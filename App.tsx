@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import OnBoarding from "@src/screens/SplashScreen/SplashScreen";
+import OnBoarding from "@src/screens/OnBoardingScreen/OnBoardingScreen";
 import HomeScreen from "@src/screens/Home/HomeScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
@@ -15,10 +15,10 @@ import { MytabBarone } from "@src/navigations/BottomNavigation/MytabBarone";
 const Stack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 export default function App() {
-  const isAuth = true;
+  const isAuth = false;
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {isAuth && (
           <Stack.Screen name='Appartment' component={AppartmentBottomTab} />
         )}

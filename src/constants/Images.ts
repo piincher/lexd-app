@@ -8,4 +8,8 @@ export const IMAGES = {
   home: require("../../assets/images/home.png"),
   homeBlue: require("../../assets/images/homeblue.png"),
   plus: require("../../assets/images/plus.png"),
+  goHouse: require("../../assets/images/goHouse.png"),
+  locationHouse: require("../../assets/images/locationHouse.png"),
+  selectHouse: require("../../assets/images/selectHouse.png"),
+  multipleChoice: require("../../assets/images/multplehouses.png"),
 };

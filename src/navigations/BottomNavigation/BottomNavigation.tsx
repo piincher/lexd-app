@@ -56,7 +56,7 @@ const BottomNavigation = ({
             numberOfLines={1}
             style={{
               fontWeight: active ? "500" : "400",
-              color: active ? COLORS.blueShade : COLORS.SlateGray,
+              color: active ? COLORS.blueShade : COLORS.black,
               fontSize: RFValue(8),
             }}
           >
