@@ -106,7 +106,7 @@ const steps = [
 	'Commande en cours de livraison',
 	'Commande livree',
 	'Commande annulee',
-	'Commande en cours de traitement',
+	'Commande en  de traitement',
 	'Commande en cours de livraison',
 ];
 const CheckRoute = () => {
