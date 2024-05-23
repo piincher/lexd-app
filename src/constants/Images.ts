@@ -1,15 +1,3 @@
 export const IMAGES = {
-  profile: require("../../assets/images/profileIcon.png"),
-  profileBlue: require("../../assets/images/profileBlue.png"),
-  heart: require("../../assets/images/heart.png"),
-  heartBlue: require("../../assets/images/heartBlue.png"),
-  reservation: require("../../assets/images/purchase.png"),
-  reservationBlue: require("../../assets/images/purchaseBlue.png"),
-  home: require("../../assets/images/home.png"),
-  homeBlue: require("../../assets/images/homeblue.png"),
-  plus: require("../../assets/images/plus.png"),
-  goHouse: require("../../assets/images/goHouse.png"),
-  locationHouse: require("../../assets/images/locationHouse.png"),
-  selectHouse: require("../../assets/images/selectHouse.png"),
-  multipleChoice: require("../../assets/images/multplehouses.png"),
+	search: require('../../assets/images/searchbox.png'),
 };

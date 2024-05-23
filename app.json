@@ -1,28 +1,40 @@
 {
-  "expo": {
-    "name": "Homely",
-    "slug": "homely",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/images/logoicon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/images/splashscreenhomely.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": ["**/*"],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/logoicon.png",
-        "backgroundColor": "#ffffff"
-      }
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
-  }
+	"expo": {
+		"name": "ChinaLinkExpress",
+		"slug": "ChinaLinkExpress",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/images/log.png",
+		"userInterfaceStyle": "light",
+		"splash": {
+			"image": "./assets/images/splashscreen.png",
+			"resizeMode": "cover",
+			"backgroundColor": "#ffffff"
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/images/log.png",
+				"backgroundColor": "#ffffff"
+			},
+			"package": "com.nuvotech.chinalinkexpress"
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"extra": {
+			"eas": {
+				"projectId": "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d"
+			}
+		},
+		"runtimeVersion": {
+			"policy": "appVersion"
+		},
+		"updates": {
+			"url": "https://u.expo.dev/e4e59c47-9dfe-4dff-8b6d-7cf9a102486d"
+		}
+	}
 }
