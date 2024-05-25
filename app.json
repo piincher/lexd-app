@@ -4,6 +4,7 @@
 		"slug": "ChinaLinkExpress",
 		"version": "1.0.0",
 		"orientation": "portrait",
+
 		"icon": "./assets/images/log.png",
 		"userInterfaceStyle": "light",
 		"splash": {

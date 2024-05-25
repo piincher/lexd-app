@@ -1,77 +1,93 @@
-import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import OnBoarding from '@src/screens/OnBoardingScreen/OnBoardingScreen';
-import HomeScreen from '@src/screens/Home/HomeScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { HomeTabParamList, RootStackParamList, RootStackScreenProps } from '@src/navigations/type';
+import { createStackNavigator } from '@react-navigation/stack';
 import { MytabBarone } from '@src/navigations/BottomNavigation/MytabBarone';
+import { HomeTabParamList, RootStackParamList, RootStackScreenProps } from '@src/navigations/type';
 import CheckRoute from '@src/screens/CheckRoute/CheckRoute';
-import { useEffect, useState } from 'react';
-import * as Font from 'expo-font';
-import { COLORS } from '@src/constants/Colors';
+import HomeScreen from '@src/screens/Home/HomeScreen';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import * as Font from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
+import { useCallback, useEffect, useState } from 'react';
+import 'react-native-gesture-handler';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AntDesign } from '@expo/vector-icons';
+import AddOrder from '@src/screens/Admin/screens/AddOrder/AddOrder';
+SplashScreen.preventAutoHideAsync();
+
 const Stack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
-export default function MainWrapper() {
-	const [isLoading, setIsLoading] = useState(true);
+function MainWrapper() {
+	const [appIsLoaded, setAppIsLoaded] = useState(false);
 	useEffect(() => {
-		const loadFonts = async () => {
-			await Font.loadAsync({
-				black: require('./assets/fonts//Roboto-Black.ttf'),
-				blackItalic: require('./assets/fonts/Roboto-BlackItalic.ttf'),
-				bold: require('./assets/fonts/Roboto-Bold.ttf'),
-				boldItalic: require('./assets/fonts/Roboto-BoldItalic.ttf'),
-				italic: require('./assets/fonts/Roboto-Italic.ttf'),
-				light: require('./assets/fonts/Roboto-Light.ttf'),
-				lightItalic: require('./assets/fonts/Roboto-LightItalic.ttf'),
-				medium: require('./assets/fonts/Roboto-Medium.ttf'),
-				mediumItalic: require('./assets/fonts/Roboto-MediumItalic.ttf'),
-				regular: require('./assets/fonts/Roboto-Regular.ttf'),
-				thin: require('./assets/fonts/Roboto-Thin.ttf'),
-				thinItalic: require('./assets/fonts/Roboto-ThinItalic.ttf'),
-			});
-			setIsLoading(false);
+		const prepare = async () => {
+			try {
+				await Font.loadAsync({
+					black: require('./assets/fonts//Roboto-Black.ttf'),
+					blackItalic: require('./assets/fonts/Roboto-BlackItalic.ttf'),
+					bold: require('./assets/fonts/Roboto-Bold.ttf'),
+					boldItalic: require('./assets/fonts/Roboto-BoldItalic.ttf'),
+					italic: require('./assets/fonts/Roboto-Italic.ttf'),
+					light: require('./assets/fonts/Roboto-Light.ttf'),
+					lightItalic: require('./assets/fonts/Roboto-LightItalic.ttf'),
+					medium: require('./assets/fonts/Roboto-Medium.ttf'),
+					mediumItalic: require('./assets/fonts/Roboto-MediumItalic.ttf'),
+					regular: require('./assets/fonts/Roboto-Regular.ttf'),
+					thin: require('./assets/fonts/Roboto-Thin.ttf'),
+					thinItalic: require('./assets/fonts/Roboto-ThinItalic.ttf'),
+				});
+			} catch (error) {
+				console.log('error loading fonts', error);
+			} finally {
+				setAppIsLoaded(true);
+			}
 		};
 
-		loadFonts();
-
-		// initializeApp();
+		prepare();
 	}, []);
+	const onLayout = useCallback(async () => {
+		if (appIsLoaded) {
+			await SplashScreen.hideAsync();
+		}
+	}, [appIsLoaded]);
 
-	if (isLoading) {
-		return (
-			<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-				<ActivityIndicator size='large' color={COLORS.yellow} />
-			</View>
-		);
+	if (!appIsLoaded) {
+		return null;
 	}
 
+	const isAdmin = true;
 	return (
-		<NavigationContainer>
-			<StatusBar style='auto' />
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
-				{/* {!isAuth && <Stack.Screen name='Appartment' component={AppartmentBottomTab} />} */}
-				<Stack.Screen name='CheckRoute' component={CheckRoute} />
-			</Stack.Navigator>
-		</NavigationContainer>
+		<SafeAreaProvider onLayout={onLayout}>
+			<NavigationContainer>
+				<StatusBar style='auto' />
+				<Stack.Navigator screenOptions={{ headerShown: false }}>
+					{/* {!isAuth && <Stack.Screen name='Appartment' component={HomeBottomTab} />} */}
+					{isAdmin && <Stack.Screen name='HomeTab' component={HomeBottomTab} />}
+					<Stack.Screen name='CheckRoute' component={CheckRoute} />
+					<Stack.Screen name='AddOrder' component={AddOrder} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		</SafeAreaProvider>
 	);
 }
 
-const AppartmentBottomTab = ({ navigation, route }: RootStackScreenProps<'Appartment'>) => {
+const HomeBottomTab = () => {
 	return (
-		<BottomTab.Navigator
-			tabBar={(props) => <MytabBarone {...props} />}
-			initialRouteName={'Home'}
-			screenOptions={{ headerShown: false }}
-		>
-			<BottomTab.Screen name='Home' component={HomeScreen} />
-			<BottomTab.Screen name='Sav' component={HomeScreen} />
+		<BottomTab.Navigator initialRouteName={'Home'} screenOptions={{ headerShown: false }}>
+			<BottomTab.Screen
+				name='Home'
+				component={HomeScreen}
+				options={{
+					tabBarIcon: ({ focused, color, size }) => (
+						<AntDesign name='home' focused={focused} color={color} size={size} />
+					),
+				}}
+			/>
+			{/* <BottomTab.Screen name='Sav' component={HomeScreen} />
 			<BottomTab.Screen name='Profile' component={HomeScreen} />
 			<BottomTab.Screen name='Reservation' component={HomeScreen} />
-			<BottomTab.Screen name='try' component={HomeScreen} />
+			<BottomTab.Screen name='try' component={HomeScreen} /> */}
 		</BottomTab.Navigator>
 	);
 };

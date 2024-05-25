@@ -20,6 +20,7 @@ interface Props {
 	containerStyle?: StyleProp<ViewStyle>;
 	name: string;
 	rightIcon?: React.ReactNode;
+	maxLength?: number;
 	onRightIconPress?: () => void;
 }
 
@@ -71,6 +72,7 @@ const AuthInputField: FC<Props> = (props) => {
 					value={values[name]}
 					onBlur={handleBlur(name)}
 					autoCapitalize='characters'
+					maxLength={props.maxLength}
 				/>
 				{rightIcon ? (
 					<Pressable onPress={handleRight} style={styles.rightIcon}>

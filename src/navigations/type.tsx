@@ -3,10 +3,11 @@ import type { StackScreenProps } from '@react-navigation/stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 
 export type RootStackParamList = {
-	Home: NavigatorScreenParams<HomeTabParamList>;
+	HomeTab: NavigatorScreenParams<HomeTabParamList>;
 	OnBoarding: undefined;
-	Appartment: undefined;
+	HomeMain: undefined;
 	CheckRoute: undefined;
+	AddOrder: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;

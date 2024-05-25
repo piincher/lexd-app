@@ -6,10 +6,12 @@ import React, { useEffect } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as yup from 'yup';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
 import { useCheckRoute } from './hooks/UseRoute';
 import { IMAGES } from '@src/constants/Images';
 import { Fonts } from '@src/constants/Fonts';
+import Constants from 'expo-constants';
+import * as WebBrowser from 'expo-web-browser';
 const CheckRouteSchema = yup.object({
 	code: yup.string().trim().required('Le numero de suivi est requis'),
 });
@@ -112,9 +114,11 @@ const steps = [
 const CheckRoute = () => {
 	const [loading, setLoading] = React.useState(false);
 	const [currentStep, setCurrentStep] = React.useState(0);
-	const { mutate, data, isLoading } = useCheckRoute();
+	const { mutate, data, isPending } = useCheckRoute();
 
-	console.log(data);
+	const _handlePressButtonAsync = async (url: string) => {
+		let result = await WebBrowser.openBrowserAsync(url);
+	};
 	const handleSubmit = async (values: newUser) => {
 		mutate({
 			code: values.code.trim(),
@@ -148,7 +152,7 @@ const CheckRoute = () => {
 						name='code'
 						rightIcon={<AntDesign name='search1' size={24} color='black' />}
 					/>
-					{isLoading && <ActivityIndicator size='small' color='#0' />}
+					{isPending && <ActivityIndicator size='small' color='#0' />}
 					{data?.route.length ?? 0 > 0 ? (
 						<ScrollView>
 							<Text style={{ textAlign: 'center', marginBottom: 25, fontFamily: Fonts.bold, fontSize: 18 }}>
@@ -172,10 +176,23 @@ const CheckRoute = () => {
 				Mali. Nous offrons un service de qualité, rapide et fiable.
 			</Text>
 			<View style={styles.iconContainer}>
-				<AntDesign name='instagram' size={24} color='black' style={styles.iconStyle} />
-				<AntDesign name='facebook-square' size={24} color='black' style={styles.iconStyle} />
-				<AntDesign name='twitter' size={24} color='black' style={styles.iconStyle} />
+				<AntDesign
+					name='instagram'
+					size={24}
+					color='black'
+					style={styles.iconStyle}
+					onPress={() => _handlePressButtonAsync('https://www.instagram.com/chinalinkexpress')}
+				/>
+				<AntDesign
+					name='facebook-square'
+					size={24}
+					color='black'
+					style={styles.iconStyle}
+					onPress={() => _handlePressButtonAsync('https://www.facebook.com/profile.php?id=61556519083512')}
+				/>
+				<FontAwesome5 name='tiktok' size={24} color='black' />
 			</View>
+			<Text>App version: {Constants.expoConfig?.version}</Text>
 		</SafeAreaView>
 	);
 };
@@ -190,7 +207,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		marginTop: 20,
+		marginTop: 10,
+		marginBottom: 10,
 	},
 	iconStyle: {
 		marginRight: 50,
