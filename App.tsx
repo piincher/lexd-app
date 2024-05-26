@@ -1,3 +1,5 @@
+import 'react-native-gesture-handler';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,17 +11,23 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AntDesign } from '@expo/vector-icons';
 import AddOrder from '@src/screens/Admin/screens/AddOrder/AddOrder';
+import ActiveOrders from '@src/screens/Admin/screens/ActiveOrder/ActiveOrders';
+import * as Sentry from '@sentry/react-native';
+import { initSentry, routingInstrumentation } from '@src/services/sentry';
 SplashScreen.preventAutoHideAsync();
 
 const Stack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
+
+initSentry();
 function MainWrapper() {
 	const [appIsLoaded, setAppIsLoaded] = useState(false);
+	const navigation = useRef();
 	useEffect(() => {
 		const prepare = async () => {
 			try {
@@ -57,15 +65,22 @@ function MainWrapper() {
 	}
 
 	const isAdmin = true;
+
 	return (
 		<SafeAreaProvider onLayout={onLayout}>
-			<NavigationContainer>
+			<NavigationContainer
+				onReady={() => {
+					routingInstrumentation.registerNavigationContainer(navigation);
+				}}
+				ref={navigation}
+			>
 				<StatusBar style='auto' />
 				<Stack.Navigator screenOptions={{ headerShown: false }}>
 					{/* {!isAuth && <Stack.Screen name='Appartment' component={HomeBottomTab} />} */}
 					{isAdmin && <Stack.Screen name='HomeTab' component={HomeBottomTab} />}
 					<Stack.Screen name='CheckRoute' component={CheckRoute} />
 					<Stack.Screen name='AddOrder' component={AddOrder} />
+					<Stack.Screen name='ActiveOrder' component={ActiveOrders} />
 				</Stack.Navigator>
 			</NavigationContainer>
 		</SafeAreaProvider>
@@ -101,4 +116,4 @@ const App = () => {
 	);
 };
 
-export default App;
+export default Sentry.wrap(App);

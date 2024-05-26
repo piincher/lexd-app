@@ -8,6 +8,7 @@ export type RootStackParamList = {
 	HomeMain: undefined;
 	CheckRoute: undefined;
 	AddOrder: undefined;
+	ActiveOrder: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;

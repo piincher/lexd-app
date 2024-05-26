@@ -12,6 +12,16 @@
 			"resizeMode": "cover",
 			"backgroundColor": "#ffffff"
 		},
+		"plugins": [
+			[
+				"@sentry/react-native/expo",
+				{
+					"organization": "nuvotech",
+					"project": "chinalinkexpress",
+					"url": "https://sentry.io/"
+				}
+			]
+		],
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
 			"supportsTablet": true

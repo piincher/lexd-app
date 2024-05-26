@@ -10,12 +10,11 @@ import { SCREEN_WIDTH } from '@src/constants/Dimensions';
 import { Fonts } from '@src/constants/Fonts';
 import { RootStackScreenProps } from '@src/navigations/type';
 import * as ImagePicker from 'expo-image-picker';
-import { FormikHelpers } from 'formik';
 import React, { useEffect, useId, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Avatar, Snackbar, Text } from 'react-native-paper';
 import * as yup from 'yup';
-import { usePlaceOrder } from '../hooks/useOrder';
+import { usePlaceOrder } from '../../hooks/useOrder';
 const signupSchema = yup.object({
 	clientName: yup.string().required('Nom du client est requis'),
 	clientPhone: yup.string().required('Numero de telephone est requis'),
@@ -72,35 +71,6 @@ const steps = [
 		id: '0',
 		title: 'le client a passé une commande',
 	},
-	{
-		id: '1',
-		title: 'les colis sont emballées',
-	},
-	{
-		id: '2',
-		title: 'les Colis sont expédiées et transférées vers le port',
-	},
-	{
-		id: '3',
-		title: "Colis transféré à l'entrepôt de Hong Kong",
-	},
-	{
-		id: '4',
-		title: "Le colis a décollé pour L'Éthiopie",
-	},
-	{
-		id: '5',
-		title: "Colis transféré vers l'aéroport d'Ethiopie",
-	},
-	{
-		id: '6',
-		title: "Colis arrivé à l'aéroport du Mali et prêt pour dédouanement",
-	},
-	{
-		id: '7',
-		title:
-			'marchandises sont arrivées au port et ont été stockées.(Kalaban-Coura pres de FEBAK +22376696177/+22350005142',
-	},
 ];
 
 const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
@@ -127,12 +97,19 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 	console.log('process', process);
 	const handleSubmit = async (values: order) => {
 		try {
-			mutate({ ...values, images: selectedImages, currentPosition: process });
+			mutate({
+				...values,
+				images: selectedImages,
+				currentPosition: process,
+				partenaire: values.partenaire || 'Chez Fode',
+			});
 			console.log('values', values);
 		} catch (error) {
 			console.log(error);
 		}
 	};
+
+	console.log('selectedImages', selectedImages);
 	const pickImage = async () => {
 		let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 

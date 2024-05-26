@@ -20,12 +20,15 @@ export type productType = {
 		title: string;
 	};
 	orderId?: string;
+	code?: string;
+	route: Array<{ id: string; title: string; time: string }>;
 };
 
 const API_URL = {
 	GET_ORDER: '/order/search',
 	CREATE_ORDER: '/order/create',
 	UPDATE_ORDER: '/order',
+	getOrders: '/order',
 };
 
 interface CheckRoute {
@@ -66,6 +69,11 @@ export const placeOrder = async ({
 	return await api.post<productType>(`${API_URL.CREATE_ORDER}`, data);
 };
 
-const updateOrder = async (data: productType) => {
+export const updateOrder = async (data: productType) => {
 	return await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}`, data);
+};
+
+export const getActiveOrders = async () => {
+	const response = await api.get<productType[]>(`${API_URL.getOrders}`);
+	return response.data;
 };

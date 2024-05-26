@@ -24,7 +24,11 @@ const initialValues = {
 };
 
 interface StepIndicatorProps {
-	steps: Array<string>;
+	steps: Array<{
+		id: string;
+		title: string;
+		time: string;
+	}>;
 	currentStep: number;
 	time?: string;
 }
@@ -32,22 +36,30 @@ interface StepIndicatorProps {
 const StepIndicator = ({ steps, currentStep, time }: StepIndicatorProps) => {
 	return (
 		<View style={styles2.container}>
-			{steps.map((step, index) => (
-				<View key={index} style={styles2.stepContainer}>
-					<View style={styles2.stepInnerContainer}>
-						<View style={[styles2.circle, index <= currentStep && styles2.activeCircle]}>
-							<Text style={[styles2.stepText, index <= currentStep && styles2.activeStepText]}>{index + 1}</Text>
+			{steps?.map((step, index) => {
+				const date = new Date(step.time ?? new Date());
+				const formattedDate = date.toISOString().split('T')[0];
+				const hours = date.getUTCHours().toString().padStart(2, '0');
+				const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+				const formattedDateTime = `${formattedDate} ${hours}:${minutes}`;
+
+				return (
+					<View key={step.id} style={styles2.stepContainer}>
+						<View style={styles2.stepInnerContainer}>
+							<View style={[styles2.circle, index <= currentStep && styles2.activeCircle]}>
+								<Text style={[styles2.stepText, index <= currentStep && styles2.activeStepText]}>{index + 1}</Text>
+							</View>
+							<Text style={[styles2.label, index <= currentStep && styles2.activeLabel]} numberOfLines={3}>
+								{formattedDateTime}
+							</Text>
+							<Text style={[styles2.label, index <= currentStep && styles2.activeLabel]} numberOfLines={3}>
+								{step?.title}
+							</Text>
 						</View>
-						<Text style={[styles2.label, index <= currentStep && styles2.activeLabel]} numberOfLines={3}>
-							{time}
-						</Text>
-						<Text style={[styles2.label, index <= currentStep && styles2.activeLabel]} numberOfLines={3}>
-							{step}
-						</Text>
+						{index < steps.length - 1 && <View style={[styles2.line, index < currentStep && styles2.activeLine]} />}
 					</View>
-					{index < steps.length - 1 && <View style={[styles2.line, index < currentStep && styles2.activeLine]} />}
-				</View>
-			))}
+				);
+			})}
 		</View>
 	);
 };
@@ -115,6 +127,8 @@ const CheckRoute = () => {
 	const [loading, setLoading] = React.useState(false);
 	const [currentStep, setCurrentStep] = React.useState(0);
 	const { mutate, data, isPending } = useCheckRoute();
+
+	console.log(data);
 
 	const _handlePressButtonAsync = async (url: string) => {
 		let result = await WebBrowser.openBrowserAsync(url);
