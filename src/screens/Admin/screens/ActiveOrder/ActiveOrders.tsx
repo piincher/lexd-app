@@ -1,15 +1,26 @@
+import { AntDesign } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
+import { useNavigation } from '@react-navigation/native';
 import { productType } from '@src/api/order';
+import AppButton from '@src/components/AppButton/AppButton';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import * as Clipboard from 'expo-clipboard';
-import React, { FC, useId } from 'react';
-import { Alert, Dimensions, FlatList, Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Card, Paragraph, Snackbar, Text, Title } from 'react-native-paper';
+import React, { FC, useEffect, useId } from 'react';
+import {
+	Alert,
+	Dimensions,
+	FlatList,
+	Image,
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	TouchableOpacity,
+	View,
+} from 'react-native';
+import { ActivityIndicator, Button, Card, Paragraph, Snackbar, Text, Title } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useGetActiveOrders, useUpdateOrder } from '../../hooks/useOrder';
-import AppButton from '@src/components/AppButton/AppButton';
-import { AntDesign } from '@expo/vector-icons';
+import { useGetActiveOrdersAdmin, useUpdateOrder } from '../../hooks/useOrder';
 interface Order {
 	id: string;
 	clientName: string;
@@ -38,34 +49,54 @@ const steps = [
 	},
 	{
 		id: '3',
-		title: "Colis transféré à l'entrepôt de Hong Kong",
+		title: "Les Colis sont transféré à l'entrepôt de Hong Kong",
 	},
 	{
 		id: '4',
-		title: "Le colis a décollé pour L'Éthiopie",
+		title: "Les colis ont décollé pour L'Éthiopie",
 	},
 	{
 		id: '5',
-		title: "Colis transféré vers l'aéroport d'Ethiopie",
+		title: "Les Colis sont transféré vers l'aéroport d'Ethiopie",
 	},
 	{
 		id: '6',
-		title: "Colis arrivé à l'aéroport du Mali et prêt pour dédouanement",
+		title: "Les Colis sont arrivé à l'aéroport de Bamako et prêt pour le dédouanement",
 	},
 	{
 		id: '7',
-		title:
-			'marchandises sont arrivées au port et ont été stockées.(Kalaban-Coura pres de FEBAK +22376696177/+22350005142',
+		title: 'Les marchandises sont arrivées et ont été stockées.(Kalaban-Coura pres de FEBAK +22376696177/+22350005142)',
 	},
 ];
 
 const ActiveOrders: FC<Props> = () => {
-	const { data, isLoading } = useGetActiveOrders();
+	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } = useGetActiveOrdersAdmin();
 
-	if (isLoading) {
+	console.log(data);
+	const renderFooter = () => {
+		if (isFetchingNextPage) {
+			return <ActivityIndicator size='small' color={COLORS.blue} animating />;
+		} else if (hasNextPage) {
+			return (
+				<TouchableOpacity onPress={loadMore}>
+					<Text>Voir</Text>
+				</TouchableOpacity>
+			);
+		} else {
+			return null;
+		}
+	};
+	const loadMore = () => {
+		if (hasNextPage) {
+			fetchNextPage();
+		}
+	};
+
+	if (isError) {
 		return (
 			<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-				<ActivityIndicator size='large' animating={true} />
+				<Text>Erreur lors du chargement des commandes actives</Text>
+				<AppButton title='Actualiser' onPress={refetch} />
 			</View>
 		);
 	}
@@ -73,11 +104,17 @@ const ActiveOrders: FC<Props> = () => {
 		<SafeAreaView style={styles.container}>
 			<Text style={styles.textStyle}>Active Orders</Text>
 			<FlatList
-				data={data!}
+				onEndReached={loadMore}
+				ListEmptyComponent={() => {
+					return <Text style={{ textAlign: 'center', fontSize: 26 }}> Aucune commande</Text>;
+				}}
+				showsVerticalScrollIndicator={false}
+				data={data?.pages?.flatMap((page) => page)}
+				keyExtractor={(item) => item._id!}
 				renderItem={({ item }) => {
 					return <RenderOrder item={item} />;
 				}}
-				keyExtractor={(item) => item._id!}
+				ListFooterComponent={renderFooter}
 			/>
 		</SafeAreaView>
 	);
@@ -87,10 +124,20 @@ const windowWidth = Dimensions.get('window').width;
 const RenderOrder = ({ item }: { item: productType }) => {
 	const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
 	const [visible, setVisible] = React.useState(false);
-	const currentRoute = item?.route[item?.route.length - 1];
+	const currentRoute = item?.route[item?.route?.length - 1];
 	const [statusChange, setStatusChange] = React.useState(currentRoute?.title ?? '');
-	const { mutate, isPending } = useUpdateOrder();
+	const { mutate, isPending, isSuccess } = useUpdateOrder();
 	const id = useId();
+	const navigation = useNavigation();
+
+	useEffect(() => {
+		if (isSuccess) {
+			setVisible(true);
+			setTimeout(() => {
+				navigation.navigate('HomeTab', { screen: 'Home' });
+			}, 1000);
+		}
+	}, [isSuccess]);
 	const currentPosition: { id: string; title: string; time: string } = {
 		id: id,
 		title: statusChange,
@@ -110,6 +157,27 @@ const RenderOrder = ({ item }: { item: productType }) => {
 	const onDismissSnackBar = () => setVisible(false);
 	return (
 		<Card style={styles.card}>
+			<Snackbar
+				visible={visible}
+				onDismiss={onDismissSnackBar}
+				style={{
+					backgroundColor: COLORS.white,
+					top: -50,
+				}}
+				duration={3000}
+			>
+				<View
+					style={{
+						flexDirection: 'row',
+						alignItems: 'center',
+						justifyContent: 'center',
+						alignContent: 'center',
+					}}
+				>
+					<Text style={{ fontFamily: Fonts.black, marginRight: 10 }}>La status a change</Text>
+					<AntDesign name='checkcircle' size={24} color='green' />
+				</View>
+			</Snackbar>
 			<ScrollView
 				horizontal
 				pagingEnabled
@@ -154,8 +222,12 @@ const RenderOrder = ({ item }: { item: productType }) => {
 				<Paragraph style={styles.ParagraphStyle}> Partenaire :{item.partenaire}</Paragraph>
 				<Paragraph style={styles.ParagraphStyle}> Nombre de colis :{item.quantity}</Paragraph>
 				<Paragraph style={[styles.ParagraphStyle, { color: COLORS.blue }]}>
-					{' '}
 					Situation actuel :{currentRoute?.title}
+				</Paragraph>
+
+				<Paragraph style={[styles.ParagraphStyle, { color: COLORS.blue }]}>
+					Date de depart :
+					{item.departureDate ? new Date(item.departureDate).toDateString() : 'Pas encore de date de depart'}
 				</Paragraph>
 
 				<View>
@@ -171,27 +243,9 @@ const RenderOrder = ({ item }: { item: productType }) => {
 						})}
 					</Picker>
 				</View>
-				<Snackbar
-					visible={visible}
-					onDismiss={onDismissSnackBar}
-					style={{
-						backgroundColor: COLORS.white,
-						top: -50,
-					}}
-					duration={3000}
-				>
-					<View
-						style={{
-							flexDirection: 'row',
-							alignItems: 'center',
-							justifyContent: 'center',
-							alignContent: 'center',
-						}}
-					>
-						<Text style={{ fontFamily: Fonts.black, marginRight: 10 }}>La status a change</Text>
-						<AntDesign name='checkcircle' size={24} color='green' />
-					</View>
-				</Snackbar>
+				<Button mode='contained' style={{ marginBottom: 20 }}>
+					Delivre
+				</Button>
 				<AppButton title='Mettre ' onPress={updateOrder} busy={isPending} />
 			</Card.Content>
 		</Card>
@@ -214,6 +268,7 @@ const styles = StyleSheet.create({
 	ParagraphStyle: {
 		fontSize: 18,
 		fontFamily: Fonts.black,
+		padding: 5,
 	},
 	imageContainer: {
 		width: windowWidth,

@@ -12,9 +12,10 @@ import { RootStackScreenProps } from '@src/navigations/type';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useId, useState } from 'react';
 import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Avatar, Snackbar, Text } from 'react-native-paper';
+import { ActivityIndicator, Avatar, Button, Snackbar, Text } from 'react-native-paper';
 import * as yup from 'yup';
 import { usePlaceOrder } from '../../hooks/useOrder';
+import { DatePickerModal } from 'react-native-paper-dates';
 const signupSchema = yup.object({
 	clientName: yup.string().required('Nom du client est requis'),
 	clientPhone: yup.string().required('Numero de telephone est requis'),
@@ -42,21 +43,7 @@ interface order {
 	};
 	orderId?: string;
 }
-const initialValues = {
-	clientName: '',
-	clientPhone: '',
-	packageWeight: '1',
-	priceTotal: 0,
-	partenaire: '',
-	quantity: '1',
-	shippingMode: 'air',
-	typeOfPackage: 'electronic',
-	currentPosition: {
-		id: '',
-		title: '',
-		time: '',
-	},
-};
+
 // 'le client a passé une commande',
 // 'les colis sont emballées',
 // 'les Colis sont expédiées et transférées vers le port',
@@ -88,6 +75,22 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 			public_id: string;
 		}[]
 	>([]);
+	const [date, setDate] = React.useState(undefined);
+	const [open, setOpen] = React.useState(false);
+
+	const onDismissSingle = React.useCallback(() => {
+		setOpen(false);
+	}, [setOpen]);
+
+	const onConfirmSingle = React.useCallback(
+		(params) => {
+			setOpen(false);
+			setDate(params.date);
+		},
+		[setOpen, setDate]
+	);
+
+	console.log('Date de depart', date);
 
 	const process = {
 		id: data,
@@ -97,11 +100,14 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 	console.log('process', process);
 	const handleSubmit = async (values: order) => {
 		try {
+			if (!date) return alert('Veuillez choisir une date de depart');
 			mutate({
 				...values,
 				images: selectedImages,
 				currentPosition: process,
 				partenaire: values.partenaire || 'Chez Fode',
+				userId: route.params.userId,
+				departureDate: date!,
 			});
 			console.log('values', values);
 		} catch (error) {
@@ -157,6 +163,22 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		}
 	}, [isSuccess]);
 	const onDismissSnackBar = () => setVisible(false);
+
+	const initialValues = {
+		clientName: route.params.clientName,
+		clientPhone: route.params.phoneNumber,
+		packageWeight: '0',
+		priceTotal: 0,
+		partenaire: '',
+		quantity: '1',
+		shippingMode: 'air',
+		typeOfPackage: 'electronic',
+		currentPosition: {
+			id: '',
+			title: '',
+			time: '',
+		},
+	};
 
 	return (
 		<Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
@@ -246,7 +268,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 							label='Poids du Colis'
 							placeholder='Poids du Colis'
 							autoCapitalize='none'
-							keyboardType='numeric'
 							containerStyle={styles.containerStyle}
 							name='packageWeight'
 						/>
@@ -285,6 +306,26 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 								return <Picker.Item key={c.id} label={c.title} value={c.title} />;
 							})}
 						</Picker>
+
+						<Button style={{ marginVertical: 50 }} onPress={() => setOpen(true)} uppercase={false} mode='outlined'>
+							Choisir la date de departure
+						</Button>
+						<DatePickerModal
+							locale='en'
+							mode='single'
+							visible={open}
+							onDismiss={onDismissSingle}
+							date={date}
+							onConfirm={onConfirmSingle}
+							saveLabel='Save'
+							label='Select Date'
+							animationType='slide'
+							presentationStyle='overFullScreen'
+						/>
+
+						<Text style={{ marginBottom: 50 }}>
+							{date ? `Date de depart : ${date.toLocaleDateString()}` : 'Pas de date de depart selectionné'}
+						</Text>
 
 						<SubmitBtn title='Add' busy={isPending} />
 					</View>

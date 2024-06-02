@@ -12,6 +12,7 @@ import { IMAGES } from '@src/constants/Images';
 import { Fonts } from '@src/constants/Fonts';
 import Constants from 'expo-constants';
 import * as WebBrowser from 'expo-web-browser';
+import SocialMedia from '@src/components/SocialMedia/SocialMedia';
 const CheckRouteSchema = yup.object({
 	code: yup.string().trim().required('Le numero de suivi est requis'),
 });
@@ -185,27 +186,8 @@ const CheckRoute = () => {
 					{/* About China Link Express   */}
 				</ScrollView>
 			</Form>
-			<Text style={{ textAlign: 'center', fontFamily: Fonts.blackItalic, fontSize: 16 }}>
-				China Link Express est une entreprise spécialisée dans l'envoi de colis express, opérant de la Chine vers le
-				Mali. Nous offrons un service de qualité, rapide et fiable.
-			</Text>
-			<View style={styles.iconContainer}>
-				<AntDesign
-					name='instagram'
-					size={24}
-					color='black'
-					style={styles.iconStyle}
-					onPress={() => _handlePressButtonAsync('https://www.instagram.com/chinalinkexpress')}
-				/>
-				<AntDesign
-					name='facebook-square'
-					size={24}
-					color='black'
-					style={styles.iconStyle}
-					onPress={() => _handlePressButtonAsync('https://www.facebook.com/profile.php?id=61556519083512')}
-				/>
-				<FontAwesome5 name='tiktok' size={24} color='black' />
-			</View>
+
+			<SocialMedia _handlePressButtonAsync={_handlePressButtonAsync} />
 			<Text>App version: {Constants.expoConfig?.version}</Text>
 		</SafeAreaView>
 	);

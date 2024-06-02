@@ -1,17 +1,19 @@
 import { COLORS } from '@src/constants/Colors';
+import { Fonts } from '@src/constants/Fonts';
 import React, { FC } from 'react';
-import { Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
+import { Text, StyleSheet, Pressable, ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
 
 interface Props {
 	title: string;
 	onPress: () => void;
 	busy?: boolean;
+	style?: StyleProp<ViewStyle>;
 }
 
-const AppButton: FC<Props> = ({ title, onPress, busy }) => {
+const AppButton: FC<Props> = ({ title, onPress, busy, style }) => {
 	return (
-		<Pressable style={styles.container} onPress={onPress}>
-			{busy ? <ActivityIndicator /> : <Text style={styles.title}>{title}</Text>}
+		<Pressable style={[style, styles.container]} onPress={onPress}>
+			{busy ? <ActivityIndicator /> : <Text style={styles.title}>{title.toUpperCase()}</Text>}
 		</Pressable>
 	);
 };
@@ -20,14 +22,14 @@ const styles = StyleSheet.create({
 	container: {
 		width: '100%',
 		height: 45,
-		backgroundColor: COLORS.Crimson,
+		backgroundColor: COLORS.blue,
 		alignItems: 'center',
 		justifyContent: 'center',
-		borderRadius: 25,
 	},
 	title: {
 		color: COLORS.white,
-		fontSize: 18,
+		fontSize: 14,
+		fontFamily: Fonts.black,
 	},
 });
 

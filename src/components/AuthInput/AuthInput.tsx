@@ -2,7 +2,7 @@ import { Fonts } from '@src/constants/Fonts';
 import AppInput from '../AppInput/AppInput';
 import { COLORS } from '@src/constants/Colors';
 import { useFormikContext } from 'formik';
-import React, { FC, useEffect } from 'react';
+import React, { Dispatch, FC, useEffect } from 'react';
 import { View, StyleSheet, Text, TextInputProps, StyleProp, ViewStyle, Pressable } from 'react-native';
 import Animated, {
 	withSequence,
@@ -11,6 +11,7 @@ import Animated, {
 	withTiming,
 	withSpring,
 } from 'react-native-reanimated';
+import ContactNumberField from '@src/screens/Auth/Login/components/ContactField';
 interface Props {
 	placeholder?: string;
 	label: string;
@@ -22,6 +23,10 @@ interface Props {
 	rightIcon?: React.ReactNode;
 	maxLength?: number;
 	onRightIconPress?: () => void;
+	code?: [{ label: string; value: string }];
+	selectedCode?: string;
+	setSelectedCode?: Dispatch<string>;
+	phone?: boolean;
 }
 
 const AuthInputField: FC<Props> = (props) => {
@@ -65,6 +70,7 @@ const AuthInputField: FC<Props> = (props) => {
 					placeholder={placeholder}
 					style={{
 						borderColor: errorMsg ? 'red' : COLORS.grey,
+						backgroundColor: COLORS.white,
 					}}
 					keyboardType={keyboardType}
 					secureTextEntry={secureTextEntry}
@@ -73,6 +79,10 @@ const AuthInputField: FC<Props> = (props) => {
 					onBlur={handleBlur(name)}
 					autoCapitalize='characters'
 					maxLength={props.maxLength}
+					code={props.code}
+					selectedCode={props.selectedCode}
+					setSelectedCode={props.setSelectedCode}
+					phone={props.phone}
 				/>
 				{rightIcon ? (
 					<Pressable onPress={handleRight} style={styles.rightIcon}>
@@ -87,10 +97,10 @@ const AuthInputField: FC<Props> = (props) => {
 const styles = StyleSheet.create({
 	container: {},
 	label: {
-		color: COLORS.black,
+		color: COLORS.white,
 		padding: 5,
 		fontSize: 16,
-		fontFamily: Fonts.lightItalic,
+		fontFamily: Fonts.black,
 	},
 	rightIcon: {
 		width: 40,

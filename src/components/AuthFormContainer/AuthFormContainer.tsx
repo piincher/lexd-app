@@ -1,6 +1,8 @@
 import { COLORS } from '@src/constants/Colors';
+import { Fonts } from '@src/constants/Fonts';
 import React, { FC, ReactNode } from 'react';
 import { ScrollView, StyleSheet, Text, View, Image } from 'react-native';
+import ComppanyLogo from '../CompanyLogo/ComppanyLogo';
 
 interface Props {
 	title: string;
@@ -13,7 +15,7 @@ const AuthFormContainer: FC<Props> = ({ title, subTitle, children }) => {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			<>
-				<Image source={require('../../../assets/icon.png')} style={{ height: 80, width: 200 }} />
+				<ComppanyLogo />
 				<View style={styles.headerContainer}>
 					<Text style={styles.heading}>{title}</Text>
 					<Text style={styles.subTitle}>{subTitle}</Text>
@@ -34,16 +36,16 @@ const styles = StyleSheet.create({
 	},
 	heading: {
 		fontSize: 25,
-		fontWeight: 'bold',
 		color: COLORS.black,
 		paddingVertical: 5,
+		fontFamily: Fonts.bold,
 	},
 	subTitle: {
 		fontSize: 15,
-
+		fontFamily: Fonts.regular,
 		color: COLORS.black,
 	},
-	headerContainer: { width: '100%', marginBottom: 20 },
+	headerContainer: { width: '100%', marginBottom: 20, marginLeft: 40 },
 });
 
 export default AuthFormContainer;

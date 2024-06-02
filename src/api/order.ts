@@ -1,4 +1,5 @@
 import api from '@src/api/client';
+import { LIMIT } from '@src/constants/Dimensions';
 
 export type imagesType = { url: string; public_id: string }[];
 
@@ -21,14 +22,20 @@ export type productType = {
 	};
 	orderId?: string;
 	code?: string;
-	route: Array<{ id: string; title: string; time: string }>;
+	route?: Array<{ id: string; title: string; time: string }>;
+	dateOfReception?: string;
+	userId: string;
+	departureDate: string;
 };
 
 const API_URL = {
 	GET_ORDER: '/order/search',
 	CREATE_ORDER: '/order/create',
 	UPDATE_ORDER: '/order',
-	getOrders: '/order',
+	getOrdersFromAUser: '/order/one',
+	getActiveOrders: '/order',
+	getActiveOrdersAdmin: '/order/all',
+	single: '/order',
 };
 
 interface CheckRoute {
@@ -51,6 +58,8 @@ export const placeOrder = async ({
 	quantity,
 	shippingMode,
 	currentPosition,
+	userId,
+	departureDate,
 }: productType) => {
 	const data = {
 		clientName,
@@ -64,16 +73,34 @@ export const placeOrder = async ({
 		quantity,
 		shippingMode,
 		currentPosition,
+		userId,
+		departureDate,
 	};
 
 	return await api.post<productType>(`${API_URL.CREATE_ORDER}`, data);
 };
 
 export const updateOrder = async (data: productType) => {
-	return await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}`, data);
+	return await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
 };
 
-export const getActiveOrders = async () => {
-	const response = await api.get<productType[]>(`${API_URL.getOrders}`);
+export const getActiveOrders = async (page: number, status: string) => {
+	console.log('page', status);
+	const response = await api.get<productType[]>(
+		`${API_URL.getOrdersFromAUser}?status=${status}&limit=${LIMIT}&page=${page}`
+	);
+	return response.data;
+};
+
+export const getActiveOrdersAdmin = async (page: number) => {
+	console.log('page', page);
+	const response = await api.get<productType[]>(
+		`${API_URL.getActiveOrdersAdmin}?status=Active&limit=${LIMIT}&page=${page}`
+	);
+	return response.data;
+};
+export const getOrderDetails = async (id: string) => {
+	console.log('id', id);
+	const response = await api.get<productType>(`${API_URL.single}/${id}/single`);
 	return response.data;
 };

@@ -1,24 +1,41 @@
 import 'react-native-gesture-handler';
 
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { MytabBarone } from '@src/navigations/BottomNavigation/MytabBarone';
-import { HomeTabParamList, RootStackParamList, RootStackScreenProps } from '@src/navigations/type';
+import * as Sentry from '@sentry/react-native';
+import { HomeTabParamList, RootStackParamList } from '@src/navigations/type';
+import ActiveOrders from '@src/screens/Admin/screens/ActiveOrder/ActiveOrders';
+import AddOrder from '@src/screens/Admin/screens/AddOrder/AddOrder';
+import Login from '@src/screens/Auth/Login/Login';
+import Verification from '@src/screens/Auth/Verification/Verification';
+import Chat from '@src/screens/Chat/screens/Chat';
 import CheckRoute from '@src/screens/CheckRoute/CheckRoute';
 import HomeScreen from '@src/screens/Home/HomeScreen';
+import OnBoarding from '@src/screens/OnBoardingScreen/OnBoardingScreen';
+import OrderDetails from '@src/screens/OrderDetail/OrderDetails';
+import { initSentry, routingInstrumentation } from '@src/services/sentry';
+import { useAppLaunchStore } from '@src/store/AppLaunch';
+import { useAuth } from '@src/store/Auth';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { AntDesign } from '@expo/vector-icons';
-import AddOrder from '@src/screens/Admin/screens/AddOrder/AddOrder';
-import ActiveOrders from '@src/screens/Admin/screens/ActiveOrder/ActiveOrders';
-import * as Sentry from '@sentry/react-native';
-import { initSentry, routingInstrumentation } from '@src/services/sentry';
+import { Chat as StreamChat, OverlayProvider, Streami18n } from 'stream-chat-expo';
+import { chatClient } from '@src/config/ChatConfig';
+import ChatRoom from '@src/screens/Chat/screens/ChatRoom';
+import { ChatProvider } from '@src/context/ChatContext';
+import SelectAdminToChatWith from '@src/screens/Chat/screens/SelectAdmin';
+import Profile from '@src/screens/Profile/screens/Profile';
+import SelectUser from '@src/screens/Admin/screens/SelectUser/SelectUser';
+import PastOrders from '@src/screens/Profile/screens/PastOrders';
+import AboutUs from '@src/screens/Profile/screens/AboutUs';
+import { UpdateProvider } from '@src/context/UpdateProvider';
+
 SplashScreen.preventAutoHideAsync();
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -28,6 +45,10 @@ initSentry();
 function MainWrapper() {
 	const [appIsLoaded, setAppIsLoaded] = useState(false);
 	const navigation = useRef();
+	const appLaunch = useAppLaunchStore((state) => state.isAppLaunchFirst);
+	const token = useAuth((state) => state.token);
+
+	console.log('token', token);
 	useEffect(() => {
 		const prepare = async () => {
 			try {
@@ -64,8 +85,6 @@ function MainWrapper() {
 		return null;
 	}
 
-	const isAdmin = true;
-
 	return (
 		<SafeAreaProvider onLayout={onLayout}>
 			<NavigationContainer
@@ -76,11 +95,27 @@ function MainWrapper() {
 			>
 				<StatusBar style='auto' />
 				<Stack.Navigator screenOptions={{ headerShown: false }}>
-					{/* {!isAuth && <Stack.Screen name='Appartment' component={HomeBottomTab} />} */}
-					{isAdmin && <Stack.Screen name='HomeTab' component={HomeBottomTab} />}
-					<Stack.Screen name='CheckRoute' component={CheckRoute} />
-					<Stack.Screen name='AddOrder' component={AddOrder} />
-					<Stack.Screen name='ActiveOrder' component={ActiveOrders} />
+					{appLaunch && <Stack.Screen name='OnBoarding' component={OnBoarding} />}
+
+					{token ? (
+						<>
+							<Stack.Screen name='HomeTab' component={HomeBottomTab} />
+							<Stack.Screen name='CheckRoute' component={CheckRoute} />
+							<Stack.Screen name='AddOrder' component={AddOrder} />
+							<Stack.Screen name='ActiveOrder' component={ActiveOrders} />
+							<Stack.Screen name='OrderDetail' component={OrderDetails} />
+							<Stack.Screen name='ChatRoom' component={ChatRoom} />
+							<Stack.Screen name='SelectAdminToChatWith' component={SelectAdminToChatWith} />
+							<Stack.Screen name='SelectUser' component={SelectUser} />
+							<Stack.Screen name='PastOrders' component={PastOrders} />
+							<Stack.Screen name='AboutUs' component={AboutUs} />
+						</>
+					) : (
+						<>
+							<Stack.Screen name='Login' component={Login} />
+							<Stack.Screen name='Verification' component={Verification} />
+						</>
+					)}
 				</Stack.Navigator>
 			</NavigationContainer>
 		</SafeAreaProvider>
@@ -99,19 +134,43 @@ const HomeBottomTab = () => {
 					),
 				}}
 			/>
-			{/* <BottomTab.Screen name='Sav' component={HomeScreen} />
-			<BottomTab.Screen name='Profile' component={HomeScreen} />
-			<BottomTab.Screen name='Reservation' component={HomeScreen} />
-			<BottomTab.Screen name='try' component={HomeScreen} /> */}
+			{/* {/* <BottomTab.Screen name='Sav' component={HomeScreen} /> */}
+			<BottomTab.Screen
+				name='Chat'
+				component={Chat}
+				options={{
+					tabBarIcon: ({ focused, color, size }) => <Entypo name='chat' focused={focused} color={color} size={size} />,
+				}}
+			/>
+			<BottomTab.Screen
+				name='Profile'
+				component={Profile}
+				options={{
+					tabBarIcon: ({ focused, color, size }) => <Entypo name='user' focused={focused} color={color} size={size} />,
+				}}
+			/>
 		</BottomTab.Navigator>
 	);
 };
 
 const client = new QueryClient();
+const streami18n = new Streami18n({
+	language: 'fr',
+});
 const App = () => {
 	return (
 		<QueryClientProvider client={client}>
-			<MainWrapper />
+			<ChatProvider>
+				<GestureHandlerRootView style={{ flex: 1 }}>
+					<OverlayProvider i18nInstance={streami18n}>
+						<StreamChat client={chatClient} i18nInstance={streami18n}>
+							<>
+								<MainWrapper />
+							</>
+						</StreamChat>
+					</OverlayProvider>
+				</GestureHandlerRootView>
+			</ChatProvider>
 		</QueryClientProvider>
 	);
 };

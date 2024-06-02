@@ -1,3 +1,4 @@
+import { useAuth } from '@src/store/Auth';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 // Default config for the axios instance
 const env = 'development' as string;
@@ -18,3 +19,33 @@ const api = (axios: AxiosInstance) => {
 };
 
 export default api(axiosInstance);
+
+axiosInstance.interceptors.request.use(
+	function (config) {
+		// Get the token from wherever you have stored it (Zustand)
+		const token = useAuth.getState().token;
+
+		// Attach the Authorization header to the request
+		if (token) {
+			config.headers.Authorization = `${token}`;
+		}
+
+		return config;
+	},
+	function (error) {
+		return Promise.reject(error);
+	}
+);
+
+axiosInstance.interceptors.response.use(
+	function (response) {
+		return response;
+	},
+	async function (error) {
+		if (error.response.status === 401 || error.response.status === 403) {
+			useAuth.getState().logOut();
+		}
+
+		return Promise.reject(error);
+	}
+);
