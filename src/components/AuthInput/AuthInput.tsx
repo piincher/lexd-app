@@ -77,7 +77,6 @@ const AuthInputField: FC<Props> = (props) => {
 					onChangeText={handleChange(name)}
 					value={values[name]}
 					onBlur={handleBlur(name)}
-					autoCapitalize='characters'
 					maxLength={props.maxLength}
 					code={props.code}
 					selectedCode={props.selectedCode}

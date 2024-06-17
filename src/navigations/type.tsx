@@ -20,6 +20,9 @@ export type RootStackParamList = {
 	SelectUser: undefined;
 	PastOrders: undefined;
 	AboutUs: undefined;
+	UserAdd: undefined;
+	AdmninPastOrders: undefined;
+	SendSms: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;

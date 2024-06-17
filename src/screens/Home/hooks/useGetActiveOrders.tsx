@@ -1,6 +1,7 @@
-import { getActiveOrders } from '@src/api/order';
+import { fetchSmsBalance, getActiveOrders } from '@src/api/order';
 import { LIMIT } from '@src/constants/Dimensions';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { SMSKEY } from '@src/constants/queryKey';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 const ORDERKEY = 'order';
 export const useGetActiveOrder = (Status: string) => {
@@ -12,5 +13,11 @@ export const useGetActiveOrder = (Status: string) => {
 			return nextPage;
 		},
 		initialPageParam: 1,
+	});
+};
+export const useViewSmsBalance = () => {
+	return useQuery({
+		queryKey: [SMSKEY],
+		queryFn: fetchSmsBalance,
 	});
 };

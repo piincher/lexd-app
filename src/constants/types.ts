@@ -15,3 +15,18 @@ export interface userType {
 	token: string;
 	streamToken?: string;
 }
+
+export interface SmsService {
+	id: string;
+	type: string;
+	developerId: string;
+	applicationId: string;
+	country: string;
+	offerName: string;
+	availableUnits: number;
+	requestedUnits: number;
+	status: string;
+	expirationDate: string;
+	creationDate: string;
+	lastUpdateDate: string;
+}

@@ -5,16 +5,27 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Sentry from '@sentry/react-native';
+import { chatClient } from '@src/config/ChatConfig';
+import { ChatProvider } from '@src/context/ChatContext';
 import { HomeTabParamList, RootStackParamList } from '@src/navigations/type';
 import ActiveOrders from '@src/screens/Admin/screens/ActiveOrder/ActiveOrders';
 import AddOrder from '@src/screens/Admin/screens/AddOrder/AddOrder';
+import AddUser from '@src/screens/Admin/screens/AddUser/AddUser';
+import AdminPastOrders from '@src/screens/Admin/screens/PastOrder/PastOrder';
+import SelectUser from '@src/screens/Admin/screens/SelectUser/SelectUser';
+import SendSms from '@src/screens/Admin/screens/SendSms/SendSms';
 import Login from '@src/screens/Auth/Login/Login';
 import Verification from '@src/screens/Auth/Verification/Verification';
 import Chat from '@src/screens/Chat/screens/Chat';
+import ChatRoom from '@src/screens/Chat/screens/ChatRoom';
+import SelectAdminToChatWith from '@src/screens/Chat/screens/SelectAdmin';
 import CheckRoute from '@src/screens/CheckRoute/CheckRoute';
 import HomeScreen from '@src/screens/Home/HomeScreen';
 import OnBoarding from '@src/screens/OnBoardingScreen/OnBoardingScreen';
 import OrderDetails from '@src/screens/OrderDetail/OrderDetails';
+import AboutUs from '@src/screens/Profile/screens/AboutUs';
+import PastOrders from '@src/screens/Profile/screens/PastOrders';
+import Profile from '@src/screens/Profile/screens/Profile';
 import { initSentry, routingInstrumentation } from '@src/services/sentry';
 import { useAppLaunchStore } from '@src/store/AppLaunch';
 import { useAuth } from '@src/store/Auth';
@@ -24,16 +35,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Chat as StreamChat, OverlayProvider, Streami18n } from 'stream-chat-expo';
-import { chatClient } from '@src/config/ChatConfig';
-import ChatRoom from '@src/screens/Chat/screens/ChatRoom';
-import { ChatProvider } from '@src/context/ChatContext';
-import SelectAdminToChatWith from '@src/screens/Chat/screens/SelectAdmin';
-import Profile from '@src/screens/Profile/screens/Profile';
-import SelectUser from '@src/screens/Admin/screens/SelectUser/SelectUser';
-import PastOrders from '@src/screens/Profile/screens/PastOrders';
-import AboutUs from '@src/screens/Profile/screens/AboutUs';
+import { OverlayProvider, Chat as StreamChat, Streami18n } from 'stream-chat-expo';
+import { initMixpanel } from '@src/config/Analytic';
 import { UpdateProvider } from '@src/context/UpdateProvider';
 
 SplashScreen.preventAutoHideAsync();
@@ -42,13 +47,12 @@ const Stack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 
 initSentry();
-function MainWrapper() {
+initMixpanel();
+function AppWrapper() {
 	const [appIsLoaded, setAppIsLoaded] = useState(false);
 	const navigation = useRef();
 	const appLaunch = useAppLaunchStore((state) => state.isAppLaunchFirst);
 	const token = useAuth((state) => state.token);
-
-	console.log('token', token);
 	useEffect(() => {
 		const prepare = async () => {
 			try {
@@ -109,6 +113,9 @@ function MainWrapper() {
 							<Stack.Screen name='SelectUser' component={SelectUser} />
 							<Stack.Screen name='PastOrders' component={PastOrders} />
 							<Stack.Screen name='AboutUs' component={AboutUs} />
+							<Stack.Screen name='UserAdd' component={AddUser} />
+							<Stack.Screen name='AdmninPastOrders' component={AdminPastOrders} />
+							<Stack.Screen name='SendSms' component={SendSms} />
 						</>
 					) : (
 						<>
@@ -159,19 +166,41 @@ const streami18n = new Streami18n({
 });
 const App = () => {
 	return (
+		// <QueryClientProvider client={client}>
+		// 	<ChatProvider>
+		// 		<OverlayProvider>
+		// 			<>
+		// 				<StreamChat client={chatClient} i18nInstance={streami18n}>
+		// 					<GestureHandlerRootView style={{ flex: 1 }}>
+		// 						<MainWrapper />
+		// 					</GestureHandlerRootView>
+		// 				</StreamChat>
+		// 			</>
+		// 		</OverlayProvider>
+		// 	</ChatProvider>
+		// </QueryClientProvider>
 		<QueryClientProvider client={client}>
 			<ChatProvider>
 				<GestureHandlerRootView style={{ flex: 1 }}>
-					<OverlayProvider i18nInstance={streami18n}>
-						<StreamChat client={chatClient} i18nInstance={streami18n}>
-							<>
-								<MainWrapper />
-							</>
-						</StreamChat>
-					</OverlayProvider>
+					<PaperProvider>
+						<MainWrapper />
+					</PaperProvider>
 				</GestureHandlerRootView>
 			</ChatProvider>
 		</QueryClientProvider>
+	);
+};
+
+// dont forget to add the in app update provider
+const MainWrapper = () => {
+	return (
+		<OverlayProvider>
+			<StreamChat client={chatClient} i18nInstance={streami18n}>
+				<>
+					<AppWrapper />
+				</>
+			</StreamChat>
+		</OverlayProvider>
 	);
 };
 

@@ -16,6 +16,8 @@ const SelectUser = ({ navigation }: RootStackScreenProps<'SelectUser'>) => {
 	const [selectedUser, setSelectedUser] = useState<userData>();
 
 	const { data } = useGetUsers();
+
+	console.log('data', data);
 	const renderUserItem = ({ item }: { item: userData }) => {
 		const isSelected = selectedUser && selectedUser._id === item._id;
 

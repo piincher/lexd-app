@@ -274,9 +274,9 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 						<AuthInputField
 							label='Type de Colis'
 							placeholder='Type de Colis'
-							autoCapitalize='none'
 							containerStyle={styles.containerStyle}
 							name='typeOfPackage'
+							autoCapitalize='none'
 						/>
 
 						<AuthInputField

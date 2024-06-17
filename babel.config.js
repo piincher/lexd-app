@@ -12,9 +12,7 @@ module.exports = function (api) {
 				'module-resolver',
 				{
 					root: ['.'],
-					alias: {
-						'@src': './src',
-					},
+					'react-native-device-info': './react-native-device-info.js',
 				},
 			],
 			'react-native-reanimated/plugin',

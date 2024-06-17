@@ -34,43 +34,8 @@ interface Order {
 
 interface Props {}
 
-const steps = [
-	{
-		id: '0',
-		title: 'le client a passé une commande',
-	},
-	{
-		id: '1',
-		title: 'les colis sont emballées',
-	},
-	{
-		id: '2',
-		title: 'les Colis sont expédiées et transférées vers le port',
-	},
-	{
-		id: '3',
-		title: "Les Colis sont transféré à l'entrepôt de Hong Kong",
-	},
-	{
-		id: '4',
-		title: "Les colis ont décollé pour L'Éthiopie",
-	},
-	{
-		id: '5',
-		title: "Les Colis sont transféré vers l'aéroport d'Ethiopie",
-	},
-	{
-		id: '6',
-		title: "Les Colis sont arrivé à l'aéroport de Bamako et prêt pour le dédouanement",
-	},
-	{
-		id: '7',
-		title: 'Les marchandises sont arrivées et ont été stockées.(Kalaban-Coura pres de FEBAK +22376696177/+22350005142)',
-	},
-];
-
-const ActiveOrders: FC<Props> = () => {
-	const Status = 'Active';
+const AdminPastOrders: FC<Props> = () => {
+	const Status = 'Inactive';
 	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } = useGetActiveOrdersAdmin(Status);
 
 	const renderFooter = () => {
@@ -102,7 +67,7 @@ const ActiveOrders: FC<Props> = () => {
 	}
 	return (
 		<SafeAreaView style={styles.container}>
-			<Text style={styles.textStyle}>Active Orders</Text>
+			<Text style={styles.textStyle}>Les Commandes passées</Text>
 			<FlatList
 				onEndReached={loadMore}
 				ListEmptyComponent={() => {
@@ -124,40 +89,14 @@ const windowWidth = Dimensions.get('window').width;
 const RenderOrder = ({ item }: { item: productType }) => {
 	const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
 	const [visible, setVisible] = React.useState(false);
-	const currentRoute = item?.route[item?.route?.length - 1];
-	const [statusChange, setStatusChange] = React.useState(currentRoute?.title ?? '');
-	const { mutate, isPending, isSuccess } = useUpdateOrder();
-	const { mutate: updateStatusDelivery } = useUpdateStatusDelivery();
-	const id = useId();
-	const navigation = useNavigation();
 
-	useEffect(() => {
-		if (isSuccess) {
-			setVisible(true);
-		}
-	}, [isSuccess]);
-	const currentPosition: { id: string; title: string; time: string } = {
-		id: id,
-		title: statusChange,
-		time: new Date().toISOString(),
-	};
+	const id = useId();
+
 	const copyToClipboard = async (text: string) => {
 		await Clipboard.setStringAsync(text);
 		Alert.alert('Copied to clipboard');
 	};
-	const updateOrder = () => {
-		mutate({
-			...item,
-			orderId: item._id,
-			currentPosition,
-		});
-	};
-	const updateDeliver = () => {
-		updateStatusDelivery({
-			...item,
-			orderId: item._id,
-		});
-	};
+
 	const onDismissSnackBar = () => setVisible(false);
 	return (
 		<Card style={styles.card}>
@@ -225,32 +164,10 @@ const RenderOrder = ({ item }: { item: productType }) => {
 				<Paragraph style={styles.ParagraphStyle}> Poid du colis : {item?.packageWeight} Kg</Paragraph>
 				<Paragraph style={styles.ParagraphStyle}> Partenaire :{item.partenaire}</Paragraph>
 				<Paragraph style={styles.ParagraphStyle}> Nombre de colis :{item.quantity}</Paragraph>
-				<Paragraph style={[styles.ParagraphStyle, { color: COLORS.blue }]}>
-					Situation actuel :{currentRoute?.title}
-				</Paragraph>
 
-				<Paragraph style={[styles.ParagraphStyle, { color: COLORS.blue }]}>
-					Date de depart :
-					{item.departureDate ? new Date(item.departureDate).toDateString() : 'Pas encore de date de depart'}
-				</Paragraph>
-
-				<View>
-					<Picker
-						mode='dialog'
-						placeholder='Select your Category'
-						style={{ width: 190, borderColor: 'red', borderWidth: 21 }}
-						selectedValue={statusChange}
-						onValueChange={(e: string) => setStatusChange(e)}
-					>
-						{steps.map((c) => {
-							return <Picker.Item key={c.id} label={c.title} value={c.title} />;
-						})}
-					</Picker>
-				</View>
-				<Button mode='contained' style={{ marginBottom: 20 }} onPress={updateDeliver}>
-					Delivre
-				</Button>
-				<AppButton title='Mettre ' onPress={updateOrder} busy={isPending} />
+				{item.status === 'Inactive' && (
+					<Paragraph style={[styles.ParagraphStyle, { color: COLORS.green }]}>Le client a recupere le colis</Paragraph>
+				)}
 			</Card.Content>
 		</Card>
 	);
@@ -283,4 +200,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default ActiveOrders;
+export default AdminPastOrders;

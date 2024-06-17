@@ -17,6 +17,7 @@ import { Notification } from '@src/components/Notification/Notification';
 import ComppanyLogo from '@src/components/CompanyLogo/ComppanyLogo';
 import SocialMedia from '@src/components/SocialMedia/SocialMedia';
 import CopyrightText from '@src/components/CopyrightText/CopyrightText';
+import { initMixpanel } from '@src/config/Analytic';
 interface newUser {
 	phone: string;
 }
@@ -37,11 +38,18 @@ const Login = ({ navigation }: RootStackScreenProps<'Login'>) => {
 	const { mutate, isSuccess, isPending } = useLogin();
 	const { mutate: appleLogin, isPending: ApplePending } = useLoginApple();
 	const SignUpData = useSignupStore((state) => state.updateCode);
+	const mixpanel = initMixpanel();
 	const handleSubmit = async (values: newUser) => {
+		mixpanel.track('Login', { phone: values.phone });
 		const phone = selectedCode.split('+')[1] + values.phone;
 
-		if (phone === '22317865673') {
+		if (phone === '22376696177') {
 			console.log('apple login');
+			appleLogin({
+				phone: phone,
+			});
+			return;
+		} else if (phone === '22317865673') {
 			appleLogin({
 				phone: phone,
 			});

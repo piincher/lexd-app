@@ -1,7 +1,14 @@
-import { placeOrder, getActiveOrders, updateOrder, getActiveOrdersAdmin } from '@src/api/order';
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useNavigation } from '@react-navigation/native';
+import {
+	getActiveOrdersAdmin,
+	placeOrder,
+	sendNotificationSms,
+	updateOrder,
+	updateOrderToDelivered,
+} from '@src/api/order';
 import { LIMIT } from '@src/constants/Dimensions';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigation } from '@react-navigation/native';
+import { SMSKEY } from '@src/constants/queryKey';
 const ORDER_KEY = 'order';
 export const usePlaceOrder = () => {
 	const queryClient = useQueryClient();
@@ -13,10 +20,10 @@ export const usePlaceOrder = () => {
 	});
 };
 
-export const useGetActiveOrdersAdmin = () => {
+export const useGetActiveOrdersAdmin = (Status: string) => {
 	return useInfiniteQuery({
 		queryKey: [ORDER_KEY],
-		queryFn: ({ pageParam = 1 }) => getActiveOrdersAdmin(pageParam),
+		queryFn: ({ pageParam = 1 }) => getActiveOrdersAdmin(pageParam, Status),
 		getNextPageParam: (lastPage, allPages) => {
 			const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
 			return nextPage;
@@ -26,11 +33,34 @@ export const useGetActiveOrdersAdmin = () => {
 };
 export const useUpdateOrder = () => {
 	const queryClient = useQueryClient();
-	const navigation = useNavigation();
 	return useMutation({
 		mutationFn: updateOrder,
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+			// queryClient.invalidateQueries({ queryKey: [SMSKEY] });
+		},
+	});
+};
+
+export const useUpdateStatusDelivery = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: updateOrderToDelivered,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+		},
+	});
+};
+
+export const useSendNotificationSms = () => {
+	const queryClient = useQueryClient();
+
+	const navigation = useNavigation();
+	return useMutation({
+		mutationFn: sendNotificationSms,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [SMSKEY] });
+			navigation.navigate('HomeTab', { screen: 'Home' });
 		},
 	});
 };

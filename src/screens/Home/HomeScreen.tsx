@@ -10,6 +10,7 @@ import ListingList from './components/OrderList';
 import { Fonts } from '@src/constants/Fonts';
 import { useAuth } from '@src/store/Auth';
 import * as WebBrowser from 'expo-web-browser';
+import { useViewSmsBalance } from './hooks/useGetActiveOrders';
 
 const data = [
 	{
@@ -26,13 +27,27 @@ const data = [
 	},
 	{
 		id: '2',
+		title: 'Ajouter un utilisateur',
+		Icons: <MaterialIcons name='verified-user' size={34} color={COLORS.blue} />,
+		route: 'UserAdd',
+	},
+
+	{
+		id: '3',
 		title: 'Voir les commandes passées',
 		Icons: <MaterialCommunityIcons name='order-bool-ascending-variant' size={34} color={COLORS.blue} />,
-		route: 'PastOrder',
+		route: 'AdmninPastOrders',
+	},
+	{
+		id: '4',
+		title: 'Envoyer un sms de rappel',
+		Icons: <MaterialCommunityIcons name='email' size={34} color={COLORS.blue} />,
+		route: 'SendSms',
 	},
 ];
 const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 	const { role } = useAuth((state) => state.user);
+	const { data: smsData } = useViewSmsBalance();
 	const logout = useAuth((state) => state.logOut);
 
 	const isAdmin = role === 'admin';
@@ -41,11 +56,20 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 		let result = await WebBrowser.openBrowserAsync(url);
 	};
 
+	const date = smsData && smsData[0]?.expirationDate ? new Date(smsData[0].expirationDate) : new Date();
+	const formattedDateTime = date.toISOString().replace('T', ' ').slice(0, -5);
+
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
 			{isAdmin ? (
 				<>
 					<ScrollView>
+						<View>
+							<Text style={styles.smsText}>le nombre de sms restant est : {smsData && smsData[0].availableUnits}</Text>
+							<Text style={[styles.smsText, { fontFamily: Fonts.bold }]}>
+								la date d'expiration : {formattedDateTime}
+							</Text>
+						</View>
 						<View
 							style={{
 								flex: 1,
@@ -115,5 +139,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignSelf: 'center',
 		marginTop: HEIGHTTODP(1),
+	},
+	smsText: {
+		fontSize: 24,
+		fontFamily: Fonts.black,
+		color: COLORS.blue,
+		textAlign: 'center',
+		marginTop: 10,
 	},
 });

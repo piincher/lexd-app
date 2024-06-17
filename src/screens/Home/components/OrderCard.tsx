@@ -5,6 +5,7 @@ import { Fonts } from '@src/constants/Fonts';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import AppButton from '@src/components/AppButton/AppButton';
+import { initMixpanel } from '@src/config/Analytic';
 interface props {
 	clientPhone: string;
 	shippingCode: string;
@@ -33,7 +34,10 @@ const OrderCard = ({
 	currentLocation,
 	departureDate,
 }: props) => {
+	const mixpanel = initMixpanel();
 	const navigateToDetail = () => {
+		mixpanel.track('OrderDetail', { id });
+		mixpanel.getDeviceId();
 		navigation.navigate('OrderDetail', { id });
 	};
 	return (
@@ -57,9 +61,9 @@ const OrderCard = ({
 					<Text style={[styles.textStyle, styles.textWithBlack]}>Type de colis: {typeOfPackage}</Text>
 					<Text style={[styles.textStyle, styles.textWithBlack]}>Position: {currentLocation}</Text>
 					<Text style={[styles.textStyle, styles.textWithBlack]}>Nombre de Colis:{quantity}</Text>
-					<Text style={[styles.textStyle, styles.textWithBlack, { fontSize: 28, color: COLORS.Crimson }]}>
+					{/* <Text style={[styles.textStyle, styles.textWithBlack, { fontSize: 28, color: COLORS.Crimson }]}>
 						Date de depart :{departureDate}
-					</Text>
+					</Text> */}
 
 					<View style={styles.rowContainer}>
 						<View style={styles.rowContainer}></View>

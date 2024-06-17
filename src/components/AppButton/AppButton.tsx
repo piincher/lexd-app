@@ -8,11 +8,16 @@ interface Props {
 	onPress: () => void;
 	busy?: boolean;
 	style?: StyleProp<ViewStyle>;
+	disabled?: boolean;
 }
 
-const AppButton: FC<Props> = ({ title, onPress, busy, style }) => {
+const AppButton: FC<Props> = ({ title, onPress, busy, style, disabled }) => {
 	return (
-		<Pressable style={[style, styles.container]} onPress={onPress}>
+		<Pressable
+			style={[style, styles.container, { backgroundColor: disabled ? COLORS.grey : COLORS.blue }]}
+			onPress={onPress}
+			disabled={disabled}
+		>
 			{busy ? <ActivityIndicator /> : <Text style={styles.title}>{title.toUpperCase()}</Text>}
 		</Pressable>
 	);
