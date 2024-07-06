@@ -23,6 +23,7 @@ export type RootStackParamList = {
 	UserAdd: undefined;
 	AdmninPastOrders: undefined;
 	SendSms: undefined;
+	Map: { id: string };
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;

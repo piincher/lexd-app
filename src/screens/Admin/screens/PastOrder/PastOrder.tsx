@@ -1,6 +1,4 @@
 import { AntDesign } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker';
-import { useNavigation } from '@react-navigation/native';
 import { productType } from '@src/api/order';
 import AppButton from '@src/components/AppButton/AppButton';
 import { COLORS } from '@src/constants/Colors';

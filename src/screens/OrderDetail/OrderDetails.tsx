@@ -107,18 +107,9 @@ const styles2 = StyleSheet.create({
 	},
 });
 
-const steps = [
-	'Commande recue',
-	'Commande en cours de traitement',
-	'Commande en cours de livraison',
-	'Commande livree',
-	'Commande annulee',
-	'Commande en  de traitement',
-	'Commande en cours de livraison',
-];
 const OrderDetails = ({ route, navigation }: RootStackScreenProps<'OrderDetail'>) => {
 	const [modalVisible, setModalVisible] = useState(false);
-	const { streamChat, user } = useChatClient();
+	useChatClient();
 
 	const showModal = () => {
 		setModalVisible(true);
@@ -130,13 +121,15 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<'OrderDetail'>
 	const id = route.params.id;
 	const { data, isPending } = useGetOrderDetails(id);
 
-	console.log(data);
-
 	useEffect(() => {
 		setCurrentStep(data?.route.length ?? 0);
 	}, [data]);
 	const handleChat = () => {
 		navigation.navigate('SelectAdminToChatWith');
+	};
+
+	const handleNavigateToMap = () => {
+		navigation.navigate('Map', { id });
 	};
 
 	return (
@@ -232,13 +225,13 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<'OrderDetail'>
 					padding: 10,
 				}}
 			>
-				<View style={{ width: '85%', marginRight: 10 }}>
-					<AppButton title='Contactez Admin' onPress={handleChat} />
+				<View style={{ width: '60%', marginRight: 10 }}>
+					<AppButton title='Voir sur le map' onPress={handleNavigateToMap} />
 				</View>
 
-				{/* <Pressable onPress={handleChat}>
+				<Pressable onPress={handleChat}>
 					<MaterialIcons name='chat' size={24} color='black' />
-				</Pressable> */}
+				</Pressable>
 			</View>
 		</SafeAreaView>
 	);

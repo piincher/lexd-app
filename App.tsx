@@ -40,6 +40,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { OverlayProvider, Chat as StreamChat, Streami18n } from 'stream-chat-expo';
 import { initMixpanel } from '@src/config/Analytic';
 import { UpdateProvider } from '@src/context/UpdateProvider';
+import Map from '@src/screens/OrderDetail/Map';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -116,6 +117,7 @@ function AppWrapper() {
 							<Stack.Screen name='UserAdd' component={AddUser} />
 							<Stack.Screen name='AdmninPastOrders' component={AdminPastOrders} />
 							<Stack.Screen name='SendSms' component={SendSms} />
+							<Stack.Screen name='Map' component={Map} />
 						</>
 					) : (
 						<>

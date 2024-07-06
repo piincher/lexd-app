@@ -20,6 +20,7 @@ export const useLoginApple = () => {
 			console.log('error from react query', error);
 		},
 		onSuccess: async (data) => {
+			console.log('data from react query', data);
 			setAuth(data);
 		},
 	});

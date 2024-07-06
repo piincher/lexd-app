@@ -23,7 +23,7 @@ export type productType = {
 	};
 	orderId?: string;
 	code?: string;
-	route?: Array<{ id: string; title: string; time: string }>;
+	route?: Array<{ id: string; title: string; time: string; coordinates: { latitude: number; longitude: number } }>;
 	dateOfReception?: string;
 	userId: string;
 	departureDate: string;

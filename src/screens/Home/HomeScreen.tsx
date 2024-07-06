@@ -45,6 +45,7 @@ const data = [
 		route: 'SendSms',
 	},
 ];
+
 const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 	const { role } = useAuth((state) => state.user);
 	const { data: smsData } = useViewSmsBalance();
@@ -146,5 +147,8 @@ const styles = StyleSheet.create({
 		color: COLORS.blue,
 		textAlign: 'center',
 		marginTop: 10,
+	},
+	container: {
+		flex: 1,
 	},
 });

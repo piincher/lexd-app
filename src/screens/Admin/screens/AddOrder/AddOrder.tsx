@@ -16,6 +16,7 @@ import { ActivityIndicator, Avatar, Button, Snackbar, Text } from 'react-native-
 import * as yup from 'yup';
 import { usePlaceOrder } from '../../hooks/useOrder';
 import { DatePickerModal } from 'react-native-paper-dates';
+
 const signupSchema = yup.object({
 	clientName: yup.string().required('Nom du client est requis'),
 	clientPhone: yup.string().required('Numero de telephone est requis'),
@@ -57,12 +58,12 @@ const steps = [
 	{
 		id: '0',
 		title: 'le client a passé une commande',
+		coordinates: { latitude: 23.1291, longitude: 113.2644 },
 	},
 ];
 
 const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
-	const data = useId();
-
+	const data = Math.random().toString(36).substring(7);
 	const [visible, setVisible] = useState(false);
 	const [pickerValue, setPickerValue] = useState<string | null>(null);
 	const { mutate, isSuccess, isPending } = usePlaceOrder();
@@ -96,6 +97,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		id: data,
 		title: category || 'le client a passé une commande',
 		time: new Date().toISOString(),
+		coordinates: { latitude: 23.1291, longitude: 113.2644 },
 	};
 	console.log('process', process);
 	const handleSubmit = async (values: order) => {

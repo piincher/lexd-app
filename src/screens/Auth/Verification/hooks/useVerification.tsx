@@ -14,7 +14,6 @@ export const useVerification = () => {
 		onSuccess: async (data) => {
 			setAuth(data);
 			console.log('data from react query', data);
-			navigation.navigate('HomeTab', { screen: 'Home' });
 		},
 	});
 };
