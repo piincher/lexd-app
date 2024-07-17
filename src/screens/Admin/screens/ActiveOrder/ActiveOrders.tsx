@@ -23,6 +23,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetActiveOrdersAdmin, useUpdateOrder, useUpdateStatusDelivery } from '../../hooks/useOrder';
 import { useGetRoutes } from '@src/screens/Home/hooks/useRoute';
 import { Route } from '@src/api/route';
+import Slider from './components/Slider';
 interface Order {
 	id: string;
 	clientName: string;
@@ -180,8 +181,23 @@ const RenderOrder = ({ item, steps }: { item: productType; steps: Route[] }) => 
 			setCoordinates(selectedStep.coordinates);
 		}
 	};
+
+	const textContentData = [
+		{ label: 'Nom du client', value: item.clientName },
+		{ label: 'Numéro du client', value: item.clientPhone },
+		{ label: 'Numéro de suivi', value: item.code },
+		{ label: "Mode d'expédition", value: item.shippingMode },
+		{ label: 'Type de colis', value: item.typeOfPackage },
+		{ label: 'Position Actuelle', value: statusChange },
+		{ label: 'Nombre de colis', value: item.quantity },
+	];
+	const handleNavigate = () => {
+		navigation.navigate('OrderDetail', {
+			id: item._id!,
+		});
+	};
 	return (
-		<Card style={styles.card} onPress={() => navigation.navigate('OrderDetail', { id: item._id! })}>
+		<SafeAreaView>
 			<Snackbar
 				visible={visible}
 				onDismiss={onDismissSnackBar}
@@ -203,77 +219,25 @@ const RenderOrder = ({ item, steps }: { item: productType; steps: Route[] }) => 
 					<AntDesign name='checkcircle' size={24} color='green' />
 				</View>
 			</Snackbar>
-			<ScrollView
-				horizontal
-				pagingEnabled
-				showsHorizontalScrollIndicator={false}
-				contentContainerStyle={{ width: `${100 * (item?.images?.length ?? 0)}%` }}
-				onMomentumScrollEnd={(event) => {
-					const offset = event.nativeEvent.contentOffset.x;
-					setCurrentImageIndex(Math.floor(offset / windowWidth));
-				}}
-			>
-				{item?.images?.map((image, index) => (
-					<View style={styles.imageContainer} key={index}>
-						<Image
-							source={{
-								uri: image?.url ? image?.url : 'https://cdn.pixabay.com/photo/2013/10/09/02/27/lake-192990_1280.jpg',
-							}}
-							style={styles.image}
-						/>
+
+			{/* image slider section */}
+			<Slider bannerImages={item?.images!} />
+			{/* text container section */}
+			<>
+				{textContentData.map((content, index) => (
+					<View key={index} style={styles.textContent}>
+						<Text style={styles.propertyStyle}>{content.label}</Text>
+						<Text style={styles.textStyle}>{content.value}</Text>
 					</View>
 				))}
-			</ScrollView>
-			<Card.Content>
-				<Title style={styles.ParagraphStyle}> Nom du Client: {item.clientName}</Title>
-				<Paragraph style={styles.ParagraphStyle}>Numero de telephone: {item.clientPhone}</Paragraph>
-				<Paragraph selectable style={[styles.ParagraphStyle, { color: COLORS.Crimson }]}>
-					Numero de suivi:{item.code}
-					<Pressable onPress={() => copyToClipboard(item.code!)}>
-						<Text
-							style={{
-								color: COLORS.white,
-								backgroundColor: COLORS.DarkGrey,
-								padding: 2,
-								marginBottom: 50,
-							}}
-						>
-							Copie le numero de suivi
-						</Text>
-					</Pressable>
-				</Paragraph>
-				<Paragraph style={styles.ParagraphStyle}> Type de colis :{item.typeOfPackage}</Paragraph>
-				<Paragraph style={styles.ParagraphStyle}> Poid du colis : {item?.packageWeight} Kg</Paragraph>
-				<Paragraph style={styles.ParagraphStyle}> Partenaire :{item.partenaire}</Paragraph>
-				<Paragraph style={styles.ParagraphStyle}> Nombre de colis :{item.quantity}</Paragraph>
-				<Paragraph style={[styles.ParagraphStyle, { color: COLORS.blue }]}>
-					Situation actuel :{currentRoute?.title}
-				</Paragraph>
+			</>
 
-				<Paragraph style={[styles.ParagraphStyle, { color: COLORS.blue }]}>
-					Date de depart :
-					{item.departureDate ? new Date(item.departureDate).toDateString() : 'Pas encore de date de depart'}
-				</Paragraph>
+			{/* Button */}
 
-				<View>
-					<Picker
-						mode='dialog'
-						placeholder='Select your Category'
-						style={{ width: 190, borderColor: 'red', borderWidth: 21 }}
-						selectedValue={statusChange}
-						onValueChange={handleStepChange}
-					>
-						{steps?.map((c) => {
-							return <Picker.Item key={c.id} label={c.title} value={c.title} />;
-						})}
-					</Picker>
-				</View>
-				<Button mode='contained' style={{ marginBottom: 20 }} onPress={updateDeliver}>
-					Delivre
-				</Button>
-				<AppButton title='Mettre ' onPress={updateOrder} busy={isPending} />
-			</Card.Content>
-		</Card>
+			<Button mode='contained' style={styles.buttonStyle} onPress={handleNavigate}>
+				<Text style={{ fontFamily: Fonts.meduim, color: COLORS.white }}>Update</Text>
+			</Button>
+		</SafeAreaView>
 	);
 };
 
@@ -281,26 +245,30 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 	},
-	card: {
-		marginVertical: 10,
-		marginHorizontal: 20,
+	textContent: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		borderTopWidth: 0.2,
+		borderColor: COLORS.grey,
+		borderBottomWidth: 0.2,
+		marginHorizontal: 10,
+		padding: 10,
+	},
+	propertyStyle: {
+		fontFamily: Fonts.regular,
 	},
 	textStyle: {
-		fontSize: 24,
 		textAlign: 'center',
-		fontFamily: Fonts.black,
+		fontFamily: Fonts.regular,
+		color: COLORS.grey,
 	},
-	ParagraphStyle: {
-		fontSize: 18,
-		fontFamily: Fonts.black,
-		padding: 5,
-	},
-	imageContainer: {
-		width: windowWidth,
-	},
-	image: {
-		width: windowWidth,
-		height: 400, // Adjust the height as needed
+	buttonStyle: {
+		width: 200,
+		alignSelf: 'center',
+		backgroundColor: COLORS.blue,
+		marginTop: 20,
+		height: 40,
+		borderRadius: 1,
 	},
 });
 

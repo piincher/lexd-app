@@ -76,7 +76,11 @@ const AuthInputField: FC<Props> = (props) => {
 			>
 				<AppInput
 					placeholder={placeholder}
-					style={{}}
+					// style={{
+					// 	borderWidth: 1,
+					// 	width: '100%',
+					// 	height: 45,
+					// }}
 					keyboardType={keyboardType}
 					secureTextEntry={secureTextEntry}
 					onChangeText={handleChange(name)}

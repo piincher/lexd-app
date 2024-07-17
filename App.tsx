@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';

@@ -1,0 +1,88 @@
+//built in
+import React, { useState } from 'react';
+import {
+	Image,
+	StyleSheet,
+	View,
+	ScrollView,
+	Text,
+	NativeScrollEvent,
+	NativeSyntheticEvent,
+	ImageSourcePropType,
+	Dimensions,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { COLORS } from '@src/constants/Colors';
+
+//constant
+
+const Screen_Width = Dimensions.get('window').width;
+
+interface bannerImageProps {
+	bannerImages: {
+		public_id: string;
+		url: string;
+	}[];
+}
+
+const Slider = ({ bannerImages }: bannerImageProps) => {
+	const [imgActive, setActive] = useState(0);
+	const onChange = (nativeEvent: NativeScrollEvent) => {
+		if (nativeEvent) {
+			const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+			if (slide != imgActive) {
+				setActive(slide);
+			}
+		}
+	};
+
+	return (
+		<SafeAreaView style={{ flex: 1, marginTop: 53 }}>
+			<View>
+				<ScrollView
+					onScroll={({ nativeEvent }) => onChange(nativeEvent)}
+					showsHorizontalScrollIndicator={false}
+					pagingEnabled
+					horizontal
+				>
+					{bannerImages.map((e, index) => {
+						console.log('single image', e.url);
+						return <Image source={{ uri: e.url }} resizeMode='stretch' style={styles.wrap} key={e.public_id} />;
+					})}
+				</ScrollView>
+			</View>
+			<View style={styles.wrapDot}>
+				{bannerImages.map((e, index) => {
+					return (
+						<Text key={e.public_id} style={imgActive == index ? styles.dotActive : styles.dot}>
+							&#x25cf;
+						</Text>
+					);
+				})}
+			</View>
+		</SafeAreaView>
+	);
+};
+
+export default Slider;
+const styles = StyleSheet.create({
+	wrap: {
+		width: Screen_Width - 32,
+		height: 250,
+		marginHorizontal: 16,
+	},
+	wrapDot: {
+		position: 'absolute',
+		bottom: 0,
+		flexDirection: 'row',
+		alignSelf: 'center',
+	},
+	dotActive: {
+		margin: 3,
+		color: COLORS.white,
+	},
+	dot: {
+		margin: 3,
+		color: '#E8EFF5',
+	},
+});
