@@ -1,8 +1,7 @@
-import React from 'react';
 import { Picker } from '@react-native-picker/picker';
+import React from 'react';
 
 import { COLORS } from '@src/constants/Colors';
-import { HEIGHTTODP } from '@src/constants/Dimensions';
 
 interface Props {
 	selectedCode: string; //counry code

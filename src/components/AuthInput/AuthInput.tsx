@@ -27,6 +27,7 @@ interface Props {
 	selectedCode?: string;
 	setSelectedCode?: Dispatch<string>;
 	phone?: boolean;
+	descriptionDown?: string;
 }
 
 const AuthInputField: FC<Props> = (props) => {
@@ -59,19 +60,23 @@ const AuthInputField: FC<Props> = (props) => {
 	const handleRight = () => {
 		handleSubmit();
 	};
+
+	console.log('errors', errorMsg);
 	return (
 		<Animated.View style={[containerStyle, inputStyle]}>
-			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+			<View style={styles.headerContainer}>
 				<Text style={styles.label}>{label}</Text>
 				<Text style={[styles.label, { color: 'red' }]}>{errorMsg}</Text>
 			</View>
-			<View>
+			<View
+				style={{
+					borderColor: errorMsg ? COLORS.danger : COLORS.grey,
+					borderWidth: 0.5,
+				}}
+			>
 				<AppInput
 					placeholder={placeholder}
-					style={{
-						borderColor: errorMsg ? 'red' : COLORS.grey,
-						backgroundColor: COLORS.white,
-					}}
+					style={{}}
 					keyboardType={keyboardType}
 					secureTextEntry={secureTextEntry}
 					onChangeText={handleChange(name)}
@@ -89,17 +94,19 @@ const AuthInputField: FC<Props> = (props) => {
 					</Pressable>
 				) : null}
 			</View>
+			<Text style={styles.descriptionText}>{props.descriptionDown}</Text>
 		</Animated.View>
 	);
 };
 
 const styles = StyleSheet.create({
 	container: {},
+	headerContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
 	label: {
-		color: COLORS.white,
+		color: COLORS.black,
 		padding: 5,
 		fontSize: 16,
-		fontFamily: Fonts.black,
+		fontFamily: Fonts.meduim,
 	},
 	rightIcon: {
 		width: 40,
@@ -108,6 +115,12 @@ const styles = StyleSheet.create({
 		top: 0,
 		right: 0,
 		justifyContent: 'center',
+	},
+	descriptionText: {
+		color: COLORS.blue,
+		fontSize: 12,
+		fontFamily: Fonts.regular,
+		marginVertical: 5,
 	},
 });
 

@@ -4,7 +4,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 const env = 'development' as string;
 const axiosParams = {
 	// Set different base URL based on the environment
-	baseURL: env === 'development' ? 'https://api.myempirebymyma.com/api/v1' : 'https://www.homely-prod.me/api/v1',
+	baseURL: env === 'development' ? 'https://dev.nuvotech.tech/api/v1' : 'https://api.myempirebymyma.com/api/v1',
 };
 // Create axios instance with default params
 const axiosInstance = axios.create(axiosParams);
