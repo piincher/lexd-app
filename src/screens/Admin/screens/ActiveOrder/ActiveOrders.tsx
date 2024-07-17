@@ -192,7 +192,7 @@ const RenderOrder = ({ item, steps }: { item: productType; steps: Route[] }) => 
 		{ label: 'Nombre de colis', value: item.quantity },
 	];
 	const handleNavigate = () => {
-		navigation.navigate('OrderDetail', {
+		navigation.navigate('ActiveOrderDetails', {
 			id: item._id!,
 		});
 	};

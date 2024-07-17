@@ -24,6 +24,7 @@ export type RootStackParamList = {
 	AdmninPastOrders: undefined;
 	SendSms: undefined;
 	Map: { id: string };
+	ActiveOrderDetails: { id: string };
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
