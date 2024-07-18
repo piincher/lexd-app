@@ -1,8 +1,13 @@
-import React, { FC } from 'react';
-import { View, StyleSheet, Text, TextProps, ViewProps } from 'react-native';
+import React, { FC, useState } from 'react';
+import { View, StyleSheet, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
+import { Checkbox } from 'react-native-paper';
+import { Picker } from '@react-native-picker/picker';
+import { useUpdateOrder } from '../../hooks/useOrder';
+import { RootStackScreenProps } from '@src/navigations/type';
+import { useGetOrderDetails } from '@src/screens/OrderDetail/hooks/useGetOrderDetail';
 
 interface Props {}
 
@@ -12,6 +17,32 @@ interface DetailRowProps {
 	label2: string;
 	value2: string;
 }
+
+const Status = {
+	currentStatus: 'in Processing',
+	orderDetail: [
+		{
+			id: '1',
+			status: 'Order Arrived',
+			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Guangzhou warehouse' }],
+		},
+		{
+			id: '2',
+			status: 'Order in Processing',
+			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'ChinalinkExpress Processing' }],
+		},
+		{
+			id: '3',
+			status: 'Order in Transit',
+			coordinates: [
+				{ latitude: 23.1291, longitude: 113.2644, location: 'Guangzhou' },
+				{ latitude: 23.1291, longitude: 113.2644, location: 'Nanjing' },
+				{ latitude: 23.1291, longitude: 113.2644, location: 'Jilin' },
+				{ latitude: 23.1291, longitude: 113.2644, location: 'Shanghai' },
+			],
+		},
+	],
+};
 
 const DetailRow: FC<DetailRowProps> = ({ label1, value1, label2, value2 }) => (
 	<>
@@ -28,7 +59,48 @@ const DetailRow: FC<DetailRowProps> = ({ label1, value1, label2, value2 }) => (
 	</>
 );
 
-const ActiveOrderDetails: FC<Props> = () => {
+const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'>) => {
+	const [statusChange, setStatusChange] = useState('');
+	const [selectedCheckboxes, setSelectedCheckboxes] = useState<{ [key: string]: boolean }>({});
+	const [selected, setSelected] = useState<any>(null); // Update the type according to your data structure
+	const [newStatus, setNewStatus] = useState('');
+	const { mutate, isPending, isSuccess, data } = useUpdateOrder();
+
+	const id = route.params.id;
+	const { data: item } = useGetOrderDetails(id);
+
+	const updateOrder = (updatedSelected: any) => {
+		mutate({
+			...item,
+			orderId: item._id!,
+			currentPosition: updatedSelected,
+		});
+	};
+
+	console.log('data from backend', data?.data.route);
+
+	const handleStepChange = (value: string) => {
+		setStatusChange(value);
+	};
+
+	const handleCheckboxPress = (location: string, status: string, coordinates: any) => {
+		const updatedCheckboxes = {
+			...selectedCheckboxes,
+			[location]: !selectedCheckboxes[location],
+		};
+
+		const updatedSelected = {
+			title: status,
+			coordinates,
+			id: Math.random().toString(36).substring(7),
+			time: new Date().toISOString(),
+		};
+
+		setSelectedCheckboxes(updatedCheckboxes);
+		setSelected(updatedSelected);
+		updateOrder(updatedSelected);
+	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.detailContainer}>
@@ -39,6 +111,42 @@ const ActiveOrderDetails: FC<Props> = () => {
 				{/* Status and type */}
 				<DetailRow label1='Status' value1='En Cours' label2='Type de colis' value2='Electronique' />
 			</View>
+
+			{/* Routes section */}
+			{Status.orderDetail.map((route) => (
+				<View key={route.id} style={styles.routeContainer}>
+					<Text>{route.status}</Text>
+					<View>
+						{route.status === 'Order in Transit' ? (
+							<Picker
+								prompt='Change le trajet'
+								mode='dialog'
+								style={styles.picker}
+								selectedValue={statusChange}
+								onValueChange={handleStepChange}
+							>
+								{route.coordinates.map((c) => (
+									<Picker.Item key={c.location} label={c.location} value={c.location} />
+								))}
+							</Picker>
+						) : (
+							route.coordinates.map((location) => (
+								<Pressable
+									key={location.location}
+									onPress={() => handleCheckboxPress(location.location, route.status, route.coordinates)}
+									style={styles.checkboxContainer}
+								>
+									<Text>{location.location}</Text>
+									<Checkbox
+										status={selectedCheckboxes[location.location] ? 'checked' : 'unchecked'}
+										onPress={() => handleCheckboxPress(location.location, route.status, route.coordinates)}
+									/>
+								</Pressable>
+							))
+						)}
+					</View>
+				</View>
+			))}
 		</SafeAreaView>
 	);
 };
@@ -65,6 +173,19 @@ const styles = StyleSheet.create({
 	},
 	valueStyle: {
 		fontFamily: Fonts.bold,
+	},
+	routeContainer: {
+		borderColor: COLORS.grey,
+		borderWidth: 0.5,
+		padding: 10,
+		margin: 10,
+	},
+	picker: {
+		width: 120,
+	},
+	checkboxContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
 	},
 });
 

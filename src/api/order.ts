@@ -83,11 +83,11 @@ export const placeOrder = async ({
 };
 
 export const updateOrder = async (data: productType) => {
+	console.log('current', data.currentPosition);
 	return await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
 };
 
 export const getActiveOrders = async (page: number, status: string) => {
-	console.log('page', status);
 	const response = await api.get<productType[]>(
 		`${API_URL.getOrdersFromAUser}?status=${status}&limit=${LIMIT}&page=${page}`
 	);
