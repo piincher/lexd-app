@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { View, StyleSheet, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@src/constants/Colors';
@@ -63,7 +63,6 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 	const [statusChange, setStatusChange] = useState('');
 	const [selectedCheckboxes, setSelectedCheckboxes] = useState<{ [key: string]: boolean }>({});
 	const [selected, setSelected] = useState<any>(null); // Update the type according to your data structure
-	const [newStatus, setNewStatus] = useState('');
 	const { mutate, isPending, isSuccess, data } = useUpdateOrder();
 
 	const id = route.params.id;
@@ -76,8 +75,6 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 			currentPosition: updatedSelected,
 		});
 	};
-
-	console.log('data from backend', data?.data.route);
 
 	const handleStepChange = (value: string) => {
 		setStatusChange(value);
@@ -100,6 +97,23 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 		setSelected(updatedSelected);
 		updateOrder(updatedSelected);
 	};
+
+	useEffect(() => {
+		if (item) {
+			console.log('otem', item.route);
+			const initialCheckboxes = item?.route?.reduce((acc: { [key: string]: boolean }, route: any) => {
+				route?.coordinates?.forEach((location: any) => {
+					acc[location.location] = Status.orderDetail.some(
+						(detail) =>
+							detail.status === route.title && detail.coordinates.some((coord) => coord.location === location.location)
+					);
+				});
+				return acc;
+			}, {});
+
+			setSelectedCheckboxes(initialCheckboxes);
+		}
+	}, [item]);
 
 	return (
 		<SafeAreaView style={styles.container}>
