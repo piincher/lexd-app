@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
-import { Checkbox } from 'react-native-paper';
+import { Button, Checkbox } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
 import { useUpdateOrder } from '../../hooks/useOrder';
 import { RootStackScreenProps } from '@src/navigations/type';
@@ -35,10 +35,10 @@ const Status = {
 			id: '3',
 			status: 'Order in Transit',
 			coordinates: [
-				{ latitude: 23.1291, longitude: 113.2644, location: 'Guangzhou' },
-				{ latitude: 23.1291, longitude: 113.2644, location: 'Nanjing' },
-				{ latitude: 23.1291, longitude: 113.2644, location: 'Jilin' },
-				{ latitude: 23.1291, longitude: 113.2644, location: 'Shanghai' },
+				{ latitude: 24.1291, longitude: 114.2644, location: 'Guangzhou' },
+				{ latitude: 25.1291, longitude: 115.2644, location: 'Nanjing' },
+				{ latitude: 26.1291, longitude: 117.2644, location: 'Jilin' },
+				{ latitude: 237.1291, longitude: 118.2644, location: 'Shanghai' },
 			],
 		},
 	],
@@ -60,13 +60,16 @@ const DetailRow: FC<DetailRowProps> = ({ label1, value1, label2, value2 }) => (
 );
 
 const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'>) => {
-	const [statusChange, setStatusChange] = useState('');
 	const [selectedCheckboxes, setSelectedCheckboxes] = useState<{ [key: string]: boolean }>({});
 	const [selected, setSelected] = useState<any>(null); // Update the type according to your data structure
 	const { mutate, isPending, isSuccess, data } = useUpdateOrder();
+	const [coordinatesData, setCoordinatesData] = useState<{ latitude: string; location: string; longitude: string }[]>(
+		[]
+	);
 
 	const id = route.params.id;
 	const { data: item } = useGetOrderDetails(id);
+	const [statusChange, setStatusChange] = useState('');
 
 	const updateOrder = (updatedSelected: any) => {
 		mutate({
@@ -76,10 +79,30 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 		});
 	};
 
-	const handleStepChange = (value: string) => {
-		setStatusChange(value);
+	// const datad = item?.route[item.route?.length - 1];
+	// const coordinateArr = datad?.coordinates;
+	// const lastItem = coordinateArr[coordinateArr?.length - 1];
+
+	const handleStepChange = (value: string, status: string, coordinates: any) => {
+		// setStatusChange(value);
+		const location = coordinates.find((loc) => loc.location === value);
+		setStatusChange(status);
+		if (location) {
+			setCoordinatesData([location]);
+		}
 	};
 
+	const updateTransiteStatus = () => {
+		const updatedSelected = {
+			title: statusChange,
+			coordinates: coordinatesData,
+			id: Math.random().toString(36).substring(7),
+			time: new Date().toISOString(),
+		};
+		updateOrder(updatedSelected);
+	};
+
+	// handle checkbox press
 	const handleCheckboxPress = (location: string, status: string, coordinates: any) => {
 		const updatedCheckboxes = {
 			...selectedCheckboxes,
@@ -98,9 +121,9 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 		updateOrder(updatedSelected);
 	};
 
+	//  when the screen load check the value of checkbox
 	useEffect(() => {
 		if (item) {
-			console.log('otem', item.route);
 			const initialCheckboxes = item?.route?.reduce((acc: { [key: string]: boolean }, route: any) => {
 				route?.coordinates?.forEach((location: any) => {
 					acc[location.location] = Status.orderDetail.some(
@@ -137,7 +160,9 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 								mode='dialog'
 								style={styles.picker}
 								selectedValue={statusChange}
-								onValueChange={handleStepChange}
+								onValueChange={(item) => {
+									handleStepChange(item, route?.status, route?.coordinates);
+								}}
 							>
 								{route.coordinates.map((c) => (
 									<Picker.Item key={c.location} label={c.location} value={c.location} />
@@ -161,6 +186,8 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 					</View>
 				</View>
 			))}
+
+			<Button onPress={updateTransiteStatus}>send</Button>
 		</SafeAreaView>
 	);
 };

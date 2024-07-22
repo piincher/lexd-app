@@ -23,7 +23,12 @@ export type productType = {
 	};
 	orderId?: string;
 	code?: string;
-	route?: Array<{ id: string; title: string; time: string; coordinates: { latitude: number; longitude: number } }>;
+	route?: Array<{
+		id: string;
+		title: string;
+		time: string;
+		coordinates: { latitude: number; longitude: number; location: string }[];
+	}>;
 	dateOfReception?: string;
 	userId: string;
 	departureDate: string;
@@ -83,7 +88,7 @@ export const placeOrder = async ({
 };
 
 export const updateOrder = async (data: productType) => {
-	console.log('current', data.currentPosition);
+	console.log('current position', data.currentPosition);
 	return await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
 };
 

@@ -155,7 +155,6 @@ const RenderOrder = ({ item, steps }: { item: productType; steps: Route[] }) => 
 		coordinates,
 	};
 
-	console.log('coordinate', coordinates);
 	const copyToClipboard = async (text: string) => {
 		await Clipboard.setStringAsync(text);
 		Alert.alert('Copied to clipboard');
