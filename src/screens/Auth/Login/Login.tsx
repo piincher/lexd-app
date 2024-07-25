@@ -35,8 +35,8 @@ const Login = ({ navigation }: RootStackScreenProps<'Login'>) => {
 	const [phone, setPhone] = React.useState('');
 	const { mutate, isSuccess, isPending } = useLogin();
 	const { mutate: appleLogin, isPending: ApplePending } = useLoginApple();
-	const SignUpData = useSignupStore((state) => state.updateCode);
 	const mixpanel = initMixpanel();
+	const SignUpData = useSignupStore((state) => state.updateCode);
 
 	useEffect(() => {
 		SignUpData(selectedCode.split('+')[1]);

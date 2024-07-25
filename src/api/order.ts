@@ -4,6 +4,16 @@ import { SmsService } from '@src/constants/types';
 
 export type imagesType = { url: string; public_id: string }[];
 
+export type currentPositionType = {
+	title: string;
+	coordinates: {
+		latitude: string;
+		location: string;
+		longitude: string;
+	}[];
+	id: string;
+	time: string;
+};
 export type productType = {
 	clientName: string;
 	clientPhone: string;
@@ -16,11 +26,9 @@ export type productType = {
 	quantity?: number;
 	shippingMode?: string;
 	createdAt?: string;
+	currentStatus?: string;
 	typeOfPackage?: string;
-	currentPosition?: {
-		id: string;
-		title: string;
-	};
+	currentPosition?: currentPositionType;
 	orderId?: string;
 	code?: string;
 	route?: Array<{
@@ -111,7 +119,6 @@ export const getActiveOrdersAdmin = async (page: number, Status: string) => {
 	return response.data;
 };
 export const getOrderDetails = async (id: string) => {
-	console.log('id', id);
 	const response = await api.get<productType>(`${API_URL.single}/${id}/single`);
 	return response.data;
 };

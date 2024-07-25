@@ -130,7 +130,8 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 			allowsMultipleSelection: true,
 			selectionLimit: 4 - selectedImages.length, // Limit based on already selected images
 			base64: true,
-			quality: 0.5,
+			quality: 1,
+			allowsEditing: true,
 		});
 
 		if (pickerResult.canceled === true) {
@@ -251,31 +252,24 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 					</ScrollView>
 
 					<View style={styles.formContainer}>
-						<AuthInputField
-							label='Nom du Client'
-							placeholder='Nom du client'
-							containerStyle={styles.containerStyle}
-							name='clientName'
-						/>
+						<AuthInputField label='Nom du Client' containerStyle={styles.containerStyle} name='clientName' />
 						<AuthInputField
 							label='Numero de Telephone du Client'
-							placeholder='Numero de Telephone du Client'
 							containerStyle={styles.containerStyle}
 							name='clientPhone'
 							keyboardType='numeric'
 							maxLength={8}
+							phone={true}
 						/>
 						{/* <AuthInputField label='Country' placeholder='Name' containerStyle={styles.containerStyle} name='country' /> */}
 						<AuthInputField
 							label='Poids du Colis'
-							placeholder='Poids du Colis'
 							autoCapitalize='none'
 							containerStyle={styles.containerStyle}
 							name='packageWeight'
 						/>
 						<AuthInputField
 							label='Type de Colis'
-							placeholder='Type de Colis'
 							containerStyle={styles.containerStyle}
 							name='typeOfPackage'
 							autoCapitalize='none'
@@ -283,7 +277,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 
 						<AuthInputField
 							label='nombre de colis'
-							placeholder='nombre de colis'
 							autoCapitalize='none'
 							keyboardType='numeric'
 							containerStyle={styles.containerStyle}
@@ -291,7 +284,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 						/>
 						<AuthInputField
 							label="Mode d'expedition"
-							placeholder='Mode d expedition'
 							autoCapitalize='none'
 							containerStyle={styles.containerStyle}
 							name='shippingMode'

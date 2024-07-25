@@ -1,9 +1,21 @@
 import axiosInstance from '@src/api/client';
-export interface Route {
+type Coordinate = {
+	latitude: number;
+	longitude: number;
+	location: string;
+	note?: string;
+};
+
+type CoordinateDetails = {
 	id: string;
-	title: string;
-	coordinates: { latitude: number; longitude: number };
-}
+	status: string;
+	coordinates: Coordinate[];
+};
+
+type RouteType = {
+	currentStatus: string;
+	orderDetail: CoordinateDetails[];
+};
 const rootUrl = '/route';
 const API_URL = {
 	GET_ROUTES: '/routes',
@@ -12,6 +24,6 @@ const API_URL = {
 
 export const getRoutes = async () => {
 	console.log('getRoutes');
-	const response = await axiosInstance.get<Route[]>(rootUrl + API_URL.GET_ROUTES);
+	const response = await axiosInstance.get<RouteType[]>(rootUrl + API_URL.GET_ROUTES);
 	return response.data;
 };

@@ -46,7 +46,6 @@ const Slider = ({ bannerImages }: bannerImageProps) => {
 					horizontal
 				>
 					{bannerImages.map((e, index) => {
-						console.log('single image', e.url);
 						return <Image source={{ uri: e.url }} resizeMode='stretch' style={styles.wrap} key={e.public_id} />;
 					})}
 				</ScrollView>

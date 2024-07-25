@@ -23,7 +23,7 @@ const AppInput: FC<Props> = (props) => {
 						/>
 					)}
 
-					<TextInput {...props} style={[styles.input, props.style]} placeholderTextColor={COLORS.black} />
+					<TextInput {...props} spellCheck style={[styles.input, props.style]} placeholderTextColor={COLORS.black} />
 				</View>
 			</Pressable>
 		</>
@@ -33,10 +33,11 @@ const AppInput: FC<Props> = (props) => {
 const styles = StyleSheet.create({
 	container: {},
 	input: {
-		// height: 50,
-		// padding: 10,
-		// flex: 1,
+		height: 50,
+		padding: 10,
+		flex: 1,
 		// borderRightColor: COLORS.lightCrimson,
+		width: '100%',
 	},
 });
 

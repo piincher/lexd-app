@@ -5,53 +5,55 @@ import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS } from '@src/constants/Colors';
 import { IMAGES } from '@src/constants/Images';
 import { HEIGHTTODP, WIDTHTODP } from '@src/constants/Dimensions';
-import { HomeTabScreenProps } from '@src/navigations/type';
+import { HomeTabScreenProps, RootStackParamList } from '@src/navigations/type';
 import ListingList from './components/OrderList';
 import { Fonts } from '@src/constants/Fonts';
 import { useAuth } from '@src/store/Auth';
 import * as WebBrowser from 'expo-web-browser';
 import { useViewSmsBalance } from './hooks/useGetActiveOrders';
+import { RowDetails } from './components/RowDetails';
+import { ItemList } from './components/ItemList';
 
-const data = [
+type dataType = {
+	id: string;
+	title: string;
+	route: keyof RootStackParamList;
+}[];
+const data: dataType = [
 	{
 		id: '0',
 		title: 'Ajouter une commande',
-		Icons: <MaterialIcons name='add-location' size={34} color={COLORS.blue} />,
 		route: 'SelectUser',
 	},
 	{
 		id: '1',
 		title: 'Voir les commandes actives',
-		Icons: <MaterialIcons name='remove-red-eye' size={34} color={COLORS.blue} />,
 		route: 'ActiveOrder',
 	},
 	{
 		id: '2',
 		title: 'Ajouter un utilisateur',
-		Icons: <MaterialIcons name='verified-user' size={34} color={COLORS.blue} />,
 		route: 'UserAdd',
 	},
 
 	{
 		id: '3',
 		title: 'Voir les commandes passées',
-		Icons: <MaterialCommunityIcons name='order-bool-ascending-variant' size={34} color={COLORS.blue} />,
 		route: 'AdmninPastOrders',
 	},
 	{
 		id: '4',
 		title: 'Envoyer un sms de rappel',
-		Icons: <MaterialCommunityIcons name='email' size={34} color={COLORS.blue} />,
 		route: 'SendSms',
 	},
 ];
 
 const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 	const { role } = useAuth((state) => state.user);
-	const { data: smsData } = useViewSmsBalance();
 	const logout = useAuth((state) => state.logOut);
 
 	const isAdmin = role === 'admin';
+	const { data: smsData } = useViewSmsBalance(isAdmin);
 
 	const _handlePressButtonAsync = async (url: string) => {
 		let result = await WebBrowser.openBrowserAsync(url);
@@ -65,39 +67,10 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 			{isAdmin ? (
 				<>
 					<ScrollView>
-						<View>
-							<Text style={styles.smsText}>le nombre de sms restant est : {smsData && smsData[0].availableUnits}</Text>
-							<Text style={[styles.smsText, { fontFamily: Fonts.bold }]}>
-								la date d'expiration : {formattedDateTime}
-							</Text>
-						</View>
-						<View
-							style={{
-								flex: 1,
-							}}
-						>
-							{data.map((item) => {
-								return (
-									<Pressable
-										key={item.id}
-										style={{
-											flexDirection: 'row',
-											justifyContent: 'space-around',
-											alignItems: 'center',
-											borderColor: COLORS.black,
-											borderWidth: 0.2,
-											margin: 5,
-											padding: 10,
-										}}
-										onPress={() => navigation.navigate(item.route)}
-									>
-										<Pressable>{item.Icons}</Pressable>
-										<Text>{item.title}</Text>
-										<MaterialIcons name='navigate-next' size={24} color='black' />
-									</Pressable>
-								);
-							})}
-						</View>
+						<RowDetails label='Le nombre de SMS restant' value={smsData?.[0]?.availableUnits ?? 0} />
+						<RowDetails label="la date d'expiration de sms" value={formattedDateTime} />
+
+						<ItemList data={data} navigation={navigation} />
 					</ScrollView>
 				</>
 			) : (

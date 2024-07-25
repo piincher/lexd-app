@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { View, StyleSheet, Text, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
@@ -8,6 +8,8 @@ import { Picker } from '@react-native-picker/picker';
 import { useUpdateOrder } from '../../hooks/useOrder';
 import { RootStackScreenProps } from '@src/navigations/type';
 import { useGetOrderDetails } from '@src/screens/OrderDetail/hooks/useGetOrderDetail';
+import AppButton from '@src/components/AppButton/AppButton';
+import { useGetRoutes } from '@src/screens/Home/hooks/useRoute';
 
 interface Props {}
 
@@ -19,26 +21,58 @@ interface DetailRowProps {
 }
 
 const Status = {
-	currentStatus: 'in Processing',
+	currentStatus: 'En cours',
 	orderDetail: [
 		{
 			id: '1',
-			status: 'Order Arrived',
-			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Guangzhou warehouse' }],
+			status: 'Order arrived at warehouse',
+			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: "Votre colis est arrivé à l'entrepôt" }],
 		},
 		{
 			id: '2',
 			status: 'Order in Processing',
-			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'ChinalinkExpress Processing' }],
+			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Emballage des Colis en Cours' }],
 		},
 		{
 			id: '3',
 			status: 'Order in Transit',
 			coordinates: [
-				{ latitude: 24.1291, longitude: 114.2644, location: 'Guangzhou' },
-				{ latitude: 25.1291, longitude: 115.2644, location: 'Nanjing' },
-				{ latitude: 26.1291, longitude: 117.2644, location: 'Jilin' },
-				{ latitude: 237.1291, longitude: 118.2644, location: 'Shanghai' },
+				{
+					latitude: 22.5429,
+					longitude: 113.9526,
+					location: 'Hong Kong',
+					note: 'les Colis sont expédiées et transférées vers le port',
+				},
+				{
+					latitude: 22.3193,
+					longitude: 114.1694,
+					location: 'Hong Kong',
+					note: "Les Colis sont transféré à l'entrepôt de Hong Kong",
+				},
+				{
+					latitude: 22.308,
+					longitude: 113.9185,
+					location: "L'Éthiopie",
+					note: "Les colis ont décollé pour L'Éthiopie",
+				},
+				{
+					latitude: 8.97778,
+					longitude: 38.7994,
+					location: 'Ethiopie',
+					note: "Les Colis transféré vers l'aéroport d'Éthiopie",
+				},
+				{
+					latitude: 12.5416,
+					longitude: -7.94994,
+					location: 'Mali',
+					note: "Colis arrivé à l'aéroport du Mali et prêt pour dédouanement",
+				},
+				{
+					latitude: 12.5585407,
+					longitude: -7.9811036,
+					location: 'Mali',
+					note: 'Les marchandises sont arrivées et ont été stockées (Kalaban-Coura, près de FEBAK, précisément à côté du lycée Birgo. +22376696177 / +22350005142)',
+				},
 			],
 		},
 	],
@@ -59,19 +93,35 @@ const DetailRow: FC<DetailRowProps> = ({ label1, value1, label2, value2 }) => (
 	</>
 );
 
+interface updateSelected {
+	title: string;
+	coordinates: {
+		latitude: string;
+		location: string;
+		longitude: string;
+	}[];
+	id: string;
+	time: string;
+}
 const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'>) => {
 	const [selectedCheckboxes, setSelectedCheckboxes] = useState<{ [key: string]: boolean }>({});
 	const [selected, setSelected] = useState<any>(null); // Update the type according to your data structure
-	const { mutate, isPending, isSuccess, data } = useUpdateOrder();
+	const { mutate } = useUpdateOrder();
 	const [coordinatesData, setCoordinatesData] = useState<{ latitude: string; location: string; longitude: string }[]>(
 		[]
 	);
+	const [note, setNote] = useState('');
 
 	const id = route.params.id;
 	const { data: item } = useGetOrderDetails(id);
 	const [statusChange, setStatusChange] = useState('');
+	const { data: Routes } = useGetRoutes();
+	const [actualLocation, setActualLocation] = useState('');
+	const [pickerValue, setPickerValue] = useState(actualLocation);
 
-	const updateOrder = (updatedSelected: any) => {
+	const Status = Routes?.[0];
+
+	const updateOrder = (updatedSelected: updateSelected) => {
 		mutate({
 			...item,
 			orderId: item._id!,
@@ -79,14 +129,18 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 		});
 	};
 
-	// const datad = item?.route[item.route?.length - 1];
-	// const coordinateArr = datad?.coordinates;
-	// const lastItem = coordinateArr[coordinateArr?.length - 1];
+	useEffect(() => {
+		const datad = item?.route?.[item.route?.length - 1] ?? [];
+		const coordinateArr = datad?.coordinates || [];
+		const lastItem = coordinateArr[coordinateArr?.length - 1];
+		setActualLocation(lastItem?.location);
+	}, [item]);
 
 	const handleStepChange = (value: string, status: string, coordinates: any) => {
-		// setStatusChange(value);
 		const location = coordinates.find((loc) => loc.location === value);
 		setStatusChange(status);
+		setPickerValue(value);
+		setNote(location?.note);
 		if (location) {
 			setCoordinatesData([location]);
 		}
@@ -98,6 +152,7 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 			coordinates: coordinatesData,
 			id: Math.random().toString(36).substring(7),
 			time: new Date().toISOString(),
+			note: note,
 		};
 		updateOrder(updatedSelected);
 	};
@@ -114,6 +169,7 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 			coordinates,
 			id: Math.random().toString(36).substring(7),
 			time: new Date().toISOString(),
+			note: `La status de votre colis est : ${status} `,
 		};
 
 		setSelectedCheckboxes(updatedCheckboxes);
@@ -126,7 +182,7 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 		if (item) {
 			const initialCheckboxes = item?.route?.reduce((acc: { [key: string]: boolean }, route: any) => {
 				route?.coordinates?.forEach((location: any) => {
-					acc[location.location] = Status.orderDetail.some(
+					acc[location.location] = Status?.orderDetail.some(
 						(detail) =>
 							detail.status === route.title && detail.coordinates.some((coord) => coord.location === location.location)
 					);
@@ -137,57 +193,69 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 			setSelectedCheckboxes(initialCheckboxes);
 		}
 	}, [item]);
-
 	return (
 		<SafeAreaView style={styles.container}>
-			<View style={styles.detailContainer}>
-				{/* Logistics details */}
-				<DetailRow label1="Pays d'envoie" value1='Chine' label2='Pays de reception' value2='Bamako, Mali' />
-				{/* Goods information */}
-				<DetailRow label1='Client' value1='Ibrahim Kouma' label2='Nombre de Kilo' value2='75 kg' />
-				{/* Status and type */}
-				<DetailRow label1='Status' value1='En Cours' label2='Type de colis' value2='Electronique' />
-			</View>
-
-			{/* Routes section */}
-			{Status.orderDetail.map((route) => (
-				<View key={route.id} style={styles.routeContainer}>
-					<Text>{route.status}</Text>
-					<View>
-						{route.status === 'Order in Transit' ? (
-							<Picker
-								prompt='Change le trajet'
-								mode='dialog'
-								style={styles.picker}
-								selectedValue={statusChange}
-								onValueChange={(item) => {
-									handleStepChange(item, route?.status, route?.coordinates);
-								}}
-							>
-								{route.coordinates.map((c) => (
-									<Picker.Item key={c.location} label={c.location} value={c.location} />
-								))}
-							</Picker>
-						) : (
-							route.coordinates.map((location) => (
-								<Pressable
-									key={location.location}
-									onPress={() => handleCheckboxPress(location.location, route.status, route.coordinates)}
-									style={styles.checkboxContainer}
-								>
-									<Text>{location.location}</Text>
-									<Checkbox
-										status={selectedCheckboxes[location.location] ? 'checked' : 'unchecked'}
-										onPress={() => handleCheckboxPress(location.location, route.status, route.coordinates)}
-									/>
-								</Pressable>
-							))
-						)}
-					</View>
+			<ScrollView>
+				<View style={styles.detailContainer}>
+					{/* Logistics details */}
+					<DetailRow label1="Pays d'envoie" value1='Chine' label2='Pays de reception' value2='Bamako, Mali' />
+					{/* Goods information */}
+					<DetailRow
+						label1='Client'
+						value1={item?.clientName!}
+						label2='Nombre de Kilo'
+						value2={String(item?.packageWeight!)}
+					/>
+					{/* Status and type */}
+					<DetailRow
+						label1='Status'
+						value1={item?.currentStatus!}
+						label2='Type de colis'
+						value2={item?.typeOfPackage!}
+					/>
 				</View>
-			))}
 
-			<Button onPress={updateTransiteStatus}>send</Button>
+				{/* Routes section */}
+				{Status?.orderDetail?.map((route) => (
+					<View key={route.id} style={styles.routeContainer}>
+						<Text style={styles.valueStyle}>{route.status}</Text>
+						<View>
+							{route.status === 'Order in Transit' ? (
+								<Picker
+									prompt='Change le trajet'
+									mode='dialog'
+									style={styles.picker}
+									selectedValue={pickerValue || actualLocation}
+									onValueChange={(item) => {
+										handleStepChange(item, route?.status, route?.coordinates);
+									}}
+								>
+									{route.coordinates.map((c) => (
+										<Picker.Item key={c.location} label={c.location} value={c.location} />
+									))}
+								</Picker>
+							) : (
+								route.coordinates.map((location) => (
+									<Pressable
+										key={location.location}
+										onPress={() => handleCheckboxPress(location.location, route.status, route.coordinates)}
+										style={styles.checkboxContainer}
+									>
+										<Text style={styles.propertyStyle}>{location.location}</Text>
+										<Checkbox
+											status={selectedCheckboxes[location.location] ? 'checked' : 'unchecked'}
+											onPress={() => handleCheckboxPress(location.location, route.status, route.coordinates)}
+										/>
+									</Pressable>
+								))
+							)}
+						</View>
+					</View>
+				))}
+				<View style={{ width: '30%', alignSelf: 'center' }}>
+					<AppButton title='Update' onPress={updateTransiteStatus} />
+				</View>
+			</ScrollView>
 		</SafeAreaView>
 	);
 };
@@ -219,10 +287,10 @@ const styles = StyleSheet.create({
 		borderColor: COLORS.grey,
 		borderWidth: 0.5,
 		padding: 10,
-		margin: 10,
+		margin: 20,
 	},
 	picker: {
-		width: 120,
+		width: '100%',
 	},
 	checkboxContainer: {
 		flexDirection: 'row',

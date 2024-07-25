@@ -68,14 +68,16 @@ const steps = [
 	},
 	{
 		id: '7',
-		title: 'Les marchandises sont arrivées et ont été stockées.(Kalaban-Coura pres de FEBAK +22376696177/+22350005142)',
+		title:
+			'Les marchandises sont arrivées et ont été stockées (Kalaban-Coura, près de FEBAK, précisément à côté du lycée Birgo. +22376696177 / +22350005142)',
 	},
 ];
 
 const ActiveOrders: FC<Props> = () => {
 	const Status = 'Active';
 	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } = useGetActiveOrdersAdmin(Status);
-	const { data: Routes } = useGetRoutes();
+	// prefetch routes
+	useGetRoutes();
 	const renderFooter = () => {
 		if (isFetchingNextPage) {
 			return <ActivityIndicator size='small' color={COLORS.blue} animating />;
@@ -115,7 +117,7 @@ const ActiveOrders: FC<Props> = () => {
 				data={data?.pages?.flatMap((page) => page)}
 				keyExtractor={(item) => item._id!}
 				renderItem={({ item }) => {
-					return <RenderOrder item={item} steps={Routes!} />;
+					return <RenderOrder item={item} />;
 				}}
 				ListFooterComponent={renderFooter}
 			/>
@@ -125,8 +127,7 @@ const ActiveOrders: FC<Props> = () => {
 
 const windowWidth = Dimensions.get('window').width;
 
-const RenderOrder = ({ item, steps }: { item: productType; steps: Route[] }) => {
-	const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
+const RenderOrder = ({ item }: { item: productType }) => {
 	const [visible, setVisible] = React.useState(false);
 	const currentRoute = item?.route?.[item?.route?.length - 1];
 	const [statusChange, setStatusChange] = React.useState(currentRoute?.title ?? '');
@@ -159,13 +160,7 @@ const RenderOrder = ({ item, steps }: { item: productType; steps: Route[] }) => 
 		await Clipboard.setStringAsync(text);
 		Alert.alert('Copied to clipboard');
 	};
-	const updateOrder = () => {
-		mutate({
-			...item,
-			orderId: item._id,
-			currentPosition,
-		});
-	};
+
 	const updateDeliver = () => {
 		updateStatusDelivery({
 			...item,
@@ -173,13 +168,6 @@ const RenderOrder = ({ item, steps }: { item: productType; steps: Route[] }) => 
 		});
 	};
 	const onDismissSnackBar = () => setVisible(false);
-	const handleStepChange = (value: string) => {
-		const selectedStep = steps.find((step) => step.title === value);
-		setStatusChange(value);
-		if (selectedStep) {
-			setCoordinates(selectedStep.coordinates);
-		}
-	};
 
 	const textContentData = [
 		{ label: 'Nom du client', value: item.clientName },
@@ -197,7 +185,7 @@ const RenderOrder = ({ item, steps }: { item: productType; steps: Route[] }) => 
 	};
 	return (
 		<SafeAreaView>
-			<Snackbar
+			{/* <Snackbar
 				visible={visible}
 				onDismiss={onDismissSnackBar}
 				style={{
@@ -217,7 +205,7 @@ const RenderOrder = ({ item, steps }: { item: productType; steps: Route[] }) => 
 					<Text style={{ fontFamily: Fonts.black, marginRight: 10 }}>La status a change</Text>
 					<AntDesign name='checkcircle' size={24} color='green' />
 				</View>
-			</Snackbar>
+			</Snackbar> */}
 
 			{/* image slider section */}
 			<Slider bannerImages={item?.images!} />

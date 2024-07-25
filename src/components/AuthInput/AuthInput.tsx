@@ -1,17 +1,16 @@
-import { Fonts } from '@src/constants/Fonts';
-import AppInput from '../AppInput/AppInput';
 import { COLORS } from '@src/constants/Colors';
+import { Fonts } from '@src/constants/Fonts';
 import { useFormikContext } from 'formik';
 import React, { Dispatch, FC, useEffect } from 'react';
-import { View, StyleSheet, Text, TextInputProps, StyleProp, ViewStyle, Pressable } from 'react-native';
+import { Pressable, StyleProp, StyleSheet, Text, TextInputProps, View, ViewStyle } from 'react-native';
 import Animated, {
-	withSequence,
 	useAnimatedStyle,
 	useSharedValue,
-	withTiming,
+	withSequence,
 	withSpring,
+	withTiming,
 } from 'react-native-reanimated';
-import ContactNumberField from '@src/screens/Auth/Login/components/ContactField';
+import AppInput from '../AppInput/AppInput';
 interface Props {
 	placeholder?: string;
 	label: string;
@@ -61,7 +60,6 @@ const AuthInputField: FC<Props> = (props) => {
 		handleSubmit();
 	};
 
-	console.log('errors', errorMsg);
 	return (
 		<Animated.View style={[containerStyle, inputStyle]}>
 			<View style={styles.headerContainer}>
@@ -70,17 +68,13 @@ const AuthInputField: FC<Props> = (props) => {
 			</View>
 			<View
 				style={{
-					borderColor: errorMsg ? COLORS.danger : COLORS.grey,
+					borderColor: errorMsg ? COLORS.redShade : COLORS.grey,
 					borderWidth: 0.5,
 				}}
 			>
 				<AppInput
 					placeholder={placeholder}
-					// style={{
-					// 	borderWidth: 1,
-					// 	width: '100%',
-					// 	height: 45,
-					// }}
+					style={!props.phone ? styles.defaultInput : {}}
 					keyboardType={keyboardType}
 					secureTextEntry={secureTextEntry}
 					onChangeText={handleChange(name)}
@@ -104,7 +98,12 @@ const AuthInputField: FC<Props> = (props) => {
 };
 
 const styles = StyleSheet.create({
-	container: {},
+	defaultInput: {
+		borderWidth: 0.5,
+		width: '70%',
+		height: 40,
+		borderColor: COLORS.grey,
+	},
 	headerContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
 	label: {
 		color: COLORS.black,

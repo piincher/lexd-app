@@ -15,9 +15,10 @@ export const useGetActiveOrder = (Status: string) => {
 		initialPageParam: 1,
 	});
 };
-export const useViewSmsBalance = () => {
+export const useViewSmsBalance = (isAdmin: boolean) => {
 	return useQuery({
 		queryKey: [SMSKEY],
 		queryFn: fetchSmsBalance,
+		enabled: isAdmin,
 	});
 };
