@@ -26,6 +26,7 @@ export type RootStackParamList = {
 	SendSms: undefined;
 	Map: { id: string };
 	ActiveOrderDetails: { id: string };
+	ScanQRCode: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;

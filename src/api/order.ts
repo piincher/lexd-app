@@ -22,7 +22,7 @@ export type productType = {
 	partenaire: string;
 	_id?: string | undefined;
 	images?: imagesType;
-	status?: string;
+	status?: 'Active' | 'Inactive' | 'In Transit';
 	quantity?: number;
 	shippingMode?: string;
 	createdAt?: string;
@@ -113,6 +113,7 @@ export const fetchSmsBalance = async () => {
 };
 
 export const getActiveOrdersAdmin = async (page: number, Status: string) => {
+	console.log('Status', Status);
 	const response = await api.get<productType[]>(
 		`${API_URL.getActiveOrdersAdmin}?status=${Status}&limit=${LIMIT}&page=${page}`
 	);

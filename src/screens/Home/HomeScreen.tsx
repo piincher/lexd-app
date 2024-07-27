@@ -46,6 +46,11 @@ const data: dataType = [
 		title: 'Envoyer un sms de rappel',
 		route: 'SendSms',
 	},
+	{
+		id: '5',
+		title: 'Scannez pour confirmer la reception',
+		route: 'ScanQRCode',
+	},
 ];
 
 const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {

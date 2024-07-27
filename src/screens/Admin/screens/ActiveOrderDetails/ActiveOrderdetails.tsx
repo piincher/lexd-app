@@ -5,7 +5,7 @@ import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import { Button, Checkbox } from 'react-native-paper';
 import { Picker } from '@react-native-picker/picker';
-import { useUpdateOrder } from '../../hooks/useOrder';
+import { useUpdateOrder, useUpdateStatusDelivery } from '../../hooks/useOrder';
 import { RootStackScreenProps } from '@src/navigations/type';
 import { useGetOrderDetails } from '@src/screens/OrderDetail/hooks/useGetOrderDetail';
 import AppButton from '@src/components/AppButton/AppButton';
@@ -118,6 +118,27 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 	const { data: Routes } = useGetRoutes();
 	const [actualLocation, setActualLocation] = useState('');
 	const [pickerValue, setPickerValue] = useState(actualLocation);
+	const { mutate: updateStatusDelivery } = useUpdateStatusDelivery();
+
+	const updateDeliver = () => {
+		updateStatusDelivery({
+			...item,
+			orderId: item?.code,
+		});
+	};
+
+	const renderSwitch = (item: string) => {
+		switch (item) {
+			case 'Active':
+				return (
+					<AppButton
+						style={{ marginTop: 25, backgroundColor: COLORS.redShade }}
+						title='Mark comme delivre'
+						onPress={updateDeliver}
+					/>
+				);
+		}
+	};
 
 	const Status = Routes?.[0];
 
@@ -193,6 +214,7 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 			setSelectedCheckboxes(initialCheckboxes);
 		}
 	}, [item]);
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
@@ -252,9 +274,17 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 						</View>
 					</View>
 				))}
-				<View style={{ width: '30%', alignSelf: 'center' }}>
-					<AppButton title='Update' onPress={updateTransiteStatus} />
-				</View>
+
+				{item?.status === 'Inactive' ? (
+					<Text style={{ color: COLORS.green, textAlign: 'center', fontSize: 18, fontFamily: Fonts.bold }}>
+						Le client a recupere son colis
+					</Text>
+				) : (
+					<View style={{ width: '50%', alignSelf: 'center' }}>
+						<AppButton title='Update' onPress={updateTransiteStatus} />
+					</View>
+				)}
+				<View style={{ width: '50%', alignSelf: 'center' }}>{item?.status && renderSwitch(item.status)}</View>
 			</ScrollView>
 		</SafeAreaView>
 	);

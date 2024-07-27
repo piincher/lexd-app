@@ -1,28 +1,17 @@
-import { AntDesign } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker';
 import { useNavigation } from '@react-navigation/native';
 import { productType } from '@src/api/order';
 import AppButton from '@src/components/AppButton/AppButton';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
+import { useGetRoutes } from '@src/screens/Home/hooks/useRoute';
 import * as Clipboard from 'expo-clipboard';
-import React, { FC, useEffect, useId } from 'react';
-import {
-	Alert,
-	Dimensions,
-	FlatList,
-	Image,
-	Pressable,
-	ScrollView,
-	StyleSheet,
-	TouchableOpacity,
-	View,
-} from 'react-native';
-import { ActivityIndicator, Button, Card, Paragraph, Snackbar, Text, Title } from 'react-native-paper';
+import React, { FC, useEffect } from 'react';
+import { Alert, Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ActivityIndicator, Button, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetActiveOrdersAdmin, useUpdateOrder, useUpdateStatusDelivery } from '../../hooks/useOrder';
-import { useGetRoutes } from '@src/screens/Home/hooks/useRoute';
-import { Route } from '@src/api/route';
+import { Category } from './components/Category';
 import Slider from './components/Slider';
 interface Order {
 	id: string;
@@ -37,47 +26,13 @@ interface Order {
 
 interface Props {}
 
-const steps = [
-	{
-		id: '0',
-		title: 'le client a passé une commande',
-	},
-	{
-		id: '1',
-		title: 'les colis sont emballées',
-	},
-	{
-		id: '2',
-		title: 'les Colis sont expédiées et transférées vers le port',
-	},
-	{
-		id: '3',
-		title: "Les Colis sont transféré à l'entrepôt de Hong Kong",
-	},
-	{
-		id: '4',
-		title: "Les colis ont décollé pour L'Éthiopie",
-	},
-	{
-		id: '5',
-		title: "Les Colis sont transféré vers l'aéroport d'Ethiopie",
-	},
-	{
-		id: '6',
-		title: "Les Colis sont arrivé à l'aéroport de Bamako et prêt pour le dédouanement",
-	},
-	{
-		id: '7',
-		title:
-			'Les marchandises sont arrivées et ont été stockées (Kalaban-Coura, près de FEBAK, précisément à côté du lycée Birgo. +22376696177 / +22350005142)',
-	},
-];
-
 const ActiveOrders: FC<Props> = () => {
-	const Status = 'Active';
-	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } = useGetActiveOrdersAdmin(Status);
+	const [statusChange, setStatusChange] = React.useState('Active');
+	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } =
+		useGetActiveOrdersAdmin(statusChange);
 	// prefetch routes
 	useGetRoutes();
+
 	const renderFooter = () => {
 		if (isFetchingNextPage) {
 			return <ActivityIndicator size='small' color={COLORS.blue} animating />;
@@ -97,6 +52,14 @@ const ActiveOrders: FC<Props> = () => {
 		}
 	};
 
+	useEffect(() => {
+		refetch();
+	}, [statusChange]);
+
+	const onStatusChange = (itemValue: string) => {
+		setStatusChange(itemValue);
+	};
+
 	if (isError) {
 		return (
 			<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -107,7 +70,7 @@ const ActiveOrders: FC<Props> = () => {
 	}
 	return (
 		<SafeAreaView style={styles.container}>
-			<Text style={styles.textStyle}>Active Orders</Text>
+			<Category onStatusChange={onStatusChange} statusChange={statusChange} setStatusChange={setStatusChange} />
 			<FlatList
 				onEndReached={loadMore}
 				ListEmptyComponent={() => {
@@ -125,49 +88,10 @@ const ActiveOrders: FC<Props> = () => {
 	);
 };
 
-const windowWidth = Dimensions.get('window').width;
-
 const RenderOrder = ({ item }: { item: productType }) => {
-	const [visible, setVisible] = React.useState(false);
 	const currentRoute = item?.route?.[item?.route?.length - 1];
-	const [statusChange, setStatusChange] = React.useState(currentRoute?.title ?? '');
-	const [coordinates, setCoordinates] = React.useState<Route['coordinates']>(
-		currentRoute?.coordinates ?? { latitude: 0, longitude: 0 }
-	);
-	const { mutate, isPending, isSuccess } = useUpdateOrder();
-	const { mutate: updateStatusDelivery } = useUpdateStatusDelivery();
-	const id = Math.random().toString(36).substring(7);
+
 	const navigation = useNavigation();
-
-	useEffect(() => {
-		if (isSuccess) {
-			setVisible(true);
-		}
-	}, [isSuccess]);
-	const currentPosition: {
-		id: string;
-		title: string;
-		time: string;
-		coordinates: { latitude: number; longitude: number };
-	} = {
-		id: id,
-		title: statusChange,
-		time: new Date().toISOString(),
-		coordinates,
-	};
-
-	const copyToClipboard = async (text: string) => {
-		await Clipboard.setStringAsync(text);
-		Alert.alert('Copied to clipboard');
-	};
-
-	const updateDeliver = () => {
-		updateStatusDelivery({
-			...item,
-			orderId: item._id,
-		});
-	};
-	const onDismissSnackBar = () => setVisible(false);
 
 	const textContentData = [
 		{ label: 'Nom du client', value: item.clientName },
@@ -175,7 +99,7 @@ const RenderOrder = ({ item }: { item: productType }) => {
 		{ label: 'Numéro de suivi', value: item.code },
 		{ label: "Mode d'expédition", value: item.shippingMode },
 		{ label: 'Type de colis', value: item.typeOfPackage },
-		{ label: 'Position Actuelle', value: statusChange },
+		{ label: 'Position Actuelle', value: currentRoute?.title ?? 'le client a passé une commande' },
 		{ label: 'Nombre de colis', value: item.quantity },
 	];
 	const handleNavigate = () => {
@@ -185,28 +109,6 @@ const RenderOrder = ({ item }: { item: productType }) => {
 	};
 	return (
 		<SafeAreaView>
-			{/* <Snackbar
-				visible={visible}
-				onDismiss={onDismissSnackBar}
-				style={{
-					backgroundColor: COLORS.white,
-					top: -50,
-				}}
-				duration={3000}
-			>
-				<View
-					style={{
-						flexDirection: 'row',
-						alignItems: 'center',
-						justifyContent: 'center',
-						alignContent: 'center',
-					}}
-				>
-					<Text style={{ fontFamily: Fonts.black, marginRight: 10 }}>La status a change</Text>
-					<AntDesign name='checkcircle' size={24} color='green' />
-				</View>
-			</Snackbar> */}
-
 			{/* image slider section */}
 			<Slider bannerImages={item?.images!} />
 			{/* text container section */}
@@ -222,7 +124,7 @@ const RenderOrder = ({ item }: { item: productType }) => {
 			{/* Button */}
 
 			<Button mode='contained' style={styles.buttonStyle} onPress={handleNavigate}>
-				<Text style={{ fontFamily: Fonts.meduim, color: COLORS.white }}>Update</Text>
+				<Text style={{ fontFamily: Fonts.meduim, color: COLORS.white }}>Next</Text>
 			</Button>
 		</SafeAreaView>
 	);

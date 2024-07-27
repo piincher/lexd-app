@@ -41,6 +41,7 @@ import { initMixpanel } from '@src/config/Analytic';
 import { UpdateProvider } from '@src/context/UpdateProvider';
 import Map from '@src/screens/OrderDetail/Map';
 import ActiveOrderdetails from '@src/screens/Admin/screens/ActiveOrderDetails/ActiveOrderdetails';
+import ScanQRCode from '@src/screens/Admin/screens/ScanCode/ScanCode';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -119,6 +120,7 @@ function AppWrapper() {
 							<Stack.Screen name='SendSms' component={SendSms} />
 							<Stack.Screen name='Map' component={Map} />
 							<Stack.Screen name='ActiveOrderDetails' component={ActiveOrderdetails} />
+							<Stack.Screen name='ScanQRCode' component={ScanQRCode} />
 						</>
 					) : (
 						<>
