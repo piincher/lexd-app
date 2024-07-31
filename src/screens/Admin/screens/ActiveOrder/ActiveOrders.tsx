@@ -13,6 +13,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetActiveOrdersAdmin, useUpdateOrder, useUpdateStatusDelivery } from '../../hooks/useOrder';
 import { Category } from './components/Category';
 import Slider from './components/Slider';
+import { ListItem } from '@src/components/ListItem/ListItem';
+import { FlashList } from '@shopify/flash-list';
+import { ListItemOrders } from '@src/components/ListItemOrders';
 interface Order {
 	id: string;
 	clientName: string;
@@ -33,19 +36,7 @@ const ActiveOrders: FC<Props> = () => {
 	// prefetch routes
 	useGetRoutes();
 
-	const renderFooter = () => {
-		if (isFetchingNextPage) {
-			return <ActivityIndicator size='small' color={COLORS.blue} animating />;
-		} else if (hasNextPage) {
-			return (
-				<TouchableOpacity onPress={loadMore}>
-					<Text>Voir</Text>
-				</TouchableOpacity>
-			);
-		} else {
-			return null;
-		}
-	};
+	console.log('fetch next page', hasNextPage);
 	const loadMore = () => {
 		if (hasNextPage) {
 			fetchNextPage();
@@ -71,61 +62,12 @@ const ActiveOrders: FC<Props> = () => {
 	return (
 		<SafeAreaView style={styles.container}>
 			<Category onStatusChange={onStatusChange} statusChange={statusChange} setStatusChange={setStatusChange} />
-			<FlatList
-				onEndReached={loadMore}
-				ListEmptyComponent={() => {
-					return <Text style={{ textAlign: 'center', fontSize: 26 }}> Aucune commande</Text>;
-				}}
-				showsVerticalScrollIndicator={false}
-				data={data?.pages?.flatMap((page) => page)}
-				keyExtractor={(item) => item._id!}
-				renderItem={({ item }) => {
-					return <RenderOrder item={item} />;
-				}}
-				ListFooterComponent={renderFooter}
+			<ListItemOrders
+				data={data!}
+				loadMore={loadMore}
+				isFetchingNextPage={isFetchingNextPage}
+				hasNextPage={hasNextPage}
 			/>
-		</SafeAreaView>
-	);
-};
-
-const RenderOrder = ({ item }: { item: productType }) => {
-	const currentRoute = item?.route?.[item?.route?.length - 1];
-
-	const navigation = useNavigation();
-
-	const textContentData = [
-		{ label: 'Nom du client', value: item.clientName },
-		{ label: 'Numéro du client', value: item.clientPhone },
-		{ label: 'Numéro de suivi', value: item.code },
-		{ label: "Mode d'expédition", value: item.shippingMode },
-		{ label: 'Type de colis', value: item.typeOfPackage },
-		{ label: 'Position Actuelle', value: currentRoute?.title ?? 'le client a passé une commande' },
-		{ label: 'Nombre de colis', value: item.quantity },
-	];
-	const handleNavigate = () => {
-		navigation.navigate('ActiveOrderDetails', {
-			id: item._id!,
-		});
-	};
-	return (
-		<SafeAreaView>
-			{/* image slider section */}
-			<Slider bannerImages={item?.images!} />
-			{/* text container section */}
-			<>
-				{textContentData.map((content, index) => (
-					<View key={index} style={styles.textContent}>
-						<Text style={styles.propertyStyle}>{content.label}</Text>
-						<Text style={styles.textStyle}>{content.value}</Text>
-					</View>
-				))}
-			</>
-
-			{/* Button */}
-
-			<Button mode='contained' style={styles.buttonStyle} onPress={handleNavigate}>
-				<Text style={{ fontFamily: Fonts.meduim, color: COLORS.white }}>Next</Text>
-			</Button>
 		</SafeAreaView>
 	);
 };
@@ -133,31 +75,6 @@ const RenderOrder = ({ item }: { item: productType }) => {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-	},
-	textContent: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		borderTopWidth: 0.2,
-		borderColor: COLORS.grey,
-		borderBottomWidth: 0.2,
-		marginHorizontal: 10,
-		padding: 10,
-	},
-	propertyStyle: {
-		fontFamily: Fonts.regular,
-	},
-	textStyle: {
-		textAlign: 'center',
-		fontFamily: Fonts.regular,
-		color: COLORS.grey,
-	},
-	buttonStyle: {
-		width: 200,
-		alignSelf: 'center',
-		backgroundColor: COLORS.blue,
-		marginTop: 20,
-		height: 40,
-		borderRadius: 1,
 	},
 });
 

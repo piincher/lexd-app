@@ -3,8 +3,9 @@ import { Text, View, StyleSheet, Button } from 'react-native';
 import { CameraView, Camera, BarcodeScanningResult } from 'expo-camera';
 import { useUpdateStatusDelivery } from '../../hooks/useOrder';
 import { CustomModal } from '@src/components/Modal/Modal';
+import { RootStackScreenProps } from '@src/navigations/type';
 
-export default function ScanQRCode() {
+export default function ScanQRCode({ navigation }: RootStackScreenProps<'ScanQRCode'>) {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState(false);
 	const [trackingNumber, setTrackingNumber] = useState('');
@@ -33,10 +34,9 @@ export default function ScanQRCode() {
 	};
 
 	useEffect(() => {
-		console.log('success', isSuccess);
 		if (isSuccess) {
-			console.log('success');
 			setScanned(false);
+			navigation.navigate('HomeTab', { screen: 'Home' });
 		}
 	}, [isSuccess]);
 

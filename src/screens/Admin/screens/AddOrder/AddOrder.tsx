@@ -62,6 +62,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { data: categories } = useGetCategories();
 	const id = categories ? categories[0]._id : '';
+	console.log('categories', id);
 	const [category, setCategory] = useState<string>(id);
 	const [selectedImages, setSelectedImages] = useState<
 		{

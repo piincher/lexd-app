@@ -113,7 +113,7 @@ export const fetchSmsBalance = async () => {
 };
 
 export const getActiveOrdersAdmin = async (page: number, Status: string) => {
-	console.log('Status', Status);
+	console.log('fetch');
 	const response = await api.get<productType[]>(
 		`${API_URL.getActiveOrdersAdmin}?status=${Status}&limit=${LIMIT}&page=${page}`
 	);

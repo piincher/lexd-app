@@ -10,6 +10,7 @@ import {
 	NativeSyntheticEvent,
 	ImageSourcePropType,
 	Dimensions,
+	Pressable,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { COLORS } from '@src/constants/Colors';
@@ -23,9 +24,10 @@ interface bannerImageProps {
 		public_id: string;
 		url: string;
 	}[];
+	handleNavigate?: () => void;
 }
 
-const Slider = ({ bannerImages }: bannerImageProps) => {
+const Slider = ({ bannerImages, handleNavigate }: bannerImageProps) => {
 	const [imgActive, setActive] = useState(0);
 	const onChange = (nativeEvent: NativeScrollEvent) => {
 		if (nativeEvent) {
@@ -37,8 +39,8 @@ const Slider = ({ bannerImages }: bannerImageProps) => {
 	};
 
 	return (
-		<SafeAreaView style={{ flex: 1, marginTop: 53 }}>
-			<View>
+		<SafeAreaView style={styles.container}>
+			<>
 				<ScrollView
 					onScroll={({ nativeEvent }) => onChange(nativeEvent)}
 					showsHorizontalScrollIndicator={false}
@@ -49,7 +51,7 @@ const Slider = ({ bannerImages }: bannerImageProps) => {
 						return <Image source={{ uri: e.url }} resizeMode='stretch' style={styles.wrap} key={e.public_id} />;
 					})}
 				</ScrollView>
-			</View>
+			</>
 			<View style={styles.wrapDot}>
 				{bannerImages.map((e, index) => {
 					return (
@@ -65,9 +67,14 @@ const Slider = ({ bannerImages }: bannerImageProps) => {
 
 export default Slider;
 const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: COLORS.white,
+	},
+
 	wrap: {
 		width: Screen_Width - 32,
-		height: 250,
+		height: Screen_Width,
 		marginHorizontal: 16,
 	},
 	wrapDot: {

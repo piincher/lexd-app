@@ -10,9 +10,12 @@ import ListingList from './components/OrderList';
 import { Fonts } from '@src/constants/Fonts';
 import { useAuth } from '@src/store/Auth';
 import * as WebBrowser from 'expo-web-browser';
-import { useViewSmsBalance } from './hooks/useGetActiveOrders';
+import { useGetActiveOrder, useViewSmsBalance } from './hooks/useGetActiveOrders';
 import { RowDetails } from './components/RowDetails';
 import { ItemList } from './components/ItemList';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { ListItemOrders } from '@src/components/ListItemOrders';
+import { UserHeaderInfo } from './components/UserHeaderInfo';
 
 type dataType = {
 	id: string;
@@ -54,8 +57,14 @@ const data: dataType = [
 ];
 
 const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
-	const { role } = useAuth((state) => state.user);
-	const logout = useAuth((state) => state.logOut);
+	const { role, firstName, lastName } = useAuth((state) => state.user);
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetActiveOrder('Active');
+
+	const loadMore = () => {
+		if (hasNextPage) {
+			fetchNextPage();
+		}
+	};
 
 	const isAdmin = role === 'admin';
 	const { data: smsData } = useViewSmsBalance(isAdmin);
@@ -80,28 +89,14 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 				</>
 			) : (
 				<>
-					<View
-						style={{
-							backgroundColor: COLORS.blue,
-							flexDirection: 'row',
-							justifyContent: 'space-around',
-							alignItems: 'center',
-							padding: 10,
-						}}
-					>
-						<Pressable onPress={() => _handlePressButtonAsync('https://wa.me/8618851725957')}>
-							<MaterialCommunityIcons name='whatsapp' size={34} color={COLORS.green} />
-						</Pressable>
-						<Text style={{ fontSize: 24, textAlign: 'center', fontFamily: Fonts.boldItalic, color: COLORS.white }}>
-							ChinaLink Express
-						</Text>
-						<Pressable onPress={() => logout()}>
-							<MaterialCommunityIcons name='logout' size={34} color={COLORS.white} />
-						</Pressable>
-					</View>
-					<View style={{ flex: 1, paddingTop: 40, paddingHorizontal: 21 }}>
-						<ListingList Status='Active' />
-					</View>
+					<UserHeaderInfo firstName={firstName} lastName={lastName} />
+
+					<ListItemOrders
+						data={data!}
+						loadMore={loadMore}
+						isFetchingNextPage={isFetchingNextPage}
+						hasNextPage={hasNextPage}
+					/>
 				</>
 			)}
 		</SafeAreaView>
