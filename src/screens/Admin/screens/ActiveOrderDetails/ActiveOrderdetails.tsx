@@ -10,88 +10,7 @@ import { RootStackScreenProps } from '@src/navigations/type';
 import { useGetOrderDetails } from '@src/screens/OrderDetail/hooks/useGetOrderDetail';
 import AppButton from '@src/components/AppButton/AppButton';
 import { useGetRoutes } from '@src/screens/Home/hooks/useRoute';
-
-interface Props {}
-
-interface DetailRowProps {
-	label1: string;
-	value1: string;
-	label2: string;
-	value2: string;
-}
-
-const Status = {
-	currentStatus: 'En cours',
-	orderDetail: [
-		{
-			id: '1',
-			status: 'Order arrived at warehouse',
-			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: "Votre colis est arrivé à l'entrepôt" }],
-		},
-		{
-			id: '2',
-			status: 'Order in Processing',
-			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Emballage des Colis en Cours' }],
-		},
-		{
-			id: '3',
-			status: 'Order in Transit',
-			coordinates: [
-				{
-					latitude: 22.5429,
-					longitude: 113.9526,
-					location: 'Hong Kong',
-					note: 'les Colis sont expédiées et transférées vers le port',
-				},
-				{
-					latitude: 22.3193,
-					longitude: 114.1694,
-					location: 'Hong Kong',
-					note: "Les Colis sont transféré à l'entrepôt de Hong Kong",
-				},
-				{
-					latitude: 22.308,
-					longitude: 113.9185,
-					location: "L'Éthiopie",
-					note: "Les colis ont décollé pour L'Éthiopie",
-				},
-				{
-					latitude: 8.97778,
-					longitude: 38.7994,
-					location: 'Ethiopie',
-					note: "Les Colis transféré vers l'aéroport d'Éthiopie",
-				},
-				{
-					latitude: 12.5416,
-					longitude: -7.94994,
-					location: 'Mali',
-					note: "Colis arrivé à l'aéroport du Mali et prêt pour dédouanement",
-				},
-				{
-					latitude: 12.5585407,
-					longitude: -7.9811036,
-					location: 'Mali',
-					note: 'Les marchandises sont arrivées et ont été stockées (Kalaban-Coura, près de FEBAK, précisément à côté du lycée Birgo. +22376696177 / +22350005142)',
-				},
-			],
-		},
-	],
-};
-
-const DetailRow: FC<DetailRowProps> = ({ label1, value1, label2, value2 }) => (
-	<>
-		<View style={styles.rowContainer}>
-			<Text style={styles.propertyStyle}>{label1}</Text>
-			<Text style={styles.propertyStyle} selectable>
-				{label2}
-			</Text>
-		</View>
-		<View style={styles.rowContainer}>
-			<Text style={styles.valueStyle}>{value1}</Text>
-			<Text style={styles.valueStyle}>{value2}</Text>
-		</View>
-	</>
-);
+import { DetailRow } from '@src/components/DetailsRow/DetailsRow';
 
 interface updateSelected {
 	title: string;
@@ -103,6 +22,7 @@ interface updateSelected {
 	id: string;
 	time: string;
 }
+
 const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'>) => {
 	const [selectedCheckboxes, setSelectedCheckboxes] = useState<{ [key: string]: boolean }>({});
 	const [selected, setSelected] = useState<any>(null); // Update the type according to your data structure
@@ -111,6 +31,7 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 		[]
 	);
 	const [note, setNote] = useState('');
+	const [locationNote, setLocationNote] = useState('');
 
 	const id = route.params.id;
 	const { data: item } = useGetOrderDetails(id);
@@ -125,19 +46,6 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 			...item,
 			orderId: item?.code,
 		});
-	};
-
-	const renderSwitch = (item: string) => {
-		switch (item) {
-			case 'Active':
-				return (
-					<AppButton
-						style={{ marginTop: 25, backgroundColor: COLORS.redShade }}
-						title='Mark comme delivre'
-						onPress={updateDeliver}
-					/>
-				);
-		}
 	};
 
 	const Status = Routes?.[0];
@@ -155,6 +63,7 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 		const coordinateArr = datad?.coordinates || [];
 		const lastItem = coordinateArr[coordinateArr?.length - 1];
 		setActualLocation(lastItem?.location);
+		setLocationNote(lastItem?.note);
 	}, [item]);
 
 	const handleStepChange = (value: string, status: string, coordinates: any) => {
@@ -235,6 +144,7 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 						label2='Type de colis'
 						value2={item?.typeOfPackage!}
 					/>
+					<DetailRow label1='Note' value1={locationNote!} label2='' value2={''} />
 				</View>
 
 				{/* Routes section */}
@@ -280,11 +190,19 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 						Le client a recupere son colis
 					</Text>
 				) : (
-					<View style={{ width: '50%', alignSelf: 'center' }}>
+					<View style={styles.buttonContainer}>
 						<AppButton title='Update' onPress={updateTransiteStatus} />
 					</View>
 				)}
-				<View style={{ width: '50%', alignSelf: 'center' }}>{item?.status && renderSwitch(item.status)}</View>
+
+				<View style={styles.buttonContainer}>
+					<AppButton
+						style={{ marginTop: 25, backgroundColor: COLORS.redShade }}
+						title='Mark comme delivre'
+						onPress={updateDeliver}
+						background='red'
+					/>
+				</View>
 			</ScrollView>
 		</SafeAreaView>
 	);
@@ -301,23 +219,14 @@ const styles = StyleSheet.create({
 		borderColor: COLORS.grey,
 		borderRadius: 5,
 	},
-	rowContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		marginTop: 20,
-	},
-	propertyStyle: {
-		fontFamily: Fonts.regular,
-		color: COLORS.grey,
-	},
-	valueStyle: {
-		fontFamily: Fonts.bold,
-	},
 	routeContainer: {
 		borderColor: COLORS.grey,
 		borderWidth: 0.5,
 		padding: 10,
 		margin: 20,
+	},
+	valueStyle: {
+		fontFamily: Fonts.bold,
 	},
 	picker: {
 		width: '100%',
@@ -326,6 +235,11 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 	},
+	propertyStyle: {
+		fontFamily: Fonts.regular,
+		color: COLORS.grey,
+	},
+	buttonContainer: { width: '50%', alignSelf: 'center' },
 });
 
 export default ActiveOrderDetails;

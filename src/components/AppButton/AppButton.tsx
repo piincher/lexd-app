@@ -9,12 +9,13 @@ interface Props {
 	busy?: boolean;
 	style?: StyleProp<ViewStyle>;
 	disabled?: boolean;
+	background?: string;
 }
 
-const AppButton: FC<Props> = ({ title, onPress, busy, style, disabled }) => {
+const AppButton: FC<Props> = ({ title, onPress, busy, style, disabled, background }) => {
 	return (
 		<Pressable
-			style={[style, styles.container, { backgroundColor: disabled ? COLORS.grey : COLORS.blue }]}
+			style={[style, styles.container, { backgroundColor: disabled ? COLORS.grey : background || COLORS.blue }]}
 			onPress={onPress}
 			disabled={disabled}
 		>

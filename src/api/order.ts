@@ -14,6 +14,13 @@ export type currentPositionType = {
 	id: string;
 	time: string;
 };
+
+export type routes = Array<{
+	id: string;
+	title: string;
+	time: string;
+	coordinates: { latitude: number; longitude: number; location: string }[];
+}>;
 export type productType = {
 	clientName: string;
 	clientPhone: string;
@@ -21,7 +28,7 @@ export type productType = {
 	priceTotal?: number;
 	partenaire: string;
 	_id?: string | undefined;
-	images?: imagesType;
+	images: imagesType;
 	status?: 'Active' | 'Inactive' | 'In Transit';
 	quantity?: number;
 	shippingMode?: string;
@@ -31,12 +38,7 @@ export type productType = {
 	currentPosition?: currentPositionType;
 	orderId?: string;
 	code?: string;
-	route?: Array<{
-		id: string;
-		title: string;
-		time: string;
-		coordinates: { latitude: number; longitude: number; location: string }[];
-	}>;
+	route: routes;
 	dateOfReception?: string;
 	userId: string;
 	departureDate: string;
@@ -96,7 +98,6 @@ export const placeOrder = async ({
 };
 
 export const updateOrder = async (data: productType) => {
-	console.log('current position', data.currentPosition);
 	return await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
 };
 

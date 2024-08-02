@@ -71,7 +71,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		}[]
 	>([]);
 
-	console.log('categor', category);
 	const [date, setDate] = React.useState(undefined);
 	const [open, setOpen] = React.useState(false);
 
@@ -162,6 +161,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		quantity: '1',
 		shippingMode: 'air',
 		typeOfPackage: category,
+		category: category,
 		currentPosition: {
 			id: '',
 			title: '',

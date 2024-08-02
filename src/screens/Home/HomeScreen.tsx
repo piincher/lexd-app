@@ -1,28 +1,22 @@
-import { StyleSheet, Text, View, ScrollView, Image, Pressable } from 'react-native';
-import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { ListItemOrders } from '@src/components/ListItemOrders';
 import { COLORS } from '@src/constants/Colors';
-import { IMAGES } from '@src/constants/Images';
-import { HEIGHTTODP, WIDTHTODP } from '@src/constants/Dimensions';
 import { HomeTabScreenProps, RootStackParamList } from '@src/navigations/type';
-import ListingList from './components/OrderList';
-import { Fonts } from '@src/constants/Fonts';
 import { useAuth } from '@src/store/Auth';
 import * as WebBrowser from 'expo-web-browser';
-import { useGetActiveOrder, useViewSmsBalance } from './hooks/useGetActiveOrders';
-import { RowDetails } from './components/RowDetails';
+import React from 'react';
+import { ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { ItemList } from './components/ItemList';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { ListItemOrders } from '@src/components/ListItemOrders';
+import { RowDetails } from './components/RowDetails';
 import { UserHeaderInfo } from './components/UserHeaderInfo';
+import { useGetActiveOrder, useViewSmsBalance } from './hooks/useGetActiveOrders';
 
 type dataType = {
 	id: string;
 	title: string;
 	route: keyof RootStackParamList;
 }[];
-const data: dataType = [
+const list: dataType = [
 	{
 		id: '0',
 		title: 'Ajouter une commande',
@@ -58,7 +52,7 @@ const data: dataType = [
 
 const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 	const { role, firstName, lastName } = useAuth((state) => state.user);
-	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetActiveOrder('Active');
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetActiveOrder('In Transit');
 
 	const loadMore = () => {
 		if (hasNextPage) {
@@ -84,13 +78,28 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 						<RowDetails label='Le nombre de SMS restant' value={smsData?.[0]?.availableUnits ?? 0} />
 						<RowDetails label="la date d'expiration de sms" value={formattedDateTime} />
 
-						<ItemList data={data} navigation={navigation} />
+						<ItemList data={list} navigation={navigation} />
 					</ScrollView>
 				</>
 			) : (
 				<>
 					<UserHeaderInfo firstName={firstName} lastName={lastName} />
-
+					{/* <View
+						style={{
+							backgroundColor: COLORS.white,
+							borderWidth: 0.5,
+							borderColor: COLORS.blue,
+							flexDirection: 'row',
+							marginHorizontal: 20,
+							justifyContent: 'space-between',
+							padding: 10,
+						}}
+					>
+						<TextInput placeholder='Entrez le Numero de suivi' />
+						<Button mode='contained' style={{ backgroundColor: COLORS.blue, width: 97, borderRadius: 0 }}>
+							Trackez
+						</Button>
+					</View> */}
 					<ListItemOrders
 						data={data!}
 						loadMore={loadMore}
@@ -104,24 +113,3 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-	imageStyle: {
-		height: HEIGHTTODP(70),
-		width: WIDTHTODP(70),
-		alignItems: 'center',
-		justifyContent: 'center',
-		alignSelf: 'center',
-		marginTop: HEIGHTTODP(1),
-	},
-	smsText: {
-		fontSize: 24,
-		fontFamily: Fonts.black,
-		color: COLORS.blue,
-		textAlign: 'center',
-		marginTop: 10,
-	},
-	container: {
-		flex: 1,
-	},
-});
