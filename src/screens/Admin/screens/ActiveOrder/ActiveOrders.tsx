@@ -29,6 +29,21 @@ interface Order {
 
 interface Props {}
 
+const status = [
+	{
+		id: '0',
+		title: 'Active',
+	},
+
+	{
+		id: '1',
+		title: 'In Transit',
+	},
+	{
+		id: '2',
+		title: 'Inactive',
+	},
+];
 const ActiveOrders: FC<Props> = () => {
 	const [statusChange, setStatusChange] = React.useState('Active');
 	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } =
@@ -61,7 +76,12 @@ const ActiveOrders: FC<Props> = () => {
 	}
 	return (
 		<SafeAreaView style={styles.container}>
-			<Category onStatusChange={onStatusChange} statusChange={statusChange} setStatusChange={setStatusChange} />
+			<Category
+				status={status}
+				onStatusChange={onStatusChange}
+				statusChange={statusChange}
+				setStatusChange={setStatusChange}
+			/>
 			<ListItemOrders
 				data={data!}
 				loadMore={loadMore}

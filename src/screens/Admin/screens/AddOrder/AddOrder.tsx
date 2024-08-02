@@ -96,6 +96,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 				partenaire: values.partenaire || 'Chez Fode',
 				userId: route.params.userId,
 				departureDate: date!,
+				category,
 			});
 			console.log('values', values);
 		} catch (error) {
@@ -116,7 +117,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 			selectionLimit: 4 - selectedImages.length, // Limit based on already selected images
 			base64: true,
 			quality: 1,
-			allowsEditing: true,
 		});
 
 		if (pickerResult.canceled === true) {

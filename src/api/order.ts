@@ -42,6 +42,10 @@ export type productType = {
 	dateOfReception?: string;
 	userId: string;
 	departureDate: string;
+	category: {
+		name: string;
+		_id: string;
+	};
 };
 
 const API_URL = {
@@ -77,6 +81,7 @@ export const placeOrder = async ({
 	currentPosition,
 	userId,
 	departureDate,
+	category,
 }: productType) => {
 	const data = {
 		clientName,
@@ -92,6 +97,7 @@ export const placeOrder = async ({
 		currentPosition,
 		userId,
 		departureDate,
+		category,
 	};
 
 	return await api.post<productType>(`${API_URL.CREATE_ORDER}`, data);

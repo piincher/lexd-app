@@ -4,7 +4,7 @@ import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import { RootStackScreenProps } from '@src/navigations/type';
 import React, { useEffect, useState } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useChatClient } from '../Chat/hooks/useChatClient';
 import { useGetOrderDetails } from './hooks/useGetOrderDetail';
@@ -12,6 +12,7 @@ import { formatDate } from '@src/utils/formatDate';
 import Svg, { Line, Circle } from 'react-native-svg';
 import { getTranslation } from '@src/services/translate';
 import { routes } from '@src/api/order';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface StepIndicatorProps {
 	steps: Array<{
@@ -222,6 +223,7 @@ const StatusTimeline = ({ statusData }: Status) => {
 							<View key={item.id} style={styles3.statusItem}>
 								<Text style={styles3.statusText}>{item.title}</Text>
 								<Text style={styles3.locationText}>{item.note}</Text>
+								{item.time && <Text style={styles3.locationText}>{item.time}</Text>}
 							</View>
 						</>
 					);
@@ -272,6 +274,8 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<'OrderDetail'>
 	const id = route.params.id;
 	const { data: item, isPending } = useGetOrderDetails(id);
 
+	console.log('item', item);
+
 	useEffect(() => {
 		// setCurrentStep(item?.route.length ?? 0);
 	}, [item]);
@@ -296,19 +300,15 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<'OrderDetail'>
 		<SafeAreaView style={{ flex: 1 }}>
 			<ScrollView>
 				<Header title='Détails de suivi' navigation={navigation} />
-				<View
-					style={{
-						flexDirection: 'row',
-						padding: 20,
-						marginHorizontal: 10,
-						alignItems: 'center',
-					}}
-				>
-					<Image source={{ uri: item?.images[0]?.url }} style={{ width: 50, height: 50 }} />
+				<View style={styles.imageContainer}>
+					<Image source={{ uri: item?.images[0]?.url }} style={styles.imageStyle} />
 					<View style={{ marginLeft: 12 }}>
-						<Text style={styles.category}>{item?.typeOfPackage}</Text>
+						<Text style={styles.category}>{item?.category?.name || item?.typeOfPackage}</Text>
 						<Text style={styles.trackingNumber}>Numero de Suivi:{item?.code}</Text>
 					</View>
+					<Pressable onPress={handleChat}>
+						<MaterialCommunityIcons name='chat' size={34} color={COLORS.blue} />
+					</Pressable>
 				</View>
 				<View style={styles.detailContainer}>
 					{/* Logistics details */}
@@ -325,7 +325,7 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<'OrderDetail'>
 						label1='Status'
 						value1={item?.currentStatus! || 'le client a passe la commande'}
 						label2='Type de colis'
-						value2={item?.typeOfPackage!}
+						value2={item?.category?.name!}
 					/>
 					<DetailRow
 						label1='Position actuelle'
@@ -356,6 +356,18 @@ const styles = StyleSheet.create({
 		fontFamily: Fonts.regular,
 		fontSize: 16,
 		color: COLORS.grey,
+	},
+	imageContainer: {
+		flexDirection: 'row',
+		padding: 20,
+		marginHorizontal: 10,
+		alignItems: 'center',
+		justifyContent: 'space-between',
+	},
+	imageStyle: {
+		width: 100,
+		height: 100,
+		borderRadius: 10,
 	},
 });
 // const styles = StyleSheet.create({

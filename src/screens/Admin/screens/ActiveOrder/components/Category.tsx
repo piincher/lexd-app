@@ -1,39 +1,17 @@
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
-import { Pressable, Text, View } from 'react-native';
-
-const status = [
-	{
-		id: '0',
-		title: 'Active',
-	},
-
-	{
-		id: '1',
-		title: 'In Transit',
-	},
-	{
-		id: '2',
-		title: 'Inactive',
-	},
-];
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 interface CategoryProps {
 	statusChange: string;
 	setStatusChange: (status: string) => void;
 	onStatusChange: (status: string) => void;
+	status: { id: string; title: string }[];
 }
-export const Category = ({ setStatusChange, statusChange, onStatusChange }: CategoryProps) => {
+export const Category = ({ setStatusChange, statusChange, onStatusChange, status }: CategoryProps) => {
 	return (
 		<>
-			<View
-				style={{
-					flexDirection: 'row',
-					justifyContent: 'space-between',
-					alignItems: 'center',
-					marginHorizontal: 10,
-				}}
-			>
+			<View style={styles.container}>
 				{status.map((item) => (
 					<Pressable
 						key={item.id}
@@ -48,7 +26,7 @@ export const Category = ({ setStatusChange, statusChange, onStatusChange }: Cate
 								textAlign: 'center',
 							}}
 						>
-							{item.title}
+							{item.title === 'Active' ? 'En cours' : item.title === 'In Transit' ? 'En transit' : 'Inactif'}
 						</Text>
 					</Pressable>
 				))}
@@ -56,3 +34,12 @@ export const Category = ({ setStatusChange, statusChange, onStatusChange }: Cate
 		</>
 	);
 };
+
+export const styles = StyleSheet.create({
+	container: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		marginHorizontal: 10,
+	},
+});

@@ -15,10 +15,10 @@ export const UserHeaderInfo = ({ firstName, lastName }: UserHeaderInfoProps) => 
 				<Text style={styles.textContent}>
 					Salut {firstName} {lastName} 🙌
 				</Text>
-				<View style={styles.notificationContainer}>
+				{/* <View style={styles.notificationContainer}>
 					<Ionicons name='notifications-outline' size={24} color='black' />
 					<View style={styles.redDot} />
-				</View>
+				</View> */}
 			</View>
 			<Text style={styles.activeOrderText}>Commande Actifs</Text>
 		</>

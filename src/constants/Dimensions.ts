@@ -9,4 +9,4 @@ export const HEIGHTTODP = (number: number) => {
 
 export const SCREEN_WIDTH = WDP('100%');
 
-export const LIMIT = 1;
+export const LIMIT = 10;
