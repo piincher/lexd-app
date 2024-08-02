@@ -1,61 +1,88 @@
-import { StyleSheet, Text, View, ScrollView, Image, Pressable } from 'react-native';
-import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { ListItemOrders } from '@src/components/ListItemOrders';
 import { COLORS } from '@src/constants/Colors';
-import { IMAGES } from '@src/constants/Images';
-import { HEIGHTTODP, WIDTHTODP } from '@src/constants/Dimensions';
-import { HomeTabScreenProps } from '@src/navigations/type';
-import ListingList from './components/OrderList';
-import { Fonts } from '@src/constants/Fonts';
+import { HomeTabScreenProps, RootStackParamList } from '@src/navigations/type';
 import { useAuth } from '@src/store/Auth';
-import * as WebBrowser from 'expo-web-browser';
-import { useViewSmsBalance } from './hooks/useGetActiveOrders';
+import React, { useEffect } from 'react';
+import { ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ItemList } from './components/ItemList';
+import { RowDetails } from './components/RowDetails';
+import { UserHeaderInfo } from './components/UserHeaderInfo';
+import { useGetActiveOrder, useViewSmsBalance } from './hooks/useGetActiveOrders';
+import { Category } from '../Admin/screens/ActiveOrder/components/Category';
 
-const data = [
+type dataType = {
+	id: string;
+	title: string;
+	route: keyof RootStackParamList;
+}[];
+const list: dataType = [
 	{
 		id: '0',
 		title: 'Ajouter une commande',
-		Icons: <MaterialIcons name='add-location' size={34} color={COLORS.blue} />,
 		route: 'SelectUser',
 	},
 	{
 		id: '1',
 		title: 'Voir les commandes actives',
-		Icons: <MaterialIcons name='remove-red-eye' size={34} color={COLORS.blue} />,
 		route: 'ActiveOrder',
 	},
 	{
 		id: '2',
 		title: 'Ajouter un utilisateur',
-		Icons: <MaterialIcons name='verified-user' size={34} color={COLORS.blue} />,
 		route: 'UserAdd',
 	},
 
 	{
 		id: '3',
 		title: 'Voir les commandes passées',
-		Icons: <MaterialCommunityIcons name='order-bool-ascending-variant' size={34} color={COLORS.blue} />,
 		route: 'AdmninPastOrders',
 	},
 	{
 		id: '4',
 		title: 'Envoyer un sms de rappel',
-		Icons: <MaterialCommunityIcons name='email' size={34} color={COLORS.blue} />,
 		route: 'SendSms',
+	},
+	{
+		id: '5',
+		title: 'Scannez pour confirmer la reception',
+		route: 'ScanQRCode',
+	},
+];
+
+const status = [
+	{
+		id: '0',
+		title: 'Active',
+	},
+
+	{
+		id: '1',
+		title: 'In Transit',
 	},
 ];
 
 const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
-	const { role } = useAuth((state) => state.user);
-	const { data: smsData } = useViewSmsBalance();
-	const logout = useAuth((state) => state.logOut);
+	const [statusChange, setStatusChange] = React.useState('Active');
+
+	const { role, firstName, lastName } = useAuth((state) => state.user);
+	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useGetActiveOrder(statusChange);
+
+	const loadMore = () => {
+		if (hasNextPage) {
+			fetchNextPage();
+		}
+	};
+	useEffect(() => {
+		refetch();
+	}, [statusChange]);
+
+	const onStatusChange = (itemValue: string) => {
+		setStatusChange(itemValue);
+	};
 
 	const isAdmin = role === 'admin';
-
-	const _handlePressButtonAsync = async (url: string) => {
-		let result = await WebBrowser.openBrowserAsync(url);
-	};
+	const { data: smsData } = useViewSmsBalance(isAdmin);
 
 	const date = smsData && smsData[0]?.expirationDate ? new Date(smsData[0].expirationDate) : new Date();
 	const formattedDateTime = date.toISOString().replace('T', ' ').slice(0, -5);
@@ -65,65 +92,44 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 			{isAdmin ? (
 				<>
 					<ScrollView>
-						<View>
-							<Text style={styles.smsText}>le nombre de sms restant est : {smsData && smsData[0].availableUnits}</Text>
-							<Text style={[styles.smsText, { fontFamily: Fonts.bold }]}>
-								la date d'expiration : {formattedDateTime}
-							</Text>
-						</View>
-						<View
-							style={{
-								flex: 1,
-							}}
-						>
-							{data.map((item) => {
-								return (
-									<Pressable
-										key={item.id}
-										style={{
-											flexDirection: 'row',
-											justifyContent: 'space-around',
-											alignItems: 'center',
-											borderColor: COLORS.black,
-											borderWidth: 0.2,
-											margin: 5,
-											padding: 10,
-										}}
-										onPress={() => navigation.navigate(item.route)}
-									>
-										<Pressable>{item.Icons}</Pressable>
-										<Text>{item.title}</Text>
-										<MaterialIcons name='navigate-next' size={24} color='black' />
-									</Pressable>
-								);
-							})}
-						</View>
+						<RowDetails label='Le nombre de SMS restant' value={smsData?.[0]?.availableUnits ?? 0} />
+						<RowDetails label="la date d'expiration de sms" value={formattedDateTime} />
+
+						<ItemList data={list} navigation={navigation} />
 					</ScrollView>
 				</>
 			) : (
 				<>
-					<View
+					<UserHeaderInfo firstName={firstName} lastName={lastName} />
+					{/* <View
 						style={{
-							backgroundColor: COLORS.blue,
+							backgroundColor: COLORS.white,
+							borderWidth: 0.5,
+							borderColor: COLORS.blue,
 							flexDirection: 'row',
-							justifyContent: 'space-around',
-							alignItems: 'center',
+							marginHorizontal: 20,
+							justifyContent: 'space-between',
 							padding: 10,
 						}}
 					>
-						<Pressable onPress={() => _handlePressButtonAsync('https://wa.me/8618851725957')}>
-							<MaterialCommunityIcons name='whatsapp' size={34} color={COLORS.green} />
-						</Pressable>
-						<Text style={{ fontSize: 24, textAlign: 'center', fontFamily: Fonts.boldItalic, color: COLORS.white }}>
-							ChinaLink Express
-						</Text>
-						<Pressable onPress={() => logout()}>
-							<MaterialCommunityIcons name='logout' size={34} color={COLORS.white} />
-						</Pressable>
-					</View>
-					<View style={{ flex: 1, paddingTop: 40, paddingHorizontal: 21 }}>
-						<ListingList Status='Active' />
-					</View>
+						<TextInput placeholder='Entrez le Numero de suivi' />
+						<Button mode='contained' style={{ backgroundColor: COLORS.blue, width: 97, borderRadius: 0 }}>
+							Trackez
+						</Button>
+					</View> */}
+
+					<Category
+						status={status}
+						onStatusChange={onStatusChange}
+						statusChange={statusChange}
+						setStatusChange={setStatusChange}
+					/>
+					<ListItemOrders
+						data={data!}
+						loadMore={loadMore}
+						isFetchingNextPage={isFetchingNextPage}
+						hasNextPage={hasNextPage}
+					/>
 				</>
 			)}
 		</SafeAreaView>
@@ -131,24 +137,3 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({
-	imageStyle: {
-		height: HEIGHTTODP(70),
-		width: WIDTHTODP(70),
-		alignItems: 'center',
-		justifyContent: 'center',
-		alignSelf: 'center',
-		marginTop: HEIGHTTODP(1),
-	},
-	smsText: {
-		fontSize: 24,
-		fontFamily: Fonts.black,
-		color: COLORS.blue,
-		textAlign: 'center',
-		marginTop: 10,
-	},
-	container: {
-		flex: 1,
-	},
-});

@@ -1,17 +1,16 @@
-import { Fonts } from '@src/constants/Fonts';
-import AppInput from '../AppInput/AppInput';
 import { COLORS } from '@src/constants/Colors';
+import { Fonts } from '@src/constants/Fonts';
 import { useFormikContext } from 'formik';
 import React, { Dispatch, FC, useEffect } from 'react';
-import { View, StyleSheet, Text, TextInputProps, StyleProp, ViewStyle, Pressable } from 'react-native';
+import { Pressable, StyleProp, StyleSheet, Text, TextInputProps, View, ViewStyle } from 'react-native';
 import Animated, {
-	withSequence,
 	useAnimatedStyle,
 	useSharedValue,
-	withTiming,
+	withSequence,
 	withSpring,
+	withTiming,
 } from 'react-native-reanimated';
-import ContactNumberField from '@src/screens/Auth/Login/components/ContactField';
+import AppInput from '../AppInput/AppInput';
 interface Props {
 	placeholder?: string;
 	label: string;
@@ -27,6 +26,7 @@ interface Props {
 	selectedCode?: string;
 	setSelectedCode?: Dispatch<string>;
 	phone?: boolean;
+	descriptionDown?: string;
 }
 
 const AuthInputField: FC<Props> = (props) => {
@@ -59,19 +59,22 @@ const AuthInputField: FC<Props> = (props) => {
 	const handleRight = () => {
 		handleSubmit();
 	};
+
 	return (
 		<Animated.View style={[containerStyle, inputStyle]}>
-			<View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+			<View style={styles.headerContainer}>
 				<Text style={styles.label}>{label}</Text>
 				<Text style={[styles.label, { color: 'red' }]}>{errorMsg}</Text>
 			</View>
-			<View>
+			<View
+				style={{
+					borderColor: errorMsg ? COLORS.redShade : COLORS.grey,
+					borderWidth: 0.5,
+				}}
+			>
 				<AppInput
 					placeholder={placeholder}
-					style={{
-						borderColor: errorMsg ? 'red' : COLORS.grey,
-						backgroundColor: COLORS.white,
-					}}
+					style={!props.phone ? styles.defaultInput : {}}
 					keyboardType={keyboardType}
 					secureTextEntry={secureTextEntry}
 					onChangeText={handleChange(name)}
@@ -89,17 +92,24 @@ const AuthInputField: FC<Props> = (props) => {
 					</Pressable>
 				) : null}
 			</View>
+			<Text style={styles.descriptionText}>{props.descriptionDown}</Text>
 		</Animated.View>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {},
+	defaultInput: {
+		borderWidth: 0.5,
+		width: '70%',
+		height: 40,
+		borderColor: COLORS.grey,
+	},
+	headerContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
 	label: {
-		color: COLORS.white,
+		color: COLORS.black,
 		padding: 5,
 		fontSize: 16,
-		fontFamily: Fonts.black,
+		fontFamily: Fonts.meduim,
 	},
 	rightIcon: {
 		width: 40,
@@ -108,6 +118,12 @@ const styles = StyleSheet.create({
 		top: 0,
 		right: 0,
 		justifyContent: 'center',
+	},
+	descriptionText: {
+		color: COLORS.blue,
+		fontSize: 12,
+		fontFamily: Fonts.regular,
+		marginVertical: 5,
 	},
 });
 

@@ -1,6 +1,7 @@
 import type { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
 import type { StackScreenProps } from '@react-navigation/stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
 	HomeTab: NavigatorScreenParams<HomeTabParamList>;
@@ -24,6 +25,8 @@ export type RootStackParamList = {
 	AdmninPastOrders: undefined;
 	SendSms: undefined;
 	Map: { id: string };
+	ActiveOrderDetails: { id: string };
+	ScanQRCode: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
@@ -33,6 +36,8 @@ export type HomeTabParamList = {
 	Chat: undefined;
 	Profile: undefined;
 };
+
+export type navigationProps = NativeStackNavigationProp<RootStackParamList>;
 
 export type HomeTabScreenProps<T extends keyof HomeTabParamList> = CompositeScreenProps<
 	BottomTabScreenProps<HomeTabParamList, T>,

@@ -21,7 +21,7 @@ export const COLORS = {
 	white: '#ffffff',
 	yellow: '#fff1c0',
 	orange: '#e08700',
-	grey: '#839FC0',
+	grey: '#8E8E8F',
 	navy: '#153059',
 	influencercardcolor: '#f6f9ff',
 	lightGray: '#898989',
@@ -38,7 +38,7 @@ export const COLORS = {
 
 	//profile screen
 	blueShade: '#0203FF',
-	blue: '#002073',
+	blue: '#1C8EF4',
 	purpleShade: '#B73FF2',
 	orangeShade: '#F76B1C',
 	redShade: '#E32929',

@@ -1,59 +1,68 @@
 import { RootStackScreenProps } from '@src/navigations/type';
-import { useQuery } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import AppButton from '@src/components/AppButton/AppButton';
+import { Header } from '@src/components/Header/Header';
+import { COLORS } from '@src/constants/Colors';
+import { Fonts } from '@src/constants/Fonts';
+import { userData } from '@src/constants/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetUsers } from '../../hooks/useGetUsers';
-import { userData } from '@src/constants/types';
-import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
-
-interface User {}
+import { MaterialIcons } from '@expo/vector-icons';
 
 const SelectUser = ({ navigation }: RootStackScreenProps<'SelectUser'>) => {
 	const [selectedUser, setSelectedUser] = useState<userData>();
 
 	const { data } = useGetUsers();
 
-	console.log('data', data);
-	const renderUserItem = ({ item }: { item: userData }) => {
-		const isSelected = selectedUser && selectedUser._id === item._id;
-
-		return (
-			<TouchableOpacity
-				style={[styles.userItem, isSelected && styles.selectedUserItem]}
-				onPress={() => setSelectedUser(item)}
-			>
-				<View style={styles.userInfo}>
-					<Text style={styles.userName}>
-						{item.firstName}-{item.lastName}
-					</Text>
-					<Text style={styles.userRole}>{item.role}</Text>
-					<Text style={[styles.userRole, { color: COLORS.blue, fontSize: 26 }]}>{item.phoneNumber}</Text>
-				</View>
-			</TouchableOpacity>
-		);
-	};
-
 	const handleCreate = async () => {
 		navigation.navigate('AddOrder', {
-			clientName: `${selectedUser?.firstName + selectedUser?.lastName!}`,
+			clientName: `${selectedUser?.firstName} ${selectedUser?.lastName!}`,
 			userId: selectedUser?._id!,
 			phoneNumber: selectedUser?.phoneNumber?.substring(3)!,
 		});
 	};
 
-	console.log;
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
-			<Text style={{ textAlign: 'center', fontWeight: '800', fontSize: 18 }}>Select Admin to chat </Text>
+			<Header title='Choisir un client' navigation={navigation} />
+			<FlatList
+				data={data!}
+				renderItem={({ item }) => {
+					return <RenderUserItem item={item} selectedUser={selectedUser!} setSelectedUser={setSelectedUser} />;
+				}}
+				keyExtractor={(item) => item._id.toString()}
+			/>
 
-			<Text style={{ marginLeft: 20 }}>Choisir un client</Text>
-			<FlatList data={data!} renderItem={renderUserItem} keyExtractor={(item) => item._id.toString()} />
-			<AppButton title='Ajouter' onPress={handleCreate} />
+			<View style={styles.buttonContainer}>
+				<AppButton title='Ajouter' onPress={handleCreate} />
+			</View>
 		</SafeAreaView>
+	);
+};
+
+const RenderUserItem = ({
+	item,
+	selectedUser,
+	setSelectedUser,
+}: {
+	item: userData;
+	setSelectedUser: React.Dispatch<React.SetStateAction<userData | undefined>>;
+	selectedUser: userData;
+}) => {
+	const isSelected = selectedUser && selectedUser._id === item._id;
+
+	return (
+		<Pressable style={[styles.userItem, isSelected && styles.selectedUserItem]} onPress={() => setSelectedUser(item)}>
+			<View style={styles.userInfo}>
+				<Text style={styles.userName}>
+					{item.firstName} {item.lastName}
+				</Text>
+				<Text style={[styles.userRole]}>+{item.phoneNumber}</Text>
+			</View>
+			<MaterialIcons name='navigate-next' size={24} color={COLORS.blue} />
+		</Pressable>
 	);
 };
 
@@ -62,6 +71,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		alignItems: 'center',
 		padding: 10,
+		marginHorizontal: 20,
 		borderBottomWidth: 1,
 		borderBottomColor: '#ccc',
 	},
@@ -79,12 +89,17 @@ const styles = StyleSheet.create({
 	},
 	userName: {
 		fontSize: 16,
-		fontFamily: Fonts.bold,
+		fontFamily: Fonts.meduim,
 	},
 	userRole: {
 		fontSize: 14,
 		color: '#888',
 		fontFamily: Fonts.black,
+	},
+	buttonContainer: {
+		width: '50%',
+		alignSelf: 'center',
+		marginBottom: 50,
 	},
 });
 

@@ -14,8 +14,7 @@ interface Props {
 }
 const ListingList = ({ Status }: Props) => {
 	const navigation = useNavigation();
-	const { data, isLoading, isError, fetchNextPage, refetch, hasNextPage, isFetchingNextPage } =
-		useGetActiveOrder(Status);
+	const { data, isLoading, isError, fetchNextPage, refetch, hasNextPage, isFetchingNextPage } = useGetActiveOrder();
 	const renderFooter = () => {
 		if (isFetchingNextPage) {
 			return <ActivityIndicator size='small' color={COLORS.blue} animating />;

@@ -1,23 +1,21 @@
-import AuthFormContainer from '@src/components/AuthFormContainer/AuthFormContainer';
-import SubmitBtn from '@src/components/SubmitBtn/SubmitBtn';
-import Form from '@src/components/Form/Form';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import AuthInputField from '@src/components/AuthInput/AuthInput';
+import Form from '@src/components/Form/Form';
+import { Notification } from '@src/components/Notification/Notification';
+import SocialMedia from '@src/components/SocialMedia/SocialMedia';
+import SubmitBtn from '@src/components/SubmitBtn/SubmitBtn';
+import { initMixpanel } from '@src/config/Analytic';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import { RootStackScreenProps } from '@src/navigations/type';
 import React, { useEffect, useState } from 'react';
-import { ImageBackground, KeyboardAvoidingView, Platform, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Snackbar, Text } from 'react-native-paper';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import * as yup from 'yup';
+import Banner from './components/Banner';
 import { useLogin, useLoginApple } from './hook/useLogin';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { IMAGES } from '@src/constants/Images';
 import { useSignupStore } from './hook/useSignInData';
-import { Notification } from '@src/components/Notification/Notification';
-import ComppanyLogo from '@src/components/CompanyLogo/ComppanyLogo';
-import SocialMedia from '@src/components/SocialMedia/SocialMedia';
-import CopyrightText from '@src/components/CopyrightText/CopyrightText';
-import { initMixpanel } from '@src/config/Analytic';
 interface newUser {
 	phone: string;
 }
@@ -37,8 +35,12 @@ const Login = ({ navigation }: RootStackScreenProps<'Login'>) => {
 	const [phone, setPhone] = React.useState('');
 	const { mutate, isSuccess, isPending } = useLogin();
 	const { mutate: appleLogin, isPending: ApplePending } = useLoginApple();
-	const SignUpData = useSignupStore((state) => state.updateCode);
 	const mixpanel = initMixpanel();
+	const SignUpData = useSignupStore((state) => state.updateCode);
+
+	useEffect(() => {
+		SignUpData(selectedCode.split('+')[1]);
+	}, [selectedCode, setSelectedCode]);
 	const handleSubmit = async (values: newUser) => {
 		mixpanel.track('Login', { phone: values.phone });
 		const phone = selectedCode.split('+')[1] + values.phone;
@@ -74,33 +76,20 @@ const Login = ({ navigation }: RootStackScreenProps<'Login'>) => {
 
 	return (
 		<Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
-			<>
-				<ImageBackground
-					source={require('../../../../assets/images/CLEX.png')}
-					imageStyle={{
-						resizeMode: 'cover', // works only here!
-					}}
-					style={{
-						flex: 1,
-						height: '100%',
-						width: '100%',
-						justifyContent: 'center',
-					}}
-				>
-					<View style={{ alignSelf: 'center', marginTop: 40 }}>
-						<ComppanyLogo img={require('../../../../assets/images/log.png')} style={{ height: 110 }} />
-					</View>
+			<SafeAreaView style={styles.formContainer}>
+				<ScrollView keyboardShouldPersistTaps='always'>
 					<Notification
-						message='Un code de verification a ete envoye a votre numero de telephone'
+						message='Un code de vérification a été envoyé à votre numéro de téléphone'
 						type='success'
 						visible={visible}
 						onDismissSnackBar={onDismissSnackBar}
 						Icon={MaterialCommunityIcons}
 					/>
-					<View style={styles.formContainer}>
+					<Banner />
+					<View style={{ padding: 20 }}>
 						<AuthInputField
-							label='Numero de telephone'
-							placeholder='Numero de telephone'
+							label='Numero de téléphone'
+							placeholder='Entrez votre numéro de téléphone'
 							autoCapitalize='none'
 							containerStyle={styles.containerStyle}
 							name='phone'
@@ -109,25 +98,30 @@ const Login = ({ navigation }: RootStackScreenProps<'Login'>) => {
 							code={SignUpData.code}
 							maxLength={8}
 							keyboardType='number-pad'
+							phone={true}
+							descriptionDown="Entrez le numéro sur l'étiquette d'expédition"
 						/>
-
-						<SubmitBtn title='Continue' busy={isPending || ApplePending} />
+						<View style={styles.ButtonContainer}>
+							<SubmitBtn title='Continue' busy={isPending || ApplePending} />
+						</View>
 					</View>
-					<View></View>
 					<View style={styles.socialMedia}>
-						<SocialMedia color={COLORS.white} _handlePressButtonAsync={() => {}} />
+						<SocialMedia color={COLORS.grey} _handlePressButtonAsync={() => {}} />
 					</View>
-					{/* <CopyrightText /> */}
-				</ImageBackground>
-			</>
+					<Text style={styles.chinalinkExpressTextStyle}>CHINALINK EXPRESS</Text>
+				</ScrollView>
+			</SafeAreaView>
 		</Form>
 	);
 };
 const styles = StyleSheet.create({
-	formContainer: { width: '100%', padding: 20 },
+	formContainer: {
+		flex: 1,
+		backgroundColor: COLORS.white,
+	},
 
 	containerStyle: {
-		marginBottom: 20,
+		width: '100%',
 	},
 	link: {
 		marginTop: 20,
@@ -136,9 +130,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	socialMedia: {
-		position: 'absolute',
-		top: '80%',
-		left: '20%',
+		padding: 40,
+	},
+	ButtonContainer: {
+		marginTop: 50,
+	},
+	chinalinkExpressTextStyle: {
+		textAlign: 'center',
+		color: COLORS.blue,
+		fontFamily: Fonts.bold,
+		fontSize: 20,
 	},
 });
 

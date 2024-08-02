@@ -1,5 +1,4 @@
 import 'react-native-gesture-handler';
-
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -36,11 +35,13 @@ import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaperProvider } from 'react-native-paper';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { OverlayProvider, Chat as StreamChat, Streami18n } from 'stream-chat-expo';
 import { initMixpanel } from '@src/config/Analytic';
 import { UpdateProvider } from '@src/context/UpdateProvider';
 import Map from '@src/screens/OrderDetail/Map';
+import ActiveOrderdetails from '@src/screens/Admin/screens/ActiveOrderDetails/ActiveOrderdetails';
+import ScanQRCode from '@src/screens/Admin/screens/ScanCode/ScanCode';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -118,6 +119,8 @@ function AppWrapper() {
 							<Stack.Screen name='AdmninPastOrders' component={AdminPastOrders} />
 							<Stack.Screen name='SendSms' component={SendSms} />
 							<Stack.Screen name='Map' component={Map} />
+							<Stack.Screen name='ActiveOrderDetails' component={ActiveOrderdetails} />
+							<Stack.Screen name='ScanQRCode' component={ScanQRCode} />
 						</>
 					) : (
 						<>
@@ -198,9 +201,9 @@ const MainWrapper = () => {
 	return (
 		<OverlayProvider>
 			<StreamChat client={chatClient} i18nInstance={streami18n}>
-				<>
+				<UpdateProvider>
 					<AppWrapper />
-				</>
+				</UpdateProvider>
 			</StreamChat>
 		</OverlayProvider>
 	);

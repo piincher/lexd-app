@@ -5,15 +5,21 @@ import SubmitBtn from '@src/components/SubmitBtn/SubmitBtn';
 import { COLORS } from '@src/constants/Colors';
 import { RootStackScreenProps } from '@src/navigations/type';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as yup from 'yup';
 import { useCreateUser } from './hooks/useAddUser';
-
+import { AntDesign } from '@expo/vector-icons';
 import { Keyboard } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Header } from '@src/components/Header/Header';
+import { useSignupStore } from '@src/screens/Auth/Login/hook/useSignInData';
 const signupSchema = yup.object({
 	firstName: yup.string().required('Prenom est requis'),
 	lastName: yup.string().required('Nom est requis'),
-	phoneNumber: yup.number().required('Numero de telephone est requis'),
+	phoneNumber: yup
+		.number()
+		.required('Numero de telephone est requis')
+		.min(8, 'Numero de telephone doit etre de 8 chiffres'),
 });
 
 interface order {
@@ -34,12 +40,21 @@ interface order {
 const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
 	const [visible, setVisible] = useState(false);
 	const { mutate, isSuccess, isPending } = useCreateUser();
+	const [selectedCode, setSelectedCode] = useState<string>('ML  +223');
+
+	const SignUpData = useSignupStore((state) => state.updateCode);
+
+	useEffect(() => {
+		SignUpData(selectedCode.split('+')[1]);
+	}, [selectedCode, setSelectedCode]);
 
 	const handleSubmit = async (values: order) => {
 		try {
 			Keyboard.dismiss();
 			mutate({
-				...values,
+				firstName: values.firstName,
+				lastName: values.lastName,
+				phoneNumber: selectedCode.split('+')[1] + values.phoneNumber,
 			});
 		} catch (error) {
 			console.log(error);
@@ -59,49 +74,45 @@ const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
 	const initialValues = {
 		firstName: '',
 		lastName: '',
-		phoneNumber: '223',
+		phoneNumber: '',
 	};
 
 	return (
 		<Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
-			<>
+			<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+				<Header title='Ajouter un utilisateur' navigation={navigation} />
 				<ScrollView
 					contentContainerStyle={styles.container}
 					keyboardShouldPersistTaps='always'
 					showsVerticalScrollIndicator={false}
 				>
 					<View style={styles.formContainer}>
+						<AuthInputField label='Prenom' containerStyle={styles.containerStyle} name='firstName' />
+						<AuthInputField label='Nom' containerStyle={styles.containerStyle} name='lastName' />
 						<AuthInputField
-							label='Prenom'
-							placeholder='Prenom'
-							containerStyle={styles.containerStyle}
-							name='firstName'
-						/>
-						<AuthInputField
-							label='Nom'
-							placeholder='Nom de famille'
-							containerStyle={styles.containerStyle}
-							name='lastName'
-						/>
-						<AuthInputField
-							label='Poids du Colis'
-							placeholder='Phone Number'
+							label='Numero de téléphone'
 							autoCapitalize='none'
 							containerStyle={styles.containerStyle}
 							name='phoneNumber'
-							keyboardType='numeric'
+							selectedCode={selectedCode}
+							setSelectedCode={setSelectedCode}
+							code={SignUpData.code}
+							maxLength={8}
+							keyboardType='number-pad'
+							phone={true}
 						/>
-
-						<SubmitBtn title='Ajouter un utilisateur' busy={isPending} />
+						<>
+							<SubmitBtn title='Ajouter un utilisateur' busy={isPending} />
+						</>
 					</View>
 					<Notification
-						message='Utilisateur creer avec success'
+						message='Utilisateur ajouté avec succès'
 						type='success'
 						visible={visible}
 						onDismissSnackBar={onDismissSnackBar}
 					/>
 				</ScrollView>
-			</>
+			</SafeAreaView>
 		</Form>
 	);
 };

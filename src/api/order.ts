@@ -4,6 +4,23 @@ import { SmsService } from '@src/constants/types';
 
 export type imagesType = { url: string; public_id: string }[];
 
+export type currentPositionType = {
+	title: string;
+	coordinates: {
+		latitude: string;
+		location: string;
+		longitude: string;
+	}[];
+	id: string;
+	time: string;
+};
+
+export type routes = Array<{
+	id: string;
+	title: string;
+	time: string;
+	coordinates: { latitude: number; longitude: number; location: string }[];
+}>;
 export type productType = {
 	clientName: string;
 	clientPhone: string;
@@ -11,22 +28,24 @@ export type productType = {
 	priceTotal?: number;
 	partenaire: string;
 	_id?: string | undefined;
-	images?: imagesType;
-	status?: string;
+	images: imagesType;
+	status?: 'Active' | 'Inactive' | 'In Transit';
 	quantity?: number;
 	shippingMode?: string;
 	createdAt?: string;
+	currentStatus?: string;
 	typeOfPackage?: string;
-	currentPosition?: {
-		id: string;
-		title: string;
-	};
+	currentPosition?: currentPositionType;
 	orderId?: string;
 	code?: string;
-	route?: Array<{ id: string; title: string; time: string; coordinates: { latitude: number; longitude: number } }>;
+	route: routes;
 	dateOfReception?: string;
 	userId: string;
 	departureDate: string;
+	category: {
+		name: string;
+		_id: string;
+	};
 };
 
 const API_URL = {
@@ -62,6 +81,7 @@ export const placeOrder = async ({
 	currentPosition,
 	userId,
 	departureDate,
+	category,
 }: productType) => {
 	const data = {
 		clientName,
@@ -77,6 +97,7 @@ export const placeOrder = async ({
 		currentPosition,
 		userId,
 		departureDate,
+		category,
 	};
 
 	return await api.post<productType>(`${API_URL.CREATE_ORDER}`, data);
@@ -87,7 +108,6 @@ export const updateOrder = async (data: productType) => {
 };
 
 export const getActiveOrders = async (page: number, status: string) => {
-	console.log('page', status);
 	const response = await api.get<productType[]>(
 		`${API_URL.getOrdersFromAUser}?status=${status}&limit=${LIMIT}&page=${page}`
 	);
@@ -100,13 +120,13 @@ export const fetchSmsBalance = async () => {
 };
 
 export const getActiveOrdersAdmin = async (page: number, Status: string) => {
+	console.log('fetch');
 	const response = await api.get<productType[]>(
 		`${API_URL.getActiveOrdersAdmin}?status=${Status}&limit=${LIMIT}&page=${page}`
 	);
 	return response.data;
 };
 export const getOrderDetails = async (id: string) => {
-	console.log('id', id);
 	const response = await api.get<productType>(`${API_URL.single}/${id}/single`);
 	return response.data;
 };
