@@ -19,7 +19,7 @@ import Chat from '@src/screens/Chat/screens/Chat';
 import ChatRoom from '@src/screens/Chat/screens/ChatRoom';
 import SelectAdminToChatWith from '@src/screens/Chat/screens/SelectAdmin';
 import CheckRoute from '@src/screens/CheckRoute/CheckRoute';
-import HomeScreen from '@src/screens/Home/HomeScreen';
+import HomeScreen from '@src/screens/Home/screens/HomeScreen';
 import OnBoarding from '@src/screens/OnBoardingScreen/OnBoardingScreen';
 import OrderDetails from '@src/screens/OrderDetail/OrderDetails';
 import AboutUs from '@src/screens/Profile/screens/AboutUs';
@@ -42,6 +42,8 @@ import { UpdateProvider } from '@src/context/UpdateProvider';
 import Map from '@src/screens/OrderDetail/Map';
 import ActiveOrderdetails from '@src/screens/Admin/screens/ActiveOrderDetails/ActiveOrderdetails';
 import ScanQRCode from '@src/screens/Admin/screens/ScanCode/ScanCode';
+import Notifications from '@src/screens/Home/screens/Notifications';
+import { useNotification } from '@src/screens/Home/hooks/useNotification';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -51,6 +53,9 @@ const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 initSentry();
 initMixpanel();
 function AppWrapper() {
+	const { expoPushToken } = useNotification();
+
+	console.log('device push notification token', expoPushToken);
 	const [appIsLoaded, setAppIsLoaded] = useState(false);
 	const navigation = useRef();
 	const appLaunch = useAppLaunchStore((state) => state.isAppLaunchFirst);
@@ -121,6 +126,7 @@ function AppWrapper() {
 							<Stack.Screen name='Map' component={Map} />
 							<Stack.Screen name='ActiveOrderDetails' component={ActiveOrderdetails} />
 							<Stack.Screen name='ScanQRCode' component={ScanQRCode} />
+							<Stack.Screen name='Notifications' component={Notifications} />
 						</>
 					) : (
 						<>
@@ -201,9 +207,9 @@ const MainWrapper = () => {
 	return (
 		<OverlayProvider>
 			<StreamChat client={chatClient} i18nInstance={streami18n}>
-				<UpdateProvider>
+				<>
 					<AppWrapper />
-				</UpdateProvider>
+				</>
 			</StreamChat>
 		</OverlayProvider>
 	);

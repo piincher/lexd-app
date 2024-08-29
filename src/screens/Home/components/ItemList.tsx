@@ -1,7 +1,4 @@
 import React from 'react';
-import { Pressable, Text, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import { RenderHomeItem } from './RenderHomeItem';
 
 interface Props<T> {

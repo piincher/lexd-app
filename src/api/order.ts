@@ -46,6 +46,7 @@ export type productType = {
 		name: string;
 		_id: string;
 	};
+	updatedAt?: string;
 };
 
 const API_URL = {

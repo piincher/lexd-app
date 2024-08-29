@@ -5,11 +5,11 @@ import { useAuth } from '@src/store/Auth';
 import React, { useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ItemList } from './components/ItemList';
-import { RowDetails } from './components/RowDetails';
-import { UserHeaderInfo } from './components/UserHeaderInfo';
-import { useGetActiveOrder, useViewSmsBalance } from './hooks/useGetActiveOrders';
-import { Category } from '../Admin/screens/ActiveOrder/components/Category';
+import { ItemList } from '../components/ItemList';
+import { RowDetails } from '../components/RowDetails';
+import { UserHeaderInfo } from '../components/UserHeaderInfo';
+import { useGetActiveOrder, useViewSmsBalance } from '../hooks/useGetActiveOrders';
+import { Category } from '../../Admin/screens/ActiveOrder/components/Category';
 
 type dataType = {
 	id: string;
@@ -100,24 +100,7 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 				</>
 			) : (
 				<>
-					<UserHeaderInfo firstName={firstName} lastName={lastName} />
-					{/* <View
-						style={{
-							backgroundColor: COLORS.white,
-							borderWidth: 0.5,
-							borderColor: COLORS.blue,
-							flexDirection: 'row',
-							marginHorizontal: 20,
-							justifyContent: 'space-between',
-							padding: 10,
-						}}
-					>
-						<TextInput placeholder='Entrez le Numero de suivi' />
-						<Button mode='contained' style={{ backgroundColor: COLORS.blue, width: 97, borderRadius: 0 }}>
-							Trackez
-						</Button>
-					</View> */}
-
+					<UserHeaderInfo navigation={navigation} firstName={firstName} lastName={lastName} />
 					<Category
 						status={status}
 						onStatusChange={onStatusChange}

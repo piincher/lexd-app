@@ -27,6 +27,7 @@ export type RootStackParamList = {
 	Map: { id: string };
 	ActiveOrderDetails: { id: string };
 	ScanQRCode: undefined;
+	Notifications: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;

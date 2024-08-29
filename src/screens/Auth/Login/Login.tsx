@@ -9,7 +9,7 @@ import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import { RootStackScreenProps } from '@src/navigations/type';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as yup from 'yup';
@@ -78,37 +78,45 @@ const Login = ({ navigation }: RootStackScreenProps<'Login'>) => {
 		<Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
 			<SafeAreaView style={styles.formContainer}>
 				<ScrollView keyboardShouldPersistTaps='always'>
-					<Notification
-						message='Un code de vérification a été envoyé à votre numéro de téléphone'
-						type='success'
-						visible={visible}
-						onDismissSnackBar={onDismissSnackBar}
-						Icon={MaterialCommunityIcons}
-					/>
-					<Banner />
-					<View style={{ padding: 20 }}>
-						<AuthInputField
-							label='Numero de téléphone'
-							placeholder='Entrez votre numéro de téléphone'
-							autoCapitalize='none'
-							containerStyle={styles.containerStyle}
-							name='phone'
-							selectedCode={selectedCode}
-							setSelectedCode={setSelectedCode}
-							code={SignUpData.code}
-							maxLength={8}
-							keyboardType='number-pad'
-							phone={true}
-							descriptionDown="Entrez le numéro sur l'étiquette d'expédition"
+					<KeyboardAvoidingView
+						style={{
+							flex: 1,
+							justifyContent: 'center',
+						}}
+						behavior={Platform.OS === 'ios' ? 'height' : undefined}
+					>
+						<Notification
+							message='Un code de vérification a été envoyé à votre numéro de téléphone'
+							type='success'
+							visible={visible}
+							onDismissSnackBar={onDismissSnackBar}
+							Icon={MaterialCommunityIcons}
 						/>
-						<View style={styles.ButtonContainer}>
-							<SubmitBtn title='Continue' busy={isPending || ApplePending} />
+						<Banner />
+						<View style={{ padding: 20 }}>
+							<AuthInputField
+								label='Numero de téléphone'
+								placeholder='Entrez votre numéro de téléphone'
+								autoCapitalize='none'
+								containerStyle={styles.containerStyle}
+								name='phone'
+								selectedCode={selectedCode}
+								setSelectedCode={setSelectedCode}
+								code={SignUpData.code}
+								maxLength={8}
+								keyboardType='number-pad'
+								phone={true}
+								descriptionDown="Entrez le numéro sur l'étiquette d'expédition"
+							/>
+							<View style={styles.ButtonContainer}>
+								<SubmitBtn title='Continue' busy={isPending || ApplePending} />
+							</View>
 						</View>
-					</View>
-					<View style={styles.socialMedia}>
-						<SocialMedia color={COLORS.grey} _handlePressButtonAsync={() => {}} />
-					</View>
-					<Text style={styles.chinalinkExpressTextStyle}>CHINALINK EXPRESS</Text>
+						<View style={styles.socialMedia}>
+							<SocialMedia color={COLORS.grey} _handlePressButtonAsync={() => {}} />
+						</View>
+						<Text style={styles.chinalinkExpressTextStyle}>CHINALINK EXPRESS</Text>
+					</KeyboardAvoidingView>
 				</ScrollView>
 			</SafeAreaView>
 		</Form>

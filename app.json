@@ -1,81 +1,80 @@
 {
-  "expo": {
-    "name": "ChinaLinkExpress",
-    "slug": "ChinaLinkExpress",
-    "version": "1.0.3",
-    "orientation": "portrait",
-    "icon": "./assets/images/log.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/images/splashscreen.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
-    },
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "android": {
-            "enableProguardInReleaseBuilds": true,
-            "extraProguardRules": "-keep public class com.horcrux.svg.** {*;}",
-            "allowBackup": false
-          }
-        }
-      ],
-      [
-        "@sentry/react-native/expo",
-        {
-          "organization": "nuvotech",
-          "project": "chinalinkexpress",
-          "url": "https://sentry.io/"
-        }
-      ],
-      "expo-secure-store",
-      [
-        "expo-image-picker",
-        {
-          "cameraPermission": "L'application accède à votre caméra pour vous permettre de prendre des photos et de les partager avec nous dans le chat."
-        }
-      ],
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "L'application accède à vos photos pour vous permettre de les partager avec nous dans le chat."
-        }
-      ]
-    ],
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.nuvotech.chinalinkexpress",
-      "buildNumber": "13",
-      "config": {
-        "usesNonExemptEncryption": false
-      }
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/log.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.nuvotech.chinalinkexpress",
-      "versionCode": 13
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d"
-      }
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/e4e59c47-9dfe-4dff-8b6d-7cf9a102486d"
-    }
-  }
+	"expo": {
+		"name": "ChinaLinkExpress",
+		"slug": "ChinaLinkExpress",
+		"version": "1.1.0",
+		"orientation": "portrait",
+		"icon": "./assets/images/log.png",
+		"userInterfaceStyle": "light",
+		"splash": {
+			"image": "./assets/images/splashscreen.png",
+			"resizeMode": "cover",
+			"backgroundColor": "#ffffff"
+		},
+		"plugins": [
+			[
+				"expo-build-properties",
+				{
+					"android": {
+						"enableProguardInReleaseBuilds": true,
+						"extraProguardRules": "-keep public class com.horcrux.svg.** {*;}",
+						"allowBackup": false
+					}
+				}
+			],
+			[
+				"@sentry/react-native/expo",
+				{
+					"organization": "nuvotech",
+					"project": "chinalinkexpress",
+					"url": "https://sentry.io/"
+				}
+			],
+			"expo-secure-store",
+			[
+				"expo-image-picker",
+				{
+					"cameraPermission": "L'application accède à votre caméra pour vous permettre de prendre des photos et de les partager avec nous dans le chat."
+				}
+			],
+			[
+				"expo-media-library",
+				{
+					"photosPermission": "L'application accède à vos photos pour vous permettre de les partager avec nous dans le chat."
+				}
+			]
+		],
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.nuvotech.chinalinkexpress",
+			"buildNumber": "16",
+			"config": {
+				"usesNonExemptEncryption": false
+			}
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/images/log.png",
+				"backgroundColor": "#ffffff"
+			},
+			"googleServicesFile": "./google-services.json",
+			"package": "com.nuvotech.chinalinkexpress",
+			"versionCode": 14
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"extra": {
+			"eas": {
+				"projectId": "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d"
+			}
+		},
+		"runtimeVersion": {
+			"policy": "appVersion"
+		},
+		"updates": {
+			"url": "https://u.expo.dev/e4e59c47-9dfe-4dff-8b6d-7cf9a102486d"
+		}
+	}
 }

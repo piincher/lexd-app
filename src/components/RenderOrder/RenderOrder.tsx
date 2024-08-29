@@ -15,6 +15,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 	const { role } = useAuth((state) => state.user);
 
 	const navigation = useNavigation();
+	const formattedDate = new Date(item.departureDate).toLocaleDateString();
 
 	const textContentData = [
 		{ label: 'Nom du client', value: item.clientName, id: '0' },
@@ -24,6 +25,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 		{ label: 'Type de colis', value: item.typeOfPackage, id: '4' },
 		{ label: 'Position Actuelle', value: currentRoute?.title ?? 'le client a passé une commande', id: '5' },
 		{ label: 'Nombre de colis', value: item.quantity, id: '6' },
+		{ label: 'Date de depart', value: formattedDate, id: '7' },
 	];
 	const handleNavigate = () => {
 		if (role === 'admin') {
