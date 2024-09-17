@@ -1,5 +1,6 @@
 import {
 	getActiveOrdersAdmin,
+	getOrderBasedOnDate,
 	placeOrder,
 	sendNotificationSms,
 	updateOrder,
@@ -61,6 +62,17 @@ export const useSendNotificationSms = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [SMSKEY] });
 			navigation.navigate('HomeTab', { screen: 'Home' });
+		},
+	});
+};
+
+export const useGetOrderBaseonDate = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: getOrderBasedOnDate,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+			// queryClient.invalidateQueries({ queryKey: [SMSKEY] });
 		},
 	});
 };

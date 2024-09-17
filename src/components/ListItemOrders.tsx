@@ -1,11 +1,9 @@
 import { FlashList } from '@shopify/flash-list';
-import { RenderOrder } from './RenderOrder/RenderOrder';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { productType } from '@src/api/order';
-import { InfiniteData } from '@tanstack/react-query';
-import { ActivityIndicator } from 'react-native-paper';
 import { COLORS } from '@src/constants/Colors';
-import { Fonts } from '@src/constants/Fonts';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ActivityIndicator } from 'react-native-paper';
+import { RenderOrder } from './RenderOrder/RenderOrder';
 
 interface ListItemOrdersProps {
 	loadMore: () => void;
@@ -36,7 +34,7 @@ export const ListItemOrders = ({ loadMore, data, isFetchingNextPage, hasNextPage
 					return <Text style={{ textAlign: 'center', fontSize: 26 }}> Aucune commande en Cours</Text>;
 				}}
 				showsVerticalScrollIndicator={false}
-				data={data?.pages?.flatMap((page) => page)}
+				data={data}
 				keyExtractor={(item) => item._id!}
 				renderItem={({ item }) => {
 					return <RenderOrder item={item} />;

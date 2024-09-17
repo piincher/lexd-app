@@ -58,6 +58,7 @@ const API_URL = {
 	getActiveOrdersAdmin: '/order/all',
 	single: '/order',
 	viewSmsBalance: '/order/viewSmsBalance',
+	GET_ORDER_BASED_ON_DATE: '/order/getOrderDepartureDate',
 };
 
 interface CheckRoute {
@@ -106,6 +107,11 @@ export const placeOrder = async ({
 
 export const updateOrder = async (data: productType) => {
 	return await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
+};
+
+export const getOrderBasedOnDate = async (data: { departureDate: string }) => {
+	const response = await api.post<productType[]>(`${API_URL.GET_ORDER_BASED_ON_DATE}`, data);
+	return response.data;
 };
 
 export const getActiveOrders = async (page: number, status: string) => {

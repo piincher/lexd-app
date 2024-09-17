@@ -2,44 +2,43 @@ import { Header } from '@src/components/Header/Header';
 import { Fonts } from '@src/constants/Fonts';
 import { RootStackScreenProps } from '@src/navigations/type';
 import React, { FC } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { COLORS } from '@src/constants/Colors';
+import { useGetNotification } from '../hooks/useGetNotification';
 interface Props {}
 
-const data = [
-	{
-		title: 'Order 1',
-		description: 'Your order has been placed',
-		time: '2 hours ago',
-	},
-	{
-		title: 'Order 2',
-		description: 'Your order is on the way',
-		time: '3 hours ago',
-	},
-];
 const Notifications = ({ navigation }: RootStackScreenProps<'Notifications'>) => {
+	const { data } = useGetNotification();
 	return (
 		<SafeAreaView style={styles.container}>
 			<Header title='Notifications' navigation={navigation} />
 
-			{data.map((item, index) => {
-				return (
-					<>
-						<View key={index} style={styles.notificationContainer}>
-							<AntDesign name='checkcircleo' size={30} color={COLORS.blue} />
-							<View>
-								<Text style={styles.title}>{item.title}</Text>
-								<Text style={styles.description}>{item.description}</Text>
+			{data &&
+				data.map((item, index) => {
+					return (
+						<>
+							<View key={index} style={styles.notificationContainer}>
+								<AntDesign
+									name='checkcircleo'
+									size={30}
+									color={item.read ? COLORS.grey : COLORS.blue}
+									style={{ marginLeft: 10 }}
+								/>
+								<View style={{ marginLeft: 20, marginHorizontal: 50 }}>
+									<Text style={styles.title}>{item.Status}</Text>
+									<Text style={styles.description} numberOfLines={20}>
+										{item.description}
+									</Text>
+								</View>
+								{/* <Text>{item.code}</Text> */}
 							</View>
-							<Text>{item.time}</Text>
-						</View>
-						<View style={styles.bottomLine} />
-					</>
-				);
-			})}
+							<View style={styles.bottomLine} />
+						</>
+					);
+				})}
 		</SafeAreaView>
 	);
 };
@@ -50,8 +49,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		marginHorizontal: 20,
-		padding: 10,
+		padding: 20,
+		width: '100%',
 	},
 	title: {
 		fontFamily: Fonts.bold,
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
 	description: {
 		fontFamily: Fonts.regular,
 		color: 'grey',
-		textAlign: 'center',
+		textAlign: 'left',
 	},
 	bottomLine: { borderBottomWidth: 0.5, marginHorizontal: 20, borderColor: 'grey' },
 });

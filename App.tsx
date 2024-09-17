@@ -44,6 +44,9 @@ import ActiveOrderdetails from '@src/screens/Admin/screens/ActiveOrderDetails/Ac
 import ScanQRCode from '@src/screens/Admin/screens/ScanCode/ScanCode';
 import Notifications from '@src/screens/Home/screens/Notifications';
 import { useNotification } from '@src/screens/Home/hooks/useNotification';
+import { en, registerTranslation } from 'react-native-paper-dates';
+import BatchUpdate from '@src/screens/Admin/screens/BatchUpdate/BatchUpdate';
+registerTranslation('en-GB', en);
 
 SplashScreen.preventAutoHideAsync();
 
@@ -127,6 +130,7 @@ function AppWrapper() {
 							<Stack.Screen name='ActiveOrderDetails' component={ActiveOrderdetails} />
 							<Stack.Screen name='ScanQRCode' component={ScanQRCode} />
 							<Stack.Screen name='Notifications' component={Notifications} />
+							<Stack.Screen name='BatchUpdate' component={BatchUpdate} />
 						</>
 					) : (
 						<>

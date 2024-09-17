@@ -3,6 +3,7 @@ export const USER_KEY = 'user';
 export const SMSKEY = 'sms';
 export const ROUTES = 'routes';
 export const CATEGORY_KEY = 'category';
+export const NOTIFICATION = 'notification';
 
 export const queryKey = {
 	ORDERKEY,
@@ -10,4 +11,5 @@ export const queryKey = {
 	SMSKEY,
 	ROUTES,
 	CATEGORY_KEY,
+	NOTIFICATION,
 };

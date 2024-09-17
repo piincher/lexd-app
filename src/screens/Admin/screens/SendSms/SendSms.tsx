@@ -4,24 +4,36 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { MultiSelect } from './components/MultiSelect';
 import { useGetUsers } from '../../hooks/useGetUsers';
 import { Button, TextInput } from 'react-native-paper';
-import { useSendNotificationSms } from '../../hooks/useOrder';
+import { useGetOrderBaseonDate, useSendNotificationSms } from '../../hooks/useOrder';
 import { Notification } from '@src/components/Notification/Notification';
 import AppButton from '@src/components/AppButton/AppButton';
 import { COLORS } from '@src/constants/Colors';
-
+import { Header } from '@src/components/Header/Header';
+import { RootStackScreenProps } from '@src/navigations/type';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { Calendar, useCalendar } from '@src/components/Calendar/Calendar';
 interface Props {}
 
-const SendSms: FC<Props> = () => {
+const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
 	const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
 	const [visible, setVisible] = React.useState<boolean>(false);
 	const { mutate, isSuccess, isPending } = useSendNotificationSms();
 	const [message, setMessage] = React.useState<string>('');
 
+	const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
+
 	const { data } = useGetUsers();
+	const {
+		mutate: fetchMutation,
+		data: fetctedData,
+		isSuccess: fetchDataSuccess,
+		isPending: fetchDataIsPending,
+		reset,
+	} = useGetOrderBaseonDate();
 	const extractedData = data?.map((item) => {
 		return {
 			id: item.phoneNumber,
-			name: item.firstName,
+			name: item.firstName + ' ' + item.lastName,
 			info: item.phoneNumber,
 		};
 	});
@@ -40,14 +52,46 @@ const SendSms: FC<Props> = () => {
 	}, [isSuccess]);
 
 	const onDismissSnackBar = () => setVisible(false);
+
+	console.log('fetch data', fetctedData);
+
+	useEffect(() => {
+		if (open) {
+			reset();
+		}
+	}, [open]);
+	const extractedData2 = fetctedData?.map((item) => {
+		return {
+			id: item.clientPhone,
+			name: item.clientName,
+			info: item.clientPhone,
+		};
+	});
+
+	const fetch = () => {
+		fetchMutation({
+			departureDate: date!,
+		});
+	};
+
+	console.log('suceess', isSuccess);
 	return (
 		<SafeAreaView style={styles.container}>
 			<Notification message='message envoye' type='success' visible={visible} onDismissSnackBar={onDismissSnackBar} />
+
+			<Header
+				title='Envoyer un message'
+				navigation={navigation}
+				rightIcon={<AntDesign name='calendar' size={24} color='black' />}
+				rightIconHandler={() => setOpen(true)}
+			/>
+			<Calendar open={open} onDismissSingle={onDismissSingle} date={date} onConfirmSingle={onConfirmSingle} />
 			<MultiSelect
-				items={extractedData || []}
+				items={extractedData2}
 				valueKey='id'
 				displayKey='name'
 				selectedItems={selectedItems}
+				setSelectedIte
 				setSelectedItems={setSelectedItems}
 			/>
 			<TextInput
@@ -58,7 +102,11 @@ const SendSms: FC<Props> = () => {
 				numberOfLines={4}
 				style={{ margin: 10 }}
 			/>
-			<AppButton onPress={handleSendSms} title='Envoyer' busy={isPending} disabled={selectedItems.length === 0} />
+			<AppButton
+				onPress={fetctedData?.length > 0 ? handleSendSms : fetch}
+				title={fetctedData?.length > 0 ? 'Envoyez un message' : 'Obtenir les client '}
+				busy={fetchDataIsPending}
+			/>
 		</SafeAreaView>
 	);
 };

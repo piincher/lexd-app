@@ -28,6 +28,7 @@ export type RootStackParamList = {
 	ActiveOrderDetails: { id: string };
 	ScanQRCode: undefined;
 	Notifications: undefined;
+	BatchUpdate: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;

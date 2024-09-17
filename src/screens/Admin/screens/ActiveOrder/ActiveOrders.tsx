@@ -1,21 +1,13 @@
-import { useNavigation } from '@react-navigation/native';
-import { productType } from '@src/api/order';
 import AppButton from '@src/components/AppButton/AppButton';
-import { COLORS } from '@src/constants/Colors';
-import { Fonts } from '@src/constants/Fonts';
-import { useGetRoutes } from '@src/screens/Home/hooks/useRoute';
-import * as Clipboard from 'expo-clipboard';
-import React, { FC, useEffect } from 'react';
-import { Alert, Dimensions, FlatList, StyleSheet, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { ActivityIndicator, Button, Text } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useGetActiveOrdersAdmin, useUpdateOrder, useUpdateStatusDelivery } from '../../hooks/useOrder';
-import { Category } from './components/Category';
-import Slider from './components/Slider';
-import { ListItem } from '@src/components/ListItem/ListItem';
-import { FlashList } from '@shopify/flash-list';
 import { ListItemOrders } from '@src/components/ListItemOrders';
+import { useGetRoutes } from '@src/screens/Home/hooks/useRoute';
+import React, { FC, useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Searchbar, Text } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useGetActiveOrdersAdmin } from '../../hooks/useOrder';
+import { Category } from './components/Category';
+import { TextInput } from 'react-native-paper';
 interface Order {
 	id: string;
 	clientName: string;
@@ -48,10 +40,24 @@ const ActiveOrders: FC<Props> = () => {
 	const [statusChange, setStatusChange] = React.useState('Active');
 	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } =
 		useGetActiveOrdersAdmin(statusChange);
+	const [searchQuery, setSearchQuery] = React.useState('');
+
 	// prefetch routes
 	useGetRoutes();
 
-	console.log('fetch next page', hasNextPage);
+	console.log(
+		'data',
+		data?.pages.flatMap((page) => page)
+	);
+	const filteredData = data?.pages
+		.flatMap((page) => page)
+		.filter((item) => {
+			return (
+				item.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+				item.code?.toLowerCase().includes(searchQuery.toLowerCase())
+			);
+		});
+
 	const loadMore = () => {
 		if (hasNextPage) {
 			fetchNextPage();
@@ -82,8 +88,13 @@ const ActiveOrders: FC<Props> = () => {
 				statusChange={statusChange}
 				setStatusChange={setStatusChange}
 			/>
+			<Searchbar
+				style={{ marginHorizontal: 10, marginVertical: 10 }}
+				value={searchQuery}
+				onChangeText={(query) => setSearchQuery(query)}
+			/>
 			<ListItemOrders
-				data={data!}
+				data={filteredData!}
 				loadMore={loadMore}
 				isFetchingNextPage={isFetchingNextPage}
 				hasNextPage={hasNextPage}

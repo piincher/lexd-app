@@ -12,77 +12,78 @@ import Svg, { Circle, Line } from 'react-native-svg';
 import { useChatClient } from '../Chat/hooks/useChatClient';
 import { useGetRoutes } from '../Home/hooks/useRoute';
 import { useGetOrderDetails } from './hooks/useGetOrderDetail';
+import { LoadingSpinner } from '@src/components/LoadingSpinner';
 
-interface StepIndicatorProps {
-	steps: Array<{
-		id: string;
-		title: string;
-		time: string;
-	}>;
-	currentStep: number;
-}
+// interface StepIndicatorProps {
+// 	steps: Array<{
+// 		id: string;
+// 		title: string;
+// 		time: string;
+// 	}>;
+// 	currentStep: number;
+// }
 
-const statusData = {
-	orderDetail: [
-		{
-			id: '1',
-			status: 'Order arrived at warehouse',
-			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Guangzhou' }],
-		},
-		{
-			id: '2',
-			status: 'Order in Processing',
-			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Guangzhou entrepot' }],
-		},
-		{
-			id: '3',
-			status: 'Order in Transit',
-			coordinates: [
-				{
-					latitude: 22.5429,
-					longitude: 113.9526,
-					location: 'Hong Kong',
-					note: 'les Colis sont expédiées et transférées vers le port',
-				},
-				{
-					latitude: 22.3193,
-					longitude: 114.1694,
-					location: 'Hong Kong',
-					note: "Les Colis sont transféré à l'entrepôt de Hong Kong",
-				},
-				{
-					latitude: 22.308,
-					longitude: 113.9185,
-					location: "L'Éthiopie",
-					note: "Les colis ont décollé pour L'Éthiopie",
-				},
-				{
-					latitude: 8.97778,
-					longitude: 38.7994,
-					location: 'Ethiopie',
-					note: "Les Colis transféré vers l'aéroport d'Éthiopie",
-				},
-				{
-					latitude: 12.5416,
-					longitude: -7.94994,
-					location: 'Bamako, Mali',
-					note: "Colis arrivé à l'aéroport du Mali et prêt pour dédouanement",
-				},
-				{
-					latitude: 12.5585407,
-					longitude: -7.9811036,
-					location: 'Bamako, Mali Aeroport',
-					note: 'Les marchandises sont arrivées et ont été stockées (Kalaban-Coura, près de FEBAK, précisément à côté du lycée Birgo. +22376696177 / +22350005142)',
-				},
-			],
-		},
-		{
-			id: '4',
-			status: 'Order in Arrived',
-			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Kalaban-Coura pret du lycee birgo' }],
-		},
-	],
-};
+// const statusData = {
+// 	orderDetail: [
+// 		{
+// 			id: '1',
+// 			status: 'Order arrived at warehouse',
+// 			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Guangzhou' }],
+// 		},
+// 		{
+// 			id: '2',
+// 			status: 'Order in Processing',
+// 			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Guangzhou entrepot' }],
+// 		},
+// 		{
+// 			id: '3',
+// 			status: 'Order in Transit',
+// 			coordinates: [
+// 				{
+// 					latitude: 22.5429,
+// 					longitude: 113.9526,
+// 					location: 'Hong Kong',
+// 					note: 'les Colis sont expédiées et transférées vers le port',
+// 				},
+// 				{
+// 					latitude: 22.3193,
+// 					longitude: 114.1694,
+// 					location: 'Hong Kong',
+// 					note: "Les Colis sont transféré à l'entrepôt de Hong Kong",
+// 				},
+// 				{
+// 					latitude: 22.308,
+// 					longitude: 113.9185,
+// 					location: "L'Éthiopie",
+// 					note: "Les colis ont décollé pour L'Éthiopie",
+// 				},
+// 				{
+// 					latitude: 8.97778,
+// 					longitude: 38.7994,
+// 					location: 'Ethiopie',
+// 					note: "Les Colis transféré vers l'aéroport d'Éthiopie",
+// 				},
+// 				{
+// 					latitude: 12.5416,
+// 					longitude: -7.94994,
+// 					location: 'Bamako, Mali',
+// 					note: "Colis arrivé à l'aéroport du Mali et prêt pour dédouanement",
+// 				},
+// 				{
+// 					latitude: 12.5585407,
+// 					longitude: -7.9811036,
+// 					location: 'Bamako, Mali Aeroport',
+// 					note: 'Les marchandises sont arrivées et ont été stockées (Kalaban-Coura, près de FEBAK, précisément à côté du lycée Birgo. +22376696177 / +22350005142)',
+// 				},
+// 			],
+// 		},
+// 		{
+// 			id: '4',
+// 			status: 'Order in Arrived',
+// 			coordinates: [{ latitude: 23.1291, longitude: 113.2644, location: 'Kalaban-Coura pret du lycee birgo' }],
+// 		},
+// 	],
+// };
 
 interface Coordinate {
 	_id: string;
@@ -95,7 +96,7 @@ interface Coordinate {
 interface Status {
 	statusData: {
 		coordinates: Coordinate[];
-		id: string;
+		_id: string;
 		note: string;
 		time: string; // ISO date string
 		title: string;
@@ -143,7 +144,7 @@ const StatusTimeline = ({ statusData, currentStatus, location }: Status) => {
 					console.log('item', item);
 					return (
 						<>
-							<View key={item.id} style={styles3.statusItem}>
+							<View key={item._id} style={styles3.statusItem}>
 								<Text style={styles3.statusText}>{item.status}</Text>
 								<Text style={styles3.locationText}>
 									{item.status === 'Order in Transit' ? location : item?.coordinates.map((coord) => coord.location)}
@@ -220,7 +221,7 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<'OrderDetail'>
 	};
 
 	if (!data) {
-		return <Text>loading...</Text>;
+		return <LoadingSpinner />;
 	}
 
 	const formattedDateTime = formatDate(item?.departureDate!);

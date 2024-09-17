@@ -10,12 +10,20 @@ import { userData } from '@src/constants/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetUsers } from '../../hooks/useGetUsers';
 import { MaterialIcons } from '@expo/vector-icons';
+import { TextInput } from 'react-native-paper';
 
 const SelectUser = ({ navigation }: RootStackScreenProps<'SelectUser'>) => {
 	const [selectedUser, setSelectedUser] = useState<userData>();
-
 	const { data } = useGetUsers();
+	const [search, setSearch] = useState<string>('');
 
+	// filtered ba
+	const filteredData = data?.filter((item) => {
+		return (
+			item.firstName.toLowerCase().includes(search.toLowerCase()) ||
+			item.lastName.toLowerCase().includes(search.toLowerCase())
+		);
+	});
 	const handleCreate = async () => {
 		navigation.navigate('AddOrder', {
 			clientName: `${selectedUser?.firstName} ${selectedUser?.lastName!}`,
@@ -25,10 +33,18 @@ const SelectUser = ({ navigation }: RootStackScreenProps<'SelectUser'>) => {
 	};
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
 			<Header title='Choisir un client' navigation={navigation} />
+			<TextInput label='Rechercher un client' style={{ margin: 20 }} onChangeText={setSearch} value={search} />
 			<FlatList
-				data={data!}
+				ListEmptyComponent={() => {
+					return (
+						<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+							<Text>Aucun utilisateur trouvé</Text>
+						</View>
+					);
+				}}
+				data={filteredData!}
 				renderItem={({ item }) => {
 					return <RenderUserItem item={item} selectedUser={selectedUser!} setSelectedUser={setSelectedUser} />;
 				}}

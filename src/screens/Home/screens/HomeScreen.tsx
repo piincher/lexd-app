@@ -3,13 +3,15 @@ import { COLORS } from '@src/constants/Colors';
 import { HomeTabScreenProps, RootStackParamList } from '@src/navigations/type';
 import { useAuth } from '@src/store/Auth';
 import React, { useEffect } from 'react';
-import { ScrollView } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ItemList } from '../components/ItemList';
 import { RowDetails } from '../components/RowDetails';
 import { UserHeaderInfo } from '../components/UserHeaderInfo';
 import { useGetActiveOrder, useViewSmsBalance } from '../hooks/useGetActiveOrders';
 import { Category } from '../../Admin/screens/ActiveOrder/components/Category';
+import { Text } from 'react-native-paper';
+import { useGetNotification } from '../hooks/useGetNotification';
 
 type dataType = {
 	id: string;
@@ -45,6 +47,12 @@ const list: dataType = [
 	},
 	{
 		id: '5',
+		title: 'Batch Update',
+		route: 'BatchUpdate',
+	},
+
+	{
+		id: '6',
 		title: 'Scannez pour confirmer la reception',
 		route: 'ScanQRCode',
 	},
@@ -66,7 +74,11 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 	const [statusChange, setStatusChange] = React.useState('Active');
 
 	const { role, firstName, lastName } = useAuth((state) => state.user);
+	const isAdmin = role === 'admin';
 	const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useGetActiveOrder(statusChange);
+
+	const mappedData = data?.pages.flatMap((page) => page);
+	const { data: smsData } = useViewSmsBalance(isAdmin);
 
 	const loadMore = () => {
 		if (hasNextPage) {
@@ -81,9 +93,6 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 		setStatusChange(itemValue);
 	};
 
-	const isAdmin = role === 'admin';
-	const { data: smsData } = useViewSmsBalance(isAdmin);
-
 	const date = smsData && smsData[0]?.expirationDate ? new Date(smsData[0].expirationDate) : new Date();
 	const formattedDateTime = date.toISOString().replace('T', ' ').slice(0, -5);
 
@@ -92,6 +101,9 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 			{isAdmin ? (
 				<>
 					<ScrollView>
+						<Pressable>
+							<Text style={{ textAlign: 'center', fontSize: 20, marginVertical: 10 }}>Informations sur le compte</Text>
+						</Pressable>
 						<RowDetails label='Le nombre de SMS restant' value={smsData?.[0]?.availableUnits ?? 0} />
 						<RowDetails label="la date d'expiration de sms" value={formattedDateTime} />
 
@@ -108,7 +120,7 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<'Home'>) => {
 						setStatusChange={setStatusChange}
 					/>
 					<ListItemOrders
-						data={data!}
+						data={mappedData!}
 						loadMore={loadMore}
 						isFetchingNextPage={isFetchingNextPage}
 						hasNextPage={hasNextPage}

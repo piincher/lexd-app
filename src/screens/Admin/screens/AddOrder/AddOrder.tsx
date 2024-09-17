@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import axiosInstance from '@src/api/client';
 import { imagesType } from '@src/api/order';
@@ -11,12 +11,13 @@ import { Fonts } from '@src/constants/Fonts';
 import { RootStackScreenProps } from '@src/navigations/type';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useEffect, useId, useState } from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Avatar, Button, Snackbar, Text } from 'react-native-paper';
 import * as yup from 'yup';
 import { usePlaceOrder } from '../../hooks/useOrder';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { useGetCategories } from '../../hooks/useCategory';
+import { CustomModal } from '@src/components/Modal/Modal';
 
 const signupSchema = yup.object({
 	clientName: yup.string().required('Nom du client est requis'),
@@ -62,7 +63,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const { data: categories } = useGetCategories();
 	const id = categories ? categories[0]._id : '';
-	console.log('categories', id);
 	const [category, setCategory] = useState<string>(id);
 	const [selectedImages, setSelectedImages] = useState<
 		{
@@ -70,6 +70,8 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 			public_id: string;
 		}[]
 	>([]);
+	const [uploadProgress, setUploadProgress] = useState(0);
+	const [showModal, setShowModal] = useState(false);
 
 	const [date, setDate] = React.useState(undefined);
 	const [open, setOpen] = React.useState(false);
@@ -105,18 +107,19 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 	};
 
 	const pickImage = async () => {
+		setShowModal(false);
 		let permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
 		if (permissionResult.granted === false) {
-			alert('Camera access is required');
+			alert('Gallery access is required to select an image');
 			return;
 		}
 
 		let pickerResult = await ImagePicker.launchImageLibraryAsync({
 			allowsMultipleSelection: true,
-			selectionLimit: 4 - selectedImages.length, // Limit based on already selected images
+			// selectionLimit: 4 - selectedImages.length, // Limit based on already selected images
 			base64: true,
-			quality: 1,
+			quality: 0.3,
 		});
 
 		if (pickerResult.canceled === true) {
@@ -131,9 +134,89 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 
 				// Perform your upload logic here
 				// Replace the axiosInstance.post with your actual upload logic
-				const { data } = await axiosInstance.post('/order/upload', {
-					image: base64Image,
-				});
+				const { data } = await axiosInstance.post(
+					'/order/upload',
+					{
+						image: base64Image,
+					},
+					{
+						onUploadProgress(progressEvent) {
+							const uploaded = mapRange({
+								inputMin: 0,
+								inputMax: progressEvent.total || 0,
+								outputMin: 0,
+								outputMax: 100,
+								inputValue: progressEvent.loaded,
+							});
+
+							if (uploaded >= 100) {
+								setIsLoading(false);
+							}
+
+							setUploadProgress(Math.floor(uploaded));
+						},
+					}
+				);
+
+				setSelectedImages((prevImages) => [...prevImages, data]);
+			} catch (error) {
+				console.log('Upload error:', error);
+			}
+		}
+		setIsLoading(false);
+	};
+
+	const takePhoto = async () => {
+		setShowModal(false);
+		let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+
+		if (permissionResult.granted === false) {
+			alert('Camera access is required to take a photo');
+			return;
+		}
+
+		let pickerResult = await ImagePicker.launchCameraAsync({
+			allowsEditing: true,
+			quality: 0.3,
+			base64: true,
+		});
+		console.log('pickerResult', pickerResult);
+
+		if (pickerResult.canceled === true) {
+			return;
+		}
+
+		const images = pickerResult.assets.map((data) => data.base64);
+		setIsLoading(true);
+		for (let image of images) {
+			try {
+				let base64Image = `data:image/jpg;base64,${image}`;
+
+				// Perform your upload logic here
+				// Replace the axiosInstance.post with your actual upload logic
+				const { data } = await axiosInstance.post(
+					'/order/upload',
+					{
+						image: base64Image,
+					},
+					{
+						onUploadProgress(progressEvent) {
+							const uploaded = mapRange({
+								inputMin: 0,
+								inputMax: progressEvent.total || 0,
+								outputMin: 0,
+								outputMax: 100,
+								inputValue: progressEvent.loaded,
+							});
+
+							if (uploaded >= 100) {
+								setIsLoading(false);
+							}
+
+							setUploadProgress(Math.floor(uploaded));
+						},
+					}
+				);
 
 				setSelectedImages((prevImages) => [...prevImages, data]);
 			} catch (error) {
@@ -177,139 +260,185 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 					keyboardShouldPersistTaps='always'
 					showsVerticalScrollIndicator={false}
 				>
-					<Snackbar
-						visible={visible}
-						onDismiss={onDismissSnackBar}
+					<KeyboardAvoidingView
 						style={{
-							backgroundColor: COLORS.white,
-							top: -50,
+							flex: 1,
+							justifyContent: 'center',
+							width: '100%',
+							alignItems: 'center',
 						}}
-						duration={3000}
+						behavior={Platform.OS === 'ios' ? 'height' : undefined}
 					>
-						<View
-							style={{
-								flexDirection: 'row',
-								alignItems: 'center',
-								justifyContent: 'center',
-								alignContent: 'center',
-							}}
+						<CustomModal
+							onConfirm={() => setShowModal(false)}
+							visible={showModal}
+							title="Choisir l'option"
+							message='Veuillez choisir une option pour ajouter une image'
+							onClose={() => setShowModal(false)}
 						>
-							<Text style={{ fontFamily: Fonts.black, marginRight: 10 }}>Woah Product is Added !</Text>
-							<AntDesign name='checkcircle' size={24} color='green' />
-						</View>
-					</Snackbar>
-					<View style={styles.imageContainer}>
-						<Image
-							style={styles.image}
-							source={{
-								uri:
-									selectedImages.length > 0
-										? selectedImages[0].url
-										: 'https://res.cloudinary.com/piincher/image/upload/v1676795950/s6mxvpjvd3ytguh7se8p.jpg',
-							}}
-						/>
-						<Pressable onPress={() => pickImage()} style={styles.imagePicker}>
-							<AntDesign name='camera' size={24} color='black' />
-						</Pressable>
-					</View>
-					<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-						{isLoading ? (
-							<ActivityIndicator size='large' color={COLORS.blue} />
-						) : (
-							selectedImages?.map((image) => (
-								<Pressable
-									style={{
-										alignContent: 'center',
-										marginHorizontal: SCREEN_WIDTH * 0.02,
-									}}
-									key={image.public_id}
-								>
-									<Avatar.Image
-										size={SCREEN_WIDTH * 0.13}
-										source={{
-											uri: image.url
-												? image.url
-												: 'https://res.cloudinary.com/piincher/image/upload/v1676795950/s6mxvpjvd3ytguh7se8p.jpg',
-										}}
-									/>
+							<View>
+								<Pressable onPress={takePhoto} style={styles.optionContainer}>
+									<MaterialIcons size={24} color={COLORS.blue} name='camera' />
+									<Text style={styles.optionLabel}>Prendre une photo</Text>
 								</Pressable>
-							))
-						)}
-					</ScrollView>
-
-					<View style={styles.formContainer}>
-						<AuthInputField label='Nom du Client' containerStyle={styles.containerStyle} name='clientName' />
-						<AuthInputField
-							label='Numero de Telephone du Client'
-							containerStyle={styles.containerStyle}
-							name='clientPhone'
-							keyboardType='numeric'
-							maxLength={8}
-							phone={true}
-						/>
-						{/* <AuthInputField label='Country' placeholder='Name' containerStyle={styles.containerStyle} name='country' /> */}
-						<AuthInputField
-							label='Poids du Colis'
-							autoCapitalize='none'
-							containerStyle={styles.containerStyle}
-							name='packageWeight'
-						/>
-
-						<AuthInputField
-							label='nombre de colis'
-							autoCapitalize='none'
-							keyboardType='numeric'
-							containerStyle={styles.containerStyle}
-							name='quantity'
-						/>
-						<AuthInputField
-							label="Mode d'expedition"
-							autoCapitalize='none'
-							containerStyle={styles.containerStyle}
-							name='shippingMode'
-						/>
-
-						<View style={{ borderColor: COLORS.grey, borderWidth: 1 }}>
-							<Picker
-								mode='dropdown'
-								placeholder='Choisir Categorie'
-								style={styles.pickerStyle}
-								selectedValue={pickerValue}
-								onValueChange={(e) => [setPickerValue(e), setCategory(e!)]}
+								<Pressable onPress={pickImage} style={styles.optionContainer}>
+									<MaterialIcons size={24} color={COLORS.blue} name='perm-media' />
+									<Text style={styles.optionLabel}>Choisir une photo dans la galerie</Text>
+								</Pressable>
+							</View>
+						</CustomModal>
+						<Snackbar
+							visible={visible}
+							onDismiss={onDismissSnackBar}
+							style={{
+								backgroundColor: COLORS.white,
+								top: -50,
+							}}
+							duration={3000}
+						>
+							<View
+								style={{
+									flexDirection: 'row',
+									alignItems: 'center',
+									justifyContent: 'center',
+									alignContent: 'center',
+								}}
 							>
-								{categories?.map((c) => {
-									return <Picker.Item key={c._id} label={c.name} value={c._id} />;
-								})}
-							</Picker>
+								<Text style={{ fontFamily: Fonts.black, marginRight: 10 }}>Woah Product is Added !</Text>
+								<AntDesign name='checkcircle' size={24} color='green' />
+							</View>
+						</Snackbar>
+						<View style={styles.imageContainer}>
+							<Image
+								style={styles.image}
+								source={{
+									uri:
+										selectedImages.length > 0
+											? selectedImages[0].url
+											: 'https://res.cloudinary.com/piincher/image/upload/v1676795950/s6mxvpjvd3ytguh7se8p.jpg',
+								}}
+							/>
+							<Pressable onPress={() => setShowModal(true)} style={styles.imagePicker}>
+								<AntDesign name='camera' size={24} color='black' />
+							</Pressable>
 						</View>
+						<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+							{isLoading ? (
+								<ActivityIndicator size='large' color={COLORS.blue} />
+							) : (
+								selectedImages?.map((image) => (
+									<Pressable
+										style={{
+											alignContent: 'center',
+											marginHorizontal: SCREEN_WIDTH * 0.02,
+										}}
+										key={image.public_id}
+									>
+										<Avatar.Image
+											size={SCREEN_WIDTH * 0.13}
+											source={{
+												uri: image.url
+													? image.url
+													: 'https://res.cloudinary.com/piincher/image/upload/v1676795950/s6mxvpjvd3ytguh7se8p.jpg',
+											}}
+										/>
+									</Pressable>
+								))
+							)}
+						</ScrollView>
 
-						<Button style={{ marginVertical: 50 }} onPress={() => setOpen(true)} uppercase={false} mode='outlined'>
-							Choisir la date de departure
-						</Button>
-						<DatePickerModal
-							locale='en'
-							mode='single'
-							visible={open}
-							onDismiss={onDismissSingle}
-							date={date}
-							onConfirm={onConfirmSingle}
-							saveLabel='Save'
-							label='Select Date'
-							animationType='slide'
-							presentationStyle='overFullScreen'
-						/>
+						<View style={styles.formContainer}>
+							<AuthInputField label='Nom du Client' containerStyle={styles.containerStyle} name='clientName' />
+							<AuthInputField
+								label='Numero de Telephone du Client'
+								containerStyle={styles.containerStyle}
+								name='clientPhone'
+								keyboardType='numeric'
+								maxLength={8}
+								phone={true}
+							/>
+							{/* <AuthInputField label='Country' placeholder='Name' containerStyle={styles.containerStyle} name='country' /> */}
+							<AuthInputField
+								label='Poids du Colis'
+								autoCapitalize='none'
+								containerStyle={styles.containerStyle}
+								name='packageWeight'
+							/>
 
-						<Text style={{ marginBottom: 50 }}>
-							{date ? `Date de depart : ${date.toLocaleDateString()}` : 'Pas de date de depart selectionné'}
-						</Text>
+							<AuthInputField
+								label='nombre de colis'
+								autoCapitalize='none'
+								keyboardType='numeric'
+								containerStyle={styles.containerStyle}
+								name='quantity'
+							/>
+							<AuthInputField
+								label="Mode d'expedition"
+								autoCapitalize='none'
+								containerStyle={styles.containerStyle}
+								name='shippingMode'
+							/>
 
-						<SubmitBtn title='Add' busy={isPending} />
-					</View>
+							<View style={{ borderColor: COLORS.grey, borderWidth: 1 }}>
+								<Picker
+									mode='dropdown'
+									placeholder='Choisir Categorie'
+									style={styles.pickerStyle}
+									selectedValue={pickerValue}
+									onValueChange={(e) => [setPickerValue(e), setCategory(e!)]}
+								>
+									{categories?.map((c) => {
+										return <Picker.Item key={c._id} label={c.name} value={c._id} />;
+									})}
+								</Picker>
+							</View>
+
+							<Button style={{ marginVertical: 50 }} onPress={() => setOpen(true)} uppercase={false} mode='outlined'>
+								Choisir la date de departure
+							</Button>
+							<DatePickerModal
+								locale='en'
+								mode='single'
+								visible={open}
+								onDismiss={onDismissSingle}
+								date={date}
+								onConfirm={onConfirmSingle}
+								saveLabel='Save'
+								label='Select Date'
+								animationType='slide'
+								presentationStyle='overFullScreen'
+							/>
+
+							<Text style={{ marginBottom: 50 }}>
+								{date ? `Date de depart : ${date.toLocaleDateString()}` : 'Pas de date de depart selectionné'}
+							</Text>
+
+							<SubmitBtn title='Add' busy={isPending} />
+						</View>
+					</KeyboardAvoidingView>
 				</ScrollView>
 			</>
 		</Form>
 	);
 };
+
+export interface MapRangeOptions {
+	inputValue: number;
+	outputMin: number;
+	outputMax: number;
+	inputMax: number;
+	inputMin: number;
+}
+
+export function mapRange(options: MapRangeOptions) {
+	const { inputValue, outputMax, outputMin, inputMax, inputMin } = options;
+
+	const result = ((inputValue - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) + outputMin;
+
+	if (result === Infinity) return 0;
+
+	return result;
+}
 const styles = StyleSheet.create({
 	formContainer: { width: '100%' },
 
@@ -353,6 +482,16 @@ const styles = StyleSheet.create({
 		elevation: 20,
 	},
 	pickerStyle: { width: '100%', height: 50 },
+	optionContainer: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		marginVertical: 10,
+	},
+	optionLabel: {
+		fontFamily: Fonts.regular,
+		fontSize: 16,
+		marginLeft: 10,
+	},
 });
 
 export default AddOrder;
