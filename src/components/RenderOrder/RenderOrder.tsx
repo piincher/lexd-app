@@ -9,6 +9,7 @@ import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import React from 'react';
 import { useAuth } from '@src/store/Auth';
+import { formatDate } from '@src/utils/formatDate';
 
 export const RenderOrder = ({ item }: { item: productType }) => {
 	const currentRoute = item?.route?.[item?.route?.length - 1];
@@ -16,16 +17,20 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 
 	const navigation = useNavigation();
 	const formattedDate = new Date(item.departureDate).toLocaleDateString();
+	const formattedLastUpdate = formatDate(item?.updatedAt!);
+
+	console.log('item', item.category);
 
 	const textContentData = [
 		{ label: 'Nom du client', value: item.clientName, id: '0' },
 		{ label: 'Numéro du client', value: item.clientPhone, id: '1' },
 		{ label: 'Numéro de suivi', value: item.code, id: '2' },
 		{ label: "Mode d'expédition", value: item.shippingMode, id: '3' },
-		{ label: 'Type de colis', value: item.typeOfPackage, id: '4' },
 		{ label: 'Position Actuelle', value: currentRoute?.title ?? 'le client a passé une commande', id: '5' },
 		{ label: 'Nombre de colis', value: item.quantity, id: '6' },
-		{ label: 'Date de depart', value: formattedDate, id: '7' },
+		{ label: 'Type de colis', value: item?.category?.name || '', id: '7' },
+		{ label: 'Date de depart', value: formattedDate, id: '8' },
+		{ label: 'Dernière mise à jour', value: formattedLastUpdate, id: '9' },
 	];
 	const handleNavigate = () => {
 		if (role === 'admin') {

@@ -18,6 +18,7 @@ const PastOrders: FC<Props> = () => {
 		}
 	};
 
+	const pages = data?.pages.flatMap((page) => page);
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
 			<Image
@@ -25,7 +26,7 @@ const PastOrders: FC<Props> = () => {
 				style={{ height: 80, width: 80, alignSelf: 'center' }}
 			/>
 			<ListItemOrders
-				data={data!}
+				data={pages}
 				loadMore={loadMore}
 				isFetchingNextPage={isFetchingNextPage}
 				hasNextPage={hasNextPage}

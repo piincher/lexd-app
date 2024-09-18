@@ -1,32 +1,50 @@
 import { Header } from '@src/components/Header/Header';
 import { Fonts } from '@src/constants/Fonts';
 import { RootStackScreenProps } from '@src/navigations/type';
-import React, { FC } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { COLORS } from '@src/constants/Colors';
-import { useGetNotification } from '../hooks/useGetNotification';
+import { useGetNotification, useUpdateNotification } from '../hooks/useGetNotification';
+import { useConfirmationNotification } from '@src/hooks/useConfirmation';
+import { Notification } from '@src/components/Notification/Notification';
 interface Props {}
 
 const Notifications = ({ navigation }: RootStackScreenProps<'Notifications'>) => {
 	const { data } = useGetNotification();
+	const { setVisible, onDismissSnackBar, visible } = useConfirmationNotification();
+	const { mutate, isSuccess } = useUpdateNotification();
+
+	useEffect(() => {
+		if (isSuccess) {
+			setVisible(true);
+		}
+	}, [isSuccess]);
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<Header title='Notifications' navigation={navigation} />
 
-			{data &&
+			{data ? (
 				data.map((item, index) => {
 					return (
 						<>
-							<View key={index} style={styles.notificationContainer}>
-								<AntDesign
-									name='checkcircleo'
-									size={30}
-									color={item.read ? COLORS.grey : COLORS.blue}
-									style={{ marginLeft: 10 }}
-								/>
+							<View key={item._id} style={styles.notificationContainer}>
+								<TouchableOpacity
+									onPress={() => {
+										mutate(item._id);
+									}}
+								>
+									<AntDesign
+										name='checkcircleo'
+										size={30}
+										color={item.read ? COLORS.grey : COLORS.blue}
+										style={{ marginLeft: 10 }}
+									/>
+								</TouchableOpacity>
+
 								<View style={{ marginLeft: 20, marginHorizontal: 50 }}>
 									<Text style={styles.title}>{item.Status}</Text>
 									<Text style={styles.description} numberOfLines={20}>
@@ -38,13 +56,27 @@ const Notifications = ({ navigation }: RootStackScreenProps<'Notifications'>) =>
 							<View style={styles.bottomLine} />
 						</>
 					);
-				})}
+				})
+			) : (
+				<Text style={{ textAlign: 'center', marginTop: 20, fontSize: 28, fontFamily: Fonts.bold }}>
+					Aucune notification
+				</Text>
+			)}
+			<Notification
+				visible={visible}
+				onDismissSnackBar={onDismissSnackBar}
+				message='Notification marquée comme lue'
+				type='success'
+			/>
 		</SafeAreaView>
 	);
 };
 
 const styles = StyleSheet.create({
-	container: {},
+	container: {
+		flex: 1,
+		backgroundColor: COLORS.white,
+	},
 	notificationContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
