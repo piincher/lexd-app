@@ -28,7 +28,7 @@ export const Category = ({ setStatusChange, statusChange, onStatusChange, status
 								borderBottomWidth: item.title === statusChange ? 5 : 0,
 							}}
 						>
-							{item.title === 'Active' ? 'En cours' : item.title === 'In Transit' ? 'En transit' : 'Inactif'}
+							{item.title === 'Active' ? 'En cours' : item.title === 'In Transit' ? 'En transit' : 'Livré'}
 						</Text>
 					</Pressable>
 				))}

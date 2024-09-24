@@ -31,9 +31,10 @@ const status = [
 		id: '1',
 		title: 'In Transit',
 	},
+
 	{
 		id: '2',
-		title: 'Inactive',
+		title: 'Delivered',
 	},
 ];
 const ActiveOrders: FC<Props> = () => {
