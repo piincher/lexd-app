@@ -8,6 +8,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetActiveOrdersAdmin } from '../../hooks/useOrder';
 import { Category } from './components/Category';
 import { TextInput } from 'react-native-paper';
+import { Header } from '@src/components/Header/Header';
+import { RootStackScreenProps } from '@src/navigations/type';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { Calendar, useCalendar } from '@src/components/Calendar/Calendar';
+import { getSafeDate } from '@src/utils/formatDate';
 interface Order {
 	id: string;
 	clientName: string;
@@ -37,11 +42,24 @@ const status = [
 		title: 'Delivered',
 	},
 ];
-const ActiveOrders: FC<Props> = () => {
+const ActiveOrders = ({ navigation }: RootStackScreenProps<'ActiveOrder'>) => {
 	const [statusChange, setStatusChange] = React.useState('Active');
-	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } =
-		useGetActiveOrdersAdmin(statusChange);
 	const [searchQuery, setSearchQuery] = React.useState('');
+
+	const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
+
+	const departureDate = new Date(
+		date?.getFullYear() ?? 1970,
+		date?.getMonth() ?? 0,
+		date?.getDate() ?? 1
+	).toISOString();
+
+	const departDate = getSafeDate(date);
+
+	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } = useGetActiveOrdersAdmin(
+		statusChange,
+		departDate
+	);
 
 	// prefetch routes
 	useGetRoutes();
@@ -67,7 +85,7 @@ const ActiveOrders: FC<Props> = () => {
 
 	useEffect(() => {
 		refetch();
-	}, [statusChange]);
+	}, [statusChange, date]);
 
 	const onStatusChange = (itemValue: string) => {
 		setStatusChange(itemValue);
@@ -83,12 +101,20 @@ const ActiveOrders: FC<Props> = () => {
 	}
 	return (
 		<SafeAreaView style={styles.container}>
+			<Header
+				title='Envoyer un message'
+				navigation={navigation}
+				rightIcon={<AntDesign name='calendar' size={24} color='black' />}
+				rightIconHandler={() => setOpen(true)}
+			/>
+			<Calendar open={open} onDismissSingle={onDismissSingle} date={date} onConfirmSingle={onConfirmSingle} />
 			<Category
 				status={status}
 				onStatusChange={onStatusChange}
 				statusChange={statusChange}
 				setStatusChange={setStatusChange}
 			/>
+
 			<Searchbar
 				style={{ marginHorizontal: 10, marginVertical: 10 }}
 				value={searchQuery}

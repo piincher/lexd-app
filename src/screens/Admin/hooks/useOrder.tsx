@@ -1,4 +1,6 @@
 import {
+	deleteImage,
+	editOrder,
 	getActiveOrdersAdmin,
 	getOrderBasedOnDate,
 	placeOrder,
@@ -9,7 +11,7 @@ import {
 import { LIMIT } from '@src/constants/Dimensions';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigation } from '@react-navigation/native';
-import { SMSKEY } from '@src/constants/queryKey';
+import { queryKey, SMSKEY } from '@src/constants/queryKey';
 const ORDER_KEY = 'order';
 export const usePlaceOrder = () => {
 	const queryClient = useQueryClient();
@@ -21,15 +23,35 @@ export const usePlaceOrder = () => {
 	});
 };
 
-export const useGetActiveOrdersAdmin = (Status: string) => {
+export const useEditOrder = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: editOrder,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+		},
+	});
+};
+
+export const useGetActiveOrdersAdmin = (Status: string, departureDate: Date) => {
 	return useInfiniteQuery({
 		queryKey: [ORDER_KEY],
-		queryFn: ({ pageParam = 1 }) => getActiveOrdersAdmin(pageParam, Status),
+		queryFn: ({ pageParam = 1 }) => getActiveOrdersAdmin(pageParam, Status, departureDate),
 		getNextPageParam: (lastPage, allPages) => {
 			const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
 			return nextPage;
 		},
 		initialPageParam: 1,
+	});
+};
+
+export const useDeleteImage = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: deleteImage,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+		},
 	});
 };
 export const useUpdateOrder = () => {

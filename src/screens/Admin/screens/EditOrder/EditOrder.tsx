@@ -6,7 +6,6 @@ import AuthInputField from '@src/components/AuthInput/AuthInput';
 import Form from '@src/components/Form/Form';
 import SubmitBtn from '@src/components/SubmitBtn/SubmitBtn';
 import { COLORS } from '@src/constants/Colors';
-import { SCREEN_WIDTH } from '@src/constants/Dimensions';
 import { Fonts } from '@src/constants/Fonts';
 import { RootStackScreenProps } from '@src/navigations/type';
 import * as ImagePicker from 'expo-image-picker';
@@ -14,15 +13,22 @@ import React, { useEffect, useId, useState } from 'react';
 import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Avatar, Button, Snackbar, Text } from 'react-native-paper';
 import * as yup from 'yup';
-import { usePlaceOrder } from '../../hooks/useOrder';
+import { useDeleteImage, useEditOrder, useUpdateOrder } from '../../hooks/useOrder';
 import { DatePickerModal } from 'react-native-paper-dates';
+import { SCREEN_WIDTH } from '@src/constants/Dimensions';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useGetOrderDetails } from '@src/screens/OrderDetail/hooks/useGetOrderDetail';
+
+import Entypo from '@expo/vector-icons/Entypo';
 import { useGetCategories } from '../../hooks/useCategory';
 import { CustomModal } from '@src/components/Modal/Modal';
+// import { useGetCategories } from '../../hooks/useCategory';
 
 const signupSchema = yup.object({
 	clientName: yup.string().required('Nom du client est requis'),
 	clientPhone: yup.string().required('Numero de telephone est requis'),
-	packageWeight: yup.number(),
+	packageWeight: yup.string(),
 	priceTotal: yup.number(),
 	quantity: yup.number().required('Nombre de colis est requis'),
 });
@@ -30,7 +36,7 @@ const signupSchema = yup.object({
 interface order {
 	clientName: string;
 	clientPhone: string;
-	packageWeight?: number;
+	packageWeight: string;
 	priceTotal?: number;
 	partenaire: string;
 	images?: imagesType;
@@ -55,25 +61,30 @@ interface order {
 // "Colis arrivé à l'aéroport du Mali et prêt pour dédouanement",
 // 'marchandises sont arrivées au port et ont été stockées.(Kalaban-Coura pres de FEBAK +22376696177/+22350005142',
 
-const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
+const EditOrder = ({ navigation, route }: RootStackScreenProps<'EditOrder'>) => {
 	const data = Math.random().toString(36).substring(7);
+	const [uploadProgress, setUploadProgress] = useState(0);
+
 	const [visible, setVisible] = useState(false);
 	const [pickerValue, setPickerValue] = useState<string | null>(null);
-	const { mutate, isSuccess, isPending } = usePlaceOrder();
+	const { mutate, isSuccess, isPending } = useEditOrder();
+	const { mutate: deleteMutation, data: deleteData } = useDeleteImage();
 	const [isLoading, setIsLoading] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 	const { data: categories } = useGetCategories();
 	const id = categories ? categories[0]._id : '';
-	const [category, setCategory] = useState<string>(id);
+
+	const orderId = route.params.id;
+	const { data: item } = useGetOrderDetails(orderId);
+
+	const [category, setCategory] = useState<string>(route.params.orderId);
 	const [selectedImages, setSelectedImages] = useState<
 		{
 			url: string;
 			public_id: string;
 		}[]
-	>([]);
-	const [uploadProgress, setUploadProgress] = useState(0);
-	const [showModal, setShowModal] = useState(false);
-
-	const [date, setDate] = React.useState(undefined);
+	>(item?.images!);
+	const [date, setDate] = React.useState(item?.departureDate ? new Date(item.departureDate) : null);
 	const [open, setOpen] = React.useState(false);
 
 	const onDismissSingle = React.useCallback(() => {
@@ -88,25 +99,33 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		[setOpen, setDate]
 	);
 
-	const startDate = new Date(date?.getFullYear() ?? 1970, date?.getMonth() ?? 0, date?.getDate() + 1 ?? 1);
+	const departureDate = new Date(date?.getFullYear(), date?.getMonth(), date?.getDate() + 1);
 
 	const handleSubmit = async (values: order) => {
 		try {
 			if (!date) return alert('Veuillez choisir une date de depart');
 			mutate({
 				...values,
-
 				images: selectedImages,
-				currentPosition: [],
 				partenaire: values.partenaire || 'Chez Fode',
-				userId: route.params.userId,
-				departureDate: startDate,
+				userId: item?.userId!,
+				departureDate: departureDate,
 				category,
+				orderId: orderId,
 			});
 			console.log('values', values);
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const deleteImage = (id: string) => {
+		console.log('id', id);
+		const img = selectedImages.find((image) => image.public_id === id)?.public_id;
+		deleteMutation({
+			public_id: img!,
+		});
+		setSelectedImages((prev) => prev.filter((image) => image.public_id !== id));
 	};
 
 	const pickImage = async () => {
@@ -168,6 +187,26 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		}
 		setIsLoading(false);
 	};
+	useEffect(() => {
+		if (isSuccess) {
+			setVisible(true);
+			setTimeout(() => {
+				navigation.navigate('Home', { screen: 'Home' });
+			}, 900);
+		}
+	}, [isSuccess]);
+	const onDismissSnackBar = () => setVisible(false);
+
+	const initialValues = {
+		clientName: item?.clientName,
+		clientPhone: item?.clientPhone,
+		packageWeight: item?.packageWeight,
+		quantity: item?.quantity,
+		typeOfPackage: item?.typeOfPackage,
+		category: category,
+		priceTotal: item?.priceTotal,
+		shippingMode: 'air',
+	};
 
 	const takePhoto = async () => {
 		setShowModal(false);
@@ -228,33 +267,8 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		}
 		setIsLoading(false);
 	};
-	useEffect(() => {
-		if (isSuccess) {
-			setVisible(true);
-			setTimeout(() => {
-				navigation.navigate('HomeTab', { screen: 'Home' });
-			}, 900);
-		}
-	}, [isSuccess]);
-	const onDismissSnackBar = () => setVisible(false);
 
-	const initialValues = {
-		clientName: route.params.clientName,
-		clientPhone: route.params.phoneNumber,
-		packageWeight: '0',
-		priceTotal: 0,
-		partenaire: '',
-		quantity: '1',
-		shippingMode: 'air',
-		typeOfPackage: category,
-		category: category,
-		currentPosition: {
-			id: '',
-			title: '',
-			time: '',
-		},
-	};
-
+	console.log('date', date);
 	return (
 		<Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
 			<>
@@ -316,7 +330,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 								style={styles.image}
 								source={{
 									uri:
-										selectedImages.length > 0
+										selectedImages?.length > 0
 											? selectedImages[0].url
 											: 'https://res.cloudinary.com/piincher/image/upload/v1676795950/s6mxvpjvd3ytguh7se8p.jpg',
 								}}
@@ -336,6 +350,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 											marginHorizontal: SCREEN_WIDTH * 0.02,
 										}}
 										key={image.public_id}
+										onPress={() => deleteImage(image.public_id)}
 									>
 										<Avatar.Image
 											size={SCREEN_WIDTH * 0.13}
@@ -442,6 +457,7 @@ export function mapRange(options: MapRangeOptions) {
 
 	return result;
 }
+
 const styles = StyleSheet.create({
 	formContainer: { width: '100%' },
 
@@ -460,20 +476,18 @@ const styles = StyleSheet.create({
 		backgroundColor: COLORS.white,
 	},
 	imageContainer: {
-		width: 200,
+		width: '100%',
 		height: 200,
 		borderStyle: 'solid',
 		borderWidth: 8,
 		padding: 0,
 		justifyContent: 'center',
-		borderRadius: 100,
 		borderColor: '#E0E0E0',
 		elevation: 10,
 	},
 	image: {
 		width: '100%',
 		height: '100%',
-		borderRadius: 100,
 	},
 	imagePicker: {
 		position: 'absolute',
@@ -497,4 +511,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default AddOrder;
+export default EditOrder;

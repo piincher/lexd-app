@@ -106,9 +106,15 @@ export const placeOrder = async ({
 };
 
 export const updateOrder = async (data: productType) => {
-	return await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
+	console.log('order id', data.orderId);
+	const response = await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
+	return response.data;
 };
 
+export const editOrder = async (data: productType) => {
+	const response = await api.put<productType>(`${API_URL.single}/${data.orderId}/edit`, data);
+	return response.data;
+};
 export const getOrderBasedOnDate = async (data: { departureDate: string }) => {
 	const response = await api.post<productType[]>(`${API_URL.GET_ORDER_BASED_ON_DATE}`, data);
 	return response.data;
@@ -126,11 +132,14 @@ export const fetchSmsBalance = async () => {
 	return response.data;
 };
 
-export const getActiveOrdersAdmin = async (page: number, Status: string) => {
-	console.log('fetch');
-	const response = await api.get<productType[]>(
-		`${API_URL.getActiveOrdersAdmin}?status=${Status}&limit=${LIMIT}&page=${page}`
-	);
+export const getActiveOrdersAdmin = async (page: number, Status: string, departureDate: Date) => {
+	let query = `status=${Status}&limit=${LIMIT}&page=${page}`;
+
+	// Only add the departureDate if the startDate is valid (not null)
+	if (departureDate) {
+		query += `&departureDate=${departureDate.toISOString()}`;
+	}
+	const response = await api.get<productType[]>(`${API_URL.getActiveOrdersAdmin}?${query}`);
 	return response.data;
 };
 export const getOrderDetails = async (id: string) => {
@@ -139,6 +148,12 @@ export const getOrderDetails = async (id: string) => {
 };
 export const updateOrderToDelivered = async (data: productType) => {
 	const response = await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/delivered`, data);
+	return response.data;
+};
+
+export const deleteImage = async (data: { public_id: string }) => {
+	const response = await api.post<{ ok: boolean }>(`${API_URL.single}/${data.public_id}/delete`, data);
+
 	return response.data;
 };
 

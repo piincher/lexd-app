@@ -10,16 +10,20 @@ import { Fonts } from '@src/constants/Fonts';
 import React from 'react';
 import { useAuth } from '@src/store/Auth';
 import { formatDate } from '@src/utils/formatDate';
+import { AntDesign } from '@expo/vector-icons';
+import { useGetOrderDetails } from '@src/screens/OrderDetail/hooks/useGetOrderDetail';
 
 export const RenderOrder = ({ item }: { item: productType }) => {
 	const currentRoute = item?.route?.[item?.route?.length - 1];
 	const { role } = useAuth((state) => state.user);
 
 	const navigation = useNavigation();
-	const formattedDate = new Date(item.departureDate).toLocaleDateString();
+	const formattedDate = formatDate(item?.departureDate!);
 	const formattedLastUpdate = formatDate(item?.updatedAt!);
 
-	console.log('item', item.category);
+	useGetOrderDetails(item._id!);
+
+	console.log('item', item._id);
 
 	const textContentData = [
 		{ label: 'Nom du client', value: item.clientName, id: '0' },
@@ -44,6 +48,12 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 			});
 		}
 	};
+	const handleEdit = () => {
+		navigation.navigate('EditOrder', {
+			id: item._id!,
+			orderId: item?.category?._id,
+		});
+	};
 	return (
 		<SafeAreaView style={styles.container}>
 			{/* image slider section */}
@@ -51,6 +61,22 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 			<Slider bannerImages={item?.images!} handleNavigate={handleNavigate} />
 			{/* text container section */}
 			<>
+				{role === 'admin' && (
+					<View
+						style={{
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							alignItems: 'center',
+							marginTop: 10,
+							marginHorizontal: 10,
+						}}
+					>
+						<Text style={{ fontFamily: Fonts.meduim, fontSize: 20, marginLeft: 20, marginTop: 10 }}>EDIT</Text>
+						<Pressable onPress={handleEdit}>
+							<AntDesign name='edit' size={24} color={COLORS.blue} />
+						</Pressable>
+					</View>
+				)}
 				{textContentData.map((content, index) => {
 					return (
 						<Pressable onPress={handleNavigate} key={content.id}>

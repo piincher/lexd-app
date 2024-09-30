@@ -29,6 +29,7 @@ export type RootStackParamList = {
 	ScanQRCode: undefined;
 	Notifications: undefined;
 	BatchUpdate: undefined;
+	EditOrder: { id: string; orderId: string };
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
