@@ -4,15 +4,17 @@ import { COLORS } from '@src/constants/Colors';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { RenderOrder } from './RenderOrder/RenderOrder';
+import { LoadingSpinner } from './LoadingSpinner';
 
 interface ListItemOrdersProps {
 	loadMore: () => void;
 	data: { pages: productType[][] | undefined };
 	isFetchingNextPage: boolean;
 	hasNextPage: boolean;
+	isLoading: boolean;
 }
 
-export const ListItemOrders = ({ loadMore, data, isFetchingNextPage, hasNextPage }: ListItemOrdersProps) => {
+export const ListItemOrders = ({ loadMore, data, isFetchingNextPage, hasNextPage, isLoading }: ListItemOrdersProps) => {
 	const renderFooter = () => {
 		if (isFetchingNextPage) {
 			return <ActivityIndicator size='small' color={COLORS.blue} animating />;
@@ -26,6 +28,11 @@ export const ListItemOrders = ({ loadMore, data, isFetchingNextPage, hasNextPage
 			return null;
 		}
 	};
+
+	if (isLoading) {
+		return <LoadingSpinner />;
+	}
+
 	return (
 		<>
 			<FlashList

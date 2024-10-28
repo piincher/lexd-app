@@ -56,7 +56,14 @@ export default function ScanQRCode({ navigation }: RootStackScreenProps<'ScanQRC
 				}}
 				style={StyleSheet.absoluteFillObject}
 			/>
-			{scanned && <CustomModal visible={scanned} onClose={() => setScanned(false)} onConfirm={confirmReceipt} />}
+			{scanned && (
+				<CustomModal
+					visible={scanned}
+					onClose={() => setScanned(false)}
+					onConfirm={confirmReceipt}
+					cancelText='cancel'
+				/>
+			)}
 		</View>
 	);
 }

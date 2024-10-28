@@ -1,7 +1,7 @@
 import { useAuth } from '@src/store/Auth';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 // Default config for the axios instance
-const env = 'production' as string;
+const env = 'development' as string;
 const axiosParams = {
 	// Set different base URL based on the environment
 	baseURL: env === 'development' ? 'https://dev.nuvotech.tech/api/v1' : 'https://api.myempirebymyma.com/api/v1',

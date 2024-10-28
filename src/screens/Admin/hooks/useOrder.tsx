@@ -3,6 +3,7 @@ import {
 	editOrder,
 	getActiveOrdersAdmin,
 	getOrderBasedOnDate,
+	getOrdersBetweenDate,
 	placeOrder,
 	sendNotificationSms,
 	updateOrder,
@@ -45,6 +46,16 @@ export const useGetActiveOrdersAdmin = (Status: string, departureDate: Date) => 
 	});
 };
 
+export const useMutateBetweenDate = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: getOrdersBetweenDate,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+			// queryClient.invalidateQueries({ queryKey: [SMSKEY] });
+		},
+	});
+};
 export const useDeleteImage = () => {
 	const queryClient = useQueryClient();
 	return useMutation({

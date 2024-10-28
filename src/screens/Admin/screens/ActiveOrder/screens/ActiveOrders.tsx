@@ -5,8 +5,8 @@ import React, { FC, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Searchbar, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useGetActiveOrdersAdmin } from '../../hooks/useOrder';
-import { Category } from './components/Category';
+import { useGetActiveOrdersAdmin } from '../../../hooks/useOrder';
+import { Category } from '../components/Category';
 import { TextInput } from 'react-native-paper';
 import { Header } from '@src/components/Header/Header';
 import { RootStackScreenProps } from '@src/navigations/type';
@@ -56,9 +56,9 @@ const ActiveOrders = ({ navigation }: RootStackScreenProps<'ActiveOrder'>) => {
 
 	const departDate = getSafeDate(date);
 
-	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch } = useGetActiveOrdersAdmin(
+	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch, isLoading } = useGetActiveOrdersAdmin(
 		statusChange,
-		departDate
+		departDate!
 	);
 
 	// prefetch routes
@@ -125,6 +125,7 @@ const ActiveOrders = ({ navigation }: RootStackScreenProps<'ActiveOrder'>) => {
 				loadMore={loadMore}
 				isFetchingNextPage={isFetchingNextPage}
 				hasNextPage={hasNextPage}
+				isLoading={isLoading}
 			/>
 		</SafeAreaView>
 	);

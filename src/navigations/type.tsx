@@ -30,6 +30,9 @@ export type RootStackParamList = {
 	Notifications: undefined;
 	BatchUpdate: undefined;
 	EditOrder: { id: string; orderId: string };
+	Orders: undefined;
+	UserActiveOrders: { type: 'air' | 'sea' };
+	AdminDashBoard: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
@@ -38,6 +41,7 @@ export type HomeTabParamList = {
 	Home: undefined;
 	Chat: undefined;
 	Profile: undefined;
+	AdminDashBoard: undefined;
 };
 
 export type navigationProps = NativeStackNavigationProp<RootStackParamList>;

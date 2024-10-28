@@ -12,10 +12,14 @@ import { useAuth } from '@src/store/Auth';
 import { formatDate } from '@src/utils/formatDate';
 import { AntDesign } from '@expo/vector-icons';
 import { useGetOrderDetails } from '@src/screens/OrderDetail/hooks/useGetOrderDetail';
+import { useShippingMode } from '@src/store/shippingMode';
 
 export const RenderOrder = ({ item }: { item: productType }) => {
 	const currentRoute = item?.route?.[item?.route?.length - 1];
 	const { role } = useAuth((state) => state.user);
+	const shippingMode = useShippingMode((state) => state.type);
+
+	console.log('shipping mode on render order', shippingMode);
 
 	const navigation = useNavigation();
 	const formattedDate = formatDate(item?.departureDate!);
@@ -35,6 +39,10 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 		{ label: 'Type de colis', value: item?.category?.name || '', id: '7' },
 		{ label: 'Date de depart', value: formattedDate, id: '8' },
 		{ label: 'Dernière mise à jour', value: formattedLastUpdate, id: '9' },
+		shippingMode && {
+			label: 'Nombre de CBM',
+			value: item.packageCBM,
+		},
 	];
 	const handleNavigate = () => {
 		if (role === 'admin') {

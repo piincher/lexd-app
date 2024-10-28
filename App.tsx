@@ -1,16 +1,23 @@
 import 'react-native-gesture-handler';
+
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Sentry from '@sentry/react-native';
+import { initMixpanel } from '@src/config/Analytic';
 import { chatClient } from '@src/config/ChatConfig';
 import { ChatProvider } from '@src/context/ChatContext';
 import { HomeTabParamList, RootStackParamList } from '@src/navigations/type';
-import ActiveOrders from '@src/screens/Admin/screens/ActiveOrder/ActiveOrders';
+import ActiveOrders from '@src/screens/Admin/screens/ActiveOrder/screens/ActiveOrders';
+import UserActiveOrders from '@src/screens/Admin/screens/ActiveOrder/screens/UserActiveOrders';
+import ActiveOrderdetails from '@src/screens/Admin/screens/ActiveOrderDetails/ActiveOrderdetails';
 import AddOrder from '@src/screens/Admin/screens/AddOrder/AddOrder';
 import AddUser from '@src/screens/Admin/screens/AddUser/AddUser';
+import BatchUpdate from '@src/screens/Admin/screens/BatchUpdate/BatchUpdate';
+import EditOrder from '@src/screens/Admin/screens/EditOrder/EditOrder';
 import AdminPastOrders from '@src/screens/Admin/screens/PastOrder/PastOrder';
+import ScanQRCode from '@src/screens/Admin/screens/ScanCode/ScanCode';
 import SelectUser from '@src/screens/Admin/screens/SelectUser/SelectUser';
 import SendSms from '@src/screens/Admin/screens/SendSms/SendSms';
 import Login from '@src/screens/Auth/Login/Login';
@@ -19,8 +26,12 @@ import Chat from '@src/screens/Chat/screens/Chat';
 import ChatRoom from '@src/screens/Chat/screens/ChatRoom';
 import SelectAdminToChatWith from '@src/screens/Chat/screens/SelectAdmin';
 import CheckRoute from '@src/screens/CheckRoute/CheckRoute';
+import { useNotification } from '@src/screens/Home/hooks/useNotification';
+import AdminDashBoard from '@src/screens/Admin/screens/AdminDashBoard/AdminDashBoard';
 import HomeScreen from '@src/screens/Home/screens/HomeScreen';
+import Notifications from '@src/screens/Home/screens/Notifications';
 import OnBoarding from '@src/screens/OnBoardingScreen/OnBoardingScreen';
+import Map from '@src/screens/OrderDetail/Map';
 import OrderDetails from '@src/screens/OrderDetail/OrderDetails';
 import AboutUs from '@src/screens/Profile/screens/AboutUs';
 import PastOrders from '@src/screens/Profile/screens/PastOrders';
@@ -35,18 +46,9 @@ import { StatusBar } from 'expo-status-bar';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaperProvider } from 'react-native-paper';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { OverlayProvider, Chat as StreamChat, Streami18n } from 'stream-chat-expo';
-import { initMixpanel } from '@src/config/Analytic';
-import { UpdateProvider } from '@src/context/UpdateProvider';
-import Map from '@src/screens/OrderDetail/Map';
-import ActiveOrderdetails from '@src/screens/Admin/screens/ActiveOrderDetails/ActiveOrderdetails';
-import ScanQRCode from '@src/screens/Admin/screens/ScanCode/ScanCode';
-import Notifications from '@src/screens/Home/screens/Notifications';
-import { useNotification } from '@src/screens/Home/hooks/useNotification';
 import { en, registerTranslation } from 'react-native-paper-dates';
-import BatchUpdate from '@src/screens/Admin/screens/BatchUpdate/BatchUpdate';
-import EditOrder from '@src/screens/Admin/screens/EditOrder/EditOrder';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { OverlayProvider, Chat as StreamChat, Streami18n } from 'stream-chat-expo';
 registerTranslation('en-GB', en);
 
 SplashScreen.preventAutoHideAsync();
@@ -59,7 +61,6 @@ initMixpanel();
 function AppWrapper() {
 	const { expoPushToken } = useNotification();
 
-	console.log('device push notification token', expoPushToken);
 	const [appIsLoaded, setAppIsLoaded] = useState(false);
 	const navigation = useRef();
 	const appLaunch = useAppLaunchStore((state) => state.isAppLaunchFirst);
@@ -133,6 +134,8 @@ function AppWrapper() {
 							<Stack.Screen name='Notifications' component={Notifications} />
 							<Stack.Screen name='BatchUpdate' component={BatchUpdate} />
 							<Stack.Screen name='EditOrder' component={EditOrder} />
+							<Stack.Screen name='Orders' component={AdminDashBoard} />
+							<Stack.Screen name='UserActiveOrders' component={UserActiveOrders} />
 						</>
 					) : (
 						<>
@@ -147,18 +150,34 @@ function AppWrapper() {
 }
 
 const HomeBottomTab = () => {
+	const admin = useAuth((state) => state.user.role);
+
+	const adminRole = admin === 'admin' ? true : false;
+
 	return (
 		<BottomTab.Navigator initialRouteName={'Home'} screenOptions={{ headerShown: false }}>
-			<BottomTab.Screen
-				name='Home'
-				component={HomeScreen}
-				options={{
-					tabBarIcon: ({ focused, color, size }) => (
-						<AntDesign name='home' focused={focused} color={color} size={size} />
-					),
-				}}
-			/>
-			{/* {/* <BottomTab.Screen name='Sav' component={HomeScreen} /> */}
+			{!adminRole && (
+				<BottomTab.Screen
+					name='Home'
+					component={HomeScreen}
+					options={{
+						tabBarIcon: ({ focused, color, size }) => (
+							<AntDesign name='home' focused={focused} color={color} size={size} />
+						),
+					}}
+				/>
+			)}
+			{adminRole && (
+				<BottomTab.Screen
+					name='AdminDashBoard'
+					component={AdminDashBoard}
+					options={{
+						tabBarIcon: ({ focused, color, size }) => (
+							<AntDesign name='file1' focused={focused} color={color} size={size} />
+						),
+					}}
+				/>
+			)}
 			<BottomTab.Screen
 				name='Chat'
 				component={Chat}

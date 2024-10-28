@@ -4,10 +4,10 @@ import { SMSKEY } from '@src/constants/queryKey';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 const ORDERKEY = 'order';
-export const useGetActiveOrder = (Status: string) => {
+export const useGetActiveOrder = (Status: string, shippingMethod: 'air' | 'sea') => {
 	return useInfiniteQuery({
 		queryKey: [Status, ORDERKEY],
-		queryFn: ({ pageParam = 1 }) => getActiveOrders(pageParam, Status),
+		queryFn: ({ pageParam = 1 }) => getActiveOrders(pageParam, Status, shippingMethod),
 		getNextPageParam: (lastPage, allPages) => {
 			const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
 			return nextPage;

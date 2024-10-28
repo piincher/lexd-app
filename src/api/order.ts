@@ -47,6 +47,7 @@ export type productType = {
 		_id: string;
 	};
 	updatedAt?: string;
+	packageCBM: string;
 };
 
 const API_URL = {
@@ -120,9 +121,9 @@ export const getOrderBasedOnDate = async (data: { departureDate: string }) => {
 	return response.data;
 };
 
-export const getActiveOrders = async (page: number, status: string) => {
+export const getActiveOrders = async (page: number, status: string, shippingMethod: 'air' | 'sea') => {
 	const response = await api.get<productType[]>(
-		`${API_URL.getOrdersFromAUser}?status=${status}&limit=${LIMIT}&page=${page}`
+		`${API_URL.getOrdersFromAUser}?status=${status}&limit=${LIMIT}&page=${page}&shippingMethod=${shippingMethod}`
 	);
 	return response.data;
 };
@@ -148,6 +149,11 @@ export const getOrderDetails = async (id: string) => {
 };
 export const updateOrderToDelivered = async (data: productType) => {
 	const response = await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/delivered`, data);
+	return response.data;
+};
+
+export const getOrdersBetweenDate = async (data: { departureDate: Date; status: string }) => {
+	const response = await api.post<productType[]>(`${API_URL.single}/getOrdersbetweentwodates`, data);
 	return response.data;
 };
 
