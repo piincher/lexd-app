@@ -34,10 +34,10 @@ export const useEditOrder = () => {
 	});
 };
 
-export const useGetActiveOrdersAdmin = (Status: string, departureDate: Date) => {
+export const useGetActiveOrdersAdmin = (Status: string, departureDate: Date, shippingMethod: 'air' | 'sea') => {
 	return useInfiniteQuery({
 		queryKey: [ORDER_KEY],
-		queryFn: ({ pageParam = 1 }) => getActiveOrdersAdmin(pageParam, Status, departureDate),
+		queryFn: ({ pageParam = 1 }) => getActiveOrdersAdmin(pageParam, Status, departureDate, shippingMethod),
 		getNextPageParam: (lastPage, allPages) => {
 			const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
 			return nextPage;

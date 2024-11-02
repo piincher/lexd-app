@@ -1,17 +1,13 @@
-import { ListItemOrders } from '@src/components/ListItemOrders';
 import { COLORS } from '@src/constants/Colors';
 import { HomeTabScreenProps, RootStackParamList } from '@src/navigations/type';
 import { useAuth } from '@src/store/Auth';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ItemList } from '../../../Home/components/ItemList';
 import { RowDetails } from '../../../Home/components/RowDetails';
-import { UserHeaderInfo } from '../../../Home/components/UserHeaderInfo';
-import { useGetActiveOrder, useViewSmsBalance } from '../../../Home/hooks/useGetActiveOrders';
-import { Category } from '../ActiveOrder/components/Category';
-import { Text } from 'react-native-paper';
-import { useGetNotification } from '../../../Home/hooks/useGetNotification';
+import { useViewSmsBalance } from '../../../Home/hooks/useGetActiveOrders';
 
 type dataType = {
 	id: string;
@@ -22,12 +18,12 @@ const list: dataType = [
 	{
 		id: '0',
 		title: 'Ajouter une commande',
-		route: 'SelectUser',
+		route: 'ChooseShippingMethod',
 	},
 	{
 		id: '1',
 		title: 'Voir les commandes actives',
-		route: 'ActiveOrder',
+		route: 'ShippingMethod',
 	},
 	{
 		id: '2',

@@ -12,7 +12,7 @@ export type RootStackParamList = {
 		clientName: string;
 		phoneNumber: string;
 	};
-	ActiveOrder: undefined;
+	ActiveOrder: { type: 'air' | 'sea' };
 	Login: undefined;
 	Verification: { phoneNumber: string };
 	OrderDetail: { id: string };
@@ -33,6 +33,8 @@ export type RootStackParamList = {
 	Orders: undefined;
 	UserActiveOrders: { type: 'air' | 'sea' };
 	AdminDashBoard: undefined;
+	ChooseShippingMethod: undefined;
+	ShippingMethod: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;

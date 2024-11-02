@@ -18,17 +18,11 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 	const currentRoute = item?.route?.[item?.route?.length - 1];
 	const { role } = useAuth((state) => state.user);
 	const shippingMode = useShippingMode((state) => state.type);
-
-	console.log('shipping mode on render order', shippingMode);
-
 	const navigation = useNavigation();
 	const formattedDate = formatDate(item?.departureDate!);
 	const formattedLastUpdate = formatDate(item?.updatedAt!);
 
 	useGetOrderDetails(item._id!);
-
-	console.log('item', item._id);
-
 	const textContentData = [
 		{ label: 'Nom du client', value: item.clientName, id: '0' },
 		{ label: 'Numéro du client', value: item.clientPhone, id: '1' },
@@ -39,7 +33,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 		{ label: 'Type de colis', value: item?.category?.name || '', id: '7' },
 		{ label: 'Date de depart', value: formattedDate, id: '8' },
 		{ label: 'Dernière mise à jour', value: formattedLastUpdate, id: '9' },
-		shippingMode && {
+		shippingMode === 'sea' && {
 			label: 'Nombre de CBM',
 			value: item.packageCBM,
 		},

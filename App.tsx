@@ -49,6 +49,8 @@ import { PaperProvider } from 'react-native-paper';
 import { en, registerTranslation } from 'react-native-paper-dates';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { OverlayProvider, Chat as StreamChat, Streami18n } from 'stream-chat-expo';
+import ChooseShippingMethod from '@src/screens/Admin/screens/ChooseShippingMethod/ChooseShippingMethod';
+import ShippingMethod from '@src/screens/Admin/screens/ShippingMethod/ShippingMethod';
 registerTranslation('en-GB', en);
 
 SplashScreen.preventAutoHideAsync();
@@ -134,8 +136,10 @@ function AppWrapper() {
 							<Stack.Screen name='Notifications' component={Notifications} />
 							<Stack.Screen name='BatchUpdate' component={BatchUpdate} />
 							<Stack.Screen name='EditOrder' component={EditOrder} />
-							<Stack.Screen name='Orders' component={AdminDashBoard} />
+							<Stack.Screen name='AdminDashBoard' component={AdminDashBoard} />
 							<Stack.Screen name='UserActiveOrders' component={UserActiveOrders} />
+							<Stack.Screen name='ChooseShippingMethod' component={ChooseShippingMethod} />
+							<Stack.Screen name='ShippingMethod' component={ShippingMethod} />
 						</>
 					) : (
 						<>

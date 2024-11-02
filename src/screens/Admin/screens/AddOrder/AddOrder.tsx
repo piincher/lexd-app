@@ -18,6 +18,7 @@ import { usePlaceOrder } from '../../hooks/useOrder';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { useGetCategories } from '../../hooks/useCategory';
 import { CustomModal } from '@src/components/Modal/Modal';
+import { useShippingMode } from '@src/store/shippingMode';
 
 const signupSchema = yup.object({
 	clientName: yup.string().required('Nom du client est requis'),
@@ -25,6 +26,8 @@ const signupSchema = yup.object({
 	packageWeight: yup.number(),
 	priceTotal: yup.number(),
 	quantity: yup.number().required('Nombre de colis est requis'),
+	packageCBM: yup.string(),
+	contenairNumber: yup.string(),
 });
 
 interface order {
@@ -44,6 +47,8 @@ interface order {
 		title: string;
 	};
 	orderId?: string;
+	packageCBM?: string;
+	contenairNumber?: string;
 }
 
 // 'le client a passé une commande',
@@ -57,6 +62,9 @@ interface order {
 
 const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 	const data = Math.random().toString(36).substring(7);
+	const shippingWay = useShippingMode((state) => state.type);
+
+	const [shippingMode, setShippingMode] = useState<'air' | 'sea'>(shippingWay);
 	const [visible, setVisible] = useState(false);
 	const [pickerValue, setPickerValue] = useState<string | null>(null);
 	const { mutate, isSuccess, isPending } = usePlaceOrder();
@@ -70,7 +78,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 			public_id: string;
 		}[]
 	>([]);
-	const [uploadProgress, setUploadProgress] = useState(0);
+	const [uploadProgresus, setUploadProgress] = useState(0);
 	const [showModal, setShowModal] = useState(false);
 
 	const [date, setDate] = React.useState(undefined);
@@ -88,8 +96,47 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		[setOpen, setDate]
 	);
 
-	const startDate = new Date(date?.getFullYear() ?? 1970, date?.getMonth() ?? 0, date?.getDate() + 1 ?? 1);
+	const renderAdditionalFields = () => {
+		if (shippingMode === 'air') {
+			return (
+				<>
+					<AuthInputField
+						label='Poids du Colis'
+						autoCapitalize='none'
+						containerStyle={styles.containerStyle}
+						name='packageWeight'
+					/>
+					{/* Additional fields for air shipping can be added here */}
+				</>
+			);
+		} else if (shippingMode === 'sea') {
+			return (
+				<>
+					<AuthInputField
+						label='Volume du Colis (CBM)'
+						autoCapitalize='none'
+						containerStyle={styles.containerStyle}
+						name='packageCBM'
+					/>
+					<AuthInputField
+						label='Numero du conteneur'
+						autoCapitalize='none'
+						containerStyle={styles.containerStyle}
+						name='contenairNumber'
+					/>
+					{/* Additional fields for sea shipping can be added here */}
+				</>
+			);
+		}
+		return null;
+	};
 
+	const startDate = new Date(date?.getFullYear() ?? 1970, date?.getMonth() ?? 0, date?.getDate() + 1 ?? 1);
+	const process = {
+		id: data,
+		title: 'le client a passé une commande',
+		time: new Date().toISOString(),
+	};
 	const handleSubmit = async (values: order) => {
 		try {
 			if (!date) return alert('Veuillez choisir une date de depart');
@@ -97,13 +144,16 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 				...values,
 
 				images: selectedImages,
-				currentPosition: [],
+				currentPosition: shippingMode === 'sea' ? process : [],
 				partenaire: values.partenaire || 'Chez Fode',
 				userId: route.params.userId,
 				departureDate: startDate,
 				category,
+				shippingMode: shippingMode,
+				packageCBM: values.packageCBM || '0',
+				dateOfReceipt: startDate,
+				contenairNumber: values.contenairNumber || '0',
 			});
-			console.log('values', values);
 		} catch (error) {
 			console.log(error);
 		}
@@ -245,7 +295,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		priceTotal: 0,
 		partenaire: '',
 		quantity: '1',
-		shippingMode: 'air',
+		shippingMode: shippingWay,
 		typeOfPackage: category,
 		category: category,
 		currentPosition: {
@@ -253,6 +303,10 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 			title: '',
 			time: '',
 		},
+	};
+
+	const handleShippingModeChange = (mode: 'air' | 'sea') => {
+		setShippingMode(mode);
 	};
 
 	return (
@@ -349,8 +403,18 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 								))
 							)}
 						</ScrollView>
+						{/* Shipping Mode Selection */}
+						<View style={styles.shippingModeContainer}>
+							<Text>Mode d'expédition:</Text>
+							<Picker selectedValue={shippingMode} onValueChange={handleShippingModeChange}>
+								<Picker.Item label='Air' value='air' />
+								<Picker.Item label='Sea' value='sea' />
+							</Picker>
+						</View>
 
+						{/* Render additional fields based on the shipping mode */}
 						<View style={styles.formContainer}>
+							{renderAdditionalFields()}
 							<AuthInputField label='Nom du Client' containerStyle={styles.containerStyle} name='clientName' />
 							<AuthInputField
 								label='Numero de Telephone du Client'
@@ -361,12 +425,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 								phone={true}
 							/>
 							{/* <AuthInputField label='Country' placeholder='Name' containerStyle={styles.containerStyle} name='country' /> */}
-							<AuthInputField
-								label='Poids du Colis'
-								autoCapitalize='none'
-								containerStyle={styles.containerStyle}
-								name='packageWeight'
-							/>
 
 							<AuthInputField
 								label='nombre de colis'
@@ -374,12 +432,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 								keyboardType='numeric'
 								containerStyle={styles.containerStyle}
 								name='quantity'
-							/>
-							<AuthInputField
-								label="Mode d'expedition"
-								autoCapitalize='none'
-								containerStyle={styles.containerStyle}
-								name='shippingMode'
 							/>
 
 							<View style={{ borderColor: COLORS.grey, borderWidth: 1 }}>
@@ -494,6 +546,13 @@ const styles = StyleSheet.create({
 		fontFamily: Fonts.regular,
 		fontSize: 16,
 		marginLeft: 10,
+	},
+
+	shippingModeContainer: {
+		width: '100%',
+		marginVertical: 20,
+		borderColor: COLORS.grey,
+		borderWidth: 1,
 	},
 });
 

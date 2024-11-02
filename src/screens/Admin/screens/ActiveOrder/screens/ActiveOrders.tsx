@@ -13,6 +13,7 @@ import { RootStackScreenProps } from '@src/navigations/type';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Calendar, useCalendar } from '@src/components/Calendar/Calendar';
 import { getSafeDate } from '@src/utils/formatDate';
+import { useShippingMode } from '@src/store/shippingMode';
 interface Order {
 	id: string;
 	clientName: string;
@@ -42,9 +43,12 @@ const status = [
 		title: 'Delivered',
 	},
 ];
-const ActiveOrders = ({ navigation }: RootStackScreenProps<'ActiveOrder'>) => {
+const ActiveOrders = ({ navigation, route }: RootStackScreenProps<'ActiveOrder'>) => {
 	const [statusChange, setStatusChange] = React.useState('Active');
 	const [searchQuery, setSearchQuery] = React.useState('');
+	const shippingMethod = route.params.type;
+
+	console.log('shipping mode', shippingMethod);
 
 	const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
 
@@ -58,7 +62,8 @@ const ActiveOrders = ({ navigation }: RootStackScreenProps<'ActiveOrder'>) => {
 
 	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch, isLoading } = useGetActiveOrdersAdmin(
 		statusChange,
-		departDate!
+		departDate!,
+		shippingMethod
 	);
 
 	// prefetch routes

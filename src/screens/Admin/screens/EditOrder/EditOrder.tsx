@@ -23,6 +23,7 @@ import { useGetOrderDetails } from '@src/screens/OrderDetail/hooks/useGetOrderDe
 import Entypo from '@expo/vector-icons/Entypo';
 import { useGetCategories } from '../../hooks/useCategory';
 import { CustomModal } from '@src/components/Modal/Modal';
+import { useShippingMode } from '@src/store/shippingMode';
 // import { useGetCategories } from '../../hooks/useCategory';
 
 const signupSchema = yup.object({
@@ -73,6 +74,7 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<'EditOrder'>) => 
 	const [showModal, setShowModal] = useState(false);
 	const { data: categories } = useGetCategories();
 	const id = categories ? categories[0]._id : '';
+	const shippingMode = useShippingMode((state) => state.type);
 
 	const orderId = route.params.id;
 	const { data: item } = useGetOrderDetails(orderId);
@@ -99,7 +101,7 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<'EditOrder'>) => 
 		[setOpen, setDate]
 	);
 
-	const departureDate = new Date(date?.getFullYear(), date?.getMonth(), date?.getDate() + 1);
+	const departureDate = new Date(date?.getFullYear(), date?.getMonth(), date?.getDate());
 
 	const handleSubmit = async (values: order) => {
 		try {

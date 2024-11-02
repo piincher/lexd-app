@@ -48,6 +48,8 @@ export type productType = {
 	};
 	updatedAt?: string;
 	packageCBM: string;
+	dateOfReceipt: string;
+	contenairNumber: string;
 };
 
 const API_URL = {
@@ -85,6 +87,9 @@ export const placeOrder = async ({
 	userId,
 	departureDate,
 	category,
+	dateOfReceipt,
+	packageCBM,
+	contenairNumber,
 }: productType) => {
 	const data = {
 		clientName,
@@ -101,6 +106,9 @@ export const placeOrder = async ({
 		userId,
 		departureDate,
 		category,
+		dateOfReceipt,
+		packageCBM,
+		contenairNumber,
 	};
 
 	return await api.post<productType>(`${API_URL.CREATE_ORDER}`, data);
@@ -133,8 +141,13 @@ export const fetchSmsBalance = async () => {
 	return response.data;
 };
 
-export const getActiveOrdersAdmin = async (page: number, Status: string, departureDate: Date) => {
-	let query = `status=${Status}&limit=${LIMIT}&page=${page}`;
+export const getActiveOrdersAdmin = async (
+	page: number,
+	Status: string,
+	departureDate: Date,
+	shippingMethod: 'air' | 'sea'
+) => {
+	let query = `status=${Status}&limit=${LIMIT}&page=${page}&shippingMethod=${shippingMethod}`;
 
 	// Only add the departureDate if the startDate is valid (not null)
 	if (departureDate) {

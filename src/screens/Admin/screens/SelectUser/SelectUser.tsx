@@ -11,6 +11,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetUsers } from '../../hooks/useGetUsers';
 import { MaterialIcons } from '@expo/vector-icons';
 import { TextInput } from 'react-native-paper';
+import RenderListItem from '@src/components/RenderListItem/RenderListItem';
 
 const SelectUser = ({ navigation }: RootStackScreenProps<'SelectUser'>) => {
 	const [selectedUser, setSelectedUser] = useState<userData>();
@@ -37,18 +38,24 @@ const SelectUser = ({ navigation }: RootStackScreenProps<'SelectUser'>) => {
 			<Header title='Choisir un client' navigation={navigation} />
 			<TextInput label='Rechercher un client' style={{ margin: 20 }} onChangeText={setSearch} value={search} />
 			<FlatList
-				ListEmptyComponent={() => {
-					return (
-						<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-							<Text>Aucun utilisateur trouvé</Text>
-						</View>
-					);
-				}}
-				data={filteredData!}
-				renderItem={({ item }) => {
-					return <RenderUserItem item={item} selectedUser={selectedUser!} setSelectedUser={setSelectedUser} />;
-				}}
-				keyExtractor={(item) => item._id.toString()}
+				data={filteredData}
+				renderItem={({ item }) => (
+					<RenderListItem
+						item={item}
+						selectedItem={selectedUser!}
+						setSelectedItem={setSelectedUser}
+						renderItemContent={(item) => (
+							<View style={{ padding: 15 }}>
+								<Text style={styles.userName}>
+									{item.firstName}- {item.lastName}
+								</Text>
+								<Text style={styles.userRole}> {item.phoneNumber}</Text>
+								<Text style={styles.userRole}> {item.role}</Text>
+							</View>
+						)}
+					/>
+				)}
+				keyExtractor={(item) => item.id}
 			/>
 
 			<View style={styles.buttonContainer}>
@@ -104,7 +111,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	userName: {
-		fontSize: 16,
+		fontSize: 20,
 		fontFamily: Fonts.meduim,
 	},
 	userRole: {
