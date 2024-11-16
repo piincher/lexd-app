@@ -6,7 +6,6 @@ import AuthInputField from '@src/components/AuthInput/AuthInput';
 import Form from '@src/components/Form/Form';
 import SubmitBtn from '@src/components/SubmitBtn/SubmitBtn';
 import { COLORS } from '@src/constants/Colors';
-import { SCREEN_WIDTH } from '@src/constants/Dimensions';
 import { Fonts } from '@src/constants/Fonts';
 import { RootStackScreenProps } from '@src/navigations/type';
 import * as ImagePicker from 'expo-image-picker';
@@ -14,26 +13,31 @@ import React, { useEffect, useId, useState } from 'react';
 import { Image, KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Avatar, Button, Snackbar, Text } from 'react-native-paper';
 import * as yup from 'yup';
-import { usePlaceOrder } from '../../hooks/useOrder';
+import { useDeleteImage, useEditOrder, useUpdateOrder } from '../../hooks/useOrder';
 import { DatePickerModal } from 'react-native-paper-dates';
+import { SCREEN_WIDTH } from '@src/constants/Dimensions';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useGetOrderDetails } from '@src/screens/OrderDetail/hooks/useGetOrderDetail';
+
+import Entypo from '@expo/vector-icons/Entypo';
 import { useGetCategories } from '../../hooks/useCategory';
 import { CustomModal } from '@src/components/Modal/Modal';
 import { useShippingMode } from '@src/store/shippingMode';
+// import { useGetCategories } from '../../hooks/useCategory';
 
 const signupSchema = yup.object({
 	clientName: yup.string().required('Nom du client est requis'),
 	clientPhone: yup.string().required('Numero de telephone est requis'),
-	packageWeight: yup.number(),
+	packageWeight: yup.string(),
 	priceTotal: yup.number(),
 	quantity: yup.number().required('Nombre de colis est requis'),
-	packageCBM: yup.string(),
-	contenairNumber: yup.string(),
 });
 
 interface order {
 	clientName: string;
 	clientPhone: string;
-	packageWeight?: number;
+	packageWeight: string;
 	priceTotal?: number;
 	partenaire: string;
 	images?: imagesType;
@@ -47,8 +51,6 @@ interface order {
 		title: string;
 	};
 	orderId?: string;
-	packageCBM?: string;
-	contenairNumber?: string;
 }
 
 // 'le client a passé une commande',
@@ -60,28 +62,31 @@ interface order {
 // "Colis arrivé à l'aéroport du Mali et prêt pour dédouanement",
 // 'marchandises sont arrivées au port et ont été stockées.(Kalaban-Coura pres de FEBAK +22376696177/+22350005142',
 
-const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
+const EditOrder = ({ navigation, route }: RootStackScreenProps<'EditOrder'>) => {
 	const data = Math.random().toString(36).substring(7);
-	const shippingWay = useShippingMode((state) => state.type);
+	const [uploadProgress, setUploadProgress] = useState(0);
 
-	const [shippingMode, setShippingMode] = useState<'air' | 'sea'>(shippingWay);
 	const [visible, setVisible] = useState(false);
 	const [pickerValue, setPickerValue] = useState<string | null>(null);
-	const { mutate, isSuccess, isPending } = usePlaceOrder();
+	const { mutate, isSuccess, isPending } = useEditOrder();
+	const { mutate: deleteMutation, data: deleteData } = useDeleteImage();
 	const [isLoading, setIsLoading] = useState(false);
+	const [showModal, setShowModal] = useState(false);
 	const { data: categories } = useGetCategories();
 	const id = categories ? categories[0]._id : '';
-	const [category, setCategory] = useState<string>(id);
+	const shippingMode = useShippingMode((state) => state.type);
+
+	const orderId = route.params.id;
+	const { data: item } = useGetOrderDetails(orderId);
+
+	const [category, setCategory] = useState<string>(route.params.orderId);
 	const [selectedImages, setSelectedImages] = useState<
 		{
 			url: string;
 			public_id: string;
 		}[]
-	>([]);
-	const [uploadProgresus, setUploadProgress] = useState(0);
-	const [showModal, setShowModal] = useState(false);
-
-	const [date, setDate] = React.useState(undefined);
+	>(item?.images!);
+	const [date, setDate] = React.useState(item?.departureDate ? new Date(item.departureDate) : null);
 	const [open, setOpen] = React.useState(false);
 
 	const onDismissSingle = React.useCallback(() => {
@@ -96,67 +101,33 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		[setOpen, setDate]
 	);
 
-	const renderAdditionalFields = () => {
-		if (shippingMode === 'air') {
-			return (
-				<>
-					<AuthInputField
-						label='Poids du Colis'
-						autoCapitalize='none'
-						containerStyle={styles.containerStyle}
-						name='packageWeight'
-					/>
-					{/* Additional fields for air shipping can be added here */}
-				</>
-			);
-		} else if (shippingMode === 'sea') {
-			return (
-				<>
-					<AuthInputField
-						label='Volume du Colis (CBM)'
-						autoCapitalize='none'
-						containerStyle={styles.containerStyle}
-						name='packageCBM'
-					/>
-					<AuthInputField
-						label='Numero du conteneur'
-						autoCapitalize='none'
-						containerStyle={styles.containerStyle}
-						name='contenairNumber'
-					/>
-					{/* Additional fields for sea shipping can be added here */}
-				</>
-			);
-		}
-		return null;
-	};
+	const departureDate = new Date(date?.getFullYear(), date?.getMonth(), date?.getDate());
 
-	const startDate = new Date(date?.getFullYear() ?? 1970, date?.getMonth() ?? 0, date?.getDate() + 1 ?? 1);
-	const process = {
-		id: data,
-		title: 'le client a passé une commande',
-		time: new Date().toISOString(),
-	};
 	const handleSubmit = async (values: order) => {
 		try {
 			if (!date) return alert('Veuillez choisir une date de depart');
 			mutate({
 				...values,
-
 				images: selectedImages,
-				currentPosition: shippingMode === 'sea' ? process : [],
 				partenaire: values.partenaire || 'Chez Fode',
-				userId: route.params.userId,
-				departureDate: startDate,
+				userId: item?.userId!,
+				departureDate: departureDate,
 				category,
-				shippingMode: shippingMode,
-				packageCBM: values.packageCBM || '0',
-				dateOfReceipt: startDate,
-				contenairNumber: values.contenairNumber || '0',
+				orderId: orderId,
 			});
+			console.log('values', values);
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const deleteImage = (id: string) => {
+		console.log('id', id);
+		const img = selectedImages.find((image) => image.public_id === id)?.public_id;
+		deleteMutation({
+			public_id: img!,
+		});
+		setSelectedImages((prev) => prev.filter((image) => image.public_id !== id));
 	};
 
 	const pickImage = async () => {
@@ -218,6 +189,26 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		}
 		setIsLoading(false);
 	};
+	useEffect(() => {
+		if (isSuccess) {
+			setVisible(true);
+			setTimeout(() => {
+				navigation.navigate('Home', { screen: 'Home' });
+			}, 900);
+		}
+	}, [isSuccess]);
+	const onDismissSnackBar = () => setVisible(false);
+
+	const initialValues = {
+		clientName: item?.clientName,
+		clientPhone: item?.clientPhone,
+		packageWeight: item?.packageWeight,
+		quantity: item?.quantity,
+		typeOfPackage: item?.typeOfPackage,
+		category: category,
+		priceTotal: item?.priceTotal,
+		shippingMode: 'air',
+	};
 
 	const takePhoto = async () => {
 		setShowModal(false);
@@ -278,37 +269,8 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 		}
 		setIsLoading(false);
 	};
-	useEffect(() => {
-		if (isSuccess) {
-			setVisible(true);
-			setTimeout(() => {
-				navigation.navigate('HomeTab', { screen: 'Home' });
-			}, 900);
-		}
-	}, [isSuccess]);
-	const onDismissSnackBar = () => setVisible(false);
 
-	const initialValues = {
-		clientName: route.params.clientName,
-		clientPhone: route.params.phoneNumber,
-		packageWeight: '0',
-		priceTotal: 0,
-		partenaire: '',
-		quantity: '1',
-		shippingMode: shippingWay,
-		typeOfPackage: category,
-		category: category,
-		currentPosition: {
-			id: '',
-			title: '',
-			time: '',
-		},
-	};
-
-	const handleShippingModeChange = (mode: 'air' | 'sea') => {
-		setShippingMode(mode);
-	};
-
+	console.log('date', date);
 	return (
 		<Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
 			<>
@@ -370,7 +332,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 								style={styles.image}
 								source={{
 									uri:
-										selectedImages.length > 0
+										selectedImages?.length > 0
 											? selectedImages[0].url
 											: 'https://res.cloudinary.com/piincher/image/upload/v1676795950/s6mxvpjvd3ytguh7se8p.jpg',
 								}}
@@ -390,6 +352,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 											marginHorizontal: SCREEN_WIDTH * 0.02,
 										}}
 										key={image.public_id}
+										onPress={() => deleteImage(image.public_id)}
 									>
 										<Avatar.Image
 											size={SCREEN_WIDTH * 0.13}
@@ -403,18 +366,8 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 								))
 							)}
 						</ScrollView>
-						{/* Shipping Mode Selection */}
-						<View style={styles.shippingModeContainer}>
-							<Text>Mode d'expédition:</Text>
-							<Picker selectedValue={shippingMode} onValueChange={handleShippingModeChange}>
-								<Picker.Item label='Air' value='air' />
-								<Picker.Item label='Sea' value='sea' />
-							</Picker>
-						</View>
 
-						{/* Render additional fields based on the shipping mode */}
 						<View style={styles.formContainer}>
-							{renderAdditionalFields()}
 							<AuthInputField label='Nom du Client' containerStyle={styles.containerStyle} name='clientName' />
 							<AuthInputField
 								label='Numero de Telephone du Client'
@@ -425,6 +378,12 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 								phone={true}
 							/>
 							{/* <AuthInputField label='Country' placeholder='Name' containerStyle={styles.containerStyle} name='country' /> */}
+							<AuthInputField
+								label='Poids du Colis'
+								autoCapitalize='none'
+								containerStyle={styles.containerStyle}
+								name='packageWeight'
+							/>
 
 							<AuthInputField
 								label='nombre de colis'
@@ -432,6 +391,12 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<'AddOrder'>) => {
 								keyboardType='numeric'
 								containerStyle={styles.containerStyle}
 								name='quantity'
+							/>
+							<AuthInputField
+								label="Mode d'expedition"
+								autoCapitalize='none'
+								containerStyle={styles.containerStyle}
+								name='shippingMode'
 							/>
 
 							<View style={{ borderColor: COLORS.grey, borderWidth: 1 }}>
@@ -494,6 +459,7 @@ export function mapRange(options: MapRangeOptions) {
 
 	return result;
 }
+
 const styles = StyleSheet.create({
 	formContainer: { width: '100%' },
 
@@ -512,20 +478,18 @@ const styles = StyleSheet.create({
 		backgroundColor: COLORS.white,
 	},
 	imageContainer: {
-		width: 200,
+		width: '100%',
 		height: 200,
 		borderStyle: 'solid',
 		borderWidth: 8,
 		padding: 0,
 		justifyContent: 'center',
-		borderRadius: 100,
 		borderColor: '#E0E0E0',
 		elevation: 10,
 	},
 	image: {
 		width: '100%',
 		height: '100%',
-		borderRadius: 100,
 	},
 	imagePicker: {
 		position: 'absolute',
@@ -547,13 +511,6 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		marginLeft: 10,
 	},
-
-	shippingModeContainer: {
-		width: '100%',
-		marginVertical: 20,
-		borderColor: COLORS.grey,
-		borderWidth: 1,
-	},
 });
 
-export default AddOrder;
+export default EditOrder;

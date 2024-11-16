@@ -20,13 +20,15 @@ export const Category = ({ setStatusChange, statusChange, onStatusChange, status
 					>
 						<Text
 							style={{
-								fontSize: 24,
 								fontFamily: Fonts.bold,
 								color: item.title === statusChange ? COLORS.blue : COLORS.grey,
 								textAlign: 'center',
+								fontSize: 32,
+								borderBottomColor: item.title === statusChange ? COLORS.blue : COLORS.grey,
+								borderBottomWidth: item.title === statusChange ? 5 : 0,
 							}}
 						>
-							{item.title === 'Active' ? 'En cours' : item.title === 'In Transit' ? 'En transit' : 'Inactif'}
+							{item.title === 'Active' ? 'En cours' : item.title === 'In Transit' ? 'En transit' : 'Livré'}
 						</Text>
 					</Pressable>
 				))}

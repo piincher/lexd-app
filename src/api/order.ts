@@ -29,7 +29,7 @@ export type productType = {
 	partenaire: string;
 	_id?: string | undefined;
 	images: imagesType;
-	status?: 'Active' | 'Inactive' | 'In Transit';
+	status?: 'Active' | 'Inactive' | 'In Transit' | 'Order Delivered';
 	quantity?: number;
 	shippingMode?: string;
 	createdAt?: string;
@@ -46,6 +46,10 @@ export type productType = {
 		name: string;
 		_id: string;
 	};
+	updatedAt?: string;
+	packageCBM: string;
+	dateOfReceipt: string;
+	contenairNumber: string;
 };
 
 const API_URL = {
@@ -57,6 +61,7 @@ const API_URL = {
 	getActiveOrdersAdmin: '/order/all',
 	single: '/order',
 	viewSmsBalance: '/order/viewSmsBalance',
+	GET_ORDER_BASED_ON_DATE: '/order/getOrderDepartureDate',
 };
 
 interface CheckRoute {
@@ -82,6 +87,9 @@ export const placeOrder = async ({
 	userId,
 	departureDate,
 	category,
+	dateOfReceipt,
+	packageCBM,
+	contenairNumber,
 }: productType) => {
 	const data = {
 		clientName,
@@ -98,18 +106,32 @@ export const placeOrder = async ({
 		userId,
 		departureDate,
 		category,
+		dateOfReceipt,
+		packageCBM,
+		contenairNumber,
 	};
 
 	return await api.post<productType>(`${API_URL.CREATE_ORDER}`, data);
 };
 
 export const updateOrder = async (data: productType) => {
-	return await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
+	console.log('order id', data.orderId);
+	const response = await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
+	return response.data;
 };
 
-export const getActiveOrders = async (page: number, status: string) => {
+export const editOrder = async (data: productType) => {
+	const response = await api.put<productType>(`${API_URL.single}/${data.orderId}/edit`, data);
+	return response.data;
+};
+export const getOrderBasedOnDate = async (data: { departureDate: string }) => {
+	const response = await api.post<productType[]>(`${API_URL.GET_ORDER_BASED_ON_DATE}`, data);
+	return response.data;
+};
+
+export const getActiveOrders = async (page: number, status: string, shippingMethod: 'air' | 'sea') => {
 	const response = await api.get<productType[]>(
-		`${API_URL.getOrdersFromAUser}?status=${status}&limit=${LIMIT}&page=${page}`
+		`${API_URL.getOrdersFromAUser}?status=${status}&limit=${LIMIT}&page=${page}&shippingMethod=${shippingMethod}`
 	);
 	return response.data;
 };
@@ -119,11 +141,19 @@ export const fetchSmsBalance = async () => {
 	return response.data;
 };
 
-export const getActiveOrdersAdmin = async (page: number, Status: string) => {
-	console.log('fetch');
-	const response = await api.get<productType[]>(
-		`${API_URL.getActiveOrdersAdmin}?status=${Status}&limit=${LIMIT}&page=${page}`
-	);
+export const getActiveOrdersAdmin = async (
+	page: number,
+	Status: string,
+	departureDate: Date,
+	shippingMethod: 'air' | 'sea'
+) => {
+	let query = `status=${Status}&limit=${LIMIT}&page=${page}&shippingMethod=${shippingMethod}`;
+
+	// Only add the departureDate if the startDate is valid (not null)
+	if (departureDate) {
+		query += `&departureDate=${departureDate.toISOString()}`;
+	}
+	const response = await api.get<productType[]>(`${API_URL.getActiveOrdersAdmin}?${query}`);
 	return response.data;
 };
 export const getOrderDetails = async (id: string) => {
@@ -132,6 +162,17 @@ export const getOrderDetails = async (id: string) => {
 };
 export const updateOrderToDelivered = async (data: productType) => {
 	const response = await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/delivered`, data);
+	return response.data;
+};
+
+export const getOrdersBetweenDate = async (data: { departureDate: Date; status: string }) => {
+	const response = await api.post<productType[]>(`${API_URL.single}/getOrdersbetweentwodates`, data);
+	return response.data;
+};
+
+export const deleteImage = async (data: { public_id: string }) => {
+	const response = await api.post<{ ok: boolean }>(`${API_URL.single}/${data.public_id}/delete`, data);
+
 	return response.data;
 };
 

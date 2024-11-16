@@ -1,6 +1,7 @@
+import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import React from 'react';
-import { Modal, View, Text, Pressable, StyleSheet, StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { Modal, Pressable, StyleProp, StyleSheet, Text, TextStyle, View, ViewStyle } from 'react-native';
 
 interface CustomModalProps {
 	visible: boolean;
@@ -19,6 +20,7 @@ interface CustomModalProps {
 		cancelText?: StyleProp<TextStyle>;
 		confirmText?: StyleProp<TextStyle>;
 	};
+	children?: React.JSX.Element;
 }
 
 export const CustomModal = ({
@@ -30,21 +32,26 @@ export const CustomModal = ({
 	confirmText = 'Confirmer',
 	cancelText = 'Annuler',
 	styles: customStyles = {},
+	children,
 }: CustomModalProps) => {
 	return (
 		<Modal animationType='fade' transparent={true} visible={visible} onRequestClose={onClose}>
 			<View style={[styles.centeredView, customStyles.centeredView]}>
+				<Pressable onPress={onClose} style={styles.backdrop} />
+
 				<View style={[styles.modalView, customStyles.modalView]}>
 					<Text style={[styles.modalText, customStyles.modalText]}>{title}</Text>
 					<Text style={[styles.messageText, customStyles.messageText]}>{message}</Text>
-					<View style={[styles.buttonContainer, customStyles.buttonContainer]}>
+					<View style={styles.modal}>{children}</View>
+
+					{/* <View style={[styles.buttonContainer, customStyles.buttonContainer]}>
 						<Pressable onPress={onClose}>
 							<Text style={[styles.cancelText, customStyles.cancelText]}>{cancelText}</Text>
 						</Pressable>
 						<Pressable onPress={onConfirm}>
 							<Text style={[styles.confirmText, customStyles.confirmText]}>{confirmText}</Text>
 						</Pressable>
-					</View>
+					</View> */}
 				</View>
 			</View>
 		</Modal>
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: 22,
+		backgroundColor: 'transparent',
 	},
 	modalView: {
 		margin: 20,
@@ -72,6 +79,12 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.25,
 		shadowRadius: 4,
 		elevation: 5,
+		zIndex: 2,
+	},
+	backdrop: {
+		...StyleSheet.absoluteFillObject,
+		backgroundColor: 'rgba(0, 0, 0, 0.5)',
+		zIndex: 1,
 	},
 	modalText: {
 		marginBottom: 15,
@@ -82,13 +95,20 @@ const styles = StyleSheet.create({
 	messageText: {
 		fontFamily: Fonts.regular,
 		textAlign: 'center',
-		fontSize: 26,
+		fontSize: 20,
 	},
 	buttonContainer: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		marginTop: 16,
 		width: '100%',
+	},
+	modal: {
+		width: '90%',
+		maxHeight: '50%',
+		borderRadius: 10,
+		padding: 10,
+		backgroundColor: COLORS.white,
 	},
 	cancelText: {
 		color: 'red',

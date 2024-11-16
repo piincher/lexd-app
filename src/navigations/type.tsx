@@ -12,7 +12,7 @@ export type RootStackParamList = {
 		clientName: string;
 		phoneNumber: string;
 	};
-	ActiveOrder: undefined;
+	ActiveOrder: { type: 'air' | 'sea' };
 	Login: undefined;
 	Verification: { phoneNumber: string };
 	OrderDetail: { id: string };
@@ -27,6 +27,14 @@ export type RootStackParamList = {
 	Map: { id: string };
 	ActiveOrderDetails: { id: string };
 	ScanQRCode: undefined;
+	Notifications: undefined;
+	BatchUpdate: undefined;
+	EditOrder: { id: string; orderId: string };
+	Orders: undefined;
+	UserActiveOrders: { type: 'air' | 'sea' };
+	AdminDashBoard: undefined;
+	ChooseShippingMethod: undefined;
+	ShippingMethod: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<RootStackParamList, T>;
@@ -35,6 +43,7 @@ export type HomeTabParamList = {
 	Home: undefined;
 	Chat: undefined;
 	Profile: undefined;
+	AdminDashBoard: undefined;
 };
 
 export type navigationProps = NativeStackNavigationProp<RootStackParamList>;

@@ -1,24 +1,39 @@
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { navigationProps } from '@src/navigations/type';
+import { useGetNotification } from '../hooks/useGetNotification';
+import { useEffect, useState } from 'react';
 
 interface UserHeaderInfoProps {
 	firstName: string;
 	lastName: string;
+	navigation?: navigationProps;
 }
 
-export const UserHeaderInfo = ({ firstName, lastName }: UserHeaderInfoProps) => {
+export const UserHeaderInfo = ({ firstName, lastName, navigation }: UserHeaderInfoProps) => {
+	const [notificationCount, setNotificationCount] = useState<number>(0);
+	const { data: notificationData } = useGetNotification();
+
+	useEffect(() => {
+		if (notificationData) {
+			const unreadNotifications = notificationData.filter((notification) => !notification.read);
+			if (unreadNotifications.length > 0) {
+				setNotificationCount(unreadNotifications.length);
+			}
+		}
+	}, [notificationData]);
 	return (
 		<>
 			<View style={styles.container}>
 				<Text style={styles.textContent}>
 					Salut {firstName} {lastName} 🙌
 				</Text>
-				{/* <View style={styles.notificationContainer}>
+				<Pressable style={styles.notificationContainer} onPress={() => navigation?.navigate('Notifications')}>
 					<Ionicons name='notifications-outline' size={24} color='black' />
-					<View style={styles.redDot} />
-				</View> */}
+					{notificationCount > 0 && <View style={styles.redDot} />}
+				</Pressable>
 			</View>
 			<Text style={styles.activeOrderText}>Commande Actifs</Text>
 		</>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "708843528394",
+    "project_id": "chinalinkexpress-ff143",
+    "storage_bucket": "chinalinkexpress-ff143.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708843528394:android:4033ce23c3623de9c5d433",
+        "android_client_info": {
+          "package_name": "com.nuvotech.chinalinkexpress"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7IkNDPAI3bccAwUKWfeoR1wp-LCi3R60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

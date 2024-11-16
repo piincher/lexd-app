@@ -23,7 +23,6 @@ const API_URL = {
 };
 
 export const getRoutes = async () => {
-	console.log('getRoutes');
 	const response = await axiosInstance.get<RouteType[]>(rootUrl + API_URL.GET_ROUTES);
 	return response.data;
 };

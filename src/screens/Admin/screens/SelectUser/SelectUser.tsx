@@ -10,12 +10,21 @@ import { userData } from '@src/constants/types';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetUsers } from '../../hooks/useGetUsers';
 import { MaterialIcons } from '@expo/vector-icons';
+import { TextInput } from 'react-native-paper';
+import RenderListItem from '@src/components/RenderListItem/RenderListItem';
 
 const SelectUser = ({ navigation }: RootStackScreenProps<'SelectUser'>) => {
 	const [selectedUser, setSelectedUser] = useState<userData>();
-
 	const { data } = useGetUsers();
+	const [search, setSearch] = useState<string>('');
 
+	// filtered ba
+	const filteredData = data?.filter((item) => {
+		return (
+			item.firstName.toLowerCase().includes(search.toLowerCase()) ||
+			item.lastName.toLowerCase().includes(search.toLowerCase())
+		);
+	});
 	const handleCreate = async () => {
 		navigation.navigate('AddOrder', {
 			clientName: `${selectedUser?.firstName} ${selectedUser?.lastName!}`,
@@ -25,14 +34,28 @@ const SelectUser = ({ navigation }: RootStackScreenProps<'SelectUser'>) => {
 	};
 
 	return (
-		<SafeAreaView style={{ flex: 1 }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
 			<Header title='Choisir un client' navigation={navigation} />
+			<TextInput label='Rechercher un client' style={{ margin: 20 }} onChangeText={setSearch} value={search} />
 			<FlatList
-				data={data!}
-				renderItem={({ item }) => {
-					return <RenderUserItem item={item} selectedUser={selectedUser!} setSelectedUser={setSelectedUser} />;
-				}}
-				keyExtractor={(item) => item._id.toString()}
+				data={filteredData}
+				renderItem={({ item }) => (
+					<RenderListItem
+						item={item}
+						selectedItem={selectedUser!}
+						setSelectedItem={setSelectedUser}
+						renderItemContent={(item) => (
+							<View style={{ padding: 15 }}>
+								<Text style={styles.userName}>
+									{item.firstName}- {item.lastName}
+								</Text>
+								<Text style={styles.userRole}> {item.phoneNumber}</Text>
+								<Text style={styles.userRole}> {item.role}</Text>
+							</View>
+						)}
+					/>
+				)}
+				keyExtractor={(item) => item.id}
 			/>
 
 			<View style={styles.buttonContainer}>
@@ -88,7 +111,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	userName: {
-		fontSize: 16,
+		fontSize: 20,
 		fontFamily: Fonts.meduim,
 	},
 	userRole: {

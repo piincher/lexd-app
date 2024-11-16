@@ -2,7 +2,7 @@
   "expo": {
     "name": "ChinaLinkExpress",
     "slug": "ChinaLinkExpress",
-    "version": "1.0.3",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
     "userInterfaceStyle": "light",
@@ -50,7 +50,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nuvotech.chinalinkexpress",
-      "buildNumber": "13",
+      "buildNumber": "20",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -60,8 +60,9 @@
         "foregroundImage": "./assets/images/log.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "package": "com.nuvotech.chinalinkexpress",
-      "versionCode": 13
+      "versionCode": 15
     },
     "web": {
       "favicon": "./assets/favicon.png"

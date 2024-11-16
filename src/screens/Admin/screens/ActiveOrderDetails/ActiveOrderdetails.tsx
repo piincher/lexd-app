@@ -41,6 +41,8 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 	const [pickerValue, setPickerValue] = useState(actualLocation);
 	const { mutate: updateStatusDelivery } = useUpdateStatusDelivery();
 
+	console.log('item', item?.status);
+
 	const updateDeliver = () => {
 		updateStatusDelivery({
 			...item,
@@ -67,13 +69,16 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 	}, [item]);
 
 	const handleStepChange = (value: string, status: string, coordinates: any) => {
+		console.log('value', value, status, coordinates);
 		const location = coordinates.find((loc) => loc.location === value);
-		setStatusChange(status);
-		setPickerValue(value);
-		setNote(location?.note);
-		if (location) {
-			setCoordinatesData([location]);
-		}
+
+		console.log('location', location);
+		// setStatusChange(status);
+		// setPickerValue(value);
+		// setNote(location?.note);
+		// if (location) {
+		// 	setCoordinatesData([location]);
+		// }
 	};
 
 	const updateTransiteStatus = () => {
@@ -124,8 +129,6 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 		}
 	}, [item]);
 
-	console.log('item', item?.category);
-
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView>
@@ -144,7 +147,7 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<'ActiveOrderDetails'
 						label1='Status'
 						value1={item?.currentStatus!}
 						label2='Type de colis'
-						value2={item?.category?.name!}
+						value2={item?.typeOfPackage!}
 					/>
 					<DetailRow label1='Note' value1={locationNote!} label2='' value2={''} />
 				</View>

@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { navigationProps, RootStackParamList } from '@src/navigations/type';
@@ -9,14 +9,15 @@ interface Props {
 	title: string;
 	rightIcon?: React.ReactNode;
 	navigation: navigationProps;
+	rightIconHandler?: () => void;
 }
-export const Header = ({ title, rightIcon, navigation }: Props) => {
+export const Header = ({ title, rightIcon, navigation, rightIconHandler }: Props) => {
 	return (
 		<>
 			<View style={Styles.container}>
 				<AntDesign name='leftcircleo' size={28} color='black' onPress={() => navigation.goBack()} />
 				<Text style={Styles.textStyle}>{title}</Text>
-				<>{rightIcon}</>
+				<Pressable onPress={rightIconHandler}>{rightIcon}</Pressable>
 			</View>
 		</>
 	);

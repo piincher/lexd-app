@@ -5,4 +5,5 @@ export const IMAGES = {
 	onboarding2: require('../../assets/images/onboarding-2.png'),
 	onboarding3: require('../../assets/images/onboarding-3.png'),
 	onboarding4: require('../../assets/images/onboarding-4.png'),
+	flat_logo: require('../../assets/images/flat_logo.png'),
 };

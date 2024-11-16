@@ -1,5 +1,9 @@
 import {
+	deleteImage,
+	editOrder,
 	getActiveOrdersAdmin,
+	getOrderBasedOnDate,
+	getOrdersBetweenDate,
 	placeOrder,
 	sendNotificationSms,
 	updateOrder,
@@ -8,7 +12,7 @@ import {
 import { LIMIT } from '@src/constants/Dimensions';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigation } from '@react-navigation/native';
-import { SMSKEY } from '@src/constants/queryKey';
+import { queryKey, SMSKEY } from '@src/constants/queryKey';
 const ORDER_KEY = 'order';
 export const usePlaceOrder = () => {
 	const queryClient = useQueryClient();
@@ -20,15 +24,45 @@ export const usePlaceOrder = () => {
 	});
 };
 
-export const useGetActiveOrdersAdmin = (Status: string) => {
+export const useEditOrder = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: editOrder,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+		},
+	});
+};
+
+export const useGetActiveOrdersAdmin = (Status: string, departureDate: Date, shippingMethod: 'air' | 'sea') => {
 	return useInfiniteQuery({
 		queryKey: [ORDER_KEY],
-		queryFn: ({ pageParam = 1 }) => getActiveOrdersAdmin(pageParam, Status),
+		queryFn: ({ pageParam = 1 }) => getActiveOrdersAdmin(pageParam, Status, departureDate, shippingMethod),
 		getNextPageParam: (lastPage, allPages) => {
 			const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
 			return nextPage;
 		},
 		initialPageParam: 1,
+	});
+};
+
+export const useMutateBetweenDate = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: getOrdersBetweenDate,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+			// queryClient.invalidateQueries({ queryKey: [SMSKEY] });
+		},
+	});
+};
+export const useDeleteImage = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: deleteImage,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+		},
 	});
 };
 export const useUpdateOrder = () => {
@@ -61,6 +95,17 @@ export const useSendNotificationSms = () => {
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: [SMSKEY] });
 			navigation.navigate('HomeTab', { screen: 'Home' });
+		},
+	});
+};
+
+export const useGetOrderBaseonDate = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: getOrderBasedOnDate,
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+			// queryClient.invalidateQueries({ queryKey: [SMSKEY] });
 		},
 	});
 };
