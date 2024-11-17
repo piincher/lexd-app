@@ -64,7 +64,8 @@
     "sp-react-native-in-app-updates": "^1.4.0",
     "stream-chat-expo": "^5.31.1",
     "yup": "^1.4.0",
-    "zustand": "^4.3.7"
+    "zustand": "^4.3.7",
+    "expo-dev-client": "~4.0.29"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

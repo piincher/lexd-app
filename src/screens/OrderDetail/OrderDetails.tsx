@@ -216,9 +216,6 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<'OrderDetail'>
 		navigation.navigate('SelectAdminToChatWith');
 	};
 
-	const handleNavigateToMap = () => {
-		navigation.navigate('Map', { id });
-	};
 
 	if (!data) {
 		return <LoadingSpinner />;

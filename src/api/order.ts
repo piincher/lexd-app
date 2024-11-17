@@ -119,6 +119,9 @@ export const updateOrder = async (data: productType) => {
 	const response = await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/update`, data);
 	return response.data;
 };
+export const batchUpdate = async (data: { orders: string[]; title: string }) => {
+	return await api.post<productType>(`${API_URL.UPDATE_ORDER}/batchUpdate`, data);
+};
 
 export const editOrder = async (data: productType) => {
 	const response = await api.put<productType>(`${API_URL.single}/${data.orderId}/edit`, data);
