@@ -35,7 +35,11 @@ export const RenderOrder = ({ item }: { item: productType }) => {
       },
       { label: "Nombre de colis", value: item.quantity, id: "6" },
       { label: "Type de colis", value: item?.category?.name || "", id: "7" },
-      { label: "Date de Chargement", value: formattedDate, id: "8" },
+      {
+         label: shippingMode === "sea" ? "Date de Chargement" : "Date de Depart",
+         value: formattedDate,
+         id: "8",
+      },
       { label: "Dernière mise à jour", value: formattedLastUpdate, id: "9" },
       shippingMode === "sea" && {
          label: "Nombre de CBM",
@@ -94,7 +98,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
             )}
             {textContentData.map((content, index) => {
                return (
-                  <Pressable onPress={handleNavigate} key={content.id}>
+                  <Pressable onPress={handleNavigate} key={index}>
                      <ListItem label={content.label} value={content.value!} index={content.id} />
                      <View style={styles.bottomLine} />
                   </Pressable>

@@ -2,13 +2,13 @@
   "expo": {
     "name": "ChinaLinkExpress",
     "slug": "ChinaLinkExpress",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splashscreen.png",
-      "resizeMode": "cover",
+      "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "plugins": [

@@ -39,7 +39,7 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
       setNote(lastItem?.note);
 
       console.log("lastItem", lastItem);
-      setActualLocation(lastItem?.location);
+      setActualLocation(item?.currentStatus!);
    }, [item]);
    const handleChat = () => {
       navigation.navigate("SelectAdminToChatWith");
@@ -69,7 +69,7 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
                {/* Logistics details */}
                <DetailRow
                   label1="Pays d'envoie"
-                  value1="Chine"
+                  value1="Chine,Foshan"
                   label2="Pays de reception"
                   value2="Bamako, Mali"
                />
@@ -88,12 +88,12 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
                   value2={item?.category?.name!}
                />
                <DetailRow
-                  label1="Position actuelle"
-                  value1={actualLocation || "En attente"}
-                  label2="Date de depart"
+                  label1="Note"
+                  value1="Pas de note pour le moment"
+                  label2="Date de Chargement"
                   value2={formattedDateTime}
                />
-               <DetailRow label1="Note" value1={note || ""} label2="" value2="" />
+
                <DetailRow
                   label1="Derniere mise a jour"
                   value1={formattedLastUpdate}

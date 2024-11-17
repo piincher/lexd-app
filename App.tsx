@@ -54,6 +54,7 @@ import ShippingMethod from "@src/screens/Admin/screens/ShippingMethod/ShippingMe
 import React from "react";
 import SeaShippingOrderDetails from "@src/screens/OrderDetail/screens/SeaShippingOrderDetails";
 import BatchUpdateDetail from "@src/screens/Admin/screens/BatchUpdate/screens/BatchUpdateDetail";
+import { UpdateProvider } from "@src/context/UpdateProvider";
 registerTranslation("en-GB", en);
 
 SplashScreen.preventAutoHideAsync();
@@ -248,9 +249,9 @@ const MainWrapper = () => {
    return (
       <OverlayProvider>
          <StreamChat client={chatClient} i18nInstance={streami18n}>
-            <>
+            <UpdateProvider>
                <AppWrapper />
-            </>
+            </UpdateProvider>
          </StreamChat>
       </OverlayProvider>
    );
