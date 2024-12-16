@@ -7,7 +7,7 @@ export const initSentry = () => {
 	Sentry.init({
 		dsn: 'https://c94705caef41cca8dd2739debd894d68@o4504673761296384.ingest.us.sentry.io/4507324627353600',
 		debug: false,
-		integrations: [new Sentry.ReactNativeTracing(),
+		integrations: [new Sentry.(),
 
 			
 		],
@@ -21,11 +21,5 @@ export const initSentry = () => {
 		
 	});
 
-	Sentry.configureScope(function (scope) {
-		scope.setUser({
-			// id: user?.phoneNumber,
-			// email: user?.email,
-			// username: user?.firstName,
-		});
-	});
+	
 };

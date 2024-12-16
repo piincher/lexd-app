@@ -4,7 +4,7 @@ import { AntDesign, Entypo } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import * as Sentry from "@sentry/react-native";
+// import * as Sentry from "@sentry/react-native";
 import { initMixpanel } from "@src/config/Analytic";
 import { chatClient } from "@src/config/ChatConfig";
 import { ChatProvider } from "@src/context/ChatContext";
@@ -31,12 +31,12 @@ import AdminDashBoard from "@src/screens/Admin/screens/AdminDashBoard/AdminDashB
 import HomeScreen from "@src/screens/Home/screens/HomeScreen";
 import Notifications from "@src/screens/Home/screens/Notifications";
 import OnBoarding from "@src/screens/OnBoardingScreen/OnBoardingScreen";
-import Map from "@src/screens/OrderDetail/Map";
+// import Map from "@src/screens/OrderDetail/Map";
 import OrderDetails from "@src/screens/OrderDetail/OrderDetails";
 import AboutUs from "@src/screens/Profile/screens/AboutUs";
 import PastOrders from "@src/screens/Profile/screens/PastOrders";
 import Profile from "@src/screens/Profile/screens/Profile";
-import { initSentry, routingInstrumentation } from "@src/services/sentry";
+// import { initSentry, routingInstrumentation } from "@src/services/sentry";
 import { useAppLaunchStore } from "@src/store/AppLaunch";
 import { useAuth } from "@src/store/Auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -62,7 +62,7 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 
-initSentry();
+// initSentry();
 initMixpanel();
 function AppWrapper() {
    const { expoPushToken } = useNotification();
@@ -111,7 +111,7 @@ function AppWrapper() {
       <SafeAreaProvider onLayout={onLayout}>
          <NavigationContainer
             onReady={() => {
-               routingInstrumentation.registerNavigationContainer(navigation);
+               // routingInstrumentation.registerNavigationContainer(navigation);
             }}
             ref={navigation}
          >
@@ -249,12 +249,12 @@ const MainWrapper = () => {
    return (
       <OverlayProvider>
          <StreamChat client={chatClient} i18nInstance={streami18n}>
-            <UpdateProvider>
+            <>
                <AppWrapper />
-            </UpdateProvider>
+            </>
          </StreamChat>
       </OverlayProvider>
    );
 };
 
-export default Sentry.wrap(App);
+export default App;
