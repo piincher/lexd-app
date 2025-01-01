@@ -61,8 +61,15 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
    const extractedData = data?.map((item) => {
       return {
          id: item._id,
-         name: item.clientName,
-         info: item.clientPhone,
+         name: item?.clientName,
+         info: item?.clientPhone,
+         images: item?.images[0]?.url,
+         currentStatus: item?.currentStatus,
+         shippingMode: item?.shippingMode,
+         code: item?.code,
+         lastUpdate: item?.updatedAt,
+         price: item?.priceTotal,
+         packageWeight: item?.packageCBM,
       };
    });
 
@@ -79,7 +86,7 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
    };
 
    return (
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
          <Header
             title="Batch Update"
             navigation={navigation}

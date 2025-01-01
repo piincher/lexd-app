@@ -7,13 +7,15 @@ import { Button, Text } from "react-native-paper";
 import { Pressable, StyleSheet, View } from "react-native";
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
-import React from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@src/store/Auth";
 import { formatDate } from "@src/utils/formatDate";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useGetOrderDetails } from "@src/screens/OrderDetail/hooks/useGetOrderDetail";
 import { useShippingMode } from "@src/store/shippingMode";
-
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { CustomModal } from "../Modal/Modal";
+import { useDeleteOrder } from "@src/screens/Admin/hooks/useOrder";
 export const RenderOrder = ({ item }: { item: productType }) => {
    const currentRoute = item?.route?.[item?.route?.length - 1];
    const { role } = useAuth((state) => state.user);
@@ -21,6 +23,14 @@ export const RenderOrder = ({ item }: { item: productType }) => {
    const navigation = useNavigation();
    const formattedDate = formatDate(item?.departureDate!);
    const formattedLastUpdate = formatDate(item?.updatedAt!);
+   const [showModal, setShowModal] = useState(false);
+   const { mutate, isSuccess } = useDeleteOrder();
+
+   useEffect(() => {
+      if (isSuccess) {
+         setShowModal(false);
+      }
+   }, [isSuccess]);
 
    useGetOrderDetails(item._id!);
    const textContentData = [
@@ -64,10 +74,25 @@ export const RenderOrder = ({ item }: { item: productType }) => {
          orderId: item?.category?._id,
       });
    };
+   const showPopUpModel = () => {
+      setShowModal(true);
+   };
+   const onConfirm = () => {
+      mutate({
+         orderId: item._id!,
+      });
+   };
    return (
       <SafeAreaView style={styles.container}>
          {/* image slider section */}
-
+         <CustomModal
+            visible={showModal}
+            onClose={() => setShowModal(false)}
+            onConfirm={onConfirm}
+            cancelText="Cancel"
+            title="Delete Order"
+            message="Are you sure you want to delete this order?"
+         />
          <Slider bannerImages={item?.images!} handleNavigate={handleNavigate} />
          {/* text container section */}
          <>
@@ -78,19 +103,12 @@ export const RenderOrder = ({ item }: { item: productType }) => {
                      justifyContent: "space-between",
                      alignItems: "center",
                      marginTop: 10,
-                     marginHorizontal: 10,
+                     marginHorizontal: 25,
                   }}
                >
-                  <Text
-                     style={{
-                        fontFamily: Fonts.meduim,
-                        fontSize: 20,
-                        marginLeft: 20,
-                        marginTop: 10,
-                     }}
-                  >
-                     EDIT
-                  </Text>
+                  <Pressable onPress={showPopUpModel}>
+                     <FontAwesome5 name="trash-alt" size={24} color={COLORS.danger} />
+                  </Pressable>
                   <Pressable onPress={handleEdit}>
                      <AntDesign name="edit" size={24} color={COLORS.blue} />
                   </Pressable>
@@ -120,6 +138,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 export const styles = StyleSheet.create({
    container: {
       flex: 1,
+      backgroundColor: COLORS.white,
    },
 
    buttonStyle: {

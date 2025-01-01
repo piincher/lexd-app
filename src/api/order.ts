@@ -178,6 +178,11 @@ export const deleteImage = async (data: { public_id: string }) => {
 
 	return response.data;
 };
+export const deleteOrder = async (data: { orderId: string }) => {
+	console.log('order id', data.orderId);
+	const response = await api.delete<{ message: string }>(`${API_URL.single}/${data.orderId}/delete`);
+	return response.data;
+}
 
 interface sendNotificationSms {
 	phoneNumbers: string[];

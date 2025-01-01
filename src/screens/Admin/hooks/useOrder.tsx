@@ -1,6 +1,7 @@
 import {
    batchUpdate,
    deleteImage,
+   deleteOrder,
    editOrder,
    getActiveOrdersAdmin,
    getOrderBasedOnDate,
@@ -78,6 +79,15 @@ export const useUpdateOrder = () => {
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
          // queryClient.invalidateQueries({ queryKey: [SMSKEY] });
+      },
+   });
+};
+export const useDeleteOrder = () => {
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: deleteOrder,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
       },
    });
 };

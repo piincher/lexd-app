@@ -36,7 +36,7 @@ import OrderDetails from "@src/screens/OrderDetail/OrderDetails";
 import AboutUs from "@src/screens/Profile/screens/AboutUs";
 import PastOrders from "@src/screens/Profile/screens/PastOrders";
 import Profile from "@src/screens/Profile/screens/Profile";
-// import { initSentry, routingInstrumentation } from "@src/services/sentry";
+import { initSentry } from "@src/services/sentry";
 import { useAppLaunchStore } from "@src/store/AppLaunch";
 import { useAuth } from "@src/store/Auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -55,6 +55,7 @@ import React from "react";
 import SeaShippingOrderDetails from "@src/screens/OrderDetail/screens/SeaShippingOrderDetails";
 import BatchUpdateDetail from "@src/screens/Admin/screens/BatchUpdate/screens/BatchUpdateDetail";
 import { UpdateProvider } from "@src/context/UpdateProvider";
+import * as Sentry from "@sentry/react-native";
 registerTranslation("en-GB", en);
 
 SplashScreen.preventAutoHideAsync();
@@ -62,7 +63,7 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 
-// initSentry();
+initSentry();
 initMixpanel();
 function AppWrapper() {
    const { expoPushToken } = useNotification();
@@ -219,19 +220,6 @@ const streami18n = new Streami18n({
 });
 const App = () => {
    return (
-      // <QueryClientProvider client={client}>
-      // 	<ChatProvider>
-      // 		<OverlayProvider>
-      // 			<>
-      // 				<StreamChat client={chatClient} i18nInstance={streami18n}>
-      // 					<GestureHandlerRootView style={{ flex: 1 }}>
-      // 						<MainWrapper />
-      // 					</GestureHandlerRootView>
-      // 				</StreamChat>
-      // 			</>
-      // 		</OverlayProvider>
-      // 	</ChatProvider>
-      // </QueryClientProvider>
       <QueryClientProvider client={client}>
          <ChatProvider>
             <GestureHandlerRootView style={{ flex: 1 }}>
@@ -257,4 +245,4 @@ const MainWrapper = () => {
    );
 };
 
-export default App;
+export default Sentry.wrap(App);
