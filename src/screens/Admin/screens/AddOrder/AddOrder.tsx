@@ -22,7 +22,7 @@ import {
 } from "react-native";
 import { ActivityIndicator, Avatar, Button, Snackbar, Text } from "react-native-paper";
 import * as yup from "yup";
-import { usePlaceOrder } from "../../hooks/useOrder";
+import { useDeleteImage, usePlaceOrder } from "../../hooks/useOrder";
 import { DatePickerModal } from "react-native-paper-dates";
 import { useGetCategories } from "../../hooks/useCategory";
 import { CustomModal } from "@src/components/Modal/Modal";
@@ -71,7 +71,7 @@ interface order {
 const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
    const data = Math.random().toString(36).substring(7);
    const shippingWay = useShippingMode((state) => state.type);
-
+   const { mutate: deleteMutation, data: deleteData } = useDeleteImage();
    const [shippingMode, setShippingMode] = useState<"air" | "sea">(shippingWay);
    const [visible, setVisible] = useState(false);
    const [pickerValue, setPickerValue] = useState<string | null>(null);
@@ -103,7 +103,14 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
       },
       [setOpen, setDate]
    );
-
+   const deleteImage = (id: string) => {
+      console.log("id", id);
+      const img = selectedImages.find((image) => image.public_id === id)?.public_id;
+      deleteMutation({
+         public_id: img!,
+      });
+      setSelectedImages((prev) => prev.filter((image) => image.public_id !== id));
+   };
    const renderAdditionalFields = () => {
       if (shippingMode === "air") {
          return (
@@ -131,6 +138,13 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
                   autoCapitalize="none"
                   containerStyle={styles.containerStyle}
                   name="contenairNumber"
+               />
+               <AuthInputField
+                  label="Prix Total"
+                  autoCapitalize="none"
+                  containerStyle={styles.containerStyle}
+                  name="priceTotal"
+                  keyboardType="numeric"
                />
                {/* Additional fields for sea shipping can be added here */}
             </>
@@ -165,6 +179,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
             packageCBM: values.packageCBM || "0",
             dateOfReceipt: startDate,
             contenairNumber: values.contenairNumber || "0",
+            priceTotal: values.priceTotal,
          });
       } catch (error) {
          console.log(error);
@@ -338,24 +353,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
                   }}
                   behavior={Platform.OS === "ios" ? "height" : undefined}
                >
-                  <CustomModal
-                     onConfirm={() => setShowModal(false)}
-                     visible={showModal}
-                     title="Choisir l'option"
-                     message="Veuillez choisir une option pour ajouter une image"
-                     onClose={() => setShowModal(false)}
-                  >
-                     <View>
-                        <Pressable onPress={takePhoto} style={styles.optionContainer}>
-                           <MaterialIcons size={24} color={COLORS.blue} name="camera" />
-                           <Text style={styles.optionLabel}>Prendre une photo</Text>
-                        </Pressable>
-                        <Pressable onPress={pickImage} style={styles.optionContainer}>
-                           <MaterialIcons size={24} color={COLORS.blue} name="perm-media" />
-                           <Text style={styles.optionLabel}>Choisir une photo dans la galerie</Text>
-                        </Pressable>
-                     </View>
-                  </CustomModal>
                   <Snackbar
                      visible={visible}
                      onDismiss={onDismissSnackBar}
@@ -389,8 +386,20 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
                                  : "https://res.cloudinary.com/piincher/image/upload/v1676795950/s6mxvpjvd3ytguh7se8p.jpg",
                         }}
                      />
-                     <Pressable onPress={() => setShowModal(true)} style={styles.imagePicker}>
+                  </View>
+                  <View
+                     style={{
+                        flexDirection: "row",
+                        justifyContent: "space-evenly",
+                        marginTop: 10,
+                        width: "100%",
+                     }}
+                  >
+                     <Pressable onPress={() => takePhoto()} style={styles.imagePicker}>
                         <AntDesign name="camera" size={24} color="black" />
+                     </Pressable>
+                     <Pressable onPress={() => pickImage()} style={styles.imagePicker}>
+                        <MaterialIcons name="perm-media" size={24} color="black" />
                      </Pressable>
                   </View>
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -404,6 +413,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
                                  marginHorizontal: SCREEN_WIDTH * 0.02,
                               }}
                               key={image.public_id}
+                              onPress={() => deleteImage(image.public_id)}
                            >
                               <Avatar.Image
                                  size={SCREEN_WIDTH * 0.13}
@@ -554,9 +564,6 @@ const styles = StyleSheet.create({
       borderRadius: 100,
    },
    imagePicker: {
-      position: "absolute",
-      right: 5,
-      bottom: 5,
       backgroundColor: "grey",
       padding: 8,
       borderRadius: 100,

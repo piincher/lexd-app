@@ -36,6 +36,7 @@
     "expo-image-manipulator": "~13.0.5",
     "expo-image-picker": "~16.0.3",
     "expo-insights": "~0.8.1",
+    "expo-linear-gradient": "~14.0.2",
     "expo-media-library": "~17.0.3",
     "expo-notifications": "~0.29.10",
     "expo-secure-store": "~14.0.0",
@@ -45,6 +46,7 @@
     "expo-web-browser": "~14.0.1",
     "formik": "^2.4.6",
     "mixpanel-react-native": "^3.0.5",
+    "moti": "^0.30.0",
     "react": "18.3.1",
     "react-native": "0.76.3",
     "react-native-gesture-handler": "~2.20.2",
@@ -59,7 +61,8 @@
     "sp-react-native-in-app-updates": "^1.4.0",
     "stream-chat-expo": "^5.44.2",
     "yup": "^1.4.0",
-    "zustand": "^4.3.7"
+    "zustand": "^4.3.7",
+    "expo-blur": "~14.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

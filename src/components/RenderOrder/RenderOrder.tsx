@@ -55,6 +55,14 @@ export const RenderOrder = ({ item }: { item: productType }) => {
          label: "Nombre de CBM",
          value: item.packageCBM,
       },
+      shippingMode === "sea" && {
+         label: "Le Prix Total",
+         value: item.priceTotal,
+      },
+      shippingMode === "sea" && {
+         label: "Compagnie de Transport",
+         value: item.contenairNumber,
+      },
    ];
    const handleNavigate = () => {
       if (role === "admin") {

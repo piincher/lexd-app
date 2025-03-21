@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 
-import { AntDesign, Entypo } from "@expo/vector-icons";
+import { AntDesign, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -56,6 +56,8 @@ import SeaShippingOrderDetails from "@src/screens/OrderDetail/screens/SeaShippin
 import BatchUpdateDetail from "@src/screens/Admin/screens/BatchUpdate/screens/BatchUpdateDetail";
 import { UpdateProvider } from "@src/context/UpdateProvider";
 import * as Sentry from "@sentry/react-native";
+import { COLORS } from "@src/constants/Colors";
+import Orders from "@src/screens/orders/Orders";
 registerTranslation("en-GB", en);
 
 SplashScreen.preventAutoHideAsync();
@@ -190,6 +192,26 @@ const HomeBottomTab = () => {
                      <AntDesign name="file1" focused={focused} color={color} size={size} />
                   ),
                }}
+            />
+         )}
+         {!adminRole && (
+            <BottomTab.Screen
+               name="Orders"
+               options={{
+                  tabBarLabel: "Commandes",
+                  tabBarAccessibilityLabel: "Commandes",
+                  tabBarActiveTintColor: COLORS.blue,
+                  tabBarInactiveTintColor: COLORS.grey,
+                  tabBarIcon: ({ focused, color, size }) => (
+                     <FontAwesome5
+                        name="clipboard-list"
+                        size={size}
+                        color={color}
+                        focused={focused}
+                     />
+                  ),
+               }}
+               component={Orders}
             />
          )}
          <BottomTab.Screen
