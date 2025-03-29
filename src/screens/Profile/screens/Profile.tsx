@@ -10,7 +10,7 @@ import { useGetCurrentUser } from "../hooks/useProfile";
 import SocialMedia from "@src/components/SocialMedia/SocialMedia";
 import Constants from "expo-constants";
 import { MotiView, MotiText } from "moti";
-import { PanGestureHandler } from "react-native-gesture-handler";
+import { Gesture, GestureDetector, PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
    Extrapolate,
    FadeIn,
@@ -26,6 +26,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import { BlurView } from "expo-blur";
+import withProtectedRoute from "@src/hoc/protected";
 
 const AnimatedList = Animated.createAnimatedComponent(List.Item);
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
@@ -74,21 +75,6 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
    const translateX = useSharedValue(0);
    const translateY = useSharedValue(0);
 
-   const gestureHandler = useAnimatedGestureHandler({
-      onStart: (_, ctx) => {
-         ctx.startX = translateX.value;
-         ctx.startY = translateY.value;
-      },
-      onActive: (event, ctx) => {
-         translateX.value = ctx.startX + event.translationX;
-         translateY.value = ctx.startY + event.translationY;
-      },
-      onEnd: () => {
-         translateX.value = withSpring(0);
-         translateY.value = withSpring(0);
-      },
-   });
-
    const animatedAvatarStyle = useAnimatedStyle(() => ({
       transform: [
          { translateX: translateX.value },
@@ -126,7 +112,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
          <BlurView intensity={30} style={StyleSheet.absoluteFill}>
             <AnimatedScrollView entering={FadeIn.duration(500)} style={{ flex: 1, padding: 10 }}>
                <View style={styles.header}>
-                  <PanGestureHandler onGestureEvent={gestureHandler}>
+                  <>
                      <Animated.View style={[animatedAvatarStyle, styles.avatarContainer]}>
                         <MotiView
                            from={{ scale: 0.8, opacity: 0 }}
@@ -141,7 +127,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                            />
                         </MotiView>
                      </Animated.View>
-                  </PanGestureHandler>
+                  </>
 
                   <View>
                      <MotiText {...animateHeader(0)} style={styles.username}>
@@ -275,4 +261,4 @@ const styles = StyleSheet.create({
    },
 });
 
-export default Profile;
+export default withProtectedRoute(Profile);

@@ -8,6 +8,7 @@ import React from "react";
 import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ItemList } from "../Home/components/ItemList";
+import withProtectedRoute from "@src/hoc/protected";
 
 type dataType = {
    id: string;
@@ -115,61 +116,7 @@ const Orders = ({ navigation }: HomeTabScreenProps<"Orders">) => {
    );
 };
 
-export default Orders;
-
-const styles = StyleSheet.create({
-   container: {
-      margin: 10,
-   },
-   card: {
-      borderWidth: 1,
-      borderColor: COLORS.primary,
-      padding: 10,
-      backgroundColor: COLORS.white,
-   },
-   title: {
-      borderColor: COLORS.primary,
-      marginBottom: 20,
-      fontFamily: Fonts.bold,
-      padding: 10,
-   },
-   name: {
-      fontSize: 16,
-      marginBottom: 10,
-      textAlign: "left",
-      marginRight: 50,
-      fontFamily: Fonts.black,
-      padding: 5,
-   },
-   date: {
-      fontWeight: "500",
-      marginBottom: 10,
-   },
-   daysRemaining: {
-      textAlign: "left",
-      marginRight: 80,
-      fontFamily: Fonts.bold,
-      padding: 5,
-   },
-   headerContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-around",
-      borderWidth: 0.5,
-      padding: 20,
-      borderColor: COLORS.primary,
-   },
-   hsCArgoText: { fontFamily: Fonts.bold, fontSize: 20 },
-   pressable: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      borderColor: COLORS.primary,
-      borderWidth: 0.9,
-      padding: 12,
-      margin: 20,
-   },
-});
+export default withProtectedRoute(Orders);
 
 // {
 // 		steps: [

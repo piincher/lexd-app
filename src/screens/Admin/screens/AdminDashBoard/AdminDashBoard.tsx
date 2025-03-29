@@ -8,6 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ItemList } from "../../../Home/components/ItemList";
 import { RowDetails } from "../../../Home/components/RowDetails";
 import { useViewSmsBalance } from "../../../Home/hooks/useGetActiveOrders";
+import withProtectedRoute from "@src/hoc/protected";
 
 type dataType = {
    id: string;
@@ -88,4 +89,4 @@ const AdminDashBoard = ({ navigation }: HomeTabScreenProps<"AdminDashBoard">) =>
 const styles = StyleSheet.create({
    container: { flex: 1, backgroundColor: COLORS.white },
 });
-export default AdminDashBoard;
+export default withProtectedRoute(AdminDashBoard);

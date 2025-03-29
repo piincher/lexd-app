@@ -54,7 +54,7 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
       <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
          <ScrollView>
             <LinearGradient colors={[COLORS.blue, COLORS.yellow]} style={styles.headerGradient}>
-               <Header title="Détails de suivi" navigation={navigation!} transparent />
+               <Header title="Détails de suivi" navigation={navigation!} />
             </LinearGradient>
 
             <View style={styles.contentContainer}>
@@ -69,7 +69,7 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
                      <Text style={styles.trackingNumber}>Numero de Suivi: {item?.code}</Text>
                   </View>
                   <Pressable onPress={handleChat} style={styles.chatButton}>
-                     <MaterialCommunityIcons name="chat" size={28} color={COLORS.white} />
+                     <MaterialCommunityIcons name="chat" size={28} color={COLORS.blue} />
                   </Pressable>
                </View>
 
@@ -135,7 +135,7 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
    );
 };
 
-const detailStyles = StyleSheet.create({
+export const detailStyles = StyleSheet.create({
    container: {
       padding: 16,
       backgroundColor: COLORS.extra1,

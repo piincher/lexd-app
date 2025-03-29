@@ -863,18 +863,17 @@
 // export default HomeScreen;
 
 import { AntDesign, FontAwesome6 } from "@expo/vector-icons";
+import FadingAnnouncement from "@src/components/Announcement/Annoncement";
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
-import { IMAGES } from "@src/constants/Images";
 import { HomeTabScreenProps } from "@src/navigations/type";
 import { useShippingMode } from "@src/store/shippingMode";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect } from "react";
+import React from "react";
 import { Image, Linking, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, {
    Extrapolate,
    FadeInDown,
-   FadeInLeft,
    FadeInRight,
    interpolate,
    useAnimatedRef,
@@ -886,7 +885,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Banner from "../components/Banner";
-import BlockComponent from "../components/Block";
+import { Header } from "../components/Header";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 const PARTNER_LOGOS = [
@@ -924,18 +923,11 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<"Home">) => {
    const setType = useShippingMode((state) => state.setType);
 
    const handlePressBlockOne = () => {
-      const air = "air";
-      setType(air);
-
-      navigation.navigate("UserActiveOrders", { type: air });
+      navigation.navigate("faq");
    };
 
    const handlePressBlockTwo = () => {
-      const sea = "sea";
-
-      setType(sea);
-
-      navigation.navigate("UserActiveOrders", { type: sea });
+      navigation.navigate("AboutUs");
    };
 
    const scrollHandler = useAnimatedScrollHandler({
@@ -967,11 +959,10 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<"Home">) => {
 
    return (
       <SafeAreaView style={styles.container}>
-         <Animated.View style={[styles.headerContainer, headerStyle]}>
-            <Image source={IMAGES.flat_logo} style={styles.logo} />
-         </Animated.View>
+         <Header />
 
          <AnimatedScrollView
+            keyboardShouldPersistTaps="handled"
             ref={scrollRef}
             onScroll={scrollHandler}
             scrollEventThrottle={16}
@@ -983,32 +974,9 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<"Home">) => {
             </Animated.View>
 
             {/* Main Actions */}
-            <Animated.Text entering={FadeInDown.delay(300).springify()} style={styles.voirPlusText}>
-               Voir Plus
-            </Animated.Text>
-
-            <View style={styles.blocksContainer}>
-               <Animated.View>
-                  <BlockComponent
-                     title="Mes Commandes Aeriennes"
-                     icon="plane-departure"
-                     backgroundColor={COLORS.blue}
-                     iconLib="FontAwesome6"
-                     onPress={handlePressBlockOne}
-                  />
-               </Animated.View>
-               <Animated.View>
-                  <BlockComponent
-                     title="Mes Commandes Maritimes"
-                     icon="sailboat"
-                     backgroundColor="#1ED7B5"
-                     iconLib="FontAwesome6"
-                     onPress={handlePressBlockTwo}
-                  />
-               </Animated.View>
-            </View>
 
             {/* Shipping Solutions */}
+            <FadingAnnouncement />
             <View style={styles.section}>
                <Text style={styles.sectionTitle}>Nos Solutions d'Expédition</Text>
                <ScrollView
@@ -1167,9 +1135,12 @@ const styles = StyleSheet.create({
    },
    headerContainer: {
       borderColor: COLORS.blue,
-      justifyContent: "center",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+
       paddingHorizontal: 20,
-      backgroundColor: "white",
+
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
@@ -1177,7 +1148,7 @@ const styles = StyleSheet.create({
       elevation: 5,
    },
    logo: {
-      width: "100%",
+      width: "80%",
       height: 60,
       resizeMode: "contain",
    },
@@ -1367,6 +1338,13 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.3,
       shadowRadius: 6,
       elevation: 8,
+   },
+   headerActions: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      gap: 16,
+      marginTop: 8,
    },
 });
 

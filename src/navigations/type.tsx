@@ -37,6 +37,7 @@ export type RootStackParamList = {
    ShippingMethod: undefined;
    SeaShippingOrderDetails: { id: string };
    BatchUpdateDetail: { data: string[] };
+   faq: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<

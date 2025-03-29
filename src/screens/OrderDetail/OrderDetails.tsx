@@ -13,6 +13,7 @@ import { useChatClient } from "../Chat/hooks/useChatClient";
 import { useGetRoutes } from "../Home/hooks/useRoute";
 import { useGetOrderDetails } from "./hooks/useGetOrderDetail";
 import { LoadingSpinner } from "@src/components/LoadingSpinner";
+import { LinearGradient } from "expo-linear-gradient";
 
 // interface StepIndicatorProps {
 // 	steps: Array<{
@@ -239,52 +240,77 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<"OrderDetail">
    return (
       <SafeAreaView style={{ flex: 1 }}>
          <ScrollView>
-            <Header title="Détails de suivi" navigation={navigation!} />
-            <View style={styles.imageContainer}>
-               <Image source={{ uri: item?.images[0]?.url }} style={styles.imageStyle} />
-               <View style={{ marginLeft: 12 }}>
-                  <Text style={styles.category}>{item?.category?.name || item?.typeOfPackage}</Text>
-                  <Text style={styles.trackingNumber}>Numero de Suivi:{item?.code}</Text>
+            <LinearGradient
+               colors={[COLORS.green, COLORS.yellow, COLORS.redShade]}
+               style={styles.headerGradient}
+            >
+               <Header title="Détails de suivi" navigation={navigation!} />
+            </LinearGradient>
+            <View>
+               <View style={styles.imageContainer}>
+                  <LinearGradient colors={[COLORS.blue, COLORS.yellow]} style={styles.imageBorder}>
+                     <Image source={{ uri: item?.images[0]?.url }} style={styles.imageStyle} />
+                  </LinearGradient>
+                  <View style={styles.textContainer}>
+                     <Text style={styles.category}>
+                        {item?.category?.name || item?.typeOfPackage}
+                     </Text>
+                     <Text style={styles.trackingNumber}>Numero de Suivi: {item?.code}</Text>
+                  </View>
+                  <Pressable onPress={handleChat} style={styles.chatButton}>
+                     <MaterialCommunityIcons name="chat" size={28} color={COLORS.white} />
+                  </Pressable>
                </View>
-               <Pressable onPress={handleChat}>
-                  <MaterialCommunityIcons name="chat" size={34} color={COLORS.blue} />
-               </Pressable>
             </View>
-            <View style={styles.detailContainer}>
-               {/* Logistics details */}
-               <DetailRow
-                  label1="Pays d'envoie"
-                  value1="Chine"
-                  label2="Pays de reception"
-                  value2="Bamako, Mali"
-               />
-               {/* Goods information */}
-               <DetailRow
-                  label1="Client"
-                  value1={item?.clientName!}
-                  label2="Nombre de Kilo"
-                  value2={String(item?.packageWeight!)}
-               />
-               {/* Status and type */}
-               <DetailRow
-                  label1="Status"
-                  value1={item?.currentStatus! || "le client a passe la commande"}
-                  label2="Type de colis"
-                  value2={item?.category?.name!}
-               />
-               <DetailRow
-                  label1="Position actuelle"
-                  value1={actualLocation || "En attente"}
-                  label2="Date de depart"
-                  value2={formattedDateTime}
-               />
-               <DetailRow label1="Note" value1={note || ""} label2="" value2="" />
-               <DetailRow
-                  label1="Derniere mise a jour"
-                  value1={formattedLastUpdate}
-                  label2=""
-                  value2=""
-               />
+            <View style={detailStyles.container}>
+               <DetailRow label="Pays d'envoie" value="Chine, Foshan" icon="earth" />
+
+               <DetailRow label="Pays de réception" value="Bamako, Mali" icon="map-marker" />
+
+               <View style={detailStyles.card}>
+                  <DetailRow
+                     label="Client"
+                     value={item?.clientName || "Non spécifié"}
+                     icon="account"
+                  />
+
+                  <DetailRow
+                     label="Prix Total"
+                     value={`${item?.priceTotal?.toLocaleString() || "0"} FCFA`}
+                     icon="cash"
+                  />
+
+                  <DetailRow
+                     label="Type de colis"
+                     value={item?.category?.name || "Général"}
+                     icon="package-variant"
+                  />
+               </View>
+
+               <View style={detailStyles.card}>
+                  <DetailRow
+                     label="Statut actuel"
+                     value={item?.currentStatus || "Commande passée"}
+                     icon="progress-check"
+                  />
+
+                  <DetailRow
+                     label="Dernière mise à jour"
+                     value={formattedLastUpdate}
+                     icon="update"
+                  />
+
+                  <DetailRow label="Date de depart" value={formattedDateTime} icon="calendar" />
+               </View>
+
+               <View style={detailStyles.card}>
+                  <DetailRow
+                     label="Notes"
+                     value={note || "Aucune note disponible"}
+                     icon="note-text"
+                     isLast
+                  />
+               </View>
             </View>
             <StatusTimeline
                statusData={data[0]?.orderDetail!}
@@ -295,7 +321,30 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<"OrderDetail">
       </SafeAreaView>
    );
 };
+const detailStyles = StyleSheet.create({
+   container: {
+      padding: 16,
+      backgroundColor: COLORS.extra1,
+   },
 
+   card: {
+      backgroundColor: COLORS.white,
+      borderRadius: 14,
+      marginVertical: 8,
+      shadowColor: COLORS.black,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.05,
+      shadowRadius: 8,
+      elevation: 2,
+   },
+   sectionHeader: {
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      color: COLORS.DarkGrey,
+      marginVertical: 12,
+      paddingLeft: 8,
+   },
+});
 const styles = StyleSheet.create({
    detailContainer: {
       borderWidth: 0.2,
@@ -303,6 +352,47 @@ const styles = StyleSheet.create({
       margin: 20,
       borderColor: COLORS.grey,
       borderRadius: 5,
+   },
+   chatButton: {
+      backgroundColor: COLORS.blue,
+      padding: 1,
+      borderRadius: 15,
+      alignSelf: "center",
+   },
+   contentContainer: {
+      paddingHorizontal: 20,
+      marginTop: 20,
+   },
+   imageContainer: {
+      flexDirection: "row",
+      backgroundColor: COLORS.white,
+      borderRadius: 20,
+      padding: 15,
+      marginBottom: 20,
+      shadowColor: COLORS.DarkGrey,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.1,
+      shadowRadius: 8,
+      elevation: 3,
+   },
+   imageBorder: {
+      borderRadius: 12,
+      padding: 3,
+   },
+   imageStyle: {
+      width: 80,
+      height: 80,
+      borderRadius: 10,
+   },
+   headerGradient: {
+      paddingTop: 5,
+      borderBottomLeftRadius: 30,
+      borderBottomRightRadius: 30,
+      shadowColor: COLORS.DarkGrey,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.2,
+      shadowRadius: 8,
+      elevation: 5,
    },
    category: {
       fontFamily: Fonts.bold,

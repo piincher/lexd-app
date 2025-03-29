@@ -58,6 +58,7 @@ import { UpdateProvider } from "@src/context/UpdateProvider";
 import * as Sentry from "@sentry/react-native";
 import { COLORS } from "@src/constants/Colors";
 import Orders from "@src/screens/orders/Orders";
+import Faq from "@src/screens/Home/screens/FAQ";
 registerTranslation("en-GB", en);
 
 SplashScreen.preventAutoHideAsync();
@@ -121,10 +122,12 @@ function AppWrapper() {
             <StatusBar style="auto" />
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                {appLaunch && <Stack.Screen name="OnBoarding" component={OnBoarding} />}
+               <Stack.Screen name="HomeTab" component={HomeBottomTab} />
+               <Stack.Screen name="AboutUs" component={AboutUs} />
+               <Stack.Screen name="faq" component={Faq} />
 
                {token ? (
                   <>
-                     <Stack.Screen name="HomeTab" component={HomeBottomTab} />
                      <Stack.Screen name="CheckRoute" component={CheckRoute} />
                      <Stack.Screen name="AddOrder" component={AddOrder} />
                      <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
@@ -133,11 +136,11 @@ function AppWrapper() {
                      <Stack.Screen name="SelectAdminToChatWith" component={SelectAdminToChatWith} />
                      <Stack.Screen name="SelectUser" component={SelectUser} />
                      <Stack.Screen name="PastOrders" component={PastOrders} />
-                     <Stack.Screen name="AboutUs" component={AboutUs} />
+
                      <Stack.Screen name="UserAdd" component={AddUser} />
                      <Stack.Screen name="AdmninPastOrders" component={AdminPastOrders} />
                      <Stack.Screen name="SendSms" component={SendSms} />
-                     <Stack.Screen name="Map" component={Map} />
+
                      <Stack.Screen name="ActiveOrderDetails" component={ActiveOrderdetails} />
                      <Stack.Screen name="ScanQRCode" component={ScanQRCode} />
                      <Stack.Screen name="Notifications" component={Notifications} />

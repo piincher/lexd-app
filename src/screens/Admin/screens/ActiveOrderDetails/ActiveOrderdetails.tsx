@@ -11,6 +11,8 @@ import { useGetOrderDetails } from "@src/screens/OrderDetail/hooks/useGetOrderDe
 import AppButton from "@src/components/AppButton/AppButton";
 import { useGetRoutes } from "@src/screens/Home/hooks/useRoute";
 import { DetailRow } from "@src/components/DetailsRow/DetailsRow";
+import { detailStyles } from "@src/screens/OrderDetail/screens/SeaShippingOrderDetails";
+import { formatDate } from "@src/utils/formatDate";
 
 interface updateSelected {
    title: string;
@@ -132,35 +134,62 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<"ActiveOrderDetails"
          setSelectedCheckboxes(initialCheckboxes);
       }
    }, [item]);
+   const formattedDateTime = formatDate(item?.departureDate!);
+   const formattedLastUpdate = formatDate(item?.updatedAt!);
 
    return (
       <SafeAreaView style={styles.container}>
          <ScrollView>
-            <View style={styles.detailContainer}>
-               {/* Logistics details */}
-               <DetailRow
-                  label1="Pays d'envoie"
-                  value1="Chine"
-                  label2="Pays de reception"
-                  value2="Bamako, Mali"
-               />
-               {/* Goods information */}
-               <DetailRow
-                  label1="Client"
-                  value1={item?.clientName!}
-                  label2="Nombre de Kilo"
-                  value2={String(item?.packageWeight!)}
-               />
-               {/* Status and type */}
-               <DetailRow
-                  label1="Status"
-                  value1={item?.currentStatus!}
-                  label2="Type de colis"
-                  value2={item?.typeOfPackage!}
-               />
-               <DetailRow label1="Note" value1={locationNote!} label2="" value2={""} />
-            </View>
+            <View style={detailStyles.container}>
+               <DetailRow label="Pays d'envoie" value="Chine, Foshan" icon="earth" />
 
+               <DetailRow label="Pays de réception" value="Bamako, Mali" icon="map-marker" />
+
+               <View style={detailStyles.card}>
+                  <DetailRow
+                     label="Client"
+                     value={item?.clientName || "Non spécifié"}
+                     icon="account"
+                  />
+
+                  <DetailRow
+                     label="Prix Total"
+                     value={`${item?.priceTotal?.toLocaleString() || "0"} FCFA`}
+                     icon="cash"
+                  />
+
+                  <DetailRow
+                     label="Type de colis"
+                     value={item?.category?.name || "Général"}
+                     icon="package-variant"
+                  />
+               </View>
+
+               <View style={detailStyles.card}>
+                  <DetailRow
+                     label="Statut actuel"
+                     value={item?.currentStatus || "Commande passée"}
+                     icon="progress-check"
+                  />
+
+                  <DetailRow
+                     label="Dernière mise à jour"
+                     value={formattedLastUpdate}
+                     icon="update"
+                  />
+
+                  <DetailRow label="Date de chargement" value={formattedDateTime} icon="calendar" />
+               </View>
+
+               <View style={detailStyles.card}>
+                  <DetailRow
+                     label="Notes"
+                     value={note || "Aucune note disponible"}
+                     icon="note-text"
+                     isLast
+                  />
+               </View>
+            </View>
             {/* Routes section */}
             {Status?.orderDetail?.map((route) => (
                <View key={route.id} style={styles.routeContainer}>
