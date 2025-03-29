@@ -59,6 +59,7 @@ import * as Sentry from "@sentry/react-native";
 import { COLORS } from "@src/constants/Colors";
 import Orders from "@src/screens/orders/Orders";
 import Faq from "@src/screens/Home/screens/FAQ";
+import FadingAnnouncement from "@src/components/Announcement/Annoncement";
 registerTranslation("en-GB", en);
 
 SplashScreen.preventAutoHideAsync();
@@ -120,8 +121,11 @@ function AppWrapper() {
             ref={navigation}
          >
             <StatusBar style="auto" />
+            <FadingAnnouncement />
+
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                {appLaunch && <Stack.Screen name="OnBoarding" component={OnBoarding} />}
+
                <Stack.Screen name="HomeTab" component={HomeBottomTab} />
                <Stack.Screen name="AboutUs" component={AboutUs} />
                <Stack.Screen name="faq" component={Faq} />

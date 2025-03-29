@@ -976,7 +976,6 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<"Home">) => {
             {/* Main Actions */}
 
             {/* Shipping Solutions */}
-            <FadingAnnouncement />
             <View style={styles.section}>
                <Text style={styles.sectionTitle}>Nos Solutions d'Expédition</Text>
                <ScrollView
@@ -1108,6 +1107,7 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<"Home">) => {
                </LinearGradient>
             </Pressable>
          </Animated.View>
+         <FadingAnnouncement />
 
          {/* WhatsApp Button */}
          <Animated.View style={[styles.whatsappButton, whatsappStyle]}>

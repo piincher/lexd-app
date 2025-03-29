@@ -151,16 +151,16 @@ const FadingAnnouncement: React.FC = () => {
 const styles = StyleSheet.create({
    container: {
       position: "absolute",
-      top: 80,
+      top: 100,
       left: 20,
       right: 20,
+      width: SCREEN_WIDTH - 40,
       borderRadius: 12,
       shadowColor: COLORS.DarkGrey,
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.1,
       shadowRadius: 12,
       elevation: 3,
-      overflow: "hidden",
       backgroundColor: COLORS.lightCrimson,
       borderWidth: 1,
       borderColor: COLORS.Crimson + "20",
