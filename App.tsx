@@ -132,7 +132,7 @@ function AppWrapper() {
 
                {token ? (
                   <>
-                     <Stack.Screen name="CheckRoute" component={CheckRoute} />
+                     {/* <Stack.Screen name="CheckRoute" component={CheckRoute} /> */}
                      <Stack.Screen name="AddOrder" component={AddOrder} />
                      <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
                      <Stack.Screen name="OrderDetail" component={OrderDetails} />

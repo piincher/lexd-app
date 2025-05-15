@@ -43,8 +43,6 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<"ActiveOrderDetails"
    const [pickerValue, setPickerValue] = useState(actualLocation);
    const { mutate: updateStatusDelivery } = useUpdateStatusDelivery();
 
-   console.log("item", item?.currentStatus);
-
    const updateDeliver = () => {
       updateStatusDelivery({
          ...item,

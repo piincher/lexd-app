@@ -10,7 +10,6 @@ interface Item {
 export const RenderHomeItem = ({ item, navigation }: Item) => {
    const { setType } = useShippingMode((state) => state);
 
-   console.log("item", item.param);
    const handleNavigation = () => {
       if (item.param) {
          setType(item.param as "air" | "sea");

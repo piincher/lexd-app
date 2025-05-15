@@ -48,15 +48,7 @@ const ActiveOrders = ({ navigation, route }: RootStackScreenProps<"ActiveOrder">
    const [searchQuery, setSearchQuery] = React.useState("");
    const shippingMethod = route.params.type;
 
-   console.log("shipping mode", shippingMethod);
-
    const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
-
-   const departureDate = new Date(
-      date?.getFullYear() ?? 1970,
-      date?.getMonth() ?? 0,
-      date?.getDate() ?? 1
-   ).toISOString();
 
    const departDate = getSafeDate(date);
 

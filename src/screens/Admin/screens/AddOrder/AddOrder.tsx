@@ -160,7 +160,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
    );
    const process = {
       id: data,
-      title: "le client a passé une commande",
+      title: "Le client a passé une commande",
       time: new Date().toISOString(),
    };
    const handleSubmit = async (values: order) => {

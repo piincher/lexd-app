@@ -155,7 +155,6 @@ const StatusTimeline = ({ statusData, currentStatus, location }: Status) => {
          </Svg>
          <View style={styles3.statusContainer}>
             {statusData?.map((item, index) => {
-               console.log("item", item);
                return (
                   <>
                      <View key={item._id} style={styles3.statusItem}>
@@ -216,8 +215,6 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<"OrderDetail">
    const [currentStep, setCurrentStep] = React.useState(0);
    const id = route.params.id;
    const { data: item, isPending } = useGetOrderDetails(id);
-
-   console.log("item", item);
 
    useEffect(() => {
       const datad = item?.route?.[item.route?.length - 1] ?? [];

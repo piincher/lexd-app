@@ -87,7 +87,6 @@ const Orders = ({ navigation }: HomeTabScreenProps<"Orders">) => {
    const { role } = useAuth((state) => state.user);
    const { setType } = useShippingMode((state) => state);
 
-   console.log("role", role);
    const userRole = role === "admin" ? list : role === "manager" ? managerList : shippingMode;
 
    const handleAirShiping = () => {

@@ -128,7 +128,11 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
                   </View>
                </View>
 
-               <StatusTimeline statusData={statusData} currentStatus={item?.currentStatus!} />
+               <StatusTimeline
+                  statusData={statusData}
+                  currentStatus={item?.currentStatus!}
+                  route={item?.route}
+               />
             </View>
          </ScrollView>
       </SafeAreaView>
@@ -158,7 +162,7 @@ export const detailStyles = StyleSheet.create({
       paddingLeft: 8,
    },
 });
-const StatusTimeline = ({ statusData, currentStatus }: Status) => {
+const StatusTimeline = ({ statusData, currentStatus, route }: Status) => {
    const [animations] = useState(() => statusData.map(() => new Animated.Value(0)));
    const currentStatusIndex = statusData.findIndex((step) => step.title === currentStatus);
 
@@ -173,11 +177,14 @@ const StatusTimeline = ({ statusData, currentStatus }: Status) => {
          }).start();
       });
    }, []);
-
    return (
       <View style={styles2.container}>
          {statusData.map((step, index) => {
-            const formattedDate = formatDate(step.createdAt);
+            console.log("step", step.title);
+            console.log("first", route[0].title.toLowerCase());
+            const match = route.find((r) => r.title.toLowerCase() === step.title.toLowerCase());
+            const formattedDate = match ? formatDate(match.time) : "Non spécifié";
+
             const isCompleted = index < currentStatusIndex;
             const isCurrent = index === currentStatusIndex;
 
