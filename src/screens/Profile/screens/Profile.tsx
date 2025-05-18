@@ -1,32 +1,40 @@
 // Profile.tsx
+import SocialMedia from "@src/components/SocialMedia/SocialMedia";
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
+import withProtectedRoute from "@src/hoc/protected";
 import { HomeTabScreenProps } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
-import React, { useCallback } from "react";
-import { Image, ScrollView, StyleSheet, View, useWindowDimensions } from "react-native";
-import { Divider, List, Text, Title } from "react-native-paper";
-import { useGetCurrentUser } from "../hooks/useProfile";
-import SocialMedia from "@src/components/SocialMedia/SocialMedia";
+import { BlurView } from "expo-blur";
 import Constants from "expo-constants";
-import { MotiView, MotiText } from "moti";
-import { Gesture, GestureDetector, PanGestureHandler } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
+import { MotiText, MotiView } from "moti";
+import React, { useCallback } from "react";
+import {
+   Image,
+   ScrollView,
+   StyleSheet,
+   View,
+   useWindowDimensions,
+   Text,
+   TouchableOpacity,
+   Alert,
+} from "react-native";
+import { Divider, List } from "react-native-paper";
 import Animated, {
    Extrapolate,
    FadeIn,
    FadeOut,
    interpolate,
-   useAnimatedGestureHandler,
    useAnimatedStyle,
    useSharedValue,
    withRepeat,
-   withSequence,
-   withSpring,
    withTiming,
 } from "react-native-reanimated";
-import { LinearGradient } from "expo-linear-gradient";
-import { BlurView } from "expo-blur";
-import withProtectedRoute from "@src/hoc/protected";
+import { useGetCurrentUser } from "../hooks/useProfile";
+import { MaterialIcons } from "@expo/vector-icons";
+import * as Clipboard from "expo-clipboard";
+import { useBalance } from "../hooks/useProfile";
 
 const AnimatedList = Animated.createAnimatedComponent(List.Item);
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
@@ -69,27 +77,30 @@ const FloatingParticle = ({ index }: { index: number }) => {
 const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
    const logout = useAuth((state) => state.logOut);
    const { data } = useGetCurrentUser();
+   const { data: balanceData } = useBalance();
    const { width } = useWindowDimensions();
 
-   // Avatar Drag Animation
-   const translateX = useSharedValue(0);
-   const translateY = useSharedValue(0);
-
-   const animatedAvatarStyle = useAnimatedStyle(() => ({
-      transform: [
-         { translateX: translateX.value },
-         { translateY: translateY.value },
-         {
-            scale: interpolate(translateY.value, [-100, 0, 100], [0.9, 1, 0.9], Extrapolate.CLAMP),
-         },
-      ],
-   }));
+   console.log("User Data: ", balanceData);
+   const copyToClipboard = async () => {
+      if (!data?.referralCode) return;
+      await Clipboard.setStringAsync(data.referralCode);
+      Alert.alert("Success", "Referral code copied to clipboard!");
+   };
 
    const animateHeader = useCallback(
       (index: number) => ({
          from: { opacity: 0, translateY: 50 },
          animate: { opacity: 1, translateY: 0 },
          transition: { type: "spring", delay: index * 100 },
+      }),
+      []
+   );
+
+   const statsAnimation = useCallback(
+      (index: number) => ({
+         from: { opacity: 0, translateY: 20 },
+         animate: { opacity: 1, translateY: 0 },
+         transition: { type: "spring", delay: 200 + index * 100 },
       }),
       []
    );
@@ -112,44 +123,93 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
          <BlurView intensity={30} style={StyleSheet.absoluteFill}>
             <AnimatedScrollView entering={FadeIn.duration(500)} style={{ flex: 1, padding: 10 }}>
                <View style={styles.header}>
-                  <>
-                     <Animated.View style={[animatedAvatarStyle, styles.avatarContainer]}>
-                        <MotiView
-                           from={{ scale: 0.8, opacity: 0 }}
-                           animate={{ scale: 1, opacity: 1 }}
-                           transition={{ type: "spring" }}
-                        >
-                           <Image
-                              style={styles.avatar}
-                              source={{
-                                 uri: "https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/ChinaLink%20Express%20(1024%20x%201024%20px)%20(1).png",
-                              }}
-                           />
-                        </MotiView>
-                     </Animated.View>
-                  </>
+                  <Animated.View style={styles.avatarContainer}>
+                     <MotiView
+                        from={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: "spring" }}
+                     >
+                        <Image
+                           style={styles.avatar}
+                           source={{
+                              uri: "https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/ChinaLink%20Express%20(1024%20x%201024%20px)%20(1).png",
+                           }}
+                        />
+                     </MotiView>
+                  </Animated.View>
 
-                  <View>
+                  <View style={styles.userInfo}>
                      <MotiText {...animateHeader(0)} style={styles.username}>
                         {data?.firstName} {data?.lastName}
                      </MotiText>
-                     <MotiText {...animateHeader(1)} style={styles.username}>
+                     <MotiText {...animateHeader(1)} style={styles.phoneNumber}>
                         +{data?.phoneNumber}
                      </MotiText>
                   </View>
                </View>
 
-               <Divider />
+               <View style={styles.statsContainer}>
+                  <MotiView {...statsAnimation(0)} style={styles.statCard}>
+                     <View style={styles.statRow}>
+                        <MaterialIcons name="account-balance-wallet" size={28} color="#4CAF50" />
+                        <View style={styles.statText}>
+                           <Text style={styles.statLabel}></Text>
+                           <Text style={styles.statValue}>{balanceData?.balance} FCFA</Text>
+                        </View>
+                        <TouchableOpacity
+                           style={[styles.actionButton, styles.topUpButton]}
+                           onPress={() => navigation.navigate("TopUp")}
+                        >
+                           <Text style={styles.buttonText}>Top Up</Text>
+                        </TouchableOpacity>
+                     </View>
+                  </MotiView>
+
+                  <MotiView {...statsAnimation(1)} style={styles.statCard}>
+                     <View style={styles.statRow}>
+                        <MaterialIcons name="card-giftcard" size={28} color="#FF9800" />
+                        <View style={styles.statText}>
+                           <Text style={styles.statLabel}>Reward Points</Text>
+                           <Text style={styles.statValue}>
+                              {data?.rewardPoints?.toLocaleString()}
+                           </Text>
+                        </View>
+                        <TouchableOpacity
+                           style={[styles.actionButton, styles.redeemButton]}
+                           onPress={() => navigation.navigate("Rewards")}
+                        >
+                           <Text style={styles.buttonText}>Redeem</Text>
+                        </TouchableOpacity>
+                     </View>
+                  </MotiView>
+
+                  <MotiView {...statsAnimation(2)} style={styles.referralCard}>
+                     <Text style={styles.referralTitle}>Your Referral Code</Text>
+                     <TouchableOpacity onPress={copyToClipboard}>
+                        <LinearGradient
+                           colors={["rgba(124,77,255,0.3)", "rgba(63,81,181,0.3)"]}
+                           style={styles.referralCodeContainer}
+                        >
+                           <Text style={styles.referralCode}>{data?.referralCode || "----"}</Text>
+                           <MaterialIcons
+                              name="content-copy"
+                              size={20}
+                              color="rgba(255,255,255,0.8)"
+                           />
+                        </LinearGradient>
+                     </TouchableOpacity>
+                     <Text style={styles.referralHint}>Share your code to earn bonus points!</Text>
+                  </MotiView>
+               </View>
+
+               <Divider style={styles.divider} />
 
                <List.Section style={styles.section}>
                   {[
-                     { title: "Mes anciens commandes", icon: "shopping", screen: "PastOrders" },
-                     {
-                        title: "A propos de ChinaLink Express",
-                        icon: "alpha-i-circle-outline",
-                        screen: "AboutUs",
-                     },
-                     { title: "Se Déconnecter", icon: "logout", action: logout },
+                     { title: "Order History", icon: "history", screen: "PastOrders" },
+                     { title: "Support Center", icon: "headset", screen: "Support" },
+                     { title: "About ChinaLink", icon: "info", screen: "AboutUs" },
+                     { title: "Log Out", icon: "logout", action: logout },
                   ].map((item, index) => (
                      <MotiView key={item.title} {...listItemAnimation(index)}>
                         <AnimatedList
@@ -172,23 +232,17 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                   ))}
                </List.Section>
 
-               <View style={{ marginTop: "40%", padding: 10 }}>
+               <View style={styles.footer}>
                   <SocialMedia color="#FFF" />
+                  <MotiText
+                     from={{ opacity: 0 }}
+                     animate={{ opacity: 1 }}
+                     transition={{ delay: 1000 }}
+                     style={styles.versionText}
+                  >
+                     App version: {Constants.expoConfig?.version}
+                  </MotiText>
                </View>
-
-               <MotiText
-                  from={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1000 }}
-                  style={{
-                     textAlign: "center",
-                     fontFamily: Fonts.black,
-                     marginBottom: 20,
-                     color: COLORS.white,
-                  }}
-               >
-                  App version: {Constants.expoConfig?.version}
-               </MotiText>
             </AnimatedScrollView>
          </BlurView>
       </LinearGradient>
@@ -197,15 +251,12 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
 
 const styles = StyleSheet.create({
    header: {
-      alignItems: "flex-start",
-      paddingTop: 40,
-      paddingBottom: 20,
-      marginLeft: 20,
       flexDirection: "row",
+      alignItems: "center",
+      padding: 20,
+      margin: 16,
       backgroundColor: "rgba(255,255,255,0.15)",
       borderRadius: 20,
-      padding: 20,
-      margin: 20,
       overflow: "hidden",
    },
    avatarContainer: {
@@ -213,46 +264,140 @@ const styles = StyleSheet.create({
       shadowOffset: { width: 0, height: 10 },
       shadowOpacity: 0.3,
       shadowRadius: 20,
-      elevation: 10,
    },
    avatar: {
-      backgroundColor: COLORS.redShade,
-      height: 100,
-      width: 100,
-      borderRadius: 50,
-      borderWidth: 0.5,
-      borderColor: COLORS.white,
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      borderWidth: 2,
+      borderColor: "rgba(255,255,255,0.2)",
+   },
+   userInfo: {
+      marginLeft: 16,
+      flex: 1,
    },
    username: {
-      marginTop: 10,
-      fontSize: 18,
-      marginLeft: 20,
-      fontFamily: Fonts.boldItalic,
-      color: COLORS.white,
-      textShadowColor: "rgba(0, 0, 0, 0.3)",
-      textShadowOffset: { width: 1, height: 1 },
-      textShadowRadius: 2,
-   },
-   section: {
-      marginTop: 30,
-   },
-   titleStyle: {
-      fontSize: 16,
+      fontSize: 20,
       fontFamily: Fonts.bold,
       color: COLORS.white,
+      marginBottom: 4,
+   },
+   phoneNumber: {
+      fontSize: 14,
+      fontFamily: Fonts.medium,
+      color: "rgba(255,255,255,0.8)",
+   },
+   statsContainer: {
+      paddingHorizontal: 16,
+   },
+   statCard: {
+      backgroundColor: "rgba(255,255,255,0.1)",
+      borderRadius: 16,
+      padding: 16,
+      marginBottom: 12,
+   },
+   statRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 16,
+   },
+   statText: {
+      flex: 1,
+   },
+   statLabel: {
+      color: "rgba(255,255,255,0.8)",
+      fontFamily: Fonts.meduim,
+      fontSize: 12,
+   },
+   statValue: {
+      color: COLORS.white,
+      fontFamily: Fonts.bold,
+      fontSize: 20,
+      marginTop: 4,
+   },
+   actionButton: {
+      borderRadius: 8,
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      justifyContent: "center",
+      alignItems: "center",
+   },
+   topUpButton: {
+      backgroundColor: "#4CAF50",
+   },
+   redeemButton: {
+      backgroundColor: "#FF9800",
+   },
+   buttonText: {
+      color: COLORS.white,
+      fontFamily: Fonts.black,
+      fontSize: 14,
+   },
+   referralCard: {
+      backgroundColor: "rgba(255,255,255,0.1)",
+      borderRadius: 16,
+      padding: 16,
+      marginTop: 8,
+   },
+   referralTitle: {
+      color: COLORS.white,
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      marginBottom: 8,
+   },
+   referralCodeContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+      padding: 12,
+      borderRadius: 8,
+      justifyContent: "center",
+      borderWidth: 1,
+      borderColor: "rgba(255,255,255,0.2)",
+   },
+   referralCode: {
+      color: COLORS.white,
+      fontFamily: Fonts.bold,
+      fontSize: 18,
+      letterSpacing: 2,
+   },
+   referralHint: {
+      color: "rgba(255,255,255,0.7)",
+      fontFamily: Fonts.meduim,
+      fontSize: 12,
+      marginTop: 8,
+      textAlign: "center",
+   },
+   divider: {
+      marginVertical: 24,
+      marginHorizontal: 16,
+      backgroundColor: "rgba(255,255,255,0.2)",
+   },
+   section: {
+      marginBottom: 24,
    },
    listItem: {
-      paddingVertical: 16,
-      paddingHorizontal: 20,
       backgroundColor: "rgba(255,255,255,0.1)",
-      marginHorizontal: 20,
-      borderRadius: 15,
+      borderRadius: 12,
+      marginHorizontal: 16,
       marginVertical: 8,
-      shadowColor: COLORS.white,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 6,
-      elevation: 3,
+      paddingVertical: 12,
+   },
+   titleStyle: {
+      color: COLORS.white,
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+   },
+   footer: {
+      marginTop: 32,
+      paddingHorizontal: 16,
+      alignItems: "center",
+   },
+   versionText: {
+      color: "rgba(255,255,255,0.6)",
+      fontFamily: Fonts.meduim,
+      fontSize: 12,
+      marginTop: 16,
    },
    particle: {
       position: "absolute",

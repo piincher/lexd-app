@@ -31,7 +31,7 @@ const faqs = [
    {
       question: "Comment sont calculés les frais d'expédition ?",
       answer:
-         "Les frais sont basés sur le poids et le volume des colis. Nous appliquons un volume minimum de 0.1 CBM, et les marchandises sous ce seuil seront facturées à ce tarif minimum. Les volumes des marchandises sont arrondis pour satisfaire nos standards d'expédition et de chargement selon les règles de chargement du conteneur. Ceci est une pratique commune pour compenser la consolidation et les frais de palettes.",
+         "Les frais sont basés sur le poids et le volume des colis.Nous appliquons un volume minimum de 0.1 CBM, facturé même si le volume réel est inférieur.Ce minimum inclut jusqu’à 10 kg de marchandise.Si le poids dépasse 10 kg, un supplément de 0.025 CBM est ajouté tous les 5 kg supplémentaires.Exemples :0.05 CBM, 8 kg → facturé 0.1 CBM 0.05 CBM, 12 kg → facturé 0.125 CBM 0.05 CBM, 17 kg → facturé 0.15 CBM Les volumes sont  arrondis selon nos standards de chargement pour répondre aux contraintes du conteneur. Cette pratique permet de compenser les frais de groupage, de palettes, et de gestion logistique.",
    },
    {
       question: "Comment puis-je suivre mes envois ?",

@@ -60,6 +60,7 @@ import { COLORS } from "@src/constants/Colors";
 import Orders from "@src/screens/orders/Orders";
 import Faq from "@src/screens/Home/screens/FAQ";
 import FadingAnnouncement from "@src/components/Announcement/Annoncement";
+import TopUpScreen from "@src/screens/Profile/screens/TopUp";
 registerTranslation("en-GB", en);
 
 SplashScreen.preventAutoHideAsync();
@@ -140,7 +141,7 @@ function AppWrapper() {
                      <Stack.Screen name="SelectAdminToChatWith" component={SelectAdminToChatWith} />
                      <Stack.Screen name="SelectUser" component={SelectUser} />
                      <Stack.Screen name="PastOrders" component={PastOrders} />
-
+                     <Stack.Screen name="TopUp" component={TopUpScreen} />
                      <Stack.Screen name="UserAdd" component={AddUser} />
                      <Stack.Screen name="AdmninPastOrders" component={AdminPastOrders} />
                      <Stack.Screen name="SendSms" component={SendSms} />
