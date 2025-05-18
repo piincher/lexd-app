@@ -1,111 +1,139 @@
 import {
-	deleteImage,
-	editOrder,
-	getActiveOrdersAdmin,
-	getOrderBasedOnDate,
-	getOrdersBetweenDate,
-	placeOrder,
-	sendNotificationSms,
-	updateOrder,
-	updateOrderToDelivered,
-} from '@src/api/order';
-import { LIMIT } from '@src/constants/Dimensions';
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigation } from '@react-navigation/native';
-import { queryKey, SMSKEY } from '@src/constants/queryKey';
-const ORDER_KEY = 'order';
+   batchUpdate,
+   deleteImage,
+   deleteOrder,
+   editOrder,
+   getActiveOrdersAdmin,
+   getOrderBasedOnDate,
+   getOrdersBetweenDate,
+   placeOrder,
+   sendNotificationSms,
+   updateOrder,
+   updateOrderToDelivered,
+} from "@src/api/order";
+import { LIMIT } from "@src/constants/Dimensions";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useNavigation } from "@react-navigation/native";
+import { queryKey, SMSKEY } from "@src/constants/queryKey";
+const ORDER_KEY = "order";
 export const usePlaceOrder = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: placeOrder,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
-		},
-	});
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: placeOrder,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+      },
+   });
 };
 
 export const useEditOrder = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: editOrder,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
-		},
-	});
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: editOrder,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+      },
+   });
 };
 
-export const useGetActiveOrdersAdmin = (Status: string, departureDate: Date, shippingMethod: 'air' | 'sea') => {
-	return useInfiniteQuery({
-		queryKey: [ORDER_KEY],
-		queryFn: ({ pageParam = 1 }) => getActiveOrdersAdmin(pageParam, Status, departureDate, shippingMethod),
-		getNextPageParam: (lastPage, allPages) => {
-			const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
-			return nextPage;
-		},
-		initialPageParam: 1,
-	});
+export const useGetActiveOrdersAdmin = (
+   Status: string,
+   departureDate: Date,
+   shippingMethod: "air" | "sea"
+) => {
+   return useInfiniteQuery({
+      queryKey: [ORDER_KEY],
+      queryFn: ({ pageParam = 1 }) =>
+         getActiveOrdersAdmin(pageParam, Status, departureDate, shippingMethod),
+      getNextPageParam: (lastPage, allPages) => {
+         const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
+         return nextPage;
+      },
+      initialPageParam: 1,
+   });
 };
 
 export const useMutateBetweenDate = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: getOrdersBetweenDate,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
-			// queryClient.invalidateQueries({ queryKey: [SMSKEY] });
-		},
-	});
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: getOrdersBetweenDate,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+         // queryClient.invalidateQueries({ queryKey: [SMSKEY] });
+      },
+   });
 };
 export const useDeleteImage = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: deleteImage,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
-		},
-	});
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: deleteImage,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+      },
+   });
 };
 export const useUpdateOrder = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: updateOrder,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
-			// queryClient.invalidateQueries({ queryKey: [SMSKEY] });
-		},
-	});
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: updateOrder,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+         // queryClient.invalidateQueries({ queryKey: [SMSKEY] });
+      },
+   });
+};
+export const useDeleteOrder = () => {
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: deleteOrder,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+      },
+   });
+};
+export const useUpdateOrderStatus = () => {
+   const queryClient = useQueryClient();
+   const navigation = useNavigation();
+
+   return useMutation({
+      mutationFn: batchUpdate,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+         navigation.navigate("HomeTab", { screen: "Home" });
+      },
+   });
 };
 
 export const useUpdateStatusDelivery = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: updateOrderToDelivered,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
-		},
-	});
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: updateOrderToDelivered,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+      },
+   });
 };
 
 export const useSendNotificationSms = () => {
-	const queryClient = useQueryClient();
+   const queryClient = useQueryClient();
 
-	const navigation = useNavigation();
-	return useMutation({
-		mutationFn: sendNotificationSms,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [SMSKEY] });
-			navigation.navigate('HomeTab', { screen: 'Home' });
-		},
-	});
+   const navigation = useNavigation();
+   return useMutation({
+      mutationFn: sendNotificationSms,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [SMSKEY] });
+         navigation.navigate("HomeTab", { screen: "Home" });
+      },
+   });
 };
 
 export const useGetOrderBaseonDate = () => {
-	const queryClient = useQueryClient();
-	return useMutation({
-		mutationFn: getOrderBasedOnDate,
-		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
-			// queryClient.invalidateQueries({ queryKey: [SMSKEY] });
-		},
-	});
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: getOrderBasedOnDate,
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+         // queryClient.invalidateQueries({ queryKey: [SMSKEY] });
+      },
+   });
 };

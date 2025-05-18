@@ -1,69 +1,193 @@
-import React from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { COLORS } from "@src/constants/Colors";
+import { Fonts } from "@src/constants/Fonts";
+import React from "react";
+import { FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface MultiSelectProps<T> {
-	items: (string | T)[];
-	valueKey?: keyof T;
-	displayKey?: keyof T;
-	selectedItems: string[];
-	setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
+   items: (string | T)[];
+   valueKey?: keyof T;
+   displayKey?: keyof T;
+   imageKey?: keyof T;
+   statusKey?: keyof T;
+   dateKey?: keyof T;
+   weightKey?: keyof T;
+   selectedItems: string[];
+   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export function MultiSelect<T>(props: MultiSelectProps<T>): JSX.Element {
-	const { items, valueKey, displayKey, selectedItems, setSelectedItems, ...otherprops } = props;
+   const {
+      items,
+      valueKey,
+      displayKey,
+      imageKey,
+      statusKey,
+      dateKey,
+      weightKey,
+      selectedItems,
+      setSelectedItems,
+      ...otherprops
+   } = props;
 
-	const handleSelect = (item: string | T) => {
-		setSelectedItems((prev) => {
-			const itemId = valueKey ? (item as T)[valueKey] : item;
-			if (prev.includes(String(itemId))) {
-				return prev.filter((i) => String(i) !== String(itemId));
-			}
-			return [...prev, String(itemId)];
-		});
-	};
+   const handleSelect = (item: string | T) => {
+      setSelectedItems((prev) => {
+         const itemId = valueKey ? (item as T)[valueKey] : item;
+         if (prev.includes(String(itemId))) {
+            return prev.filter((i) => String(i) !== String(itemId));
+         }
+         return [...prev, String(itemId)];
+      });
+   };
 
-	return (
-		<FlatList
-			data={items}
-			keyExtractor={(item, index) => (valueKey ? String((item as T)[valueKey]) : String(index))}
-			renderItem={({ item }) => (
-				<TouchableOpacity onPress={() => handleSelect(item)} {...otherprops} style={styles.container}>
-					<Text>{item?.info}</Text>
-					<Text>{displayKey ? (item as T)[displayKey] : item}</Text>
-					<View
-						style={[
-							styles.indicator,
-							selectedItems.includes(valueKey ? String((item as T)[valueKey]) : String(item))
-								? styles.selected
-								: styles.notSelected,
-						]}
-					/>
-				</TouchableOpacity>
-			)}
-		/>
-	);
+   return (
+      <FlatList
+         data={items}
+         ListEmptyComponent={() => (
+            <View style={styles.emptyContainer}>
+               <Text style={styles.emptyText}>No items available</Text>
+            </View>
+         )}
+         keyExtractor={(item, index) => (valueKey ? String((item as T)[valueKey]) : String(index))}
+         renderItem={({ item }) => {
+            const isSelected = selectedItems.includes(
+               valueKey ? String((item as T)[valueKey]) : String(item)
+            );
+
+            return (
+               <Pressable
+                  onPress={() => handleSelect(item)}
+                  {...otherprops}
+                  style={[styles.card, isSelected ? styles.selectedCard : styles.notSelectedCard]}
+               >
+                  {/* Image */}
+                  {item?.images ? (
+                     <Image source={{ uri: item?.images }} style={styles.image} />
+                  ) : (
+                     <View style={styles.placeholderImage}>
+                        <Text style={styles.placeholderText}>No Image</Text>
+                     </View>
+                  )}
+
+                  {/* Details */}
+                  <View style={styles.cardDetails}>
+                     {/* Name */}
+                     <Text style={styles.cardTitle}>
+                        {displayKey ? String((item as T)[displayKey]) : String(item)}
+                     </Text>
+
+                     {/* Additional Info */}
+                     <Text style={styles.cardSubtitle}>Status Actuel: {item?.currentStatus}</Text>
+                     <Text style={styles.cardSubtitle}>
+                        Date de le derniere mise a jour(GMT):{" "}
+                        {item.lastUpdate ? String(item.lastUpdate.split("T")[0]) : "N/A"}
+                     </Text>
+                     <Text style={styles.cardSubtitle}>
+                        Numero de Suivi: {item.code ? `${item.code}` : "N/A"}
+                     </Text>
+                     <Text style={styles.cardSubtitle}>
+                        Prix Total: {item.price ? `${item.price} FCFA` : "N/A"}
+                     </Text>
+                     <Text style={styles.cardSubtitle}>
+                        Le Nombre de CBM: {item.packageWeight ? `${item.packageWeight} CBM` : "N/A"}
+                     </Text>
+                  </View>
+
+                  {/* Selection Indicator */}
+                  <View
+                     style={[
+                        styles.indicator,
+                        isSelected ? styles.selectedIndicator : styles.notSelectedIndicator,
+                     ]}
+                  />
+               </Pressable>
+            );
+         }}
+      />
+   );
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row', // flex-row
-		alignItems: 'center', // items-center
-		justifyContent: 'space-between', // justify-between
-		width: '50%', // w-full
-		height: 40, // h-10 (10 * 4 pixels per unit = 40 pixels)
-		alignSelf: 'center', // self-center
-	},
-	indicator: {
-		borderWidth: 1, // border
-		borderColor: 'black', // border-black
-		borderRadius: 9999, // rounded-full (high value for fully rounded corners)
-		width: 16, // w-4 (4 * 4 pixels per unit = 16 pixels)
-		height: 16, // h-4 (4 * 4 pixels per unit = 16 pixels)
-	},
-	selected: {
-		backgroundColor: 'black', // bg-black
-	},
-	notSelected: {
-		backgroundColor: 'white', // bg-white
-	},
+   card: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: COLORS.white,
+      borderRadius: 10,
+      marginVertical: 8,
+      marginHorizontal: 16,
+      padding: 10,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 3,
+   },
+   selectedCard: {
+      borderColor: COLORS.primary,
+      borderWidth: 2,
+   },
+   notSelectedCard: {
+      borderColor: COLORS.grey,
+      borderWidth: 1,
+   },
+   image: {
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      marginRight: 10,
+   },
+   placeholderImage: {
+      width: 50,
+      height: 50,
+      borderRadius: 25,
+      backgroundColor: COLORS.grey,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: 10,
+   },
+   placeholderText: {
+      color: COLORS.white,
+      fontFamily: Fonts.bold,
+      fontSize: 12,
+   },
+   cardDetails: {
+      flex: 1,
+      justifyContent: "center",
+      marginRight: 10,
+   },
+   cardTitle: {
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      color: COLORS.black,
+      marginBottom: 4,
+   },
+   cardSubtitle: {
+      fontFamily: Fonts.regular,
+      fontSize: 14,
+      color: COLORS.grey,
+      marginBottom: 2,
+   },
+   indicator: {
+      width: 16,
+      height: 16,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: COLORS.black,
+   },
+   selectedIndicator: {
+      backgroundColor: COLORS.blue,
+   },
+   notSelectedIndicator: {
+      backgroundColor: COLORS.white,
+   },
+   emptyContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+   },
+   emptyText: {
+      fontFamily: Fonts.bold,
+      fontSize: 18,
+      textAlign: "center",
+      color: COLORS.grey,
+   },
 });

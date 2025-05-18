@@ -1,145 +1,140 @@
-import AppButton from '@src/components/AppButton/AppButton';
-import { ListItemOrders } from '@src/components/ListItemOrders';
-import { useGetRoutes } from '@src/screens/Home/hooks/useRoute';
-import React, { FC, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Searchbar, Text } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useGetActiveOrdersAdmin } from '../../../hooks/useOrder';
-import { Category } from '../components/Category';
-import { TextInput } from 'react-native-paper';
-import { Header } from '@src/components/Header/Header';
-import { RootStackScreenProps } from '@src/navigations/type';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { Calendar, useCalendar } from '@src/components/Calendar/Calendar';
-import { getSafeDate } from '@src/utils/formatDate';
-import { useShippingMode } from '@src/store/shippingMode';
+import AppButton from "@src/components/AppButton/AppButton";
+import { ListItemOrders } from "@src/components/ListItemOrders";
+import { useGetRoutes } from "@src/screens/Home/hooks/useRoute";
+import React, { FC, useEffect } from "react";
+import { StyleSheet, View } from "react-native";
+import { Searchbar, Text } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useGetActiveOrdersAdmin } from "../../../hooks/useOrder";
+import { Category } from "../components/Category";
+import { TextInput } from "react-native-paper";
+import { Header } from "@src/components/Header/Header";
+import { RootStackScreenProps } from "@src/navigations/type";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { Calendar, useCalendar } from "@src/components/Calendar/Calendar";
+import { getSafeDate } from "@src/utils/formatDate";
+import { useShippingMode } from "@src/store/shippingMode";
 interface Order {
-	id: string;
-	clientName: string;
-	phoneNumber: string;
-	trackingCode: string;
-	typeOfGoods: string;
-	weight: string;
-	partner: string;
-	image: string;
+   id: string;
+   clientName: string;
+   phoneNumber: string;
+   trackingCode: string;
+   typeOfGoods: string;
+   weight: string;
+   partner: string;
+   image: string;
 }
 
 interface Props {}
 
 const status = [
-	{
-		id: '0',
-		title: 'Active',
-	},
+   {
+      id: "0",
+      title: "Active",
+   },
 
-	{
-		id: '1',
-		title: 'In Transit',
-	},
+   {
+      id: "1",
+      title: "In Transit",
+   },
 
-	{
-		id: '2',
-		title: 'Delivered',
-	},
+   {
+      id: "2",
+      title: "Delivered",
+   },
 ];
-const ActiveOrders = ({ navigation, route }: RootStackScreenProps<'ActiveOrder'>) => {
-	const [statusChange, setStatusChange] = React.useState('Active');
-	const [searchQuery, setSearchQuery] = React.useState('');
-	const shippingMethod = route.params.type;
+const ActiveOrders = ({ navigation, route }: RootStackScreenProps<"ActiveOrder">) => {
+   const [statusChange, setStatusChange] = React.useState("Active");
+   const [searchQuery, setSearchQuery] = React.useState("");
+   const shippingMethod = route.params.type;
 
-	console.log('shipping mode', shippingMethod);
+   const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
 
-	const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
+   const departDate = getSafeDate(date);
 
-	const departureDate = new Date(
-		date?.getFullYear() ?? 1970,
-		date?.getMonth() ?? 0,
-		date?.getDate() ?? 1
-	).toISOString();
+   const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch, isLoading } =
+      useGetActiveOrdersAdmin(statusChange, departDate!, shippingMethod);
 
-	const departDate = getSafeDate(date);
+   // prefetch routes
+   useGetRoutes();
 
-	const { data, fetchNextPage, isError, hasNextPage, isFetchingNextPage, refetch, isLoading } = useGetActiveOrdersAdmin(
-		statusChange,
-		departDate!,
-		shippingMethod
-	);
+   console.log(
+      "data",
+      data?.pages.flatMap((page) => page)
+   );
+   const filteredData = data?.pages
+      .flatMap((page) => page)
+      .filter((item) => {
+         return (
+            item.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.clientPhone.toLowerCase().includes(searchQuery.toLowerCase())
+         );
+      });
 
-	// prefetch routes
-	useGetRoutes();
+   const loadMore = () => {
+      if (hasNextPage) {
+         fetchNextPage();
+      }
+   };
 
-	console.log(
-		'data',
-		data?.pages.flatMap((page) => page)
-	);
-	const filteredData = data?.pages
-		.flatMap((page) => page)
-		.filter((item) => {
-			return (
-				item.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-				item.code?.toLowerCase().includes(searchQuery.toLowerCase())
-			);
-		});
+   useEffect(() => {
+      refetch();
+   }, [statusChange, date]);
 
-	const loadMore = () => {
-		if (hasNextPage) {
-			fetchNextPage();
-		}
-	};
+   const onStatusChange = (itemValue: string) => {
+      setStatusChange(itemValue);
+   };
 
-	useEffect(() => {
-		refetch();
-	}, [statusChange, date]);
+   if (isError) {
+      return (
+         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+            <Text>Erreur lors du chargement des commandes actives</Text>
+            <AppButton title="Actualiser" onPress={refetch} />
+         </View>
+      );
+   }
+   return (
+      <SafeAreaView style={styles.container}>
+         <Header
+            title="Envoyer un message"
+            navigation={navigation}
+            rightIcon={<AntDesign name="calendar" size={24} color="black" />}
+            rightIconHandler={() => setOpen(true)}
+         />
+         <Calendar
+            open={open}
+            onDismissSingle={onDismissSingle}
+            date={date}
+            onConfirmSingle={onConfirmSingle}
+         />
+         <Category
+            status={status}
+            onStatusChange={onStatusChange}
+            statusChange={statusChange}
+            setStatusChange={setStatusChange}
+         />
 
-	const onStatusChange = (itemValue: string) => {
-		setStatusChange(itemValue);
-	};
-
-	if (isError) {
-		return (
-			<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-				<Text>Erreur lors du chargement des commandes actives</Text>
-				<AppButton title='Actualiser' onPress={refetch} />
-			</View>
-		);
-	}
-	return (
-		<SafeAreaView style={styles.container}>
-			<Header
-				title='Envoyer un message'
-				navigation={navigation}
-				rightIcon={<AntDesign name='calendar' size={24} color='black' />}
-				rightIconHandler={() => setOpen(true)}
-			/>
-			<Calendar open={open} onDismissSingle={onDismissSingle} date={date} onConfirmSingle={onConfirmSingle} />
-			<Category
-				status={status}
-				onStatusChange={onStatusChange}
-				statusChange={statusChange}
-				setStatusChange={setStatusChange}
-			/>
-
-			<Searchbar
-				style={{ marginHorizontal: 10, marginVertical: 10 }}
-				value={searchQuery}
-				onChangeText={(query) => setSearchQuery(query)}
-			/>
-			<ListItemOrders
-				data={filteredData!}
-				loadMore={loadMore}
-				isFetchingNextPage={isFetchingNextPage}
-				hasNextPage={hasNextPage}
-				isLoading={isLoading}
-			/>
-		</SafeAreaView>
-	);
+         <Searchbar
+            style={{ marginHorizontal: 10, marginVertical: 10 }}
+            value={searchQuery}
+            onChangeText={(query) => setSearchQuery(query)}
+         />
+         <ListItemOrders
+            data={filteredData!}
+            loadMore={loadMore}
+            isFetchingNextPage={isFetchingNextPage}
+            hasNextPage={hasNextPage}
+            isLoading={isLoading}
+         />
+      </SafeAreaView>
+   );
 };
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
+   container: {
+      flex: 1,
+   },
 });
 
 export default ActiveOrders;
