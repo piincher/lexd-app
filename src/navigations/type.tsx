@@ -39,6 +39,8 @@ export type RootStackParamList = {
    BatchUpdateDetail: { data: string[] };
    faq: undefined;
    TopUp: undefined;
+   TopUpList: undefined;
+   TopUpHistory: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<

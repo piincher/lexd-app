@@ -168,8 +168,26 @@ const TopUpScreen = ({ navigation }: RootStackScreenProps<"TopUp">) => {
                   transition={{ type: "timing", duration: 500 }}
                   style={styles.header}
                >
-                  <Text style={styles.title}>Wallet Top Up</Text>
-                  <Text style={styles.subtitle}>Fund your account securely</Text>
+                  <Text style={styles.title}>Recharger le portefeuille</Text>
+                  <Text style={styles.subtitle}>Alimentez votre compte en toute sécurité</Text>
+                  <View style={{ marginTop: 18, alignItems: "flex-start", width: "100%" }}>
+                     <Text style={[styles.subtitle, { marginBottom: 6 }]}>
+                        Étapes pour recharger :
+                     </Text>
+                     <Text style={styles.subtitle}>
+                        1. Sélectionnez ou saisissez le montant à recharger.
+                     </Text>
+                     <Text style={styles.subtitle}>
+                        2. Déposez le montant via Orange Money :{" "}
+                        <Text style={{ fontWeight: "bold" }}>74023631</Text>
+                     </Text>
+                     <Text style={styles.subtitle}>
+                        3. Téléchargez la preuve de paiement en photo ci dessous.
+                     </Text>
+                     <Text style={styles.subtitle}>
+                        4. L’administrateur vérifiera et approuvera votre recharge.
+                     </Text>
+                  </View>
                </MotiView>
 
                <Animated.View
@@ -218,15 +236,15 @@ const TopUpScreen = ({ navigation }: RootStackScreenProps<"TopUp">) => {
                      <Text style={styles.hintText}>
                         {amount
                            ? `${Number(amount).toLocaleString()} FCFA`
-                           : "Enter amount between 5,000 - 500,000 FCFA"}
+                           : "Entrez un montant entre 5 000 et 500 000 FCFA"}
                      </Text>
                   </MotiView>
                </Animated.View>
 
                <Animated.View entering={SlideInDown.delay(400)} style={styles.uploadSection}>
-                  <Text style={styles.uploadTitle}>Payment Proof</Text>
+                  <Text style={styles.uploadTitle}>Preuve de paiement</Text>
                   <Text style={styles.uploadSubtitle}>
-                     Upload screenshot of your Orange Money transaction
+                     Téléchargez la capture d’écran de votre transaction Orange Money
                   </Text>
 
                   <TouchableOpacity
@@ -252,7 +270,9 @@ const TopUpScreen = ({ navigation }: RootStackScreenProps<"TopUp">) => {
                               color="rgba(255,255,255,0.5)"
                            />
                            <Text style={styles.uploadText}>
-                              {isImageLoading ? "Uploading..." : "Tap to Upload Proof"}
+                              {isImageLoading
+                                 ? "Téléchargement..."
+                                 : "Appuyez pour télécharger la preuve"}
                            </Text>
                         </View>
                      )}
@@ -278,7 +298,7 @@ const TopUpScreen = ({ navigation }: RootStackScreenProps<"TopUp">) => {
                         animate={{ opacity: isSubmitting ? 0.7 : 1 }}
                         style={styles.buttonText}
                      >
-                        {isSubmitting ? "Processing..." : "Submit Request"}
+                        {isSubmitting ? "Traitement..." : "Envoyer la demande"}
                      </MotiText>
                      <MaterialIcons
                         name="arrow-forward"

@@ -1,7 +1,7 @@
 import { useAuth } from "@src/store/Auth";
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 // Default config for the axios instance
-const env = "development" as string;
+const env = "production" as string;
 const axiosParams = {
    // Set different base URL based on the environment
    baseURL:

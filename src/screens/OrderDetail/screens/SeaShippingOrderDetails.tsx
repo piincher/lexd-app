@@ -26,6 +26,7 @@ import { useGetOrderDetails } from "../hooks/useGetOrderDetail";
 import { useGetSeaRoutes } from "../hooks/useSeaRoutes";
 import { RootStackScreenProps } from "@src/navigations/type";
 import { useBalance } from "@src/screens/Profile/hooks/useProfile";
+import { useProcessPayment } from "@src/screens/Admin/screens/TopUpList/hooks/useTopUp";
 
 const PAYMENT_STRINGS = {
    PAY_NOW: "Payer maintenant",
@@ -39,7 +40,10 @@ const PAYMENT_STRINGS = {
    TOPUP_CTA: "Recharger le compte",
 };
 
-const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"OrderDetail">) => {
+const SeaShippingOrderDetails = ({
+   route,
+   navigation,
+}: RootStackScreenProps<"SeaShippingOrderDetails">) => {
    const [actualLocation, setActualLocation] = useState("");
    const [note, setNote] = useState("");
    const { data: statusData } = useGetSeaRoutes();
@@ -54,7 +58,18 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
    // Mock user balance - replace with actual data from your backend
    const { data } = useBalance();
    const isBalanceSufficient = data?.balance >= (item?.priceTotal || 0);
+   const { mutate: processMutate, isSuccess, data: processData } = useProcessPayment();
+
+   console.log("payment response from backend", processData);
    useChatClient();
+
+   useEffect(() => {
+      if (isSuccess) {
+         setPaymentStatus("success");
+         setShowModal(true);
+         setIsPaying(false);
+      }
+   }, [isSuccess]);
    useEffect(() => {
       if (showModal) {
          Animated.timing(fadeAnim, {
@@ -82,24 +97,10 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
    const handlePayment = async () => {
       if (!isBalanceSufficient) return;
 
-      try {
-         setIsPaying(true);
+      setIsPaying(true);
 
-         // Simulate API call
-         await new Promise((resolve) => setTimeout(resolve, 2000));
-
-         // Simulate successful payment
-         setPaymentStatus("success");
-         setShowModal(true);
-
-         // Here you would update the order status in your backend
-         // await updateOrderPaymentStatus(id);
-      } catch (error) {
-         setPaymentStatus("failed");
-         setShowModal(true);
-      } finally {
-         setIsPaying(false);
-      }
+      //  API call
+      processMutate(id);
    };
 
    const renderPaymentModal = () => (
@@ -145,7 +146,6 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
       return [COLORS.success, "#1f7a45"];
    };
 
-   console.log("payment sttatus", item.paymentStatus);
    return (
       <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
          <ScrollView>
@@ -217,11 +217,11 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
                   <TouchableOpacity
                      style={[
                         styles.payButton,
-                        (!isBalanceSufficient || item?.paymentStatus === "paid") &&
+                        (!isBalanceSufficient || item?.paymentStatus === "Paid") &&
                            styles.disabledButton,
                      ]}
                      onPress={handlePayment}
-                     disabled={!isBalanceSufficient || item?.paymentStatus === "paid"}
+                     disabled={!isBalanceSufficient || item?.paymentStatus === "Paid"}
                   >
                      <LinearGradient colors={getButtonColors()} style={styles.gradientButton}>
                         {isPaying ? (
@@ -366,8 +366,6 @@ const StatusTimeline = ({ statusData, currentStatus, route }: Status) => {
    return (
       <View style={styles2.container}>
          {statusData.map((step, index) => {
-            console.log("step", step.title);
-            console.log("first", route[0].title.toLowerCase());
             const match = route.find((r) => r.title.toLowerCase() === step.title.toLowerCase());
             const formattedDate = match ? formatDate(match.time) : "Non spécifié";
 

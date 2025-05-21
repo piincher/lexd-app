@@ -1,10 +1,10 @@
-import { userData, userType } from '../constants/types';
 import axiosInstance from './client';
 const rootUrl = '/topup';
 const API_URL = {
     initiateTopUp: `${rootUrl}/`,
     adminGetTopUp: `${rootUrl}/status`,
     updateTopup: `${rootUrl}/`,
+    ownTopUpRequests: `${rootUrl}/ownTopUpRequests`,
 };
 
 export type topUpType = {
@@ -30,4 +30,14 @@ export const adminUpdateTopUp = async (data:topUpType) => {
     const response = await axiosInstance.put<topUpType[]>(`${API_URL.updateTopup}/${data._id}/status`, data);
     return response.data;
 };
+
+export const topUpHistory = async () => {
+    const response = await axiosInstance.get<topUpType[]>(`${API_URL.ownTopUpRequests}`);
+    return response.data;
+};
+
+export const processPayement = async (orderId:string) => {
+    const response = await axiosInstance.post<topUpType>('/payment/process', {orderId});
+    return response.data;
+}
 

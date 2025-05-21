@@ -109,8 +109,8 @@ const SocialMedia: FC<Props> = ({ color }: Props) => {
 
 const styles = StyleSheet.create({
    container: {
-      position: "relative",
       zIndex: 2,
+      top: -25,
    },
    iconContainer: {
       flexDirection: "row",

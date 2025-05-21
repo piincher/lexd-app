@@ -165,7 +165,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                      </View>
                   </MotiView>
 
-                  <MotiView {...statsAnimation(1)} style={styles.statCard}>
+                  {/* <MotiView {...statsAnimation(1)} style={styles.statCard}>
                      <View style={styles.statRow}>
                         <MaterialIcons name="card-giftcard" size={28} color="#FF9800" />
                         <View style={styles.statText}>
@@ -199,17 +199,26 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                         </LinearGradient>
                      </TouchableOpacity>
                      <Text style={styles.referralHint}>Share your code to earn bonus points!</Text>
-                  </MotiView>
+                  </MotiView> */}
                </View>
 
                <Divider style={styles.divider} />
 
                <List.Section style={styles.section}>
                   {[
-                     { title: "Order History", icon: "history", screen: "PastOrders" },
-                     { title: "Support Center", icon: "headset", screen: "Support" },
-                     { title: "About ChinaLink", icon: "info", screen: "AboutUs" },
-                     { title: "Log Out", icon: "logout", action: logout },
+                     { title: "Historique des commandes", icon: "history", screen: "PastOrders" },
+                     {
+                        title: "Historique des recharges",
+                        icon: "bank-transfer",
+                        screen: "TopUpHistory",
+                     },
+                     {
+                        title: "Centre d'assistance",
+                        icon: "headset",
+                        screen: "SelectAdminToChatWith",
+                     },
+                     { title: "À propos de ChinaLink", icon: "info", screen: "AboutUs" },
+                     { title: "Se déconnecter", icon: "logout", action: logout },
                   ].map((item, index) => (
                      <MotiView key={item.title} {...listItemAnimation(index)}>
                         <AnimatedList
@@ -397,7 +406,7 @@ const styles = StyleSheet.create({
       color: "rgba(255,255,255,0.6)",
       fontFamily: Fonts.meduim,
       fontSize: 12,
-      marginTop: 16,
+      top: -20,
    },
    particle: {
       position: "absolute",

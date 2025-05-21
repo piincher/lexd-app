@@ -50,6 +50,7 @@ export type productType = {
 	packageCBM: string;
 	dateOfReceipt: string;
 	contenairNumber: string;
+	paymentStatus?: 'Paid' | 'Unpaid';
 };
 
 const API_URL = {
