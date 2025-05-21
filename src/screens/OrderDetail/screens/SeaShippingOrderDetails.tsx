@@ -366,7 +366,7 @@ const StatusTimeline = ({ statusData, currentStatus, route }: Status) => {
    return (
       <View style={styles2.container}>
          {statusData.map((step, index) => {
-            const match = route.find((r) => r.title.toLowerCase() === step.title.toLowerCase());
+            const match = route.find((r) => r?.title?.toLowerCase() === step?.title?.toLowerCase());
             const formattedDate = match ? formatDate(match.time) : "Non spécifié";
 
             const isCompleted = index < currentStatusIndex;
