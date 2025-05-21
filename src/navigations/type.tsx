@@ -38,6 +38,7 @@ export type RootStackParamList = {
    SeaShippingOrderDetails: { id: string };
    BatchUpdateDetail: { data: string[] };
    faq: undefined;
+   TopUp: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<

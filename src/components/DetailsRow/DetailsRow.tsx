@@ -31,7 +31,7 @@ export const DetailRow = ({ label, value, icon, isLast, onPress }: DetailRowProp
          </View>
 
          <View style={styles.valueContainer}>
-            <Text style={styles.value} numberOfLines={2} ellipsizeMode="tail">
+            <Text style={styles.value} numberOfLines={5} ellipsizeMode="tail">
                {value}
             </Text>
             <MaterialCommunityIcons name="chevron-right" size={24} color={COLORS.SlateGray} />
@@ -43,7 +43,6 @@ export const DetailRow = ({ label, value, icon, isLast, onPress }: DetailRowProp
 const styles = StyleSheet.create({
    container: {
       paddingVertical: 18,
-      paddingHorizontal: 20,
       backgroundColor: COLORS.FeatherWhite,
       marginHorizontal: 16,
       marginVertical: 6,
@@ -66,13 +65,13 @@ const styles = StyleSheet.create({
    },
    label: {
       fontFamily: Fonts.meduim,
-      fontSize: 14,
+      fontSize: 12,
       color: COLORS.DimGray,
       marginLeft: 12,
    },
    value: {
       fontFamily: Fonts.regular,
-      fontSize: 15,
+      fontSize: 14,
       color: COLORS.DarkGrey,
       maxWidth: "80%",
    },

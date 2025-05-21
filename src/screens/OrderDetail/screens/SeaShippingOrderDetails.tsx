@@ -9,28 +9,61 @@ import { formatDate } from "@src/utils/formatDate";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
 import {
+   ActivityIndicator,
    Animated,
    Easing,
    Image,
+   Modal,
    Pressable,
    ScrollView,
    StyleSheet,
    Text,
+   TouchableOpacity,
    View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useGetOrderDetails } from "../hooks/useGetOrderDetail";
 import { useGetSeaRoutes } from "../hooks/useSeaRoutes";
+import { RootStackScreenProps } from "@src/navigations/type";
+import { useBalance } from "@src/screens/Profile/hooks/useProfile";
+
+const PAYMENT_STRINGS = {
+   PAY_NOW: "Payer maintenant",
+   PAYMENT_DETAILS: "Détails de paiement",
+   TOTAL_AMOUNT: "Montant total",
+   DUE_NOW: "À payer maintenant",
+   CURRENT_BALANCE: "Solde actuel",
+   INSUFFICIENT_BALANCE: "Solde insuffisant!",
+   TOPUP_REQUIRED: "Rechargez votre compte pour continuer",
+   DEFICIT_AMOUNT: (amount: number) => `Manque ${amount.toLocaleString()} FCFA`,
+   TOPUP_CTA: "Recharger le compte",
+};
 
 const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"OrderDetail">) => {
    const [actualLocation, setActualLocation] = useState("");
    const [note, setNote] = useState("");
    const { data: statusData } = useGetSeaRoutes();
-   useChatClient();
+   const [showBalanceError, setShowBalanceError] = useState(false);
+   const [paymentStatus, setPaymentStatus] = useState<"pending" | "success" | "failed" | "">("");
+   const [isPaying, setIsPaying] = useState(false);
+   const [showModal, setShowModal] = useState(false);
+   const fadeAnim = useState(new Animated.Value(0))[0];
 
    const id = route.params.id;
    const { data: item, isPending } = useGetOrderDetails(id);
-
+   // Mock user balance - replace with actual data from your backend
+   const { data } = useBalance();
+   const isBalanceSufficient = data?.balance >= (item?.priceTotal || 0);
+   useChatClient();
+   useEffect(() => {
+      if (showModal) {
+         Animated.timing(fadeAnim, {
+            toValue: 1,
+            duration: 300,
+            useNativeDriver: true,
+         }).start();
+      }
+   }, [showModal]);
    useEffect(() => {
       const datad = item?.route?.[item.route?.length - 1] ?? [];
       const coordinateArr = datad?.coordinates || [];
@@ -46,10 +79,73 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
    if (!statusData || isPending) {
       return <LoadingSpinner />;
    }
+   const handlePayment = async () => {
+      if (!isBalanceSufficient) return;
+
+      try {
+         setIsPaying(true);
+
+         // Simulate API call
+         await new Promise((resolve) => setTimeout(resolve, 2000));
+
+         // Simulate successful payment
+         setPaymentStatus("success");
+         setShowModal(true);
+
+         // Here you would update the order status in your backend
+         // await updateOrderPaymentStatus(id);
+      } catch (error) {
+         setPaymentStatus("failed");
+         setShowModal(true);
+      } finally {
+         setIsPaying(false);
+      }
+   };
+
+   const renderPaymentModal = () => (
+      <Modal
+         animationType="fade"
+         transparent={true}
+         visible={showModal && paymentStatus === "success"}
+         onRequestClose={() => setShowModal(false)}
+      >
+         <View style={styles.modalOverlay}>
+            <Animated.View style={[styles.modalContent, { opacity: fadeAnim }]}>
+               <MaterialCommunityIcons name="check-circle" size={60} color={COLORS.success} />
+               <Text style={styles.modalTitle}>Paiement Réussi!</Text>
+               <Text style={styles.modalText}>
+                  Votre paiement de {item?.priceTotal?.toLocaleString()} FCFA a été traité avec
+                  succès.
+               </Text>
+               <TouchableOpacity
+                  style={styles.modalButton}
+                  onPress={() => {
+                     Animated.timing(fadeAnim, {
+                        toValue: 0,
+                        duration: 300,
+                        useNativeDriver: true,
+                     }).start(() => {
+                        setShowModal(false);
+                        navigation.goBack();
+                     });
+                  }}
+               >
+                  <Text style={styles.modalButtonText}>RETOUR À LA COMMANDE</Text>
+               </TouchableOpacity>
+            </Animated.View>
+         </View>
+      </Modal>
+   );
 
    const formattedDateTime = formatDate(item?.departureDate!);
    const formattedLastUpdate = formatDate(item?.updatedAt!);
+   const getButtonColors = () => {
+      if (item?.paymentStatus === "Paid") return [COLORS.success, COLORS.success];
+      if (!isBalanceSufficient) return [COLORS.grey, COLORS.DarkGrey];
+      return [COLORS.success, "#1f7a45"];
+   };
 
+   console.log("payment sttatus", item.paymentStatus);
    return (
       <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
          <ScrollView>
@@ -58,6 +154,94 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
             </LinearGradient>
 
             <View style={styles.contentContainer}>
+               {/* Payment Section */}
+               <View style={styles.paymentCard}>
+                  <Text style={styles.paymentHeader}>Détails de paiement</Text>
+
+                  <View style={styles.amountRow}>
+                     <Text style={styles.amountLabel}>Montant total</Text>
+                     <Text style={styles.amountValue}>
+                        {item?.priceTotal?.toLocaleString() || "0"} FCFA
+                     </Text>
+                  </View>
+
+                  {!isBalanceSufficient && (
+                     <View style={styles.balanceAlert}>
+                        <View style={styles.alertHeader}>
+                           <MaterialCommunityIcons
+                              name="alert-circle-outline"
+                              size={24}
+                              color={COLORS.redShade}
+                           />
+                           <Text style={styles.alertTitle}>Solde insuffisant!</Text>
+                        </View>
+                        <View style={styles.balanceDetails}>
+                           <View style={styles.balanceRow}>
+                              <Text style={styles.balanceLabel}>Solde actuel</Text>
+                              <Text style={styles.balanceValue}>
+                                 {data?.balance.toLocaleString()} FCFA
+                              </Text>
+                           </View>
+                           <View style={styles.balanceRow}>
+                              <Text style={styles.balanceLabel}>À payer maintenant</Text>
+                              <Text style={styles.dueAmount}>
+                                 {item?.priceTotal?.toLocaleString()} FCFA
+                              </Text>
+                           </View>
+                           <View style={styles.deficitContainer}>
+                              <Text style={styles.deficitText}>
+                                 Manque{" "}
+                                 {(item?.priceTotal! - (data?.balance ?? 0)).toLocaleString()} FCFA
+                              </Text>
+                           </View>
+                        </View>
+                        <TouchableOpacity
+                           style={styles.topupButton}
+                           onPress={() => navigation.navigate("TopUp")}
+                        >
+                           <LinearGradient
+                              colors={[COLORS.primary, COLORS.secondary]}
+                              style={styles.gradientButton}
+                           >
+                              <MaterialCommunityIcons
+                                 name="wallet-plus"
+                                 size={24}
+                                 color={COLORS.white}
+                              />
+                              <Text style={styles.topupButtonText}>Recharger le compte</Text>
+                           </LinearGradient>
+                        </TouchableOpacity>
+                     </View>
+                  )}
+
+                  <TouchableOpacity
+                     style={[
+                        styles.payButton,
+                        (!isBalanceSufficient || item?.paymentStatus === "paid") &&
+                           styles.disabledButton,
+                     ]}
+                     onPress={handlePayment}
+                     disabled={!isBalanceSufficient || item?.paymentStatus === "paid"}
+                  >
+                     <LinearGradient colors={getButtonColors()} style={styles.gradientButton}>
+                        {isPaying ? (
+                           <ActivityIndicator color={COLORS.white} />
+                        ) : (
+                           <>
+                              <Text style={styles.payButtonText}>
+                                 {item?.paymentStatus === "Paid" ? "Déjà Payé" : "Payer maintenant"}
+                              </Text>
+                              <MaterialCommunityIcons
+                                 name={item?.paymentStatus === "Paid" ? "check" : "shield-check"}
+                                 size={24}
+                                 color={COLORS.white}
+                              />
+                           </>
+                        )}
+                     </LinearGradient>
+                  </TouchableOpacity>
+               </View>
+
                <View style={styles.imageContainer}>
                   <LinearGradient colors={[COLORS.blue, COLORS.yellow]} style={styles.imageBorder}>
                      <Image source={{ uri: item?.images[0]?.url }} style={styles.imageStyle} />
@@ -134,6 +318,8 @@ const SeaShippingOrderDetails = ({ route, navigation }: RootStackScreenProps<"Or
                   route={item?.route}
                />
             </View>
+
+            {renderPaymentModal()}
          </ScrollView>
       </SafeAreaView>
    );
@@ -327,6 +513,138 @@ const styles2 = StyleSheet.create({
    },
 });
 const styles = StyleSheet.create({
+   paymentCard: {
+      backgroundColor: COLORS.white,
+      borderRadius: 16,
+      padding: 20,
+      margin: 16,
+      shadowColor: COLORS.black,
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.1,
+      shadowRadius: 12,
+      elevation: 5,
+   },
+   paymentHeader: {
+      fontFamily: Fonts.bold,
+      fontSize: 18,
+      color: COLORS.primaryText,
+      marginBottom: 16,
+   },
+   amountRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: 24,
+   },
+   amountLabel: {
+      fontFamily: Fonts.medium,
+      fontSize: 16,
+      color: COLORS.secondaryText,
+   },
+   amountValue: {
+      fontFamily: Fonts.bold,
+      fontSize: 18,
+      color: COLORS.primary,
+   },
+   balanceAlert: {
+      backgroundColor: COLORS.errorLight,
+      borderRadius: 12,
+      padding: 16,
+      marginVertical: 12,
+   },
+   alertHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginBottom: 12,
+   },
+   alertTitle: {
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      color: COLORS.error,
+      marginLeft: 8,
+   },
+   balanceDetails: {
+      borderTopWidth: 1,
+      borderTopColor: COLORS.errorLight,
+      paddingTop: 12,
+   },
+   balanceRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: 8,
+   },
+   balanceLabel: {
+      fontFamily: Fonts.regular,
+      fontSize: 14,
+      color: COLORS.secondaryText,
+   },
+   balanceValue: {
+      fontFamily: Fonts.medium,
+      fontSize: 14,
+      color: COLORS.error,
+   },
+   dueAmount: {
+      fontFamily: Fonts.medium,
+      fontSize: 14,
+      color: COLORS.primaryText,
+   },
+   deficitContainer: {
+      backgroundColor: COLORS.white,
+      borderRadius: 8,
+      padding: 8,
+      marginTop: 12,
+   },
+   deficitText: {
+      fontFamily: Fonts.bold,
+      fontSize: 14,
+      color: COLORS.error,
+      textAlign: "center",
+   },
+   topupButton: {
+      marginTop: 16,
+      borderRadius: 12,
+      overflow: "hidden",
+   },
+   gradientButton: {
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      paddingVertical: 14,
+      paddingHorizontal: 24,
+   },
+   topupButtonText: {
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      color: COLORS.white,
+      marginLeft: 12,
+   },
+   payButton: {
+      borderRadius: 12,
+      overflow: "hidden",
+      marginTop: 16,
+   },
+   payButtonText: {
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      color: COLORS.white,
+      marginRight: 12,
+   },
+   disabledButton: {
+      opacity: 0.7,
+   },
+   modalOverlay: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "rgba(0,0,0,0.4)",
+   },
+   modalContent: {
+      backgroundColor: COLORS.white,
+      padding: 25,
+      borderRadius: 20,
+      alignItems: "center",
+      width: "85%",
+   },
    headerGradient: {
       paddingTop: 5,
       borderBottomLeftRadius: 30,

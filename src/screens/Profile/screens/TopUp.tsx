@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { MotiView, MotiText } from "moti";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
    StyleSheet,
    View,
@@ -30,13 +30,16 @@ import { useHeaderHeight } from "@react-navigation/elements";
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
 import axiosInstance from "@src/api/client";
+import { useInitiateTopUp } from "../hooks/useProfile";
+import { RootStackScreenProps } from "@src/navigations/type";
 const PRESET_AMOUNTS = [5000, 10000, 20000, 50000];
 const MIN_AMOUNT = 5000;
 const MAX_AMOUNT = 500000;
 
 const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-const TopUpScreen = ({ navigation }) => {
+const TopUpScreen = ({ navigation }: RootStackScreenProps<"TopUp">) => {
+   const { mutate, isSuccess } = useInitiateTopUp();
    const headerHeight = useHeaderHeight();
    const [amount, setAmount] = useState("");
    const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -67,7 +70,7 @@ const TopUpScreen = ({ navigation }) => {
 
       try {
          const base64Image = `data:image/jpg;base64,${image.base64}`;
-         const { data } = await axiosInstance.post(
+         const { data } = await axiosInstance.post<{ url: string }>(
             "/order/upload",
             { image: base64Image },
             {
@@ -114,6 +117,14 @@ const TopUpScreen = ({ navigation }) => {
       return true;
    };
 
+   useEffect(() => {
+      if (isSuccess) {
+         Alert.alert("Success", "Votre demande de recharge a été envoyée avec succès");
+         setAmount("");
+         navigation.goBack();
+      }
+   }, [isSuccess]);
+
    const handleSubmit = async () => {
       if (!validateAmount()) return;
       if (!selectedImage) {
@@ -123,12 +134,10 @@ const TopUpScreen = ({ navigation }) => {
 
       try {
          setIsSubmitting(true);
-         await axiosInstance.post("/topup", {
-            amount: Number(amount),
+         mutate({
+            amount: Number(amount.replace(/[^0-9]/g, "")),
             proofImage: selectedImage,
          });
-         Alert.alert("Success", "");
-         navigation.goBack();
       } catch (error) {
          Alert.alert("Error", "Failed to submit request. Please try again.");
       } finally {

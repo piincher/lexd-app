@@ -61,6 +61,7 @@ import Orders from "@src/screens/orders/Orders";
 import Faq from "@src/screens/Home/screens/FAQ";
 import FadingAnnouncement from "@src/components/Announcement/Annoncement";
 import TopUpScreen from "@src/screens/Profile/screens/TopUp";
+import AdminTopUpList from "@src/screens/Admin/screens/TopUpList/TopUpList";
 registerTranslation("en-GB", en);
 
 SplashScreen.preventAutoHideAsync();
@@ -145,7 +146,7 @@ function AppWrapper() {
                      <Stack.Screen name="UserAdd" component={AddUser} />
                      <Stack.Screen name="AdmninPastOrders" component={AdminPastOrders} />
                      <Stack.Screen name="SendSms" component={SendSms} />
-
+                     <Stack.Screen name="TopUpList" component={AdminTopUpList} />
                      <Stack.Screen name="ActiveOrderDetails" component={ActiveOrderdetails} />
                      <Stack.Screen name="ScanQRCode" component={ScanQRCode} />
                      <Stack.Screen name="Notifications" component={Notifications} />

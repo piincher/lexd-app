@@ -53,6 +53,12 @@ const list: dataType = [
       title: "Scannez pour confirmer la reception",
       route: "ScanQRCode",
    },
+
+   {
+      id: "9",
+      title: "Top Up Request",
+      route: "TopUpList",
+   },
 ];
 
 const AdminDashBoard = ({ navigation }: HomeTabScreenProps<"AdminDashBoard">) => {
