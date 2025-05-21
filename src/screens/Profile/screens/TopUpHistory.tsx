@@ -6,13 +6,14 @@ import { useTopUpHistory } from "@src/screens/Admin/screens/TopUpList/hooks/useT
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import { Animated, FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { useBalance } from "../hooks/useProfile";
 
 const TopUpHistoryScreen = () => {
    const [refreshing, setRefreshing] = useState(false);
    const { data } = useTopUpHistory();
+   const { data: balanceData } = useBalance();
 
    const renderItem = ({ item, index }: { item: topUpType; index: number }) => {
-      console.log("items", item.createdAt);
       return (
          <Animated.View style={[styles.card, {}]}>
             <View style={styles.cardLeft}>
@@ -115,7 +116,7 @@ const TopUpHistoryScreen = () => {
       <LinearGradient colors={[COLORS.blue, COLORS.yellow]} style={styles.container}>
          <View style={styles.header}>
             <Text style={styles.headerTitle}>Historique des Recharges</Text>
-            <Text style={styles.balanceText}>Solde Actuel: 175,000 FCFA</Text>
+            <Text style={styles.balanceText}>Solde Actuel:{balanceData?.balance} FCFA</Text>
          </View>
 
          <FlatList
