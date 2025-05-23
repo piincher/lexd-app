@@ -23,14 +23,14 @@
           }
         }
       ],
-      [
-        "@sentry/react-native/expo",
-        {
-          "organization": "nuvotech",
-          "project": "chinalinkexpress",
-          "url": "https://sentry.io/"
-        }
-      ],
+      // [
+      //   "@sentry/react-native/expo",
+      //   {
+      //     "organization": "nuvotech",
+      //     "project": "chinalinkexpress",
+      //     "url": "https://sentry.io/"
+      //   }
+      // ],
       "expo-secure-store",
       [
         "expo-image-picker",

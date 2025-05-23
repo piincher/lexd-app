@@ -36,7 +36,7 @@ import OrderDetails from "@src/screens/OrderDetail/OrderDetails";
 import AboutUs from "@src/screens/Profile/screens/AboutUs";
 import PastOrders from "@src/screens/Profile/screens/PastOrders";
 import Profile from "@src/screens/Profile/screens/Profile";
-import { initSentry } from "@src/services/sentry";
+// import { initSentry } from "@src/services/sentry";
 import { useAppLaunchStore } from "@src/store/AppLaunch";
 import { useAuth } from "@src/store/Auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -70,7 +70,7 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 
-initSentry();
+// initSentry();
 initMixpanel();
 function AppWrapper() {
    const { expoPushToken } = useNotification();
@@ -270,12 +270,12 @@ const MainWrapper = () => {
    return (
       <OverlayProvider>
          <StreamChat client={chatClient} i18nInstance={streami18n}>
-            <UpdateProvider>
+            <>
                <AppWrapper />
-            </UpdateProvider>
+            </>
          </StreamChat>
       </OverlayProvider>
    );
 };
 
-export default Sentry.wrap(App);
+export default App;
