@@ -270,9 +270,9 @@ const MainWrapper = () => {
    return (
       <OverlayProvider>
          <StreamChat client={chatClient} i18nInstance={streami18n}>
-            <>
+            <UpdateProvider>
                <AppWrapper />
-            </>
+            </UpdateProvider>
          </StreamChat>
       </OverlayProvider>
    );
