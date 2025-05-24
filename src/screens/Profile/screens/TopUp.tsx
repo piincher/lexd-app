@@ -179,7 +179,7 @@ const TopUpScreen = ({ navigation }: RootStackScreenProps<"TopUp">) => {
                      </Text>
                      <Text style={styles.subtitle}>
                         2. Déposez le montant via Orange Money :{" "}
-                        <Text style={{ fontWeight: "bold" }}>74023631</Text>
+                        <Text style={{ fontWeight: "bold" }}>76696177</Text>
                      </Text>
                      <Text style={styles.subtitle}>
                         3. Téléchargez la preuve de paiement en photo ci dessous.
