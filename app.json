@@ -23,14 +23,6 @@
           }
         }
       ],
-      // [
-      //   "@sentry/react-native/expo",
-      //   {
-      //     "organization": "nuvotech",
-      //     "project": "chinalinkexpress",
-      //     "url": "https://sentry.io/"
-      //   }
-      // ],
       "expo-secure-store",
       [
         "expo-image-picker",
@@ -43,7 +35,8 @@
         {
           "photosPermission": "L'application accède à vos photos pour vous permettre de les partager avec nous dans le chat."
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "assetBundlePatterns": [
       "**/*"
@@ -51,7 +44,6 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nuvotech.chinalinkexpress",
-      
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -62,8 +54,7 @@
         "backgroundColor": "#ffffff"
       },
       "googleServicesFile": "./google-services.json",
-      "package": "com.nuvotech.chinalinkexpress",
-     
+      "package": "com.nuvotech.chinalinkexpress"
     },
     "web": {
       "favicon": "./assets/favicon.png"

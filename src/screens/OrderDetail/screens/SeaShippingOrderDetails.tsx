@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
    paymentHeader: {
       fontFamily: Fonts.bold,
       fontSize: 18,
-      color: COLORS.primaryText,
+      color: COLORS.blue,
       marginBottom: 16,
    },
    amountRow: {
@@ -535,7 +535,7 @@ const styles = StyleSheet.create({
       marginBottom: 24,
    },
    amountLabel: {
-      fontFamily: Fonts.medium,
+      fontFamily: Fonts.meduim,
       fontSize: 16,
       color: COLORS.secondaryText,
    },

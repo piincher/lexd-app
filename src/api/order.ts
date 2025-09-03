@@ -51,6 +51,7 @@ export type productType = {
 	dateOfReceipt: string;
 	contenairNumber: string;
 	paymentStatus?: 'Paid' | 'Unpaid';
+	unitPrice: number;
 };
 
 const API_URL = {
@@ -91,6 +92,7 @@ export const placeOrder = async ({
 	dateOfReceipt,
 	packageCBM,
 	contenairNumber,
+	unitPrice,
 }: productType) => {
 	const data = {
 		clientName,
@@ -110,6 +112,7 @@ export const placeOrder = async ({
 		dateOfReceipt,
 		packageCBM,
 		contenairNumber,
+		unitPrice,
 	};
 
 	return await api.post<productType>(`${API_URL.CREATE_ORDER}`, data);

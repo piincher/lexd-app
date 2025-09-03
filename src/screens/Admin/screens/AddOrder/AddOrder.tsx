@@ -27,6 +27,9 @@ import { DatePickerModal } from "react-native-paper-dates";
 import { useGetCategories } from "../../hooks/useCategory";
 import { CustomModal } from "@src/components/Modal/Modal";
 import { useShippingMode } from "@src/store/shippingMode";
+import { useFormikContext } from "formik";
+import AutoCalculateTotal from "./components/AutoCalculateTotal";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const signupSchema = yup.object({
    clientName: yup.string().required("Nom du client est requis"),
@@ -36,6 +39,7 @@ const signupSchema = yup.object({
    quantity: yup.number().required("Nombre de colis est requis"),
    packageCBM: yup.string(),
    contenairNumber: yup.string(),
+   unitPrice: yup.number(),
 });
 
 interface order {
@@ -57,6 +61,7 @@ interface order {
    orderId?: string;
    packageCBM?: string;
    contenairNumber?: string;
+   unitPrice: number;
 }
 
 // 'le client a passé une commande',
@@ -74,18 +79,19 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
    const { mutate: deleteMutation, data: deleteData } = useDeleteImage();
    const [shippingMode, setShippingMode] = useState<"air" | "sea">(shippingWay);
    const [visible, setVisible] = useState(false);
-   const [pickerValue, setPickerValue] = useState<string | null>(null);
    const { mutate, isSuccess, isPending } = usePlaceOrder();
    const [isLoading, setIsLoading] = useState(false);
    const { data: categories } = useGetCategories();
-   const id = categories ? categories[0]._id : "";
+   const id = categories ? categories[0]?._id : "";
    const [category, setCategory] = useState<string>(id);
+   const [pickerValue, setPickerValue] = useState<string | null>(id);
    const [selectedImages, setSelectedImages] = useState<
       {
          url: string;
          public_id: string;
       }[]
    >([]);
+
    const [uploadProgresus, setUploadProgress] = useState(0);
    const [showModal, setShowModal] = useState(false);
 
@@ -128,16 +134,23 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
          return (
             <>
                <AuthInputField
+                  label="Numero du conteneur"
+                  autoCapitalize="none"
+                  containerStyle={styles.containerStyle}
+                  name="contenairNumber"
+               />
+               <AuthInputField
                   label="Volume du Colis (CBM)"
                   autoCapitalize="none"
                   containerStyle={styles.containerStyle}
                   name="packageCBM"
                />
                <AuthInputField
-                  label="Numero du conteneur"
+                  label="Prix unitaire"
                   autoCapitalize="none"
                   containerStyle={styles.containerStyle}
-                  name="contenairNumber"
+                  name="unitPrice"
+                  keyboardType="numeric"
                />
                <AuthInputField
                   label="Prix Total"
@@ -305,6 +318,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
       }
       setIsLoading(false);
    };
+
    useEffect(() => {
       if (isSuccess) {
          setVisible(true);
@@ -319,9 +333,10 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
       clientName: route.params.clientName,
       clientPhone: route.params.phoneNumber,
       packageWeight: "0",
-      priceTotal: 0,
       partenaire: "",
       quantity: "1",
+      priceTotal: "0",
+      unitPrice: "0",
       shippingMode: shippingWay,
       typeOfPackage: category,
       category: category,
@@ -338,7 +353,8 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
 
    return (
       <Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
-         <>
+         <SafeAreaView>
+            <AutoCalculateTotal shippingMode="sea" />
             <ScrollView
                contentContainerStyle={styles.container}
                keyboardShouldPersistTaps="always"
@@ -507,7 +523,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
                   </View>
                </KeyboardAvoidingView>
             </ScrollView>
-         </>
+         </SafeAreaView>
       </Form>
    );
 };

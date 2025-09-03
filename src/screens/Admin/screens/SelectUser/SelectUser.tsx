@@ -51,7 +51,7 @@ const SelectUser = ({ navigation }: RootStackScreenProps<"SelectUser">) => {
                   selectedItem={selectedUser!}
                   setSelectedItem={setSelectedUser}
                   renderItemContent={(item) => (
-                     <View style={{ padding: 15 }}>
+                     <View style={{ padding: 15 }} key={item._id}>
                         <Text style={styles.userName}>
                            {item.firstName}- {item.lastName}
                         </Text>

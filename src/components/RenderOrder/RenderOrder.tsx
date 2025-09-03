@@ -16,6 +16,7 @@ import { useShippingMode } from "@src/store/shippingMode";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { CustomModal } from "../Modal/Modal";
 import { useDeleteOrder } from "@src/screens/Admin/hooks/useOrder";
+
 export const RenderOrder = ({ item }: { item: productType }) => {
    const currentRoute = item?.route?.[item?.route?.length - 1];
    const { role } = useAuth((state) => state.user);
@@ -33,6 +34,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
    }, [isSuccess]);
 
    useGetOrderDetails(item._id!);
+
    const textContentData = [
       { label: "Nom du client", value: item.clientName, id: "0" },
       { label: "Numéro du client", value: item.clientPhone, id: "1" },
@@ -51,19 +53,28 @@ export const RenderOrder = ({ item }: { item: productType }) => {
          id: "8",
       },
       { label: "Dernière mise à jour", value: formattedLastUpdate, id: "9" },
-      shippingMode === "sea" && {
-         label: "Nombre de CBM",
-         value: item.packageCBM,
-      },
-      shippingMode === "sea" && {
-         label: "Le Prix Total",
-         value: item.priceTotal,
-      },
-      shippingMode === "sea" && {
-         label: "Compagnie de Transport",
-         value: item.contenairNumber,
-      },
-   ];
+      ...(shippingMode === "sea"
+         ? [
+              { label: "Prix Unitaire", value: item.unitPrice, id: "10" },
+              { label: "Nombre de CBM", value: item.packageCBM, id: "11" },
+              { label: "Le Prix Total", value: item.priceTotal, id: "12" },
+              { label: "Compagnie de Transport", value: item.contenairNumber, id: "13" },
+              {
+                 label: "Status de Paiement",
+                 value:
+                    item.paymentStatus === "Paid" ? (
+                       <Text style={{ color: COLORS.green, fontFamily: Fonts.meduim }}>Payé</Text>
+                    ) : (
+                       <Text style={{ color: COLORS.danger, fontFamily: Fonts.meduim }}>
+                          Non payé
+                       </Text>
+                    ),
+                 id: "14",
+              },
+           ]
+         : []),
+   ].filter((item) => item.value !== undefined && item.value !== null && item.value !== "");
+
    const handleNavigate = () => {
       if (role === "admin") {
          navigation.navigate("ActiveOrderDetails", {
@@ -76,23 +87,26 @@ export const RenderOrder = ({ item }: { item: productType }) => {
          id: item._id!,
       });
    };
+
    const handleEdit = () => {
       navigation.navigate("EditOrder", {
          id: item._id!,
          orderId: item?.category?._id,
       });
    };
+
    const showPopUpModel = () => {
       setShowModal(true);
    };
+
    const onConfirm = () => {
       mutate({
          orderId: item._id!,
       });
    };
+
    return (
       <SafeAreaView style={styles.container}>
-         {/* image slider section */}
          <CustomModal
             visible={showModal}
             onClose={() => setShowModal(false)}
@@ -102,37 +116,24 @@ export const RenderOrder = ({ item }: { item: productType }) => {
             message="Are you sure you want to delete this order?"
          />
          <Slider bannerImages={item?.images!} handleNavigate={handleNavigate} />
-         {/* text container section */}
-         <>
-            {role === "admin" && (
-               <View
-                  style={{
-                     flexDirection: "row",
-                     justifyContent: "space-between",
-                     alignItems: "center",
-                     marginTop: 10,
-                     marginHorizontal: 25,
-                  }}
-               >
-                  <Pressable onPress={showPopUpModel}>
-                     <FontAwesome5 name="trash-alt" size={24} color={COLORS.danger} />
-                  </Pressable>
-                  <Pressable onPress={handleEdit}>
-                     <AntDesign name="edit" size={24} color={COLORS.blue} />
-                  </Pressable>
-               </View>
-            )}
-            {textContentData.map((content, index) => {
-               return (
-                  <Pressable onPress={handleNavigate} key={index}>
-                     <ListItem label={content.label} value={content.value!} index={content.id} />
-                     <View style={styles.bottomLine} />
-                  </Pressable>
-               );
-            })}
-         </>
 
-         {/* Button */}
+         {role === "admin" && (
+            <View style={styles.adminActions}>
+               <Pressable onPress={showPopUpModel}>
+                  <FontAwesome5 name="trash-alt" size={24} color={COLORS.danger} />
+               </Pressable>
+               <Pressable onPress={handleEdit}>
+                  <AntDesign name="edit" size={24} color={COLORS.blue} />
+               </Pressable>
+            </View>
+         )}
+
+         {textContentData.map((content) => (
+            <Pressable onPress={handleNavigate} key={content.id}>
+               <ListItem label={content.label} value={content.value} index={content.id} />
+               <View style={styles.bottomLine} />
+            </Pressable>
+         ))}
 
          {role === "admin" && (
             <Button mode="contained" style={styles.buttonStyle} onPress={handleNavigate}>
@@ -148,7 +149,13 @@ export const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: COLORS.white,
    },
-
+   adminActions: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginTop: 10,
+      marginHorizontal: 25,
+   },
    buttonStyle: {
       width: 200,
       alignSelf: "center",
