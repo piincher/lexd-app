@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MultiSelect } from "./components/MultiSelect";
 import { useGetUsers } from "../../hooks/useGetUsers";
@@ -18,6 +18,7 @@ const SendSms = ({ navigation }: RootStackScreenProps<"SendSms">) => {
    const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
    const [visible, setVisible] = React.useState<boolean>(false);
    const { mutate, isSuccess, isPending } = useSendNotificationSms();
+   const [search, setSearch] = React.useState<string>("");
    const [message, setMessage] = React.useState<string>("");
 
    const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
@@ -41,11 +42,9 @@ const SendSms = ({ navigation }: RootStackScreenProps<"SendSms">) => {
       if (isSuccess) {
          setVisible(true);
       }
-   }, [isSuccess]);
+   }, [isSuccess, setVisible]);
 
    const onDismissSnackBar = () => setVisible(false);
-
-   console.log("fetch data", fetctedData);
 
    useEffect(() => {
       if (open) {
@@ -58,6 +57,13 @@ const SendSms = ({ navigation }: RootStackScreenProps<"SendSms">) => {
          name: item.clientName,
          info: item.clientPhone,
       };
+   });
+
+   const filteredData = extractedData2?.filter((item) => {
+      return (
+         item.name.toLowerCase().includes(search.toLowerCase()) ||
+         item.info.toLowerCase().includes(search.toLowerCase())
+      );
    });
 
    const departureDate = new Date(
@@ -74,46 +80,64 @@ const SendSms = ({ navigation }: RootStackScreenProps<"SendSms">) => {
 
    return (
       <SafeAreaView style={styles.container}>
-         <Notification
-            message="message envoye"
-            type="success"
-            visible={visible}
-            onDismissSnackBar={onDismissSnackBar}
-         />
+         <ScrollView keyboardShouldPersistTaps="always">
+            <KeyboardAvoidingView
+               style={{
+                  flex: 1,
+                  justifyContent: "center",
+               }}
+               behavior={Platform.OS === "ios" ? "height" : undefined}
+            >
+               <Header
+                  title="Envoyer un message"
+                  navigation={navigation}
+                  rightIcon={<AntDesign name="calendar" size={24} color="black" />}
+                  rightIconHandler={() => setOpen(true)}
+               />
+               <Calendar
+                  open={open}
+                  onDismissSingle={onDismissSingle}
+                  date={date}
+                  onConfirmSingle={onConfirmSingle}
+               />
+               <TextInput
+                  label="search client"
+                  mode="outlined"
+                  onChangeText={(text) => setSearch(text)}
+                  multiline
+                  numberOfLines={4}
+                  style={{ margin: 10 }}
+               />
+               <MultiSelect
+                  items={filteredData}
+                  valueKey="id"
+                  displayKey="name"
+                  selectedItems={selectedItems}
+                  setSelectedIte
+                  setSelectedItems={setSelectedItems}
+               />
 
-         <Header
-            title="Envoyer un message"
-            navigation={navigation}
-            rightIcon={<AntDesign name="calendar" size={24} color="black" />}
-            rightIconHandler={() => setOpen(true)}
-         />
-         <Calendar
-            open={open}
-            onDismissSingle={onDismissSingle}
-            date={date}
-            onConfirmSingle={onConfirmSingle}
-         />
-         <MultiSelect
-            items={extractedData2}
-            valueKey="id"
-            displayKey="name"
-            selectedItems={selectedItems}
-            setSelectedIte
-            setSelectedItems={setSelectedItems}
-         />
-         <TextInput
-            label="Message"
-            mode="outlined"
-            onChangeText={(text) => setMessage(text)}
-            multiline
-            numberOfLines={4}
-            style={{ margin: 10 }}
-         />
-         <AppButton
-            onPress={fetctedData?.length > 0 ? handleSendSms : fetch}
-            title={fetctedData?.length > 0 ? "Envoyez un message" : "Obtenir les client "}
-            busy={fetchDataIsPending}
-         />
+               <Notification
+                  message="message envoye"
+                  type="success"
+                  visible={visible}
+                  onDismissSnackBar={onDismissSnackBar}
+               />
+               <TextInput
+                  label="Message"
+                  mode="outlined"
+                  onChangeText={(text) => setMessage(text)}
+                  multiline
+                  numberOfLines={4}
+                  style={{ margin: 10 }}
+               />
+               <AppButton
+                  onPress={fetctedData?.length > 0 ? handleSendSms : fetch}
+                  title={fetctedData?.length > 0 ? "Envoyez un message" : "Obtenir les client "}
+                  busy={fetchDataIsPending || isPending}
+               />
+            </KeyboardAvoidingView>
+         </ScrollView>
       </SafeAreaView>
    );
 };
@@ -121,6 +145,7 @@ const SendSms = ({ navigation }: RootStackScreenProps<"SendSms">) => {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
+      backgroundColor: COLORS.white,
    },
 });
 

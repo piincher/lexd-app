@@ -67,11 +67,11 @@ const styles = StyleSheet.create({
       fontFamily: Fonts.meduim,
       fontSize: 12,
       color: COLORS.DimGray,
-      marginLeft: 12,
+      marginLeft: 16,
    },
    value: {
       fontFamily: Fonts.regular,
-      fontSize: 14,
+      fontSize: 10,
       color: COLORS.DarkGrey,
       maxWidth: "80%",
    },

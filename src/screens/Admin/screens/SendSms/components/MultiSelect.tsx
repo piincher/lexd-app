@@ -39,6 +39,8 @@ export function MultiSelect<T>(props: MultiSelectProps<T>): JSX.Element {
       });
    };
 
+   console.log("selected items", selectedItems);
+
    return (
       <FlatList
          data={items}
@@ -52,6 +54,8 @@ export function MultiSelect<T>(props: MultiSelectProps<T>): JSX.Element {
             const isSelected = selectedItems.includes(
                valueKey ? String((item as T)[valueKey]) : String(item)
             );
+
+            console.log("rendering item", item, "isSelected:", isSelected);
 
             return (
                <Pressable
@@ -76,20 +80,7 @@ export function MultiSelect<T>(props: MultiSelectProps<T>): JSX.Element {
                      </Text>
 
                      {/* Additional Info */}
-                     <Text style={styles.cardSubtitle}>Status Actuel: {item?.currentStatus}</Text>
-                     <Text style={styles.cardSubtitle}>
-                        Date de le derniere mise a jour(GMT):{" "}
-                        {item.lastUpdate ? String(item.lastUpdate.split("T")[0]) : "N/A"}
-                     </Text>
-                     <Text style={styles.cardSubtitle}>
-                        Numero de Suivi: {item.code ? `${item.code}` : "N/A"}
-                     </Text>
-                     <Text style={styles.cardSubtitle}>
-                        Prix Total: {item.price ? `${item.price} FCFA` : "N/A"}
-                     </Text>
-                     <Text style={styles.cardSubtitle}>
-                        Le Nombre de CBM: {item.packageWeight ? `${item.packageWeight} CBM` : "N/A"}
-                     </Text>
+                     <Text style={styles.cardSubtitle}>Numero de telephone: {item?.info}</Text>
                   </View>
 
                   {/* Selection Indicator */}
