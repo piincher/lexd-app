@@ -55,8 +55,12 @@ export const RenderOrder = ({ item }: { item: productType }) => {
       { label: "Dernière mise à jour", value: formattedLastUpdate, id: "9" },
       ...(shippingMode === "sea"
          ? [
-              { label: "Prix Unitaire", value: item.unitPrice, id: "10" },
               { label: "Nombre de CBM", value: item.packageCBM, id: "11" },
+              {
+                 label: "Prix Unitaire",
+                 value: item.unitPrice ? item.unitPrice : "indefini",
+                 id: "10",
+              },
               { label: "Le Prix Total", value: item.priceTotal, id: "12" },
               { label: "Compagnie de Transport", value: item.contenairNumber, id: "13" },
               {
