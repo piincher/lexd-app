@@ -23,7 +23,8 @@ export const useUpdateTopupStatus = () => {
       mutationFn: adminUpdateTopUp,
       onSuccess: () => {
          // Invalidate the query to refetch the data
-         queryClient.invalidateQueries({ queryKey: [TOPKEY, BALANCEKEY] });
+         queryClient.invalidateQueries({ queryKey: [TOPKEY] });
+         queryClient.invalidateQueries({ queryKey: [BALANCEKEY] });
       },
    });
 };

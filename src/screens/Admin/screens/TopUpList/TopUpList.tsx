@@ -1,5 +1,4 @@
-// AdminTopUpList.tsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
    View,
    Text,
@@ -8,10 +7,8 @@ import {
    Image,
    TouchableOpacity,
    ActivityIndicator,
-   RefreshControl,
-   TouchableWithoutFeedback,
-   Modal,
    Dimensions,
+   TouchableWithoutFeedback,
 } from "react-native";
 import { BlurView } from "expo-blur";
 import { MotiView, MotiText } from "moti";
@@ -19,59 +16,80 @@ import Animated, {
    FadeInRight,
    FadeOutRight,
    Layout,
-   SlideInRight,
-   SlideOutLeft,
+   useSharedValue,
+   useAnimatedStyle,
+   withTiming,
 } from "react-native-reanimated";
 import { SegmentedButtons, IconButton } from "react-native-paper";
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
 import { useAdminGetTopUp, useUpdateTopupStatus } from "./hooks/useTopUp";
-import { GestureHandlerRootView, PinchGestureHandler } from "react-native-gesture-handler";
+import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
 import { MaterialIcons } from "@expo/vector-icons";
-const STATUSES = ["pending", "approved", "rejected"];
-const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
-type TopUpRequest = {
-   _id: string;
-   user: {
-      firstName: string;
-      phoneNumber: string;
-   };
-   amount: number;
-   createdAt: string;
-   status: "pending" | "approved" | "rejected";
-   proofImage: string;
-};
+const STATUSES = ["pending", "approved", "rejected"];
+
+const { width, height } = Dimensions.get("window");
 
 const AdminTopUpList = () => {
    const [selectedStatus, setSelectedStatus] = useState("pending");
-
    const [loading, setLoading] = useState(false);
-
    const [hasMore, setHasMore] = useState(true);
    const { data } = useAdminGetTopUp();
    const [selectedImage, setSelectedImage] = useState<string | null>(null);
-   const [scale, setScale] = useState(1);
-   const [baseScale, setBaseScale] = useState(1);
-   const [visible, setVisible] = useState(false);
+
    const { mutate } = useUpdateTopupStatus();
 
-   // Add gesture handler functions
-   const onPinchGestureEvent = (event) => {
-      setScale(event.nativeEvent.scale * baseScale);
+   // zoom values
+   const scale = useSharedValue(1);
+   const savedScale = useSharedValue(1);
+   const isZoomed = useSharedValue(false);
+
+   // Pinch gesture
+   const pinch = Gesture.Pinch()
+      .onUpdate((e) => {
+         scale.value = savedScale.value * e.scale;
+      })
+      .onEnd(() => {
+         savedScale.value = scale.value;
+      });
+
+   // Double tap gesture
+   const doubleTap = Gesture.Tap()
+      .numberOfTaps(2)
+      .onStart(() => {
+         if (isZoomed.value) {
+            scale.value = withTiming(1);
+            savedScale.value = 1;
+            isZoomed.value = false;
+         } else {
+            scale.value = withTiming(2);
+            savedScale.value = 2;
+            isZoomed.value = true;
+         }
+      });
+
+   const animatedImageStyle = useAnimatedStyle(() => ({
+      transform: [{ scale: scale.value }],
+   }));
+
+   const handleStatusChange = (_id: string, newStatus: "approved" | "rejected") => {
+      mutate({ _id, status: newStatus });
    };
 
-   const onPinchHandlerStateChange = (event) => {
-      if (event.nativeEvent.oldState === State.ACTIVE) {
-         setBaseScale(scale);
-      }
-   };
-   const handleStatusChange = async (id: string, newStatus: "approved" | "rejected") => {
-      console.log("Status changed to:", newStatus);
-      console.log("ID:", id);
-      mutate({ _id: id, status: newStatus });
-   };
-   const renderItem = ({ item, index }: { item: TopUpRequest; index: number }) => (
+   interface TopUpItem {
+      _id: string;
+      proofImage: string;
+      user: {
+         firstName: string;
+         phoneNumber: string;
+      };
+      amount: number;
+      createdAt: string;
+      status: "pending" | "approved" | "rejected";
+   }
+
+   const renderItem = ({ item, index }: { item: TopUpItem; index: number }) => (
       <Animated.View
          key={item._id}
          entering={FadeInRight.delay(index * 50)}
@@ -80,23 +98,16 @@ const AdminTopUpList = () => {
          style={styles.itemContainer}
       >
          <View style={styles.itemContent}>
-            <TouchableOpacity
-               onPress={() => {
-                  setSelectedImage(item.proofImage);
-                  setVisible(true);
-               }}
-            >
+            <TouchableOpacity onPress={() => setSelectedImage(item.proofImage)}>
                <Image
                   source={{ uri: item.proofImage }}
                   style={styles.proofImage}
                   resizeMode="cover"
                />
             </TouchableOpacity>
-
             <View style={styles.details}>
                <Text style={styles.userName}>{item.user.firstName}</Text>
                <Text style={styles.userPhone}>{item.user.phoneNumber}</Text>
-
                <MotiView
                   from={{ opacity: 0, translateY: 5 }}
                   animate={{ opacity: 1, translateY: 0 }}
@@ -113,7 +124,6 @@ const AdminTopUpList = () => {
                </MotiView>
             </View>
          </View>
-
          {item.status === "pending" ? (
             <View style={styles.actions}>
                <IconButton
@@ -141,42 +151,6 @@ const AdminTopUpList = () => {
                {item.status}
             </MotiText>
          )}
-
-         <Modal
-            visible={!!selectedImage}
-            transparent={false}
-            onRequestClose={() => {
-               setSelectedImage(null);
-               setScale(1);
-               setBaseScale(1);
-            }}
-         >
-            <GestureHandlerRootView style={styles.modalContainer}>
-               <PinchGestureHandler
-                  onGestureEvent={onPinchGestureEvent}
-                  onHandlerStateChange={onPinchHandlerStateChange}
-               >
-                  <View style={styles.modalContent}>
-                     <TouchableWithoutFeedback
-                        onPress={() => {
-                           setVisible(false);
-                           setSelectedImage(null);
-                        }}
-                     >
-                        <View style={styles.closeButton}>
-                           <MaterialIcons name="close" size={28} color="white" />
-                        </View>
-                     </TouchableWithoutFeedback>
-
-                     <Image
-                        style={[styles.fullImage, { transform: [{ scale }] }]}
-                        source={{ uri: selectedImage || "" }}
-                        resizeMode={scale > 1 ? "contain" : "cover"}
-                     />
-                  </View>
-               </PinchGestureHandler>
-            </GestureHandlerRootView>
-         </Modal>
       </Animated.View>
    );
 
@@ -184,7 +158,6 @@ const AdminTopUpList = () => {
       <View style={styles.container}>
          <BlurView intensity={25} style={styles.blurContainer}>
             <Text style={styles.title}>Top-Up Requests</Text>
-
             <SegmentedButtons
                value={selectedStatus}
                onValueChange={setSelectedStatus}
@@ -192,44 +165,58 @@ const AdminTopUpList = () => {
                   value: status,
                   label: status.toUpperCase(),
                   style: {
-                     backgroundColor: selectedStatus === status ? COLORS.accent : "transparent",
+                     backgroundColor: selectedStatus === status ? COLORS.blue : "transparent",
                      borderColor: COLORS.Crimson,
                   },
                   labelStyle: {
-                     color: selectedStatus === status ? COLORS.white : COLORS.accent,
+                     color: selectedStatus === status ? COLORS.white : COLORS.lightGray,
                      fontFamily: Fonts.bold,
                   },
                }))}
                style={styles.segmentedControl}
             />
-
             <FlatList
                data={(data ?? []).filter((item) => item.status === selectedStatus)}
-               keyExtractor={(item) => item._id}
+               keyExtractor={(item) => item._id!}
                renderItem={renderItem}
                contentContainerStyle={styles.listContent}
-               //   refreshControl={
-               //     <RefreshControl
-               //       refreshing={refreshing}
-               //       onRefresh={handleRefresh}
-               //       tintColor={COLORS.accent}
-               //     />
-               //   }
                ListFooterComponent={() => (
                   <View style={styles.footer}>
-                     {loading && <ActivityIndicator size="large" color={COLORS.accent} />}
+                     {loading && <ActivityIndicator size="large" color={COLORS.blue} />}
                      {!hasMore && <Text style={styles.noMoreText}>No more requests</Text>}
                   </View>
                )}
-               //   onEndReached={() => hasMore && loadRequests()}
-               //   onEndReachedThreshold={0.5}
             />
          </BlurView>
+
+         {/* Full-screen image overlay */}
+         {selectedImage && (
+            <TouchableWithoutFeedback style={styles.overlayContainer}>
+               <GestureDetector gesture={Gesture.Simultaneous(pinch, doubleTap)}>
+                  <View style={styles.modalContent}>
+                     <TouchableOpacity
+                        style={styles.closeButton}
+                        onPress={() => {
+                           setSelectedImage(null);
+                           scale.value = 1;
+                           savedScale.value = 1;
+                           isZoomed.value = false;
+                        }}
+                     >
+                        <MaterialIcons name="close" size={28} color="white" />
+                     </TouchableOpacity>
+                     <Animated.Image
+                        source={{ uri: selectedImage }}
+                        style={[styles.fullImage, animatedImageStyle]}
+                        resizeMode="contain"
+                     />
+                  </View>
+               </GestureDetector>
+            </TouchableWithoutFeedback>
+         )}
       </View>
    );
 };
-
-const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
    container: {
@@ -334,9 +321,8 @@ const styles = StyleSheet.create({
       color: "rgba(255,255,255,0.5)",
       fontFamily: Fonts.meduim,
    },
-
-   modalContainer: {
-      flex: 1,
+   overlayContainer: {
+      ...StyleSheet.absoluteFillObject,
       backgroundColor: "rgba(0,0,0,0.95)",
       justifyContent: "center",
       alignItems: "center",
@@ -346,20 +332,17 @@ const styles = StyleSheet.create({
       height: "100%",
       justifyContent: "center",
       alignItems: "center",
-      position: "absolute",
-      top: 200,
-      right: -200,
    },
    fullImage: {
-      width: width,
-      height: height,
+      width,
+      height,
    },
    closeButton: {
       position: "absolute",
-      top: -200,
+      top: 40,
       right: 20,
-      zIndex: 100,
-      backgroundColor: "rgba(255,255,255,0.2)",
+      zIndex: 10,
+      backgroundColor: "rgba(255,255,255,0.3)",
       borderRadius: 20,
       padding: 8,
    },
