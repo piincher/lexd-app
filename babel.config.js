@@ -15,7 +15,7 @@ module.exports = function (api) {
                "react-native-device-info": "./react-native-device-info.js",
             },
          ],
-         "react-native-reanimated/plugin",
+         "react-native-worklets/plugin",
       ],
    };
 };

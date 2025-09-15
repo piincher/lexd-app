@@ -25,6 +25,8 @@ export const COLORS = {
 	navy: '#153059',
 	influencercardcolor: '#f6f9ff',
 	lightGray: '#898989',
+	 lightBackground: '#F8FAFC',
+border: '#E5E7EB',
 
 	// extras
 	extra1: '#EFF3FA',

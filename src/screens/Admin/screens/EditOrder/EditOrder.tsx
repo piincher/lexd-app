@@ -335,7 +335,6 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
       }
       return null;
    };
-   console.log("date", item?.departureDate);
    return (
       <Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
          <>

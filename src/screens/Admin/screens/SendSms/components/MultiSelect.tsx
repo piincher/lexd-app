@@ -51,11 +51,16 @@ export function MultiSelect<T>(props: MultiSelectProps<T>): JSX.Element {
          )}
          keyExtractor={(item, index) => (valueKey ? String((item as T)[valueKey]) : String(index))}
          renderItem={({ item }) => {
+            console.log("Rendering item:", item);
             const isSelected = selectedItems.includes(
                valueKey ? String((item as T)[valueKey]) : String(item)
             );
 
             console.log("rendering item", item, "isSelected:", isSelected);
+            const lastUpdate = new Date(item?.[dateKey] as string);
+            const formattedDate = isNaN(lastUpdate.getTime())
+               ? "N/A"
+               : lastUpdate.toLocaleDateString();
 
             return (
                <Pressable
@@ -81,6 +86,11 @@ export function MultiSelect<T>(props: MultiSelectProps<T>): JSX.Element {
 
                      {/* Additional Info */}
                      <Text style={styles.cardSubtitle}>Numero de telephone: {item?.info}</Text>
+                     <Text style={styles.cardSubtitle}>Current Status : {item.currentStatus}</Text>
+                     <Text style={styles.cardSubtitle}>
+                        Date : {item?.lastUpdate ? String(item?.lastUpdate).split("T")[0] : "N/A"}
+                     </Text>
+                     <Text style={styles.cardSubtitle}>CBM : {item.packageWeight}</Text>
                   </View>
 
                   {/* Selection Indicator */}
@@ -113,7 +123,7 @@ const styles = StyleSheet.create({
       elevation: 3,
    },
    selectedCard: {
-      borderColor: COLORS.primary,
+      borderColor: COLORS.blue,
       borderWidth: 2,
    },
    notSelectedCard: {
@@ -155,7 +165,7 @@ const styles = StyleSheet.create({
       fontFamily: Fonts.regular,
       fontSize: 14,
       color: COLORS.grey,
-      marginBottom: 2,
+      marginBottom: 10,
    },
    indicator: {
       width: 16,

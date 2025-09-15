@@ -14,6 +14,7 @@ import UserActiveOrders from "@src/screens/Admin/screens/ActiveOrder/screens/Use
 import ActiveOrderdetails from "@src/screens/Admin/screens/ActiveOrderDetails/ActiveOrderdetails";
 import AddOrder from "@src/screens/Admin/screens/AddOrder/AddOrder";
 import AddUser from "@src/screens/Admin/screens/AddUser/AddUser";
+import AdminDashBoard from "@src/screens/Admin/screens/AdminDashBoard/AdminDashBoard";
 import BatchUpdate from "@src/screens/Admin/screens/BatchUpdate/screens/BatchUpdate";
 import EditOrder from "@src/screens/Admin/screens/EditOrder/EditOrder";
 import AdminPastOrders from "@src/screens/Admin/screens/PastOrder/PastOrder";
@@ -25,9 +26,7 @@ import Verification from "@src/screens/Auth/Verification/Verification";
 import Chat from "@src/screens/Chat/screens/Chat";
 import ChatRoom from "@src/screens/Chat/screens/ChatRoom";
 import SelectAdminToChatWith from "@src/screens/Chat/screens/SelectAdmin";
-import CheckRoute from "@src/screens/CheckRoute/CheckRoute";
 import { useNotification } from "@src/screens/Home/hooks/useNotification";
-import AdminDashBoard from "@src/screens/Admin/screens/AdminDashBoard/AdminDashBoard";
 import HomeScreen from "@src/screens/Home/screens/HomeScreen";
 import Notifications from "@src/screens/Home/screens/Notifications";
 import OnBoarding from "@src/screens/OnBoardingScreen/OnBoardingScreen";
@@ -37,32 +36,29 @@ import AboutUs from "@src/screens/Profile/screens/AboutUs";
 import PastOrders from "@src/screens/Profile/screens/PastOrders";
 import Profile from "@src/screens/Profile/screens/Profile";
 // import { initSentry } from "@src/services/sentry";
+import FadingAnnouncement from "@src/components/Announcement/Annoncement";
+import { COLORS } from "@src/constants/Colors";
+import BatchUpdateDetail from "@src/screens/Admin/screens/BatchUpdate/screens/BatchUpdateDetail";
+import ChooseShippingMethod from "@src/screens/Admin/screens/ChooseShippingMethod/ChooseShippingMethod";
+import ShippingMethod from "@src/screens/Admin/screens/ShippingMethod/ShippingMethod";
+import AdminTopUpList from "@src/screens/Admin/screens/TopUpList/TopUpList";
+import Faq from "@src/screens/Home/screens/FAQ";
+import SeaShippingOrderDetails from "@src/screens/OrderDetail/screens/SeaShippingOrderDetails";
+import Orders from "@src/screens/orders/Orders";
+import TopUpScreen from "@src/screens/Profile/screens/TopUp";
+import TopUpHistoryScreen from "@src/screens/Profile/screens/TopUpHistory";
 import { useAppLaunchStore } from "@src/store/AppLaunch";
 import { useAuth } from "@src/store/Auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { en, registerTranslation } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-expo";
-import ChooseShippingMethod from "@src/screens/Admin/screens/ChooseShippingMethod/ChooseShippingMethod";
-import ShippingMethod from "@src/screens/Admin/screens/ShippingMethod/ShippingMethod";
-import React from "react";
-import SeaShippingOrderDetails from "@src/screens/OrderDetail/screens/SeaShippingOrderDetails";
-import BatchUpdateDetail from "@src/screens/Admin/screens/BatchUpdate/screens/BatchUpdateDetail";
-import { UpdateProvider } from "@src/context/UpdateProvider";
-import * as Sentry from "@sentry/react-native";
-import { COLORS } from "@src/constants/Colors";
-import Orders from "@src/screens/orders/Orders";
-import Faq from "@src/screens/Home/screens/FAQ";
-import FadingAnnouncement from "@src/components/Announcement/Annoncement";
-import TopUpScreen from "@src/screens/Profile/screens/TopUp";
-import AdminTopUpList from "@src/screens/Admin/screens/TopUpList/TopUpList";
-import TopUpHistoryScreen from "@src/screens/Profile/screens/TopUpHistory";
+import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-react-native";
 registerTranslation("en-GB", en);
 
 SplashScreen.preventAutoHideAsync();
@@ -200,7 +196,7 @@ const HomeBottomTab = () => {
                component={AdminDashBoard}
                options={{
                   tabBarIcon: ({ focused, color, size }) => (
-                     <AntDesign name="file1" focused={focused} color={color} size={size} />
+                     <AntDesign name="book" focused={focused} color={color} size={size} />
                   ),
                }}
             />
@@ -268,13 +264,13 @@ const App = () => {
 // dont forget to add the in app update provider
 const MainWrapper = () => {
    return (
-      <OverlayProvider>
-         <StreamChat client={chatClient} i18nInstance={streami18n}>
-            <>
+      <>
+         <OverlayProvider>
+            <StreamChat client={chatClient} i18nInstance={streami18n}>
                <AppWrapper />
-            </>
-         </StreamChat>
-      </OverlayProvider>
+            </StreamChat>
+         </OverlayProvider>
+      </>
    );
 };
 

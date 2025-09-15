@@ -58,10 +58,6 @@ const ActiveOrders = ({ navigation, route }: RootStackScreenProps<"ActiveOrder">
    // prefetch routes
    useGetRoutes();
 
-   console.log(
-      "data",
-      data?.pages.flatMap((page) => page)
-   );
    const filteredData = data?.pages
       .flatMap((page) => page)
       .filter((item) => {
@@ -97,7 +93,7 @@ const ActiveOrders = ({ navigation, route }: RootStackScreenProps<"ActiveOrder">
    return (
       <SafeAreaView style={styles.container}>
          <Header
-            title="Envoyer un message"
+            title="Commandes"
             navigation={navigation}
             rightIcon={<AntDesign name="calendar" size={24} color="black" />}
             rightIconHandler={() => setOpen(true)}
@@ -118,6 +114,7 @@ const ActiveOrders = ({ navigation, route }: RootStackScreenProps<"ActiveOrder">
          <Searchbar
             style={{ marginHorizontal: 10, marginVertical: 10 }}
             value={searchQuery}
+            placeholder="Rechercher par nom, téléphone, code de suivi"
             onChangeText={(query) => setSearchQuery(query)}
          />
          <ListItemOrders

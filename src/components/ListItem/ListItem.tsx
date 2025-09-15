@@ -1,40 +1,76 @@
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View, Pressable, StyleProp, ViewStyle } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 interface ListItemProps {
    label: string;
-   value: string | number;
-   index: string;
+   value: React.ReactNode;
+   icon?: string;
+   isCopyable?: boolean;
+   onCopy?: () => void;
+   style?: StyleProp<ViewStyle>;
 }
 
-export const ListItem = ({ label, value, index }: ListItemProps) => {
+export const ListItem = ({ label, value, icon, isCopyable, onCopy, style }: ListItemProps) => {
    return (
-      <View key={index} style={styles.textContent}>
-         <Text style={styles.propertyStyle}>{label}</Text>
-         <Text numberOfLines={5} style={styles.textStyle}>
-            {value}
-         </Text>
+      <View style={[styles.container, style]}>
+         <View style={styles.leftSection}>
+            {icon && (
+               <MaterialIcons name={icon} size={20} color={COLORS.blue} style={styles.icon} />
+            )}
+            <Text style={styles.label}>{label}</Text>
+         </View>
+         <View style={styles.rightSection}>
+            <Text style={styles.value}>{value}</Text>
+            {isCopyable && (
+               <Pressable onPress={onCopy} style={styles.copyButton}>
+                  <MaterialIcons name="content-copy" size={16} color={COLORS.blue} />
+               </Pressable>
+            )}
+         </View>
       </View>
    );
 };
 
 const styles = StyleSheet.create({
-   textContent: {
+   container: {
       flexDirection: "row",
+      alignItems: "center",
       justifyContent: "space-between",
-      marginVertical: 5,
-      marginHorizontal: 20,
+      paddingVertical: 12,
+      paddingHorizontal: 16,
    },
-   propertyStyle: {
+   leftSection: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+   },
+   rightSection: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      gap: 8,
+   },
+   icon: {
+      marginTop: 2,
+   },
+   label: {
       fontSize: 14,
       fontFamily: Fonts.meduim,
+      color: COLORS.DarkGrey,
+      fontWeight: "500",
    },
-   textStyle: {
-      fontSize: 13,
-      maxWidth: "60%",
+   value: {
+      fontSize: 14,
       fontFamily: Fonts.meduim,
       color: COLORS.grey,
+      maxWidth: 200,
       textAlign: "right",
+      marginTop: 2,
+   },
+   copyButton: {
+      padding: 4,
    },
 });

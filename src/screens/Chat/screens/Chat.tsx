@@ -4,7 +4,7 @@ import { HomeTabScreenProps } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ChannelList } from "stream-chat-expo";
+import { ChannelList } from "stream-chat-react-native";
 import { useChatClient } from "../hooks/useChatClient";
 import withProtectedRoute from "@src/hoc/protected";
 

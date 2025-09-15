@@ -3,7 +3,7 @@ import { useAppContext } from "@src/context/ChatContext";
 import { RootStackScreenProps } from "@src/navigations/type";
 import { useEffect } from "react";
 import { Text } from "react-native-paper";
-import { Channel, MessageList, MessageInput } from "stream-chat-expo";
+import { Channel, MessageList, MessageInput } from "stream-chat-react-native";
 
 const ChatRoom = ({ route }: RootStackScreenProps<"ChatRoom">) => {
    const { channel: activeChannel, setChannel: setActiveChannel } = useAppContext();

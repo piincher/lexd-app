@@ -29,7 +29,7 @@ export type productType = {
 	partenaire: string;
 	_id?: string | undefined;
 	images: imagesType;
-	status?: 'Active' | 'Inactive' | 'In Transit' | 'Order Delivered';
+	status?: 'Active' | 'Inactive' | 'In Transit' | 'Delivered';
 	quantity?: number;
 	shippingMode?: string;
 	createdAt?: string;

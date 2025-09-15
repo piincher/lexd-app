@@ -1,22 +1,22 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { ChannelPreviewMessengerProps } from 'stream-chat-expo';
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { ChannelPreviewMessengerProps } from "stream-chat-react-native";
 
-export type StreamChannel = ChannelPreviewMessengerProps['channel'] | undefined;
+export type StreamChannel = ChannelPreviewMessengerProps["channel"] | undefined;
 
 type contextType = {
-	channel: StreamChannel;
-	setChannel: Dispatch<SetStateAction<StreamChannel>>;
+   channel: StreamChannel;
+   setChannel: Dispatch<SetStateAction<StreamChannel>>;
 };
 export const ChatContext = React.createContext<contextType>({} as contextType);
 
 interface ChatContextProps {
-	children: React.ReactNode;
+   children: React.ReactNode;
 }
 
 export const ChatProvider = ({ children }: ChatContextProps) => {
-	const [channel, setChannel] = useState<StreamChannel>();
+   const [channel, setChannel] = useState<StreamChannel>();
 
-	return <ChatContext.Provider value={{ channel, setChannel }}>{children}</ChatContext.Provider>;
+   return <ChatContext.Provider value={{ channel, setChannel }}>{children}</ChatContext.Provider>;
 };
 
 export const useAppContext = () => React.useContext(ChatContext);
