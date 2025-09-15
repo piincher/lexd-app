@@ -32,6 +32,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { useGetCategories } from "../../hooks/useCategory";
 import { CustomModal } from "@src/components/Modal/Modal";
 import { useShippingMode } from "@src/store/shippingMode";
+import AutoCalculateTotal from "../AddOrder/components/AutoCalculateTotal";
 // import { useGetCategories } from '../../hooks/useCategory';
 
 const signupSchema = yup.object({
@@ -42,6 +43,7 @@ const signupSchema = yup.object({
    quantity: yup.number().required("Nombre de colis est requis"),
    packageCBM: yup.string(),
    contenairNumber: yup.string(),
+   unitPrice: yup.number(),
 });
 
 interface order {
@@ -61,6 +63,7 @@ interface order {
       title: string;
    };
    orderId?: string;
+   unitPrice: number;
 }
 
 // 'le client a passé une commande',
@@ -228,6 +231,7 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
       shippingMode: item?.shippingMode,
       packageCBM: item?.packageCBM,
       contenairNumber: item?.contenairNumber,
+      unitPrice: item?.unitPrice,
    };
 
    const takePhoto = async () => {
@@ -322,6 +326,14 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
                   containerStyle={styles.containerStyle}
                   name="contenairNumber"
                />
+
+               <AuthInputField
+                  label="Prix unitaire"
+                  autoCapitalize="none"
+                  containerStyle={styles.containerStyle}
+                  name="unitPrice"
+                  keyboardType="numeric"
+               />
                <AuthInputField
                   label="Prix Total"
                   autoCapitalize="none"
@@ -337,7 +349,8 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
    };
    return (
       <Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
-         <>
+         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+            <AutoCalculateTotal shippingMode="sea" />
             <ScrollView
                contentContainerStyle={styles.container}
                keyboardShouldPersistTaps="always"
@@ -450,12 +463,6 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
                         phone={true}
                      />
                      {/* <AuthInputField label='Country' placeholder='Name' containerStyle={styles.containerStyle} name='country' /> */}
-                     <AuthInputField
-                        label="Poids du Colis"
-                        autoCapitalize="none"
-                        containerStyle={styles.containerStyle}
-                        name="packageWeight"
-                     />
 
                      <AuthInputField
                         label="nombre de colis"
@@ -510,7 +517,7 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
                   </View>
                </KeyboardAvoidingView>
             </ScrollView>
-         </>
+         </SafeAreaView>
       </Form>
    );
 };

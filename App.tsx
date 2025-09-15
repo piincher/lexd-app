@@ -56,10 +56,10 @@ import { StatusBar } from "expo-status-bar";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
-import { en, registerTranslation } from "react-native-paper-dates";
+import { enGB, registerTranslation } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-react-native";
-registerTranslation("en-GB", en);
+registerTranslation("en", enGB);
 
 SplashScreen.preventAutoHideAsync();
 

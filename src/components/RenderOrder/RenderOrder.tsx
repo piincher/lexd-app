@@ -44,7 +44,6 @@ export const RenderOrder = ({ item }: { item: productType }) => {
       { label: "Numéro de suivi", value: item.code, icon: "qr-code", isCopyable: true },
    ];
 
-   console.log("Order Item:", item);
    const shippingDetails = [
       { label: "Mode d'expédition", value: item.shippingMode, icon: "local-shipping" },
       {

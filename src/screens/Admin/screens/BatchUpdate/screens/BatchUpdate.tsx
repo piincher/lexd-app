@@ -12,12 +12,12 @@ import { Fonts } from "@src/constants/Fonts";
 import { useMutateBetweenDate } from "@src/screens/Admin/hooks/useOrder";
 import { LoadingSpinner } from "@src/components/LoadingSpinner";
 import { MultiSelect } from "../../SendSms/components/MultiSelect";
+
 const Status = [
    {
       id: "1",
       title: "Active",
    },
-
    {
       id: "3",
       title: "In Transit",
@@ -39,11 +39,6 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
       date?.getMonth() ?? 0,
       date?.getDate() + 1 ?? 1
    );
-
-   // const getYear2 = new Date(range?.endDate).getFullYear();
-   // const getMonth2 = new Date(range?.endDate).getMonth();
-   // const getDate2 = new Date(range?.endDate).getDate();
-   // const endDate = new Date(getYear2, getMonth2, getDate2 + 1);
 
    useEffect(() => {
       if (open) {
@@ -77,6 +72,21 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
       navigation.navigate("BatchUpdateDetail", { data: selectedItems });
    };
 
+   // Select all items function
+   const selectAllItems = () => {
+      if (extractedData) {
+         const allIds = extractedData
+            .map((item) => item.id)
+            .filter((id): id is string => typeof id === "string");
+         setSelectedItems(allIds);
+      }
+   };
+
+   // Clear selection function
+   const clearSelection = () => {
+      setSelectedItems([]);
+   };
+
    if (isPending) {
       return <LoadingSpinner />;
    }
@@ -88,7 +98,7 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
    return (
       <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
          <Header
-            title="Batch Update"
+            title="Batch Update Orders"
             navigation={navigation}
             rightIcon={<AntDesign name="calendar" size={24} color="black" />}
             rightIconHandler={() => setOpen(true)}
@@ -123,6 +133,20 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
             </View>
          </View>
 
+         {/* Add Select All and Clear Selection buttons */}
+         <View style={styles.selectionControls}>
+            <AppButton
+               title="Tout sélectionner"
+               onPress={selectAllItems}
+               style={styles.selectButton}
+            />
+            <AppButton
+               title="Effacer la sélection"
+               onPress={clearSelection}
+               style={styles.clearButton}
+            />
+         </View>
+
          <MultiSelect
             items={extractedData || []}
             valueKey="id"
@@ -154,5 +178,28 @@ const styles = StyleSheet.create({
    picker: {
       width: "100%",
       fontFamily: Fonts.bold,
+   },
+   selectionControls: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginHorizontal: 20,
+      marginTop: 10,
+      marginBottom: 10,
+   },
+   selectButton: {
+      flex: 1,
+      marginRight: 10,
+      backgroundColor: COLORS.blue,
+   },
+   selectButtonText: {
+      color: COLORS.white,
+   },
+   clearButton: {
+      flex: 1,
+      marginLeft: 10,
+      backgroundColor: COLORS.lightGray,
+   },
+   clearButtonText: {
+      color: COLORS.DarkGrey,
    },
 });
