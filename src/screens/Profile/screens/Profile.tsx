@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
    },
    phoneNumber: {
       fontSize: 14,
-      fontFamily: Fonts.medium,
+      fontFamily: Fonts.meduim,
       color: "rgba(255,255,255,0.8)",
    },
    statsContainer: {

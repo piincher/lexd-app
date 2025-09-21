@@ -25,7 +25,7 @@ export const ListItem = ({ label, value, icon, isCopyable, onCopy, style }: List
          <View style={styles.rightSection}>
             <Text style={styles.value}>{value}</Text>
             {isCopyable && (
-               <Pressable onPress={onCopy} style={styles.copyButton}>
+               <Pressable onPress={() => onCopy()} style={styles.copyButton}>
                   <MaterialIcons name="content-copy" size={16} color={COLORS.blue} />
                </Pressable>
             )}

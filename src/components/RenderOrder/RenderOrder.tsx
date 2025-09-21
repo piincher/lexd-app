@@ -40,7 +40,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 
    const customerInfo = [
       { label: "Nom du client", value: item.clientName, icon: "person" },
-      { label: "Numéro de téléphone", value: item.clientPhone, icon: "phone", isCopyable: true },
+      { label: "Numéro de téléphone", value: item.clientPhone, icon: "phone" },
       { label: "Numéro de suivi", value: item.code, icon: "qr-code", isCopyable: true },
    ];
 
@@ -123,7 +123,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 
    const copyTrackingNumber = () => {
       if (item.code) {
-         Alert.alert("Copié !", "Le numéro de suivi a été copié dans le presse-papiers");
+         copyToClipboard(item.code);
       }
    };
 

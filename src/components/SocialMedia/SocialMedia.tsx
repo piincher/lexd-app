@@ -88,8 +88,8 @@ const SocialMedia: FC<Props> = ({ color }: Props) => {
                url="https://www.instagram.com/chinalinkexpress"
             />
             <SocialIcon
-               IconComponent={AnimatedIcon}
-               icon="facebook-square"
+               IconComponent={AnimatedFontAwesome}
+               icon="facebook-f"
                url="https://www.facebook.com/profile.php?id=61556519083512"
             />
             <SocialIcon

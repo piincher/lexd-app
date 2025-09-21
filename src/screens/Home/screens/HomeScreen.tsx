@@ -886,6 +886,8 @@ import Animated, {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Banner from "../components/Banner";
 import { Header } from "../components/Header";
+import * as Sentry from "@sentry/react-native";
+import { Button } from "react-native-paper";
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 const PARTNER_LOGOS = [
@@ -1103,7 +1105,7 @@ const HomeScreen = ({ navigation }: HomeTabScreenProps<"Home">) => {
                style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1 })}
             >
                <LinearGradient colors={["#4A90E2", "#1ED7B5"]} style={styles.backToTopButton}>
-                  <AntDesign name="arrowup" size={24} color="white" />
+                  <AntDesign name="arrow-up" size={24} color="white" />
                </LinearGradient>
             </Pressable>
          </Animated.View>

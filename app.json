@@ -2,7 +2,7 @@
   "expo": {
     "name": "ChinaLinkExpress",
     "slug": "ChinaLinkExpress",
-    "version": "2.0.0",
+    "version": "2.2.0",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
     "newArchEnabled": true,
@@ -36,7 +36,15 @@
           "photosPermission": "L'application accède à vos photos pour vous permettre de les partager avec nous dans le chat."
         }
       ],
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "chinalinkexpress",
+          "organization": "nuvotech"
+        }
+      ]
     ],
     "assetBundlePatterns": [
       "**/*"
@@ -46,7 +54,10 @@
       "bundleIdentifier": "com.nuvotech.chinalinkexpress",
       "config": {
         "usesNonExemptEncryption": false
-      }
+      },
+     "infoPlist": {
+       "LSApplicationQueriesSchemes": ["itms-apps"]
+     }
     },
     "android": {
       "adaptiveIcon": {
