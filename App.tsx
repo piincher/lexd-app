@@ -61,6 +61,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-react-native";
 import { initSentry } from "@src/services/sentry";
 import { UpdateProvider } from "@src/context/UpdateProvider";
+import Stats from "@src/screens/Stats/Screens/Stats";
 registerTranslation("en", enGB);
 
 SplashScreen.preventAutoHideAsync();
@@ -223,6 +224,15 @@ const HomeBottomTab = () => {
                component={Orders}
             />
          )}
+         <BottomTab.Screen
+            name="Stats"
+            component={Stats}
+            options={{
+               tabBarIcon: ({ focused, color, size }) => (
+                  <Entypo name="pie-chart" focused={focused} color={color} size={size} />
+               ),
+            }}
+         />
          <BottomTab.Screen
             name="Chat"
             component={Chat}

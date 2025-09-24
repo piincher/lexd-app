@@ -53,6 +53,7 @@ export type HomeTabParamList = {
    Chat: undefined;
    Profile: undefined;
    AdminDashBoard: undefined;
+   Stats: undefined;
 };
 
 export type navigationProps = NativeStackNavigationProp<RootStackParamList>;

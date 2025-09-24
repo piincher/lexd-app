@@ -92,6 +92,10 @@ export const fetchAllUsers = async () => {
    const response = await axiosInstance.get<userData[]>(API_URL.fetchAllUsers);
    return response.data;
 };
+export const getUser = async (id: string) => {
+   const response = await axiosInstance.get<userData>(`${API_URL.fetchAllUsers}/${id}`);
+   return response.data;
+};
 
 // export const updateProfile = async (data: userData) => {
 // 	const response = await axiosInstance.put<UserData>(API_URL.updateProfile, data);

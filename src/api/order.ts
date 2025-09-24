@@ -188,6 +188,12 @@ export const deleteOrder = async (data: { orderId: string }) => {
 	return response.data;
 }
 
+export const getOrdersBasedOnUserId = async (id:string) => {
+	console.log('user id', id);
+	const response = await api.get<productType[]>(`${API_URL.getOrdersFromAUser}/${id}/orders`);
+	return response.data;
+}
+
 interface sendNotificationSms {
 	phoneNumbers: string[];
 	message: string;
