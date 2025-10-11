@@ -41,6 +41,8 @@ export type RootStackParamList = {
    TopUp: undefined;
    TopUpList: undefined;
    TopUpHistory: undefined;
+   ClientManagement: undefined;
+   ClientDetails: { id: string };
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<

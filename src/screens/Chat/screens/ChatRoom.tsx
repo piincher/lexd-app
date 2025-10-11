@@ -1,8 +1,10 @@
 import { chatClient } from "@src/config/ChatConfig";
+import { COLORS } from "@src/constants/Colors";
 import { useAppContext } from "@src/context/ChatContext";
 import { RootStackScreenProps } from "@src/navigations/type";
 import { useEffect } from "react";
 import { Text } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Channel, MessageList, MessageInput } from "stream-chat-react-native";
 
 const ChatRoom = ({ route }: RootStackScreenProps<"ChatRoom">) => {
@@ -36,12 +38,12 @@ const ChatRoom = ({ route }: RootStackScreenProps<"ChatRoom">) => {
    };
 
    return (
-      <>
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
          <Channel channel={activeChannel}>
             <MessageList />
             <MessageInput />
          </Channel>
-      </>
+      </SafeAreaView>
    );
 };
 

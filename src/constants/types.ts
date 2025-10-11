@@ -8,6 +8,7 @@ export type userData = {
 		url: string;
 		public_id: string;
 	};
+	blocked: boolean;
 };
 
 export interface userType {

@@ -10,6 +10,7 @@ const API_URL = {
    sendPhoneOtp: `${rootUrl}/sendPhoneOtp`,
    verifyPhoneOtp: `${rootUrl}/verifyPhoneOtp`,
    fetchAllUsers: `${rootUrl}/allUsers`,
+   blockUser: `${rootUrl}/blockUser`,
 
    // sendEmailOtp: `${rootUrl}/sendEmailOtp`,
    // verifyEmailOtp: `${rootUrl}/verifyEmailOtp`,
@@ -92,6 +93,12 @@ export const fetchAllUsers = async () => {
    const response = await axiosInstance.get<userData[]>(API_URL.fetchAllUsers);
    return response.data;
 };
+export const blockUnblockUser = async (id: string) => {
+   const response = await axiosInstance.post<{ message: string }>(`${API_URL.blockUser}/${id}`, {
+      id,
+   });
+   return response.data;
+};
 export const getUser = async (id: string) => {
    const response = await axiosInstance.get<userData>(`${API_URL.fetchAllUsers}/${id}`);
    return response.data;
@@ -121,7 +128,6 @@ export const loginPhoneOtpApple = async (data: { phone: string }) => {
       token: string;
    }>(API_URL.login, data);
 
-   console.log("response", response.data);
    return response.data;
 };
 export const getBalance = async () => {

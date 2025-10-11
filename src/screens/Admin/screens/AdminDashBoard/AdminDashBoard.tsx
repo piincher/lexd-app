@@ -59,6 +59,11 @@ const list: dataType = [
       title: "Demande de recharge",
       route: "TopUpList",
    },
+   {
+      id: "10",
+      title: "Client Management",
+      route: "ClientManagement",
+   },
 ];
 
 const AdminDashBoard = ({ navigation }: HomeTabScreenProps<"AdminDashBoard">) => {

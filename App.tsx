@@ -62,6 +62,8 @@ import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-rea
 import { initSentry } from "@src/services/sentry";
 import { UpdateProvider } from "@src/context/UpdateProvider";
 import Stats from "@src/screens/Stats/Screens/Stats";
+import ClientManagement from "@src/screens/Admin/screens/ClientManagement/screens/ClientManagement";
+import ClientDetails from "@src/screens/Admin/screens/ClientManagement/screens/ClientDetail";
 registerTranslation("en", enGB);
 
 SplashScreen.preventAutoHideAsync();
@@ -156,6 +158,8 @@ function AppWrapper() {
                      <Stack.Screen name="EditOrder" component={EditOrder} />
                      <Stack.Screen name="AdminDashBoard" component={AdminDashBoard} />
                      <Stack.Screen name="UserActiveOrders" component={UserActiveOrders} />
+                     <Stack.Screen name="ClientManagement" component={ClientManagement} />
+                     <Stack.Screen name="ClientDetails" component={ClientDetails} />
                      <Stack.Screen name="ChooseShippingMethod" component={ChooseShippingMethod} />
                      <Stack.Screen name="ShippingMethod" component={ShippingMethod} />
                      <Stack.Screen
@@ -276,13 +280,13 @@ const App = () => {
 // dont forget to add the in app update provider
 const MainWrapper = () => {
    return (
-      <UpdateProvider>
+      <>
          <OverlayProvider>
             <StreamChat client={chatClient} i18nInstance={streami18n}>
                <AppWrapper />
             </StreamChat>
          </OverlayProvider>
-      </UpdateProvider>
+      </>
    );
 };
 
