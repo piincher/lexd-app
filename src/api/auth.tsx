@@ -1,5 +1,8 @@
 import { userData, userType } from "../constants/types";
 import axiosInstance from "./client";
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
+import Constants from "expo-constants";
 const rootUrl = "/user";
 const API_URL = {
    login: `${rootUrl}/login`,
@@ -74,6 +77,15 @@ export const sendPhoneOtp = async (phone: string) => {
    return response.data;
 };
 export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {
+   if (!Device.isDevice) {
+      return;
+   }
+
+   const token = (
+      await Notifications.getExpoPushTokenAsync({
+         projectId: Constants?.expoConfig?.extra?.eas.projectId!,
+      })
+   ).data;
    const response = await axiosInstance.post<{
       user: userRegistrationType;
       streamToken: string;
@@ -81,6 +93,7 @@ export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {
    }>(API_URL.verifyPhoneOtp, {
       phone: data.phone,
       otp: data.otp,
+      pushToken: token,
    });
    return response.data;
 };
@@ -122,11 +135,24 @@ export const getUser = async (id: string) => {
 // };
 
 export const loginPhoneOtpApple = async (data: { phone: string }) => {
+   if (!Device.isDevice) {
+      return;
+   }
+
+   const token = (
+      await Notifications.getExpoPushTokenAsync({
+         projectId: Constants?.expoConfig?.extra?.eas.projectId!,
+      })
+   ).data;
+   const datat = {
+      phone: data.phone,
+      pushToken: token,
+   };
    const response = await axiosInstance.post<{
       user: userRegistrationType;
       streamToken: string;
       token: string;
-   }>(API_URL.login, data);
+   }>(API_URL.login, datat);
 
    return response.data;
 };

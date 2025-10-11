@@ -11,6 +11,7 @@ export type RootStackParamList = {
       userId: string;
       clientName: string;
       phoneNumber: string;
+      pushTokens: string[];
    };
    ActiveOrder: { type: "air" | "sea" };
    Login: undefined;

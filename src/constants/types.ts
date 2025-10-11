@@ -9,6 +9,7 @@ export type userData = {
 		public_id: string;
 	};
 	blocked: boolean;
+	pushTokens?: string[];
 };
 
 export interface userType {

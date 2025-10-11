@@ -31,6 +31,7 @@ const SelectUser = ({ navigation }: RootStackScreenProps<"SelectUser">) => {
          clientName: `${selectedUser?.firstName} ${selectedUser?.lastName!}`,
          userId: selectedUser?._id!,
          phoneNumber: selectedUser?.phoneNumber?.substring(3)!,
+         pushTokens: selectedUser?.pushTokens!,
       });
    };
 

@@ -30,6 +30,7 @@ import { useShippingMode } from "@src/store/shippingMode";
 import { useFormikContext } from "formik";
 import AutoCalculateTotal from "./components/AutoCalculateTotal";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { sendPushNotification } from "@src/screens/Home/hooks/useNotification";
 
 const signupSchema = yup.object({
    clientName: yup.string().required("Nom du client est requis"),
@@ -79,7 +80,7 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
    const { mutate: deleteMutation, data: deleteData } = useDeleteImage();
    const [shippingMode, setShippingMode] = useState<"air" | "sea">(shippingWay);
    const [visible, setVisible] = useState(false);
-   const { mutate, isSuccess, isPending } = usePlaceOrder();
+   const { mutate, isSuccess, isPending, data: orderData } = usePlaceOrder();
    const [isLoading, setIsLoading] = useState(false);
    const { data: categories } = useGetCategories();
    const id = categories ? categories[0]?._id : "";
@@ -321,6 +322,12 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
 
    useEffect(() => {
       if (isSuccess) {
+         sendPushNotification(
+            route.params.pushTokens,
+            "Nouvelle Commande Ajoutée",
+            "Votre commande a été ajoutée avec succès !",
+            orderData?.data._id || ""
+         );
          setVisible(true);
          setTimeout(() => {
             navigation.navigate("HomeTab", { screen: "Home" });

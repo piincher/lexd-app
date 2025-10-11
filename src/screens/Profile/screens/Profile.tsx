@@ -80,7 +80,8 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
    const { data: balanceData } = useBalance();
    const { width } = useWindowDimensions();
 
-   console.log("User Data: ", data?.rewardPoints);
+   console.log("User Data: ", data);
+
    const copyToClipboard = async () => {
       if (!data?.referralCode) return;
       await Clipboard.setStringAsync(data.referralCode);
