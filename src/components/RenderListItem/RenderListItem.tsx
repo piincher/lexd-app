@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
       backgroundColor: "white", // Default background color
       borderBottomWidth: 1,
       borderBottomColor: "#ddd",
+      flex: 1,
    },
    selectedItem: {
       backgroundColor: "#e0f7fa", // Change background color for the selected item

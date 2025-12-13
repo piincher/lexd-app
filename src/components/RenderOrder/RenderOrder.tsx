@@ -219,19 +219,6 @@ export const RenderOrder = ({ item }: { item: productType }) => {
             ))}
          </View>
 
-         {/* Shipping Details Section */}
-         <View style={styles.card}>
-            <Text style={styles.sectionTitle}>Détails d'expédition</Text>
-            {shippingDetails.map((item, index) => (
-               <ListItem
-                  key={`shipping-${index}`}
-                  label={item.label}
-                  value={item.value}
-                  icon={item.icon}
-               />
-            ))}
-         </View>
-
          {/* Payment Information Section (conditional) */}
          {shippingMode === "sea" && (
             <View style={styles.card}>
@@ -246,6 +233,19 @@ export const RenderOrder = ({ item }: { item: productType }) => {
                ))}
             </View>
          )}
+
+         {/* Shipping Details Section */}
+         <View style={styles.card}>
+            <Text style={styles.sectionTitle}>Détails d'expédition</Text>
+            {shippingDetails.map((item, index) => (
+               <ListItem
+                  key={`shipping-${index}`}
+                  label={item.label}
+                  value={item.value}
+                  icon={item.icon}
+               />
+            ))}
+         </View>
 
          {/* Admin Actions */}
          {role === "admin" && (

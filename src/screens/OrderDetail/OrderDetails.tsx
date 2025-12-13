@@ -276,6 +276,11 @@ const OrderDetails = ({ route, navigation }: RootStackScreenProps<"OrderDetail">
                      value={`${item?.priceTotal?.toLocaleString() || "0"} FCFA`}
                      icon="cash"
                   />
+                  <DetailRow
+                     label="Nombre de CBM"
+                     value={item?.numberOfCbm?.toString() || "0"}
+                     icon="cash"
+                  />
 
                   <DetailRow
                      label="Type de colis"

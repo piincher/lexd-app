@@ -131,7 +131,7 @@ const SeaShippingOrderDetails = ({
                      });
                   }}
                >
-                  <Text style={styles.modalButtonText}>RETOUR À LA COMMANDE</Text>
+                  <Text>RETOUR À LA COMMANDE</Text>
                </TouchableOpacity>
             </Animated.View>
          </View>

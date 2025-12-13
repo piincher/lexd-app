@@ -5,7 +5,7 @@ import { RootStackScreenProps } from "@src/navigations/type";
 import { useEffect } from "react";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Channel, MessageList, MessageInput } from "stream-chat-react-native";
+import { Channel, MessageList, MessageInput } from "stream-chat-expo";
 
 const ChatRoom = ({ route }: RootStackScreenProps<"ChatRoom">) => {
    const { channel: activeChannel, setChannel: setActiveChannel } = useAppContext();

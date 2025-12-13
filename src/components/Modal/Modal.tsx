@@ -30,6 +30,7 @@ interface CustomModalProps {
       confirmText?: StyleProp<TextStyle>;
    };
    children?: React.JSX.Element;
+   icon?: string;
 }
 
 export const CustomModal = ({

@@ -58,7 +58,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-react-native";
+import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-expo";
 import { initSentry } from "@src/services/sentry";
 import { UpdateProvider } from "@src/context/UpdateProvider";
 import Stats from "@src/screens/Stats/Screens/Stats";
@@ -280,13 +280,13 @@ const App = () => {
 // dont forget to add the in app update provider
 const MainWrapper = () => {
    return (
-      <>
+      <UpdateProvider>
          <OverlayProvider>
             <StreamChat client={chatClient} i18nInstance={streami18n}>
                <AppWrapper />
             </StreamChat>
          </OverlayProvider>
-      </>
+      </UpdateProvider>
    );
 };
 

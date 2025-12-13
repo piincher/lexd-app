@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { ChannelPreviewMessengerProps } from "stream-chat-react-native";
+import { ChannelPreviewMessengerProps } from "stream-chat-expo";
 
 export type StreamChannel = ChannelPreviewMessengerProps["channel"] | undefined;
 
