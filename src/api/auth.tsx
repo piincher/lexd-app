@@ -77,15 +77,21 @@ export const sendPhoneOtp = async (phone: string) => {
    return response.data;
 };
 export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {
-   if (!Device.isDevice) {
-      return;
+   let pushToken = '';
+   
+   // Only get push token on physical devices
+   if (Device.isDevice) {
+      try {
+         pushToken = (
+            await Notifications.getExpoPushTokenAsync({
+               projectId: Constants?.expoConfig?.extra?.eas.projectId!,
+            })
+         ).data;
+      } catch (e) {
+         console.log('Failed to get push token:', e);
+      }
    }
 
-   const token = (
-      await Notifications.getExpoPushTokenAsync({
-         projectId: Constants?.expoConfig?.extra?.eas.projectId!,
-      })
-   ).data;
    const response = await axiosInstance.post<{
       user: userRegistrationType;
       streamToken: string;
@@ -93,7 +99,7 @@ export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {
    }>(API_URL.verifyPhoneOtp, {
       phone: data.phone,
       otp: data.otp,
-      pushToken: token,
+      pushToken: pushToken || undefined,
    });
    return response.data;
 };
@@ -135,18 +141,24 @@ export const getUser = async (id: string) => {
 // };
 
 export const loginPhoneOtpApple = async (data: { phone: string }) => {
-   if (!Device.isDevice) {
-      return;
+   let pushToken = '';
+   
+   // Only get push token on physical devices
+   if (Device.isDevice) {
+      try {
+         pushToken = (
+            await Notifications.getExpoPushTokenAsync({
+               projectId: Constants?.expoConfig?.extra?.eas.projectId!,
+            })
+         ).data;
+      } catch (e) {
+         console.log('Failed to get push token:', e);
+      }
    }
-
-   const token = (
-      await Notifications.getExpoPushTokenAsync({
-         projectId: Constants?.expoConfig?.extra?.eas.projectId!,
-      })
-   ).data;
+   
    const datat = {
       phone: data.phone,
-      pushToken: token,
+      pushToken: pushToken || undefined,
    };
    const response = await axiosInstance.post<{
       user: userRegistrationType;

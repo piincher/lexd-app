@@ -71,7 +71,7 @@ export const useAuth = create<authType>()(
 		}),
 		{
 			name: 'auth',
-			storage, // Uncomment to enable persistent storage
+			storage, // Persistent storage enabled
 		}
 	)
 );

@@ -1,7 +1,7 @@
 import { productType } from "@src/api/order";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Slider from "@src/screens/Admin/screens/ActiveOrder/components/Slider";
+import Slider from "@src/features/admin/orders/components/Slider";
 import { ListItem } from "../ListItem/ListItem";
 import { Button, Text } from "react-native-paper";
 import { Pressable, StyleSheet, View, Alert } from "react-native";
@@ -11,10 +11,10 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@src/store/Auth";
 import { formatDate } from "@src/utils/formatDate";
 import { AntDesign, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
-import { useGetOrderDetails } from "@src/screens/OrderDetail/hooks/useGetOrderDetail";
+import { useGetOrderDetails } from "@src/features/order-detail";
 import { useShippingMode } from "@src/store/shippingMode";
 import { CustomModal } from "../Modal/Modal";
-import { useDeleteOrder } from "@src/screens/Admin/hooks/useOrder";
+import { useDeleteOrder } from "@src/features/admin/orders/hooks/useOrderManagement";
 import { useClipboard } from "@src/hooks/useClipBoard";
 
 export const RenderOrder = ({ item }: { item: productType }) => {

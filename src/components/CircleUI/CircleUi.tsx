@@ -16,7 +16,7 @@ interface Props {
    position: "top-left" | "top-right" | "bottom-left" | "bottom-right";
 }
 
-const CircleUI: React.FC<Props> = React.memo(({ size, position }) => {
+const CircleUI: React.FC<Props> = ({ size, position }) => {
    const rotation = useSharedValue(0);
    const scale = useSharedValue(1);
 
@@ -70,7 +70,7 @@ const CircleUI: React.FC<Props> = React.memo(({ size, position }) => {
          />
       </Animated.View>
    );
-});
+};
 
 const styles = StyleSheet.create({
    circleContainer: {

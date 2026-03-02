@@ -1,5 +1,5 @@
 import type { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
-import type { StackScreenProps } from "@react-navigation/stack";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
@@ -44,9 +44,72 @@ export type RootStackParamList = {
    TopUpHistory: undefined;
    ClientManagement: undefined;
    ClientDetails: { id: string };
+   // Goods Feature (V2 - Client)
+   MyGoods: undefined;
+   GoodsDetail: { goodsId: string };
+   ScanQR: undefined;
+   // Admin V2 Features
+   ReceiveGoods: undefined;
+   AdminGoodsList: undefined;
+   AdminGoodsDetail: { goodsId: string };
+   ConsigneeList: undefined;
+   CreateConsignee: undefined;
+   ConsigneeDetail: { consigneeId: string };
+   // Container V2 Features
+   ContainerList: undefined;
+   CreateContainer: undefined;
+   ContainerDetail: { containerId: string };
+   AssignGoods: { containerId: string };
+   PackingList: { containerId: string };
+   // Route V2 Features
+   RouteList: undefined;
+   RouteForm: { routeId?: string };
+   // Finance Features
+   FinancialDashboard: undefined;
+   RevenueReport: undefined;
+   ContainerProfit: undefined;
+   CustomerAnalytics: undefined;
+   ExpenseList: undefined;
+   ExpenseDetail: { expenseId: string };
+   CreateExpense: undefined;
+   ExpenseSummary: undefined;
+   InvoiceList: undefined;
+   InvoiceDetail: { invoiceId: string };
+   CreateInvoice: undefined;
+   InvoicePreview: { invoiceId: string };
+   // Customer Dashboard
+   CustomerDashboard: undefined;
+   // Customer Container Features
+   MyContainers: undefined;
+   ContainerTracking: { containerId: string };
+   ClientPackingList: { containerId: string };
+   // Customer Support Features
+   TicketList: undefined;
+   TicketDetail: { ticketId: string };
+   CreateTicket: undefined;
+   // Admin Loading List
+   AdminLoadingList: { containerId: string };
+   // Customer Loading List
+   ClientLoadingList: { containerId: string };
+   // WhatsApp Admin
+   WhatsAppRequests: undefined;
+   WhatsAppRequestDetail: { requestId: string };
+   // Customer Payment Features
+   PaymentPortal: undefined;
+   PaymentHistory: undefined;
+   PaymentConfirmation: {
+      paymentId: string;
+      transactionReference: string;
+      amount: number;
+      currency: string;
+      paymentMethod: string;
+      goodsCount: number;
+   };
+   NotificationDetail: { notification: import('../features/notifications/types').InAppNotification };
+   NotificationSettings: undefined;
 };
 
-export type RootStackScreenProps<T extends keyof RootStackParamList> = StackScreenProps<
+export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<
    RootStackParamList,
    T
 >;
@@ -57,6 +120,10 @@ export type HomeTabParamList = {
    Profile: undefined;
    AdminDashBoard: undefined;
    Stats: undefined;
+   MyGoods: undefined;
+   MyContainers: undefined;
+   CustomerDashboard: undefined;
+   Orders: undefined;
 };
 
 export type navigationProps = NativeStackNavigationProp<RootStackParamList>;

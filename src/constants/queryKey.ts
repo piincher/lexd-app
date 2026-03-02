@@ -4,6 +4,9 @@ export const SMSKEY = 'sms';
 export const ROUTES = 'routes';
 export const CATEGORY_KEY = 'category';
 export const NOTIFICATION = 'notification';
+export const GOODS_KEY = 'goods';
+export const MY_GOODS_KEY = 'myGoods';
+export const PAYMENTS_KEY = 'payments';
 
 export const queryKey = {
 	ORDERKEY,
@@ -12,4 +15,7 @@ export const queryKey = {
 	ROUTES,
 	CATEGORY_KEY,
 	NOTIFICATION,
+	GOODS_KEY,
+	MY_GOODS_KEY,
+	PAYMENTS_KEY,
 };

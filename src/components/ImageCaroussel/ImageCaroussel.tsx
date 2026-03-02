@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, View, Animated } from 'react-native';
 
 //import components
@@ -14,7 +14,8 @@ interface Props {
 
 const CardView = ({ images, onPress }: Props) => {
 	const [activeIndex, setActiveIndex] = useState(0);
-	const scrollX = useRef(new Animated.Value(0)).current;
+	// Use useState with lazy initializer for React Compiler compatibility
+	const [scrollX] = useState(() => new Animated.Value(0));
 
 	const updateIndex = (e: any) => {
 		const contentOffset = e.nativeEvent.contentOffset;

@@ -3,57 +3,143 @@ import * as Sentry from "@sentry/react-native";
 import { AntDesign, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // import * as Sentry from "@sentry/react-native";
 import { initMixpanel } from "@src/config/Analytic";
 import { chatClient } from "@src/config/ChatConfig";
 import { ChatProvider } from "@src/context/ChatContext";
 import { HomeTabParamList, RootStackParamList } from "@src/navigations/type";
-import ActiveOrders from "@src/screens/Admin/screens/ActiveOrder/screens/ActiveOrders";
-import UserActiveOrders from "@src/screens/Admin/screens/ActiveOrder/screens/UserActiveOrders";
-import ActiveOrderdetails from "@src/screens/Admin/screens/ActiveOrderDetails/ActiveOrderdetails";
-import AddOrder from "@src/screens/Admin/screens/AddOrder/AddOrder";
-import AddUser from "@src/screens/Admin/screens/AddUser/AddUser";
-import AdminDashBoard from "@src/screens/Admin/screens/AdminDashBoard/AdminDashBoard";
-import BatchUpdate from "@src/screens/Admin/screens/BatchUpdate/screens/BatchUpdate";
-import EditOrder from "@src/screens/Admin/screens/EditOrder/EditOrder";
-import AdminPastOrders from "@src/screens/Admin/screens/PastOrder/PastOrder";
-import ScanQRCode from "@src/screens/Admin/screens/ScanCode/ScanCode";
-import SelectUser from "@src/screens/Admin/screens/SelectUser/SelectUser";
-import SendSms from "@src/screens/Admin/screens/SendSms/SendSms";
-import Login from "@src/screens/Auth/Login/Login";
-import Verification from "@src/screens/Auth/Verification/Verification";
-import Chat from "@src/screens/Chat/screens/Chat";
-import ChatRoom from "@src/screens/Chat/screens/ChatRoom";
-import SelectAdminToChatWith from "@src/screens/Chat/screens/SelectAdmin";
-import { useNotification } from "@src/screens/Home/hooks/useNotification";
-import HomeScreen from "@src/screens/Home/screens/HomeScreen";
-import Notifications from "@src/screens/Home/screens/Notifications";
-import OnBoarding from "@src/screens/OnBoardingScreen/OnBoardingScreen";
-// import Map from "@src/screens/OrderDetail/Map";
-import OrderDetails from "@src/screens/OrderDetail/OrderDetails";
-import AboutUs from "@src/screens/Profile/screens/AboutUs";
-import PastOrders from "@src/screens/Profile/screens/PastOrders";
-import Profile from "@src/screens/Profile/screens/Profile";
-// import { initSentry } from "@src/services/sentry";
+
+// Features - Admin
+import {
+   ActiveOrdersScreen as ActiveOrders,
+   UserActiveOrdersScreen as UserActiveOrders,
+   ActiveOrderDetailsScreen as ActiveOrderdetails,
+   AddOrderScreen as AddOrder,
+   AddUserScreen as AddUser,
+   AdminDashBoardScreen as AdminDashBoard,
+   BatchUpdateScreen as BatchUpdate,
+   EditOrderScreen as EditOrder,
+   PastOrderScreen as AdminPastOrders,
+   ScanCodeScreen as ScanQRCode,
+   SelectUserScreen as SelectUser,
+   SendSmsScreen as SendSms,
+   BatchUpdateDetailScreen as BatchUpdateDetail,
+   ChooseShippingMethodScreen as ChooseShippingMethod,
+   ShippingMethodScreen as ShippingMethod,
+   TopUpListScreen as AdminTopUpList,
+   ClientManagementScreen as ClientManagement,
+   ClientDetailScreen as ClientDetails,
+   // Admin V2 Features
+   ReceiveGoodsScreen,
+   GoodsListScreen as AdminGoodsList,
+   AdminGoodsDetailScreen,
+   ConsigneeListScreen,
+   CreateConsigneeScreen,
+   ConsigneeDetailScreen,
+   // Container V2 Features
+   ContainerListScreen,
+   CreateContainerScreen,
+   ContainerDetailScreen,
+   AssignGoodsScreen,
+   PackingListScreen,
+   LoadingListScreen,
+   // Route V2 Features
+   RouteListScreen,
+   RouteFormScreen,
+   // Finance Features
+   FinancialDashboardScreen,
+   RevenueReportScreen,
+   ContainerProfitScreen,
+   CustomerAnalyticsScreen,
+   ExpenseListScreen,
+   ExpenseDetailScreen,
+   CreateExpenseScreen,
+   ExpenseSummaryScreen,
+   InvoiceListScreen,
+   InvoiceDetailScreen,
+   CreateInvoiceScreen,
+   InvoicePreviewScreen,
+} from "@src/features/admin";
+
+// Features - Auth
+import { LoginScreen as Login, VerificationScreen as Verification } from "@src/features/auth";
+
+// Features - Chat
+import {
+   ChatScreen as Chat,
+   ChatRoomScreen as ChatRoom,
+   SelectAdminScreen as SelectAdminToChatWith,
+} from "@src/features/chat";
+
+// Features - Home
+import {
+   HomeScreen,
+   NotificationsScreen as Notifications,
+   FAQScreen as Faq,
+   useNotification,
+} from "@src/features/home";
+
+// Features - Onboarding
+import { OnBoardingScreen as OnBoarding } from "@src/features/onboarding";
+
+// Features - Order Detail
+import {
+   OrderDetailsScreen as OrderDetails,
+   SeaShippingOrderDetailsScreen as SeaShippingOrderDetails,
+} from "@src/features/order-detail";
+
+// Features - Orders
+import { OrdersScreen as Orders } from "@src/features/orders";
+
+// Features - Profile
+import {
+   ProfileScreen as Profile,
+   AboutUsScreen as AboutUs,
+   PastOrdersScreen as PastOrders,
+   TopUpScreen,
+   TopUpHistoryScreen as TopUpHistoryScreen,
+   NotificationSettingsScreen,
+} from "@src/features/profile";
+
+// Features - Goods (V2 Client)
+import { MyGoodsScreen, GoodsDetailScreen, ScanQRScreen as GoodsScanQR } from "@src/features/goods";
+
+// Features - Customer Containers (V2)
+import {
+  MyContainersScreen,
+  ContainerTrackingScreen,
+  ClientPackingListScreen,
+  ClientLoadingListScreen,
+} from "@src/features/customer/containers";
+
+// Features - Stats
+import { StatsScreen as Stats } from "@src/features/stats";
+
+// Features - Routes
+import { CheckRouteScreen as CheckRoute } from "@src/features/routes";
+
+// Features - Support
+import {
+   TicketListScreen,
+   TicketDetailScreen,
+   CreateTicketScreen,
+} from "@src/features/customer/support";
+
+// WhatsApp Admin Features
+import { WhatsAppRequestListScreen } from "@src/features/admin/whatsapp-requests";
+
+// Components & Others
 import FadingAnnouncement from "@src/components/Announcement/Annoncement";
 import { COLORS } from "@src/constants/Colors";
-import BatchUpdateDetail from "@src/screens/Admin/screens/BatchUpdate/screens/BatchUpdateDetail";
-import ChooseShippingMethod from "@src/screens/Admin/screens/ChooseShippingMethod/ChooseShippingMethod";
-import ShippingMethod from "@src/screens/Admin/screens/ShippingMethod/ShippingMethod";
-import AdminTopUpList from "@src/screens/Admin/screens/TopUpList/TopUpList";
-import Faq from "@src/screens/Home/screens/FAQ";
-import SeaShippingOrderDetails from "@src/screens/OrderDetail/screens/SeaShippingOrderDetails";
-import Orders from "@src/screens/orders/Orders";
-import TopUpScreen from "@src/screens/Profile/screens/TopUp";
-import TopUpHistoryScreen from "@src/screens/Profile/screens/TopUpHistory";
 import { useAppLaunchStore } from "@src/store/AppLaunch";
 import { useAuth } from "@src/store/Auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { StatusBar as ThemeStatusBar } from "@src/components/StatusBar";
+import React, { useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, registerTranslation } from "react-native-paper-dates";
@@ -61,14 +147,14 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-expo";
 import { initSentry } from "@src/services/sentry";
 import { UpdateProvider } from "@src/context/UpdateProvider";
-import Stats from "@src/screens/Stats/Screens/Stats";
-import ClientManagement from "@src/screens/Admin/screens/ClientManagement/screens/ClientManagement";
-import ClientDetails from "@src/screens/Admin/screens/ClientManagement/screens/ClientDetail";
+import { NotificationProvider } from "@src/app/providers";
+import { ThemeProvider, useAppTheme } from "@src/providers";
+
 registerTranslation("en", enGB);
 
 SplashScreen.preventAutoHideAsync();
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 
 initSentry();
@@ -77,9 +163,16 @@ function AppWrapper() {
    const { expoPushToken } = useNotification();
 
    const [appIsLoaded, setAppIsLoaded] = useState(false);
-   const navigation = useRef();
+   const navigation = useRef<any>(null);
    const appLaunch = useAppLaunchStore((state) => state.isAppLaunchFirst);
    const token = useAuth((state) => state.token);
+
+   useEffect(() => {
+      fetch("http://192.168.0.112:3000/health")
+         .then((res) => res.json())
+         .then((data) => console.log("✅ Connected:", data))
+         .catch((err) => console.log("❌ Error:", err));
+   }, []);
    useEffect(() => {
       const prepare = async () => {
          try {
@@ -99,18 +192,21 @@ function AppWrapper() {
             });
          } catch (error) {
             console.log("error loading fonts", error);
-         } finally {
-            setAppIsLoaded(true);
          }
+         // Moved from finally block - React Compiler doesn't support finally clauses
+         setAppIsLoaded(true);
       };
 
       prepare();
    }, []);
-   const onLayout = useCallback(async () => {
+   const onLayout = async () => {
       if (appIsLoaded) {
          await SplashScreen.hideAsync();
       }
-   }, [appIsLoaded]);
+   };
+
+   // Hooks must be called before any conditional returns (Rules of Hooks)
+   const { isDark, colors } = useAppTheme();
 
    if (!appIsLoaded) {
       return null;
@@ -118,14 +214,8 @@ function AppWrapper() {
 
    return (
       <SafeAreaProvider onLayout={onLayout}>
-         <NavigationContainer
-            onReady={() => {
-               // routingInstrumentation.registerNavigationContainer(navigation);
-            }}
-            ref={navigation}
-         >
-            <StatusBar style="auto" />
-            <FadingAnnouncement />
+         <ThemeStatusBar style={isDark ? 'light' : 'dark'} />
+         <FadingAnnouncement />
 
             <Stack.Navigator screenOptions={{ headerShown: false }}>
                {appLaunch && <Stack.Screen name="OnBoarding" component={OnBoarding} />}
@@ -136,7 +226,7 @@ function AppWrapper() {
 
                {token ? (
                   <>
-                     {/* <Stack.Screen name="CheckRoute" component={CheckRoute} /> */}
+                     <Stack.Screen name="CheckRoute" component={CheckRoute} />
                      <Stack.Screen name="AddOrder" component={AddOrder} />
                      <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
                      <Stack.Screen name="OrderDetail" component={OrderDetails} />
@@ -166,6 +256,53 @@ function AppWrapper() {
                         name="SeaShippingOrderDetails"
                         component={SeaShippingOrderDetails}
                      />
+                     {/* Admin V2 Screens */}
+                     <Stack.Screen name="ReceiveGoods" component={ReceiveGoodsScreen} />
+                     <Stack.Screen name="AdminGoodsList" component={AdminGoodsList} />
+                     <Stack.Screen name="AdminGoodsDetail" component={AdminGoodsDetailScreen} />
+                     <Stack.Screen name="ConsigneeList" component={ConsigneeListScreen} />
+                     <Stack.Screen name="CreateConsignee" component={CreateConsigneeScreen} />
+                     <Stack.Screen name="ConsigneeDetail" component={ConsigneeDetailScreen} />
+                     {/* Container V2 Screens */}
+                     <Stack.Screen name="ContainerList" component={ContainerListScreen} />
+                     <Stack.Screen name="CreateContainer" component={CreateContainerScreen} />
+                     <Stack.Screen name="ContainerDetail" component={ContainerDetailScreen} />
+                     <Stack.Screen name="AssignGoods" component={AssignGoodsScreen} />
+                     <Stack.Screen name="PackingList" component={PackingListScreen} />
+                     <Stack.Screen name="AdminLoadingList" component={LoadingListScreen} />
+                     {/* Route V2 Screens */}
+                     <Stack.Screen name="RouteList" component={RouteListScreen} />
+                     <Stack.Screen name="RouteForm" component={RouteFormScreen} />
+                     {/* Finance Screens */}
+                     <Stack.Screen name="FinancialDashboard" component={FinancialDashboardScreen} />
+                     <Stack.Screen name="RevenueReport" component={RevenueReportScreen} />
+                     <Stack.Screen name="ContainerProfit" component={ContainerProfitScreen} />
+                     <Stack.Screen name="CustomerAnalytics" component={CustomerAnalyticsScreen} />
+                     <Stack.Screen name="ExpenseList" component={ExpenseListScreen} />
+                     <Stack.Screen name="ExpenseDetail" component={ExpenseDetailScreen} />
+                     <Stack.Screen name="CreateExpense" component={CreateExpenseScreen} />
+                     <Stack.Screen name="ExpenseSummary" component={ExpenseSummaryScreen} />
+                     <Stack.Screen name="InvoiceList" component={InvoiceListScreen} />
+                     <Stack.Screen name="InvoiceDetail" component={InvoiceDetailScreen} />
+                     <Stack.Screen name="CreateInvoice" component={CreateInvoiceScreen} />
+                     <Stack.Screen name="InvoicePreview" component={InvoicePreviewScreen} />
+                     {/* Client V2 Screens */}
+                     <Stack.Screen name="MyGoods" component={MyGoodsScreen} />
+                     <Stack.Screen name="GoodsDetail" component={GoodsDetailScreen} />
+                     <Stack.Screen name="ScanQR" component={GoodsScanQR} />
+                     {/* Customer Container V2 Screens */}
+                     <Stack.Screen name="MyContainers" component={MyContainersScreen} />
+                     <Stack.Screen name="ContainerTracking" component={ContainerTrackingScreen} />
+                     <Stack.Screen name="ClientPackingList" component={ClientPackingListScreen} />
+                     <Stack.Screen name="ClientLoadingList" component={ClientLoadingListScreen} />
+                     {/* WhatsApp Admin Screens */}
+                     <Stack.Screen name="WhatsAppRequests" component={WhatsAppRequestListScreen} />
+                     <Stack.Screen name="WhatsAppRequestDetail" component={WhatsAppRequestListScreen} />
+                     {/* Customer Support Screens */}
+                     <Stack.Screen name="TicketList" component={TicketListScreen} />
+                     <Stack.Screen name="TicketDetail" component={TicketDetailScreen} />
+                     <Stack.Screen name="CreateTicket" component={CreateTicketScreen} />
+                     <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
                   </>
                ) : (
                   <>
@@ -174,18 +311,29 @@ function AppWrapper() {
                   </>
                )}
             </Stack.Navigator>
-         </NavigationContainer>
       </SafeAreaProvider>
    );
 }
 
 const HomeBottomTab = () => {
    const admin = useAuth((state) => state.user.role);
+   const { colors } = useAppTheme();
 
    const adminRole = admin === "admin" ? true : false;
 
    return (
-      <BottomTab.Navigator initialRouteName={"Home"} screenOptions={{ headerShown: false }}>
+      <BottomTab.Navigator 
+         initialRouteName={"Home"} 
+         screenOptions={{ 
+            headerShown: false,
+            tabBarActiveTintColor: colors.primary.main,
+            tabBarInactiveTintColor: colors.text.disabled,
+            tabBarStyle: {
+               backgroundColor: colors.background.card,
+               borderTopColor: colors.border,
+            },
+         }}
+      >
          {!adminRole && (
             <BottomTab.Screen
                name="Home"
@@ -214,8 +362,6 @@ const HomeBottomTab = () => {
                options={{
                   tabBarLabel: "Commandes",
                   tabBarAccessibilityLabel: "Commandes",
-                  tabBarActiveTintColor: COLORS.blue,
-                  tabBarInactiveTintColor: COLORS.grey,
                   tabBarIcon: ({ focused, color, size }) => (
                      <FontAwesome5
                         name="clipboard-list"
@@ -226,6 +372,19 @@ const HomeBottomTab = () => {
                   ),
                }}
                component={Orders}
+            />
+         )}
+         {!adminRole && (
+            <BottomTab.Screen
+               name="MyGoods"
+               component={MyGoodsScreen}
+               options={{
+                  tabBarLabel: "Mes Marchandises",
+                  tabBarAccessibilityLabel: "Mes Marchandises",
+                  tabBarIcon: ({ focused, color, size }) => (
+                     <FontAwesome5 name="box" size={size} color={color} focused={focused} />
+                  ),
+               }}
             />
          )}
          <BottomTab.Screen
@@ -263,16 +422,30 @@ const client = new QueryClient();
 const streami18n = new Streami18n({
    language: "fr",
 });
+const ThemedApp = () => {
+   const { paperTheme, navigationTheme } = useAppTheme();
+
+   return (
+      <PaperProvider theme={paperTheme}>
+         <NavigationContainer theme={navigationTheme}>
+            <MainWrapper />
+         </NavigationContainer>
+      </PaperProvider>
+   );
+};
+
 const App = () => {
    return (
       <QueryClientProvider client={client}>
-         <ChatProvider>
-            <GestureHandlerRootView style={{ flex: 1 }}>
-               <PaperProvider>
-                  <MainWrapper />
-               </PaperProvider>
-            </GestureHandlerRootView>
-         </ChatProvider>
+         <ThemeProvider>
+            <NotificationProvider>
+               <ChatProvider>
+                  <GestureHandlerRootView style={{ flex: 1 }}>
+                     <ThemedApp />
+                  </GestureHandlerRootView>
+               </ChatProvider>
+            </NotificationProvider>
+         </ThemeProvider>
       </QueryClientProvider>
    );
 };

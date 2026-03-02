@@ -8,7 +8,7 @@ import { LoadingSpinner } from './LoadingSpinner';
 
 interface ListItemOrdersProps {
 	loadMore: () => void;
-	data: { pages: productType[][] | undefined };
+	data: productType[] | undefined;
 	isFetchingNextPage: boolean;
 	hasNextPage: boolean;
 	isLoading: boolean;
@@ -41,7 +41,7 @@ export const ListItemOrders = ({ loadMore, data, isFetchingNextPage, hasNextPage
 					return <Text style={{ textAlign: 'center', fontSize: 26 }}> Aucune commande en Cours</Text>;
 				}}
 				showsVerticalScrollIndicator={false}
-				data={data}
+				data={data || []}
 				keyExtractor={(item) => item._id!}
 				renderItem={({ item }) => {
 					return <RenderOrder item={item} />;

@@ -87,6 +87,7 @@ const AuthInputField: FC<Props> = (props) => {
             style={{
                borderColor: errorMsg ? COLORS.redShade : COLORS.grey,
                borderWidth: 0.5,
+               borderRadius: 8,
             }}
          >
             <AppInput
@@ -120,7 +121,7 @@ const styles = StyleSheet.create({
    defaultInput: {
       borderWidth: 0.5,
       width: "70%",
-      height: 40,
+      minHeight: 48,
       borderColor: COLORS.grey,
    },
    headerContainer: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },

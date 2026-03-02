@@ -5,8 +5,8 @@
     "version": "2.5.0",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
-    "newArchEnabled": true,
     "userInterfaceStyle": "light",
+
     "splash": {
       "image": "./assets/images/splashscreen.png",
       "resizeMode": "contain",
@@ -44,7 +44,16 @@
           "project": "chinalinkexpress",
           "organization": "nuvotech"
         }
-      ]
+      ],
+      "@sentry/react-native",
+      [
+        "expo-notifications",
+        {
+          "color": "#8B5CF6",
+          "enableBackgroundRemoteNotifications": true
+        }
+      ],
+      "@react-native-community/datetimepicker"
     ],
     "assetBundlePatterns": [
       "**/*"
@@ -55,9 +64,15 @@
       "config": {
         "usesNonExemptEncryption": false
       },
-     "infoPlist": {
-       "LSApplicationQueriesSchemes": ["itms-apps"]
-     }
+      "infoPlist": {
+        "LSApplicationQueriesSchemes": [
+          "itms-apps"
+        ],
+        "UIBackgroundModes": [
+          "remote-notification",
+          "fetch"
+        ]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -65,7 +80,17 @@
         "backgroundColor": "#ffffff"
       },
       "googleServicesFile": "./google-services.json",
-      "package": "com.nuvotech.chinalinkexpress"
+      "package": "com.nuvotech.chinalinkexpress",
+      "notification": {
+        "color": "#8B5CF6",
+        "androidMode": "default",
+        "androidCollapsedTitle": "#{unread_notifications} nouvelles notifications"
+      },
+      "permissions": [
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE",
+        "WAKE_LOCK"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"

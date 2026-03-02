@@ -35,16 +35,13 @@ export const useCalendar = () => {
 	const [date, setDate] = React.useState(undefined);
 	const [open, setOpen] = React.useState(false);
 
-	const onDismissSingle = React.useCallback(() => {
+	const onDismissSingle = () => {
 		setOpen(false);
-	}, [setOpen]);
+	};
 
-	const onConfirmSingle = React.useCallback(
-		(params) => {
-			setOpen(false);
-			setDate(params.date);
-		},
-		[setOpen, setDate]
-	);
+	const onConfirmSingle = (params) => {
+		setOpen(false);
+		setDate(params.date);
+	};
 	return { date, setDate, open, setOpen, onDismissSingle, onConfirmSingle };
 };

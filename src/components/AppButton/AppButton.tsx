@@ -27,7 +27,8 @@ const AppButton: FC<Props> = ({ title, onPress, busy, style, disabled, backgroun
 const styles = StyleSheet.create({
 	container: {
 		width: '100%',
-		height: 45,
+		minHeight: 48,
+		borderRadius: 12,
 		backgroundColor: COLORS.blue,
 		alignItems: 'center',
 		justifyContent: 'center',

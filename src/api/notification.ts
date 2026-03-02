@@ -1,4 +1,3 @@
-import { userData, userType } from '../constants/types';
 import axiosInstance from './client';
 const rootUrl = '/notification';
 const API_URL = {

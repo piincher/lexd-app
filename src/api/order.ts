@@ -168,6 +168,7 @@ export const getOrderDetails = async (id: string) => {
 	return response.data;
 };
 export const updateOrderToDelivered = async (data: productType) => {
+	console.log('order id', data.orderId);
 	const response = await api.put<productType>(`${API_URL.UPDATE_ORDER}/${data.orderId}/delivered`, data);
 	return response.data;
 };

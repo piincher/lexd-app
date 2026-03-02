@@ -1,5 +1,5 @@
 import { COLORS } from '@src/constants/Colors';
-import ContactNumberField from '@src/screens/Auth/Login/components/ContactField';
+import ContactNumberField from "@src/features/auth/components/ContactField";
 import React, { FC } from 'react';
 import { Keyboard, Pressable, StyleSheet, TextInput, TextInputProps, View, Text, Platform } from 'react-native';
 
@@ -23,7 +23,7 @@ const AppInput: FC<Props> = (props) => {
 						/>
 					)}
 
-					<TextInput {...props} spellCheck style={[styles.input, props.style]} placeholderTextColor={COLORS.black} />
+					<TextInput {...props} spellCheck style={[styles.input, props.style]} placeholderTextColor={COLORS.grey} />
 				</View>
 			</Pressable>
 		</>

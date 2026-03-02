@@ -1,6 +1,6 @@
 // components/FadingAnnouncement.tsx
 import { COLORS } from "@src/constants/Colors";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import * as ExpoWeb from "expo-web-browser";
 import {
    View,
@@ -28,9 +28,10 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 
 const FadingAnnouncement: React.FC = () => {
    const [announcement, setAnnouncement] = useState<Announcement | null>(null);
-   const fadeAnim = useRef(new Animated.Value(0)).current;
-   const slideAnim = useRef(new Animated.Value(SCREEN_WIDTH)).current;
-   const scaleAnim = useRef(new Animated.Value(0.8)).current;
+   // Use useState with lazy initializer instead of useRef for React Compiler compatibility
+   const [fadeAnim] = useState(() => new Animated.Value(0));
+   const [slideAnim] = useState(() => new Animated.Value(SCREEN_WIDTH));
+   const [scaleAnim] = useState(() => new Animated.Value(0.8));
 
    useEffect(() => {
       const fetchAnnouncement = async () => {
