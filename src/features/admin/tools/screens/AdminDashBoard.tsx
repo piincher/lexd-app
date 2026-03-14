@@ -5,7 +5,6 @@ import React from "react";
 import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ItemList } from "@src/shared/components";
 import { RowDetails } from "@src/shared/components";
 import { useViewSmsBalance } from "@src/shared/hooks";
 import withProtectedRoute from "@src/hoc/protected";
@@ -162,7 +161,16 @@ const AdminDashBoard = ({ navigation }: HomeTabScreenProps<"AdminDashBoard">) =>
             {/* Admin Actions Section */}
             <View style={styles.actionsSection}>
                <Text style={styles.sectionTitle}>Actions disponibles</Text>
-               <ItemList data={list} navigation={navigation} />
+               {list.map((item) => (
+                  <Pressable
+                     key={item.id}
+                     style={styles.actionItem}
+                     onPress={() => navigation.navigate(item.route)}
+                  >
+                     <Text style={styles.actionText}>{item.title}</Text>
+                     <MaterialIcons name="navigate-next" size={24} color={COLORS.blue} />
+                  </Pressable>
+               ))}
             </View>
          </ScrollView>
       </SafeAreaView>
@@ -270,8 +278,21 @@ const styles = StyleSheet.create({
       borderBottomWidth: 1,
       borderBottomColor: COLORS.border,
    },
-   itemList: {
-      gap: 12,
+   actionItem: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      borderColor: COLORS.blue,
+      borderWidth: 0.2,
+      padding: 12,
+      marginVertical: 6,
+      backgroundColor: COLORS.white,
+      borderRadius: 8,
+   },
+   actionText: {
+      fontFamily: Fonts.meduim,
+      fontSize: 16,
+      color: COLORS.DarkGrey,
    },
 });
 
