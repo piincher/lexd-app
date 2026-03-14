@@ -58,9 +58,7 @@ export const useCreateContainerScreen = () => {
 
   const consignees: Consignee[] = consigneesData || [];
   // Safe extraction of routes data - handle different API response formats
-  const routes: Route[] = Array.isArray(routesData?.data) 
-    ? routesData?.data 
-    : routesData?.data?.routes || [];
+  const routes: Route[] = (routesData?.data as Route[]) || [];
 
   // Filter consignees based on search
   const filteredConsignees = useMemo(() => {
@@ -71,7 +69,7 @@ export const useCreateContainerScreen = () => {
         c.name.toLowerCase().includes(query) ||
         c.phone?.toLowerCase().includes(query) ||
         c.warehouseAddress?.toLowerCase().includes(query) ||
-        c.code?.toLowerCase().includes(query)
+        c._id?.toLowerCase().includes(query)
     );
   }, [consignees, consigneeSearchQuery]);
 
@@ -146,7 +144,7 @@ export const useCreateContainerScreen = () => {
   }, [updateField]);
 
   const handleSelectConsignee = useCallback((consignee: Consignee) => {
-    updateField('consigneeId', consignee._id || consignee.id);
+    updateField('consigneeId', consignee._id);
     setSelectedConsigneeName(consignee.name);
     setConsigneeSearchQuery('');
     setShowConsigneeDropdown(false);

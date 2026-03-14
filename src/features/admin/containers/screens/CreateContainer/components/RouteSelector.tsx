@@ -73,9 +73,9 @@ export const RouteSelector: React.FC<RouteSelectorProps> = ({
                   <Text style={styles.selectedRoutePath}>
                     {typeof selectedRoute.origin === 'string' 
                       ? selectedRoute.origin 
-                      : selectedRoute.origin?.city || 'N/A'} → {typeof selectedRoute.destination === 'string' 
+                      : (selectedRoute.origin as any)?.city || 'N/A'} → {typeof selectedRoute.destination === 'string' 
                         ? selectedRoute.destination 
-                        : selectedRoute.destination?.city || 'N/A'}
+                        : (selectedRoute.destination as any)?.city || 'N/A'}
                   </Text>
                 )}
               </View>
