@@ -3,7 +3,7 @@
  */
 
 export { ContainerCard } from './ContainerCard';
-export { ContainerWaypointTracker } from './ContainerWaypointTracker';
+export { default as ContainerWaypointTracker } from './ContainerWaypointTracker';
 export { WaypointUpdateModal } from './WaypointUpdateModal';
 
 // Packing & Loading List Components

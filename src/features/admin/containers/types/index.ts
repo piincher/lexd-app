@@ -14,6 +14,26 @@ export * from './waypointStatus';
 export * from './packingList';
 
 // ============================================
+// CONTAINER WAYPOINT TRACKER PROPS
+// ============================================
+
+import { ContainerWaypoint } from './waypoints';
+import { ExtendedWaypointStatus } from './waypointStatus';
+
+export interface ContainerWaypointTrackerProps {
+  waypoints: ContainerWaypoint[];
+  currentWaypointIndex: number;
+  onMarkArrived?: (waypointIndex: number, status?: ExtendedWaypointStatus) => void;
+  onMarkDeparted?: (waypointIndex: number, status?: ExtendedWaypointStatus) => void;
+  onAddNotes?: (waypointIndex: number) => void;
+  onUpdateInfo?: (waypointIndex: number) => void;
+  onUpdateStatus?: (waypointIndex: number, status: ExtendedWaypointStatus) => void;
+  containerNumber: string;
+  finalDestination?: FinalDestination;
+  consignee?: ConsigneeInfo;
+}
+
+// ============================================
 // ROUTE TYPES (Phase 3)
 // ============================================
 
