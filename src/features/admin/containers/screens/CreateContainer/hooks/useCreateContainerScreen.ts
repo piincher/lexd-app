@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCreateContainer } from '../../../hooks';
 import { useGetActiveRoutes } from '../../../../routes/hooks/useRoutes';
 import { useGetConsignees, Consignee } from '../../../../consignees';
-import { ShippingLine, ContainerFormData, ShippingMode, Route } from '../../types';
+import { ShippingLine, ContainerFormData, ShippingMode, Route } from '../../../types';
 
 type AdminV2StackParamList = {
   ContainerList: undefined;

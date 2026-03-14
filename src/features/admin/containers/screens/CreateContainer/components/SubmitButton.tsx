@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '100%',
-    borderRadius: Theme.borderRadius.md,
+    borderRadius: Theme.radius.md,
   },
   buttonContent: {
     paddingVertical: Theme.spacing.sm,
