@@ -500,11 +500,7 @@ const handleDeepLink = (
         navigationRef.navigate("GoodsDetail", { goodsId });
       }
       break;
-    case "InvoiceDetail":
-      if (invoiceId) {
-        navigationRef.navigate("InvoiceDetail", { invoiceId });
-      }
-      break;
+    // InvoiceDetail case removed - finance feature deleted
     case "TicketDetail":
       if (ticketId) {
         navigationRef.navigate("TicketDetail", { ticketId });

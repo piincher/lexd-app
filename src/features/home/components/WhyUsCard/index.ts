@@ -1,0 +1,1 @@
+export { WhyUsCard } from './WhyUsCard';

@@ -12,5 +12,4 @@ export * from './containers';
 // Support Feature
 export * from './support';
 
-// Payments Feature
-export * from './payments';
+

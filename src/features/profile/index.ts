@@ -4,8 +4,7 @@
 export { default as ProfileScreen } from "./screens/Profile";
 export { default as AboutUsScreen } from "./screens/AboutUs";
 export { default as PastOrdersScreen } from "./screens/PastOrders";
-export { default as TopUpScreen } from "./screens/TopUp";
-export { default as TopUpHistoryScreen } from "./screens/TopUpHistory";
+
 export { default as NotificationSettingsScreen } from "./screens/NotificationSettingsScreen";
 
 // Hooks

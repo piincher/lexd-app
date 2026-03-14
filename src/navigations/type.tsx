@@ -39,9 +39,7 @@ export type RootStackParamList = {
    SeaShippingOrderDetails: { id: string };
    BatchUpdateDetail: { data: string[] };
    faq: undefined;
-   TopUp: undefined;
-   TopUpList: undefined;
-   TopUpHistory: undefined;
+
    ClientManagement: undefined;
    ClientDetails: { id: string };
    // Goods Feature (V2 - Client)
@@ -64,19 +62,7 @@ export type RootStackParamList = {
    // Route V2 Features
    RouteList: undefined;
    RouteForm: { routeId?: string };
-   // Finance Features
-   FinancialDashboard: undefined;
-   RevenueReport: undefined;
-   ContainerProfit: undefined;
-   CustomerAnalytics: undefined;
-   ExpenseList: undefined;
-   ExpenseDetail: { expenseId: string };
-   CreateExpense: undefined;
-   ExpenseSummary: undefined;
-   InvoiceList: undefined;
-   InvoiceDetail: { invoiceId: string };
-   CreateInvoice: undefined;
-   InvoicePreview: { invoiceId: string };
+   // Customer Dashboard
    // Customer Dashboard
    CustomerDashboard: undefined;
    // Customer Container Features

@@ -52,13 +52,6 @@ const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
     route: 'MyContainers',
   },
   {
-    id: 'pay-debt',
-    label: 'Payer ma dette',
-    icon: 'cash-check',
-    route: 'TopUp',
-    showIf: (data) => data.stats.balanceDue > 0,
-  },
-  {
     id: 'contact-support',
     label: 'Contacter support',
     icon: 'chat',
@@ -217,7 +210,8 @@ export const CustomerDashboardScreen: React.FC<
   };
 
   const handlePayBalance = () => {
-    navigation.navigate('TopUp' as never);
+    // Payment feature removed
+    console.log('Payment feature removed');
   };
 
   // Combine quick actions from API with defaults

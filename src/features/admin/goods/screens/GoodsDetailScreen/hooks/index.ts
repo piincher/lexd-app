@@ -1,0 +1,1 @@
+export { useGoodsDetailScreen } from './useGoodsDetailScreen';

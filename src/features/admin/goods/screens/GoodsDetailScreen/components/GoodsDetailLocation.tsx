@@ -1,0 +1,113 @@
+// GoodsDetailLocation - Location and container information
+
+import React from 'react';
+import { View } from 'react-native';
+import { Text, Card } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
+
+interface Container {
+  virtualContainerNumber?: string;
+  shippingLine?: string;
+}
+
+interface GoodsDetailLocationProps {
+  warehouseLocation?: string;
+  container?: Container | null;
+}
+
+export const GoodsDetailLocation: React.FC<GoodsDetailLocationProps> = ({
+  warehouseLocation,
+  container,
+}) => {
+  return (
+    <Card style={styles.sectionCard}>
+      <Card.Content>
+        <View style={styles.sectionHeader}>
+          <MaterialCommunityIcons name="map-marker" size={20} color={Theme.primary[600]} />
+          <Text style={styles.sectionTitle}>Localisation</Text>
+        </View>
+        
+        <View style={styles.locationGrid}>
+          <View style={styles.locationItem}>
+            <View style={[styles.locationIcon, { backgroundColor: Theme.primary[100] }]}>
+              <MaterialCommunityIcons name="warehouse" size={24} color={Theme.primary[600]} />
+            </View>
+            <View>
+              <Text style={styles.locationLabel}>Emplacement</Text>
+              <Text style={styles.locationValue}>{warehouseLocation || 'Non assigné'}</Text>
+            </View>
+          </View>
+          
+          {container && (
+            <View style={styles.locationItem}>
+              <View style={[styles.locationIcon, { backgroundColor: `${Theme.accent.mint}20` }]}>
+                <MaterialCommunityIcons name="truck-container" size={24} color={Theme.accent.mint} />
+              </View>
+              <View style={styles.locationTextContainer}>
+                <Text style={styles.locationLabel}>Conteneur</Text>
+                <Text style={styles.locationValue} numberOfLines={1}>
+                  {container.virtualContainerNumber}
+                </Text>
+                <Text style={styles.locationSubtext}>{container.shippingLine}</Text>
+              </View>
+            </View>
+          )}
+        </View>
+      </Card.Content>
+    </Card>
+  );
+};
+
+const styles = {
+  sectionCard: {
+    marginBottom: 12,
+    borderRadius: 16,
+    elevation: 2,
+    backgroundColor: '#FFFFFF',
+  },
+  sectionHeader: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+    marginBottom: 16,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '700' as const,
+    color: Theme.neutral[800],
+    marginLeft: 10,
+  },
+  locationGrid: {
+    gap: 12,
+  },
+  locationItem: {
+    flexDirection: 'row' as const,
+    alignItems: 'center' as const,
+  },
+  locationIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    justifyContent: 'center' as const,
+    alignItems: 'center' as const,
+    marginRight: 14,
+  },
+  locationTextContainer: {
+    flex: 1,
+  },
+  locationLabel: {
+    fontSize: 12,
+    color: Theme.neutral[500],
+    marginBottom: 2,
+  },
+  locationValue: {
+    fontSize: 15,
+    fontWeight: '700' as const,
+    color: Theme.neutral[800],
+  },
+  locationSubtext: {
+    fontSize: 13,
+    color: Theme.neutral[500],
+    marginTop: 2,
+  },
+};

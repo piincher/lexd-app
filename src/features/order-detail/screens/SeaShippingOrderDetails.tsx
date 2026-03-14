@@ -26,7 +26,7 @@ import { useGetOrderDetails } from "../hooks/useOrderDetail";
 import { useGetSeaRoutes } from "../hooks/useSeaRoutes";
 import { RootStackScreenProps } from "@src/navigations/type";
 import { useBalance } from "@src/features/profile/hooks/useProfile";
-import { useProcessPayment } from "@src/features/admin/finance/hooks/useTopUp";
+
 
 const PAYMENT_STRINGS = {
    PAY_NOW: "Payer maintenant",
@@ -58,18 +58,7 @@ const SeaShippingOrderDetails = ({
    // Mock user balance - replace with actual data from your backend
    const { data } = useBalance();
    const isBalanceSufficient = data?.balance >= (item?.priceTotal || 0);
-   const { mutate: processMutate, isSuccess, data: processData } = useProcessPayment();
-
-   console.log("payment response from backend", processData);
    useChatClient();
-
-   useEffect(() => {
-      if (isSuccess) {
-         setPaymentStatus("success");
-         setShowModal(true);
-         setIsPaying(false);
-      }
-   }, [isSuccess]);
    useEffect(() => {
       if (showModal) {
          Animated.timing(fadeAnim, {
@@ -195,22 +184,7 @@ const SeaShippingOrderDetails = ({
                               </Text>
                            </View>
                         </View>
-                        <TouchableOpacity
-                           style={styles.topupButton}
-                           onPress={() => navigation.navigate("TopUp")}
-                        >
-                           <LinearGradient
-                              colors={[COLORS.primary, COLORS.secondary]}
-                              style={styles.gradientButton}
-                           >
-                              <MaterialCommunityIcons
-                                 name="wallet-plus"
-                                 size={24}
-                                 color={COLORS.white}
-                              />
-                              <Text style={styles.topupButtonText}>Recharger le compte</Text>
-                           </LinearGradient>
-                        </TouchableOpacity>
+
                      </View>
                   )}
 

@@ -32,20 +32,13 @@ import {
   TicketDetailScreen, 
   CreateTicketScreen 
 } from '@src/features/customer/support';
-import { 
-  PaymentPortalScreen, 
-  PaymentHistoryScreen, 
-  PaymentConfirmationScreen 
-} from '@src/features/customer/payments';
-import { MyInvoicesScreen, InvoiceDetailScreen } from '@src/features/customer/invoices';
+
 
 // Profile & Settings
 import { 
   ProfileScreen, 
   AboutUsScreen, 
   PastOrdersScreen, 
-  TopUpScreen, 
-  TopUpHistoryScreen,
   NotificationSettingsScreen 
 } from '@src/features/profile';
 
@@ -75,7 +68,7 @@ import {
   BatchUpdateDetailScreen,
   ChooseShippingMethodScreen,
   ShippingMethodScreen,
-  TopUpListScreen as AdminTopUpListScreen,
+
   ClientManagementScreen,
   ClientDetailScreen,
   // Admin V2
@@ -92,18 +85,7 @@ import {
   PackingListScreen,
   RouteListScreen,
   RouteFormScreen,
-  // Finance
-  FinancialDashboardScreen,
-  RevenueReportScreen,
-  ContainerProfitScreen,
-  CustomerAnalyticsScreen,
-  ExpenseListScreen,
-  ExpenseDetailScreen,
-  CreateExpenseScreen,
-  ExpenseSummaryScreen,
-  InvoiceListScreen,
-  CreateInvoiceScreen,
-  InvoicePreviewScreen,
+
 } from '@src/features/admin';
 
 // Legacy Screens
@@ -288,18 +270,8 @@ export const AuthenticatedNavigator: React.FC = () => {
       <Stack.Screen name="TicketDetail" component={TicketDetailScreen} />
       <Stack.Screen name="CreateTicket" component={CreateTicketScreen} />
 
-      {/* Customer V2 - Payments */}
-      <Stack.Screen name="PaymentPortal" component={PaymentPortalScreen} />
-      <Stack.Screen name="PaymentHistory" component={PaymentHistoryScreen} />
-      <Stack.Screen name="PaymentConfirmation" component={PaymentConfirmationScreen} />
-      <Stack.Screen name="TopUp" component={TopUpScreen} />
-      <Stack.Screen name="TopUpHistory" component={TopUpHistoryScreen} />
-
-      {/* Customer V2 - Invoices */}
-      <Stack.Screen name="MyInvoices" component={MyInvoicesScreen} />
-      <Stack.Screen name="InvoiceDetail" component={InvoiceDetailScreen} />
-
       {/* Notifications */}
+
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
       <Stack.Screen name="NotificationDetail" component={NotificationDetailScreen} />
       <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
@@ -330,7 +302,7 @@ export const AuthenticatedNavigator: React.FC = () => {
       <Stack.Screen name="ClientDetails" component={ClientDetailScreen} />
       <Stack.Screen name="UserAdd" component={AddUserScreen} />
       <Stack.Screen name="SendSms" component={SendSmsScreen} />
-      <Stack.Screen name="TopUpList" component={AdminTopUpListScreen} />
+
       <Stack.Screen name="ScanQRCode" component={ScanCodeScreen} />
       <Stack.Screen name="ChooseShippingMethod" component={ChooseShippingMethodScreen} />
       <Stack.Screen name="ShippingMethod" component={ShippingMethodScreen} />
@@ -351,18 +323,7 @@ export const AuthenticatedNavigator: React.FC = () => {
       <Stack.Screen name="RouteList" component={RouteListScreen} />
       <Stack.Screen name="RouteForm" component={RouteFormScreen} />
 
-      {/* Finance */}
-      <Stack.Screen name="FinancialDashboard" component={FinancialDashboardScreen} />
-      <Stack.Screen name="RevenueReport" component={RevenueReportScreen} />
-      <Stack.Screen name="ContainerProfit" component={ContainerProfitScreen} />
-      <Stack.Screen name="CustomerAnalytics" component={CustomerAnalyticsScreen} />
-      <Stack.Screen name="ExpenseList" component={ExpenseListScreen} />
-      <Stack.Screen name="ExpenseDetail" component={ExpenseDetailScreen} />
-      <Stack.Screen name="CreateExpense" component={CreateExpenseScreen} />
-      <Stack.Screen name="ExpenseSummary" component={ExpenseSummaryScreen} />
-      <Stack.Screen name="InvoiceList" component={InvoiceListScreen} />
-      <Stack.Screen name="CreateInvoice" component={CreateInvoiceScreen} />
-      <Stack.Screen name="InvoicePreview" component={InvoicePreviewScreen} />
+
 
       {/* Info Screens */}
       <Stack.Screen name="AboutUs" component={AboutUsScreen} />

@@ -215,14 +215,6 @@ export const AnalyticsDashboardScreen: React.FC = () => {
   };
 
   // Navigation handlers
-  const handleViewRevenueReport = () => {
-    navigation.navigate('RevenueReport' as never);
-  };
-
-  const handleViewCustomerAnalytics = () => {
-    navigation.navigate('CustomerAnalytics' as never);
-  };
-
   const handleViewContainerDetails = () => {
     navigation.navigate('ContainerList' as never);
   };
@@ -304,14 +296,7 @@ export const AnalyticsDashboardScreen: React.FC = () => {
           <View style={styles.section}>
             <View style={styles.sectionHeader}>
               <Text style={styles.sectionTitle}>Tendance des Revenus</Text>
-              <Button
-                mode="text"
-                onPress={handleViewRevenueReport}
-                compact
-                icon="chart-line"
-              >
-                Détails
-              </Button>
+
             </View>
             {revenueTrends && (
               <RevenueChart
@@ -352,7 +337,7 @@ export const AnalyticsDashboardScreen: React.FC = () => {
                 <Text style={styles.sectionTitle}>Top Clients</Text>
                 <Button
                   mode="text"
-                  onPress={handleViewCustomerAnalytics}
+
                   compact
                 >
                   Voir tout

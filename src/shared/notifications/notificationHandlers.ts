@@ -168,17 +168,10 @@ const handleTicketReply: NotificationHandler = (data) => {
 
 /**
  * Handle INVOICE notifications
- * Navigate to invoice detail
+ * Invoice feature removed - just log
  */
 const handleInvoice: NotificationHandler = (data) => {
-  console.log("[NotificationHandlers] Handling INVOICE:", data);
-
-  if (data.invoiceId) {
-    navigate("InvoiceDetail", { invoiceId: data.invoiceId });
-  } else {
-    // Fallback to invoice list
-    navigate("Invoices");
-  }
+  console.log("[NotificationHandlers] INVOICE feature removed:", data);
 };
 
 /**

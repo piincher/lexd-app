@@ -152,12 +152,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                            <Text style={styles.statLabel}></Text>
                            <Text style={styles.statValue}>{balanceData?.balance} FCFA</Text>
                         </View>
-                        <TouchableOpacity
-                           style={[styles.actionButton, styles.topUpButton]}
-                           onPress={() => navigation.navigate("TopUp")}
-                        >
-                           <Text style={styles.buttonText}>Top Up</Text>
-                        </TouchableOpacity>
+
                      </View>
                   </MotiView>
 
@@ -209,11 +204,6 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                   
                   {[
                      { title: "Historique des commandes", icon: "history", screen: "PastOrders" },
-                     {
-                        title: "Historique des recharges",
-                        icon: "bank-transfer",
-                        screen: "TopUpHistory",
-                     },
                      {
                         title: "Centre d'assistance",
                         icon: "headset",

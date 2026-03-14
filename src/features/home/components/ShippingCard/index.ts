@@ -1,0 +1,1 @@
+export { ShippingCard } from './ShippingCard';

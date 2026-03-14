@@ -78,12 +78,7 @@ export type AuthenticatedStackParamList = {
     paymentMethod: string;
     goodsCount: number;
   };
-  TopUp: undefined;
-  TopUpHistory: undefined;
-  
-  // Customer V2 Features - Invoices
-  MyInvoices: undefined;
-  InvoiceDetail: { invoiceId: string };
+  // Notifications
   
   // Notifications
   Notifications: undefined;
@@ -121,7 +116,7 @@ export type AuthenticatedStackParamList = {
   ClientDetails: { id: string };
   UserAdd: undefined;
   SendSms: undefined;
-  TopUpList: undefined;
+
   ScanQRCode: undefined;
   ChooseShippingMethod: undefined;
   ShippingMethod: undefined;
@@ -143,18 +138,7 @@ export type AuthenticatedStackParamList = {
   RouteList: undefined;
   RouteForm: { routeId?: string };
   
-  // Finance Features (Admin)
-  FinancialDashboard: undefined;
-  RevenueReport: undefined;
-  ContainerProfit: undefined;
-  CustomerAnalytics: undefined;
-  ExpenseList: undefined;
-  ExpenseDetail: { expenseId: string };
-  CreateExpense: undefined;
-  ExpenseSummary: undefined;
-  InvoiceList: undefined;
-  CreateInvoice: undefined;
-  InvoicePreview: { invoiceId: string };
+
 };
 
 /**

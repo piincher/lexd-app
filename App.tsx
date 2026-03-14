@@ -27,7 +27,7 @@ import {
    BatchUpdateDetailScreen as BatchUpdateDetail,
    ChooseShippingMethodScreen as ChooseShippingMethod,
    ShippingMethodScreen as ShippingMethod,
-   TopUpListScreen as AdminTopUpList,
+
    ClientManagementScreen as ClientManagement,
    ClientDetailScreen as ClientDetails,
    // Admin V2 Features
@@ -47,19 +47,6 @@ import {
    // Route V2 Features
    RouteListScreen,
    RouteFormScreen,
-   // Finance Features
-   FinancialDashboardScreen,
-   RevenueReportScreen,
-   ContainerProfitScreen,
-   CustomerAnalyticsScreen,
-   ExpenseListScreen,
-   ExpenseDetailScreen,
-   CreateExpenseScreen,
-   ExpenseSummaryScreen,
-   InvoiceListScreen,
-   InvoiceDetailScreen,
-   CreateInvoiceScreen,
-   InvoicePreviewScreen,
 } from "@src/features/admin";
 
 // Features - Auth
@@ -97,8 +84,7 @@ import {
    ProfileScreen as Profile,
    AboutUsScreen as AboutUs,
    PastOrdersScreen as PastOrders,
-   TopUpScreen,
-   TopUpHistoryScreen as TopUpHistoryScreen,
+
    NotificationSettingsScreen,
 } from "@src/features/profile";
 
@@ -234,12 +220,9 @@ function AppWrapper() {
                      <Stack.Screen name="SelectAdminToChatWith" component={SelectAdminToChatWith} />
                      <Stack.Screen name="SelectUser" component={SelectUser} />
                      <Stack.Screen name="PastOrders" component={PastOrders} />
-                     <Stack.Screen name="TopUp" component={TopUpScreen} />
                      <Stack.Screen name="UserAdd" component={AddUser} />
                      <Stack.Screen name="AdmninPastOrders" component={AdminPastOrders} />
                      <Stack.Screen name="SendSms" component={SendSms} />
-                     <Stack.Screen name="TopUpList" component={AdminTopUpList} />
-                     <Stack.Screen name="TopUpHistory" component={TopUpHistoryScreen} />
                      <Stack.Screen name="ActiveOrderDetails" component={ActiveOrderdetails} />
                      <Stack.Screen name="ScanQRCode" component={ScanQRCode} />
                      <Stack.Screen name="Notifications" component={Notifications} />
@@ -273,19 +256,6 @@ function AppWrapper() {
                      {/* Route V2 Screens */}
                      <Stack.Screen name="RouteList" component={RouteListScreen} />
                      <Stack.Screen name="RouteForm" component={RouteFormScreen} />
-                     {/* Finance Screens */}
-                     <Stack.Screen name="FinancialDashboard" component={FinancialDashboardScreen} />
-                     <Stack.Screen name="RevenueReport" component={RevenueReportScreen} />
-                     <Stack.Screen name="ContainerProfit" component={ContainerProfitScreen} />
-                     <Stack.Screen name="CustomerAnalytics" component={CustomerAnalyticsScreen} />
-                     <Stack.Screen name="ExpenseList" component={ExpenseListScreen} />
-                     <Stack.Screen name="ExpenseDetail" component={ExpenseDetailScreen} />
-                     <Stack.Screen name="CreateExpense" component={CreateExpenseScreen} />
-                     <Stack.Screen name="ExpenseSummary" component={ExpenseSummaryScreen} />
-                     <Stack.Screen name="InvoiceList" component={InvoiceListScreen} />
-                     <Stack.Screen name="InvoiceDetail" component={InvoiceDetailScreen} />
-                     <Stack.Screen name="CreateInvoice" component={CreateInvoiceScreen} />
-                     <Stack.Screen name="InvoicePreview" component={InvoicePreviewScreen} />
                      {/* Client V2 Screens */}
                      <Stack.Screen name="MyGoods" component={MyGoodsScreen} />
                      <Stack.Screen name="GoodsDetail" component={GoodsDetailScreen} />

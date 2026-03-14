@@ -1,0 +1,1 @@
+export { TicketClosedBanner } from './TicketClosedBanner';

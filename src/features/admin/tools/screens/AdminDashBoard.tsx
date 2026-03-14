@@ -40,32 +40,6 @@ const list: dataType = [
       title: "🚢 Gestion Conteneurs",
       route: "ContainerList",
    },
-   // Finance Features
-   {
-      id: "finance-1",
-      title: "📊 Tableau de Bord Financier",
-      route: "FinancialDashboard",
-   },
-   {
-      id: "finance-2",
-      title: "💰 Rapport de Revenus",
-      route: "RevenueReport",
-   },
-   {
-      id: "finance-3",
-      title: "📈 Analyse Clients",
-      route: "CustomerAnalytics",
-   },
-   {
-      id: "finance-4",
-      title: "💸 Gestion Dépenses",
-      route: "ExpenseList",
-   },
-   {
-      id: "finance-5",
-      title: "🧾 Gestion Factures",
-      route: "InvoiceList",
-   },
    // Existing Features
    {
       id: "0",
@@ -101,11 +75,6 @@ const list: dataType = [
       id: "6",
       title: "Scanner pour confirmation de réception",
       route: "ScanQRCode",
-   },
-   {
-      id: "9",
-      title: "Demande de recharge",
-      route: "TopUpList",
    },
    {
       id: "10",
