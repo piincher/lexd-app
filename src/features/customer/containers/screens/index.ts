@@ -5,5 +5,5 @@
 
 export { default as MyContainersScreen } from './MyContainersScreen';
 export { default as ContainerTrackingScreen } from './ContainerTrackingScreen';
-export { default as ClientPackingListScreen } from './ClientPackingListScreen';
+export { default as ClientPackingListScreen } from './ClientPackingList';
 export { default as ClientLoadingListScreen } from './ClientLoadingListScreen';
