@@ -1,6 +1,7 @@
 import { ListItemOrders } from "@src/components/ListItemOrders";
 import { Fonts } from "@src/constants/Fonts";
-import { OrderList, useGetActiveOrder } from "@src/features/home";
+import { OrderList } from "@src/shared/components";
+import { useGetActiveOrder } from "@src/shared/hooks";
 import React, { FC } from "react";
 import { View, StyleSheet, Image } from "react-native";
 import { Text } from "react-native-paper";

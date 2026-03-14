@@ -4,7 +4,7 @@ import { Header } from "@src/components/Header/Header";
 import { LoadingSpinner } from "@src/components/LoadingSpinner";
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
-import { useChatClient } from "@src/features/chat";
+import { useChatClient } from "@src/shared/hooks";
 import { formatDate } from "@src/utils/formatDate";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useEffect, useState } from "react";
@@ -25,7 +25,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useGetOrderDetails } from "../hooks/useOrderDetail";
 import { useGetSeaRoutes } from "../hooks/useSeaRoutes";
 import { RootStackScreenProps } from "@src/navigations/type";
-import { useBalance } from "@src/features/profile/hooks/useProfile";
+import { useBalance } from "@src/shared/hooks";
 
 
 const PAYMENT_STRINGS = {

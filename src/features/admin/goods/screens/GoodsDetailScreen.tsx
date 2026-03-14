@@ -29,7 +29,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useGetGoodsById, useDeleteGoods, useUpdateGoodsStatus, useAssignGoodsToContainer } from "../hooks";
 import { useGetAllContainers } from "@src/features/admin/containers/hooks";
-import { StatusBadge } from "@src/features/goods/components";
+import { StatusBadge } from "@src/shared/components";
 import { Theme } from "@src/constants/Theme";
 
 const { width } = Dimensions.get("window");

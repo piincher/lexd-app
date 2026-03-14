@@ -16,7 +16,7 @@ import { Picker } from "@react-native-picker/picker";
 import { useUpdateOrderStatus } from "../hooks/useOrderManagement";
 import AppButton from "@src/components/AppButton/AppButton";
 import SubmitBtn from "@src/components/SubmitBtn/SubmitBtn";
-import { useGetSeaRoutes } from "@src/features/order-detail";
+import { useGetSeaRoutes } from "@src/shared/hooks";
 
 const batchUpdateSchema = yup.object({
    contenairNumber: yup.string(),

@@ -27,7 +27,7 @@ import { CustomModal } from "@src/components/Modal/Modal";
 import { useShippingMode } from "@src/store/shippingMode";
 import { AutoCalculateTotal } from "../../orders/components/AutoCalculateTotal";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { sendPushNotification } from "@src/features/home";
+import { sendPushNotification } from "@src/shared/hooks";
 import { usePlaceOrder, useDeleteImage } from "../hooks/useOrderManagement";
 import { useGetCategory } from "../../hooks/useCategory";
 

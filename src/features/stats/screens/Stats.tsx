@@ -4,11 +4,11 @@ import { StyleSheet, View, Text, ScrollView, Dimensions, Pressable } from "react
 import { ActivityIndicator, Avatar, Card, useTheme } from "react-native-paper";
 import { BarChart } from "react-native-gifted-charts";
 import { HomeTabScreenProps, RootStackScreenProps } from "@src/navigations/type";
-import { useGetOrderOfUserById } from "@src/features/home";
+import { useGetOrderOfUserById } from "@src/shared/hooks";
 import { useGetUser } from "@src/hooks/useGetUser";
 import { Fonts } from "@src/constants/Fonts";
 import { COLORS } from "@src/constants/Colors";
-import { useGetCurrentUser } from "@src/features/profile";
+import { useGetCurrentUser } from "@src/shared/hooks";
 import { SafeAreaView } from "react-native-safe-area-context";
 import withProtectedRoute from "@src/hoc/protected";
 import { productType } from "@src/api/order";

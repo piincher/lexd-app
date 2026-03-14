@@ -7,7 +7,7 @@ import { useShippingMode } from "@src/store/shippingMode";
 import React from "react";
 import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ItemList } from "@src/features/home";
+import { ItemList } from "@src/shared/components";
 import withProtectedRoute from "@src/hoc/protected";
 
 type dataType = {
