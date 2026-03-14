@@ -7,9 +7,9 @@ import {
   useGetGoodsById,
   useDeleteGoods,
   useUpdateGoodsStatus,
-  useAssignGoodsToContainer,
   goodsQueryKeys,
 } from '../../../hooks';
+import { useAssignGoodsToContainer } from '@src/features/admin/containers/hooks';
 import { useGetAllContainers } from '../../../../containers/hooks';
 import { Goods, GoodsStatus } from '../../../types';
 
@@ -211,7 +211,7 @@ export const useGoodsDetailScreen = (): UseGoodsDetailScreenReturn => {
     }
 
     assignMutation.mutate(
-      { containerId: selectedContainerId, goodsIds: [goods._id] },
+      { containerId: selectedContainerId, data: { goodsIds: [goods._id] } },
       {
         onSuccess: () => {
           Alert.alert('Succès', 'Marchandise assignée au container');

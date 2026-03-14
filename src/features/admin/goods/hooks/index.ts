@@ -12,7 +12,6 @@ export {
   useUpdateGoodsLocation,
   useUpdateGoodsPhoto,
   useDeleteGoods,
-  useAssignGoodsToContainer,
   useUpdateGoodsStatus,
 } from './useGoods';
 

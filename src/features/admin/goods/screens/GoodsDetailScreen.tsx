@@ -27,7 +27,8 @@ import {
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { useGetGoodsById, useDeleteGoods, useUpdateGoodsStatus, useAssignGoodsToContainer } from "../hooks";
+import { useGetGoodsById, useDeleteGoods, useUpdateGoodsStatus } from "../hooks";
+import { useAssignGoodsToContainer } from "@src/features/admin/containers/hooks";
 import { useGetAllContainers } from "@src/features/admin/containers/hooks";
 import { StatusBadge } from "@src/shared/components";
 import { Theme } from "@src/constants/Theme";
@@ -126,7 +127,7 @@ export const GoodsDetailScreen: React.FC = () => {
       }
       
       assignMutation.mutate(
-         { containerId: selectedContainerId, goodsIds: [goods._id] },
+         { containerId: selectedContainerId, data: { goodsIds: [goods._id] } },
          {
             onSuccess: () => {
                Alert.alert("Succès", "Marchandise assignée au container");
