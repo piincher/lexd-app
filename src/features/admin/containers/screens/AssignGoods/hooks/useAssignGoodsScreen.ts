@@ -71,6 +71,9 @@ export const useAssignGoodsScreen = (): UseAssignGoodsScreenReturn => {
   const toggleSelection = (goodsId: string) => setSelectedGoods((prev) => prev.includes(goodsId) ? prev.filter((id) => id !== goodsId) : [...prev, goodsId]);
   const toggleSelectAll = () => setSelectedGoods(selectedGoods.length === filteredGoods.length ? [] : filteredGoods.map((g) => g._id));
 
+
+
+  
   const handleAssign = async () => {
     if (selectedGoods.length === 0) return;
     if (!isAssignable) return Alert.alert('Action impossible', `Ce container est en statut "${CONTAINER_STATUS_LABELS[containerStatus]}". Les marchandises ne peuvent être assignées qu'aux containers "Réservé" ou "En Chargement".`, [{ text: 'OK' }]);

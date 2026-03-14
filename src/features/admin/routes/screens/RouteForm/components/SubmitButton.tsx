@@ -1,0 +1,71 @@
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ActivityIndicator } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
+
+interface SubmitButtonProps {
+  isEditMode: boolean;
+  isSubmitting: boolean;
+  onPress: () => void;
+}
+
+export const SubmitButton: React.FC<SubmitButtonProps> = ({
+  isEditMode,
+  isSubmitting,
+  onPress,
+}) => {
+  return (
+    <TouchableOpacity
+      style={styles.submitButtonContainer}
+      onPress={onPress}
+      disabled={isSubmitting}
+      activeOpacity={0.9}
+    >
+      <LinearGradient
+        colors={Theme.gradients.primary}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.submitButton}
+      >
+        {isSubmitting ? (
+          <ActivityIndicator size="small" color="#FFF" />
+        ) : (
+          <>
+            <Ionicons 
+              name={isEditMode ? 'save' : 'add-circle'} 
+              size={22} 
+              color="#FFF" 
+            />
+            <Text style={styles.submitButtonText}>
+              {isEditMode ? 'Enregistrer les modifications' : 'Créer la Route'}
+            </Text>
+          </>
+        )}
+      </LinearGradient>
+    </TouchableOpacity>
+  );
+};
+
+const styles = StyleSheet.create({
+  submitButtonContainer: {
+    marginTop: Theme.spacing.xl,
+    borderRadius: Theme.radius.full,
+    overflow: 'hidden',
+    ...Theme.shadows.lg,
+  },
+  submitButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: Theme.spacing.lg,
+    gap: Theme.spacing.sm,
+  },
+  submitButtonText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#FFF',
+    letterSpacing: 0.3,
+  },
+});

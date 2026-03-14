@@ -1,0 +1,91 @@
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
+
+interface HeaderProps {
+  containerNumber: string;
+  clientCount: number;
+  totalItems: number;
+  onBack: () => void;
+  onGoToLoadingList: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({
+  containerNumber,
+  clientCount,
+  totalItems,
+  onBack,
+  onGoToLoadingList,
+}) => {
+  return (
+    <LinearGradient
+      colors={[Theme.primary[600], Theme.primary[800]]}
+      style={styles.header}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    >
+      <View style={styles.headerTop}>
+        <TouchableOpacity style={styles.backIconButton} onPress={onBack}>
+          <Ionicons name="arrow-back" size={24} color="#FFF" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Liste de Colisage</Text>
+        <TouchableOpacity style={styles.loadingListButton} onPress={onGoToLoadingList}>
+          <Ionicons name="list" size={20} color="#FFF" />
+        </TouchableOpacity>
+      </View>
+      <Text style={styles.headerSubtitle}>{containerNumber}</Text>
+      <Text style={styles.headerMeta}>
+        {clientCount} client{clientCount > 1 ? 's' : ''} • {totalItems} colis
+      </Text>
+    </LinearGradient>
+  );
+};
+
+const styles = StyleSheet.create({
+  header: {
+    paddingTop: Theme.spacing.lg,
+    paddingBottom: Theme.spacing.xl,
+    paddingHorizontal: Theme.spacing.lg,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  backIconButton: {
+    width: 44,
+    height: 44,
+    borderRadius: Theme.radius.full,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingListButton: {
+    width: 44,
+    height: 44,
+    borderRadius: Theme.radius.full,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFF',
+  },
+  headerSubtitle: {
+    fontSize: 24,
+    fontWeight: '800',
+    color: '#FFF',
+    textAlign: 'center',
+    marginTop: Theme.spacing.md,
+  },
+  headerMeta: {
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.8)',
+    textAlign: 'center',
+    marginTop: Theme.spacing.xs,
+  },
+});

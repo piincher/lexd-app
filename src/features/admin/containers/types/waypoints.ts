@@ -234,6 +234,8 @@ export const SEGMENT_TYPE_LABELS: Record<SegmentType, string> = {
   WAREHOUSE: 'Entrepôt',
 };
 
+export const SEGMENT_TYPE_OPTIONS: SegmentType[] = ['SEA', 'ROAD', 'AIR', 'WAREHOUSE'];
+
 export const SEGMENT_TYPE_ICONS: Record<SegmentType, string> = {
   SEA: 'boat',
   ROAD: 'truck',
@@ -257,3 +259,45 @@ export interface WaypointFilters {
   segmentType?: SegmentType;
   country?: string;
 }
+
+// ============================================
+// LEGACY WAYPOINT TYPE CONSTANTS (for backward compatibility)
+// ============================================
+
+export type WaypointType = 'PORT' | 'WAREHOUSE' | 'BORDER' | 'TERMINAL' | 'DEPOT';
+
+export const WAYPOINT_TYPE_OPTIONS: WaypointType[] = ['PORT', 'WAREHOUSE', 'BORDER', 'TERMINAL', 'DEPOT'];
+
+export const WAYPOINT_TYPE_LABELS: Record<WaypointType, string> = {
+  PORT: 'Port',
+  WAREHOUSE: 'Entrepôt',
+  BORDER: 'Frontière',
+  TERMINAL: 'Terminal',
+  DEPOT: 'Dépôt',
+};
+
+export const WAYPOINT_TYPE_ICONS: Record<WaypointType, string> = {
+  PORT: 'boat',
+  WAREHOUSE: 'warehouse',
+  BORDER: 'flag',
+  TERMINAL: 'business',
+  DEPOT: 'cube',
+};
+
+export type TransportMode = 'SEA' | 'ROAD' | 'AIR' | 'RAIL';
+
+export const TRANSPORT_MODE_OPTIONS: TransportMode[] = ['SEA', 'ROAD', 'AIR', 'RAIL'];
+
+export const TRANSPORT_MODE_LABELS: Record<TransportMode, string> = {
+  SEA: 'Maritime',
+  ROAD: 'Routier',
+  AIR: 'Aérien',
+  RAIL: 'Ferroviaire',
+};
+
+export const TRANSPORT_MODE_ICONS: Record<TransportMode, string> = {
+  SEA: 'boat',
+  ROAD: 'truck',
+  AIR: 'airplane',
+  RAIL: 'train',
+};

@@ -410,6 +410,79 @@ export const SHIPPING_MODE_COLORS: Record<ShippingMode, string> = {
 };
 
 // ============================================
+// ROUTE TEMPLATE TYPES
+// ============================================
+
+/**
+ * Template waypoint for route import
+ */
+export interface TemplateWaypoint {
+  location: string;
+  locationCode: string;
+  type: string;
+}
+
+/**
+ * Template sea segment for route import
+ */
+export interface TemplateSeaSegment {
+  fromPort: string;
+  toPort: string;
+  carrier: string;
+}
+
+/**
+ * Template road segment for route import
+ */
+export interface TemplateRoadSegment {
+  fromLocation: string;
+  toLocation: string;
+  carrier: string;
+}
+
+/**
+ * Route template for importing waypoints
+ */
+export interface RouteTemplate {
+  id: string;
+  name: string;
+  description: string;
+  waypoints: TemplateWaypoint[];
+  seaSegments?: TemplateSeaSegment[];
+  roadSegments?: TemplateRoadSegment[];
+}
+
+// ============================================
+// SEGMENT TYPES (for display)
+// ============================================
+
+/**
+ * Sea segment for display
+ */
+export interface SeaSegment {
+  fromPort: string;
+  toPort: string;
+  vesselName?: string;
+  vesselIMO?: string;
+  carrier: string;
+  departureDate?: string;
+  estimatedArrival?: string;
+}
+
+/**
+ * Road segment for display
+ */
+export interface RoadSegment {
+  fromLocation: string;
+  toLocation: string;
+  truckPlate?: string;
+  driverName?: string;
+  driverPhone?: string;
+  carrier?: string;
+  estimatedTransitHours?: number;
+}
+
+// ============================================
 // ROUTE DISPLAY CONSTANTS (Dakar Route)
 // ============================================
 

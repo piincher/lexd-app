@@ -1,0 +1,13 @@
+export { ServiceCard } from './ServiceCard';
+export { WhyChooseCard } from './WhyChooseCard';
+export { HowItWorksStep } from './HowItWorksStep';
+export { FloatingHeader } from './FloatingHeader';
+export { HeroSection } from './HeroSection';
+export { ServicesSection } from './ServicesSection';
+export { HowItWorksSection } from './HowItWorksSection';
+export { WhyChooseSection } from './WhyChooseSection';
+export { PartnersSection } from './PartnersSection';
+export { QuickLinksSection } from './QuickLinksSection';
+export { CTASection } from './CTASection';
+export { Footer } from './Footer';
+export { WhatsAppFAB } from './WhatsAppFAB';
