@@ -5,7 +5,7 @@
 import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAssignGoodsScreen } from './hooks/useAssignGoodsScreen.ts';
+import { useAssignGoodsScreen } from './hooks/useAssignGoodsScreen';
 import {
   Header, SearchBar, SelectAllBar, GoodsListItem,
   EmptyState, LoadingState, ErrorState, BottomActionBar,
