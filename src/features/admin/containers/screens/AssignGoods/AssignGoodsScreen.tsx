@@ -5,11 +5,11 @@
 import React from 'react';
 import { FlatList, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAssignGoodsScreen } from './hooks/index';
+import { useAssignGoodsScreen } from './hooks/useAssignGoodsScreen';
 import {
   Header, SearchBar, SelectAllBar, GoodsListItem,
   EmptyState, LoadingState, ErrorState, BottomActionBar,
-} from './components/index';
+} from './components';
 import { styles } from './AssignGoodsScreen.styles';
 import { ContainerStatus } from '../../types';
 import { Theme } from '@src/constants/Theme';
