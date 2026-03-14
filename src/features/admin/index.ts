@@ -5,17 +5,18 @@
 export { useGetCategory } from "./hooks/useCategory";
 export { useGetOrders } from "./hooks/useOrder";
 
-
 // Sub-features
 export * from "./orders";
 export * from "./users";
 export * from "./communications";
 export * from "./shipping";
-
 export * from "./tools";
 
-// Phase 1 V2 Features
-export * from "./v2";
+// Consolidated Features (migrated from v2)
+export * from "./consignees";
+export * from "./containers";
+export * from "./goods";
+export * from "./routes";
 
 // Search Feature
 export * from "./search";

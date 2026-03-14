@@ -12,9 +12,8 @@ export * from "./auth";
 export * from "./home";
 export * from "./admin";
 
-// Phase 1 V2 Features
+// Phase 1 V2 Features (now consolidated into admin)
 export * from "./goods";
-export * from "./admin/v2";
 
 // Phase 3 Features
 export * from "./customer";
