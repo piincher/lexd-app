@@ -90,6 +90,29 @@ export type ContainerStatus =
   | 'READY_FOR_PICKUP';
 
 /**
+ * Timeline step definition for UI
+ */
+export interface TimelineStep {
+  status: ContainerStatus;
+  label: string;
+  icon: string;
+}
+
+/**
+ * Timeline steps configuration
+ * Phase 3: Added READY_FOR_PICKUP to timeline
+ */
+export const TIMELINE_STEPS: TimelineStep[] = [
+  { status: 'BOOKED', label: 'Réservé', icon: 'bookmark' },
+  { status: 'EMPTY_TO_WAREHOUSE', label: 'Vide vers Entrepôt', icon: 'cube-outline' },
+  { status: 'LOADING', label: 'Chargement', icon: 'hammer' },
+  { status: 'LOADED', label: 'Chargé', icon: 'cube' },
+  { status: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },
+  { status: 'ARRIVED', label: 'Arrivé', icon: 'flag' },
+  { status: 'READY_FOR_PICKUP', label: 'Retrait', icon: 'checkmark-done' },
+];
+
+/**
  * Shipping line carriers
  */
 export type ShippingLine = 'MSC' | 'MAERSK' | 'CMA_CGM' | 'HAPAG_LLOYD' | 'ETHIOPIAN_AIRLINES' | 'AIR_STANDARD';

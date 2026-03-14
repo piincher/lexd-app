@@ -1,0 +1,45 @@
+import { useState } from 'react';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { useQueryClient } from '@tanstack/react-query';
+import { Alert } from 'react-native';
+import { useGetContainerById, useUpdateContainerStatus, useRemoveGoodsFromContainer, useDeleteContainer, useMarkReadyForPickup, useMarkGoodsDelivered, containerQueryKeys } from '../../hooks';
+import { Container, ContainerStatus, CONTAINER_STATUS_COLORS, CONTAINER_STATUS_LABELS } from '../../types';
+import { Goods } from '../../../goods/types';
+import { Theme } from '@src/constants/Theme';
+
+const MAX_CBM = 67;
+const TIMELINE_STEPS: ContainerStatus[] = ['BOOKED','EMPTY_TO_WAREHOUSE','LOADING','LOADED','IN_TRANSIT','ARRIVED','READY_FOR_PICKUP'];
+
+export const useContainerDetailScreen = () => {
+  const route = useRoute(), navigation = useNavigation(), queryClient = useQueryClient();
+  const { containerId } = route.params as { containerId: string };
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [statusMenuVisible, setStatusMenuVisible] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showRemoveGoodsDialog, setShowRemoveGoodsDialog] = useState(false);
+  const [showReadyForPickupDialog, setShowReadyForPickupDialog] = useState(false);
+  const [selectedGoodsId, setSelectedGoodsId] = useState<string | null>(null);
+  const { data: containerResponse, isLoading, isRefetching, refetch } = useGetContainerById(containerId);
+  const updateStatusMutation = useUpdateContainerStatus(), removeGoodsMutation = useRemoveGoodsFromContainer();
+  const deleteContainerMutation = useDeleteContainer(), markReadyForPickupMutation = useMarkReadyForPickup();
+  const markGoodsDeliveredMutation = useMarkGoodsDelivered();
+  const container: Container | undefined = containerResponse?.data?.container || containerResponse?.data;
+  const goodsList: Goods[] = (() => { if (!container) return []; const g = (container as any).goodsIds; return (Array.isArray(g) && g.length > 0 && typeof g[0] === 'object') ? g as Goods[] : container?.goods || []; })();
+  const fillPercentage = container ? Math.min(((container.totalCBM || 0) / MAX_CBM) * 100, 100) : 0;
+  const getFillColor = (p: number) => p >= 90 ? Theme.status.error : p >= 70 ? Theme.status.warning : Theme.status.success;
+  const fillColor = getFillColor(fillPercentage), statusColor = container ? CONTAINER_STATUS_COLORS[container.status] : '#8B5CF6';
+  const statusLabel = container ? CONTAINER_STATUS_LABELS[container.status] : '', currentStatusIndex = container ? TIMELINE_STEPS.indexOf(container.status) : -1;
+  const handleRefresh = async () => { setIsRefreshing(true); await queryClient.invalidateQueries({ queryKey: containerQueryKeys.detail(containerId) }); await refetch(); setIsRefreshing(false); };
+  const handleUpdateStatus = async (newStatus: ContainerStatus) => { setStatusMenuVisible(false); if (newStatus === container?.status) return; try { await updateStatusMutation.mutateAsync({ id: containerId, data: { status: newStatus } }); Alert.alert('Succès', `Statut mis à jour: ${CONTAINER_STATUS_LABELS[newStatus]}`); } catch { Alert.alert('Erreur', 'Impossible de mettre à jour le statut'); } };
+  const handleRemoveGoods = (goodsId: string) => { setSelectedGoodsId(goodsId); setShowRemoveGoodsDialog(true); };
+  const confirmRemoveGoods = async () => { if (!selectedGoodsId) return; try { await removeGoodsMutation.mutateAsync({ containerId, goodsId: selectedGoodsId }); setShowRemoveGoodsDialog(false); setSelectedGoodsId(null); Alert.alert('Succès', 'Marchandise retirée'); } catch { Alert.alert('Erreur', 'Impossible de retirer la marchandise'); } };
+  const handleDeleteContainer = () => { if (goodsList.length > 0) { Alert.alert('Impossible', 'Veuillez d\'abord retirer toutes les marchandises.'); return; } setShowDeleteDialog(true); };
+  const confirmDeleteContainer = async () => { try { await deleteContainerMutation.mutateAsync(containerId); setShowDeleteDialog(false); navigation.navigate('ContainerList' as never); } catch (error: any) { Alert.alert('Impossible de supprimer', error?.response?.data?.message || error?.message || 'Une erreur est survenue'); } };
+  const handleAssignGoods = () => navigation.navigate('AssignGoods' as never, { containerId } as never);
+  const handleGeneratePackingList = () => { if (goodsList.length === 0) { Alert.alert('Info', 'Aucune marchandise'); return; } navigation.navigate('PackingList' as never, { containerId } as never); };
+  const handleGoToLoadingList = () => { if (goodsList.length === 0) { Alert.alert('Info', 'Aucune marchandise'); return; } navigation.navigate('LoadingList' as never, { containerId } as never); };
+  const handleMarkReadyForPickup = () => setShowReadyForPickupDialog(true);
+  const confirmMarkReadyForPickup = async () => { try { await markReadyForPickupMutation.mutateAsync(containerId); setShowReadyForPickupDialog(false); Alert.alert('Succès', 'Container marqué comme prêt pour le retrait'); } catch { Alert.alert('Erreur', 'Impossible de marquer le container'); } };
+  const handleMarkGoodsDelivered = (goodsId: string) => Alert.alert('Confirmer la livraison', 'Marquer cette marchandise comme livrée ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Marquer Livré', onPress: async () => { try { await markGoodsDeliveredMutation.mutateAsync(goodsId); Alert.alert('Succès', 'Marchandise marquée comme livrée'); } catch { Alert.alert('Erreur', 'Impossible de marquer la marchandise'); } } }]);
+  return { containerId, navigation, container, goodsList, isLoading, isRefetching, isRefreshing, updateStatusMutation, removeGoodsMutation, deleteContainerMutation, markReadyForPickupMutation, markGoodsDeliveredMutation, statusMenuVisible, setStatusMenuVisible, showDeleteDialog, setShowDeleteDialog, showRemoveGoodsDialog, setShowRemoveGoodsDialog, showReadyForPickupDialog, setShowReadyForPickupDialog, selectedGoodsId, setSelectedGoodsId, fillPercentage, fillColor, statusColor, statusLabel, currentStatusIndex, handleRefresh, handleUpdateStatus, handleRemoveGoods, confirmRemoveGoods, handleDeleteContainer, confirmDeleteContainer, handleAssignGoods, handleGeneratePackingList, handleGoToLoadingList, handleMarkReadyForPickup, confirmMarkReadyForPickup, handleMarkGoodsDelivered };
+};
