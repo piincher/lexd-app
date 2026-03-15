@@ -4,14 +4,14 @@ import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { styles } from '../GoodsDetailScreen.styles';
-import { Goods } from '../../../types';
+
 
 interface LocationCardProps {
-  goods: Goods;
+  warehouseLocation?: string;
   container: any;
 }
 
-export const LocationCard: React.FC<LocationCardProps> = ({ goods, container }) => (
+export const LocationCard: React.FC<LocationCardProps> = ({ warehouseLocation, container }) => (
   <Card style={styles.sectionCard}>
     <Card.Content>
       <View style={styles.sectionHeader}>
@@ -26,7 +26,7 @@ export const LocationCard: React.FC<LocationCardProps> = ({ goods, container }) 
           </View>
           <View>
             <Text style={styles.locationLabel}>Emplacement</Text>
-            <Text style={styles.locationValue}>{goods.warehouseLocation || 'Non assigné'}</Text>
+            <Text style={styles.locationValue}>{warehouseLocation || 'Non assigné'}</Text>
           </View>
         </View>
 

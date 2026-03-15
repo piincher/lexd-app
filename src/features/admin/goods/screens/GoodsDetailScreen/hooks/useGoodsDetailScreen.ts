@@ -1,9 +1,23 @@
 import { useState, useCallback } from 'react';
 import { Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { useGetGoodsById, useDeleteGoods, useUpdateGoodsStatus } from '../../../hooks';
+import { useGetGoodsById, useDeleteGoods, useUpdateGoodsStatus } from '../../../hooks/useGoods';
 import { useAssignGoodsToContainer } from '@src/features/admin/containers/hooks';
 import { useGetAllContainers } from '@src/features/admin/containers/hooks';
+
+// Utility functions
+const formatCurrency = (amount: number): string => {
+  return amount?.toLocaleString('fr-FR') || '0';
+};
+
+const formatDate = (dateString: string): string => {
+  if (!dateString) return 'N/A';
+  return new Date(dateString).toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
+};
 
 export const useGoodsDetailScreen = () => {
   const route = useRoute();
@@ -74,6 +88,43 @@ export const useGoodsDetailScreen = () => {
     setAssignDialogVisible(true);
   }, [hasContainers, navigation]);
 
+  const getPaymentStatusColor = useCallback(() => {
+    if (!goods) return '#757575';
+    if (goods.paymentStatus === 'PAID') return '#4CAF50';
+    if (goods.paymentStatus === 'PARTIAL') return '#FF9800';
+    return '#F44336';
+  }, [goods]);
+
+  const handleDelete = useCallback(() => {
+    if (!goods) return;
+    Alert.alert(
+      "Confirmer la suppression",
+      "Êtes-vous sûr de vouloir supprimer cette marchandise ?",
+      [
+        { text: "Annuler", style: "cancel" },
+        { 
+          text: "Supprimer", 
+          style: "destructive",
+          onPress: () => {
+            deleteMutation.mutate({ id: goods._id }, {
+              onSuccess: () => navigation.goBack(),
+            });
+          }
+        }
+      ]
+    );
+  }, [goods, deleteMutation, navigation]);
+
+  const handleStatusUpdate = useCallback((status: string) => {
+    if (!goods) return;
+    updateStatusMutation.mutate({ id: goods._id, status });
+  }, [goods, updateStatusMutation]);
+
+  const handleShareQR = useCallback(() => {
+    // TODO: Implement QR sharing
+    Alert.alert("Info", "Partage du QR code à implémenter");
+  }, []);
+
   return {
     goodsId,
     navigation,
@@ -97,5 +148,11 @@ export const useGoodsDetailScreen = () => {
     updateStatusMutation,
     handleAssignToContainer,
     handleAssignPress,
+    handleDelete,
+    handleStatusUpdate,
+    handleShareQR,
+    getPaymentStatusColor,
+    formatDate,
+    formatCurrency,
   };
 };

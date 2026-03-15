@@ -85,8 +85,13 @@ import {
   PackingListScreen,
   RouteListScreen,
   RouteFormScreen,
+  // Admin Phase 3
+  OrderDetailWithGoodsScreen,
 
 } from '@src/features/admin';
+
+// Direct imports to ensure proper loading
+import { VoidGoodsListScreen, VoidGoodsScreen } from '@src/features/admin/goods';
 
 // Legacy Screens
 import { HomeScreen } from '@src/features/home';
@@ -323,7 +328,11 @@ export const AuthenticatedNavigator: React.FC = () => {
       <Stack.Screen name="RouteList" component={RouteListScreen} />
       <Stack.Screen name="RouteForm" component={RouteFormScreen} />
 
-
+      {/* Admin Phase 3 - Order & Goods Management */}
+      <Stack.Screen name="VoidGoodsList" component={VoidGoodsListScreen} />
+      <Stack.Screen name="VoidGoods" component={VoidGoodsScreen} />
+      <Stack.Screen name="OrderDetailWithGoods" component={OrderDetailWithGoodsScreen} />
+      {/* TODO: OrderTotalsBreakdown screen - pending component creation */}
 
       {/* Info Screens */}
       <Stack.Screen name="AboutUs" component={AboutUsScreen} />

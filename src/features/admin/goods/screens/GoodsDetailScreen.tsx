@@ -57,19 +57,20 @@ export const GoodsDetailScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Header
-        goodsId={goods.goodsId}
-        status={goods.status}
+        goods={goods}
+        container={container}
+        hasContainers={hasContainers}
         menuVisible={menuVisible}
-        setMenuVisible={setMenuVisible}
+        onMenuToggle={setMenuVisible}
         onBack={() => navigation.goBack()}
         onAssignPress={handleAssignPress}
         onStatusUpdate={handleStatusUpdate}
         onDelete={handleDelete}
-        showAssignOption={hasContainers}
       />
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <QRCard
+          hasQRCode={!!goods.qrCodeImageUrl}
           qrCodeImageUrl={goods.qrCodeImageUrl}
           goodsId={goods.goodsId}
           onShare={handleShareQR}
@@ -123,8 +124,8 @@ export const GoodsDetailScreen: React.FC = () => {
         selectedContainerId={selectedContainerId}
         onSelect={setSelectedContainerId}
         onDismiss={() => setAssignDialogVisible(false)}
-        onAssign={handleAssignToContainer}
-        isLoading={assignMutation.isPending}
+        onConfirm={handleAssignToContainer}
+        isAssigning={assignMutation.isPending}
       />
     </SafeAreaView>
   );

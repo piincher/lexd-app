@@ -43,3 +43,8 @@ export { useGoodsAssignment } from './useGoodsAssignment';
 export { useGoodsStatus } from './useGoodsStatus';
 // useReceiveGoods exported from dedicated file (single source)
 export { useReceiveGoods } from './useReceiveGoods';
+
+// ============================================
+// MUTATION HOOKS
+// ============================================
+export { useVoidGoods } from './useVoidGoods';

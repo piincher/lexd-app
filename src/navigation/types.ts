@@ -138,6 +138,17 @@ export type AuthenticatedStackParamList = {
   RouteList: undefined;
   RouteForm: { routeId?: string };
   
+  // Admin Phase 3 - Order & Goods Management
+  VoidGoodsList: undefined;
+  VoidGoods: { goodsId: string; goodsTrackingCode: string; cbm: number };
+  OrderDetailWithGoods: { orderId: string };
+  OrderTotalsBreakdown: { orderId: string };
+  AllOrders: undefined;
+
+  // Client Navigation (Phase 4)
+  ClientOrdersList: undefined;
+  ClientOrderDetail: { orderId: string };
+  TrackOrder: undefined;
 
 };
 

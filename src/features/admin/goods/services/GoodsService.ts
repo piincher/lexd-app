@@ -186,6 +186,11 @@ export class GoodsService {
     formData.append('unitPrice', data.unitPrice.toString());
     formData.append('location', data.location);
 
+    // Add receivedByName if present
+    if (data.receivedByName) {
+      formData.append('receivedByName', data.receivedByName);
+    }
+
     // Add dimensions if present
     if (data.dimensions) {
       formData.append('dimensions', JSON.stringify(data.dimensions));

@@ -19,6 +19,11 @@ export * from './types';
 export { default as ReceiveGoodsScreen } from './screens/ReceiveGoodsScreen';
 export { default as GoodsListScreen } from './screens/GoodsListScreen';
 export { default as AdminGoodsDetailScreen } from './screens/GoodsDetailScreen';
+export { default as VoidGoodsScreen } from './screens/VoidGoodsScreen';
+
+// VoidGoodsListScreen - direct import/export to ensure availability
+import VoidGoodsListScreen from './screens/VoidGoodsListScreen';
+export { VoidGoodsListScreen };
 
 // Components (for advanced usage)
 export * from './components';

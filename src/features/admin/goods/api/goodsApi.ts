@@ -44,4 +44,7 @@ export const adminGoodsApi = {
     
   assignToContainer: (containerId: string, goodsIds: string[]): Promise<AxiosResponse<ApiResponse<void>>> =>
     axios.post(`/containers/${containerId}/assign-goods`, { goodsIds }),
+    
+  void: (id: string, reason: string): Promise<AxiosResponse<ApiResponse<Goods>>> =>
+    axios.post(`${BASE_URL}/${id}/void`, { reason }),
 };

@@ -5,6 +5,9 @@
 export { useGetCategory } from "./hooks/useCategory";
 export { useGetOrders } from "./hooks/useOrder";
 
+// Dashboard (explicit export to ensure availability)
+export { AdminDashBoard as AdminDashBoardScreen } from "./dashboard";
+
 // Sub-features
 export * from "./orders";
 export * from "./users";

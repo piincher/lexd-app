@@ -19,7 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Hooks
-import { useReceiveGoods } from '../hooks';
+import { useReceiveGoods } from '../hooks/useGoods';
 import { useReceiveGoodsForm } from '../hooks/useReceiveGoodsForm';
 
 // Components
@@ -92,6 +92,8 @@ export const ReceiveGoodsScreen: React.FC = () => {
     } catch (error) {
       if (error instanceof ApiClientError) {
         setErrorMessage(error.getUserMessage());
+      } else if (error instanceof Error) {
+        setErrorMessage(`Erreur: ${error.message}`);
       } else {
         setErrorMessage('Une erreur inattendue est survenue');
       }

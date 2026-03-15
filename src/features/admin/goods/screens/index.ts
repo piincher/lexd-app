@@ -47,3 +47,11 @@ export type {
   GoodsPhotosUploadProps,
   GoodsConditionSelectorProps,
 } from './ReceiveGoodsScreen/types';
+
+// VoidGoodsScreen
+export { VoidGoodsScreen } from './VoidGoodsScreen';
+export { default as VoidGoodsScreenDefault } from './VoidGoodsScreen';
+
+// VoidGoodsListScreen
+import VoidGoodsListScreen from './VoidGoodsListScreen';
+export { VoidGoodsListScreen };

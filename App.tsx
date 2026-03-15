@@ -27,7 +27,6 @@ import {
    BatchUpdateDetailScreen as BatchUpdateDetail,
    ChooseShippingMethodScreen as ChooseShippingMethod,
    ShippingMethodScreen as ShippingMethod,
-
    ClientManagementScreen as ClientManagement,
    ClientDetailScreen as ClientDetails,
    // Admin V2 Features
@@ -47,6 +46,11 @@ import {
    // Route V2 Features
    RouteListScreen,
    RouteFormScreen,
+   // Admin Phase 3 - Void Pattern
+   VoidGoodsListScreen,
+   VoidGoodsScreen,
+   // Admin Phase 4 - All Orders
+   AllOrdersScreen,
 } from "@src/features/admin";
 
 // Features - Auth
@@ -84,7 +88,6 @@ import {
    ProfileScreen as Profile,
    AboutUsScreen as AboutUs,
    PastOrdersScreen as PastOrders,
-
    NotificationSettingsScreen,
 } from "@src/features/profile";
 
@@ -93,10 +96,10 @@ import { MyGoodsScreen, GoodsDetailScreen, ScanQRScreen as GoodsScanQR } from "@
 
 // Features - Customer Containers (V2)
 import {
-  MyContainersScreen,
-  ContainerTrackingScreen,
-  ClientPackingListScreen,
-  ClientLoadingListScreen,
+   MyContainersScreen,
+   ContainerTrackingScreen,
+   ClientPackingListScreen,
+   ClientLoadingListScreen,
 } from "@src/features/customer/containers";
 
 // Features - Stats
@@ -200,87 +203,96 @@ function AppWrapper() {
 
    return (
       <SafeAreaProvider onLayout={onLayout}>
-         <ThemeStatusBar style={isDark ? 'light' : 'dark'} />
+         <ThemeStatusBar style={isDark ? "light" : "dark"} />
          <FadingAnnouncement />
 
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-               {appLaunch && <Stack.Screen name="OnBoarding" component={OnBoarding} />}
+         <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {appLaunch && <Stack.Screen name="OnBoarding" component={OnBoarding} />}
 
-               <Stack.Screen name="HomeTab" component={HomeBottomTab} />
-               <Stack.Screen name="AboutUs" component={AboutUs} />
-               <Stack.Screen name="faq" component={Faq} />
+            <Stack.Screen name="HomeTab" component={HomeBottomTab} />
+            <Stack.Screen name="AboutUs" component={AboutUs} />
+            <Stack.Screen name="faq" component={Faq} />
 
-               {token ? (
-                  <>
-                     <Stack.Screen name="CheckRoute" component={CheckRoute} />
-                     <Stack.Screen name="AddOrder" component={AddOrder} />
-                     <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
-                     <Stack.Screen name="OrderDetail" component={OrderDetails} />
-                     <Stack.Screen name="ChatRoom" component={ChatRoom} />
-                     <Stack.Screen name="SelectAdminToChatWith" component={SelectAdminToChatWith} />
-                     <Stack.Screen name="SelectUser" component={SelectUser} />
-                     <Stack.Screen name="PastOrders" component={PastOrders} />
-                     <Stack.Screen name="UserAdd" component={AddUser} />
-                     <Stack.Screen name="AdmninPastOrders" component={AdminPastOrders} />
-                     <Stack.Screen name="SendSms" component={SendSms} />
-                     <Stack.Screen name="ActiveOrderDetails" component={ActiveOrderdetails} />
-                     <Stack.Screen name="ScanQRCode" component={ScanQRCode} />
-                     <Stack.Screen name="Notifications" component={Notifications} />
-                     <Stack.Screen name="BatchUpdate" component={BatchUpdate} />
-                     <Stack.Screen name="BatchUpdateDetail" component={BatchUpdateDetail} />
-                     <Stack.Screen name="EditOrder" component={EditOrder} />
-                     <Stack.Screen name="AdminDashBoard" component={AdminDashBoard} />
-                     <Stack.Screen name="UserActiveOrders" component={UserActiveOrders} />
-                     <Stack.Screen name="ClientManagement" component={ClientManagement} />
-                     <Stack.Screen name="ClientDetails" component={ClientDetails} />
-                     <Stack.Screen name="ChooseShippingMethod" component={ChooseShippingMethod} />
-                     <Stack.Screen name="ShippingMethod" component={ShippingMethod} />
-                     <Stack.Screen
-                        name="SeaShippingOrderDetails"
-                        component={SeaShippingOrderDetails}
-                     />
-                     {/* Admin V2 Screens */}
-                     <Stack.Screen name="ReceiveGoods" component={ReceiveGoodsScreen} />
-                     <Stack.Screen name="AdminGoodsList" component={AdminGoodsList} />
-                     <Stack.Screen name="AdminGoodsDetail" component={AdminGoodsDetailScreen} />
-                     <Stack.Screen name="ConsigneeList" component={ConsigneeListScreen} />
-                     <Stack.Screen name="CreateConsignee" component={CreateConsigneeScreen} />
-                     <Stack.Screen name="ConsigneeDetail" component={ConsigneeDetailScreen} />
-                     {/* Container V2 Screens */}
-                     <Stack.Screen name="ContainerList" component={ContainerListScreen} />
-                     <Stack.Screen name="CreateContainer" component={CreateContainerScreen} />
-                     <Stack.Screen name="ContainerDetail" component={ContainerDetailScreen} />
-                     <Stack.Screen name="AssignGoods" component={AssignGoodsScreen} />
-                     <Stack.Screen name="PackingList" component={PackingListScreen} />
-                     <Stack.Screen name="AdminLoadingList" component={LoadingListScreen} />
-                     {/* Route V2 Screens */}
-                     <Stack.Screen name="RouteList" component={RouteListScreen} />
-                     <Stack.Screen name="RouteForm" component={RouteFormScreen} />
-                     {/* Client V2 Screens */}
-                     <Stack.Screen name="MyGoods" component={MyGoodsScreen} />
-                     <Stack.Screen name="GoodsDetail" component={GoodsDetailScreen} />
-                     <Stack.Screen name="ScanQR" component={GoodsScanQR} />
-                     {/* Customer Container V2 Screens */}
-                     <Stack.Screen name="MyContainers" component={MyContainersScreen} />
-                     <Stack.Screen name="ContainerTracking" component={ContainerTrackingScreen} />
-                     <Stack.Screen name="ClientPackingList" component={ClientPackingListScreen} />
-                     <Stack.Screen name="ClientLoadingList" component={ClientLoadingListScreen} />
-                     {/* WhatsApp Admin Screens */}
-                     <Stack.Screen name="WhatsAppRequests" component={WhatsAppRequestListScreen} />
-                     <Stack.Screen name="WhatsAppRequestDetail" component={WhatsAppRequestListScreen} />
-                     {/* Customer Support Screens */}
-                     <Stack.Screen name="TicketList" component={TicketListScreen} />
-                     <Stack.Screen name="TicketDetail" component={TicketDetailScreen} />
-                     <Stack.Screen name="CreateTicket" component={CreateTicketScreen} />
-                     <Stack.Screen name="NotificationSettings" component={NotificationSettingsScreen} />
-                  </>
-               ) : (
-                  <>
-                     <Stack.Screen name="Login" component={Login} />
-                     <Stack.Screen name="Verification" component={Verification} />
-                  </>
-               )}
-            </Stack.Navigator>
+            {token ? (
+               <>
+                  <Stack.Screen name="CheckRoute" component={CheckRoute} />
+                  <Stack.Screen name="VoidGoodsList" component={VoidGoodsListScreen} />
+                  <Stack.Screen name="VoidGoods" component={VoidGoodsScreen} />
+                  <Stack.Screen name="AllOrders" component={AllOrdersScreen} />
+                  <Stack.Screen name="AddOrder" component={AddOrder} />
+                  <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
+                  <Stack.Screen name="OrderDetail" component={OrderDetails} />
+                  <Stack.Screen name="ChatRoom" component={ChatRoom} />
+                  <Stack.Screen name="SelectAdminToChatWith" component={SelectAdminToChatWith} />
+                  <Stack.Screen name="SelectUser" component={SelectUser} />
+                  <Stack.Screen name="PastOrders" component={PastOrders} />
+                  <Stack.Screen name="UserAdd" component={AddUser} />
+                  <Stack.Screen name="AdmninPastOrders" component={AdminPastOrders} />
+                  <Stack.Screen name="SendSms" component={SendSms} />
+                  <Stack.Screen name="ActiveOrderDetails" component={ActiveOrderdetails} />
+                  <Stack.Screen name="ScanQRCode" component={ScanQRCode} />
+                  <Stack.Screen name="Notifications" component={Notifications} />
+                  <Stack.Screen name="BatchUpdate" component={BatchUpdate} />
+                  <Stack.Screen name="BatchUpdateDetail" component={BatchUpdateDetail} />
+                  <Stack.Screen name="EditOrder" component={EditOrder} />
+                  <Stack.Screen name="AdminDashBoard" component={AdminDashBoard} />
+                  <Stack.Screen name="UserActiveOrders" component={UserActiveOrders} />
+                  <Stack.Screen name="ClientManagement" component={ClientManagement} />
+                  <Stack.Screen name="ClientDetails" component={ClientDetails} />
+                  <Stack.Screen name="ChooseShippingMethod" component={ChooseShippingMethod} />
+                  <Stack.Screen name="ShippingMethod" component={ShippingMethod} />
+                  <Stack.Screen
+                     name="SeaShippingOrderDetails"
+                     component={SeaShippingOrderDetails}
+                  />
+                  {/* Admin V2 Screens */}
+                  <Stack.Screen name="ReceiveGoods" component={ReceiveGoodsScreen} />
+                  <Stack.Screen name="AdminGoodsList" component={AdminGoodsList} />
+                  <Stack.Screen name="AdminGoodsDetail" component={AdminGoodsDetailScreen} />
+                  <Stack.Screen name="ConsigneeList" component={ConsigneeListScreen} />
+                  <Stack.Screen name="CreateConsignee" component={CreateConsigneeScreen} />
+                  <Stack.Screen name="ConsigneeDetail" component={ConsigneeDetailScreen} />
+                  {/* Container V2 Screens */}
+                  <Stack.Screen name="ContainerList" component={ContainerListScreen} />
+                  <Stack.Screen name="CreateContainer" component={CreateContainerScreen} />
+                  <Stack.Screen name="ContainerDetail" component={ContainerDetailScreen} />
+                  <Stack.Screen name="AssignGoods" component={AssignGoodsScreen} />
+                  <Stack.Screen name="PackingList" component={PackingListScreen} />
+                  <Stack.Screen name="AdminLoadingList" component={LoadingListScreen} />
+                  {/* Route V2 Screens */}
+                  <Stack.Screen name="RouteList" component={RouteListScreen} />
+                  <Stack.Screen name="RouteForm" component={RouteFormScreen} />
+                  {/* Client V2 Screens */}
+                  <Stack.Screen name="MyGoods" component={MyGoodsScreen} />
+                  <Stack.Screen name="GoodsDetail" component={GoodsDetailScreen} />
+                  <Stack.Screen name="ScanQR" component={GoodsScanQR} />
+                  {/* Customer Container V2 Screens */}
+                  <Stack.Screen name="MyContainers" component={MyContainersScreen} />
+                  <Stack.Screen name="ContainerTracking" component={ContainerTrackingScreen} />
+                  <Stack.Screen name="ClientPackingList" component={ClientPackingListScreen} />
+                  <Stack.Screen name="ClientLoadingList" component={ClientLoadingListScreen} />
+                  {/* WhatsApp Admin Screens */}
+                  <Stack.Screen name="WhatsAppRequests" component={WhatsAppRequestListScreen} />
+                  <Stack.Screen
+                     name="WhatsAppRequestDetail"
+                     component={WhatsAppRequestListScreen}
+                  />
+                  {/* Customer Support Screens */}
+                  <Stack.Screen name="TicketList" component={TicketListScreen} />
+                  <Stack.Screen name="TicketDetail" component={TicketDetailScreen} />
+                  <Stack.Screen name="CreateTicket" component={CreateTicketScreen} />
+                  <Stack.Screen
+                     name="NotificationSettings"
+                     component={NotificationSettingsScreen}
+                  />
+               </>
+            ) : (
+               <>
+                  <Stack.Screen name="Login" component={Login} />
+                  <Stack.Screen name="Verification" component={Verification} />
+               </>
+            )}
+         </Stack.Navigator>
       </SafeAreaProvider>
    );
 }
@@ -292,9 +304,9 @@ const HomeBottomTab = () => {
    const adminRole = admin === "admin" ? true : false;
 
    return (
-      <BottomTab.Navigator 
-         initialRouteName={"Home"} 
-         screenOptions={{ 
+      <BottomTab.Navigator
+         initialRouteName={"Home"}
+         screenOptions={{
             headerShown: false,
             tabBarActiveTintColor: colors.primary.main,
             tabBarInactiveTintColor: colors.text.disabled,

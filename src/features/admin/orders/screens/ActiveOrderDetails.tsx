@@ -260,6 +260,16 @@ const ActiveOrderDetails = ({ route }: RootStackScreenProps<"ActiveOrderDetails"
                   busy={isPending}
                />
             </View>
+
+            {/* View Order with Goods (Void Pattern) */}
+            <View style={styles.buttonContainer}>
+               <AppButton
+                  style={{ marginTop: 15, backgroundColor: COLORS.blue }}
+                  title="📦 Voir avec Marchandises (Nouveau)"
+                  onPress={() => navigation.navigate('OrderDetailWithGoods', { orderId: id })}
+                  background="blue"
+               />
+            </View>
          </ScrollView>
       </SafeAreaView>
    );

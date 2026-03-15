@@ -4,25 +4,31 @@ import { Card, Text, Divider, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { styles } from '../GoodsDetailScreen.styles';
-import { Goods } from '../../../types';
+
 
 interface FinancialCardProps {
-  goods: Goods;
+  unitPrice: number;
+  totalCost: number;
+  amountPaid: number;
   balanceDue: number;
+  paymentStatus: string;
   getPaymentStatusColor: () => string;
   formatCurrency: (amount: number) => string;
 }
 
 export const FinancialCard: React.FC<FinancialCardProps> = ({
-  goods,
+  unitPrice,
+  totalCost,
+  amountPaid,
   balanceDue,
+  paymentStatus,
   getPaymentStatusColor,
   formatCurrency,
 }) => {
   const paymentStatusColor = getPaymentStatusColor();
-  const paymentStatusLabel = goods.paymentStatus === 'PAID'
+  const paymentStatusLabel = paymentStatus === 'PAID'
     ? 'Payé'
-    : goods.paymentStatus === 'PARTIAL'
+    : paymentStatus === 'PARTIAL'
     ? 'Partiel'
     : 'Non payé';
 
@@ -36,20 +42,20 @@ export const FinancialCard: React.FC<FinancialCardProps> = ({
 
         <View style={styles.financialRow}>
           <Text style={styles.financialLabel}>Prix unitaire</Text>
-          <Text style={styles.financialValue}>{formatCurrency(goods.unitPrice)} FCFA</Text>
+          <Text style={styles.financialValue}>{formatCurrency(unitPrice)} FCFA</Text>
         </View>
 
         <Divider style={styles.divider} />
 
         <View style={styles.financialRowHighlight}>
           <Text style={styles.financialLabelHighlight}>Coût total</Text>
-          <Text style={styles.financialValueTotal}>{formatCurrency(goods.totalCost)} FCFA</Text>
+          <Text style={styles.financialValueTotal}>{formatCurrency(totalCost)} FCFA</Text>
         </View>
 
         <View style={styles.financialRow}>
           <Text style={styles.financialLabel}>Montant payé</Text>
           <Text style={[styles.financialValue, { color: Theme.status.success }]}>
-            {formatCurrency(goods.amountPaid)} FCFA
+            {formatCurrency(amountPaid)} FCFA
           </Text>
         </View>
 
@@ -66,7 +72,7 @@ export const FinancialCard: React.FC<FinancialCardProps> = ({
           <Chip
             style={[styles.paymentChip, { backgroundColor: paymentStatusColor + '20' }]}
             textStyle={{ color: paymentStatusColor, fontWeight: '600' }}
-            icon={goods.paymentStatus === 'PAID' ? 'check-circle' : 'clock-outline'}
+            icon={paymentStatus === 'PAID' ? 'check-circle' : 'clock-outline'}
           >
             {paymentStatusLabel}
           </Chip>

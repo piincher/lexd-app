@@ -72,7 +72,7 @@ const LOGISTICS_COLORS = {
    },
 };
 
-const AdminPastOrders: FC = () => {
+const PastOrderScreen: FC = () => {
    const [shippingType, setShippingType] = useState<"air" | "sea">("air");
    const [statusFilter, setStatusFilter] = useState("Inactive");
    const [searchQuery, setSearchQuery] = useState("");
@@ -696,4 +696,4 @@ const styles = StyleSheet.create({
    },
 });
 
-export default AdminPastOrders;
+export default PastOrderScreen;

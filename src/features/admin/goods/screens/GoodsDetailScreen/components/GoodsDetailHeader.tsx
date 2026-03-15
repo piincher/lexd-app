@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { Text, Menu, Chip } from 'react-native-paper';
+import { Text, Menu, Chip, Divider } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
@@ -76,7 +76,7 @@ export const GoodsDetailHeader: React.FC<GoodsDetailHeaderProps> = ({
           />
         )}
         <Menu.Item onPress={() => onStatusUpdate('READY_FOR_PICKUP')} title="Pret pour retrait" />
-        <Menu.Divider />
+        <Divider />
         <Menu.Item onPress={onDelete} title="Supprimer" titleStyle={{ color: Theme.status.error }} />
       </Menu>
     </View>

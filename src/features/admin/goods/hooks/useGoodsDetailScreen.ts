@@ -6,7 +6,9 @@
 import { useState, useCallback } from 'react';
 import { Alert } from 'react-native';
 import { useGetAllContainers } from '@src/features/admin/containers/hooks';
-import { useGoodsDetail, useGoodsAssignment, useGoodsStatus } from './index';
+import { useGoodsDetail } from './useGoodsDetail';
+import { useGoodsAssignment } from './useGoodsAssignment';
+import { useGoodsStatus } from './useGoodsStatus';
 import { useDeleteGoods } from './useGoods';
 
 export const useGoodsDetailScreen = (goodsId: string) => {
