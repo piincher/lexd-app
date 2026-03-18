@@ -7,7 +7,7 @@ import React from 'react';
 import { View, StyleSheet, Image, Alert } from 'react-native';
 import { Card, Text, Button, IconButton } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
-import { GoodsPhotosUploadProps } from '../../../types';
+import { GoodsPhotosUploadProps } from '../../types';
 import { COLORS } from '@src/constants/Colors';
 
 export const GoodsPhotosUpload: React.FC<GoodsPhotosUploadProps> = ({

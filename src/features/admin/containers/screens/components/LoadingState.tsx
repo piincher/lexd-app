@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '../../../../../shared/ui';
+import { Theme } from '../../../../../constants/Theme';
 import { styles } from '../ContainerDetailScreen.styles';
 
 export const LoadingState: React.FC = () => (

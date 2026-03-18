@@ -10,7 +10,7 @@ import { GoodsDimensionsInput } from './GoodsDimensionsInput';
 import { GoodsPhotosUpload } from './GoodsPhotosUpload';
 import { GoodsConditionSelector } from './GoodsConditionSelector';
 import { FormInput } from '../../../components/FormInput';
-import { ReceiveGoodsFormSectionProps, ClientSelectionProps } from '../../../types';
+import { ReceiveGoodsFormSectionProps, ClientSelectionProps } from '../../types';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
 import { CostSummary } from '../../../components/CostSummary';
 

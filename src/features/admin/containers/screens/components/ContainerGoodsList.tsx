@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Goods } from '../../../goods/types';
-import { Theme } from '../../../../../shared/ui';
+import { Theme } from '../../../../../constants/Theme';
 import { styles } from '../ContainerDetailScreen.styles';
 
 interface ContainerGoodsListProps {

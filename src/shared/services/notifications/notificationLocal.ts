@@ -42,7 +42,6 @@ export const scheduleLocalNotification = async (
         title,
         body,
         data,
-        sound: 'default',
         badge: 1,
       },
       trigger: notificationTrigger,

@@ -147,6 +147,7 @@ import { initSentry } from "@src/services/sentry";
 import { UpdateProvider } from "@src/context/UpdateProvider";
 import { NotificationProvider } from "@src/app/providers";
 import { ThemeProvider, useAppTheme } from "@src/providers";
+import { ManualOrderScreen } from "@src/features/orders/screens/ManualOrderScreen";
 
 registerTranslation("en", enGB);
 
@@ -227,7 +228,10 @@ function AppWrapper() {
                   <Stack.Screen name="CheckRoute" component={CheckRoute} />
                   <Stack.Screen name="VoidGoodsList" component={VoidGoodsListScreen} />
                   <Stack.Screen name="VoidGoods" component={VoidGoodsScreen} />
-                  <Stack.Screen name="OrderDetailWithGoods" component={OrderDetailWithGoodsScreen} />
+                  <Stack.Screen
+                     name="OrderDetailWithGoods"
+                     component={OrderDetailWithGoodsScreen}
+                  />
                   <Stack.Screen name="AllOrders" component={AllOrdersScreen} />
                   <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} />
                   <Stack.Screen name="RecordPaymentScreen" component={RecordPaymentScreen} />
@@ -267,13 +271,14 @@ function AppWrapper() {
                   <Stack.Screen name="ConsigneeList" component={ConsigneeListScreen} />
                   <Stack.Screen name="CreateConsignee" component={CreateConsigneeScreen} />
                   <Stack.Screen name="ConsigneeDetail" component={ConsigneeDetailScreen} />
+                  <Stack.Screen name="ManualOrder" component={ManualOrderScreen} />
                   {/* Container V2 Screens */}
                   <Stack.Screen name="ContainerList" component={ContainerListScreen} />
                   <Stack.Screen name="CreateContainer" component={CreateContainerScreen} />
                   <Stack.Screen name="ContainerDetail" component={ContainerDetailScreen} />
                   <Stack.Screen name="AssignGoods" component={AssignGoodsScreen} />
                   <Stack.Screen name="PackingList" component={PackingListScreen} />
-                  <Stack.Screen name="AdminLoadingList" component={LoadingListScreen} />
+                  <Stack.Screen name="LoadingList" component={LoadingListScreen} />
                   {/* Route V2 Screens */}
                   <Stack.Screen name="RouteList" component={RouteListScreen} />
                   <Stack.Screen name="RouteForm" component={RouteFormScreen} />

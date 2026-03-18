@@ -3,10 +3,13 @@
  * SRP: Layout composition ONLY (<100 lines)
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useLayoutEffect } from 'react';
 import { View, RefreshControl, ActivityIndicator, ScrollView, Text } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { Searchbar, Button } from 'react-native-paper';
+import { Searchbar, Button, IconButton } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AuthenticatedStackParamList } from '@src/navigation/types';
 import { Screen } from '@src/shared/ui';
 import { COLORS } from '@src/constants/Colors';
 import { useGetAllOrders } from '../hooks/useOrderManagement';
@@ -24,12 +27,26 @@ const STATUS_TABS = [
   { key: 'Delivered', label: 'Delivered' },
 ];
 
+type NavigationProp = NativeStackNavigationProp<AuthenticatedStackParamList>;
+
 const AllOrdersScreen: React.FC = () => {
+  const navigation = useNavigation<NavigationProp>();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
 
   const { data, isLoading, error, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } = 
     useGetAllOrders();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <IconButton
+          icon="chart-bar"
+          onPress={() => navigation.navigate('OrdersDashboard')}
+        />
+      ),
+    });
+  }, [navigation]);
   
   console.log('[AllOrdersScreen] Data:', data, 'Error:', error);
   

@@ -526,7 +526,6 @@ export const setupNotificationChannels = async (): Promise<void> => {
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#FF5722",
-      sound: "default",
     });
 
     // Orders channel
@@ -535,7 +534,6 @@ export const setupNotificationChannels = async (): Promise<void> => {
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#8B5CF6",
-      sound: "default",
     });
 
     // Payments channel
@@ -544,7 +542,6 @@ export const setupNotificationChannels = async (): Promise<void> => {
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#10B981",
-      sound: "default",
     });
 
     // Containers channel
@@ -561,7 +558,6 @@ export const setupNotificationChannels = async (): Promise<void> => {
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#F59E0B",
-      sound: "default",
     });
 
     // Invoices channel
@@ -570,7 +566,6 @@ export const setupNotificationChannels = async (): Promise<void> => {
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#EF4444",
-      sound: "default",
     });
 
     // System channel

@@ -132,7 +132,7 @@ export const PackingListTable: React.FC<PackingListTableProps> = ({
       <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
         {sortedGoods.map((item, index) => (
           <View
-            key={item._id}
+            key={item._id || item.goodsId || `item-${index}`}
             style={[
               styles.dataRow,
               index % 2 === 0 ? styles.rowEven : styles.rowOdd,

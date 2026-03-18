@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userData } from '@src/constants/types';
 import { ReceiveGoodsInput } from '../../../../types';
-import { receiveGoodsSchema, ReceiveGoodsFormData } from '../../../types';
+import { receiveGoodsSchema, ReceiveGoodsFormData } from '../types';
 
 const DEFAULT_VALUES: ReceiveGoodsFormData = {
   description: '',

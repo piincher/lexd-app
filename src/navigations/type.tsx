@@ -74,7 +74,7 @@ export type RootStackParamList = {
    TicketDetail: { ticketId: string };
    CreateTicket: undefined;
    // Admin Loading List
-   AdminLoadingList: { containerId: string };
+   LoadingList: { containerId: string };
    // Customer Loading List
    ClientLoadingList: { containerId: string };
    // WhatsApp Admin
@@ -93,6 +93,25 @@ export type RootStackParamList = {
    };
    NotificationDetail: { notification: import('../features/notifications/types').InAppNotification };
    NotificationSettings: undefined;
+   ManualOrder: undefined;
+   SelectManualOrder: {
+      goodsId: string; // The goods to assign to an order
+   };
+   ConfirmGoodsAssignment: {
+      orderId: string;
+      goodsId: string;
+   };
+   EditManualOrder: {
+      order: {
+         _id: string;
+         clientName: string;
+         clientPhone?: string;
+         shippingMode: "air" | "sea";
+         estimatedCbm?: number;
+         note?: string;
+      };
+   };
+   OrdersDashboard: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<

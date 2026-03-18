@@ -49,6 +49,13 @@ export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
   };
 
   const { clientName, clientPhone, goods, summary } = clientGroup;
+  
+  // Calculate payment status
+  const balance = summary.balanceDue || 0;
+  const isPaid = balance <= 0;
+  const isPartial = !isPaid && (summary.totalPaid || 0) > 0;
+  const statusColor = isPaid ? '#10B981' : isPartial ? '#F59E0B' : '#EF4444';
+  const statusText = isPaid ? 'Payé' : isPartial ? 'Partiel' : 'Impayé';
 
   return (
     <Animated.View
@@ -75,12 +82,28 @@ export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
                 </Text>
               </View>
               <View style={styles.clientDetails}>
-                <Text style={styles.clientName} numberOfLines={1}>
+                <Text style={styles.clientName} numberOfLines={2}>
                   {clientName}
                 </Text>
                 <View style={styles.phoneRow}>
                   <Ionicons name="call-outline" size={12} color={Theme.neutral[500]} />
                   <Text style={styles.clientPhone}>{clientPhone}</Text>
+                </View>
+                {/* Financial Info */}
+                <View style={styles.financialRow}>
+                  <Text style={styles.totalCost}>{(summary.totalCost || 0).toLocaleString()} FCFA</Text>
+                  {!isPaid && (
+                    <View style={[styles.balanceBadge, { backgroundColor: statusColor + '20' }]}>
+                      <Text style={[styles.balanceText, { color: statusColor }]}>
+                        Solde: {(summary.balanceDue || 0).toLocaleString()} FCFA
+                      </Text>
+                    </View>
+                  )}
+                  {isPaid && (
+                    <View style={[styles.balanceBadge, { backgroundColor: '#10B98120' }]}>
+                      <Text style={[styles.balanceText, { color: '#10B981' }]}>Payé</Text>
+                    </View>
+                  )}
                 </View>
               </View>
             </View>
@@ -136,6 +159,29 @@ export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
               <Text style={styles.subtotalLabel}>Poids Total:</Text>
               <Text style={styles.subtotalValue}>{summary.totalWeight.toFixed(0)} kg</Text>
             </View>
+            {/* Financial Summary */}
+            <View style={[styles.subtotalRow, { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: Theme.primary[200] }]}>
+              <Text style={[styles.subtotalLabel, { fontWeight: '700' }]}>Montant Total:</Text>
+              <Text style={[styles.subtotalValue, { color: Theme.primary[600], fontWeight: '700' }]}>
+                {(summary.totalCost || 0).toLocaleString()} FCFA
+              </Text>
+            </View>
+            {(summary.totalPaid || 0) > 0 && (
+              <View style={styles.subtotalRow}>
+                <Text style={styles.subtotalLabel}>Déjà Payé:</Text>
+                <Text style={[styles.subtotalValue, { color: '#10B981' }]}>
+                  {(summary.totalPaid || 0).toLocaleString()} FCFA
+                </Text>
+              </View>
+            )}
+            {!isPaid && (
+              <View style={styles.subtotalRow}>
+                <Text style={[styles.subtotalLabel, { color: '#DC2626', fontWeight: '700' }]}>SOLDE À PAYER:</Text>
+                <Text style={[styles.subtotalValue, { color: '#DC2626', fontWeight: '800' }]}>
+                  {(summary.balanceDue || 0).toLocaleString()} FCFA
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       )}
@@ -188,10 +234,11 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   clientName: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '700',
     color: Theme.neutral[800],
     marginBottom: 2,
+    lineHeight: 18,
   },
   phoneRow: {
     flexDirection: 'row',
@@ -203,10 +250,31 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Theme.neutral[500],
   },
+  financialRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 4,
+  },
+  totalCost: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: Theme.primary[600],
+  },
+  balanceBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 12,
+  },
+  balanceText: {
+    fontSize: 11,
+    fontWeight: '700',
+  },
   summaryContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: Theme.spacing.sm,
+    flexShrink: 0,
   },
   summaryItem: {
     alignItems: 'center',

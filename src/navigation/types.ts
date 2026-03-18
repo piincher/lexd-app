@@ -135,6 +135,7 @@ export type AuthenticatedStackParamList = {
   ContainerDetail: { containerId: string };
   AssignGoods: { containerId: string };
   PackingList: { containerId: string };
+  LoadingList: { containerId: string };
   RouteList: undefined;
   RouteForm: { routeId?: string };
   
@@ -145,6 +146,22 @@ export type AuthenticatedStackParamList = {
   OrderTotalsBreakdown: { orderId: string };
   AllOrders: undefined;
   OrderDetailScreen: { id: string };
+  
+  // Manual Order System (Phases 1-4)
+  ManualOrder: undefined;
+  SelectManualOrder: { goodsId?: string };
+  ConfirmGoodsAssignment: { orderId: string; goodsId: string };
+  EditManualOrder: {
+    order: {
+      _id: string;
+      clientName: string;
+      clientPhone?: string;
+      shippingMode: "air" | "sea";
+      estimatedCbm?: number;
+      note?: string;
+    };
+  };
+  OrdersDashboard: undefined;
   
   // Payment Screens
   PaymentScreen: {
@@ -253,7 +270,7 @@ export type RootNavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    interface RootParamList extends AuthenticatedStackParamList {}
   }
 }
 

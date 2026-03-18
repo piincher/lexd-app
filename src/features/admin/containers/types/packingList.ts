@@ -19,7 +19,38 @@ export interface ClientGoodsGroup {
     totalWeight: number;
     totalItems: number;
     totalQuantity: number;
+    totalCost: number;
+    totalPaid: number;
+    balanceDue: number;
   };
+}
+
+/**
+ * Container info from packing list API
+ */
+export interface PackingListContainer {
+  id: string;
+  number: string;
+  virtualContainerNumber?: string;
+  shippingLine: string;
+  shippingLineLabel: string;
+  shippingMode: string;
+  status: string;
+  statusLabel: string;
+  capacityCBM?: number;
+  totalCBM?: number;
+  route?: {
+    name: string;
+    origin: string;
+    destination: string;
+    estimatedTransitDays: number;
+    capacityCBM?: number;
+  } | null;
+  consignee?: {
+    name: string;
+    phone: string;
+    warehouseAddress?: string;
+  } | null;
 }
 
 /**
@@ -30,20 +61,22 @@ export interface ContainerSummary {
   totalWeight: number;
   totalItems: number;
   totalPackages: number;
+  totalQuantity?: number;
+  totalClients?: number;
   capacityPercentage: number;
-  remainingCBM: number;
-  maxCBM: number;
+  remainingCBM?: number;
+  maxCBM?: number;
 }
 
 /**
  * Admin packing list data - complete data structure
  */
 export interface AdminPackingListData {
-  container: Container;
+  container: PackingListContainer;
   clients: ClientGoodsGroup[];
   summary: ContainerSummary;
   generatedAt: string;
-  generatedBy: string;
+  generatedBy?: string;
 }
 
 /**

@@ -8,7 +8,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { Controller } from 'react-hook-form';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { GoodsConditionSelectorProps } from '../../../types';
+import { GoodsConditionSelectorProps } from '../../types';
 import { COLORS } from '@src/constants/Colors';
 
 type ConditionOption = {

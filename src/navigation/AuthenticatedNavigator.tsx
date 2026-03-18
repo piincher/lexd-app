@@ -83,6 +83,7 @@ import {
   ContainerDetailScreen,
   AssignGoodsScreen,
   PackingListScreen,
+  LoadingListScreen,
   RouteListScreen,
   RouteFormScreen,
   // Admin Phase 3
@@ -96,6 +97,11 @@ import { VoidGoodsListScreen, VoidGoodsScreen } from '@src/features/admin/goods'
 // Legacy Screens
 import { HomeScreen } from '@src/features/home';
 import { OrdersScreen } from '@src/features/orders';
+import { ManualOrderScreen } from '@src/features/orders/screens/ManualOrderScreen';
+import { SelectManualOrderScreen } from '@src/features/orders/screens/SelectManualOrderScreen';
+import { ConfirmGoodsAssignmentScreen } from '@src/features/orders/screens/ConfirmGoodsAssignmentScreen';
+import { EditManualOrderScreen } from '@src/features/orders/screens/EditManualOrderScreen';
+import { OrdersDashboardScreen } from '@src/features/orders/screens/OrdersDashboardScreen';
 import { OrderDetailsScreen, SeaShippingOrderDetailsScreen } from '@src/features/order-detail';
 import { CheckRouteScreen } from '@src/features/routes';
 import { StatsScreen } from '@src/features/stats';
@@ -288,6 +294,11 @@ export const AuthenticatedNavigator: React.FC = () => {
       {/* Legacy V1 */}
       <Stack.Screen name="Orders" component={OrdersScreen} />
       <Stack.Screen name="OrderDetail" component={OrderDetailsScreen} />
+      <Stack.Screen name="ManualOrder" component={ManualOrderScreen} />
+      <Stack.Screen name="SelectManualOrder" component={SelectManualOrderScreen} />
+      <Stack.Screen name="ConfirmGoodsAssignment" component={ConfirmGoodsAssignmentScreen} />
+      <Stack.Screen name="EditManualOrder" component={EditManualOrderScreen} />
+      <Stack.Screen name="OrdersDashboard" component={OrdersDashboardScreen} />
       <Stack.Screen name="PastOrders" component={PastOrdersScreen} />
       <Stack.Screen name="CheckRoute" component={CheckRouteScreen} />
       <Stack.Screen name="Stats" component={StatsScreen} />
@@ -325,6 +336,7 @@ export const AuthenticatedNavigator: React.FC = () => {
       <Stack.Screen name="ContainerDetail" component={ContainerDetailScreen} />
       <Stack.Screen name="AssignGoods" component={AssignGoodsScreen} />
       <Stack.Screen name="PackingList" component={PackingListScreen} />
+      <Stack.Screen name="LoadingList" component={LoadingListScreen} />
       <Stack.Screen name="RouteList" component={RouteListScreen} />
       <Stack.Screen name="RouteForm" component={RouteFormScreen} />
 

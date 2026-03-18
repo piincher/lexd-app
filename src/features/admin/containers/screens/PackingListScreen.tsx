@@ -43,14 +43,17 @@ export const PackingListScreen: React.FC = () => {
     return <ErrorState onBack={() => navigation.goBack()} />;
   }
 
-  const { clients, summary } = packingListData;
+  const { clients = [], summary } = packingListData;
+  
+  // Ensure summary has required fields
+  const safeSummary = summary || { totalItems: 0, totalCBM: 0, totalWeight: 0, totalPackages: 0, capacityPercentage: 0 };
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <Header
-        containerNumber={container.virtualContainerNumber}
+        containerNumber={container.number}
         clientCount={clients.length}
-        totalItems={summary.totalItems}
+        totalItems={safeSummary.totalItems}
         onBack={() => navigation.goBack()}
         onGoToLoadingList={handleGoToLoadingList}
       />
@@ -60,7 +63,7 @@ export const PackingListScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <CapacityCard summary={summary} />
+        <CapacityCard summary={safeSummary} />
 
         <SectionHeader allExpanded={allExpanded} onToggleAll={handleToggleAll} />
 
@@ -78,7 +81,7 @@ export const PackingListScreen: React.FC = () => {
         )}
 
         {clients.length > 0 && (
-          <SummaryCard summary={summary} formatDate={formatDate} />
+          <SummaryCard summary={safeSummary} formatDate={formatDate} />
         )}
 
         <View style={{ height: 100 }} />

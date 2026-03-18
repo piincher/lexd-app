@@ -30,7 +30,7 @@ interface DimensionsInputProps {
 }
 
 export const DimensionsInput: React.FC<DimensionsInputProps> = ({
-   useDimensions,
+   useDimensions = false,
    onToggleMode,
    length,
    width,

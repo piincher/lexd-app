@@ -65,4 +65,43 @@ export const styles = StyleSheet.create({
   dialogButton: {
     paddingHorizontal: 32,
   },
+  // Choice Dialog Styles
+  choiceDialog: {
+    borderRadius: 16,
+    backgroundColor: '#fff',
+  },
+  choiceDialogText: {
+    textAlign: 'center',
+    color: '#666',
+    fontSize: 15,
+    marginTop: 8,
+  },
+  choiceDialogActions: {
+    flexDirection: 'column',
+    paddingHorizontal: 24,
+    paddingBottom: 24,
+    gap: 12,
+  },
+  choiceButton: {
+    width: '100%',
+    borderRadius: 8,
+  },
+  assignButton: {
+    backgroundColor: '#dc3545',
+  },
+  choiceDivider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    marginVertical: 8,
+  },
+  dividerLine: {
+    flex: 1,
+    backgroundColor: '#e0e0e0',
+  },
+  dividerText: {
+    marginHorizontal: 12,
+    color: '#999',
+    fontSize: 14,
+  },
 });

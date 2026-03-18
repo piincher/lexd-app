@@ -145,7 +145,7 @@ export class ContainerService {
   // ============================================
 
   async generatePackingList(containerId: string): Promise<ApiResponse<PackingList>> {
-    return apiRequest.get(this.client, `${BASE_URL}/${containerId}/packing-list`);
+    return apiRequest.get(this.client, `${BASE_URL}/${containerId}/packing-list/admin`);
   }
 
   async downloadPackingListPDF(containerId: string): Promise<Blob> {
