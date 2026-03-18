@@ -1,91 +1,135 @@
 /**
- * AllOrdersScreen - Screen to view ALL orders
+ * AllOrdersScreen - Professional logistics orders view
  * SRP: Layout composition ONLY (<100 lines)
  */
 
-import React, { useState } from 'react';
-import { View, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { Text, Searchbar, Button, Divider } from 'react-native-paper';
-import { MaterialIcons } from '@expo/vector-icons';
+import React, { useState, useMemo } from 'react';
+import { View, RefreshControl, ActivityIndicator, ScrollView, Text } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { Searchbar, Button } from 'react-native-paper';
 import { Screen } from '@src/shared/ui';
 import { COLORS } from '@src/constants/Colors';
-import { useGetActiveOrdersAdmin } from '../hooks/useOrderManagement';
+import { useGetAllOrders } from '../hooks/useOrderManagement';
 import { OrderCard } from './components/OrderCard';
-import { FilterMenu } from './components/FilterMenu';
+import { OrdersStats } from './components/OrdersStats';
 import { EmptyOrders } from './components/EmptyOrders';
 import { AddOrderButton } from './components/AddOrderButton';
 import { styles } from './AllOrdersScreen.styles';
 
+const STATUS_TABS = [
+  { key: null, label: 'All' },
+  { key: 'PENDING', label: 'Pending' },
+  { key: 'Active', label: 'Active' },
+  { key: 'In Transit', label: 'Transit' },
+  { key: 'Delivered', label: 'Delivered' },
+];
+
 const AllOrdersScreen: React.FC = () => {
-  const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'all' | 'active' | 'past'>('all');
 
-  const { data, isLoading, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } = 
-    useGetActiveOrdersAdmin(statusFilter || 'Active', new Date(), 'sea');
+  const { data, isLoading, error, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } = 
+    useGetAllOrders();
+  
+  console.log('[AllOrdersScreen] Data:', data, 'Error:', error);
+  
+  const orders = useMemo(() => {
+    if (!data?.pages) return [];
+    return data.pages.flatMap((page) => page || []);
+  }, [data]);
 
-  const orders = data?.pages?.flatMap((page) => page) || [];
+  console.log('[AllOrdersScreen] Orders count:', orders.length);
 
-  const filteredOrders = orders.filter((order: any) => {
-    const matchesSearch = 
-      order.clientName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.code?.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    if (viewMode === 'all') return matchesSearch;
-    if (viewMode === 'active') return matchesSearch && order.status === 'Active';
-    if (viewMode === 'past') return matchesSearch && (order.status === 'Delivered' || order.status === 'Inactive');
-    return matchesSearch;
-  });
+  const filteredOrders = useMemo(() => {
+    if (!orders || orders.length === 0) return [];
+    return orders.filter((order: any) => {
+      if (!order) return false;
+      const matchesSearch = 
+        order.clientName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        order.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        order.clientPhone?.includes(searchQuery);
+      if (!statusFilter) return matchesSearch;
+      return matchesSearch && order.status === statusFilter;
+    });
+  }, [orders, searchQuery, statusFilter]);
 
   const loadMore = () => hasNextPage && !isFetchingNextPage && fetchNextPage();
 
+  const renderOrderCard = ({ item }: { item: any }) => {
+    if (!item) return null;
+    return <OrderCard order={item} />;
+  };
+
+  if (error) {
+    return (
+      <Screen header={{ title: 'Orders' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 20 }}>
+          <Text style={{ color: 'red', textAlign: 'center' }}>
+            Error loading orders: {error.message}
+          </Text>
+        </View>
+      </Screen>
+    );
+  }
+
   return (
-    <Screen header={{ title: 'All Orders', subtitle: `${filteredOrders.length} orders` }}>
+    <Screen header={{ title: 'Orders', subtitle: 'Manage all shipments' }}>
       <View style={styles.container}>
+        {/* Stats Section */}
+        <OrdersStats orders={orders} />
+
+        {/* Search Bar */}
         <Searchbar
           placeholder="Search orders..."
           onChangeText={setSearchQuery}
           value={searchQuery}
           style={styles.searchBar}
+          inputStyle={styles.searchInput}
+          iconColor={COLORS.blue}
         />
 
-        <View style={styles.filterRow}>
-          <View style={styles.viewModeContainer}>
-            {(['all', 'active', 'past'] as const).map((mode) => (
-              <Button
-                key={mode}
-                mode={viewMode === mode ? 'contained' : 'outlined'}
-                onPress={() => setViewMode(mode)}
-                style={styles.viewModeButton}
-                compact
-              >
-                {mode.charAt(0).toUpperCase() + mode.slice(1)}
-              </Button>
-            ))}
-          </View>
-          <FilterMenu statusFilter={statusFilter} onSelect={setStatusFilter} />
-        </View>
+        {/* Status Tabs */}
+        <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={false} 
+          style={styles.tabsContainer}
+          contentContainerStyle={styles.tabsContent}
+        >
+          {STATUS_TABS.map((tab) => (
+            <Button
+              key={tab.label}
+              mode={statusFilter === tab.key ? 'contained' : 'outlined'}
+              onPress={() => setStatusFilter(tab.key as string | null)}
+              style={styles.tabButton}
+              buttonColor={statusFilter === tab.key ? COLORS.blue : undefined}
+              textColor={statusFilter === tab.key ? '#FFF' : COLORS.grey}
+              compact
+            >
+              {tab.label}
+            </Button>
+          ))}
+        </ScrollView>
 
-        {isLoading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={COLORS.blue} />
-            <Text style={styles.loadingText}>Loading...</Text>
-          </View>
-        ) : (
-          <FlatList
+        {/* Orders List with FlashList */}
+        <View style={styles.listContainer}>
+          <FlashList
             data={filteredOrders}
-            keyExtractor={(item) => item._id}
-            renderItem={({ item }) => <OrderCard order={item} />}
-            contentContainerStyle={styles.listContainer}
+            keyExtractor={(item, index) => item?._id || `order-${index}`}
+            renderItem={renderOrderCard}
+            estimatedItemSize={180}
             refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
             onEndReached={loadMore}
             onEndReachedThreshold={0.5}
-            ListFooterComponent={isFetchingNextPage ? <ActivityIndicator style={styles.loadMoreIndicator} /> : null}
-            ListEmptyComponent={<EmptyOrders />}
+            ListFooterComponent={
+              isFetchingNextPage ? (
+                <ActivityIndicator style={styles.loadMoreIndicator} color={COLORS.blue} />
+              ) : null
+            }
+            ListEmptyComponent={isLoading ? null : <EmptyOrders />}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 80 }}
           />
-        )}
+        </View>
 
         <AddOrderButton />
       </View>

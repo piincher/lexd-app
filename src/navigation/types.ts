@@ -144,6 +144,33 @@ export type AuthenticatedStackParamList = {
   OrderDetailWithGoods: { orderId: string };
   OrderTotalsBreakdown: { orderId: string };
   AllOrders: undefined;
+  OrderDetailScreen: { id: string };
+  
+  // Payment Screens
+  PaymentScreen: {
+    amount?: number;
+    orderId?: string;
+    orderCode?: string;
+    clientName?: string;
+    clientPhone?: string;
+    description?: string;
+    isAdminPayment?: boolean;
+  };
+  PaymentHistoryScreen: {
+    orderId?: string;
+    orderCode?: string;
+  };
+  OrderPaymentHistory: {
+    orderId: string;
+    orderCode: string;
+  };
+  RecordPaymentScreen: {
+    orderId: string;
+    orderCode: string;
+    clientName: string;
+    currentBalance: number;
+    totalAmount: number;
+  };
 
   // Client Navigation (Phase 4)
   ClientOrdersList: undefined;

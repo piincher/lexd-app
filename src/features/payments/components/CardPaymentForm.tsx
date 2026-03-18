@@ -5,19 +5,19 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Image,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import type { CardPaymentFormProps, CardDetails, SavedCard } from '../types';
 
-const CARD_BRAND_ICONS: Record<string, any> = {
-  visa: require('@assets/images/visa.png'),
-  mastercard: require('@assets/images/mastercard.png'),
-  amex: require('@assets/images/amex.png'),
-  discover: require('@assets/images/discover.png'),
-  default: require('@assets/images/credit-card-generic.png'),
+// Card brand configuration with icons
+const CARD_BRAND_CONFIG: Record<string, { icon: string; color: string; label: string }> = {
+  visa: { icon: 'credit-card', color: '#1A1F71', label: 'Visa' },
+  mastercard: { icon: 'credit-card', color: '#EB001B', label: 'Mastercard' },
+  amex: { icon: 'credit-card', color: '#006FCF', label: 'American Express' },
+  discover: { icon: 'credit-card', color: '#FF6000', label: 'Discover' },
+  default: { icon: 'credit-card', color: COLORS.grey, label: 'Card' },
 };
 
 const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
@@ -218,11 +218,13 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
             ]}
             onPress={() => handleSavedCardSelect(savedCard.id)}
           >
-            <Image
-              source={CARD_BRAND_ICONS[savedCard.brand] || CARD_BRAND_ICONS.default}
-              style={styles.savedCardIcon}
-              resizeMode="contain"
-            />
+            <View style={[styles.savedCardIconContainer, { backgroundColor: CARD_BRAND_CONFIG[savedCard.brand]?.color || CARD_BRAND_CONFIG.default.color + '20' }]}>
+              <MaterialCommunityIcons
+                name="credit-card"
+                size={24}
+                color={CARD_BRAND_CONFIG[savedCard.brand]?.color || CARD_BRAND_CONFIG.default.color}
+              />
+            </View>
             <View style={styles.savedCardInfo}>
               <Text style={styles.savedCardNumber}>
                 •••• •••• •••• {savedCard.last4}
@@ -286,11 +288,13 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
                 {card.expiryMonth || 'MM'}/{card.expiryYear || 'YY'}
               </Text>
             </View>
-            <Image
-              source={CARD_BRAND_ICONS[cardBrand] || CARD_BRAND_ICONS.default}
-              style={styles.cardBrandIcon}
-              resizeMode="contain"
-            />
+            <View style={styles.cardBrandIconContainer}>
+              <MaterialCommunityIcons
+                name="credit-card"
+                size={32}
+                color="#FFF"
+              />
+            </View>
           </View>
         </View>
       </View>
@@ -469,9 +473,12 @@ const styles = StyleSheet.create({
     borderColor: COLORS.blue,
     backgroundColor: COLORS.blue + '08',
   },
-  savedCardIcon: {
-    width: 40,
-    height: 25,
+  savedCardIconContainer: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
     marginRight: 12,
   },
   savedCardInfo: {
@@ -548,9 +555,11 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     marginTop: 4,
   },
-  cardBrandIcon: {
+  cardBrandIconContainer: {
     width: 50,
-    height: 30,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputGroup: {
     marginBottom: 16,

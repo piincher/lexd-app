@@ -4,7 +4,6 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
   ActivityIndicator,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,18 +12,12 @@ import { Fonts } from '@src/constants/Fonts';
 import { usePaymentProviders } from '../hooks/usePayments';
 import type { PaymentProvider, PaymentMethodSelectorProps } from '../types';
 
-const PROVIDER_IMAGES: Record<PaymentProvider, any> = {
-  ORANGE_MONEY: require('@assets/images/orange-money.png'),
-  WAVE: require('@assets/images/wave.png'),
-  STRIPE: require('@assets/images/credit-card.png'),
-  CARD: require('@assets/images/credit-card.png'),
-};
-
-const PROVIDER_FALLBACK_ICONS: Record<PaymentProvider, string> = {
-  ORANGE_MONEY: 'cellphone',
-  WAVE: 'wave',
-  STRIPE: 'credit-card',
-  CARD: 'credit-card',
+// Use icons instead of images since assets don't exist
+const PROVIDER_ICONS: Record<PaymentProvider, { name: string; color: string; bgColor: string }> = {
+  ORANGE_MONEY: { name: 'cellphone', color: '#FF6600', bgColor: '#FFF3E0' },
+  WAVE: { name: 'wave', color: '#1E88E5', bgColor: '#E3F2FD' },
+  STRIPE: { name: 'credit-card', color: '#635BFF', bgColor: '#EDE7F6' },
+  CARD: { name: 'credit-card', color: '#4CAF50', bgColor: '#E8F5E9' },
 };
 
 const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
@@ -65,7 +58,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         <View style={styles.amountBanner}>
           <Text style={styles.amountLabel}>Amount to Pay</Text>
           <Text style={styles.amountValue}>
-            {(amount / 100).toLocaleString()} FCFA
+            {amount.toLocaleString()} FCFA
           </Text>
         </View>
       )}
@@ -73,7 +66,8 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
       <View style={styles.methodsList}>
         {providers.map((provider) => {
           const isSelected = selectedMethod === provider.code;
-          const hasError = false; // Could check provider availability
+          const hasError = false;
+          const iconConfig = PROVIDER_ICONS[provider.code as PaymentProvider] || PROVIDER_ICONS.CARD;
 
           return (
             <TouchableOpacity
@@ -87,8 +81,12 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
               onPress={() => !disabled && onSelect(provider.code as PaymentProvider)}
               activeOpacity={disabled ? 1 : 0.7}
             >
-              <View style={styles.methodIconContainer}>
-                {renderProviderIcon(provider.code as PaymentProvider)}
+              <View style={[styles.methodIconContainer, { backgroundColor: iconConfig.bgColor }]}>
+                <MaterialCommunityIcons
+                  name={iconConfig.name as any}
+                  size={28}
+                  color={iconConfig.color}
+                />
               </View>
 
               <View style={styles.methodInfo}>
@@ -128,29 +126,6 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
       )}
     </View>
   );
-};
-
-/**
- * Render provider icon with fallback
- */
-const renderProviderIcon = (provider: PaymentProvider) => {
-  try {
-    return (
-      <Image
-        source={PROVIDER_IMAGES[provider]}
-        style={styles.providerImage}
-        resizeMode="contain"
-      />
-    );
-  } catch {
-    return (
-      <MaterialCommunityIcons
-        name={PROVIDER_FALLBACK_ICONS[provider] as any}
-        size={32}
-        color={COLORS.blue}
-      />
-    );
-  }
 };
 
 /**
@@ -290,14 +265,9 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
-  },
-  providerImage: {
-    width: 40,
-    height: 40,
   },
   methodInfo: {
     flex: 1,

@@ -16,3 +16,6 @@ export { default as PastOrderScreen } from './PastOrder';
 export { OrderTotalsBreakdownScreen } from './OrderTotalsBreakdownScreen';
 export { OrderDetailWithGoodsScreen } from './OrderDetailWithGoodsScreen';
 export { default as AllOrdersScreen } from './AllOrdersScreen';
+export { default as OrderDetailScreen } from './OrderDetailScreen';
+export { default as RecordPaymentScreen } from './RecordPaymentScreen';
+export { default as PaymentHistoryScreen } from './PaymentHistoryScreen';

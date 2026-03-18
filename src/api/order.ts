@@ -195,6 +195,18 @@ export const getOrdersBasedOnUserId = async (id:string) => {
 	return response.data;
 }
 
+export const getAllOrders = async (page: number = 1, status?: string) => {
+	let query = `limit=${LIMIT}&page=${page}`;
+	if (status && status !== 'all') {
+		query += `&status=${status}`;
+	}
+	const url = `${API_URL.getActiveOrdersAdmin}?${query}`;
+	console.log('[API getAllOrders] URL:', url);
+	const response = await api.get<productType[]>(url);
+	console.log('[API getAllOrders] Response count:', response.data.length);
+	return response.data;
+}
+
 interface sendNotificationSms {
 	phoneNumbers: string[];
 	message: string;
@@ -205,5 +217,54 @@ export const sendNotificationSms = async (data: sendNotificationSms) => {
 	}>(`${API_URL.single}/sendNotification`, data);
 
 	console.log('response', response.data);
+	return response.data;
+};
+
+// Payment Types
+export interface PaymentRecord {
+	orderId: string;
+	amount: number;
+	paymentMethod: string;
+	referenceNumber?: string;
+	notes?: string;
+	proofImages?: string[];
+	recordedAt: string;
+}
+
+export interface PaymentHistory {
+	_id: string;
+	orderId: string;
+	amount: number;
+	paymentMethod: string;
+	referenceNumber?: string;
+	notes?: string;
+	recordedBy: string;
+	recordedAt: string;
+}
+
+/**
+ * Record a payment for an order (admin only)
+ */
+export const recordPayment = async (data: PaymentRecord) => {
+	console.log('[API recordPayment] Submitting:', data);
+	try {
+		const response = await api.post<{
+			message: string;
+			payment: PaymentHistory;
+			order: productType;
+		}>(`${API_URL.single}/payment`, data);
+		console.log('[API recordPayment] Success:', response.data);
+		return response.data;
+	} catch (error) {
+		console.error('[API recordPayment] Error:', error);
+		throw error;
+	}
+};
+
+/**
+ * Get payment history for an order
+ */
+export const getPaymentHistory = async (orderId: string) => {
+	const response = await api.get<PaymentHistory[]>(`${API_URL.single}/${orderId}/payments`);
 	return response.data;
 };

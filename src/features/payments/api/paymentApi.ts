@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { API_URL } from '@env';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAuth } from '@src/store/Auth';
 import type {
   InitializePaymentRequest,
   InitializePaymentResponse,
@@ -13,15 +12,33 @@ import type {
   PaymentProviderInfo,
 } from '../types';
 
-const API_BASE_URL = `${API_URL}/api/v2/payments`;
+// Use the same API configuration as the main client
+const ENV = (process.env.EXPO_PUBLIC_ENV as 'local' | 'staging' | 'production') || 'local';
+
+const API_CONFIG = {
+  local: {
+    baseURLV2: 'http://192.168.0.112:3000/api/v2',
+  },
+  staging: {
+    baseURLV2: 'https://chinalinkexpressbackend.onrender.com/api/v2',
+  },
+  production: {
+    baseURLV2: 'https://api.myempirebymyma.com/api/v2',
+  },
+};
+
+const API_BASE_URL = `${API_CONFIG[ENV].baseURLV2}/payments`;
 
 /**
  * Get auth headers for API requests
+ * Uses the same approach as the main API client - zustand store
  */
-const getAuthHeaders = async () => {
-  const token = await AsyncStorage.getItem('token');
+const getAuthHeaders = () => {
+  const token = useAuth.getState().token;
+  
+  // Backend expects raw token without "Bearer " prefix
   return {
-    Authorization: token ? `Bearer ${token}` : '',
+    Authorization: token || '',
     'Content-Type': 'application/json',
   };
 };
@@ -38,7 +55,7 @@ export const getPaymentProviders = async (
   country?: string,
   currency?: string
 ): Promise<{ providers: PaymentProviderInfo[] }> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const params = new URLSearchParams();
   if (country) params.append('country', country);
   if (currency) params.append('currency', currency);
@@ -55,7 +72,7 @@ export const getPaymentProviders = async (
 export const initializePayment = async (
   data: InitializePaymentRequest
 ): Promise<InitializePaymentResponse> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const response = await axios.post(`${API_BASE_URL}/initialize`, data, { headers });
   return response.data.data;
 };
@@ -66,7 +83,7 @@ export const initializePayment = async (
 export const verifyPayment = async (
   data: VerifyPaymentRequest
 ): Promise<VerifyPaymentResponse> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const response = await axios.post(`${API_BASE_URL}/verify`, data, { headers });
   return response.data.data;
 };
@@ -82,7 +99,7 @@ export const getPaymentHistory = async (params?: {
   page?: number;
   limit?: number;
 }): Promise<PaymentHistoryResponse> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const queryParams = new URLSearchParams();
   
   if (params?.status) queryParams.append('status', params.status);
@@ -102,7 +119,7 @@ export const getPaymentHistory = async (params?: {
  * Get payment details
  */
 export const getPaymentDetails = async (paymentId: string): Promise<any> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const response = await axios.get(`${API_BASE_URL}/${paymentId}`, { headers });
   return response.data.data;
 };
@@ -113,7 +130,7 @@ export const getPaymentDetails = async (paymentId: string): Promise<any> => {
 export const topUpBalance = async (
   data: TopUpRequest
 ): Promise<InitializePaymentResponse> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const response = await axios.post(`${API_BASE_URL}/topup`, data, { headers });
   return response.data.data;
 };
@@ -122,7 +139,7 @@ export const topUpBalance = async (
  * Cancel payment
  */
 export const cancelPayment = async (paymentId: string): Promise<any> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const response = await axios.post(`${API_BASE_URL}/cancel/${paymentId}`, {}, { headers });
   return response.data.data;
 };
@@ -131,7 +148,7 @@ export const cancelPayment = async (paymentId: string): Promise<any> => {
  * Get balance due
  */
 export const getBalanceDue = async (): Promise<BalanceDueResponse> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const response = await axios.get(`${API_BASE_URL}/balance-due`, { headers });
   return response.data.data;
 };
@@ -140,7 +157,7 @@ export const getBalanceDue = async (): Promise<BalanceDueResponse> => {
  * Calculate balance for specific goods
  */
 export const calculateBalanceForGoods = async (goodsIds: string[]): Promise<BalanceDueResponse> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const response = await axios.post(
     `${API_BASE_URL}/balance-due`,
     { goodsIds },
@@ -153,7 +170,7 @@ export const calculateBalanceForGoods = async (goodsIds: string[]): Promise<Bala
  * Refund payment (admin only)
  */
 export const refundPayment = async (data: RefundRequest): Promise<any> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const response = await axios.post(`${API_BASE_URL}/refund`, data, { headers });
   return response.data.data;
 };
@@ -166,7 +183,7 @@ export const pollPaymentStatus = async (
   transactionId: string,
   options?: { maxAttempts?: number; intervalMs?: number }
 ): Promise<any> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const queryParams = new URLSearchParams();
   if (options?.maxAttempts) queryParams.append('maxAttempts', options.maxAttempts.toString());
   if (options?.intervalMs) queryParams.append('intervalMs', options.intervalMs.toString());
@@ -189,7 +206,7 @@ export const initiatePayment = async (data: {
   email?: string;
   idempotencyKey?: string;
 }): Promise<any> => {
-  const headers = await getAuthHeaders();
+  const headers = getAuthHeaders();
   const response = await axios.post(`${API_BASE_URL}/initiate`, data, { headers });
   return response.data.data;
 };

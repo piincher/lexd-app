@@ -1,4 +1,10 @@
 export { OrderCard } from './OrderCard';
-export { FilterMenu } from './FilterMenu';
+export { OrdersStats } from './OrdersStats';
 export { EmptyOrders } from './EmptyOrders';
 export { AddOrderButton } from './AddOrderButton';
+export { OrderDetailHeader } from './OrderDetailHeader';
+export { OrderInfoSection } from './OrderInfoSection';
+export { PaymentSection } from './PaymentSection';
+export { OrderStatusTimeline } from './OrderStatusTimeline';
+export { OrderActions } from './OrderActions';
+export { OrderDetailSkeleton } from './OrderDetailSkeleton';

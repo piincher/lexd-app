@@ -1,4 +1,4 @@
-import { getOrderById, getOrderDetails, getSeaRouteById } from '@src/api/order';
+import { getOrderDetails, getSeaRouteById } from '@src/api/order';
 import { ORDERKEY } from '@src/constants/queryKey';
 import { useQuery } from '@tanstack/react-query';
 
@@ -12,7 +12,7 @@ export const useGetOrderDetails = (id: string) => {
 export const useGetOrderDetail = (orderId: string) => {
 	return useQuery({
 		queryKey: ['order', orderId],
-		queryFn: () => getOrderById(orderId),
+		queryFn: () => getOrderDetails(orderId),
 		enabled: !!orderId,
 	});
 };

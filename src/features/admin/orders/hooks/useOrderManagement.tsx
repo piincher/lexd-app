@@ -4,11 +4,13 @@ import {
    deleteOrder,
    editOrder,
    getActiveOrdersAdmin,
+   getAllOrders,
    getOrderBasedOnDate,
    getOrdersBetweenDate,
    placeOrder,
    updateOrder,
    updateOrderToDelivered,
+   recordPayment,
 } from "@src/api/order";
 import { LIMIT } from "@src/constants/Dimensions";
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -123,6 +125,43 @@ export const useGetOrderBaseonDate = () => {
       mutationFn: getOrderBasedOnDate,
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+      },
+   });
+};
+
+// Hook to get ALL orders without date/method restrictions
+export const useGetAllOrders = (status?: string) => {
+   return useInfiniteQuery({
+      queryKey: [queryKey.ORDERKEY, 'all', status],
+      queryFn: async ({ pageParam = 1 }) => {
+         console.log('[useGetAllOrders] Fetching page:', pageParam, 'status:', status);
+         const result = await getAllOrders(pageParam, status);
+         console.log('[useGetAllOrders] Result count:', result.length);
+         return result;
+      },
+      getNextPageParam: (lastPage, allPages) => {
+         const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
+         return nextPage;
+      },
+      initialPageParam: 1,
+   });
+};
+
+/**
+ * Hook to record a payment for an order
+ */
+export const useRecordPayment = () => {
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: recordPayment,
+      onSuccess: (data) => {
+         console.log('[useRecordPayment] Success:', data);
+         // Invalidate order queries to refresh the data
+         queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+         queryClient.invalidateQueries({ queryKey: ['order', data.order._id] });
+      },
+      onError: (error) => {
+         console.error('[useRecordPayment] Error:', error);
       },
    });
 };

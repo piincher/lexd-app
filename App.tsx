@@ -49,9 +49,15 @@ import {
    // Admin Phase 3 - Void Pattern
    VoidGoodsListScreen,
    VoidGoodsScreen,
+   OrderDetailWithGoodsScreen,
    // Admin Phase 4 - All Orders
    AllOrdersScreen,
+   OrderDetailScreen,
+   RecordPaymentScreen,
 } from "@src/features/admin";
+
+// Admin Payment History Screen (aliased to avoid conflict with payments feature)
+import AdminPaymentHistoryScreen from "@src/features/admin/orders/screens/PaymentHistoryScreen";
 
 // Features - Auth
 import { LoginScreen as Login, VerificationScreen as Verification } from "@src/features/auth";
@@ -79,6 +85,9 @@ import {
    OrderDetailsScreen as OrderDetails,
    SeaShippingOrderDetailsScreen as SeaShippingOrderDetails,
 } from "@src/features/order-detail";
+
+// Features - Payments
+import { PaymentScreen, PaymentHistoryScreen } from "@src/features/payments";
 
 // Features - Orders
 import { OrdersScreen as Orders } from "@src/features/orders";
@@ -218,7 +227,13 @@ function AppWrapper() {
                   <Stack.Screen name="CheckRoute" component={CheckRoute} />
                   <Stack.Screen name="VoidGoodsList" component={VoidGoodsListScreen} />
                   <Stack.Screen name="VoidGoods" component={VoidGoodsScreen} />
+                  <Stack.Screen name="OrderDetailWithGoods" component={OrderDetailWithGoodsScreen} />
                   <Stack.Screen name="AllOrders" component={AllOrdersScreen} />
+                  <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} />
+                  <Stack.Screen name="RecordPaymentScreen" component={RecordPaymentScreen} />
+                  <Stack.Screen name="OrderPaymentHistory" component={AdminPaymentHistoryScreen} />
+                  <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
+                  <Stack.Screen name="PaymentHistoryScreen" component={PaymentHistoryScreen} />
                   <Stack.Screen name="AddOrder" component={AddOrder} />
                   <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
                   <Stack.Screen name="OrderDetail" component={OrderDetails} />
