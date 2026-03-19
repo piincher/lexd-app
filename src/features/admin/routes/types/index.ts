@@ -24,12 +24,21 @@ export interface Route {
   _id: string;
   name: string;
   shippingMode: ShippingMode;
-  origin: string;
-  destination: string;
+  origin: {
+    city: string;
+    country: string;
+    warehouse?: string;
+  };
+  destination: {
+    city: string;
+    country: string;
+    warehouse?: string;
+  };
   shippingLine: string;
   estimatedTransitDays: number;
   description?: string;
-  isActive: boolean;
+  status: 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
+  waypoints: RouteWaypoint[];
   createdBy: string;
   createdAt: string;
   updatedAt: string;
@@ -226,9 +235,14 @@ export interface RouteFormStepperProps {
  */
 export interface RouteWaypoint {
   id: string;
-  location: string;
-  estimatedArrival: string;
-  notes?: string;
+  order: number;
+  location: {
+    city: string;
+    country: string;
+  };
+  estimatedDaysFromStart: number;
+  description: string;
+  type: 'PORT' | 'AIRPORT' | 'CUSTOMS' | 'ROAD' | 'WAREHOUSE' | 'BORDER';
 }
 
 /**

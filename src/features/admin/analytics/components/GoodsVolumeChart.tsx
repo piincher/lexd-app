@@ -37,8 +37,8 @@ type ViewMode = 'status' | 'shipping' | 'trend';
 const statusConfig: Record<string, { label: string; color: string; icon: string }> = {
   RECEIVED_AT_WAREHOUSE: { label: 'Reçu', color: '#3B82F6', icon: 'warehouse' },
   ASSIGNED_TO_CONTAINER: { label: 'Assigné', color: '#8B5CF6', icon: 'package-variant-closed' },
-  LOADED_IN_CONTAINER: { label: 'Chargé', color: '#F59E0B', icon: 'truck' },
-  IN_TRANSIT: { label: 'En Transit', color: '#06B6D4', icon: 'ship' },
+  LOADED_IN_CONTAINER: { label: 'Chargé', color: '#F59E0B', icon: 'truck-delivery' },
+  IN_TRANSIT: { label: 'En Transit', color: '#06B6D4', icon: 'ferry' },
   ARRIVED_DESTINATION: { label: 'Arrivé', color: '#10B981', icon: 'map-marker-check' },
   READY_FOR_PICKUP: { label: 'À Retirer', color: '#EC4899', icon: 'clock-outline' },
   DELIVERED: { label: 'Livré', color: '#22C55E', icon: 'check-circle' },
@@ -260,7 +260,7 @@ export const GoodsVolumeChart: React.FC<GoodsVolumeChartProps> = ({
         <View style={styles.tabsContainer}>
           {[
             { key: 'status' as ViewMode, label: 'Statut', icon: 'tag-outline' },
-            { key: 'shipping' as ViewMode, label: 'Transport', icon: 'ship' },
+            { key: 'shipping' as ViewMode, label: 'Transport', icon: 'ferry' },
             { key: 'trend' as ViewMode, label: 'Tendance', icon: 'chart-line' },
           ].map((tab) => (
             <TouchableOpacity
@@ -338,7 +338,7 @@ export const GoodsVolumeChart: React.FC<GoodsVolumeChartProps> = ({
             
             {byShippingMode.map((mode) => {
               const color = shippingModeColors[mode.shippingMode] || '#6B7280';
-              const icon = mode.shippingMode === 'AIR' ? 'airplane' : mode.shippingMode === 'SEA' ? 'ship' : 'help-circle';
+              const icon = mode.shippingMode === 'AIR' ? 'airplane' : mode.shippingMode === 'SEA' ? 'ferry' : 'help-circle';
 
               return (
                 <View key={mode.shippingMode} style={styles.shippingItem}>

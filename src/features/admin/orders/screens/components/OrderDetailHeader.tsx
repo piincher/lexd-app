@@ -37,7 +37,7 @@ const STATUS_CONFIG: Record<string, {
   Delivered: { 
     color: '#2196F3', 
     bgColor: '#E3F2FD',
-    icon: 'package-variant-delivered',
+    icon: 'package-check',
     label: 'Delivered'
   },
   Inactive: { 
@@ -84,7 +84,7 @@ export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) =
       <View style={styles.middleRow}>
         <View style={[styles.shippingBadge, { backgroundColor: isAir ? '#E3F2FD' : '#E0F2F1' }]}>
           <MaterialCommunityIcons 
-            name={isAir ? 'airplane' : 'ship'} 
+            name={isAir ? 'airplane' : 'ferry'} 
             size={14} 
             color={isAir ? '#1976D2' : '#00796B'} 
           />

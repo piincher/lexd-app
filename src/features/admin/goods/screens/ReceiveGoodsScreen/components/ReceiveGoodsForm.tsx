@@ -9,6 +9,7 @@ import { Controller } from 'react-hook-form';
 import { GoodsDimensionsInput } from './GoodsDimensionsInput';
 import { GoodsPhotosUpload } from './GoodsPhotosUpload';
 import { GoodsConditionSelector } from './GoodsConditionSelector';
+import { ShippingModeSelector } from '../components/ShippingModeSelector';
 import { FormInput } from '../../../components/FormInput';
 import { ReceiveGoodsFormSectionProps, ClientSelectionProps } from '../../types';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
@@ -52,6 +53,9 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
 }) => {
   const unitPrice = watch('unitPrice');
   const unitPriceValue = parseFloat(unitPrice?.replace(',', '.') || '0') || 0;
+  const shippingMode = watch('shippingMode');
+  const weight = watch('weight');
+  const weightValue = parseFloat(weight?.replace(',', '.') || '0') || 0;
 
   return (
     <ScrollView
@@ -65,6 +69,19 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
         selectedClient={selectedClient}
         onSelectClient={onSelectClient}
         error={clientError}
+      />
+
+      {/* Shipping Mode */}
+      <Controller
+        control={control}
+        name="shippingMode"
+        render={({ field: { onChange, value } }) => (
+          <ShippingModeSelector
+            value={value}
+            onChange={onChange}
+            error={errors.shippingMode?.message}
+          />
+        )}
       />
 
       {/* Description */}
@@ -93,6 +110,7 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
         useDimensions={useDimensions}
         onToggleMode={onToggleDimensions}
         calculatedCBM={calculatedCBM}
+        shippingMode={shippingMode}
       />
 
       {/* Weight & Quantity Row */}
@@ -146,7 +164,7 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
                 error={errors.unitPrice?.message}
                 keyboardType="decimal-pad"
                 placeholder="0"
-                suffix="FCFA/m³"
+                suffix={shippingMode === 'AIR' ? 'FCFA/kg' : 'FCFA/m³'}
               />
             )}
           />
@@ -202,8 +220,10 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
       {/* Cost Summary */}
       <CostSummary
         cbm={calculatedCBM}
+        weight={weightValue}
         unitPrice={unitPriceValue}
         totalCost={totalCost}
+        shippingMode={shippingMode}
       />
     </ScrollView>
   );

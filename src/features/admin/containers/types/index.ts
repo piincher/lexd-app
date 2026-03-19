@@ -12,6 +12,7 @@
 export * from './waypoints';
 export * from './waypointStatus';
 export * from './packingList';
+export * from './transitStatus';
 
 // ============================================
 // CONTAINER WAYPOINT TRACKER PROPS
@@ -515,3 +516,9 @@ export const ROUTE_DESCRIPTIONS = {
   ROAD_TO_BAMAKO: 'Transport routier Dakar → Diboli (frontière) → Bamako',
   COMPLETE_ROUTE: 'Nansha → [Transit] → DAKAR (Port d\'arrivée) → Diboli (Douane) → Bamako (Retrait)',
 } as const;
+
+// ============================================
+// TRANSIT STATUS TYPES
+// ============================================
+
+export * from './transitStatus';

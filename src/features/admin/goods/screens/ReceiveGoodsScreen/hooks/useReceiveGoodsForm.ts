@@ -12,6 +12,7 @@ import { receiveGoodsSchema, ReceiveGoodsFormData } from '../types';
 
 const DEFAULT_VALUES: ReceiveGoodsFormData = {
   description: '',
+  shippingMode: 'SEA', // Default to SEA
   length: '',
   width: '',
   height: '',
@@ -72,6 +73,8 @@ export const useReceiveGoodsForm = (
   
   // Watch form values for calculations
   const watchedValues = watch();
+  const shippingMode = watchedValues.shippingMode || 'SEA';
+  const isAirShipping = shippingMode === 'AIR';
   
   // Additional UI state
   const [selectedClient, setSelectedClient] = useState<userData | null>(null);
@@ -79,9 +82,14 @@ export const useReceiveGoodsForm = (
   const [useDimensions, setUseDimensions] = useState(true);
   
   /**
-   * Calculate CBM based on current input mode
+   * Calculate CBM based on current input mode and shipping mode
+   * Returns 0 for AIR shipping since CBM doesn't matter for air
    */
   const calculatedCBM = useMemo(() => {
+    if (isAirShipping) {
+      return 0;
+    }
+    
     if (useDimensions) {
       const l = parseFloat(watchedValues.length?.replace(',', '.') || '0') || 0;
       const w = parseFloat(watchedValues.width?.replace(',', '.') || '0') || 0;
@@ -89,15 +97,22 @@ export const useReceiveGoodsForm = (
       return (l * w * h) / 1000000; // Convert cm³ to m³
     }
     return parseFloat(watchedValues.cbm?.replace(',', '.') || '0') || 0;
-  }, [useDimensions, watchedValues.length, watchedValues.width, watchedValues.height, watchedValues.cbm]);
+  }, [isAirShipping, useDimensions, watchedValues.length, watchedValues.width, watchedValues.height, watchedValues.cbm]);
   
   /**
-   * Calculate total cost
+   * Calculate total cost based on shipping mode
+   * For AIR: based on weight
+   * For SEA: based on CBM
    */
   const totalCost = useMemo(() => {
     const unitPrice = parseFloat(watchedValues.unitPrice?.replace(',', '.') || '0') || 0;
+    const weight = parseFloat(watchedValues.weight?.replace(',', '.') || '0') || 0;
+    
+    if (isAirShipping) {
+      return weight * unitPrice;
+    }
     return calculatedCBM * unitPrice;
-  }, [calculatedCBM, watchedValues.unitPrice]);
+  }, [isAirShipping, calculatedCBM, watchedValues.unitPrice, watchedValues.weight]);
   
   /**
    * Check if form is valid
@@ -138,6 +153,7 @@ export const useReceiveGoodsForm = (
       unitPrice: parseFloat(watchedValues.unitPrice.replace(',', '.')),
       location: watchedValues.location.toUpperCase().trim(),
       receivedByName: watchedValues.receivedByName.trim(),
+      shippingMode: watchedValues.shippingMode || 'SEA',
     };
     
     // Add CBM (from dimensions or direct input)

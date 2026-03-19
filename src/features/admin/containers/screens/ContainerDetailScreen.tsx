@@ -43,7 +43,11 @@ export const ContainerDetailScreen: React.FC = () => {
         />
         <ContainerTimeline currentStatus={container.status} currentStatusIndex={currentStatusIndex} />
         <ContainerCapacityCard totalCBM={container.totalCBM || 0} fillPercentage={fillPercentage} fillColor={fillColor} />
-        <ContainerWaypointSection containerId={containerId} />
+        <ContainerWaypointSection 
+          containerId={containerId} 
+          containerStatus={container.status}
+          containerNumber={container.virtualContainerNumber || container.containerNumber}
+        />
         <ContainerGoodsList goodsList={goodsList} onRemoveGoods={handleRemoveGoods} onMarkDelivered={handleMarkGoodsDelivered} />
       </ScrollView>
 

@@ -109,8 +109,8 @@ export const getCurrentUser = async () => {
    return response.data;
 };
 export const fetchAllUsers = async () => {
-   const response = await axiosInstance.get<userData[]>(API_URL.fetchAllUsers);
-   return response.data;
+   const response = await axiosInstance.get<{ success: boolean; data: userData[] }>(API_URL.fetchAllUsers);
+   return response.data.data;
 };
 export const blockUnblockUser = async (id: string) => {
    const response = await axiosInstance.post<{ message: string }>(`${API_URL.blockUser}/${id}`, {

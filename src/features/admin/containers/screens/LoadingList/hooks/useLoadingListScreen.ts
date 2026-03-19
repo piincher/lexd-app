@@ -1,16 +1,16 @@
 import { useState, useMemo, useCallback } from 'react';
 import { Alert } from 'react-native';
 import * as Print from 'expo-print';
-import * as Sharing from 'expo-sharing';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useGetContainerById } from '../../../hooks';
+import { useGetContainerById, useGetPackingList } from '../../../hooks';
 import { Container } from '../../../types';
 import { Goods } from '../../../../goods/types';
 import {
   AdminLoadingListData,
   LoadingListItem,
   getClientColor,
+  ClientGoodsGroup,
 } from '../../../types/packingList';
 
 // Navigation types
@@ -46,22 +46,76 @@ const SHIPPING_LINE_LABELS: Record<string, string> = {
 export const useLoadingListScreen = () => {
   const route = useRoute();
   const navigation = useNavigation<NavigationProp>();
-  const { containerId } = route.params as { containerId: string };
+  const params = route.params as { containerId: string; clientId?: string } | undefined;
+  const containerId = params?.containerId || '';
+  const initialClientId = params?.clientId || null;
 
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [loadedItems, setLoadedItems] = useState<Set<string>>(new Set());
+  
+  // State for client filtering (for walk-in customers)
+  const [selectedClientId, setSelectedClientId] = useState<string | null>(initialClientId);
 
   const { data: containerResponse, isLoading: isContainerLoading } = useGetContainerById(containerId);
   const container: Container | undefined = containerResponse?.data?.container || containerResponse?.data;
+  
+  // Fetch packing list to get client info (names, phone)
+  const { data: packingListResponse, isLoading: isPackingListLoading } = useGetPackingList(containerId);
+  
+  console.log('[DEBUG] Packing list loading:', isPackingListLoading);
+  console.log('[DEBUG] Packing list response:', packingListResponse ? 'has data' : 'no data');
+  
+  // Create a map of clientId -> client info from packing list
+  const clientInfoMap = useMemo(() => {
+    const map = new Map<string, ClientGoodsGroup>();
+    const packingData = packingListResponse?.data?.data || packingListResponse?.data;
+    console.log('[DEBUG] Packing list data:', packingData);
+    console.log('[DEBUG] Packing list clients:', packingData?.clients);
+    if (packingData?.clients) {
+      packingData.clients.forEach((client: ClientGoodsGroup) => {
+        console.log('[DEBUG] Adding client to map:', client.clientId, client.clientName);
+        map.set(String(client.clientId), client);
+      });
+    }
+    console.log('[DEBUG] Client info map size:', map.size);
+    return map;
+  }, [packingListResponse]);
 
   // Process loading list data
   const loadingListData: AdminLoadingListData | null = useMemo(() => {
     if (!container) return null;
 
-    const goodsIds = (container as any).goodsIds;
-    const goodsList: Goods[] = Array.isArray(goodsIds) && goodsIds.length > 0 && typeof goodsIds[0] === 'object'
-      ? (goodsIds as Goods[])
-      : (container.goods || []);
+    // Use packing list goods which have client info populated
+    const packingData = packingListResponse?.data?.data || packingListResponse?.data;
+    let goodsList: any[] = [];
+    
+    if (packingData?.clients) {
+      // Flatten goods from all clients in packing list
+      packingData.clients.forEach((client: any) => {
+        if (client.goods) {
+          client.goods.forEach((goods: any) => {
+            goodsList.push({
+              ...goods,
+              clientId: client.clientId,
+              clientName: client.clientName,
+            });
+          });
+        }
+      });
+    }
+    
+    // Fallback to container goods if packing list not available
+    if (goodsList.length === 0) {
+      const goodsIds = (container as any).goodsIds;
+      goodsList = Array.isArray(goodsIds) && goodsIds.length > 0 && typeof goodsIds[0] === 'object'
+        ? (goodsIds as Goods[])
+        : (container.goods || []);
+    }
+
+    console.log('[DEBUG] Final goods count:', goodsList.length);
+    if (goodsList.length > 0) {
+      console.log('[DEBUG] First goods:', JSON.stringify(goodsList[0], null, 2));
+    }
 
     if (goodsList.length === 0) {
       return {
@@ -88,8 +142,8 @@ export const useLoadingListScreen = () => {
     const uniqueClients = new Set<string>();
 
     goodsList.forEach((goods) => {
-      const client = typeof goods.clientId === 'object' ? goods.clientId : null;
-      const clientId = client?._id || (goods.clientId as string) || 'unknown';
+      // Extract client ID (now directly on goods from packing list)
+      const clientId = (goods as any).clientId || 'unknown';
       uniqueClients.add(clientId);
     });
 
@@ -102,11 +156,9 @@ export const useLoadingListScreen = () => {
 
     // Create loading items
     const items: LoadingListItem[] = sortedGoods.map((goods, index) => {
-      const client = typeof goods.clientId === 'object' ? goods.clientId : null;
-      const clientId = client?._id || (goods.clientId as string) || 'unknown';
-      const clientName = client
-        ? `${client.firstName} ${client.lastName}`
-        : 'Client Inconnu';
+      // Get client info directly from goods (populated from packing list)
+      const clientId = (goods as any).clientId || 'unknown';
+      const clientName = (goods as any).clientName || 'Client Inconnu';
 
       return {
         sequenceNumber: index + 1,
@@ -141,7 +193,59 @@ export const useLoadingListScreen = () => {
         remainingCBM: totalCBM - loadedCBM,
       },
     };
-  }, [container, loadedItems]);
+  }, [container, loadedItems, clientInfoMap]);
+
+  // Filter data for single client view (walk-in customers)
+  const filteredLoadingListData = useMemo(() => {
+    if (!loadingListData) return null;
+    if (!selectedClientId) return loadingListData; // Show all clients
+
+    // Normalize IDs for comparison (handle both string and ObjectId)
+    const normalizeId = (id: any) => String(id).trim();
+    const targetId = normalizeId(selectedClientId);
+    
+    const filteredItems = loadingListData.items.filter(
+      (item) => normalizeId(item.clientId) === targetId
+    );
+    
+    // Debug: Show sample IDs if filter fails
+    if (filteredItems.length === 0 && loadingListData.items.length > 0) {
+      const sampleIds = loadingListData.items.slice(0, 3).map(i => i.clientId);
+      console.warn('[LoadingList] Filter failed. Target:', targetId, 'Samples:', sampleIds);
+    }
+    
+    // If no items found, return all data (don't break the UI)
+    if (filteredItems.length === 0) {
+      return loadingListData;
+    }
+
+    // Recalculate summary for single client
+    const totalCBM = filteredItems.reduce((sum, item) => sum + (item.goods.actualCBM || 0), 0);
+    const totalWeight = filteredItems.reduce((sum, item) => sum + (item.goods.weight || 0), 0);
+    const loadedItems = filteredItems.filter((item) => item.isLoaded).length;
+    const loadedCBM = filteredItems
+      .filter((item) => item.isLoaded)
+      .reduce((sum, item) => sum + (item.goods.actualCBM || 0), 0);
+    
+    return {
+      ...loadingListData,
+      items: filteredItems,
+      summary: {
+        ...loadingListData.summary,
+        totalItems: filteredItems.length,
+        totalPackages: filteredItems.length,
+        totalCBM,
+        totalWeight,
+        loadedItems,
+        remainingItems: filteredItems.length - loadedItems,
+        loadedCBM,
+        remainingCBM: totalCBM - loadedCBM,
+        capacityPercentage: (totalCBM / MAX_CBM) * 100,
+      },
+      isSingleClientView: true,
+      singleClientName: filteredItems[0]?.clientName,
+    };
+  }, [loadingListData, selectedClientId]);
 
   // Calculate weight distribution
   const weightDistribution = useMemo(() => {
@@ -213,11 +317,20 @@ export const useLoadingListScreen = () => {
   }, []);
 
   const handlePrint = useCallback(async () => {
-    if (!loadingListData) return;
+    if (!filteredLoadingListData) return;
     setIsGeneratingPDF(true);
 
     try {
-      const { container, items, summary } = loadingListData;
+      const { container, items, summary, isSingleClientView, singleClientName } = filteredLoadingListData;
+      
+      // Single client header banner for PDF
+      const singleClientBannerHtml = isSingleClientView ? `
+        <div style="background: #dcfce7; border: 2px solid #16a34a; border-radius: 8px; padding: 12px; margin-bottom: 16px; text-align: center;">
+          <div style="font-size: 14px; font-weight: 700; color: #166534;">📋 COPIE CLIENT INDIVIDUEL</div>
+          <div style="font-size: 12px; color: #166534; margin-top: 4px;">Client: ${singleClientName}</div>
+          <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">Ce document ne contient que vos marchandises</div>
+        </div>
+      ` : '';
 
       // Generate HTML for PDF
       const itemsHtml = items.map((item) => `
@@ -294,6 +407,21 @@ export const useLoadingListScreen = () => {
             </div>
           </div>
 
+          <!-- CONSIGNEE & PICKUP INFO -->
+          <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 12px; margin-bottom: 20px;">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+              <div>
+                <div style="font-size: 10px; color: #0369a1; text-transform: uppercase; margin-bottom: 4px;">📍 Point de Retrait</div>
+                <div style="font-size: 13px; font-weight: 600; color: #0c4a6e;">${(container as any).consignee?.warehouseAddress || 'ChinaLink Express Warehouse - Bamako'}</div>
+              </div>
+              <div>
+                <div style="font-size: 10px; color: #0369a1; text-transform: uppercase; margin-bottom: 4px;">👤 Consignataire</div>
+                <div style="font-size: 13px; font-weight: 600; color: #0c4a6e;">${(container as any).consignee?.name || 'N/A'}</div>
+                <div style="font-size: 12px; color: #0369a1;">📞 ${(container as any).consignee?.phone || 'N/A'}</div>
+              </div>
+            </div>
+          </div>
+
           <div class="progress-section">
             <div class="progress-header">
               <span class="progress-title">Progression du Chargement</span>
@@ -328,9 +456,23 @@ export const useLoadingListScreen = () => {
             </tbody>
           </table>
 
+          <!-- PAYMENT INFO & CONTACT -->
+          <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 16px; margin: 24px 0;">
+            <div style="font-size: 14px; font-weight: 700; color: #92400e; margin-bottom: 8px; text-align: center;">
+              💳 PAIEMENT EN AVANCE
+            </div>
+            <div style="font-size: 12px; color: #78350f; text-align: center; line-height: 1.6;">
+              Pour effectuer un paiement anticipé ou régler votre solde,<br>
+              veuillez contacter le consignataire:<br>
+              <strong style="font-size: 14px; color: #92400e;">${(container as any).consignee?.name || 'N/A'}</strong><br>
+              📞 <strong>${(container as any).consignee?.phone || 'N/A'}</strong>
+            </div>
+          </div>
+
           <div class="footer">
             <p>Document généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
             <p><strong>ChinaLink Express</strong> - Transport International</p>
+            <p>Bamako, Mali | Tél: ${(container as any).consignee?.phone || '+223 XX XX XX XX'}</p>
           </div>
         </body>
         </html>
@@ -341,15 +483,13 @@ export const useLoadingListScreen = () => {
         base64: false,
       });
 
-      if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(uri, {
-          mimeType: 'application/pdf',
-          dialogTitle: `Plan de Chargement - ${container.virtualContainerNumber}`,
-          UTI: 'com.adobe.pdf',
-        });
-      } else {
-        Alert.alert('PDF Généré', `Fichier sauvegardé: ${uri}`);
-      }
+      // Share PDF using legacy API for SDK 55 compatibility
+      const { sharePDFFromUri } = require('../../../../../../shared/lib/pdfShare');
+      await sharePDFFromUri({
+        uri,
+        filename: `LoadingList_${container.virtualContainerNumber}_${Date.now()}.pdf`,
+        dialogTitle: `Plan de Chargement - ${container.virtualContainerNumber}`,
+      });
 
       setIsGeneratingPDF(false);
     } catch (error) {
@@ -357,7 +497,7 @@ export const useLoadingListScreen = () => {
       console.error('PDF generation error:', error);
       setIsGeneratingPDF(false);
     }
-  }, [loadingListData]);
+  }, [filteredLoadingListData]);
 
   return {
     containerId,
@@ -369,6 +509,10 @@ export const useLoadingListScreen = () => {
     loadedItems,
     setLoadedItems,
     loadingListData,
+    // Single client filtering (for walk-in customers)
+    filteredLoadingListData,
+    selectedClientId,
+    setSelectedClientId,
     weightDistribution,
     progressPercentage,
     handleToggleLoaded,

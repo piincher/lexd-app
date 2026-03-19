@@ -9,6 +9,7 @@ export {
   useGetAllGoods,
   useGetGoodsById,
   useGetGoodsByClient,
+  useReceiveGoods,  // React Query mutation hook
   useUpdateGoodsLocation,
   useUpdateGoodsPhoto,
   useDeleteGoods,
@@ -31,7 +32,7 @@ export { goodsQueryKeys } from './useGoods';
 export { useGoodsList } from './useGoodsList';
 export { useGoodsDetail } from './useGoodsDetail';
 export { useGoodsDetailScreen } from './useGoodsDetailScreen';
-// useReceiveGoods is exported from useReceiveGoods.ts below (single source)
+// Note: useReceiveGoods mutation hook is exported from useGoods.ts above
 export { useReceiveGoodsForm } from './useReceiveGoodsForm';
 
 // ============================================
@@ -41,8 +42,8 @@ export { useGoodsFilters } from './useGoodsFilters';
 export { useGoodsScanner } from './useGoodsScanner';
 export { useGoodsAssignment } from './useGoodsAssignment';
 export { useGoodsStatus } from './useGoodsStatus';
-// useReceiveGoods exported from dedicated file (single source)
-export { useReceiveGoods } from './useReceiveGoods';
+// Screen-level orchestrator hook (returns form state, handlers - NOT the mutation)
+export { useReceiveGoods as useReceiveGoodsScreen } from './useReceiveGoods';
 
 // ============================================
 // MUTATION HOOKS

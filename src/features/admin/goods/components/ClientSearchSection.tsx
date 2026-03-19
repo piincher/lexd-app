@@ -27,19 +27,19 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
   const { data: users, isLoading, error: fetchError } = useGetUsers();
   
   // Debug logging
-  console.log('ClientSearchSection - Users:', users?.data?.length || 0, 'Error:', fetchError?.message || 'none');
+  console.log('ClientSearchSection - Users:', users?.length || 0, 'Error:', fetchError?.message || 'none');
 
   /**
    * Filter users based on search query
    * Supports partial phone number matching by extracting digits
    */
   const filteredUsers = (() => {
-    if (!users?.data || !searchQuery.trim()) return [];
+    if (!users || !Array.isArray(users) || !searchQuery.trim()) return [];
 
     const query = searchQuery.toLowerCase();
     const queryDigits = query.replace(/\D/g, ''); // Extract digits from query
 
-    return users.data.filter((user: userData) => {
+    return users.filter((user: userData) => {
       // Name search (case insensitive)
       const nameMatch = 
         user.firstName?.toLowerCase().includes(query) ||
@@ -174,9 +174,9 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
             />
 
             {/* Debug info - remove in production */}
-            {__DEV__ && users?.data && (
+            {__DEV__ && users && Array.isArray(users) && (
               <Text style={styles.debugText}>
-                Total users: {users.data.length} | Query: "{searchQuery}" | Digits: "{searchQuery.replace(/\D/g, '')}"
+                Total users: {users.length} | Query: "{searchQuery}" | Digits: "{searchQuery.replace(/\D/g, '')}"
               </Text>
             )}
 

@@ -1,6 +1,7 @@
 /**
  * ContainerWaypointSection - Waypoint tracker section component
  * Refactored from ContainerWaypointTrackerSection
+ * Updated: Conditionally renders TransitStatusManager for IN_TRANSIT containers
  */
 
 import React from 'react';
@@ -13,19 +14,37 @@ import {
   useUpdateWaypointStatus,
   waypointQueryKeys,
 } from '../../hooks/useWaypoints';
-import { containerQueryKeys } from '../../hooks/useContainers';
+import { useGetContainerById, containerQueryKeys } from '../../hooks/useContainers';
 import { ContainerWaypointTracker } from '../../components/ContainerWaypointTracker';
+import { TransitStatusManager } from '../../components/TransitStatusManager';
+import { InitializeWaypointsButton } from '../../components/TransitStatusManager/components/InitializeWaypointsButton';
 import { styles } from '../ContainerDetailScreen.styles';
 import { Theme } from '@src/constants/Theme';
 
 interface ContainerWaypointSectionProps {
   containerId: string;
+  containerNumber?: string;
+  containerStatus?: string;
 }
 
 export const ContainerWaypointSection: React.FC<ContainerWaypointSectionProps> = ({
   containerId,
+  containerNumber: propContainerNumber,
+  containerStatus: propContainerStatus,
 }) => {
   const queryClient = useQueryClient();
+  
+  // Fetch container data if status not provided via props
+  const { data: containerData } = useGetContainerById(
+    !propContainerStatus ? containerId : undefined
+  );
+  
+  // Get container status from props or fetched data
+  const container = containerData?.data?.container || containerData?.data;
+  const containerStatus = propContainerStatus || container?.status;
+  const containerNumber = propContainerNumber || container?.virtualContainerNumber || container?.actualContainerNumber;
+  const isInTransit = containerStatus === 'IN_TRANSIT';
+  
   const { data: waypointsData, isLoading } = useGetWaypoints(containerId);
   const updateWaypointMutation = useUpdateWaypointStatus();
 
@@ -57,11 +76,38 @@ export const ContainerWaypointSection: React.FC<ContainerWaypointSectionProps> =
   }
 
   if (!waypointsData?.waypoints || waypointsData.waypoints.length === 0) {
-    return null;
+    return (
+      <Animated.View entering={FadeIn} style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="location" size={20} color={Theme.primary[600]} />
+          <Text style={styles.cardTitle}>Suivi du Transit</Text>
+        </View>
+        <View style={{ padding: Theme.spacing.lg, alignItems: 'center' }}>
+          <Ionicons name="map-outline" size={48} color={Theme.neutral[300]} />
+          <Text style={{ marginTop: Theme.spacing.md, color: Theme.neutral[500], textAlign: 'center' }}>
+            Aucun point de passage configuré pour ce conteneur.
+          </Text>
+          <Text style={{ marginTop: Theme.spacing.sm, color: Theme.neutral[400], fontSize: 12, textAlign: 'center' }}>
+            Les waypoints seront initialisés automatiquement lors de la création.
+          </Text>
+          <InitializeWaypointsButton 
+            containerId={containerId} 
+            onInitialized={() => {
+              queryClient.invalidateQueries({
+                queryKey: waypointQueryKeys.list(containerId),
+              });
+            }}
+          />
+        </View>
+      </Animated.View>
+    );
   }
 
-  const { waypoints, currentWaypointIndex, containerNumber, finalDestination, consignee } =
+  const { waypoints, currentWaypointIndex, containerNumber: waypointContainerNumber, finalDestination, consignee } =
     waypointsData;
+
+  // Use container number from waypoints data as fallback
+  const displayContainerNumber = containerNumber || waypointContainerNumber;
 
   return (
     <Animated.View entering={FadeIn} style={styles.card}>
@@ -69,14 +115,27 @@ export const ContainerWaypointSection: React.FC<ContainerWaypointSectionProps> =
         <Ionicons name="location" size={20} color={Theme.primary[600]} />
         <Text style={styles.cardTitle}>Suivi du Transit</Text>
       </View>
-      <ContainerWaypointTracker
-        waypoints={waypoints}
-        currentWaypointIndex={currentWaypointIndex}
-        containerNumber={containerNumber}
-        finalDestination={finalDestination}
-        consignee={consignee}
-        onUpdateStatus={handleUpdateStatus}
-      />
+      
+      {isInTransit ? (
+        // Full transit status manager for IN_TRANSIT containers
+        <TransitStatusManager
+          containerId={containerId}
+          containerNumber={displayContainerNumber}
+          containerStatus={containerStatus as any}
+          waypoints={waypoints}
+          currentWaypointIndex={currentWaypointIndex}
+        />
+      ) : (
+        // Standard waypoint tracker for other statuses
+        <ContainerWaypointTracker
+          waypoints={waypoints}
+          currentWaypointIndex={currentWaypointIndex}
+          containerNumber={displayContainerNumber}
+          finalDestination={finalDestination}
+          consignee={consignee}
+          onUpdateStatus={handleUpdateStatus}
+        />
+      )}
     </Animated.View>
   );
 };

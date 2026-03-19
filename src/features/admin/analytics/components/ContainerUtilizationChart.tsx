@@ -258,7 +258,7 @@ export const ContainerUtilizationChart: React.FC<ContainerUtilizationChartProps>
               <View style={styles.containerInfo}>
                 <View style={styles.containerNumberContainer}>
                   <MaterialCommunityIcons
-                    name={container.shippingMode === 'AIR' ? 'airplane' : 'ship'}
+                    name={container.shippingMode === 'AIR' ? 'airplane' : 'ferry'}
                     size={16}
                     color="#6B7280"
                   />

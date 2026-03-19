@@ -228,10 +228,12 @@ function AppWrapper() {
                   <Stack.Screen name="CheckRoute" component={CheckRoute} />
                   <Stack.Screen name="VoidGoodsList" component={VoidGoodsListScreen} />
                   <Stack.Screen name="VoidGoods" component={VoidGoodsScreen} />
+
                   <Stack.Screen
                      name="OrderDetailWithGoods"
                      component={OrderDetailWithGoodsScreen}
                   />
+                  <Stack.Screen name="SelectManualOrder" component={ManualOrderScreen} />
                   <Stack.Screen name="AllOrders" component={AllOrdersScreen} />
                   <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} />
                   <Stack.Screen name="RecordPaymentScreen" component={RecordPaymentScreen} />

@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Alert, Linking, Platform, Share } from 'react-native';
-import * as FileSystem from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
@@ -41,14 +41,14 @@ export const useClientPackingListScreen = (containerId: string) => {
       setDownloadProgress(0.1); const pdfBlob = await downloadMutation.mutateAsync(containerId); setDownloadProgress(0.5);
       const filename = `PackingList_${packingList.containerNumber}_${format(new Date(), 'yyyyMMdd_HHmmss')}.pdf`;
       if (Platform.OS === 'web') { const url = window.URL.createObjectURL(pdfBlob); const a = document.createElement('a'); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); document.body.removeChild(a); window.URL.revokeObjectURL(url); showSnackbar('PDF téléchargé avec succès'); return; }
-      const fileUri = `${FileSystem.cacheDirectory}${filename}`; const base64 = await blobToBase64(pdfBlob); setDownloadProgress(0.7); await FileSystem.writeAsStringAsync(fileUri, base64, { encoding: FileSystem.EncodingType.Base64 }); setDownloadProgress(1); showSnackbar('PDF téléchargé avec succès'); Alert.alert('Téléchargement terminé', 'Voulez-vous ouvrir le PDF ?', [{ text: 'Plus tard', style: 'cancel' }, { text: 'Ouvrir', onPress: async () => { if (await Sharing.isAvailableAsync()) await Sharing.shareAsync(fileUri, { mimeType: 'application/pdf', dialogTitle: 'Ouvrir le PDF' }); } }]);
+      const destFile = new File(Paths.cache, filename); const base64 = await blobToBase64(pdfBlob); setDownloadProgress(0.7); await destFile.write(base64, { encoding: 'base64' }); setDownloadProgress(1); showSnackbar('PDF téléchargé avec succès'); Alert.alert('Téléchargement terminé', 'Voulez-vous ouvrir le PDF ?', [{ text: 'Plus tard', style: 'cancel' }, { text: 'Ouvrir', onPress: async () => { if (await Sharing.isAvailableAsync()) await Sharing.shareAsync(destFile.uri, { mimeType: 'application/pdf', dialogTitle: 'Ouvrir le PDF' }); } }]);
     } catch { Alert.alert('Erreur de téléchargement', 'Impossible de télécharger le PDF. Veuillez réessayer.'); } finally { setTimeout(() => setDownloadProgress(0), 1000); }
   }, [packingList, containerId, downloadMutation, showSnackbar]);
   const handleShare = useCallback(async () => {
     if (!packingList) return;
     try {
       if (packingList.generatedAt && Platform.OS !== 'web') {
-        try { setDownloadProgress(0.3); const pdfBlob = await downloadMutation.mutateAsync(containerId); setDownloadProgress(0.7); const filename = `PackingList_${packingList.containerNumber}_${format(new Date(), 'yyyyMMdd_HHmmss')}.pdf`; const fileUri = `${FileSystem.cacheDirectory}${filename}`; const base64 = await blobToBase64(pdfBlob); await FileSystem.writeAsStringAsync(fileUri, base64, { encoding: FileSystem.EncodingType.Base64 }); setDownloadProgress(1); await Sharing.shareAsync(fileUri, { mimeType: 'application/pdf', dialogTitle: 'Partager ma liste de colisage', UTI: 'com.adobe.pdf' }); setTimeout(() => setDownloadProgress(0), 500); return; } catch {}
+        try { setDownloadProgress(0.3); const pdfBlob = await downloadMutation.mutateAsync(containerId); setDownloadProgress(0.7); const filename = `PackingList_${packingList.containerNumber}_${format(new Date(), 'yyyyMMdd_HHmmss')}.pdf`; const destFile = new File(Paths.cache, filename); const base64 = await blobToBase64(pdfBlob); await destFile.write(base64, { encoding: 'base64' }); setDownloadProgress(1); await Sharing.shareAsync(destFile.uri, { mimeType: 'application/pdf', dialogTitle: 'Partager ma liste de colisage', UTI: 'com.adobe.pdf' }); setTimeout(() => setDownloadProgress(0), 500); return; } catch {}
       }
       await Share.share({ message: generateShareText(), title: `Liste de Colisage - ${packingList.containerNumber}` });
     } catch { Alert.alert('Erreur', 'Impossible de partager la liste de colisage'); }

@@ -11,3 +11,14 @@ export { CapacityUsageBar } from './CapacityUsageBar';
 export { ClientGoodsSection } from './ClientGoodsSection';
 export { PackingListTable } from './PackingListTable';
 export { LoadingSequenceItem } from './LoadingSequenceItem';
+
+// Transit Status Components
+export {
+  TransitStatusManager,
+  TransitStatusCard,
+  TransitTimeline,
+  TransitActionButtons,
+  StatusUpdateModal,
+  NonTransitView,
+  InitializeWaypointsButton,
+} from './TransitStatusManager';

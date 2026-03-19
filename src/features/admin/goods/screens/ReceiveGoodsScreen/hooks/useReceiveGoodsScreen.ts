@@ -9,7 +9,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Alert } from 'react-native';
 import { useReceiveGoodsForm } from './useReceiveGoodsForm';
 import { useReceiveGoods as useReceiveGoodsMutation } from '../../../hooks';
-import { ApiClientError } from '@src/api/client';
 import { AuthenticatedStackParamList } from '@src/navigation/types';
 
 type NavigationProp = NativeStackNavigationProp<AuthenticatedStackParamList>;
@@ -66,12 +65,11 @@ export const useReceiveGoodsScreen = () => {
         photoUri: formHook.photoUri || undefined,
       });
       setShowSuccessDialog(true);
-    } catch (error) {
-      if (error instanceof ApiClientError) {
-        setErrorMessage(error.getUserMessage());
-      } else {
-        setErrorMessage('Une erreur inattendue est survenue');
-      }
+    } catch (error: any) {
+      console.error('[ReceiveGoods] Error:', error);
+      // ApiClientError has the message directly, or check response data
+      const serverMessage = error?.message || error?.response?.data?.message;
+      setErrorMessage(serverMessage || 'Une erreur inattendue est survenue');
     }
   }, [formHook, receiveGoodsMutation]);
 
@@ -91,18 +89,18 @@ export const useReceiveGoodsScreen = () => {
       });
       
       // Extract goods ID from result and navigate to order selection
-      const goodsId = result?.data?._id || result?.data?.id;
+      // API returns { goods, order } in data
+      const goodsId = result?.data?.goods?._id || result?.data?.goods?.id;
       if (goodsId) {
         navigation.navigate('SelectManualOrder', { goodsId });
       } else {
         setErrorMessage('Erreur: ID de marchandise non trouvé');
       }
-    } catch (error) {
-      if (error instanceof ApiClientError) {
-        setErrorMessage(error.getUserMessage());
-      } else {
-        setErrorMessage('Une erreur inattendue est survenue');
-      }
+    } catch (error: any) {
+      console.error('[ReceiveGoods] Error:', error);
+      // ApiClientError has the message directly, or check response data
+      const serverMessage = error?.message || error?.response?.data?.message;
+      setErrorMessage(serverMessage || 'Une erreur inattendue est survenue');
     }
   }, [formHook, receiveGoodsMutation, navigation]);
 
@@ -120,7 +118,7 @@ export const useReceiveGoodsScreen = () => {
     setShowSuccessDialog(false);
     formHook.resetForm();
     setIsSubmitted(false);
-    navigation.navigate('GoodsList');
+    navigation.navigate('AdminGoodsList');
   }, [formHook, navigation]);
 
   /**
@@ -130,6 +128,9 @@ export const useReceiveGoodsScreen = () => {
     setShowChoiceModal(false);
   }, []);
 
+  // Watch shipping mode for UI display and validation
+  const shippingMode = formHook.watch('shippingMode') || 'SEA';
+
   return {
     // Form-related
     form: {
@@ -137,6 +138,7 @@ export const useReceiveGoodsScreen = () => {
       errors: formHook.formState.errors,
       setValue: formHook.setValue,
       watch: formHook.watch,
+      shippingMode,
       selectedClient: formHook.selectedClient,
       setSelectedClient: formHook.setSelectedClient,
       photoUri: formHook.photoUri,

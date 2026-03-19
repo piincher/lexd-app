@@ -4,7 +4,6 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Alert, Share } from 'react-native';
 import * as Print from 'expo-print';
-import * as Sharing from 'expo-sharing';
 import { useGetPackingList } from '../../../hooks/useContainers';
 import { SHIPPING_MODE_LABELS, SHIPPING_LINE_LABELS } from '../../../types';
 import { AdminPackingListData, ClientGoodsGroup, getClientColor } from '../../../types/packingList';
@@ -22,12 +21,16 @@ export type NavigationProp = NativeStackNavigationProp<AdminV2StackParamList>;
 export const usePackingListScreen = () => {
   const route = useRoute();
   const navigation = useNavigation<NavigationProp>();
-  const params = route.params as { containerId: string } | undefined;
+  const params = route.params as { containerId: string; clientId?: string } | undefined;
   const containerId = params?.containerId;
+  const initialClientId = params?.clientId || null;
   const documentRef = useRef<View>(null);
 
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [allExpanded, setAllExpanded] = useState(true);
+  
+  // State for client filtering (for walk-in customers)
+  const [selectedClientId, setSelectedClientId] = useState<string | null>(initialClientId);
 
   const { data: packingListResponse, isLoading: isContainerLoading } = useGetPackingList(containerId || '');
   const packingListData: AdminPackingListData | null = useMemo(() => {
@@ -53,6 +56,8 @@ export const usePackingListScreen = () => {
       shippingMode: apiContainer.shippingMode,
       status: apiContainer.status,
       statusLabel: apiContainer.status,
+      consignee: apiContainer.consignee,
+      route: apiContainer.route,
     };
     
     // Get goods list for fallback
@@ -140,17 +145,57 @@ export const usePackingListScreen = () => {
     } as AdminPackingListData;
   }, [packingListResponse]);
 
+  // Filter data for single client view (walk-in customers)
+  const filteredPackingListData = useMemo(() => {
+    if (!packingListData) return null;
+    if (!selectedClientId) return packingListData; // Show all clients
+
+    const filteredClients = packingListData.clients.filter(
+      (c) => String(c.clientId) === String(selectedClientId)
+    );
+    
+    if (filteredClients.length === 0) return packingListData;
+
+    // Recalculate summary for single client
+    const client = filteredClients[0];
+    const singleClientSummary = {
+      ...packingListData.summary,
+      totalItems: client.summary.totalItems,
+      totalPackages: client.summary.totalItems,
+      totalQuantity: client.summary.totalQuantity,
+      totalCBM: client.summary.totalCBM,
+      totalWeight: client.summary.totalWeight,
+    };
+
+    return {
+      ...packingListData,
+      clients: filteredClients,
+      summary: singleClientSummary,
+      isSingleClientView: true,
+      singleClientName: client.clientName,
+    };
+  }, [packingListData, selectedClientId]);
+
   const handlePrint = useCallback(async () => {
-    if (!packingListData) return;
+    if (!filteredPackingListData) return;
     setIsGeneratingPDF(true);
 
     try {
-      const { container, clients, summary } = packingListData;
+      const { container, clients, summary, isSingleClientView, singleClientName } = filteredPackingListData;
 
       // Calculate grand totals
       const grandTotal = clients.reduce((sum, c) => sum + (c.summary.totalCost || 0), 0);
       const grandPaid = clients.reduce((sum, c) => sum + (c.summary.totalPaid || 0), 0);
       const grandBalance = clients.reduce((sum, c) => sum + (c.summary.balanceDue || 0), 0);
+      
+      // Single client header banner for PDF
+      const singleClientBannerHtml = isSingleClientView ? `
+        <div style="background: #dcfce7; border: 2px solid #16a34a; border-radius: 8px; padding: 12px; margin-bottom: 16px; text-align: center;">
+          <div style="font-size: 14px; font-weight: 700; color: #166534;">📋 COPIE CLIENT INDIVIDUEL</div>
+          <div style="font-size: 12px; color: #166534; margin-top: 4px;">Client: ${singleClientName}</div>
+          <div style="font-size: 10px; color: #6b7280; margin-top: 2px;">Ce document ne contient que vos marchandises</div>
+        </div>
+      ` : '';
       
       const clientRowsHtml = clients.map((client, cIndex) => {
         const balance = client.summary.balanceDue || 0;
@@ -263,6 +308,7 @@ export const usePackingListScreen = () => {
           </style>
         </head>
         <body>
+          ${singleClientBannerHtml}
           <div class="header">
             <h1>LISTE DE COLISAGE</h1>
             <p>${container.number}</p>
@@ -287,6 +333,21 @@ export const usePackingListScreen = () => {
             </div>
           </div>
 
+          <!-- CONSIGNEE & PICKUP INFO -->
+          <div style="background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 12px; margin-bottom: 20px;">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+              <div>
+                <div style="font-size: 10px; color: #0369a1; text-transform: uppercase; margin-bottom: 4px;">📍 Point de Retrait</div>
+                <div style="font-size: 13px; font-weight: 600; color: #0c4a6e;">${container.consignee?.warehouseAddress || 'ChinaLink Express Warehouse - Bamako'}</div>
+              </div>
+              <div>
+                <div style="font-size: 10px; color: #0369a1; text-transform: uppercase; margin-bottom: 4px;">👤 Consignataire</div>
+                <div style="font-size: 13px; font-weight: 600; color: #0c4a6e;">${container.consignee?.name || 'N/A'}</div>
+                <div style="font-size: 12px; color: #0369a1;">📞 ${container.consignee?.phone || 'N/A'}</div>
+              </div>
+            </div>
+          </div>
+
           <h2 style="color: #166534; font-size: 18px; margin-bottom: 16px;">📦 Marchandises par Client</h2>
           ${clientRowsHtml}
 
@@ -300,7 +361,7 @@ export const usePackingListScreen = () => {
             </div>
             <div class="totals-row">
               <span class="totals-label">Volume Total:</span>
-              <span class="totals-value">${summary.totalCBM.toFixed(2)} m³ (${summary.capacityPercentage.toFixed(1)}% utilisé)</span>
+              <span class="totals-value">${summary.totalCBM.toFixed(2)} m³${!isSingleClientView ? ` (${summary.capacityPercentage.toFixed(1)}% utilisé)` : ''}</span>
             </div>
             <div class="totals-row">
               <span class="totals-label">Poids Total:</span>
@@ -333,10 +394,23 @@ export const usePackingListScreen = () => {
             </div>
           </div>
 
+          <!-- PAYMENT INFO & CONTACT -->
+          <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 16px; margin: 24px 0;">
+            <div style="font-size: 14px; font-weight: 700; color: #92400e; margin-bottom: 8px; text-align: center;">
+              💳 PAIEMENT EN AVANCE
+            </div>
+            <div style="font-size: 12px; color: #78350f; text-align: center; line-height: 1.6;">
+              Pour effectuer un paiement anticipé ou régler votre solde,<br>
+              veuillez contacter le consignataire:<br>
+              <strong style="font-size: 14px; color: #92400e;">${container.consignee?.name || 'N/A'}</strong><br>
+              📞 <strong>${container.consignee?.phone || 'N/A'}</strong>
+            </div>
+          </div>
+
           <div class="footer">
             <p>Document généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
             <p><strong>ChinaLink Express</strong> - Transport International</p>
-            <p>Bamako, Mali | Tél: +223 XX XX XX XX</p>
+            <p>Bamako, Mali | Tél: ${container.consignee?.phone || '+223 XX XX XX XX'}</p>
           </div>
         </body>
         </html>
@@ -347,15 +421,13 @@ export const usePackingListScreen = () => {
         base64: false,
       });
 
-      if (await Sharing.isAvailableAsync()) {
-        await Sharing.shareAsync(uri, {
-          mimeType: 'application/pdf',
-          dialogTitle: `Liste de Colisage - ${container.number}`,
-          UTI: 'com.adobe.pdf',
-        });
-      } else {
-        Alert.alert('PDF Généré', `Fichier sauvegardé: ${uri}`);
-      }
+      // Share PDF using legacy API for SDK 55 compatibility
+      const { sharePDFFromUri } = require('../../../../../../shared/lib/pdfShare');
+      await sharePDFFromUri({
+        uri,
+        filename: `PackingList_${container.number}_${Date.now()}.pdf`,
+        dialogTitle: `Liste de Colisage - ${container.number}`,
+      });
 
       setIsGeneratingPDF(false);
     } catch (error) {
@@ -363,24 +435,35 @@ export const usePackingListScreen = () => {
       console.error('PDF generation error:', error);
       setIsGeneratingPDF(false);
     }
-  }, [packingListData]);
+  }, [filteredPackingListData]);
 
   // Handler: Share packing list
   const handleShare = useCallback(async () => {
-    if (!packingListData) return;
+    if (!filteredPackingListData) return;
 
-    const { container, clients, summary } = packingListData;
+    const { container, clients, summary, isSingleClientView, singleClientName } = filteredPackingListData;
 
     const lines: string[] = [];
     lines.push('╔════════════════════════════════════════════════╗');
     lines.push('║         CHINALINK EXPRESS - LISTE DE COLISAGE  ║');
     lines.push('╚════════════════════════════════════════════════╝');
+    if (isSingleClientView) {
+      lines.push('');
+      lines.push('📋 COPIE CLIENT INDIVIDUEL');
+      lines.push(`👤 Client: ${singleClientName}`);
+      lines.push('⚠️ Ce document ne contient que vos marchandises');
+    }
     lines.push('');
     lines.push(`📦 Container: ${container.number}`);
     lines.push(`🚢 Route: Chine → Bamako`);
     lines.push(`🛳️ Mode: ${container.shippingModeLabel || SHIPPING_MODE_LABELS[container.shippingMode] || container.shippingMode}`);
     lines.push(`🏢 Compagnie: ${container.shippingLineLabel || SHIPPING_LINE_LABELS[container.shippingLine] || container.shippingLine}`);
     lines.push(`📅 Date: ${new Date().toLocaleDateString('fr-FR')}`);
+    lines.push('');
+    lines.push('── CONSIGNATAIRE & POINT DE RETRAIT ──────────────');
+    lines.push(`👤 Consignataire: ${container.consignee?.name || 'N/A'}`);
+    lines.push(`📞 Contact: ${container.consignee?.phone || 'N/A'}`);
+    lines.push(`📍 Point de Retrait: ${container.consignee?.warehouseAddress || 'ChinaLink Express Warehouse - Bamako'}`);
     lines.push('');
     lines.push('══════════════════════════════════════════════════');
     lines.push('                    MARCHANDISES                  ');
@@ -427,15 +510,23 @@ export const usePackingListScreen = () => {
     lines.push(`📦 Total Marchandises: ${summary.totalItems}`);
     lines.push(`📐 Volume Total: ${summary.totalCBM.toFixed(2)} m³`);
     lines.push(`⚖️ Poids Total: ${summary.totalWeight.toFixed(0)} kg`);
-    lines.push(`📊 Utilisation: ${summary.capacityPercentage.toFixed(1)}%`);
+    if (!isSingleClientView) {
+      lines.push(`📊 Utilisation: ${summary.capacityPercentage.toFixed(1)}%`);
+    }
     lines.push('');
     lines.push('💰 MONTANT TOTAL CONTAINER: ' + grandTotalText.toLocaleString() + ' FCFA');
     lines.push('✅ TOTAL DÉJÀ PAYÉ: ' + grandPaidText.toLocaleString() + ' FCFA');
     lines.push('⚠️ SOLDE TOTAL À RECOUVRER: ' + grandBalanceText.toLocaleString() + ' FCFA');
     lines.push('');
+    lines.push('── PAIEMENT EN AVANCE ────────────────────────────');
+    lines.push('Pour effectuer un paiement anticipé ou régler votre solde,');
+    lines.push('veuillez contacter le consignataire:');
+    lines.push(`👤 ${container.consignee?.name || 'N/A'}`);
+    lines.push(`📞 ${container.consignee?.phone || 'N/A'}`);
+    lines.push('');
     lines.push('══════════════════════════════════════════════════');
     lines.push('    ChinaLink Express - Transport International   ');
-    lines.push('        Tél: +223 XX XX XX XX | Bamako, Mali      ');
+    lines.push(`        Tél: ${container.consignee?.phone || '+223 XX XX XX XX'} | Bamako, Mali      `);
     lines.push('══════════════════════════════════════════════════');
 
     try {
@@ -446,7 +537,7 @@ export const usePackingListScreen = () => {
     } catch (error) {
       Alert.alert('Erreur', 'Impossible de partager la liste');
     }
-  }, [packingListData]);
+  }, [filteredPackingListData]);
 
   const handleToggleAll = useCallback(() => {
     setAllExpanded((prev) => !prev);
@@ -478,6 +569,10 @@ export const usePackingListScreen = () => {
     allExpanded,
     setAllExpanded,
     packingListData,
+    // Single client filtering (for walk-in customers)
+    filteredPackingListData,
+    selectedClientId,
+    setSelectedClientId,
     handlePrint,
     handleShare,
     handleToggleAll,

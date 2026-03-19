@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Alert } from 'react-native';
-import { useReceiveGoods as useReceiveGoodsMutation } from './useGoods';
+// Direct import from useGoods.ts to get the mutation hook
+import { useReceiveGoods as useReceiveGoodsMutationFn } from './useGoods';
 import { useReceiveGoodsForm } from './useReceiveGoodsForm';
-import { ApiClientError } from '@src/api/client';
 
 type AdminV2StackParamList = {
   GoodsList: undefined;
@@ -19,7 +19,7 @@ export const useReceiveGoods = () => {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const form = useReceiveGoodsForm({ initialQuantity: 1 });
-  const receiveGoodsMutation = useReceiveGoodsMutation();
+  const receiveGoodsMutation = useReceiveGoodsMutationFn();
 
   const handleSubmit = async () => {
     if (!form.validateForm()) {
@@ -36,12 +36,11 @@ export const useReceiveGoods = () => {
         photoUri: form.photoUri || undefined,
       });
       setShowSuccessDialog(true);
-    } catch (error) {
-      if (error instanceof ApiClientError) {
-        setErrorMessage(error.getUserMessage());
-      } else {
-        setErrorMessage('Une erreur inattendue est survenue');
-      }
+    } catch (error: any) {
+      console.error('[useReceiveGoods] Error:', error);
+      // ApiClientError has the message directly
+      const serverMessage = error?.message || error?.response?.data?.message;
+      setErrorMessage(serverMessage || 'Une erreur inattendue est survenue');
     }
   };
 

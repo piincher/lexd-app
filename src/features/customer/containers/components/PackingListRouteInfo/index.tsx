@@ -68,7 +68,7 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
             <View style={styles.routeLine}>
               <View style={styles.routeLineBar} />
               <View style={styles.routeTransitInfo}>
-                <MaterialCommunityIcons name="truck" size={14} color="#64748B" />
+                <MaterialCommunityIcons name="truck-delivery" size={14} color="#64748B" />
                 <Text style={styles.transitDays}>Transport routier</Text>
               </View>
             </View>

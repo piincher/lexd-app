@@ -17,7 +17,7 @@ const signupSchema = yup.object({
 	firstName: yup.string().required('Prenom est requis'),
 	lastName: yup.string().required('Nom est requis'),
 	phoneNumber: yup
-		.number()
+		.string()
 		.required('Numero de telephone est requis')
 		.min(8, 'Numero de telephone doit etre de 8 chiffres'),
 });

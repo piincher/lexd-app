@@ -168,7 +168,7 @@ export const DISCHARGE_PORT_STATUSES: PortStatusOption[] = [
   {
     status: 'DEPARTED',
     label: 'Départ',
-    icon: 'truck',
+    icon: 'car',
     color: '#6366F1',
     description: 'Conteneur parti du port',
     availableFrom: ['READY_FOR_PICKUP'],
@@ -252,7 +252,7 @@ export const WAREHOUSE_STATUSES: PortStatusOption[] = [
   {
     status: 'IN_PROGRESS',
     label: 'En Transit',
-    icon: 'truck',
+    icon: 'car',
     color: '#3B82F6',
     description: 'En route vers l\'entrepôt',
     availableFrom: ['PENDING'],

@@ -17,7 +17,7 @@ const STATUS_ORDER = [
   { key: 'Order in Processing', label: 'Processing', icon: 'cog' },
   { key: 'Order in Transit', label: 'In Transit', icon: 'truck-delivery' },
   { key: 'Order in Arrived', label: 'Arrived', icon: 'map-marker-check' },
-  { key: 'Delivered', label: 'Delivered', icon: 'package-variant-delivered' },
+  { key: 'Delivered', label: 'Delivered', icon: 'package-check' },
 ];
 
 export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({ 

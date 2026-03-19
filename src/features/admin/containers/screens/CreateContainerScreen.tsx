@@ -2,7 +2,7 @@
  * CreateContainerScreen - Create new container with form validation
  */
 import React from 'react';
-import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView, Platform, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card } from 'react-native-paper';
 import { useCreateContainerScreen } from './CreateContainer/hooks';
@@ -38,6 +38,7 @@ export const CreateContainerScreen: React.FC = () => {
               <ConsigneeSelector selectedConsigneeId={formData.consigneeId} selectedConsigneeName={selectedConsigneeName} consignees={filteredConsignees} searchQuery={consigneeSearchQuery} showDropdown={showConsigneeDropdown} error={errors.consigneeId} onSearchChange={setConsigneeSearchQuery} onToggleDropdown={setShowConsigneeDropdown} onSelectConsignee={handleSelectConsignee} onClearConsignee={handleClearConsignee} />
               <ContainerNumberInput value={formData.actualContainerNumber} error={errors.actualContainerNumber} onChangeText={(text) => updateField('actualContainerNumber', text)} />
               <BookingReferenceInput value={formData.bookingReference} onChangeText={(text) => updateField('bookingReference', text)} />
+              {errors.submit && <Text style={styles.errorText}>{errors.submit}</Text>}
               <SubmitButton isLoading={createMutation.isPending} isDisabled={!formData.shippingMode || !formData.routeId || !formData.consigneeId} onSubmit={handleSubmit} />
             </Card.Content>
           </Card>

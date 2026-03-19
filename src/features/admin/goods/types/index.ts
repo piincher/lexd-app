@@ -95,6 +95,7 @@ export interface Goods {
 export interface ReceiveGoodsInput {
   clientId: string;
   description: string;
+  shippingMode: 'AIR' | 'SEA';
   dimensions?: Dimensions;
   actualCBM?: number;
   weight: number;

@@ -238,7 +238,7 @@ export const SEGMENT_TYPE_OPTIONS: SegmentType[] = ['SEA', 'ROAD', 'AIR', 'WAREH
 
 export const SEGMENT_TYPE_ICONS: Record<SegmentType, string> = {
   SEA: 'boat',
-  ROAD: 'truck',
+  ROAD: 'car',
   AIR: 'airplane',
   WAREHOUSE: 'warehouse',
 };
@@ -297,7 +297,7 @@ export const TRANSPORT_MODE_LABELS: Record<TransportMode, string> = {
 
 export const TRANSPORT_MODE_ICONS: Record<TransportMode, string> = {
   SEA: 'boat',
-  ROAD: 'truck',
+  ROAD: 'car',
   AIR: 'airplane',
   RAIL: 'train',
 };

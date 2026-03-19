@@ -17,6 +17,7 @@ import { OrderInfoSection } from './components/OrderInfoSection';
 import { PaymentSection } from './components/PaymentSection';
 import { OrderStatusTimeline } from './components/OrderStatusTimeline';
 import { OrderActions } from './components/OrderActions';
+import { OrderGoodsSection } from './components/OrderGoodsSection';
 import { OrderDetailSkeleton } from './components/OrderDetailSkeleton';
 import { EmptyOrders } from './components/EmptyOrders';
 import { styles } from './OrderDetailScreen.styles';
@@ -89,6 +90,9 @@ const OrderDetailScreen: React.FC = () => {
 
         {/* Order Information */}
         <OrderInfoSection order={order} />
+
+        {/* Goods Section - Shows goods attached to this order */}
+        <OrderGoodsSection goods={order?.goodsIds || []} />
 
         {/* Status Timeline */}
         <OrderStatusTimeline 

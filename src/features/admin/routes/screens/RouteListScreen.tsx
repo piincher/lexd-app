@@ -49,10 +49,9 @@ export const RouteListScreen: React.FC = () => {
 
   const { data, isLoading, isRefetching, error, refetch } = useGetRoutes(filters);
 
-  // Handle response data
-  const routes: Route[] = Array.isArray(data?.data) 
-    ? data.data 
-    : [];
+  // Handle response data - backend returns { data: { routes: [...], pagination: {...} } }
+  const routes: Route[] = (data?.data?.routes as Route[]) || [];
+  const pagination = data?.data?.pagination;
 
   // Calculate stats
   const stats = {
@@ -357,7 +356,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
             <View style={styles.locationContainer}>
               <Text style={styles.locationLabel}>Origine</Text>
               <Text style={styles.locationValue} numberOfLines={1}>
-                {route.origin}
+                {typeof route.origin === 'string' ? route.origin : route.origin?.city}
               </Text>
             </View>
             <View style={styles.routeArrow}>
@@ -366,7 +365,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
             <View style={styles.locationContainer}>
               <Text style={styles.locationLabel}>Destination</Text>
               <Text style={styles.locationValue} numberOfLines={1}>
-                {route.destination}
+                {typeof route.destination === 'string' ? route.destination : route.destination?.city}
               </Text>
             </View>
           </View>

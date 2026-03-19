@@ -35,10 +35,11 @@ export const routeQueryKeys = {
 
 /**
  * Hook to get all routes with optional filters
+ * Backend returns { data: { routes: [...], pagination: {...} } }
  */
 export const useGetRoutes = (
   filters?: RouteFilters,
-  options?: UseQueryOptions<ApiResponse<Route[]>, ApiClientError>
+  options?: UseQueryOptions<ApiResponse<{ routes: Route[]; pagination?: any }>, ApiClientError>
 ) => {
   return useQuery({
     queryKey: routeQueryKeys.list(filters),
@@ -51,10 +52,11 @@ export const useGetRoutes = (
 /**
  * Hook to get active routes (for dropdowns)
  * Optionally filter by shipping mode
+ * Backend returns { data: { routes: [...] } }
  */
 export const useGetActiveRoutes = (
   mode?: string,
-  options?: UseQueryOptions<ApiResponse<Route[]>, ApiClientError>
+  options?: UseQueryOptions<ApiResponse<{ routes: Route[] }>, ApiClientError>
 ) => {
   return useQuery({
     queryKey: routeQueryKeys.activeByMode(mode),
@@ -174,13 +176,13 @@ export const useToggleRouteStatus = () => {
 
 /**
  * Hook to get route statistics
+ * Backend returns { data: { routes: [...], pagination: {...} } }
  */
 export const useRouteStats = () => {
   const { data: routesData } = useGetRoutes();
   
-  const routes: Route[] = Array.isArray(routesData?.data) 
-    ? routesData.data 
-    : [];
+  // Extract routes array from nested response
+  const routes: Route[] = routesData?.data?.routes || [];
 
   return {
     total: routes.length,

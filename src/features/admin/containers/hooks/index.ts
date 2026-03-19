@@ -52,3 +52,17 @@ export {
   // Query keys
   waypointQueryKeys,
 } from './useWaypoints';
+
+// ============================================
+// TRANSIT STATUS HOOKS
+// ============================================
+
+export {
+  transitStatusQueryKeys,
+  useGetTransitStatus,
+  useGetTransitHistory,
+  useUpdateTransitStatus,
+  useValidateTransitTransition,
+  useBulkUpdateTransitStatus,
+  useTransitProgress,
+} from './useTransitStatus';

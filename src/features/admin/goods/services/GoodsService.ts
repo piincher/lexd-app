@@ -180,6 +180,7 @@ export class GoodsService {
     // Add basic fields
     formData.append('clientId', data.clientId);
     formData.append('description', data.description || '');
+    formData.append('shippingMode', data.shippingMode || 'SEA');
     formData.append('actualCBM', data.actualCBM?.toString() || '0');
     formData.append('weight', data.weight.toString());
     formData.append('quantity', data.quantity.toString());

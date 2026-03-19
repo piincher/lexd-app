@@ -39,7 +39,7 @@ const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
 const STATUS_CONFIG: Record<string, { color: string; icon: string; label: string }> = {
   received: { color: '#6366F1', icon: 'package-variant', label: 'Reçu' },
   in_container: { color: '#3B82F6', icon: 'container', label: 'En Container' },
-  shipped: { color: '#0EA5E9', icon: 'ship', label: 'Expédié' },
+  shipped: { color: '#0EA5E9', icon: 'ferry', label: 'Expédié' },
   in_transit: { color: '#F59E0B', icon: 'truck-fast', label: 'En Transit' },
   arrived: { color: '#10B981', icon: 'map-marker-check', label: 'Arrivé' },
   delivered: { color: '#059669', icon: 'check-circle', label: 'Livré' },

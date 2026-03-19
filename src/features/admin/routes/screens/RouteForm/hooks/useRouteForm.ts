@@ -59,14 +59,14 @@ export const useRouteForm = () => {
     if (isEditMode && routeData?.data) {
       const route = routeData.data;
       setFormData({
-        name: route.name,
-        shippingMode: route.shippingMode,
-        origin: route.origin,
-        destination: route.destination,
+        name: route.name || '',
+        shippingMode: route.shippingMode || '',
+        origin: typeof route.origin === 'string' ? route.origin : route.origin?.city || '',
+        destination: typeof route.destination === 'string' ? route.destination : route.destination?.city || '',
         shippingLine: (route.shippingLine as ShippingLine) || '',
-        estimatedTransitDays: route.estimatedTransitDays.toString(),
+        estimatedTransitDays: route.estimatedTransitDays?.toString() || '',
         description: route.description || '',
-        isActive: route.isActive,
+        isActive: route.isActive ?? true,
       });
     }
   }, [isEditMode, routeData]);

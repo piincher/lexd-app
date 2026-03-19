@@ -34,7 +34,7 @@ const STATUS_CONFIG: Record<string, {
   Delivered: { 
     color: '#2196F3', 
     bgColor: '#E3F2FD',
-    icon: 'package-variant-delivered',
+    icon: 'package-check',
     label: 'Delivered'
   },
   Inactive: { 

@@ -22,6 +22,7 @@ interface FormErrors {
   consigneeId?: string;
   actualContainerNumber?: string;
   bookingReference?: string;
+  submit?: string;
 }
 
 const SHIPPING_MODES: ShippingMode[] = ['SEA', 'AIR'];
@@ -57,8 +58,8 @@ export const useCreateContainerScreen = () => {
   const createMutation = useCreateContainer();
 
   const consignees: Consignee[] = consigneesData || [];
-  // Safe extraction of routes data - handle different API response formats
-  const routes: Route[] = (routesData?.data as Route[]) || [];
+  // Extract routes from response - backend returns { data: { routes: [...] } }
+  const routes: Route[] = (routesData?.data?.routes as Route[]) || [];
 
   // Filter consignees based on search
   const filteredConsignees = useMemo(() => {
@@ -168,9 +169,19 @@ export const useCreateContainerScreen = () => {
       bookingReference: formData.bookingReference.trim() || undefined,
     };
 
+    console.log('[CreateContainer] Submitting:', submitData);
+
     createMutation.mutate(submitData, {
-      onSuccess: () => {
+      onSuccess: (response) => {
+        console.log('[CreateContainer] Success:', response);
         navigation.goBack();
+      },
+      onError: (error: any) => {
+        console.error('[CreateContainer] Error:', error);
+        setErrors((prev) => ({
+          ...prev,
+          submit: error?.response?.data?.message || error?.message || 'Erreur lors de la création du container',
+        }));
       },
     });
   }, [formData, validateForm, createMutation, navigation]);
@@ -192,6 +203,7 @@ export const useCreateContainerScreen = () => {
     isLoadingRoutes,
     isRoutesError,
     createMutation,
+    isSubmitting: createMutation.isPending,
     navigation,
     handleSelectShippingMode,
     handleSelectRoute,

@@ -124,7 +124,7 @@ const GoodsDetailScreen = ({
 
 	// Get shipment icon name based on type
 	const getShipmentIcon = (shipmentType?: 'air' | 'sea'): any => {
-		return shipmentType === 'air' ? 'airplane' : 'ship';
+		return shipmentType === 'air' ? 'airplane' : 'ferry';
 	};
 
 	// Phase 3: Navigate to container tracking

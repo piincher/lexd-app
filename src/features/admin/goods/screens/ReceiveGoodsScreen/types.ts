@@ -36,12 +36,18 @@ export const dimensionsSchema = z.object({
 
 /**
  * Schema for receive goods form
+ * CBM fields are conditionally required based on shipping mode
  */
 export const receiveGoodsSchema = z.object({
   description: z.string()
     .min(1, 'La description est requise')
     .min(3, 'La description doit contenir au moins 3 caractères'),
   
+  // Shipping mode - determines validation rules
+  shippingMode: z.enum(['AIR', 'SEA'])
+    .default('SEA'),
+  
+  // CBM fields - conditionally validated
   length: z.string().optional(),
   width: z.string().optional(),
   height: z.string().optional(),
@@ -77,6 +83,18 @@ export const receiveGoodsSchema = z.object({
   
   condition: z.enum(['new', 'used', 'damaged'])
     .default('new'),
+}).refine((data) => {
+  // For SEA shipping, CBM is required (either via dimensions or direct input)
+  if (data.shippingMode === 'SEA') {
+    const hasDimensions = data.length && data.width && data.height;
+    const hasDirectCBM = data.cbm && parseFloat(data.cbm.replace(',', '.')) > 0;
+    return hasDimensions || hasDirectCBM;
+  }
+  // For AIR shipping, CBM is optional
+  return true;
+}, {
+  message: 'CBM est requis pour le transport maritime (dimensions ou CBM direct)',
+  path: ['cbm'], // Error will be associated with cbm field
 });
 
 // ============================================
@@ -96,6 +114,7 @@ export interface GoodsDimensionsInputProps extends ReceiveGoodsFormSectionProps 
   useDimensions: boolean;
   onToggleMode: (use: boolean) => void;
   calculatedCBM: number;
+  shippingMode: 'AIR' | 'SEA';
 }
 
 export interface GoodsPhotosUploadProps {

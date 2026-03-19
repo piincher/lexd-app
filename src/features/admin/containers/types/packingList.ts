@@ -51,6 +51,8 @@ export interface PackingListContainer {
     phone: string;
     warehouseAddress?: string;
   } | null;
+  // Extended fields for PDF generation
+  shippingModeLabel?: string;
 }
 
 /**
@@ -77,6 +79,9 @@ export interface AdminPackingListData {
   summary: ContainerSummary;
   generatedAt: string;
   generatedBy?: string;
+  // Extended properties for single client view (walk-in customers)
+  isSingleClientView?: boolean;
+  singleClientName?: string;
 }
 
 /**
@@ -106,6 +111,9 @@ export interface AdminLoadingListData {
     loadedCBM: number;
     remainingCBM: number;
   };
+  // Extended properties for single client view (walk-in customers)
+  isSingleClientView?: boolean;
+  singleClientName?: string;
 }
 
 /**

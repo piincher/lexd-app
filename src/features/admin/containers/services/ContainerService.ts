@@ -43,7 +43,7 @@ export class ContainerService {
   /**
    * Get active routes filtered by shipping mode
    */
-  async getActiveRoutesByMode(mode: string): Promise<ApiResponse<Route[]>> {
+  async getActiveRoutesByMode(mode: string): Promise<ApiResponse<{ routes: Route[] }>> {
     return apiRequest.get(this.client, ROUTES_URL, { 
       params: { 
         shippingMode: mode,
@@ -55,7 +55,7 @@ export class ContainerService {
   /**
    * Get all active routes
    */
-  async getActiveRoutes(filters?: RouteFilters): Promise<ApiResponse<Route[]>> {
+  async getActiveRoutes(filters?: RouteFilters): Promise<ApiResponse<{ routes: Route[] }>> {
     return apiRequest.get(this.client, ROUTES_URL, { 
       params: { 
         isActive: true,

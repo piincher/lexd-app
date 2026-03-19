@@ -3,6 +3,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import { Alert } from 'react-native';
 import { useGetContainerById, useUpdateContainerStatus, useRemoveGoodsFromContainer, useDeleteContainer, useMarkReadyForPickup, useMarkGoodsDelivered, containerQueryKeys } from '../../hooks';
+import { waypointQueryKeys } from '../../hooks/useWaypoints';
 import { Container, ContainerStatus, CONTAINER_STATUS_COLORS, CONTAINER_STATUS_LABELS } from '../../types';
 import { Goods } from '../../../goods/types';
 import { Theme } from '@src/constants/Theme';
@@ -29,7 +30,13 @@ export const useContainerDetailScreen = () => {
   const getFillColor = (p: number) => p >= 90 ? Theme.status.error : p >= 70 ? Theme.status.warning : Theme.status.success;
   const fillColor = getFillColor(fillPercentage), statusColor = container ? CONTAINER_STATUS_COLORS[container.status] : '#8B5CF6';
   const statusLabel = container ? CONTAINER_STATUS_LABELS[container.status] : '', currentStatusIndex = container ? TIMELINE_STEPS.indexOf(container.status) : -1;
-  const handleRefresh = async () => { setIsRefreshing(true); await queryClient.invalidateQueries({ queryKey: containerQueryKeys.detail(containerId) }); await refetch(); setIsRefreshing(false); };
+  const handleRefresh = async () => { 
+    setIsRefreshing(true); 
+    await queryClient.invalidateQueries({ queryKey: containerQueryKeys.detail(containerId) });
+    await queryClient.invalidateQueries({ queryKey: waypointQueryKeys.list(containerId) });
+    await refetch(); 
+    setIsRefreshing(false); 
+  };
   const handleUpdateStatus = async (newStatus: ContainerStatus) => { setStatusMenuVisible(false); if (newStatus === container?.status) return; try { await updateStatusMutation.mutateAsync({ id: containerId, data: { status: newStatus } }); Alert.alert('Succès', `Statut mis à jour: ${CONTAINER_STATUS_LABELS[newStatus]}`); } catch { Alert.alert('Erreur', 'Impossible de mettre à jour le statut'); } };
   const handleRemoveGoods = (goodsId: string) => { setSelectedGoodsId(goodsId); setShowRemoveGoodsDialog(true); };
   const confirmRemoveGoods = async () => { if (!selectedGoodsId) return; try { await removeGoodsMutation.mutateAsync({ containerId, goodsId: selectedGoodsId }); setShowRemoveGoodsDialog(false); setSelectedGoodsId(null); Alert.alert('Succès', 'Marchandise retirée'); } catch { Alert.alert('Erreur', 'Impossible de retirer la marchandise'); } };

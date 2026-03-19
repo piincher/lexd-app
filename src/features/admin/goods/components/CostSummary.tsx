@@ -1,6 +1,6 @@
 /**
  * CostSummary - Component displaying cost calculation summary
- * Improved with better visual styling and clear hierarchy
+ * Supports both AIR (weight-based) and SEA (CBM-based) shipping modes
  */
 
 import React from 'react';
@@ -10,8 +10,10 @@ import { COLORS } from '@src/constants/Colors';
 
 interface CostSummaryProps {
   cbm: number;
+  weight?: number;
   unitPrice: number;
   totalCost: number;
+  shippingMode?: 'AIR' | 'SEA';
 }
 
 const formatCurrency = (amount: number): string => {
@@ -20,10 +22,20 @@ const formatCurrency = (amount: number): string => {
 
 export const CostSummary: React.FC<CostSummaryProps> = ({
   cbm,
+  weight = 0,
   unitPrice,
   totalCost,
+  shippingMode = 'SEA',
 }) => {
-  if (cbm <= 0 || unitPrice <= 0) {
+  const isAirShipping = shippingMode === 'AIR';
+  
+  // For AIR: need weight and unitPrice
+  // For SEA: need cbm and unitPrice
+  const hasRequiredValues = isAirShipping 
+    ? (weight > 0 && unitPrice > 0)
+    : (cbm > 0 && unitPrice > 0);
+    
+  if (!hasRequiredValues) {
     return null;
   }
 
@@ -32,14 +44,25 @@ export const CostSummary: React.FC<CostSummaryProps> = ({
       <Card.Content style={styles.cardContent}>
         <Text style={styles.sectionLabel}>Récapitulatif des coûts</Text>
         
-        <View style={styles.row}>
-          <Text style={styles.label}>Volume (CBM)</Text>
-          <Text style={styles.value}>{cbm.toFixed(4)} m³</Text>
-        </View>
+        {isAirShipping ? (
+          // AIR shipping - show weight
+          <View style={styles.row}>
+            <Text style={styles.label}>Poids</Text>
+            <Text style={styles.value}>{weight.toFixed(2)} kg</Text>
+          </View>
+        ) : (
+          // SEA shipping - show CBM
+          <View style={styles.row}>
+            <Text style={styles.label}>Volume (CBM)</Text>
+            <Text style={styles.value}>{cbm.toFixed(4)} m³</Text>
+          </View>
+        )}
         
         <View style={styles.row}>
           <Text style={styles.label}>Prix unitaire</Text>
-          <Text style={styles.value}>{formatCurrency(unitPrice)} FCFA/m³</Text>
+          <Text style={styles.value}>
+            {formatCurrency(unitPrice)} FCFA/{isAirShipping ? 'kg' : 'm³'}
+          </Text>
         </View>
         
         <Divider style={styles.divider} />

@@ -1,4 +1,4 @@
-import * as FileSystem from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -26,10 +26,10 @@ export const blobToBase64 = (blob: Blob): Promise<string> => {
 };
 
 export const savePDF = async (blob: Blob, filename: string): Promise<string> => {
-  const fileUri = `${FileSystem.cacheDirectory}${filename}`;
+  const destFile = new File(Paths.cache, filename);
   const base64Data = await blobToBase64(blob);
-  await FileSystem.writeAsStringAsync(fileUri, base64Data, { encoding: FileSystem.EncodingType.Base64 });
-  return fileUri;
+  await destFile.write(base64Data, { encoding: 'base64' });
+  return destFile.uri;
 };
 
 export const downloadWeb = (blob: Blob, filename: string) => {

@@ -1,9 +1,10 @@
 /**
  * PackingListScreen - Admin Packing List with client grouping
  * Enhanced: Shows ALL goods grouped by client with collapsible sections
+ * NEW: Single client filter for walk-in customers
  */
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { usePackingListScreen } from './PackingList/hooks';
 import {
@@ -17,6 +18,7 @@ import {
   ActionBar,
 } from './PackingList/components';
 import { ClientGoodsSection } from '../components/ClientGoodsSection';
+import { ClientSelector } from './PackingList/components/ClientSelector';
 import { styles } from './PackingList/PackingListScreen.styles';
 
 export const PackingListScreen: React.FC = () => {
@@ -27,6 +29,9 @@ export const PackingListScreen: React.FC = () => {
     isGeneratingPDF,
     allExpanded,
     packingListData,
+    filteredPackingListData,
+    selectedClientId,
+    setSelectedClientId,
     handleShare,
     handlePrint,
     handleToggleAll,
@@ -39,11 +44,13 @@ export const PackingListScreen: React.FC = () => {
     return <LoadingState />;
   }
 
-  if (!container || !packingListData) {
+  if (!container || !packingListData || !filteredPackingListData) {
     return <ErrorState onBack={() => navigation.goBack()} />;
   }
 
-  const { clients = [], summary } = packingListData;
+  // Use filtered data for display (supports single client view for walk-ins)
+  const { clients = [], summary } = filteredPackingListData;
+  const allClients = packingListData.clients;
   
   // Ensure summary has required fields
   const safeSummary = summary || { totalItems: 0, totalCBM: 0, totalWeight: 0, totalPackages: 0, capacityPercentage: 0 };
@@ -63,7 +70,25 @@ export const PackingListScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
+        {/* Client Selector - for walk-in customers who need individual packing list */}
+        {allClients.length > 1 && (
+          <ClientSelector
+            clients={allClients}
+            selectedClientId={selectedClientId}
+            onSelectClient={setSelectedClientId}
+          />
+        )}
+
         <CapacityCard summary={safeSummary} />
+
+        {/* Show indicator when viewing single client (walk-in mode) */}
+        {selectedClientId && clients.length === 1 && (
+          <View style={styles.singleClientBanner}>
+            <Text style={styles.singleClientText}>
+              📋 Vue client individuel: {clients[0]?.clientName}
+            </Text>
+          </View>
+        )}
 
         <SectionHeader allExpanded={allExpanded} onToggleAll={handleToggleAll} />
 
