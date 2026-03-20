@@ -1,6 +1,7 @@
 /**
  * useReceiveGoodsScreen - Screen-level hook
  * Responsibility: Orchestrate form hook and UI state
+ * Auto-assigns goods to existing order (< 7 days) or creates new order
  */
 
 import { useState, useCallback } from 'react';
@@ -17,8 +18,7 @@ export const useReceiveGoodsScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
-  const [showChoiceModal, setShowChoiceModal] = useState(false);
-  const [createdGoodsId, setCreatedGoodsId] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string>('Marchandise enregistrée avec succès!');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Form hook
@@ -28,7 +28,7 @@ export const useReceiveGoodsScreen = () => {
   const receiveGoodsMutation = useReceiveGoodsMutation();
 
   /**
-   * Handle form submission - shows choice modal instead of directly submitting
+   * Handle form submission - auto-assigns to order or creates new one
    */
   const handleSubmit = useCallback(async () => {
     setIsSubmitted(true);
@@ -46,63 +46,31 @@ export const useReceiveGoodsScreen = () => {
       return;
     }
 
-    // Show choice modal instead of directly submitting
-    setShowChoiceModal(true);
-  }, [formHook]);
-
-  /**
-   * Handle creating new order (traditional flow)
-   */
-  const handleCreateNewOrder = useCallback(async () => {
-    setShowChoiceModal(false);
-
-    const submitData = formHook.buildSubmitData();
-    if (!submitData) return;
-
-    try {
-      await receiveGoodsMutation.mutateAsync({
-        data: submitData,
-        photoUri: formHook.photoUri || undefined,
-      });
-      setShowSuccessDialog(true);
-    } catch (error: any) {
-      console.error('[ReceiveGoods] Error:', error);
-      // ApiClientError has the message directly, or check response data
-      const serverMessage = error?.message || error?.response?.data?.message;
-      setErrorMessage(serverMessage || 'Une erreur inattendue est survenue');
-    }
-  }, [formHook, receiveGoodsMutation]);
-
-  /**
-   * Handle assign to existing order - first create goods, then navigate
-   */
-  const handleAssignToExistingOrder = useCallback(async () => {
-    setShowChoiceModal(false);
-
-    const submitData = formHook.buildSubmitData();
-    if (!submitData) return;
-
     try {
       const result = await receiveGoodsMutation.mutateAsync({
         data: submitData,
         photoUri: formHook.photoUri || undefined,
       });
       
-      // Extract goods ID from result and navigate to order selection
-      // API returns { goods, order } in data
-      const goodsId = result?.data?.goods?._id || result?.data?.goods?.id;
-      if (goodsId) {
-        navigation.navigate('SelectManualOrder', { goodsId });
+      // Set success message based on order action
+      const orderAction = result?.data?.orderAction;
+      const orderCode = result?.data?.order?.code;
+      
+      if (orderAction === 'added_to_existing' && orderCode) {
+        setSuccessMessage(`Marchandise ajoutée à la commande ${orderCode}`);
+      } else if (orderAction === 'created_new' && orderCode) {
+        setSuccessMessage(`Nouvelle commande ${orderCode} créée avec la marchandise`);
       } else {
-        setErrorMessage('Erreur: ID de marchandise non trouvé');
+        setSuccessMessage('Marchandise enregistrée avec succès!');
       }
+      
+      setShowSuccessDialog(true);
     } catch (error: any) {
       console.error('[ReceiveGoods] Error:', error);
-      // ApiClientError has the message directly, or check response data
       const serverMessage = error?.message || error?.response?.data?.message;
       setErrorMessage(serverMessage || 'Une erreur inattendue est survenue');
     }
-  }, [formHook, receiveGoodsMutation, navigation]);
+  }, [formHook, receiveGoodsMutation]);
 
   /**
    * Dismiss error message
@@ -120,13 +88,6 @@ export const useReceiveGoodsScreen = () => {
     setIsSubmitted(false);
     navigation.navigate('AdminGoodsList');
   }, [formHook, navigation]);
-
-  /**
-   * Close choice modal
-   */
-  const closeChoiceModal = useCallback(() => {
-    setShowChoiceModal(false);
-  }, []);
 
   // Watch shipping mode for UI display and validation
   const shippingMode = formHook.watch('shippingMode') || 'SEA';
@@ -155,15 +116,12 @@ export const useReceiveGoodsScreen = () => {
       isSubmitting: receiveGoodsMutation.isPending,
       errorMessage,
       showSuccessDialog,
-      showChoiceModal,
+      successMessage,
     },
     // Actions
     actions: {
       dismissError,
       dismissSuccess,
-      closeChoiceModal,
-      createNewOrder: handleCreateNewOrder,
-      assignToExistingOrder: handleAssignToExistingOrder,
     },
   };
 };

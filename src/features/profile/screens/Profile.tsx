@@ -36,8 +36,10 @@ import { useGetCurrentUser } from "../hooks/useProfile";
 import { MaterialIcons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { useBalance } from "../hooks/useProfile";
+import { CertifiedShipperCard } from "../components/CertifiedShipperCard";
+import { useCertificateProgress } from "../hooks/useCertificate";
 import { ThemeToggle } from "@src/components/ThemeToggle";
-import { useAppTheme } from "@src/providers"; 
+import { useAppTheme } from "@src/providers";
 
 const AnimatedList = Animated.createAnimatedComponent(List.Item);
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView);
@@ -81,6 +83,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
    const logout = useAuth((state) => state.logOut);
    const { data } = useGetCurrentUser();
    const { data: balanceData } = useBalance();
+   const { data: certificateProgress, isLoading: isCertLoading } = useCertificateProgress();
    const { width } = useWindowDimensions();
 
    console.log("User Data: ", data);
@@ -154,6 +157,10 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                         </View>
 
                      </View>
+                  </MotiView>
+
+                  <MotiView {...statsAnimation(1)} style={{ marginTop: 4 }}>
+                     <CertifiedShipperCard progress={certificateProgress} isLoading={isCertLoading} />
                   </MotiView>
 
                   {/* <MotiView {...statsAnimation(1)} style={styles.statCard}>

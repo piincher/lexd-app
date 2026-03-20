@@ -17,6 +17,7 @@ export const useReceiveGoods = () => {
   const navigation = useNavigation<NavigationProp>();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string>('Marchandise enregistrée avec succès!');
 
   const form = useReceiveGoodsForm({ initialQuantity: 1 });
   const receiveGoodsMutation = useReceiveGoodsMutationFn();
@@ -31,10 +32,23 @@ export const useReceiveGoods = () => {
     if (!submitData) return;
 
     try {
-      await receiveGoodsMutation.mutateAsync({
+      const result = await receiveGoodsMutation.mutateAsync({
         data: submitData,
         photoUri: form.photoUri || undefined,
       });
+      
+      // Set success message based on order action
+      const orderAction = result?.data?.orderAction;
+      const orderCode = result?.data?.order?.code;
+      
+      if (orderAction === 'added_to_existing' && orderCode) {
+        setSuccessMessage(`Marchandise ajoutée à la commande ${orderCode}`);
+      } else if (orderAction === 'created_new' && orderCode) {
+        setSuccessMessage(`Nouvelle commande ${orderCode} créée avec la marchandise`);
+      } else {
+        setSuccessMessage('Marchandise enregistrée avec succès!');
+      }
+      
       setShowSuccessDialog(true);
     } catch (error: any) {
       console.error('[useReceiveGoods] Error:', error);
@@ -61,6 +75,7 @@ export const useReceiveGoods = () => {
     setErrorMessage,
     showSuccessDialog,
     setShowSuccessDialog,
+    successMessage,
     isSubmitting: receiveGoodsMutation.isPending,
     handleSubmit,
     handleSuccessDismiss,

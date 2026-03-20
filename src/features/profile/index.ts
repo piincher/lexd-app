@@ -9,3 +9,4 @@ export { default as NotificationSettingsScreen } from "./screens/NotificationSet
 
 // Hooks
 export { useGetCurrentUser, useBalance, useInitiateTopUp } from "./hooks/useProfile";
+export { useCertificateProgress } from "./hooks/useCertificate";

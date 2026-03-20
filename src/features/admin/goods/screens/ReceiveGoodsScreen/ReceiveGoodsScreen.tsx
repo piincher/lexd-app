@@ -1,11 +1,12 @@
 /**
  * ReceiveGoodsScreen - Thin screen component
  * Responsibility: Layout composition only (<100 lines)
+ * Auto-assigns goods to order (< 7 days) or creates new order
  */
 
 import React from 'react';
 import { View, Text, SafeAreaView, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { Button, Snackbar, Portal, Dialog, Divider } from 'react-native-paper';
+import { Button, Snackbar, Portal, Dialog } from 'react-native-paper';
 import { useReceiveGoodsScreen } from './hooks/useReceiveGoodsScreen';
 import { ReceiveGoodsForm } from './components/ReceiveGoodsForm';
 import { styles } from './ReceiveGoodsScreen.styles';
@@ -70,48 +71,10 @@ export const ReceiveGoodsScreen: React.FC = () => {
             <Dialog.Icon icon="check-circle" size={48} color={COLORS.success || '#28a745'} />
             <Dialog.Title style={styles.dialogTitle}>Succès</Dialog.Title>
             <Dialog.Content>
-              <Text style={styles.dialogText}>Marchandise enregistrée avec succès!</Text>
+              <Text style={styles.dialogText}>{ui.successMessage}</Text>
             </Dialog.Content>
             <Dialog.Actions style={styles.dialogActions}>
               <Button onPress={actions.dismissSuccess} mode="contained" style={styles.dialogButton}>OK</Button>
-            </Dialog.Actions>
-          </Dialog>
-
-          {/* Choice Modal - Create New Order vs Assign to Existing */}
-          <Dialog visible={ui.showChoiceModal} onDismiss={actions.closeChoiceModal} style={styles.choiceDialog}>
-            <Dialog.Icon icon="link-variant" size={40} color={COLORS.primary || '#dc3545'} />
-            <Dialog.Title style={styles.dialogTitle}>Assigner la marchandise</Dialog.Title>
-            <Dialog.Content>
-              <Text style={styles.choiceDialogText}>
-                Comment souhaitez-vous traiter cette marchandise ?
-              </Text>
-            </Dialog.Content>
-            <Dialog.Actions style={styles.choiceDialogActions}>
-              <Button 
-                onPress={actions.createNewOrder} 
-                mode="outlined" 
-                style={styles.choiceButton}
-                icon="plus-circle"
-                loading={ui.isSubmitting}
-                disabled={ui.isSubmitting}
-              >
-                Nouvelle commande
-              </Button>
-              <View style={styles.choiceDivider}>
-                <Divider style={styles.dividerLine} />
-                <Text style={styles.dividerText}>ou</Text>
-                <Divider style={styles.dividerLine} />
-              </View>
-              <Button 
-                onPress={actions.assignToExistingOrder} 
-                mode="contained" 
-                style={[styles.choiceButton, styles.assignButton]}
-                icon="link"
-                loading={ui.isSubmitting}
-                disabled={ui.isSubmitting}
-              >
-                Commande existante
-              </Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

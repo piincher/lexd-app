@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
   buttonLabel: {
     fontSize: 14,
     fontWeight: '600',
-    fontFamily: Fonts.semiBold,
+    fontFamily: Fonts.bold,
   },
 });
 

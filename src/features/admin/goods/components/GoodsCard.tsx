@@ -16,7 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Badge } from '@src/components/ui';
 import { Theme } from '@src/constants/Theme';
-import { Goods } from '../types';
+import { Goods, ClientInfo } from '../types';
 
 const { width } = Dimensions.get('window');
 
@@ -86,6 +86,11 @@ const formatCurrency = (amount: number): string => {
 export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress, onMenuPress }) => {
   const statusConfig = getStatusConfig(goods.status);
   const hasPhoto = goods.photos && goods.photos.length > 0;
+  
+  // Get client info - clientId can be string or ClientInfo object
+  const clientInfo = typeof goods.clientId === 'string' ? null : goods.clientId as ClientInfo;
+  const clientName = clientInfo ? `${clientInfo.firstName} ${clientInfo.lastName}` : '';
+  const clientPhone = clientInfo ? clientInfo.phoneNumber : '';
 
   return (
     <TouchableOpacity 
@@ -145,6 +150,40 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress, onMenuPres
           <Text style={styles.description} numberOfLines={1}>
             {goods.description || 'Sans description'}
           </Text>
+          
+          {/* Client Info */}
+          {clientName && (
+            <View style={styles.clientRow}>
+              <Ionicons name="person-outline" size={14} color={Theme.neutral[500]} />
+              <Text style={styles.clientText} numberOfLines={1}>
+                {clientName}
+              </Text>
+            </View>
+          )}
+          {clientPhone && (
+            <View style={styles.clientRow}>
+              <Ionicons name="call-outline" size={14} color={Theme.neutral[500]} />
+              <Text style={styles.clientPhone} numberOfLines={1}>
+                {clientPhone}
+              </Text>
+            </View>
+          )}
+
+          {/* Quantity & Location Row */}
+          <View style={styles.infoRow}>
+            <View style={styles.infoItem}>
+              <Ionicons name="layers-outline" size={14} color={Theme.neutral[500]} />
+              <Text style={styles.infoText}>
+                Qté: {goods.quantity || 1}
+              </Text>
+            </View>
+            <View style={styles.infoItem}>
+              <Ionicons name="location-outline" size={14} color={Theme.neutral[500]} />
+              <Text style={styles.infoText}>
+                Loc: {goods.warehouseLocation || 'N/A'}
+              </Text>
+            </View>
+          </View>
 
           {/* Metrics Row */}
           <View style={styles.metricsRow}>
@@ -257,6 +296,37 @@ const styles = StyleSheet.create({
     color: Theme.neutral[500],
     marginTop: 4,
     fontWeight: '500',
+  },
+  clientRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+    gap: 6,
+  },
+  clientText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: Theme.neutral[700],
+  },
+  clientPhone: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: Theme.neutral[500],
+  },
+  infoRow: {
+    flexDirection: 'row',
+    marginTop: 8,
+    gap: Theme.spacing.lg,
+  },
+  infoItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  infoText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: Theme.neutral[600],
   },
   metricsRow: {
     flexDirection: 'row',

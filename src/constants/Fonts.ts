@@ -6,9 +6,12 @@ export const Fonts = {
 	italic: 'italic',
 	light: 'light',
 	lightItalic: 'lightItalic',
-	meduim: 'medium',
-	meduimItalic: 'mediumItalic',
+	medium: 'medium',
+	meduim: 'medium', // Keep for backward compatibility
+	mediumItalic: 'mediumItalic',
+	meduimItalic: 'mediumItalic', // Keep for backward compatibility
 	regular: 'regular',
+	semiBold: 'bold', // Map to bold since there's no semiBold font
 	thin: 'thin',
 	thinItalic: 'thinItalic',
 };

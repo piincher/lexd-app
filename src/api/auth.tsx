@@ -173,3 +173,15 @@ export const getBalance = async () => {
    const response = await axiosInstance.get<{ balance: number }>(`topup/balance`);
    return response.data;
 };
+
+// Admin: Create user directly without OTP
+export const createUser = async ({ firstName, lastName, phoneNumber }: userRegistrationType) => {
+   const user = {
+      firstName,
+      lastName,
+      phoneNumber,
+      role: 'user',
+   };
+   const response = await axiosInstance.post<{ success: boolean; user: userType }>(`${rootUrl}/admin/create`, user);
+   return response.data;
+};
