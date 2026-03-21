@@ -21,6 +21,9 @@ export * from "./containers";
 export * from "./goods";
 export * from "./routes";
 
+// Certificates
+export * from "./certificates";
+
 // Search Feature
 export * from "./search";
 

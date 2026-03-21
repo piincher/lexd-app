@@ -112,6 +112,40 @@ export type RootStackParamList = {
       };
    };
    OrdersDashboard: undefined;
+   // Admin Certificate Issuance
+   IssueCertificate: undefined;
+   CertificateHistory: undefined;
+   CertificateDetailAdmin: {
+      certificate: {
+         _id: string;
+         certificateId: string;
+         verificationCode: string;
+         type: "AUTO" | "MANUAL";
+         status: "ACTIVE" | "REVOKED";
+         totalCBMAtIssuance: number;
+         thresholdCBM: number;
+         certificateUrl: string | null;
+         customNote: string | null;
+         issuedAt: string;
+         userId: { _id: string; firstName: string; lastName: string; phoneNumber: string };
+         issuedBy: { _id: string; firstName: string; lastName: string } | null;
+      };
+   };
+   // Badges Screen
+   Badges: undefined;
+   // Reviews Screens
+   MyReviews: undefined;
+   AdminReviews: undefined;
+   // Promos Screen
+   ManagePromos: undefined;
+   // Client Certificate Detail
+   CertificateDetail: {
+      certificateId: string;
+      verificationCode: string;
+      issuedAt: string;
+      certificateUrl: string | null;
+      certificateMongoId?: string;
+   };
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<

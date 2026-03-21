@@ -13,8 +13,8 @@ interface GoodsCardProps {
 	onPress?: () => void;
 }
 
-const formatCurrency = (amount: number): string => {
-	return `${amount.toLocaleString('fr-FR')} FCFA`;
+const formatCurrency = (amount?: number): string => {
+	return `${(amount ?? 0).toLocaleString('fr-FR')} FCFA`;
 };
 
 const truncateText = (text: string, maxLength: number): string => {

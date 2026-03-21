@@ -63,6 +63,14 @@ export const setupNotificationChannels = async (): Promise<void> => {
     //   sound: 'default',
     // });
 
+    // Certificates channel
+    await Notifications.setNotificationChannelAsync(NOTIFICATION_CHANNELS.CERTIFICATES, {
+      name: 'Certificates',
+      importance: Notifications.AndroidImportance.HIGH,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#F4D03F',
+    });
+
     // System channel
     await Notifications.setNotificationChannelAsync(NOTIFICATION_CHANNELS.SYSTEM, {
       name: 'System',
@@ -89,6 +97,7 @@ export const getChannelIdForType = (type: NotificationType): string => {
     CONTAINER_STATUS: NOTIFICATION_CHANNELS.CONTAINERS,
     TICKET_REPLY: NOTIFICATION_CHANNELS.TICKETS,
     // INVOICE: NOTIFICATION_CHANNELS.INVOICES, // Feature removed
+    CERTIFICATE_ISSUED: NOTIFICATION_CHANNELS.CERTIFICATES,
     GENERAL: NOTIFICATION_CHANNELS.DEFAULT,
     SYSTEM: NOTIFICATION_CHANNELS.SYSTEM,
   };

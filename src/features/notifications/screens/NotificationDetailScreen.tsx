@@ -21,12 +21,13 @@ import { Fonts } from '@src/constants/Fonts';
 import { Header } from '@src/components/Header/Header';
 import type { navigationProps, RootStackParamList } from '@src/navigations/type';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { 
-  NOTIFICATION_TYPE_CONFIG, 
+import {
+  NOTIFICATION_TYPE_CONFIG,
   NOTIFICATION_CATEGORY_CONFIG,
-  NOTIFICATION_PRIORITY_CONFIG 
+  NOTIFICATION_PRIORITY_CONFIG
 } from '../types';
 import { useMarkAsRead, useDeleteNotification } from '../hooks/useNotifications';
+import { certificateApi } from '@src/features/profile/api/certificateApi';
 
 type NotificationDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -67,7 +68,24 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
   // Handle action button press
   const handleActionPress = () => {
     // Navigate based on type and data
-    if (notification.data?.orderId) {
+    if (notification.data?.type === 'CERTIFICATE_ISSUED' || notification.data?.certificateId) {
+      // Fetch certificate progress and navigate to detail screen
+      certificateApi.getProgress().then((response) => {
+        const progress = response.data.data;
+        if (progress.isCertified && progress.certificate) {
+          const cert = progress.certificate;
+          navigation.navigate('CertificateDetail', {
+            certificateId: cert.certificateId,
+            verificationCode: cert.verificationCode,
+            issuedAt: cert.issuedAt,
+            certificateUrl: cert.certificateUrl || null,
+            certificateMongoId: cert._id || notification.data?.certificateId,
+          });
+        }
+      }).catch((err) => {
+        console.error('[NotificationDetail] Error fetching certificate:', err);
+      });
+    } else if (notification.data?.orderId) {
       navigation.navigate('OrderDetail', { id: notification.data.orderId });
     } else if (notification.data?.containerId) {
       navigation.navigate('ContainerTracking', { containerId: notification.data.containerId });
@@ -184,12 +202,19 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
                   <Text style={styles.dataValue}>#{notification.data.invoiceId.slice(-6)}</Text>
                 </View>
               )}
+
+              {notification.data.certificateId && (
+                <View style={styles.dataItem}>
+                  <Text style={styles.dataLabel}>Certificat</Text>
+                  <Text style={styles.dataValue}>#{notification.data.certificateId.slice(-6)}</Text>
+                </View>
+              )}
             </Surface>
           </Animated.View>
         )}
 
         {/* Action Button */}
-        {(notification.data?.orderId || notification.data?.containerId || notification.data?.ticketId) && (
+        {(notification.data?.orderId || notification.data?.containerId || notification.data?.ticketId || notification.data?.certificateId) && (
           <Animated.View entering={FadeInUp.delay(400)} style={styles.actionContainer}>
             <Button
               mode="contained"

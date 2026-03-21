@@ -26,13 +26,14 @@ import type { navigationProps } from '@src/navigations/type';
 import type { InAppNotification, PublicNotification } from '../types';
 import NotificationItem from '../components/NotificationItem';
 import PrivacyNotificationCard from '../components/PrivacyNotificationCard';
-import { 
-  useGetNotificationsInfinite, 
-  useMarkAsRead, 
-  useMarkAllAsRead, 
-  useDeleteNotification 
+import {
+  useGetNotificationsInfinite,
+  useMarkAsRead,
+  useMarkAllAsRead,
+  useDeleteNotification
 } from '../hooks/useNotifications';
 import { useGetPublicNotificationsInfinite } from '../hooks/usePublicNotifications';
+import { certificateApi } from '@src/features/profile/api/certificateApi';
 
 interface NotificationsScreenProps {
   navigation: navigationProps;
@@ -103,32 +104,36 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
   const handleNavigation = (notification: InAppNotification) => {
     const { type, data } = notification;
 
-    switch (type) {
+    // Check both the notification type and data.type for certificate notifications
+    // (backend creates in-app notifications with type "GENERAL" but data.type "CERTIFICATE_ISSUED")
+    const effectiveType = data?.type === 'CERTIFICATE_ISSUED' ? 'CERTIFICATE_ISSUED' : type;
+
+    switch (effectiveType) {
       case 'ORDER_UPDATE':
         if (data?.orderId) {
           navigation.navigate('OrderDetail', { id: data.orderId });
         }
         break;
-      
+
       case 'CONTAINER_STATUS':
         if (data?.containerId) {
           navigation.navigate('ContainerTracking', { containerId: data.containerId });
         }
         break;
-      
+
       case 'TICKET_REPLY':
         if (data?.ticketId) {
           navigation.navigate('TicketDetail', { ticketId: data.ticketId });
         }
         break;
-      
+
       case 'INVOICE':
         if (data?.invoiceId) {
           // Navigate to invoice detail
           // navigation.navigate('InvoiceDetail', { id: data.invoiceId });
         }
         break;
-      
+
       case 'PAYMENT':
         if (data?.paymentId) {
           navigation.navigate('PaymentConfirmation', {
@@ -141,7 +146,26 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
           });
         }
         break;
-      
+
+      case 'CERTIFICATE_ISSUED':
+        // Fetch certificate progress and navigate to detail screen
+        certificateApi.getProgress().then((response) => {
+          const progress = response.data.data;
+          if (progress.isCertified && progress.certificate) {
+            const cert = progress.certificate;
+            navigation.navigate('CertificateDetail', {
+              certificateId: cert.certificateId,
+              verificationCode: cert.verificationCode,
+              issuedAt: cert.issuedAt,
+              certificateUrl: cert.certificateUrl || null,
+              certificateMongoId: cert._id || data?.certificateId,
+            });
+          }
+        }).catch((err) => {
+          console.error('[NotificationsScreen] Error fetching certificate:', err);
+        });
+        break;
+
       default:
         // No navigation for general/system notifications
         break;

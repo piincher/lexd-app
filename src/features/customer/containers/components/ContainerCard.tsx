@@ -94,9 +94,9 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
             <View style={styles.routeLocation}>
               <Text style={styles.routeLabel}>Origine</Text>
               <Text style={styles.routeValue}>
-                {typeof container.route.origin === 'string' 
-                  ? container.route.origin 
-                  : container.route.origin?.city || 'N/A'}
+                {typeof container.route?.origin === 'string'
+                  ? container.route.origin
+                  : container.route?.origin?.city || 'N/A'}
               </Text>
             </View>
 
@@ -107,16 +107,16 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
                 color={COLORS.SlateGray}
               />
               <Text style={styles.transitDays}>
-                ~{container.route.estimatedTransitDays} j
+                ~{container.route?.estimatedTransitDays || '?'} j
               </Text>
             </View>
 
             <View style={styles.routeLocation}>
               <Text style={styles.routeLabel}>Destination</Text>
               <Text style={styles.routeValue}>
-                {typeof container.route.destination === 'string' 
-                  ? container.route.destination 
-                  : container.route.destination?.city || 'N/A'}
+                {typeof container.route?.destination === 'string'
+                  ? container.route.destination
+                  : container.route?.destination?.city || 'N/A'}
               </Text>
             </View>
           </View>

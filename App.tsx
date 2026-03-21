@@ -9,6 +9,7 @@ import { initMixpanel } from "@src/config/Analytic";
 import { chatClient } from "@src/config/ChatConfig";
 import { ChatProvider } from "@src/context/ChatContext";
 import { HomeTabParamList, RootStackParamList } from "@src/navigations/type";
+import { navigationRef } from "@src/navigations/navigationRef";
 
 // Features - Admin
 import {
@@ -59,6 +60,17 @@ import {
 // Admin Payment History Screen (aliased to avoid conflict with payments feature)
 import AdminPaymentHistoryScreen from "@src/features/admin/orders/screens/PaymentHistoryScreen";
 
+// Admin Certificates
+import IssueCertificateScreen from "@src/features/admin/certificates/screens/IssueCertificateScreen";
+import CertificateHistoryScreen from "@src/features/admin/certificates/screens/CertificateHistoryScreen";
+import CertificateDetailAdminScreen from "@src/features/admin/certificates/screens/CertificateDetailAdminScreen";
+
+// Admin Reviews
+import AdminReviewsScreen from "@src/features/admin/reviews/screens/AdminReviewsScreen";
+
+// Admin Promos
+import ManagePromosScreen from "@src/features/admin/promos/screens/ManagePromosScreen";
+
 // Features - Auth
 import { LoginScreen as Login, VerificationScreen as Verification } from "@src/features/auth";
 
@@ -98,7 +110,12 @@ import {
    AboutUsScreen as AboutUs,
    PastOrdersScreen as PastOrders,
    NotificationSettingsScreen,
+   BadgesScreen,
+   MyReviewsScreen,
 } from "@src/features/profile";
+
+// Client Certificate Detail
+import CertificateDetailScreen from "@src/features/profile/screens/CertificateDetail";
 
 // Features - Goods (V2 Client)
 import { MyGoodsScreen, GoodsDetailScreen, ScanQRScreen as GoodsScanQR } from "@src/features/goods";
@@ -140,7 +157,7 @@ import { StatusBar as ThemeStatusBar } from "@src/components/StatusBar";
 import React, { useEffect, useRef, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
-import { enGB, registerTranslation } from "react-native-paper-dates";
+import { enGB, fr, registerTranslation } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-expo";
 import { initSentry } from "@src/services/sentry";
@@ -150,6 +167,7 @@ import { ThemeProvider, useAppTheme } from "@src/providers";
 import { ManualOrderScreen } from "@src/features/orders/screens/ManualOrderScreen";
 
 registerTranslation("en", enGB);
+registerTranslation("fr", fr);
 
 SplashScreen.preventAutoHideAsync();
 
@@ -222,6 +240,7 @@ function AppWrapper() {
             <Stack.Screen name="HomeTab" component={HomeBottomTab} />
             <Stack.Screen name="AboutUs" component={AboutUs} />
             <Stack.Screen name="faq" component={Faq} />
+            <Stack.Screen name="CertificateDetail" component={CertificateDetailScreen} />
 
             {token ? (
                <>
@@ -260,6 +279,9 @@ function AppWrapper() {
                   <Stack.Screen name="UserActiveOrders" component={UserActiveOrders} />
                   <Stack.Screen name="ClientManagement" component={ClientManagement} />
                   <Stack.Screen name="ClientDetails" component={ClientDetails} />
+                  <Stack.Screen name="IssueCertificate" component={IssueCertificateScreen} />
+                  <Stack.Screen name="CertificateHistory" component={CertificateHistoryScreen} />
+                  <Stack.Screen name="CertificateDetailAdmin" component={CertificateDetailAdminScreen} />
                   <Stack.Screen name="ChooseShippingMethod" component={ChooseShippingMethod} />
                   <Stack.Screen name="ShippingMethod" component={ShippingMethod} />
                   <Stack.Screen
@@ -307,6 +329,13 @@ function AppWrapper() {
                      name="NotificationSettings"
                      component={NotificationSettingsScreen}
                   />
+                  {/* Badges Screen */}
+                  <Stack.Screen name="Badges" component={BadgesScreen} />
+                  {/* Reviews Screens */}
+                  <Stack.Screen name="MyReviews" component={MyReviewsScreen} />
+                  <Stack.Screen name="AdminReviews" component={AdminReviewsScreen} />
+                  {/* Promos Screens */}
+                  <Stack.Screen name="ManagePromos" component={ManagePromosScreen} />
                </>
             ) : (
                <>
@@ -431,7 +460,7 @@ const ThemedApp = () => {
 
    return (
       <PaperProvider theme={paperTheme}>
-         <NavigationContainer theme={navigationTheme}>
+         <NavigationContainer ref={navigationRef} theme={navigationTheme}>
             <MainWrapper />
          </NavigationContainer>
       </PaperProvider>

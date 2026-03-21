@@ -8,6 +8,7 @@ import {
   NavigationContainerRef,
 } from "@react-navigation/native";
 import { NotificationData, NotificationType } from "../services/notificationService";
+import { certificateApi } from "@src/features/profile/api/certificateApi";
 
 // ============================================================================
 // Types
@@ -175,6 +176,44 @@ const handleInvoice: NotificationHandler = (data) => {
 };
 
 /**
+ * Handle CERTIFICATE_ISSUED notifications
+ * Navigate to CertificateDetail using params from push payload, or fetch from API as fallback
+ */
+const handleCertificateIssued: NotificationHandler = async (data) => {
+  console.log("[NotificationHandlers] Handling CERTIFICATE_ISSUED:", data);
+
+  // Use navigation params directly from push notification payload if available
+  if (data.screen === "CertificateDetail" && data.params) {
+    navigate("CertificateDetail", data.params);
+    return;
+  }
+
+  // Fallback: fetch certificate progress from API
+  try {
+    const response = await certificateApi.getProgress();
+    const progress = response.data.data;
+
+    if (progress.isCertified && progress.certificate) {
+      const cert = progress.certificate;
+      navigate("CertificateDetail", {
+        certificateId: cert.certificateId,
+        verificationCode: cert.verificationCode,
+        issuedAt: cert.issuedAt,
+        certificateUrl: cert.certificateUrl || null,
+        certificateMongoId: cert._id || data.certificateId,
+      });
+    } else {
+      console.warn("[NotificationHandlers] Certificate not found in progress, navigating to Profile");
+      navigate("Profile");
+    }
+  } catch (error) {
+    console.error("[NotificationHandlers] Error fetching certificate progress:", error);
+    // Fallback to profile screen where the certificate section is visible
+    navigate("Profile");
+  }
+};
+
+/**
  * Handle GENERAL notifications
  * Navigate to notifications screen or show in-app
  */
@@ -224,6 +263,7 @@ export const notificationHandlers: Record<NotificationType, NotificationHandler>
   CONTAINER_STATUS: handleContainerStatus,
   TICKET_REPLY: handleTicketReply,
   INVOICE: handleInvoice,
+  CERTIFICATE_ISSUED: handleCertificateIssued,
   GENERAL: handleGeneral,
   SYSTEM: handleSystem,
 };
@@ -263,17 +303,25 @@ export const processNotification = (
 
 /**
  * Process notification from notification data object
- * @param data Notification data containing type
+ * @param data Notification data containing type and/or screen
  * @returns true if handled, false otherwise
  */
 export const processNotificationData = (data: NotificationData): boolean => {
-  if (!data.type) {
-    console.warn("[NotificationHandlers] Notification data missing type");
-    handleGeneral(data);
-    return false;
+  // If type is present, use the registered type-based handler
+  if (data.type) {
+    return processNotification(data.type, data);
   }
 
-  return processNotification(data.type, data);
+  // Fallback: if no type but screen is specified, navigate directly
+  if (data.screen && typeof data.screen === "string") {
+    console.log("[NotificationHandlers] Navigating via screen field:", data.screen);
+    navigate(data.screen, data.params || {});
+    return true;
+  }
+
+  console.warn("[NotificationHandlers] Notification data missing type and screen");
+  handleGeneral(data);
+  return false;
 };
 
 // ============================================================================

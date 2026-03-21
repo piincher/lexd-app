@@ -8,21 +8,50 @@ export interface Goods {
     phoneNumber: string;
   };
   warehouseLocation: string;
+  dimensions?: {
+    length?: number;
+    width?: number;
+    height?: number;
+  };
   actualCBM: number;
   cbm?: number;
   weight: number;
   quantity: number;
   description: string;
+  shippingMode?: 'AIR' | 'SEA';
   status: GoodsStatus;
   photos: string[];
   images?: string[];
+  unitPrice?: number;
   totalCost: number;
+  amountPaid?: number;
+  balanceDue?: number;
   paymentStatus: 'UNPAID' | 'PARTIAL' | 'PAID';
+  paymentHistory?: {
+    paymentId: string;
+    amount: number;
+    date: string;
+  }[];
   containerId?: {
     _id: string;
     virtualContainerNumber: string;
+    shippingLine?: string;
+    status?: string;
   };
+  loadingPosition?: {
+    section?: 'FRONT' | 'MIDDLE' | 'BACK';
+    description?: string;
+    sequenceNumber?: number;
+  };
+  receivedAt?: string;
+  receivedByName?: string;
+  readyForPickupAt?: string;
+  deliveredAt?: string;
+  pickedUpBy?: string;
+  pickupNotes?: string;
   qrCode?: string;
+  qrCodeImageUrl?: string;
+  qrCodeData?: string;
   createdAt: string;
   location?: GoodsLocation;
 }

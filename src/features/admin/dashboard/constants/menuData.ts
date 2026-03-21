@@ -58,6 +58,10 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       { id: "c1", title: "Client Management", route: "ClientManagement" },
       { id: "c2", title: "Add User", route: "UserAdd" },
       { id: "c3", title: "Send SMS", route: "SendSms" },
+      { id: "c4", title: "Issue Certificate", route: "IssueCertificate" },
+      { id: "c5", title: "Certificate History", route: "CertificateHistory" },
+      { id: "c6", title: "Avis Clients", route: "AdminReviews" },
+      { id: "c7", title: "Promotions", route: "ManagePromos" },
     ],
   },
   {

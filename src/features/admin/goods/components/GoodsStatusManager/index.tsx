@@ -37,9 +37,10 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
 
 const STATUS_OPTIONS = [
   { value: 'RECEIVED_AT_WAREHOUSE', label: 'Recu au depot' },
+  { value: 'ASSIGNED_TO_CONTAINER', label: 'Assigne au conteneur' },
   { value: 'LOADED_IN_CONTAINER', label: 'Charge dans conteneur' },
   { value: 'IN_TRANSIT', label: 'En transit' },
-  { value: 'ARRIVED_AT_DESTINATION', label: 'Arrive a destination' },
+  { value: 'ARRIVED_DESTINATION', label: 'Arrive a destination' },
   { value: 'READY_FOR_PICKUP', label: 'Pret pour retrait' },
   { value: 'DELIVERED', label: 'Livre' },
 ];

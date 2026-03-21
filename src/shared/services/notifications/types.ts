@@ -17,6 +17,7 @@ export type NotificationType =
   | 'CONTAINER_STATUS'
   | 'TICKET_REPLY'
   // | 'INVOICE' // Feature removed
+  | 'CERTIFICATE_ISSUED'
   | 'GENERAL'
   | 'SYSTEM';
 
@@ -27,6 +28,7 @@ export interface NotificationData {
   containerId?: string;
   ticketId?: string;
   // invoiceId?: string; // Feature removed
+  certificateId?: string;
   goodsId?: string;
   message?: string;
   [key: string]: any;
@@ -76,6 +78,7 @@ export const NOTIFICATION_CHANNELS = {
   CONTAINERS: 'containers',
   TICKETS: 'tickets',
   // INVOICES: 'invoices', // Feature removed
+  CERTIFICATES: 'certificates',
   SYSTEM: 'system',
 } as const;
 
@@ -116,6 +119,12 @@ export const defaultNotificationPreferences: NotificationPreference[] = [
   //   label: 'Invoice Notifications',
   //   description: 'Get notified about new invoices',
   // }, // Feature removed
+  {
+    type: 'CERTIFICATE_ISSUED',
+    enabled: true,
+    label: 'Certificats',
+    description: 'Notifications de certificat d\'expéditeur certifié',
+  },
   {
     type: 'GENERAL',
     enabled: true,

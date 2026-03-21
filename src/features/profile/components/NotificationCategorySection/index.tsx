@@ -26,6 +26,7 @@ const getIconForType = (type: NotificationType): string => {
     CONTAINER_STATUS: "box",
     TICKET_REPLY: "message1",
     INVOICE: "filetext1",
+    CERTIFICATE_ISSUED: "trophy",
     GENERAL: "bells",
     SYSTEM: "setting",
   };
@@ -39,6 +40,7 @@ const getColorForType = (type: NotificationType): string => {
     CONTAINER_STATUS: "#3B82F6",
     TICKET_REPLY: "#F59E0B",
     INVOICE: "#EF4444",
+    CERTIFICATE_ISSUED: "#F4D03F",
     GENERAL: "#6B7280",
     SYSTEM: "#8B5CF6",
   };

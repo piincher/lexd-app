@@ -106,6 +106,7 @@ export const useNotificationSettings = () => {
       CONTAINER_STATUS: 'cube',
       TICKET_REPLY: 'message-circle',
       INVOICE: 'file-text',
+      CERTIFICATE_ISSUED: 'award',
       GENERAL: 'bell',
       SYSTEM: 'settings',
     };
@@ -119,6 +120,7 @@ export const useNotificationSettings = () => {
       CONTAINER_STATUS: '#3B82F6',
       TICKET_REPLY: '#F59E0B',
       INVOICE: '#EF4444',
+      CERTIFICATE_ISSUED: '#F4D03F',
       GENERAL: '#6B7280',
       SYSTEM: '#8B5CF6',
     };

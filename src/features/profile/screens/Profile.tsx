@@ -37,6 +37,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { useBalance } from "../hooks/useProfile";
 import { CertifiedShipperCard } from "../components/CertifiedShipperCard";
+import { MilestoneBadges } from "../components/MilestoneBadges";
+import { BadgesSection } from "../components/BadgesSection";
+import { ReviewsSection } from "../components/ReviewsSection";
 import { useCertificateProgress } from "../hooks/useCertificate";
 import { ThemeToggle } from "@src/components/ThemeToggle";
 import { useAppTheme } from "@src/providers";
@@ -161,6 +164,18 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
 
                   <MotiView {...statsAnimation(1)} style={{ marginTop: 4 }}>
                      <CertifiedShipperCard progress={certificateProgress} isLoading={isCertLoading} />
+                  </MotiView>
+
+                  <MotiView {...statsAnimation(2)} style={{ marginTop: 4 }}>
+                     <MilestoneBadges />
+                  </MotiView>
+
+                  <MotiView {...statsAnimation(3)} style={{ marginTop: 4 }}>
+                     <BadgesSection />
+                  </MotiView>
+
+                  <MotiView {...statsAnimation(4)} style={{ marginTop: 4 }}>
+                     <ReviewsSection />
                   </MotiView>
 
                   {/* <MotiView {...statsAnimation(1)} style={styles.statCard}>

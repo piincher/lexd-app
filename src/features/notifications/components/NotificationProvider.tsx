@@ -13,6 +13,7 @@ import type { InAppNotification } from '../types';
 import { useGetUnreadCount } from '../hooks/useNotifications';
 import NotificationToast from './NotificationToast';
 import type { RootStackParamList } from '@src/navigations/type';
+import { certificateApi } from '@src/features/profile/api/certificateApi';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -82,31 +83,34 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     // Navigate based on notification type
     const { type, data } = notification;
 
-    switch (type) {
+    // Check both the notification type and data.type for certificate notifications
+    const effectiveType = data?.type === 'CERTIFICATE_ISSUED' ? 'CERTIFICATE_ISSUED' : type;
+
+    switch (effectiveType) {
       case 'ORDER_UPDATE':
         if (data?.orderId) {
           navigation.navigate('OrderDetail', { id: data.orderId });
         }
         break;
-      
+
       case 'CONTAINER_STATUS':
         if (data?.containerId) {
           navigation.navigate('ContainerTracking', { containerId: data.containerId });
         }
         break;
-      
+
       case 'TICKET_REPLY':
         if (data?.ticketId) {
           navigation.navigate('TicketDetail', { ticketId: data.ticketId });
         }
         break;
-      
+
       case 'INVOICE':
         if (data?.invoiceId) {
           // navigation.navigate('InvoiceDetail', { id: data.invoiceId });
         }
         break;
-      
+
       case 'PAYMENT':
         if (data?.paymentId) {
           navigation.navigate('PaymentConfirmation', {
@@ -119,7 +123,26 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
           });
         }
         break;
-      
+
+      case 'CERTIFICATE_ISSUED':
+        // Fetch certificate progress and navigate to detail screen
+        certificateApi.getProgress().then((response) => {
+          const progress = response.data.data;
+          if (progress.isCertified && progress.certificate) {
+            const cert = progress.certificate;
+            navigation.navigate('CertificateDetail', {
+              certificateId: cert.certificateId,
+              verificationCode: cert.verificationCode,
+              issuedAt: cert.issuedAt,
+              certificateUrl: cert.certificateUrl || null,
+              certificateMongoId: cert._id || data?.certificateId,
+            });
+          }
+        }).catch((err) => {
+          console.error('[NotificationProvider] Error fetching certificate:', err);
+        });
+        break;
+
       default:
         // Show notification detail for other types
         navigation.navigate('NotificationDetail', { notification });

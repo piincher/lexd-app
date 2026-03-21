@@ -11,6 +11,7 @@ export interface CertificateProgress {
   isEligible: boolean;
   isCertified: boolean;
   certificate: {
+    _id: string;
     certificateId: string;
     verificationCode: string;
     issuedAt: string;
@@ -35,4 +36,12 @@ export const certificateApi = {
 
   getDownloadUrl: (): Promise<ApiResponse<CertificateDownload>> =>
     axios.get(`${BASE_URL}/download`),
+
+  getSecureDownloadUrl: (certificateId: string): Promise<{ data: { url: string } }> =>
+    axios.get(`${BASE_URL}/${certificateId}/download`),
+};
+
+export const getCertificateDownloadUrl = async (certificateId: string): Promise<string> => {
+  const response = await certificateApi.getSecureDownloadUrl(certificateId);
+  return response.data.url;
 };

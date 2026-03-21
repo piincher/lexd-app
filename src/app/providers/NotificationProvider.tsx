@@ -12,7 +12,7 @@ import React, {
   useState,
 } from "react";
 import { AppState, AppStateStatus, Platform } from "react-native";
-import { useNavigationContainerRef } from "@react-navigation/native";
+import { navigationRef } from "@src/navigations/navigationRef";
 
 import {
   clearBadgeCount,
@@ -132,17 +132,14 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   const responseListener = useRef<Notifications.Subscription | null>(null);
   const appState = useRef(AppState.currentState);
 
-  // Navigation ref (will be set when navigation is ready)
-  const navigationRef = useNavigationContainerRef();
-
   // ============================================================================
   // Initialization
   // ============================================================================
 
   useEffect(() => {
-    // Set navigation ref for deep linking
+    // Set navigation ref for deep linking (uses shared ref from navigationRef.ts)
     setNotificationNavigationRef(navigationRef);
-  }, [navigationRef]);
+  }, []);
 
   useEffect(() => {
     const initialize = async () => {

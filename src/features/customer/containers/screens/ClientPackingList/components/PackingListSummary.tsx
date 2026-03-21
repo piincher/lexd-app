@@ -29,21 +29,24 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
   departureDate, arrivalDate, getShippingModeIcon, getStatusColor, formatDate,
 }) => {
   const theme = useTheme();
-  const statusColor = status ? getStatusColor(status) : COLORS.DimGray;
+  const rawStatusColor = status ? getStatusColor(status) : null;
+  const statusColorObj = rawStatusColor && typeof rawStatusColor === 'object' ? rawStatusColor as any : null;
+  const statusBg = statusColorObj?.bg || '#F3F4F6';
+  const statusText = statusColorObj?.text || (typeof rawStatusColor === 'string' ? rawStatusColor : COLORS.DimGray);
 
   return (
     <Card style={styles.card}>
       <Card.Content>
         <View style={styles.header}>
           <View style={styles.containerInfo}>
-            <MaterialCommunityIcons name="container" size={24} color={theme.colors.primary} />
+            <MaterialCommunityIcons name="package-variant-closed" size={24} color={theme.colors.primary} />
             <View style={styles.containerTextContainer}>
               <Text style={styles.containerLabel}>Container</Text>
               <Text style={styles.containerNumber}>{containerNumber || 'N/A'}</Text>
             </View>
           </View>
           {status && (
-            <Chip style={[styles.statusChip, { backgroundColor: `${statusColor}20` }]} textStyle={[styles.statusText, { color: statusColor }]}>
+            <Chip style={[styles.statusChip, { backgroundColor: statusBg }]} textStyle={[styles.statusText, { color: statusText }]}>
               {status}
             </Chip>
           )}

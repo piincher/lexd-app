@@ -2,13 +2,14 @@
  * Notification Types - In-App Notification System
  */
 
-export type NotificationType = 
-  | 'ORDER_UPDATE' 
-  | 'PAYMENT' 
-  | 'CONTAINER_STATUS' 
-  | 'TICKET_REPLY' 
-  | 'INVOICE' 
-  | 'SYSTEM' 
+export type NotificationType =
+  | 'ORDER_UPDATE'
+  | 'PAYMENT'
+  | 'CONTAINER_STATUS'
+  | 'TICKET_REPLY'
+  | 'INVOICE'
+  | 'CERTIFICATE_ISSUED'
+  | 'SYSTEM'
   | 'GENERAL';
 
 export type NotificationCategory = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR';
@@ -26,6 +27,7 @@ export interface InAppNotification {
     ticketId?: string;
     invoiceId?: string;
     paymentId?: string;
+    certificateId?: string;
     [key: string]: any;
   };
   actionUrl?: string;
@@ -93,10 +95,15 @@ export const NOTIFICATION_TYPE_CONFIG: Record<NotificationType, {
     icon: 'message-reply',
     description: 'Nouvelle réponse au ticket'
   },
-  INVOICE: { 
-    label: 'Facture', 
+  INVOICE: {
+    label: 'Facture',
     icon: 'file-document',
     description: 'Nouvelle facture disponible'
+  },
+  CERTIFICATE_ISSUED: {
+    label: 'Certificat',
+    icon: 'certificate',
+    description: 'Certificat d\'expéditeur certifié'
   },
   SYSTEM: { 
     label: 'Système', 

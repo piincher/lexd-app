@@ -5,17 +5,20 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from '../ClientPackingListScreen.styles';
 
 interface Goods {
-  _id: string;
+  _id?: string;
+  goodsId?: string;
   description?: string;
   cbm?: number;
+  actualCBM?: number;
   weight?: number;
   quantity?: number;
   status?: string;
+  statusLabel?: string;
 }
 
 interface PackingListGoodsProps {
   goods: Goods[];
-  getStatusColor: (status: string) => string;
+  getStatusColor: (status: string) => { bg: string; text: string; icon: string } | string;
 }
 
 export const PackingListGoods: React.FC<PackingListGoodsProps> = ({
@@ -72,9 +75,12 @@ export const PackingListGoods: React.FC<PackingListGoodsProps> = ({
           </DataTable.Header>
 
           {goods.map((item, index) => {
-            const statusColor = getStatusColor(item.status || '');
+            const rawColor = getStatusColor(item.status || '');
+            const statusBg = typeof rawColor === 'string' ? rawColor : rawColor.bg;
+            const statusText = typeof rawColor === 'string' ? '#FFF' : rawColor.text;
+            const cbmValue = item.actualCBM ?? item.cbm;
             return (
-              <DataTable.Row key={item._id} style={styles.tableRow}>
+              <DataTable.Row key={item._id || item.goodsId || `goods-${index}`} style={styles.tableRow}>
                 <DataTable.Cell style={styles.colNumber}>
                   <Text style={styles.rowNumber}>{index + 1}</Text>
                 </DataTable.Cell>
@@ -85,7 +91,7 @@ export const PackingListGoods: React.FC<PackingListGoodsProps> = ({
                 </DataTable.Cell>
                 <DataTable.Cell numeric style={styles.colCBM}>
                   <Text style={styles.numericText}>
-                    {item.cbm?.toFixed(2) || '-'}
+                    {cbmValue != null ? cbmValue.toFixed(2) : '-'}
                   </Text>
                 </DataTable.Cell>
                 <DataTable.Cell numeric style={styles.colWeight}>
@@ -100,10 +106,10 @@ export const PackingListGoods: React.FC<PackingListGoodsProps> = ({
                 </DataTable.Cell>
                 <DataTable.Cell style={styles.colStatus}>
                   <Chip
-                    style={[styles.statusChip, { backgroundColor: statusColor }]}
-                    textStyle={styles.statusChipText}
+                    style={[styles.statusChip, { backgroundColor: statusBg }]}
+                    textStyle={[styles.statusChipText, { color: statusText }]}
                   >
-                    {item.status || 'N/A'}
+                    {item.statusLabel || item.status || 'N/A'}
                   </Chip>
                 </DataTable.Cell>
               </DataTable.Row>

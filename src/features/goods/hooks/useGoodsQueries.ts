@@ -29,7 +29,7 @@ export const useGetGoodsDetail = (goodsId: string) => {
 	return useQuery({
 		queryKey: QUERY_KEYS.goodsDetail(goodsId),
 		queryFn: () => goodsApi.getGoodsById(goodsId),
-		select: (response) => response.data.data,
+		select: (response) => response.data.data.goods,
 		enabled: !!goodsId,
 		staleTime: 10 * 60 * 1000, // 10 minutes - goods details don't change often
 	});

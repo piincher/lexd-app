@@ -146,6 +146,13 @@ export const notificationCategories: NotificationCategory[] = [
     },
   },
   {
+    identifier: "CERTIFICATE_ISSUED",
+    actions: [notificationActions.view, notificationActions.markRead],
+    options: {
+      customDismissAction: true,
+    },
+  },
+  {
     identifier: "GENERAL",
     actions: [notificationActions.markRead, notificationActions.dismiss],
     options: {
@@ -237,6 +244,7 @@ export const getCategoryForType = (type: string): string => {
     "CONTAINER_STATUS",
     "TICKET_REPLY",
     "INVOICE",
+    "CERTIFICATE_ISSUED",
     "GENERAL",
     "SYSTEM",
   ];

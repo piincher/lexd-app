@@ -25,6 +25,7 @@ export type NotificationType =
   | "CONTAINER_STATUS"
   | "TICKET_REPLY"
   | "INVOICE"
+  | "CERTIFICATE_ISSUED"
   | "GENERAL"
   | "SYSTEM";
 
@@ -35,6 +36,7 @@ export interface NotificationData {
   containerId?: string;
   ticketId?: string;
   invoiceId?: string;
+  certificateId?: string;
   goodsId?: string;
   message?: string;
   [key: string]: any;
@@ -75,6 +77,7 @@ const NOTIFICATION_CHANNELS = {
   CONTAINERS: "containers",
   TICKETS: "tickets",
   INVOICES: "invoices",
+  CERTIFICATES: "certificates",
   SYSTEM: "system",
 } as const;
 
@@ -471,6 +474,14 @@ export const setupNotificationChannels = async (): Promise<void> => {
       lightColor: "#EF4444",
     });
 
+    // Certificates channel
+    await Notifications.setNotificationChannelAsync(NOTIFICATION_CHANNELS.CERTIFICATES, {
+      name: "Certificates",
+      importance: Notifications.AndroidImportance.HIGH,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#F4D03F",
+    });
+
     // System channel
     await Notifications.setNotificationChannelAsync(NOTIFICATION_CHANNELS.SYSTEM, {
       name: "System",
@@ -497,6 +508,7 @@ export const getChannelIdForType = (type: NotificationType): string => {
     CONTAINER_STATUS: NOTIFICATION_CHANNELS.CONTAINERS,
     TICKET_REPLY: NOTIFICATION_CHANNELS.TICKETS,
     INVOICE: NOTIFICATION_CHANNELS.INVOICES,
+    CERTIFICATE_ISSUED: NOTIFICATION_CHANNELS.CERTIFICATES,
     GENERAL: NOTIFICATION_CHANNELS.DEFAULT,
     SYSTEM: NOTIFICATION_CHANNELS.SYSTEM,
   };
@@ -541,6 +553,12 @@ export const defaultNotificationPreferences: NotificationPreference[] = [
     enabled: true,
     label: "Invoice Notifications",
     description: "Get notified about new invoices",
+  },
+  {
+    type: "CERTIFICATE_ISSUED",
+    enabled: true,
+    label: "Certificats",
+    description: "Notifications de certificat d'expéditeur certifié",
   },
   {
     type: "GENERAL",

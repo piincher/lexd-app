@@ -32,7 +32,26 @@ export const useGetMyContainers = (filters?: CustomerContainerFilters) => {
   return useQuery({
     queryKey: QUERY_KEYS.containersList(filters),
     queryFn: () => customerContainerApi.getMyContainers(filters),
-    select: (response) => response.data.data,
+    select: (response) => {
+      const data = response.data.data;
+      if (!data?.containers) return data;
+      return {
+        ...data,
+        containers: data.containers.map((c: any) => {
+          const routeData = c.routeId || c.route;
+          return {
+            ...c,
+            myGoods: c.customerGoods?.items || [],
+            route: routeData ? {
+              name: routeData.name || '',
+              origin: typeof routeData.origin === 'string' ? routeData.origin : routeData.origin?.city || '',
+              destination: typeof routeData.destination === 'string' ? routeData.destination : routeData.destination?.city || '',
+              estimatedTransitDays: routeData.estimatedTransitDays || 0,
+            } : { name: '', origin: '', destination: '', estimatedTransitDays: 0 },
+          };
+        }),
+      };
+    },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 };
@@ -45,7 +64,22 @@ export const useGetContainerDetails = (containerId: string) => {
   return useQuery({
     queryKey: QUERY_KEYS.containerDetail(containerId),
     queryFn: () => customerContainerApi.getContainerDetails(containerId),
-    select: (response) => response.data.data.container,
+    select: (response) => {
+      const container = response.data.data.container;
+      if (!container) return container;
+      // Map customerGoods.items → myGoods and routeId → route for frontend compatibility
+      const routeData = container.routeId || container.route;
+      return {
+        ...container,
+        myGoods: container.customerGoods?.items || [],
+        route: routeData ? {
+          name: routeData.name || '',
+          origin: typeof routeData.origin === 'string' ? routeData.origin : routeData.origin?.city || '',
+          destination: typeof routeData.destination === 'string' ? routeData.destination : routeData.destination?.city || '',
+          estimatedTransitDays: routeData.estimatedTransitDays || 0,
+        } : { name: '', origin: '', destination: '', estimatedTransitDays: 0 },
+      };
+    },
     enabled: !!containerId,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -74,7 +108,27 @@ export const useGetMyPackingList = (containerId: string) => {
   return useQuery({
     queryKey: QUERY_KEYS.packingList(containerId),
     queryFn: () => customerContainerApi.getMyPackingList(containerId),
-    select: (response) => response.data.data,
+    select: (response) => {
+      const raw = response.data.data;
+      if (!raw) return raw;
+      const c = raw.container || {} as any;
+      // Transform backend shape → frontend ClientPackingListResponse shape
+      return {
+        containerNumber: c.number || c.virtualContainerNumber || '',
+        shippingMode: c.shippingMode || 'SEA',
+        shippingLine: c.shippingLine || '',
+        shippingLineLabel: c.shippingLineLabel || c.shippingLine || '',
+        route: c.route || { origin: '', destination: '', estimatedTransitDays: 0 },
+        consignee: c.consignee || null,
+        tracking: {
+          status: c.status || '',
+          statusLabel: c.statusLabel || c.status || '',
+        },
+        items: raw.goods || [],
+        summary: raw.summary || { totalItems: 0, totalCBM: 0, totalWeight: 0, totalPackages: 0 },
+        generatedAt: raw.generatedAt || '',
+      };
+    },
     enabled: !!containerId,
     staleTime: 10 * 60 * 1000, // 10 minutes
   });

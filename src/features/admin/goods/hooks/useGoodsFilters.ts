@@ -16,8 +16,11 @@ const STATUS_FILTERS: FilterOption[] = [
   { key: 'all', label: 'Tous', icon: 'apps' },
   { key: 'RECEIVED_AT_WAREHOUSE', label: 'Entrepôt', icon: 'home' },
   { key: 'ASSIGNED_TO_CONTAINER', label: 'Container', icon: 'cube' },
+  { key: 'LOADED_IN_CONTAINER', label: 'Chargé', icon: 'archive' },
   { key: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },
   { key: 'ARRIVED_DESTINATION', label: 'Arrivé', icon: 'flag' },
+  { key: 'READY_FOR_PICKUP', label: 'Prêt', icon: 'hand-left' },
+  { key: 'DELIVERED', label: 'Livré', icon: 'checkmark-circle' },
 ];
 
 interface UseGoodsFiltersReturn {
