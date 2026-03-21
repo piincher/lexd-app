@@ -1,10 +1,11 @@
 /**
  * AllOrdersScreen - Professional logistics orders view
- * SRP: Layout composition ONLY (<100 lines)
+ * SRP: Layout composition ONLY
  */
 
-import React, { useState, useMemo, useLayoutEffect } from 'react';
-import { View, RefreshControl, ActivityIndicator, ScrollView, Text } from 'react-native';
+import React, { useState, useMemo, useLayoutEffect, useCallback, useRef } from 'react';
+
+import { View, RefreshControl, ScrollView, Text } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Searchbar, Button, IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -17,11 +18,12 @@ import { OrderCard } from './components/OrderCard';
 import { OrdersStats } from './components/OrdersStats';
 import { EmptyOrders } from './components/EmptyOrders';
 import { AddOrderButton } from './components/AddOrderButton';
+import { OrderCardSkeleton, OrderCardFooterSkeleton } from './components/OrderCardSkeleton';
 import { styles } from './AllOrdersScreen.styles';
 
 const STATUS_TABS = [
-  { key: null, label: 'All' },
-  { key: 'PENDING', label: 'Pending' },
+  { key: undefined, label: 'All' },
+  { key: 'Pending', label: 'Pending' },
   { key: 'Active', label: 'Active' },
   { key: 'In Transit', label: 'Transit' },
   { key: 'Delivered', label: 'Delivered' },
@@ -32,10 +34,15 @@ type NavigationProp = NativeStackNavigationProp<AuthenticatedStackParamList>;
 const AllOrdersScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
 
-  const { data, isLoading, error, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } = 
-    useGetAllOrders();
+  // Gate to prevent onEndReached auto-fetch cascade.
+  // After each fetch, set to true. Reset to false on user scroll.
+  const hasCalledOnEnd = useRef(false);
+
+  // Pass status filter to the API for server-side filtering
+  const { data, isLoading, isFetching, error, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useGetAllOrders(statusFilter);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -47,30 +54,39 @@ const AllOrdersScreen: React.FC = () => {
       ),
     });
   }, [navigation]);
-  
-  console.log('[AllOrdersScreen] Data:', data, 'Error:', error);
-  
+
   const orders = useMemo(() => {
     if (!data?.pages) return [];
     return data.pages.flatMap((page) => page || []);
   }, [data]);
 
-  console.log('[AllOrdersScreen] Orders count:', orders.length);
-
+  // Client-side search filter only (status is handled server-side)
   const filteredOrders = useMemo(() => {
     if (!orders || orders.length === 0) return [];
+    if (!searchQuery) return orders;
+    const query = searchQuery.toLowerCase();
     return orders.filter((order: any) => {
       if (!order) return false;
-      const matchesSearch = 
-        order.clientName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        order.clientPhone?.includes(searchQuery);
-      if (!statusFilter) return matchesSearch;
-      return matchesSearch && order.status === statusFilter;
+      return (
+        order.clientName?.toLowerCase().includes(query) ||
+        order.code?.toLowerCase().includes(query) ||
+        order.clientPhone?.includes(searchQuery)
+      );
     });
-  }, [orders, searchQuery, statusFilter]);
+  }, [orders, searchQuery]);
 
-  const loadMore = () => hasNextPage && !isFetchingNextPage && fetchNextPage();
+  // Reset the gate when user scrolls — allows next onEndReached to fire
+  const handleMomentumScrollBegin = useCallback(() => {
+    hasCalledOnEnd.current = false;
+  }, []);
+
+  const loadMore = useCallback(() => {
+    if (hasCalledOnEnd.current) return;
+    if (hasNextPage && !isFetchingNextPage) {
+      hasCalledOnEnd.current = true;
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const renderOrderCard = ({ item }: { item: any }) => {
     if (!item) return null;
@@ -90,7 +106,7 @@ const AllOrdersScreen: React.FC = () => {
   }
 
   return (
-    <Screen header={{ title: 'Orders', subtitle: 'Manage all shipments' }}>
+    <Screen header={{ title: 'Orders', subtitle: 'Manage all shipments' }} scrollable={false}>
       <View style={styles.container}>
         {/* Stats Section */}
         <OrdersStats orders={orders} />
@@ -106,9 +122,9 @@ const AllOrdersScreen: React.FC = () => {
         />
 
         {/* Status Tabs */}
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false} 
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
           style={styles.tabsContainer}
           contentContainerStyle={styles.tabsContent}
         >
@@ -116,7 +132,7 @@ const AllOrdersScreen: React.FC = () => {
             <Button
               key={tab.label}
               mode={statusFilter === tab.key ? 'contained' : 'outlined'}
-              onPress={() => setStatusFilter(tab.key as string | null)}
+              onPress={() => setStatusFilter(tab.key)}
               style={styles.tabButton}
               buttonColor={statusFilter === tab.key ? COLORS.blue : undefined}
               textColor={statusFilter === tab.key ? '#FFF' : COLORS.grey}
@@ -129,23 +145,26 @@ const AllOrdersScreen: React.FC = () => {
 
         {/* Orders List with FlashList */}
         <View style={styles.listContainer}>
-          <FlashList
-            data={filteredOrders}
-            keyExtractor={(item, index) => item?._id || `order-${index}`}
-            renderItem={renderOrderCard}
-            estimatedItemSize={180}
-            refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
-            onEndReached={loadMore}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={
-              isFetchingNextPage ? (
-                <ActivityIndicator style={styles.loadMoreIndicator} color={COLORS.blue} />
-              ) : null
-            }
-            ListEmptyComponent={isLoading ? null : <EmptyOrders />}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 80 }}
-          />
+          {!data?.pages?.length && (isLoading || isFetching) ? (
+            <OrderCardSkeleton count={5} />
+          ) : (
+            <FlashList
+              data={filteredOrders}
+              keyExtractor={(item, index) => item?._id || `order-${index}`}
+              renderItem={renderOrderCard}
+              estimatedItemSize={180}
+              refreshControl={<RefreshControl refreshing={false} onRefresh={refetch} />}
+              onEndReached={loadMore}
+              onEndReachedThreshold={0.3}
+              onMomentumScrollBegin={handleMomentumScrollBegin}
+              ListFooterComponent={
+                isFetchingNextPage ? <OrderCardFooterSkeleton /> : null
+              }
+              ListEmptyComponent={<EmptyOrders />}
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 80 }}
+            />
+          )}
         </View>
 
         <AddOrderButton />

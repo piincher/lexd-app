@@ -88,11 +88,24 @@ export const useMarkAsRead = () => {
       const previousLists = queryClient.getQueriesData({ queryKey: notificationQueryKeys.lists() });
       const previousUnread = queryClient.getQueryData(notificationQueryKeys.unread());
 
-      // Optimistically update all list queries
+      // Optimistically update all list queries (handles both regular and infinite query structures)
       queryClient.setQueriesData(
         { queryKey: notificationQueryKeys.lists() },
         (old: any) => {
           if (!old) return old;
+          // Infinite query structure: { pages: [...], pageParams: [...] }
+          if (old.pages) {
+            return {
+              ...old,
+              pages: old.pages.map((page: any) => ({
+                ...page,
+                data: page.data?.map((n: InAppNotification) =>
+                  n._id === id ? { ...n, isRead: true } : n
+                ),
+              })),
+            };
+          }
+          // Regular query structure: { data: [...], pagination: {...} }
           return {
             ...old,
             data: old.data?.map((n: InAppNotification) =>
@@ -150,11 +163,20 @@ export const useMarkAllAsRead = () => {
       const previousLists = queryClient.getQueriesData({ queryKey: notificationQueryKeys.lists() });
       const previousUnread = queryClient.getQueryData(notificationQueryKeys.unread());
 
-      // Optimistically mark all as read
+      // Optimistically mark all as read (handles both regular and infinite query structures)
       queryClient.setQueriesData(
         { queryKey: notificationQueryKeys.lists() },
         (old: any) => {
           if (!old) return old;
+          if (old.pages) {
+            return {
+              ...old,
+              pages: old.pages.map((page: any) => ({
+                ...page,
+                data: page.data?.map((n: InAppNotification) => ({ ...n, isRead: true })),
+              })),
+            };
+          }
           return {
             ...old,
             data: old.data?.map((n: InAppNotification) => ({ ...n, isRead: true })),
@@ -227,11 +249,20 @@ export const useDeleteNotification = () => {
 
       const previousLists = queryClient.getQueriesData({ queryKey: notificationQueryKeys.lists() });
 
-      // Optimistically remove from all lists
+      // Optimistically remove from all lists (handles both regular and infinite query structures)
       queryClient.setQueriesData(
         { queryKey: notificationQueryKeys.lists() },
         (old: any) => {
           if (!old) return old;
+          if (old.pages) {
+            return {
+              ...old,
+              pages: old.pages.map((page: any) => ({
+                ...page,
+                data: page.data?.filter((n: InAppNotification) => n._id !== id),
+              })),
+            };
+          }
           return {
             ...old,
             data: old.data?.filter((n: InAppNotification) => n._id !== id),

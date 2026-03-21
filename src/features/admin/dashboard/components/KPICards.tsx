@@ -12,7 +12,6 @@ import { Fonts } from "@src/constants/Fonts";
 
 interface KPICardsProps {
   stats: {
-    activeOrders: number;
     totalGoods: number;
     pendingContainers: number;
     smsBalance: number;
@@ -28,7 +27,6 @@ interface KPICardData {
 
 export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
   const cards: KPICardData[] = [
-    { icon: "shopping-bag", value: stats.activeOrders, label: "Active Orders", color: "#4CAF50" },
     { icon: "inventory", value: stats.totalGoods, label: "Goods in Stock", color: "#2196F3" },
     { icon: "local-shipping", value: stats.pendingContainers, label: "Containers", color: "#FF9800" },
     { icon: "sms", value: stats.smsBalance, label: "SMS Balance", color: "#9C27B0" },

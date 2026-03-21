@@ -1,150 +1,306 @@
-import React, { FC, useEffect } from "react";
-import { View, StyleSheet, Text, KeyboardAvoidingView, Platform } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { MultiSelect } from "../components/MultiSelect";
-import { useGetUsers } from "../../users/hooks/useGetUsers";
-import { Button, TextInput } from "react-native-paper";
-import { useGetOrderBaseonDate } from "../../orders/hooks/useOrderManagement";
-import { useSendNotificationSms } from "../hooks/useNotifications";
-import { Notification } from "@src/components/Notification/Notification";
-import AppButton from "@src/components/AppButton/AppButton";
-import { COLORS } from "@src/constants/Colors";
-import { Header } from "@src/components/Header/Header";
-import { RootStackScreenProps } from "@src/navigations/type";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import { Calendar, useCalendar } from "@src/components/Calendar/Calendar";
-const SendSms = ({ navigation }: RootStackScreenProps<"SendSms">) => {
-   const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
-   const [visible, setVisible] = React.useState<boolean>(false);
-   const { mutate, isSuccess, isPending } = useSendNotificationSms();
-   const [search, setSearch] = React.useState<string>("");
-   const [message, setMessage] = React.useState<string>("");
+/**
+ * SendSmsScreen
+ * SRP: State coordination and layout composition ONLY
+ * Delegates all rendering to sub-components
+ */
 
-   const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
+import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Keyboard } from 'react-native';
+import { Text } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, { FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
+import { showMessage } from 'react-native-flash-message';
+import * as Haptics from 'expo-haptics';
 
-   const {
-      mutate: fetchMutation,
-      data: fetctedData,
-      isSuccess: fetchDataSuccess,
-      isPending: fetchDataIsPending,
-      reset,
-   } = useGetOrderBaseonDate();
+import { Theme } from '@src/constants/Theme';
+import { Fonts } from '@src/constants/Fonts';
+import { RootStackScreenProps } from '@src/navigations/type';
+import { useGetUsers } from '../../hooks/useGetUsers';
+import { useGetOrderBaseonDate } from '../../orders/hooks/useOrderManagement';
+import { useSendNotificationSms } from '../hooks/useNotifications';
+import { useViewSmsBalance } from '@src/shared/hooks';
+import { Calendar, useCalendar } from '@src/components/Calendar/Calendar';
 
-   const handleSendSms = () => {
-      mutate({
-         phoneNumbers: selectedItems,
-         message,
-      });
-   };
+import { SmsBalanceHeader } from '../components/SmsBalanceHeader';
+import { RecipientSelector, Recipient } from '../components/RecipientSelector';
+import { MessageComposer } from '../components/MessageComposer';
+import { SendConfirmationModal } from '../components/SendConfirmationModal';
 
-   useEffect(() => {
-      if (isSuccess) {
-         setVisible(true);
-      }
-   }, [isSuccess, setVisible]);
+const SMS_CHAR_LIMIT = 160;
 
-   const onDismissSnackBar = () => setVisible(false);
+type SourceMode = 'all' | 'date';
 
-   useEffect(() => {
-      if (open) {
-         reset();
-      }
-   }, [open]);
-   const extractedData2 = fetctedData?.map((item) => {
-      return {
-         id: item.clientPhone,
-         name: item.clientName,
-         info: item.clientPhone,
-      };
-   });
+const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
+  // UI state
+  const [mode, setMode] = useState<SourceMode>('all');
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [search, setSearch] = useState('');
+  const [message, setMessage] = useState('');
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
-   const filteredData = extractedData2?.filter((item) => {
+  // Data hooks
+  const { data: usersData, isLoading: isLoadingUsers } = useGetUsers();
+  const { data: smsData } = useViewSmsBalance(true);
+  const {
+    mutate: fetchByDate,
+    data: dateData,
+    isPending: isFetchingByDate,
+    reset: resetDateData,
+  } = useGetOrderBaseonDate();
+  const { mutate: sendSms, isPending: isSending, isSuccess: isSendSuccess, reset: resetSendState } = useSendNotificationSms();
+  const [showSuccess, setShowSuccess] = useState(false);
+  const sentCountRef = useRef(0);
+
+  // Calendar
+  const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
+
+  // SMS balance
+  const smsBalance = smsData?.[2]?.availableUnits || 0;
+
+  // Handle send success — show overlay, then reset form
+  useEffect(() => {
+    if (isSendSuccess) {
+      sentCountRef.current = selectedIds.size;
+      setShowSuccess(true);
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+        setSelectedIds(new Set());
+        setMessage('');
+        setSearch('');
+        resetSendState();
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [isSendSuccess]);
+
+  // Map users to unified Recipient format
+  const allRecipients: Recipient[] = useMemo(() => {
+    if (mode === 'date') {
       return (
-         item.name.toLowerCase().includes(search.toLowerCase()) ||
-         item.info.toLowerCase().includes(search.toLowerCase())
+        dateData?.map((item: any) => ({
+          id: item.clientPhone,
+          name: item.clientName,
+          phone: item.clientPhone,
+        })) || []
       );
-   });
+    }
+    return (
+      usersData
+        ?.filter((u: any) => u.phoneNumber && !u.blocked)
+        .map((u: any) => ({
+          id: u.phoneNumber,
+          name: `${u.firstName} ${u.lastName}`.trim(),
+          phone: u.phoneNumber,
+        })) || []
+    );
+  }, [mode, usersData, dateData]);
 
-   const departureDate: Date = date && date instanceof Date ? new Date(
+  // Date label
+  const dateLabel = date instanceof Date
+    ? date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+    : '';
+
+  // Handlers
+  const handleModeChange = useCallback(
+    (newMode: SourceMode) => {
+      setMode(newMode);
+      setSelectedIds(new Set());
+      setSearch('');
+    },
+    []
+  );
+
+  const handleToggle = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
+
+  const handleSelectAll = useCallback(() => {
+    const filtered = allRecipients.filter(
+      (r) =>
+        r.name.toLowerCase().includes(search.toLowerCase()) ||
+        r.phone.includes(search)
+    );
+    setSelectedIds(new Set(filtered.map((r) => r.id)));
+  }, [allRecipients, search]);
+
+  const handleDeselectAll = useCallback(() => {
+    setSelectedIds(new Set());
+  }, []);
+
+  const handleFetchByDate = useCallback(() => {
+    if (!date || !(date instanceof Date)) return;
+    const departureDate = new Date(
       date.getFullYear(),
       date.getMonth(),
       date.getDate() + 1
-   ) : new Date();
+    );
+    fetchByDate({ departureDate });
+  }, [date, fetchByDate]);
 
-   const fetch = () => {
-      fetchMutation({
-         departureDate: departureDate,
-      });
-   };
+  const handleOpenCalendar = useCallback(() => {
+    resetDateData();
+    setOpen(true);
+  }, [resetDateData, setOpen]);
 
-   return (
-      <SafeAreaView style={styles.container}>
-         <View style={{ flex: 1 }}>
-            <KeyboardAvoidingView
-               style={{
-                  flex: 1,
-                  justifyContent: "center",
-               }}
-               behavior={Platform.OS === "ios" ? "height" : undefined}
-            >
-               <Header
-                  title="Envoyer un message"
-                  navigation={navigation}
-                  rightIcon={<AntDesign name="calendar" size={24} color="black" />}
-                  rightIconHandler={() => setOpen(true)}
-               />
-               <Calendar
-                  open={open}
-                  onDismissSingle={onDismissSingle}
-                  date={date}
-                  onConfirmSingle={onConfirmSingle}
-               />
-               <TextInput
-                  label="search client"
-                  mode="outlined"
-                  onChangeText={(text) => setSearch(text)}
-                  multiline
-                  numberOfLines={4}
-                  style={{ margin: 10 }}
-               />
-               <MultiSelect
-                  items={filteredData || []}
-                  valueKey="id"
-                  displayKey="name"
-                  selectedItems={selectedItems}
-                  setSelectedItems={setSelectedItems}
-               />
+  const handleSendPress = useCallback(() => {
+    if (selectedIds.size === 0) {
+      showMessage({ message: 'Selectionnez au moins un destinataire', type: 'warning' });
+      return;
+    }
+    if (!message.trim()) {
+      showMessage({ message: 'Ecrivez un message', type: 'warning' });
+      return;
+    }
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    setShowConfirmation(true);
+  }, [selectedIds, message]);
 
-               <Notification
-                  message="message envoye"
-                  type="success"
-                  visible={visible}
-                  onDismissSnackBar={onDismissSnackBar}
-               />
-               <TextInput
-                  label="Message"
-                  mode="outlined"
-                  onChangeText={(text) => setMessage(text)}
-                  multiline
-                  numberOfLines={4}
-                  style={{ margin: 10 }}
-               />
-               <AppButton
-                  onPress={(fetctedData?.length || 0) > 0 ? handleSendSms : fetch}
-                  title={(fetctedData?.length || 0) > 0 ? "Envoyez un message" : "Obtenir les client "}
-                  busy={fetchDataIsPending || isPending}
-               />
-            </KeyboardAvoidingView>
-         </View>
-      </SafeAreaView>
-   );
+  const handleConfirmSend = useCallback(() => {
+    setShowConfirmation(false);
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    sendSms({
+      phoneNumbers: Array.from(selectedIds),
+      message: message.trim(),
+    });
+  }, [selectedIds, message, sendSms]);
+
+  // SMS calculation
+  const smsPerRecipient = message.length === 0 ? 0 : Math.ceil(message.length / SMS_CHAR_LIMIT);
+  const totalSms = smsPerRecipient * selectedIds.size;
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <SmsBalanceHeader smsBalance={smsBalance} onBack={() => navigation.goBack()} />
+
+      <KeyboardAvoidingView
+        style={styles.flex}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <RecipientSelector
+            mode={mode}
+            onModeChange={handleModeChange}
+            recipients={allRecipients}
+            selectedIds={selectedIds}
+            onToggle={handleToggle}
+            onSelectAll={handleSelectAll}
+            onDeselectAll={handleDeselectAll}
+            search={search}
+            onSearchChange={setSearch}
+            isLoading={mode === 'all' ? isLoadingUsers : isFetchingByDate}
+            dateLabel={dateLabel}
+            onOpenCalendar={handleOpenCalendar}
+            onFetchByDate={handleFetchByDate}
+            isFetchingByDate={isFetchingByDate}
+          />
+
+          <MessageComposer
+            message={message}
+            onMessageChange={setMessage}
+            recipientCount={selectedIds.size}
+            isSending={isSending}
+            onSend={handleSendPress}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
+
+      <Calendar
+        open={open}
+        onDismissSingle={onDismissSingle}
+        date={date}
+        onConfirmSingle={onConfirmSingle}
+      />
+
+      <SendConfirmationModal
+        visible={showConfirmation}
+        recipientCount={selectedIds.size}
+        smsCount={totalSms}
+        messagePreview={message}
+        onConfirm={handleConfirmSend}
+        onCancel={() => setShowConfirmation(false)}
+      />
+
+      {/* Success Overlay */}
+      {showSuccess && (
+        <Animated.View
+          entering={FadeIn.duration(200)}
+          exiting={FadeOut.duration(300)}
+          style={styles.successOverlay}
+        >
+          <Animated.View entering={ZoomIn.springify().damping(12)} style={styles.successCard}>
+            <View style={styles.successIconCircle}>
+              <Ionicons name="checkmark-circle" size={56} color="#10B981" />
+            </View>
+            <Text style={styles.successTitle}>Envoye avec succes!</Text>
+            <Text style={styles.successSubtitle}>
+              Message envoye a {sentCountRef.current} destinataire{sentCountRef.current > 1 ? 's' : ''}
+            </Text>
+          </Animated.View>
+        </Animated.View>
+      )}
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: COLORS.white,
-   },
+  container: {
+    flex: 1,
+    backgroundColor: Theme.neutral[50],
+  },
+  flex: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  successOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 100,
+  },
+  successCard: {
+    backgroundColor: '#FFF',
+    borderRadius: 24,
+    paddingVertical: 36,
+    paddingHorizontal: 40,
+    alignItems: 'center',
+  },
+  successIconCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: 'rgba(16,185,129,0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  successTitle: {
+    fontSize: 20,
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
+    color: Theme.neutral[800],
+    marginBottom: 6,
+  },
+  successSubtitle: {
+    fontSize: 14,
+    fontFamily: Fonts.regular,
+    color: Theme.neutral[500],
+  },
 });
 
 export default SendSms;

@@ -207,9 +207,7 @@ export const getAllOrders = async (page: number = 1, status?: string) => {
 		query += `&status=${status}`;
 	}
 	const url = `${API_URL.getActiveOrdersAdmin}?${query}`;
-	console.log('[API getAllOrders] URL:', url);
 	const response = await api.get<productType[]>(url);
-	console.log('[API getAllOrders] Response count:', response.data.length);
 	return response.data;
 }
 

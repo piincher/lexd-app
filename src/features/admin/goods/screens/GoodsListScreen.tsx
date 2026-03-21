@@ -26,6 +26,7 @@ import { Goods, GoodsStatus } from '../types';
 import { useQueryClient } from '@tanstack/react-query';
 import { ApiClientError } from '@src/api/client';
 import { Theme } from '@src/constants/Theme';
+import NotificationBell from '@src/features/notifications/components/NotificationBell';
 
 const { width } = Dimensions.get('window');
 
@@ -117,12 +118,11 @@ export const GoodsListScreen: React.FC = () => {
             <Text style={styles.headerGreeting}>Bonjour! 👋</Text>
             <Text style={styles.headerTitle}>Marchandises</Text>
           </View>
-          <TouchableOpacity style={styles.notificationButton}>
-            <View style={styles.notificationBadge}>
-              <Text style={styles.notificationBadgeText}>3</Text>
-            </View>
-            <Ionicons name="notifications-outline" size={24} color={Theme.neutral[700]} />
-          </TouchableOpacity>
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={24}
+            color={Theme.neutral[700]}
+          />
         </View>
 
         {/* Stats Row */}
@@ -347,32 +347,6 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: Theme.neutral[800],
     letterSpacing: -0.5,
-  },
-  notificationButton: {
-    width: 48,
-    height: 48,
-    borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral.white,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...Theme.shadows.sm,
-  },
-  notificationBadge: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    backgroundColor: Theme.accent.coral,
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1,
-  },
-  notificationBadgeText: {
-    fontSize: 10,
-    fontWeight: '700',
-    color: '#FFF',
   },
   statsRow: {
     flexDirection: 'row',

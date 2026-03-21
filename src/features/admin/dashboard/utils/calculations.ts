@@ -8,7 +8,6 @@ export const calculateDashboardStats = (
   containersData: any,
   smsData: any
 ) => ({
-  activeOrders: ordersData?.pages?.[0]?.length || 0,
   totalGoods: goodsData?.data?.data?.length || goodsData?.data?.goods?.length || 0,
   pendingContainers: containersData?.data?.length || containersData?.data?.containers?.length || 0,
   smsBalance: smsData?.[2]?.availableUnits || 0,

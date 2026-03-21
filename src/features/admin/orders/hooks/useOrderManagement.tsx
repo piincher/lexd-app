@@ -134,14 +134,13 @@ export const useGetAllOrders = (status?: string) => {
    return useInfiniteQuery({
       queryKey: [queryKey.ORDERKEY, 'all', status],
       queryFn: async ({ pageParam = 1 }) => {
-         console.log('[useGetAllOrders] Fetching page:', pageParam, 'status:', status);
          const result = await getAllOrders(pageParam, status);
-         console.log('[useGetAllOrders] Result count:', result.length);
          return result;
       },
       getNextPageParam: (lastPage, allPages) => {
-         const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
-         return nextPage;
+         // Stop fetching if the last page returned fewer items than LIMIT
+         if (!lastPage || lastPage.length < LIMIT) return undefined;
+         return allPages.length + 1;
       },
       initialPageParam: 1,
    });

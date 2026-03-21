@@ -30,7 +30,7 @@ export const RecentOrders: React.FC<RecentOrdersProps> = ({ orders }) => {
     <Card style={styles.card}>
       <View style={styles.header}>
         <Text style={styles.title}>📋 Recent Orders</Text>
-        <Button mode="text" onPress={() => navigation.navigate("ActiveOrder" as never)} textColor={COLORS.blue}>
+        <Button mode="text" onPress={() => navigation.navigate("AllOrders" as never)} textColor={COLORS.blue}>
           View All
         </Button>
       </View>

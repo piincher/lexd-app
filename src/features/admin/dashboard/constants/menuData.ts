@@ -33,7 +33,6 @@ export const MENU_CATEGORIES: MenuCategory[] = [
     icon: "clipboard-list",
     items: [
       { id: "o1", title: "All Orders", route: "AllOrders" },
-      { id: "o2", title: "Active Orders", route: "ActiveOrder" },
       { id: "o3", title: "Add New Order", route: "ChooseShippingMethod" },
       { id: "o4", title: "Past Orders", route: "AdmninPastOrders" },
       { id: "o5", title: "Batch Update", route: "BatchUpdate" },
@@ -47,7 +46,6 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       { id: "l1", title: "Containers", route: "ContainerList" },
       { id: "l2", title: "Consignees", route: "ConsigneeList" },
       { id: "l3", title: "Routes", route: "RouteList" },
-      { id: "l4", title: "Packing Lists", route: "PackingList" },
     ],
   },
   {

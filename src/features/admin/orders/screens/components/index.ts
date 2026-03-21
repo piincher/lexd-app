@@ -8,4 +8,5 @@ export { PaymentSection } from './PaymentSection';
 export { OrderStatusTimeline } from './OrderStatusTimeline';
 export { OrderActions } from './OrderActions';
 export { OrderDetailSkeleton } from './OrderDetailSkeleton';
+export { OrderCardSkeleton, OrderCardFooterSkeleton } from './OrderCardSkeleton';
 export { OrderGoodsSection } from './OrderGoodsSection';

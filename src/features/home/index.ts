@@ -16,5 +16,5 @@ export { RowDetails } from "./components/RowDetails";
 
 // Screens
 export { default as HomeScreen } from "./screens/HomeScreen";
-export { default as NotificationsScreen } from "./screens/Notifications";
+export { default as NotificationsScreen } from "../notifications/screens/NotificationsScreen";
 export { default as FAQScreen } from "./screens/FAQ";
