@@ -1,155 +1,79 @@
-import Animated, {
-   useAnimatedStyle,
-   interpolate,
-   useSharedValue,
-   withSpring,
-} from "react-native-reanimated";
-import { Pressable, View, Image, StyleSheet, Platform } from "react-native";
-import { BlurView } from "expo-blur";
+import React from "react";
+import { View, Image, Pressable, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
-import { COLORS } from "@src/constants/Colors";
 import { IMAGES } from "@src/constants/Images";
 import { useNavigation } from "@react-navigation/native";
-
-const AnimatedBlurView = Animated.createAnimatedComponent(BlurView);
+import { useAppTheme } from "@src/providers";
 
 export const Header = () => {
-   const headerHeight = useSharedValue(100);
-   const buttonOneScale = useSharedValue(1);
-   const buttonTwoScale = useSharedValue(1);
-
    const navigation = useNavigation();
-   const handlePressBlockOne = () => {
-      navigation.navigate("faq");
-   };
-   const handlePressBlockTwo = () => {
-      navigation.navigate("AboutUs");
-   };
-
-   const headerStyle = useAnimatedStyle(() => ({
-      height: withSpring(headerHeight.value),
-      paddingVertical: interpolate(headerHeight.value, [70, 100], [8, 16]),
-      borderBottomWidth: interpolate(headerHeight.value, [70, 100], [1, 0]),
-      borderBottomColor: "rgba(0,0,0,0.1)",
-   }));
-
-   const logoStyle = useAnimatedStyle(() => ({
-      width: interpolate(headerHeight.value, [70, 80], [90, 150]),
-      height: interpolate(headerHeight.value, [70, 100], [30, 45]),
-   }));
-
-   const buttonOneAnimatedStyle = useAnimatedStyle(() => ({
-      transform: [{ scale: withSpring(buttonOneScale.value) }],
-      opacity: withSpring(buttonOneScale.value < 1 ? 0.6 : 1),
-   }));
-
-   const buttonTwoAnimatedStyle = useAnimatedStyle(() => ({
-      transform: [{ scale: withSpring(buttonTwoScale.value) }],
-      opacity: withSpring(buttonTwoScale.value < 1 ? 0.6 : 1),
-   }));
+   const { colors } = useAppTheme();
 
    return (
-      <AnimatedBlurView intensity={50} style={[styles.headerContainer, headerStyle]} tint="light">
-         <Animated.Image
-            source={IMAGES.flat_logo}
-            style={[styles.logo, logoStyle]}
-            resizeMode="contain"
-         />
-
-         <View style={styles.headerActions}>
+      <View
+         style={[
+            styles.container,
+            {
+               backgroundColor: colors.background.default,
+               borderBottomColor: colors.border,
+            },
+         ]}
+      >
+         <Image source={IMAGES.flat_logo} style={styles.logo} resizeMode="contain" />
+         <View style={styles.actions}>
             <Pressable
-               onPress={handlePressBlockOne}
-               onPressIn={() => (buttonOneScale.value = 0.9)}
-               onPressOut={() => (buttonOneScale.value = 1)}
+               onPress={() => navigation.navigate("faq" as never)}
+               style={({ pressed }) => [
+                  styles.iconButton,
+                  { opacity: pressed ? 0.7 : 1 },
+               ]}
+               hitSlop={8}
                accessibilityRole="button"
-               accessibilityLabel="Help"
-               hitSlop={12}
+               accessibilityLabel="FAQ"
             >
-               <Animated.View
-                  style={[
-                     styles.iconContainer,
-                     buttonOneAnimatedStyle,
-                     { backgroundColor: COLORS.blue + "15" },
-                  ]}
-               >
-                  <FontAwesome6
-                     name="question"
-                     size={24}
-                     color={COLORS.blue}
-                     style={styles.iconShadow}
-                  />
-               </Animated.View>
+               <FontAwesome6 name="question" size={18} color={colors.primary.main} />
             </Pressable>
-
             <Pressable
-               onPress={handlePressBlockTwo}
-               onPressIn={() => (buttonTwoScale.value = 0.9)}
-               onPressOut={() => (buttonTwoScale.value = 1)}
+               onPress={() => navigation.navigate("AboutUs" as never)}
+               style={({ pressed }) => [
+                  styles.iconButton,
+                  { opacity: pressed ? 0.7 : 1 },
+               ]}
+               hitSlop={8}
                accessibilityRole="button"
-               accessibilityLabel="Information"
-               hitSlop={12}
+               accessibilityLabel="À propos"
             >
-               <Animated.View
-                  style={[
-                     styles.iconContainer,
-                     buttonTwoAnimatedStyle,
-                     { backgroundColor: COLORS.blue + "15" },
-                  ]}
-               >
-                  <FontAwesome6
-                     name="info"
-                     size={24}
-                     color={COLORS.blue}
-                     style={styles.iconShadow}
-                  />
-               </Animated.View>
+               <FontAwesome6 name="info" size={18} color={colors.primary.main} />
             </Pressable>
          </View>
-      </AnimatedBlurView>
+      </View>
    );
 };
 
 const styles = StyleSheet.create({
-   headerContainer: {
+   container: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingHorizontal: 24,
-      position: "absolute",
-      top: 0,
-      left: 0,
-      right: 0,
-      zIndex: 100,
-      overflow: "hidden",
-      backgroundColor: Platform.select({
-         ios: "transparent",
-         android: "rgba(255,255,255,0.95)",
-      }),
-
-      width: "100%",
+      paddingHorizontal: 20,
+      paddingVertical: 12,
+      borderBottomWidth: 1,
    },
    logo: {
-      aspectRatio: 4,
+      width: 140,
+      height: 40,
    },
-   headerActions: {
+   actions: {
       flexDirection: "row",
-      gap: 16,
+      gap: 12,
       alignItems: "center",
    },
-   iconContainer: {
-      padding: 10,
-      borderRadius: 30,
+   iconButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: "rgba(34,197,94,0.1)",
       justifyContent: "center",
       alignItems: "center",
-      shadowColor: COLORS.blue,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
-   },
-   iconShadow: {
-      textShadowColor: "rgba(0,0,0,0.1)",
-      textShadowOffset: { width: 0, height: 1 },
-      textShadowRadius: 2,
    },
 });

@@ -21,6 +21,8 @@ export const useGetOrderOfUserById = (id: string) => {
       queryKey: [ORDERKEY, id],
       queryFn: () => getOrdersBasedOnUserId(id),
       enabled: !!id,
+      refetchOnWindowFocus: true,
+      staleTime: 30_000,
    });
 };
 

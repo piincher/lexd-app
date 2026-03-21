@@ -1,89 +1,285 @@
 import { MaterialIcons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
 import { HomeTabScreenProps } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
 import { useShippingMode } from "@src/store/shippingMode";
-import React from "react";
-import { Pressable, ScrollView, StyleSheet, Text } from "react-native";
+import React, { useCallback, useMemo, useState } from "react";
+import {
+   Pressable,
+   ScrollView,
+   StyleSheet,
+   Text,
+   View,
+   ActivityIndicator,
+   RefreshControl,
+} from "react-native";
+import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
 import withProtectedRoute from "@src/hoc/protected";
+import { useAppTheme } from "@src/providers";
+import { useGetOrderOfUserById } from "@src/features/home/hooks/useGetActiveOrders";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { productType } from "@src/api/order";
+import { OrderListCard, OrderStatusFilter } from "../components";
 
-type dataType = {
-   id: string;
-   title: string;
-   route: any;
-   param?: string;
-}[];
-const list: dataType = [
-   {
-      id: "0",
-      title: "Ajouter une commande",
-      route: "SelectUser",
-   },
-   {
-      id: "1",
-      title: "Voir les commandes",
-      route: "SelectShippingMethod",
-   },
-   {
-      id: "2",
-      title: "Ajouter un utilisateur",
-      route: "UserAdd",
-   },
+// -- Constants --
 
-   {
-      id: "3",
-      title: "Batch Update",
-      route: "BatchUpdate",
-   },
-   {
-      id: "4",
-      title: "Marquer comme livré",
-      route: "ScanQRCode",
-   },
-   {
-      id: "5",
-      title: "Les colis recupérés",
-      route: "AdminPastOrders",
-   },
-   {
-      id: "6",
-      title: "Chercher des colis d'un client",
-      route: "SearchOrder",
-   },
-   {
-      id: "7",
-      title: "Liste des utilisateurs",
-      route: "UserList",
-   },
+type MenuItemType = { id: string; title: string; route: any; param?: string };
+
+const ADMIN_MENU: MenuItemType[] = [
+   { id: "0", title: "Ajouter une commande", route: "SelectUser" },
+   { id: "1", title: "Voir les commandes", route: "SelectShippingMethod" },
+   { id: "2", title: "Ajouter un utilisateur", route: "UserAdd" },
+   { id: "3", title: "Batch Update", route: "BatchUpdate" },
+   { id: "4", title: "Marquer comme livré", route: "ScanQRCode" },
+   { id: "5", title: "Les colis recupérés", route: "AdminPastOrders" },
+   { id: "6", title: "Chercher des colis d'un client", route: "SearchOrder" },
+   { id: "7", title: "Liste des utilisateurs", route: "UserList" },
 ];
 
-const managerList: dataType = [
-   {
-      id: "4",
-      title: "Marquer comme livré",
-      route: "ScanQRCode",
-   },
+const MANAGER_MENU: MenuItemType[] = [
+   { id: "4", title: "Marquer comme livré", route: "ScanQRCode" },
 ];
 
-const shippingMode: dataType = [
-   {
-      id: "1",
-      title: "Mes Expeditions Aeriennes",
-      route: "UserActiveOrders",
-      param: "air",
-   },
-   {
-      id: "2",
-      title: "Mes Expeditions Maritimes",
-      route: "UserActiveOrders",
-      param: "sea",
-   },
+const STATUS_FILTERS = [
+   { key: "all", label: "Tous" },
+   { key: "Inactive", label: "En attente" },
+   { key: "Active", label: "En cours" },
+   { key: "In Transit", label: "En transit" },
+   { key: "Delivered", label: "Livré" },
 ];
+
+// ============================================
+// AdminMenu — admin / manager navigation hub
+// ============================================
+
+const AdminMenu: React.FC<{ navigation: any; items: MenuItemType[] }> = ({
+   navigation,
+   items,
+}) => {
+   const { setType } = useShippingMode((state) => state);
+
+   return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+         <ScrollView>
+            {items.map((item) => (
+               <Pressable
+                  key={item.id}
+                  style={styles.adminItem}
+                  onPress={() => {
+                     if (item.param) setType(item.param as "air" | "sea");
+                     navigation.navigate(item.route, { param: item.param });
+                  }}
+               >
+                  <Text style={styles.adminItemText}>{item.title}</Text>
+                  <MaterialIcons name="navigate-next" size={24} color={COLORS.blue} />
+               </Pressable>
+            ))}
+         </ScrollView>
+      </SafeAreaView>
+   );
+};
+
+// ============================================
+// CustomerOrders — customer order list
+// ============================================
+
+const CustomerOrders: React.FC = () => {
+   const { colors } = useAppTheme();
+   const navigation = useNavigation();
+   const userId = useAuth((state) => state.user._id);
+   const { data: orders, isLoading, refetch } = useGetOrderOfUserById(userId);
+   const [statusFilter, setStatusFilter] = useState("all");
+   const [refreshing, setRefreshing] = useState(false);
+
+   // Refetch on screen focus
+   useFocusEffect(
+      useCallback(() => {
+         refetch();
+      }, [refetch])
+   );
+
+   const onRefresh = useCallback(async () => {
+      setRefreshing(true);
+      await refetch();
+      setRefreshing(false);
+   }, [refetch]);
+
+   // Sort by latest update, filter by status
+   const filteredOrders = useMemo(() => {
+      if (!orders || !Array.isArray(orders)) return [];
+      const sorted = [...orders].sort((a, b) => {
+         const dateA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+         const dateB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+         return dateB - dateA;
+      });
+      if (statusFilter === "all") return sorted;
+      return sorted.filter((o) => o.status === statusFilter);
+   }, [orders, statusFilter]);
+
+   // Compute counts for filter badges
+   const statusCounts = useMemo(() => {
+      if (!orders || !Array.isArray(orders))
+         return { all: 0, Inactive: 0, Active: 0, "In Transit": 0, Delivered: 0 };
+      return {
+         all: orders.length,
+         Inactive: orders.filter((o) => o.status === "Inactive").length,
+         Active: orders.filter((o) => o.status === "Active").length,
+         "In Transit": orders.filter((o) => o.status === "In Transit").length,
+         Delivered: orders.filter((o) => o.status === "Delivered").length,
+      };
+   }, [orders]);
+
+   const handleOrderPress = useCallback(
+      (order: productType) => {
+         (navigation as any).navigate("OrderDetail", { id: order._id });
+      },
+      [navigation]
+   );
+
+   const renderItem: ListRenderItem<productType> = useCallback(
+      ({ item }) => (
+         <OrderListCard order={item} onPress={() => handleOrderPress(item)} />
+      ),
+      [handleOrderPress]
+   );
+
+   const keyExtractor = useCallback((item: productType) => item._id!, []);
+
+   return (
+      <SafeAreaView
+         style={[styles.container, { backgroundColor: colors.background.default }]}
+         edges={["top"]}
+      >
+         {/* Header */}
+         <View style={styles.header}>
+            <Text style={[styles.headerTitle, { color: colors.text.primary }]}>
+               Mes Commandes
+            </Text>
+            <Text style={[styles.headerSubtitle, { color: colors.text.secondary }]}>
+               {statusCounts[statusFilter as keyof typeof statusCounts] ?? 0} commande
+               {(statusCounts[statusFilter as keyof typeof statusCounts] ?? 0) !== 1
+                  ? "s"
+                  : ""}
+            </Text>
+         </View>
+
+         {/* Status filter */}
+         <OrderStatusFilter
+            filters={STATUS_FILTERS}
+            activeFilter={statusFilter}
+            counts={statusCounts}
+            onSelect={setStatusFilter}
+         />
+
+         {/* Orders list */}
+         {isLoading ? (
+            <View style={styles.loadingContainer}>
+               <ActivityIndicator size="large" color={colors.primary.main} />
+            </View>
+         ) : (
+            <View style={styles.listWrapper}>
+               <FlashList
+                  data={filteredOrders}
+                  keyExtractor={keyExtractor}
+                  renderItem={renderItem}
+                  estimatedItemSize={90}
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.listContent}
+                  refreshControl={
+                     <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        tintColor={colors.primary.main}
+                     />
+                  }
+                  ListEmptyComponent={
+                     <View style={styles.emptyContainer}>
+                        <Feather name="inbox" size={48} color={colors.text.disabled} />
+                        <Text style={[styles.emptyTitle, { color: colors.text.primary }]}>
+                           Aucune commande
+                        </Text>
+                        <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
+                           {statusFilter !== "all"
+                              ? `Vous n'avez pas de commande "${STATUS_FILTERS.find(
+                                   (f) => f.key === statusFilter
+                                )?.label.toLowerCase()}"`
+                              : "Vos commandes apparaîtront ici"}
+                        </Text>
+                     </View>
+                  }
+               />
+            </View>
+         )}
+      </SafeAreaView>
+   );
+};
+
+// ============================================
+// Orders — main screen (role-based routing)
+// ============================================
+
+const Orders = ({ navigation }: HomeTabScreenProps<"Orders">) => {
+   const { role } = useAuth((state) => state.user);
+
+   if (role === "admin") return <AdminMenu navigation={navigation} items={ADMIN_MENU} />;
+   if (role === "manager") return <AdminMenu navigation={navigation} items={MANAGER_MENU} />;
+   return <CustomerOrders />;
+};
+
+export default withProtectedRoute(Orders);
+
+// ============================================
+// Styles
+// ============================================
 
 const styles = StyleSheet.create({
-   item: {
+   container: {
+      flex: 1,
+   },
+   header: {
+      paddingHorizontal: 20,
+      paddingTop: 16,
+      paddingBottom: 14,
+   },
+   headerTitle: {
+      fontSize: 22,
+      fontWeight: "700",
+   },
+   headerSubtitle: {
+      fontSize: 13,
+      marginTop: 2,
+   },
+   listWrapper: {
+      flex: 1,
+   },
+   listContent: {
+      paddingHorizontal: 16,
+      paddingBottom: 100,
+   },
+   loadingContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+   },
+   emptyContainer: {
+      paddingTop: 80,
+      alignItems: "center",
+      gap: 8,
+   },
+   emptyTitle: {
+      fontSize: 17,
+      fontWeight: "600",
+   },
+   emptyText: {
+      fontSize: 14,
+      textAlign: "center",
+      paddingHorizontal: 40,
+   },
+   // Admin menu
+   adminItem: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
@@ -92,53 +288,7 @@ const styles = StyleSheet.create({
       padding: 12,
       margin: 20,
    },
-   itemText: {
+   adminItemText: {
       fontFamily: Fonts.meduim,
    },
 });
-
-const Orders = ({ navigation }: HomeTabScreenProps<"Orders">) => {
-   const { role } = useAuth((state) => state.user);
-   const { setType } = useShippingMode((state) => state);
-
-   const userRole = role === "admin" ? list : role === "manager" ? managerList : shippingMode;
-
-   const handleAirShiping = () => {
-      const air = "air";
-      setType(air);
-      navigation.navigate("UserActiveOrders", { type: air });
-   };
-
-   return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-         <>
-            <ScrollView>
-               {userRole ? (
-                  <>
-                     {/* <RowDetails label='Le nombre de SMS restant' value={smsData?.[1]?.availableUnits ?? 0} />
-							<RowDetails label="la date d'expiration de sms" value={formattedDateTime} /> */}
-
-                     {userRole.map((item) => (
-                        <Pressable
-                           key={item.id}
-                           style={styles.item}
-                           onPress={() => {
-                              if (item.param) setType(item.param as "air" | "sea");
-                              navigation.navigate(item.route, { param: item.param });
-                           }}
-                        >
-                           <Text style={styles.itemText}>{item.title}</Text>
-                           <MaterialIcons name="navigate-next" size={24} color={COLORS.blue} />
-                        </Pressable>
-                     ))}
-                  </>
-               ) : (
-                  <></>
-               )}
-            </ScrollView>
-         </>
-      </SafeAreaView>
-   );
-};
-
-export default withProtectedRoute(Orders);

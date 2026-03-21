@@ -93,10 +93,7 @@ import {
 import { OnBoardingScreen as OnBoarding } from "@src/features/onboarding";
 
 // Features - Order Detail
-import {
-   OrderDetailsScreen as OrderDetails,
-   SeaShippingOrderDetailsScreen as SeaShippingOrderDetails,
-} from "@src/features/order-detail";
+import { NewOrderDetailScreen } from "@src/features/order-detail";
 
 // Features - Payments
 import { PaymentScreen, PaymentHistoryScreen } from "@src/features/payments";
@@ -261,7 +258,7 @@ function AppWrapper() {
                   <Stack.Screen name="PaymentHistoryScreen" component={PaymentHistoryScreen} />
                   <Stack.Screen name="AddOrder" component={AddOrder} />
                   <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
-                  <Stack.Screen name="OrderDetail" component={OrderDetails} />
+                  <Stack.Screen name="OrderDetail" component={NewOrderDetailScreen} />
                   <Stack.Screen name="ChatRoom" component={ChatRoom} />
                   <Stack.Screen name="SelectAdminToChatWith" component={SelectAdminToChatWith} />
                   <Stack.Screen name="SelectUser" component={SelectUser} />
@@ -284,10 +281,6 @@ function AppWrapper() {
                   <Stack.Screen name="CertificateDetailAdmin" component={CertificateDetailAdminScreen} />
                   <Stack.Screen name="ChooseShippingMethod" component={ChooseShippingMethod} />
                   <Stack.Screen name="ShippingMethod" component={ShippingMethod} />
-                  <Stack.Screen
-                     name="SeaShippingOrderDetails"
-                     component={SeaShippingOrderDetails}
-                  />
                   {/* Admin V2 Screens */}
                   <Stack.Screen name="ReceiveGoods" component={ReceiveGoodsScreen} />
                   <Stack.Screen name="AdminGoodsList" component={AdminGoodsList} />

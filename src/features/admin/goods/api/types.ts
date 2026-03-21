@@ -15,6 +15,7 @@ export type { Goods, GoodsStatus, GoodsFilters };
 export interface ReceiveGoodsInput {
   clientId: string;
   description: string;
+  shippingMode?: 'AIR' | 'SEA';
   dimensions?: {
     length: number;
     width: number;
@@ -26,6 +27,7 @@ export interface ReceiveGoodsInput {
   unitPrice: number;
   location: string;
   photoUrl?: string;
+  receivedByName?: string;
 }
 
 /**

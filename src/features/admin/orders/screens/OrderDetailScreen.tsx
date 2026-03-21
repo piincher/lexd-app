@@ -1,11 +1,10 @@
 /**
- * OrderDetailScreen - Production-ready order detail view
- * SRP: Layout composition ONLY (<100 lines)
+ * OrderDetailScreen - Comprehensive admin order detail view
+ * SRP: Layout composition only — each section is a dedicated component
  */
 
 import React from 'react';
-import { ScrollView, RefreshControl, View } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
+import { ScrollView, RefreshControl } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui';
 import { COLORS } from '@src/constants/Colors';
@@ -13,7 +12,10 @@ import { useGetOrderDetail } from '@src/shared/hooks';
 import { useGetRoutes } from '@src/shared/hooks';
 import { useUpdateOrder, useUpdateStatusDelivery } from '../hooks/useOrderManagement';
 import { OrderDetailHeader } from './components/OrderDetailHeader';
+import { OrderImageGallery } from './components/OrderImageGallery';
+import { OrderQuickStats } from './components/OrderQuickStats';
 import { OrderInfoSection } from './components/OrderInfoSection';
+import { OrderShippingSection } from './components/OrderShippingSection';
 import { PaymentSection } from './components/PaymentSection';
 import { OrderStatusTimeline } from './components/OrderStatusTimeline';
 import { OrderActions } from './components/OrderActions';
@@ -33,9 +35,9 @@ const OrderDetailScreen: React.FC = () => {
   const { mutate: markDelivered, isPending: isDelivering } = useUpdateStatusDelivery(id);
 
   const handleUpdateStatus = () => {
-    navigation.navigate('EditOrder' as never, { 
-      id: order?._id, 
-      orderId: order?.code 
+    navigation.navigate('EditOrder' as never, {
+      id: order?._id,
+      orderId: order?.code,
     } as never);
   };
 
@@ -48,7 +50,7 @@ const OrderDetailScreen: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Screen header={{ title: 'Order Details' }}>
+      <Screen header={{ title: 'Détails commande' }}>
         <OrderDetailSkeleton />
       </Screen>
     );
@@ -56,25 +58,25 @@ const OrderDetailScreen: React.FC = () => {
 
   if (!order) {
     return (
-      <Screen header={{ title: 'Order Details' }}>
+      <Screen header={{ title: 'Détails commande' }}>
         <EmptyOrders />
       </Screen>
     );
   }
 
   return (
-    <Screen 
-      header={{ 
-        title: 'Order Details', 
-        subtitle: order?.code 
+    <Screen
+      header={{
+        title: 'Détails commande',
+        subtitle: order?.code,
       }}
     >
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         refreshControl={
-          <RefreshControl 
-            refreshing={isLoading} 
+          <RefreshControl
+            refreshing={isLoading}
             onRefresh={refetch}
             colors={[COLORS.blue]}
             tintColor={COLORS.blue}
@@ -82,26 +84,40 @@ const OrderDetailScreen: React.FC = () => {
         }
         showsVerticalScrollIndicator={false}
       >
-        {/* Order Header Card */}
+        {/* 1. Header: client, status, shipping mode, price */}
         <OrderDetailHeader order={order} />
 
-        {/* Payment Section */}
+        {/* 2. Product images */}
+        <OrderImageGallery images={order?.images} />
+
+        {/* 3. Quick stats: quantity, weight, CBM */}
+        <OrderQuickStats
+          quantity={order?.quantity}
+          weight={order?.packageWeight}
+          cbm={order?.packageCBM || (order as any)?.calculatedCBM}
+          shippingMode={order?.shippingMode}
+        />
+
+        {/* 4. Payment details with record/history */}
         <PaymentSection order={order} />
 
-        {/* Order Information */}
+        {/* 5. Client info, package details, dates */}
         <OrderInfoSection order={order} />
 
-        {/* Goods Section - Shows goods attached to this order */}
+        {/* 6. Shipping & logistics: route, container, transporter */}
+        <OrderShippingSection order={order} />
+
+        {/* 7. Goods linked to this order */}
         <OrderGoodsSection goods={order?.goodsIds || []} />
 
-        {/* Status Timeline */}
-        <OrderStatusTimeline 
-          order={order} 
+        {/* 8. Status timeline with current location */}
+        <OrderStatusTimeline
+          order={order}
           routeData={routes?.[0]}
         />
 
-        {/* Action Buttons */}
-        <OrderActions 
+        {/* 9. Admin actions: edit, mark delivered */}
+        <OrderActions
           order={order}
           onUpdateStatus={handleUpdateStatus}
           onMarkDelivered={handleMarkDelivered}

@@ -13,6 +13,17 @@ interface ApiResponse<T> {
   message: string;
 }
 
+/**
+ * Extended goods response when backend auto-creates/assigns order
+ */
+export interface ReceiveGoodsResponse extends Goods {
+  orderAction?: 'created_new' | 'added_to_existing';
+  order?: {
+    _id: string;
+    code: string;
+  };
+}
+
 export const adminGoodsApi = {
   getAll: (filters?: GoodsFilters): Promise<AxiosResponse<ApiResponse<Goods[]>>> =>
     axios.get(BASE_URL, { params: filters }),
@@ -23,10 +34,10 @@ export const adminGoodsApi = {
   getByClient: (clientId: string): Promise<AxiosResponse<ApiResponse<Goods[]>>> =>
     axios.get(`${BASE_URL}/client/${clientId}`),
     
-  receive: (data: ReceiveGoodsInput): Promise<AxiosResponse<ApiResponse<Goods>>> =>
+  receive: (data: ReceiveGoodsInput): Promise<AxiosResponse<ApiResponse<ReceiveGoodsResponse>>> =>
     axios.post(BASE_URL, data),
-    
-  receiveWithPhoto: (data: FormData): Promise<AxiosResponse<ApiResponse<Goods>>> =>
+
+  receiveWithPhoto: (data: FormData): Promise<AxiosResponse<ApiResponse<ReceiveGoodsResponse>>> =>
     axios.post(BASE_URL, data, {
       headers: {
         'Content-Type': 'multipart/form-data',

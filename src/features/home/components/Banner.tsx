@@ -1,6 +1,14 @@
 import { COLORS } from "@src/constants/Colors";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, ScrollView, StyleSheet, View, Image, TouchableOpacity, Linking } from "react-native";
+import {
+   ActivityIndicator,
+   Dimensions,
+   StyleSheet,
+   View,
+   Image,
+   TouchableOpacity,
+   Linking,
+} from "react-native";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 import { useNavigation } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
@@ -9,6 +17,8 @@ import { useActiveBanners, useBannerClick } from "@src/features/customer/promos/
 import type { PromoBanner } from "@src/features/customer/promos/api";
 
 const { width } = Dimensions.get("window");
+const BANNER_WIDTH = width - 32;
+const BANNER_HEIGHT = BANNER_WIDTH * 0.55;
 
 const FALLBACK_IMAGES = [
    "https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/1.png",
@@ -39,7 +49,6 @@ const Banner = () => {
    }, [hasDynamicBanners]);
 
    const handleBannerPress = (banner: PromoBanner) => {
-      // Track the click
       bannerClick.mutate(banner.bannerId);
 
       switch (banner.linkType) {
@@ -73,63 +82,76 @@ const Banner = () => {
    const isLoading = hasDynamicBanners ? bannersLoading : fallbackLoading;
 
    if (isLoading) {
-      return <ActivityIndicator size="large" color={COLORS.blue} />;
+      return (
+         <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={COLORS.blue} />
+         </View>
+      );
    }
 
    return (
-      <ScrollView showsVerticalScrollIndicator={false}>
-         <View style={styles.container}>
-            <View style={styles.swiper}>
-               <SwiperFlatList
-                  autoplay
-                  autoplayDelay={5}
-                  autoplayLoop
-                  index={0}
-                  showPagination
-                  paginationStyleItemActive={{ backgroundColor: COLORS.blue, marginTop: 10 }}
-                  paginationStyleItemInactive={{ backgroundColor: COLORS.grey, marginTop: 10 }}
-               >
-                  {hasDynamicBanners
-                     ? banners.map((banner) => (
-                        <TouchableOpacity
-                           key={banner.bannerId}
-                           activeOpacity={banner.linkType === "NONE" ? 1 : 0.8}
-                           onPress={() => handleBannerPress(banner)}
-                        >
-                           <Image
-                              source={{ uri: banner.imageUrl }}
-                              style={styles.imageContainer}
-                           />
-                        </TouchableOpacity>
-                     ))
-                     : fallbackBanner.map((item) => (
-                        <React.Fragment key={item}>
-                           <Image key={item} source={{ uri: item }} style={styles.imageContainer} />
-                        </React.Fragment>
-                     ))}
-               </SwiperFlatList>
-               <View style={{ height: 20 }} />
-            </View>
-         </View>
-      </ScrollView>
+      <View style={styles.container}>
+         <SwiperFlatList
+            autoplay
+            autoplayDelay={5}
+            autoplayLoop
+            index={0}
+            showPagination
+            paginationStyleItemActive={styles.paginationActive}
+            paginationStyleItemInactive={styles.paginationInactive}
+            paginationStyleItem={styles.paginationDot}
+         >
+            {hasDynamicBanners
+               ? banners.map((banner) => (
+                    <TouchableOpacity
+                       key={banner.bannerId}
+                       activeOpacity={banner.linkType === "NONE" ? 1 : 0.8}
+                       onPress={() => handleBannerPress(banner)}
+                    >
+                       <Image
+                          source={{ uri: banner.imageUrl }}
+                          style={styles.bannerImage}
+                       />
+                    </TouchableOpacity>
+                 ))
+               : fallbackBanner.map((item) => (
+                    <Image key={item} source={{ uri: item }} style={styles.bannerImage} />
+                 ))}
+         </SwiperFlatList>
+      </View>
    );
 };
+
 const styles = StyleSheet.create({
    container: {
-      //backgroundColor: "gainsboro",
+      marginTop: 16,
+      marginBottom: 8,
       alignItems: "center",
+   },
+   loadingContainer: {
+      height: BANNER_HEIGHT,
       justifyContent: "center",
-   },
-   swiper: {
-      width,
       alignItems: "center",
-      marginTop: 20,
    },
-   imageContainer: {
-      height: width,
-      width: width - 40,
-      borderRadius: 10,
-      marginHorizontal: 20,
+   bannerImage: {
+      width: BANNER_WIDTH,
+      height: BANNER_HEIGHT,
+      borderRadius: 16,
+      marginHorizontal: 16,
+   },
+   paginationActive: {
+      backgroundColor: COLORS.blue,
+   },
+   paginationInactive: {
+      backgroundColor: COLORS.grey,
+   },
+   paginationDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      marginHorizontal: 4,
+      marginTop: 12,
    },
 });
+
 export default Banner;

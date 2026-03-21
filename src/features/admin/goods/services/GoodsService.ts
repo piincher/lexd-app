@@ -8,6 +8,14 @@ import { ApiResponse, PaginatedResponse } from '@src/api/types';
 import { Goods, ReceiveGoodsInput, UpdateLocationInput, GoodsFilters } from '../types';
 
 /**
+ * Extended response when backend auto-creates/assigns order
+ */
+interface ReceiveGoodsResponse extends Goods {
+  orderAction?: 'created_new' | 'added_to_existing';
+  order?: { _id: string; code: string };
+}
+
+/**
  * API endpoints for goods
  */
 const ENDPOINTS = {
@@ -71,7 +79,7 @@ export class GoodsService {
   /**
    * Receive new goods (without photo)
    */
-  async receive(data: ReceiveGoodsInput): Promise<ApiResponse<Goods>> {
+  async receive(data: ReceiveGoodsInput): Promise<ApiResponse<ReceiveGoodsResponse>> {
     return apiRequest.post(this.client, ENDPOINTS.BASE, data);
   }
 
@@ -82,7 +90,7 @@ export class GoodsService {
     data: ReceiveGoodsInput,
     photoUri: string,
     onProgress?: (progress: number) => void
-  ): Promise<ApiResponse<Goods>> {
+  ): Promise<ApiResponse<ReceiveGoodsResponse>> {
     const formData = this.createGoodsFormData(data, photoUri);
     
     return uploadFile<Goods>(

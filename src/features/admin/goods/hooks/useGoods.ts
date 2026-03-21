@@ -112,8 +112,9 @@ export const useReceiveGoods = () => {
       return goodsService.receive(data);
     },
     onSuccess: () => {
-      // Invalidate all goods lists to refresh data
+      // Invalidate goods + order lists to refresh data
       queryClient.invalidateQueries({ queryKey: goodsQueryKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: ['order'] });
     },
   });
 };
