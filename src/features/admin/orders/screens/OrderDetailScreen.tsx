@@ -10,7 +10,7 @@ import { Screen } from '@src/shared/ui';
 import { COLORS } from '@src/constants/Colors';
 import { useGetOrderDetail } from '@src/shared/hooks';
 import { useGetRoutes } from '@src/shared/hooks';
-import { useUpdateOrder, useUpdateStatusDelivery } from '../hooks/useOrderManagement';
+import { useUpdateOrder } from '../hooks/useOrderManagement';
 import { OrderDetailHeader } from './components/OrderDetailHeader';
 import { OrderImageGallery } from './components/OrderImageGallery';
 import { OrderQuickStats } from './components/OrderQuickStats';
@@ -32,20 +32,12 @@ const OrderDetailScreen: React.FC = () => {
   const { data: order, isLoading, refetch } = useGetOrderDetail(id);
   const { data: routes } = useGetRoutes();
   const { mutate: updateOrder, isPending: isUpdating } = useUpdateOrder();
-  const { mutate: markDelivered, isPending: isDelivering } = useUpdateStatusDelivery(id);
 
   const handleUpdateStatus = () => {
     navigation.navigate('EditOrder' as never, {
       id: order?._id,
       orderId: order?.code,
     } as never);
-  };
-
-  const handleMarkDelivered = () => {
-    markDelivered({
-      ...order,
-      orderId: order?.code,
-    });
   };
 
   if (isLoading) {
@@ -120,8 +112,7 @@ const OrderDetailScreen: React.FC = () => {
         <OrderActions
           order={order}
           onUpdateStatus={handleUpdateStatus}
-          onMarkDelivered={handleMarkDelivered}
-          isUpdating={isUpdating || isDelivering}
+          isUpdating={isUpdating}
         />
       </ScrollView>
     </Screen>

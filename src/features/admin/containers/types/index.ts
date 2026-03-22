@@ -108,7 +108,8 @@ export type ContainerStatus =
   | 'LOADED' 
   | 'IN_TRANSIT' 
   | 'ARRIVED'
-  | 'READY_FOR_PICKUP';
+  | 'READY_FOR_PICKUP'
+  | 'DELIVERED';
 
 /**
  * Timeline step definition for UI
@@ -131,6 +132,7 @@ export const TIMELINE_STEPS: TimelineStep[] = [
   { status: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },
   { status: 'ARRIVED', label: 'Arrivé', icon: 'flag' },
   { status: 'READY_FOR_PICKUP', label: 'Retrait', icon: 'checkmark-done' },
+  { status: 'DELIVERED', label: 'Livré', icon: 'checkmark-done' },
 ];
 
 /**
@@ -149,6 +151,7 @@ export interface ContainerTimeline {
   departedAt?: string;
   arrivedAt?: string;
   readyForPickupAt?: string;
+  deliveredAt?: string;
   estimatedDeparture?: string;
   estimatedArrival?: string;
 }
@@ -386,6 +389,7 @@ export const CONTAINER_STATUS_LABELS: Record<ContainerStatus, string> = {
   IN_TRANSIT: 'En Transit',
   ARRIVED: 'Arrivé',
   READY_FOR_PICKUP: 'Prêt pour Retrait',
+  DELIVERED: 'Livré',
 };
 
 /**
@@ -400,6 +404,7 @@ export const CONTAINER_STATUS_COLORS: Record<ContainerStatus, string> = {
   IN_TRANSIT: '#EC4899',
   ARRIVED: '#10B981',
   READY_FOR_PICKUP: '#F97316',
+  DELIVERED: '#22C55E',
 };
 
 /**

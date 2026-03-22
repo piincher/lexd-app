@@ -25,6 +25,11 @@ interface ContainerDialogsProps {
   showReadyForPickupDialog: boolean;
   setShowReadyForPickupDialog: (show: boolean) => void;
   onConfirmReadyForPickup: () => void;
+
+  // Delivered dialog
+  showDeliveredDialog: boolean;
+  setShowDeliveredDialog: (show: boolean) => void;
+  onConfirmDelivered: () => void;
 }
 
 export const ContainerDialogs: React.FC<ContainerDialogsProps> = ({
@@ -43,6 +48,11 @@ export const ContainerDialogs: React.FC<ContainerDialogsProps> = ({
   showReadyForPickupDialog,
   setShowReadyForPickupDialog,
   onConfirmReadyForPickup,
+
+  // Delivered dialog
+  showDeliveredDialog,
+  setShowDeliveredDialog,
+  onConfirmDelivered,
 }) => {
   return (
     <>
@@ -122,6 +132,33 @@ export const ContainerDialogs: React.FC<ContainerDialogsProps> = ({
             <Button
               onPress={onConfirmReadyForPickup}
               textColor={Theme.status.warning}
+            >
+              Confirmer
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
+      {/* Delivered Confirmation Dialog */}
+      <Portal>
+        <Dialog
+          visible={showDeliveredDialog}
+          onDismiss={() => setShowDeliveredDialog(false)}
+        >
+          <Dialog.Icon icon="checkmark-done-circle" color={Theme.status.success} />
+          <Dialog.Title style={styles.dialogTitle}>
+            Confirmer la livraison
+          </Dialog.Title>
+          <Dialog.Content>
+            <Text style={styles.dialogText}>
+              Marquer ce conteneur comme livré ? Cette action marquera aussi toutes les marchandises comme livrées.
+            </Text>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setShowDeliveredDialog(false)}>Annuler</Button>
+            <Button
+              onPress={onConfirmDelivered}
+              textColor={Theme.status.success}
             >
               Confirmer
             </Button>

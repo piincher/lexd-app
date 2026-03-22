@@ -11,8 +11,10 @@ interface ContainerActionButtonsProps {
   onGeneratePackingList: () => void;
   onGoToLoadingList: () => void;
   onMarkReadyForPickup: () => void;
+  onMarkDelivered: () => void;
   hasGoods: boolean;
   canMarkReadyForPickup: boolean;
+  canMarkDelivered: boolean;
 }
 
 export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
@@ -20,8 +22,10 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
   onGeneratePackingList,
   onGoToLoadingList,
   onMarkReadyForPickup,
+  onMarkDelivered,
   hasGoods,
   canMarkReadyForPickup,
+  canMarkDelivered,
 }) => {
   return (
     <Animated.View entering={FadeInUp.delay(500)} style={styles.actionsCard}>
@@ -41,6 +45,27 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
             <Ionicons name="checkmark-done-circle" size={20} color="#FFF" />
             <Text style={styles.actionButtonText}>
               Marquer Prêt pour Retrait
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
+
+      {/* Mark Delivered Button */}
+      {canMarkDelivered && (
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={onMarkDelivered}
+          activeOpacity={0.9}
+        >
+          <LinearGradient
+            colors={[Theme.status.success, '#22C55E']}
+            style={styles.actionGradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+          >
+            <Ionicons name="checkmark-done-circle" size={20} color="#FFF" />
+            <Text style={styles.actionButtonText}>
+              Marquer comme Livré
             </Text>
           </LinearGradient>
         </TouchableOpacity>

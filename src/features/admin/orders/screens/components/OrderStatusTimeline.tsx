@@ -40,12 +40,16 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
           const isCompleted = index <= currentIndex;
           const isCurrent = index === currentIndex;
           
+          const isDelivered = status.key === 'Delivered';
+          const canPress = onStatusUpdate && !isDelivered;
+          
           return (
             <TouchableOpacity 
               key={status.key}
               style={styles.timelineItem}
-              onPress={() => onStatusUpdate?.(status.key)}
-              activeOpacity={0.7}
+              onPress={() => canPress && onStatusUpdate(status.key)}
+              activeOpacity={canPress ? 0.7 : 1}
+              disabled={!canPress}
             >
               {/* Connector Line */}
               {index > 0 && (

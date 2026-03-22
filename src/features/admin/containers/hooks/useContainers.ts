@@ -251,6 +251,25 @@ export const useMarkGoodsDelivered = () => {
   });
 };
 
+export const useMarkContainerDelivered = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (containerId: string) => 
+      containerService.updateStatus(containerId, { status: 'DELIVERED' }),
+    onSuccess: (_, containerId) => {
+      // Invalidate container queries
+      queryClient.invalidateQueries({ 
+        queryKey: containerQueryKeys.detail(containerId) 
+      });
+      queryClient.invalidateQueries({ queryKey: containerQueryKeys.lists() });
+      
+      // Invalidate goods queries (all goods may have been updated)
+      queryClient.invalidateQueries({ queryKey: ['goods'] });
+    },
+  });
+};
+
 // ============================================
 // UTILITY HOOKS
 // ============================================

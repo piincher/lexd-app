@@ -13,6 +13,20 @@ import {
   ContainerDialogs, LoadingState, ErrorState,
 } from './components';
 
+/**
+ * Container Delivery Flow (Option A):
+ * 
+ * 1. Admin clicks "Marquer comme Livré" on Container
+ * 2. Backend handles cascade:
+ *    - Container status → DELIVERED
+ *    - All goods in container → DELIVERED
+ *    - Associated orders auto-update if all goods delivered
+ * 3. Customer sees "Livré" status
+ * 
+ * Note: Order-level "Mark as Delivered" button has been removed
+ * since delivery is now managed at the container level.
+ */
+
 export const ContainerDetailScreen: React.FC = () => {
   const screen = useContainerDetailScreen();
   if (screen.isLoading) return <LoadingState />;
@@ -24,7 +38,9 @@ export const ContainerDetailScreen: React.FC = () => {
   const { showDeleteDialog, setShowDeleteDialog, confirmDeleteContainer } = screen;
   const { showRemoveGoodsDialog, setShowRemoveGoodsDialog, confirmRemoveGoods } = screen;
   const { showReadyForPickupDialog, setShowReadyForPickupDialog, confirmMarkReadyForPickup } = screen;
+  const { showDeliveredDialog, setShowDeliveredDialog, confirmMarkDelivered } = screen;
   const { handleRemoveGoods, handleMarkGoodsDelivered, handleAssignGoods } = screen;
+  const { handleMarkDelivered, canMarkDelivered } = screen;
   const { handleGeneratePackingList, handleGoToLoadingList, handleMarkReadyForPickup } = screen;
 
   return (
@@ -56,8 +72,10 @@ export const ContainerDetailScreen: React.FC = () => {
         onGeneratePackingList={handleGeneratePackingList}
         onGoToLoadingList={handleGoToLoadingList}
         onMarkReadyForPickup={handleMarkReadyForPickup}
+        onMarkDelivered={handleMarkDelivered}
         hasGoods={goodsList.length > 0}
         canMarkReadyForPickup={container.status === 'ARRIVED'}
+        canMarkDelivered={canMarkDelivered}
       />
 
       <ContainerDialogs
@@ -71,6 +89,9 @@ export const ContainerDetailScreen: React.FC = () => {
         showReadyForPickupDialog={showReadyForPickupDialog}
         setShowReadyForPickupDialog={setShowReadyForPickupDialog}
         onConfirmReadyForPickup={confirmMarkReadyForPickup}
+        showDeliveredDialog={showDeliveredDialog}
+        setShowDeliveredDialog={setShowDeliveredDialog}
+        onConfirmDelivered={confirmMarkDelivered}
       />
     </SafeAreaView>
   );

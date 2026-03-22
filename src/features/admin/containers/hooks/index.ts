@@ -19,6 +19,7 @@ export {
   useGetActiveRoutesForMode,
   // Phase 3: Pickup workflow hooks
   useMarkReadyForPickup,
+  useMarkContainerDelivered,
   useMarkGoodsDelivered,
 } from './useContainers';
 
