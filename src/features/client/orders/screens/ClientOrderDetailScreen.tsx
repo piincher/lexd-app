@@ -4,13 +4,13 @@
  */
 
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
 import { EmptyState } from '@src/shared/ui/EmptyState';
 import { useClientOrder } from '../hooks/useClientOrder';
 import { OrderHeader, OrderSummary, PackageList } from '../components';
-import { Theme } from '@src/constants/Theme';
+import { OrderDetailSkeleton } from '../components/OrderDetailSkeleton';
 import { styles } from './ClientOrderDetailScreen.styles';
 
 export const ClientOrderDetailScreen: React.FC = () => {
@@ -21,9 +21,7 @@ export const ClientOrderDetailScreen: React.FC = () => {
   if (isLoading) {
     return (
       <Screen>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={Theme.colors.primary.main} />
-        </View>
+        <OrderDetailSkeleton />
       </Screen>
     );
   }

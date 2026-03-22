@@ -9,8 +9,7 @@ import { View, StyleSheet, Pressable, Dimensions } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Swipeable } from 'react-native-gesture-handler';
 import Animated, { FadeInDown, FadeOutLeft, Layout } from 'react-native-reanimated';
-import { Ionicons } from '@expo/vector-icons';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
@@ -47,7 +46,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     if (!isUnread) return null;
     return (
       <View style={[styles.swipeAction, styles.leftAction]}>
-        <Ionicons name="checkmark-circle" size={26} color="#FFF" />
+        <MaterialCommunityIcons name="check-circle-outline" size={26} color="#FFF" />
         <Text style={styles.swipeText}>Lu</Text>
       </View>
     );
@@ -55,7 +54,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
 
   const renderRightActions = () => (
     <View style={[styles.swipeAction, styles.rightAction]}>
-      <Ionicons name="trash" size={24} color="#FFF" />
+      <MaterialCommunityIcons name="delete-outline" size={24} color="#FFF" />
       <Text style={styles.swipeText}>Suppr.</Text>
     </View>
   );
@@ -131,7 +130,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
             </View>
 
             {/* Chevron */}
-            <Ionicons name="chevron-forward" size={18} color={Theme.neutral[300]} />
+            <MaterialCommunityIcons name="chevron-right" size={18} color={Theme.neutral[300]} />
           </View>
         </Pressable>
       </Swipeable>

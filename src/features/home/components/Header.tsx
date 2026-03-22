@@ -1,13 +1,16 @@
 import React from "react";
-import { View, Image, Pressable, StyleSheet } from "react-native";
-import { FontAwesome6 } from "@expo/vector-icons";
+import { View, Image, Pressable, StyleSheet, Platform } from "react-native";
+import { Text } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { IMAGES } from "@src/constants/Images";
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from "@src/providers";
+import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 
 export const Header = () => {
    const navigation = useNavigation();
-   const { colors } = useAppTheme();
+   const { colors, isDark } = useAppTheme();
 
    return (
       <View
@@ -15,35 +18,79 @@ export const Header = () => {
             styles.container,
             {
                backgroundColor: colors.background.default,
-               borderBottomColor: colors.border,
+               borderBottomColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
             },
          ]}
       >
-         <Image source={IMAGES.flat_logo} style={styles.logo} resizeMode="contain" />
+         {/* Logo + Brand */}
+         <View style={styles.brandRow}>
+            <Image source={IMAGES.flat_logo} style={styles.logo} resizeMode="contain" />
+         </View>
+
+         {/* Action Buttons */}
          <View style={styles.actions}>
             <Pressable
                onPress={() => navigation.navigate("faq" as never)}
                style={({ pressed }) => [
                   styles.iconButton,
-                  { opacity: pressed ? 0.7 : 1 },
+                  {
+                     backgroundColor: isDark
+                        ? 'rgba(74,222,128,0.12)'
+                        : 'rgba(34,197,94,0.08)',
+                  },
+                  pressed && styles.iconButtonPressed,
                ]}
                hitSlop={8}
                accessibilityRole="button"
                accessibilityLabel="FAQ"
             >
-               <FontAwesome6 name="question" size={18} color={colors.primary.main} />
+               <MaterialCommunityIcons
+                  name="help-circle-outline"
+                  size={20}
+                  color={colors.primary.main}
+               />
+            </Pressable>
+            <Pressable
+               onPress={() => navigation.navigate("Notifications" as never)}
+               style={({ pressed }) => [
+                  styles.iconButton,
+                  {
+                     backgroundColor: isDark
+                        ? 'rgba(74,222,128,0.12)'
+                        : 'rgba(34,197,94,0.08)',
+                  },
+                  pressed && styles.iconButtonPressed,
+               ]}
+               hitSlop={8}
+               accessibilityRole="button"
+               accessibilityLabel="Notifications"
+            >
+               <MaterialCommunityIcons
+                  name="bell-outline"
+                  size={20}
+                  color={colors.primary.main}
+               />
             </Pressable>
             <Pressable
                onPress={() => navigation.navigate("AboutUs" as never)}
                style={({ pressed }) => [
                   styles.iconButton,
-                  { opacity: pressed ? 0.7 : 1 },
+                  {
+                     backgroundColor: isDark
+                        ? 'rgba(74,222,128,0.12)'
+                        : 'rgba(34,197,94,0.08)',
+                  },
+                  pressed && styles.iconButtonPressed,
                ]}
                hitSlop={8}
                accessibilityRole="button"
                accessibilityLabel="À propos"
             >
-               <FontAwesome6 name="info" size={18} color={colors.primary.main} />
+               <MaterialCommunityIcons
+                  name="information-outline"
+                  size={20}
+                  color={colors.primary.main}
+               />
             </Pressable>
          </View>
       </View>
@@ -55,25 +102,43 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingHorizontal: 20,
+      paddingHorizontal: 16,
       paddingVertical: 12,
-      borderBottomWidth: 1,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      ...Platform.select({
+         ios: {
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.06,
+            shadowRadius: 4,
+         },
+         android: {
+            elevation: 2,
+         },
+      }),
+   },
+   brandRow: {
+      flexDirection: "row",
+      alignItems: "center",
    },
    logo: {
       width: 140,
-      height: 40,
+      height: 36,
    },
    actions: {
       flexDirection: "row",
-      gap: 12,
+      gap: 8,
       alignItems: "center",
    },
    iconButton: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: "rgba(34,197,94,0.1)",
+      width: 36,
+      height: 36,
+      borderRadius: 10,
       justifyContent: "center",
       alignItems: "center",
+   },
+   iconButtonPressed: {
+      opacity: 0.7,
+      transform: [{ scale: 0.92 }],
    },
 });

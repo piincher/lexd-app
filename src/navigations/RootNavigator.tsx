@@ -21,8 +21,7 @@ import { useAppLaunchStore } from '@src/store/AppLaunch';
 import { COLORS } from '@src/constants/Colors';
 
 import { PublicNavigator } from './PublicNavigator';
-import { AuthenticatedNavigator } from '../navigation/AuthenticatedNavigator';
-import { OnBoardingScreen } from '@src/features/onboarding';
+import { OnboardingScreen } from '@src/features/onboarding';
 
 import { RootStackParamList } from './types';
 
@@ -36,7 +35,9 @@ const AuthGate: React.FC = () => {
   const { token, user } = useAuth();
   const isAuthenticated = !!token && !!user?._id;
 
-  return isAuthenticated ? <AuthenticatedNavigator /> : <PublicNavigator />;
+  // TODO: Replace with AuthenticatedNavigator when available
+  // For now, just return PublicNavigator
+  return <PublicNavigator />;
 };
 
 /**
@@ -61,10 +62,6 @@ export const RootNavigator: React.FC = () => {
     initializeAuth();
   }, []);
 
-  const handleOnboardingComplete = () => {
-    markAppAsLaunched();
-  };
-
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -78,14 +75,7 @@ export const RootNavigator: React.FC = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {/* Onboarding - Only show on first launch */}
         {isAppLaunchFirst && (
-          <Stack.Screen name="OnBoarding">
-            {(props) => (
-              <OnBoardingScreen 
-                {...props} 
-                onComplete={handleOnboardingComplete}
-              />
-            )}
-          </Stack.Screen>
+          <Stack.Screen name="OnBoarding" component={OnboardingScreen} />
         )}
 
         {/* Main App - Switches between Public and Authenticated */}

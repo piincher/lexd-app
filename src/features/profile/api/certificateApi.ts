@@ -45,3 +45,24 @@ export const getCertificateDownloadUrl = async (certificateId: string): Promise<
   const response = await certificateApi.getSecureDownloadUrl(certificateId);
   return response.data.url;
 };
+
+// ============================================
+// PUBLIC VERIFICATION (No auth required)
+// ============================================
+
+export interface VerifiedCertificate {
+  certificateId: string;
+  holderName: string;
+  issuedAt: string;
+  status: 'ACTIVE' | 'REVOKED';
+  type: 'AUTO' | 'MANUAL';
+}
+
+export const verifyCertificatePublic = async (
+  verificationCode: string
+): Promise<ApiResponse<VerifiedCertificate>> => {
+  const response = await axios.get(`${BASE_URL}/verify/${verificationCode}`, {
+    headers: { skipAuth: 'true' },
+  });
+  return response.data;
+};

@@ -17,12 +17,13 @@ import {
 } from "react-native";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
-import withProtectedRoute from "@src/hoc/protected";
+import { withProtectedRoute } from "@src/features/auth";
 import { useAppTheme } from "@src/providers";
 import { useGetOrderOfUserById } from "@src/features/home/hooks/useGetActiveOrders";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { productType } from "@src/api/order";
 import { OrderListCard, OrderStatusFilter } from "../components";
+import { OrderListSkeleton } from "../components/OrderListSkeleton";
 
 // -- Constants --
 
@@ -176,9 +177,7 @@ const CustomerOrders: React.FC = () => {
 
          {/* Orders list */}
          {isLoading ? (
-            <View style={styles.loadingContainer}>
-               <ActivityIndicator size="large" color={colors.primary.main} />
-            </View>
+            <OrderListSkeleton />
          ) : (
             <View style={styles.listWrapper}>
                <FlashList

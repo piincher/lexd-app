@@ -17,6 +17,7 @@ export const DEFAULT_STATS: DashboardStats = {
   totalContainers: 0,
   activeContainers: 0,
   totalSpent: 0,
+  totalPaid: 0,
   balanceDue: 0,
 };
 

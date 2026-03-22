@@ -1,2 +1,11 @@
 // Onboarding Feature - Public API
-export { default as OnBoardingScreen } from "./screens/OnBoardingScreen";
+export { OnboardingScreen } from "./screens";
+export {
+  OnboardingSlide,
+  OnboardingIndicator,
+  OnboardingBackdrop,
+  OnboardingCTA,
+  OnboardingSquare,
+} from "./components";
+export * from "./types";
+export * from "./constants";

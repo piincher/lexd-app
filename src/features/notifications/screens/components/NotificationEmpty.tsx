@@ -6,7 +6,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -22,17 +22,17 @@ interface NotificationEmptyProps {
 
 const EMPTY_CONFIG: Record<FilterTab, { icon: string; title: string; subtitle: string }> = {
   all: {
-    icon: 'notifications-off-outline',
+    icon: 'bell-off-outline',
     title: 'Aucune notification',
     subtitle: 'Vous serez notifie des que quelque chose se passe',
   },
   unread: {
-    icon: 'checkmark-done-circle-outline',
+    icon: 'check-circle-outline',
     title: 'Tout est lu !',
     subtitle: 'Vous etes a jour avec toutes vos notifications',
   },
   system: {
-    icon: 'settings-outline',
+    icon: 'cog-outline',
     title: 'Aucune notification systeme',
     subtitle: 'Les alertes systeme apparaitront ici',
   },
@@ -47,7 +47,7 @@ export const NotificationEmpty: React.FC<NotificationEmptyProps> = ({
     return (
       <Animated.View entering={FadeInUp.springify()} style={styles.container}>
         <View style={styles.errorCircle}>
-          <Ionicons name="cloud-offline-outline" size={48} color="#EF4444" />
+          <MaterialCommunityIcons name="cloud-off-outline" size={48} color="#EF4444" />
         </View>
         <Text style={styles.title}>Erreur de chargement</Text>
         <Text style={styles.subtitle}>
@@ -60,7 +60,7 @@ export const NotificationEmpty: React.FC<NotificationEmptyProps> = ({
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <Ionicons name="refresh" size={18} color="#FFF" />
+            <MaterialCommunityIcons name="refresh" size={18} color="#FFF" />
             <Text style={styles.retryText}>Reessayer</Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -77,7 +77,7 @@ export const NotificationEmpty: React.FC<NotificationEmptyProps> = ({
           colors={[Theme.primary[50], Theme.primary[100]]}
           style={styles.iconGradient}
         >
-          <Ionicons name={config.icon as any} size={56} color={Theme.primary[400]} />
+          <MaterialCommunityIcons name={config.icon as any} size={56} color={Theme.primary[400]} />
         </LinearGradient>
       </View>
       <Text style={styles.title}>{config.title}</Text>

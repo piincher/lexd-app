@@ -84,7 +84,7 @@ const NOTIFICATION_CHANNELS = {
 const API_URL = {
   registerDevice: "/users/me/device-token",
   unregisterDevice: "/users/me/device-token",
-  updatePreferences: "/users/me/notification-preferences",
+  updatePreferences: "/user/me/notification-preferences",
 };
 
 // ============================================================================

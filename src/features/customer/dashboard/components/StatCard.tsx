@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    padding: Theme.spacing.lg,
+    padding: 14,
     justifyContent: 'space-between',
     position: 'relative',
   },
@@ -120,25 +120,25 @@ const styles = StyleSheet.create({
     borderRadius: Theme.radius.lg,
   },
   iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: Theme.radius.md,
+    width: 36,
+    height: 36,
+    borderRadius: 10,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'flex-start',
   },
   value: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '800',
     letterSpacing: -0.5,
-    marginTop: Theme.spacing.sm,
+    marginTop: 6,
   },
   label: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: '600',
     opacity: 0.9,
-    marginTop: Theme.spacing.xs,
+    marginTop: 2,
   },
 });
 

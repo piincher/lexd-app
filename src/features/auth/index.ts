@@ -1,13 +1,20 @@
 // Auth Feature - Public API
 
 // Screens
-export { default as LoginScreen } from "./screens/Login";
+export { default as LoginScreen } from "./screens/LoginScreen";
 export { default as VerificationScreen } from "./screens/Verification";
+export { AuthRequiredScreen } from "./screens/AuthRequiredScreen";
 
 // Hooks
 export { useLogin, useLoginApple } from "./hooks/useLogin";
 export { useSignupStore } from "./hooks/useSignInData";
 export { useVerification } from "./hooks/useVerification";
+export { useLoginForm } from "./hooks/useLoginForm";
+export { useAuthCheck } from "./hooks/useAuthCheck";
 
 // Components
-export { default as ContactField } from "./components/ContactField";
+export { ContactField } from "./components/ContactField";
+export { LoginHeader, PhoneInput, CountryPicker, LoginFooter, SubmitButton, SecurityNote } from "./components";
+
+// HOCs
+export { withProtectedRoute } from "./hoc/withProtectedRoute";

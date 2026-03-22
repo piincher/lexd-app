@@ -3,7 +3,7 @@
  * Main customer dashboard with stats, quick actions, and activity feed
  */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   View,
   StyleSheet,
@@ -14,24 +14,27 @@ import {
 import {
   Appbar,
   Text,
-  ActivityIndicator,
   Button,
   useTheme,
   Avatar,
-  Badge,
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 
 import { Theme } from '@src/constants/Theme';
-import { COLORS } from '@src/constants/Colors';
 import { useAuth } from '@src/store/Auth';
 import { RootStackScreenProps } from '@src/navigations/type';
 
 import { useGetDashboard, useGetActivity, useDashboardInvalidation } from '../hooks/useDashboard';
-import { StatCard, ActivityFeed, QuickActions } from '../components';
+import {
+  StatCard,
+  ActivityFeed,
+  QuickActions,
+  ShipmentPipeline,
+  ActiveContainers,
+  PaymentInsights,
+} from '../components';
 import { QuickAction, DashboardStats } from '../types';
 
 // ============================================
@@ -75,12 +78,10 @@ const STAT_GRADIENTS = {
 // ============================================
 
 const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('fr-FR', {
-    style: 'currency',
-    currency: 'XOF',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
+  const num = Number(amount) || 0;
+  if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M F`;
+  if (num >= 1_000) return `${Math.round(num / 1_000)}K F`;
+  return `${Math.round(num)} F`;
 };
 
 const formatNumber = (num: number): string => {
@@ -110,15 +111,16 @@ const DashboardSkeleton: React.FC = () => {
 
       {/* Stats Grid Skeleton */}
       <View style={styles.statsGrid}>
-        {[1, 2, 3, 4].map((i) => (
-          <View
-            key={i}
-            style={[
-              styles.skeletonCard,
-              { backgroundColor: theme.colors.surfaceVariant },
-            ]}
-          />
-        ))}
+        <View style={styles.statsRow}>
+          {[1, 2].map((i) => (
+            <View key={i} style={[styles.skeletonCard, { backgroundColor: theme.colors.surfaceVariant }]} />
+          ))}
+        </View>
+        <View style={styles.statsRow}>
+          {[3, 4].map((i) => (
+            <View key={i} style={[styles.skeletonCard, { backgroundColor: theme.colors.surfaceVariant }]} />
+          ))}
+        </View>
       </View>
 
       {/* Quick Actions Skeleton */}
@@ -214,10 +216,8 @@ export const CustomerDashboardScreen: React.FC<
     console.log('Payment feature removed');
   };
 
-  // Combine quick actions from API with defaults
-  const quickActions = dashboardData?.quickActions?.length
-    ? dashboardData.quickActions
-    : DEFAULT_QUICK_ACTIONS;
+  // Always use the local French quick actions (backend ones have wrong icons)
+  const quickActions = DEFAULT_QUICK_ACTIONS;
 
   // Stats data
   const stats: DashboardStats = dashboardData?.stats || {
@@ -226,13 +226,26 @@ export const CustomerDashboardScreen: React.FC<
     totalContainers: 0,
     activeContainers: 0,
     totalSpent: 0,
+    totalPaid: 0,
     balanceDue: 0,
+  };
+
+  // Containers data
+  const containers = dashboardData?.containers || [];
+
+  // Container press handler
+  const handleContainerPress = (containerId: string) => {
+    if (containerId) {
+      (navigation as any).navigate('ContainerTracking', { containerId });
+    } else {
+      navigation.navigate('MyContainers' as never);
+    }
   };
 
   // Welcome message based on time
   const getWelcomeMessage = (): string => {
     const hour = new Date().getHours();
-    const name = user?.name?.split(' ')[0] || 'Client';
+    const name = user?.firstName || 'Client';
     if (hour < 12) return `Bonjour, ${name} ☀️`;
     if (hour < 18) return `Bon après-midi, ${name} 👋`;
     return `Bonsoir, ${name} 🌙`;
@@ -274,7 +287,7 @@ export const CustomerDashboardScreen: React.FC<
         <View style={styles.headerLeft}>
           <Avatar.Text
             size={40}
-            label={(user?.name?.[0] || 'C').toUpperCase()}
+            label={(user?.firstName?.[0] || 'C').toUpperCase()}
             style={{ backgroundColor: theme.colors.primary }}
             color={Theme.neutral.white}
           />
@@ -311,35 +324,39 @@ export const CustomerDashboardScreen: React.FC<
         >
           {/* Stats Grid */}
           <View style={styles.statsGrid}>
-            <StatCard
-              icon="package-variant"
-              value={formatNumber(stats.totalGoods)}
-              label="Total Marchandises"
-              gradientColors={STAT_GRADIENTS.goods}
-              testID="stat-goods"
-            />
-            <StatCard
-              icon="ferry"
-              value={formatNumber(stats.activeContainers)}
-              label="En Transit"
-              gradientColors={STAT_GRADIENTS.containers}
-              testID="stat-containers"
-            />
-            <StatCard
-              icon="cash-multiple"
-              value={formatCurrency(stats.totalSpent)}
-              label="Total Dépensé"
-              gradientColors={STAT_GRADIENTS.spent}
-              testID="stat-spent"
-            />
-            <StatCard
-              icon="credit-card-clock"
-              value={formatCurrency(stats.balanceDue)}
-              label="Solde Dû"
-              gradientColors={STAT_GRADIENTS.balance}
-              onPress={stats.balanceDue > 0 ? handlePayBalance : undefined}
-              testID="stat-balance"
-            />
+            <View style={styles.statsRow}>
+              <StatCard
+                icon="package-variant"
+                value={formatNumber(stats.totalGoods)}
+                label="Marchandises"
+                gradientColors={STAT_GRADIENTS.goods}
+                testID="stat-goods"
+              />
+              <StatCard
+                icon="ferry"
+                value={formatNumber(stats.activeContainers)}
+                label="En Transit"
+                gradientColors={STAT_GRADIENTS.containers}
+                testID="stat-containers"
+              />
+            </View>
+            <View style={styles.statsRow}>
+              <StatCard
+                icon="cash-multiple"
+                value={formatCurrency(stats.totalSpent)}
+                label="Total Depense"
+                gradientColors={STAT_GRADIENTS.spent}
+                testID="stat-spent"
+              />
+              <StatCard
+                icon="credit-card-clock"
+                value={formatCurrency(stats.balanceDue)}
+                label="Solde Du"
+                gradientColors={STAT_GRADIENTS.balance}
+                onPress={stats.balanceDue > 0 ? handlePayBalance : undefined}
+                testID="stat-balance"
+              />
+            </View>
           </View>
 
           {/* Balance Alert */}
@@ -378,6 +395,25 @@ export const CustomerDashboardScreen: React.FC<
             dashboardData={{ stats, quickActions, recentActivity: [] }}
             onActionPress={handleActionPress}
             testID="quick-actions"
+          />
+
+          {/* Shipment Pipeline */}
+          <ShipmentPipeline
+            goodsByStatus={stats.goodsByStatus}
+            totalGoods={stats.totalGoods}
+          />
+
+          {/* Active Containers */}
+          <ActiveContainers
+            containers={containers}
+            onContainerPress={handleContainerPress}
+          />
+
+          {/* Payment Insights */}
+          <PaymentInsights
+            totalSpent={stats.totalSpent}
+            totalPaid={stats.totalPaid || 0}
+            balanceDue={stats.balanceDue}
           />
 
           {/* Activity Feed */}
@@ -434,10 +470,12 @@ const styles = StyleSheet.create({
     paddingTop: Theme.spacing.sm,
   },
   statsGrid: {
+    paddingHorizontal: 16,
+    gap: 10,
+  },
+  statsRow: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: Theme.spacing.lg,
-    gap: Theme.spacing.md,
+    gap: 10,
   },
   balanceAlert: {
     flexDirection: 'row',
@@ -509,8 +547,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   skeletonCard: {
-    width: '47%',
-    aspectRatio: 1,
+    flex: 1,
+    height: 120,
     borderRadius: Theme.radius.lg,
     marginBottom: Theme.spacing.md,
   },

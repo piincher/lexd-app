@@ -89,6 +89,9 @@ import {
    useNotification,
 } from "@src/features/home";
 
+// Features - Customer Dashboard (V2)
+import { CustomerDashboardScreen } from "@src/features/customer/dashboard/screens/CustomerDashboardScreen";
+
 // Features - Onboarding
 import { OnBoardingScreen as OnBoarding } from "@src/features/onboarding";
 
@@ -303,6 +306,8 @@ function AppWrapper() {
                   <Stack.Screen name="MyGoods" component={MyGoodsScreen} />
                   <Stack.Screen name="GoodsDetail" component={GoodsDetailScreen} />
                   <Stack.Screen name="ScanQR" component={GoodsScanQR} />
+                  {/* Customer Dashboard V2 */}
+                  <Stack.Screen name="CustomerDashboard" component={CustomerDashboardScreen} />
                   {/* Customer Container V2 Screens */}
                   <Stack.Screen name="MyContainers" component={MyContainersScreen} />
                   <Stack.Screen name="ContainerTracking" component={ContainerTrackingScreen} />
@@ -365,6 +370,7 @@ const HomeBottomTab = () => {
                name="Home"
                component={HomeScreen}
                options={{
+                  tabBarLabel: "Accueil",
                   tabBarIcon: ({ focused, color, size }) => (
                      <AntDesign name="home" focused={focused} color={color} size={size} />
                   ),
@@ -413,15 +419,17 @@ const HomeBottomTab = () => {
                }}
             />
          )}
-         <BottomTab.Screen
-            name="Stats"
-            component={Stats}
-            options={{
-               tabBarIcon: ({ focused, color, size }) => (
-                  <Entypo name="pie-chart" focused={focused} color={color} size={size} />
-               ),
-            }}
-         />
+         {adminRole && (
+            <BottomTab.Screen
+               name="Stats"
+               component={Stats}
+               options={{
+                  tabBarIcon: ({ focused, color, size }) => (
+                     <Entypo name="pie-chart" focused={focused} color={color} size={size} />
+                  ),
+               }}
+            />
+         )}
          <BottomTab.Screen
             name="Chat"
             component={Chat}

@@ -21,7 +21,7 @@ import { VerificationScreen } from '@src/features/auth';
 
 // Info Screens (public)
 import { AboutUsScreen } from '@src/features/profile';
-import { FAQScreen } from '@src/features/home';
+import { FAQScreen } from '@src/features/support';
 
 // Placeholder screens that will be implemented
 import { View, Text, StyleSheet } from 'react-native';

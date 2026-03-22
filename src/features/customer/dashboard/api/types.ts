@@ -28,11 +28,28 @@ export interface ApiResponse<T> {
 }
 
 /**
+ * Container info returned by the dashboard API
+ */
+export interface DashboardContainer {
+  id: string;
+  virtualContainerNumber: string;
+  status: string;
+  shippingMode?: string;
+  shippingLine?: string;
+  timeline?: {
+    departedAt?: string;
+    arrivedAt?: string;
+    estimatedArrival?: string;
+  };
+}
+
+/**
  * Response for fetching dashboard data
  */
 export interface GetDashboardResponse {
   stats: DashboardStats;
   quickActions: QuickAction[];
+  containers?: DashboardContainer[];
 }
 
 /**

@@ -1,287 +1,102 @@
 /**
- * BadgesSection Component
- * Displays a compact badges overview on the Profile screen.
- * Shows earned/total count, horizontal scrollable badge row,
- * and a "Voir tout" button to navigate to the full BadgesScreen.
+ * BadgesSection Component - Theme-aware badge display for Profile screen
  */
 
 import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from "react-native";
 import { MotiView } from "moti";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { Fonts } from "@src/constants/Fonts";
 import { navigationProps } from "@src/navigations/type";
+import { useAppTheme } from "@src/providers";
 import { useMyBadges, useCheckBadges } from "../../hooks/useBadges";
-import type { UserBadge } from "../../api/badgeApi";
+import { BadgeItem } from "./BadgeItem";
+import { styles } from "./BadgesSection.styles";
 
-const BADGE_SIZE = 52;
-
-/**
- * Map badge icon names to MaterialCommunityIcons glyph names
- */
-const iconMap: Record<string, keyof typeof MaterialCommunityIcons.glyphMap> = {
-  "package-variant": "package-variant",
-  "compass-outline": "compass-outline",
-  "map-marker-distance": "map-marker-distance",
-  store: "store",
-  "star-circle": "star-circle",
-  "diamond-stone": "diamond-stone",
-  "truck-delivery": "truck-delivery",
-  heart: "heart",
-  "shield-star": "shield-star",
-  certificate: "certificate",
-};
-
-/**
- * Tier color mapping
- */
-const tierColors: Record<string, string> = {
-  BRONZE: "#CD7F32",
-  SILVER: "#C0C0C0",
-  GOLD: "#d4a843",
-  PLATINUM: "#E5E4E2",
-};
-
-/**
- * Single badge circle for the horizontal row
- */
-const BadgeItem: React.FC<{ badge: UserBadge }> = ({ badge }) => {
-  const iconName = iconMap[badge.icon] || "help-circle";
-  const color = badge.earned ? tierColors[badge.tier] || "#d4a843" : "rgba(255,255,255,0.2)";
-
-  return (
-    <View style={styles.badgeWrapper}>
-      <View
-        style={[
-          styles.badgeCircle,
-          {
-            backgroundColor: badge.earned ? `${color}20` : "rgba(255,255,255,0.05)",
-            borderColor: badge.earned ? color : "rgba(255,255,255,0.12)",
-          },
-        ]}
-      >
-        {badge.earned ? (
-          <MaterialCommunityIcons name={iconName} size={22} color={color} />
-        ) : (
-          <MaterialCommunityIcons name="lock" size={16} color="rgba(255,255,255,0.2)" />
-        )}
-      </View>
-
-      {/* Mini progress bar for unearned badges */}
-      {!badge.earned && badge.progressPercentage > 0 && (
-        <View style={styles.miniProgressTrack}>
-          <View
-            style={[
-              styles.miniProgressFill,
-              { width: `${Math.min(badge.progressPercentage, 100)}%` },
-            ]}
-          />
-        </View>
-      )}
-
-      <Text
-        style={[
-          styles.badgeLabel,
-          { color: badge.earned ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.3)" },
-        ]}
-        numberOfLines={1}
-      >
-        {badge.name}
-      </Text>
-    </View>
-  );
-};
-
-/**
- * BadgesSection - Profile screen section component
- */
 export const BadgesSection: React.FC = () => {
   const navigation = useNavigation<navigationProps>();
-  const { data, isLoading } = useMyBadges();
+  const { data, isLoading, error, refetch } = useMyBadges();
   const checkBadges = useCheckBadges();
+  const { colors, isDark } = useAppTheme();
 
-  // Trigger badge check on mount (non-blocking)
-  useEffect(() => {
-    checkBadges.mutate();
-  }, []);
+  useEffect(() => { checkBadges.mutate(); }, []);
+
+  const cardBg = isDark ? "rgba(255,255,255,0.1)" : colors.background.paper;
 
   if (isLoading) {
     return (
-      <View style={styles.card}>
+      <View style={[styles.card, { backgroundColor: cardBg }]}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#d4a843" />
-          <Text style={styles.loadingText}>Chargement des badges...</Text>
+          <ActivityIndicator size="small" color={colors.accent.gold} />
+          <Text style={[styles.loadingText, { color: colors.text.secondary }]}>Chargement des badges...</Text>
         </View>
       </View>
     );
   }
 
-  if (!data || !data.badges || data.badges.length === 0) {
-    return null;
+  if (error) {
+    return (
+      <MotiView from={{ opacity: 0, translateY: 10 }} animate={{ opacity: 1, translateY: 0 }} style={[styles.card, { backgroundColor: cardBg }]}>
+        <View style={styles.headerRow}>
+          <View style={styles.headerLeft}>
+            <MaterialCommunityIcons name="medal" size={20} color={colors.accent.gold} />
+            <Text style={[styles.headerTitle, { color: colors.text.primary }]}>Mes Badges</Text>
+          </View>
+        </View>
+        <View style={styles.emptyContainer}>
+          <MaterialCommunityIcons name="alert-circle-outline" size={40} color={colors.status.warning} />
+          <Text style={[styles.emptyText, { color: colors.text.secondary }]}>Impossible de charger les badges</Text>
+          <TouchableOpacity onPress={() => refetch()} style={styles.retryButton}>
+            <Text style={[styles.retryText, { color: colors.accent.gold }]}>Réessayer</Text>
+          </TouchableOpacity>
+        </View>
+      </MotiView>
+    );
+  }
+
+  if (!data?.badges?.length) {
+    return (
+      <MotiView from={{ opacity: 0, translateY: 20 }} animate={{ opacity: 1, translateY: 0 }} transition={{ type: "spring", damping: 15, stiffness: 120 }} style={[styles.card, { backgroundColor: cardBg }]}>
+        <View style={styles.headerRow}>
+          <View style={styles.headerLeft}>
+            <MaterialCommunityIcons name="medal" size={20} color={colors.accent.gold} />
+            <Text style={[styles.headerTitle, { color: colors.text.primary }]}>Mes Badges</Text>
+          </View>
+        </View>
+        <View style={styles.emptyContainer}>
+          <MaterialCommunityIcons name="medal-outline" size={40} color={colors.text.disabled} />
+          <Text style={[styles.emptyText, { color: colors.text.secondary }]}>Aucun badge pour le moment</Text>
+          <Text style={[styles.emptySubtext, { color: colors.text.disabled }]}>Complétez des commandes pour gagner des badges</Text>
+        </View>
+      </MotiView>
+    );
   }
 
   const { badges, summary } = data;
 
   return (
-    <MotiView
-      from={{ opacity: 0, translateY: 20 }}
-      animate={{ opacity: 1, translateY: 0 }}
-      transition={{ type: "spring", damping: 15, stiffness: 120 }}
-      style={styles.card}
-    >
-      {/* Header row */}
-      <TouchableOpacity
-        style={styles.headerRow}
-        onPress={() => navigation.navigate("Badges")}
-        activeOpacity={0.7}
-      >
+    <MotiView from={{ opacity: 0, translateY: 20 }} animate={{ opacity: 1, translateY: 0 }} transition={{ type: "spring", damping: 15, stiffness: 120 }} style={[styles.card, { backgroundColor: cardBg }]}>
+      <TouchableOpacity style={styles.headerRow} onPress={() => navigation.navigate("Badges")} activeOpacity={0.7}>
         <View style={styles.headerLeft}>
-          <MaterialCommunityIcons name="medal" size={20} color="#d4a843" />
-          <Text style={styles.headerTitle}>Mes Badges</Text>
+          <MaterialCommunityIcons name="medal" size={20} color={colors.accent.gold} />
+          <Text style={[styles.headerTitle, { color: colors.text.primary }]}>Mes Badges</Text>
         </View>
         <View style={styles.headerRight}>
-          <View style={styles.countBadge}>
-            <Text style={styles.countText}>
-              {summary.earnedCount}/{summary.totalBadges}
-            </Text>
+          <View style={[styles.countBadge, { backgroundColor: `${colors.accent.gold}20` }]}>
+            <Text style={[styles.countText, { color: colors.accent.gold }]}>{summary.earnedCount}/{summary.totalBadges}</Text>
           </View>
-          <MaterialCommunityIcons name="chevron-right" size={20} color="rgba(255,255,255,0.5)" />
+          <MaterialCommunityIcons name="chevron-right" size={20} color={colors.text.disabled} />
         </View>
       </TouchableOpacity>
 
-      {/* Horizontal scrollable badge row */}
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.badgesRow}
-      >
-        {badges.map((badge) => (
-          <BadgeItem key={badge.badgeId} badge={badge} />
-        ))}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.badgesRow}>
+        {badges.map((badge) => <BadgeItem key={badge.badgeId} badge={badge} isDark={isDark} colors={colors} />)}
       </ScrollView>
 
-      {/* Footer link */}
-      <TouchableOpacity
-        style={styles.viewAllButton}
-        onPress={() => navigation.navigate("Badges")}
-        activeOpacity={0.7}
-      >
-        <Text style={styles.viewAllText}>Voir tous les badges</Text>
-        <MaterialCommunityIcons name="arrow-right" size={14} color="#d4a843" />
+      <TouchableOpacity style={styles.viewAllButton} onPress={() => navigation.navigate("Badges")} activeOpacity={0.7}>
+        <Text style={[styles.viewAllText, { color: colors.accent.gold }]}>Voir tous les badges</Text>
+        <MaterialCommunityIcons name="arrow-right" size={14} color={colors.accent.gold} />
       </TouchableOpacity>
     </MotiView>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-  },
-  loadingContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    paddingVertical: 8,
-  },
-  loadingText: {
-    color: "rgba(255,255,255,0.6)",
-    fontFamily: Fonts.regular,
-    fontSize: 13,
-  },
-  // Header
-  headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 14,
-  },
-  headerLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  headerTitle: {
-    color: "#FFFFFF",
-    fontFamily: Fonts.bold,
-    fontSize: 16,
-  },
-  headerRight: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  countBadge: {
-    backgroundColor: "rgba(212,168,67,0.2)",
-    borderRadius: 10,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-  },
-  countText: {
-    color: "#d4a843",
-    fontFamily: Fonts.bold,
-    fontSize: 12,
-  },
-  // Badge row
-  badgesRow: {
-    flexDirection: "row",
-    gap: 10,
-    paddingVertical: 4,
-  },
-  badgeWrapper: {
-    alignItems: "center",
-    width: BADGE_SIZE + 12,
-  },
-  badgeCircle: {
-    width: BADGE_SIZE,
-    height: BADGE_SIZE,
-    borderRadius: BADGE_SIZE / 2,
-    borderWidth: 1.5,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  badgeLabel: {
-    fontFamily: Fonts.meduim,
-    fontSize: 9,
-    marginTop: 4,
-    textAlign: "center",
-  },
-  miniProgressTrack: {
-    width: BADGE_SIZE - 8,
-    height: 3,
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderRadius: 1.5,
-    overflow: "hidden",
-    marginTop: 3,
-  },
-  miniProgressFill: {
-    height: "100%",
-    backgroundColor: "#d4a843",
-    borderRadius: 1.5,
-  },
-  // Footer
-  viewAllButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-    marginTop: 12,
-    paddingVertical: 6,
-  },
-  viewAllText: {
-    color: "#d4a843",
-    fontFamily: Fonts.meduim,
-    fontSize: 13,
-  },
-});

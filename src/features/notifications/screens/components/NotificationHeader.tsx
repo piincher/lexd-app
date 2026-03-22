@@ -6,7 +6,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { Theme } from '@src/constants/Theme';
@@ -30,7 +30,7 @@ export const NotificationHeader: React.FC<NotificationHeaderProps> = ({
   <View style={styles.container}>
     <View style={styles.leftSection}>
       <TouchableOpacity onPress={onBack} style={styles.backButton} activeOpacity={0.7}>
-        <Ionicons name="arrow-back" size={22} color={Theme.neutral[800]} />
+        <MaterialCommunityIcons name="arrow-left" size={22} color={Theme.neutral[800]} />
       </TouchableOpacity>
       <View>
         <Text style={styles.title}>Notifications</Text>
@@ -51,8 +51,8 @@ export const NotificationHeader: React.FC<NotificationHeaderProps> = ({
         style={[styles.markAllButton, isMarkingAll && styles.markAllDisabled]}
         activeOpacity={0.7}
       >
-        <Ionicons
-          name="checkmark-done"
+        <MaterialCommunityIcons
+          name="check-all"
           size={18}
           color={isMarkingAll ? Theme.neutral[400] : Theme.primary[500]}
         />

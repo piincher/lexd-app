@@ -8,4 +8,3 @@ export * from './types';
 // Export navigators
 export { RootNavigator } from './RootNavigator';
 export { PublicNavigator } from './PublicNavigator';
-export { AuthenticatedNavigator } from '../navigation/AuthenticatedNavigator';

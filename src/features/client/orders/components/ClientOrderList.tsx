@@ -4,6 +4,7 @@ import { Theme } from '@src/constants/Theme';
 import { EmptyState } from '@src/shared/ui/EmptyState';
 import { Order } from '../types';
 import { ClientOrderCard } from './ClientOrderCard';
+import { ClientOrderCardSkeleton } from './ClientOrderCardSkeleton';
 
 interface ClientOrderListProps {
   orders: Order[];
@@ -17,11 +18,7 @@ export const ClientOrderList: React.FC<ClientOrderListProps> = ({
   onOrderPress,
 }) => {
   if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <EmptyState title="Chargement..." loading />
-      </View>
-    );
+    return <ClientOrderCardSkeleton count={5} />;
   }
 
   if (orders.length === 0) {

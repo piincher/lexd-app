@@ -63,7 +63,6 @@ export type RootStackParamList = {
    RouteList: undefined;
    RouteForm: { routeId?: string };
    // Customer Dashboard
-   // Customer Dashboard
    CustomerDashboard: undefined;
    // Customer Container Features
    MyContainers: undefined;

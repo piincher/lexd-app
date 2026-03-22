@@ -16,6 +16,7 @@ export interface DashboardStats {
   totalContainers: number;
   activeContainers: number;
   totalSpent: number;
+  totalPaid: number;
   balanceDue: number;
 }
 

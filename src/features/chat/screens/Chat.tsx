@@ -6,7 +6,7 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ChannelList } from "stream-chat-expo";
 import { useChatClient } from "../hooks/useChatClient";
-import withProtectedRoute from "@src/hoc/protected";
+import { withProtectedRoute } from "@src/features/auth";
 
 const Chat = ({ navigation }: HomeTabScreenProps<"Chat">) => {
    const { setChannel } = useAppContext();

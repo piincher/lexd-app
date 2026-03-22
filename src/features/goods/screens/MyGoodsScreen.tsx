@@ -13,6 +13,7 @@ import { COLORS } from '@src/constants/Colors';
 import { useGetMyGoods } from '../hooks';
 import { GoodsList } from '../components';
 import { GoodsFilter } from '../components';
+import { GoodsListSkeleton } from '../components/GoodsListSkeleton';
 import { GoodsStatus } from '../api';
 
 type FilterTab = 'ALL' | GoodsStatus;
@@ -46,13 +47,10 @@ const MyGoodsScreen = ({ navigation }: RootStackScreenProps<'MyGoods'>) => {
 		return (
 			<SafeAreaView style={styles.container}>
 				<Appbar.Header>
-					<Appbar.Content title="Mes Marchandises" />
+					<Appbar.Content title="Mes Marchandises" titleStyle={styles.headerTitle} />
 					<Appbar.Action icon="qrcode-scan" onPress={handleScanPress} />
 				</Appbar.Header>
-				<View style={styles.centerContainer}>
-					<ActivityIndicator size="large" color={theme.colors.primary} />
-					<Text style={styles.loadingText}>Chargement...</Text>
-				</View>
+				<GoodsListSkeleton />
 			</SafeAreaView>
 		);
 	}

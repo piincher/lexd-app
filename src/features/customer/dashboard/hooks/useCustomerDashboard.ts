@@ -12,7 +12,7 @@ import { QuickAction, DashboardStats } from '../types';
 import { DEFAULT_QUICK_ACTIONS, DEFAULT_STATS, getWelcomeMessage } from './dashboardConstants';
 
 export interface UseCustomerDashboardReturn {
-  user: ReturnType<typeof useAuth>['user'];
+  user: any;
   welcomeMessage: string;
   stats: DashboardStats;
   quickActions: QuickAction[];
@@ -37,7 +37,7 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
   const stats = dashboardData?.stats || DEFAULT_STATS;
   const quickActions = dashboardData?.quickActions?.length ? dashboardData.quickActions : DEFAULT_QUICK_ACTIONS;
   const activities = activityData?.activities || [];
-  const welcomeMessage = useMemo(() => getWelcomeMessage(user?.name || ''), [user?.name]);
+  const welcomeMessage = useMemo(() => getWelcomeMessage(user?.firstName || ''), [user?.firstName]);
 
   const refresh = useCallback(async () => {
     await Promise.all([refetchDashboard(), refetchActivity()]);

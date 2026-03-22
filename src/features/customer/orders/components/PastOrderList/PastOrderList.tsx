@@ -3,6 +3,7 @@ import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 import { Order } from '../../types';
 import { PastOrderCard } from '../PastOrderCard';
+import { PastOrderCardSkeleton } from '../PastOrderCardSkeleton';
 
 interface PastOrderListProps {
   orders: Order[];
@@ -23,7 +24,11 @@ export const PastOrderList: React.FC<PastOrderListProps> = ({
   onLoadMore,
   hasMore,
 }) => {
-  if (!isLoading && orders.length === 0) {
+  if (isLoading) {
+    return <PastOrderCardSkeleton count={5} />;
+  }
+
+  if (orders.length === 0) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyText}>Aucune commande trouvée</Text>

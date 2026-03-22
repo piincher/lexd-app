@@ -6,7 +6,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
@@ -19,9 +19,9 @@ interface FilterTabConfig {
 }
 
 const TABS: FilterTabConfig[] = [
-  { key: 'all', label: 'Toutes', icon: 'notifications-outline' },
-  { key: 'unread', label: 'Non lues', icon: 'mail-unread-outline' },
-  { key: 'system', label: 'Système', icon: 'settings-outline' },
+  { key: 'all', label: 'Toutes', icon: 'bell-outline' },
+  { key: 'unread', label: 'Non lues', icon: 'email-outline' },
+  { key: 'system', label: 'Système', icon: 'cog-outline' },
 ];
 
 interface NotificationFilterTabsProps {
@@ -52,7 +52,7 @@ export const NotificationFilterTabs: React.FC<NotificationFilterTabsProps> = ({
             style={[styles.tab, isActive && styles.activeTab]}
             activeOpacity={0.7}
           >
-            <Ionicons
+            <MaterialCommunityIcons
               name={tab.icon as any}
               size={16}
               color={isActive ? '#FFF' : Theme.neutral[500]}

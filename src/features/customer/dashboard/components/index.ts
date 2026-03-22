@@ -6,3 +6,6 @@
 export { StatCard, type StatCardProps } from './StatCard';
 export { ActivityFeed, type ActivityFeedProps } from './ActivityFeed';
 export { QuickActions, type QuickActionsProps } from './QuickActions';
+export { ShipmentPipeline, type ShipmentPipelineProps } from './ShipmentPipeline';
+export { ActiveContainers, type ActiveContainersProps } from './ActiveContainers';
+export { PaymentInsights, type PaymentInsightsProps } from './PaymentInsights';
