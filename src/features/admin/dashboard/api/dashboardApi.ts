@@ -12,7 +12,7 @@ import type { OutstandingPaymentsData, UnassignedGoodsData } from '../types';
  */
 export const getOutstandingPayments = async (): Promise<OutstandingPaymentsData> => {
   const response = await apiClientV2.get('/payments/outstanding');
-  return response.data;
+  return response.data.data; // Backend returns { success, data, message, error }
 };
 
 /**
@@ -21,5 +21,5 @@ export const getOutstandingPayments = async (): Promise<OutstandingPaymentsData>
  */
 export const getUnassignedGoods = async (): Promise<UnassignedGoodsData> => {
   const response = await apiClientV2.get('/goods/unassigned/alert');
-  return response.data;
+  return response.data.data; // Backend returns { success, data, message, error }
 };
