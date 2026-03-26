@@ -4,7 +4,7 @@
  */
 
 import { apiClientV2 } from '@src/api/client';
-import type { OutstandingPaymentsData } from '../types';
+import type { OutstandingPaymentsData, UnassignedGoodsData } from '../types';
 
 /**
  * Get outstanding payments summary
@@ -12,5 +12,14 @@ import type { OutstandingPaymentsData } from '../types';
  */
 export const getOutstandingPayments = async (): Promise<OutstandingPaymentsData> => {
   const response = await apiClientV2.get('/payments/outstanding');
+  return response.data;
+};
+
+/**
+ * Get unassigned goods alert data
+ * Returns aggregated data about goods not yet assigned to containers
+ */
+export const getUnassignedGoods = async (): Promise<UnassignedGoodsData> => {
+  const response = await apiClientV2.get('/goods/unassigned/alert');
   return response.data;
 };

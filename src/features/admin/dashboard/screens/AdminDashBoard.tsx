@@ -11,9 +11,10 @@ import { useAdminDashboard } from "../hooks/useAdminDashboard";
 import {
   DashboardHeader,
   KPICards,
+  OutstandingPaymentsSection,
+  UnassignedGoodsSection,
   SMSBalanceCard,
   QuickActions,
-  OutstandingPaymentsSection,
   RecentOrders,
   MenuCategories,
 } from "../components";
@@ -30,6 +31,7 @@ export const AdminDashBoard: React.FC = () => {
         <DashboardHeader user={user} />
         <KPICards stats={stats} />
         <OutstandingPaymentsSection />
+        <UnassignedGoodsSection />
         <SMSBalanceCard balance={smsBalance} />
         <QuickActions />
         <RecentOrders orders={recentOrders} />

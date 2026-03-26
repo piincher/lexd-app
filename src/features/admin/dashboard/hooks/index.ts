@@ -4,3 +4,4 @@
 
 export { useAdminDashboard } from "./useAdminDashboard";
 export { useOutstandingPayments } from "./useOutstandingPayments";
+export { useUnassignedGoods } from "./useUnassignedGoods";

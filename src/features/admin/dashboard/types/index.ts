@@ -29,3 +29,30 @@ export interface OutstandingPaymentsData {
   topClients: OutstandingClient[];
   aging: AgingBuckets;
 }
+
+// Unassigned Goods Types
+export interface UnassignedGoodsItem {
+  goodsId: string;
+  description: string;
+  clientName: string;
+  receivedAt: string;
+  daysWaiting: number;
+}
+
+export interface UnassignedGoodsByShippingMode {
+  AIR: number;
+  SEA: number;
+}
+
+export interface UnassignedGoodsByAge {
+  '0-3': number;
+  '4-7': number;
+  '8+': number;
+}
+
+export interface UnassignedGoodsData {
+  total: number;
+  byShippingMode: UnassignedGoodsByShippingMode;
+  byAge: UnassignedGoodsByAge;
+  oldestGoods: UnassignedGoodsItem[];
+}
