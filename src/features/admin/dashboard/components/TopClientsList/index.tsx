@@ -1,0 +1,68 @@
+import React from "react";
+import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+
+import { OutstandingClient } from "../../types";
+import { styles } from "./TopClientsList.styles";
+
+interface TopClientsListProps {
+  clients: OutstandingClient[];
+}
+
+const formatCurrency = (amount: number): string => {
+  return new Intl.NumberFormat("fr-FR", {
+    style: "currency",
+    currency: "XAF",
+    minimumFractionDigits: 0,
+  }).format(amount);
+};
+
+export const TopClientsList: React.FC<TopClientsListProps> = ({ clients }) => {
+  const navigation = useNavigation();
+
+  const renderItem = ({ item, index }: { item: OutstandingClient; index: number }) => (
+    <View style={styles.clientItem}>
+      <View style={styles.rankContainer}>
+        <Text style={styles.rank}>#{index + 1}</Text>
+      </View>
+      <View style={styles.info}>
+        <Text style={styles.name} numberOfLines={1}>
+          {item.clientName}
+        </Text>
+        <Text style={styles.goodsCount}>{item.goodsCount} colis</Text>
+      </View>
+      <Text style={styles.amount}>{formatCurrency(item.totalOwed)}</Text>
+      <TouchableOpacity
+        style={styles.action}
+        onPress={() => navigation.navigate("ClientDetails", { id: item.clientId })}
+      >
+        <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+      </TouchableOpacity>
+    </View>
+  );
+
+  if (!clients || clients.length === 0) {
+    return (
+      <View style={styles.empty}>
+        <Ionicons name="people-outline" size={32} color="#9CA3AF" />
+        <Text style={styles.emptyText}>Aucun client avec impayés</Text>
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Ionicons name="trophy" size={18} color="#F59E0B" />
+        <Text style={styles.title}>Top Clients avec Impayés</Text>
+      </View>
+      <FlatList
+        data={clients}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.clientId}
+        scrollEnabled={false}
+      />
+    </View>
+  );
+};
