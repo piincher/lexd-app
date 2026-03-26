@@ -8,3 +8,9 @@ export { SMSBalanceCard } from "./SMSBalanceCard";
 export { QuickActions } from "./QuickActions";
 export { RecentOrders } from "./RecentOrders";
 export { MenuCategories } from "./MenuCategories";
+
+// Outstanding Payments
+export { OutstandingPaymentsCard } from "./OutstandingPaymentsCard";
+export { AgingChart } from "./AgingChart";
+export { TopClientsList } from "./TopClientsList";
+export { OutstandingPaymentsSection } from "./OutstandingPaymentsSection";

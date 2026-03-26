@@ -29,6 +29,7 @@ import { useGetGoodsDetail } from '../hooks';
 import { StatusBadge } from '../components';
 import { ReviewPrompt } from '@src/features/customer/reviews';
 import { GoodsStatus } from '../api';
+import { useAuth } from '@src/store/Auth';
 
 // ── Helpers ─────────────────────────────────────────────────────────────
 
@@ -100,8 +101,14 @@ const GoodsDetailScreen = ({
 }: RootStackScreenProps<'GoodsDetail'>) => {
 	const { goodsId } = route.params;
 	const theme = useTheme();
+	const userRole = useAuth((state) => state.user?.role);
+	const isAdmin = userRole === 'admin';
 
 	const { data: goods, isLoading, isError, error, refetch } = useGetGoodsDetail(goodsId);
+
+	const handleEdit = () => {
+		navigation.navigate('EditGoods', { goodsId });
+	};
 
 	const handleShare = async () => {
 		if (!goods) return;
@@ -174,6 +181,9 @@ const GoodsDetailScreen = ({
 			<Appbar.Header>
 				<Appbar.BackAction onPress={() => navigation.goBack()} />
 				<Appbar.Content title={goods.goodsId} titleStyle={styles.headerTitle} />
+				{isAdmin && (
+					<Appbar.Action icon="pencil" onPress={handleEdit} />
+				)}
 				<Appbar.Action icon="share-variant" onPress={handleShare} />
 			</Appbar.Header>
 
@@ -621,8 +631,8 @@ const GoodsDetailScreen = ({
 					</Card>
 				)}
 
-				{/* ── Review Section ──────────────────────────────────── */}
-				{goods.status === 'DELIVERED' && (
+				{/* ── Review Section — available once goods are assigned to container ── */}
+				{['ASSIGNED_TO_CONTAINER', 'LOADED_IN_CONTAINER', 'IN_TRANSIT', 'ARRIVED_DESTINATION', 'READY_FOR_PICKUP', 'DELIVERED'].includes(goods.status) && (
 					<View style={styles.reviewSection}>
 						<ReviewPrompt goodsId={goods._id} goodsLabel={goods.goodsId} />
 					</View>

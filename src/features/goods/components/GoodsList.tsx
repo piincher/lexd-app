@@ -33,7 +33,7 @@ export const GoodsList: React.FC<GoodsListProps> = ({
 	const renderItem: ListRenderItem<Goods> = ({ item }) => (
 		<GoodsCard
 			goods={item}
-			onPress={() => onGoodsPress?.(item.goodsId)}
+			onPress={() => onGoodsPress?.(item._id)}
 		/>
 	);
 

@@ -32,8 +32,8 @@ export const ContainerDetailScreen: React.FC = () => {
   if (screen.isLoading) return <LoadingState />;
   if (!screen.container) return <ErrorState onBack={() => screen.navigation.goBack()} />;
 
-  const { container, goodsList, isRefreshing, statusColor, statusLabel, 
-    currentStatusIndex, fillPercentage, fillColor, handleRefresh } = screen;
+  const { container, goodsList, isRefreshing, statusColor, statusLabel,
+    currentStatusIndex, fillPercentage, fillColor, isAirContainer, capacityValue, maxCapacity, handleRefresh } = screen;
   const { containerId, statusMenuVisible, setStatusMenuVisible, handleUpdateStatus } = screen;
   const { showDeleteDialog, setShowDeleteDialog, confirmDeleteContainer } = screen;
   const { showRemoveGoodsDialog, setShowRemoveGoodsDialog, confirmRemoveGoods } = screen;
@@ -58,7 +58,7 @@ export const ContainerDetailScreen: React.FC = () => {
           onBack={() => screen.navigation.goBack()}
         />
         <ContainerTimeline currentStatus={container.status} currentStatusIndex={currentStatusIndex} />
-        <ContainerCapacityCard totalCBM={container.totalCBM || 0} fillPercentage={fillPercentage} fillColor={fillColor} />
+        <ContainerCapacityCard totalCBM={capacityValue} fillPercentage={fillPercentage} fillColor={fillColor} maxCBM={maxCapacity} isAir={isAirContainer} />
         <ContainerWaypointSection 
           containerId={containerId} 
           containerStatus={container.status}

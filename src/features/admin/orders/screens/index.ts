@@ -19,3 +19,4 @@ export { default as AllOrdersScreen } from './AllOrdersScreen';
 export { default as OrderDetailScreen } from './OrderDetailScreen';
 export { default as RecordPaymentScreen } from './RecordPaymentScreen';
 export { default as PaymentHistoryScreen } from './PaymentHistoryScreen';
+export { default as PaymentDetailScreen } from './PaymentDetailScreen';

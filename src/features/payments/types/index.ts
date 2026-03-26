@@ -151,12 +151,32 @@ export interface PaymentHistoryItem {
     cardLast4?: string;
     expiresAt?: string;
     failureReason?: string;
+    receiptUrl?: string;
   };
   refund?: {
     amount: number;
     reason: string;
     refundedAt: string;
   };
+  receiptUrl?: string | null;
+  receiptNumber?: string | null;
+  receiptGeneratedAt?: string | null;
+  orderCode?: string | null;
+  notes?: string | null;
+  referenceNumber?: string | null;
+  createdBy?: {
+    id: string;
+    name: string | null;
+  } | null;
+}
+
+export interface PaymentHistoryFilters {
+  page?: number;
+  limit?: number;
+  startDate?: string;
+  endDate?: string;
+  paymentMethod?: string;
+  status?: string;
 }
 
 export interface PaymentHistoryResponse {

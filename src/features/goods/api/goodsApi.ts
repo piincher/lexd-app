@@ -1,7 +1,7 @@
 import { apiV2 } from '@src/api/client';
 
 const axios = apiV2;
-import { Goods, GoodsFilters, ApiResponse, ScanQRResponse } from './types';
+import { Goods, GoodsFilters, ApiResponse, ScanQRResponse, UpdateGoodsInput } from './types';
 
 const BASE_URL = '/goods';
 
@@ -14,4 +14,7 @@ export const goodsApi = {
     
   scanQR: (qrData: string) =>
     axios.post<ApiResponse<ScanQRResponse>>(`${BASE_URL}/scan`, { qrData }),
+
+  updateGoods: (goodsId: string, data: UpdateGoodsInput) =>
+    axios.patch<ApiResponse<Goods>>(`${BASE_URL}/${goodsId}`, data),
 };

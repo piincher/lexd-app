@@ -11,6 +11,7 @@ type AdminV2StackParamList = { ContainerList: undefined; ContainerDetail: { cont
 type RouteParams = { containerId: string };
 type NavigationProp = NativeStackNavigationProp<AdminV2StackParamList>;
 const MAX_CONTAINER_CBM = 67;
+const MAX_CONTAINER_WEIGHT = 28000; // kg
 const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'LOADING'];
 const canReceiveGoods = (status: ContainerStatus): boolean => ASSIGNABLE_STATUSES.includes(status);
 
@@ -28,6 +29,8 @@ export interface UseAssignGoodsScreenReturn {
   currentContainerCBM: number;
   totalSelectedCBM: number;
   isOverCapacity: boolean;
+  isAirContainer: boolean;
+  maxCapacity: number;
   assignMutation: any;
   toggleSelection: (goodsId: string) => void;
   toggleSelectAll: () => void;
@@ -46,10 +49,10 @@ export const useAssignGoodsScreen = (): UseAssignGoodsScreenReturn => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const { data: containerData, isLoading: isLoadingContainer, error: containerError } = useGetContainerById(containerId);
-  const { data: unassignedGoodsData, isLoading: isLoadingGoods, isRefetching, refetch, error: goodsError } = useGetUnassignedGoods();
-  const assignMutation = useAssignGoodsToContainer();
-
   const container: Container | undefined = containerData?.data?.container || containerData?.data;
+  const isAirContainer = container?.shippingMode === 'AIR';
+  const { data: unassignedGoodsData, isLoading: isLoadingGoods, isRefetching, refetch, error: goodsError } = useGetUnassignedGoods(container?.shippingMode);
+  const assignMutation = useAssignGoodsToContainer();
   const unassignedGoods: Goods[] = unassignedGoodsData?.data?.goods || unassignedGoodsData?.data || [];
   const containerStatus = container?.status as ContainerStatus;
   const isAssignable = canReceiveGoods(containerStatus);
@@ -65,9 +68,19 @@ export const useAssignGoodsScreen = (): UseAssignGoodsScreenReturn => {
     });
   }, [searchQuery, unassignedGoods]);
 
-  const currentContainerCBM = container?.totalCBM || 0;
-  const totalSelectedCBM = useMemo(() => selectedGoods.reduce((sum, id) => sum + (unassignedGoods.find((g) => g._id === id)?.actualCBM || 0), 0), [selectedGoods, unassignedGoods]);
-  const isOverCapacity = currentContainerCBM + totalSelectedCBM > MAX_CONTAINER_CBM;
+  // For AIR containers, use weight (kg); for SEA, use CBM (m³)
+  const maxCapacity = isAirContainer ? MAX_CONTAINER_WEIGHT : MAX_CONTAINER_CBM;
+  const currentContainerCBM = isAirContainer
+    ? (goodsList => goodsList.reduce((sum: number, g: any) => sum + (parseFloat(g?.weight) || 0), 0))(
+        Array.isArray(container?.goodsIds) && container.goodsIds.length > 0 && typeof container.goodsIds[0] === 'object'
+          ? container.goodsIds : container?.goods || []
+      )
+    : (container?.totalCBM || 0);
+  const totalSelectedCBM = useMemo(() => selectedGoods.reduce((sum, id) => {
+    const g = unassignedGoods.find((g) => g._id === id);
+    return sum + (isAirContainer ? (parseFloat(String(g?.weight)) || 0) : (g?.actualCBM || 0));
+  }, 0), [selectedGoods, unassignedGoods, isAirContainer]);
+  const isOverCapacity = currentContainerCBM + totalSelectedCBM > maxCapacity;
   const toggleSelection = (goodsId: string) => setSelectedGoods((prev) => prev.includes(goodsId) ? prev.filter((id) => id !== goodsId) : [...prev, goodsId]);
   const toggleSelectAll = () => setSelectedGoods(selectedGoods.length === filteredGoods.length ? [] : filteredGoods.map((g) => g._id));
 
@@ -95,6 +108,7 @@ export const useAssignGoodsScreen = (): UseAssignGoodsScreenReturn => {
     containerId, container, unassignedGoods, selectedGoods, searchQuery,
     isLoading: isLoadingContainer || isLoadingGoods, isRefetching, error: containerError || goodsError,
     isAssignable, filteredGoods, currentContainerCBM, totalSelectedCBM, isOverCapacity,
+    isAirContainer, maxCapacity,
     assignMutation, toggleSelection, toggleSelectAll, handleAssign, handleRefresh, setSearchQuery, navigation,
   };
 };

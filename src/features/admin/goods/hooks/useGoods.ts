@@ -63,7 +63,7 @@ export const useGetGoodsById = (
     queryKey: goodsQueryKeys.detail(id || ''),
     queryFn: () => goodsService.getById(id!),
     enabled: !!id, // Only fetch if ID is provided
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0, // Always fetch fresh data to ensure updates are reflected
     ...options,
   });
 };

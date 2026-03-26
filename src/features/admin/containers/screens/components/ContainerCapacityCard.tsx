@@ -8,6 +8,7 @@ interface ContainerCapacityCardProps {
   fillPercentage: number;
   fillColor: string;
   maxCBM?: number;
+  isAir?: boolean;
 }
 
 export const ContainerCapacityCard: React.FC<ContainerCapacityCardProps> = ({
@@ -15,7 +16,9 @@ export const ContainerCapacityCard: React.FC<ContainerCapacityCardProps> = ({
   fillPercentage,
   fillColor,
   maxCBM = MAX_CBM,
+  isAir = false,
 }) => {
+  const unit = isAir ? 'kg' : 'CBM';
   const getStatusColor = (percentage: number): string => {
     if (percentage > 90) return '#EF4444'; // red
     if (percentage >= 70) return '#F59E0B'; // yellow
@@ -36,8 +39,8 @@ export const ContainerCapacityCard: React.FC<ContainerCapacityCardProps> = ({
 
         <View style={styles.capacityInfo}>
           <Text style={styles.capacityValue}>{totalCBM.toFixed(1)}</Text>
-          <Text style={styles.capacityUnit}>CBM</Text>
-          <Text style={styles.capacityMax}>/ {maxCBM} CBM</Text>
+          <Text style={styles.capacityUnit}>{unit}</Text>
+          <Text style={styles.capacityMax}>/ {maxCBM} {unit}</Text>
         </View>
 
         <View style={styles.progressContainer}>

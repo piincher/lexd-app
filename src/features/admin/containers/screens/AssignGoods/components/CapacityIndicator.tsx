@@ -10,13 +10,16 @@ interface CapacityIndicatorProps {
   currentCBM: number;
   selectedCBM: number;
   maxCBM?: number;
+  isAir?: boolean;
 }
 
 export const CapacityIndicator: React.FC<CapacityIndicatorProps> = ({
   currentCBM,
   selectedCBM,
   maxCBM = MAX_CONTAINER_CBM,
+  isAir = false,
 }) => {
+  const unit = isAir ? 'kg' : 'm³';
   const totalCBM = (currentCBM || 0) + (selectedCBM || 0);
   const fillPercentage = Math.min((totalCBM / maxCBM) * 100, 100);
   const isFull = fillPercentage >= 90;
@@ -33,7 +36,7 @@ export const CapacityIndicator: React.FC<CapacityIndicatorProps> = ({
       <View style={styles.capacityHeader}>
         <Text style={styles.capacityLabel}>Capacité du container</Text>
         <Text style={[styles.capacityValue, { color: getFillColor() }]}>
-          {(totalCBM || 0).toFixed(2)} / {maxCBM} m³
+          {(totalCBM || 0).toFixed(2)} / {maxCBM} {unit}
         </Text>
       </View>
       <View style={styles.progressBarBackground}>
@@ -48,12 +51,12 @@ export const CapacityIndicator: React.FC<CapacityIndicatorProps> = ({
       <View style={styles.capacityLegend}>
         <View style={styles.legendItem}>
           <View style={[styles.legendDot, { backgroundColor: Theme.neutral[400] }]} />
-          <Text style={styles.legendText}>Actuel: {(currentCBM || 0).toFixed(2)} m³</Text>
+          <Text style={styles.legendText}>Actuel: {(currentCBM || 0).toFixed(2)} {unit}</Text>
         </View>
         {selectedCBM > 0 && (
           <View style={styles.legendItem}>
             <View style={[styles.legendDot, { backgroundColor: Theme.primary[500] }]} />
-            <Text style={styles.legendText}>Sélection: {(selectedCBM || 0).toFixed(2)} m³</Text>
+            <Text style={styles.legendText}>Sélection: {(selectedCBM || 0).toFixed(2)} {unit}</Text>
           </View>
         )}
       </View>

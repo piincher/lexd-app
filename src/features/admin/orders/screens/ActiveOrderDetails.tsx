@@ -96,7 +96,7 @@ const ActiveOrderDetails = ({
    const Status = Routes?.[0];
    const isDelivered = item?.status === "Delivered" || item?.status === "Inactive";
    const isAir = item?.shippingMode === "air";
-   const orderPrice = item?.priceTotal || 0;
+   const orderPrice = parseFloat(String(item?.calculatedTotal || item?.priceTotal || 0)) || 0;
 
    // ── Handlers ──
 
@@ -268,7 +268,7 @@ const ActiveOrderDetails = ({
                   <View style={{ alignItems: "flex-end" }}>
                      <Text style={styles.priceLabel}>Montant total</Text>
                      <Text style={styles.priceValue}>
-                        {orderPrice.toLocaleString()} FCFA
+                        {orderPrice > 0 ? `${orderPrice.toLocaleString()} FCFA` : 'Non défini'}
                      </Text>
                   </View>
                </View>

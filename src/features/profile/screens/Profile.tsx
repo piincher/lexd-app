@@ -65,6 +65,14 @@ const MENU_SECTIONS: { title: string; items: MenuItem[] }[] = [
             iconBg: "rgba(245,158,11,0.1)",
             iconColor: "#F59E0B",
          },
+         {
+            title: "Historique des paiements",
+            subtitle: "Consultez vos paiements",
+            icon: "receipt-text-outline",
+            screen: "MyPaymentHistory",
+            iconBg: "rgba(16, 185, 129, 0.1)",
+            iconColor: "#10B981",
+         },
       ],
    },
    {

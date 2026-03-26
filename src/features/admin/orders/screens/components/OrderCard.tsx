@@ -64,8 +64,8 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const initials = order.clientName?.split(' ').map((n: string) => n[0]).join('') || '?';
   
   const isAir = order.shippingMode === 'air';
-  // Price can be in priceTotal (string) or calculatedTotal (number)
-  const orderPrice = order.calculatedTotal || parseFloat(order.priceTotal) || 0;
+  // Price can be in calculatedTotal (from goods), priceTotal (manual string), or totalCost
+  const orderPrice = parseFloat(String(order.calculatedTotal || 0)) || parseFloat(String(order.priceTotal || 0)) || parseFloat(String(order.totalCost || 0)) || 0;
   const hasHighValue = orderPrice > 500000;
 
   return (
@@ -148,7 +148,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
           <View style={styles.detailItem}>
             <MaterialIcons name="attach-money" size={14} color={COLORS.grey} />
             <Text style={[styles.amountText, { color: orderPrice > 0 ? '#4CAF50' : COLORS.grey }]}>
-              {orderPrice.toLocaleString()} FCFA
+              {orderPrice > 0 ? `${orderPrice.toLocaleString()} FCFA` : 'Non défini'}
             </Text>
           </View>
         </View>

@@ -18,6 +18,14 @@ export {
   usePaymentFlow,
 } from './hooks/usePayments';
 
+// Export payment history hooks
+export { useMyPaymentHistory } from './hooks/useMyPaymentHistory';
+export { 
+  useGenerateReceipt, 
+  useDownloadReceipt, 
+  useShareReceipt 
+} from './hooks/usePaymentReceipt';
+
 // Export components
 export { default as PaymentMethodSelector } from './components/PaymentMethodSelector';
 export { default as OrangeMoneyForm } from './components/OrangeMoneyForm';
@@ -28,3 +36,4 @@ export { default as PaymentStatusModal } from './components/PaymentStatusModal';
 // Export screens
 export { default as PaymentScreen } from './screens/PaymentScreen';
 export { default as PaymentHistoryScreen } from './screens/PaymentHistoryScreen';
+export { MyPaymentHistoryScreen } from './screens/MyPaymentHistoryScreen';

@@ -11,20 +11,39 @@ interface PaymentSectionProps {
   order: any;
 }
 
+// Parsing helpers for price and CBM values
+const parsePrice = (value: any): number => {
+  if (value === null || value === undefined || value === '') return 0;
+  const num = parseFloat(String(value));
+  return isNaN(num) ? 0 : num;
+};
+
+const parseCBM = (value: any): string => {
+  if (value === null || value === undefined || value === '' || value === '0') return '';
+  return String(value);
+};
+
 export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
   const navigation = useNavigation();
-  
-  const orderPrice = order?.calculatedTotal || parseFloat(order?.priceTotal) || 0;
-  
-  // Get payment status - check both paymentStatus field and paidAmount
-  const paidAmount = order?.paidAmount || 0;
-  const balanceDue = order?.balanceDue || Math.max(0, orderPrice - paidAmount);
-  
+
+  // Parse prices safely
+  const isAir = order?.shippingMode === 'air';
+  const unitPrice = parsePrice(order?.unitPrice);
+  const totalPrice = parsePrice(order?.calculatedTotal) ||
+                     parsePrice(order?.priceTotal) ||
+                     parsePrice(order?.totalCost);
+  const cbm = parseCBM(order?.packageCBM) || parseCBM(order?.calculatedCBM);
+
+  // Get payment info
+  const paidAmount = parsePrice(order?.paidAmount);
+  const balanceDue = parsePrice(order?.balanceDue) || Math.max(0, totalPrice - paidAmount);
+
   // Determine payment status
+  // When totalPrice is 0 (no price set), treat as UNPAID
   let paymentStatus: 'UNPAID' | 'PARTIAL' | 'PAID' = 'UNPAID';
-  if (balanceDue <= 0 || paidAmount >= orderPrice) {
+  if (totalPrice > 0 && (balanceDue <= 0 || paidAmount >= totalPrice)) {
     paymentStatus = 'PAID';
-  } else if (paidAmount > 0) {
+  } else if (paidAmount > 0 && totalPrice > 0) {
     paymentStatus = 'PARTIAL';
   }
 
@@ -61,14 +80,15 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
       orderId: order?._id,
       orderCode: order?.code,
       balanceDue,
-      orderPrice,
+      totalPrice,
     });
     navigation.navigate('RecordPaymentScreen' as never, {
       orderId: order?._id,
       orderCode: order?.code,
       clientName: order?.clientName,
+      clientPhone: order?.clientPhone,
       currentBalance: balanceDue,
-      totalAmount: orderPrice,
+      totalAmount: totalPrice,
     } as never);
   };
 
@@ -76,6 +96,8 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
     navigation.navigate('OrderPaymentHistory' as never, {
       orderId: order?._id,
       orderCode: order?.code,
+      clientName: order?.clientName,
+      clientPhone: order?.clientPhone,
     } as never);
   };
 
@@ -89,10 +111,10 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
       {/* Payment Status Card */}
       <View style={[styles.statusCard, { backgroundColor: statusConfig.bgColor }]}>
         <View style={styles.statusIconContainer}>
-          <MaterialCommunityIcons 
-            name={statusConfig.icon as any} 
-            size={32} 
-            color={statusConfig.color} 
+          <MaterialCommunityIcons
+            name={statusConfig.icon as any}
+            size={32}
+            color={statusConfig.color}
           />
         </View>
         <View style={styles.statusContent}>
@@ -113,9 +135,44 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
 
       {/* Payment Breakdown */}
       <View style={styles.breakdown}>
+        {/* Pricing Details */}
+        {isAir ? (
+          order?.packageWeight ? (
+            <View style={styles.breakdownRow}>
+              <Text style={styles.breakdownLabel}>Poids</Text>
+              <Text style={styles.breakdownValue}>{order.packageWeight} kg</Text>
+            </View>
+          ) : null
+        ) : (
+          cbm ? (
+            <View style={styles.breakdownRow}>
+              <Text style={styles.breakdownLabel}>Volume (CBM)</Text>
+              <Text style={styles.breakdownValue}>{cbm} m³</Text>
+            </View>
+          ) : null
+        )}
+        {unitPrice > 0 && (
+          <View style={styles.breakdownRow}>
+            <Text style={styles.breakdownLabel}>Prix unitaire</Text>
+            <Text style={styles.breakdownValue}>
+              {unitPrice.toLocaleString()} FCFA/{isAir ? 'kg' : 'm³'}
+            </Text>
+          </View>
+        )}
+        <View style={styles.breakdownRow}>
+          <Text style={styles.breakdownLabel}>Prix total</Text>
+          <Text style={styles.breakdownValue}>
+            {totalPrice > 0 ? `${totalPrice.toLocaleString()} FCFA` : 'Non défini'}
+          </Text>
+        </View>
+
+        <Divider style={{ marginVertical: 8 }} />
+
         <View style={styles.breakdownRow}>
           <Text style={styles.breakdownLabel}>Total Order Amount</Text>
-          <Text style={styles.breakdownValue}>{orderPrice.toLocaleString()} FCFA</Text>
+          <Text style={styles.breakdownValue}>
+            {totalPrice > 0 ? `${totalPrice.toLocaleString()} FCFA` : 'Non défini'}
+          </Text>
         </View>
         <View style={styles.breakdownRow}>
           <Text style={styles.breakdownLabel}>Amount Paid</Text>
@@ -147,7 +204,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
             Record Payment
           </Button>
         )}
-        
+
         <Button
           mode="outlined"
           onPress={handleViewHistory}
@@ -164,7 +221,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
       <View style={styles.adminNote}>
         <MaterialCommunityIcons name="information" size={16} color={COLORS.grey} />
         <Text style={styles.adminNoteText}>
-          Record payments made by clients via cash, bank transfer, or mobile money. 
+          Record payments made by clients via cash, bank transfer, or mobile money.
           The client will receive a notification of the recorded payment.
         </Text>
       </View>

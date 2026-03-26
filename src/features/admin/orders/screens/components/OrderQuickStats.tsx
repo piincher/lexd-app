@@ -5,8 +5,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from './OrderQuickStats.styles';
 
 interface OrderQuickStatsProps {
-  quantity?: number;
-  weight?: number;
+  quantity?: number | string;
+  weight?: number | string;
   cbm?: string | number;
   shippingMode?: string;
 }
@@ -34,44 +34,59 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
   weight,
   cbm,
   shippingMode,
-}) => (
-  <Surface style={styles.container}>
-    <StatItem
-      icon="package-variant-closed"
-      value={String(quantity ?? 0)}
-      label="Colis"
-      color="#1976D2"
-      bgColor="#E3F2FD"
-    />
-    <View style={styles.divider} />
-    <StatItem
-      icon="weight"
-      value={weight ? `${weight} kg` : '--'}
-      label="Poids"
-      color="#E65100"
-      bgColor="#FFF3E0"
-    />
-    <View style={styles.divider} />
-    <StatItem
-      icon="cube-outline"
-      value={cbm ? String(cbm) : '--'}
-      label="CBM (m³)"
-      color="#2E7D32"
-      bgColor="#E8F5E9"
-    />
-    {shippingMode === 'sea' && (
-      <>
-        <View style={styles.divider} />
-        <StatItem
-          icon="ferry"
-          value={shippingMode}
-          label="Mode"
-          color="#00796B"
-          bgColor="#E0F2F1"
-        />
-      </>
-    )}
-  </Surface>
-);
+}) => {
+  // Parse values safely to handle v1 API string responses
+  const parsedQuantity = quantity !== undefined && quantity !== '' 
+    ? parseInt(String(quantity), 10) || 0 
+    : 0;
+    
+  const parsedWeight = weight !== undefined && weight !== '' && weight !== '0' && weight !== 0
+    ? String(weight)
+    : null;
+    
+  const parsedCBM = cbm !== undefined && cbm !== '' && cbm !== '0' && cbm !== 0
+    ? String(cbm)
+    : null;
+
+  return (
+    <Surface style={styles.container}>
+      <StatItem
+        icon="package-variant-closed"
+        value={String(parsedQuantity)}
+        label="Colis"
+        color="#1976D2"
+        bgColor="#E3F2FD"
+      />
+      <View style={styles.divider} />
+      <StatItem
+        icon="weight"
+        value={parsedWeight ? `${parsedWeight} kg` : '--'}
+        label="Poids"
+        color="#E65100"
+        bgColor="#FFF3E0"
+      />
+      <View style={styles.divider} />
+      <StatItem
+        icon="cube-outline"
+        value={parsedCBM ? `${parsedCBM} m³` : '--'}
+        label="CBM (m³)"
+        color="#2E7D32"
+        bgColor="#E8F5E9"
+      />
+      {shippingMode === 'sea' && (
+        <>
+          <View style={styles.divider} />
+          <StatItem
+            icon="ferry"
+            value={shippingMode}
+            label="Mode"
+            color="#00796B"
+            bgColor="#E0F2F1"
+          />
+        </>
+      )}
+    </Surface>
+  );
+};
 
 export default OrderQuickStats;

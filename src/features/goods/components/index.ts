@@ -3,6 +3,7 @@
 export { GoodsCard } from './GoodsCard';
 export { StatusBadge } from './StatusBadge';
 export { EmptyState } from './EmptyState';
+export { GoodsForm } from './GoodsForm/GoodsForm';
 
 // Existing components
 export { GoodsList } from './GoodsList';

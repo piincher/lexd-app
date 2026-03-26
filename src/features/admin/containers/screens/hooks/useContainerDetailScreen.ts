@@ -9,6 +9,7 @@ import { Goods } from '../../../goods/types';
 import { Theme } from '@src/constants/Theme';
 
 const MAX_CBM = 67;
+const MAX_WEIGHT = 28000; // kg
 const TIMELINE_STEPS: ContainerStatus[] = ['BOOKED','EMPTY_TO_WAREHOUSE','LOADING','LOADED','IN_TRANSIT','ARRIVED','READY_FOR_PICKUP'];
 
 export const useContainerDetailScreen = () => {
@@ -28,7 +29,11 @@ export const useContainerDetailScreen = () => {
   const markContainerDeliveredMutation = useMarkContainerDelivered();
   const container: Container | undefined = containerResponse?.data?.container || containerResponse?.data;
   const goodsList: Goods[] = (() => { if (!container) return []; const g = (container as any).goodsIds; return (Array.isArray(g) && g.length > 0 && typeof g[0] === 'object') ? g as Goods[] : container?.goods || []; })();
-  const fillPercentage = container ? Math.min(((container.totalCBM || 0) / MAX_CBM) * 100, 100) : 0;
+  const isAirContainer = container?.shippingMode === 'AIR';
+  const totalWeight = goodsList.reduce((sum, g: any) => sum + (parseFloat(g?.weight) || 0), 0);
+  const capacityValue = isAirContainer ? totalWeight : (container?.totalCBM || 0);
+  const maxCapacity = isAirContainer ? MAX_WEIGHT : MAX_CBM;
+  const fillPercentage = container ? Math.min((capacityValue / maxCapacity) * 100, 100) : 0;
   const getFillColor = (p: number) => p >= 90 ? Theme.status.error : p >= 70 ? Theme.status.warning : Theme.status.success;
   const fillColor = getFillColor(fillPercentage), statusColor = container ? CONTAINER_STATUS_COLORS[container.status] : '#8B5CF6';
   const statusLabel = container ? CONTAINER_STATUS_LABELS[container.status] : '', currentStatusIndex = container ? TIMELINE_STEPS.indexOf(container.status) : -1;
@@ -54,5 +59,5 @@ export const useContainerDetailScreen = () => {
   const handleMarkDelivered = () => setShowDeliveredDialog(true);
   const confirmMarkDelivered = async () => { try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } };
   const handleMarkGoodsDelivered = (goodsId: string) => Alert.alert('Confirmer la livraison', 'Marquer cette marchandise comme livrée ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Marquer Livré', onPress: async () => { try { await markGoodsDeliveredMutation.mutateAsync(goodsId); Alert.alert('Succès', 'Marchandise marquée comme livrée'); } catch { Alert.alert('Erreur', 'Impossible de marquer la marchandise'); } } }]);
-  return { containerId, navigation, container, goodsList, isLoading, isRefetching, isRefreshing, updateStatusMutation, removeGoodsMutation, deleteContainerMutation, markReadyForPickupMutation, markGoodsDeliveredMutation, markContainerDeliveredMutation, statusMenuVisible, setStatusMenuVisible, showDeleteDialog, setShowDeleteDialog, showRemoveGoodsDialog, setShowRemoveGoodsDialog, showReadyForPickupDialog, setShowReadyForPickupDialog, showDeliveredDialog, setShowDeliveredDialog, selectedGoodsId, setSelectedGoodsId, fillPercentage, fillColor, statusColor, statusLabel, currentStatusIndex, canMarkReadyForPickup, canMarkDelivered, handleRefresh, handleUpdateStatus, handleRemoveGoods, confirmRemoveGoods, handleDeleteContainer, confirmDeleteContainer, handleAssignGoods, handleGeneratePackingList, handleGoToLoadingList, handleMarkReadyForPickup, confirmMarkReadyForPickup, handleMarkDelivered, confirmMarkDelivered, handleMarkGoodsDelivered };
+  return { containerId, navigation, container, goodsList, isLoading, isRefetching, isRefreshing, updateStatusMutation, removeGoodsMutation, deleteContainerMutation, markReadyForPickupMutation, markGoodsDeliveredMutation, markContainerDeliveredMutation, statusMenuVisible, setStatusMenuVisible, showDeleteDialog, setShowDeleteDialog, showRemoveGoodsDialog, setShowRemoveGoodsDialog, showReadyForPickupDialog, setShowReadyForPickupDialog, showDeliveredDialog, setShowDeliveredDialog, selectedGoodsId, setSelectedGoodsId, fillPercentage, fillColor, statusColor, statusLabel, currentStatusIndex, isAirContainer, capacityValue, maxCapacity, canMarkReadyForPickup, canMarkDelivered, handleRefresh, handleUpdateStatus, handleRemoveGoods, confirmRemoveGoods, handleDeleteContainer, confirmDeleteContainer, handleAssignGoods, handleGeneratePackingList, handleGoToLoadingList, handleMarkReadyForPickup, confirmMarkReadyForPickup, handleMarkDelivered, confirmMarkDelivered, handleMarkGoodsDelivered };
 };

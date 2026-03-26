@@ -10,13 +10,17 @@ const formatCurrency = (amount: number): string => {
   return amount?.toLocaleString('fr-FR') || '0';
 };
 
-const formatDate = (dateString: string): string => {
+const formatDate = (dateString?: string): string => {
   if (!dateString) return 'N/A';
-  return new Date(dateString).toLocaleDateString('fr-FR', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
+  try {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
+  } catch {
+    return 'N/A';
+  }
 };
 
 export const useGoodsDetailScreen = () => {
@@ -24,19 +28,19 @@ export const useGoodsDetailScreen = () => {
   const navigation = useNavigation();
   const { goodsId } = route.params as { goodsId: string };
   
-  const { data, isLoading, refetch } = useGetGoodsById(goodsId);
+  const { data, isPending, isFetching, refetch } = useGetGoodsById(goodsId);
   const deleteMutation = useDeleteGoods();
   const updateStatusMutation = useUpdateGoodsStatus();
-  
+
   const [menuVisible, setMenuVisible] = useState(false);
   const [assignDialogVisible, setAssignDialogVisible] = useState(false);
   const [selectedContainerId, setSelectedContainerId] = useState<string | null>(null);
-  
+
   const { data: containersData } = useGetAllContainers({ status: ['BOOKED', 'LOADING'] });
   const assignMutation = useAssignGoodsToContainer();
-  
-  const containers = Array.isArray(containersData?.data) 
-    ? containersData?.data 
+
+  const containers = Array.isArray(containersData?.data)
+    ? containersData?.data
     : containersData?.data?.containers || [];
   const hasContainers = containers.length > 0;
 
@@ -125,34 +129,53 @@ export const useGoodsDetailScreen = () => {
     Alert.alert("Info", "Partage du QR code à implémenter");
   }, []);
 
+  const handleNavigateToEdit = useCallback(() => {
+    navigation.navigate('EditGoods' as never, { goodsId } as never);
+  }, [navigation, goodsId]);
+
+  const handleGoBack = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
   return {
-    goodsId,
-    navigation,
-    goods,
-    isLoading,
-    refetch,
-    client,
-    container,
-    balanceDue,
-    hasQRCode,
-    menuVisible,
-    setMenuVisible,
-    assignDialogVisible,
-    setAssignDialogVisible,
-    selectedContainerId,
-    setSelectedContainerId,
-    containers,
-    hasContainers,
-    assignMutation,
-    deleteMutation,
-    updateStatusMutation,
-    handleAssignToContainer,
-    handleAssignPress,
-    handleDelete,
-    handleStatusUpdate,
-    handleShareQR,
-    getPaymentStatusColor,
-    formatDate,
-    formatCurrency,
+    state: {
+      goods,
+      client,
+      container,
+      balanceDue,
+      hasQRCode,
+    },
+    loading: {
+      isLoading: isPending,
+      isRefetching: isFetching && !isPending,
+      refetch,
+    },
+    dialogs: {
+      menuVisible,
+      assignDialogVisible,
+      selectedContainerId,
+      setMenuVisible,
+      setAssignDialogVisible,
+      setSelectedContainerId,
+    },
+    containers: {
+      containers,
+      hasContainers,
+    },
+    mutations: {
+      isAssigning: assignMutation.isPending,
+    },
+    actions: {
+      handleAssignToContainer,
+      handleAssignPress,
+      handleDelete,
+      handleStatusUpdate,
+      handleShareQR,
+      handleNavigateToEdit,
+      handleGoBack,
+      getPaymentStatusColor,
+      formatDate,
+      formatCurrency,
+    },
   };
 };

@@ -13,6 +13,8 @@ interface HeaderProps {
   totalSelectedCBM: number;
   isAssignable: boolean;
   containerStatus: ContainerStatus;
+  isAirContainer?: boolean;
+  maxCapacity?: number;
   onBack: () => void;
 }
 
@@ -24,6 +26,8 @@ export const Header: React.FC<HeaderProps> = ({
   totalSelectedCBM,
   isAssignable,
   containerStatus,
+  isAirContainer = false,
+  maxCapacity = MAX_CONTAINER_CBM,
   onBack,
 }) => {
   return (
@@ -43,7 +47,8 @@ export const Header: React.FC<HeaderProps> = ({
         <CapacityIndicator
           currentCBM={currentContainerCBM}
           selectedCBM={totalSelectedCBM}
-          maxCBM={MAX_CONTAINER_CBM}
+          maxCBM={maxCapacity}
+          isAir={isAirContainer}
         />
 
         {!isAssignable && (

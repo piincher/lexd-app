@@ -52,7 +52,7 @@ export const GoodsListItem: React.FC<GoodsListItemProps> = ({
         <View style={styles.goodsInfo}>
           <View style={styles.goodsHeader}>
             <Text style={styles.goodsId}>{goods.goodsId}</Text>
-            <Badge label={`${(goods.actualCBM || 0).toFixed(3)} m³`} variant="primary" size="small" />
+            <Badge label={goods.shippingMode === 'AIR' ? `${(parseFloat(String(goods.weight)) || 0).toFixed(2)} kg` : `${(goods.actualCBM || 0).toFixed(3)} m³`} variant="primary" size="small" />
           </View>
           <Text style={styles.description} numberOfLines={1}>{goods.description || 'Sans description'}</Text>
           <View style={styles.goodsMeta}>

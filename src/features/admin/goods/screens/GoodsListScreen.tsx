@@ -89,10 +89,10 @@ export const GoodsListScreen: React.FC = () => {
   };
 
   const renderItem = ({ item }: { item: Goods }) => (
-    <GoodsCard 
-      goods={item} 
-      onPress={() => handleGoodsPress(item.goodsId)}
-      onMenuPress={() => handleGoodsPress(item.goodsId)}
+    <GoodsCard
+      goods={item}
+      onPress={() => handleGoodsPress(item._id)}
+      onMenuPress={() => handleGoodsPress(item._id)}
     />
   );
 

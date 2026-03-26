@@ -20,7 +20,16 @@ const PAYMENT_COLORS: Record<string, { bg: string; text: string; label: string }
 
 export const OrderPaymentCard: React.FC<OrderPaymentCardProps> = ({ order }) => {
    const paymentCfg = PAYMENT_COLORS[order.paymentStatus || ""] || PAYMENT_COLORS.Unpaid;
-   const isSea = order.shippingMode === "sea";
+   const isAir = order.shippingMode === "air";
+
+   // Compute total from populated goodsIds as fallback
+   const goodsTotal = (order.goodsIds && Array.isArray(order.goodsIds))
+      ? order.goodsIds.reduce((sum: number, g: any) =>
+         sum + (typeof g === 'object' ? (parseFloat(String(g?.totalCost || 0)) || 0) : 0), 0)
+      : 0;
+   const totalPrice = parseFloat(String(order.calculatedTotal || 0))
+      || parseFloat(String(order.priceTotal || 0))
+      || goodsTotal;
 
    return (
       <Card style={styles.card}>
@@ -49,23 +58,38 @@ export const OrderPaymentCard: React.FC<OrderPaymentCardProps> = ({ order }) => 
             </View>
             <Divider style={styles.divider} />
 
-            {/* Sea-specific fields */}
-            {isSea && (
+            {/* Shipping-specific fields */}
+            {isAir ? (
+               <>
+                  {order.packageWeight ? (
+                     <InfoRow
+                        icon="weight"
+                        label="Poids"
+                        value={`${order.packageWeight} kg`}
+                     />
+                  ) : null}
+                  {order.unitPrice ? (
+                     <InfoRow
+                        icon="tag"
+                        label="Prix unitaire"
+                        value={`${formatCurrency(order.unitPrice)}/kg`}
+                     />
+                  ) : null}
+               </>
+            ) : (
                <>
                   <InfoRow
                      icon="ruler-square"
                      label="CBM"
                      value={order.packageCBM || "N/A"}
                   />
-                  <InfoRow
-                     icon="tag"
-                     label="Prix unitaire"
-                     value={
-                        order.unitPrice
-                           ? formatCurrency(order.unitPrice)
-                           : "N/A"
-                     }
-                  />
+                  {order.unitPrice ? (
+                     <InfoRow
+                        icon="tag"
+                        label="Prix unitaire"
+                        value={`${formatCurrency(order.unitPrice)}/m³`}
+                     />
+                  ) : null}
                </>
             )}
 
@@ -76,8 +100,8 @@ export const OrderPaymentCard: React.FC<OrderPaymentCardProps> = ({ order }) => 
                   <Text style={styles.label}>Prix total</Text>
                </View>
                <Text style={styles.totalValue}>
-                  {order.priceTotal
-                     ? formatCurrency(order.priceTotal)
+                  {totalPrice > 0
+                     ? formatCurrency(totalPrice)
                      : "Non défini"}
                </Text>
             </View>

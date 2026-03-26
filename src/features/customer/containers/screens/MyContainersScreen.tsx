@@ -3,7 +3,7 @@
  * List view showing all containers where customer has goods
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
 import { Appbar, ActivityIndicator, Text, Button, Chip, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,26 +13,34 @@ import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 import { useGetMyContainers } from '../hooks/useCustomerContainers';
 import { ContainerCard } from '../components';
-import { CustomerContainer, ShippingMode, CustomerContainerStatus } from '../types';
+import { ShippingMode } from '../types';
 
 type FilterMode = 'ALL' | ShippingMode;
-type FilterStatus = 'ALL' | CustomerContainerStatus;
+
+interface FilterOption {
+  value: FilterMode;
+  label: string;
+  icon: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+}
+
+const FILTER_OPTIONS: FilterOption[] = [
+  { value: 'ALL', label: 'Tous', icon: 'filter-variant' },
+  { value: 'SEA', label: 'Maritime', icon: 'ferry' },
+  { value: 'AIR', label: 'Aérien', icon: 'airplane' },
+];
 
 const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
   navigation,
 }) => {
   const theme = useTheme();
   const [modeFilter, setModeFilter] = useState<FilterMode>('ALL');
-  const [statusFilter, setStatusFilter] = useState<FilterStatus>('ALL');
 
-  const filters = {
-    ...(modeFilter !== 'ALL' && { shippingMode: modeFilter }),
-    ...(statusFilter !== 'ALL' && { status: statusFilter }),
-  };
+  // Build API filters - only include shippingMode when not ALL
+  const filters = useMemo(() => {
+    return modeFilter !== 'ALL' ? { shippingMode: modeFilter } : undefined;
+  }, [modeFilter]);
 
-  const { data, isLoading, isError, error, refetch, isFetching } = useGetMyContainers(
-    Object.keys(filters).length > 0 ? filters : undefined
-  );
+  const { data, isLoading, isError, error, refetch, isFetching } = useGetMyContainers(filters);
 
   const containers = data?.containers || [];
 
@@ -40,8 +48,8 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
     refetch();
   };
 
-  const handleContainerPress = (container: CustomerContainer) => {
-    navigation.navigate('ContainerTracking', { containerId: container._id });
+  const handleContainerPress = (containerId: string) => {
+    navigation.navigate('ContainerTracking', { containerId });
   };
 
   const renderEmptyState = () => (
@@ -53,7 +61,9 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
       />
       <Text style={styles.emptyTitle}>Aucun container</Text>
       <Text style={styles.emptyText}>
-        Vous n'avez pas de marchandises dans un container pour le moment.
+        {modeFilter !== 'ALL' 
+          ? `Aucun conteneur ${FILTER_OPTIONS.find(f => f.value === modeFilter)?.label.toLowerCase()} trouvé.`
+          : "Vous n'avez pas de marchandises dans un container pour le moment."}
       </Text>
       <Button
         mode="contained"
@@ -67,34 +77,34 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
 
   const renderFilterChips = () => (
     <View style={styles.filtersContainer}>
-      {/* Mode Filter */}
       <View style={styles.filterRow}>
-        <Chip
-          selected={modeFilter === 'ALL'}
-          onPress={() => setModeFilter('ALL')}
-          style={styles.filterChip}
-          selectedColor={theme.colors.primary}
-        >
-          Tous
-        </Chip>
-        <Chip
-          selected={modeFilter === 'SEA'}
-          onPress={() => setModeFilter('SEA')}
-          style={styles.filterChip}
-          selectedColor={theme.colors.primary}
-          icon="ferry"
-        >
-          Maritime
-        </Chip>
-        <Chip
-          selected={modeFilter === 'AIR'}
-          onPress={() => setModeFilter('AIR')}
-          style={styles.filterChip}
-          selectedColor={theme.colors.primary}
-          icon="airplane"
-        >
-          Aérien
-        </Chip>
+        {FILTER_OPTIONS.map((option) => {
+          const isSelected = modeFilter === option.value;
+          return (
+            <Chip
+              key={option.value}
+              selected={isSelected}
+              onPress={() => setModeFilter(option.value)}
+              style={[
+                styles.filterChip,
+                isSelected && { backgroundColor: theme.colors.primary }
+              ]}
+              textStyle={{
+                color: isSelected ? '#fff' : theme.colors.onSurface,
+                fontFamily: isSelected ? Fonts.bold : Fonts.meduim,
+              }}
+              icon={() => (
+                <MaterialCommunityIcons
+                  name={option.icon}
+                  size={16}
+                  color={isSelected ? '#fff' : theme.colors.onSurfaceVariant}
+                />
+              )}
+            >
+              {option.label}
+            </Chip>
+          );
+        })}
       </View>
     </View>
   );
@@ -140,7 +150,7 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['bottom']}>
       <Appbar.Header>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content
@@ -165,7 +175,7 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
           renderItem={({ item }) => (
             <ContainerCard
               container={item}
-              onPress={() => handleContainerPress(item)}
+              onPress={() => handleContainerPress(item._id)}
             />
           )}
           contentContainerStyle={styles.listContent}
@@ -227,10 +237,12 @@ const styles = StyleSheet.create({
   },
   filterRow: {
     flexDirection: 'row',
-    gap: 8,
+    gap: 10,
   },
   filterChip: {
-    marginRight: 8,
+    borderRadius: 20,
+    height: 36,
+    backgroundColor: COLORS.lightBackground,
   },
   listContent: {
     paddingVertical: 8,

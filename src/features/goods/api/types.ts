@@ -119,4 +119,8 @@ export interface UpdateGoodsInput {
   totalCost?: number;
   containerId?: string;
   location?: GoodsLocation;
+  unitPrice?: number;
+  shippingMode?: 'AIR' | 'SEA';
+  dimensions?: { length: number; width: number; height: number };
+  receivedByName?: string;
 }

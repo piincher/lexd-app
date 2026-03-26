@@ -13,6 +13,7 @@ import {
   KPICards,
   SMSBalanceCard,
   QuickActions,
+  OutstandingPaymentsSection,
   RecentOrders,
   MenuCategories,
 } from "../components";
@@ -28,6 +29,7 @@ export const AdminDashBoard: React.FC = () => {
       >
         <DashboardHeader user={user} />
         <KPICards stats={stats} />
+        <OutstandingPaymentsSection />
         <SMSBalanceCard balance={smsBalance} />
         <QuickActions />
         <RecentOrders orders={recentOrders} />

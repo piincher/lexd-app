@@ -12,6 +12,7 @@ interface BottomActionBarProps {
   isOverCapacity: boolean;
   isAssignable: boolean;
   isPending: boolean;
+  isAir?: boolean;
   onAssign: () => void;
 }
 
@@ -21,6 +22,7 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
   isOverCapacity,
   isAssignable,
   isPending,
+  isAir = false,
   onAssign,
 }) => {
   if (selectedCount === 0) {
@@ -34,7 +36,7 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
           <View style={styles.selectionInfo}>
             <Text style={styles.selectionCount}>{selectedCount} sélectionné(s)</Text>
             <Text style={[styles.selectionCBM, isOverCapacity && styles.selectionCBMError]}>
-              {(totalSelectedCBM || 0).toFixed(3)} m³
+              {(totalSelectedCBM || 0).toFixed(3)} {isAir ? 'kg' : 'm³'}
               {isOverCapacity && ' (Excès)'}
             </Text>
           </View>

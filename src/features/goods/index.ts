@@ -4,6 +4,7 @@
 // Screens
 export { default as MyGoodsScreen } from './screens/MyGoodsScreen';
 export { default as GoodsDetailScreen } from './screens/GoodsDetailScreen';
+export { default as EditGoodsScreen } from './screens/EditGoodsScreen';
 export { default as ScanQRScreen } from './screens/ScanQRScreen';
 
 // Components

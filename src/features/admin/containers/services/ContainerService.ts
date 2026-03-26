@@ -160,8 +160,9 @@ export class ContainerService {
   // UNASSIGNED GOODS (for assignment UI)
   // ============================================
 
-  async getUnassignedGoods(): Promise<ApiResponse<any[]>> {
-    return apiRequest.get(this.client, '/goods/unassigned');
+  async getUnassignedGoods(shippingMode?: string): Promise<ApiResponse<any[]>> {
+    const params = shippingMode ? `?shippingMode=${shippingMode}` : '';
+    return apiRequest.get(this.client, `/goods/unassigned${params}`);
   }
 }
 

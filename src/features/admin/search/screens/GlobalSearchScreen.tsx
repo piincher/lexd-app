@@ -80,7 +80,7 @@ export const GlobalSearchScreen: React.FC = () => {
   const handleItemPress = (item: any, entity: string) => {
     switch (entity) {
       case "goods":
-        navigation.navigate("AdminGoodsDetail", { goodsId: item.goodsId });
+        navigation.navigate("AdminGoodsDetail", { goodsId: item._id });
         break;
       case "container":
         navigation.navigate("ContainerDetail", { containerId: item._id });

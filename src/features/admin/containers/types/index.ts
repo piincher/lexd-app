@@ -194,6 +194,9 @@ export interface Container {
   goodsIds: string[] | Goods[];
   goods?: Goods[];
   totalCBM: number;
+  capacityCBM?: number;
+  capacityWeight?: number;
+  containerNumber?: string;
   createdBy: string;
   actualContainerNumber?: string;
   bookingReference?: string;

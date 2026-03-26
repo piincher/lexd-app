@@ -13,7 +13,7 @@ import { styles } from './GoodsDetailScreen.styles';
 export const GoodsDetailScreen: React.FC = () => {
   const { state, loading, dialogs, containers, mutations, actions } = useGoodsDetailScreen();
   const { goods, client, container, balanceDue, hasQRCode } = state;
-  const { isLoading, isRefetching } = loading;
+  const { isLoading, isRefetching, refetch } = loading;
   const { menuVisible, assignDialogVisible, selectedContainerId, setMenuVisible, setAssignDialogVisible, setSelectedContainerId } = dialogs;
   const { isAssigning } = mutations;
 
@@ -35,7 +35,7 @@ export const GoodsDetailScreen: React.FC = () => {
       />
       <ScrollView
         style={styles.scrollView}
-        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={() => {}} tintColor={Theme.primary[500]} />}
+        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={Theme.primary[500]} />}
       >
         <QRCard
           hasQRCode={hasQRCode}
@@ -46,15 +46,23 @@ export const GoodsDetailScreen: React.FC = () => {
         <PhotoCard photoUrl={goods.photos?.[0]} />
         <DescriptionCard description={goods.description} />
         <ClientCard client={client} />
-        <PropertiesCard goods={goods} />
-        <LocationCard goods={goods} container={container} />
+        <PropertiesCard
+          actualCBM={goods.actualCBM}
+          weight={goods.weight}
+          quantity={goods.quantity}
+          dimensions={goods.dimensions}
+        />
+        <LocationCard warehouseLocation={goods.warehouseLocation} container={container} />
         <FinancialCard
-          goods={goods}
+          unitPrice={goods?.unitPrice || 0}
+          totalCost={goods?.totalCost || 0}
+          amountPaid={goods?.amountPaid || 0}
           balanceDue={balanceDue}
+          paymentStatus={goods?.paymentStatus || 'UNPAID'}
           getPaymentStatusColor={actions.getPaymentStatusColor}
           formatCurrency={actions.formatCurrency}
         />
-        <ReceptionCard goods={goods} formatDate={actions.formatDate} />
+        <ReceptionCard receivedAt={goods.receivedAt} receivedByName={goods.receivedByName} receivedBy={goods.receivedBy} formatDate={actions.formatDate} />
         <ActionButtons onEdit={actions.handleNavigateToEdit} onDelete={actions.handleDelete} />
         <View style={{ height: 40 }} />
       </ScrollView>

@@ -63,7 +63,7 @@ export interface Goods {
   _id: string;
   goodsId: string;
   clientId: string | ClientInfo;
-  receivedBy: string;
+  receivedBy: string | { firstName?: string; lastName?: string };
   receivedByName?: string;
   receivedAt: string;
   warehouseLocation: string;

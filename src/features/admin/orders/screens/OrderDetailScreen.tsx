@@ -33,6 +33,46 @@ const OrderDetailScreen: React.FC = () => {
   const { data: routes } = useGetRoutes();
   const { mutate: updateOrder, isPending: isUpdating } = useUpdateOrder();
 
+  // Helper to parse numeric values from string/number fields
+  const parseNum = (val: any): number => {
+    if (val === null || val === undefined || val === '') return 0;
+    const num = parseFloat(String(val));
+    return isNaN(num) ? 0 : num;
+  };
+
+  // Compute total from populated goodsIds as fallback when calculatedTotal is 0
+  const computeTotalFromGoods = (): number => {
+    if (!order?.goodsIds || !Array.isArray(order.goodsIds) || order.goodsIds.length === 0) return 0;
+    // goodsIds are populated objects with totalCost, unitPrice, weight, actualCBM
+    return order.goodsIds.reduce((sum: number, g: any) => {
+      if (typeof g === 'object' && g !== null) {
+        return sum + (parseNum(g.totalCost) || 0);
+      }
+      return sum;
+    }, 0);
+  };
+
+  // Price resolution: calculatedTotal > priceTotal > sum from goods
+  const resolvedTotal = parseNum(order?.calculatedTotal)
+    || parseNum(order?.priceTotal)
+    || computeTotalFromGoods();
+
+  // Create a normalized order object that handles v1/v2 differences
+  // Use calculatedTotal (from goods) as primary price source, fallback to priceTotal (manual)
+  const normalizedOrder = order
+    ? {
+        ...order,
+        // Ensure these fields exist for display
+        quantity: order?.quantity || 1,
+        packageWeight: order?.packageWeight || '0',
+        packageCBM:
+          order?.packageCBM || String(order?.calculatedCBM || '0'),
+        unitPrice: parseNum(order?.unitPrice),
+        priceTotal: resolvedTotal,
+        calculatedTotal: resolvedTotal,
+      }
+    : null;
+
   const handleUpdateStatus = () => {
     navigation.navigate('EditOrder' as never, {
       id: order?._id,
@@ -77,40 +117,40 @@ const OrderDetailScreen: React.FC = () => {
         showsVerticalScrollIndicator={false}
       >
         {/* 1. Header: client, status, shipping mode, price */}
-        <OrderDetailHeader order={order} />
+        <OrderDetailHeader order={normalizedOrder!} />
 
         {/* 2. Product images */}
-        <OrderImageGallery images={order?.images} />
+        <OrderImageGallery images={normalizedOrder?.images} />
 
         {/* 3. Quick stats: quantity, weight, CBM */}
         <OrderQuickStats
-          quantity={order?.quantity}
-          weight={order?.packageWeight}
-          cbm={order?.packageCBM || (order as any)?.calculatedCBM}
-          shippingMode={order?.shippingMode}
+          quantity={normalizedOrder?.quantity}
+          weight={normalizedOrder?.packageWeight}
+          cbm={normalizedOrder?.packageCBM}
+          shippingMode={normalizedOrder?.shippingMode}
         />
 
         {/* 4. Payment details with record/history */}
-        <PaymentSection order={order} />
+        <PaymentSection order={normalizedOrder!} />
 
         {/* 5. Client info, package details, dates */}
-        <OrderInfoSection order={order} />
+        <OrderInfoSection order={normalizedOrder!} />
 
         {/* 6. Shipping & logistics: route, container, transporter */}
-        <OrderShippingSection order={order} />
+        <OrderShippingSection order={normalizedOrder!} />
 
         {/* 7. Goods linked to this order */}
-        <OrderGoodsSection goods={order?.goodsIds || []} />
+        <OrderGoodsSection goods={normalizedOrder?.goodsIds || []} />
 
         {/* 8. Status timeline with current location */}
         <OrderStatusTimeline
-          order={order}
+          order={normalizedOrder!}
           routeData={routes?.[0]}
         />
 
         {/* 9. Admin actions: edit, mark delivered */}
         <OrderActions
-          order={order}
+          order={normalizedOrder!}
           onUpdateStatus={handleUpdateStatus}
           isUpdating={isUpdating}
         />

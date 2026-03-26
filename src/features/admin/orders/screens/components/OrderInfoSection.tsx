@@ -18,6 +18,24 @@ interface InfoItemProps {
   iconColor?: string;
 }
 
+// Helper functions to parse string values safely from v1 API
+const parseNumber = (value: any): number | null => {
+  if (value === null || value === undefined || value === '') return null;
+  const num = parseFloat(String(value));
+  return isNaN(num) ? null : num;
+};
+
+const parseString = (value: any): string | null => {
+  if (value === null || value === undefined || value === '') return null;
+  return String(value);
+};
+
+const parsePrice = (value: any): number => {
+  if (value === null || value === undefined || value === '') return 0;
+  const num = parseFloat(String(value));
+  return isNaN(num) ? 0 : num;
+};
+
 const InfoItem: React.FC<InfoItemProps> = ({ icon, label, value, iconColor = COLORS.grey }) => (
   <View style={styles.infoItem}>
     <View style={styles.iconContainer}>
@@ -31,8 +49,26 @@ const InfoItem: React.FC<InfoItemProps> = ({ icon, label, value, iconColor = COL
 );
 
 export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => {
-  const departureDate = order?.departureDate ? formatDate(order.departureDate) : 'Not scheduled';
-  const receiptDate = order?.dateOfReceipt ? formatDate(order.dateOfReceipt) : 'Not received';
+  // Parse values safely from v1 API (strings need to be converted)
+  const quantity = parseNumber(order?.quantity) ?? 1;
+  const packageWeight = parseString(order?.packageWeight);
+  const packageCBM = parseString(order?.packageCBM) || parseString(order?.calculatedCBM);
+  const unitPrice = parseNumber(order?.unitPrice);
+
+  // Extract pricing information
+  const totalPrice = parsePrice(order?.calculatedTotal) || 
+                     parsePrice(order?.priceTotal) || 
+                     parsePrice(order?.totalCost);
+
+  // Format dates with empty string checks
+  const departureDate = order?.departureDate && order.departureDate !== ''
+    ? formatDate(order.departureDate)
+    : 'Not scheduled';
+
+  const receiptDate = order?.dateOfReceipt && order.dateOfReceipt !== ''
+    ? formatDate(order.dateOfReceipt)
+    : 'Not received';
+
   const lastUpdate = order?.updatedAt ? formatDate(order.updatedAt) : 'N/A';
   const createdDate = order?.createdAt ? formatDate(order.createdAt) : 'N/A';
 
@@ -63,19 +99,19 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
         <InfoItem
           icon="package-variant-closed"
           label="Quantité"
-          value={`${order?.quantity ?? 1} colis`}
+          value={`${quantity} colis`}
           iconColor="#7B1FA2"
         />
         <InfoItem
           icon="weight"
           label="Poids"
-          value={order?.packageWeight ? `${order.packageWeight} kg` : 'N/A'}
+          value={packageWeight ? `${packageWeight} kg` : 'N/A'}
           iconColor="#E65100"
         />
         <InfoItem
           icon="cube-outline"
           label="CBM"
-          value={`${order?.packageCBM || order?.calculatedCBM || '0'} m³`}
+          value={`${packageCBM || '0'} m³`}
           iconColor="#2196F3"
         />
         <InfoItem
@@ -84,14 +120,42 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
           value={order?.category?.name || order?.typeOfPackage || 'Général'}
           iconColor="#FF9800"
         />
-        {order?.unitPrice > 0 && (
+      </View>
+
+      <Divider style={styles.divider} />
+
+      <Text style={styles.sectionTitle}>Prix</Text>
+
+      <View style={styles.grid}>
+        {unitPrice !== null && unitPrice > 0 && (
           <InfoItem
             icon="tag"
             label="Prix unitaire"
-            value={`${order.unitPrice.toLocaleString()} FCFA`}
+            value={`${unitPrice.toLocaleString()} FCFA/${order?.shippingMode === 'air' ? 'kg' : 'm³'}`}
             iconColor="#00796B"
           />
         )}
+        {order?.shippingMode === 'air' ? (
+          <InfoItem
+            icon="weight"
+            label="Poids"
+            value={packageWeight ? `${packageWeight} kg` : 'N/A'}
+            iconColor="#E65100"
+          />
+        ) : (
+          <InfoItem
+            icon="cube-outline"
+            label="CBM"
+            value={`${packageCBM || '0'} m³`}
+            iconColor="#2196F3"
+          />
+        )}
+        <InfoItem
+          icon="cash"
+          label="Prix total"
+          value={totalPrice > 0 ? `${totalPrice.toLocaleString()} FCFA` : 'Non défini'}
+          iconColor="#4CAF50"
+        />
       </View>
 
       <Divider style={styles.divider} />

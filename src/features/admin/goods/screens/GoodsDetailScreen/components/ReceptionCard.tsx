@@ -7,12 +7,19 @@ import { styles } from '../GoodsDetailScreen.styles';
 
 
 interface ReceptionCardProps {
-  receivedAt: string;
+  receivedAt?: string;
   receivedByName?: string;
-  formatDate: (dateString: string) => string;
+  receivedBy?: { firstName?: string; lastName?: string } | null;
+  formatDate: (dateString?: string) => string;
 }
 
-export const ReceptionCard: React.FC<ReceptionCardProps> = ({ receivedAt, receivedByName, formatDate }) => (
+export const ReceptionCard: React.FC<ReceptionCardProps> = ({ receivedAt, receivedByName, receivedBy, formatDate }) => {
+  // Get receiver name from receivedByName or from populated receivedBy object
+  const receiverName = receivedByName || 
+    (receivedBy ? `${receivedBy.firstName || ''} ${receivedBy.lastName || ''}`.trim() : null) || 
+    'N/A';
+  
+  return (
   <Card style={styles.sectionCard}>
     <Card.Content>
       <View style={styles.sectionHeader}>
@@ -26,9 +33,10 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ receivedAt, receiv
         </View>
         <View style={styles.receptionItem}>
           <Text style={styles.receptionLabel}>Reçu par</Text>
-          <Text style={styles.receptionValue}>{receivedByName || 'N/A'}</Text>
+          <Text style={styles.receptionValue}>{receiverName}</Text>
         </View>
       </View>
     </Card.Content>
   </Card>
-);
+  );
+};

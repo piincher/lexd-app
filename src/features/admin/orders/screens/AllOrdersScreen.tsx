@@ -3,9 +3,9 @@
  * SRP: Layout composition ONLY
  */
 
-import React, { useState, useMemo, useLayoutEffect, useCallback, useRef } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 
-import { View, RefreshControl, ScrollView, Text } from 'react-native';
+import { View, RefreshControl, ScrollView, Text, Alert } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Searchbar, Button, IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthenticatedStackParamList } from '@src/navigation/types';
 import { Screen } from '@src/shared/ui';
 import { COLORS } from '@src/constants/Colors';
-import { useGetAllOrders } from '../hooks/useOrderManagement';
+import { useGetAllOrders, useSyncOrderStatuses } from '../hooks/useOrderManagement';
 import { OrderCard } from './components/OrderCard';
 import { OrdersStats } from './components/OrdersStats';
 import { EmptyOrders } from './components/EmptyOrders';
@@ -44,16 +44,34 @@ const AllOrdersScreen: React.FC = () => {
   const { data, isLoading, isFetching, error, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useGetAllOrders(statusFilter);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <IconButton
-          icon="chart-bar"
-          onPress={() => navigation.navigate('OrdersDashboard')}
-        />
-      ),
-    });
-  }, [navigation]);
+  const { mutate: syncOrderStatuses, isPending: isSyncing } = useSyncOrderStatuses();
+
+  const handleSyncOrderStatuses = () => {
+    Alert.alert(
+      'Sync Order Statuses',
+      'This will sync all order statuses from their linked goods. Continue?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Sync',
+          onPress: () => {
+            syncOrderStatuses(undefined, {
+              onSuccess: (result) => {
+                Alert.alert(
+                  'Sync Complete',
+                  `Processed ${result.affectedOrders} orders\nUpdated ${result.updatedCount} orders`
+                );
+                refetch();
+              },
+              onError: (error: any) => {
+                Alert.alert('Sync Failed', error?.message || 'Failed to sync order statuses');
+              },
+            });
+          },
+        },
+      ]
+    );
+  };
 
   const orders = useMemo(() => {
     if (!data?.pages) return [];
@@ -106,7 +124,22 @@ const AllOrdersScreen: React.FC = () => {
   }
 
   return (
-    <Screen header={{ title: 'Orders', subtitle: 'Manage all shipments' }} scrollable={false}>
+    <Screen 
+      header={{ 
+        title: 'Orders', 
+        rightAction: (
+          <IconButton
+            icon="sync"
+            size={24}
+            onPress={handleSyncOrderStatuses}
+            loading={isSyncing}
+            disabled={isSyncing}
+            iconColor={COLORS.blue}
+          />
+        )
+      }} 
+      scrollable={false}
+    >
       <View style={styles.container}>
         {/* Stats Section */}
         <OrdersStats orders={orders} />

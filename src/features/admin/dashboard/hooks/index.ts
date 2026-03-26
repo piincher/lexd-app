@@ -3,3 +3,4 @@
  */
 
 export { useAdminDashboard } from "./useAdminDashboard";
+export { useOutstandingPayments } from "./useOutstandingPayments";

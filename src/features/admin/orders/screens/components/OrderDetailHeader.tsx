@@ -10,6 +10,12 @@ interface OrderDetailHeaderProps {
   order: any;
 }
 
+const parsePrice = (value: any): number => {
+  if (value === null || value === undefined || value === '') return 0;
+  const num = parseFloat(String(value));
+  return isNaN(num) ? 0 : num;
+};
+
 const STATUS_CONFIG: Record<string, { 
   color: string; 
   bgColor: string;
@@ -51,7 +57,10 @@ const STATUS_CONFIG: Record<string, {
 export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) => {
   const statusConfig = STATUS_CONFIG[order?.status] || STATUS_CONFIG.Inactive;
   const initials = order?.clientName?.split(' ').map((n: string) => n[0]).join('') || '?';
-  const orderPrice = order?.calculatedTotal || parseFloat(order?.priceTotal) || 0;
+  const orderPrice = parsePrice(order?.calculatedTotal) || 
+                     parsePrice(order?.priceTotal) || 
+                     parsePrice(order?.totalCost) || 0;
+  const unitPrice = parsePrice(order?.unitPrice);
   const isAir = order?.shippingMode === 'air';
 
   return (
@@ -96,8 +105,13 @@ export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) =
         <View style={styles.priceContainer}>
           <Text style={styles.priceLabel}>Total Amount</Text>
           <Text style={styles.priceValue}>
-            {orderPrice.toLocaleString()} FCFA
+            {orderPrice > 0 ? `${orderPrice.toLocaleString()} FCFA` : 'Non défini'}
           </Text>
+          {unitPrice > 0 && (
+            <Text style={styles.unitPriceText}>
+              {unitPrice.toLocaleString()} FCFA/{isAir ? 'kg' : 'm³'}
+            </Text>
+          )}
         </View>
       </View>
 

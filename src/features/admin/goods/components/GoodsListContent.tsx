@@ -39,7 +39,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   onAddPress,
 }) => {
   const renderItem: ListRenderItem<Goods> = useCallback(({ item }) => (
-    <GoodsCard goods={item} onPress={() => onGoodsPress(item.goodsId)} />
+    <GoodsCard goods={item} onPress={() => onGoodsPress(item._id)} />
   ), [onGoodsPress]);
 
   const keyExtractor = useCallback((item: Goods) => item._id, []);

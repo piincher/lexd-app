@@ -11,6 +11,7 @@ import {
    updateOrder,
    updateOrderToDelivered,
    recordPayment,
+   syncOrderStatuses,
 } from "@src/api/order";
 import { LIMIT } from "@src/constants/Dimensions";
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -163,4 +164,16 @@ export const useRecordPayment = () => {
          console.error('[useRecordPayment] Error:', error);
       },
    });
+};
+
+export const useSyncOrderStatuses = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: syncOrderStatuses,
+    onSuccess: () => {
+      // Invalidate orders queries to refresh the list
+      queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
+      queryClient.invalidateQueries({ queryKey: [ORDER_KEY] });
+    },
+  });
 };

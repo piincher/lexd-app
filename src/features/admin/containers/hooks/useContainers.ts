@@ -31,7 +31,7 @@ export const containerQueryKeys = {
   byStatus: (status: string) => [...containerQueryKeys.all, 'status', status] as const,
   readyForDeparture: () => [...containerQueryKeys.all, 'ready-for-departure'] as const,
   packingList: (id: string) => [...containerQueryKeys.detail(id), 'packing-list'] as const,
-  unassignedGoods: () => [...containerQueryKeys.all, 'unassigned-goods'] as const,
+  unassignedGoods: (shippingMode?: string) => [...containerQueryKeys.all, 'unassigned-goods', shippingMode] as const,
   // Route query keys
   routes: () => [...containerQueryKeys.all, 'routes'] as const,
   routesByMode: (mode: string) => [...containerQueryKeys.routes(), 'mode', mode] as const,
@@ -110,11 +110,12 @@ export const useGetReadyForDeparture = (
 };
 
 export const useGetUnassignedGoods = (
+  shippingMode?: string,
   options?: UseQueryOptions<any, ApiClientError>
 ) => {
   return useQuery({
-    queryKey: containerQueryKeys.unassignedGoods(),
-    queryFn: () => containerService.getUnassignedGoods(),
+    queryKey: containerQueryKeys.unassignedGoods(shippingMode),
+    queryFn: () => containerService.getUnassignedGoods(shippingMode),
     staleTime: 2 * 60 * 1000,
     ...options,
   });

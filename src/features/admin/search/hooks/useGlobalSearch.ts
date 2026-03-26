@@ -85,7 +85,7 @@ export const useGlobalSearch = (): UseGlobalSearchReturn => {
   const handleItemPress = useCallback((item: any, entity: string) => {
     switch (entity) {
       case "goods":
-        navigation.navigate("AdminGoodsDetail", { goodsId: item.goodsId });
+        navigation.navigate("AdminGoodsDetail", { goodsId: item._id });
         break;
       case "container":
         navigation.navigate("ContainerDetail", { containerId: item._id });

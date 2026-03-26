@@ -14,6 +14,28 @@ export interface PDFShareOptions {
 }
 
 /**
+ * Download a remote PDF URL to cache and return the local file URI
+ */
+export async function downloadPDFToCache(url: string, filename: string): Promise<string> {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  const reader = new FileReader();
+
+  const base64: string = await new Promise((resolve, reject) => {
+    reader.onloadend = () => {
+      const result = reader.result as string;
+      resolve(result.split(',')[1]);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+
+  const destFile = new File(Paths.cache, filename);
+  await destFile.write(base64, { encoding: 'base64' });
+  return destFile.uri;
+}
+
+/**
  * Copy PDF to cache directory and share it using react-native-share
  * Bypasses expo-sharing which has getFilePermission issues on SDK 55
  */
@@ -23,10 +45,10 @@ export async function sharePDFFromUri(options: PDFShareOptions): Promise<void> {
   try {
     // Create File instance for source (Print output)
     const sourceFile = new File(uri);
-    
+
     // Create File instance for destination (cache directory)
     const destFile = new File(Paths.cache, filename);
-    
+
     // Copy file using new API
     await sourceFile.copy(destFile);
 
@@ -51,4 +73,74 @@ export async function sharePDFFromUri(options: PDFShareOptions): Promise<void> {
     Alert.alert('Erreur', 'Impossible de partager le PDF');
     throw error;
   }
+}
+
+/**
+ * Share a remote PDF URL on WhatsApp (downloads first, then shares file)
+ */
+export async function sharePDFOnWhatsApp(options: {
+  url: string;
+  filename: string;
+  message: string;
+  phone?: string;
+}): Promise<void> {
+  const { url, filename, message, phone } = options;
+
+  const fileUri = await downloadPDFToCache(url, filename);
+
+  try {
+    await RNShare.shareSingle({
+      social: RNShare.Social.WHATSAPP,
+      url: fileUri,
+      type: 'application/pdf',
+      title: 'Reçu de Paiement',
+      message,
+      filename,
+      whatsAppNumber: phone,
+    } as any);
+  } catch (err: any) {
+    // If WhatsApp-specific fails, fallback to generic share
+    if (err?.message?.includes('not installed') || err?.message?.includes('not supported')) {
+      await sharePDFGeneric({ fileUri, filename, message });
+    } else if (!isUserCancellation(err)) {
+      throw err;
+    }
+  }
+}
+
+/**
+ * Share a remote PDF URL via native share sheet (any app)
+ */
+export async function sharePDFGeneric(options: {
+  fileUri?: string;
+  url?: string;
+  filename: string;
+  message?: string;
+}): Promise<void> {
+  const { filename, message } = options;
+  let fileUri = options.fileUri;
+
+  if (!fileUri && options.url) {
+    fileUri = await downloadPDFToCache(options.url, filename);
+  }
+  if (!fileUri) throw new Error('No file URI');
+
+  try {
+    await RNShare.open({
+      url: fileUri,
+      type: 'application/pdf',
+      title: 'Reçu de Paiement - ChinaLink Express',
+      filename,
+      message,
+    });
+  } catch (err: any) {
+    if (!isUserCancellation(err)) {
+      throw err;
+    }
+  }
+}
+
+function isUserCancellation(err: any): boolean {
+  const msg = err?.message || '';
+  return msg.includes('User did not share') || msg.includes('cancelled');
 }

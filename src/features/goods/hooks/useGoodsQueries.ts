@@ -31,6 +31,6 @@ export const useGetGoodsDetail = (goodsId: string) => {
 		queryFn: () => goodsApi.getGoodsById(goodsId),
 		select: (response) => response.data.data.goods,
 		enabled: !!goodsId,
-		staleTime: 10 * 60 * 1000, // 10 minutes - goods details don't change often
+		staleTime: 0, // Always fetch fresh data on refetch
 	});
 };

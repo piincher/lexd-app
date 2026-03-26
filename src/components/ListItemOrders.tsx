@@ -38,7 +38,13 @@ export const ListItemOrders = ({ loadMore, data, isFetchingNextPage, hasNextPage
 			<FlashList
 				onEndReached={loadMore}
 				ListEmptyComponent={() => {
-					return <Text style={{ textAlign: 'center', fontSize: 26 }}> Aucune commande en Cours</Text>;
+					return (
+						<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingVertical: 40 }}>
+							<Text style={{ textAlign: 'center', fontSize: 18, color: COLORS.DimGray, fontFamily: Fonts.meduim }}>
+								Aucune commande trouvée
+							</Text>
+						</View>
+					);
 				}}
 				showsVerticalScrollIndicator={false}
 				data={data || []}

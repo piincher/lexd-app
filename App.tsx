@@ -55,6 +55,7 @@ import {
    AllOrdersScreen,
    OrderDetailScreen,
    RecordPaymentScreen,
+   PaymentDetailScreen,
 } from "@src/features/admin";
 
 // Admin Payment History Screen (aliased to avoid conflict with payments feature)
@@ -99,7 +100,8 @@ import { OnBoardingScreen as OnBoarding } from "@src/features/onboarding";
 import { NewOrderDetailScreen } from "@src/features/order-detail";
 
 // Features - Payments
-import { PaymentScreen, PaymentHistoryScreen } from "@src/features/payments";
+import { PaymentScreen, PaymentHistoryScreen, MyPaymentHistoryScreen } from "@src/features/payments";
+import UserPaymentDetailScreen from "@src/features/payments/screens/UserPaymentDetailScreen";
 
 // Features - Orders
 import { OrdersScreen as Orders } from "@src/features/orders";
@@ -118,7 +120,7 @@ import {
 import CertificateDetailScreen from "@src/features/profile/screens/CertificateDetail";
 
 // Features - Goods (V2 Client)
-import { MyGoodsScreen, GoodsDetailScreen, ScanQRScreen as GoodsScanQR } from "@src/features/goods";
+import { MyGoodsScreen, GoodsDetailScreen, EditGoodsScreen, ScanQRScreen as GoodsScanQR } from "@src/features/goods";
 
 // Features - Customer Containers (V2)
 import {
@@ -256,9 +258,16 @@ function AppWrapper() {
                   <Stack.Screen name="AllOrders" component={AllOrdersScreen} />
                   <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} />
                   <Stack.Screen name="RecordPaymentScreen" component={RecordPaymentScreen} />
+                  <Stack.Screen name="PaymentDetail" component={PaymentDetailScreen} />
                   <Stack.Screen name="OrderPaymentHistory" component={AdminPaymentHistoryScreen} />
                   <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
                   <Stack.Screen name="PaymentHistoryScreen" component={PaymentHistoryScreen} />
+                  <Stack.Screen
+                     name="MyPaymentHistory"
+                     component={MyPaymentHistoryScreen}
+                     options={{ title: 'Historique des paiements' }}
+                  />
+                  <Stack.Screen name="UserPaymentDetail" component={UserPaymentDetailScreen} />
                   <Stack.Screen name="AddOrder" component={AddOrder} />
                   <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
                   <Stack.Screen name="OrderDetail" component={NewOrderDetailScreen} />
@@ -305,6 +314,7 @@ function AppWrapper() {
                   {/* Client V2 Screens */}
                   <Stack.Screen name="MyGoods" component={MyGoodsScreen} />
                   <Stack.Screen name="GoodsDetail" component={GoodsDetailScreen} />
+                  <Stack.Screen name="EditGoods" component={EditGoodsScreen} />
                   <Stack.Screen name="ScanQR" component={GoodsScanQR} />
                   {/* Customer Dashboard V2 */}
                   <Stack.Screen name="CustomerDashboard" component={CustomerDashboardScreen} />

@@ -15,3 +15,6 @@ export { WavePaymentForm } from './WavePaymentForm';
 // Payment UI Components
 export { PaymentMethodSelector } from './PaymentMethodSelector';
 export { PaymentStatusModal } from './PaymentStatusModal';
+
+// Payment History Components
+export { PaymentHistoryCard } from './PaymentHistoryCard';

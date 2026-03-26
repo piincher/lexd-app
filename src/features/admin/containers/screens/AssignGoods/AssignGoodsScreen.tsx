@@ -19,6 +19,7 @@ export const AssignGoodsScreen: React.FC = () => {
     container, filteredGoods, selectedGoods, searchQuery,
     isLoading, isRefetching, error, isAssignable,
     currentContainerCBM, totalSelectedCBM, isOverCapacity,
+    isAirContainer, maxCapacity,
     assignMutation, toggleSelection, toggleSelectAll,
     handleAssign, handleRefresh, setSearchQuery, navigation,
   } = useAssignGoodsScreen();
@@ -41,6 +42,8 @@ export const AssignGoodsScreen: React.FC = () => {
         totalSelectedCBM={totalSelectedCBM}
         isAssignable={isAssignable}
         containerStatus={containerStatus}
+        isAirContainer={isAirContainer}
+        maxCapacity={maxCapacity}
         onBack={() => navigation.goBack()}
       />
       <SearchBar searchQuery={searchQuery} onChangeText={setSearchQuery} />
@@ -73,6 +76,7 @@ export const AssignGoodsScreen: React.FC = () => {
         isOverCapacity={isOverCapacity}
         isAssignable={isAssignable}
         isPending={assignMutation.isPending}
+        isAir={isAirContainer}
         onAssign={handleAssign}
       />
     </SafeAreaView>

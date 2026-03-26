@@ -45,6 +45,7 @@ export type RootStackParamList = {
    // Goods Feature (V2 - Client)
    MyGoods: undefined;
    GoodsDetail: { goodsId: string };
+   EditGoods: { goodsId: string };
    ScanQR: undefined;
    // Admin V2 Features
    ReceiveGoods: undefined;
@@ -82,6 +83,7 @@ export type RootStackParamList = {
    // Customer Payment Features
    PaymentPortal: undefined;
    PaymentHistory: undefined;
+   MyPaymentHistory: undefined;
    PaymentConfirmation: {
       paymentId: string;
       transactionReference: string;
@@ -144,6 +146,47 @@ export type RootStackParamList = {
       issuedAt: string;
       certificateUrl: string | null;
       certificateMongoId?: string;
+   };
+   // Record Payment Screen (Admin)
+   RecordPaymentScreen: {
+      orderId: string;
+      orderCode: string;
+      clientName: string;
+      clientPhone?: string;
+      currentBalance: number;
+      totalAmount: number;
+   };
+   // Order Payment History Screen (Admin)
+   OrderPaymentHistory: {
+      orderId: string;
+      orderCode: string;
+      clientName?: string;
+      clientPhone?: string;
+   };
+   // Payment Detail Screen
+   PaymentDetail: {
+      paymentId: string;
+      orderId?: string;
+      orderCode: string;
+      clientName: string;
+      clientPhone?: string;
+      amount: number;
+      paymentMethod: string;
+      status: string;
+      paidAt: string;
+      referenceNumber?: string;
+      receiptNumber?: string;
+      notes?: string;
+      receiptUrl?: string;
+      proofImages?: string[];
+      goodsIds?: Array<{
+         goodsId: string;
+         description: string;
+      }>;
+   };
+   // User Payment Detail Screen (payments recorded by admin on user's behalf)
+   UserPaymentDetail: {
+      payment: import("../features/payments/types").PaymentHistoryItem;
    };
 };
 

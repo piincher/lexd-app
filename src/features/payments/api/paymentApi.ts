@@ -211,6 +211,75 @@ export const initiatePayment = async (data: {
   return response.data.data;
 };
 
+/**
+ * Get user's payment history (admin-recorded payments)
+ */
+export const getMyPaymentHistory = async (filters?: {
+  page?: number;
+  limit?: number;
+  startDate?: string;
+  endDate?: string;
+  paymentMethod?: string;
+}): Promise<{
+  payments: any[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}> => {
+  const headers = getAuthHeaders();
+  const queryParams = new URLSearchParams();
+  
+  if (filters?.page) queryParams.append('page', filters.page.toString());
+  if (filters?.limit) queryParams.append('limit', filters.limit.toString());
+  if (filters?.startDate) queryParams.append('startDate', filters.startDate);
+  if (filters?.endDate) queryParams.append('endDate', filters.endDate);
+  if (filters?.paymentMethod) queryParams.append('paymentMethod', filters.paymentMethod);
+  
+  const response = await axios.get(`${API_BASE_URL}/my-history?${queryParams.toString()}`, {
+    headers,
+  });
+  return response.data.data;
+};
+
+/**
+ * Generate PDF receipt for a payment
+ */
+export const generateReceipt = async (paymentId: string): Promise<{
+  success: boolean;
+  data: {
+    receiptUrl: string;
+    receiptNumber: string;
+    generatedAt: string;
+  };
+  message: string;
+}> => {
+  const headers = getAuthHeaders();
+  const response = await axios.post(
+    `${API_BASE_URL}/${paymentId}/receipt/generate`,
+    {},
+    { headers }
+  );
+  return response.data;
+};
+
+/**
+ * Download receipt PDF as blob
+ */
+export const downloadReceipt = async (paymentId: string): Promise<Blob> => {
+  const headers = getAuthHeaders();
+  const response = await axios.get(
+    `${API_BASE_URL}/${paymentId}/receipt`,
+    { 
+      headers,
+      responseType: 'blob',
+    }
+  );
+  return response.data;
+};
+
 // Default export
 export default {
   getPaymentProviders,
@@ -225,4 +294,7 @@ export default {
   refundPayment,
   pollPaymentStatus,
   initiatePayment,
+  getMyPaymentHistory,
+  generateReceipt,
+  downloadReceipt,
 };

@@ -93,7 +93,8 @@ export const useCreateContainerScreen = () => {
       newErrors.routeId = 'La route est requise';
     }
 
-    if (!formData.shippingLine) {
+    // Shipping line is only required for SEA mode
+    if (formData.shippingMode === 'SEA' && !formData.shippingLine) {
       newErrors.shippingLine = 'La compagnie est requise';
     }
 
@@ -162,7 +163,7 @@ export const useCreateContainerScreen = () => {
 
     const submitData = {
       shippingMode: formData.shippingMode as ShippingMode,
-      shippingLine: formData.shippingLine as ShippingLine,
+      shippingLine: formData.shippingLine ? (formData.shippingLine as ShippingLine) : undefined,
       routeId: formData.routeId,
       consigneeId: formData.consigneeId,
       actualContainerNumber: formData.actualContainerNumber.trim() || undefined,

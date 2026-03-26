@@ -36,10 +36,11 @@ const PAYMENT_METHODS = [
 const RecordPaymentScreen: React.FC = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { orderId, orderCode, clientName, currentBalance, totalAmount } = route.params as {
+  const { orderId, orderCode, clientName, clientPhone, currentBalance, totalAmount } = route.params as {
     orderId: string;
     orderCode: string;
     clientName: string;
+    clientPhone?: string;
     currentBalance: number;
     totalAmount: number;
   };
@@ -93,16 +94,31 @@ const RecordPaymentScreen: React.FC = () => {
 
     recordPayment(paymentData, {
       onSuccess: (data) => {
-        console.log('[RecordPaymentScreen] Payment recorded successfully:', data);
-        Alert.alert(
-          'Success',
-          'Payment recorded successfully!',
-          [{ text: 'OK', onPress: () => navigation.goBack() }]
-        );
+        console.log('[RecordPaymentScreen] Payment recorded:', data);
+
+        const paymentV2Id = data.paymentV2Id || data.payment?.id;
+
+        // Navigate to Payment Detail — receipt is generated in background,
+        // PaymentDetailScreen will poll for it
+        navigation.navigate('PaymentDetail', {
+          paymentId: paymentV2Id || '',
+          orderId,
+          orderCode,
+          clientName,
+          clientPhone,
+          amount: parseFloat(amount),
+          paymentMethod,
+          status: 'COMPLETED',
+          paidAt: new Date().toISOString(),
+          referenceNumber,
+          notes,
+          proofImages,
+          goodsIds: data.goodsIds || [],
+        });
       },
       onError: (err) => {
         console.error('[RecordPaymentScreen] Payment failed:', err);
-        Alert.alert('Error', 'Failed to record payment. Please try again.');
+        Alert.alert('Erreur', 'Échec de l\'enregistrement du paiement. Veuillez réessayer.');
       },
     });
   };

@@ -29,7 +29,7 @@ export type productType = {
 	partenaire: string;
 	_id?: string | undefined;
 	images: imagesType;
-	status?: 'Active' | 'Inactive' | 'In Transit' | 'Delivered';
+	status?: 'Active' | 'Inactive' | 'In Transit' | 'Delivered' | 'Pending' | 'Cancelled';
 	quantity?: number;
 	shippingMode?: string;
 	createdAt?: string;
@@ -50,10 +50,21 @@ export type productType = {
 	packageCBM: string;
 	dateOfReceipt: string;
 	contenairNumber: string;
-	paymentStatus?: 'Paid' | 'Unpaid';
+	paymentStatus?: 'Paid' | 'Unpaid' | 'UNPAID' | 'PARTIAL' | 'PAID';
 	unitPrice: number;
 	shipmentLine?: string;
 	destinationCountry?: string;
+	// Goods-linked order fields
+	calculatedTotal?: number;
+	calculatedCBM?: number;
+	goodsIds?: any[];
+	isGoodsLinked?: boolean;
+	isManual?: boolean;
+	pricingSource?: 'manual' | 'goods-cbm';
+	paidAmount?: number;
+	balanceDue?: number;
+	totalCost?: number;
+	note?: string;
 };
 
 const API_URL = {
@@ -270,5 +281,34 @@ export const recordPayment = async (data: PaymentRecord) => {
  */
 export const getPaymentHistory = async (orderId: string) => {
 	const response = await api.get<PaymentHistory[]>(`${API_URL.single}/${orderId}/payments`);
+	return response.data;
+};
+
+/**
+ * Backfill missing PaymentV2 records and receipts for an order (admin only)
+ */
+export const backfillPayments = async (orderId: string) => {
+	const response = await api.post(`${API_URL.single}/${orderId}/backfill-payments`);
+	return response.data;
+};
+
+/**
+ * Sync all order statuses from their linked goods (admin maintenance)
+ * POST /order/sync-statuses
+ */
+export const syncOrderStatuses = async () => {
+	const response = await api.post<{
+		success: boolean;
+		message: string;
+		affectedOrders: number;
+		updatedCount: number;
+		details?: Array<{
+			orderId: string;
+			orderCode: string;
+			oldStatus: string;
+			newStatus: string;
+			statusChanged: boolean;
+		}>;
+	}>(`${API_URL.single}/sync-statuses`);
 	return response.data;
 };

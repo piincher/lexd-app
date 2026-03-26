@@ -36,10 +36,42 @@ const ShippingRow: React.FC<ShippingRowProps> = ({
   </View>
 );
 
-export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ order }) => {
-  const lastPosition = order?.currentPosition?.coordinates?.[
+// Extract position from v1 route data
+const getPositionFromRoute = (order: any): string => {
+  // Try v2 currentPosition first
+  const v2Position = order?.currentPosition?.coordinates?.[
     (order.currentPosition?.coordinates?.length ?? 1) - 1
   ]?.location;
+  if (v2Position) return v2Position;
+  
+  // Try v1 route array
+  if (order?.route && Array.isArray(order.route) && order.route.length > 0) {
+    // Get the last route entry
+    const lastRoute = order.route[order.route.length - 1];
+    if (lastRoute?.coordinates && lastRoute.coordinates.length > 0) {
+      const lastCoord = lastRoute.coordinates[lastRoute.coordinates.length - 1];
+      return lastCoord?.location || lastRoute?.title || 'En transit';
+    }
+    return lastRoute?.title || 'En transit';
+  }
+  
+  // Fallback to currentStatus
+  return order?.currentStatus || 'En attente';
+};
+
+const formatDateSafe = (dateValue: any): string => {
+  if (!dateValue || dateValue === '') return 'Non défini';
+  try {
+    return new Date(dateValue).toLocaleDateString('fr-FR');
+  } catch {
+    return String(dateValue);
+  }
+};
+
+export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ order }) => {
+  const position = getPositionFromRoute(order);
+  const departureDate = formatDateSafe(order?.departureDate);
+  const receiptDate = formatDateSafe(order?.dateOfReceipt);
 
   return (
     <Surface style={styles.container}>
@@ -82,8 +114,20 @@ export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ orde
       <ShippingRow
         icon="map-marker-radius"
         label="Position actuelle"
-        value={lastPosition || order?.currentStatus || 'En attente'}
+        value={position}
         iconColor="#E65100"
+      />
+      <ShippingRow
+        icon="calendar-arrow-right"
+        label="Date de départ"
+        value={departureDate}
+        iconColor="#9C27B0"
+      />
+      <ShippingRow
+        icon="calendar-check"
+        label="Date de réception"
+        value={receiptDate}
+        iconColor="#4CAF50"
       />
       <ShippingRow
         icon="package-variant"

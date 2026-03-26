@@ -104,6 +104,12 @@ export const styles = StyleSheet.create({
     color: '#1A1A2E',
     fontFamily: Fonts.bold,
   },
+  unitPriceText: {
+    fontSize: 12,
+    color: COLORS.grey,
+    fontFamily: Fonts.medium,
+    marginTop: 2,
+  },
   paymentRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

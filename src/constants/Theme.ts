@@ -560,6 +560,39 @@ export const Theme = {
   gradients: lightTheme.gradients,
   radius: lightTheme.borderRadius,
   spacing: lightTheme.spacing,
+  colors: {
+    primary: lightTheme.colors.primary,
+    secondary: {
+      main: lightTheme.colors.accent.gold,
+      light: lightTheme.colors.accent.goldLight,
+      dark: lightTheme.colors.accent.goldDark,
+    },
+    error: {
+      main: lightTheme.colors.status.error,
+      light: '#FEE2E2',
+      dark: '#991B1B',
+    },
+    warning: {
+      main: lightTheme.colors.status.warning,
+      light: '#FEF9C3',
+      dark: '#92400E',
+    },
+    success: {
+      main: lightTheme.colors.status.success,
+      light: '#F0FDF4',
+      dark: '#166534',
+    },
+    info: {
+      main: lightTheme.colors.status.info,
+      light: '#EFF6FF',
+      dark: '#1E40AF',
+    },
+    accent: lightTheme.colors.accent,
+    status: lightTheme.colors.status,
+    background: lightTheme.colors.background,
+    text: lightTheme.colors.text,
+    neutral: lightTheme.colors.neutral,
+  },
 };
 
 export default {
