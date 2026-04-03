@@ -26,6 +26,7 @@ import {
   TopCustomers,
   RecentPaymentsList,
   StatsSkeleton,
+  ProfitOverviewCard,
 } from './components';
 
 const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
@@ -48,6 +49,8 @@ const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
     isLoadingCustomers,
     recentPayments,
     outstanding,
+    profitSummary,
+    isLoadingProfit,
   } = useAdminStats();
 
   const [refreshing, setRefreshing] = React.useState(false);
@@ -115,6 +118,10 @@ const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
         <View style={styles.sectionGap} />
 
         <OutstandingCard outstanding={outstanding} />
+
+        <View style={styles.sectionGap} />
+
+        <ProfitOverviewCard profitSummary={profitSummary} isLoading={isLoadingProfit} />
 
         <View style={styles.sectionGap} />
 

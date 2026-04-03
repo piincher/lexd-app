@@ -39,9 +39,10 @@ const OrderDetailScreen = ({
       if (order?.code) copyToClipboard(order.code);
    }, [order, copyToClipboard]);
 
-   const handleChat = useCallback(() => {
-      navigation.navigate("SelectAdminToChatWith" as never);
-   }, [navigation]);
+   // Chat feature hidden - not in use
+   // const handleChat = useCallback(() => {
+   //    navigation.navigate("SelectAdminToChatWith" as never);
+   // }, [navigation]);
 
    // -- Loading --
    if (isPending) {
@@ -92,7 +93,8 @@ const OrderDetailScreen = ({
                titleStyle={styles.appbarTitle}
             />
             <Appbar.Action icon="share-variant" onPress={handleShare} />
-            <Appbar.Action icon="chat" onPress={handleChat} />
+            {/* Chat feature hidden - not in use */}
+            {/* <Appbar.Action icon="chat" onPress={handleChat} /> */}
          </Appbar.Header>
 
          <ScrollView
@@ -102,8 +104,8 @@ const OrderDetailScreen = ({
             {/* Status + Shipping mode badges */}
             <OrderHeader order={order} />
 
-            {/* Product photo */}
-            <OrderImageSection images={order.images} />
+            {/* Product photo — includes goods photos from linked goodsIds */}
+            <OrderImageSection images={order.images} goodsIds={order.goodsIds} />
 
             {/* Quick stats: Quantity, Weight, CBM */}
             <OrderQuickStats order={order} />

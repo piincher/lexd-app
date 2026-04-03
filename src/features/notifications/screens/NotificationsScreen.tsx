@@ -84,11 +84,9 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
   }, [markAllAsRead]);
 
   const handleNotificationPress = useCallback((notification: InAppNotification) => {
-    if (!notification.isRead) {
-      markAsRead(notification._id);
-    }
-    navigateByType(notification);
-  }, [markAsRead]);
+    // Navigate to detail screen to show full notification
+    navigation.navigate('NotificationDetail', { notification });
+  }, [navigation]);
 
   const navigateByType = (notification: InAppNotification) => {
     const { type, data: notifData } = notification;

@@ -59,3 +59,34 @@ export const getGoodsVolume = async (
   });
   return extractData<GoodsVolumeResponse>(response);
 };
+
+export interface ContainerProfitSummary {
+  summary: {
+    totalRevenue: number;
+    totalCollected: number;
+    totalCost: number;
+    totalProfit: number;
+    totalCBM: number;
+    overallMargin: number;
+    containerCount: number;
+    cbmCostPerUnit: number;
+  };
+  containers: Array<{
+    containerId: string;
+    containerNumber: string;
+    status: string;
+    shippingMode: string;
+    totalCBM: number;
+    revenue: number;
+    collected: number;
+    cost: number;
+    profit: number;
+    profitMargin: number;
+    goodsCount: number;
+  }>;
+}
+
+export const getContainerProfitSummary = async (): Promise<ContainerProfitSummary> => {
+  const response = await apiClientV2.get('/containers/profit-summary');
+  return extractData<ContainerProfitSummary>(response);
+};

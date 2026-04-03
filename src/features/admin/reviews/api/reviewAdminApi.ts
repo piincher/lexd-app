@@ -69,5 +69,5 @@ export const reviewAdminApi = {
     axios.get(`${BASE_URL}/admin/stats`),
 
   respondToReview: (data: RespondToReviewInput): Promise<ApiResponse<AdminReview>> =>
-    axios.post(`${BASE_URL}/admin/respond`, data),
+    axios.post(`${BASE_URL}/admin/${data.reviewId}/respond`, { response: data.response }),
 };

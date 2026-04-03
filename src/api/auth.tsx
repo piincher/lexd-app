@@ -94,7 +94,6 @@ export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {
 
    const response = await axiosInstance.post<{
       user: userRegistrationType;
-      streamToken: string;
       token: string;
    }>(API_URL.verifyPhoneOtp, {
       phone: data.phone,
@@ -162,7 +161,6 @@ export const loginPhoneOtpApple = async (data: { phone: string }) => {
    };
    const response = await axiosInstance.post<{
       user: userRegistrationType;
-      streamToken: string;
       token: string;
    }>(API_URL.login, datat);
 

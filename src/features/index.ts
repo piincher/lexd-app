@@ -4,7 +4,6 @@
 export * from "./stats";
 export * from "./onboarding";
 export * from "./routes";
-export * from "./chat";
 export * from "./profile";
 export * from "./orders";
 export * from "./order-detail";

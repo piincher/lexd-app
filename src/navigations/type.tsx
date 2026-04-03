@@ -17,8 +17,6 @@ export type RootStackParamList = {
    Login: undefined;
    Verification: { phoneNumber: string };
    OrderDetail: { id: string };
-   ChatRoom: { id: string };
-   SelectAdminToChatWith: undefined;
    SelectUser: undefined;
    PastOrders: undefined;
    AboutUs: undefined;
@@ -47,6 +45,7 @@ export type RootStackParamList = {
    GoodsDetail: { goodsId: string };
    EditGoods: { goodsId: string };
    ScanQR: undefined;
+   UnassignedGoods: undefined;
    // Admin V2 Features
    ReceiveGoods: undefined;
    AdminGoodsList: undefined;
@@ -139,6 +138,8 @@ export type RootStackParamList = {
    AdminReviews: undefined;
    // Promos Screen
    ManagePromos: undefined;
+   // Activity List
+   ActivityList: undefined;
    // Client Certificate Detail
    CertificateDetail: {
       certificateId: string;
@@ -197,7 +198,6 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeSta
 
 export type HomeTabParamList = {
    Home: undefined;
-   Chat: undefined;
    Profile: undefined;
    AdminDashBoard: undefined;
    Stats: undefined;

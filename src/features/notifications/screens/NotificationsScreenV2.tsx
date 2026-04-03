@@ -31,14 +31,10 @@ export const NotificationsScreenV2: React.FC = () => {
 
   const handleNotificationPress = useCallback(
     (notification: InAppNotification) => {
-      if (!notification.isRead) {
-        markAsRead.mutate(notification._id);
-      }
-      if (notification.action?.screen) {
-        navigation.navigate(notification.action.screen as never, notification.action.params as never);
-      }
+      // Always navigate to detail screen to show full notification
+      navigation.navigate('NotificationDetail', { notification });
     },
-    [markAsRead, navigation]
+    [navigation]
   );
 
   const handleDismiss = useCallback(

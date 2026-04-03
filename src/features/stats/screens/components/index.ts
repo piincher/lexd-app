@@ -10,3 +10,4 @@ export { OutstandingCard } from './OutstandingCard';
 export { TopCustomers } from './TopCustomers';
 export { RecentPaymentsList } from './RecentPaymentsList';
 export { StatsSkeleton } from './StatsSkeleton';
+export { ProfitOverviewCard } from './ProfitOverviewCard';

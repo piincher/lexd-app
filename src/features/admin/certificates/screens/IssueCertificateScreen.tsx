@@ -14,6 +14,8 @@ import {
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
+import * as Clipboard from "expo-clipboard";
+import { showMessage } from "react-native-flash-message";
 import {
   useSearchUsersForCertificate,
   useIssueCertificate,
@@ -145,6 +147,16 @@ export default function IssueCertificateScreen({
     setSearchQuery("");
   }, []);
 
+  const handleCopyCode = useCallback(async (code: string, label: string) => {
+    await Clipboard.setStringAsync(code);
+    showMessage({
+      message: `${label} copié !`,
+      description: `Le ${label.toLowerCase()} ${code} a été copié dans le presse-papiers.`,
+      type: "success",
+      duration: 2000,
+    });
+  }, []);
+
   const renderUser = ({ item }: { item: CertificateUser }) => (
     <UserCard
       user={item}
@@ -177,7 +189,15 @@ export default function IssueCertificateScreen({
           <View style={styles.successCard}>
             <View style={styles.successCardRow}>
               <Text style={styles.successCardLabel}>N° Certificat</Text>
-              <Text style={styles.successCardValue}>{issuedCertificate.certificateId}</Text>
+              <View style={styles.valueWithCopy}>
+                <Text style={styles.successCardValue}>{issuedCertificate.certificateId}</Text>
+                <TouchableOpacity 
+                  onPress={() => handleCopyCode(issuedCertificate.certificateId, "Code")}
+                  style={styles.copyButton}
+                >
+                  <Ionicons name="copy-outline" size={18} color="#6B7280" />
+                </TouchableOpacity>
+              </View>
             </View>
             <View style={styles.successCardDivider} />
             <View style={styles.successCardRow}>
@@ -187,9 +207,17 @@ export default function IssueCertificateScreen({
             <View style={styles.successCardDivider} />
             <View style={styles.successCardRow}>
               <Text style={styles.successCardLabel}>Code de vérification</Text>
-              <Text style={[styles.successCardValue, styles.verificationCode]}>
-                {issuedCertificate.verificationCode}
-              </Text>
+              <View style={styles.valueWithCopy}>
+                <Text style={[styles.successCardValue, styles.verificationCode]}>
+                  {issuedCertificate.verificationCode}
+                </Text>
+                <TouchableOpacity 
+                  onPress={() => handleCopyCode(issuedCertificate.verificationCode, "Code de vérification")}
+                  style={styles.copyButton}
+                >
+                  <Ionicons name="copy-outline" size={18} color="#6B7280" />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
 
@@ -614,6 +642,16 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#d4a843",
     letterSpacing: 1,
+  },
+  valueWithCopy: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  copyButton: {
+    padding: 4,
+    backgroundColor: "#F3F4F6",
+    borderRadius: 6,
   },
   downloadButton: {
     flexDirection: "row",

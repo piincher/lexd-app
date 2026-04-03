@@ -7,6 +7,7 @@ export { useGetOrders } from "./hooks/useOrder";
 
 // Dashboard (explicit export to ensure availability)
 export { AdminDashBoard as AdminDashBoardScreen } from "./dashboard";
+export { UnassignedGoodsScreen } from "./dashboard";
 
 // Sub-features
 export * from "./orders";

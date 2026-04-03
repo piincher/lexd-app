@@ -12,6 +12,8 @@ import {
   getTopCustomers,
   getPaymentMetrics,
   getGoodsVolume,
+  getContainerProfitSummary,
+  ContainerProfitSummary,
 } from '../../api/statsApi';
 import {
   KPIItem,
@@ -92,6 +94,18 @@ export const useAdminStats = () => {
     retry: 2,
   });
 
+  // CBM profit summary (global across all containers)
+  const {
+    data: profitSummary,
+    isLoading: isLoadingProfit,
+    refetch: refetchProfit,
+  } = useQuery<ContainerProfitSummary>({
+    queryKey: [STATS_KEY, 'profit-summary'],
+    queryFn: getContainerProfitSummary,
+    staleTime: 5 * 60 * 1000,
+    retry: 2,
+  });
+
   const isLoading = isLoadingDashboard && !dashboard;
   const isError = isDashboardError && !dashboard;
 
@@ -100,7 +114,8 @@ export const useAdminStats = () => {
     refetchCustomers();
     refetchPayments();
     refetchGoods();
-  }, [refetchDashboard, refetchCustomers, refetchPayments, refetchGoods]);
+    refetchProfit();
+  }, [refetchDashboard, refetchCustomers, refetchPayments, refetchGoods, refetchProfit]);
 
   // Shipping mode breakdown from goods volume
   const shippingModeCounts = useMemo(() => {
@@ -200,5 +215,8 @@ export const useAdminStats = () => {
     recentPayments: dashboard?.recentPayments || [],
     // Outstanding
     outstanding: dashboard?.outstanding,
+    // CBM Profit
+    profitSummary: profitSummary ?? null,
+    isLoadingProfit,
   };
 };

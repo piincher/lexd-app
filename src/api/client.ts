@@ -23,8 +23,8 @@ const ENV: Environment = (process.env.EXPO_PUBLIC_ENV as Environment) || 'local'
 
 const API_CONFIG = {
   local: {
-    baseURL: 'http://192.168.0.112:3000/api/v1',
-    baseURLV2: 'http://192.168.0.112:3000/api/v2',
+    baseURL: 'http://192.168.0.111:3000/api/v1',
+    baseURLV2: 'http://192.168.0.111:3000/api/v2',
     timeout: 10000,
   },
   staging: {

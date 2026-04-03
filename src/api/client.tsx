@@ -8,7 +8,7 @@ import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 
 // Option 1: Local Development (Your Computer)
 // Use this when testing on physical device
-const LOCAL_IP = "192.168.0.112"; // Your computer's IP
+const LOCAL_IP = "192.168.0.111"; // Your computer's IP
 const LOCAL_URL = `http://${LOCAL_IP}:3000/api/v1`;
 const LOCAL_URL_V2 = `http://${LOCAL_IP}:3000/api/v2`;
 

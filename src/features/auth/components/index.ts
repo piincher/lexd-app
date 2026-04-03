@@ -17,3 +17,4 @@ export { LoginFooter } from './LoginFooter';
 export { SubmitButton } from './SubmitButton';
 export { SecurityNote } from './SecurityNote';
 export { AuthRequiredScreen } from './AuthRequiredScreen';
+export { AuthRequiredContent } from './AuthRequiredContent';

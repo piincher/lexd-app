@@ -61,7 +61,7 @@ export interface VerifiedCertificate {
 export const verifyCertificatePublic = async (
   verificationCode: string
 ): Promise<ApiResponse<VerifiedCertificate>> => {
-  const response = await axios.get(`${BASE_URL}/verify/${verificationCode}`, {
+  const response = await axios.get(`/public/verify/${verificationCode}`, {
     headers: { skipAuth: 'true' },
   });
   return response.data;

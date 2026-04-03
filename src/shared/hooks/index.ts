@@ -3,7 +3,6 @@
 
 export * from './useOrders';
 export * from './useUser';
-export * from './useChat';
 export * from './useNotification';
 export * from './useRoutes';
 export * from './useOrderDetail';

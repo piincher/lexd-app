@@ -117,6 +117,20 @@ const TEMPLATES: Template[] = [
     message:
       'Bonjour, l\'inspection de votre marchandise est terminee. Tout est conforme. Elle sera expediee selon le calendrier prevu. ChinaLink',
   },
+  {
+    label: 'Conteneur vide',
+    icon: 'cube-outline',
+    category: 'expedition',
+    message:
+      'Bonjour, un conteneur vide a ete envoye vers l\'expediteur pour le chargement de votre marchandise. Nous vous tiendrons informe de son arrivee. ChinaLink',
+  },
+  {
+    label: 'Conteneur recu',
+    icon: 'checkmark-done-circle',
+    category: 'expedition',
+    message:
+      'Bonjour, le conteneur vide a ete recu par l\'expediteur. Le chargement de votre marchandise va debuter prochainement. ChinaLink',
+  },
 
   // --- Finance ---
   {
@@ -199,6 +213,13 @@ const TEMPLATES: Template[] = [
     category: 'alertes',
     message:
       'Bonjour, nous vous informons d\'un retard sur votre livraison. Nous faisons le necessaire pour accelerer le processus. Merci. ChinaLink',
+  },
+  {
+    label: 'Excuse conteneur',
+    icon: 'sad',
+    category: 'alertes',
+    message:
+      'Bonjour, nous vous prions de nous excuser pour le retard concernant votre conteneur. Nous faisons tout notre possible pour resoudre la situation au plus vite. Merci de votre comprehension. ChinaLink',
   },
   {
     label: 'Urgence',

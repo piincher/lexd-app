@@ -6,8 +6,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // import * as Sentry from "@sentry/react-native";
 import { initMixpanel } from "@src/config/Analytic";
-import { chatClient } from "@src/config/ChatConfig";
-import { ChatProvider } from "@src/context/ChatContext";
 import { HomeTabParamList, RootStackParamList } from "@src/navigations/type";
 import { navigationRef } from "@src/navigations/navigationRef";
 
@@ -56,6 +54,7 @@ import {
    OrderDetailScreen,
    RecordPaymentScreen,
    PaymentDetailScreen,
+   UnassignedGoodsScreen,
 } from "@src/features/admin";
 
 // Admin Payment History Screen (aliased to avoid conflict with payments feature)
@@ -75,13 +74,6 @@ import ManagePromosScreen from "@src/features/admin/promos/screens/ManagePromosS
 // Features - Auth
 import { LoginScreen as Login, VerificationScreen as Verification } from "@src/features/auth";
 
-// Features - Chat
-import {
-   ChatScreen as Chat,
-   ChatRoomScreen as ChatRoom,
-   SelectAdminScreen as SelectAdminToChatWith,
-} from "@src/features/chat";
-
 // Features - Home
 import {
    HomeScreen,
@@ -90,8 +82,11 @@ import {
    useNotification,
 } from "@src/features/home";
 
+// Features - Notifications
+import NotificationDetailScreen from "@src/features/notifications/screens/NotificationDetailScreen";
+
 // Features - Customer Dashboard (V2)
-import { CustomerDashboardScreen } from "@src/features/customer/dashboard/screens/CustomerDashboardScreen";
+import { CustomerDashboardScreen, ActivityListScreen } from "@src/features/customer/dashboard";
 
 // Features - Onboarding
 import { OnBoardingScreen as OnBoarding } from "@src/features/onboarding";
@@ -161,7 +156,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, fr, registerTranslation } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { OverlayProvider, Chat as StreamChat, Streami18n } from "stream-chat-expo";
 import { initSentry } from "@src/services/sentry";
 import { UpdateProvider } from "@src/context/UpdateProvider";
 import { NotificationProvider } from "@src/app/providers";
@@ -271,8 +265,6 @@ function AppWrapper() {
                   <Stack.Screen name="AddOrder" component={AddOrder} />
                   <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
                   <Stack.Screen name="OrderDetail" component={NewOrderDetailScreen} />
-                  <Stack.Screen name="ChatRoom" component={ChatRoom} />
-                  <Stack.Screen name="SelectAdminToChatWith" component={SelectAdminToChatWith} />
                   <Stack.Screen name="SelectUser" component={SelectUser} />
                   <Stack.Screen name="PastOrders" component={PastOrders} />
                   <Stack.Screen name="UserAdd" component={AddUser} />
@@ -281,6 +273,7 @@ function AppWrapper() {
                   <Stack.Screen name="ActiveOrderDetails" component={ActiveOrderdetails} />
                   <Stack.Screen name="ScanQRCode" component={ScanQRCode} />
                   <Stack.Screen name="Notifications" component={Notifications} />
+                  <Stack.Screen name="NotificationDetail" component={NotificationDetailScreen} />
                   <Stack.Screen name="BatchUpdate" component={BatchUpdate} />
                   <Stack.Screen name="BatchUpdateDetail" component={BatchUpdateDetail} />
                   <Stack.Screen name="EditOrder" component={EditOrder} />
@@ -294,6 +287,7 @@ function AppWrapper() {
                   <Stack.Screen name="ChooseShippingMethod" component={ChooseShippingMethod} />
                   <Stack.Screen name="ShippingMethod" component={ShippingMethod} />
                   {/* Admin V2 Screens */}
+                  <Stack.Screen name="UnassignedGoods" component={UnassignedGoodsScreen} />
                   <Stack.Screen name="ReceiveGoods" component={ReceiveGoodsScreen} />
                   <Stack.Screen name="AdminGoodsList" component={AdminGoodsList} />
                   <Stack.Screen name="AdminGoodsDetail" component={AdminGoodsDetailScreen} />
@@ -318,6 +312,7 @@ function AppWrapper() {
                   <Stack.Screen name="ScanQR" component={GoodsScanQR} />
                   {/* Customer Dashboard V2 */}
                   <Stack.Screen name="CustomerDashboard" component={CustomerDashboardScreen} />
+                  <Stack.Screen name="ActivityList" component={ActivityListScreen} />
                   {/* Customer Container V2 Screens */}
                   <Stack.Screen name="MyContainers" component={MyContainersScreen} />
                   <Stack.Screen name="ContainerTracking" component={ContainerTrackingScreen} />
@@ -441,15 +436,6 @@ const HomeBottomTab = () => {
             />
          )}
          <BottomTab.Screen
-            name="Chat"
-            component={Chat}
-            options={{
-               tabBarIcon: ({ focused, color, size }) => (
-                  <Entypo name="chat" focused={focused} color={color} size={size} />
-               ),
-            }}
-         />
-         <BottomTab.Screen
             name="Profile"
             component={Profile}
             options={{
@@ -463,9 +449,6 @@ const HomeBottomTab = () => {
 };
 
 const client = new QueryClient();
-const streami18n = new Streami18n({
-   language: "fr",
-});
 const ThemedApp = () => {
    const { paperTheme, navigationTheme } = useAppTheme();
 
@@ -483,26 +466,19 @@ const App = () => {
       <QueryClientProvider client={client}>
          <ThemeProvider>
             <NotificationProvider>
-               <ChatProvider>
-                  <GestureHandlerRootView style={{ flex: 1 }}>
-                     <ThemedApp />
-                  </GestureHandlerRootView>
-               </ChatProvider>
+               <GestureHandlerRootView style={{ flex: 1 }}>
+                  <ThemedApp />
+               </GestureHandlerRootView>
             </NotificationProvider>
          </ThemeProvider>
       </QueryClientProvider>
    );
 };
 
-// dont forget to add the in app update provider
 const MainWrapper = () => {
    return (
       <UpdateProvider>
-         <OverlayProvider>
-            <StreamChat client={chatClient} i18nInstance={streami18n}>
-               <AppWrapper />
-            </StreamChat>
-         </OverlayProvider>
+         <AppWrapper />
       </UpdateProvider>
    );
 };

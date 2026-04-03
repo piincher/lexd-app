@@ -51,10 +51,15 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#1F2937",
   },
+  phone: {
+    fontSize: 13,
+    color: "#6B7280",
+    marginTop: 1,
+  },
   goodsCount: {
     fontSize: 13,
     color: "#9CA3AF",
-    marginTop: 2,
+    marginTop: 1,
   },
   amount: {
     fontSize: 15,

@@ -9,7 +9,7 @@ import { styles } from "./UnassignedGoodsSection.styles";
 
 export const UnassignedGoodsSection: React.FC = () => {
   const navigation = useNavigation();
-  const { data, isLoading, error, refetch } = useUnassignedGoods();
+  const { totalCount, sortedGoods, isLoading, error, handleRefresh } = useUnassignedGoods();
 
   if (isLoading) {
     return (
@@ -20,24 +20,35 @@ export const UnassignedGoodsSection: React.FC = () => {
     );
   }
 
-  if (error || !data) {
+  if (error) {
     return (
       <View style={styles.errorContainer}>
         <Ionicons name="alert-circle" size={24} color="#EF4444" />
         <Text style={styles.errorText}>Erreur</Text>
-        <TouchableOpacity onPress={refetch}>
+        <TouchableOpacity onPress={handleRefresh}>
           <Text style={styles.retryText}>Réessayer</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
+  const byShippingMode = {
+    AIR: sortedGoods.filter((g) => g.shippingMode === 'AIR').length,
+    SEA: sortedGoods.filter((g) => g.shippingMode !== 'AIR').length,
+  };
+
+  const byAge = {
+    '0-3': sortedGoods.filter((g) => g.daysWaiting <= 3).length,
+    '4-7': sortedGoods.filter((g) => g.daysWaiting >= 4 && g.daysWaiting <= 7).length,
+    '8+': sortedGoods.filter((g) => g.daysWaiting >= 8).length,
+  };
+
   return (
     <View style={styles.container}>
       <UnassignedGoodsAlert
-        total={data.total}
-        byShippingMode={data.byShippingMode}
-        byAge={data.byAge}
+        total={totalCount}
+        byShippingMode={byShippingMode}
+        byAge={byAge}
         onPress={() => navigation.navigate("UnassignedGoods")}
       />
     </View>

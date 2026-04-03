@@ -12,7 +12,6 @@ interface authType {
 		role: string;
 	};
 	token: string;
-	streamToken: string;
 	setAuth: (user: userType) => void;
 	logOut: () => void;
 }
@@ -42,7 +41,6 @@ export const useAuth = create<authType>()(
 				role: '',
 			},
 			token: '',
-			streamToken: '',
 			setAuth: (user: userType) => {
 				set((state) => ({
 					...state,
@@ -51,7 +49,6 @@ export const useAuth = create<authType>()(
 						...user.user,
 					},
 					token: user.token || state.token,
-					streamToken: user.streamToken || state.streamToken,
 				}));
 			},
 			logOut: () => {
@@ -65,7 +62,6 @@ export const useAuth = create<authType>()(
 						_id: '',
 					},
 					token: '',
-					streamToken: '',
 				}));
 			},
 		}),

@@ -43,4 +43,4 @@ export type {
 } from './components';
 
 // Screens
-export { CustomerDashboardScreen } from './screens';
+export { CustomerDashboardScreen, ActivityListScreen } from './screens';

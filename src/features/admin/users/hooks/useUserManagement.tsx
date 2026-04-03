@@ -1,4 +1,4 @@
-import { createUser, fetchAllUsers, register, toggleBlockUser } from "@src/api/auth";
+import { blockUnblockUser, createUser, fetchAllUsers, register } from "@src/api/auth";
 import { USER_KEY } from "@src/constants/queryKey";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -24,7 +24,7 @@ export const useCreateUser = () => {
 export const useBlockandUnblockUser = () => {
    const queryClient = useQueryClient();
    return useMutation({
-      mutationFn: toggleBlockUser,
+      mutationFn: blockUnblockUser,
       onSuccess: () => {
          queryClient.invalidateQueries({ queryKey: [USERS_KEY] });
       },

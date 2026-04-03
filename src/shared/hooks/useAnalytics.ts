@@ -64,7 +64,6 @@ export const AnalyticsEvents = {
   FILTER_APPLIED: 'filter_applied',
   SORT_APPLIED: 'sort_applied',
   QR_SCAN: 'qr_scan',
-  CHAT_OPENED: 'chat_opened',
   NOTIFICATION_RECEIVED: 'notification_received',
   NOTIFICATION_OPENED: 'notification_opened',
 } as const;

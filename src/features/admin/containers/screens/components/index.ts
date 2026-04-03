@@ -9,3 +9,5 @@ export { ContainerActionButtons } from './ContainerActionButtons';
 export { ContainerDialogs } from './ContainerDialogs';
 export { LoadingState } from './LoadingState';
 export { ErrorState } from './ErrorState';
+export { ContainerProfitCard } from './ContainerProfitCard';
+export type { CbmProfit } from './ContainerProfitCard';

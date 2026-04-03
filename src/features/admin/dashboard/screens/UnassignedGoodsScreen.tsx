@@ -12,7 +12,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
 import { useUnassignedGoods } from "../hooks";
-import { UnassignedGoodsItem } from "../types";
+import { ClientInfo } from "@src/features/admin/goods/types";
 
 const formatDate = (dateStr: string) => {
   return new Date(dateStr).toLocaleDateString("fr-FR", {
@@ -27,38 +27,17 @@ const getBadgeColor = (days: number) => {
   return "#10B981";
 };
 
-export const UnassignedGoodsScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const { data, isLoading, refetch } = useUnassignedGoods();
+const getClientInfo = (clientId: string | ClientInfo | undefined) => {
+  if (!clientId || typeof clientId === "string") return { name: "Inconnu", phone: "" };
+  return {
+    name: `${clientId.firstName} ${clientId.lastName}`,
+    phone: clientId.phoneNumber || "",
+  };
+};
 
-  const renderItem = ({ item }: { item: UnassignedGoodsItem }) => (
-    <TouchableOpacity
-      style={styles.card}
-      onPress={() => navigation.navigate("GoodsDetail", { goodsId: item.goodsId })}
-    >
-      <View style={styles.row}>
-        <View style={styles.iconContainer}>
-          <Ionicons name="cube" size={24} color="#1a5f2a" />
-        </View>
-        <View style={styles.info}>
-          <Text style={styles.goodsId}>{item.goodsId}</Text>
-          <Text style={styles.description} numberOfLines={1}>
-            {item.description || "No description"}
-          </Text>
-          <Text style={styles.client}>{item.clientName}</Text>
-        </View>
-        <View style={styles.badge}>
-          <Text style={[styles.daysText, { color: getBadgeColor(item.daysWaiting) }]}>
-            {item.daysWaiting}j
-          </Text>
-        </View>
-      </View>
-      <View style={styles.footer}>
-        <Text style={styles.date}>Reçu: {formatDate(item.receivedAt)}</Text>
-        <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
-      </View>
-    </TouchableOpacity>
-  );
+export const UnassignedGoodsScreen: React.FC = () => {
+  const navigation = useNavigation<any>();
+  const { sortedGoods, isLoading, handleRefresh } = useUnassignedGoods();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -67,15 +46,57 @@ export const UnassignedGoodsScreen: React.FC = () => {
           <Ionicons name="arrow-back" size={24} color="#1F2937" />
         </TouchableOpacity>
         <Text style={styles.title}>Marchandises Non Assignées</Text>
-        <View style={{ width: 24 }} />
+        <Text style={styles.count}>{sortedGoods.length}</Text>
       </View>
 
       <FlatList
-        data={data?.oldestGoods || []}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.goodsId}
+        data={sortedGoods}
+        keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
-        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={handleRefresh} />
+        }
+        renderItem={({ item }) => {
+          const { name, phone } = getClientInfo(item.clientId);
+          return (
+            <TouchableOpacity
+              style={styles.card}
+              activeOpacity={0.75}
+              onPress={() => navigation.navigate("GoodsDetail", { goodsId: item._id })}
+            >
+              <View style={styles.row}>
+                <View style={styles.iconContainer}>
+                  <Ionicons name="cube" size={22} color="#1a5f2a" />
+                </View>
+                <View style={styles.info}>
+                  <Text style={styles.goodsId}>{item.goodsId}</Text>
+                  <Text style={styles.description} numberOfLines={1}>
+                    {item.description || "Aucune description"}
+                  </Text>
+                  <Text style={styles.client}>{name}</Text>
+                  {phone ? <Text style={styles.phone}>{phone}</Text> : null}
+                </View>
+                <View style={styles.right}>
+                  <View style={[styles.badge, { borderColor: getBadgeColor(item.daysWaiting) }]}>
+                    <Text style={[styles.daysText, { color: getBadgeColor(item.daysWaiting) }]}>
+                      {item.daysWaiting}j
+                    </Text>
+                  </View>
+                  <Ionicons name="chevron-forward" size={18} color="#9CA3AF" style={{ marginTop: 8 }} />
+                </View>
+              </View>
+              <View style={styles.footer}>
+                <Ionicons name="time-outline" size={13} color="#9CA3AF" />
+                <Text style={styles.date}>
+                  {"  "}Reçu: {formatDate(item.receivedAt)}
+                </Text>
+                <View style={styles.modeBadge}>
+                  <Text style={styles.modeText}>{item.shippingMode || "—"}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        }}
         ListEmptyComponent={
           <View style={styles.empty}>
             <Ionicons name="checkmark-circle" size={64} color="#10B981" />
@@ -98,11 +119,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 16,
     backgroundColor: "white",
+    borderBottomWidth: 1,
+    borderBottomColor: "#F3F4F6",
   },
   title: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "700",
     color: "#1F2937",
+    flex: 1,
+    textAlign: "center",
+  },
+  count: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: "white",
+    backgroundColor: "#EF4444",
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    overflow: "hidden",
+    minWidth: 24,
+    textAlign: "center",
   },
   list: {
     padding: 16,
@@ -120,11 +157,11 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
   },
   iconContainer: {
-    width: 48,
-    height: 48,
+    width: 44,
+    height: 44,
     borderRadius: 12,
     backgroundColor: "#F0FDF4",
     alignItems: "center",
@@ -135,42 +172,63 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   goodsId: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "700",
     color: "#1F2937",
   },
   description: {
-    fontSize: 14,
+    fontSize: 13,
     color: "#6B7280",
     marginTop: 2,
   },
   client: {
     fontSize: 13,
-    color: "#9CA3AF",
-    marginTop: 2,
+    fontWeight: "600",
+    color: "#374151",
+    marginTop: 4,
+  },
+  phone: {
+    fontSize: 12,
+    color: "#6B7280",
+    marginTop: 1,
+  },
+  right: {
+    alignItems: "center",
+    marginLeft: 8,
   },
   badge: {
-    backgroundColor: "#F3F4F6",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
+    borderWidth: 1.5,
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
   },
   daysText: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "700",
   },
   footer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
     marginTop: 12,
-    paddingTop: 12,
+    paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: "#F3F4F6",
   },
   date: {
-    fontSize: 13,
+    fontSize: 12,
     color: "#9CA3AF",
+    flex: 1,
+  },
+  modeBadge: {
+    backgroundColor: "#EFF6FF",
+    borderRadius: 8,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  modeText: {
+    fontSize: 11,
+    fontWeight: "700",
+    color: "#3B82F6",
   },
   empty: {
     alignItems: "center",

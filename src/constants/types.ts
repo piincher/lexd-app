@@ -15,7 +15,6 @@ export type userData = {
 export interface userType {
 	user: userData;
 	token: string;
-	streamToken?: string;
 }
 
 export interface SmsService {

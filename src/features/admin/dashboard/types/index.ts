@@ -7,6 +7,7 @@
 export interface OutstandingClient {
   clientId: string;
   clientName: string;
+  phoneNumber: string;
   totalOwed: number;
   goodsCount: number;
 }

@@ -4,3 +4,4 @@
 
 export { AdminDashBoard } from "./AdminDashBoard";
 export { default as AdminDashBoardDefault } from "./AdminDashBoard";
+export { UnassignedGoodsScreen } from "./UnassignedGoodsScreen";

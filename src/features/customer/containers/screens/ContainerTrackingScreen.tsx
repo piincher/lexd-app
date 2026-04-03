@@ -680,14 +680,15 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
           <Text style={styles.helpText}>
             Une question concernant votre container?
           </Text>
-          <Button
+          {/* Chat feature hidden - not in use */}
+          {/* <Button
             mode="outlined"
             onPress={() => navigation.navigate('SelectAdminToChatWith')}
             icon="chat"
             style={styles.helpButton}
           >
             Contacter le Support
-          </Button>
+          </Button> */}
         </View>
       </ScrollView>
 

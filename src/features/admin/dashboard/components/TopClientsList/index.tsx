@@ -22,7 +22,11 @@ export const TopClientsList: React.FC<TopClientsListProps> = ({ clients }) => {
   const navigation = useNavigation();
 
   const renderItem = ({ item, index }: { item: OutstandingClient; index: number }) => (
-    <View style={styles.clientItem}>
+    <TouchableOpacity
+      style={styles.clientItem}
+      activeOpacity={0.7}
+      onPress={() => navigation.navigate("ClientDetails", { id: item.clientId })}
+    >
       <View style={styles.rankContainer}>
         <Text style={styles.rank}>#{index + 1}</Text>
       </View>
@@ -30,16 +34,16 @@ export const TopClientsList: React.FC<TopClientsListProps> = ({ clients }) => {
         <Text style={styles.name} numberOfLines={1}>
           {item.clientName}
         </Text>
+        {item.phoneNumber ? (
+          <Text style={styles.phone} numberOfLines={1}>
+            {item.phoneNumber}
+          </Text>
+        ) : null}
         <Text style={styles.goodsCount}>{item.goodsCount} colis</Text>
       </View>
       <Text style={styles.amount}>{formatCurrency(item.totalOwed)}</Text>
-      <TouchableOpacity
-        style={styles.action}
-        onPress={() => navigation.navigate("ClientDetails", { id: item.clientId })}
-      >
-        <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
-      </TouchableOpacity>
-    </View>
+      <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
+    </TouchableOpacity>
   );
 
   if (!clients || clients.length === 0) {

@@ -54,12 +54,13 @@ const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
     icon: 'container',
     route: 'MyContainers',
   },
-  {
-    id: 'contact-support',
-    label: 'Contacter support',
-    icon: 'chat',
-    route: 'SelectAdminToChatWith',
-  },
+  // Chat feature hidden - not in use
+  // {
+  //   id: 'contact-support',
+  //   label: 'Contacter support',
+  //   icon: 'chat',
+  //   route: 'SelectAdminToChatWith',
+  // },
 ];
 
 // ============================================
@@ -207,8 +208,7 @@ export const CustomerDashboardScreen: React.FC<
   };
 
   const handleViewAllActivity = () => {
-    // TODO: Navigate to full activity history screen
-    console.log('View all activity');
+    navigation.navigate('ActivityList' as never);
   };
 
   const handlePayBalance = () => {

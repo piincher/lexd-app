@@ -12,6 +12,8 @@ import {
 
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Clipboard from "expo-clipboard";
+import { showMessage } from "react-native-flash-message";
 import {
   useDownloadCertificate,
   useRevokeCertificate,
@@ -82,6 +84,16 @@ export default function CertificateDetailAdminScreen({
     download(certificate._id);
   }, [certificate, download]);
 
+  const handleCopyCode = useCallback(async () => {
+    await Clipboard.setStringAsync(certificate.certificateId);
+    showMessage({
+      message: "Code copié !",
+      description: `Le code ${certificate.certificateId} a été copié dans le presse-papiers.`,
+      type: "success",
+      duration: 2000,
+    });
+  }, [certificate.certificateId]);
+
   const isAuto = certificate.type === "AUTO";
 
   return (
@@ -106,6 +118,9 @@ export default function CertificateDetailAdminScreen({
         <View style={styles.idContainer}>
           <MaterialIcons name="verified" size={28} color="#d4a843" />
           <Text style={styles.certificateIdText}>{certificate.certificateId}</Text>
+          <TouchableOpacity onPress={handleCopyCode} style={styles.copyButton}>
+            <Ionicons name="copy-outline" size={20} color="#6B7280" />
+          </TouchableOpacity>
         </View>
 
         {/* Status + Type badges */}
@@ -326,6 +341,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: Fonts.bold,
     color: "#1F2937",
+  },
+  copyButton: {
+    padding: 6,
+    backgroundColor: "#F3F4F6",
+    borderRadius: 8,
   },
 
   /* Badges */

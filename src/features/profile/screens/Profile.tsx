@@ -86,14 +86,15 @@ const MENU_SECTIONS: { title: string; items: MenuItem[] }[] = [
             iconBg: "rgba(34,197,94,0.1)",
             iconColor: "#22C55E",
          },
-         {
-            title: "Centre d'assistance",
-            subtitle: "Contactez notre equipe",
-            icon: "headset",
-            screen: "SelectAdminToChatWith",
-            iconBg: "rgba(59,130,246,0.1)",
-            iconColor: "#3B82F6",
-         },
+         // Chat feature hidden - not in use
+         // {
+         //    title: "Centre d'assistance",
+         //    subtitle: "Contactez notre equipe",
+         //    icon: "headset",
+         //    screen: "SelectAdminToChatWith",
+         //    iconBg: "rgba(59,130,246,0.1)",
+         //    iconColor: "#3B82F6",
+         // },
          {
             title: "A propos de ChinaLink",
             subtitle: "En savoir plus sur nous",

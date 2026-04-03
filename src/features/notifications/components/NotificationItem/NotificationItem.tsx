@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { InAppNotification } from '../../types';
+import { InAppNotification, NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../../types';
 import { formatRelativeTime } from '../../utils/timeUtils';
 
 interface NotificationItemProps {
@@ -19,37 +19,32 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   onDismiss,
   onDelete,
 }) => {
+  // Get config with fallbacks
+  const typeConfig = NOTIFICATION_TYPE_CONFIG[notification.type] || NOTIFICATION_TYPE_CONFIG.GENERAL;
+  const catConfig = NOTIFICATION_CATEGORY_CONFIG[notification.category] || NOTIFICATION_CATEGORY_CONFIG.INFO;
+  
+  const safeIcon = typeConfig?.icon || 'bell';
+  const safeLabel = typeConfig?.label || 'Notification';
+  const safeDescription = typeConfig?.description || 'Nouvelle notification';
+  
   const renderRightActions = () => (
     <View style={styles.actionsContainer}>
       <TouchableOpacity
         style={[styles.actionButton, styles.dismissButton]}
         onPress={() => onDismiss(notification._id)}
       >
-        <Ionicons name="archive-outline" size={24} color={Theme.neutral.white} />
+        <MaterialCommunityIcons name="archive-outline" size={24} color={Theme.neutral.white} />
         <Text style={styles.actionText}>Archiver</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.actionButton, styles.deleteButton]}
         onPress={() => onDelete(notification._id)}
       >
-        <Ionicons name="trash-outline" size={24} color={Theme.neutral.white} />
+        <MaterialCommunityIcons name="trash-outline" size={24} color={Theme.neutral.white} />
         <Text style={styles.actionText}>Supprimer</Text>
       </TouchableOpacity>
     </View>
   );
-
-  const getIconName = () => {
-    switch (notification.type) {
-      case 'order':
-        return 'cube-outline';
-      case 'payment':
-        return 'card-outline';
-      case 'system':
-        return 'information-circle-outline';
-      default:
-        return 'notifications-outline';
-    }
-  };
 
   return (
     <Swipeable renderRightActions={renderRightActions}>
@@ -57,19 +52,19 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
         style={[styles.container, !notification.isRead && styles.unread]}
         onPress={() => onPress(notification)}
       >
-        <View style={[styles.iconContainer, !notification.isRead && styles.unreadIcon]}>
-          <Ionicons
-            name={getIconName()}
+        <View style={[styles.iconContainer, !notification.isRead && styles.unreadIcon, { backgroundColor: catConfig.backgroundColor }]}>
+          <MaterialCommunityIcons
+            name={safeIcon as any}
             size={24}
-            color={!notification.isRead ? Theme.colors.primary.main : Theme.neutral.grey500}
+            color={catConfig.color}
           />
         </View>
         <View style={styles.content}>
           <Text style={[styles.title, !notification.isRead && styles.unreadText]}>
-            {notification.title}
+            {notification.title || safeLabel}
           </Text>
           <Text style={styles.message} numberOfLines={2}>
-            {notification.message}
+            {notification.message || safeDescription}
           </Text>
           <Text style={styles.time}>{formatRelativeTime(notification.createdAt)}</Text>
         </View>

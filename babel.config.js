@@ -15,7 +15,7 @@ module.exports = function (api) {
          },
       },
       plugins: [
-         "react-native-reanimated/plugin",
+         "react-native-worklets/plugin",
          [
             "module-resolver",
             {

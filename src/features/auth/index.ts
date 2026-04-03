@@ -15,6 +15,7 @@ export { useAuthCheck } from "./hooks/useAuthCheck";
 // Components
 export { ContactField } from "./components/ContactField";
 export { LoginHeader, PhoneInput, CountryPicker, LoginFooter, SubmitButton, SecurityNote } from "./components";
+export { AuthRequiredContent } from "./components/AuthRequiredContent";
 
 // HOCs
 export { withProtectedRoute } from "./hoc/withProtectedRoute";

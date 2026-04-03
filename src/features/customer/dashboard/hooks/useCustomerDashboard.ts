@@ -45,7 +45,7 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
 
   const handleNotifications = useCallback(() => navigation.navigate('Notifications' as never), [navigation]);
   const handlePayBalance = useCallback(() => console.log('Payment feature removed'), [navigation]);
-  const handleViewAllActivity = useCallback(() => console.log('View all activity'), []);
+  const handleViewAllActivity = useCallback(() => navigation.navigate('ActivityList' as never), [navigation]);
   const handleActionPress = useCallback((action: QuickAction) => {
     if (action.route) navigation.navigate(action.route as never);
     else if (action.action) action.action();

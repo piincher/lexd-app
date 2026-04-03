@@ -11,10 +11,12 @@ import {
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
+import * as Clipboard from "expo-clipboard";
 import { useListCertificates, useDownloadCertificate } from "../hooks/useCertificateAdmin";
 import { CertificateRecord } from "../api";
 import { RootStackScreenProps } from "@src/navigations/type";
 import { Fonts } from "@src/constants/Fonts";
+import { showMessage } from "react-native-flash-message";
 
 type FilterChip = {
   label: string;
@@ -55,11 +57,26 @@ const CertificateCard = ({ certificate, onDownload, isDownloading, onPress }: Ce
   const isAuto = certificate.type === "AUTO";
   const isActive = certificate.status === "ACTIVE";
 
+  const handleCopyCode = async () => {
+    await Clipboard.setStringAsync(certificate.certificateId);
+    showMessage({
+      message: "Code copié !",
+      description: `Le code ${certificate.certificateId} a été copié dans le presse-papiers.`,
+      type: "success",
+      duration: 2000,
+    });
+  };
+
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.7}>
-      {/* Header row: Certificate ID + Badges */}
+      {/* Header row: Certificate ID + Copy + Badges */}
       <View style={styles.cardHeader}>
-        <Text style={styles.certificateId}>{certificate.certificateId}</Text>
+        <View style={styles.certificateIdContainer}>
+          <Text style={styles.certificateId}>{certificate.certificateId}</Text>
+          <TouchableOpacity onPress={handleCopyCode} style={styles.copyButton}>
+            <Ionicons name="copy-outline" size={18} color="#6B7280" />
+          </TouchableOpacity>
+        </View>
         <View style={styles.badgeRow}>
           <View style={[styles.badge, isAuto ? styles.badgeAuto : styles.badgeManual]}>
             <Text style={[styles.badgeText, isAuto ? styles.badgeAutoText : styles.badgeManualText]}>
@@ -432,12 +449,21 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginBottom: 12,
   },
+  certificateIdContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    flexShrink: 1,
+  },
   certificateId: {
     fontSize: 16,
     fontFamily: Fonts.bold,
     color: "#1F2937",
-    flexShrink: 1,
     marginRight: 8,
+  },
+  copyButton: {
+    padding: 4,
+    backgroundColor: "#F3F4F6",
+    borderRadius: 6,
   },
   badgeRow: {
     flexDirection: "row",

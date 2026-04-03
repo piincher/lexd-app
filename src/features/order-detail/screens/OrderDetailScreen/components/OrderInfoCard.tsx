@@ -15,27 +15,32 @@ const InfoRow = ({
    label,
    value,
    trailing,
+   optional,
 }: {
    icon: string;
    label: string;
    value?: string | null;
    trailing?: React.ReactNode;
-}) => (
-   <>
-      <View style={styles.row}>
-         <View style={styles.rowLeft}>
-            <MaterialCommunityIcons name={icon as any} size={18} color="#6B7280" />
-            <Text style={styles.label}>{label}</Text>
+   optional?: boolean;
+}) => {
+   if (optional && !value && !trailing) return null;
+   return (
+      <>
+         <View style={styles.row}>
+            <View style={styles.rowLeft}>
+               <MaterialCommunityIcons name={icon as any} size={18} color="#6B7280" />
+               <Text style={styles.label}>{label}</Text>
+            </View>
+            {trailing || (
+               <Text style={styles.value} numberOfLines={1}>
+                  {value || "—"}
+               </Text>
+            )}
          </View>
-         {trailing || (
-            <Text style={styles.value} numberOfLines={1}>
-               {value || "N/A"}
-            </Text>
-         )}
-      </View>
-      <Divider style={styles.divider} />
-   </>
-);
+         <Divider style={styles.divider} />
+      </>
+   );
+};
 
 export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({
    order,
@@ -63,6 +68,7 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({
             icon="shape"
             label="Catégorie"
             value={order.category?.name || order.typeOfPackage}
+            optional
          />
          <InfoRow
             icon="truck-delivery"

@@ -10,7 +10,7 @@ import { styles } from './ContainerDetailScreen.styles';
 import {
   ContainerDetailHeader, ContainerTimeline, ContainerCapacityCard,
   ContainerGoodsList, ContainerWaypointSection, ContainerActionButtons,
-  ContainerDialogs, LoadingState, ErrorState,
+  ContainerDialogs, LoadingState, ErrorState, ContainerProfitCard,
 } from './components';
 
 /**
@@ -32,7 +32,7 @@ export const ContainerDetailScreen: React.FC = () => {
   if (screen.isLoading) return <LoadingState />;
   if (!screen.container) return <ErrorState onBack={() => screen.navigation.goBack()} />;
 
-  const { container, goodsList, isRefreshing, statusColor, statusLabel,
+  const { container, goodsList, cbmProfit, isRefreshing, statusColor, statusLabel,
     currentStatusIndex, fillPercentage, fillColor, isAirContainer, capacityValue, maxCapacity, handleRefresh } = screen;
   const { containerId, statusMenuVisible, setStatusMenuVisible, handleUpdateStatus } = screen;
   const { showDeleteDialog, setShowDeleteDialog, confirmDeleteContainer } = screen;
@@ -59,6 +59,7 @@ export const ContainerDetailScreen: React.FC = () => {
         />
         <ContainerTimeline currentStatus={container.status} currentStatusIndex={currentStatusIndex} />
         <ContainerCapacityCard totalCBM={capacityValue} fillPercentage={fillPercentage} fillColor={fillColor} maxCBM={maxCapacity} isAir={isAirContainer} />
+        {cbmProfit && <ContainerProfitCard cbmProfit={cbmProfit} />}
         <ContainerWaypointSection 
           containerId={containerId} 
           containerStatus={container.status}

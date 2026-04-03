@@ -39,6 +39,13 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
 }) => {
   const typeConfig = NOTIFICATION_TYPE_CONFIG[notification.type] || NOTIFICATION_TYPE_CONFIG.GENERAL;
   const catConfig = NOTIFICATION_CATEGORY_CONFIG[notification.category] || NOTIFICATION_CATEGORY_CONFIG.INFO;
+  
+  // Ensure we have valid config values
+  const safeIcon = typeConfig?.icon || 'bell';
+  const safeLabel = typeConfig?.label || 'Notification';
+  const safeDescription = typeConfig?.description || 'Nouvelle notification';
+  const safeCatColor = catConfig?.color || '#3B82F6';
+  const safeCatBgColor = catConfig?.backgroundColor || 'rgba(59, 130, 246, 0.1)';
   const relativeTime = formatRelativeTime(notification.createdAt);
   const isUnread = !notification.isRead;
 
@@ -89,15 +96,15 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
           ]}
         >
           {/* Color accent bar */}
-          <View style={[styles.accentBar, { backgroundColor: catConfig.color }]} />
+          <View style={[styles.accentBar, { backgroundColor: safeCatColor }]} />
 
           <View style={styles.cardContent}>
             {/* Icon */}
-            <View style={[styles.iconCircle, { backgroundColor: catConfig.backgroundColor }]}>
+            <View style={[styles.iconCircle, { backgroundColor: safeCatBgColor }]}>
               <MaterialCommunityIcons
-                name={typeConfig.icon as any}
+                name={safeIcon as any}
                 size={22}
-                color={catConfig.color}
+                color={safeCatColor}
               />
             </View>
 
@@ -108,21 +115,21 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
                   style={[styles.title, isUnread && styles.unreadTitle]}
                   numberOfLines={1}
                 >
-                  {notification.title}
+                  {notification.title || safeLabel}
                 </Text>
                 {isUnread && (
-                  <View style={[styles.unreadDot, { backgroundColor: catConfig.color }]} />
+                  <View style={[styles.unreadDot, { backgroundColor: safeCatColor }]} />
                 )}
               </View>
 
               <Text style={styles.message} numberOfLines={2}>
-                {notification.message}
+                {notification.message || safeDescription}
               </Text>
 
               <View style={styles.metaRow}>
-                <View style={[styles.typeBadge, { backgroundColor: catConfig.backgroundColor }]}>
-                  <Text style={[styles.typeLabel, { color: catConfig.color }]}>
-                    {typeConfig.label}
+                <View style={[styles.typeBadge, { backgroundColor: safeCatBgColor }]}>
+                  <Text style={[styles.typeLabel, { color: safeCatColor }]}>
+                    {safeLabel}
                   </Text>
                 </View>
                 <Text style={styles.time}>{relativeTime}</Text>

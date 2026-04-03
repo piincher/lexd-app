@@ -24,24 +24,29 @@ const InfoRow = ({
    icon,
    label,
    value,
+   optional,
 }: {
    icon: string;
    label: string;
    value?: string | null;
-}) => (
-   <>
-      <View style={styles.row}>
-         <View style={styles.rowLeft}>
-            <MaterialCommunityIcons name={icon as any} size={18} color="#6B7280" />
-            <Text style={styles.label}>{label}</Text>
+   optional?: boolean;
+}) => {
+   if (optional && !value) return null;
+   return (
+      <>
+         <View style={styles.row}>
+            <View style={styles.rowLeft}>
+               <MaterialCommunityIcons name={icon as any} size={18} color="#6B7280" />
+               <Text style={styles.label}>{label}</Text>
+            </View>
+            <Text style={styles.value} numberOfLines={1}>
+               {value || "—"}
+            </Text>
          </View>
-         <Text style={styles.value} numberOfLines={1}>
-            {value || "N/A"}
-         </Text>
-      </View>
-      <Divider style={styles.divider} />
-   </>
-);
+         <Divider style={styles.divider} />
+      </>
+   );
+};
 
 export const OrderShippingCard: React.FC<OrderShippingCardProps> = ({ order }) => (
    <Card style={styles.card}>
@@ -73,16 +78,19 @@ export const OrderShippingCard: React.FC<OrderShippingCardProps> = ({ order }) =
                   order.currentPosition.coordinates.length - 1
                ]?.location
             }
+            optional
          />
          <InfoRow
             icon="calendar-arrow-right"
             label="Date de départ"
-            value={formatDate(order.departureDate)}
+            value={order.departureDate ? formatDate(order.departureDate) : null}
+            optional
          />
          <InfoRow
             icon="calendar-check"
             label="Date de réception"
-            value={formatDate(order.dateOfReceipt || order.dateOfReception)}
+            value={(order.dateOfReceipt || order.dateOfReception) ? formatDate(order.dateOfReceipt || order.dateOfReception) : null}
+            optional
          />
          <InfoRow
             icon="update"
