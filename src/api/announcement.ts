@@ -19,7 +19,7 @@ export interface announcementProps {
 }
 
 export const fetchAnnouncement = async () => {
-    const response = await axiosInstance.get<announcementProps[]>(API_URL.getAnoncement);
+    const response = await axiosInstance.get<announcementProps>(API_URL.getAnoncement);
     return response.data;
 };
 

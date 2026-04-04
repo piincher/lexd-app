@@ -1,6 +1,6 @@
 /**
  * GoodsListSearch - Search bar with glass effect
- * SRP: Search input with clear button
+ * SRP: Search input with clear button and filter trigger
  */
 
 import React from 'react';
@@ -13,12 +13,16 @@ interface GoodsListSearchProps {
   value: string;
   onChangeText: (text: string) => void;
   onClear: () => void;
+  onFilterPress: () => void;
+  hasActiveFilters?: boolean;
 }
 
-export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({ 
-  value, 
-  onChangeText, 
-  onClear 
+export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
+  value,
+  onChangeText,
+  onClear,
+  onFilterPress,
+  hasActiveFilters = false,
 }) => (
   <View style={styles.wrapper}>
     <LinearGradient colors={['#FFFFFF', '#FAFAFA']} style={styles.container}>
@@ -34,7 +38,12 @@ export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
         <TouchableOpacity onPress={onClear} style={styles.clearButton}>
           <Ionicons name="close-circle" size={22} color={Theme.neutral[400]} />
         </TouchableOpacity>
-      ) : null}
+      ) : (
+        <TouchableOpacity onPress={onFilterPress} style={styles.filterButton}>
+          <Ionicons name="options-outline" size={22} color={hasActiveFilters ? Theme.primary[500] : Theme.neutral[400]} />
+          {hasActiveFilters && <View style={styles.filterBadge} />}
+        </TouchableOpacity>
+      )}
     </LinearGradient>
   </View>
 );
@@ -65,6 +74,24 @@ const styles = StyleSheet.create({
   },
   clearButton: {
     padding: 4,
+  },
+  filterButton: {
+    width: 36,
+    height: 36,
+    borderRadius: Theme.radius.md,
+    backgroundColor: Theme.primary[100],
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  filterBadge: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: Theme.primary[500],
   },
 });
 

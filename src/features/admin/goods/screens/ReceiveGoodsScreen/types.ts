@@ -81,6 +81,17 @@ export const receiveGoodsSchema = z.object({
   receivedByName: z.string()
     .min(1, 'Le nom du réceptionnaire est requis'),
   
+  expressTrackingNumber: z.string()
+    .optional(),
+  
+  receivedDate: z.string()
+    .optional()
+    .refine((val) => {
+      if (!val) return true;
+      const d = new Date(val);
+      return !isNaN(d.getTime());
+    }, { message: 'Date de réception invalide' }),
+  
   condition: z.enum(['new', 'used', 'damaged'])
     .default('new'),
 }).refine((data) => {
@@ -118,9 +129,9 @@ export interface GoodsDimensionsInputProps extends ReceiveGoodsFormSectionProps 
 }
 
 export interface GoodsPhotosUploadProps {
-  photoUri: string | null;
+  photoUris: string[];
   onPhotoSelected: (uri: string) => void;
-  onPhotoRemoved: () => void;
+  onPhotoRemoved: (uri: string) => void;
 }
 
 export interface GoodsConditionSelectorProps extends ReceiveGoodsFormSectionProps {}

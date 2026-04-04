@@ -99,15 +99,15 @@ export const useReceiveGoods = () => {
   return useMutation({
     mutationFn: async ({
       data,
-      photoUri,
+      photoUris,
       onProgress,
     }: {
       data: ReceiveGoodsInput;
-      photoUri?: string;
+      photoUris?: string[];
       onProgress?: (progress: number) => void;
     }) => {
-      if (photoUri) {
-        return goodsService.receiveWithPhoto(data, photoUri, onProgress);
+      if (photoUris && photoUris.length > 0) {
+        return goodsService.receiveWithPhoto(data, photoUris, onProgress);
       }
       return goodsService.receive(data);
     },

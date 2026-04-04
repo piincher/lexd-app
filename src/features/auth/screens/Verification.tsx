@@ -28,7 +28,7 @@ import { Notification } from "@src/components/Notification/Notification";
 import { useVerification } from "../hooks/useVerification";
 import { useLogin } from "../hooks/useLogin";
 
-const OTP_LENGTH = 4;
+const OTP_LENGTH = 6;
 
 const Verification = ({ route, navigation }: RootStackScreenProps<"Verification">) => {
    const { colors, isDark } = useAppTheme();
@@ -167,7 +167,7 @@ const Verification = ({ route, navigation }: RootStackScreenProps<"Verification"
                      Verification
                   </Text>
                   <Text style={[styles.heroSubtitle, { color: colors.text.secondary }]}>
-                     Entrez le code a 4 chiffres envoye au
+                     Entrez le code a 6 chiffres envoye au
                   </Text>
                   <View style={styles.phoneHighlight}>
                      <MaterialCommunityIcons name="phone-outline" size={14} color="#22C55E" />
@@ -293,7 +293,7 @@ const Verification = ({ route, navigation }: RootStackScreenProps<"Verification"
                {/* ── Footer ── */}
                <Animated.View entering={FadeIn.delay(400).duration(400)} style={styles.footer}>
                   <Text style={[styles.footerText, { color: colors.text.disabled }]}>
-                     © {new Date().getFullYear()} ChinaLink Express. Tous droits reserves
+                     made with ❤️ by nuvotech.tech, paris-nanjing +8617865673053
                   </Text>
                </Animated.View>
             </ScrollView>

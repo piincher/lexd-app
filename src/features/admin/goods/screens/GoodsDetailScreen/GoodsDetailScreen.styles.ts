@@ -135,6 +135,13 @@ export const styles = StyleSheet.create({
     width: '100%',
     height: 200,
   },
+  photoWrapper: {
+    position: 'relative',
+  },
+  photo: {
+    width,
+    height: 200,
+  },
   photoOverlay: {
     position: 'absolute',
     bottom: 0,
@@ -147,6 +154,20 @@ export const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 13,
     fontWeight: '600',
+  },
+  photoBadge: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+  },
+  photoBadgeText: {
+    color: '#FFF',
+    fontSize: 12,
+    fontWeight: '700',
   },
 
   // Section Card
@@ -175,6 +196,12 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     color: Theme.neutral[600],
     lineHeight: 22,
+  },
+  trackingNumber: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: Theme.neutral[800],
+    letterSpacing: 0.5,
   },
 
   // Client Section

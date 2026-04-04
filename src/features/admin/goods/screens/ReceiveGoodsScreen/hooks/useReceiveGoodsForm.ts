@@ -22,6 +22,8 @@ const DEFAULT_VALUES: ReceiveGoodsFormData = {
   unitPrice: '',
   location: '',
   receivedByName: '',
+  expressTrackingNumber: '',
+  receivedDate: '',
   condition: 'new',
 };
 
@@ -41,8 +43,10 @@ interface UseReceiveGoodsFormReturn {
   // Additional state
   selectedClient: userData | null;
   setSelectedClient: (client: userData | null) => void;
-  photoUri: string | null;
-  setPhotoUri: (uri: string | null) => void;
+  photoUris: string[];
+  setPhotoUris: (uris: string[]) => void;
+  addPhotoUri: (uri: string) => void;
+  removePhotoUri: (uri: string) => void;
   useDimensions: boolean;
   setUseDimensions: (use: boolean) => void;
   
@@ -78,8 +82,16 @@ export const useReceiveGoodsForm = (
   
   // Additional UI state
   const [selectedClient, setSelectedClient] = useState<userData | null>(null);
-  const [photoUri, setPhotoUri] = useState<string | null>(null);
+  const [photoUris, setPhotoUris] = useState<string[]>([]);
   const [useDimensions, setUseDimensions] = useState(true);
+
+  const addPhotoUri = useCallback((uri: string) => {
+    setPhotoUris((prev) => (prev.includes(uri) ? prev : [...prev, uri]));
+  }, []);
+
+  const removePhotoUri = useCallback((uri: string) => {
+    setPhotoUris((prev) => prev.filter((u) => u !== uri));
+  }, []);
   
   /**
    * Calculate CBM based on current input mode and shipping mode
@@ -153,6 +165,8 @@ export const useReceiveGoodsForm = (
       unitPrice: parseFloat(watchedValues.unitPrice.replace(',', '.')),
       location: watchedValues.location.toUpperCase().trim(),
       receivedByName: watchedValues.receivedByName.trim(),
+      expressTrackingNumber: watchedValues.expressTrackingNumber?.trim() || undefined,
+      receivedDate: watchedValues.receivedDate || undefined,
       shippingMode: watchedValues.shippingMode || 'SEA',
     };
     
@@ -181,7 +195,7 @@ export const useReceiveGoodsForm = (
       quantity: initialQuantity.toString(),
     });
     setSelectedClient(null);
-    setPhotoUri(null);
+    setPhotoUris([]);
     setUseDimensions(true);
   }, [reset, initialQuantity]);
   
@@ -194,8 +208,10 @@ export const useReceiveGoodsForm = (
     formState,
     selectedClient,
     setSelectedClient,
-    photoUri,
-    setPhotoUri,
+    photoUris,
+    setPhotoUris,
+    addPhotoUri,
+    removePhotoUri,
     useDimensions,
     setUseDimensions: handleToggleDimensions,
     calculatedCBM,

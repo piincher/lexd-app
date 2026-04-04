@@ -34,6 +34,8 @@ import {
   setNotificationNavigationRef,
 } from "../../shared/notifications/notificationHandlers";
 import { setupNotificationCategories } from "../../shared/notifications/notificationCategories";
+import apiClient from "../../api/client";
+import { useAuth } from "@src/store/Auth";
 
 // ============================================================================
 // Types
@@ -201,6 +203,12 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   useEffect(() => {
     const getTokenAndRegister = async () => {
       if (permissionStatus === "granted" && autoRegister && !isRegistered) {
+        const authToken = useAuth.getState().token;
+        if (!authToken || authToken.trim() === '') {
+          // Not authenticated yet, skip registration and retry later
+          return;
+        }
+
         try {
           const token = (
             await Notifications.getExpoPushTokenAsync({
@@ -213,19 +221,15 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
           setPushToken(token);
 
           // Register with backend
-          const response = await fetch("/api/v1/users/me/device-token", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+          try {
+            await apiClient.post("/user/me/device-token", {
               token,
               platform: Platform.OS,
-            }),
-          });
-
-          if (response.ok) {
+            });
             setIsRegistered(true);
+          } catch (apiErr) {
+            console.error("[NotificationProvider] API registration failed:", apiErr);
+            // Don't throw - token will be retried on next app launch
           }
         } catch (err) {
           console.error("[NotificationProvider] Token registration error:", err);
@@ -343,20 +347,12 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     setError(null);
 
     try {
-      const response = await fetch("/api/v1/users/me/device-token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          token: pushToken,
-          platform: Platform.OS,
-        }),
+      await apiClient.post("/user/me/device-token", {
+        token: pushToken,
+        platform: Platform.OS,
       });
-
-      const success = response.ok;
-      setIsRegistered(success);
-      return success;
+      setIsRegistered(true);
+      return true;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
       setError(errorMessage);
@@ -376,18 +372,9 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     setError(null);
 
     try {
-      const response = await fetch(
-        `/api/v1/users/me/device-token/${pushToken}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      const success = response.ok;
-      if (success) {
-        setIsRegistered(false);
-      }
-      return success;
+      await apiClient.delete(`/user/me/device-token/${pushToken}`);
+      setIsRegistered(false);
+      return true;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
       setError(errorMessage);

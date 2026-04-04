@@ -13,7 +13,7 @@ interface ClientStats {
 export const useClientStats = (clients: userData[]): ClientStats => {
   return useMemo(() => ({
     total: clients.length,
-    active: clients.filter(c => !c.blocked).length,
-    blocked: clients.filter(c => c.blocked).length,
+    active: clients.filter(c => !c.blocked?.isBlocked).length,
+    blocked: clients.filter(c => c.blocked?.isBlocked).length,
   }), [clients]);
 };

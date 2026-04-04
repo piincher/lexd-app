@@ -36,9 +36,9 @@ export const ReceiveGoodsScreen: React.FC = () => {
               useDimensions={form.useDimensions}
               onToggleDimensions={form.setUseDimensions}
               calculatedCBM={form.calculatedCBM}
-              photoUri={form.photoUri}
-              onPhotoSelected={form.setPhotoUri}
-              onPhotoRemoved={() => form.setPhotoUri(null)}
+              photoUris={form.photoUris}
+              onPhotoSelected={form.addPhotoUri}
+              onPhotoRemoved={form.removePhotoUri}
               totalCost={form.totalCost}
             />
           </View>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { ScrollView, RefreshControl, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Card, Text } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { useGoodsDetailScreen } from './hooks';
 import {
@@ -43,8 +45,19 @@ export const GoodsDetailScreen: React.FC = () => {
           goodsId={goods.goodsId}
           onShare={actions.handleShareQR}
         />
-        <PhotoCard photoUrl={goods.photos?.[0]} />
+        <PhotoCard photoUrls={goods.photos} />
         <DescriptionCard description={goods.description} />
+        {goods.expressTrackingNumber ? (
+          <Card style={styles.sectionCard}>
+            <Card.Content>
+              <View style={styles.sectionHeader}>
+                <MaterialCommunityIcons name="truck-fast" size={20} color={Theme.primary[600]} />
+                <Text style={styles.sectionTitle}>N° de suivi express</Text>
+              </View>
+              <Text style={styles.trackingNumber}>{goods.expressTrackingNumber}</Text>
+            </Card.Content>
+          </Card>
+        ) : null}
         <ClientCard client={client} />
         <PropertiesCard
           actualCBM={goods.actualCBM}

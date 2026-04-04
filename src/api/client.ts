@@ -33,8 +33,8 @@ const API_CONFIG = {
     timeout: 15000,
   },
   production: {
-    baseURL: 'https://api.myempirebymyma.com/api/v1',
-    baseURLV2: 'https://api.myempirebymyma.com/api/v2',
+    baseURL: 'https://api.chinalinkexpress.com/api/v1',
+    baseURLV2: 'https://api.chinalinkexpress.com/api/v2',
     timeout: 15000,
   },
 } as const;

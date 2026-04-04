@@ -194,7 +194,7 @@ export const useReceiveGoodsScreen = () => {
       console.log('[ReceiveGoods] Submitting goods...');
       const result = await receiveGoodsMutation.mutateAsync({
         data: submitData,
-        photoUri: formHook.photoUri || undefined,
+        photoUris: formHook.photoUris.length > 0 ? formHook.photoUris : undefined,
       });
 
       // Log full response to understand the structure
@@ -290,8 +290,9 @@ export const useReceiveGoodsScreen = () => {
       shippingMode,
       selectedClient: formHook.selectedClient,
       setSelectedClient: formHook.setSelectedClient,
-      photoUri: formHook.photoUri,
-      setPhotoUri: formHook.setPhotoUri,
+      photoUris: formHook.photoUris,
+      addPhotoUri: formHook.addPhotoUri,
+      removePhotoUri: formHook.removePhotoUri,
       useDimensions: formHook.useDimensions,
       setUseDimensions: formHook.setUseDimensions,
       calculatedCBM: formHook.calculatedCBM,

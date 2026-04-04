@@ -1,6 +1,5 @@
 /**
- * OnboardingIndicator - Dot indicators for onboarding slides
- * Animated scale and opacity based on scroll position
+ * OnboardingIndicator - Modern animated dot indicators
  */
 
 import React from "react";
@@ -13,6 +12,9 @@ interface OnboardingIndicatorProps {
   width?: number;
 }
 
+const DOT_SIZE = 10;
+const ACTIVE_DOT_WIDTH = 28;
+
 export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
   scrollX,
   count,
@@ -22,16 +24,25 @@ export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
     <View style={styles.container}>
       {Array.from({ length: count }).map((_, i) => {
         const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
-        
+
+        // Scale animation
         const scale = scrollX.interpolate({
           inputRange,
-          outputRange: [0.8, 1.4, 0.8],
+          outputRange: [0.8, 1, 0.8],
           extrapolate: "clamp",
         });
-        
+
+        // Opacity animation
         const opacity = scrollX.interpolate({
           inputRange,
           outputRange: [0.4, 1, 0.4],
+          extrapolate: "clamp",
+        });
+
+        // Width animation for active state
+        const dotWidth = scrollX.interpolate({
+          inputRange,
+          outputRange: [DOT_SIZE, ACTIVE_DOT_WIDTH, DOT_SIZE],
           extrapolate: "clamp",
         });
 
@@ -41,6 +52,7 @@ export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
             style={[
               styles.dot,
               {
+                width: dotWidth,
                 opacity,
                 transform: [{ scale }],
               },
@@ -54,18 +66,15 @@ export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    bottom: 100,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    gap: 8,
   },
   dot: {
-    height: 10,
-    width: 10,
-    borderRadius: 5,
-    backgroundColor: "#fff",
-    margin: 8,
+    height: DOT_SIZE,
+    borderRadius: DOT_SIZE / 2,
+    backgroundColor: "#FFFFFF",
   },
 });
 

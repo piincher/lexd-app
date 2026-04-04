@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView, Keyboard } from 'react-native';
+import { View, StyleSheet, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
 import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated, { FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated';
@@ -87,7 +87,7 @@ const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
     }
     return (
       usersData
-        ?.filter((u: any) => u.phoneNumber && !u.blocked)
+        ?.filter((u: any) => u.phoneNumber && !u.blocked?.isBlocked)
         .map((u: any) => ({
           id: u.phoneNumber,
           name: `${u.firstName} ${u.lastName}`.trim(),
@@ -184,13 +184,11 @@ const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          <RecipientSelector
+        <View style={styles.content}>
+          <View style={styles.recipientSection}>
+            <RecipientSelector
             mode={mode}
             onModeChange={handleModeChange}
             recipients={allRecipients}
@@ -206,6 +204,7 @@ const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
             onFetchByDate={handleFetchByDate}
             isFetchingByDate={isFetchingByDate}
           />
+          </View>
 
           <MessageComposer
             message={message}
@@ -214,7 +213,7 @@ const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
             isSending={isSending}
             onSend={handleSendPress}
           />
-        </ScrollView>
+        </View>
       </KeyboardAvoidingView>
 
       <Calendar
@@ -263,8 +262,11 @@ const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
-  scrollContent: {
-    flexGrow: 1,
+  content: {
+    flex: 1,
+  },
+  recipientSection: {
+    flex: 1,
   },
   successOverlay: {
     ...StyleSheet.absoluteFillObject,

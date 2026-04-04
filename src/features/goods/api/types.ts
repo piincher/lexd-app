@@ -18,6 +18,7 @@ export interface Goods {
   weight: number;
   quantity: number;
   description: string;
+  expressTrackingNumber?: string;
   shippingMode?: 'AIR' | 'SEA';
   status: GoodsStatus;
   photos: string[];

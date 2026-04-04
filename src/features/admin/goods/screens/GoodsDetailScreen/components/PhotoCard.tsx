@@ -1,20 +1,36 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, ScrollView } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { styles } from '../GoodsDetailScreen.styles';
 
 interface PhotoCardProps {
-  photoUrl?: string;
+  photoUrls?: string[];
 }
 
-export const PhotoCard: React.FC<PhotoCardProps> = ({ photoUrl }) => {
-  if (!photoUrl) return null;
+export const PhotoCard: React.FC<PhotoCardProps> = ({ photoUrls }) => {
+  const urls = photoUrls?.filter(Boolean) || [];
+  if (urls.length === 0) return null;
 
   return (
     <Card style={styles.photoCard}>
-      <Image source={{ uri: photoUrl }} style={styles.photo} resizeMode="cover" />
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {urls.map((url, index) => (
+          <View key={`${url}_${index}`} style={styles.photoWrapper}>
+            <Image source={{ uri: url }} style={styles.photo} resizeMode="cover" />
+            {urls.length > 1 && (
+              <View style={styles.photoBadge}>
+                <Text style={styles.photoBadgeText}>
+                  {index + 1}/{urls.length}
+                </Text>
+              </View>
+            )}
+          </View>
+        ))}
+      </ScrollView>
       <View style={styles.photoOverlay}>
-        <Text style={styles.photoLabel}>Photo de la marchandise</Text>
+        <Text style={styles.photoLabel}>
+          {urls.length > 1 ? 'Photos de la marchandise' : 'Photo de la marchandise'}
+        </Text>
       </View>
     </Card>
   );

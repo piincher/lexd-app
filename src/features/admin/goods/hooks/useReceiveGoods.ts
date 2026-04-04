@@ -34,7 +34,7 @@ export const useReceiveGoods = () => {
     try {
       const result = await receiveGoodsMutation.mutateAsync({
         data: submitData,
-        photoUri: form.photoUri || undefined,
+        photoUris: form.photoUris.length > 0 ? form.photoUris : undefined,
       });
       
       // Set success message based on order action

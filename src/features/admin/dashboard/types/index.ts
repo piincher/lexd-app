@@ -57,3 +57,30 @@ export interface UnassignedGoodsData {
   byAge: UnassignedGoodsByAge;
   oldestGoods: UnassignedGoodsItem[];
 }
+
+// Outstanding Payments List Types
+export interface OutstandingPaymentItem {
+  _id: string;
+  goodsId: string;
+  description: string;
+  clientId: string;
+  clientName: string;
+  phoneNumber: string;
+  totalCost: number;
+  amountPaid: number;
+  balanceDue: number;
+  paymentStatus: 'UNPAID' | 'PARTIAL';
+  shippingMode: string;
+  createdAt: string;
+  receivedAt: string;
+}
+
+export interface OutstandingPaymentsListData {
+  items: OutstandingPaymentItem[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}

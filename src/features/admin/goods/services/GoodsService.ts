@@ -84,14 +84,14 @@ export class GoodsService {
   }
 
   /**
-   * Receive new goods with photo upload
+   * Receive new goods with photo upload (multiple photos supported)
    */
   async receiveWithPhoto(
     data: ReceiveGoodsInput,
-    photoUri: string,
+    photoUris: string[],
     onProgress?: (progress: number) => void
   ): Promise<ApiResponse<ReceiveGoodsResponse>> {
-    const formData = this.createGoodsFormData(data, photoUri);
+    const formData = this.createGoodsFormData(data, photoUris);
     
     return uploadFile<Goods>(
       this.client,
@@ -177,11 +177,11 @@ export class GoodsService {
   // ============================================
 
   /**
-   * Create FormData for goods with photo
+   * Create FormData for goods with photos
    */
   private createGoodsFormData(
     data: ReceiveGoodsInput,
-    photoUri: string
+    photoUris: string[]
   ): FormData {
     const formData = new FormData();
 
@@ -200,17 +200,29 @@ export class GoodsService {
       formData.append('receivedByName', data.receivedByName);
     }
 
+    // Add expressTrackingNumber if present
+    if (data.expressTrackingNumber) {
+      formData.append('expressTrackingNumber', data.expressTrackingNumber);
+    }
+
+    // Add receivedDate if present
+    if (data.receivedDate) {
+      formData.append('receivedDate', data.receivedDate);
+    }
+
     // Add dimensions if present
     if (data.dimensions) {
       formData.append('dimensions', JSON.stringify(data.dimensions));
     }
 
-    // Add photo
-    formData.append('photo', {
-      uri: photoUri,
-      name: `goods_${Date.now()}.jpg`,
-      type: 'image/jpeg',
-    } as any);
+    // Add photos
+    photoUris.forEach((uri, index) => {
+      formData.append('photos', {
+        uri,
+        name: `goods_${Date.now()}_${index}.jpg`,
+        type: 'image/jpeg',
+      } as any);
+    });
 
     return formData;
   }

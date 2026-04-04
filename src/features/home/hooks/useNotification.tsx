@@ -60,7 +60,7 @@ async function registerForPushNotificationsAsync() {
 		}
 		token = (
 			await Notifications.getExpoPushTokenAsync({
-				projectId: Constants?.expoConfig?.extra?.eas.projectId,
+				projectId: Constants?.expoConfig?.extra?.eas?.projectId || process.env.EXPO_PUBLIC_EAS_PROJECT_ID || "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d",
 			})
 		).data;
 	} else {

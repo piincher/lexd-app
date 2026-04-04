@@ -1,33 +1,40 @@
 /**
- * OnboardingScreen - Main onboarding screen
- * Following SRP: Screen is a thin wrapper (< 100 lines)
- * Composition only - delegates to components and hooks
+ * OnboardingScreen - Modern onboarding experience
+ * Features: Animated backgrounds, smooth transitions, progress indicators
  */
 
 import React, { useCallback } from "react";
-import { View, useWindowDimensions, Animated } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Animated,
+  StatusBar,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { PublicStackScreenProps } from "@src/navigations/type";
 import { useOnboarding } from "../hooks/useOnboarding";
-import { OnboardingBackdrop } from "../components/OnboardingBackdrop";
-import { OnboardingSquare } from "../components/OnboardingSquare";
 import { OnboardingSlide } from "../components/OnboardingSlide";
 import { OnboardingIndicator } from "../components/OnboardingIndicator";
 import { OnboardingCTA } from "../components/OnboardingCTA";
-import { styles } from "./OnboardingScreen.styles";
+import { OnboardingProgress } from "../components/OnboardingProgress";
+import { OnboardingBackground } from "../components/OnboardingBackground";
 
 interface Props extends PublicStackScreenProps<"OnBoarding"> {}
 
+const { width, height } = Dimensions.get("window");
+
 export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
-  const { width } = useWindowDimensions();
-  const { 
-    scrollX, 
-    currentIndex, 
-    isLastSlide, 
-    slides, 
+  const {
+    scrollX,
+    currentIndex,
+    isLastSlide,
+    slides,
     bgColors,
     handleScroll,
     onMomentumScrollEnd,
     completeOnboarding,
+    goToNext,
     flatListRef,
   } = useOnboarding();
 
@@ -36,27 +43,100 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
     navigation.replace("CheckRoute");
   }, [completeOnboarding, navigation]);
 
+  // Interpolate background color based on scroll position
+  const backgroundColor = scrollX.interpolate({
+    inputRange: bgColors.map((_, i) => i * width),
+    outputRange: bgColors,
+  });
+
+  const renderItem = useCallback(
+    ({ item, index }: { item: typeof slides[0]; index: number }) => (
+      <OnboardingSlide
+        slide={item}
+        index={index}
+        totalSlides={slides.length}
+        width={width}
+      />
+    ),
+    [slides.length]
+  );
+
   return (
     <View style={styles.container}>
-      <OnboardingBackdrop scrollX={scrollX} colors={bgColors} />
-      <OnboardingSquare scrollX={scrollX} />
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       
-      <Animated.FlatList
-        ref={flatListRef}
-        horizontal
-        pagingEnabled
-        data={slides}
-        renderItem={({ item }) => <OnboardingSlide slide={item} width={width} />}
-        keyExtractor={(item) => item.id}
-        onScroll={handleScroll}
-        onMomentumScrollEnd={onMomentumScrollEnd}
-        showsHorizontalScrollIndicator={false}
-      />
-      
-      <OnboardingIndicator scrollX={scrollX} count={slides.length} currentIndex={currentIndex} />
-      <OnboardingCTA isLastSlide={isLastSlide} onPress={handleComplete} />
+      {/* Animated Background */}
+      <OnboardingBackground backgroundColor={backgroundColor} />
+
+      <SafeAreaView style={styles.safeArea}>
+        {/* Progress Bar */}
+        <OnboardingProgress
+          currentIndex={currentIndex}
+          totalSlides={slides.length}
+          scrollX={scrollX}
+          width={width}
+        />
+
+        {/* Slides */}
+        <Animated.FlatList
+          ref={flatListRef}
+          data={slides}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          bounces={false}
+          onScroll={handleScroll}
+          onMomentumScrollEnd={onMomentumScrollEnd}
+          scrollEventThrottle={16}
+          getItemLayout={(_, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          contentContainerStyle={styles.flatListContent}
+        />
+
+        {/* Bottom Section */}
+        <View style={styles.bottomSection}>
+          {/* Dot Indicators */}
+          <OnboardingIndicator
+            scrollX={scrollX}
+            count={slides.length}
+            currentIndex={currentIndex}
+            width={width}
+          />
+
+          {/* CTA Buttons */}
+          <OnboardingCTA
+            isLastSlide={isLastSlide}
+            onPress={isLastSlide ? handleComplete : goToNext}
+            onSkip={handleComplete}
+            currentIndex={currentIndex}
+            totalSlides={slides.length}
+          />
+        </View>
+      </SafeAreaView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  safeArea: {
+    flex: 1,
+  },
+  flatListContent: {
+    flexGrow: 1,
+  },
+  bottomSection: {
+    paddingHorizontal: 24,
+    paddingBottom: 32,
+    gap: 24,
+  },
+});
 
 export default OnboardingScreen;

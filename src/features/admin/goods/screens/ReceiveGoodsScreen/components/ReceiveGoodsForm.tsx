@@ -3,8 +3,8 @@
  * Composes all form sections with React Hook Form
  */
 
-import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, ScrollView, Pressable, Text } from 'react-native';
 import { Controller } from 'react-hook-form';
 import { GoodsDimensionsInput } from './GoodsDimensionsInput';
 import { GoodsPhotosUpload } from './GoodsPhotosUpload';
@@ -14,6 +14,8 @@ import { FormInput } from '../../../components/FormInput';
 import { ReceiveGoodsFormSectionProps, ClientSelectionProps } from '../../types';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
 import { CostSummary } from '../../../components/CostSummary';
+import { DatePickerModal } from 'react-native-paper-dates';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface ReceiveGoodsFormProps extends ReceiveGoodsFormSectionProps {
   // Client selection
@@ -26,10 +28,10 @@ interface ReceiveGoodsFormProps extends ReceiveGoodsFormSectionProps {
   onToggleDimensions: (use: boolean) => void;
   calculatedCBM: number;
   
-  // Photo
-  photoUri: string | null;
+  // Photos
+  photoUris: string[];
   onPhotoSelected: (uri: string) => void;
-  onPhotoRemoved: () => void;
+  onPhotoRemoved: (uri: string) => void;
   
   // Cost summary
   totalCost: number;
@@ -46,7 +48,7 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
   useDimensions,
   onToggleDimensions,
   calculatedCBM,
-  photoUri,
+  photoUris,
   onPhotoSelected,
   onPhotoRemoved,
   totalCost,
@@ -97,6 +99,22 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
             placeholder="Description de la marchandise"
             multiline
             numberOfLines={3}
+          />
+        )}
+      />
+
+      {/* Express Tracking Number */}
+      <Controller
+        control={control}
+        name="expressTrackingNumber"
+        render={({ field: { onChange, value } }) => (
+          <FormInput
+            label="N° de suivi express (optionnel)"
+            value={value}
+            onChangeText={onChange}
+            error={errors.expressTrackingNumber?.message}
+            placeholder="Ex: 1Z999AA10123456784"
+            autoCapitalize="characters"
           />
         )}
       />
@@ -202,6 +220,61 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
         )}
       />
 
+      {/* Received Date */}
+      <Controller
+        control={control}
+        name="receivedDate"
+        render={({ field: { value } }) => {
+          const [show, setShow] = useState(false);
+          const displayDate = value
+            ? new Date(value).toLocaleDateString('fr-FR')
+            : null;
+          return (
+            <View>
+              <Pressable
+                onPress={() => setShow(true)}
+                style={[
+                  styles.dateButton,
+                  { backgroundColor: 'rgba(255,255,255,0.06)', borderColor: 'rgba(0,0,0,0.06)' }
+                ]}
+              >
+                <MaterialCommunityIcons name="calendar" size={20} color="#22C55E" />
+                <Text style={styles.dateButtonText}>
+                  {displayDate || 'Date de réception (optionnel)'}
+                </Text>
+                {value && (
+                  <Pressable
+                    onPress={() => setValue('receivedDate', '')}
+                    hitSlop={8}
+                  >
+                    <MaterialCommunityIcons name="close-circle" size={18} color="#9CA3AF" />
+                  </Pressable>
+                )}
+              </Pressable>
+              {errors.receivedDate?.message && (
+                <Text style={styles.dateError}>{errors.receivedDate.message}</Text>
+              )}
+              <DatePickerModal
+                locale="fr"
+                mode="single"
+                visible={show}
+                onDismiss={() => setShow(false)}
+                date={value ? new Date(value) : undefined}
+                onConfirm={({ date }) => {
+                  setShow(false);
+                  if (date) {
+                    setValue('receivedDate', date.toISOString(), {
+                      shouldValidate: true,
+                    });
+                  }
+                }}
+                validRange={{ endDate: new Date() }}
+              />
+            </View>
+          );
+        }}
+      />
+
       {/* Condition */}
       <GoodsConditionSelector
         control={control}
@@ -210,9 +283,9 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
         watch={watch}
       />
 
-      {/* Photo Upload */}
+      {/* Photos Upload */}
       <GoodsPhotosUpload
-        photoUri={photoUri}
+        photoUris={photoUris}
         onPhotoSelected={onPhotoSelected}
         onPhotoRemoved={onPhotoRemoved}
       />
@@ -246,5 +319,26 @@ const styles = StyleSheet.create({
   halfColumn: {
     flex: 1,
     marginHorizontal: 6,
+  },
+  dateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 52,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    paddingHorizontal: 14,
+    marginTop: 4,
+    gap: 10,
+  },
+  dateButtonText: {
+    flex: 1,
+    fontSize: 15,
+    color: '#374151',
+  },
+  dateError: {
+    fontSize: 12,
+    color: '#EF4444',
+    marginTop: 4,
+    marginLeft: 4,
   },
 });

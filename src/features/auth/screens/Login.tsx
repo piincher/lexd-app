@@ -73,12 +73,22 @@ const Login = ({ navigation }: RootStackScreenProps<"Login">) => {
       const full = selectedCountry.code + trimmed;
 
       if (full === "22376696177" || full === "22317865673") {
-         appleLogin({ phone: full });
+         appleLogin({ phone: full }, {
+            onError: (err: any) => {
+               const msg = err?.response?.data?.message || err?.message || "Une erreur est survenue. Veuillez réessayer.";
+               setError(msg);
+            }
+         });
          return;
       }
 
       setFullPhone(full);
-      mutate(full);
+      mutate(full, {
+         onError: (err: any) => {
+            const msg = err?.response?.data?.message || err?.message || "Une erreur est survenue. Veuillez réessayer.";
+            setError(msg);
+         }
+      });
    }, [phone, selectedCountry, mutate, appleLogin, mixpanel]);
 
    useEffect(() => {

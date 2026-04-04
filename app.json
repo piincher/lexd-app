@@ -2,7 +2,7 @@
   "expo": {
     "name": "ChinaLinkExpress",
     "slug": "ChinaLinkExpress",
-    "version": "2.5.0",
+    "version": "2.6.0",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
     "userInterfaceStyle": "light",
@@ -28,12 +28,6 @@
         "expo-image-picker",
         {
           "cameraPermission": "L'application accède à votre caméra pour vous permettre de prendre des photos et de les partager avec nous dans le chat."
-        }
-      ],
-      [
-        "expo-media-library",
-        {
-          "photosPermission": "L'application accède à vos photos pour vous permettre de les partager avec nous dans le chat."
         }
       ],
       "expo-web-browser",

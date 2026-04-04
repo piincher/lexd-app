@@ -3,9 +3,13 @@ export { OnboardingScreen } from "./screens";
 export {
   OnboardingSlide,
   OnboardingIndicator,
-  OnboardingBackdrop,
   OnboardingCTA,
+  OnboardingProgress,
+  OnboardingBackground,
+  // Legacy exports (kept for backward compatibility)
+  OnboardingBackdrop,
   OnboardingSquare,
 } from "./components";
 export * from "./types";
 export * from "./constants";
+export * from "./hooks";

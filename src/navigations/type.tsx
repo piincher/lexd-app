@@ -32,6 +32,7 @@ export type RootStackParamList = {
    Orders: undefined;
    UserActiveOrders: { type: "air" | "sea" };
    AdminDashBoard: undefined;
+   OutstandingPaymentsList: undefined;
    ChooseShippingMethod: undefined;
    ShippingMethod: undefined;
    SeaShippingOrderDetails: { id: string };
@@ -138,6 +139,9 @@ export type RootStackParamList = {
    AdminReviews: undefined;
    // Promos Screen
    ManagePromos: undefined;
+   // Campaign Screens
+   CampaignList: undefined;
+   CreateCampaign: undefined;
    // Activity List
    ActivityList: undefined;
    // Client Certificate Detail

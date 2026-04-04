@@ -113,7 +113,12 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
    const logout = useAuth((state) => state.logOut);
    const { data, refetch: refetchUser } = useGetCurrentUser();
    const { data: balanceData, refetch: refetchBalance } = useBalance();
-   const { data: certificateProgress, isLoading: isCertLoading, error: certError, refetch: refetchCert } = useCertificateProgress();
+   const {
+      data: certificateProgress,
+      isLoading: isCertLoading,
+      error: certError,
+      refetch: refetchCert,
+   } = useCertificateProgress();
 
    const [refreshing, setRefreshing] = useState(false);
 
@@ -124,14 +129,10 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
    }, [refetchUser, refetchBalance, refetchCert]);
 
    const handleLogout = () => {
-      Alert.alert(
-         "Se deconnecter",
-         "Etes-vous sur de vouloir vous deconnecter ?",
-         [
-            { text: "Annuler", style: "cancel" },
-            { text: "Deconnecter", style: "destructive", onPress: logout },
-         ]
-      );
+      Alert.alert("Se deconnecter", "Etes-vous sur de vouloir vous deconnecter ?", [
+         { text: "Annuler", style: "cancel" },
+         { text: "Deconnecter", style: "destructive", onPress: logout },
+      ]);
    };
 
    const avatarUri = data?.avatar?.url;
@@ -162,9 +163,8 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
             {/* ─── Profile Header ─── */}
             <Animated.View entering={FadeInDown.duration(500).springify()}>
                <LinearGradient
-                  colors={isDark
-                     ? ['#15803D', '#166534', '#14532D']
-                     : ['#22C55E', '#16A34A', '#15803D']
+                  colors={
+                     isDark ? ["#15803D", "#166534", "#14532D"] : ["#22C55E", "#16A34A", "#15803D"]
                   }
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
@@ -193,7 +193,11 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                            {data?.firstName} {data?.lastName}
                         </Text>
                         <View style={styles.phoneRow}>
-                           <MaterialCommunityIcons name="phone-outline" size={13} color="rgba(255,255,255,0.7)" />
+                           <MaterialCommunityIcons
+                              name="phone-outline"
+                              size={13}
+                              color="rgba(255,255,255,0.7)"
+                           />
                            <Text style={styles.phoneNumber}>+{data?.phoneNumber}</Text>
                         </View>
                      </View>
@@ -202,7 +206,11 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                   {/* Balance Strip */}
                   <View style={styles.balanceStrip}>
                      <View style={styles.balanceLeft}>
-                        <MaterialCommunityIcons name="wallet-outline" size={20} color="rgba(255,255,255,0.85)" />
+                        <MaterialCommunityIcons
+                           name="wallet-outline"
+                           size={20}
+                           color="rgba(255,255,255,0.85)"
+                        />
                         <Text style={styles.balanceLabel}>Solde disponible</Text>
                      </View>
                      <Text style={styles.balanceValue}>{balanceFormatted} FCFA</Text>
@@ -215,52 +223,92 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                entering={FadeInDown.delay(100).duration(400).springify()}
                style={styles.quickStatsRow}
             >
-               <Pressable
-                  style={[styles.quickStatCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
+               {/* <Pressable
+                  style={[
+                     styles.quickStatCard,
+                     { backgroundColor: cardBg, borderColor: cardBorder },
+                  ]}
                   onPress={() => navigation.navigate("PastOrders" as any)}
                >
                   <View style={[styles.quickStatIcon, { backgroundColor: "rgba(59,130,246,0.1)" }]}>
-                     <MaterialCommunityIcons name="package-variant-closed" size={20} color="#3B82F6" />
+                     <MaterialCommunityIcons
+                        name="package-variant-closed"
+                        size={20}
+                        color="#3B82F6"
+                     />
                   </View>
-                  <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>Commandes</Text>
-                  <MaterialCommunityIcons name="chevron-right" size={16} color={colors.text.disabled} />
-               </Pressable>
+                  <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>
+                     Commandes
+                  </Text>
+                  <MaterialCommunityIcons
+                     name="chevron-right"
+                     size={16}
+                     color={colors.text.disabled}
+                  />
+               </Pressable> */}
 
                <Pressable
-                  style={[styles.quickStatCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
+                  style={[
+                     styles.quickStatCard,
+                     { backgroundColor: cardBg, borderColor: cardBorder },
+                  ]}
                   onPress={() => navigation.navigate("MyGoods" as any)}
                >
                   <View style={[styles.quickStatIcon, { backgroundColor: "rgba(34,197,94,0.1)" }]}>
                      <MaterialCommunityIcons name="cube-outline" size={20} color="#22C55E" />
                   </View>
-                  <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>Marchandises</Text>
-                  <MaterialCommunityIcons name="chevron-right" size={16} color={colors.text.disabled} />
+                  <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>
+                     Marchandises
+                  </Text>
+                  <MaterialCommunityIcons
+                     name="chevron-right"
+                     size={16}
+                     color={colors.text.disabled}
+                  />
                </Pressable>
 
                <Pressable
-                  style={[styles.quickStatCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
+                  style={[
+                     styles.quickStatCard,
+                     { backgroundColor: cardBg, borderColor: cardBorder },
+                  ]}
                   onPress={() => navigation.navigate("MyContainers" as any)}
                >
                   <View style={[styles.quickStatIcon, { backgroundColor: "rgba(245,158,11,0.1)" }]}>
                      <MaterialCommunityIcons name="truck-outline" size={20} color="#F59E0B" />
                   </View>
-                  <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>Conteneurs</Text>
-                  <MaterialCommunityIcons name="chevron-right" size={16} color={colors.text.disabled} />
+                  <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>
+                     Conteneurs
+                  </Text>
+                  <MaterialCommunityIcons
+                     name="chevron-right"
+                     size={16}
+                     color={colors.text.disabled}
+                  />
                </Pressable>
             </Animated.View>
 
             {/* ─── Achievements Section ─── */}
             <Animated.View entering={FadeInDown.delay(200).duration(400).springify()}>
                <View style={styles.sectionHeader}>
-                  <MaterialCommunityIcons name="trophy-outline" size={18} color={colors.primary.main} />
+                  <MaterialCommunityIcons
+                     name="trophy-outline"
+                     size={18}
+                     color={colors.primary.main}
+                  />
                   <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
                      Realisations
                   </Text>
                </View>
-               <View style={[styles.achievementsCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
-                  <CertifiedShipperCard 
-                     progress={certificateProgress} 
-                     isLoading={isCertLoading} 
+               <View
+                  style={[
+                     styles.achievementsCard,
+                     { backgroundColor: cardBg, borderColor: cardBorder },
+                  ]}
+               >
+                  <CertifiedShipperCard
+                     progress={certificateProgress}
+                     isLoading={isCertLoading}
                      error={certError}
                      onRetry={refetchCert}
                   />
@@ -273,14 +321,20 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
             {/* ─── Settings Menu ─── */}
             <Animated.View entering={FadeInDown.delay(300).duration(400).springify()}>
                <View style={styles.sectionHeader}>
-                  <MaterialCommunityIcons name="cog-outline" size={18} color={colors.primary.main} />
+                  <MaterialCommunityIcons
+                     name="cog-outline"
+                     size={18}
+                     color={colors.primary.main}
+                  />
                   <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
                      Parametres
                   </Text>
                </View>
 
                {/* Theme Toggle */}
-               <View style={[styles.menuCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
+               <View
+                  style={[styles.menuCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
+               >
                   <ThemeToggle variant="menu" />
                </View>
 
@@ -290,7 +344,12 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                      <Text style={[styles.menuGroupTitle, { color: colors.text.secondary }]}>
                         {section.title}
                      </Text>
-                     <View style={[styles.menuCard, { backgroundColor: cardBg, borderColor: cardBorder }]}>
+                     <View
+                        style={[
+                           styles.menuCard,
+                           { backgroundColor: cardBg, borderColor: cardBorder },
+                        ]}
+                     >
                         {section.items.map((item, index) => (
                            <React.Fragment key={item.title}>
                               {index > 0 && (
@@ -305,7 +364,12 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                                  ]}
                                  onPress={() => navigation.navigate(item.screen as any)}
                               >
-                                 <View style={[styles.menuIconCircle, { backgroundColor: item.iconBg }]}>
+                                 <View
+                                    style={[
+                                       styles.menuIconCircle,
+                                       { backgroundColor: item.iconBg },
+                                    ]}
+                                 >
                                     <MaterialCommunityIcons
                                        name={item.icon as any}
                                        size={20}
@@ -313,10 +377,20 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                                     />
                                  </View>
                                  <View style={styles.menuTextCol}>
-                                    <Text style={[styles.menuItemTitle, { color: colors.text.primary }]}>
+                                    <Text
+                                       style={[
+                                          styles.menuItemTitle,
+                                          { color: colors.text.primary },
+                                       ]}
+                                    >
                                        {item.title}
                                     </Text>
-                                    <Text style={[styles.menuItemSubtitle, { color: colors.text.secondary }]}>
+                                    <Text
+                                       style={[
+                                          styles.menuItemSubtitle,
+                                          { color: colors.text.secondary },
+                                       ]}
+                                    >
                                        {item.subtitle}
                                     </Text>
                                  </View>
@@ -349,10 +423,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
             </Animated.View>
 
             {/* ─── Footer ─── */}
-            <Animated.View
-               entering={FadeIn.delay(500).duration(500)}
-               style={styles.footer}
-            >
+            <Animated.View entering={FadeIn.delay(500).duration(500)} style={styles.footer}>
                <SocialMedia color={isDark ? "rgba(255,255,255,0.5)" : colors.text.disabled} />
                <Text style={[styles.versionText, { color: colors.text.disabled }]}>
                   v{Constants.expoConfig?.version}

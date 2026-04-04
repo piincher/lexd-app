@@ -60,6 +60,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       { id: "c5", title: "Certificate History", route: "CertificateHistory" },
       { id: "c6", title: "Avis Clients", route: "AdminReviews" },
       { id: "c7", title: "Promotions", route: "ManagePromos" },
+      { id: "c8", title: "Push Campaigns", route: "CampaignList" },
     ],
   },
   {

@@ -34,7 +34,9 @@ export const ManualOrderScreen: React.FC<AuthenticatedStackScreenProps<"ManualOr
   });
 
   const handleSubmit = (values: ManualOrderFormValues) => {
-    console.log("[ManualOrderScreen] Submitting:", values);
+    if (__DEV__) {
+      console.log("[ManualOrderScreen] Submitting:", values);
+    }
     mutate({
       ...values,
       userId: selectedUser?._id,
@@ -71,7 +73,9 @@ export const ManualOrderScreen: React.FC<AuthenticatedStackScreenProps<"ManualOr
           
           const canSubmit = hasRequiredFields && !isPending;
           
-          console.log("[Formik] canSubmit:", canSubmit, "values:", values);
+          if (__DEV__) {
+            console.log("[Formik] canSubmit:", canSubmit, "values:", values);
+          }
           
           const handleSelectUser = async (user: User | null) => {
             setSelectedUser(user);
@@ -137,8 +141,7 @@ export const ManualOrderScreen: React.FC<AuthenticatedStackScreenProps<"ManualOr
                   CRÉER LA COMMANDE
                 </Button>
                 
-                {/* Debug info - remove in production */}
-                {!canSubmit && (
+                {__DEV__ && !canSubmit && (
                   <View style={styles.debugContainer}>
                     <Text style={styles.debugText}>Champs requis:</Text>
                     {!values.clientName && (

@@ -23,6 +23,8 @@ import {
    ScanCodeScreen as ScanQRCode,
    SelectUserScreen as SelectUser,
    SendSmsScreen as SendSms,
+   CampaignListScreen,
+   CreateCampaignScreen,
    BatchUpdateDetailScreen as BatchUpdateDetail,
    ChooseShippingMethodScreen as ChooseShippingMethod,
    ShippingMethodScreen as ShippingMethod,
@@ -55,6 +57,7 @@ import {
    RecordPaymentScreen,
    PaymentDetailScreen,
    UnassignedGoodsScreen,
+   OutstandingPaymentsListScreen,
 } from "@src/features/admin";
 
 // Admin Payment History Screen (aliased to avoid conflict with payments feature)
@@ -79,7 +82,6 @@ import {
    HomeScreen,
    NotificationsScreen as Notifications,
    FAQScreen as Faq,
-   useNotification,
 } from "@src/features/home";
 
 // Features - Notifications
@@ -89,7 +91,7 @@ import NotificationDetailScreen from "@src/features/notifications/screens/Notifi
 import { CustomerDashboardScreen, ActivityListScreen } from "@src/features/customer/dashboard";
 
 // Features - Onboarding
-import { OnBoardingScreen as OnBoarding } from "@src/features/onboarding";
+import { OnboardingScreen as OnBoarding } from "@src/features/onboarding";
 
 // Features - Order Detail
 import { NewOrderDetailScreen } from "@src/features/order-detail";
@@ -173,8 +175,6 @@ const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 initSentry();
 initMixpanel();
 function AppWrapper() {
-   const { expoPushToken } = useNotification();
-
    const [appIsLoaded, setAppIsLoaded] = useState(false);
    const navigation = useRef<any>(null);
    const appLaunch = useAppLaunchStore((state) => state.isAppLaunchFirst);
@@ -278,6 +278,7 @@ function AppWrapper() {
                   <Stack.Screen name="BatchUpdateDetail" component={BatchUpdateDetail} />
                   <Stack.Screen name="EditOrder" component={EditOrder} />
                   <Stack.Screen name="AdminDashBoard" component={AdminDashBoard} />
+                  <Stack.Screen name="OutstandingPaymentsList" component={OutstandingPaymentsListScreen} />
                   <Stack.Screen name="UserActiveOrders" component={UserActiveOrders} />
                   <Stack.Screen name="ClientManagement" component={ClientManagement} />
                   <Stack.Screen name="ClientDetails" component={ClientDetails} />
@@ -339,6 +340,9 @@ function AppWrapper() {
                   <Stack.Screen name="AdminReviews" component={AdminReviewsScreen} />
                   {/* Promos Screens */}
                   <Stack.Screen name="ManagePromos" component={ManagePromosScreen} />
+                  {/* Campaign Screens */}
+                  <Stack.Screen name="CampaignList" component={CampaignListScreen} />
+                  <Stack.Screen name="CreateCampaign" component={CreateCampaignScreen} />
                </>
             ) : (
                <>
@@ -465,7 +469,7 @@ const App = () => {
    return (
       <QueryClientProvider client={client}>
          <ThemeProvider>
-            <NotificationProvider>
+            <NotificationProvider autoRequestPermission={true}>
                <GestureHandlerRootView style={{ flex: 1 }}>
                   <ThemedApp />
                </GestureHandlerRootView>

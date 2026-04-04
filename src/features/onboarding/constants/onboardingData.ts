@@ -4,36 +4,36 @@ import { OnboardingSlide } from "../types/onboarding.types";
 export const ONBOARDING_SLIDES: OnboardingSlide[] = [
   {
     id: "1",
-    title: "Envoyez des colis à vos proches par voie aérienne",
+    title: "Envoyez vos colis en toute simplicité",
     description:
-      "Nous vous aidons à envoyer des colis à vos proches en Afrique de l'ouest (Mali)!",
+      "Expédiez vos marchandises vers l'Afrique de l'Ouest (Mali) par voie aérienne ou maritime en quelques clics.",
     image: IMAGES.onboarding2,
-    bgColor: "#A5BBFF",
+    bgColor: "#6366F1", // Indigo
   },
   {
     id: "2",
-    title: "Suivez vos colis en temps réel",
+    title: "Suivi en temps réel",
     description:
-      "Nous vous permettons de suivre vos colis en temps réel et de savoir où ils se trouvent!",
+      "Suivez l'emplacement et l'état de vos colis à chaque étape de leur voyage, en temps réel.",
     image: IMAGES.onboarding1,
-    bgColor: "#DDBEFE",
+    bgColor: "#8B5CF6", // Violet
   },
   {
     id: "3",
-    title: "Soyez informé de l'état de vos colis en temps réel",
+    title: "Notifications instantanées",
     description:
-      "Nous vous informons de l'état de vos colis en temps réel et vous notifions de chaque étape!",
+      "Recevez des alertes à chaque étape importante : expédition, arrivée, douane, livraison.",
     image: IMAGES.onboarding3,
-    bgColor: "#FF63ED",
+    bgColor: "#EC4899", // Pink
   },
   {
     id: "4",
-    title: "Recuperez vos colis en toute sécurité",
+    title: "Livraison sécurisée",
     description:
-      "Nous vous permettons de récupérer vos colis en toute sécurité et en toute confiance!",
+      "Récupérez vos colis en toute sécurité grâce à notre réseau de distribution fiable.",
     image: IMAGES.onboarding4,
-    bgColor: "#B98EFF",
+    bgColor: "#14B8A6", // Teal
   },
 ];
 
-export const BACKGROUND_COLORS = ["#A5BBFF", "#DDBEFE", "#FF63ED", "#B98EFF"];
+export const BACKGROUND_COLORS = ONBOARDING_SLIDES.map((slide) => slide.bgColor);

@@ -260,6 +260,19 @@ const GoodsDetailScreen = ({
 						<Text style={styles.descriptionText}>{goods.description || 'Aucune description'}</Text>
 						<Divider style={styles.divider} />
 
+						{/* Express Tracking Number */}
+						{goods.expressTrackingNumber && (
+							<>
+								<View style={styles.infoRow}>
+									<Text style={styles.infoLabel}>N° de suivi express</Text>
+									<Text style={[styles.infoValue, { fontFamily: Fonts.bold, letterSpacing: 0.5 }]}>
+										{goods.expressTrackingNumber}
+									</Text>
+								</View>
+								<Divider style={styles.divider} />
+							</>
+						)}
+
 						{/* Dimensions */}
 						{hasDimensions && (
 							<>

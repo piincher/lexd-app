@@ -8,6 +8,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useGetAllGoods, goodsQueryKeys } from './useGoods';
 import { GoodsFilters, GoodsStatus } from '../types';
 import { ApiClientError } from '@src/api/client';
+import { userData } from '@src/constants/types';
+
+interface DateRange {
+  startDate: string;
+  endDate: string;
+}
 
 interface UseGoodsListOptions {
   initialStatus?: GoodsStatus | 'all';
@@ -15,39 +21,45 @@ interface UseGoodsListOptions {
 }
 
 interface UseGoodsListReturn {
-  // Data
   goods: any[];
   total: number;
   isLoading: boolean;
   isRefetching: boolean;
   error: ApiClientError | null;
-  
-  // Filters
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   selectedStatus: GoodsStatus | 'all';
   setSelectedStatus: (status: GoodsStatus | 'all') => void;
-  
-  // Actions
+  selectedClient: userData | null;
+  setSelectedClient: (client: userData | null) => void;
+  dateRange: DateRange | null;
+  setDateRange: (range: DateRange | null) => void;
   refetch: () => Promise<any>;
   handleRefresh: () => Promise<void>;
+  clearAllFilters: () => void;
+  hasFilters: boolean;
 }
 
 export const useGoodsList = (options: UseGoodsListOptions = {}): UseGoodsListReturn => {
   const { initialStatus = 'all', onError } = options;
   const queryClient = useQueryClient();
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<GoodsStatus | 'all'>(initialStatus);
+  const [selectedClient, setSelectedClient] = useState<userData | null>(null);
+  const [dateRange, setDateRange] = useState<DateRange | null>(null);
 
   const filters = useMemo<GoodsFilters>(() => ({
     ...(selectedStatus !== 'all' && { status: selectedStatus }),
     ...(searchQuery && { search: searchQuery }),
-  }), [selectedStatus, searchQuery]);
+    ...(selectedClient && { clientId: selectedClient._id }),
+    ...(dateRange && { startDate: dateRange.startDate, endDate: dateRange.endDate }),
+  }), [selectedStatus, searchQuery, selectedClient, dateRange]);
+
+  const hasFilters = !!searchQuery || selectedStatus !== 'all' || !!selectedClient || !!dateRange;
 
   const { data, isLoading, isRefetching, error, refetch } = useGetAllGoods(filters);
 
-  // Handle errors via effect for React Query v5 compatibility
   useEffect(() => {
     if (error && onError) {
       onError(error);
@@ -62,6 +74,13 @@ export const useGoodsList = (options: UseGoodsListOptions = {}): UseGoodsListRet
     await refetch();
   }, [queryClient, refetch]);
 
+  const clearAllFilters = useCallback(() => {
+    setSearchQuery('');
+    setSelectedStatus('all');
+    setSelectedClient(null);
+    setDateRange(null);
+  }, []);
+
   return {
     goods,
     total,
@@ -72,7 +91,13 @@ export const useGoodsList = (options: UseGoodsListOptions = {}): UseGoodsListRet
     setSearchQuery,
     selectedStatus,
     setSelectedStatus,
+    selectedClient,
+    setSelectedClient,
+    dateRange,
+    setDateRange,
     refetch,
     handleRefresh,
+    clearAllFilters,
+    hasFilters,
   };
 };

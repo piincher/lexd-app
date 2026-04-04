@@ -56,9 +56,19 @@ export const useLoginForm = () => {
       mixpanel.track("Login", { phone: trimmed });
 
       if (SPECIAL_PHONES.includes(fullPhone)) {
-         appleLogin({ phone: fullPhone });
+         appleLogin({ phone: fullPhone }, {
+            onError: (err: any) => {
+               const msg = err?.response?.data?.message || err?.message || "Une erreur est survenue. Veuillez réessayer.";
+               setError(msg);
+            }
+         });
       } else {
-         mutate(fullPhone);
+         mutate(fullPhone, {
+            onError: (err: any) => {
+               const msg = err?.response?.data?.message || err?.message || "Une erreur est survenue. Veuillez réessayer.";
+               setError(msg);
+            }
+         });
       }
    }, [phone, fullPhone, mutate, appleLogin, mixpanel]);
 

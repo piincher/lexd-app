@@ -84,7 +84,7 @@ export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {
       try {
          pushToken = (
             await Notifications.getExpoPushTokenAsync({
-               projectId: Constants?.expoConfig?.extra?.eas.projectId!,
+               projectId: Constants?.expoConfig?.extra?.eas?.projectId || process.env.EXPO_PUBLIC_EAS_PROJECT_ID || "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d",
             })
          ).data;
       } catch (e) {
@@ -147,7 +147,7 @@ export const loginPhoneOtpApple = async (data: { phone: string }) => {
       try {
          pushToken = (
             await Notifications.getExpoPushTokenAsync({
-               projectId: Constants?.expoConfig?.extra?.eas.projectId!,
+               projectId: Constants?.expoConfig?.extra?.eas?.projectId || process.env.EXPO_PUBLIC_EAS_PROJECT_ID || "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d",
             })
          ).data;
       } catch (e) {

@@ -23,19 +23,19 @@ export const ClientCard: React.FC<ClientCardProps> = ({
 }) => {
   const navigation = useNavigation<RootStackScreenProps<"ClientDetails">["navigation"]>();
   const avatarColors = getAvatarColor(`${client.firstName} ${client.lastName}`);
-  const borderColor = client.blocked ? "#EF4444" : "#10B981";
+  const borderColor = client.blocked?.isBlocked ? "#EF4444" : "#10B981";
   
   const handleBlockToggle = useCallback(() => {
     Alert.alert(
-      client.blocked ? "Débloquer le client ?" : "Bloquer le client ?",
-      client.blocked
+      client.blocked?.isBlocked ? "Débloquer le client ?" : "Bloquer le client ?",
+      client.blocked?.isBlocked
         ? `Êtes-vous sûr de vouloir débloquer ${client.firstName} ${client.lastName} ?`
         : `Êtes-vous sûr de vouloir bloquer ${client.firstName} ${client.lastName} ? Il ne pourra plus passer de commandes.`,
       [
         { text: "Annuler", style: "cancel" },
         {
-          text: client.blocked ? "Débloquer" : "Bloquer",
-          style: client.blocked ? "default" : "destructive",
+          text: client.blocked?.isBlocked ? "Débloquer" : "Bloquer",
+          style: client.blocked?.isBlocked ? "default" : "destructive",
           onPress: () => onToggleBlock(client._id),
         },
       ]
@@ -52,7 +52,7 @@ export const ClientCard: React.FC<ClientCardProps> = ({
         style={({ pressed }) => [
           styles.card,
           pressed && styles.cardPressed,
-          client.blocked && styles.blockedCard,
+          client.blocked?.isBlocked && styles.blockedCard,
         ]}
       >
         <View style={[styles.accentBorder, { backgroundColor: borderColor }]} />
@@ -73,7 +73,7 @@ export const ClientCard: React.FC<ClientCardProps> = ({
             <Text style={styles.name} numberOfLines={1}>
               {client.firstName} {client.lastName}
             </Text>
-            {client.blocked && (
+            {client.blocked?.isBlocked && (
               <View style={styles.blockedBadge}>
                 <Ionicons name="ban" size={10} color="#EF4444" />
                 <Text style={styles.blockedText}>Bloqué</Text>
@@ -97,15 +97,15 @@ export const ClientCard: React.FC<ClientCardProps> = ({
         <TouchableOpacity
           style={[
             styles.actionButton,
-            client.blocked ? styles.unblockButton : styles.blockButton,
+            client.blocked?.isBlocked ? styles.unblockButton : styles.blockButton,
           ]}
           onPress={handleBlockToggle}
           activeOpacity={0.8}
         >
           <Ionicons
-            name={client.blocked ? "lock-open" : "lock-closed"}
+            name={client.blocked?.isBlocked ? "lock-open" : "lock-closed"}
             size={18}
-            color={client.blocked ? "#10B981" : "#EF4444"}
+            color={client.blocked?.isBlocked ? "#10B981" : "#EF4444"}
           />
         </TouchableOpacity>
       </Pressable>

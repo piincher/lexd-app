@@ -83,9 +83,9 @@ export const NOTIFICATION_CHANNELS = {
 } as const;
 
 export const API_URL = {
-  registerDevice: '/users/me/device-token',
-  unregisterDevice: '/users/me/device-token',
-  updatePreferences: '/users/me/notification-preferences',
+  registerDevice: '/user/me/device-token',
+  unregisterDevice: '/user/me/device-token',
+  updatePreferences: '/user/me/notification-preferences',
 };
 
 export const defaultNotificationPreferences: NotificationPreference[] = [

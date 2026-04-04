@@ -12,6 +12,7 @@ import {
    Easing,
    Dimensions,
 } from "react-native";
+import { fetchAnnouncement } from "@src/api/announcement";
 
 type Announcement = {
    _id: string;
@@ -34,22 +35,20 @@ const FadingAnnouncement: React.FC = () => {
    const [scaleAnim] = useState(() => new Animated.Value(0.8));
 
    useEffect(() => {
-      const fetchAnnouncement = async () => {
+      const loadAnnouncement = async () => {
          try {
-            const response = await fetch(
-               "https://api.myempirebymyma.com/api/v1/announcement/active"
-            );
-            const data: Announcement = await response.json();
+            const data = await fetchAnnouncement();
 
             if (data && data.isActive) {
                setAnnouncement(data);
             }
          } catch (error) {
-            console.error("Error fetching announcement:", error);
+            // Silently fail - announcement is not critical
+            console.log("Announcement fetch failed:", error);
          }
       };
 
-      fetchAnnouncement();
+      loadAnnouncement();
    }, []);
 
    useEffect(() => {

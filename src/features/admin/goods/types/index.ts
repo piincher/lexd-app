@@ -73,6 +73,7 @@ export interface Goods {
   quantity: number;
   photos: string[];
   description: string;
+  expressTrackingNumber?: string;
   status: GoodsStatus;
   containerId?: string | ContainerInfo;
   unitPrice: number;
@@ -102,8 +103,9 @@ export interface ReceiveGoodsInput {
   quantity: number;
   unitPrice: number;
   location: string;
-  photoUrl?: string;
   receivedByName: string;
+  expressTrackingNumber?: string;
+  receivedDate?: string;
 }
 
 /**
@@ -141,6 +143,9 @@ export interface GoodsFilters extends BaseFilters {
   clientId?: string;
   containerId?: string;
   paymentStatus?: PaymentStatus;
+  search?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 /**
@@ -170,6 +175,8 @@ export interface GoodsFormData {
   unitPrice: string;
   location: string;
   receivedByName: string;
+  expressTrackingNumber: string;
+  receivedDate: string;
 }
 
 /**
@@ -187,6 +194,8 @@ export interface GoodsFormErrors {
   unitPrice?: string;
   location?: string;
   receivedByName?: string;
+  expressTrackingNumber?: string;
+  receivedDate?: string;
 }
 
 /**

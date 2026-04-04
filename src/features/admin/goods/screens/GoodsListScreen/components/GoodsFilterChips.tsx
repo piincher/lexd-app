@@ -11,20 +11,23 @@ import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { GoodsStatus } from '../../../types';
 
-interface FilterOption {
-  key: GoodsStatus | 'all';
-  label: string;
-  icon: string;
-}
+const STATUS_FILTERS: { key: GoodsStatus | 'all'; label: string; icon: string }[] = [
+  { key: 'all', label: 'Tous', icon: 'apps' },
+  { key: 'RECEIVED_AT_WAREHOUSE', label: 'Entrepôt', icon: 'home' },
+  { key: 'ASSIGNED_TO_CONTAINER', label: 'Container', icon: 'cube' },
+  { key: 'LOADED_IN_CONTAINER', label: 'Chargé', icon: 'archive' },
+  { key: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },
+  { key: 'ARRIVED_DESTINATION', label: 'Arrivé', icon: 'flag' },
+  { key: 'READY_FOR_PICKUP', label: 'Prêt', icon: 'hand-left' },
+  { key: 'DELIVERED', label: 'Livré', icon: 'checkmark-circle' },
+];
 
 interface GoodsFilterChipsProps {
-  filters: FilterOption[];
   selectedStatus: GoodsStatus | 'all';
   onSelect: (status: GoodsStatus | 'all') => void;
 }
 
 export const GoodsFilterChips: React.FC<GoodsFilterChipsProps> = ({
-  filters,
   selectedStatus,
   onSelect,
 }) => (
@@ -34,7 +37,7 @@ export const GoodsFilterChips: React.FC<GoodsFilterChipsProps> = ({
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.list}
     >
-      {filters.map((filter) => {
+      {STATUS_FILTERS.map((filter) => {
         const isSelected = selectedStatus === filter.key;
         return (
           <TouchableOpacity

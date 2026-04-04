@@ -8,7 +8,14 @@ export type userData = {
 		url: string;
 		public_id: string;
 	};
-	blocked: boolean;
+	blocked?: {
+		isBlocked: boolean;
+		blockedAt?: string;
+		blockedBy?: string;
+		blockedReason?: string;
+		blockedType?: "MANUAL" | "AUTO_BRUTE_FORCE" | null;
+		unblockInstructions?: string;
+	};
 	pushTokens?: string[];
 };
 

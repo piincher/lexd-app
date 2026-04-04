@@ -17,13 +17,14 @@ interface UseReceiveGoodsFormReturn {
   formData: GoodsFormData;
   errors: GoodsFormErrors;
   selectedClient: userData | null;
-  photoUri: string | null;
+  photoUris: string[];
   useDimensions: boolean;
   
   // Actions
   setFormField: (field: keyof GoodsFormData, value: string) => void;
   setSelectedClient: (client: userData | null) => void;
-  setPhotoUri: (uri: string | null) => void;
+  addPhotoUri: (uri: string) => void;
+  removePhotoUri: (uri: string) => void;
   setUseDimensions: (use: boolean) => void;
   clearFieldError: (field: keyof GoodsFormErrors) => void;
   clearAllErrors: () => void;
@@ -53,6 +54,8 @@ const INITIAL_FORM_DATA: GoodsFormData = {
   unitPrice: '',
   location: '',
   receivedByName: '',
+  expressTrackingNumber: '',
+  receivedDate: '',
 };
 
 /**
@@ -70,8 +73,16 @@ export const useReceiveGoodsForm = (
   });
   const [errors, setErrors] = useState<GoodsFormErrors>({});
   const [selectedClient, setSelectedClientState] = useState<userData | null>(null);
-  const [photoUri, setPhotoUriState] = useState<string | null>(null);
+  const [photoUris, setPhotoUris] = useState<string[]>([]);
   const [useDimensions, setUseDimensionsState] = useState(true);
+  
+  const addPhotoUri = (uri: string) => {
+    setPhotoUris((prev) => (prev.includes(uri) ? prev : [...prev, uri]));
+  };
+  
+  const removePhotoUri = (uri: string) => {
+    setPhotoUris((prev) => prev.filter((u) => u !== uri));
+  };
   
   // Validation and calculation hooks
   const { validate, isValid } = useGoodsFormValidation();
@@ -99,13 +110,6 @@ export const useReceiveGoodsForm = (
         setErrors(prev => ({ ...prev, clientPhone: undefined }));
       }
     }
-  };
-  
-  /**
-   * Set photo URI
-   */
-  const setPhotoUri = (uri: string | null) => {
-    setPhotoUriState(uri);
   };
   
   /**
@@ -158,7 +162,7 @@ export const useReceiveGoodsForm = (
     });
     setErrors({});
     setSelectedClientState(null);
-    setPhotoUriState(null);
+    setPhotoUris([]);
     setUseDimensionsState(true);
   };
   
@@ -216,6 +220,8 @@ export const useReceiveGoodsForm = (
       unitPrice: parseFloat(formData.unitPrice.replace(',', '.')),
       location: formData.location.toUpperCase().trim(),
       receivedByName: formData.receivedByName.trim(),
+      expressTrackingNumber: formData.expressTrackingNumber?.trim() || undefined,
+      receivedDate: formData.receivedDate || undefined,
     };
     
     // Add dimensions if using dimension mode
@@ -234,11 +240,12 @@ export const useReceiveGoodsForm = (
     formData,
     errors,
     selectedClient,
-    photoUri,
+    photoUris,
     useDimensions,
     setFormField,
     setSelectedClient,
-    setPhotoUri,
+    addPhotoUri,
+    removePhotoUri,
     setUseDimensions,
     clearFieldError,
     clearAllErrors,
