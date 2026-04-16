@@ -12,10 +12,10 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useNavigation } from "@react-navigation/native";
 
 import { Fonts } from "@src/constants/Fonts";
-import { COLORS } from "@src/constants/Colors";
 import { LIMIT } from "@src/constants/Dimensions";
 import { getActiveOrders, productType } from "@src/api/order";
 import { ListItemOrders } from "@src/components/ListItemOrders";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 const ORDERKEY = "past-orders";
 
@@ -37,7 +37,6 @@ const fetchPastOrders = async (
   page: number,
   shippingMethod: ShippingMode
 ): Promise<productType[]> => {
-  // Fetch both air and sea if "all", otherwise fetch specific method
   if (shippingMethod === "all") {
     const [airOrders, seaOrders] = await Promise.all([
       getActiveOrders(page, "Inactive", "air"),
@@ -50,7 +49,115 @@ const fetchPastOrders = async (
 
 const PastOrders: React.FC = () => {
   const navigation = useNavigation();
+  const { colors } = useAppTheme();
   const [shippingMode, setShippingMode] = useState<ShippingMode>("all");
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flex: 1,
+          backgroundColor: colors.background.default,
+        },
+        header: {
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          backgroundColor: colors.background.card,
+          borderBottomWidth: 1,
+          borderBottomColor: colors.border,
+        },
+        backButton: {
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        headerTitle: {
+          fontFamily: Fonts.bold,
+          fontSize: 18,
+          color: colors.text.primary,
+        },
+        placeholder: {
+          width: 40,
+        },
+        centerContainer: {
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        loadingText: {
+          marginTop: 16,
+          fontFamily: Fonts.meduim,
+          color: colors.text.secondary,
+        },
+        filtersContainer: {
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          backgroundColor: colors.background.card,
+          borderBottomWidth: 1,
+          borderBottomColor: colors.border,
+        },
+        filterRow: {
+          flexDirection: "row",
+          gap: 10,
+        },
+        filterChip: {
+          borderRadius: 20,
+          height: 36,
+          backgroundColor: colors.background.paper,
+        },
+        countContainer: {
+          paddingHorizontal: 16,
+          paddingVertical: 8,
+          backgroundColor: colors.background.default,
+        },
+        countText: {
+          fontFamily: Fonts.meduim,
+          fontSize: 14,
+          color: colors.text.secondary,
+        },
+        listContainer: {
+          flex: 1,
+        },
+        emptyContainer: {
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          paddingHorizontal: 32,
+        },
+        emptyTitle: {
+          fontSize: 20,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginTop: 16,
+        },
+        emptyText: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          textAlign: "center",
+          marginTop: 8,
+          marginBottom: 24,
+          lineHeight: 20,
+        },
+        browseButton: {
+          backgroundColor: colors.primary.main,
+          paddingVertical: 12,
+          paddingHorizontal: 24,
+          borderRadius: 8,
+        },
+        browseButtonText: {
+          color: colors.text.inverse,
+          fontFamily: Fonts.bold,
+          fontSize: 14,
+        },
+      }),
+    [colors]
+  );
 
   const {
     data,
@@ -93,17 +200,17 @@ const PastOrders: React.FC = () => {
               onPress={() => setShippingMode(option.value)}
               style={[
                 styles.filterChip,
-                isSelected && { backgroundColor: COLORS.Crimson },
+                isSelected && { backgroundColor: colors.primary.main },
               ]}
               textStyle={{
-                color: isSelected ? COLORS.white : COLORS.DimGray,
+                color: isSelected ? colors.text.inverse : colors.text.secondary,
                 fontFamily: isSelected ? Fonts.bold : Fonts.meduim,
               }}
               icon={() => (
                 <MaterialCommunityIcons
                   name={option.icon}
                   size={16}
-                  color={isSelected ? COLORS.white : COLORS.DimGray}
+                  color={isSelected ? colors.text.inverse : colors.text.secondary}
                 />
               )}
             >
@@ -120,7 +227,7 @@ const PastOrders: React.FC = () => {
       <MaterialCommunityIcons
         name="package-variant-closed"
         size={80}
-        color={COLORS.SlateGray}
+        color={colors.text.disabled}
       />
       <Text style={styles.emptyTitle}>Aucune commande terminée</Text>
       <Text style={styles.emptyText}>
@@ -147,13 +254,13 @@ const PastOrders: React.FC = () => {
             onPress={() => navigation.goBack()}
             style={styles.backButton}
           >
-            <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.DarkGrey} />
+            <MaterialCommunityIcons name="arrow-left" size={24} color={colors.text.primary} />
           </Pressable>
           <Text style={styles.headerTitle}>Commandes Terminées</Text>
           <View style={styles.placeholder} />
         </View>
         <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color={COLORS.Crimson} />
+          <ActivityIndicator size="large" color={colors.primary.main} />
           <Text style={styles.loadingText}>Chargement de vos commandes...</Text>
         </View>
       </SafeAreaView>
@@ -165,7 +272,7 @@ const PastOrders: React.FC = () => {
       {/* Header */}
       <View style={styles.header}>
         <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.DarkGrey} />
+          <MaterialCommunityIcons name="arrow-left" size={24} color={colors.text.primary} />
         </Pressable>
         <Text style={styles.headerTitle}>Commandes Terminées</Text>
         <View style={styles.placeholder} />
@@ -199,108 +306,5 @@ const PastOrders: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.lightBackground,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.Silver,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 18,
-    color: COLORS.DarkGrey,
-  },
-  placeholder: {
-    width: 40,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loadingText: {
-    marginTop: 16,
-    fontFamily: Fonts.meduim,
-    color: COLORS.DimGray,
-  },
-  filtersContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.Silver,
-  },
-  filterRow: {
-    flexDirection: "row",
-    gap: 10,
-  },
-  filterChip: {
-    borderRadius: 20,
-    height: 36,
-    backgroundColor: COLORS.lightBackground,
-  },
-  countContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: COLORS.lightBackground,
-  },
-  countText: {
-    fontFamily: Fonts.meduim,
-    fontSize: 14,
-    color: COLORS.DimGray,
-  },
-  listContainer: {
-    flex: 1,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 32,
-  },
-  emptyTitle: {
-    fontSize: 20,
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-    marginTop: 16,
-  },
-  emptyText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.DimGray,
-    textAlign: "center",
-    marginTop: 8,
-    marginBottom: 24,
-    lineHeight: 20,
-  },
-  browseButton: {
-    backgroundColor: COLORS.Crimson,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-  },
-  browseButtonText: {
-    color: COLORS.white,
-    fontFamily: Fonts.bold,
-    fontSize: 14,
-  },
-});
 
 export default PastOrders;

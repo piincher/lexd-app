@@ -83,7 +83,7 @@ export const certificateAdminApi = {
   sendToClient: (certificateId: string): Promise<ApiResponse<CertificateRecord>> =>
     axios.post(`${BASE_URL}/admin/send-to-client`, { certificateId }),
 
-  getDownloadUrl: (certificateId: string): Promise<{ data: { url: string } }> =>
+  getDownloadUrl: (certificateId: string): Promise<ApiResponse<{ url: string }>> =>
     axios.get(`${BASE_URL}/${certificateId}/download`),
 
   revokeCertificate: (certificateId: string): Promise<ApiResponse<CertificateRecord>> =>
@@ -92,5 +92,5 @@ export const certificateAdminApi = {
 
 export const getCertificateDownloadUrl = async (certificateId: string): Promise<string> => {
   const response = await certificateAdminApi.getDownloadUrl(certificateId);
-  return response.data.url;
+  return response.data.data.url;
 };

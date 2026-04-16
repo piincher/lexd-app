@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle } from 'react-native';
+import { COLORS } from '@src/constants/Colors';
 
 export type BadgeVariant = 
   | 'default' 
@@ -16,22 +17,12 @@ export type BadgeVariant =
 
 export type BadgeSize = 'small' | 'medium';
 
-interface BadgeProps {
+export interface BadgeProps {
   label: string;
   variant?: BadgeVariant;
   size?: BadgeSize;
   style?: ViewStyle;
 }
-
-const variantStyles: Record<BadgeVariant, { bg: string; text: string }> = {
-  default: { bg: '#E8E4F3', text: '#6B5B95' },
-  primary: { bg: '#E8E4F3', text: '#6B5B95' },
-  success: { bg: '#D4EDDA', text: '#155724' },
-  warning: { bg: '#FFF3CD', text: '#856404' },
-  danger: { bg: '#F8D7DA', text: '#721C24' },
-  info: { bg: '#D1ECF1', text: '#0C5460' },
-  neutral: { bg: '#E9ECEF', text: '#495057' },
-};
 
 export const Badge: React.FC<BadgeProps> = ({
   label,
@@ -39,7 +30,27 @@ export const Badge: React.FC<BadgeProps> = ({
   size = 'small',
   style,
 }) => {
-  const colors = variantStyles[variant];
+  const getColors = () => {
+    switch (variant) {
+      case 'default':
+      case 'primary':
+        return { bg: COLORS.Silver, text: COLORS.DarkGrey };
+      case 'success':
+        return { bg: COLORS.lightBackground, text: COLORS.heading };
+      case 'warning':
+        return { bg: COLORS.lightyellow + '20', text: COLORS.orange };
+      case 'danger':
+        return { bg: COLORS.danger + '15', text: COLORS.danger };
+      case 'info':
+        return { bg: COLORS.blueTransparent, text: COLORS.navy };
+      case 'neutral':
+        return { bg: COLORS.Silver, text: COLORS.DarkGrey };
+      default:
+        return { bg: COLORS.Silver, text: COLORS.DarkGrey };
+    }
+  };
+
+  const colors = getColors();
 
   return (
     <View

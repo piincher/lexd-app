@@ -100,7 +100,7 @@ export const Input = forwardRef<RNTextInput, InputProps>(({
         <RNTextInput
           ref={ref}
           style={inputStyles}
-          placeholderTextColor={COLORS.lightGray}
+          placeholderTextColor={COLORS.placeHolder}
           editable={editable}
           {...textInputProps}
         />
@@ -140,31 +140,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     marginBottom: 8,
-    color: '#333',
+    color: COLORS.DarkGrey,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
   // Variants
   default: {
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: COLORS.inputBorder,
     borderRadius: 8,
   },
   filled: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.Silver,
     borderRadius: 8,
   },
   outlined: {
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: COLORS.inputBorder,
     borderRadius: 12,
   },
   underlined: {
     borderBottomWidth: 2,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: COLORS.inputBorder,
+    backgroundColor: 'transparent',
   },
   // Sizes
   small: {
@@ -186,14 +187,14 @@ const styles = StyleSheet.create({
     borderColor: COLORS.danger || '#dc3545',
   },
   disabled: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.Silver,
     opacity: 0.7,
   },
   // Input
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: COLORS.black,
   },
   smallInput: {
     fontSize: 14,
@@ -219,7 +220,7 @@ const styles = StyleSheet.create({
   // Helper/Error
   helperText: {
     fontSize: 12,
-    color: '#666',
+    color: COLORS.grey,
     marginTop: 4,
   },
   errorText: {

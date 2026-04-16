@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { ContainerProfitSummary } from '../../api/statsApi';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ProfitOverviewCardProps {
   profitSummary: ContainerProfitSummary | null;
@@ -17,41 +17,185 @@ const fmt = (amount: number): string => {
   return `${amount.toFixed(0)} F`;
 };
 
-const MetricRow: React.FC<{
-  label: string;
-  value: string;
-  valueColor?: string;
-  icon?: string;
-}> = ({ label, value, valueColor = Theme.neutral[800], icon }) => (
-  <View style={styles.metricRow}>
-    <View style={styles.metricLeft}>
-      {icon ? <Ionicons name={icon as any} size={14} color={Theme.neutral[400]} style={{ marginRight: 6 }} /> : null}
-      <Text style={styles.metricLabel}>{label}</Text>
-    </View>
-    <Text style={[styles.metricValue, { color: valueColor }]}>{value}</Text>
-  </View>
-);
-
 export const ProfitOverviewCard: React.FC<ProfitOverviewCardProps> = ({
   profitSummary,
   isLoading,
 }) => {
+  const { colors } = useAppTheme();
   const s = profitSummary?.summary;
   const containers = profitSummary?.containers ?? [];
 
   const isProfit = (s?.totalProfit ?? 0) >= 0;
-  const profitColor = isProfit ? '#10B981' : '#EF4444';
+  const profitColor = isProfit ? colors.status.success : colors.status.error;
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        card: {
+          backgroundColor: colors.background.card,
+          borderRadius: 16,
+          padding: 16,
+          marginHorizontal: 20,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.06,
+          shadowRadius: 8,
+          elevation: 3,
+        },
+        header: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 14,
+          gap: 10,
+        },
+        iconBox: {
+          width: 34,
+          height: 34,
+          borderRadius: 10,
+          backgroundColor: colors.feedback.successBg,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        title: {
+          flex: 1,
+          fontSize: 15,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        marginBadge: {
+          borderRadius: 20,
+          paddingHorizontal: 10,
+          paddingVertical: 3,
+        },
+        marginText: {
+          fontSize: 12,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+        },
+        profitBox: {
+          borderRadius: 12,
+          padding: 14,
+          alignItems: 'center',
+          marginBottom: 14,
+        },
+        profitLabel: {
+          fontSize: 11,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+          marginBottom: 4,
+        },
+        profitValue: {
+          fontSize: 28,
+          fontFamily: Fonts.bold,
+          fontWeight: '800',
+        },
+        profitSub: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+          marginTop: 4,
+        },
+        metrics: {
+          gap: 10,
+          marginBottom: 14,
+        },
+        metricRow: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        },
+        metricLeft: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          flex: 1,
+        },
+        metricLabel: {
+          fontSize: 13,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          flex: 1,
+        },
+        metricValue: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+        },
+        divider: {
+          height: 1,
+          backgroundColor: colors.border,
+        },
+        breakdown: {
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+          paddingTop: 14,
+          gap: 10,
+        },
+        breakdownTitle: {
+          fontSize: 12,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.disabled,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+          marginBottom: 4,
+        },
+        containerRow: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        },
+        containerLeft: {
+          flex: 1,
+        },
+        containerNumber: {
+          fontSize: 13,
+          fontFamily: Fonts.medium,
+          fontWeight: '600',
+          color: colors.text.primary,
+        },
+        containerMeta: {
+          fontSize: 11,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+          marginTop: 1,
+        },
+        containerRight: {
+          alignItems: 'flex-end',
+        },
+        containerProfit: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+        },
+        containerMargin: {
+          fontSize: 11,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+        },
+        emptyText: {
+          fontSize: 13,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+          textAlign: 'center',
+          paddingVertical: 16,
+        },
+      }),
+    [colors]
+  );
 
   return (
     <View style={styles.card}>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.iconBox}>
-          <Ionicons name="trending-up" size={18} color="#10B981" />
+          <Ionicons name="trending-up" size={18} color={colors.status.success} />
         </View>
         <Text style={styles.title}>Rentabilité Globale CBM</Text>
         {!isLoading && s && (
-          <View style={[styles.marginBadge, { backgroundColor: isProfit ? '#ECFDF5' : '#FEF2F2' }]}>
+          <View style={[styles.marginBadge, { backgroundColor: isProfit ? colors.feedback.successBg : colors.feedback.errorBg }]}>
             <Text style={[styles.marginText, { color: profitColor }]}>
               {isProfit ? '+' : ''}{s.overallMargin.toFixed(1)}%
             </Text>
@@ -60,13 +204,13 @@ export const ProfitOverviewCard: React.FC<ProfitOverviewCardProps> = ({
       </View>
 
       {isLoading ? (
-        <ActivityIndicator size="small" color={Theme.primary[500]} style={{ paddingVertical: 24 }} />
+        <ActivityIndicator size="small" color={colors.primary.main} style={{ paddingVertical: 24 }} />
       ) : !s ? (
         <Text style={styles.emptyText}>Aucune donnée disponible</Text>
       ) : (
         <>
           {/* Big profit number */}
-          <View style={[styles.profitBox, { backgroundColor: isProfit ? '#ECFDF5' : '#FEF2F2' }]}>
+          <View style={[styles.profitBox, { backgroundColor: isProfit ? colors.feedback.successBg : colors.feedback.errorBg }]}>
             <Text style={styles.profitLabel}>{isProfit ? 'Bénéfice Total' : 'Perte Totale'}</Text>
             <Text style={[styles.profitValue, { color: profitColor }]}>
               {isProfit ? '+' : ''}{fmt(s.totalProfit)}
@@ -78,24 +222,28 @@ export const ProfitOverviewCard: React.FC<ProfitOverviewCardProps> = ({
 
           {/* Metrics */}
           <View style={styles.metrics}>
-            <MetricRow
-              icon="cash-outline"
-              label="Chiffre d'affaires"
-              value={fmt(s.totalRevenue)}
-            />
-            <MetricRow
-              icon="checkmark-circle-outline"
-              label="Encaissé"
-              value={fmt(s.totalCollected)}
-              valueColor="#10B981"
-            />
+            <View style={styles.metricRow}>
+              <View style={styles.metricLeft}>
+                <Ionicons name="cash-outline" size={14} color={colors.text.disabled} style={{ marginRight: 6 }} />
+                <Text style={styles.metricLabel}>Chiffre d'affaires</Text>
+              </View>
+              <Text style={[styles.metricValue, { color: colors.text.primary }]}>{fmt(s.totalRevenue)}</Text>
+            </View>
+            <View style={styles.metricRow}>
+              <View style={styles.metricLeft}>
+                <Ionicons name="checkmark-circle-outline" size={14} color={colors.text.disabled} style={{ marginRight: 6 }} />
+                <Text style={styles.metricLabel}>Encaissé</Text>
+              </View>
+              <Text style={[styles.metricValue, { color: colors.status.success }]}>{fmt(s.totalCollected)}</Text>
+            </View>
             <View style={styles.divider} />
-            <MetricRow
-              icon="boat-outline"
-              label={`Coût agent (${fmt(s.cbmCostPerUnit)}/CBM)`}
-              value={fmt(s.totalCost)}
-              valueColor="#EF4444"
-            />
+            <View style={styles.metricRow}>
+              <View style={styles.metricLeft}>
+                <Ionicons name="boat-outline" size={14} color={colors.text.disabled} style={{ marginRight: 6 }} />
+                <Text style={styles.metricLabel}>{`Coût agent (${fmt(s.cbmCostPerUnit)}/CBM)`}</Text>
+              </View>
+              <Text style={[styles.metricValue, { color: colors.status.error }]}>{fmt(s.totalCost)}</Text>
+            </View>
           </View>
 
           {/* Per-container breakdown */}
@@ -119,7 +267,7 @@ export const ProfitOverviewCard: React.FC<ProfitOverviewCardProps> = ({
                       <Text
                         style={[
                           styles.containerProfit,
-                          { color: c.profit >= 0 ? '#10B981' : '#EF4444' },
+                          { color: c.profit >= 0 ? colors.status.success : colors.status.error },
                         ]}
                       >
                         {c.profit >= 0 ? '+' : ''}{fmt(c.profit)}
@@ -137,157 +285,3 @@ export const ProfitOverviewCard: React.FC<ProfitOverviewCardProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    padding: 16,
-    marginHorizontal: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 3,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 14,
-    gap: 10,
-  },
-  iconBox: {
-    width: 34,
-    height: 34,
-    borderRadius: 10,
-    backgroundColor: '#ECFDF5',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    flex: 1,
-    fontSize: 15,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  marginBadge: {
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-  },
-  marginText: {
-    fontSize: 12,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-  },
-  profitBox: {
-    borderRadius: 12,
-    padding: 14,
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  profitLabel: {
-    fontSize: 11,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[500],
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 4,
-  },
-  profitValue: {
-    fontSize: 28,
-    fontFamily: Fonts.bold,
-    fontWeight: '800',
-  },
-  profitSub: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    marginTop: 4,
-  },
-  metrics: {
-    gap: 10,
-    marginBottom: 14,
-  },
-  metricRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  metricLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  metricLabel: {
-    fontSize: 13,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[500],
-    flex: 1,
-  },
-  metricValue: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: Theme.neutral[100],
-  },
-  breakdown: {
-    borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
-    paddingTop: 14,
-    gap: 10,
-  },
-  breakdownTitle: {
-    fontSize: 12,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[400],
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-    marginBottom: 4,
-  },
-  containerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  containerLeft: {
-    flex: 1,
-  },
-  containerNumber: {
-    fontSize: 13,
-    fontFamily: Fonts.medium,
-    fontWeight: '600',
-    color: Theme.neutral[700],
-  },
-  containerMeta: {
-    fontSize: 11,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    marginTop: 1,
-  },
-  containerRight: {
-    alignItems: 'flex-end',
-  },
-  containerProfit: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-  },
-  containerMargin: {
-    fontSize: 11,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-  },
-  emptyText: {
-    fontSize: 13,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    textAlign: 'center',
-    paddingVertical: 16,
-  },
-});

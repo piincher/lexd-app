@@ -165,13 +165,15 @@ const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
   }, [selectedIds, message]);
 
   const handleConfirmSend = useCallback(() => {
+    // Guard: prevent double-firing if the mutation is already in flight
+    if (isSending) return;
     setShowConfirmation(false);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     sendSms({
       phoneNumbers: Array.from(selectedIds),
       message: message.trim(),
     });
-  }, [selectedIds, message, sendSms]);
+  }, [selectedIds, message, sendSms, isSending]);
 
   // SMS calculation
   const smsPerRecipient = message.length === 0 ? 0 : Math.ceil(message.length / SMS_CHAR_LIMIT);
@@ -228,6 +230,7 @@ const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
         recipientCount={selectedIds.size}
         smsCount={totalSms}
         messagePreview={message}
+        isSending={isSending}
         onConfirm={handleConfirmSend}
         onCancel={() => setShowConfirmation(false)}
       />

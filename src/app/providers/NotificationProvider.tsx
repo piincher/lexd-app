@@ -133,6 +133,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   const notificationListener = useRef<Notifications.Subscription | null>(null);
   const responseListener = useRef<Notifications.Subscription | null>(null);
   const appState = useRef(AppState.currentState);
+  const hasAttemptedRegistration = useRef(false);
 
   // ============================================================================
   // Initialization
@@ -167,7 +168,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
         // Check if app was opened from notification
         const lastNotificationResponse =
-          await Notifications.getLastNotificationResponseAsync();
+          await Notifications.getLastNotificationResponse();
         if (lastNotificationResponse) {
           setWasOpenedFromNotification(true);
           handleNotificationResponse(lastNotificationResponse);
@@ -200,14 +201,35 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   // Token Registration
   // ============================================================================
 
+  // Listen for auth state changes and retry registration when user logs in
+  useEffect(() => {
+    const unsubscribe = useAuth.subscribe((state) => {
+      const authToken = state.token;
+      
+      // If we have an auth token and haven't registered yet, trigger registration
+      if (authToken && authToken.trim() !== '' && permissionStatus === "granted" && autoRegister && !isRegistered) {
+        console.log("[NotificationProvider] Auth token detected, triggering registration...");
+        hasAttemptedRegistration.current = false; // Reset to allow retry
+      }
+    });
+
+    return () => unsubscribe();
+  }, [permissionStatus, autoRegister, isRegistered]);
+
   useEffect(() => {
     const getTokenAndRegister = async () => {
-      if (permissionStatus === "granted" && autoRegister && !isRegistered) {
+      if (permissionStatus === "granted" && autoRegister && !isRegistered && !hasAttemptedRegistration.current) {
         const authToken = useAuth.getState().token;
+        
+        // Mark that we've attempted registration (even if no auth token)
+        hasAttemptedRegistration.current = true;
+        
         if (!authToken || authToken.trim() === '') {
-          // Not authenticated yet, skip registration and retry later
+          console.log("[NotificationProvider] No auth token yet, will retry after login...");
           return;
         }
+
+        console.log("[NotificationProvider] Starting push token registration...");
 
         try {
           const token = (
@@ -218,6 +240,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
             })
           ).data;
 
+          console.log("[NotificationProvider] Got Expo push token:", token?.slice(0, 20) + "...");
           setPushToken(token);
 
           // Register with backend
@@ -226,19 +249,23 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
               token,
               platform: Platform.OS,
             });
+            console.log("[NotificationProvider] Successfully registered with backend!");
             setIsRegistered(true);
           } catch (apiErr) {
             console.error("[NotificationProvider] API registration failed:", apiErr);
-            // Don't throw - token will be retried on next app launch
+            // Reset flag to allow retry on next auth change
+            hasAttemptedRegistration.current = false;
           }
         } catch (err) {
           console.error("[NotificationProvider] Token registration error:", err);
+          // Reset flag to allow retry
+          hasAttemptedRegistration.current = false;
         }
       }
     };
 
     getTokenAndRegister();
-  }, [permissionStatus, autoRegister, isRegistered]);
+  }, [permissionStatus, autoRegister, isRegistered, useAuth.getState().token]);
 
   // ============================================================================
   // Notification Listeners
@@ -338,8 +365,10 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   };
 
   const registerDevice = async (): Promise<boolean> => {
-    if (!pushToken) {
-      setError("No push token available");
+    const authToken = useAuth.getState().token;
+    if (!authToken || authToken.trim() === '') {
+      setError("User not authenticated");
+      console.log("[NotificationProvider] Cannot register: no auth token");
       return false;
     }
 
@@ -347,15 +376,37 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     setError(null);
 
     try {
+      // Get token if not already available
+      let token = pushToken;
+      if (!token) {
+        if (permissionStatus !== "granted") {
+          setError("Notification permission not granted");
+          return false;
+        }
+        
+        token = (
+          await Notifications.getExpoPushTokenAsync({
+            projectId:
+              process.env.EXPO_PUBLIC_EAS_PROJECT_ID ||
+              "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d",
+          })
+        ).data;
+        setPushToken(token);
+      }
+
+      console.log("[NotificationProvider] Manually registering device...");
       await apiClient.post("/user/me/device-token", {
-        token: pushToken,
+        token,
         platform: Platform.OS,
       });
       setIsRegistered(true);
+      hasAttemptedRegistration.current = true;
+      console.log("[NotificationProvider] Manual registration successful!");
       return true;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
       setError(errorMessage);
+      console.error("[NotificationProvider] Manual registration failed:", err);
       return false;
     } finally {
       setIsLoading(false);

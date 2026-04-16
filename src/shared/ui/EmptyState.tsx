@@ -9,7 +9,7 @@ import React from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button } from './Button';
-import { lightTheme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export interface EmptyStateProps {
   icon?: string;
@@ -26,7 +26,7 @@ export interface EmptyStateProps {
 export const EmptyState: React.FC<EmptyStateProps> = ({
   icon = 'archive-off',
   iconSize = 64,
-  iconColor = lightTheme.colors.text.secondary,
+  iconColor,
   title,
   message,
   actionLabel,
@@ -34,19 +34,21 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   loading = false,
   style,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <View style={[styles.container, style]}>
       {loading ? (
         <ActivityIndicator
           size="large"
-          color={lightTheme.colors.primary.main}
+          color={colors.primary.main}
           testID="empty-state-loading"
         />
       ) : (
         <MaterialCommunityIcons
           name={icon as any}
           size={iconSize}
-          color={iconColor}
+          color={iconColor || colors.text.secondary}
           testID="empty-state-icon"
         />
       )}
@@ -55,7 +57,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         <Text
           style={[
             styles.title,
-            { color: lightTheme.colors.text.primary },
+            { color: colors.text.primary },
           ]}
         >
           {title}
@@ -65,7 +67,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
           <Text
             style={[
               styles.message,
-              { color: lightTheme.colors.text.secondary },
+              { color: colors.text.secondary },
             ]}
           >
             {message}
@@ -86,35 +88,33 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   );
 };
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: lightTheme.spacing['2xl'],
-    paddingVertical: lightTheme.spacing['3xl'],
+    paddingHorizontal: 32,
+    paddingVertical: 48,
   },
   textContainer: {
     alignItems: 'center',
-    marginTop: lightTheme.spacing.lg,
-    marginBottom: lightTheme.spacing.xl,
+    marginTop: 20,
+    marginBottom: 24,
   },
   title: {
-    fontSize: lightTheme.typography.h4.fontSize,
-    fontWeight: lightTheme.typography.h4.fontWeight as '700',
-    letterSpacing: lightTheme.typography.h4.letterSpacing,
-    lineHeight: lightTheme.typography.h4.lineHeight,
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: -0.1,
+    lineHeight: 26,
     textAlign: 'center',
   },
   message: {
-    fontSize: lightTheme.typography.bodySmall.fontSize,
-    fontWeight: lightTheme.typography.bodySmall.fontWeight as '400',
-    letterSpacing: lightTheme.typography.bodySmall.letterSpacing,
-    lineHeight: lightTheme.typography.bodySmall.lineHeight,
+    fontSize: 14,
+    fontWeight: '400',
+    letterSpacing: 0,
+    lineHeight: 20,
     textAlign: 'center',
-    marginTop: lightTheme.spacing.sm,
+    marginTop: 8,
   },
 });
 

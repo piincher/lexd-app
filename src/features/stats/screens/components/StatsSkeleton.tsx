@@ -3,7 +3,7 @@
  * SRP: Shimmer loading skeleton for the stats screen
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -14,6 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -23,6 +24,7 @@ const ShimmerBlock: React.FC<{
   borderRadius?: number;
   style?: any;
 }> = ({ width, height, borderRadius = 8, style }) => {
+  const { colors } = useAppTheme();
   const shimmer = useSharedValue(0);
 
   useEffect(() => {
@@ -40,7 +42,7 @@ const ShimmerBlock: React.FC<{
           width: width as any,
           height,
           borderRadius,
-          backgroundColor: Theme.neutral[100],
+          backgroundColor: colors.neutral[200],
           overflow: 'hidden',
         },
         style,
@@ -48,7 +50,7 @@ const ShimmerBlock: React.FC<{
     >
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
         <LinearGradient
-          colors={['transparent', 'rgba(255,255,255,0.4)', 'transparent']}
+          colors={['transparent', 'rgba(255,255,255,0.25)', 'transparent']}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={StyleSheet.absoluteFill}
@@ -59,6 +61,90 @@ const ShimmerBlock: React.FC<{
 };
 
 export const StatsSkeleton: React.FC = () => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flex: 1,
+          backgroundColor: colors.background.default,
+        },
+        headerSkeleton: {
+          backgroundColor: colors.neutral[200],
+          paddingHorizontal: 20,
+          paddingTop: 12,
+          paddingBottom: 28,
+          borderBottomLeftRadius: 24,
+          borderBottomRightRadius: 24,
+        },
+        headerTop: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'flex-start',
+        },
+        kpiGrid: {
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: 10,
+          paddingHorizontal: 20,
+          marginTop: -16,
+        },
+        kpiCard: {
+          flex: 1,
+          minWidth: '45%',
+          backgroundColor: colors.background.card,
+          borderRadius: 16,
+          padding: 14,
+          ...Theme.shadows.sm,
+        },
+        periodRow: {
+          flexDirection: 'row',
+          paddingHorizontal: 20,
+          gap: 8,
+          marginTop: 16,
+        },
+        card: {
+          marginHorizontal: 20,
+          marginTop: 12,
+          backgroundColor: colors.background.card,
+          borderRadius: 16,
+          padding: 18,
+          ...Theme.shadows.sm,
+        },
+        statusRow: {
+          marginTop: 12,
+        },
+        statusRowLeft: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+        },
+        modesRow: {
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          marginTop: 14,
+        },
+        modeItem: {
+          alignItems: 'center',
+          gap: 2,
+        },
+        paymentRow: {
+          flexDirection: 'row',
+          gap: 10,
+          marginTop: 14,
+        },
+        paymentCard: {
+          flex: 1,
+          backgroundColor: colors.background.paper,
+          borderRadius: 12,
+          padding: 14,
+        },
+      }),
+    [colors]
+  );
+
   return (
     <View style={styles.container}>
       {/* Header skeleton */}
@@ -142,81 +228,3 @@ export const StatsSkeleton: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.neutral[50],
-  },
-  headerSkeleton: {
-    backgroundColor: Theme.neutral[200],
-    paddingHorizontal: 20,
-    paddingTop: 12,
-    paddingBottom: 28,
-    borderBottomLeftRadius: 24,
-    borderBottomRightRadius: 24,
-  },
-  headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-  },
-  kpiGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-    paddingHorizontal: 20,
-    marginTop: -16,
-  },
-  kpiCard: {
-    flex: 1,
-    minWidth: '45%',
-    backgroundColor: '#FFF',
-    borderRadius: 16,
-    padding: 14,
-    ...Theme.shadows.sm,
-  },
-  periodRow: {
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    gap: 8,
-    marginTop: 16,
-  },
-  card: {
-    marginHorizontal: 20,
-    marginTop: 12,
-    backgroundColor: '#FFF',
-    borderRadius: 16,
-    padding: 18,
-    ...Theme.shadows.sm,
-  },
-  statusRow: {
-    marginTop: 12,
-  },
-  statusRowLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  modesRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: 14,
-  },
-  modeItem: {
-    alignItems: 'center',
-    gap: 2,
-  },
-  paymentRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginTop: 14,
-  },
-  paymentCard: {
-    flex: 1,
-    backgroundColor: Theme.neutral[50],
-    borderRadius: 12,
-    padding: 14,
-  },
-});

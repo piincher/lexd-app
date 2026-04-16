@@ -13,8 +13,8 @@ import { SwiperFlatList } from "react-native-swiper-flatlist";
 import { useNavigation } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
 import { useClipboard } from "@src/hooks/useClipBoard";
-import { useActiveBanners, useBannerClick } from "@src/features/customer/promos/hooks";
-import type { PromoBanner } from "@src/features/customer/promos/api";
+import { useHomeBanners, useHomeBannerClick } from "../hooks/useHomeBanners";
+import type { PromoBanner } from "@src/shared/api/promos";
 
 const { width } = Dimensions.get("window");
 const BANNER_WIDTH = width - 32;
@@ -32,8 +32,8 @@ const Banner = () => {
    const navigation = useNavigation<any>();
    const { copyToClipboard } = useClipboard();
 
-   const { data: banners, isLoading: bannersLoading, isError } = useActiveBanners();
-   const bannerClick = useBannerClick();
+   const { data: banners, isLoading: bannersLoading, isError } = useHomeBanners();
+   const bannerClick = useHomeBannerClick();
 
    const hasDynamicBanners = !isError && banners && banners.length > 0;
 

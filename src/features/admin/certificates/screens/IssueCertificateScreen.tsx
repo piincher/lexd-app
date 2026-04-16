@@ -166,11 +166,12 @@ export default function IssueCertificateScreen({
   );
 
   if (issuedCertificate) {
-    const clientName = issuedCertificate.userId
-      ? `${issuedCertificate.userId.firstName} ${issuedCertificate.userId.lastName}`
-      : selectedUser
-        ? `${selectedUser.firstName} ${selectedUser.lastName}`
-        : "";
+    const clientName =
+      typeof issuedCertificate.userId === "object" && issuedCertificate.userId?.firstName
+        ? `${issuedCertificate.userId.firstName} ${issuedCertificate.userId.lastName}`
+        : selectedUser
+          ? `${selectedUser.firstName} ${selectedUser.lastName}`
+          : "";
 
     return (
       <SafeAreaView style={styles.container} edges={["bottom"]}>

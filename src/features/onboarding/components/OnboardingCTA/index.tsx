@@ -39,7 +39,7 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
           activeOpacity={0.9}
         >
           <Text style={styles.primaryText}>Commencer</Text>
-          <AntDesign name="arrowright" size={20} color="#8B5CF6" style={styles.icon} />
+          <AntDesign name="arrow-right" size={20} color="#8B5CF6" style={styles.icon} />
         </TouchableOpacity>
       </View>
     );

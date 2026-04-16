@@ -149,9 +149,12 @@ export const usePackingListScreen = () => {
   const filteredPackingListData = useMemo(() => {
     if (!packingListData) return null;
     if (!selectedClientId) return packingListData; // Show all clients
+    
+    const normalizeId = (id: unknown) => String(id ?? '').trim();
+    const targetClientId = normalizeId(selectedClientId);
 
     const filteredClients = packingListData.clients.filter(
-      (c) => String(c.clientId) === String(selectedClientId)
+      (c) => normalizeId(c.clientId) === targetClientId
     );
     
     if (filteredClients.length === 0) return packingListData;

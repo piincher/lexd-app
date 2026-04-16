@@ -1,6 +1,6 @@
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
-import React from "react";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import React, { useMemo } from "react";
 import {
    Modal,
    Pressable,
@@ -44,6 +44,78 @@ export const CustomModal = ({
    styles: customStyles = {},
    children,
 }: CustomModalProps) => {
+   const { colors } = useAppTheme();
+
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            centeredView: {
+               flex: 1,
+               justifyContent: "center",
+               alignItems: "center",
+               backgroundColor: "transparent",
+            },
+            modalView: {
+               margin: 20,
+               backgroundColor: colors.background.card,
+               borderRadius: 20,
+               padding: 35,
+               alignItems: "center",
+               shadowColor: "#000",
+               shadowOffset: { width: 0, height: 2 },
+               shadowOpacity: 0.25,
+               shadowRadius: 4,
+               elevation: 5,
+               zIndex: 2,
+            },
+            backdrop: {
+               ...StyleSheet.absoluteFillObject,
+               backgroundColor: colors.background.overlay,
+               zIndex: 1,
+            },
+            modalText: {
+               marginBottom: 15,
+               textAlign: "center",
+               fontSize: 20,
+               fontFamily: Fonts.bold,
+               color: colors.text.primary,
+            },
+            messageText: {
+               fontFamily: Fonts.regular,
+               textAlign: "center",
+               fontSize: 20,
+               color: colors.text.secondary,
+            },
+            buttonContainer: {
+               flexDirection: "row",
+               justifyContent: "space-between",
+               marginTop: 16,
+               width: "100%",
+            },
+            modal: {
+               width: "90%",
+               maxHeight: "50%",
+               borderRadius: 10,
+               padding: 10,
+               backgroundColor: colors.background.paper,
+            },
+            cancelText: {
+               color: colors.accent.red,
+               textAlign: "center",
+               marginRight: 10,
+               fontFamily: Fonts.black,
+               fontSize: 20,
+            },
+            confirmText: {
+               color: colors.status.success,
+               textAlign: "center",
+               fontFamily: Fonts.black,
+               fontSize: 20,
+            },
+         }),
+      [colors]
+   );
+
    return (
       <Modal animationType="fade" transparent={true} visible={visible} onRequestClose={onClose}>
          <View style={[styles.centeredView, customStyles.centeredView]}>
@@ -75,70 +147,3 @@ export const CustomModal = ({
       </Modal>
    );
 };
-
-const styles = StyleSheet.create({
-   centeredView: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      backgroundColor: "transparent",
-   },
-   modalView: {
-      margin: 20,
-      backgroundColor: "white",
-      borderRadius: 20,
-      padding: 35,
-      alignItems: "center",
-      shadowColor: "#000",
-      shadowOffset: {
-         width: 0,
-         height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5,
-      zIndex: 2,
-   },
-   backdrop: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: "rgba(0, 0, 0, 0.5)",
-      zIndex: 1,
-   },
-   modalText: {
-      marginBottom: 15,
-      textAlign: "center",
-      fontSize: 20,
-      fontFamily: Fonts.bold,
-   },
-   messageText: {
-      fontFamily: Fonts.regular,
-      textAlign: "center",
-      fontSize: 20,
-   },
-   buttonContainer: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginTop: 16,
-      width: "100%",
-   },
-   modal: {
-      width: "90%",
-      maxHeight: "50%",
-      borderRadius: 10,
-      padding: 10,
-      backgroundColor: COLORS.white,
-   },
-   cancelText: {
-      color: "red",
-      textAlign: "center",
-      marginRight: 10,
-      fontFamily: Fonts.black,
-      fontSize: 20,
-   },
-   confirmText: {
-      color: "green",
-      textAlign: "center",
-      fontFamily: Fonts.black,
-      fontSize: 20,
-   },
-});

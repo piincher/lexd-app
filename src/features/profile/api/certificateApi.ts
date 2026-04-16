@@ -1,4 +1,8 @@
 import { apiV2 } from "@src/api/client";
+import {
+  verifyCertificatePublic as verifySharedCertificatePublic,
+  type VerifiedCertificate,
+} from "@src/shared/api/certificates";
 
 const axios = apiV2;
 
@@ -37,32 +41,24 @@ export const certificateApi = {
   getDownloadUrl: (): Promise<ApiResponse<CertificateDownload>> =>
     axios.get(`${BASE_URL}/download`),
 
-  getSecureDownloadUrl: (certificateId: string): Promise<{ data: { url: string } }> =>
+  getSecureDownloadUrl: (certificateId: string): Promise<ApiResponse<{ url: string }>> =>
     axios.get(`${BASE_URL}/${certificateId}/download`),
 };
 
 export const getCertificateDownloadUrl = async (certificateId: string): Promise<string> => {
   const response = await certificateApi.getSecureDownloadUrl(certificateId);
-  return response.data.url;
+  return response.data.data.url;
 };
 
 // ============================================
 // PUBLIC VERIFICATION (No auth required)
+// Backward-compatible export path for existing imports.
 // ============================================
-
-export interface VerifiedCertificate {
-  certificateId: string;
-  holderName: string;
-  issuedAt: string;
-  status: 'ACTIVE' | 'REVOKED';
-  type: 'AUTO' | 'MANUAL';
-}
 
 export const verifyCertificatePublic = async (
   verificationCode: string
 ): Promise<ApiResponse<VerifiedCertificate>> => {
-  const response = await axios.get(`/public/verify/${verificationCode}`, {
-    headers: { skipAuth: 'true' },
-  });
-  return response.data;
+  return verifySharedCertificatePublic(verificationCode) as Promise<
+    ApiResponse<VerifiedCertificate>
+  >;
 };

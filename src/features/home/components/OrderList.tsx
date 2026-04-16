@@ -6,7 +6,7 @@ import { ActivityIndicator, Text } from 'react-native-paper';
 
 import { COLORS } from '@src/constants/Colors';
 // import RetryButton from '@src/components/common/Error';
-import { useGetActiveOrder } from '../hooks/useGetActiveOrders';
+import { useGetActiveOrder } from '@src/shared/hooks';
 import OrderCard from './OrderCard';
 
 interface Props {

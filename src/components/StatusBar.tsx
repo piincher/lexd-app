@@ -8,7 +8,7 @@ import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { StatusBar as RNStatusBar, Platform, View, StyleSheet } from 'react-native';
 import { useAppTheme } from '../providers/ThemeProvider';
 
-interface StatusBarProps {
+export interface StatusBarProps {
   /** Override the automatic style detection */
   style?: 'auto' | 'inverted' | 'light' | 'dark';
   /** Override background color */

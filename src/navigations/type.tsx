@@ -92,27 +92,13 @@ export type RootStackParamList = {
       paymentMethod: string;
       goodsCount: number;
    };
-   NotificationDetail: { notification: import('../features/notifications/types').InAppNotification };
+   NotificationDetail: {
+      notification: import("../features/notifications/types").InAppNotification;
+   };
    NotificationSettings: undefined;
-   ManualOrder: undefined;
-   SelectManualOrder: {
-      goodsId: string; // The goods to assign to an order
-   };
-   ConfirmGoodsAssignment: {
-      orderId: string;
-      goodsId: string;
-   };
-   EditManualOrder: {
-      order: {
-         _id: string;
-         clientName: string;
-         clientPhone?: string;
-         shippingMode: "air" | "sea";
-         estimatedCbm?: number;
-         note?: string;
-      };
-   };
-   OrdersDashboard: undefined;
+   // Admin Announcements
+   CreateAnnouncement: undefined;
+
    // Admin Certificate Issuance
    IssueCertificate: undefined;
    CertificateHistory: undefined;
@@ -132,6 +118,25 @@ export type RootStackParamList = {
          issuedBy: { _id: string; firstName: string; lastName: string } | null;
       };
    };
+   PaymentHistoryScreen: undefined;
+   // Admin Payment Management
+   PaymentManagement: undefined;
+   PaymentScreen: {
+      orderId: string;
+      orderCode: string;
+      clientName: string;
+      clientPhone?: string;
+      currentBalance: number;
+      totalAmount: number;
+   };
+   // Admin Order Payment History
+   AdminOrderPaymentHistory: {
+      orderId: string;
+      orderCode: string;
+      clientName?: string;
+      clientPhone?: string;
+   };
+
    // Badges Screen
    Badges: undefined;
    // Reviews Screens

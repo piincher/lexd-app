@@ -19,12 +19,12 @@ import { ApiError, ApiException, ApiRequestConfig, ApiResponse } from './types';
 
 type Environment = 'local' | 'staging' | 'production';
 
-const ENV: Environment = (process.env.EXPO_PUBLIC_ENV as Environment) || 'local';
+const ENV: Environment = (process.env.EXPO_PUBLIC_ENV as Environment) || 'production';
 
 const API_CONFIG = {
   local: {
-    baseURL: 'http://192.168.0.111:3000/api/v1',
-    baseURLV2: 'http://192.168.0.111:3000/api/v2',
+    baseURL: 'http://192.168.0.100:3000/api/v1',
+    baseURLV2: 'http://192.168.0.100:3000/api/v2',
     timeout: 10000,
   },
   staging: {
@@ -163,37 +163,6 @@ const responseInterceptor = (response: AxiosResponse): AxiosResponse => {
   return response;
 };
 
-/**
- * Response error interceptor with retry logic
- */
-const responseErrorInterceptor = async (error: AxiosError<ApiResponse<unknown>>): Promise<never> => {
-  const config = error.config as ApiRequestConfig | undefined;
-  
-  if (!config) {
-    return Promise.reject(new ApiClientError(error));
-  }
-
-  // Skip error handling if requested
-  if (config.headers?.['skipErrorHandling']) {
-    return Promise.reject(error);
-  }
-
-  // Handle retry logic
-  const retryCount = config.retryCount || 0;
-  if (shouldRetry(error, retryCount)) {
-    config.retryCount = retryCount + 1;
-    await new Promise(resolve => setTimeout(resolve, getRetryDelay(retryCount)));
-    return axios(config);
-  }
-
-  // Handle auth errors
-  if (error.response?.status === 401) {
-    useAuth.getState().logOut();
-  }
-
-  return Promise.reject(new ApiClientError(error));
-};
-
 // ============================================
 // API CLIENT FACTORY
 // ============================================
@@ -210,6 +179,37 @@ const createApiClient = (baseURL: string): AxiosInstance => {
       Accept: 'application/json',
     },
   });
+
+  /**
+   * Response error interceptor with retry logic
+   */
+  const responseErrorInterceptor = async (error: AxiosError<ApiResponse<unknown>>): Promise<never> => {
+    const config = error.config as ApiRequestConfig | undefined;
+
+    if (!config) {
+      return Promise.reject(new ApiClientError(error));
+    }
+
+    // Skip error handling if requested
+    if (config.headers?.['skipErrorHandling']) {
+      return Promise.reject(error);
+    }
+
+    // Handle retry logic
+    const retryCount = config.retryCount || 0;
+    if (shouldRetry(error, retryCount)) {
+      config.retryCount = retryCount + 1;
+      await new Promise(resolve => setTimeout(resolve, getRetryDelay(retryCount)));
+      return client.request(config);
+    }
+
+    // Handle auth errors
+    if (error.response?.status === 401) {
+      useAuth.getState().logOut();
+    }
+
+    return Promise.reject(new ApiClientError(error));
+  };
 
   // Add interceptors
   client.interceptors.request.use(requestInterceptor, requestErrorInterceptor);

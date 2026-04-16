@@ -1,7 +1,6 @@
 // Home Feature - Public API
 
 // Hooks
-export { useGetActiveOrder, useGetOrderOfUserById, useViewSmsBalance } from "./hooks/useGetActiveOrders";
 export { useNotification, sendPushNotification } from "./hooks/useNotification";
 
 // Components
@@ -16,6 +15,3 @@ export { RowDetails } from "./components/RowDetails";
 
 // Screens
 export { default as HomeScreen } from "./screens/HomeScreen";
-export { default as NotificationsScreen } from "../notifications/screens/NotificationsScreen";
-// FAQScreen moved to @src/features/support - use new import path
-export { FAQScreen } from "@src/features/support";

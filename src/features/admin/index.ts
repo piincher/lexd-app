@@ -29,5 +29,8 @@ export * from "./certificates";
 // Search Feature
 export * from "./search";
 
+// Announcements
+export * from "./announcements";
+
 // All Admin screens have been migrated to feature-based architecture.
 // Import from: @src/features/admin

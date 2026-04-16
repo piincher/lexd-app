@@ -17,7 +17,7 @@ import { FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '../providers/ThemeProvider';
 import { ThemeMode } from '../constants/Theme';
 
-interface ThemeToggleProps {
+export interface ThemeToggleProps {
   /** Variant of the toggle button */
   variant?: 'icon' | 'button' | 'menu';
   /** Size of the icon */

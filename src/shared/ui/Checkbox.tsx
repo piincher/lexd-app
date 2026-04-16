@@ -12,7 +12,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type CheckboxSize = 'small' | 'medium' | 'large';
 
@@ -51,6 +51,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   testID,
   accessibilityLabel,
 }) => {
+  const { colors } = useAppTheme();
   const boxSize = sizeMap[size];
   const checkmarkSize = checkmarkSizeMap[size];
 
@@ -72,9 +73,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             width: boxSize,
             height: boxSize,
             borderRadius: boxSize * 0.25,
+            borderColor: disabled ? colors.neutral[400] : checked ? colors.primary.main : colors.neutral[400],
+            backgroundColor: checked ? colors.primary.main : 'transparent',
           },
-          checked && styles.checkedBox,
-          disabled && styles.disabledBox,
         ]}
       >
         {checked && (
@@ -84,6 +85,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
               {
                 fontSize: checkmarkSize,
                 lineHeight: checkmarkSize * 1.2,
+                color: colors.neutral.white,
               },
             ]}
           >
@@ -97,8 +99,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             styles.label,
             {
               fontSize: size === 'small' ? 14 : size === 'large' ? 18 : 16,
+              color: disabled ? colors.neutral[400] : colors.neutral[800],
             },
-            disabled && styles.disabledLabel,
             labelStyle,
           ]}
         >
@@ -119,28 +121,14 @@ const styles = StyleSheet.create({
   },
   box: {
     borderWidth: 2,
-    borderColor: Theme.neutral[400],
-    backgroundColor: 'transparent',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  checkedBox: {
-    backgroundColor: Theme.primary.main,
-    borderColor: Theme.primary.main,
-  },
-  disabledBox: {
-    borderColor: Theme.neutral[300],
-  },
   checkmark: {
-    color: Theme.neutral.white,
     fontWeight: 'bold',
   },
   label: {
-    marginLeft: Theme.spacing.sm,
-    color: Theme.neutral[800],
-  },
-  disabledLabel: {
-    color: Theme.neutral[400],
+    marginLeft: 10,
   },
 });
 

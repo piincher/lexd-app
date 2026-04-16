@@ -5,6 +5,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info' | 'custom';
 
@@ -23,25 +24,6 @@ export interface BadgeProps {
   textStyle?: TextStyle;
 }
 
-const VARIANT_STYLES: Record<
-  Exclude<BadgeVariant, 'custom'>,
-  { backgroundColor: string; textColor: string }
-> = {
-  default: { backgroundColor: '#E5E7EB', textColor: '#374151' },
-  primary: { backgroundColor: '#DBEAFE', textColor: '#2563EB' },
-  success: { backgroundColor: '#D1FAE5', textColor: '#059669' },
-  warning: { backgroundColor: '#FEF3C7', textColor: '#D97706' },
-  error: { backgroundColor: '#FEE2E2', textColor: '#DC2626' },
-  info: { backgroundColor: '#E0F2FE', textColor: '#0284C7' },
-};
-
-/**
- * Badge Component
- * 
- * @example
- * <Badge label="Pending" variant="warning" />
- * <Badge label="Custom" variant="custom" backgroundColor="#F0F0F0" textColor="#333" />
- */
 export const Badge: React.FC<BadgeProps> = ({
   label,
   variant = 'default',
@@ -50,23 +32,39 @@ export const Badge: React.FC<BadgeProps> = ({
   style,
   textStyle,
 }) => {
-  const colors =
-    variant === 'custom'
-      ? {
-          backgroundColor: backgroundColor || VARIANT_STYLES.default.backgroundColor,
-          textColor: textColor || VARIANT_STYLES.default.textColor,
-        }
-      : VARIANT_STYLES[variant];
+  const { colors } = useAppTheme();
+
+  const getVariantStyles = (): { backgroundColor: string; textColor: string } => {
+    if (variant === 'custom') {
+      return {
+        backgroundColor: backgroundColor || colors.neutral[200],
+        textColor: textColor || colors.neutral[700],
+      };
+    }
+
+    const variants: Record<Exclude<BadgeVariant, 'custom'>, { backgroundColor: string; textColor: string }> = {
+      default: { backgroundColor: colors.neutral[200], textColor: colors.neutral[700] },
+      primary: { backgroundColor: colors.primary[100], textColor: colors.primary[700] },
+      success: { backgroundColor: colors.feedback.successBg, textColor: colors.status.success },
+      warning: { backgroundColor: colors.feedback.warningBg, textColor: colors.status.warning },
+      error: { backgroundColor: colors.feedback.errorBg, textColor: colors.status.error },
+      info: { backgroundColor: colors.feedback.infoBg, textColor: colors.status.info },
+    };
+
+    return variants[variant];
+  };
+
+  const variantStyles = getVariantStyles();
 
   return (
     <View
       style={[
         styles.container,
-        { backgroundColor: colors.backgroundColor },
+        { backgroundColor: variantStyles.backgroundColor },
         style,
       ]}
     >
-      <Text style={[styles.text, { color: colors.textColor }, textStyle]}>
+      <Text style={[styles.text, { color: variantStyles.textColor }, textStyle]}>
         {label}
       </Text>
     </View>

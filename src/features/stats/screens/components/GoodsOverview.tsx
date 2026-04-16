@@ -3,7 +3,7 @@
  * SRP: Visual breakdown of goods by status and payment from v2 analytics
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import Animated, { FadeInRight } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { GoodsVolumeResponse } from '../../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsOverviewProps {
   goodsVolume?: GoodsVolumeResponse;
@@ -39,9 +40,146 @@ const formatNumber = (num: number | undefined | null): string => {
 };
 
 export const GoodsOverview: React.FC<GoodsOverviewProps> = ({ goodsVolume, isLoading }) => {
+  const { colors } = useAppTheme();
   const summary = goodsVolume?.summary;
   const byStatus = goodsVolume?.byStatus || [];
   const totalGoods = Number(summary?.totalGoods) || 0;
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          marginHorizontal: 20,
+          backgroundColor: colors.background.card,
+          borderRadius: 16,
+          padding: 18,
+          ...Theme.shadows.sm,
+        },
+        header: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 14,
+        },
+        title: {
+          fontSize: 15,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        subtitle: {
+          fontSize: 11,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+          marginTop: 2,
+        },
+        summaryBadge: {
+          alignItems: 'center',
+          backgroundColor: colors.primary[50],
+          paddingHorizontal: 14,
+          paddingVertical: 6,
+          borderRadius: 12,
+        },
+        summaryValue: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.primary.main,
+        },
+        summaryLabel: {
+          fontSize: 9,
+          fontFamily: Fonts.regular,
+          color: colors.primary.light,
+        },
+        loader: {
+          paddingVertical: 24,
+        },
+        quickStats: {
+          flexDirection: 'row',
+          backgroundColor: colors.background.paper,
+          borderRadius: 12,
+          padding: 14,
+          marginBottom: 14,
+        },
+        quickStat: {
+          flex: 1,
+          alignItems: 'center',
+          gap: 4,
+        },
+        quickStatValue: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        quickStatLabel: {
+          fontSize: 10,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+        },
+        quickStatDivider: {
+          width: 1,
+          backgroundColor: colors.border,
+          marginHorizontal: 8,
+        },
+        statusSection: {
+          gap: 2,
+        },
+        statusRow: {
+          marginBottom: 10,
+        },
+        statusHeader: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 5,
+        },
+        statusLeft: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+        },
+        statusDot: {
+          width: 8,
+          height: 8,
+          borderRadius: 4,
+        },
+        statusLabel: {
+          fontSize: 12,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+        },
+        statusRight: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 6,
+        },
+        statusCount: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        statusPercent: {
+          fontSize: 10,
+          fontFamily: Fonts.medium,
+          color: colors.text.disabled,
+          minWidth: 28,
+          textAlign: 'right',
+        },
+        barBg: {
+          height: 4,
+          backgroundColor: colors.border,
+          borderRadius: 2,
+          overflow: 'hidden',
+        },
+        barFill: {
+          height: '100%',
+          borderRadius: 2,
+        },
+      }),
+    [colors]
+  );
 
   return (
     <View style={styles.container}>
@@ -57,7 +195,7 @@ export const GoodsOverview: React.FC<GoodsOverviewProps> = ({ goodsVolume, isLoa
       </View>
 
       {isLoading ? (
-        <ActivityIndicator size="small" color={Theme.primary[500]} style={styles.loader} />
+        <ActivityIndicator size="small" color={colors.primary.main} style={styles.loader} />
       ) : (
         <>
           {/* Quick stats row */}
@@ -113,135 +251,3 @@ export const GoodsOverview: React.FC<GoodsOverviewProps> = ({ goodsVolume, isLoa
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 20,
-    backgroundColor: '#FFF',
-    borderRadius: 16,
-    padding: 18,
-    ...Theme.shadows.sm,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  title: {
-    fontSize: 15,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  subtitle: {
-    fontSize: 11,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    marginTop: 2,
-  },
-  summaryBadge: {
-    alignItems: 'center',
-    backgroundColor: Theme.primary[50],
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 12,
-  },
-  summaryValue: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.primary[600],
-  },
-  summaryLabel: {
-    fontSize: 9,
-    fontFamily: Fonts.regular,
-    color: Theme.primary[400],
-  },
-  loader: {
-    paddingVertical: 24,
-  },
-  quickStats: {
-    flexDirection: 'row',
-    backgroundColor: Theme.neutral[50],
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 14,
-  },
-  quickStat: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 4,
-  },
-  quickStatValue: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  quickStatLabel: {
-    fontSize: 10,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[500],
-  },
-  quickStatDivider: {
-    width: 1,
-    backgroundColor: Theme.neutral[200],
-    marginHorizontal: 8,
-  },
-  statusSection: {
-    gap: 2,
-  },
-  statusRow: {
-    marginBottom: 10,
-  },
-  statusHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  statusLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  statusLabel: {
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[700],
-  },
-  statusRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  statusCount: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  statusPercent: {
-    fontSize: 10,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[400],
-    minWidth: 28,
-    textAlign: 'right',
-  },
-  barBg: {
-    height: 4,
-    backgroundColor: Theme.neutral[100],
-    borderRadius: 2,
-    overflow: 'hidden',
-  },
-  barFill: {
-    height: '100%',
-    borderRadius: 2,
-  },
-});

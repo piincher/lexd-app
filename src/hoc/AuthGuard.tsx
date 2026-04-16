@@ -19,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '@src/store/Auth';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -68,6 +69,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({
 }) => {
   const { isAuthenticated } = useAuthGuard();
   const navigation = useNavigation();
+  const { colors } = useAppTheme();
 
   if (!isAuthenticated) {
     if (fallback) {
@@ -75,9 +77,9 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({
     }
 
     return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color={COLORS.blue} />
-        <Text style={styles.text}>Vérification de l'authentification...</Text>
+      <View style={[styles.container, { backgroundColor: colors.background.default }]}>
+        <ActivityIndicator size="large" color={colors.primary.main} />
+        <Text style={[styles.text, { color: colors.text.secondary }]}>Vérification de l'authentification...</Text>
         <Button 
           mode="contained" 
           onPress={() => navigation.navigate(redirectTo as never)}
@@ -115,21 +117,23 @@ export function withAuthGuard<P extends object>(
       }
     }, [isAuthenticated, user]);
 
+    const { colors } = useAppTheme();
+
     if (!isAuthenticated) {
       if (options?.fallback) {
         return <>{options.fallback}</>;
       }
       return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color={COLORS.blue} />
+        <View style={[styles.container, { backgroundColor: colors.background.default }]}>
+          <ActivityIndicator size="large" color={colors.primary.main} />
         </View>
       );
     }
 
     if (options?.requireAdmin && user?.role !== 'admin') {
       return (
-        <View style={styles.container}>
-          <Text style={styles.errorText}>Accès réservé aux administrateurs</Text>
+        <View style={[styles.container, { backgroundColor: colors.background.default }]}>
+          <Text style={[styles.errorText, { color: colors.status.error }]}>Accès réservé aux administrateurs</Text>
           <Button onPress={() => navigation.navigate('Home' as never)}>
             Retour
           </Button>
@@ -147,12 +151,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#fff',
   },
   text: {
     marginTop: 16,
     fontSize: 16,
-    color: '#666',
     fontFamily: Fonts.regular,
   },
   button: {
@@ -160,7 +162,6 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 16,
-    color: 'red',
     fontFamily: Fonts.bold,
     marginBottom: 16,
   },

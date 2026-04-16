@@ -3,12 +3,13 @@
  * SRP: Period filter pills for analytics data range
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { PeriodFilter, PeriodOption } from '../../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface PeriodSelectorProps {
   selected: PeriodFilter;
@@ -23,6 +24,42 @@ const PERIODS: PeriodOption[] = [
 ];
 
 export const PeriodSelector: React.FC<PeriodSelectorProps> = ({ selected, onSelect }) => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flexDirection: 'row',
+          paddingHorizontal: 20,
+          gap: 8,
+        },
+        pill: {
+          paddingHorizontal: 14,
+          paddingVertical: 8,
+          borderRadius: 20,
+          backgroundColor: colors.background.card,
+          borderWidth: 1,
+          borderColor: colors.border,
+        },
+        pillActive: {
+          backgroundColor: colors.primary.main,
+          borderColor: colors.primary.main,
+        },
+        pillText: {
+          fontSize: 12,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+        },
+        pillTextActive: {
+          color: colors.text.inverse,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+        },
+      }),
+    [colors]
+  );
+
   return (
     <View style={styles.container}>
       {PERIODS.map((p) => {
@@ -43,33 +80,3 @@ export const PeriodSelector: React.FC<PeriodSelectorProps> = ({ selected, onSele
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    gap: 8,
-  },
-  pill: {
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: '#FFF',
-    borderWidth: 1,
-    borderColor: Theme.neutral[200],
-  },
-  pillActive: {
-    backgroundColor: Theme.primary[500],
-    borderColor: Theme.primary[500],
-  },
-  pillText: {
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[500],
-  },
-  pillTextActive: {
-    color: '#FFF',
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-  },
-});

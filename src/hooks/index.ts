@@ -22,7 +22,7 @@ export {
 export { useGetUser } from './useGetUser';
 
 // Announcement hooks
-export { useAnnouncement } from './useAnnouncement';
+export { useAddAnoncement, useFetchAnnouncement } from './useAnnouncement';
 
 // Clipboard hooks
 export { useClipBoard } from './useClipBoard';

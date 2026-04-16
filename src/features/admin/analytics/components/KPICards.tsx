@@ -3,11 +3,12 @@
  * Displays key performance indicators in card format
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
-import { Card, Text, useTheme } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -57,8 +58,6 @@ const KPICard: React.FC<KPICardProps> = ({
   gradientColors,
   trend,
 }) => {
-  const theme = useTheme();
-
   return (
     <LinearGradient
       colors={gradientColors}
@@ -106,6 +105,7 @@ const KPICard: React.FC<KPICardProps> = ({
 // ============================================
 
 export const KPICards: React.FC<KPICardsProps> = ({ data, loading = false }) => {
+  const { colors } = useAppTheme();
   const formatCurrency = (amount: number) => {
     if (amount >= 100000000) {
       return `${(amount / 1000000).toFixed(0)}M`;
@@ -173,7 +173,7 @@ export const KPICards: React.FC<KPICardsProps> = ({ data, loading = false }) => 
       <View style={styles.container}>
         <View style={styles.grid}>
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <View key={i} style={[styles.skeletonCard, { backgroundColor: '#E5E7EB' }]} />
+            <View key={i} style={[styles.skeletonCard, { backgroundColor: colors.neutral[200] }]} />
           ))}
         </View>
       </View>

@@ -16,6 +16,7 @@ interface SendConfirmationModalProps {
   recipientCount: number;
   smsCount: number;
   messagePreview: string;
+  isSending?: boolean;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -25,6 +26,7 @@ export const SendConfirmationModal: React.FC<SendConfirmationModalProps> = ({
   recipientCount,
   smsCount,
   messagePreview,
+  isSending = false,
   onConfirm,
   onCancel,
 }) => (
@@ -66,15 +68,20 @@ export const SendConfirmationModal: React.FC<SendConfirmationModalProps> = ({
           <TouchableOpacity onPress={onCancel} style={styles.cancelButton} activeOpacity={0.7}>
             <Text style={styles.cancelText}>Annuler</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={onConfirm} style={styles.confirmWrapper} activeOpacity={0.8}>
+          <TouchableOpacity
+            onPress={isSending ? undefined : onConfirm}
+            style={[styles.confirmWrapper, isSending && styles.confirmDisabled]}
+            activeOpacity={isSending ? 1 : 0.8}
+            disabled={isSending}
+          >
             <LinearGradient
-              colors={Theme.gradients.primary}
+              colors={isSending ? ['#9ca3af', '#9ca3af'] : Theme.gradients.primary}
               style={styles.confirmButton}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <Ionicons name="send" size={16} color="#FFF" />
-              <Text style={styles.confirmText}>Envoyer</Text>
+              <Ionicons name={isSending ? 'hourglass' : 'send'} size={16} color="#FFF" />
+              <Text style={styles.confirmText}>{isSending ? 'Envoi en cours...' : 'Envoyer'}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -187,6 +194,9 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 14,
     overflow: 'hidden',
+  },
+  confirmDisabled: {
+    opacity: 0.7,
   },
   confirmButton: {
     flexDirection: 'row',

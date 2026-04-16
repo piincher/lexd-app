@@ -3,7 +3,7 @@
  * SRP: Displays recent payments from the v2 dashboard endpoint
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { RecentPayment } from '../../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface RecentPaymentsListProps {
   payments: RecentPayment[];
@@ -39,7 +40,53 @@ const PaymentRow: React.FC<{ payment: RecentPayment; index: number; isLast: bool
   index,
   isLast,
 }) => {
+  const { colors } = useAppTheme();
   const method = METHOD_CONFIG[payment.paymentMethod?.toLowerCase()] || METHOD_CONFIG.cash;
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        row: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingVertical: 10,
+          gap: 12,
+        },
+        rowBorder: {
+          borderBottomWidth: 1,
+          borderBottomColor: colors.border,
+        },
+        methodIcon: {
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        info: {
+          flex: 1,
+        },
+        customerName: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          fontWeight: '600',
+          color: colors.text.primary,
+        },
+        date: {
+          fontSize: 10,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+          marginTop: 2,
+        },
+        amount: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.status.success,
+        },
+      }),
+    [colors]
+  );
 
   return (
     <Animated.View
@@ -61,6 +108,62 @@ const PaymentRow: React.FC<{ payment: RecentPayment; index: number; isLast: bool
 };
 
 export const RecentPaymentsList: React.FC<RecentPaymentsListProps> = ({ payments }) => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          marginHorizontal: 20,
+          backgroundColor: colors.background.card,
+          borderRadius: 16,
+          padding: 18,
+          ...Theme.shadows.sm,
+        },
+        header: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 12,
+        },
+        title: {
+          fontSize: 15,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        subtitle: {
+          fontSize: 11,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+          marginTop: 2,
+        },
+        countBadge: {
+          backgroundColor: colors.primary[50],
+          paddingHorizontal: 10,
+          paddingVertical: 4,
+          borderRadius: 10,
+        },
+        countText: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.primary.main,
+        },
+        emptyContainer: {
+          alignItems: 'center',
+          paddingVertical: 20,
+          gap: 6,
+        },
+        emptyText: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+        },
+      }),
+    [colors]
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -84,98 +187,10 @@ export const RecentPaymentsList: React.FC<RecentPaymentsListProps> = ({ payments
         ))
       ) : (
         <View style={styles.emptyContainer}>
-          <Ionicons name="receipt-outline" size={28} color={Theme.neutral[300]} />
+          <Ionicons name="receipt-outline" size={28} color={colors.text.disabled} />
           <Text style={styles.emptyText}>Aucun paiement recent</Text>
         </View>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 20,
-    backgroundColor: '#FFF',
-    borderRadius: 16,
-    padding: 18,
-    ...Theme.shadows.sm,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  title: {
-    fontSize: 15,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  subtitle: {
-    fontSize: 11,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    marginTop: 2,
-  },
-  countBadge: {
-    backgroundColor: Theme.primary[50],
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 10,
-  },
-  countText: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.primary[600],
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    gap: 12,
-  },
-  rowBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[50],
-  },
-  methodIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  info: {
-    flex: 1,
-  },
-  customerName: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    fontWeight: '600',
-    color: Theme.neutral[800],
-  },
-  date: {
-    fontSize: 10,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    marginTop: 2,
-  },
-  amount: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: '#10B981',
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    paddingVertical: 20,
-    gap: 6,
-  },
-  emptyText: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-  },
-});

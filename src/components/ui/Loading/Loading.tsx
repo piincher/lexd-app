@@ -28,7 +28,7 @@ export const Loading: React.FC<LoadingProps> = ({
   return (
     <View style={[
       styles.container,
-      fullScreen && styles.fullScreen,
+      fullScreen && [styles.fullScreen, { backgroundColor: COLORS.white }],
       style,
     ]}>
       <ActivityIndicator 
@@ -36,7 +36,7 @@ export const Loading: React.FC<LoadingProps> = ({
         color={COLORS.Crimson}
       />
       {message && (
-        <Text style={styles.message}>{message}</Text>
+        <Text style={[styles.message, { color: COLORS.DarkGrey }]}>{message}</Text>
       )}
     </View>
   );
@@ -80,15 +80,13 @@ const styles = StyleSheet.create({
   },
   fullScreen: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   message: {
     marginTop: 12,
     fontSize: 14,
-    color: '#666',
   },
   skeleton: {
-    backgroundColor: '#e0e0e0',
+    backgroundColor: COLORS.Silver,
   },
 });
 

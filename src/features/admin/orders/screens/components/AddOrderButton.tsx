@@ -15,13 +15,6 @@ export const AddOrderButton: React.FC = () => {
   return (
     <View style={styles.container}>
       <FAB
-        icon="file-document-outline"
-        style={styles.fabManual}
-        onPress={() => navigation.navigate('ManualOrder')}
-        color="#FFF"
-        label="Nouvelle commande"
-      />
-      <FAB
         icon="plus"
         style={styles.fab}
         onPress={() => navigation.navigate('AddOrder', {

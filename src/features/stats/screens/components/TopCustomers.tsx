@@ -3,7 +3,7 @@
  * SRP: Displays top customers ranked by revenue
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { TopCustomer } from '../../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface TopCustomersProps {
   customers: TopCustomer[];
@@ -27,8 +28,64 @@ const formatAmount = (amount: number | undefined | null): string => {
 };
 
 const CustomerRow: React.FC<{ customer: TopCustomer; rank: number }> = ({ customer, rank }) => {
+  const { colors } = useAppTheme();
   const rankColor = RANK_COLORS[rank] || '#6B7280';
   const isTopThree = rank < 3;
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        row: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingVertical: 10,
+          gap: 10,
+        },
+        rowBorder: {
+          borderBottomWidth: 1,
+          borderBottomColor: colors.border,
+        },
+        rankBadge: {
+          width: 30,
+          height: 30,
+          borderRadius: 10,
+          backgroundColor: colors.background.paper,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        rankText: {
+          fontSize: 12,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.secondary,
+        },
+        customerInfo: {
+          flex: 1,
+        },
+        customerName: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          fontWeight: '600',
+          color: colors.text.primary,
+        },
+        customerMeta: {
+          fontSize: 10,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+          marginTop: 2,
+        },
+        revenueContainer: {
+          alignItems: 'flex-end',
+        },
+        revenueAmount: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+      }),
+    [colors]
+  );
 
   return (
     <Animated.View
@@ -60,6 +117,61 @@ const CustomerRow: React.FC<{ customer: TopCustomer; rank: number }> = ({ custom
 };
 
 export const TopCustomers: React.FC<TopCustomersProps> = ({ customers, isLoading }) => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          marginHorizontal: 20,
+          backgroundColor: colors.background.card,
+          borderRadius: 16,
+          padding: 18,
+          ...Theme.shadows.sm,
+        },
+        header: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 14,
+        },
+        title: {
+          fontSize: 15,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        subtitle: {
+          fontSize: 11,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+          marginTop: 2,
+        },
+        iconContainer: {
+          width: 36,
+          height: 36,
+          borderRadius: 10,
+          backgroundColor: colors.feedback.warningBg,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        loader: {
+          paddingVertical: 24,
+        },
+        emptyContainer: {
+          alignItems: 'center',
+          paddingVertical: 20,
+          gap: 6,
+        },
+        emptyText: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+        },
+      }),
+    [colors]
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -73,114 +185,17 @@ export const TopCustomers: React.FC<TopCustomersProps> = ({ customers, isLoading
       </View>
 
       {isLoading ? (
-        <ActivityIndicator size="small" color={Theme.primary[500]} style={styles.loader} />
+        <ActivityIndicator size="small" color={colors.primary.main} style={styles.loader} />
       ) : customers.length > 0 ? (
         customers.map((customer, index) => (
           <CustomerRow key={customer.userId} customer={customer} rank={index} />
         ))
       ) : (
         <View style={styles.emptyContainer}>
-          <Ionicons name="people-outline" size={28} color={Theme.neutral[300]} />
+          <Ionicons name="people-outline" size={28} color={colors.text.disabled} />
           <Text style={styles.emptyText}>Aucune donnee disponible</Text>
         </View>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 20,
-    backgroundColor: '#FFF',
-    borderRadius: 16,
-    padding: 18,
-    ...Theme.shadows.sm,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  title: {
-    fontSize: 15,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  subtitle: {
-    fontSize: 11,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    marginTop: 2,
-  },
-  iconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    backgroundColor: '#FFFBEB',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 10,
-    gap: 10,
-  },
-  rowBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[50],
-  },
-  rankBadge: {
-    width: 30,
-    height: 30,
-    borderRadius: 10,
-    backgroundColor: Theme.neutral[50],
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  rankText: {
-    fontSize: 12,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[500],
-  },
-  customerInfo: {
-    flex: 1,
-  },
-  customerName: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    fontWeight: '600',
-    color: Theme.neutral[800],
-  },
-  customerMeta: {
-    fontSize: 10,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    marginTop: 2,
-  },
-  revenueContainer: {
-    alignItems: 'flex-end',
-  },
-  revenueAmount: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  loader: {
-    paddingVertical: 24,
-  },
-  emptyContainer: {
-    alignItems: 'center',
-    paddingVertical: 20,
-    gap: 6,
-  },
-  emptyText: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-  },
-});

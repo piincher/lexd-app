@@ -9,18 +9,24 @@ import { userData } from "@src/constants/types";
 import { RootStackScreenProps } from "@src/navigations/type";
 import { getInitials, getAvatarColor } from "../../lib/clientUtils";
 import { styles } from "./ClientCard.styles";
+import { ClientCardSkeleton } from "./ClientCardSkeleton";
 
 interface ClientCardProps {
   client: userData;
   onToggleBlock: (clientId: string) => void;
   index: number;
+  isLoading?: boolean;
 }
 
 export const ClientCard: React.FC<ClientCardProps> = ({ 
   client, 
   onToggleBlock, 
-  index 
+  index,
+  isLoading = false,
 }) => {
+  if (isLoading) {
+    return <ClientCardSkeleton />;
+  }
   const navigation = useNavigation<RootStackScreenProps<"ClientDetails">["navigation"]>();
   const avatarColors = getAvatarColor(`${client.firstName} ${client.lastName}`);
   const borderColor = client.blocked?.isBlocked ? "#EF4444" : "#10B981";

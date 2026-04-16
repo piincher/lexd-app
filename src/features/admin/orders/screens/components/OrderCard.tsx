@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text, Avatar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
-import { Fonts } from '@src/constants/Fonts';
-import { styles } from './OrderCard.styles';
+import { createStyles } from './OrderCard.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const STATUS_CONFIG: Record<string, { 
   color: string; 
@@ -53,6 +52,8 @@ interface OrderCardProps {
 
 export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const navigation = useNavigation();
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   
   // Defensive check
   if (!order) {
@@ -84,7 +85,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
             <Avatar.Text
               size={44}
               label={initials}
-              style={[styles.avatar, { backgroundColor: statusConfig.bgColor }]}
+              style={[styles.avatar, { backgroundColor: statusConfig.color + '20' }]}
               labelStyle={[styles.avatarLabel, { color: statusConfig.color }]}
             />
             <View style={styles.clientInfo}>
@@ -102,7 +103,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
             </View>
           </View>
           
-          <View style={[styles.statusBadge, { backgroundColor: statusConfig.bgColor }]}>
+          <View style={[styles.statusBadge, { backgroundColor: statusConfig.color + '20' }]}>
             <MaterialCommunityIcons name={statusConfig.icon as any} size={14} color={statusConfig.color} />
             <Text style={[styles.statusText, { color: statusConfig.color }]}>
               {statusConfig.label}
@@ -112,20 +113,20 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 
         {/* Shipping Mode & Route */}
         <View style={styles.shippingRow}>
-          <View style={[styles.shippingMode, { backgroundColor: isAir ? '#E3F2FD' : '#E0F2F1' }]}>
-            <FontAwesome5 
-              name={isAir ? 'plane' : 'ship'} 
-              size={12} 
-              color={isAir ? '#1976D2' : '#00796B'} 
+          <View style={[styles.shippingMode, { backgroundColor: isAir ? '#1976D220' : '#00796B20' }]}>
+            <FontAwesome5
+              name={isAir ? 'plane' : 'ship'}
+              size={12}
+              color={isAir ? '#1976D2' : '#00796B'}
             />
             <Text style={[styles.shippingText, { color: isAir ? '#1976D2' : '#00796B' }]}>
               {isAir ? 'Air Freight' : 'Sea Shipping'}
             </Text>
           </View>
-          
+
           {order.destination && (
             <View style={styles.routeInfo}>
-              <MaterialIcons name="location-on" size={12} color={COLORS.grey} />
+              <MaterialIcons name="location-on" size={12} color={colors.text.secondary} />
               <Text style={styles.routeText}>{order.destination}</Text>
             </View>
           )}
@@ -134,20 +135,20 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
         {/* Details Grid */}
         <View style={styles.detailsGrid}>
           <View style={styles.detailItem}>
-            <MaterialIcons name="phone" size={14} color={COLORS.grey} />
+            <MaterialIcons name="phone" size={14} color={colors.text.secondary} />
             <Text style={styles.detailText}>{order.clientPhone || 'N/A'}</Text>
           </View>
-          
+
           <View style={styles.detailItem}>
-            <MaterialIcons name="schedule" size={14} color={COLORS.grey} />
+            <MaterialIcons name="schedule" size={14} color={colors.text.secondary} />
             <Text style={styles.detailText}>
               {order.departureDate ? new Date(order.departureDate).toLocaleDateString('fr-FR') : 'No date'}
             </Text>
           </View>
-          
+
           <View style={styles.detailItem}>
-            <MaterialIcons name="attach-money" size={14} color={COLORS.grey} />
-            <Text style={[styles.amountText, { color: orderPrice > 0 ? '#4CAF50' : COLORS.grey }]}>
+            <MaterialIcons name="attach-money" size={14} color={colors.text.secondary} />
+            <Text style={[styles.amountText, { color: orderPrice > 0 ? colors.status.success : colors.text.secondary }]}>
               {orderPrice > 0 ? `${orderPrice.toLocaleString()} FCFA` : 'Non défini'}
             </Text>
           </View>

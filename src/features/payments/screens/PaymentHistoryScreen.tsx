@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { usePaymentHistory } from '../hooks/usePayments';
 import {
   PaymentHistoryItem,
@@ -33,6 +33,7 @@ const STATUS_FILTERS: { label: string; value: PaymentStatus | 'ALL' }[] = [
 
 const PaymentHistoryScreen: React.FC = () => {
   const navigation = useNavigation();
+  const { colors } = useAppTheme();
   const [selectedFilter, setSelectedFilter] = useState<PaymentStatus | 'ALL'>('ALL');
   const [page, setPage] = useState(1);
 
@@ -50,6 +51,229 @@ const PaymentHistoryScreen: React.FC = () => {
   });
 
   const [refreshing, setRefreshing] = useState(false);
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flex: 1,
+          backgroundColor: colors.background.default,
+        },
+        header: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          borderBottomWidth: 1,
+          borderBottomColor: colors.border,
+        },
+        backButton: {
+          padding: 8,
+        },
+        headerTitle: {
+          fontSize: 18,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        placeholder: {
+          width: 40,
+        },
+        filterContainer: {
+          paddingVertical: 12,
+          borderBottomWidth: 1,
+          borderBottomColor: colors.border,
+        },
+        filterList: {
+          paddingHorizontal: 16,
+          gap: 8,
+        },
+        filterButton: {
+          paddingHorizontal: 16,
+          paddingVertical: 8,
+          borderRadius: 20,
+          backgroundColor: colors.background.paper,
+        },
+        filterButtonActive: {
+          backgroundColor: colors.primary.main,
+        },
+        filterButtonText: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+        },
+        filterButtonTextActive: {
+          color: colors.text.inverse,
+        },
+        listContent: {
+          padding: 16,
+          paddingBottom: 32,
+          flexGrow: 1,
+        },
+        paymentCard: {
+          backgroundColor: colors.background.card,
+          borderRadius: 16,
+          padding: 16,
+          marginBottom: 12,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 8,
+          elevation: 2,
+        },
+        paymentHeader: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 12,
+        },
+        providerInfo: {
+          flexDirection: 'row',
+          alignItems: 'center',
+        },
+        providerIcon: {
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+          backgroundColor: colors.primary.main + '10',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 12,
+        },
+        providerName: {
+          fontSize: 14,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        paymentDate: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          marginTop: 2,
+        },
+        statusBadge: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 10,
+          paddingVertical: 4,
+          borderRadius: 12,
+        },
+        statusDot: {
+          width: 6,
+          height: 6,
+          borderRadius: 3,
+          marginRight: 6,
+        },
+        statusText: {
+          fontSize: 12,
+          fontFamily: Fonts.medium,
+        },
+        paymentBody: {
+          paddingTop: 12,
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+        },
+        amountContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 8,
+        },
+        amountLabel: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        amount: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        detailRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 6,
+        },
+        detailText: {
+          marginLeft: 6,
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        paymentFooter: {
+          marginTop: 12,
+          paddingTop: 12,
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+        },
+        receiptButton: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          alignSelf: 'flex-start',
+        },
+        receiptText: {
+          marginLeft: 6,
+          fontSize: 13,
+          fontFamily: Fonts.medium,
+          color: colors.primary.main,
+        },
+        loaderContainer: {
+          paddingVertical: 24,
+        },
+        emptyContainer: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingVertical: 64,
+        },
+        emptyTitle: {
+          fontSize: 18,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginTop: 16,
+          marginBottom: 8,
+        },
+        emptyText: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          textAlign: 'center',
+          paddingHorizontal: 32,
+        },
+        errorContainer: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 32,
+        },
+        errorTitle: {
+          fontSize: 18,
+          fontFamily: Fonts.bold,
+          color: colors.status.error,
+          marginTop: 16,
+          marginBottom: 8,
+        },
+        errorText: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          textAlign: 'center',
+          marginBottom: 24,
+        },
+        retryButton: {
+          backgroundColor: colors.primary.main,
+          borderRadius: 8,
+          paddingHorizontal: 24,
+          paddingVertical: 12,
+        },
+        retryButtonText: {
+          fontSize: 14,
+          fontFamily: Fonts.bold,
+          color: colors.text.inverse,
+        },
+      }),
+    [colors]
+  );
 
   // Handle refresh
   const handleRefresh = async () => {
@@ -97,7 +321,7 @@ const PaymentHistoryScreen: React.FC = () => {
             <MaterialCommunityIcons
               name={getProviderIcon(item.paymentMethod as PaymentProvider) as any}
               size={20}
-              color={COLORS.blue}
+              color={colors.primary.main}
             />
           </View>
           <View>
@@ -126,21 +350,21 @@ const PaymentHistoryScreen: React.FC = () => {
 
         {item.metadata?.phoneNumber && (
           <View style={styles.detailRow}>
-            <MaterialCommunityIcons name="phone" size={14} color={COLORS.grey} />
+            <MaterialCommunityIcons name="phone" size={14} color={colors.text.secondary} />
             <Text style={styles.detailText}>{item.metadata.phoneNumber}</Text>
           </View>
         )}
 
         {item.metadata?.cardLast4 && (
           <View style={styles.detailRow}>
-            <MaterialCommunityIcons name="credit-card" size={14} color={COLORS.grey} />
+            <MaterialCommunityIcons name="credit-card" size={14} color={colors.text.secondary} />
             <Text style={styles.detailText}>•••• {item.metadata.cardLast4}</Text>
           </View>
         )}
 
         {item.goodsIds && item.goodsIds.length > 0 && (
           <View style={styles.detailRow}>
-            <MaterialCommunityIcons name="package-variant" size={14} color={COLORS.grey} />
+            <MaterialCommunityIcons name="package-variant" size={14} color={colors.text.secondary} />
             <Text style={styles.detailText}>
               {item.goodsIds.length} item{item.goodsIds.length > 1 ? 's' : ''}
             </Text>
@@ -151,7 +375,7 @@ const PaymentHistoryScreen: React.FC = () => {
       {item.status === 'COMPLETED' && (
         <View style={styles.paymentFooter}>
           <TouchableOpacity style={styles.receiptButton}>
-            <MaterialCommunityIcons name="receipt" size={16} color={COLORS.blue} />
+            <MaterialCommunityIcons name="receipt" size={16} color={colors.primary.main} />
             <Text style={styles.receiptText}>View Receipt</Text>
           </TouchableOpacity>
         </View>
@@ -197,7 +421,7 @@ const PaymentHistoryScreen: React.FC = () => {
       <MaterialCommunityIcons
         name="credit-card-off"
         size={64}
-        color={COLORS.lightGray}
+        color={colors.text.disabled}
       />
       <Text style={styles.emptyTitle}>No Payments Yet</Text>
       <Text style={styles.emptyText}>
@@ -212,7 +436,7 @@ const PaymentHistoryScreen: React.FC = () => {
       <MaterialCommunityIcons
         name="alert-circle"
         size={48}
-        color={COLORS.redShade}
+        color={colors.status.error}
       />
       <Text style={styles.errorTitle}>Failed to Load</Text>
       <Text style={styles.errorText}>
@@ -232,7 +456,7 @@ const PaymentHistoryScreen: React.FC = () => {
           onPress={() => navigation.goBack()}
           style={styles.backButton}
         >
-          <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.black} />
+          <MaterialCommunityIcons name="arrow-left" size={24} color={colors.text.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Payment History</Text>
         <View style={styles.placeholder} />
@@ -260,7 +484,7 @@ const PaymentHistoryScreen: React.FC = () => {
           ListFooterComponent={
             isLoading ? (
               <View style={styles.loaderContainer}>
-                <ActivityIndicator size="large" color={COLORS.blue} />
+                <ActivityIndicator size="large" color={colors.primary.main} />
               </View>
             ) : null
           }
@@ -269,224 +493,5 @@ const PaymentHistoryScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.lightGray + '30',
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-  },
-  placeholder: {
-    width: 40,
-  },
-  filterContainer: {
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.lightGray + '30',
-  },
-  filterList: {
-    paddingHorizontal: 16,
-    gap: 8,
-  },
-  filterButton: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: COLORS.lightGray + '30',
-  },
-  filterButtonActive: {
-    backgroundColor: COLORS.blue,
-  },
-  filterButtonText: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.grey,
-  },
-  filterButtonTextActive: {
-    color: COLORS.white,
-  },
-  listContent: {
-    padding: 16,
-    paddingBottom: 32,
-    flexGrow: 1,
-  },
-  paymentCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: 16,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  paymentHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  providerInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  providerIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: COLORS.blue + '10',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  providerName: {
-    fontSize: 14,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-  },
-  paymentDate: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    marginTop: 2,
-  },
-  statusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  statusDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    marginRight: 6,
-  },
-  statusText: {
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-  },
-  paymentBody: {
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.lightGray + '30',
-  },
-  amountContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  amountLabel: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-  },
-  amount: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 6,
-  },
-  detailText: {
-    marginLeft: 6,
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-  },
-  paymentFooter: {
-    marginTop: 12,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.lightGray + '30',
-  },
-  receiptButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
-  },
-  receiptText: {
-    marginLeft: 6,
-    fontSize: 13,
-    fontFamily: Fonts.medium,
-    color: COLORS.blue,
-  },
-  loaderContainer: {
-    paddingVertical: 24,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 64,
-  },
-  emptyTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  emptyText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    textAlign: 'center',
-    paddingHorizontal: 32,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    color: COLORS.redShade,
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  errorText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  retryButton: {
-    backgroundColor: COLORS.blue,
-    borderRadius: 8,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-  },
-  retryButtonText: {
-    fontSize: 14,
-    fontFamily: Fonts.bold,
-    color: COLORS.white,
-  },
-});
 
 export default PaymentHistoryScreen;

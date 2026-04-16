@@ -1,10 +1,10 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { View, ScrollView, StyleSheet, Share } from "react-native";
 import { Text, Appbar, ActivityIndicator, Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RootStackScreenProps } from "@src/navigations/type";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useGetOrderDetails } from "../../hooks/useOrderDetail";
 import { useClipboard } from "@src/hooks/useClipBoard";
 import {
@@ -22,8 +22,53 @@ const OrderDetailScreen = ({
    navigation,
 }: RootStackScreenProps<"OrderDetail">) => {
    const { id } = route.params;
+   const { colors } = useAppTheme();
    const { data: order, isPending, isError, error, refetch } = useGetOrderDetails(id);
    const { copyToClipboard } = useClipboard();
+
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            container: {
+               flex: 1,
+               backgroundColor: colors.background.default,
+            },
+            scrollContent: {
+               paddingBottom: 40,
+            },
+            center: {
+               flex: 1,
+               justifyContent: "center",
+               alignItems: "center",
+               padding: 32,
+            },
+            loadingText: {
+               marginTop: 12,
+               fontSize: 14,
+               color: colors.text.secondary,
+            },
+            errorTitle: {
+               marginTop: 16,
+               fontSize: 18,
+               fontWeight: "700",
+               color: colors.text.primary,
+            },
+            errorText: {
+               marginTop: 8,
+               fontSize: 14,
+               color: colors.text.secondary,
+               textAlign: "center",
+            },
+            retryBtn: {
+               marginTop: 20,
+            },
+            appbarTitle: {
+               fontSize: 16,
+               fontWeight: "700",
+            },
+         }),
+      [colors]
+   );
 
    const handleShare = useCallback(async () => {
       if (!order) return;
@@ -39,11 +84,6 @@ const OrderDetailScreen = ({
       if (order?.code) copyToClipboard(order.code);
    }, [order, copyToClipboard]);
 
-   // Chat feature hidden - not in use
-   // const handleChat = useCallback(() => {
-   //    navigation.navigate("SelectAdminToChatWith" as never);
-   // }, [navigation]);
-
    // -- Loading --
    if (isPending) {
       return (
@@ -53,7 +93,7 @@ const OrderDetailScreen = ({
                <Appbar.Content title="Détails" />
             </Appbar.Header>
             <View style={styles.center}>
-               <ActivityIndicator size="large" color={COLORS.green} />
+               <ActivityIndicator size="large" color={colors.status.success} />
                <Text style={styles.loadingText}>Chargement...</Text>
             </View>
          </SafeAreaView>
@@ -69,7 +109,7 @@ const OrderDetailScreen = ({
                <Appbar.Content title="Détails" />
             </Appbar.Header>
             <View style={styles.center}>
-               <MaterialCommunityIcons name="alert-circle" size={56} color={COLORS.danger} />
+               <MaterialCommunityIcons name="alert-circle" size={56} color={colors.status.error} />
                <Text style={styles.errorTitle}>Erreur de chargement</Text>
                <Text style={styles.errorText}>
                   {(error as any)?.message ||
@@ -93,8 +133,6 @@ const OrderDetailScreen = ({
                titleStyle={styles.appbarTitle}
             />
             <Appbar.Action icon="share-variant" onPress={handleShare} />
-            {/* Chat feature hidden - not in use */}
-            {/* <Appbar.Action icon="chat" onPress={handleChat} /> */}
          </Appbar.Header>
 
          <ScrollView
@@ -130,44 +168,3 @@ const OrderDetailScreen = ({
 };
 
 export default OrderDetailScreen;
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: "#F9FAFB",
-   },
-   scrollContent: {
-      paddingBottom: 40,
-   },
-   center: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      padding: 32,
-   },
-   loadingText: {
-      marginTop: 12,
-      fontSize: 14,
-      color: "#6B7280",
-   },
-   errorTitle: {
-      marginTop: 16,
-      fontSize: 18,
-      fontWeight: "700",
-      color: "#1F2937",
-   },
-   errorText: {
-      marginTop: 8,
-      fontSize: 14,
-      color: "#6B7280",
-      textAlign: "center",
-   },
-   retryBtn: {
-      marginTop: 20,
-      backgroundColor: COLORS.green,
-   },
-   appbarTitle: {
-      fontSize: 16,
-      fontWeight: "700",
-   },
-});

@@ -71,8 +71,10 @@ export const Button: React.FC<ButtonProps> = ({
     textStyle,
   ];
 
+  // Use actual white for text on colored backgrounds to ensure contrast
+  const solidTextColor = '#FFFFFF';
   const iconColor = variant === 'primary' || variant === 'danger' 
-    ? COLORS.white 
+    ? solidTextColor
     : variant === 'outline' || variant === 'ghost'
     ? COLORS.Crimson
     : COLORS.DarkGrey;
@@ -93,7 +95,7 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {loading ? (
         <ActivityIndicator 
-          color={variant === 'primary' || variant === 'danger' ? COLORS.white : COLORS.Crimson} 
+          color={variant === 'primary' || variant === 'danger' ? solidTextColor : COLORS.Crimson} 
           size={size === 'small' ? 'small' : 'small'}
         />
       ) : (
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   primaryText: {
-    color: COLORS.white,
+    color: '#FFFFFF',
   },
   secondaryText: {
     color: COLORS.DarkGrey,
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     color: COLORS.Crimson,
   },
   dangerText: {
-    color: COLORS.white,
+    color: '#FFFFFF',
   },
   smallText: {
     fontSize: 14,

@@ -1,11 +1,12 @@
 // Goods Feature - GoodsFilter Component
 // Pure presentational component for filtering goods by status
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, FlatList, ListRenderItem } from 'react-native';
-import { Chip, useTheme } from 'react-native-paper';
+import { Chip } from 'react-native-paper';
 import { GoodsStatus } from '../api';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 type FilterTab = 'ALL' | GoodsStatus;
 
@@ -34,7 +35,31 @@ export const GoodsFilter: React.FC<GoodsFilterProps> = ({
 	activeFilter,
 	onFilterChange,
 }) => {
-	const theme = useTheme();
+	const { colors } = useAppTheme();
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				container: {
+					paddingVertical: 12,
+					backgroundColor: colors.background.card,
+					borderBottomWidth: 1,
+					borderBottomColor: colors.border,
+				},
+				filterList: {
+					paddingHorizontal: 16,
+					gap: 8,
+				},
+				chip: {
+					backgroundColor: colors.background.paper,
+					marginRight: 8,
+				},
+				chipText: {
+					fontFamily: Fonts.meduim,
+				},
+			}),
+		[colors]
+	);
 
 	const renderItem: ListRenderItem<FilterOption> = ({ item }) => (
 		<Chip
@@ -43,12 +68,14 @@ export const GoodsFilter: React.FC<GoodsFilterProps> = ({
 			style={[
 				styles.chip,
 				activeFilter === item.key && {
-					backgroundColor: theme.colors.primary,
+					backgroundColor: colors.primary.main,
 				},
 			]}
 			textStyle={[
 				styles.chipText,
-				activeFilter === item.key && { color: 'white' },
+				activeFilter === item.key
+					? { color: colors.text.inverse }
+					: { color: colors.text.secondary },
 			]}
 		>
 			{item.label}
@@ -68,23 +95,3 @@ export const GoodsFilter: React.FC<GoodsFilterProps> = ({
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		paddingVertical: 12,
-		backgroundColor: 'white',
-		borderBottomWidth: 1,
-		borderBottomColor: '#E0E0E0',
-	},
-	filterList: {
-		paddingHorizontal: 16,
-		gap: 8,
-	},
-	chip: {
-		backgroundColor: '#E8E8E8',
-		marginRight: 8,
-	},
-	chipText: {
-		fontFamily: Fonts.meduim,
-	},
-});

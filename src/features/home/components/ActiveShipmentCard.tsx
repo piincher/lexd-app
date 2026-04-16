@@ -139,8 +139,8 @@ export const ActiveShipmentCard: React.FC<ActiveShipmentCardProps> = ({
                   >
                      {order.code || "---"}
                   </Text>
-                  <View style={styles.statusBadge}>
-                     <Text style={styles.statusText}>{statusText}</Text>
+                  <View style={[styles.statusBadge, { backgroundColor: colors.background.paper }]}>
+                     <Text style={[styles.statusText, { color: colors.text.secondary }]}>{statusText}</Text>
                   </View>
                </View>
             </View>
@@ -360,7 +360,6 @@ const styles = StyleSheet.create({
       fontWeight: "700",
    },
    statusBadge: {
-      backgroundColor: "#EBEEF2",
       paddingHorizontal: 10,
       paddingVertical: 3,
       borderRadius: 6,
@@ -369,7 +368,6 @@ const styles = StyleSheet.create({
    statusText: {
       fontSize: 12,
       fontWeight: "500",
-      color: "#5A6B7E",
    },
    routeLine: {
       flexDirection: "row",

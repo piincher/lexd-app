@@ -25,6 +25,13 @@ export interface CardProps {
   accessibilityLabel?: string;
 }
 
+const paddingMap = {
+  none: 0,
+  small: 12,
+  medium: 16,
+  large: 24,
+};
+
 export const Card: React.FC<CardProps> = ({
   children,
   variant = 'elevated',
@@ -35,89 +42,42 @@ export const Card: React.FC<CardProps> = ({
   testID,
   accessibilityLabel,
 }) => {
-  const paddingStyles = {
-    none: styles.paddingNone,
-    small: styles.paddingSmall,
-    medium: styles.paddingMedium,
-    large: styles.paddingLarge,
-  };
+  const paddingValue = paddingMap[padding];
 
-  const cardStyles = [
-    styles.base,
-    styles[variant],
-    paddingStyles[padding],
-    disabled && styles.disabled,
-    style,
-  ];
+  // Map our variants to react-native-paper modes
+  const mode = variant === 'outlined' ? 'outlined' : 'elevated';
+  const isFlat = variant === 'flat' || variant === 'default';
 
-  if (onPress) {
-    return (
-      <TouchableOpacity
-        onPress={onPress}
-        disabled={disabled}
-        style={cardStyles}
-        testID={testID}
-        accessibilityLabel={accessibilityLabel}
-        accessibilityRole="button"
-        activeOpacity={0.9}
-      >
-        {children}
-      </TouchableOpacity>
-    );
-  }
+  const backgroundColor = isFlat 
+    ? COLORS.Silver 
+    : COLORS.white;
+
+  const borderColor = variant === 'outlined' ? COLORS.inputBorder : undefined;
 
   return (
-    <View 
-      style={cardStyles}
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={disabled}
+      style={[{ 
+        margin: 0, 
+        padding: paddingValue,
+        backgroundColor,
+        borderRadius: 12,
+        borderColor,
+        borderWidth: variant === 'outlined' ? 1 : 0,
+        shadowColor: variant === 'elevated' ? COLORS.black : 'transparent',
+        shadowOffset: variant === 'elevated' ? { width: 0, height: 2 } : { width: 0, height: 0 },
+        shadowOpacity: variant === 'elevated' ? 0.1 : 0,
+        shadowRadius: variant === 'elevated' ? 4 : 0,
+        elevation: variant === 'elevated' ? 3 : 0,
+      }, style]}
       testID={testID}
       accessibilityLabel={accessibilityLabel}
+      activeOpacity={onPress ? 0.9 : 1}
     >
       {children}
-    </View>
+    </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  base: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
-  },
-  // Variants
-  default: {
-    backgroundColor: '#fff',
-  },
-  outlined: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-  },
-  elevated: {
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  flat: {
-    backgroundColor: '#f5f5f5',
-  },
-  // Padding
-  paddingNone: {
-    padding: 0,
-  },
-  paddingSmall: {
-    padding: 12,
-  },
-  paddingMedium: {
-    padding: 16,
-  },
-  paddingLarge: {
-    padding: 24,
-  },
-  disabled: {
-    opacity: 0.6,
-  },
-});
 
 export default Card;

@@ -25,6 +25,7 @@ import {
    SendSmsScreen as SendSms,
    CampaignListScreen,
    CreateCampaignScreen,
+   CreateAnnouncementScreen,
    BatchUpdateDetailScreen as BatchUpdateDetail,
    ChooseShippingMethodScreen as ChooseShippingMethod,
    ShippingMethodScreen as ShippingMethod,
@@ -78,11 +79,13 @@ import ManagePromosScreen from "@src/features/admin/promos/screens/ManagePromosS
 import { LoginScreen as Login, VerificationScreen as Verification } from "@src/features/auth";
 
 // Features - Home
-import {
-   HomeScreen,
-   NotificationsScreen as Notifications,
-   FAQScreen as Faq,
-} from "@src/features/home";
+import { HomeScreen } from "@src/features/home";
+
+// Features - Notifications
+import { NotificationsScreen as Notifications } from "@src/features/notifications";
+
+// Features - Support
+import { FAQScreen as Faq } from "@src/features/support";
 
 // Features - Notifications
 import NotificationDetailScreen from "@src/features/notifications/screens/NotificationDetailScreen";
@@ -162,7 +165,7 @@ import { initSentry } from "@src/services/sentry";
 import { UpdateProvider } from "@src/context/UpdateProvider";
 import { NotificationProvider } from "@src/app/providers";
 import { ThemeProvider, useAppTheme } from "@src/providers";
-import { ManualOrderScreen } from "@src/features/orders/screens/ManualOrderScreen";
+
 
 registerTranslation("en", enGB);
 registerTranslation("fr", fr);
@@ -237,10 +240,10 @@ function AppWrapper() {
             <Stack.Screen name="AboutUs" component={AboutUs} />
             <Stack.Screen name="faq" component={Faq} />
             <Stack.Screen name="CertificateDetail" component={CertificateDetailScreen} />
+            <Stack.Screen name="CheckRoute" component={CheckRoute} />
 
             {token ? (
                <>
-                  <Stack.Screen name="CheckRoute" component={CheckRoute} />
                   <Stack.Screen name="VoidGoodsList" component={VoidGoodsListScreen} />
                   <Stack.Screen name="VoidGoods" component={VoidGoodsScreen} />
 
@@ -248,7 +251,6 @@ function AppWrapper() {
                      name="OrderDetailWithGoods"
                      component={OrderDetailWithGoodsScreen}
                   />
-                  <Stack.Screen name="SelectManualOrder" component={ManualOrderScreen} />
                   <Stack.Screen name="AllOrders" component={AllOrdersScreen} />
                   <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} />
                   <Stack.Screen name="RecordPaymentScreen" component={RecordPaymentScreen} />
@@ -295,7 +297,6 @@ function AppWrapper() {
                   <Stack.Screen name="ConsigneeList" component={ConsigneeListScreen} />
                   <Stack.Screen name="CreateConsignee" component={CreateConsigneeScreen} />
                   <Stack.Screen name="ConsigneeDetail" component={ConsigneeDetailScreen} />
-                  <Stack.Screen name="ManualOrder" component={ManualOrderScreen} />
                   {/* Container V2 Screens */}
                   <Stack.Screen name="ContainerList" component={ContainerListScreen} />
                   <Stack.Screen name="CreateContainer" component={CreateContainerScreen} />
@@ -343,6 +344,7 @@ function AppWrapper() {
                   {/* Campaign Screens */}
                   <Stack.Screen name="CampaignList" component={CampaignListScreen} />
                   <Stack.Screen name="CreateCampaign" component={CreateCampaignScreen} />
+                  <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncementScreen} />
                </>
             ) : (
                <>

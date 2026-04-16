@@ -18,7 +18,7 @@
 import React from 'react';
 import { Modal, View, Text, StyleSheet, Pressable } from 'react-native';
 import { Button } from './Button';
-import { lightTheme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export interface ConfirmDialogProps {
   visible: boolean;
@@ -43,6 +43,7 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   variant = 'primary',
   loading = false,
 }) => {
+  const { colors } = useAppTheme();
   const confirmButtonVariant = variant === 'danger' ? 'danger' : 'primary';
 
   return (
@@ -55,14 +56,22 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
     >
       <Pressable 
         onPress={onCancel} 
-        style={styles.overlay}
+        style={[styles.overlay, { backgroundColor: colors.background.overlay }]}
         testID="confirm-dialog-backdrop"
       >
-        <View style={styles.card} testID="confirm-dialog-card" pointerEvents="box-none">
-          <Text style={styles.title} testID="confirm-dialog-title">
+        <View 
+          style={[styles.card, { 
+            backgroundColor: colors.background.card,
+            borderRadius: 16,
+            padding: 24,
+          }]} 
+          testID="confirm-dialog-card" 
+          pointerEvents="box-none"
+        >
+          <Text style={[styles.title, { color: colors.text.primary }]} testID="confirm-dialog-title">
             {title}
           </Text>
-          <Text style={styles.message} testID="confirm-dialog-message">
+          <Text style={[styles.message, { color: colors.text.secondary }]} testID="confirm-dialog-message">
             {message}
           </Text>
           <View style={styles.buttonContainer} pointerEvents="box-none">
@@ -93,40 +102,33 @@ export const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: lightTheme.colors.status.info + '80', // 50% opacity overlay
     justifyContent: 'center',
     alignItems: 'center',
-    padding: lightTheme.spacing.lg,
+    padding: 20,
   },
   card: {
-    backgroundColor: lightTheme.colors.neutral.white,
-    borderRadius: lightTheme.borderRadius.lg,
-    padding: lightTheme.spacing['2xl'],
     width: '100%',
     maxWidth: 360,
-    ...lightTheme.shadows.lg,
   },
   title: {
-    fontSize: lightTheme.typography.h3.fontSize,
-    fontWeight: lightTheme.typography.h3.fontWeight as '700',
-    letterSpacing: lightTheme.typography.h3.letterSpacing,
-    lineHeight: lightTheme.typography.h3.lineHeight,
+    fontSize: 20,
+    fontWeight: '700',
+    letterSpacing: -0.2,
+    lineHeight: 28,
     textAlign: 'center',
-    color: lightTheme.colors.text.primary,
-    marginBottom: lightTheme.spacing.md,
+    marginBottom: 12,
   },
   message: {
-    fontSize: lightTheme.typography.body.fontSize,
-    fontWeight: lightTheme.typography.body.fontWeight as '400',
-    letterSpacing: lightTheme.typography.body.letterSpacing,
-    lineHeight: lightTheme.typography.body.lineHeight,
+    fontSize: 16,
+    fontWeight: '400',
+    letterSpacing: 0,
+    lineHeight: 24,
     textAlign: 'center',
-    color: lightTheme.colors.text.secondary,
-    marginBottom: lightTheme.spacing['2xl'],
+    marginBottom: 24,
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: lightTheme.spacing.md,
+    gap: 12,
   },
   cancelButton: {
     flex: 1,

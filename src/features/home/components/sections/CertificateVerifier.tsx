@@ -17,7 +17,7 @@ import { Theme } from '@src/constants/Theme';
 import {
   verifyCertificatePublic,
   type VerifiedCertificate,
-} from '@src/features/profile/api/certificateApi';
+} from '@src/shared/api/certificates';
 
 type VerifyState =
   | { kind: 'idle' }

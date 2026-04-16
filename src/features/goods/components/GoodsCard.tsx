@@ -1,12 +1,13 @@
 // Goods Feature - GoodsCard Component
 // Pure presentational component for displaying a single goods item
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, Image, Pressable } from 'react-native';
-import { Card, Text, useTheme } from 'react-native-paper';
+import { Card, Text } from 'react-native-paper';
 import { Goods } from '../api';
 import { StatusBadge } from './StatusBadge';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsCardProps {
 	goods: Goods;
@@ -23,8 +24,73 @@ const truncateText = (text: string, maxLength: number): string => {
 };
 
 export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
-	const theme = useTheme();
+	const { colors } = useAppTheme();
 	const images = goods.photos || [];
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				card: {
+					marginHorizontal: 16,
+					marginVertical: 8,
+					elevation: 2,
+				},
+				content: {
+					flexDirection: 'row',
+					padding: 12,
+				},
+				imageContainer: {
+					marginRight: 12,
+				},
+				image: {
+					width: 80,
+					height: 80,
+					borderRadius: 8,
+				},
+				placeholderImage: {
+					backgroundColor: colors.background.paper,
+					justifyContent: 'center',
+					alignItems: 'center',
+				},
+				placeholderText: {
+					fontSize: 32,
+				},
+				infoContainer: {
+					flex: 1,
+					justifyContent: 'space-between',
+				},
+				headerRow: {
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					marginBottom: 4,
+				},
+				goodsId: {
+					fontFamily: Fonts.bold,
+					fontWeight: '700',
+				},
+				description: {
+					fontFamily: Fonts.regular,
+					color: colors.text.secondary,
+					marginBottom: 8,
+				},
+				footerRow: {
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+				},
+				cbmText: {
+					fontFamily: Fonts.meduim,
+					color: colors.text.disabled,
+				},
+				costText: {
+					fontFamily: Fonts.bold,
+					fontSize: 14,
+					color: colors.primary.main,
+				},
+			}),
+		[colors]
+	);
 
 	return (
 		<Pressable onPress={onPress}>
@@ -59,7 +125,7 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 								CBM: {(goods.actualCBM || 0).toFixed(3)}
 							</Text>
 							{goods.totalCost > 0 && (
-								<Text style={[styles.costText, { color: theme.colors.primary }]}>
+								<Text style={styles.costText}>
 									{formatCurrency(goods.totalCost)}
 								</Text>
 							)}
@@ -72,63 +138,3 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 };
 
 GoodsCard.displayName = 'GoodsCard';
-
-const styles = StyleSheet.create({
-	card: {
-		marginHorizontal: 16,
-		marginVertical: 8,
-		elevation: 2,
-	},
-	content: {
-		flexDirection: 'row',
-		padding: 12,
-	},
-	imageContainer: {
-		marginRight: 12,
-	},
-	image: {
-		width: 80,
-		height: 80,
-		borderRadius: 8,
-	},
-	placeholderImage: {
-		backgroundColor: '#E8EFF5',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	placeholderText: {
-		fontSize: 32,
-	},
-	infoContainer: {
-		flex: 1,
-		justifyContent: 'space-between',
-	},
-	headerRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginBottom: 4,
-	},
-	goodsId: {
-		fontFamily: Fonts.bold,
-		fontWeight: '700',
-	},
-	description: {
-		fontFamily: Fonts.regular,
-		color: '#666',
-		marginBottom: 8,
-	},
-	footerRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-	cbmText: {
-		fontFamily: Fonts.meduim,
-		color: '#888',
-	},
-	costText: {
-		fontFamily: Fonts.bold,
-		fontSize: 14,
-	},
-});

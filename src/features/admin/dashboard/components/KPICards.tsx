@@ -3,12 +3,12 @@
  * SRP: Display 4 KPI cards ONLY
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { MaterialIcons } from "@expo/vector-icons";
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface KPICardsProps {
   stats: {
@@ -26,6 +26,47 @@ interface KPICardData {
 }
 
 export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flexDirection: "row",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+          marginBottom: 16,
+        },
+        card: {
+          width: "48%",
+          marginBottom: 12,
+          borderRadius: 12,
+          borderLeftWidth: 4,
+          elevation: 2,
+        },
+        content: {
+          flexDirection: "row",
+          alignItems: "center",
+          padding: 16,
+        },
+        textContainer: {
+          marginLeft: 12,
+        },
+        value: {
+          fontSize: 20,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        label: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          marginTop: 2,
+        },
+      }),
+    [colors]
+  );
+
   const cards: KPICardData[] = [
     { icon: "inventory", value: stats.totalGoods, label: "Goods in Stock", color: "#2196F3" },
     { icon: "local-shipping", value: stats.pendingContainers, label: "Containers", color: "#FF9800" },
@@ -49,39 +90,5 @@ export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    marginBottom: 16,
-  },
-  card: {
-    width: "48%",
-    marginBottom: 12,
-    borderRadius: 12,
-    borderLeftWidth: 4,
-    elevation: 2,
-  },
-  content: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 16,
-  },
-  textContainer: {
-    marginLeft: 12,
-  },
-  value: {
-    fontSize: 20,
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-  },
-  label: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    marginTop: 2,
-  },
-});
 
 export default KPICards;

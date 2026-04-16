@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 const STEPS = [
    { key: "pending", label: "Commande passée", icon: "clipboard-check" },
@@ -51,7 +51,78 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
    status,
    currentStatus,
 }) => {
+   const { colors } = useAppTheme();
    const activeIndex = getStepIndex(status, currentStatus);
+
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            card: {
+               marginHorizontal: 16,
+               marginTop: 16,
+               borderRadius: 14,
+               elevation: 2,
+            },
+            header: {
+               flexDirection: "row",
+               alignItems: "center",
+               gap: 8,
+               paddingHorizontal: 16,
+               paddingTop: 16,
+               paddingBottom: 8,
+            },
+            headerTitle: {
+               fontSize: 16,
+               fontWeight: "700",
+               color: colors.text.primary,
+            },
+            timeline: {
+               flexDirection: "row",
+               justifyContent: "space-between",
+               alignItems: "flex-start",
+               paddingVertical: 12,
+            },
+            step: {
+               alignItems: "center",
+               flex: 1,
+            },
+            connector: {
+               position: "absolute",
+               top: 16,
+               right: "50%",
+               left: "-50%",
+               height: 2,
+               zIndex: -1,
+            },
+            circle: {
+               width: 34,
+               height: 34,
+               borderRadius: 17,
+               justifyContent: "center",
+               alignItems: "center",
+            },
+            stepLabel: {
+               fontSize: 10,
+               marginTop: 6,
+               textAlign: "center",
+            },
+            currentStatusRow: {
+               flexDirection: "row",
+               alignItems: "center",
+               gap: 6,
+               paddingTop: 8,
+               paddingBottom: 4,
+               borderTopWidth: 1,
+               borderTopColor: colors.border,
+            },
+            currentStatusText: {
+               fontSize: 13,
+               color: colors.text.primary,
+               fontWeight: "500",
+            },
+         }),
+      [colors]
+   );
 
    return (
       <Card style={styles.card}>
@@ -59,7 +130,7 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
             <MaterialCommunityIcons
                name="timeline-clock"
                size={20}
-               color={COLORS.green}
+               color={colors.status.success}
             />
             <Text style={styles.headerTitle}>Suivi du statut</Text>
          </View>
@@ -68,7 +139,6 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
                {STEPS.map((step, index) => {
                   const isCompleted = index <= activeIndex;
                   const isCurrent = index === activeIndex;
-                  const stepColor = isCompleted ? COLORS.green : "#D1D5DB";
 
                   return (
                      <View key={step.key} style={styles.step}>
@@ -78,8 +148,8 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
                                  styles.connector,
                                  {
                                     backgroundColor: isCompleted
-                                       ? COLORS.green
-                                       : "#E5E7EB",
+                                       ? colors.status.success
+                                       : colors.border,
                                  },
                               ]}
                            />
@@ -89,9 +159,9 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
                               styles.circle,
                               {
                                  backgroundColor: isCompleted
-                                    ? COLORS.green
-                                    : "#F3F4F6",
-                                 borderColor: isCurrent ? COLORS.gold : "transparent",
+                                    ? colors.status.success
+                                    : colors.background.paper,
+                                 borderColor: isCurrent ? colors.status.warning : "transparent",
                                  borderWidth: isCurrent ? 2 : 0,
                               },
                            ]}
@@ -99,17 +169,15 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
                            <MaterialCommunityIcons
                               name={step.icon as any}
                               size={16}
-                              color={isCompleted ? "#FFFFFF" : "#9CA3AF"}
+                              color={isCompleted ? colors.text.inverse : colors.text.disabled}
                            />
                         </View>
                         <Text
                            style={[
                               styles.stepLabel,
                               {
-                                 color: isCompleted ? "#1F2937" : "#9CA3AF",
-                                 fontFamily: isCurrent
-                                    ? Fonts.bold
-                                    : Fonts.regular,
+                                 color: isCompleted ? colors.text.primary : colors.text.disabled,
+                                 fontFamily: isCurrent ? Fonts.bold : Fonts.regular,
                               },
                            ]}
                         >
@@ -125,7 +193,7 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
                   <MaterialCommunityIcons
                      name="map-marker"
                      size={14}
-                     color={COLORS.green}
+                     color={colors.status.success}
                   />
                   <Text style={styles.currentStatusText}>{currentStatus}</Text>
                </View>
@@ -134,69 +202,3 @@ export const OrderTimeline: React.FC<OrderTimelineProps> = ({
       </Card>
    );
 };
-
-const styles = StyleSheet.create({
-   card: {
-      marginHorizontal: 16,
-      marginTop: 16,
-      borderRadius: 14,
-      elevation: 2,
-   },
-   header: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 8,
-      paddingHorizontal: 16,
-      paddingTop: 16,
-      paddingBottom: 8,
-   },
-   headerTitle: {
-      fontSize: 16,
-      fontWeight: "700",
-      color: "#1F2937",
-   },
-   timeline: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "flex-start",
-      paddingVertical: 12,
-   },
-   step: {
-      alignItems: "center",
-      flex: 1,
-   },
-   connector: {
-      position: "absolute",
-      top: 16,
-      right: "50%",
-      left: "-50%",
-      height: 2,
-      zIndex: -1,
-   },
-   circle: {
-      width: 34,
-      height: 34,
-      borderRadius: 17,
-      justifyContent: "center",
-      alignItems: "center",
-   },
-   stepLabel: {
-      fontSize: 10,
-      marginTop: 6,
-      textAlign: "center",
-   },
-   currentStatusRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 6,
-      paddingTop: 8,
-      paddingBottom: 4,
-      borderTopWidth: 1,
-      borderTopColor: "#F3F4F6",
-   },
-   currentStatusText: {
-      fontSize: 13,
-      color: "#374151",
-      fontWeight: "500",
-   },
-});

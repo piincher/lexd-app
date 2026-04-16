@@ -4,7 +4,7 @@
  * Uses v2 analytics API exclusively
  */
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { View, ScrollView, StyleSheet, RefreshControl, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -13,6 +13,7 @@ import { HomeTabScreenProps } from '@src/navigations/type';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { withProtectedRoute } from '@src/features/auth';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 import { useAdminStats } from './hooks';
 import {
@@ -30,6 +31,65 @@ import {
 } from './components';
 
 const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flex: 1,
+          backgroundColor: colors.background.default,
+        },
+        scrollContent: {
+          flexGrow: 1,
+        },
+        sectionGap: {
+          height: 14,
+        },
+        bottomPadding: {
+          height: 32,
+        },
+        errorContainer: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 40,
+          gap: 8,
+        },
+        errorTitle: {
+          fontSize: 18,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+          textAlign: 'center',
+          marginTop: 8,
+        },
+        errorSubtitle: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          textAlign: 'center',
+        },
+        retryButton: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+          backgroundColor: colors.primary.main,
+          paddingHorizontal: 24,
+          paddingVertical: 12,
+          borderRadius: 12,
+          marginTop: 12,
+        },
+        retryText: {
+          fontSize: 14,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.inverse,
+        },
+      }),
+    [colors]
+  );
+
   const {
     user,
     isLoading,
@@ -159,57 +219,5 @@ const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.neutral[50],
-  },
-  scrollContent: {
-    flexGrow: 1,
-  },
-  sectionGap: {
-    height: 14,
-  },
-  bottomPadding: {
-    height: 32,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 40,
-    gap: 8,
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[700],
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  errorSubtitle: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    textAlign: 'center',
-  },
-  retryButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    backgroundColor: Theme.primary[500],
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 12,
-    marginTop: 12,
-  },
-  retryText: {
-    fontSize: 14,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: '#FFF',
-  },
-});
 
 export default withProtectedRoute(Stats);

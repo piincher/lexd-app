@@ -61,6 +61,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       { id: "c6", title: "Avis Clients", route: "AdminReviews" },
       { id: "c7", title: "Promotions", route: "ManagePromos" },
       { id: "c8", title: "Push Campaigns", route: "CampaignList" },
+      { id: "c9", title: "Announcements", route: "CreateAnnouncement" },
     ],
   },
   {

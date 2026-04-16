@@ -1,7 +1,8 @@
 import { Header } from "@src/components/Header/Header";
 import { Fonts } from "@src/constants/Fonts";
 import { RootStackScreenProps } from "@src/navigations/type";
-import React, { useEffect } from "react";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import React, { useEffect, useMemo } from "react";
 import {
    View,
    StyleSheet,
@@ -9,10 +10,9 @@ import {
    ActivityIndicator,
    RefreshControl,
 } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { COLORS } from "@src/constants/Colors";
 import { useGetNotification, useUpdateNotification } from "../hooks/useGetNotification";
 import { useConfirmationNotification } from "@src/hooks/useConfirmation";
 import { Notification as SnackbarNotification } from "@src/components/Notification/Notification";
@@ -32,7 +32,108 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
    const { data, isLoading, isError, refetch } = useGetNotification();
    const { setVisible, onDismissSnackBar, visible } = useConfirmationNotification();
    const { mutate: markAsRead, isSuccess, isPending } = useUpdateNotification();
-   const { colors } = useTheme();
+   const { colors } = useAppTheme();
+
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            container: {
+               flex: 1,
+               backgroundColor: colors.background.default,
+            },
+            listContent: {
+               paddingVertical: 16,
+            },
+            notificationContainer: {
+               flexDirection: "row",
+               alignItems: "flex-start",
+               paddingVertical: 16,
+               paddingHorizontal: 20,
+               backgroundColor: colors.background.card,
+            },
+            checkboxContainer: {
+               padding: 8,
+               borderRadius: 8,
+            },
+            contentContainer: {
+               flex: 1,
+               marginLeft: 16,
+            },
+            title: {
+               fontFamily: Fonts.semiBold,
+               fontSize: 17,
+               color: colors.text.primary,
+               marginBottom: 4,
+            },
+            description: {
+               fontFamily: Fonts.regular,
+               fontSize: 14.5,
+               color: colors.text.secondary,
+               lineHeight: 20,
+            },
+            divider: {
+               height: 1,
+               marginHorizontal: 20,
+               backgroundColor: colors.border,
+            },
+            emptyStateContainer: {
+               flex: 1,
+               justifyContent: "center",
+               alignItems: "center",
+               padding: 40,
+               minHeight: 300,
+            },
+            loadingText: {
+               fontFamily: Fonts.medium,
+               fontSize: 16,
+               color: colors.text.secondary,
+               marginTop: 16,
+            },
+            errorTitle: {
+               fontFamily: Fonts.semiBold,
+               fontSize: 20,
+               color: colors.status.error,
+               marginTop: 20,
+               textAlign: "center",
+            },
+            errorText: {
+               fontFamily: Fonts.regular,
+               fontSize: 15,
+               color: colors.text.secondary,
+               marginTop: 8,
+               textAlign: "center",
+               marginBottom: 24,
+               paddingHorizontal: 20,
+            },
+            retryButton: {
+               backgroundColor: colors.primary.main,
+               paddingHorizontal: 24,
+               paddingVertical: 12,
+               borderRadius: 8,
+            },
+            retryText: {
+               fontFamily: Fonts.medium,
+               fontSize: 16,
+               color: colors.text.inverse,
+            },
+            emptyTitle: {
+               fontFamily: Fonts.bold,
+               fontSize: 22,
+               color: colors.text.primary,
+               marginTop: 24,
+               textAlign: "center",
+            },
+            emptySubtitle: {
+               fontFamily: Fonts.regular,
+               fontSize: 15,
+               color: colors.text.secondary,
+               marginTop: 12,
+               textAlign: "center",
+               paddingHorizontal: 40,
+            },
+         }),
+      [colors]
+   );
 
    // ✅ Handle success feedback
    useEffect(() => {
@@ -67,7 +168,7 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
                <AntDesign
                   name={item.read ? "check-circle" : "check"}
                   size={30}
-                  color={item.read ? COLORS.blue : COLORS.grey}
+                  color={item.read ? colors.primary.main : colors.text.disabled}
                />
             </TouchableOpacity>
 
@@ -89,7 +190,7 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
       if (isLoading) {
          return (
             <View style={styles.emptyStateContainer}>
-               <ActivityIndicator size="large" color={COLORS.primary} />
+               <ActivityIndicator size="large" color={colors.primary.main} />
                <Text style={styles.loadingText}>Chargement des notifications...</Text>
             </View>
          );
@@ -98,7 +199,7 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
       if (isError) {
          return (
             <View style={styles.emptyStateContainer}>
-               <AntDesign name="warning" size={48} color={COLORS.danger} />
+               <AntDesign name="warning" size={48} color={colors.status.error} />
                <Text style={styles.errorTitle}>Erreur de chargement</Text>
                <Text style={styles.errorText}>
                   Impossible de récupérer vos notifications. Veuillez réessayer.
@@ -113,7 +214,7 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
       if (!data || data.length === 0) {
          return (
             <View style={styles.emptyStateContainer}>
-               <AntDesign name="bells" size={64} color={COLORS.grey} />
+               <AntDesign name="bells" size={64} color={colors.text.disabled} />
                <Text style={styles.emptyTitle}>Aucune notification</Text>
                <Text style={styles.emptySubtitle}>
                   Vous serez informé ici dès qu'une nouvelle notification arrivera.
@@ -125,9 +226,6 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
       return null;
    })();
 
-   // ✅ Estimated item size for FlashList optimization
-   const estimatedItemSize = 100;
-
    return (
       <SafeAreaView style={styles.container}>
          <Header title="Notifications" navigation={navigation} />
@@ -137,14 +235,14 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
             renderItem={renderItem}
             keyExtractor={(item) => item._id}
             ListEmptyComponent={ListEmptyComponent}
-            estimatedItemSize={estimatedItemSize}
+            estimatedItemSize={100}
             showsVerticalScrollIndicator={false}
             refreshControl={
                <RefreshControl
                   refreshing={isLoading}
                   onRefresh={refetch}
-                  colors={[COLORS.primary]}
-                  tintColor={COLORS.primary}
+                  colors={[colors.primary.main]}
+                  tintColor={colors.primary.main}
                />
             }
             contentContainerStyle={styles.listContent}
@@ -162,101 +260,3 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
 };
 
 export default Notifications;
-
-// ✅ Enhanced Styles
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: COLORS.background,
-   },
-   listContent: {
-      paddingVertical: 16,
-   },
-   notificationContainer: {
-      flexDirection: "row",
-      alignItems: "flex-start",
-      paddingVertical: 16,
-      paddingHorizontal: 20,
-      backgroundColor: COLORS.white,
-   },
-   checkboxContainer: {
-      padding: 8,
-      borderRadius: 8,
-   },
-   contentContainer: {
-      flex: 1,
-      marginLeft: 16,
-   },
-   title: {
-      fontFamily: Fonts.semiBold,
-      fontSize: 17,
-      color: COLORS.textPrimary,
-      marginBottom: 4,
-   },
-   description: {
-      fontFamily: Fonts.regular,
-      fontSize: 14.5,
-      color: COLORS.textSecondary,
-      lineHeight: 20,
-   },
-   divider: {
-      height: 1,
-      marginHorizontal: 20,
-      backgroundColor: COLORS.border,
-   },
-   emptyStateContainer: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      padding: 40,
-      minHeight: 300,
-   },
-   loadingText: {
-      fontFamily: Fonts.medium,
-      fontSize: 16,
-      color: COLORS.textSecondary,
-      marginTop: 16,
-   },
-   errorTitle: {
-      fontFamily: Fonts.semiBold,
-      fontSize: 20,
-      color: COLORS.danger,
-      marginTop: 20,
-      textAlign: "center",
-   },
-   errorText: {
-      fontFamily: Fonts.regular,
-      fontSize: 15,
-      color: COLORS.textSecondary,
-      marginTop: 8,
-      textAlign: "center",
-      marginBottom: 24,
-      paddingHorizontal: 20,
-   },
-   retryButton: {
-      backgroundColor: COLORS.primary,
-      paddingHorizontal: 24,
-      paddingVertical: 12,
-      borderRadius: 8,
-   },
-   retryText: {
-      fontFamily: Fonts.medium,
-      fontSize: 16,
-      color: COLORS.white,
-   },
-   emptyTitle: {
-      fontFamily: Fonts.bold,
-      fontSize: 22,
-      color: COLORS.textPrimary,
-      marginTop: 24,
-      textAlign: "center",
-   },
-   emptySubtitle: {
-      fontFamily: Fonts.regular,
-      fontSize: 15,
-      color: COLORS.textSecondary,
-      marginTop: 12,
-      textAlign: "center",
-      paddingHorizontal: 40,
-   },
-});

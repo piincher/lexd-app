@@ -3,7 +3,7 @@
  * SRP: About page with company info, values, and contact
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import {
    Image,
    Linking,
@@ -19,6 +19,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 const APP_VERSION = "2.0.0";
 
@@ -28,28 +29,24 @@ const VALUES = [
       title: "Fiabilite",
       desc: "Livraison securisee et ponctuelle de vos marchandises",
       color: "#3B82F6",
-      bg: "#EFF6FF",
    },
    {
       icon: "heart-outline" as const,
       title: "Integrite",
       desc: "Transparence totale dans chaque etape du processus",
       color: "#EF4444",
-      bg: "#FEF2F2",
    },
    {
       icon: "flash-outline" as const,
       title: "Efficacite",
       desc: "Solutions logistiques optimisees pour votre business",
       color: "#F59E0B",
-      bg: "#FFFBEB",
    },
    {
       icon: "people-outline" as const,
       title: "Satisfaction",
       desc: "Votre reussite est notre priorite absolue",
       color: "#10B981",
-      bg: "#F0FDF4",
    },
 ];
 
@@ -61,6 +58,322 @@ const STATS = [
 ];
 
 const AboutUs = () => {
+   const { colors } = useAppTheme();
+
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            container: {
+               flex: 1,
+               backgroundColor: colors.background.default,
+            },
+            scrollContent: {
+               flexGrow: 1,
+               paddingBottom: 40,
+            },
+
+            // Hero
+            heroSection: {
+               marginBottom: 0,
+            },
+            heroBg: {
+               alignItems: "center",
+               paddingTop: 32,
+               paddingBottom: 36,
+               borderBottomLeftRadius: 32,
+               borderBottomRightRadius: 32,
+            },
+            logoWrapper: {
+               width: 90,
+               height: 90,
+               borderRadius: 22,
+               backgroundColor: "rgba(255,255,255,0.95)",
+               justifyContent: "center",
+               alignItems: "center",
+               marginBottom: 16,
+               shadowColor: "#000",
+               shadowOffset: { width: 0, height: 4 },
+               shadowOpacity: 0.15,
+               shadowRadius: 12,
+               elevation: 8,
+            },
+            logo: {
+               width: 60,
+               height: 60,
+               resizeMode: "contain",
+            },
+            heroTitle: {
+               fontSize: 24,
+               fontFamily: Fonts.bold,
+               fontWeight: "700",
+               color: "#FFF",
+               marginBottom: 4,
+            },
+            heroSubtitle: {
+               fontSize: 13,
+               fontFamily: Fonts.regular,
+               color: "rgba(255,255,255,0.8)",
+               marginBottom: 12,
+            },
+            versionBadge: {
+               backgroundColor: "rgba(255,255,255,0.2)",
+               paddingHorizontal: 12,
+               paddingVertical: 4,
+               borderRadius: 12,
+            },
+            versionText: {
+               fontSize: 11,
+               fontFamily: Fonts.medium,
+               color: "rgba(255,255,255,0.9)",
+            },
+
+            // Stats
+            statsRow: {
+               flexDirection: "row",
+               marginHorizontal: 20,
+               marginTop: -20,
+               backgroundColor: colors.background.card,
+               borderRadius: 16,
+               padding: 16,
+               ...Theme.shadows.sm,
+            },
+            statItem: {
+               flex: 1,
+               alignItems: "center",
+            },
+            statValue: {
+               fontSize: 20,
+               fontFamily: Fonts.bold,
+               fontWeight: "700",
+               color: colors.primary.main,
+            },
+            statLabel: {
+               fontSize: 9,
+               fontFamily: Fonts.regular,
+               color: colors.text.secondary,
+               textAlign: "center",
+               marginTop: 2,
+            },
+
+            // Image
+            imageCard: {
+               marginHorizontal: 20,
+               marginTop: 16,
+               borderRadius: 16,
+               overflow: "hidden",
+               height: 180,
+               ...Theme.shadows.sm,
+            },
+            warehouseImage: {
+               width: "100%",
+               height: "100%",
+            },
+            imageOverlay: {
+               ...StyleSheet.absoluteFillObject,
+               justifyContent: "flex-end",
+               padding: 16,
+            },
+            imageCaption: {
+               fontSize: 12,
+               fontFamily: Fonts.medium,
+               color: "rgba(255,255,255,0.9)",
+            },
+
+            // Cards
+            card: {
+               marginHorizontal: 20,
+               marginTop: 14,
+               backgroundColor: colors.background.card,
+               borderRadius: 16,
+               padding: 18,
+               ...Theme.shadows.sm,
+            },
+            cardIconRow: {
+               flexDirection: "row",
+               alignItems: "center",
+               gap: 10,
+               marginBottom: 12,
+            },
+            cardIconContainer: {
+               width: 38,
+               height: 38,
+               borderRadius: 11,
+               justifyContent: "center",
+               alignItems: "center",
+            },
+            cardTitle: {
+               fontSize: 16,
+               fontFamily: Fonts.bold,
+               fontWeight: "700",
+               color: colors.text.primary,
+            },
+            cardContent: {
+               fontSize: 13,
+               fontFamily: Fonts.regular,
+               color: colors.text.secondary,
+               lineHeight: 20,
+            },
+
+            // Values
+            sectionTitle: {
+               fontSize: 16,
+               fontFamily: Fonts.bold,
+               fontWeight: "700",
+               color: colors.text.primary,
+               marginHorizontal: 20,
+               marginTop: 20,
+               marginBottom: 10,
+            },
+            valuesGrid: {
+               flexDirection: "row",
+               flexWrap: "wrap",
+               paddingHorizontal: 15,
+               gap: 10,
+            },
+            valueCard: {
+               flex: 1,
+               minWidth: "45%",
+               backgroundColor: colors.background.card,
+               borderRadius: 14,
+               padding: 14,
+               ...Theme.shadows.sm,
+            },
+            valueIcon: {
+               width: 38,
+               height: 38,
+               borderRadius: 11,
+               justifyContent: "center",
+               alignItems: "center",
+               marginBottom: 10,
+            },
+            valueTitle: {
+               fontSize: 13,
+               fontFamily: Fonts.bold,
+               fontWeight: "700",
+               color: colors.text.primary,
+               marginBottom: 4,
+            },
+            valueDesc: {
+               fontSize: 10,
+               fontFamily: Fonts.regular,
+               color: colors.text.secondary,
+               lineHeight: 15,
+            },
+
+            // Services
+            servicesList: {
+               gap: 10,
+            },
+            serviceRow: {
+               flexDirection: "row",
+               alignItems: "center",
+               gap: 10,
+            },
+            serviceText: {
+               fontSize: 13,
+               fontFamily: Fonts.medium,
+               color: colors.text.primary,
+            },
+
+            // Contact
+            contactCard: {
+               marginHorizontal: 20,
+               marginTop: 16,
+               borderRadius: 16,
+               overflow: "hidden",
+               ...Theme.shadows.sm,
+            },
+            contactGradient: {
+               alignItems: "center",
+               padding: 24,
+               gap: 6,
+            },
+            contactTitle: {
+               fontSize: 18,
+               fontFamily: Fonts.bold,
+               fontWeight: "700",
+               color: "#FFF",
+               marginTop: 4,
+            },
+            contactSubtitle: {
+               fontSize: 12,
+               fontFamily: Fonts.regular,
+               color: "rgba(255,255,255,0.8)",
+               textAlign: "center",
+               marginBottom: 8,
+            },
+            contactButton: {
+               flexDirection: "row",
+               alignItems: "center",
+               gap: 8,
+               backgroundColor: "#FFF",
+               paddingHorizontal: 20,
+               paddingVertical: 10,
+               borderRadius: 24,
+            },
+            contactButtonText: {
+               fontSize: 14,
+               fontFamily: Fonts.bold,
+               fontWeight: "700",
+               color: Theme.primary[600],
+            },
+
+            // Footer
+            footer: {
+               alignItems: "center",
+               marginTop: 28,
+               paddingHorizontal: 20,
+               gap: 6,
+            },
+            footerDivider: {
+               width: 40,
+               height: 3,
+               borderRadius: 2,
+               backgroundColor: colors.border,
+               marginBottom: 10,
+            },
+            footerCopyright: {
+               fontSize: 11,
+               fontFamily: Fonts.medium,
+               color: colors.text.secondary,
+            },
+            madeWithText: {
+               fontSize: 11,
+               fontFamily: Fonts.regular,
+               color: colors.text.secondary,
+            },
+            footerMadeBy: {
+               flexDirection: "row",
+               alignItems: "center",
+               marginTop: 2,
+            },
+            nuvoLink: {
+               fontSize: 11,
+               fontFamily: Fonts.bold,
+               fontWeight: "700",
+               color: colors.primary.main,
+               textDecorationLine: "underline",
+            },
+            footerLocation: {
+               fontSize: 10,
+               fontFamily: Fonts.medium,
+               color: colors.text.secondary,
+            },
+            footerPhone: {
+               flexDirection: "row",
+               alignItems: "center",
+               gap: 4,
+               marginTop: 2,
+            },
+            footerPhoneText: {
+               fontSize: 10,
+               fontFamily: Fonts.regular,
+               color: colors.text.secondary,
+            },
+         }),
+      [colors]
+   );
+
    const handleCall = () => {
       Linking.openURL("tel:+8617865673053");
    };
@@ -129,8 +442,8 @@ const AboutUs = () => {
             {/* Mission Section */}
             <Animated.View entering={FadeInDown.delay(400).duration(600)} style={styles.card}>
                <View style={styles.cardIconRow}>
-                  <View style={[styles.cardIconContainer, { backgroundColor: Theme.primary[50] }]}>
-                     <Ionicons name="rocket-outline" size={22} color={Theme.primary[600]} />
+                  <View style={[styles.cardIconContainer, { backgroundColor: colors.primary.main + '10' }]}>
+                     <Ionicons name="rocket-outline" size={22} color={colors.primary.main} />
                   </View>
                   <Text style={styles.cardTitle}>Notre Mission</Text>
                </View>
@@ -144,7 +457,7 @@ const AboutUs = () => {
             {/* Vision Section */}
             <Animated.View entering={FadeInDown.delay(500).duration(600)} style={styles.card}>
                <View style={styles.cardIconRow}>
-                  <View style={[styles.cardIconContainer, { backgroundColor: "#EFF6FF" }]}>
+                  <View style={[styles.cardIconContainer, { backgroundColor: "#3B82F620" }]}>
                      <Ionicons name="eye-outline" size={22} color="#3B82F6" />
                   </View>
                   <Text style={styles.cardTitle}>Notre Vision</Text>
@@ -162,7 +475,7 @@ const AboutUs = () => {
                <View style={styles.valuesGrid}>
                   {VALUES.map((val, index) => (
                      <View key={index} style={styles.valueCard}>
-                        <View style={[styles.valueIcon, { backgroundColor: val.bg }]}>
+                        <View style={[styles.valueIcon, { backgroundColor: val.color + '20' }]}>
                            <Ionicons name={val.icon} size={22} color={val.color} />
                         </View>
                         <Text style={styles.valueTitle}>{val.title}</Text>
@@ -175,7 +488,7 @@ const AboutUs = () => {
             {/* Services Section */}
             <Animated.View entering={FadeInDown.delay(700).duration(600)} style={styles.card}>
                <View style={styles.cardIconRow}>
-                  <View style={[styles.cardIconContainer, { backgroundColor: "#FFFBEB" }]}>
+                  <View style={[styles.cardIconContainer, { backgroundColor: "#F59E0B20" }]}>
                      <Ionicons name="cube-outline" size={22} color="#F59E0B" />
                   </View>
                   <Text style={styles.cardTitle}>Nos Services</Text>
@@ -190,7 +503,7 @@ const AboutUs = () => {
                      { icon: "shield-checkmark-outline", text: "Assurance marchandises" },
                   ].map((service, index) => (
                      <View key={index} style={styles.serviceRow}>
-                        <Ionicons name={service.icon as any} size={18} color={Theme.primary[500]} />
+                        <Ionicons name={service.icon as any} size={18} color={colors.primary.main} />
                         <Text style={styles.serviceText}>{service.text}</Text>
                      </View>
                   ))}
@@ -243,7 +556,7 @@ const AboutUs = () => {
                   activeOpacity={0.7}
                   style={styles.footerPhone}
                >
-                  <Ionicons name="call-outline" size={12} color={Theme.neutral[400]} />
+                  <Ionicons name="call-outline" size={12} color={colors.text.secondary} />
                   <Text style={styles.footerPhoneText}>+86 178 6567 3053</Text>
                </TouchableOpacity>
             </Animated.View>
@@ -253,313 +566,3 @@ const AboutUs = () => {
 };
 
 export default AboutUs;
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: Theme.neutral[50],
-   },
-   scrollContent: {
-      flexGrow: 1,
-      paddingBottom: 40,
-   },
-
-   // Hero
-   heroSection: {
-      marginBottom: 0,
-   },
-   heroBg: {
-      alignItems: "center",
-      paddingTop: 32,
-      paddingBottom: 36,
-      borderBottomLeftRadius: 32,
-      borderBottomRightRadius: 32,
-   },
-   logoWrapper: {
-      width: 90,
-      height: 90,
-      borderRadius: 22,
-      backgroundColor: "rgba(255,255,255,0.95)",
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: 16,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.15,
-      shadowRadius: 12,
-      elevation: 8,
-   },
-   logo: {
-      width: 60,
-      height: 60,
-      resizeMode: "contain",
-   },
-   heroTitle: {
-      fontSize: 24,
-      fontFamily: Fonts.bold,
-      fontWeight: "700",
-      color: "#FFF",
-      marginBottom: 4,
-   },
-   heroSubtitle: {
-      fontSize: 13,
-      fontFamily: Fonts.regular,
-      color: "rgba(255,255,255,0.8)",
-      marginBottom: 12,
-   },
-   versionBadge: {
-      backgroundColor: "rgba(255,255,255,0.2)",
-      paddingHorizontal: 12,
-      paddingVertical: 4,
-      borderRadius: 12,
-   },
-   versionText: {
-      fontSize: 11,
-      fontFamily: Fonts.medium,
-      color: "rgba(255,255,255,0.9)",
-   },
-
-   // Stats
-   statsRow: {
-      flexDirection: "row",
-      marginHorizontal: 20,
-      marginTop: -20,
-      backgroundColor: "#FFF",
-      borderRadius: 16,
-      padding: 16,
-      ...Theme.shadows.sm,
-   },
-   statItem: {
-      flex: 1,
-      alignItems: "center",
-   },
-   statValue: {
-      fontSize: 20,
-      fontFamily: Fonts.bold,
-      fontWeight: "700",
-      color: Theme.primary[600],
-   },
-   statLabel: {
-      fontSize: 9,
-      fontFamily: Fonts.regular,
-      color: Theme.neutral[500],
-      textAlign: "center",
-      marginTop: 2,
-   },
-
-   // Image
-   imageCard: {
-      marginHorizontal: 20,
-      marginTop: 16,
-      borderRadius: 16,
-      overflow: "hidden",
-      height: 180,
-      ...Theme.shadows.sm,
-   },
-   warehouseImage: {
-      width: "100%",
-      height: "100%",
-   },
-   imageOverlay: {
-      ...StyleSheet.absoluteFillObject,
-      justifyContent: "flex-end",
-      padding: 16,
-   },
-   imageCaption: {
-      fontSize: 12,
-      fontFamily: Fonts.medium,
-      color: "rgba(255,255,255,0.9)",
-   },
-
-   // Cards
-   card: {
-      marginHorizontal: 20,
-      marginTop: 14,
-      backgroundColor: "#FFF",
-      borderRadius: 16,
-      padding: 18,
-      ...Theme.shadows.sm,
-   },
-   cardIconRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 10,
-      marginBottom: 12,
-   },
-   cardIconContainer: {
-      width: 38,
-      height: 38,
-      borderRadius: 11,
-      justifyContent: "center",
-      alignItems: "center",
-   },
-   cardTitle: {
-      fontSize: 16,
-      fontFamily: Fonts.bold,
-      fontWeight: "700",
-      color: Theme.neutral[800],
-   },
-   cardContent: {
-      fontSize: 13,
-      fontFamily: Fonts.regular,
-      color: Theme.neutral[600],
-      lineHeight: 20,
-   },
-
-   // Values
-   sectionTitle: {
-      fontSize: 16,
-      fontFamily: Fonts.bold,
-      fontWeight: "700",
-      color: Theme.neutral[800],
-      marginHorizontal: 20,
-      marginTop: 20,
-      marginBottom: 10,
-   },
-   valuesGrid: {
-      flexDirection: "row",
-      flexWrap: "wrap",
-      paddingHorizontal: 15,
-      gap: 10,
-   },
-   valueCard: {
-      flex: 1,
-      minWidth: "45%",
-      backgroundColor: "#FFF",
-      borderRadius: 14,
-      padding: 14,
-      ...Theme.shadows.sm,
-   },
-   valueIcon: {
-      width: 38,
-      height: 38,
-      borderRadius: 11,
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: 10,
-   },
-   valueTitle: {
-      fontSize: 13,
-      fontFamily: Fonts.bold,
-      fontWeight: "700",
-      color: Theme.neutral[800],
-      marginBottom: 4,
-   },
-   valueDesc: {
-      fontSize: 10,
-      fontFamily: Fonts.regular,
-      color: Theme.neutral[500],
-      lineHeight: 15,
-   },
-
-   // Services
-   servicesList: {
-      gap: 10,
-   },
-   serviceRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 10,
-   },
-   serviceText: {
-      fontSize: 13,
-      fontFamily: Fonts.medium,
-      color: Theme.neutral[700],
-   },
-
-   // Contact
-   contactCard: {
-      marginHorizontal: 20,
-      marginTop: 16,
-      borderRadius: 16,
-      overflow: "hidden",
-      ...Theme.shadows.sm,
-   },
-   contactGradient: {
-      alignItems: "center",
-      padding: 24,
-      gap: 6,
-   },
-   contactTitle: {
-      fontSize: 18,
-      fontFamily: Fonts.bold,
-      fontWeight: "700",
-      color: "#FFF",
-      marginTop: 4,
-   },
-   contactSubtitle: {
-      fontSize: 12,
-      fontFamily: Fonts.regular,
-      color: "rgba(255,255,255,0.8)",
-      textAlign: "center",
-      marginBottom: 8,
-   },
-   contactButton: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 8,
-      backgroundColor: "#FFF",
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      borderRadius: 24,
-   },
-   contactButtonText: {
-      fontSize: 14,
-      fontFamily: Fonts.bold,
-      fontWeight: "700",
-      color: Theme.primary[600],
-   },
-
-   // Footer
-   footer: {
-      alignItems: "center",
-      marginTop: 28,
-      paddingHorizontal: 20,
-      gap: 6,
-   },
-   footerDivider: {
-      width: 40,
-      height: 3,
-      borderRadius: 2,
-      backgroundColor: Theme.neutral[200],
-      marginBottom: 10,
-   },
-   footerCopyright: {
-      fontSize: 11,
-      fontFamily: Fonts.medium,
-      color: Theme.neutral[400],
-   },
-   madeWithText: {
-      fontSize: 11,
-      fontFamily: Fonts.regular,
-      color: Theme.neutral[400],
-   },
-   footerMadeBy: {
-      flexDirection: "row",
-      alignItems: "center",
-      marginTop: 2,
-   },
-   nuvoLink: {
-      fontSize: 11,
-      fontFamily: Fonts.bold,
-      fontWeight: "700",
-      color: Theme.primary[500],
-      textDecorationLine: "underline",
-   },
-   footerLocation: {
-      fontSize: 10,
-      fontFamily: Fonts.medium,
-      color: Theme.neutral[400],
-   },
-   footerPhone: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 4,
-      marginTop: 2,
-   },
-   footerPhoneText: {
-      fontSize: 10,
-      fontFamily: Fonts.regular,
-      color: Theme.neutral[400],
-   },
-});

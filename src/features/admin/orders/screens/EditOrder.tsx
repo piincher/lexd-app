@@ -32,7 +32,7 @@ import Entypo from "@expo/vector-icons/Entypo";
 import { useGetCategory } from "../../hooks/useCategory";
 import { CustomModal } from "@src/components/Modal/Modal";
 import { useShippingMode } from "@src/store/shippingMode";
-import { AutoCalculateTotal } from "../../orders/components/AutoCalculateTotal";
+import AutoCalculateTotal from "../../orders/components/AutoCalculateTotal";
 // import { useGetCategories } from '../../hooks/useCategory';
 
 const signupSchema = yup.object({

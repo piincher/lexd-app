@@ -1,49 +1,38 @@
-// components/FadingAnnouncement.tsx
+// components/FeatureAnnouncementModal.tsx
 import { COLORS } from "@src/constants/Colors";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import * as ExpoWeb from "expo-web-browser";
 import {
    View,
    Text,
-   Animated,
+   Modal,
    StyleSheet,
    TouchableOpacity,
-   Linking,
-   Easing,
    Dimensions,
+   ScrollView,
 } from "react-native";
-import { fetchAnnouncement } from "@src/api/announcement";
-
-type Announcement = {
-   _id: string;
-   title: string;
-   message: string;
-   link?: string;
-   isActive: boolean;
-   publishDate: string;
-   expirationDate: string;
-   __v: number;
-};
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { fetchAnnouncement, announcementProps } from "@src/api/announcement";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const DISMISSED_KEY = "@dismissed_announcement_id";
 
-const FadingAnnouncement: React.FC = () => {
-   const [announcement, setAnnouncement] = useState<Announcement | null>(null);
-   // Use useState with lazy initializer instead of useRef for React Compiler compatibility
-   const [fadeAnim] = useState(() => new Animated.Value(0));
-   const [slideAnim] = useState(() => new Animated.Value(SCREEN_WIDTH));
-   const [scaleAnim] = useState(() => new Animated.Value(0.8));
+const FeatureAnnouncementModal: React.FC = () => {
+   const [announcement, setAnnouncement] = useState<announcementProps | null>(null);
+   const [visible, setVisible] = useState(false);
 
    useEffect(() => {
       const loadAnnouncement = async () => {
          try {
             const data = await fetchAnnouncement();
-
             if (data && data.isActive) {
-               setAnnouncement(data);
+               const dismissedId = await AsyncStorage.getItem(DISMISSED_KEY);
+               if (dismissedId !== data._id) {
+                  setAnnouncement(data);
+                  setVisible(true);
+               }
             }
          } catch (error) {
-            // Silently fail - announcement is not critical
             console.log("Announcement fetch failed:", error);
          }
       };
@@ -51,145 +40,131 @@ const FadingAnnouncement: React.FC = () => {
       loadAnnouncement();
    }, []);
 
-   useEffect(() => {
+   const handleDismiss = useCallback(async () => {
+      setVisible(false);
       if (announcement) {
-         const animation = Animated.loop(
-            Animated.sequence([
-               Animated.parallel([
-                  Animated.timing(fadeAnim, {
-                     toValue: 1,
-                     duration: 800,
-                     easing: Easing.out(Easing.quad),
-                     useNativeDriver: true,
-                  }),
-                  Animated.timing(slideAnim, {
-                     toValue: 0,
-                     duration: 1000,
-                     easing: Easing.out(Easing.back(1)),
-                     useNativeDriver: true,
-                  }),
-                  Animated.spring(scaleAnim, {
-                     toValue: 1,
-                     friction: 4,
-                     useNativeDriver: true,
-                  }),
-               ]),
-               Animated.delay(3000),
-               Animated.parallel([
-                  Animated.timing(fadeAnim, {
-                     toValue: 0,
-                     duration: 800,
-                     easing: Easing.in(Easing.quad),
-                     useNativeDriver: true,
-                  }),
-                  Animated.timing(slideAnim, {
-                     toValue: -SCREEN_WIDTH,
-                     duration: 1000,
-                     easing: Easing.in(Easing.quad),
-                     useNativeDriver: true,
-                  }),
-                  Animated.timing(scaleAnim, {
-                     toValue: 0.9,
-                     duration: 800,
-                     useNativeDriver: true,
-                  }),
-               ]),
-               Animated.delay(500),
-            ])
-         ).start();
-
-         //  return () => animation.stop();
+         await AsyncStorage.setItem(DISMISSED_KEY, announcement._id);
       }
    }, [announcement]);
 
-   const handlePress = () => {
+   const handleLearnMore = useCallback(async () => {
       if (announcement?.link) {
-         ExpoWeb.openBrowserAsync(announcement.link, {
+         await ExpoWeb.openBrowserAsync(announcement.link, {
             toolbarColor: COLORS.blue,
          });
-         // Add press feedback animation
-         Animated.sequence([
-            Animated.spring(scaleAnim, {
-               toValue: 0.95,
-               useNativeDriver: true,
-            }),
-            Animated.spring(scaleAnim, {
-               toValue: 1,
-               useNativeDriver: true,
-            }),
-         ]).start();
       }
-   };
+   }, [announcement]);
 
    if (!announcement) return null;
 
    return (
-      <Animated.View
-         style={[
-            styles.container,
-            {
-               opacity: fadeAnim,
-               transform: [{ translateX: slideAnim }, { scale: scaleAnim }],
-            },
-         ]}
+      <Modal
+         animationType="fade"
+         transparent
+         visible={visible}
+         onRequestClose={handleDismiss}
       >
-         <TouchableOpacity onPress={handlePress} activeOpacity={0.9}>
-            <View style={styles.content}>
-               <Text style={styles.title}>{announcement.title}</Text>
-               <Text style={styles.message}>{announcement.message}</Text>
-               {announcement.link && (
-                  <View style={styles.linkIndicator}>
-                     <Text style={styles.linkText}>Learn More →</Text>
-                  </View>
-               )}
+         <View style={styles.overlay}>
+            <View style={styles.card}>
+               <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={styles.scrollContent}
+               >
+                  <Text style={styles.title}>{announcement.title}</Text>
+                  <Text style={styles.message}>{announcement.message}</Text>
+               </ScrollView>
+
+               <View style={styles.actions}>
+                  {announcement.link && (
+                     <TouchableOpacity
+                        onPress={handleLearnMore}
+                        style={[styles.button, styles.secondaryButton]}
+                        activeOpacity={0.8}
+                     >
+                        <Text style={styles.secondaryButtonText}>En savoir plus</Text>
+                     </TouchableOpacity>
+                  )}
+                  <TouchableOpacity
+                     onPress={handleDismiss}
+                     style={[styles.button, styles.primaryButton]}
+                     activeOpacity={0.8}
+                  >
+                     <Text style={styles.primaryButtonText}>J'ai compris</Text>
+                  </TouchableOpacity>
+               </View>
             </View>
-         </TouchableOpacity>
-      </Animated.View>
+         </View>
+      </Modal>
    );
 };
 
 const styles = StyleSheet.create({
-   container: {
-      position: "absolute",
-      top: 100,
-      left: 20,
-      right: 20,
-      width: SCREEN_WIDTH - 40,
-      borderRadius: 12,
-      shadowColor: COLORS.DarkGrey,
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.1,
-      shadowRadius: 12,
-      elevation: 3,
-      backgroundColor: COLORS.lightCrimson,
-      borderWidth: 1,
-      borderColor: COLORS.Crimson + "20",
+   overlay: {
+      flex: 1,
+      backgroundColor: "rgba(0,0,0,0.5)",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 24,
    },
-   content: {
-      paddingVertical: 16,
-      paddingHorizontal: 20,
+   card: {
+      width: SCREEN_WIDTH - 48,
+      maxHeight: "70%",
+      backgroundColor: COLORS.white,
+      borderRadius: 16,
+      paddingTop: 24,
+      shadowColor: "#000",
+      shadowOffset: { width: 0, height: 10 },
+      shadowOpacity: 0.25,
+      shadowRadius: 20,
+      elevation: 10,
+   },
+   scrollContent: {
+      paddingHorizontal: 24,
+      paddingBottom: 8,
    },
    title: {
-      fontSize: 16,
-      fontWeight: "600",
-      color: COLORS.Crimson,
-      marginBottom: 8,
+      fontSize: 20,
+      fontWeight: "700",
+      color: COLORS.black,
+      marginBottom: 12,
+      textAlign: "center",
    },
    message: {
-      fontSize: 14,
+      fontSize: 15,
       color: COLORS.DarkGrey,
-      lineHeight: 20,
+      lineHeight: 22,
+      textAlign: "center",
    },
-   linkIndicator: {
-      marginTop: 12,
+   actions: {
       flexDirection: "row",
-      alignItems: "center",
+      justifyContent: "flex-end",
+      gap: 12,
+      padding: 20,
+      paddingTop: 16,
+      borderTopWidth: 1,
+      borderTopColor: "#E5E7EB",
    },
-   linkText: {
-      color: COLORS.terms2,
+   button: {
+      paddingVertical: 10,
+      paddingHorizontal: 18,
+      borderRadius: 8,
+   },
+   primaryButton: {
+      backgroundColor: COLORS.blue,
+   },
+   primaryButtonText: {
+      color: COLORS.white,
       fontSize: 14,
-      fontWeight: "500",
+      fontWeight: "600",
+   },
+   secondaryButton: {
+      backgroundColor: "#F3F4F6",
+   },
+   secondaryButtonText: {
+      color: COLORS.DarkGrey,
+      fontSize: 14,
+      fontWeight: "600",
    },
 });
 
-export default FadingAnnouncement;
+export default FeatureAnnouncementModal;

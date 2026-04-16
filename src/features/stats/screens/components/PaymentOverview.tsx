@@ -3,7 +3,7 @@
  * SRP: Visual breakdown of payment status with method breakdown from v2 analytics
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -11,6 +11,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { PaymentMetricsResponse } from '../../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface PaymentOverviewProps {
   paymentMetrics?: PaymentMetricsResponse;
@@ -41,8 +42,155 @@ export const PaymentOverview: React.FC<PaymentOverviewProps> = ({
   paymentSummary,
   isLoading,
 }) => {
+  const { colors } = useAppTheme();
   const { collectionRate, totalCollected, totalOutstanding, completedTransactions, totalTransactions } = paymentSummary;
   const methods = paymentMetrics?.paymentMethods || [];
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          marginHorizontal: 20,
+          backgroundColor: colors.background.card,
+          borderRadius: 16,
+          padding: 18,
+          ...Theme.shadows.sm,
+        },
+        header: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 16,
+        },
+        title: {
+          fontSize: 15,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        headerSubtitle: {
+          fontSize: 11,
+          fontFamily: Fonts.regular,
+          color: colors.text.disabled,
+          marginTop: 2,
+        },
+        rateBadge: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 4,
+          paddingHorizontal: 10,
+          paddingVertical: 5,
+          borderRadius: 12,
+        },
+        rateText: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+        },
+        statsRow: {
+          flexDirection: 'row',
+          gap: 10,
+          marginBottom: 14,
+        },
+        statCard: {
+          flex: 1,
+          backgroundColor: colors.background.paper,
+          borderRadius: 12,
+          padding: 14,
+          borderLeftWidth: 3,
+        },
+        statAmount: {
+          fontSize: 17,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        statCurrency: {
+          fontSize: 10,
+          fontFamily: Fonts.medium,
+          color: colors.text.disabled,
+          marginBottom: 6,
+        },
+        statFooter: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 4,
+        },
+        dot: {
+          width: 6,
+          height: 6,
+          borderRadius: 3,
+        },
+        statLabel: {
+          fontSize: 11,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+        },
+        barContainer: {
+          marginBottom: 2,
+        },
+        barBg: {
+          flexDirection: 'row',
+          height: 5,
+          borderRadius: 3,
+          overflow: 'hidden',
+        },
+        barPaid: {
+          backgroundColor: '#10B981',
+          borderRadius: 3,
+        },
+        barUnpaid: {
+          backgroundColor: '#FCA5A5',
+          borderRadius: 3,
+        },
+        methodsSection: {
+          marginTop: 16,
+          paddingTop: 14,
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+        },
+        methodsTitle: {
+          fontSize: 12,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.secondary,
+          marginBottom: 10,
+        },
+        methodRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 8,
+          gap: 8,
+        },
+        methodIcon: {
+          width: 28,
+          height: 28,
+          borderRadius: 8,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        methodLabel: {
+          flex: 1,
+          fontSize: 12,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+        },
+        methodAmount: {
+          fontSize: 12,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        methodPercent: {
+          fontSize: 11,
+          fontFamily: Fonts.medium,
+          color: colors.text.disabled,
+          minWidth: 30,
+          textAlign: 'right',
+        },
+      }),
+    [colors]
+  );
 
   return (
     <Animated.View entering={FadeInUp.delay(250).springify().damping(15)} style={styles.container}>
@@ -53,13 +201,13 @@ export const PaymentOverview: React.FC<PaymentOverviewProps> = ({
             {completedTransactions}/{totalTransactions} transactions
           </Text>
         </View>
-        <View style={[styles.rateBadge, { backgroundColor: collectionRate >= 50 ? '#F0FDF4' : '#FEF2F2' }]}>
+        <View style={[styles.rateBadge, { backgroundColor: collectionRate >= 50 ? colors.feedback.successBg : colors.feedback.errorBg }]}>
           <Ionicons
             name={collectionRate >= 50 ? 'trending-up' : 'trending-down'}
             size={12}
-            color={collectionRate >= 50 ? '#10B981' : '#EF4444'}
+            color={collectionRate >= 50 ? colors.status.success : colors.status.error}
           />
-          <Text style={[styles.rateText, { color: collectionRate >= 50 ? '#10B981' : '#EF4444' }]}>
+          <Text style={[styles.rateText, { color: collectionRate >= 50 ? colors.status.success : colors.status.error }]}>
             {collectionRate.toFixed(0)}%
           </Text>
         </View>
@@ -67,20 +215,20 @@ export const PaymentOverview: React.FC<PaymentOverviewProps> = ({
 
       {/* Collected vs Outstanding cards */}
       <View style={styles.statsRow}>
-        <View style={[styles.statCard, { borderLeftColor: '#10B981', borderLeftWidth: 3 }]}>
+        <View style={[styles.statCard, { borderLeftColor: colors.status.success, borderLeftWidth: 3 }]}>
           <Text style={styles.statAmount}>{formatAmount(totalCollected)}</Text>
           <Text style={styles.statCurrency}>FCFA</Text>
           <View style={styles.statFooter}>
-            <View style={[styles.dot, { backgroundColor: '#10B981' }]} />
+            <View style={[styles.dot, { backgroundColor: colors.status.success }]} />
             <Text style={styles.statLabel}>Encaisse</Text>
           </View>
         </View>
 
-        <View style={[styles.statCard, { borderLeftColor: '#EF4444', borderLeftWidth: 3 }]}>
+        <View style={[styles.statCard, { borderLeftColor: colors.status.error, borderLeftWidth: 3 }]}>
           <Text style={styles.statAmount}>{formatAmount(totalOutstanding)}</Text>
           <Text style={styles.statCurrency}>FCFA</Text>
           <View style={styles.statFooter}>
-            <View style={[styles.dot, { backgroundColor: '#EF4444' }]} />
+            <View style={[styles.dot, { backgroundColor: colors.status.error }]} />
             <Text style={styles.statLabel}>En attente</Text>
           </View>
         </View>
@@ -96,7 +244,7 @@ export const PaymentOverview: React.FC<PaymentOverviewProps> = ({
 
       {/* Payment methods breakdown */}
       {isLoading ? (
-        <ActivityIndicator size="small" color={Theme.primary[500]} style={{ marginTop: 16 }} />
+        <ActivityIndicator size="small" color={colors.primary.main} style={{ marginTop: 16 }} />
       ) : methods.length > 0 ? (
         <View style={styles.methodsSection}>
           <Text style={styles.methodsTitle}>Methodes de paiement</Text>
@@ -122,145 +270,3 @@ export const PaymentOverview: React.FC<PaymentOverviewProps> = ({
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 20,
-    backgroundColor: '#FFF',
-    borderRadius: 16,
-    padding: 18,
-    ...Theme.shadows.sm,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 15,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  headerSubtitle: {
-    fontSize: 11,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
-    marginTop: 2,
-  },
-  rateBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 12,
-  },
-  rateText: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-  },
-  statsRow: {
-    flexDirection: 'row',
-    gap: 10,
-    marginBottom: 14,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: Theme.neutral[50],
-    borderRadius: 12,
-    padding: 14,
-    borderLeftWidth: 3,
-  },
-  statAmount: {
-    fontSize: 17,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  statCurrency: {
-    fontSize: 10,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[400],
-    marginBottom: 6,
-  },
-  statFooter: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  dot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-  statLabel: {
-    fontSize: 11,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[500],
-  },
-  barContainer: {
-    marginBottom: 2,
-  },
-  barBg: {
-    flexDirection: 'row',
-    height: 5,
-    borderRadius: 3,
-    overflow: 'hidden',
-  },
-  barPaid: {
-    backgroundColor: '#10B981',
-    borderRadius: 3,
-  },
-  barUnpaid: {
-    backgroundColor: '#FCA5A5',
-    borderRadius: 3,
-  },
-  methodsSection: {
-    marginTop: 16,
-    paddingTop: 14,
-    borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
-  },
-  methodsTitle: {
-    fontSize: 12,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[600],
-    marginBottom: 10,
-  },
-  methodRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-    gap: 8,
-  },
-  methodIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  methodLabel: {
-    flex: 1,
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[700],
-  },
-  methodAmount: {
-    fontSize: 12,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  methodPercent: {
-    fontSize: 11,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[400],
-    minWidth: 30,
-    textAlign: 'right',
-  },
-});

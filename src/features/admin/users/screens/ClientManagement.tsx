@@ -18,6 +18,7 @@ const SEARCH_PLACEHOLDER = "Rechercher par nom, téléphone ou email...";
 
 export default function ClientManagement({ navigation }: RootStackScreenProps<"ClientManagement">) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [pendingClientId, setPendingClientId] = useState<string | null>(null);
   const { data } = useGetUsers();
   const { mutate } = useBlockandUnblockUser();
   const clients = data ?? [];
@@ -36,12 +37,22 @@ export default function ClientManagement({ navigation }: RootStackScreenProps<"C
   const { total, active, blocked } = useClientStats(filteredClients);
 
   const handleToggleBlock = useCallback((clientId: string) => {
-    mutate(clientId);
+    setPendingClientId(clientId);
+    mutate(clientId, {
+      onSettled: () => {
+        setPendingClientId(null);
+      },
+    });
   }, [mutate]);
 
   const renderClient = useCallback(({ item, index }: { item: userData; index: number }) => (
-    <ClientCard client={item} onToggleBlock={handleToggleBlock} index={index} />
-  ), [handleToggleBlock]);
+    <ClientCard 
+      client={item} 
+      onToggleBlock={handleToggleBlock} 
+      index={index} 
+      isLoading={pendingClientId === item._id}
+    />
+  ), [handleToggleBlock, pendingClientId]);
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>

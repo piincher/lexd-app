@@ -6,6 +6,7 @@
 
 import { MD3LightTheme, MD3DarkTheme } from 'react-native-paper';
 import { Theme as NavigationTheme } from '@react-navigation/native';
+import { Appearance } from 'react-native';
 
 // ============================================
 // Color Palette - Light Theme
@@ -502,8 +503,7 @@ export type AppTheme = typeof lightTheme;
 // ============================================
 // Legacy Colors Export (for backward compatibility)
 // ============================================
-export const COLORS = {
-  // colors used in signup form,
+const lightCOLORS = {
   inputBorder: '#c4d7e7',
   placeHolder: '#839fc0',
   success: '#16A34A',
@@ -546,7 +546,65 @@ export const COLORS = {
   goldLight: '#F4D03F',
   goldDark: '#B8860B',
   redLight: '#EF4444',
-};
+  shadow: '#000000',
+  dark: '#1F2937',
+} as const;
+
+const darkCOLORS = {
+  inputBorder: '#374151',
+  placeHolder: '#9CA3AF',
+  success: '#4ADE80',
+  danger: '#EF4444',
+  heading: '#86EFAC',
+  text: '#BBF7D0',
+  link: '#F4D03F',
+  black: '#F9FAFB',
+  lightergray: '#1F2937',
+  Crimson: '#4ADE80',
+  lightCrimson: '#14532D',
+  DarkGrey: '#E5E7EB',
+  DimGray: '#D1D5DB',
+  SlateGray: '#15803D',
+  Silver: '#374151',
+  FeatherWhite: '#0F172A',
+  lightyellow: '#F4D03F',
+  white: '#0F172A',
+  yellow: '#F4D03F',
+  orange: '#F7DC6F',
+  grey: '#9CA3AF',
+  navy: '#86EFAC',
+  influencercardcolor: '#1E293B',
+  lightGray: '#D1D5DB',
+  lightBackground: '#14532D',
+  border: '#15803D',
+  extra1: '#14532D',
+  extra2: '#1E293B',
+  terms: '#4ADE80',
+  green: '#4ADE80',
+  terms2: '#86EFAC',
+  blueTransparent: 'rgba(134, 239, 172, 0.5)',
+  dont: '#BBF7D0',
+  blueShade: '#4ADE80',
+  blue: '#4ADE80',
+  purpleShade: '#D4AF37',
+  orangeShade: '#F7DC6F',
+  redShade: '#EF4444',
+  gold: '#F4D03F',
+  goldLight: '#F7DC6F',
+  goldDark: '#D4AF37',
+  redLight: '#F87171',
+  shadow: '#000000',
+  dark: '#F9FAFB',
+} as unknown as typeof lightCOLORS;
+
+export const COLORS = new Proxy({} as typeof lightCOLORS, {
+  get(_, prop) {
+    if (typeof prop !== 'string') return undefined;
+    const scheme = Appearance.getColorScheme() || 'light';
+    const source = scheme === 'dark' ? darkCOLORS : lightCOLORS;
+    return source[prop as keyof typeof lightCOLORS];
+  },
+});
 
 // ============================================
 // Static Theme Export (for direct color access)

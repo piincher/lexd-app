@@ -1,6 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
 import { HomeTabScreenProps } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
@@ -19,7 +18,7 @@ import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { withProtectedRoute } from "@src/features/auth";
 import { useAppTheme } from "@src/providers";
-import { useGetOrderOfUserById } from "@src/features/home/hooks/useGetActiveOrders";
+import { useGetOrderOfUserById } from "@src/shared/hooks";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { productType } from "@src/api/order";
 import { OrderListCard, OrderStatusFilter } from "../components";
@@ -61,21 +60,22 @@ const AdminMenu: React.FC<{ navigation: any; items: MenuItemType[] }> = ({
    items,
 }) => {
    const { setType } = useShippingMode((state) => state);
+   const { colors } = useAppTheme();
 
    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
          <ScrollView>
             {items.map((item) => (
                <Pressable
                   key={item.id}
-                  style={styles.adminItem}
+                  style={[styles.adminItem, { borderColor: colors.primary.main }]}
                   onPress={() => {
                      if (item.param) setType(item.param as "air" | "sea");
                      navigation.navigate(item.route, { param: item.param });
                   }}
                >
-                  <Text style={styles.adminItemText}>{item.title}</Text>
-                  <MaterialIcons name="navigate-next" size={24} color={COLORS.blue} />
+                  <Text style={[styles.adminItemText, { color: colors.text.primary }]}>{item.title}</Text>
+                  <MaterialIcons name="navigate-next" size={24} color={colors.primary.main} />
                </Pressable>
             ))}
          </ScrollView>
@@ -282,7 +282,6 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      borderColor: COLORS.blue,
       borderWidth: 0.2,
       padding: 12,
       margin: 20,

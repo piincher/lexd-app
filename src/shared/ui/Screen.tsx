@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme, lightTheme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type ScreenVariant = 'default' | 'plain' | 'card';
 
@@ -46,6 +46,8 @@ export const Screen: React.FC<ScreenProps> = ({
   header,
   footer,
 }) => {
+  const { colors, isDark } = useAppTheme();
+
   // Render header based on type
   const renderHeader = () => {
     if (!header) return null;
@@ -59,17 +61,22 @@ export const Screen: React.FC<ScreenProps> = ({
     const headerConfig = header as HeaderConfig;
     if (headerConfig.title) {
       return (
-        <View style={styles.simpleHeader}>
+        <View style={[styles.simpleHeader, { 
+          backgroundColor: colors.background.default,
+          borderBottomColor: colors.border,
+        }]}>
           {headerConfig.showBack && (
             <TouchableOpacity 
               onPress={headerConfig.onBackPress} 
               style={styles.backButton}
               testID="screen-back-button"
             >
-              <Text style={styles.backButtonText}>←</Text>
+              <Text style={[styles.backButtonText, { color: colors.primary.main }]}>←</Text>
             </TouchableOpacity>
           )}
-          <Text style={styles.headerTitle}>{headerConfig.title}</Text>
+          <Text style={[styles.headerTitle, { color: colors.text.primary }]}>
+            {headerConfig.title}
+          </Text>
           {headerConfig.rightAction ? (
             <View style={styles.rightAction}>{headerConfig.rightAction}</View>
           ) : (
@@ -81,9 +88,11 @@ export const Screen: React.FC<ScreenProps> = ({
     
     return null;
   };
+
   const containerStyle = [
     styles.container,
-    variant === 'plain' && styles.plainContainer,
+    { backgroundColor: colors.background.default },
+    variant === 'plain' && { backgroundColor: colors.background.default },
     style,
   ];
 
@@ -113,7 +122,10 @@ export const Screen: React.FC<ScreenProps> = ({
 
   return (
     <>
-      <StatusBar barStyle="dark-content" backgroundColor={Theme.neutral.white} />
+      <StatusBar 
+        barStyle={isDark ? 'light-content' : 'dark-content'} 
+        backgroundColor={colors.background.default} 
+      />
       {safeArea ? (
         <SafeAreaView style={containerStyle} edges={['top', 'left', 'right']}>
           {renderContent()}
@@ -128,10 +140,6 @@ export const Screen: React.FC<ScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
-  },
-  plainContainer: {
-    backgroundColor: Theme.neutral.white,
   },
   scrollView: {
     flex: 1,
@@ -140,39 +148,35 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   cardContent: {
-    padding: Theme.spacing.md,
+    padding: 16,
   },
   simpleHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: Theme.spacing.lg,
-    paddingVertical: Theme.spacing.md,
-    backgroundColor: Theme.neutral.white,
+    paddingHorizontal: 20,
+    paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[200],
   },
   backButton: {
-    padding: Theme.spacing.sm,
-    minWidth: 40,
+    padding: 10,
+    minWidth: 44,
   },
   backButtonText: {
     fontSize: 24,
-    color: lightTheme.colors.primary.main,
   },
   headerTitle: {
     flex: 1,
     textAlign: 'center',
-    fontSize: lightTheme.typography.h4.fontSize,
-    fontWeight: lightTheme.typography.h4.fontWeight as '700',
-    color: lightTheme.colors.text.primary,
+    fontSize: 18,
+    fontWeight: '700',
   },
   rightAction: {
-    minWidth: 40,
+    minWidth: 44,
     alignItems: 'flex-end',
   },
   rightPlaceholder: {
-    minWidth: 40,
+    minWidth: 44,
   },
 });
 

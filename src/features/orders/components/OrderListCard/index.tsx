@@ -95,11 +95,11 @@ const OrderListCardInner: React.FC<OrderListCardProps> = ({ order, onPress }) =>
       >
          {/* Row 1: Icon + Code + Status + Chevron */}
          <View style={styles.topRow}>
-            <View style={styles.iconBox}>
+            <View style={[styles.iconBox, { backgroundColor: colors.background.paper }]}>
                <MaterialCommunityIcons
                   name={isSeaShipping ? "ferry" : "airplane"}
                   size={20}
-                  color="#1B365D"
+                  color={colors.primary.dark}
                />
             </View>
 
@@ -119,7 +119,7 @@ const OrderListCardInner: React.FC<OrderListCardProps> = ({ order, onPress }) =>
                   <Text style={[styles.metaText, { color: colors.text.secondary }]}>
                      {formatShortDate(order.departureDate)}
                   </Text>
-                  <View style={styles.metaDot} />
+                  <View style={[styles.metaDot, { backgroundColor: colors.border }]} />
                   <MaterialCommunityIcons
                      name="package-variant"
                      size={12}
@@ -194,7 +194,6 @@ const styles = StyleSheet.create({
       width: 38,
       height: 38,
       borderRadius: 10,
-      backgroundColor: "#E8EEF4",
       justifyContent: "center",
       alignItems: "center",
       marginRight: 10,
@@ -220,7 +219,6 @@ const styles = StyleSheet.create({
       width: 3,
       height: 3,
       borderRadius: 1.5,
-      backgroundColor: "#D1D5DB",
    },
    statusBadge: {
       paddingHorizontal: 8,

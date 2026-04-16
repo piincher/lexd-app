@@ -3,21 +3,117 @@
  * SRP: Visual air vs sea shipping mode breakdown
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+
 interface ShippingModeCardProps {
   shippingModeCounts: { air: number; sea: number };
 }
 
 export const ShippingModeCard: React.FC<ShippingModeCardProps> = ({ shippingModeCounts }) => {
+  const { colors } = useAppTheme();
   const total = shippingModeCounts.air + shippingModeCounts.sea;
   const airPercent = total > 0 ? (shippingModeCounts.air / total) * 100 : 50;
   const seaPercent = total > 0 ? (shippingModeCounts.sea / total) * 100 : 50;
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          marginHorizontal: 20,
+          backgroundColor: colors.background.card,
+          borderRadius: 16,
+          padding: 18,
+          ...Theme.shadows.sm,
+        },
+        header: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 14,
+        },
+        title: {
+          fontSize: 15,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        totalText: {
+          fontSize: 12,
+          fontFamily: Fonts.medium,
+          color: colors.text.disabled,
+        },
+        splitBar: {
+          flexDirection: 'row',
+          height: 6,
+          borderRadius: 3,
+          overflow: 'hidden',
+          marginBottom: 18,
+        },
+        splitAir: {
+          backgroundColor: '#3B82F6',
+          borderRadius: 3,
+        },
+        splitGap: {
+          width: 3,
+        },
+        splitSea: {
+          backgroundColor: '#10B981',
+          borderRadius: 3,
+        },
+        modesRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+        },
+        modeCard: {
+          flex: 1,
+          alignItems: 'center',
+          gap: 4,
+        },
+        modeIcon: {
+          width: 38,
+          height: 38,
+          borderRadius: 11,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        modeValue: {
+          fontSize: 20,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.text.primary,
+        },
+        modeLabel: {
+          fontSize: 11,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        percentBadge: {
+          paddingHorizontal: 10,
+          paddingVertical: 3,
+          borderRadius: 10,
+          marginTop: 2,
+        },
+        percentText: {
+          fontSize: 11,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+        },
+        divider: {
+          width: 1,
+          height: 60,
+          backgroundColor: colors.border,
+          marginHorizontal: 8,
+        },
+      }),
+    [colors]
+  );
 
   return (
     <Animated.View entering={FadeInUp.delay(200).springify().damping(15)} style={styles.container}>
@@ -62,92 +158,3 @@ export const ShippingModeCard: React.FC<ShippingModeCardProps> = ({ shippingMode
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 20,
-    backgroundColor: '#FFF',
-    borderRadius: 16,
-    padding: 18,
-    ...Theme.shadows.sm,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 14,
-  },
-  title: {
-    fontSize: 15,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  totalText: {
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    color: Theme.neutral[400],
-  },
-  splitBar: {
-    flexDirection: 'row',
-    height: 6,
-    borderRadius: 3,
-    overflow: 'hidden',
-    marginBottom: 18,
-  },
-  splitAir: {
-    backgroundColor: '#3B82F6',
-    borderRadius: 3,
-  },
-  splitGap: {
-    width: 3,
-  },
-  splitSea: {
-    backgroundColor: '#10B981',
-    borderRadius: 3,
-  },
-  modesRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  modeCard: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 4,
-  },
-  modeIcon: {
-    width: 38,
-    height: 38,
-    borderRadius: 11,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modeValue: {
-    fontSize: 20,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  modeLabel: {
-    fontSize: 11,
-    fontFamily: Fonts.regular,
-    color: Theme.neutral[500],
-  },
-  percentBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 3,
-    borderRadius: 10,
-    marginTop: 2,
-  },
-  percentText: {
-    fontSize: 11,
-    fontFamily: Fonts.bold,
-    fontWeight: '700',
-  },
-  divider: {
-    width: 1,
-    height: 60,
-    backgroundColor: Theme.neutral[100],
-    marginHorizontal: 8,
-  },
-});

@@ -1,7 +1,7 @@
 // Goods Feature - GoodsDetailScreen
 // Comprehensive detail screen for viewing a single goods item
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
 	View,
 	StyleSheet,
@@ -17,14 +17,13 @@ import {
 	Button,
 	Card,
 	Divider,
-	useTheme,
 	Chip,
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetGoodsDetail } from '../hooks';
 import { StatusBadge } from '../components';
 import { ReviewPrompt } from '@src/features/customer/reviews';
@@ -61,19 +60,19 @@ const formatDateTime = (dateString?: string): string => {
 
 const getShippingModeConfig = (mode?: string) => {
 	if (mode === 'AIR') {
-		return { label: 'Aérien', icon: 'airplane' as const, color: '#3F51B5', bg: '#E8EAF6' };
+		return { label: 'Aérien', icon: 'airplane' as const, color: '#3F51B5' };
 	}
-	return { label: 'Maritime', icon: 'ferry' as const, color: '#0277BD', bg: '#E1F5FE' };
+	return { label: 'Maritime', icon: 'ferry' as const, color: '#0277BD' };
 };
 
 const getPaymentColors = (status: string) => {
 	switch (status) {
 		case 'PAID':
-			return { bg: '#E8F5E9', text: '#2E7D32', label: 'Payé' };
+			return { text: '#2E7D32', label: 'Payé' };
 		case 'PARTIAL':
-			return { bg: '#FFF3E0', text: '#E65100', label: 'Partiel' };
+			return { text: '#E65100', label: 'Partiel' };
 		default:
-			return { bg: '#FFEBEE', text: '#C62828', label: 'Non payé' };
+			return { text: '#C62828', label: 'Non payé' };
 	}
 };
 
@@ -100,11 +99,392 @@ const GoodsDetailScreen = ({
 	navigation,
 }: RootStackScreenProps<'GoodsDetail'>) => {
 	const { goodsId } = route.params;
-	const theme = useTheme();
+	const { colors } = useAppTheme();
 	const userRole = useAuth((state) => state.user?.role);
 	const isAdmin = userRole === 'admin';
 
 	const { data: goods, isLoading, isError, error, refetch } = useGetGoodsDetail(goodsId);
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				container: {
+					flex: 1,
+					backgroundColor: colors.background.default,
+				},
+				headerTitle: {
+					fontFamily: Fonts.bold,
+				},
+				scrollContent: {
+					paddingBottom: 32,
+				},
+				centerContainer: {
+					flex: 1,
+					justifyContent: 'center',
+					alignItems: 'center',
+					paddingHorizontal: 32,
+				},
+				loadingText: {
+					marginTop: 16,
+					fontFamily: Fonts.medium,
+					color: colors.text.secondary,
+				},
+				errorTitle: {
+					fontSize: 18,
+					fontFamily: Fonts.bold,
+					color: colors.text.primary,
+					marginTop: 16,
+				},
+				errorText: {
+					fontSize: 14,
+					fontFamily: Fonts.regular,
+					color: colors.text.secondary,
+					textAlign: 'center',
+					marginTop: 8,
+				},
+				retryButton: {
+					marginTop: 24,
+				},
+
+				// ── Status Header ──
+				statusHeader: {
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					paddingHorizontal: 16,
+					paddingVertical: 12,
+					backgroundColor: colors.background.card,
+					marginBottom: 8,
+				},
+				statusHeaderLeft: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					gap: 8,
+				},
+				shippingBadge: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					paddingHorizontal: 10,
+					paddingVertical: 4,
+					borderRadius: 12,
+					gap: 4,
+				},
+				shippingBadgeText: {
+					fontFamily: Fonts.bold,
+					fontSize: 12,
+				},
+				dateText: {
+					fontFamily: Fonts.regular,
+					color: colors.text.secondary,
+					fontSize: 11,
+				},
+
+				// ── Photo ──
+				photoCard: {
+					marginHorizontal: 16,
+					marginBottom: 12,
+					elevation: 2,
+					borderRadius: 12,
+					overflow: 'hidden',
+				},
+				mainImage: {
+					width: '100%',
+					height: 220,
+					backgroundColor: colors.background.paper,
+				},
+				placeholderImage: {
+					justifyContent: 'center',
+					alignItems: 'center',
+				},
+				placeholderText: {
+					fontFamily: Fonts.medium,
+					color: colors.text.secondary,
+					marginTop: 8,
+					fontSize: 13,
+				},
+
+				// ── Quick Stats ──
+				statsRow: {
+					flexDirection: 'row',
+					backgroundColor: colors.background.card,
+					marginHorizontal: 16,
+					marginBottom: 12,
+					borderRadius: 12,
+					paddingVertical: 16,
+					elevation: 1,
+				},
+				statBox: {
+					flex: 1,
+					alignItems: 'center',
+				},
+				statValue: {
+					fontFamily: Fonts.bold,
+					fontSize: 16,
+					color: colors.text.primary,
+					marginTop: 4,
+				},
+				statLabel: {
+					fontFamily: Fonts.regular,
+					fontSize: 11,
+					color: colors.text.secondary,
+					marginTop: 2,
+				},
+				statDivider: {
+					width: 1,
+					backgroundColor: colors.border,
+				},
+
+				// ── Section Cards ──
+				sectionCard: {
+					marginHorizontal: 16,
+					marginBottom: 12,
+					elevation: 2,
+					borderRadius: 12,
+				},
+				sectionHeader: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					paddingHorizontal: 16,
+					paddingTop: 16,
+					paddingBottom: 8,
+					gap: 8,
+				},
+				sectionTitle: {
+					fontFamily: Fonts.bold,
+					fontSize: 15,
+					color: colors.text.primary,
+				},
+
+				// ── Info Rows ──
+				infoRow: {
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					paddingVertical: 10,
+				},
+				infoLabel: {
+					fontFamily: Fonts.medium,
+					color: colors.text.secondary,
+					fontSize: 13,
+				},
+				infoValue: {
+					fontFamily: Fonts.bold,
+					color: colors.text.primary,
+					fontSize: 13,
+					flex: 1,
+					textAlign: 'right',
+				},
+				descriptionText: {
+					fontFamily: Fonts.regular,
+					color: colors.text.primary,
+					fontSize: 14,
+					lineHeight: 20,
+					paddingVertical: 8,
+				},
+				totalCostText: {
+					fontSize: 15,
+					color: colors.status.warning,
+				},
+				divider: {
+					backgroundColor: colors.border,
+				},
+
+				// ── Location Badge ──
+				locationBadge: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					backgroundColor: colors.primary.main + '15',
+					paddingHorizontal: 10,
+					paddingVertical: 4,
+					borderRadius: 8,
+					gap: 4,
+				},
+				locationBadgeText: {
+					fontFamily: Fonts.bold,
+					fontSize: 13,
+					color: colors.primary.main,
+				},
+
+				// ── Timeline ──
+				timeline: {
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'flex-start',
+					paddingVertical: 8,
+					paddingHorizontal: 4,
+				},
+				timelineStep: {
+					alignItems: 'center',
+					flex: 1,
+					position: 'relative',
+				},
+				timelineConnector: {
+					position: 'absolute',
+					top: 16,
+					left: -20,
+					right: 20,
+					height: 2,
+					zIndex: -1,
+				},
+				timelineCircle: {
+					width: 32,
+					height: 32,
+					borderRadius: 16,
+					justifyContent: 'center',
+					alignItems: 'center',
+					marginBottom: 6,
+				},
+				timelineLabel: {
+					fontSize: 9,
+					textAlign: 'center',
+				},
+				keyDates: {
+					marginTop: 8,
+					gap: 6,
+				},
+				keyDateRow: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					gap: 6,
+				},
+				keyDateText: {
+					fontFamily: Fonts.regular,
+					fontSize: 12,
+					color: colors.text.secondary,
+				},
+
+				// ── Payment ──
+				paymentChip: {
+					height: 28,
+				},
+				paymentHistoryRow: {
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+					alignItems: 'center',
+					paddingVertical: 10,
+				},
+				paymentHistoryLeft: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					gap: 8,
+				},
+				paymentHistoryDate: {
+					fontFamily: Fonts.regular,
+					fontSize: 13,
+					color: colors.text.secondary,
+				},
+				paymentHistoryAmount: {
+					fontFamily: Fonts.bold,
+					fontSize: 14,
+					color: colors.status.success,
+				},
+
+				// ── Container ──
+				containerBox: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					backgroundColor: colors.background.paper,
+					borderRadius: 12,
+					padding: 16,
+					marginBottom: 12,
+				},
+				containerBoxInfo: {
+					marginLeft: 12,
+					flex: 1,
+				},
+				containerBoxLabel: {
+					fontFamily: Fonts.regular,
+					fontSize: 12,
+					color: colors.text.secondary,
+					marginBottom: 4,
+				},
+				containerBoxNumber: {
+					fontFamily: Fonts.bold,
+					fontSize: 16,
+					color: colors.text.primary,
+				},
+				trackButton: {
+					borderRadius: 8,
+				},
+
+				// ── Pickup ──
+				pickupBanner: {
+					flexDirection: 'row',
+					alignItems: 'center',
+					alignSelf: 'flex-start',
+					paddingHorizontal: 14,
+					paddingVertical: 8,
+					borderRadius: 20,
+					marginBottom: 16,
+					gap: 8,
+				},
+				pickupBannerText: {
+					fontFamily: Fonts.bold,
+					fontSize: 13,
+				},
+				pickupLocation: {
+					flexDirection: 'row',
+					alignItems: 'flex-start',
+					padding: 14,
+					backgroundColor: colors.background.paper,
+					borderRadius: 12,
+					marginBottom: 12,
+				},
+				pickupLocationTitle: {
+					fontFamily: Fonts.bold,
+					fontSize: 14,
+					color: colors.text.primary,
+					marginBottom: 2,
+				},
+				pickupLocationAddress: {
+					fontFamily: Fonts.regular,
+					fontSize: 13,
+					color: colors.text.secondary,
+				},
+				pickupMessage: {
+					flexDirection: 'row',
+					alignItems: 'flex-start',
+					padding: 12,
+					backgroundColor: colors.primary.main + '12',
+					borderRadius: 8,
+					gap: 8,
+				},
+				pickupMessageText: {
+					fontFamily: Fonts.medium,
+					fontSize: 13,
+					color: colors.primary.main,
+					flex: 1,
+				},
+
+				// ── QR Code ──
+				qrContent: {
+					alignItems: 'center',
+					paddingVertical: 16,
+				},
+				qrImage: {
+					width: 180,
+					height: 180,
+					resizeMode: 'contain',
+					backgroundColor: colors.background.card,
+				},
+				qrText: {
+					fontFamily: Fonts.regular,
+					color: colors.text.secondary,
+					fontSize: 12,
+					marginTop: 12,
+					textAlign: 'center',
+				},
+
+				// ── Review & Bottom ──
+				reviewSection: {
+					paddingHorizontal: 4,
+				},
+				bottomPadding: {
+					height: 32,
+				},
+			}),
+		[colors]
+	);
 
 	const handleEdit = () => {
 		navigation.navigate('EditGoods', { goodsId });
@@ -130,7 +510,7 @@ const GoodsDetailScreen = ({
 					<Appbar.Content title="Détails" />
 				</Appbar.Header>
 				<View style={styles.centerContainer}>
-					<ActivityIndicator size="large" color={theme.colors.primary} />
+					<ActivityIndicator size="large" color={colors.primary.main} />
 					<Text style={styles.loadingText}>Chargement des détails...</Text>
 				</View>
 			</SafeAreaView>
@@ -145,7 +525,7 @@ const GoodsDetailScreen = ({
 					<Appbar.Content title="Détails" />
 				</Appbar.Header>
 				<View style={styles.centerContainer}>
-					<MaterialCommunityIcons name="alert-circle" size={64} color={theme.colors.error} />
+					<MaterialCommunityIcons name="alert-circle" size={64} color={colors.status.error} />
 					<Text style={styles.errorTitle}>Erreur de chargement</Text>
 					<Text style={styles.errorText}>
 						{error?.message || 'Impossible de charger les détails de cette marchandise.'}
@@ -192,7 +572,7 @@ const GoodsDetailScreen = ({
 				<View style={styles.statusHeader}>
 					<View style={styles.statusHeaderLeft}>
 						<StatusBadge status={goods.status} />
-						<View style={[styles.shippingBadge, { backgroundColor: shippingConfig.bg }]}>
+						<View style={[styles.shippingBadge, { backgroundColor: shippingConfig.color + '20' }]}>
 							<MaterialCommunityIcons
 								name={shippingConfig.icon}
 								size={16}
@@ -221,7 +601,7 @@ const GoodsDetailScreen = ({
 							<MaterialCommunityIcons
 								name="package-variant"
 								size={64}
-								color={COLORS.SlateGray}
+								color={colors.text.disabled}
 							/>
 							<Text style={styles.placeholderText}>Aucune photo</Text>
 						</View>
@@ -231,19 +611,19 @@ const GoodsDetailScreen = ({
 				{/* ── Quick Stats Row ─────────────────────────────────── */}
 				<View style={styles.statsRow}>
 					<View style={styles.statBox}>
-						<MaterialCommunityIcons name="cube-outline" size={22} color={COLORS.green} />
+						<MaterialCommunityIcons name="cube-outline" size={22} color={colors.status.success} />
 						<Text style={styles.statValue}>{cbm.toFixed(3)}</Text>
 						<Text style={styles.statLabel}>CBM (m³)</Text>
 					</View>
 					<View style={styles.statDivider} />
 					<View style={styles.statBox}>
-						<MaterialCommunityIcons name="weight" size={22} color={COLORS.green} />
+						<MaterialCommunityIcons name="weight" size={22} color={colors.status.success} />
 						<Text style={styles.statValue}>{weight} kg</Text>
 						<Text style={styles.statLabel}>Poids</Text>
 					</View>
 					<View style={styles.statDivider} />
 					<View style={styles.statBox}>
-						<MaterialCommunityIcons name="package-variant-closed" size={22} color={COLORS.green} />
+						<MaterialCommunityIcons name="package-variant-closed" size={22} color={colors.status.success} />
 						<Text style={styles.statValue}>{goods.quantity}</Text>
 						<Text style={styles.statLabel}>Quantité</Text>
 					</View>
@@ -252,7 +632,7 @@ const GoodsDetailScreen = ({
 				{/* ── Description & Details Card ──────────────────────── */}
 				<Card style={styles.sectionCard}>
 					<View style={styles.sectionHeader}>
-						<MaterialCommunityIcons name="information" size={20} color={theme.colors.primary} />
+						<MaterialCommunityIcons name="information" size={20} color={colors.primary.main} />
 						<Text style={styles.sectionTitle}>Informations</Text>
 					</View>
 					<Card.Content>
@@ -290,7 +670,7 @@ const GoodsDetailScreen = ({
 						<View style={styles.infoRow}>
 							<Text style={styles.infoLabel}>Emplacement entrepôt</Text>
 							<View style={styles.locationBadge}>
-								<MaterialCommunityIcons name="warehouse" size={14} color={COLORS.blue} />
+								<MaterialCommunityIcons name="warehouse" size={14} color={colors.primary.main} />
 								<Text style={styles.locationBadgeText}>
 									{goods.warehouseLocation || 'Non assigné'}
 								</Text>
@@ -337,7 +717,7 @@ const GoodsDetailScreen = ({
 				{/* ── Status Timeline ─────────────────────────────────── */}
 				<Card style={styles.sectionCard}>
 					<View style={styles.sectionHeader}>
-						<MaterialCommunityIcons name="timeline-clock" size={20} color={theme.colors.primary} />
+						<MaterialCommunityIcons name="timeline-clock" size={20} color={colors.primary.main} />
 						<Text style={styles.sectionTitle}>Suivi du statut</Text>
 					</View>
 					<Card.Content>
@@ -345,8 +725,6 @@ const GoodsDetailScreen = ({
 							{STATUS_STEPS.map((step, index) => {
 								const isCompleted = index <= currentStatusIndex;
 								const isCurrent = index === currentStatusIndex;
-								const isLast = index === STATUS_STEPS.length - 1;
-								const stepColor = isCompleted ? COLORS.green : '#D1D5DB';
 
 								return (
 									<View key={step.key} style={styles.timelineStep}>
@@ -355,7 +733,7 @@ const GoodsDetailScreen = ({
 											<View
 												style={[
 													styles.timelineConnector,
-													{ backgroundColor: isCompleted ? COLORS.green : '#E5E7EB' },
+													{ backgroundColor: isCompleted ? colors.status.success : colors.border },
 												]}
 											/>
 										)}
@@ -364,8 +742,8 @@ const GoodsDetailScreen = ({
 											style={[
 												styles.timelineCircle,
 												{
-													backgroundColor: isCompleted ? COLORS.green : '#F3F4F6',
-													borderColor: isCurrent ? COLORS.gold : 'transparent',
+													backgroundColor: isCompleted ? colors.status.success : colors.background.paper,
+													borderColor: isCurrent ? colors.status.warning : 'transparent',
 													borderWidth: isCurrent ? 2 : 0,
 												},
 											]}
@@ -373,7 +751,7 @@ const GoodsDetailScreen = ({
 											<MaterialCommunityIcons
 												name={step.icon as any}
 												size={16}
-												color={isCompleted ? '#fff' : '#9CA3AF'}
+												color={isCompleted ? colors.text.inverse : colors.text.disabled}
 											/>
 										</View>
 										{/* Label */}
@@ -381,7 +759,7 @@ const GoodsDetailScreen = ({
 											style={[
 												styles.timelineLabel,
 												{
-													color: isCompleted ? COLORS.DarkGrey : '#9CA3AF',
+													color: isCompleted ? colors.text.primary : colors.text.disabled,
 													fontFamily: isCurrent ? Fonts.bold : Fonts.regular,
 												},
 											]}
@@ -397,7 +775,7 @@ const GoodsDetailScreen = ({
 						<View style={styles.keyDates}>
 							{goods.readyForPickupAt && (
 								<View style={styles.keyDateRow}>
-									<MaterialCommunityIcons name="calendar-check" size={14} color={COLORS.DimGray} />
+									<MaterialCommunityIcons name="calendar-check" size={14} color={colors.text.secondary} />
 									<Text style={styles.keyDateText}>
 										Prêt le {formatDateTime(goods.readyForPickupAt)}
 									</Text>
@@ -405,7 +783,7 @@ const GoodsDetailScreen = ({
 							)}
 							{goods.deliveredAt && (
 								<View style={styles.keyDateRow}>
-									<MaterialCommunityIcons name="calendar-check" size={14} color={COLORS.green} />
+									<MaterialCommunityIcons name="calendar-check" size={14} color={colors.status.success} />
 									<Text style={styles.keyDateText}>
 										Livré le {formatDateTime(goods.deliveredAt)}
 									</Text>
@@ -418,7 +796,7 @@ const GoodsDetailScreen = ({
 				{/* ── Pricing & Payment Card ──────────────────────────── */}
 				<Card style={styles.sectionCard}>
 					<View style={styles.sectionHeader}>
-						<MaterialCommunityIcons name="cash-multiple" size={20} color={theme.colors.primary} />
+						<MaterialCommunityIcons name="cash-multiple" size={20} color={colors.primary.main} />
 						<Text style={styles.sectionTitle}>Tarification & Paiement</Text>
 					</View>
 					<Card.Content>
@@ -445,7 +823,7 @@ const GoodsDetailScreen = ({
 						{/* Amount Paid */}
 						<View style={styles.infoRow}>
 							<Text style={styles.infoLabel}>Montant payé</Text>
-							<Text style={[styles.infoValue, { color: COLORS.green }]}>
+							<Text style={[styles.infoValue, { color: colors.status.success }]}>
 								{formatCurrency(goods.amountPaid)}
 							</Text>
 						</View>
@@ -457,7 +835,7 @@ const GoodsDetailScreen = ({
 							<Text
 								style={[
 									styles.infoValue,
-									{ color: balanceDue > 0 ? '#C62828' : COLORS.green },
+									{ color: balanceDue > 0 ? colors.status.error : colors.status.success },
 								]}
 							>
 								{formatCurrency(balanceDue)}
@@ -469,7 +847,7 @@ const GoodsDetailScreen = ({
 						<View style={styles.infoRow}>
 							<Text style={styles.infoLabel}>Statut paiement</Text>
 							<Chip
-								style={[styles.paymentChip, { backgroundColor: paymentConfig.bg }]}
+								style={[styles.paymentChip, { backgroundColor: paymentConfig.text + '20' }]}
 								textStyle={{ color: paymentConfig.text, fontFamily: Fonts.bold, fontSize: 12 }}
 								compact
 							>
@@ -483,7 +861,7 @@ const GoodsDetailScreen = ({
 				{goods.paymentHistory && goods.paymentHistory.length > 0 && (
 					<Card style={styles.sectionCard}>
 						<View style={styles.sectionHeader}>
-							<MaterialCommunityIcons name="history" size={20} color={theme.colors.primary} />
+							<MaterialCommunityIcons name="history" size={20} color={colors.primary.main} />
 							<Text style={styles.sectionTitle}>Historique des paiements</Text>
 						</View>
 						<Card.Content>
@@ -494,7 +872,7 @@ const GoodsDetailScreen = ({
 											<MaterialCommunityIcons
 												name="check-circle"
 												size={16}
-												color={COLORS.green}
+												color={colors.status.success}
 											/>
 											<Text style={styles.paymentHistoryDate}>
 												{formatDateTime(payment.date)}
@@ -517,7 +895,7 @@ const GoodsDetailScreen = ({
 				{goods.containerId && (
 					<Card style={styles.sectionCard}>
 						<View style={styles.sectionHeader}>
-							<MaterialCommunityIcons name="cube" size={20} color={theme.colors.primary} />
+							<MaterialCommunityIcons name="cube" size={20} color={colors.primary.main} />
 							<Text style={styles.sectionTitle}>Container</Text>
 						</View>
 						<Card.Content>
@@ -526,7 +904,7 @@ const GoodsDetailScreen = ({
 									<MaterialCommunityIcons
 										name={goods.shippingMode === 'AIR' ? 'airplane' : 'ferry'}
 										size={36}
-										color={theme.colors.primary}
+										color={colors.primary.main}
 									/>
 									<View style={styles.containerBoxInfo}>
 										<Text style={styles.containerBoxLabel}>
@@ -538,7 +916,7 @@ const GoodsDetailScreen = ({
 												: goods.containerId}
 										</Text>
 									</View>
-									<MaterialCommunityIcons name="chevron-right" size={24} color={COLORS.DimGray} />
+									<MaterialCommunityIcons name="chevron-right" size={24} color={colors.text.secondary} />
 								</View>
 							</Pressable>
 							<Button
@@ -560,21 +938,21 @@ const GoodsDetailScreen = ({
 							<MaterialCommunityIcons
 								name={goods.status === 'DELIVERED' ? 'check-circle' : 'package-variant'}
 								size={20}
-								color={goods.status === 'DELIVERED' ? COLORS.green : '#D97706'}
+								color={goods.status === 'DELIVERED' ? colors.status.success : colors.status.warning}
 							/>
 							<Text style={styles.sectionTitle}>Statut de Retrait</Text>
 						</View>
 						<Card.Content>
 							{goods.status === 'READY_FOR_PICKUP' && (
 								<>
-									<View style={[styles.pickupBanner, { backgroundColor: '#FEF3C7' }]}>
-										<MaterialCommunityIcons name="package-variant" size={20} color="#D97706" />
-										<Text style={[styles.pickupBannerText, { color: '#92400E' }]}>
+									<View style={[styles.pickupBanner, { backgroundColor: colors.status.warning + '30' }]}>
+										<MaterialCommunityIcons name="package-variant" size={20} color={colors.status.warning} />
+										<Text style={[styles.pickupBannerText, { color: colors.text.primary }]}>
 											Prêt pour Retrait
 										</Text>
 									</View>
 									<View style={styles.pickupLocation}>
-										<MaterialCommunityIcons name="warehouse" size={20} color={COLORS.DimGray} />
+										<MaterialCommunityIcons name="warehouse" size={20} color={colors.text.secondary} />
 										<View style={{ marginLeft: 12, flex: 1 }}>
 											<Text style={styles.pickupLocationTitle}>Lieu de Retrait</Text>
 											<Text style={styles.pickupLocationAddress}>
@@ -583,7 +961,7 @@ const GoodsDetailScreen = ({
 										</View>
 									</View>
 									<View style={styles.pickupMessage}>
-										<MaterialCommunityIcons name="information" size={18} color={theme.colors.primary} />
+										<MaterialCommunityIcons name="information" size={18} color={colors.primary.main} />
 										<Text style={styles.pickupMessageText}>
 											Contactez-nous pour organiser le retrait de votre marchandise
 										</Text>
@@ -592,9 +970,9 @@ const GoodsDetailScreen = ({
 							)}
 							{goods.status === 'DELIVERED' && (
 								<>
-									<View style={[styles.pickupBanner, { backgroundColor: '#D1FAE5' }]}>
-										<MaterialCommunityIcons name="check-circle" size={20} color="#059669" />
-										<Text style={[styles.pickupBannerText, { color: '#065F46' }]}>
+									<View style={[styles.pickupBanner, { backgroundColor: colors.status.success + '30' }]}>
+										<MaterialCommunityIcons name="check-circle" size={20} color={colors.status.success} />
+										<Text style={[styles.pickupBannerText, { color: colors.text.primary }]}>
 											Livré avec succès
 										</Text>
 									</View>
@@ -632,7 +1010,7 @@ const GoodsDetailScreen = ({
 				{qrCodeUrl && (
 					<Card style={styles.sectionCard}>
 						<View style={styles.sectionHeader}>
-							<MaterialCommunityIcons name="qrcode" size={20} color={theme.colors.primary} />
+							<MaterialCommunityIcons name="qrcode" size={20} color={colors.primary.main} />
 							<Text style={styles.sectionTitle}>Code QR</Text>
 						</View>
 						<Card.Content style={styles.qrContent}>
@@ -656,384 +1034,5 @@ const GoodsDetailScreen = ({
 		</SafeAreaView>
 	);
 };
-
-// ── Styles ──────────────────────────────────────────────────────────────
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: COLORS.lightBackground,
-	},
-	headerTitle: {
-		fontFamily: Fonts.bold,
-	},
-	scrollContent: {
-		paddingBottom: 32,
-	},
-	centerContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		paddingHorizontal: 32,
-	},
-	loadingText: {
-		marginTop: 16,
-		fontFamily: Fonts.medium,
-		color: COLORS.DimGray,
-	},
-	errorTitle: {
-		fontSize: 18,
-		fontFamily: Fonts.bold,
-		color: COLORS.DarkGrey,
-		marginTop: 16,
-	},
-	errorText: {
-		fontSize: 14,
-		fontFamily: Fonts.regular,
-		color: COLORS.DimGray,
-		textAlign: 'center',
-		marginTop: 8,
-	},
-	retryButton: {
-		marginTop: 24,
-	},
-
-	// ── Status Header ──
-	statusHeader: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingHorizontal: 16,
-		paddingVertical: 12,
-		backgroundColor: 'white',
-		marginBottom: 8,
-	},
-	statusHeaderLeft: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 8,
-	},
-	shippingBadge: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		paddingHorizontal: 10,
-		paddingVertical: 4,
-		borderRadius: 12,
-		gap: 4,
-	},
-	shippingBadgeText: {
-		fontFamily: Fonts.bold,
-		fontSize: 12,
-	},
-	dateText: {
-		fontFamily: Fonts.regular,
-		color: COLORS.DimGray,
-		fontSize: 11,
-	},
-
-	// ── Photo ──
-	photoCard: {
-		marginHorizontal: 16,
-		marginBottom: 12,
-		elevation: 2,
-		borderRadius: 12,
-		overflow: 'hidden',
-	},
-	mainImage: {
-		width: '100%',
-		height: 220,
-		backgroundColor: COLORS.Silver,
-	},
-	placeholderImage: {
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	placeholderText: {
-		fontFamily: Fonts.medium,
-		color: COLORS.DimGray,
-		marginTop: 8,
-		fontSize: 13,
-	},
-
-	// ── Quick Stats ──
-	statsRow: {
-		flexDirection: 'row',
-		backgroundColor: 'white',
-		marginHorizontal: 16,
-		marginBottom: 12,
-		borderRadius: 12,
-		paddingVertical: 16,
-		elevation: 1,
-	},
-	statBox: {
-		flex: 1,
-		alignItems: 'center',
-	},
-	statValue: {
-		fontFamily: Fonts.bold,
-		fontSize: 16,
-		color: COLORS.DarkGrey,
-		marginTop: 4,
-	},
-	statLabel: {
-		fontFamily: Fonts.regular,
-		fontSize: 11,
-		color: COLORS.DimGray,
-		marginTop: 2,
-	},
-	statDivider: {
-		width: 1,
-		backgroundColor: COLORS.border,
-	},
-
-	// ── Section Cards ──
-	sectionCard: {
-		marginHorizontal: 16,
-		marginBottom: 12,
-		elevation: 2,
-		borderRadius: 12,
-	},
-	sectionHeader: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		paddingHorizontal: 16,
-		paddingTop: 16,
-		paddingBottom: 8,
-		gap: 8,
-	},
-	sectionTitle: {
-		fontFamily: Fonts.bold,
-		fontSize: 15,
-		color: COLORS.DarkGrey,
-	},
-
-	// ── Info Rows ──
-	infoRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingVertical: 10,
-	},
-	infoLabel: {
-		fontFamily: Fonts.medium,
-		color: COLORS.DimGray,
-		fontSize: 13,
-	},
-	infoValue: {
-		fontFamily: Fonts.bold,
-		color: COLORS.DarkGrey,
-		fontSize: 13,
-		flex: 1,
-		textAlign: 'right',
-	},
-	descriptionText: {
-		fontFamily: Fonts.regular,
-		color: COLORS.DarkGrey,
-		fontSize: 14,
-		lineHeight: 20,
-		paddingVertical: 8,
-	},
-	totalCostText: {
-		fontSize: 15,
-		color: COLORS.gold,
-	},
-	divider: {
-		backgroundColor: COLORS.border,
-	},
-
-	// ── Location Badge ──
-	locationBadge: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: '#E1F5FE',
-		paddingHorizontal: 10,
-		paddingVertical: 4,
-		borderRadius: 8,
-		gap: 4,
-	},
-	locationBadgeText: {
-		fontFamily: Fonts.bold,
-		fontSize: 13,
-		color: '#0277BD',
-	},
-
-	// ── Timeline ──
-	timeline: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'flex-start',
-		paddingVertical: 8,
-		paddingHorizontal: 4,
-	},
-	timelineStep: {
-		alignItems: 'center',
-		flex: 1,
-		position: 'relative',
-	},
-	timelineConnector: {
-		position: 'absolute',
-		top: 16,
-		left: -20,
-		right: 20,
-		height: 2,
-		zIndex: -1,
-	},
-	timelineCircle: {
-		width: 32,
-		height: 32,
-		borderRadius: 16,
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginBottom: 6,
-	},
-	timelineLabel: {
-		fontSize: 9,
-		textAlign: 'center',
-	},
-	keyDates: {
-		marginTop: 8,
-		gap: 6,
-	},
-	keyDateRow: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 6,
-	},
-	keyDateText: {
-		fontFamily: Fonts.regular,
-		fontSize: 12,
-		color: COLORS.DimGray,
-	},
-
-	// ── Payment ──
-	paymentChip: {
-		height: 28,
-	},
-	paymentHistoryRow: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingVertical: 10,
-	},
-	paymentHistoryLeft: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 8,
-	},
-	paymentHistoryDate: {
-		fontFamily: Fonts.regular,
-		fontSize: 13,
-		color: COLORS.DimGray,
-	},
-	paymentHistoryAmount: {
-		fontFamily: Fonts.bold,
-		fontSize: 14,
-		color: COLORS.green,
-	},
-
-	// ── Container ──
-	containerBox: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		backgroundColor: COLORS.lightBackground,
-		borderRadius: 12,
-		padding: 16,
-		marginBottom: 12,
-	},
-	containerBoxInfo: {
-		marginLeft: 12,
-		flex: 1,
-	},
-	containerBoxLabel: {
-		fontFamily: Fonts.regular,
-		fontSize: 12,
-		color: COLORS.DimGray,
-		marginBottom: 4,
-	},
-	containerBoxNumber: {
-		fontFamily: Fonts.bold,
-		fontSize: 16,
-		color: COLORS.DarkGrey,
-	},
-	trackButton: {
-		borderRadius: 8,
-	},
-
-	// ── Pickup ──
-	pickupBanner: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		alignSelf: 'flex-start',
-		paddingHorizontal: 14,
-		paddingVertical: 8,
-		borderRadius: 20,
-		marginBottom: 16,
-		gap: 8,
-	},
-	pickupBannerText: {
-		fontFamily: Fonts.bold,
-		fontSize: 13,
-	},
-	pickupLocation: {
-		flexDirection: 'row',
-		alignItems: 'flex-start',
-		padding: 14,
-		backgroundColor: COLORS.lightBackground,
-		borderRadius: 12,
-		marginBottom: 12,
-	},
-	pickupLocationTitle: {
-		fontFamily: Fonts.bold,
-		fontSize: 14,
-		color: COLORS.DarkGrey,
-		marginBottom: 2,
-	},
-	pickupLocationAddress: {
-		fontFamily: Fonts.regular,
-		fontSize: 13,
-		color: COLORS.DimGray,
-	},
-	pickupMessage: {
-		flexDirection: 'row',
-		alignItems: 'flex-start',
-		padding: 12,
-		backgroundColor: '#EFF6FF',
-		borderRadius: 8,
-		gap: 8,
-	},
-	pickupMessageText: {
-		fontFamily: Fonts.medium,
-		fontSize: 13,
-		color: '#1E40AF',
-		flex: 1,
-	},
-
-	// ── QR Code ──
-	qrContent: {
-		alignItems: 'center',
-		paddingVertical: 16,
-	},
-	qrImage: {
-		width: 180,
-		height: 180,
-		resizeMode: 'contain',
-		backgroundColor: 'white',
-	},
-	qrText: {
-		fontFamily: Fonts.regular,
-		color: COLORS.DimGray,
-		fontSize: 12,
-		marginTop: 12,
-		textAlign: 'center',
-	},
-
-	// ── Review & Bottom ──
-	reviewSection: {
-		paddingHorizontal: 4,
-	},
-	bottomPadding: {
-		height: 32,
-	},
-});
 
 export default GoodsDetailScreen;
