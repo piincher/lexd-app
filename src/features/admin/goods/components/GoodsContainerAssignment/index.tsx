@@ -38,7 +38,7 @@ export const GoodsContainerAssignment: React.FC<GoodsContainerAssignmentProps> =
         {isAssigned ? (
           <View style={styles.assignedContainer}>
             <View style={styles.iconContainer}>
-              <MaterialCommunityIcons name="container" size={32} color={Theme.primary[600]} />
+              <MaterialCommunityIcons name="ferry" size={32} color={Theme.primary[600]} />
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.containerNumber}>{containerNumber || containerId}</Text>

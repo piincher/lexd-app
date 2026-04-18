@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from "react";
-import {
-   View,
-   StyleSheet,
-   Text,
-   Pressable,
-   ScrollView,
-   RefreshControl,
-} from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { View, StyleSheet, Text, Pressable, ScrollView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Appbar, Button, Chip, Divider, Surface } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
 import { RootStackScreenProps } from "@src/navigations/type";
-import { useGetOrderDetail } from '@src/shared/hooks/useOrderDetail';
-import { useGetRoutes } from '@src/shared/hooks/useRoutes';
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { useGetOrderDetail } from "@src/shared/hooks/useOrderDetail";
+import { useGetRoutes } from "@src/shared/hooks/useRoutes";
 import { formatDate } from "@src/utils/formatDate";
 import { useUpdateOrder, useUpdateStatusDelivery } from "../hooks/useOrderManagement";
+import createStyles from "./components/OrderCard.styles";
+import COLORS from "@src/constants/Colors";
 
 // ── Types ──────────────────────────────────────────
 
@@ -45,38 +40,39 @@ const STEP_ICONS: Record<string, string> = {
    Delivered: "package-check",
 };
 
-// ── Info row helper ────────────────────────────────
-
-const InfoRow = ({
-   icon,
-   label,
-   value,
-   iconColor = "#6B7280",
-}: {
-   icon: string;
-   label: string;
-   value: string;
-   iconColor?: string;
-}) => (
-   <View style={styles.infoRow}>
-      <View style={styles.infoRowLeft}>
-         <View style={[styles.infoIcon, { backgroundColor: `${iconColor}15` }]}>
-            <MaterialCommunityIcons name={icon as any} size={18} color={iconColor} />
-         </View>
-         <Text style={styles.infoLabel}>{label}</Text>
-      </View>
-      <Text style={styles.infoValue} numberOfLines={1}>
-         {value || "N/A"}
-      </Text>
-   </View>
-);
-
 // ── Main screen ────────────────────────────────────
 
 const ActiveOrderDetails = ({
    route: navRoute,
    navigation,
 }: RootStackScreenProps<"ActiveOrderDetails">) => {
+   const { colors, isDark } = useAppTheme();
+   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
+   // ── Info row helper ──
+   const InfoRow = ({
+      icon,
+      label,
+      value,
+      iconColor = colors.text.secondary,
+   }: {
+      icon: string;
+      label: string;
+      value: string;
+      iconColor?: string;
+   }) => (
+      <View style={styles.infoRow}>
+         <View style={styles.infoRowLeft}>
+            <View style={[styles.infoIcon, { backgroundColor: `${iconColor}15` }]}>
+               <MaterialCommunityIcons name={icon as any} size={18} color={iconColor} />
+            </View>
+            <Text style={styles.infoLabel}>{label}</Text>
+         </View>
+         <Text style={styles.infoValue} numberOfLines={1}>
+            {value || "N/A"}
+         </Text>
+      </View>
+   );
    // ── State ──
    const [selectedCheckboxes, setSelectedCheckboxes] = useState<Record<string, boolean>>({});
    const [coordinatesData, setCoordinatesData] = useState<
@@ -151,16 +147,19 @@ const ActiveOrderDetails = ({
 
    useEffect(() => {
       if (!item) return;
-      const initial = item?.route?.reduce((acc: Record<string, boolean>, r: any) => {
-         r?.coordinates?.forEach((loc: any) => {
-            acc[loc.location] = !!Status?.orderDetail?.some(
-               (d: any) =>
-                  d.status === r.title &&
-                  d.coordinates.some((c: any) => c.location === loc.location)
-            );
-         });
-         return acc;
-      }, {} as Record<string, boolean>);
+      const initial = item?.route?.reduce(
+         (acc: Record<string, boolean>, r: any) => {
+            r?.coordinates?.forEach((loc: any) => {
+               acc[loc.location] = !!Status?.orderDetail?.some(
+                  (d: any) =>
+                     d.status === r.title &&
+                     d.coordinates.some((c: any) => c.location === loc.location),
+               );
+            });
+            return acc;
+         },
+         {} as Record<string, boolean>,
+      );
       setSelectedCheckboxes(initial || {});
    }, [item, Status]);
 
@@ -171,21 +170,14 @@ const ActiveOrderDetails = ({
          {/* App bar */}
          <Appbar.Header style={styles.appbar}>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
-            <Appbar.Content
-               title={item?.code || "Commande"}
-               titleStyle={styles.appbarTitle}
-            />
+            <Appbar.Content title={item?.code || "Commande"} titleStyle={styles.appbarTitle} />
          </Appbar.Header>
 
          <ScrollView
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
             refreshControl={
-               <RefreshControl
-                  refreshing={isLoading}
-                  onRefresh={refetch}
-                  tintColor={COLORS.blue}
-               />
+               <RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor={COLORS.blue} />
             }
          >
             {/* ── 1. Header card ── */}
@@ -215,9 +207,7 @@ const ActiveOrderDetails = ({
                         <Text style={styles.clientName} numberOfLines={1}>
                            {item?.clientName || "Client"}
                         </Text>
-                        <Text style={styles.clientPhone}>
-                           {item?.clientPhone || "—"}
-                        </Text>
+                        <Text style={styles.clientPhone}>{item?.clientPhone || "—"}</Text>
                      </View>
                   </View>
 
@@ -269,7 +259,7 @@ const ActiveOrderDetails = ({
                   <View style={{ alignItems: "flex-end" }}>
                      <Text style={styles.priceLabel}>Montant total</Text>
                      <Text style={styles.priceValue}>
-                        {orderPrice > 0 ? `${orderPrice.toLocaleString()} FCFA` : 'Non défini'}
+                        {orderPrice > 0 ? `${orderPrice.toLocaleString()} FCFA` : "Non défini"}
                      </Text>
                   </View>
                </View>
@@ -278,11 +268,7 @@ const ActiveOrderDetails = ({
             {/* ── 2. Quick stats ── */}
             <Surface style={[styles.card, styles.statsCard]}>
                <View style={styles.statItem}>
-                  <MaterialCommunityIcons
-                     name="package-variant-closed"
-                     size={20}
-                     color="#1976D2"
-                  />
+                  <MaterialCommunityIcons name="package-variant-closed" size={20} color="#1976D2" />
                   <Text style={styles.statValue}>{item?.quantity ?? 1}</Text>
                   <Text style={styles.statLabel}>Colis</Text>
                </View>
@@ -297,9 +283,7 @@ const ActiveOrderDetails = ({
                <View style={styles.statDivider} />
                <View style={styles.statItem}>
                   <MaterialCommunityIcons name="cube-outline" size={20} color="#2E7D32" />
-                  <Text style={styles.statValue}>
-                     {item?.packageCBM || "0"}
-                  </Text>
+                  <Text style={styles.statValue}>{item?.packageCBM || "0"}</Text>
                   <Text style={styles.statLabel}>CBM (m³)</Text>
                </View>
             </Surface>
@@ -355,11 +339,7 @@ const ActiveOrderDetails = ({
                   <>
                      <Divider style={styles.divider} />
                      <View style={styles.noteBox}>
-                        <MaterialCommunityIcons
-                           name="note-text"
-                           size={16}
-                           color="#F57C00"
-                        />
+                        <MaterialCommunityIcons name="note-text" size={16} color="#F57C00" />
                         <Text style={styles.noteText}>
                            {note || (item as any)?.note || "Aucune note"}
                         </Text>
@@ -391,9 +371,7 @@ const ActiveOrderDetails = ({
                               name={(STEP_ICONS[routeItem.status] || "circle") as any}
                               size={16}
                               color={
-                                 routeItem.status === "Order in Transit"
-                                    ? "#1976D2"
-                                    : "#6B7280"
+                                 routeItem.status === "Order in Transit" ? "#1976D2" : "#6B7280"
                               }
                            />
                         </View>
@@ -409,11 +387,7 @@ const ActiveOrderDetails = ({
                               style={styles.picker}
                               selectedValue={pickerValue || actualLocation}
                               onValueChange={(val) =>
-                                 handleStepChange(
-                                    val,
-                                    routeItem.status,
-                                    routeItem.coordinates
-                                 )
+                                 handleStepChange(val, routeItem.status, routeItem.coordinates)
                               }
                            >
                               {routeItem.coordinates.map((c: any) => (
@@ -428,59 +402,57 @@ const ActiveOrderDetails = ({
                      ) : (
                         /* Other statuses: vertical timeline items */
                         <View style={styles.timelineList}>
-                           {routeItem.coordinates.map(
-                              (location: any, locIndex: number) => {
-                                 const isChecked = selectedCheckboxes[location.location];
-                                 return (
-                                    <Pressable
-                                       key={location.location}
-                                       onPress={() =>
-                                          handleCheckboxPress(
-                                             location.location,
-                                             routeItem.status,
-                                             routeItem.coordinates
-                                          )
-                                       }
-                                       style={styles.timelineItem}
-                                    >
-                                       {/* Connector line */}
-                                       {locIndex > 0 && (
-                                          <View
-                                             style={[
-                                                styles.connector,
-                                                isChecked && styles.connectorActive,
-                                             ]}
-                                          />
-                                       )}
-                                       {/* Circle */}
+                           {routeItem.coordinates.map((location: any, locIndex: number) => {
+                              const isChecked = selectedCheckboxes[location.location];
+                              return (
+                                 <Pressable
+                                    key={location.location}
+                                    onPress={() =>
+                                       handleCheckboxPress(
+                                          location.location,
+                                          routeItem.status,
+                                          routeItem.coordinates,
+                                       )
+                                    }
+                                    style={styles.timelineItem}
+                                 >
+                                    {/* Connector line */}
+                                    {locIndex > 0 && (
                                        <View
                                           style={[
-                                             styles.timelineCircle,
-                                             isChecked && styles.timelineCircleActive,
+                                             styles.connector,
+                                             isChecked && styles.connectorActive,
                                           ]}
-                                       >
-                                          {isChecked && (
-                                             <MaterialCommunityIcons
-                                                name="check"
-                                                size={12}
-                                                color="#FFF"
-                                             />
-                                          )}
-                                       </View>
-                                       {/* Label */}
-                                       <Text
-                                          style={[
-                                             styles.timelineLabel,
-                                             isChecked && styles.timelineLabelActive,
-                                          ]}
-                                          numberOfLines={2}
-                                       >
-                                          {location.location}
-                                       </Text>
-                                    </Pressable>
-                                 );
-                              }
-                           )}
+                                       />
+                                    )}
+                                    {/* Circle */}
+                                    <View
+                                       style={[
+                                          styles.timelineCircle,
+                                          isChecked && styles.timelineCircleActive,
+                                       ]}
+                                    >
+                                       {isChecked && (
+                                          <MaterialCommunityIcons
+                                             name="check"
+                                             size={12}
+                                             color="#FFF"
+                                          />
+                                       )}
+                                    </View>
+                                    {/* Label */}
+                                    <Text
+                                       style={[
+                                          styles.timelineLabel,
+                                          isChecked && styles.timelineLabelActive,
+                                       ]}
+                                       numberOfLines={2}
+                                    >
+                                       {location.location}
+                                    </Text>
+                                 </Pressable>
+                              );
+                           })}
                         </View>
                      )}
 
@@ -495,14 +467,8 @@ const ActiveOrderDetails = ({
             <View style={styles.actionsSection}>
                {isDelivered ? (
                   <View style={styles.deliveredBanner}>
-                     <MaterialCommunityIcons
-                        name="check-circle"
-                        size={24}
-                        color="#4CAF50"
-                     />
-                     <Text style={styles.deliveredText}>
-                        Le client a récupéré son colis
-                     </Text>
+                     <MaterialCommunityIcons name="check-circle" size={24} color="#4CAF50" />
+                     <Text style={styles.deliveredText}>Le client a récupéré son colis</Text>
                   </View>
                ) : (
                   <Button

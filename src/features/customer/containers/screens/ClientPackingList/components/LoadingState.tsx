@@ -1,18 +1,25 @@
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
 import { COLORS } from '@src/constants/Colors';
 import { styles } from '../ClientPackingListScreen.styles';
+import { ShimmerBlock } from '@src/shared/ui';
 
 export const LoadingState: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color={COLORS.primary} />
-        <Text style={styles.loadingText}>
-          Chargement de la liste de colisage...
-        </Text>
+      <View style={{ padding: 16, gap: 12 }}>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <View key={i} style={{ flexDirection: 'row', alignItems: 'center', gap: 12, paddingVertical: 8 }}>
+            <ShimmerBlock width={48} height={48} borderRadius={8} />
+            <View style={{ flex: 1, gap: 8 }}>
+              <ShimmerBlock width={'60%'} height={14} borderRadius={3} />
+              <ShimmerBlock width={'40%'} height={10} borderRadius={3} />
+            </View>
+            <ShimmerBlock width={60} height={22} borderRadius={6} />
+          </View>
+        ))}
       </View>
     </SafeAreaView>
   );

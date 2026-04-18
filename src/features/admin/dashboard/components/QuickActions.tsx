@@ -1,15 +1,12 @@
-/**
- * QuickActions - Quick action buttons grid
- * SRP: Display quick action buttons ONLY
- */
-
-import React from "react";
-import { View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useMemo } from "react";
+import { View, Pressable, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
+import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface QuickAction {
   id: string;
@@ -17,114 +14,156 @@ interface QuickAction {
   subtitle: string;
   icon: string;
   route: string;
-  color: string;
+  gradient: readonly [string, string];
 }
 
 const QUICK_ACTIONS: QuickAction[] = [
   {
     id: "qa1",
-    title: "Receive Goods",
-    subtitle: "New merchandise",
-    icon: "package",
+    title: "Réception",
+    subtitle: "Nouvelle marchandise",
+    icon: "package-variant-closed",
     route: "ReceiveGoods",
-    color: "#4CAF50",
+    gradient: ["#10B981", "#059669"] as const,
   },
   {
     id: "qa2",
-    title: "Add Order",
-    subtitle: "Create new order",
+    title: "Commande",
+    subtitle: "Créer une commande",
     icon: "plus-circle",
     route: "ChooseShippingMethod",
-    color: "#2196F3",
+    gradient: ["#3B82F6", "#2563EB"] as const,
   },
   {
     id: "qa3",
-    title: "Containers",
-    subtitle: "Manage containers",
-    icon: "truck-delivery",
+    title: "Conteneurs",
+    subtitle: "Gérer",
+    icon: "ferry",
     route: "ContainerList",
-    color: "#FF9800",
+    gradient: ["#F97316", "#EA580C"] as const,
   },
   {
     id: "qa4",
-    title: "Scan QR",
-    subtitle: "Quick scan",
+    title: "Scanner",
+    subtitle: "QR code",
     icon: "qrcode-scan",
     route: "ScanQRCode",
-    color: "#9C27B0",
+    gradient: ["#A855F7", "#9333EA"] as const,
   },
 ];
 
 export const QuickActions: React.FC = () => {
   const navigation = useNavigation();
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          marginBottom: 20,
+        },
+        sectionHeader: {
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: 12,
+          paddingHorizontal: 4,
+        },
+        sectionTitle: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          letterSpacing: -0.3,
+        },
+        sectionBadge: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        grid: {
+          flexDirection: "row",
+          gap: 10,
+        },
+        item: {
+          flex: 1,
+          borderRadius: 18,
+          overflow: "hidden",
+          ...Theme.shadows.sm,
+        },
+        gradient: {
+          padding: 12,
+          minHeight: 110,
+          justifyContent: "space-between",
+        },
+        iconWrap: {
+          width: 38,
+          height: 38,
+          borderRadius: 12,
+          backgroundColor: "rgba(255,255,255,0.25)",
+          justifyContent: "center",
+          alignItems: "center",
+          borderWidth: 1,
+          borderColor: "rgba(255,255,255,0.2)",
+        },
+        title: {
+          fontSize: 13,
+          fontFamily: Fonts.bold,
+          color: "#FFF",
+          letterSpacing: -0.2,
+        },
+        subtitle: {
+          fontSize: 10,
+          fontFamily: Fonts.regular,
+          color: "rgba(255,255,255,0.82)",
+          marginTop: 1,
+        },
+      }),
+    [colors, isDark]
+  );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Quick Actions</Text>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Actions rapides</Text>
+        <Text style={styles.sectionBadge}>4 raccourcis</Text>
+      </View>
       <View style={styles.grid}>
         {QUICK_ACTIONS.map((action) => (
-          <TouchableOpacity
+          <Pressable
             key={action.id}
-            style={styles.item}
             onPress={() => navigation.navigate(action.route as never)}
+            style={({ pressed }) => [
+              styles.item,
+              pressed && { opacity: 0.9, transform: [{ scale: 0.96 }] },
+            ]}
           >
-            <View style={[styles.icon, { backgroundColor: action.color + "20" }]}>
-              <MaterialCommunityIcons name={action.icon as any} size={28} color={action.color} />
-            </View>
-            <Text style={styles.title}>{action.title}</Text>
-            <Text style={styles.subtitle}>{action.subtitle}</Text>
-          </TouchableOpacity>
+            <LinearGradient
+              colors={action.gradient}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.gradient}
+            >
+              <View style={styles.iconWrap}>
+                <MaterialCommunityIcons
+                  name={action.icon as any}
+                  size={20}
+                  color="#FFF"
+                />
+              </View>
+              <View>
+                <Text style={styles.title} numberOfLines={1}>
+                  {action.title}
+                </Text>
+                <Text style={styles.subtitle} numberOfLines={1}>
+                  {action.subtitle}
+                </Text>
+              </View>
+            </LinearGradient>
+          </Pressable>
         ))}
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-    marginBottom: 12,
-  },
-  grid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-  },
-  item: {
-    width: "23%",
-    alignItems: "center",
-    padding: 12,
-    backgroundColor: "#FFF",
-    borderRadius: 12,
-    elevation: 2,
-    marginBottom: 8,
-  },
-  icon: {
-    width: 50,
-    height: 50,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  title: {
-    fontSize: 11,
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-    textAlign: "center",
-  },
-  subtitle: {
-    fontSize: 9,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    textAlign: "center",
-    marginTop: 2,
-  },
-});
 
 export default QuickActions;

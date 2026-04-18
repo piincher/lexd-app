@@ -24,7 +24,7 @@ import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 import { ContainerWaypoint, WAYPOINT_STATUS_COLORS, WAYPOINT_TYPE_ICONS, TRANSPORT_MODE_ICONS } from '../types';
-import { WaypointCard } from './WaypointCard';
+import { TimelineWaypointCard } from './TimelineWaypointCard';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -236,7 +236,7 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
               <Text style={styles.currentLocationText}>POSITION ACTUELLE</Text>
             </View>
           </View>
-          <WaypointCard
+          <TimelineWaypointCard
             waypoint={currentWaypoint}
             isCurrent={true}
             isCompleted={false}
@@ -279,7 +279,7 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
             </View>
           </View>
           {upcomingWaypoints.slice(0, 3).map((waypoint, index) => (
-            <WaypointCard
+            <TimelineWaypointCard
               key={`upcoming-${waypoint.locationCode}-${index}`}
               waypoint={waypoint}
               isCurrent={false}
@@ -310,7 +310,7 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
           </View>
           {/* Show only the last completed waypoint */}
           {completedWaypoints.length > 0 && (
-            <WaypointCard
+            <TimelineWaypointCard
               waypoint={completedWaypoints[completedWaypoints.length - 1]}
               isCurrent={false}
               isCompleted={true}

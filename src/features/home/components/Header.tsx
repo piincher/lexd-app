@@ -2,6 +2,7 @@ import React from "react";
 import { View, Image, Pressable, StyleSheet, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { NotificationBell } from "@src/features/notifications";
 import { IMAGES } from "@src/constants/Images";
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -50,27 +51,22 @@ export const Header = () => {
                   color={colors.primary.main}
                />
             </Pressable>
-            <Pressable
-               onPress={() => navigation.navigate("Notifications" as never)}
-               style={({ pressed }) => [
+            <View
+               style={[
                   styles.iconButton,
                   {
                      backgroundColor: isDark
                         ? 'rgba(74,222,128,0.12)'
                         : 'rgba(34,197,94,0.08)',
                   },
-                  pressed && styles.iconButtonPressed,
                ]}
-               hitSlop={8}
-               accessibilityRole="button"
-               accessibilityLabel="Notifications"
             >
-               <MaterialCommunityIcons
-                  name="bell-outline"
+               <NotificationBell
+                  onPress={() => navigation.navigate("Notifications" as never)}
                   size={20}
                   color={colors.primary.main}
                />
-            </Pressable>
+            </View>
             <Pressable
                onPress={() => navigation.navigate("AboutUs" as never)}
                style={({ pressed }) => [

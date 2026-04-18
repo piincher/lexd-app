@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import {
   Appbar,
-  ActivityIndicator,
   Text,
   Card,
   Divider,

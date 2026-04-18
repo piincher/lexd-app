@@ -4,7 +4,7 @@
 
 import React, { useState, useMemo } from "react";
 import { View, StyleSheet } from "react-native";
-import { Appbar, ActivityIndicator, Button, Text } from "react-native-paper";
+import { Appbar, Button, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RootStackScreenProps } from "@src/navigations/type";

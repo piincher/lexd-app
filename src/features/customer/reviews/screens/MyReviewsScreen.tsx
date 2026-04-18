@@ -5,7 +5,6 @@ import {
   TouchableOpacity,
   Platform,
   StyleSheet,
-  ActivityIndicator,
   ScrollView,
 } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -15,6 +14,7 @@ import { Fonts } from "@src/constants/Fonts";
 import { RootStackScreenProps } from "@src/navigations/type";
 import { useMyReviews, useReviewStats } from "../hooks/useReviews";
 import type { Review } from "../api";
+import { ReviewsListSkeleton } from "../components/ReviewsListSkeleton";
 
 const formatDate = (dateString: string): string => {
   try {
@@ -145,10 +145,7 @@ export default function MyReviewsScreen({
 
       {/* Loading state */}
       {isLoading ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#d4a843" />
-          <Text style={styles.loadingText}>Chargement de vos avis...</Text>
-        </View>
+        <ReviewsListSkeleton />
       ) : (
         <FlashList
           data={reviews}

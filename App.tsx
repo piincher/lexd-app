@@ -4,6 +4,7 @@ import { AntDesign, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { linking } from "@src/shared/lib/deepLinking";
 // import * as Sentry from "@sentry/react-native";
 import { initMixpanel } from "@src/config/Analytic";
 import { HomeTabParamList, RootStackParamList } from "@src/navigations/type";
@@ -106,6 +107,7 @@ import { initSentry } from "@src/services/sentry";
 import { UpdateProvider } from "@src/context/UpdateProvider";
 import { NotificationProvider } from "@src/app/providers";
 import { ThemeProvider, useAppTheme } from "@src/providers";
+import DeepLinkHandler from "@src/shared/components/DeepLinkHandler";
 
 // Features - Admin
 import ActiveOrders from "@src/features/admin/orders/screens/ActiveOrders";
@@ -182,12 +184,6 @@ function AppWrapper() {
    const appLaunch = useAppLaunchStore((state) => state.isAppLaunchFirst);
    const token = useAuth((state) => state.token);
 
-   useEffect(() => {
-      fetch("http://192.168.0.112:3000/health")
-         .then((res) => res.json())
-         .then((data) => console.log("✅ Connected:", data))
-         .catch((err) => console.log("❌ Error:", err));
-   }, []);
    useEffect(() => {
       const prepare = async () => {
          try {
@@ -367,13 +363,113 @@ function AppWrapper() {
 
 const HomeBottomTab = () => {
    const admin = useAuth((state) => state.user.role);
+   const token = useAuth((state) => state.token);
    const { colors } = useAppTheme();
 
-   const adminRole = admin === "admin" ? true : false;
+   const adminRole = admin === "admin";
+
+   // Build tab config array — React Navigation requires stable children,
+   // so we filter the array BEFORE rendering instead of using && inside JSX
+   const tabs = [
+      {
+         name: "Home" as const,
+         component: HomeScreen,
+         show: !adminRole && !token,
+         options: {
+            tabBarLabel: "Accueil",
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <AntDesign name="home" focused={focused} color={color} size={size} />
+            ),
+         },
+      },
+      {
+         name: "CustomerDashboard" as const,
+         component: CustomerDashboardScreen,
+         show: !adminRole && !!token,
+         options: {
+            tabBarLabel: "Tableau de Bord",
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <AntDesign name="layout" focused={focused} color={color} size={size} />
+            ),
+         },
+      },
+      {
+         name: "AdminDashBoard" as const,
+         component: AdminDashBoard,
+         show: adminRole,
+         options: {
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <AntDesign name="book" focused={focused} color={color} size={size} />
+            ),
+         },
+      },
+      {
+         name: "Orders" as const,
+         component: Orders,
+         show: !adminRole,
+         options: {
+            tabBarLabel: "Commandes",
+            tabBarAccessibilityLabel: "Commandes",
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <FontAwesome5 name="clipboard-list" size={size} color={color} focused={focused} />
+            ),
+         },
+      },
+      {
+         name: "MyGoods" as const,
+         component: MyGoodsScreen,
+         show: !adminRole,
+         options: {
+            tabBarLabel: "Mes Marchandises",
+            tabBarAccessibilityLabel: "Mes Marchandises",
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <FontAwesome5 name="box" size={size} color={color} focused={focused} />
+            ),
+         },
+      },
+      {
+         name: "MyContainers" as const,
+         component: MyContainersScreen,
+         show: !adminRole && !!token,
+         options: {
+            tabBarLabel: "Containers",
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <FontAwesome5 name="ship" size={size} color={color} focused={focused} />
+            ),
+         },
+      },
+      {
+         name: "Stats" as const,
+         component: Stats,
+         show: adminRole,
+         options: {
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <Entypo name="pie-chart" focused={focused} color={color} size={size} />
+            ),
+         },
+      },
+      {
+         name: "Profile" as const,
+         component: Profile,
+         show: true,
+         options: {
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <Entypo name="user" focused={focused} color={color} size={size} />
+            ),
+         },
+      },
+   ];
+
+   const visibleTabs = tabs.filter((t) => t.show);
+   const initialRoute = adminRole
+      ? "AdminDashBoard"
+      : token
+      ? "CustomerDashboard"
+      : "Home";
 
    return (
       <BottomTab.Navigator
-         initialRouteName={"Home"}
+         initialRouteName={initialRoute}
          screenOptions={{
             headerShown: false,
             tabBarActiveTintColor: colors.primary.main,
@@ -384,80 +480,14 @@ const HomeBottomTab = () => {
             },
          }}
       >
-         {!adminRole && (
+         {visibleTabs.map((tab) => (
             <BottomTab.Screen
-               name="Home"
-               component={HomeScreen}
-               options={{
-                  tabBarLabel: "Accueil",
-                  tabBarIcon: ({ focused, color, size }) => (
-                     <AntDesign name="home" focused={focused} color={color} size={size} />
-                  ),
-               }}
+               key={tab.name}
+               name={tab.name}
+               component={tab.component}
+               options={tab.options}
             />
-         )}
-         {adminRole && (
-            <BottomTab.Screen
-               name="AdminDashBoard"
-               component={AdminDashBoard}
-               options={{
-                  tabBarIcon: ({ focused, color, size }) => (
-                     <AntDesign name="book" focused={focused} color={color} size={size} />
-                  ),
-               }}
-            />
-         )}
-         {!adminRole && (
-            <BottomTab.Screen
-               name="Orders"
-               options={{
-                  tabBarLabel: "Commandes",
-                  tabBarAccessibilityLabel: "Commandes",
-                  tabBarIcon: ({ focused, color, size }) => (
-                     <FontAwesome5
-                        name="clipboard-list"
-                        size={size}
-                        color={color}
-                        focused={focused}
-                     />
-                  ),
-               }}
-               component={Orders}
-            />
-         )}
-         {!adminRole && (
-            <BottomTab.Screen
-               name="MyGoods"
-               component={MyGoodsScreen}
-               options={{
-                  tabBarLabel: "Mes Marchandises",
-                  tabBarAccessibilityLabel: "Mes Marchandises",
-                  tabBarIcon: ({ focused, color, size }) => (
-                     <FontAwesome5 name="box" size={size} color={color} focused={focused} />
-                  ),
-               }}
-            />
-         )}
-         {adminRole && (
-            <BottomTab.Screen
-               name="Stats"
-               component={Stats}
-               options={{
-                  tabBarIcon: ({ focused, color, size }) => (
-                     <Entypo name="pie-chart" focused={focused} color={color} size={size} />
-                  ),
-               }}
-            />
-         )}
-         <BottomTab.Screen
-            name="Profile"
-            component={Profile}
-            options={{
-               tabBarIcon: ({ focused, color, size }) => (
-                  <Entypo name="user" focused={focused} color={color} size={size} />
-               ),
-            }}
-         />
+         ))}
       </BottomTab.Navigator>
    );
 };
@@ -467,7 +497,8 @@ const ThemedApp = () => {
 
    return (
       <PaperProvider theme={paperTheme}>
-         <NavigationContainer ref={navigationRef} theme={navigationTheme}>
+         <NavigationContainer ref={navigationRef} theme={navigationTheme} linking={linking}>
+            <DeepLinkHandler />
             <MainWrapper />
          </NavigationContainer>
       </PaperProvider>

@@ -77,7 +77,7 @@ export const PaymentInsights: React.FC<PaymentInsightsProps> = ({
             { backgroundColor: balanceDue > 0 ? '#F59E0B' : '#059669' },
           ]} />
           <View>
-            <Text style={styles.amountLabel}>Solde Du</Text>
+            <Text style={styles.amountLabel}>Solde Dû</Text>
             <Text style={[
               styles.amountValue,
               balanceDue > 0 && styles.amountWarning,

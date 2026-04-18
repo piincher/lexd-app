@@ -11,7 +11,6 @@ import {
    StyleSheet,
    Text,
    View,
-   ActivityIndicator,
    RefreshControl,
 } from "react-native";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";

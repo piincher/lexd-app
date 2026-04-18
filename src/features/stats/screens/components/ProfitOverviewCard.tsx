@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { ShimmerBlock } from '@src/shared/ui';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
@@ -204,7 +205,23 @@ export const ProfitOverviewCard: React.FC<ProfitOverviewCardProps> = ({
       </View>
 
       {isLoading ? (
-        <ActivityIndicator size="small" color={colors.primary.main} style={{ paddingVertical: 24 }} />
+        <View style={{ gap: 12, paddingVertical: 8 }}>
+          <ShimmerBlock width={'100%'} height={80} borderRadius={12} />
+          <View style={{ gap: 10 }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <ShimmerBlock width={120} height={14} borderRadius={3} />
+              <ShimmerBlock width={80} height={14} borderRadius={3} />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <ShimmerBlock width={100} height={14} borderRadius={3} />
+              <ShimmerBlock width={70} height={14} borderRadius={3} />
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+              <ShimmerBlock width={140} height={14} borderRadius={3} />
+              <ShimmerBlock width={60} height={14} borderRadius={3} />
+            </View>
+          </View>
+        </View>
       ) : !s ? (
         <Text style={styles.emptyText}>Aucune donnée disponible</Text>
       ) : (

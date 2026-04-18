@@ -1,396 +1,494 @@
 /**
- * WaypointCard - Individual waypoint card for customer view
- * Displays location info, status, dates, and transport mode in a clean design
+ * WaypointCard - Individual waypoint card for container tracking journey
+ * Extracted from ContainerTrackingScreen to follow SRP
  */
 
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
-import { Theme } from '@src/constants/Theme';
+
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
-import { ContainerWaypoint, WAYPOINT_STATUS_COLORS, WAYPOINT_STATUS_LABELS, WAYPOINT_TYPE_ICONS, WAYPOINT_TYPE_LABELS, TRANSPORT_MODE_ICONS, TRANSPORT_MODE_LABELS, CUSTOMER_WAYPOINT_TYPE_COLORS } from '../types';
+import { ContainerWaypoint, SEGMENT_TYPE_LABELS, SEGMENT_TYPE_ICONS } from '@src/shared/types/containerWaypoints';
+import {
+  getExtendedStatusLabel,
+  getExtendedStatusColor,
+  getExtendedStatusIcon,
+  getLocationCategory,
+  ExtendedWaypointStatus,
+} from '@src/shared/types/waypointStatus';
 
 interface WaypointCardProps {
   waypoint: ContainerWaypoint;
-  isCurrent?: boolean;
-  isCompleted?: boolean;
+  index: number;
+  currentWaypointIndex: number;
+  isExpanded: boolean;
+  onToggle: () => void;
 }
+
+const formatDateShort = (dateString?: string): string => {
+  if (!dateString) return '-';
+  try {
+    return format(new Date(dateString), 'dd MMM yyyy', { locale: fr });
+  } catch {
+    return dateString;
+  }
+};
 
 export const WaypointCard: React.FC<WaypointCardProps> = ({
   waypoint,
-  isCurrent = false,
-  isCompleted = false,
+  index,
+  currentWaypointIndex,
+  isExpanded,
+  onToggle,
 }) => {
-  const statusColor = WAYPOINT_STATUS_COLORS[waypoint.status];
-  const typeIcon = WAYPOINT_TYPE_ICONS[waypoint.type];
-  const transportIcon = TRANSPORT_MODE_ICONS[waypoint.transportMode];
-  const typeColor = CUSTOMER_WAYPOINT_TYPE_COLORS[waypoint.type];
+  const rotation = useSharedValue(isExpanded ? '180deg' : '0deg');
 
-  // Format date for display
-  const formatDate = (dateString?: string): string => {
-    if (!dateString) return '';
-    try {
-      return format(new Date(dateString), 'dd MMM', { locale: fr });
-    } catch {
-      return dateString;
-    }
+  useEffect(() => {
+    rotation.value = withTiming(isExpanded ? '180deg' : '0deg', { duration: 200 });
+  }, [isExpanded]);
+
+  const chevronStyle = useAnimatedStyle(() => ({
+    transform: [{ rotateZ: rotation.value }],
+  }));
+
+  const isCurrent = index === currentWaypointIndex;
+  const isCompleted = waypoint.status === 'COMPLETED';
+  const rawStatusColor = getExtendedStatusColor(waypoint.status as ExtendedWaypointStatus);
+  const statusColor = typeof rawStatusColor === 'string' ? rawStatusColor : '#9CA3AF';
+  const locationCode = waypoint.location?.portCode || waypoint.location?.countryCode || '';
+  const category = getLocationCategory(locationCode);
+  const isDakar = category === 'DISCHARGE_PORT';
+  const isBorder = category === 'BORDER';
+  const isWarehouse = category === 'WAREHOUSE';
+
+  const getLocationSuffix = () => {
+    if (isDakar) return ' (Port de déchargement)';
+    if (isBorder) return ' (Frontière)';
+    if (isWarehouse) return ' (Entrepôt)';
+    return '';
   };
-
-  // Format time for display
-  const formatTime = (dateString?: string): string => {
-    if (!dateString) return '';
-    try {
-      return format(new Date(dateString), 'HH:mm', { locale: fr });
-    } catch {
-      return '';
-    }
-  };
-
-  // Get the most relevant date to display
-  const getDisplayDate = (): { label: string; date: string; time: string } | null => {
-    if (waypoint.actualArrival) {
-      return {
-        label: 'Arrivé',
-        date: formatDate(waypoint.actualArrival),
-        time: formatTime(waypoint.actualArrival),
-      };
-    }
-    if (waypoint.estimatedArrival) {
-      return {
-        label: 'Est. arrivée',
-        date: formatDate(waypoint.estimatedArrival),
-        time: formatTime(waypoint.estimatedArrival),
-      };
-    }
-    return null;
-  };
-
-  const displayDate = getDisplayDate();
 
   return (
-    <View
-      style={[
-        styles.container,
-        isCurrent && styles.containerCurrent,
-        isCompleted && styles.containerCompleted,
-      ]}
-    >
-      {/* Left Side - Type Icon with background */}
-      <View style={styles.leftSection}>
+    <View>
+      {/* Timeline connector */}
+      {index > 0 && (
+        <View style={styles.timelineConnector}>
+          <View
+            style={[
+              styles.connectorLine,
+              isCompleted || index <= currentWaypointIndex
+                ? { backgroundColor: '#10B981' }
+                : isCurrent
+                ? { backgroundColor: '#3B82F6' }
+                : { backgroundColor: '#D1D5DB' },
+            ]}
+          />
+        </View>
+      )}
+
+      <TouchableOpacity
+        style={[
+          styles.waypointCard,
+          isCurrent && styles.waypointCardCurrent,
+          isCompleted && styles.waypointCardCompleted,
+          isDakar && styles.waypointCardDakar,
+          isBorder && styles.waypointCardBorder,
+          isWarehouse && styles.waypointCardWarehouse,
+        ]}
+        onPress={onToggle}
+        activeOpacity={0.9}
+      >
+        {/* Status color bar */}
         <View
           style={[
-            styles.iconContainer,
-            { backgroundColor: `${typeColor}20` },
+            styles.wpStatusBar,
+            { backgroundColor: statusColor },
+            (isDakar || isBorder) && { height: 6 },
           ]}
-        >
-          <Ionicons name={typeIcon as any} size={24} color={typeColor} />
-        </View>
-        {/* Connector line for timeline effect */}
-        <View style={styles.connector} />
-      </View>
+        />
 
-      {/* Main Content */}
-      <View style={styles.content}>
-        {/* Header Row */}
-        <View style={styles.headerRow}>
-          <View style={styles.locationContainer}>
-            <Text style={styles.locationName} numberOfLines={1}>
-              {waypoint.location}
-            </Text>
-            <Text style={styles.locationCode}>{waypoint.locationCode}</Text>
+        <View style={styles.wpContent}>
+          {/* Header */}
+          <View style={styles.wpHeader}>
+            <View
+              style={[
+                styles.wpNumber,
+                isDakar && { backgroundColor: '#0EA5E9', width: 40, height: 40, borderRadius: 20 },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.wpNumberText,
+                  isDakar && { color: '#FFF', fontSize: 18 },
+                ]}
+              >
+                {index + 1}
+              </Text>
+            </View>
+
+            <View style={styles.wpTitleContainer}>
+              <Text style={[styles.wpLocation, isDakar && { color: '#0284C7', fontSize: 18 }]}>
+                {waypoint.location?.city || 'Unknown'}
+                {getLocationSuffix()}
+              </Text>
+              <Text style={styles.wpCode}>
+                {waypoint.location?.countryCode || ''}
+              </Text>
+            </View>
+
+            {/* Status badge */}
+            <View style={[styles.wpStatusBadge, { backgroundColor: `${statusColor}20` }]}>
+              <Ionicons
+                name={getExtendedStatusIcon(waypoint.status as ExtendedWaypointStatus) as any}
+                size={14}
+                color={statusColor}
+              />
+              <Text style={[styles.wpStatusText, { color: statusColor }]} numberOfLines={1}>
+                {getExtendedStatusLabel(waypoint.status as ExtendedWaypointStatus)}
+              </Text>
+            </View>
           </View>
-          {displayDate && (
-            <View style={styles.dateContainer}>
-              <Text style={styles.dateLabel}>{displayDate.label}</Text>
-              <Text style={styles.dateValue}>{displayDate.date}</Text>
-              {displayDate.time && (
-                <Text style={styles.timeValue}>{displayDate.time}</Text>
+
+          {/* Transport type & current indicator */}
+          <View style={styles.wpTypeRow}>
+            <View style={styles.wpTypeBadge}>
+              <Ionicons
+                name={(waypoint.segmentType === 'SEA' ? 'boat' :
+                      waypoint.segmentType === 'AIR' ? 'airplane' :
+                      waypoint.segmentType === 'ROAD' ? 'car' : 'cube') as any}
+                size={12}
+                color="#6B7280"
+              />
+              <Text style={styles.wpTypeBadgeText}>
+                {waypoint.segmentType || 'Transport'}
+              </Text>
+            </View>
+
+            {isCurrent && (
+              <View style={styles.currentBadge}>
+                <Text style={styles.currentBadgeText}>POSITION ACTUELLE</Text>
+              </View>
+            )}
+          </View>
+
+          {/* Date info */}
+          <View style={styles.wpQuickInfo}>
+            {waypoint.actualArrival ? (
+              <View style={styles.wpInfoItem}>
+                <Ionicons name="calendar" size={12} color="#10B981" />
+                <Text style={styles.wpInfoText}>
+                  Arrivé: {formatDateShort(waypoint.actualArrival)}
+                </Text>
+              </View>
+            ) : waypoint.estimatedArrival ? (
+              <View style={styles.wpInfoItem}>
+                <Ionicons name="time-outline" size={12} color="#F59E0B" />
+                <Text style={styles.wpInfoText}>
+                  Est. arrivée: {formatDateShort(waypoint.estimatedArrival)}
+                </Text>
+              </View>
+            ) : null}
+          </View>
+
+          {/* Expand indicator */}
+          <View style={styles.wpExpandIndicator}>
+            <Animated.View style={chevronStyle}>
+              <Ionicons
+                name="chevron-down"
+                size={18}
+                color="#9CA3AF"
+              />
+            </Animated.View>
+          </View>
+
+          {/* Expanded details */}
+          {isExpanded && (
+            <View style={styles.wpDetails}>
+              <View style={styles.wpDetailDivider} />
+
+              {waypoint.estimatedDeparture && (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Départ estimé</Text>
+                  <Text style={styles.wpDetailValue}>
+                    {formatDateShort(waypoint.estimatedDeparture)}
+                  </Text>
+                </View>
               )}
+              {waypoint.actualDeparture && (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Départ réel</Text>
+                  <Text style={styles.wpDetailValue}>
+                    {formatDateShort(waypoint.actualDeparture)}
+                  </Text>
+                </View>
+              )}
+              {waypoint.estimatedArrival && (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Arrivée estimée</Text>
+                  <Text style={styles.wpDetailValue}>
+                    {formatDateShort(waypoint.estimatedArrival)}
+                  </Text>
+                </View>
+              )}
+              {waypoint.actualArrival && (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Arrivée réelle</Text>
+                  <Text style={styles.wpDetailValue}>
+                    {formatDateShort(waypoint.actualArrival)}
+                  </Text>
+                </View>
+              )}
+              {waypoint.seaDetails?.vesselName && (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Navire</Text>
+                  <Text style={styles.wpDetailValue}>
+                    {waypoint.seaDetails.vesselName}
+                  </Text>
+                </View>
+              )}
+              {waypoint.seaDetails?.carrier && (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Transporteur</Text>
+                  <Text style={styles.wpDetailValue}>
+                    {waypoint.seaDetails.carrier}
+                  </Text>
+                </View>
+              )}
+              {waypoint.seaDetails?.terminal && (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Terminal</Text>
+                  <Text style={styles.wpDetailValue}>
+                    {waypoint.seaDetails.terminal}
+                  </Text>
+                </View>
+              )}
+              {waypoint.roadDetails?.transporterName && (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Transporteur</Text>
+                  <Text style={styles.wpDetailValue}>
+                    {waypoint.roadDetails.transporterName}
+                  </Text>
+                </View>
+              )}
+              {waypoint.roadDetails?.borderCrossing && (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Frontière</Text>
+                  <Text style={styles.wpDetailValue}>
+                    {waypoint.roadDetails.borderCrossing}
+                  </Text>
+                </View>
+              )}
+              {waypoint.description ? (
+                <View style={styles.wpDetailRow}>
+                  <Text style={styles.wpDetailLabel}>Description</Text>
+                  <Text style={[styles.wpDetailValue, { flex: 1, textAlign: 'right' }]}>
+                    {waypoint.description}
+                  </Text>
+                </View>
+              ) : null}
+              {waypoint.notes ? (
+                <View style={styles.wpNotes}>
+                  <Ionicons name="chatbubble-outline" size={12} color="#6B7280" />
+                  <Text style={styles.wpNotesText}>{waypoint.notes}</Text>
+                </View>
+              ) : null}
             </View>
           )}
         </View>
-
-        {/* Status Badge */}
-        <View
-          style={[
-            styles.statusBadge,
-            { backgroundColor: `${statusColor}15` },
-          ]}
-        >
-          <View
-            style={[
-              styles.statusDot,
-              { backgroundColor: statusColor },
-            ]}
-          />
-          <Text style={[styles.statusText, { color: statusColor }]}>
-            {WAYPOINT_STATUS_LABELS[waypoint.status]}
-          </Text>
-        </View>
-
-        {/* Type & Transport Info */}
-        <View style={styles.infoRow}>
-          <View style={styles.infoBadge}>
-            <Ionicons name={typeIcon as any} size={12} color={Theme.neutral[500]} />
-            <Text style={styles.infoBadgeText}>
-              {WAYPOINT_TYPE_LABELS[waypoint.type]}
-            </Text>
-          </View>
-          <View style={styles.transportBadge}>
-            <Ionicons
-              name={transportIcon as any}
-              size={12}
-              color={Theme.status.info}
-            />
-            <Text style={styles.transportBadgeText}>
-              {TRANSPORT_MODE_LABELS[waypoint.transportMode]}
-            </Text>
-          </View>
-        </View>
-
-        {/* Transport Details - Brief */}
-        {(waypoint.vesselName || waypoint.truckPlate) && (
-          <View style={styles.detailsRow}>
-            {waypoint.vesselName && (
-              <View style={styles.detailItem}>
-                <Ionicons name="boat" size={12} color={Theme.neutral[400]} />
-                <Text style={styles.detailText} numberOfLines={1}>
-                  {waypoint.vesselName}
-                </Text>
-              </View>
-            )}
-            {waypoint.truckPlate && (
-              <View style={styles.detailItem}>
-                <Ionicons name="car" size={12} color={Theme.neutral[400]} />
-                <Text style={styles.detailText} numberOfLines={1}>
-                  {waypoint.truckPlate}
-                </Text>
-              </View>
-            )}
-            {waypoint.carrier && (
-              <View style={styles.detailItem}>
-                <Ionicons name="business" size={12} color={Theme.neutral[400]} />
-                <Text style={styles.detailText} numberOfLines={1}>
-                  {waypoint.carrier}
-                </Text>
-              </View>
-            )}
-          </View>
-        )}
-
-        {/* Current Location Indicator */}
-        {isCurrent && (
-          <View style={styles.currentIndicator}>
-            <LinearGradient
-              colors={[Theme.status.info, '#0EA5E9']}
-              style={styles.currentGradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-            >
-              <Ionicons name="navigate" size={12} color="#FFF" />
-              <Text style={styles.currentText}>Votre container est ici</Text>
-            </LinearGradient>
-          </View>
-        )}
-      </View>
-
-      {/* Right Side - Status Indicator */}
-      <View style={styles.rightSection}>
-        {isCompleted ? (
-          <View style={[styles.statusIcon, { backgroundColor: Theme.status.success }]}>
-            <Ionicons name="checkmark" size={16} color="#FFF" />
-          </View>
-        ) : isCurrent ? (
-          <View style={[styles.statusIcon, { backgroundColor: Theme.status.info }]}>
-            <Ionicons name="navigate" size={16} color="#FFF" />
-          </View>
-        ) : (
-          <View style={[styles.statusIcon, { backgroundColor: Theme.neutral[300] }]}>
-            <Ionicons name="time-outline" size={16} color="#FFF" />
-          </View>
-        )}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    backgroundColor: Theme.neutral.white,
-    borderRadius: Theme.radius.xl,
-    padding: Theme.spacing.md,
-    marginBottom: Theme.spacing.md,
-    ...Theme.shadows.sm,
-  },
-  containerCurrent: {
-    borderWidth: 2,
-    borderColor: Theme.status.info,
-    ...Theme.shadows.md,
-  },
-  containerCompleted: {
-    opacity: 0.8,
-  },
-  leftSection: {
+  timelineConnector: {
     alignItems: 'center',
-    marginRight: Theme.spacing.md,
+    height: 24,
   },
-  iconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+  connectorLine: {
+    width: 3,
+    height: 24,
+    borderRadius: 2,
+  },
+  waypointCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  waypointCardCurrent: {
+    borderWidth: 2,
+    borderColor: '#3B82F6',
+    shadowColor: '#3B82F6',
+    shadowOpacity: 0.15,
+    elevation: 4,
+  },
+  waypointCardCompleted: {
+    opacity: 0.85,
+  },
+  waypointCardDakar: {
+    borderWidth: 2,
+    borderColor: '#0EA5E9',
+    elevation: 4,
+  },
+  waypointCardBorder: {
+    borderWidth: 2,
+    borderColor: '#F59E0B',
+    elevation: 4,
+  },
+  waypointCardWarehouse: {
+    borderWidth: 2,
+    borderColor: '#8B5CF6',
+    elevation: 4,
+  },
+  wpStatusBar: {
+    height: 4,
+    width: '100%',
+  },
+  wpContent: {
+    padding: 16,
+  },
+  wpHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 10,
+  },
+  wpNumber: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#DCFCE7',
     justifyContent: 'center',
     alignItems: 'center',
+    marginRight: 12,
   },
-  connector: {
-    width: 2,
+  wpNumberText: {
+    fontSize: 16,
+    fontFamily: Fonts.bold,
+    color: '#16A34A',
+  },
+  wpTitleContainer: {
     flex: 1,
-    backgroundColor: Theme.neutral[200],
-    marginTop: Theme.spacing.xs,
   },
-  content: {
-    flex: 1,
+  wpLocation: {
+    fontSize: 16,
+    fontFamily: Fonts.bold,
+    color: COLORS.DarkGrey,
   },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: Theme.spacing.sm,
-  },
-  locationContainer: {
-    flex: 1,
-    marginRight: Theme.spacing.sm,
-  },
-  locationName: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  locationCode: {
+  wpCode: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    fontFamily: Fonts.regular,
+    color: COLORS.DimGray,
     marginTop: 2,
   },
-  dateContainer: {
-    alignItems: 'flex-end',
+  wpStatusBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 20,
+    gap: 4,
   },
-  dateLabel: {
+  wpStatusText: {
     fontSize: 10,
-    color: Theme.neutral[400],
-    fontWeight: '600',
-    textTransform: 'uppercase',
+    fontFamily: Fonts.bold,
   },
-  dateValue: {
-    fontSize: 14,
-    fontWeight: '700',
-    color: Theme.neutral[700],
-  },
-  timeValue: {
-    fontSize: 12,
-    color: Theme.neutral[500],
-  },
-  statusBadge: {
+  wpTypeRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-start',
-    paddingHorizontal: Theme.spacing.md,
-    paddingVertical: Theme.spacing.xs,
-    borderRadius: Theme.radius.full,
-    marginBottom: Theme.spacing.sm,
-    gap: 6,
-  },
-  statusDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  statusText: {
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  infoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Theme.spacing.sm,
+    gap: 8,
+    marginBottom: 8,
     flexWrap: 'wrap',
   },
-  infoBadge: {
+  wpTypeBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral[100],
-    paddingHorizontal: Theme.spacing.sm,
+    backgroundColor: '#F3F4F6',
+    paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: Theme.radius.full,
+    borderRadius: 20,
     gap: 4,
   },
-  infoBadgeText: {
+  wpTypeBadgeText: {
     fontSize: 11,
-    color: Theme.neutral[600],
-    fontWeight: '500',
+    fontFamily: Fonts.meduim,
+    color: '#6B7280',
   },
-  transportBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: `${Theme.status.info}15`,
-    paddingHorizontal: Theme.spacing.sm,
-    paddingVertical: 4,
-    borderRadius: Theme.radius.full,
-    gap: 4,
+  currentBadge: {
+    backgroundColor: '#3B82F6',
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    borderRadius: 20,
   },
-  transportBadgeText: {
-    fontSize: 11,
-    color: Theme.status.info,
-    fontWeight: '500',
-  },
-  detailsRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Theme.spacing.md,
-    marginTop: Theme.spacing.sm,
-    flexWrap: 'wrap',
-  },
-  detailItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  detailText: {
-    fontSize: 11,
-    color: Theme.neutral[500],
-    maxWidth: 100,
-  },
-  currentIndicator: {
-    marginTop: Theme.spacing.sm,
-  },
-  currentGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: Theme.spacing.sm,
-    paddingHorizontal: Theme.spacing.md,
-    borderRadius: Theme.radius.lg,
-    gap: Theme.spacing.xs,
-  },
-  currentText: {
-    fontSize: 12,
-    fontWeight: '700',
+  currentBadgeText: {
+    fontSize: 9,
+    fontFamily: Fonts.bold,
     color: '#FFF',
   },
-  rightSection: {
-    justifyContent: 'center',
-    marginLeft: Theme.spacing.sm,
+  wpQuickInfo: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
   },
-  statusIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    justifyContent: 'center',
+  wpInfoItem: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 4,
+  },
+  wpInfoText: {
+    fontSize: 12,
+    fontFamily: Fonts.regular,
+    color: '#6B7280',
+  },
+  wpExpandIndicator: {
+    alignItems: 'center',
+    marginTop: 6,
+  },
+  wpDetails: {
+    marginTop: 8,
+  },
+  wpDetailDivider: {
+    height: 1,
+    backgroundColor: '#E5E7EB',
+    marginBottom: 10,
+  },
+  wpDetailRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 6,
+  },
+  wpDetailLabel: {
+    fontSize: 13,
+    fontFamily: Fonts.regular,
+    color: COLORS.DimGray,
+  },
+  wpDetailValue: {
+    fontSize: 13,
+    fontFamily: Fonts.meduim,
+    color: COLORS.DarkGrey,
+  },
+  wpNotes: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 6,
+    backgroundColor: '#F9FAFB',
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  wpNotesText: {
+    fontSize: 12,
+    fontFamily: Fonts.regular,
+    color: '#6B7280',
+    flex: 1,
   },
 });
-
-export default WaypointCard;

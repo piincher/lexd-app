@@ -3,7 +3,7 @@ import AuthInputField from '@src/components/AuthInput/AuthInput';
 import Form from '@src/components/Form/Form';
 import SubmitBtn from '@src/components/SubmitBtn/SubmitBtn';
 import React, { useEffect } from 'react';
-import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as yup from 'yup';
 import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
@@ -167,7 +167,11 @@ const CheckRoute = () => {
 						name='code'
 						rightIcon={<AntDesign name='search1' size={24} color='black' />}
 					/>
-					{isPending && <ActivityIndicator size='small' color='#0' />}
+					{isPending && (
+						<View style={{ marginVertical: 16, alignItems: 'center' }}>
+							<ShimmerBlock width={200} height={16} borderRadius={4} />
+						</View>
+					)}
 					{data?.route.length ?? 0 > 0 ? (
 						<ScrollView>
 							<Text style={{ textAlign: 'center', marginBottom: 25, fontFamily: Fonts.bold, fontSize: 18 }}>

@@ -7,6 +7,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Avatar, Appbar, useTheme } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
 
 export interface DashboardWelcomeHeaderProps {
   userName?: string;
@@ -43,10 +44,10 @@ export const DashboardWelcomeHeader: React.FC<DashboardWelcomeHeaderProps> = ({
           </Text>
         </View>
       </View>
-      <Appbar.Action
-        icon="bell-outline"
+      <NotificationBell
         onPress={onNotificationPress}
-        style={styles.notificationButton}
+        size={24}
+        color={theme.colors.onSurface}
       />
     </Appbar.Header>
   );

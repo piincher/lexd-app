@@ -1,7 +1,6 @@
 import { COLORS } from "@src/constants/Colors";
 import React, { useEffect, useState } from "react";
 import {
-   ActivityIndicator,
    Dimensions,
    StyleSheet,
    View,
@@ -9,6 +8,7 @@ import {
    TouchableOpacity,
    Linking,
 } from "react-native";
+import { ShimmerBlock } from "@src/shared/ui";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 import { useNavigation } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
@@ -83,8 +83,8 @@ const Banner = () => {
 
    if (isLoading) {
       return (
-         <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color={COLORS.blue} />
+         <View style={styles.container}>
+            <ShimmerBlock width={BANNER_WIDTH} height={BANNER_HEIGHT} borderRadius={16} />
          </View>
       );
    }

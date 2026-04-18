@@ -5,9 +5,9 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  SafeAreaView,
   Alert,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { COLORS } from '@src/constants/Colors';
@@ -19,6 +19,7 @@ import CardPaymentForm from '../components/CardPaymentForm';
 import PaymentStatusModal from '../components/PaymentStatusModal';
 import { usePaymentFlow, useBalanceDue } from '../hooks/usePayments';
 import type { PaymentProvider, CardDetails } from '../types';
+import * as Haptics from 'expo-haptics';
 
 interface PaymentScreenParams {
   amount?: number;
@@ -58,6 +59,7 @@ const PaymentScreen: React.FC = () => {
 
   // Handle provider selection
   const handleProviderSelect = (provider: PaymentProvider) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setSelectedProvider(provider);
     setPhoneNumber('');
     setCardValid(false);
@@ -131,6 +133,7 @@ const PaymentScreen: React.FC = () => {
         handleCardPayment(result);
       }
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       setStatusModalConfig({
         status: 'error',
         title: 'Payment Failed',
@@ -154,6 +157,7 @@ const PaymentScreen: React.FC = () => {
         });
 
         if (result.status === 'COMPLETED') {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
           setStatusModalConfig({
             status: 'success',
             title: 'Payment Successful!',
@@ -161,6 +165,7 @@ const PaymentScreen: React.FC = () => {
           });
           return;
         } else if (result.status === 'FAILED') {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
           setStatusModalConfig({
             status: 'error',
             title: 'Payment Failed',

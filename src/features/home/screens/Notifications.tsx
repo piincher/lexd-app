@@ -7,9 +7,9 @@ import {
    View,
    StyleSheet,
    TouchableOpacity,
-   ActivityIndicator,
    RefreshControl,
 } from "react-native";
+import { ShimmerBlock } from "@src/shared/ui";
 import { Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -190,8 +190,17 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
       if (isLoading) {
          return (
             <View style={styles.emptyStateContainer}>
-               <ActivityIndicator size="large" color={colors.primary.main} />
-               <Text style={styles.loadingText}>Chargement des notifications...</Text>
+               <View style={{ width: '100%' }}>
+                  {Array.from({ length: 3 }).map((_, i) => (
+                     <View key={i} style={{ flexDirection: 'row', alignItems: 'flex-start', paddingVertical: 16, paddingHorizontal: 20 }}>
+                        <ShimmerBlock width={30} height={30} borderRadius={15} />
+                        <View style={{ flex: 1, marginLeft: 16, gap: 6 }}>
+                           <ShimmerBlock width={'60%'} height={17} borderRadius={4} />
+                           <ShimmerBlock width={'90%'} height={14} borderRadius={3} />
+                        </View>
+                     </View>
+                  ))}
+               </View>
             </View>
          );
       }

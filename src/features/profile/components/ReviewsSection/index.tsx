@@ -4,7 +4,7 @@
  */
 
 import React from "react";
-import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { MotiView } from "moti";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -12,6 +12,7 @@ import { navigationProps } from "@src/navigations/type";
 import { useMyReviews, useReviewStats } from "@src/shared/hooks/useReviews";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { StarRating } from "./StarRating";
+import { ReviewsSectionSkeleton } from "./ReviewsSectionSkeleton";
 import { styles } from "./ReviewsSection.styles";
 
 export const ReviewsSection: React.FC = () => {
@@ -34,10 +35,7 @@ export const ReviewsSection: React.FC = () => {
   if (isLoading) {
     return (
       <View style={[styles.card, { backgroundColor: cardBg }]}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#d4a843" />
-          <Text style={[styles.loadingText, { color: colors.text.secondary }]}>Chargement des avis...</Text>
-        </View>
+        <ReviewsSectionSkeleton />
       </View>
     );
   }

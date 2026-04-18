@@ -21,3 +21,4 @@ export { Screen, type ScreenProps, type ScreenVariant } from './Screen';
 export { Checkbox, type CheckboxProps, type CheckboxSize } from './Checkbox';
 export { ConfirmDialog, type ConfirmDialogProps } from './ConfirmDialog';
 export { EmptyState, type EmptyStateProps } from './EmptyState';
+export { ShimmerBlock } from './ShimmerBlock';

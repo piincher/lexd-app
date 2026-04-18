@@ -18,7 +18,6 @@ import {
   Text,
   Card,
   IconButton,
-  ActivityIndicator,
   Button,
   useTheme,
   Divider,
@@ -33,6 +32,7 @@ import { COLORS } from '@src/constants/Colors';
 import { useGetTicket, useAddMessage, useRateTicket } from '../hooks/useTickets';
 import { TicketStatusBadge } from '../components/TicketStatusBadge';
 import { TicketMessageBubble } from '../components/TicketMessageBubble';
+import { TicketDetailSkeleton } from '../components/TicketDetailSkeleton';
 import { Ticket, TicketStatus, TICKET_TYPE_LABELS, TICKET_PRIORITY_LABELS, TICKET_PRIORITY_COLORS } from '../types';
 import { showMessage } from 'react-native-flash-message';
 
@@ -231,10 +231,7 @@ const TicketDetailScreen: React.FC<RootStackScreenProps<'TicketDetail'>> = ({
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Ticket" titleStyle={styles.headerTitle} />
         </Appbar.Header>
-        <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
-          <Text style={styles.loadingText}>Chargement...</Text>
-        </View>
+        <TicketDetailSkeleton />
       </SafeAreaView>
     );
   }
@@ -372,11 +369,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 32,
-  },
-  loadingText: {
-    marginTop: 16,
-    fontFamily: Fonts.meduim,
-    color: COLORS.DimGray,
   },
   errorTitle: {
     fontSize: 18,

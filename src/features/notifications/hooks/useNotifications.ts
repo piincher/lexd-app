@@ -54,15 +54,15 @@ export const useGetNotificationsInfinite = (filter?: 'all' | 'unread' | 'system'
 };
 
 /**
- * Get unread count - polls every 30 seconds
+ * Get unread count - refetches on focus/reconnect only (no polling)
  */
 export const useGetUnreadCount = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: notificationQueryKeys.unread(),
     queryFn: () => notificationApi.getUnreadCount(),
-    refetchInterval: 30000, // Poll every 30 seconds
-    refetchIntervalInBackground: true,
-    staleTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    staleTime: 1 * 60 * 1000, // 1 minute
     ...options,
   });
 };

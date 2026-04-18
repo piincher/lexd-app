@@ -6,7 +6,6 @@ import { DashboardHeader } from "../components/DashboardHeader";
 import { KPICards } from "../components/KPICards";
 import { OutstandingPaymentsSection } from "../components/OutstandingPaymentsSection";
 import { UnassignedGoodsSection } from "../components/UnassignedGoodsSection";
-import { SMSBalanceCard } from "../components/SMSBalanceCard";
 import { QuickActions } from "../components/QuickActions";
 import { RecentOrders } from "../components/RecentOrders";
 import { MenuCategories } from "../components/MenuCategories";
@@ -26,7 +25,7 @@ const DashboardSkeleton: React.FC<{ bg: string; block: string }> = ({ bg, block 
 );
 
 export const AdminDashBoard: React.FC = () => {
-  const { user, stats, recentOrders, smsBalance, refreshing, onRefresh, isLoading } =
+  const { user, stats, recentOrders, refreshing, onRefresh, isLoading } =
     useAdminDashboard();
   const { colors, isDark } = useAppTheme();
 
@@ -62,7 +61,6 @@ export const AdminDashBoard: React.FC = () => {
         <KPICards stats={stats} />
         <OutstandingPaymentsSection />
         <UnassignedGoodsSection />
-        <SMSBalanceCard balance={smsBalance} />
         <QuickActions />
         <RecentOrders orders={recentOrders} />
         <MenuCategories />

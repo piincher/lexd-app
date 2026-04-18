@@ -5,9 +5,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   RefreshControl,
-  SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
+import { ShimmerBlock } from '@src/shared/ui';
+import { PaymentHistorySkeleton } from '@src/features/payments/components/PaymentHistorySkeleton';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -460,6 +462,8 @@ const PaymentHistoryScreen: React.FC = () => {
       {/* Content */}
       {error ? (
         renderErrorState()
+      ) : isLoading && payments.length === 0 ? (
+        <PaymentHistorySkeleton />
       ) : (
         <FlashList
           data={payments}
@@ -474,7 +478,7 @@ const PaymentHistoryScreen: React.FC = () => {
           onEndReachedThreshold={0.5}
           ListEmptyComponent={!isLoading ? renderEmptyState : null}
           ListFooterComponent={
-            isLoading ? (
+            isLoading && payments.length > 0 ? (
               <View style={styles.loaderContainer}>
                 <ActivityIndicator size="large" color={colors.primary.main} />
               </View>

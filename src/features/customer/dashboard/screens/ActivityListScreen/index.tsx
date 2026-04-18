@@ -1,13 +1,14 @@
 import React from "react";
 import { View, StyleSheet, RefreshControl } from "react-native";
 import { FlashList } from '@shopify/flash-list';
-import { Appbar, Text, ActivityIndicator } from "react-native-paper";
+import { Appbar, Text } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetActivity } from "../../hooks/useDashboard";
+import { ActivityListSkeleton } from "../../components/ActivityListSkeleton";
 import { ActivityItem } from "../../types";
 
 const ActivityListScreen: React.FC = () => {
@@ -55,12 +56,7 @@ const ActivityListScreen: React.FC = () => {
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Activités" />
         </Appbar.Header>
-        <View style={styles.center}>
-          <ActivityIndicator size="large" color={colors.primary.main} />
-          <Text style={[styles.loadingText, { color: colors.text.secondary }]}>
-            Chargement...
-          </Text>
-        </View>
+        <ActivityListSkeleton />
       </SafeAreaView>
     );
   }

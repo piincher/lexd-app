@@ -5,7 +5,7 @@
 
 import React, { useMemo, useState } from "react";
 import {
-  View, Text, TouchableOpacity, Linking, Share, Alert, ActivityIndicator,
+  View, Text, TouchableOpacity, Linking, Share, Alert,
 } from "react-native";
 import { MotiView } from "moti";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -16,6 +16,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from "./CertifiedShipperCard.styles";
 import { CertifiedView } from "./CertifiedView";
 import { ProgressView } from "./ProgressView";
+import { CertifiedShipperSkeleton } from "./CertifiedShipperSkeleton";
 
 interface CertifiedShipperCardProps {
   progress: CertificateProgress | undefined;
@@ -63,10 +64,7 @@ export const CertifiedShipperCard: React.FC<CertifiedShipperCardProps> = ({
   if (isLoading) {
     return (
       <View style={styles.card}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color="#d4a843" />
-          <Text style={styles.loadingText}>Chargement...</Text>
-        </View>
+        <CertifiedShipperSkeleton />
       </View>
     );
   }

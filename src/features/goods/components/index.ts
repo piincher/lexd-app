@@ -5,6 +5,8 @@ export { StatusBadge } from './StatusBadge';
 export { EmptyState } from './EmptyState';
 export { GoodsForm } from './GoodsForm/GoodsForm';
 
+export { GoodsDetailSkeleton } from './GoodsDetailSkeleton';
+
 // Existing components
 export { GoodsList } from './GoodsList';
 export { GoodsFilter } from './GoodsFilter';

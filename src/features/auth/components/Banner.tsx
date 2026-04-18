@@ -1,11 +1,13 @@
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { ShimmerBlock } from '@src/shared/ui';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import { SwiperFlatList } from 'react-native-swiper-flatlist';
 
 const { width } = Dimensions.get('window');
 
 const Banner = () => {
+	const { colors } = useAppTheme();
 	const [banner, setBanner] = useState<string[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
 
@@ -22,7 +24,11 @@ const Banner = () => {
 		};
 	}, []);
 	if (loading) {
-		return <ActivityIndicator size='large' color={COLORS.blue} />;
+		return (
+			<View style={styles.container}>
+				<ShimmerBlock width={width} height={width} borderRadius={0} />
+			</View>
+		);
 	}
 
 	return (
@@ -35,8 +41,8 @@ const Banner = () => {
 						autoplayLoop
 						index={2}
 						showPagination
-						paginationStyleItemActive={{ backgroundColor: COLORS.blue }}
-						paginationStyleItemInactive={{ backgroundColor: COLORS.grey }}
+						paginationStyleItemActive={{ backgroundColor: colors.primary.main }}
+						paginationStyleItemInactive={{ backgroundColor: colors.text.secondary }}
 					>
 						{banner.map((item) => {
 							return (

@@ -5,7 +5,7 @@ import {
   RefreshControl,
   Pressable,
 } from "react-native";
-import { Text, Chip, ActivityIndicator } from "react-native-paper";
+import { Text, Chip } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -16,6 +16,7 @@ import { LIMIT } from "@src/constants/Dimensions";
 import { getActiveOrders, productType } from "@src/api/order";
 import { ListItemOrders } from "@src/components/ListItemOrders";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { PastOrderCardSkeleton } from "@src/features/customer/orders/components/PastOrderCardSkeleton";
 
 const ORDERKEY = "past-orders";
 
@@ -259,10 +260,7 @@ const PastOrders: React.FC = () => {
           <Text style={styles.headerTitle}>Commandes Terminées</Text>
           <View style={styles.placeholder} />
         </View>
-        <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color={colors.primary.main} />
-          <Text style={styles.loadingText}>Chargement de vos commandes...</Text>
-        </View>
+        <PastOrderCardSkeleton count={5} />
       </SafeAreaView>
     );
   }

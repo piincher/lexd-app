@@ -6,7 +6,7 @@
 import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { Appbar, ActivityIndicator, Text, Button, Chip, useTheme } from 'react-native-paper';
+import { Appbar, Text, Button, Chip, Searchbar, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { RootStackScreenProps } from '@src/navigations/type';
@@ -14,7 +14,9 @@ import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 import { useGetMyContainers } from '../hooks/useCustomerContainers';
 import { ContainerCard } from '../components/ContainerCard';
+import { ContainerListSkeleton } from '../components/ContainerListSkeleton';
 import { ShippingMode } from '../types';
+import * as Haptics from 'expo-haptics';
 
 type FilterMode = 'ALL' | ShippingMode;
 
@@ -35,6 +37,7 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
 }) => {
   const theme = useTheme();
   const [modeFilter, setModeFilter] = useState<FilterMode>('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Build API filters - only include shippingMode when not ALL
   const filters = useMemo(() => {
@@ -44,6 +47,16 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
   const { data, isLoading, isError, error, refetch, isFetching } = useGetMyContainers(filters);
 
   const containers = data?.containers || [];
+
+  const filteredContainers = useMemo(() => {
+    if (!searchQuery.trim()) return containers;
+    const q = searchQuery.toLowerCase();
+    return containers.filter(c =>
+      c.virtualContainerNumber?.toLowerCase().includes(q) ||
+      c.shippingLine?.toLowerCase().includes(q) ||
+      c.route?.name?.toLowerCase().includes(q)
+    );
+  }, [containers, searchQuery]);
 
   const handleRefresh = () => {
     refetch();
@@ -62,17 +75,21 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
       />
       <Text style={styles.emptyTitle}>Aucun container</Text>
       <Text style={styles.emptyText}>
-        {modeFilter !== 'ALL' 
-          ? `Aucun conteneur ${FILTER_OPTIONS.find(f => f.value === modeFilter)?.label.toLowerCase()} trouvé.`
-          : "Vous n'avez pas de marchandises dans un container pour le moment."}
+        {searchQuery.trim()
+          ? "Aucun container ne correspond à votre recherche."
+          : modeFilter !== 'ALL'
+            ? `Aucun conteneur ${FILTER_OPTIONS.find(f => f.value === modeFilter)?.label.toLowerCase()} trouvé.`
+            : "Vous n'avez pas de marchandises dans un container pour le moment."}
       </Text>
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate('MyGoods')}
-        style={styles.emptyButton}
-      >
-        Voir mes marchandises
-      </Button>
+      {!searchQuery.trim() && (
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate('MyGoods')}
+          style={styles.emptyButton}
+        >
+          Voir mes marchandises
+        </Button>
+      )}
     </View>
   );
 
@@ -85,10 +102,22 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
             <Chip
               key={option.value}
               selected={isSelected}
-              onPress={() => setModeFilter(option.value)}
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                setModeFilter(option.value);
+              }}
               style={[
                 styles.filterChip,
-                isSelected && { backgroundColor: theme.colors.primary }
+                isSelected && {
+                  backgroundColor: theme.colors.primary,
+                  borderWidth: 1,
+                  borderColor: theme.colors.primary,
+                  elevation: 2,
+                  shadowColor: '#000',
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 2,
+                },
               ]}
               textStyle={{
                 color: isSelected ? '#fff' : theme.colors.onSurface,
@@ -112,15 +141,12 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['bottom']}>
         <Appbar.Header>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Mes Containers" />
         </Appbar.Header>
-        <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
-          <Text style={styles.loadingText}>Chargement de vos containers...</Text>
-        </View>
+        <ContainerListSkeleton />
       </SafeAreaView>
     );
   }
@@ -165,13 +191,25 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
         />
       </Appbar.Header>
 
+      <View style={styles.searchContainer}>
+        <Searchbar
+          placeholder="Rechercher un container..."
+          onChangeText={setSearchQuery}
+          value={searchQuery}
+          style={styles.searchBar}
+          inputStyle={styles.searchInput}
+          icon="magnify"
+          clearIcon="close-circle"
+        />
+      </View>
+
       {renderFilterChips()}
 
-      {containers.length === 0 ? (
+      {filteredContainers.length === 0 ? (
         renderEmptyState()
       ) : (
         <FlashList
-          data={containers}
+          data={filteredContainers}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <ContainerCard
@@ -244,6 +282,23 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     height: 36,
     backgroundColor: COLORS.lightBackground,
+  },
+  searchContainer: {
+    paddingHorizontal: 16,
+    paddingTop: 12,
+    paddingBottom: 4,
+    backgroundColor: COLORS.white,
+  },
+  searchBar: {
+    backgroundColor: COLORS.lightBackground,
+    borderRadius: 12,
+    height: 44,
+  },
+  searchInput: {
+    fontFamily: Fonts.regular,
+    fontSize: 14,
+    minHeight: 0,
+    paddingVertical: 0,
   },
   listContent: {
     paddingVertical: 8,

@@ -18,8 +18,7 @@ export const ticketQueryKeys = {
   messages: (id: string) => [...ticketQueryKeys.detail(id), 'messages'] as const,
 };
 
-// Polling interval for real-time updates (30 seconds)
-const POLLING_INTERVAL = 30000;
+// No polling - refetch on focus/reconnect only to reduce backend load
 
 /**
  * Hook to fetch all tickets with optional status filter
@@ -33,7 +32,8 @@ export const useGetTickets = (status?: string, options?: UseQueryOptions<Ticket[
     },
     select: (data) => data,
     staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchInterval: POLLING_INTERVAL, // Real-time polling
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
     ...options,
   });
 };
@@ -50,7 +50,8 @@ export const useGetTicket = (id: string, options?: UseQueryOptions<Ticket, ApiCl
     },
     enabled: !!id,
     staleTime: 2 * 60 * 1000, // 2 minutes
-    refetchInterval: POLLING_INTERVAL, // Real-time polling for messages
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
     ...options,
   });
 };

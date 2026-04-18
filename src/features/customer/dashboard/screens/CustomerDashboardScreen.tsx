@@ -20,6 +20,7 @@ import {
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { NotificationBell } from '@src/features/notifications';
 import { useNavigation } from '@react-navigation/native';
 
 import { Theme } from '@src/constants/Theme';
@@ -35,6 +36,7 @@ import { ActiveContainers } from '../components/ActiveContainers';
 import { PaymentInsights } from '../components/PaymentInsights';
 import { DashboardSkeleton } from '../components/DashboardSkeleton';
 import { QuickAction, DashboardStats } from '../types';
+import * as Haptics from 'expo-haptics';
 
 // ============================================
 // DEFAULT QUICK ACTIONS
@@ -50,7 +52,7 @@ const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
   {
     id: 'view-containers',
     label: 'Mes containers',
-    icon: 'container',
+    icon: 'ferry',
     route: 'MyContainers',
   },
   // Chat feature hidden - not in use
@@ -130,6 +132,7 @@ export const CustomerDashboardScreen: React.FC<
   // Action press handler
   const handleActionPress =
     (action: QuickAction) => {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       if (action.route) {
         navigation.navigate(action.route as never);
       } else if (action.action) {
@@ -232,10 +235,10 @@ export const CustomerDashboardScreen: React.FC<
             </Text>
           </View>
         </View>
-        <Appbar.Action
-          icon="bell-outline"
+        <NotificationBell
           onPress={handleNotifications}
-          style={styles.notificationButton}
+          size={24}
+          color={theme.colors.onSurface}
         />
       </Appbar.Header>
 
@@ -265,6 +268,7 @@ export const CustomerDashboardScreen: React.FC<
                 label="Marchandises"
                 gradientColors={STAT_GRADIENTS.goods}
                 testID="stat-goods"
+                onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
               />
               <StatCard
                 icon="ferry"
@@ -272,22 +276,25 @@ export const CustomerDashboardScreen: React.FC<
                 label="En Transit"
                 gradientColors={STAT_GRADIENTS.containers}
                 testID="stat-containers"
+                onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
               />
             </View>
             <View style={styles.statsRow}>
               <StatCard
                 icon="cash-multiple"
                 value={formatCurrency(stats.totalSpent)}
-                label="Total Depense"
+                label="Total Dépensé"
                 gradientColors={STAT_GRADIENTS.spent}
                 testID="stat-spent"
+                onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
               />
               <StatCard
                 icon="credit-card-clock"
                 value={formatCurrency(stats.balanceDue)}
-                label="Solde Du"
+                label="Solde Dû"
                 gradientColors={STAT_GRADIENTS.balance}
                 testID="stat-balance"
+                onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
               />
             </View>
           </View>
@@ -392,9 +399,6 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 13,
     marginTop: 2,
-  },
-  notificationButton: {
-    marginRight: Theme.spacing.sm,
   },
   scrollView: {
     flex: 1,

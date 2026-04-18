@@ -11,7 +11,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
   RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -22,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Fonts } from "@src/constants/Fonts";
 import { navigationProps } from "@src/navigations/type";
 import { useMyBadges, useCheckBadges } from "../hooks/useBadges";
+import { BadgesScreenSkeleton } from "./BadgesScreenSkeleton";
 import type { UserBadge } from "../api/badgeApi";
 
 /**
@@ -230,10 +230,7 @@ const BadgesScreen: React.FC = () => {
         </View>
 
         {isLoading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#d4a843" />
-            <Text style={styles.loadingText}>Chargement des badges...</Text>
-          </View>
+          <BadgesScreenSkeleton />
         ) : (
           <ScrollView
             style={styles.scrollView}

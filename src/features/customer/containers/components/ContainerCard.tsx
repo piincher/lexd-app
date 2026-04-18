@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card, Text, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns/format';
@@ -12,6 +12,7 @@ import { fr } from 'date-fns/locale';
 import { CustomerContainer, CUSTOMER_STATUS_LABELS, CUSTOMER_STATUS_COLORS, CUSTOMER_STATUS_BG_COLORS, SHIPPING_LINE_LABELS } from '../types';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
+import * as Haptics from 'expo-haptics';
 
 interface ContainerCardProps {
   container: CustomerContainer;
@@ -54,6 +55,11 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
   container,
   onPress,
 }) => {
+  const handlePress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    onPress?.();
+  };
+
   const statusColor = CUSTOMER_STATUS_COLORS[container.status];
   const statusBgColor = CUSTOMER_STATUS_BG_COLORS[container.status];
   const statusLabel = CUSTOMER_STATUS_LABELS[container.status];
@@ -67,7 +73,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
   const transitDays = container.route?.estimatedTransitDays;
 
   return (
-    <Pressable onPress={onPress} style={({ pressed }) => [{ opacity: pressed ? 0.9 : 1 }]}>
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.95}>
       <Card style={styles.card} mode="elevated">
         <Card.Content style={styles.content}>
           {/* Header Row */}
@@ -194,7 +200,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
           </View>
         </Card.Content>
       </Card>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

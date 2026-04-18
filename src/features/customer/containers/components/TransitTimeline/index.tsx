@@ -11,7 +11,7 @@ import { Card, Divider } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
 import { COLORS } from '@src/constants/Colors';
 import { ContainerWaypoint } from '../../types';
-import { WaypointCard } from '../WaypointCard';
+import { TimelineWaypointCard } from '../TimelineWaypointCard';
 import { useTimelineData } from './hooks/useTimelineData';
 import { formatTimestamp } from './components/TimelineDateMarker';
 import { RouteFlow } from './components/RouteFlow';
@@ -76,7 +76,7 @@ export const TransitTimeline: React.FC<Props> = ({
               <Text style={styles.currentLocationText}>POSITION ACTUELLE</Text>
             </View>
           </View>
-          <WaypointCard waypoint={currentWaypoint} isCurrent={true} isCompleted={false} />
+          <TimelineWaypointCard waypoint={currentWaypoint} isCurrent={true} isCompleted={false} />
         </Animated.View>
       )}
 

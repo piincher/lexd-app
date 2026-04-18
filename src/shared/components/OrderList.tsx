@@ -1,6 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
+import { OrderListSkeleton } from '@src/features/orders/components/OrderListSkeleton';
 
 import { COLORS } from '@src/constants/Colors';
 
@@ -73,7 +74,7 @@ export const OrderList: React.FC<OrderListProps> = ({
 	};
 
 	if (isLoading) {
-		return <ActivityIndicator size='large' color={COLORS.blue} animating />;
+		return <OrderListSkeleton count={4} />;
 	}
 
 	return (

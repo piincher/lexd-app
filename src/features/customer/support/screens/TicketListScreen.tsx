@@ -6,7 +6,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { Appbar, ActivityIndicator, Text, Button, Chip, FAB, useTheme } from 'react-native-paper';
+import { Appbar, Text, Button, Chip, FAB, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { RootStackScreenProps } from '@src/navigations/type';
@@ -14,6 +14,7 @@ import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 import { useGetTickets } from '../hooks/useTickets';
 import { TicketCard } from '../components/TicketCard';
+import { TicketListSkeleton } from '../components/TicketListSkeleton';
 import { Ticket, TicketStatus } from '../types';
 
 type FilterTab = 'ALL' | 'OPEN' | 'RESOLVED';
@@ -86,7 +87,21 @@ const TicketListScreen: React.FC<RootStackScreenProps<'TicketList'>> = ({
             key={tab.key}
             selected={activeFilter === tab.key}
             onPress={() => setActiveFilter(tab.key)}
-            style={styles.filterChip}
+            style={[
+              styles.filterChip,
+              activeFilter === tab.key && {
+                borderWidth: 1.5,
+                borderColor: theme.colors.primary,
+                elevation: 2,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.15,
+                shadowRadius: 2,
+              },
+            ]}
+            textStyle={{
+              fontFamily: activeFilter === tab.key ? Fonts.bold : Fonts.regular,
+            }}
             selectedColor={theme.colors.primary}
             showSelectedOverlay
           >
@@ -104,10 +119,7 @@ const TicketListScreen: React.FC<RootStackScreenProps<'TicketList'>> = ({
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Support" titleStyle={styles.headerTitle} />
         </Appbar.Header>
-        <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color={theme.colors.primary} />
-          <Text style={styles.loadingText}>Chargement de vos tickets...</Text>
-        </View>
+        <TicketListSkeleton />
       </SafeAreaView>
     );
   }
@@ -201,11 +213,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 32,
-  },
-  loadingText: {
-    marginTop: 16,
-    fontFamily: Fonts.meduim,
-    color: COLORS.DimGray,
   },
   errorTitle: {
     fontSize: 18,

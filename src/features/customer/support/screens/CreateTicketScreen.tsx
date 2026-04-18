@@ -32,6 +32,7 @@ import { useCreateTicket, useUploadAttachment } from '../hooks/useTickets';
 import { TicketTypeSelector } from '../components/TicketTypeSelector';
 import { TicketType } from '../types';
 import { showMessage } from 'react-native-flash-message';
+import * as Haptics from 'expo-haptics';
 
 const MAX_ATTACHMENTS = 3;
 
@@ -46,6 +47,7 @@ const CreateTicketScreen: React.FC<RootStackScreenProps<'CreateTicket'>> = ({
   const [description, setDescription] = useState('');
   const [attachments, setAttachments] = useState<string[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [charCounts, setCharCounts] = useState({ subject: 0, description: 0 });
 
   const createTicketMutation = useCreateTicket();
   const uploadMutation = useUploadAttachment();
@@ -82,6 +84,8 @@ const CreateTicketScreen: React.FC<RootStackScreenProps<'CreateTicket'>> = ({
         attachments: attachments.length > 0 ? attachments : undefined,
       });
 
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
       showMessage({
         message: 'Ticket créé avec succès',
         description: 'Nous vous répondrons dans les plus brefs délais.',
@@ -91,6 +95,7 @@ const CreateTicketScreen: React.FC<RootStackScreenProps<'CreateTicket'>> = ({
 
       navigation.goBack();
     } catch (error) {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       showMessage({
         message: 'Erreur',
         description: 'Une erreur est survenue lors de la création du ticket.',
@@ -129,6 +134,7 @@ const CreateTicketScreen: React.FC<RootStackScreenProps<'CreateTicket'>> = ({
         });
 
         setAttachments((prev) => [...prev, url]);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       }
     } catch (error) {
       showMessage({
@@ -140,6 +146,7 @@ const CreateTicketScreen: React.FC<RootStackScreenProps<'CreateTicket'>> = ({
   };
 
   const handleRemoveAttachment = (index: number) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setAttachments((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -182,6 +189,7 @@ const CreateTicketScreen: React.FC<RootStackScreenProps<'CreateTicket'>> = ({
               value={subject}
               onChangeText={(text) => {
                 setSubject(text);
+                setCharCounts((prev) => ({ ...prev, subject: text.length }));
                 setErrors((prev) => ({ ...prev, subject: '' }));
               }}
               error={!!errors.subject}
@@ -190,6 +198,11 @@ const CreateTicketScreen: React.FC<RootStackScreenProps<'CreateTicket'>> = ({
               maxLength={100}
             />
             {errors.subject && <HelperText type="error">{errors.subject}</HelperText>}
+            <HelperText
+              type={charCounts.subject > 0 && charCounts.subject < 5 ? 'error' : 'info'}
+            >
+              {charCounts.subject === 0 ? 'Min. 5 caractères' : `${charCounts.subject}/100 caractères`}
+            </HelperText>
           </View>
 
           {/* Description Input */}
@@ -201,6 +214,7 @@ const CreateTicketScreen: React.FC<RootStackScreenProps<'CreateTicket'>> = ({
               value={description}
               onChangeText={(text) => {
                 setDescription(text);
+                setCharCounts((prev) => ({ ...prev, description: text.length }));
                 setErrors((prev) => ({ ...prev, description: '' }));
               }}
               error={!!errors.description}
@@ -209,10 +223,14 @@ const CreateTicketScreen: React.FC<RootStackScreenProps<'CreateTicket'>> = ({
               multiline
               numberOfLines={6}
               textAlignVertical="top"
-              maxLength={2000}
+              maxLength={500}
             />
             {errors.description && <HelperText type="error">{errors.description}</HelperText>}
-            <Text style={styles.charCount}>{description.length}/2000</Text>
+            <HelperText
+              type={charCounts.description > 0 && charCounts.description < 20 ? 'error' : 'info'}
+            >
+              {charCounts.description === 0 ? 'Min. 20 caractères' : `${charCounts.description}/500 caractères`}
+            </HelperText>
           </View>
 
           {/* Attachments Section */}

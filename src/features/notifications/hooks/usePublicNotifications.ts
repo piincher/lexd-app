@@ -91,21 +91,20 @@ export const useGetPublicNotificationsInfinite = (type?: PublicNotificationType)
 };
 
 /**
- * Get public notifications with polling
- * Automatically refreshes every 30 seconds for real-time updates
+ * Get public notifications - refetches on focus/reconnect only (no polling)
  */
 export const useGetPublicNotificationsPolling = (
   type?: PublicNotificationType,
-  options?: { enabled?: boolean; interval?: number }
+  options?: { enabled?: boolean }
 ) => {
-  const { enabled = true, interval = 30000 } = options || {};
+  const { enabled = true } = options || {};
 
   return useQuery({
     queryKey: publicNotificationQueryKeys.list(type),
     queryFn: () => getPublicNotifications({ type, limit: 20 }),
-    refetchInterval: interval,
-    refetchIntervalInBackground: false,
-    staleTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    staleTime: 2 * 60 * 1000, // 2 minutes
     enabled,
   });
 };

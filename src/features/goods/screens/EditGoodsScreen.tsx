@@ -5,7 +5,8 @@
 
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Appbar, Button, ActivityIndicator, Text } from 'react-native-paper';
+import { Appbar, Button, Text } from 'react-native-paper';
+import { ShimmerBlock } from '@src/shared/ui';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { RootStackScreenProps } from '@src/navigations/type';
@@ -45,9 +46,13 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Modifier" />
         </Appbar.Header>
-        <View style={styles.centerContainer}>
-          <ActivityIndicator size="large" color={COLORS.Crimson} />
-          <Text style={styles.loadingText}>Chargement...</Text>
+        <View style={{ padding: 16, gap: 16 }}>
+          <ShimmerBlock width={'60%'} height={18} borderRadius={4} />
+          <ShimmerBlock width={'100%'} height={48} borderRadius={8} />
+          <ShimmerBlock width={'100%'} height={48} borderRadius={8} />
+          <ShimmerBlock width={'100%'} height={48} borderRadius={8} />
+          <ShimmerBlock width={'100%'} height={80} borderRadius={8} />
+          <ShimmerBlock width={'100%'} height={48} borderRadius={8} />
         </View>
       </SafeAreaView>
     );

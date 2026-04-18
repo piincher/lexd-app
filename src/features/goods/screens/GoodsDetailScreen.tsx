@@ -13,7 +13,6 @@ import {
 import {
 	Text,
 	Appbar,
-	ActivityIndicator,
 	Button,
 	Card,
 	Divider,
@@ -29,6 +28,7 @@ import { StatusBadge } from '../components/StatusBadge';
 import { ReviewPrompt } from '@src/features/customer/reviews';
 import { GoodsStatus } from '../api';
 import { useAuth } from '@src/store/Auth';
+import { GoodsDetailSkeleton } from '../components/GoodsDetailSkeleton';
 
 // ── Helpers ─────────────────────────────────────────────────────────────
 
@@ -509,10 +509,7 @@ const GoodsDetailScreen = ({
 					<Appbar.BackAction onPress={() => navigation.goBack()} />
 					<Appbar.Content title="Détails" />
 				</Appbar.Header>
-				<View style={styles.centerContainer}>
-					<ActivityIndicator size="large" color={colors.primary.main} />
-					<Text style={styles.loadingText}>Chargement des détails...</Text>
-				</View>
+				<GoodsDetailSkeleton />
 			</SafeAreaView>
 		);
 	}

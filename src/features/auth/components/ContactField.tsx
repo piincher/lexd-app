@@ -1,7 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import React from 'react';
 
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface Props {
 	selectedCode: string; //counry code
@@ -18,6 +18,7 @@ const details = [
 ];
 
 const ContactNumberField = (props: Props) => {
+	const { colors } = useAppTheme();
 	return (
 		<Picker
 			testID='react.picker.test'
@@ -31,7 +32,7 @@ const ContactNumberField = (props: Props) => {
 			style={{
 				width: '36%',
 				alignSelf: 'center',
-				color: !props.enable ? COLORS.DimGray : COLORS.inputBorder,
+				color: !props.enable ? colors.text.secondary : colors.text.primary,
 			}}
 		>
 			{details.map((item) => (

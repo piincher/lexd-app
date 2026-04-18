@@ -58,7 +58,13 @@ export const StatCard: React.FC<StatCardProps> = ({
   return (
     <CardWrapper
       {...pressableProps}
-      style={styles.container}
+      style={onPress
+        ? ({ pressed }: { pressed?: boolean }) => [
+            styles.container,
+            pressed && { opacity: 0.92, transform: [{ scale: 0.98 }] },
+          ]
+        : styles.container
+      }
     >
       <LinearGradient
         colors={gradientColors as readonly [string, string, ...string[]]}

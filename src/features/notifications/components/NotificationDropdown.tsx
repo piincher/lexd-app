@@ -13,7 +13,7 @@ import {
   Dimensions,
   ScrollView,
 } from 'react-native';
-import { Text, Surface, Divider, ActivityIndicator } from 'react-native-paper';
+import { Text, Surface, Divider } from 'react-native-paper';
 import Animated, { 
   FadeIn, 
   FadeOut,
@@ -118,7 +118,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                 {/* Content */}
                 {isLoading ? (
                   <View style={styles.loadingContainer}>
-                    <ActivityIndicator color={COLORS.blue} />
+                    <NotificationSkeleton count={4} />
                   </View>
                 ) : notifications.length === 0 ? (
                   <View style={styles.emptyContainer}>

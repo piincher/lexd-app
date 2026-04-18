@@ -4,12 +4,13 @@
  */
 
 import React from "react";
-import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { MotiView } from "moti";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMilestoneProgress } from "../../hooks/useMilestones";
 import { BadgeCircle } from "./BadgeCircle";
+import { MilestoneBadgesSkeleton } from "./MilestoneBadgesSkeleton";
 import { styles, iconMap } from "./MilestoneBadges.styles";
 
 export const MilestoneBadges: React.FC = () => {
@@ -21,10 +22,7 @@ export const MilestoneBadges: React.FC = () => {
   if (isLoading) {
     return (
       <View style={[styles.card, { backgroundColor: cardBg }]}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color={colors.accent.gold} />
-          <Text style={[styles.loadingText, { color: colors.text.secondary }]}>Chargement...</Text>
-        </View>
+        <MilestoneBadgesSkeleton />
       </View>
     );
   }

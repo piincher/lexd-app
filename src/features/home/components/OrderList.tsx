@@ -3,6 +3,7 @@ import { FlashList } from '@shopify/flash-list';
 // import { LoadingSpinner } from '@src/components/common/LoadingSpinner';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
+import { OrderListSkeleton } from '@src/features/orders/components/OrderListSkeleton';
 
 import { COLORS } from '@src/constants/Colors';
 // import RetryButton from '@src/components/common/Error';
@@ -39,7 +40,7 @@ const ListingList = ({ Status }: Props) => {
 	}
 
 	if (isLoading) {
-		return <ActivityIndicator size='large' color={COLORS.blue} animating />;
+		return <OrderListSkeleton count={4} />;
 	}
 
 	return (

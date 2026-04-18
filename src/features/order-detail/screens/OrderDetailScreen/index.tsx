@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import { View, ScrollView, StyleSheet, Share } from "react-native";
-import { Text, Appbar, ActivityIndicator, Button } from "react-native-paper";
+import { Text, Appbar, Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RootStackScreenProps } from "@src/navigations/type";
@@ -14,6 +14,7 @@ import { OrderInfoCard } from "./components/OrderInfoCard";
 import { OrderShippingCard } from "./components/OrderShippingCard";
 import { OrderPaymentCard } from "./components/OrderPaymentCard";
 import { OrderTimeline } from "./components/OrderTimeline";
+import { OrderDetailSkeleton } from "./components/OrderDetailSkeleton";
 
 const OrderDetailScreen = ({
    route,
@@ -90,10 +91,7 @@ const OrderDetailScreen = ({
                <Appbar.BackAction onPress={() => navigation.goBack()} />
                <Appbar.Content title="Détails" />
             </Appbar.Header>
-            <View style={styles.center}>
-               <ActivityIndicator size="large" color={colors.status.success} />
-               <Text style={styles.loadingText}>Chargement...</Text>
-            </View>
+            <OrderDetailSkeleton />
          </SafeAreaView>
       );
    }

@@ -5,3 +5,4 @@ export { OrderShippingCard } from "./OrderShippingCard";
 export { OrderPaymentCard } from "./OrderPaymentCard";
 export { OrderTimeline } from "./OrderTimeline";
 export { OrderImageSection } from "./OrderImageSection";
+export { OrderDetailSkeleton } from "./OrderDetailSkeleton";

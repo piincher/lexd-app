@@ -58,7 +58,7 @@ const ActionButton: React.FC<{
   const gradientColors = getActionGradient(action.id);
 
   return (
-    <Pressable onPress={onPress} style={styles.actionButton}>
+    <Pressable onPress={onPress} style={({ pressed }) => [styles.actionButton, { transform: [{ scale: pressed ? 0.95 : 1 }] }]}>
       <LinearGradient
         colors={gradientColors}
         start={{ x: 0, y: 0 }}

@@ -3,6 +3,7 @@ import { View, StyleSheet, Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { NotificationBell } from "@src/features/notifications";
 import { useNavigation } from "@react-navigation/native";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
@@ -69,18 +70,13 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
           >
             <MaterialCommunityIcons name="magnify" size={20} color="#FFF" />
           </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Notifications")}
-            style={({ pressed }) => [
-              styles.iconBtn,
-              pressed && styles.iconBtnPressed,
-            ]}
-            hitSlop={8}
-            accessibilityLabel="Notifications"
-          >
-            <MaterialCommunityIcons name="bell-outline" size={20} color="#FFF" />
-            <View style={styles.notifDot} />
-          </Pressable>
+          <View style={styles.iconBtn}>
+            <NotificationBell
+              onPress={() => navigation.navigate("Notifications")}
+              size={20}
+              color="#FFF"
+            />
+          </View>
         </View>
       </View>
 
@@ -172,17 +168,6 @@ const styles = StyleSheet.create({
   iconBtnPressed: {
     opacity: 0.75,
     transform: [{ scale: 0.94 }],
-  },
-  notifDot: {
-    position: "absolute",
-    top: 8,
-    right: 9,
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: "#F4D03F",
-    borderWidth: 1.5,
-    borderColor: "#15803D",
   },
   mainRow: {
     flexDirection: "row",

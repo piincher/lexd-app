@@ -110,7 +110,7 @@ export const RequestCard: React.FC<RequestCardProps> = ({
               </Text>
             </View>
             <View style={styles.resultItem}>
-              <Ionicons name="container" size={16} color={Theme.neutral[500]} />
+              <Ionicons name="cube" size={16} color={Theme.neutral[500]} />
               <Text style={styles.resultText}>
                 {request.searchResults.containersFound.length} container(s)
               </Text>

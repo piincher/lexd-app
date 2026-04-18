@@ -3,7 +3,7 @@
  * Premium design with theme support, animated sections, and clean hierarchy
  */
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
    Image,
    ScrollView,
@@ -34,6 +34,8 @@ import { BadgesSection } from "../components/BadgesSection";
 import { ReviewsSection } from "../components/ReviewsSection";
 import { useCertificateProgress } from "../hooks/useCertificate";
 import { ThemeToggle } from "@src/components/ThemeToggle";
+import { useGetUnreadCount } from "@src/features/notifications";
+import * as Haptics from 'expo-haptics';
 
 // ─── Menu Configuration ─────────────────────────────────────────
 type MenuItem = {
@@ -122,6 +124,16 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
 
    const [refreshing, setRefreshing] = useState(false);
 
+   const { data: unreadData } = useGetUnreadCount();
+   const unreadCount = unreadData?.count || 0;
+
+   // Update tab bar badge when unread count changes
+   useEffect(() => {
+      navigation.setOptions({
+         tabBarBadge: unreadCount > 0 ? (unreadCount > 99 ? "99+" : unreadCount) : undefined,
+      });
+   }, [unreadCount, navigation]);
+
    const onRefresh = useCallback(async () => {
       setRefreshing(true);
       await Promise.all([refetchUser(), refetchBalance(), refetchCert()]);
@@ -129,6 +141,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
    }, [refetchUser, refetchBalance, refetchCert]);
 
    const handleLogout = () => {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       Alert.alert("Se deconnecter", "Etes-vous sur de vouloir vous deconnecter ?", [
          { text: "Annuler", style: "cancel" },
          { text: "Deconnecter", style: "destructive", onPress: logout },
@@ -223,7 +236,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                entering={FadeInDown.delay(100).duration(400).springify()}
                style={styles.quickStatsRow}
             >
-               {/* <Pressable
+               <Pressable
                   style={[
                      styles.quickStatCard,
                      { backgroundColor: cardBg, borderColor: cardBorder },
@@ -232,7 +245,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                >
                   <View style={[styles.quickStatIcon, { backgroundColor: "rgba(59,130,246,0.1)" }]}>
                      <MaterialCommunityIcons
-                        name="package-variant-closed"
+                        name="clipboard-list-outline"
                         size={20}
                         color="#3B82F6"
                      />
@@ -245,7 +258,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                      size={16}
                      color={colors.text.disabled}
                   />
-               </Pressable> */}
+               </Pressable>
 
                <Pressable
                   style={[
@@ -297,7 +310,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                      color={colors.primary.main}
                   />
                   <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
-                     Realisations
+                     Réalisations
                   </Text>
                </View>
                <View
@@ -327,7 +340,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                      color={colors.primary.main}
                   />
                   <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
-                     Parametres
+                     Paramètres
                   </Text>
                </View>
 
@@ -361,8 +374,12 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                                  style={({ pressed }) => [
                                     styles.menuItem,
                                     pressed && styles.menuItemPressed,
+                                    pressed && { backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)' },
                                  ]}
-                                 onPress={() => navigation.navigate(item.screen as any)}
+                                 onPress={() => {
+                                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                                    navigation.navigate(item.screen as any);
+                                 }}
                               >
                                  <View
                                     style={[

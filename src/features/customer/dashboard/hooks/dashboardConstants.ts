@@ -7,7 +7,7 @@ import { QuickAction, DashboardStats } from '../types';
 
 export const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
   { id: 'view-goods', label: 'Voir mes marchandises', icon: 'package-variant-closed', route: 'MyGoods' },
-  { id: 'view-containers', label: 'Mes containers', icon: 'container', route: 'MyContainers' },
+  { id: 'view-containers', label: 'Mes containers', icon: 'ferry', route: 'MyContainers' },
   // Chat feature hidden - not in use
   // { id: 'contact-support', label: 'Contacter support', icon: 'chat', route: 'SelectAdminToChatWith' },
 ];

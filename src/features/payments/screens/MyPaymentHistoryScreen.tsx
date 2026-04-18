@@ -8,6 +8,7 @@ import { COLORS } from '@src/constants/Colors';
 import { useMyPaymentHistory } from '../hooks/useMyPaymentHistory';
 import { useDownloadReceipt, useShareReceipt } from '../hooks';
 import { PaymentHistoryCard } from '../components/PaymentHistoryCard';
+import { PaymentHistorySkeleton } from '../components/PaymentHistorySkeleton';
 import { PaymentHistoryItem } from '../types';
 
 export const MyPaymentHistoryScreen: React.FC = () => {
@@ -56,9 +57,7 @@ export const MyPaymentHistoryScreen: React.FC = () => {
   if (isLoading && payments.length === 0) {
     return (
       <Screen header={{ title: 'Historique des paiements', showBack: true, onBackPress: () => navigation.goBack() }}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.green} />
-        </View>
+        <PaymentHistorySkeleton />
       </Screen>
     );
   }
