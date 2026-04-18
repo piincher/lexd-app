@@ -2,7 +2,8 @@
 // Pure presentational component for filtering goods by status
 
 import React, { useMemo } from 'react';
-import { View, StyleSheet, FlatList, ListRenderItem } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { Chip } from 'react-native-paper';
 import { GoodsStatus } from '../api';
 import { Fonts } from '@src/constants/Fonts';
@@ -84,7 +85,7 @@ export const GoodsFilter: React.FC<GoodsFilterProps> = ({
 
 	return (
 		<View style={styles.container}>
-			<FlatList
+			<FlashList
 				horizontal
 				showsHorizontalScrollIndicator={false}
 				data={filterOptions}

@@ -6,17 +6,15 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useWhatsAppRequestListScreen } from './hooks';
-import {
-  WhatsAppRequestHeader,
-  WhatsAppRequestStats,
-  WhatsAppRequestFilters,
-  WhatsAppRequestList,
-  WhatsAppRequestLoadingState,
-  WhatsAppRequestErrorState,
-  WhatsAppRequestPDFModal,
-  WhatsAppRequestErrorSnackbar,
-} from './components';
+import { useWhatsAppRequestListScreen } from './hooks/useWhatsAppRequestListScreen';
+import { WhatsAppRequestHeader } from './components/WhatsAppRequestHeader';
+import { WhatsAppRequestStats } from './components/WhatsAppRequestStats';
+import { WhatsAppRequestFilters } from './components/WhatsAppRequestFilters';
+import { WhatsAppRequestList } from './components/WhatsAppRequestList';
+import { WhatsAppRequestLoadingState } from './components/WhatsAppRequestLoadingState';
+import { WhatsAppRequestErrorState } from './components/WhatsAppRequestErrorState';
+import { WhatsAppRequestPDFModal } from './components/WhatsAppRequestPDFModal';
+import { WhatsAppRequestErrorSnackbar } from './components/WhatsAppRequestErrorSnackbar';
 
 export const WhatsAppRequestListScreen: React.FC = () => {
   const {

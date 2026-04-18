@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { productType } from "@src/api/order";
 
 // Design colors matching the screenshot

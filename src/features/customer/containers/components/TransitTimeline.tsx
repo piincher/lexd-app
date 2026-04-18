@@ -18,17 +18,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Card, Divider } from 'react-native-paper';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
-import {
-  ContainerWaypoint,
-  WAYPOINT_STATUS_COLORS,
-  WAYPOINT_TYPE_ICONS,
-  TRANSPORT_MODE_ICONS,
-} from '../types';
+import { ContainerWaypoint, WAYPOINT_STATUS_COLORS, WAYPOINT_TYPE_ICONS, TRANSPORT_MODE_ICONS } from '../types';
 import { WaypointCard } from './WaypointCard';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');

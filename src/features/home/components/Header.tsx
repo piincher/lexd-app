@@ -4,7 +4,7 @@ import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { IMAGES } from "@src/constants/Images";
 import { useNavigation } from "@react-navigation/native";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
 

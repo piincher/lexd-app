@@ -12,20 +12,22 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Theme } from '@src/constants/Theme';
 import { ApiClientError } from '@src/api/client';
 import { useGoodsList } from '../../hooks';
-import {
-  GoodsListHeader,
-  GoodsListSearch,
-  GoodsFilterChips,
-  ActiveFilterChips,
-  GoodsFilterModal,
-  GoodsList,
-  GoodsListFAB,
-} from './components';
+import { GoodsListHeader } from './components/GoodsListHeader';
+import { GoodsListSearch } from './components/GoodsListSearch';
+import { GoodsFilterChips } from './components/GoodsFilterChips';
+import { ActiveFilterChips } from './components/ActiveFilterChips';
+import { GoodsFilterModal } from './components/GoodsFilterModal';
+import { GoodsList } from './components/GoodsList';
+import { GoodsListFAB } from './components/GoodsListFAB';
+import { GoodsBulkActionBar } from './components/GoodsBulkActionBar';
+import { OptionPickerModal } from './components/OptionPickerModal';
+import { useGoodsBulkActions } from './hooks/useGoodsBulkActions';
 
 type NavigationProp = NativeStackNavigationProp<{
   GoodsList: undefined;
   ReceiveGoods: undefined;
   AdminGoodsDetail: { goodsId: string };
+  AdminGoodsPdfExport: { startDate?: string; endDate?: string } | undefined;
 }>;
 
 export const GoodsListScreen: React.FC = () => {
@@ -54,16 +56,50 @@ export const GoodsListScreen: React.FC = () => {
     onError: (err: ApiClientError) => setErrorMessage(err.getUserMessage()),
   });
 
+  const {
+    selectedGoodsIds,
+    isSelectionMode,
+    containerPickerVisible,
+    statusPickerVisible,
+    toggleSelectGoods,
+    toggleSelectAllGoods,
+    exitSelectionMode,
+    setIsSelectionMode,
+    setContainerPickerVisible,
+    setStatusPickerVisible,
+    isBulkPending,
+    handleAssignContainer,
+    handleChangeStatus,
+    handleVoidGoods,
+    containerOptions,
+    statusOptions,
+  } = useGoodsBulkActions(goods, handleRefresh);
+
   const handleGoodsPress = useCallback((goodsId: string) => {
     navigation.navigate('AdminGoodsDetail', { goodsId });
   }, [navigation]);
 
   const handleAddPress = useCallback(() => navigation.navigate('ReceiveGoods'), [navigation]);
+  const handleExportPress = useCallback(() => {
+    navigation.navigate('AdminGoodsPdfExport', dateRange ? {
+      startDate: dateRange.startDate,
+      endDate: dateRange.endDate,
+    } : undefined);
+  }, [navigation, dateRange]);
   const pendingCount = goods.filter((g) => g.status === 'RECEIVED_AT_WAREHOUSE').length;
 
   return (
     <SafeAreaView style={styles.container}>
-      <GoodsListHeader total={total} pendingCount={pendingCount} />
+      <GoodsListHeader
+        total={total}
+        pendingCount={pendingCount}
+        onExportPress={handleExportPress}
+        isSelectionMode={isSelectionMode}
+        onToggleSelectionMode={() => {
+          if (isSelectionMode) exitSelectionMode();
+          else setIsSelectionMode(true);
+        }}
+      />
       <GoodsListSearch
         value={searchQuery}
         onChangeText={setSearchQuery}
@@ -87,8 +123,37 @@ export const GoodsListScreen: React.FC = () => {
         onRefresh={handleRefresh}
         onGoodsPress={handleGoodsPress}
         onAddPress={handleAddPress}
+        isSelectionMode={isSelectionMode}
+        selectedIds={selectedGoodsIds}
+        onToggleSelect={toggleSelectGoods}
       />
-      <GoodsListFAB onPress={handleAddPress} />
+      {!isSelectionMode && <GoodsListFAB onPress={handleAddPress} />}
+      {isSelectionMode && (
+        <GoodsBulkActionBar
+          selectedCount={selectedGoodsIds.length}
+          totalCount={goods.length}
+          isPending={isBulkPending}
+          onToggleSelectAll={toggleSelectAllGoods}
+          onAssignContainer={() => setContainerPickerVisible(true)}
+          onChangeStatus={() => setStatusPickerVisible(true)}
+          onVoid={handleVoidGoods}
+          onCancel={exitSelectionMode}
+        />
+      )}
+      <OptionPickerModal
+        visible={containerPickerVisible}
+        title="Assigner au container"
+        options={containerOptions}
+        onSelect={handleAssignContainer}
+        onDismiss={() => setContainerPickerVisible(false)}
+      />
+      <OptionPickerModal
+        visible={statusPickerVisible}
+        title="Changer statut"
+        options={statusOptions}
+        onSelect={handleChangeStatus}
+        onDismiss={() => setStatusPickerVisible(false)}
+      />
       <GoodsFilterModal
         visible={filterModalVisible}
         onDismiss={() => setFilterModalVisible(false)}

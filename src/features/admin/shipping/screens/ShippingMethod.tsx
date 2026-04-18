@@ -3,7 +3,8 @@ import { COLORS } from "@src/constants/Colors";
 import { RootStackParamList, RootStackScreenProps } from "@src/navigations/type";
 import { useShippingMode } from "@src/store/shippingMode";
 import React, { FC, useState } from "react";
-import { View, StyleSheet, Text, FlatList, Pressable } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type Item = {
@@ -28,7 +29,7 @@ const ShippingMethod = ({ navigation }: RootStackScreenProps<"ShippingMethod">) 
    };
    return (
       <SafeAreaView style={styles.container}>
-         <FlatList
+         <FlashList
             data={items}
             renderItem={({ item }) => (
                <RenderListItem

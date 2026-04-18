@@ -32,7 +32,8 @@ interface AuthGuardProps {
  * Returns auth state and utilities
  */
 export const useAuthGuard = () => {
-  const { token, user } = useAuth();
+  const token = useAuth((state) => state.token);
+  const user = useAuth((state) => state.user);
   const navigation = useNavigation();
   
   const isAuthenticated = !!token && !!user?._id;

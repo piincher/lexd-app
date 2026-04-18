@@ -7,7 +7,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { TicketMessage, MessageSender } from '../types';
 import { Fonts } from '@src/constants/Fonts';

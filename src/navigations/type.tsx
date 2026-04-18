@@ -51,6 +51,7 @@ export type RootStackParamList = {
    ReceiveGoods: undefined;
    AdminGoodsList: undefined;
    AdminGoodsDetail: { goodsId: string };
+   AdminGoodsPdfExport: { startDate?: string; endDate?: string } | undefined;
    ConsigneeList: undefined;
    CreateConsignee: undefined;
    ConsigneeDetail: { consigneeId: string };
@@ -149,6 +150,9 @@ export type RootStackParamList = {
    CreateCampaign: undefined;
    // Activity List
    ActivityList: undefined;
+   // Search Screens
+   GlobalSearch: undefined;
+   Search: undefined;
    // Client Certificate Detail
    CertificateDetail: {
       certificateId: string;

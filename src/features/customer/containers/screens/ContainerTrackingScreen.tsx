@@ -27,34 +27,27 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 import { useGetContainerDetails } from '../hooks/useCustomerContainers';
-import { useGetWaypoints } from '@src/features/admin/containers/hooks/useWaypoints';
+import { useGetWaypoints } from '@src/shared/hooks/useWaypoints';
 import {
   ContainerWaypoint,
   SEGMENT_TYPE_LABELS,
   SEGMENT_TYPE_ICONS,
-  WAYPOINT_STATUS_COLORS,
-} from '@src/features/admin/containers/types/waypoints';
+} from '@src/shared/types/containerWaypoints';
 import {
   getExtendedStatusLabel,
   getExtendedStatusColor,
   getExtendedStatusIcon,
   getLocationCategory,
   ExtendedWaypointStatus,
-} from '@src/features/admin/containers/types/waypointStatus';
-import { ContainerTimeline } from '../components';
-import {
-  CUSTOMER_STATUS_LABELS,
-  CUSTOMER_STATUS_COLORS,
-  CUSTOMER_STATUS_BG_COLORS,
-  SHIPPING_LINE_LABELS,
-  CustomerGoodsInContainer,
-} from '../types';
+} from '@src/shared/types/waypointStatus';
+import { ContainerTimeline } from '../components/ContainerTimeline';
+import { CUSTOMER_STATUS_LABELS, CUSTOMER_STATUS_COLORS, CUSTOMER_STATUS_BG_COLORS, SHIPPING_LINE_LABELS, CustomerGoodsInContainer } from '../types';
 
 const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'>> = ({
   navigation,

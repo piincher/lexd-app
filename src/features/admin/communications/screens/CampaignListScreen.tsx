@@ -313,7 +313,7 @@ const CampaignListScreen = ({
         <FlashList
           data={campaigns}
           keyExtractor={(item) => item._id}
-          estimatedItemSize={180}
+
           contentContainerStyle={{ padding: 16 }}
           onRefresh={refetch}
           refreshing={isLoading}

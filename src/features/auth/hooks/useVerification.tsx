@@ -11,9 +11,6 @@ export const useVerification = () => {
 	
 	return useMutation({
 		mutationFn: verifyPhoneOtp,
-		onError: async (error) => {
-			console.log('error from react query', error);
-		},
 		onSuccess: async (data) => {
 			setAuth(data);
 			console.log('data from react query', data);

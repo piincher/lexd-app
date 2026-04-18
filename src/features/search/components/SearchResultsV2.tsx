@@ -4,7 +4,8 @@
  */
 
 import React, { useCallback, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Theme } from '@src/constants/Theme';
 import { Input } from '@src/shared/ui/Input';
 import { Button } from '@src/shared/ui/Button';
@@ -75,7 +76,7 @@ export const SearchResultsV2: React.FC<SearchResultsV2Props> = ({
           <Text style={styles.emptyText}>Aucun résultat trouvé</Text>
         </View>
       ) : (
-        <FlatList
+        <FlashList
           data={results}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (

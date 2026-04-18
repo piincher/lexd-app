@@ -7,7 +7,7 @@ import React from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { Card, Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { Ticket, TICKET_TYPE_LABELS, TICKET_TYPE_ICONS } from '../types';
 import { TicketStatusBadge } from './TicketStatusBadge';

@@ -29,7 +29,7 @@ export interface UseCustomerDashboardReturn {
 
 export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
   const navigation = useNavigation();
-  const { user } = useAuth();
+  const user = useAuth((state) => state.user);
 
   const { data: dashboardData, isLoading: isDashboardLoading, isError, error, refetch: refetchDashboard } = useGetDashboard();
   const { data: activityData, isLoading: isActivityLoading, refetch: refetchActivity } = useGetActivity({ limit: 5 });
@@ -44,7 +44,7 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
   }, [refetchDashboard, refetchActivity]);
 
   const handleNotifications = useCallback(() => navigation.navigate('Notifications' as never), [navigation]);
-  const handlePayBalance = useCallback(() => console.log('Payment feature removed'), [navigation]);
+  const handlePayBalance = useCallback(() => navigation.navigate('MyPaymentHistory' as never), [navigation]);
   const handleViewAllActivity = useCallback(() => navigation.navigate('ActivityList' as never), [navigation]);
   const handleActionPress = useCallback((action: QuickAction) => {
     if (action.route) navigation.navigate(action.route as never);

@@ -11,11 +11,7 @@ import {
   ConsigneeCard,
 } from './ContainerWaypointTracker/components';
 import { styles } from './ContainerWaypointTracker/ContainerWaypointTracker.styles';
-import {
-  ContainerWaypointTrackerProps,
-  FinalDestination,
-  ConsigneeInfo,
-} from '../types';
+import { ContainerWaypointTrackerProps, FinalDestination, ConsigneeInfo } from '../types';
 
 export const ContainerWaypointTracker: React.FC<ContainerWaypointTrackerProps> = ({
   waypoints,

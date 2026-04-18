@@ -21,12 +21,12 @@ const STATUS_COLORS: Record<OrderStatus, { bg: string; text: string; label: stri
 };
 
 export const PastOrderCard: React.FC<PastOrderCardProps> = ({ order, onPress }) => {
-  const statusStyle = STATUS_COLORS[order.status];
+  const statusStyle = STATUS_COLORS[order.status] ?? STATUS_COLORS.pending;
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => onPress(order)}>
       <View style={styles.header}>
-        <Text style={styles.orderNumber}>{order.orderNumber}</Text>
+        <Text style={styles.orderNumber}>{order.orderNumber ?? '—'}</Text>
         <Badge
           label={statusStyle.label}
           variant="custom"
@@ -38,7 +38,7 @@ export const PastOrderCard: React.FC<PastOrderCardProps> = ({ order, onPress }) 
       <View style={styles.details}>
         <View style={styles.row}>
           <Ionicons name="location-outline" size={16} color={Theme.neutral.grey500} />
-          <Text style={styles.detailText}>{order.destination.address}</Text>
+          <Text style={styles.detailText}>{order.destination?.address ?? 'N/A'}</Text>
         </View>
         <View style={styles.row}>
           <Ionicons name="cube-outline" size={16} color={Theme.neutral.grey500} />
@@ -50,10 +50,10 @@ export const PastOrderCard: React.FC<PastOrderCardProps> = ({ order, onPress }) 
 
       <View style={styles.footer}>
         <Text style={styles.date}>
-          {new Date(order.metadata.createdAt).toLocaleDateString('fr-FR')}
+          {new Date(order.metadata?.createdAt ?? Date.now()).toLocaleDateString('fr-FR')}
         </Text>
         <Text style={styles.amount}>
-          {order.pricing.total.toLocaleString('fr-FR')} {order.pricing.currency}
+          {order.pricing?.total?.toLocaleString('fr-FR') ?? '0'} {order.pricing?.currency ?? 'XOF'}
         </Text>
       </View>
     </TouchableOpacity>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Alert, Platform, Linking } from 'react-native';
+import { apiClientV2 } from '@src/api/client';
 import {
   NotificationPreference,
   defaultNotificationPreferences,
@@ -95,9 +96,25 @@ export const useNotificationSettings = () => {
     }
   }, []);
 
-  const handleQuietHoursToggle = useCallback((value: boolean) => {
-    setQuietHours((prev) => ({ ...prev, enabled: value }));
-  }, []);
+  const handleQuietHoursToggle = useCallback(async (value: boolean) => {
+    const updated = { ...quietHours, enabled: value };
+    setQuietHours(updated);
+    try {
+      await apiClientV2.put('/users/preferences', { quietHours: updated });
+    } catch (error) {
+      console.warn('Quiet hours toggle save not implemented on backend:', error);
+    }
+  }, [quietHours]);
+
+  const handleQuietHoursSave = useCallback(async (startTime: string, endTime: string) => {
+    const updated = { ...quietHours, startTime, endTime };
+    setQuietHours(updated);
+    try {
+      await apiClientV2.put('/users/preferences', { quietHours: updated });
+    } catch (error) {
+      console.warn('Quiet hours save not implemented on backend:', error);
+    }
+  }, [quietHours]);
 
   const getIconForType = useCallback((type: NotificationType): string => {
     const iconMap: Record<NotificationType, string> = {
@@ -138,6 +155,7 @@ export const useNotificationSettings = () => {
     handleMasterToggle,
     handlePreferenceToggle,
     handleQuietHoursToggle,
+    handleQuietHoursSave,
     openSettings,
     getIconForType,
     getColorForType,

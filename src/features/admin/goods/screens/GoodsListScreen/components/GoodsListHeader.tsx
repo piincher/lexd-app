@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -13,6 +13,9 @@ import { Theme } from '@src/constants/Theme';
 interface GoodsListHeaderProps {
   total: number;
   pendingCount: number;
+  onExportPress?: () => void;
+  isSelectionMode?: boolean;
+  onToggleSelectionMode?: () => void;
 }
 
 interface StatCardProps {
@@ -34,12 +37,34 @@ const StatCard: React.FC<StatCardProps> = ({ value, label, icon, gradient }) => 
   </View>
 );
 
-export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({ total, pendingCount }) => (
+export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
+  total,
+  pendingCount,
+  onExportPress,
+  isSelectionMode,
+  onToggleSelectionMode,
+}) => (
   <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
     <View style={styles.headerTop}>
       <View>
         <Text style={styles.greeting}>Bonjour! 👋</Text>
         <Text style={styles.title}>Marchandises</Text>
+      </View>
+      <View style={{ flexDirection: 'row', gap: 8 }}>
+        {onToggleSelectionMode && (
+          <TouchableOpacity onPress={onToggleSelectionMode} style={styles.exportButton} activeOpacity={0.8}>
+            <Ionicons
+              name={isSelectionMode ? 'close' : 'checkbox-outline'}
+              size={22}
+              color={isSelectionMode ? Theme.status.error : Theme.primary[500]}
+            />
+          </TouchableOpacity>
+        )}
+        {onExportPress && (
+          <TouchableOpacity onPress={onExportPress} style={styles.exportButton} activeOpacity={0.8}>
+            <Ionicons name="document-text" size={22} color={Theme.primary[500]} />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
 
@@ -93,6 +118,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Theme.spacing.md,
+  },
+  exportButton: {
+    width: 44,
+    height: 44,
+    borderRadius: Theme.radius.lg,
+    backgroundColor: Theme.neutral.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...Theme.shadows.sm,
   },
   statValue: {
     fontSize: 20,

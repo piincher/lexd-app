@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  FlatList,
   TouchableOpacity,
   RefreshControl,
   StyleSheet,
   TextInput,
   ActivityIndicator,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-import { useOutstandingPaymentsList } from "../hooks";
+import { useOutstandingPaymentsList } from "../hooks/useOutstandingPaymentsList";
 
 const formatCurrency = (amount: number) =>
   `${Math.round(amount).toLocaleString("fr-FR")} FCFA`;
@@ -178,7 +178,7 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <FlatList
+      <FlashList
         data={items}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}

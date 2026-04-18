@@ -19,7 +19,7 @@ import { ApiError, ApiException, ApiRequestConfig, ApiResponse } from './types';
 
 type Environment = 'local' | 'staging' | 'production';
 
-const ENV: Environment = (process.env.EXPO_PUBLIC_ENV as Environment) || 'production';
+const ENV: Environment = (process.env.EXPO_PUBLIC_ENV as Environment) || 'local';
 
 const API_CONFIG = {
   local: {
@@ -42,6 +42,52 @@ const API_CONFIG = {
 const currentConfig = API_CONFIG[ENV];
 
 // ============================================
+// TOKEN REFRESH STATE (shared across instances)
+// ============================================
+
+let isRefreshing = false;
+let refreshSubscribers: Array<(token: string) => void> = [];
+
+const subscribeTokenRefresh = (cb: (token: string) => void) => {
+  refreshSubscribers.push(cb);
+};
+
+const onTokenRefreshed = (token: string) => {
+  refreshSubscribers.forEach((cb) => cb(token));
+  refreshSubscribers = [];
+};
+
+const refreshClient = axios.create({
+  baseURL: currentConfig.baseURLV2,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+    Accept: 'application/json',
+  },
+});
+
+const doRefresh = async (): Promise<string> => {
+  const { refreshToken } = useAuth.getState();
+  if (!refreshToken) {
+    throw new Error('No refresh token available');
+  }
+  const res = await refreshClient.post('/auth/refresh', { refreshToken });
+  const data = res.data.data || res.data;
+  const newAccessToken = data.accessToken || data.token;
+  const newRefreshToken = data.refreshToken;
+  const expiresIn = data.expiresIn;
+
+  useAuth.getState().setAuth({
+    user: useAuth.getState().user as any,
+    token: newAccessToken,
+    accessToken: newAccessToken,
+    refreshToken: newRefreshToken,
+    expiresIn,
+  });
+  return newAccessToken;
+};
+
+// ============================================
 // ERROR HANDLING
 // ============================================
 
@@ -58,7 +104,8 @@ export class ApiClientError extends Error {
     const responseData = error.response?.data;
     // Backend format: { success, data, message, error }
     const message = responseData?.message || error.message;
-    const code = responseData?.error || 'UNKNOWN_ERROR';
+    const errorField = responseData?.error;
+    const code = (typeof errorField === 'string' ? errorField : errorField?.code) || 'UNKNOWN_ERROR';
     
     super(message);
     
@@ -135,10 +182,14 @@ const getRetryDelay = (retryCount: number): number => {
  */
 const requestInterceptor = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
   const token = useAuth.getState().token;
+  const url = config.url || '';
   
   // Only add auth header if token exists and is not empty
   if (token && token.trim() !== '' && !config.headers.get('skipAuth')) {
-    config.headers.Authorization = token;
+    config.headers.Authorization = `Bearer ${token}`;
+    console.log(`[API Client] Adding auth token for ${url}: ${token.slice(0, 20)}...`);
+  } else {
+    console.log(`[API Client] No auth token for ${url} (hasToken=${!!token}, skipAuth=${!!config.headers.get('skipAuth')})`);
   }
   
   // Remove internal headers before sending
@@ -203,9 +254,43 @@ const createApiClient = (baseURL: string): AxiosInstance => {
       return client.request(config);
     }
 
-    // Handle auth errors
+    // Handle auth errors with token refresh
     if (error.response?.status === 401) {
-      useAuth.getState().logOut();
+      const responseData = error.response?.data as any;
+      console.log('[API Client] 401 response for', config.url, 'data:', JSON.stringify(responseData));
+      const isTokenExpired = responseData?.code === 'TOKEN_EXPIRED';
+      const cfg = config as ApiRequestConfig & { _skipRefresh?: boolean };
+
+      if (isTokenExpired && !cfg._skipRefresh) {
+        if (!isRefreshing) {
+          isRefreshing = true;
+          doRefresh()
+            .then((newToken) => {
+              isRefreshing = false;
+              onTokenRefreshed(newToken);
+            })
+            .catch(async (refreshErr) => {
+              isRefreshing = false;
+              refreshSubscribers = [];
+              await useAuth.getState().logOut();
+              return Promise.reject(refreshErr);
+            });
+        }
+
+        return new Promise((resolve, reject) => {
+          subscribeTokenRefresh((newToken) => {
+            cfg.headers = cfg.headers || {};
+            cfg.headers.Authorization = `Bearer ${newToken}`;
+            resolve(client.request(cfg));
+          });
+        });
+      }
+
+      // Not a refreshable expiry — force logout
+      const token = useAuth.getState().token;
+      if (token && token.trim() !== '') {
+        await useAuth.getState().logOut();
+      }
     }
 
     return Promise.reject(new ApiClientError(error));

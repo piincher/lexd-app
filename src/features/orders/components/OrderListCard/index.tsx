@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { productType } from "@src/api/order";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 /**
  * Compact order card for list display.

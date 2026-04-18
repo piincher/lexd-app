@@ -4,7 +4,8 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { View, StyleSheet, RefreshControl } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Appbar, ActivityIndicator, Text, Button, Chip, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,7 +13,7 @@ import { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 import { useGetMyContainers } from '../hooks/useCustomerContainers';
-import { ContainerCard } from '../components';
+import { ContainerCard } from '../components/ContainerCard';
 import { ShippingMode } from '../types';
 
 type FilterMode = 'ALL' | ShippingMode;
@@ -169,7 +170,7 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
       {containers.length === 0 ? (
         renderEmptyState()
       ) : (
-        <FlatList
+        <FlashList
           data={containers}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (

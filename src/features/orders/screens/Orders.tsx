@@ -16,12 +16,13 @@ import {
 } from "react-native";
 import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { withProtectedRoute } from "@src/features/auth";
-import { useAppTheme } from "@src/providers";
-import { useGetOrderOfUserById } from "@src/shared/hooks";
+import { withProtectedRoute } from "@src/shared/hoc/withProtectedRoute";
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { productType } from "@src/api/order";
-import { OrderListCard, OrderStatusFilter } from "../components";
+import { OrderListCard } from "../components/OrderListCard";
+import { OrderStatusFilter } from "../components/OrderStatusFilter";
 import { OrderListSkeleton } from "../components/OrderListSkeleton";
 
 // -- Constants --
@@ -59,7 +60,7 @@ const AdminMenu: React.FC<{ navigation: any; items: MenuItemType[] }> = ({
    navigation,
    items,
 }) => {
-   const { setType } = useShippingMode((state) => state);
+   const setType = useShippingMode((state) => state.setType);
    const { colors } = useAppTheme();
 
    return (
@@ -184,7 +185,7 @@ const CustomerOrders: React.FC = () => {
                   data={filteredOrders}
                   keyExtractor={keyExtractor}
                   renderItem={renderItem}
-                  estimatedItemSize={90}
+
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={styles.listContent}
                   refreshControl={

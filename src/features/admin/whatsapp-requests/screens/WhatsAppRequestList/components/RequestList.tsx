@@ -1,5 +1,6 @@
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { RefreshControl, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Theme } from '@src/constants/Theme';
 import { WhatsAppRequest } from '@src/features/admin/whatsapp-requests/api/whatsappRequestApi';
 import { RequestCard } from './RequestCard';
@@ -35,7 +36,7 @@ export const RequestList: React.FC<RequestListProps> = ({
   isCompleting,
 }) => {
   return (
-    <FlatList
+    <FlashList
       data={requests}
       keyExtractor={(item) => item._id}
       renderItem={({ item }) => (

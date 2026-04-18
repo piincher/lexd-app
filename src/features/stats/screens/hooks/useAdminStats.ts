@@ -6,7 +6,7 @@
 
 import { useMemo, useState, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useGetCurrentUser } from '@src/shared/hooks';
+import { useGetCurrentUser } from '@src/shared/hooks/useUser';
 import {
   getDashboard,
   getTopCustomers,

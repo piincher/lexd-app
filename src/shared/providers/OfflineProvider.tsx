@@ -8,11 +8,12 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { AppState, AppStateStatus } from 'react-native';
 import { QueryClient, onlineManager } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as EncryptedStorage from '../lib/encryptedStorage';
 import NetInfo from '@react-native-community/netinfo';
-import { createQueryClient, persistOptions, prefetchForOffline } from '../lib/queryClient';
+import { getQueryClient, persistOptions, prefetchForOffline } from '../lib/queryClient';
 import { initBackgroundSync, checkAndSync, registerBackgroundSync } from '../lib/backgroundSync';
 import { showMessage } from 'react-native-flash-message';
+import { useAuth } from '@src/store/Auth';
 
 interface OfflineContextValue {
   /** Whether the app is hydrated and ready */
@@ -45,7 +46,7 @@ export const OfflineProvider: React.FC<OfflineProviderProps> = ({
   prefetchQueries,
   showToasts = true,
 }) => {
-  const [queryClient] = useState(() => customQueryClient || createQueryClient());
+  const [queryClient] = useState(() => customQueryClient || getQueryClient());
   const [isHydrated, setIsHydrated] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -110,6 +111,16 @@ export const OfflineProvider: React.FC<OfflineProviderProps> = ({
     console.log('[OfflineProvider] Hydration complete');
   };
 
+  // Expired-token guard after hydration
+  useEffect(() => {
+    if (!isHydrated) return;
+    const { token, refreshToken, expiresAt } = useAuth.getState();
+    const isExpired = expiresAt && Date.now() >= expiresAt;
+    if (token && isExpired && !refreshToken) {
+      useAuth.getState().logOut();
+    }
+  }, [isHydrated]);
+
   // Manual sync trigger
   const syncNow = async () => {
     const result = await checkAndSync();
@@ -164,7 +175,7 @@ export const OfflineProvider: React.FC<OfflineProviderProps> = ({
       queryClient.clear();
       
       // Clear AsyncStorage
-      await AsyncStorage.clear();
+      await EncryptedStorage.clear();
       
       if (showToasts) {
         showMessage({

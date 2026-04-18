@@ -370,7 +370,7 @@ export default function AdminReviewsScreen({
           data={reviews}
           renderItem={renderReview}
           keyExtractor={(item) => item._id}
-          estimatedItemSize={250}
+
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
           refreshing={isRefetching}

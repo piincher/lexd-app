@@ -9,8 +9,8 @@ import { MotiView } from "moti";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { navigationProps } from "@src/navigations/type";
-import { useMyReviews, useReviewStats } from "@src/features/customer/reviews/hooks/useReviews";
-import { useAppTheme } from "@src/providers";
+import { useMyReviews, useReviewStats } from "@src/shared/hooks/useReviews";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { StarRating } from "./StarRating";
 import { styles } from "./ReviewsSection.styles";
 

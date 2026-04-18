@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Card } from '@src/shared/ui';
+import { Card } from '@src/shared/ui/Card';
 import { lightTheme } from '@src/constants/Theme';
 
 interface OrderSummaryCardProps {

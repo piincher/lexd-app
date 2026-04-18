@@ -337,7 +337,7 @@ export default function IssueCertificateScreen({
               renderItem={renderUser}
               keyExtractor={(item) => item._id}
               contentContainerStyle={styles.listContainer}
-              estimatedItemSize={90}
+
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={
                 <View style={styles.emptyContainer}>

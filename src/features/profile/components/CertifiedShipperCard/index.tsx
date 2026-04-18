@@ -12,7 +12,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { navigationProps } from "@src/navigations/type";
 import { getCertificateDownloadUrl, CertificateProgress } from "../../api/certificateApi";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from "./CertifiedShipperCard.styles";
 import { CertifiedView } from "./CertifiedView";
 import { ProgressView } from "./ProgressView";

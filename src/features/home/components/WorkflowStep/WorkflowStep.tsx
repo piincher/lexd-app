@@ -7,7 +7,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { useAppTheme } from '@src/providers';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface WorkflowStepProps {
   icon: string;

@@ -8,7 +8,7 @@ interface Item {
    navigation: any;
 }
 export const RenderHomeItem = ({ item, navigation }: Item) => {
-   const { setType } = useShippingMode((state) => state);
+   const setType = useShippingMode((state) => state.setType);
 
    const handleNavigation = () => {
       if (item.param) {

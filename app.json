@@ -3,9 +3,13 @@
     "name": "ChinaLinkExpress",
     "slug": "ChinaLinkExpress",
     "version": "2.6.0",
+    "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
     "userInterfaceStyle": "light",
+    "experiments": {
+      "reactCompiler": true
+    },
 
     "splash": {
       "image": "./assets/images/splashscreen.png",
@@ -17,7 +21,8 @@
         "expo-build-properties",
         {
           "android": {
-            "enableProguardInReleaseBuilds": true,
+            "enableMinifyInReleaseBuilds": true,
+            "enableBundleCompression": false,
             "extraProguardRules": "-keep public class com.horcrux.svg.** {*;}",
             "allowBackup": false
           }
@@ -50,7 +55,9 @@
       "@react-native-community/datetimepicker"
     ],
     "assetBundlePatterns": [
-      "**/*"
+      "assets/images/*",
+      "assets/fonts/*",
+      "assets/favicon.png"
     ],
     "ios": {
       "supportsTablet": true,

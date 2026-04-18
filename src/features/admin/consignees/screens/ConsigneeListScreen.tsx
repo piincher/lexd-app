@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import {
    Text,
    Searchbar,
@@ -145,7 +146,7 @@ const ConsigneeListScreen: React.FC = () => {
             iconColor={COLORS.DimGray}
          />
 
-         <FlatList
+         <FlashList
             data={filteredConsignees}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (

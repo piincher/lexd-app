@@ -6,7 +6,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Card } from '@src/shared/ui';
+import { Card } from '@src/shared/ui/Card';
 import { Text } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 import { styles } from './GoodsDimensionsCard.styles';

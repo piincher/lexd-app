@@ -1,5 +1,6 @@
 import { useRef, useState, useCallback, useMemo } from "react";
-import { Animated, FlatList, Dimensions } from "react-native";
+import { Animated, Dimensions } from "react-native";
+import { FlashList } from '@shopify/flash-list';
 import { useAppLaunchStore } from "@src/store/AppLaunch";
 import { ONBOARDING_SLIDES, BACKGROUND_COLORS } from "../constants";
 
@@ -24,11 +25,11 @@ export interface UseOnboardingReturn {
   onMomentumScrollEnd: (event: any) => void;
 
   // Refs
-  flatListRef: React.RefObject<FlatList>;
+  flatListRef: React.RefObject<any>;
 }
 
 export const useOnboarding = (): UseOnboardingReturn => {
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef = useRef<any>(null);
   const [scrollX] = useState(() => new Animated.Value(0));
   const [currentIndex, setCurrentIndex] = useState(0);
   const setIsAppLaunchFirst = useAppLaunchStore((state) => state.setIsAppLaunchFirst);

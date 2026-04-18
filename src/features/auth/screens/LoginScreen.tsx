@@ -9,13 +9,18 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from "react-na
 import Animated, { FadeInDown } from "react-native-reanimated";
 
 import { Notification } from "@src/components/Notification/Notification";
-import { Screen } from "@src/shared/ui";
-import { useAppTheme } from "@src/providers";
+import { Screen } from "@src/shared/ui/Screen";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { PublicStackScreenProps } from "@src/navigations/type";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useLoginForm } from "../hooks/useLoginForm";
-import { LoginHeader, PhoneInput, CountryPicker, SubmitButton, SecurityNote, LoginFooter } from "../components";
+import { LoginHeader } from "../components/LoginHeader";
+import { PhoneInput } from "../components/PhoneInput";
+import { CountryPicker } from "../components/CountryPicker";
+import { SubmitButton } from "../components/SubmitButton";
+import { SecurityNote } from "../components/SecurityNote";
+import { LoginFooter } from "../components/LoginFooter";
 
 export const LoginScreen: React.FC<PublicStackScreenProps<"Login">> = ({ navigation }) => {
   const { colors, isDark } = useAppTheme();

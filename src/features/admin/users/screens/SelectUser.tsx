@@ -1,6 +1,7 @@
 import { RootStackScreenProps } from "@src/navigations/type";
 import React, { useState } from "react";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 
 import AppButton from "@src/components/AppButton/AppButton";
 import { Header } from "@src/components/Header/Header";
@@ -44,7 +45,7 @@ const SelectUser = ({ navigation }: RootStackScreenProps<"SelectUser">) => {
             onChangeText={setSearch}
             value={search}
          />
-         <FlatList
+         <FlashList
             data={filteredData}
             renderItem={({ item }) => (
                <RenderListItem

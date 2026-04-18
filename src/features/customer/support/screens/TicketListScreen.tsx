@@ -4,7 +4,8 @@
  */
 
 import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl } from 'react-native';
+import { View, StyleSheet, RefreshControl } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Appbar, ActivityIndicator, Text, Button, Chip, FAB, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,7 +13,7 @@ import { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 import { useGetTickets } from '../hooks/useTickets';
-import { TicketCard } from '../components';
+import { TicketCard } from '../components/TicketCard';
 import { Ticket, TicketStatus } from '../types';
 
 type FilterTab = 'ALL' | 'OPEN' | 'RESOLVED';
@@ -155,7 +156,7 @@ const TicketListScreen: React.FC<RootStackScreenProps<'TicketList'>> = ({
       {!hasTickets ? (
         renderEmptyState()
       ) : (
-        <FlatList
+        <FlashList
           data={tickets}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (

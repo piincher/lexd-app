@@ -3,8 +3,9 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { Card } from '@src/shared/ui';
+import { View, Text, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { Card } from '@src/shared/ui/Card';
 import { lightTheme } from '@src/constants/Theme';
 import { OrderGoods } from '../api/types';
 
@@ -23,7 +24,7 @@ export const ActiveGoodsSection: React.FC<ActiveGoodsSectionProps> = ({ goods })
   return (
     <Card variant="elevated" style={styles.card}>
       <Text style={styles.title}>Active Goods ({goods.length})</Text>
-      <FlatList
+      <FlashList
         data={goods}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}

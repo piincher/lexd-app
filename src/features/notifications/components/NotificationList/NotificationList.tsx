@@ -1,5 +1,6 @@
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { RefreshControl, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { InAppNotification } from '../../types';
 import { NotificationItem } from '../NotificationItem';
 import { NotificationEmptyState } from '../NotificationEmptyState';
@@ -35,7 +36,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
   }
 
   return (
-    <FlatList
+    <FlashList
       data={notifications}
       keyExtractor={(item) => item._id}
       renderItem={({ item }) => (

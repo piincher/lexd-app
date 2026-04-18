@@ -21,13 +21,8 @@ import { Fonts } from '@src/constants/Fonts';
 import { Header } from '@src/components/Header/Header';
 import type { navigationProps, RootStackParamList } from '@src/navigations/type';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import {
-  NOTIFICATION_TYPE_CONFIG,
-  NOTIFICATION_CATEGORY_CONFIG,
-  NOTIFICATION_PRIORITY_CONFIG
-} from '../types';
+import { NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG, NOTIFICATION_PRIORITY_CONFIG } from '../types';
 import { useMarkAsRead, useDeleteNotification } from '../hooks/useNotifications';
-import { certificateApi } from '@src/features/profile/api/certificateApi';
 
 type NotificationDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
@@ -69,22 +64,17 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
   const handleActionPress = () => {
     // Navigate based on type and data
     if (notification.data?.type === 'CERTIFICATE_ISSUED' || notification.data?.certificateId) {
-      // Fetch certificate progress and navigate to detail screen
-      certificateApi.getProgress().then((response) => {
-        const progress = response.data.data;
-        if (progress.isCertified && progress.certificate) {
-          const cert = progress.certificate;
-          navigation.navigate('CertificateDetail', {
-            certificateId: cert.certificateId,
-            verificationCode: cert.verificationCode,
-            issuedAt: cert.issuedAt,
-            certificateUrl: cert.certificateUrl || null,
-            certificateMongoId: cert._id || notification.data?.certificateId,
-          });
-        }
-      }).catch((err) => {
-        console.error('[NotificationDetail] Error fetching certificate:', err);
-      });
+      if (notification.data?.certificateId && notification.data?.verificationCode && notification.data?.issuedAt) {
+        navigation.navigate('CertificateDetail', {
+          certificateId: notification.data.certificateId,
+          verificationCode: notification.data.verificationCode,
+          issuedAt: notification.data.issuedAt,
+          certificateUrl: notification.data.certificateUrl || null,
+          certificateMongoId: notification.data.certificateMongoId || notification.data.certificateId,
+        });
+      } else {
+        navigation.navigate('Profile');
+      }
     } else if (notification.data?.orderId) {
       navigation.navigate('OrderDetail', { id: notification.data.orderId });
     } else if (notification.data?.containerId) {

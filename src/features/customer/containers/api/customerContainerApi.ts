@@ -4,14 +4,7 @@
  */
 
 import { apiClientV2 } from '@src/api/client';
-import {
-  ApiResponse,
-  GetMyContainersResponse,
-  GetContainerDetailsResponse,
-  GetContainerForGoodsResponse,
-  GetMyContainersParams,
-  ClientPackingListResponse,
-} from './types';
+import { ApiResponse, GetMyContainersResponse, GetContainerDetailsResponse, GetContainerForGoodsResponse, GetMyContainersParams, ClientPackingListResponse } from './types';
 
 const axios = apiClientV2;
 const BASE_URL = '/customer/containers';

@@ -5,17 +5,16 @@
  */
 
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
-import { useAppTheme } from '@src/providers';
-import { Screen } from '@src/shared/ui';
-import { useFAQ } from '../hooks';
-import {
-  FAQSearchBar,
-  FAQCategoryFilter,
-  FAQItem,
-  FAQEmptyState,
-  FAQContactButton,
-} from '../components';
+import { View, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Screen } from '@src/shared/ui/Screen';
+import { useFAQ } from '../hooks/useFAQ';
+import { FAQSearchBar } from '../components/FAQSearchBar';
+import { FAQCategoryFilter } from '../components/FAQCategoryFilter';
+import { FAQItem } from '../components/FAQItem';
+import { FAQEmptyState } from '../components/FAQEmptyState';
+import { FAQContactButton } from '../components/FAQContactButton';
 import { FAQSkeleton } from './FAQScreenSkeleton';
 
 export const FAQScreen: React.FC = () => {
@@ -43,7 +42,7 @@ export const FAQScreen: React.FC = () => {
       footer={<FAQContactButton />}
       scrollable={false}
     >
-      <FlatList
+      <FlashList
         data={filteredData}
         keyExtractor={(item) => item.id}
         renderItem={({ item, index }) => (

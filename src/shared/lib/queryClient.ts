@@ -6,7 +6,7 @@
 import { QueryClient } from '@tanstack/react-query';
 import { PersistQueryClientOptions } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as EncryptedStorage from './encryptedStorage';
 
 // Cache strategies for different data types
 export const CACHE_STRATEGIES = {
@@ -88,7 +88,7 @@ export const createQueryClient = (): QueryClient => {
  */
 export const createPersister = () => {
   return createAsyncStoragePersister({
-    storage: AsyncStorage,
+    storage: EncryptedStorage,
     key: 'CHINALINK_QUERY_CACHE',
     // Throttle writes to storage (ms)
     throttleTime: 1000,
@@ -104,10 +104,11 @@ export const createPersister = () => {
 export const persistOptions: Omit<PersistQueryClientOptions, 'queryClient'> = {
   persister: createPersister(),
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  buster: 'v1', // Version key - increment to invalidate old cache
+  buster: 'v3', // Version key - increment to invalidate old cache
   dehydrateOptions: {
     // Only persist these query keys
     shouldDehydrateQuery: (query) => {
+      if (query.state.status === 'pending') return false;
       const queryKey = query.queryKey[0] as string;
       return PERSISTED_QUERY_KEYS.some(key => 
         typeof queryKey === 'string' && queryKey.includes(key)

@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import { Card, Text, Button, Menu, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
@@ -90,8 +90,14 @@ export const GoodsStatusManager: React.FC<GoodsStatusManagerProps> = ({
               <Menu.Item
                 key={option.value}
                 onPress={() => {
-                  onStatusUpdate(option.value);
-                  setMenuVisible(false);
+                  Alert.alert(
+                    'Confirmer le changement de statut',
+                    `Passer au statut "${option.label}" ?`,
+                    [
+                      { text: 'Annuler', style: 'cancel' },
+                      { text: 'Confirmer', onPress: () => { onStatusUpdate(option.value); setMenuVisible(false); } },
+                    ]
+                  );
                 }}
                 title={option.label}
                 disabled={option.value === currentStatus}

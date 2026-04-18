@@ -5,16 +5,8 @@
 
 import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { containerService } from '../services/ContainerService';
-import { 
-  Container, 
-  CreateContainerInput, 
-  UpdateContainerStatusInput,
-  AssignGoodsInput,
-  ContainerFilters,
-  PackingList,
-  Route,
-  ShippingMode,
-} from '../types';
+import { PackingList } from '../types/PackingList';
+import { Container, CreateContainerInput, UpdateContainerStatusInput, AssignGoodsInput, ContainerFilters, Route, ShippingMode } from '../types';
 import { ApiClientError } from '@src/api/client';
 
 // ============================================

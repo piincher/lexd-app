@@ -4,12 +4,7 @@
  */
 
 import { apiClientV2 } from '@src/api/client';
-import {
-  ApiResponse,
-  GetDashboardResponse,
-  GetActivityResponse,
-  GetActivityParams,
-} from './types';
+import { ApiResponse, GetDashboardResponse, GetActivityResponse, GetActivityParams } from './types';
 
 const axios = apiClientV2;
 const BASE_URL = '/customer/dashboard';

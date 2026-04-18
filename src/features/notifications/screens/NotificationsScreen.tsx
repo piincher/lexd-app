@@ -19,7 +19,6 @@ import {
   useMarkAllAsRead,
   useDeleteNotification,
 } from '../hooks/useNotifications';
-import { certificateApi } from '@src/features/profile/api/certificateApi';
 
 import { NotificationHeader } from './components/NotificationHeader';
 import { NotificationFilterTabs } from './components/NotificationFilterTabs';
@@ -115,19 +114,17 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
         }
         break;
       case 'CERTIFICATE_ISSUED':
-        certificateApi.getProgress().then((response) => {
-          const progress = response.data.data;
-          if (progress.isCertified && progress.certificate) {
-            const cert = progress.certificate;
-            navigation.navigate('CertificateDetail', {
-              certificateId: cert.certificateId,
-              verificationCode: cert.verificationCode,
-              issuedAt: cert.issuedAt,
-              certificateUrl: cert.certificateUrl || null,
-              certificateMongoId: cert._id || notifData?.certificateId,
-            });
-          }
-        }).catch(() => {});
+        if (notifData?.certificateId && notifData?.verificationCode && notifData?.issuedAt) {
+          navigation.navigate('CertificateDetail', {
+            certificateId: notifData.certificateId,
+            verificationCode: notifData.verificationCode,
+            issuedAt: notifData.issuedAt,
+            certificateUrl: notifData.certificateUrl || null,
+            certificateMongoId: notifData.certificateMongoId || notifData.certificateId,
+          });
+        } else {
+          navigation.navigate('Profile');
+        }
         break;
     }
   };

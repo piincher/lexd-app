@@ -5,7 +5,7 @@
 
 import { useState, useCallback } from 'react';
 import { Alert } from 'react-native';
-import { useGetAllContainers } from '@src/features/admin/containers/hooks';
+import { useGetAllContainers } from '@src/features/admin/containers/hooks/useContainers';
 import { useGoodsDetail } from './useGoodsDetail';
 import { useGoodsAssignment } from './useGoodsAssignment';
 import { useGoodsStatus } from './useGoodsStatus';

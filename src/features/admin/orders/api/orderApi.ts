@@ -1,10 +1,6 @@
 import { apiV2 } from '@src/api/client';
 import { AxiosResponse } from 'axios';
-import { 
-  OrderWithGoods, 
-  OrderWithGoodsSeparated, 
-  OrderTotalsBreakdown 
-} from './types';
+import { OrderWithGoods, OrderWithGoodsSeparated, OrderTotalsBreakdown } from './types';
 
 const axios = apiV2;
 const BASE_URL = '/api/v1/orders';

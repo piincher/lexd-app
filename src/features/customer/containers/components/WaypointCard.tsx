@@ -7,21 +7,12 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
-import {
-  ContainerWaypoint,
-  WAYPOINT_STATUS_COLORS,
-  WAYPOINT_STATUS_LABELS,
-  WAYPOINT_TYPE_ICONS,
-  WAYPOINT_TYPE_LABELS,
-  TRANSPORT_MODE_ICONS,
-  TRANSPORT_MODE_LABELS,
-  CUSTOMER_WAYPOINT_TYPE_COLORS,
-} from '../types';
+import { ContainerWaypoint, WAYPOINT_STATUS_COLORS, WAYPOINT_STATUS_LABELS, WAYPOINT_TYPE_ICONS, WAYPOINT_TYPE_LABELS, TRANSPORT_MODE_ICONS, TRANSPORT_MODE_LABELS, CUSTOMER_WAYPOINT_TYPE_COLORS } from '../types';
 
 interface WaypointCardProps {
   waypoint: ContainerWaypoint;

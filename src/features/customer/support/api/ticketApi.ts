@@ -4,18 +4,7 @@
  */
 
 import { apiClientV2, uploadFile } from '@src/api/client';
-import {
-  ApiResponse,
-  GetTicketsResponse,
-  GetTicketResponse,
-  CreateTicketRequest,
-  CreateTicketResponse,
-  AddMessageRequest,
-  AddMessageResponse,
-  RateTicketRequest,
-  RateTicketResponse,
-  UploadAttachmentResponse,
-} from './types';
+import { ApiResponse, GetTicketsResponse, GetTicketResponse, CreateTicketRequest, CreateTicketResponse, AddMessageRequest, AddMessageResponse, RateTicketRequest, RateTicketResponse, UploadAttachmentResponse } from './types';
 
 const axios = apiClientV2;
 const BASE_URL = '/tickets';

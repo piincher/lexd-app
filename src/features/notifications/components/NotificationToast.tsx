@@ -29,10 +29,7 @@ import * as Haptics from 'expo-haptics';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import type { InAppNotification } from '../types';
-import { 
-  NOTIFICATION_TYPE_CONFIG, 
-  NOTIFICATION_CATEGORY_CONFIG 
-} from '../types';
+import { NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../types';
 
 const { width } = Dimensions.get('window');
 

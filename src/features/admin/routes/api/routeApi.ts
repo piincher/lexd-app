@@ -5,12 +5,7 @@
 
 import { apiClientV2, apiRequest } from '@src/api/client';
 import { ApiResponse } from '@src/api/types';
-import { 
-  Route, 
-  CreateRouteInput, 
-  UpdateRouteInput,
-  RouteFilters,
-} from '../types';
+import { Route, CreateRouteInput, UpdateRouteInput, RouteFilters } from '../types';
 
 const BASE_URL = '/routes';
 

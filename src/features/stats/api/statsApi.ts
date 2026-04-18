@@ -4,14 +4,7 @@
  */
 
 import { apiClientV2 } from '@src/api/client';
-import {
-  DashboardResponse,
-  TopCustomersResponse,
-  ContainerUtilizationResponse,
-  PaymentMetricsResponse,
-  GoodsVolumeResponse,
-  PeriodFilter,
-} from '../types';
+import { DashboardResponse, TopCustomersResponse, ContainerUtilizationResponse, PaymentMetricsResponse, GoodsVolumeResponse, PeriodFilter } from '../types';
 
 // All v2 responses are wrapped: { success: true, data: { ... } }
 const extractData = <T>(response: any): T => {

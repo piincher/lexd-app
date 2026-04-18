@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, View, Animated } from 'react-native';
+import { Dimensions, StyleSheet, View, Animated } from 'react-native';
+import { FlashList, FlashListProps } from '@shopify/flash-list';
 
 //import components
 import ImgSliderItem from '../ImageSlider/ImageSlider';
@@ -11,6 +12,8 @@ interface Props {
 	images: { public_id: string; url: string }[];
 	onPress?: () => void;
 }
+
+const AnimatedFlashList = Animated.createAnimatedComponent(FlashList) as React.ComponentType<FlashListProps<{ public_id: string; url: string }>>;
 
 const CardView = ({ images, onPress }: Props) => {
 	const [activeIndex, setActiveIndex] = useState(0);
@@ -26,7 +29,7 @@ const CardView = ({ images, onPress }: Props) => {
 
 	return (
 		<View style={styles.container}>
-			<Animated.FlatList
+			<AnimatedFlashList
 				data={images}
 				keyExtractor={(item) => item.public_id}
 				horizontal

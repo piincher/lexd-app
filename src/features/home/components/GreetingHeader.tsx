@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useAuth } from "@src/store/Auth";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const getGreeting = (): string => {
    const hour = new Date().getHours();

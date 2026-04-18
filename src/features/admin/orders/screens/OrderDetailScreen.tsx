@@ -6,10 +6,10 @@
 import React from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { Screen } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
 import { COLORS } from '@src/constants/Colors';
-import { useGetOrderDetail } from '@src/shared/hooks';
-import { useGetRoutes } from '@src/shared/hooks';
+import { useGetOrderDetail } from '@src/shared/hooks/useOrderDetail';
+import { useGetRoutes } from '@src/shared/hooks/useRoutes';
 import { useUpdateOrder } from '../hooks/useOrderManagement';
 import { OrderDetailHeader } from './components/OrderDetailHeader';
 import { OrderImageGallery } from './components/OrderImageGallery';

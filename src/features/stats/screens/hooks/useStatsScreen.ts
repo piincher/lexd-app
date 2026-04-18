@@ -1,4 +1,5 @@
-import { useGetCurrentUser, useGetOrderOfUserById } from "@src/shared/hooks";
+import { useGetCurrentUser } from '@src/shared/hooks/useUser';
+import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
 import { productType } from "@src/api/order";
 import { COLORS } from "@src/constants/Colors";
 

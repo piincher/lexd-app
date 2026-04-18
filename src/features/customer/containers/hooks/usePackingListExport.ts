@@ -7,7 +7,7 @@
 import { useState, useCallback } from 'react';
 import { Alert, Platform, Share } from 'react-native';
 import * as Sharing from 'expo-sharing';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { useDownloadPackingListPDF } from './useCustomerContainers';
 import { generateShareText, blobToBase64, downloadWeb, savePDF } from '../utils/packingListExportHelpers';
 

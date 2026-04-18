@@ -26,8 +26,6 @@ interface GoodsListContentProps {
   onAddPress?: () => void;
 }
 
-const GOODS_CARD_HEIGHT = 160;
-
 export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   goods,
   isLoading,
@@ -43,15 +41,6 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   ), [onGoodsPress]);
 
   const keyExtractor = useCallback((item: Goods) => item._id, []);
-
-  const getItemLayout = useCallback((
-    data: ArrayLike<Goods> | null | undefined,
-    index: number
-  ) => ({
-    length: GOODS_CARD_HEIGHT,
-    offset: GOODS_CARD_HEIGHT * index,
-    index,
-  }), []);
 
   if (isLoading) {
     return (
@@ -87,9 +76,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
       renderItem={renderItem}
       contentContainerStyle={styles.listContent}
       showsVerticalScrollIndicator={false}
-      estimatedItemSize={GOODS_CARD_HEIGHT}
-      getItemLayout={getItemLayout}
-      removeClippedSubviews={true}
+
       refreshControl={
         <RefreshControl
           refreshing={isRefetching}

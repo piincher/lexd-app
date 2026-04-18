@@ -18,4 +18,4 @@ export { LoginHeader, PhoneInput, CountryPicker, LoginFooter, SubmitButton, Secu
 export { AuthRequiredContent } from "./components/AuthRequiredContent";
 
 // HOCs
-export { withProtectedRoute } from "./hoc/withProtectedRoute";
+export { withProtectedRoute } from "@src/shared/hoc/withProtectedRoute";

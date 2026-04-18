@@ -6,7 +6,7 @@
 
 import * as TaskManager from 'expo-task-manager';
 import * as BackgroundFetch from 'expo-background-fetch';
-import { AppState, AppStateStatus } from 'react-native';
+import { AppStateStatus } from 'react-native';
 import { QueryClient } from '@tanstack/react-query';
 import { 
   processQueue, 
@@ -50,9 +50,6 @@ let queryClient: QueryClient | null = null;
  */
 export const initBackgroundSync = (client: QueryClient): void => {
   queryClient = client;
-  
-  // Listen for app state changes
-  AppState.addEventListener('change', handleAppStateChange);
   
   console.log('[BackgroundSync] Initialized');
 };

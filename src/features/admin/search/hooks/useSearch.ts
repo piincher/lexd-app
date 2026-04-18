@@ -4,6 +4,7 @@
 
 import { useQuery, useQueryClient, UseQueryOptions } from "@tanstack/react-query";
 import { useState, useEffect, useRef } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import debounce from "lodash/debounce";
 import {
   searchGoods,
@@ -254,22 +255,25 @@ export const useRecentSearches = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const queryClient = useQueryClient();
 
-  // Load from local storage on mount
+  // Load from async storage on mount
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
-      if (stored) {
-        setRecentSearches(JSON.parse(stored));
+    const loadRecentSearches = async () => {
+      try {
+        const stored = await AsyncStorage.getItem(RECENT_SEARCHES_KEY);
+        if (stored) {
+          setRecentSearches(JSON.parse(stored));
+        }
+      } catch (e) {
+        console.error("Failed to load recent searches:", e);
       }
-    } catch (e) {
-      console.error("Failed to load recent searches:", e);
-    }
+    };
+    loadRecentSearches();
   }, []);
 
-  // Save to local storage
-  const saveRecentSearches = (searches: string[]) => {
+  // Save to async storage
+  const saveRecentSearches = async (searches: string[]) => {
     try {
-      localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
+      await AsyncStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
     } catch (e) {
       console.error("Failed to save recent searches:", e);
     }
@@ -299,9 +303,13 @@ export const useRecentSearches = () => {
   };
 
   // Clear all searches
-  const clearRecentSearches = () => {
+  const clearRecentSearches = async () => {
     setRecentSearches([]);
-    localStorage.removeItem(RECENT_SEARCHES_KEY);
+    try {
+      await AsyncStorage.removeItem(RECENT_SEARCHES_KEY);
+    } catch (e) {
+      console.error("Failed to clear recent searches:", e);
+    }
   };
 
   return {

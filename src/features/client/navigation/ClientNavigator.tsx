@@ -10,15 +10,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AuthenticatedStackParamList } from '@src/navigation/types';
 
-// Import screens (placeholders - actual screens will be created in Phase 4)
-// import { ClientOrdersListScreen } from '../screens/ClientOrdersListScreen';
-// import { ClientOrderDetailScreen } from '../screens/ClientOrderDetailScreen';
-// import { TrackOrderScreen } from '../screens/TrackOrderScreen';
-
-// Placeholder components until actual screens are created
-const ClientOrdersListScreen: React.FC = () => null;
-const ClientOrderDetailScreen: React.FC = () => null;
-const TrackOrderScreen: React.FC = () => null;
+import { ClientOrdersListScreen } from '../orders/screens/ClientOrdersListScreen';
+import { ClientOrderDetailScreen } from '../orders/screens/ClientOrderDetailScreen';
+import { TrackOrderScreen } from '../orders/screens/TrackOrderScreen';
 
 const Stack = createNativeStackNavigator<AuthenticatedStackParamList>();
 

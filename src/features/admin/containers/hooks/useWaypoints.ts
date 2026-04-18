@@ -20,48 +20,13 @@ import {
   WaypointStatus,
 } from '../types/waypoints';
 import { ApiClientError } from '@src/api/client';
+import { waypointQueryKeys, useGetWaypoints } from '@src/shared/hooks/useWaypoints';
 
-// ============================================
-// QUERY KEYS
-// ============================================
-
-export const waypointQueryKeys = {
-  all: ['waypoints'] as const,
-  lists: () => [...waypointQueryKeys.all, 'list'] as const,
-  list: (containerId: string) => [...waypointQueryKeys.lists(), containerId] as const,
-  details: () => [...waypointQueryKeys.all, 'detail'] as const,
-  detail: (containerId: string, index: number) =>
-    [...waypointQueryKeys.details(), containerId, index] as const,
-  status: (containerId: string) =>
-    [...waypointQueryKeys.list(containerId), 'status'] as const,
-  seaSegments: (containerId: string) =>
-    [...waypointQueryKeys.list(containerId), 'sea-segments'] as const,
-  roadSegments: (containerId: string) =>
-    [...waypointQueryKeys.list(containerId), 'road-segments'] as const,
-};
+export { waypointQueryKeys, useGetWaypoints };
 
 // ============================================
 // QUERY HOOKS
 // ============================================
-
-/**
- * Get all waypoints for a container
- */
-export const useGetWaypoints = (
-  containerId: string | undefined,
-  options?: UseQueryOptions<WaypointsResponse, ApiClientError>
-) => {
-  return useQuery({
-    queryKey: waypointQueryKeys.list(containerId || ''),
-    queryFn: async () => {
-      const response = await waypointService.getWaypoints(containerId!);
-      return response.data;
-    },
-    enabled: !!containerId,
-    staleTime: 2 * 60 * 1000, // 2 minutes
-    ...options,
-  });
-};
 
 /**
  * Get current tracking status for a container

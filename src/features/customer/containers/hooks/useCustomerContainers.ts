@@ -33,8 +33,10 @@ export const useGetMyContainers = (filters?: CustomerContainerFilters) => {
     queryKey: QUERY_KEYS.containersList(filters),
     queryFn: () => customerContainerApi.getMyContainers(filters),
     select: (response) => {
-      const data = response.data.data;
-      if (!data?.containers) return data;
+      const data = response?.data?.data;
+      if (!data || !Array.isArray(data.containers)) {
+        return data ?? { containers: [] };
+      }
       return {
         ...data,
         containers: data.containers.map((c: any) => {

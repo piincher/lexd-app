@@ -1,5 +1,5 @@
 import { userData, userType } from "../constants/types";
-import axiosInstance from "./client";
+import axiosInstance, { apiClientV2 } from "./client";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
@@ -63,6 +63,18 @@ export interface UserData {
 // 	});
 // 	return response.data;
 // };
+export const refreshAccessToken = async (refreshToken: string) => {
+   const response = await apiClientV2.post<{
+      success: boolean;
+      data: {
+         accessToken: string;
+         refreshToken: string;
+         expiresIn: number;
+      };
+   }>('/auth/refresh', { refreshToken }, { headers: { skipAuth: 'true' } as any });
+   return response.data.data;
+};
+
 export const register = async ({ firstName, lastName, phoneNumber }: userRegistrationType) => {
    const user = {
       firstName,
@@ -95,6 +107,9 @@ export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {
    const response = await axiosInstance.post<{
       user: userRegistrationType;
       token: string;
+      accessToken?: string;
+      refreshToken?: string;
+      expiresIn?: number;
    }>(API_URL.verifyPhoneOtp, {
       phone: data.phone,
       otp: data.otp,
@@ -162,6 +177,9 @@ export const loginPhoneOtpApple = async (data: { phone: string }) => {
    const response = await axiosInstance.post<{
       user: userRegistrationType;
       token: string;
+      accessToken?: string;
+      refreshToken?: string;
+      expiresIn?: number;
    }>(API_URL.login, datat);
 
    return response.data;

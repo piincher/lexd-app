@@ -10,7 +10,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown, FadeIn } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
-import { useAppTheme } from '@src/providers';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useAuth } from '@src/store/Auth';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';

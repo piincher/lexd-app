@@ -192,6 +192,7 @@ export const usePaymentPolling = (
 
   const startPolling = () => {
     if (!provider || !transactionId) return;
+    if (intervalRef.current) return;
 
     setStatus('polling');
     attemptsRef.current = 0;

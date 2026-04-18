@@ -11,6 +11,7 @@ import {
   Animated,
   StatusBar,
 } from "react-native";
+import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { PublicStackScreenProps } from "@src/navigations/type";
 import { useOnboarding } from "../hooks/useOnboarding";
@@ -23,6 +24,8 @@ import { OnboardingBackground } from "../components/OnboardingBackground";
 interface Props extends PublicStackScreenProps<"OnBoarding"> {}
 
 const { width, height } = Dimensions.get("window");
+
+const AnimatedFlashList = Animated.createAnimatedComponent(FlashList) as any;
 
 export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
   const {
@@ -78,11 +81,11 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
         />
 
         {/* Slides */}
-        <Animated.FlatList
+        <AnimatedFlashList
           ref={flatListRef}
           data={slides}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item: any) => item.id}
           horizontal
           pagingEnabled
           showsHorizontalScrollIndicator={false}
@@ -90,7 +93,7 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
           onScroll={handleScroll}
           onMomentumScrollEnd={onMomentumScrollEnd}
           scrollEventThrottle={16}
-          getItemLayout={(_, index) => ({
+          getItemLayout={(_: any, index: number) => ({
             length: width,
             offset: width * index,
             index,

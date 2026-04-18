@@ -25,7 +25,7 @@ import { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetGoodsDetail } from '../hooks';
-import { StatusBadge } from '../components';
+import { StatusBadge } from '../components/StatusBadge';
 import { ReviewPrompt } from '@src/features/customer/reviews';
 import { GoodsStatus } from '../api';
 import { useAuth } from '@src/store/Auth';

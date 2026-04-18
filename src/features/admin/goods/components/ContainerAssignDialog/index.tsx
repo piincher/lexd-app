@@ -27,7 +27,7 @@ interface ContainerAssignDialogProps {
 export const ContainerAssignDialog: React.FC<ContainerAssignDialogProps> = ({
   visible,
   onDismiss,
-  containers,
+  containers = [],
   selectedId,
   onSelect,
   onAssign,

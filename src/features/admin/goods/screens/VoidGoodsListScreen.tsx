@@ -4,12 +4,13 @@
  */
 
 import React, { useState } from 'react';
-import { View, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
+import { View, TouchableOpacity, RefreshControl } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
 import { Text, Card, Badge, IconButton, Searchbar, Menu, Divider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Screen } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
 import { Theme } from '@src/constants/Theme';
 import { useGetAllGoods } from '../hooks';
 import { Goods } from '../types';
@@ -156,7 +157,7 @@ export const VoidGoodsListScreen: React.FC = () => {
         </View>
 
         {/* Goods List */}
-        <FlatList
+        <FlashList
           data={goodsList}
           keyExtractor={(item) => item._id}
           renderItem={renderGoodsItem}

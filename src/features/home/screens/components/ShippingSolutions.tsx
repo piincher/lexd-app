@@ -3,7 +3,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Pressable, ScrollView, Text, View, StyleSheet } from "react-native";
 import Animated, { FadeInRight } from "react-native-reanimated";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from "@src/constants/Fonts";
 
 interface ShippingSolutionsProps {

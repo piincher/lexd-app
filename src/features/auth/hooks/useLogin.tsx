@@ -6,9 +6,6 @@ import { useNotificationContext } from "@src/app/providers/NotificationProvider"
 export const useLogin = () => {
    return useMutation({
       mutationFn: sendPhoneOtp,
-      onError: async (error) => {
-         console.log("error from react query", error);
-      },
       onSuccess: async (data) => {},
    });
 };

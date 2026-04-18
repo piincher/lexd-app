@@ -19,7 +19,7 @@ import { RootStackScreenProps } from '@src/navigations/type';
 import { useGetUsers } from '../../hooks/useGetUsers';
 import { useGetOrderBaseonDate } from '../../orders/hooks/useOrderManagement';
 import { useSendNotificationSms } from '../hooks/useNotifications';
-import { useViewSmsBalance } from '@src/shared/hooks';
+import { useViewSmsBalance } from '@src/shared/hooks/useOrders';
 import { Calendar, useCalendar } from '@src/components/Calendar/Calendar';
 
 import { SmsBalanceHeader } from '../components/SmsBalanceHeader';

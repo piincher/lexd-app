@@ -19,11 +19,8 @@ import { Portal, Modal, Button } from 'react-native-paper';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import Animated, { FadeIn, SlideInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
-import {
-  ContainerWaypoint,
-  WaypointStatus,
-  SegmentType,
-} from '../types';
+import { WaypointStatus } from '../types/WaypointStatus';
+import { ContainerWaypoint, SegmentType } from '../types';
 import {
   ExtendedWaypointStatus,
   PortStatusOption,

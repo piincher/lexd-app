@@ -7,12 +7,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   StyleSheet,
-  FlatList,
   TextInput as RNTextInput,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import {
   Appbar,
   Text,
@@ -25,20 +25,15 @@ import {
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 import { useGetTicket, useAddMessage, useRateTicket } from '../hooks/useTickets';
-import { TicketStatusBadge, TicketMessageBubble } from '../components';
-import {
-  Ticket,
-  TicketStatus,
-  TICKET_TYPE_LABELS,
-  TICKET_PRIORITY_LABELS,
-  TICKET_PRIORITY_COLORS,
-} from '../types';
+import { TicketStatusBadge } from '../components/TicketStatusBadge';
+import { TicketMessageBubble } from '../components/TicketMessageBubble';
+import { Ticket, TicketStatus, TICKET_TYPE_LABELS, TICKET_PRIORITY_LABELS, TICKET_PRIORITY_COLORS } from '../types';
 import { showMessage } from 'react-native-flash-message';
 
 // Star Rating Component
@@ -219,7 +214,7 @@ const TicketDetailScreen: React.FC<RootStackScreenProps<'TicketDetail'>> = ({
   };
 
   // Scroll to bottom when new messages arrive
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef = useRef<any>(null);
 
   useEffect(() => {
     if (ticket?.messages.length) {
@@ -280,7 +275,7 @@ const TicketDetailScreen: React.FC<RootStackScreenProps<'TicketDetail'>> = ({
         style={styles.keyboardView}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
-        <FlatList
+        <FlashList
           ref={flatListRef}
           data={[
             { type: 'info', id: 'info' },

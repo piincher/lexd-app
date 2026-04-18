@@ -15,11 +15,11 @@ import {
 } from 'react-native';
 import { Text, Surface, Divider, Chip } from 'react-native-paper';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Screen } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import type { PaymentHistoryItem } from '../types';
 

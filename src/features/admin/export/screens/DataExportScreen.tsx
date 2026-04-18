@@ -10,9 +10,9 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  FlatList,
   RefreshControl,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import {
   Text,
   Card,
@@ -28,7 +28,8 @@ import {
   Portal,
 } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import { format, formatDistanceToNow } from "date-fns";
+import { format } from "date-fns/format";
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 
 import {
   useListExports,
@@ -342,8 +343,8 @@ export const DataExportScreen: React.FC = () => {
                   </Text>
                 </View>
               ) : (
-                <FlatList
-                  data={exports}
+                <FlashList
+                  data={exports as ExportLog[]}
                   renderItem={renderExportItem}
                   keyExtractor={(item) => item._id}
                   scrollEnabled={false}

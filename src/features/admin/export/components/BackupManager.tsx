@@ -8,11 +8,11 @@ import React, { useState } from "react";
 import {
   View,
   StyleSheet,
-  FlatList,
   RefreshControl,
   TouchableOpacity,
   Alert,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import {
   Text,
   Card,
@@ -24,7 +24,8 @@ import {
   Dialog,
   Portal,
 } from "react-native-paper";
-import { format, formatDistanceToNow } from "date-fns";
+import { format } from "date-fns/format";
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 
 import {
   useListBackups,
@@ -320,8 +321,8 @@ export const BackupManager: React.FC<BackupManagerProps> = ({
       </View>
 
       {/* Backup List */}
-      <FlatList
-        data={backups}
+      <FlashList
+        data={backups as Backup[]}
         renderItem={renderBackupItem}
         keyExtractor={(item) => item._id}
         refreshControl={

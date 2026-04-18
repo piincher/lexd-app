@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button } from '@src/shared/ui';
+import { Button } from '@src/shared/ui/Button';
 import { lightTheme } from '@src/constants/Theme';
 
 interface RecalculateButtonProps {

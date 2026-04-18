@@ -2,7 +2,7 @@
  * Search API - API functions for global search and filtering
  */
 
-import { client } from "@src/api/client";
+import { apiClientV2 } from "@src/api/client";
 
 // Types
 export interface SearchFilters {
@@ -129,7 +129,7 @@ export const searchGoods = async (
   if (pagination.sortBy) params.append("sortBy", pagination.sortBy);
   if (pagination.sortOrder) params.append("sortOrder", pagination.sortOrder);
 
-  const response = await client.get(`/v2/search/goods?${params.toString()}`);
+  const response = await apiClientV2.get(`/search/goods?${params.toString()}`);
   return response.data;
 };
 
@@ -160,7 +160,7 @@ export const searchContainers = async (
   if (pagination.sortBy) params.append("sortBy", pagination.sortBy);
   if (pagination.sortOrder) params.append("sortOrder", pagination.sortOrder);
 
-  const response = await client.get(`/v2/search/containers?${params.toString()}`);
+  const response = await apiClientV2.get(`/search/containers?${params.toString()}`);
   return response.data;
 };
 
@@ -189,7 +189,7 @@ export const searchClients = async (
   if (pagination.sortBy) params.append("sortBy", pagination.sortBy);
   if (pagination.sortOrder) params.append("sortOrder", pagination.sortOrder);
 
-  const response = await client.get(`/v2/search/clients?${params.toString()}`);
+  const response = await apiClientV2.get(`/search/clients?${params.toString()}`);
   return response.data;
 };
 
@@ -204,7 +204,7 @@ export const globalSearch = async (
   params.append("q", query);
   params.append("limit", limit.toString());
 
-  const response = await client.get(`/v2/search/global?${params.toString()}`);
+  const response = await apiClientV2.get(`/search/global?${params.toString()}`);
   return response.data;
 };
 
@@ -219,7 +219,7 @@ export const getSearchSuggestions = async (
   params.append("q", query);
   params.append("limit", limit.toString());
 
-  const response = await client.get(`/v2/search/suggestions?${params.toString()}`);
+  const response = await apiClientV2.get(`/search/suggestions?${params.toString()}`);
   return response.data;
 };
 
@@ -227,7 +227,7 @@ export const getSearchSuggestions = async (
  * Get filter presets
  */
 export const getFilterPresets = async (): Promise<FilterPreset[]> => {
-  const response = await client.get("/v2/search/presets");
+  const response = await apiClientV2.get("/search/presets");
   return response.data.data;
 };
 
@@ -238,6 +238,6 @@ export const getSearchStats = async (days: number = 30): Promise<any> => {
   const params = new URLSearchParams();
   params.append("days", days.toString());
 
-  const response = await client.get(`/v2/search/stats?${params.toString()}`);
+  const response = await apiClientV2.get(`/search/stats?${params.toString()}`);
   return response.data.data;
 };

@@ -1,10 +1,13 @@
 import React, { useCallback } from 'react';
-import { FlatList, RefreshControl, Linking, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { RefreshControl, Linking, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
-import { Screen, EmptyState, Text } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
+import { EmptyState } from '@src/shared/ui/EmptyState';
 import { COLORS } from '@src/constants/Colors';
-import { useMyPaymentHistory, useDownloadReceipt, useShareReceipt } from '../hooks';
-import { PaymentHistoryCard } from '../components';
+import { useMyPaymentHistory } from '../hooks/useMyPaymentHistory';
+import { useDownloadReceipt, useShareReceipt } from '../hooks';
+import { PaymentHistoryCard } from '../components/PaymentHistoryCard';
 import { PaymentHistoryItem } from '../types';
 
 export const MyPaymentHistoryScreen: React.FC = () => {
@@ -82,7 +85,7 @@ export const MyPaymentHistoryScreen: React.FC = () => {
           message="Vous n'avez pas encore de paiements enregistrés."
         />
       ) : (
-        <FlatList
+        <FlashList
           data={payments}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}

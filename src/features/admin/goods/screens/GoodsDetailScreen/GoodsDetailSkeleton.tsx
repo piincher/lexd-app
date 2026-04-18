@@ -6,7 +6,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Card } from 'react-native-paper';
-import { Skeleton } from '@src/shared/ui';
+import { Skeleton } from '@src/shared/ui/Skeleton';
 import { styles } from './GoodsDetailScreen.styles';
 
 export const GoodsDetailSkeleton: React.FC = () => {

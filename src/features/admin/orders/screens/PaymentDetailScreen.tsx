@@ -8,7 +8,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import { getPaymentHistory } from '@src/api/order';
-import { Screen } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
 import { PaymentInfoCard } from '../components/PaymentInfoCard';
 import { ClientInfoCard } from '../components/ClientInfoCard';
 import { OrderInfoCard } from '../components/OrderInfoCard';
@@ -68,8 +68,10 @@ const PaymentDetailScreen: React.FC = () => {
   const [receiptLoading, setReceiptLoading] = useState(!params.receiptUrl && !!orderId);
   const pollRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pollCountRef = useRef(0);
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
+    isMountedRef.current = true;
     // If we already have the receipt URL, no need to poll
     if (receiptUrl || !orderId) {
       setReceiptLoading(false);
@@ -98,7 +100,9 @@ const PaymentDetailScreen: React.FC = () => {
       pollCountRef.current += 1;
       // Poll up to 6 times (30 seconds total), then stop
       if (pollCountRef.current < 6) {
-        pollRef.current = setTimeout(pollForReceipt, 5000);
+        if (isMountedRef.current) {
+          pollRef.current = setTimeout(pollForReceipt, 5000);
+        }
       } else {
         setReceiptLoading(false);
       }
@@ -108,6 +112,7 @@ const PaymentDetailScreen: React.FC = () => {
     pollRef.current = setTimeout(pollForReceipt, 3000);
 
     return () => {
+      isMountedRef.current = false;
       if (pollRef.current) clearTimeout(pollRef.current);
     };
   }, [orderId, paymentId, receiptUrl]);

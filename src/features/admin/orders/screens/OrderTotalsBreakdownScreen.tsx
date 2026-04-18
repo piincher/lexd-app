@@ -6,16 +6,14 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useRoute } from '@react-navigation/native';
-import { Screen } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
 import { AuthenticatedStackScreenProps } from '@src/navigation/types';
-import { useOrderTotals } from '../hooks';
+import { useOrderTotals } from '../hooks/useOrderTotals';
 import { styles } from './OrderTotalsBreakdownScreen.styles';
-import {
-  UnitPriceCard,
-  ActiveGoodsBreakdown,
-  VoidedGoodsBreakdown,
-  SummaryCard,
-} from './components';
+import { UnitPriceCard } from './components/UnitPriceCard';
+import { ActiveGoodsBreakdown } from './components/ActiveGoodsBreakdown';
+import { VoidedGoodsBreakdown } from './components/VoidedGoodsBreakdown';
+import { SummaryCard } from './components/SummaryCard';
 
 export const OrderTotalsBreakdownScreen: React.FC<
   AuthenticatedStackScreenProps<'OrderTotalsBreakdown'>

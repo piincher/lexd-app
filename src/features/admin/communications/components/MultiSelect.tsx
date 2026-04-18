@@ -1,7 +1,8 @@
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
 import React from "react";
-import { FlatList, Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 
 interface Item {
    id: string;
@@ -50,7 +51,7 @@ export function MultiSelect(props: MultiSelectProps): React.ReactElement {
    };
 
    return (
-      <FlatList
+      <FlashList
          data={items}
          ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>

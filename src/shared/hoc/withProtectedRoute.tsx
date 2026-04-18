@@ -1,8 +1,8 @@
 import React, { useCallback } from "react";
 import { useNavigation } from "@react-navigation/native";
 
-import { useAuthCheck } from "../hooks/useAuthCheck";
-import { AuthRequiredScreen } from "../screens/AuthRequiredScreen";
+import { useAuthCheck } from "@src/shared/hooks/useAuthCheck";
+import { AuthRequiredScreen } from "@src/shared/components/AuthRequiredScreen";
 
 export const withProtectedRoute = <P extends object>(
    Component: React.ComponentType<P>

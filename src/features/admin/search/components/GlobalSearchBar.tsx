@@ -11,10 +11,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
-  FlatList,
   Keyboard,
   Dimensions,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -28,6 +28,7 @@ interface GlobalSearchBarProps {
   onSearch?: (query: string) => void;
   onFocus?: () => void;
   onBlur?: () => void;
+  onFilterPress?: () => void;
   placeholder?: string;
   showSuggestions?: boolean;
   autoFocus?: boolean;
@@ -37,6 +38,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
   onSearch,
   onFocus,
   onBlur,
+  onFilterPress,
   placeholder = "Rechercher...",
   showSuggestions = true,
   autoFocus = false,
@@ -53,7 +55,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
     { enabled: showSuggestions && isFocused }
   );
 
-  const { recentSearches, addRecentSearch, removeRecentSearch } = useRecentSearches();
+  const { recentSearches, addRecentSearch, removeRecentSearch, clearRecentSearches } = useRecentSearches();
 
   useEffect(() => {
     if (autoFocus) {
@@ -202,7 +204,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
               <Ionicons name="close-circle" size={22} color={Theme.neutral[400]} />
             </TouchableOpacity>
           ) : (
-            <TouchableOpacity style={styles.filterButton}>
+            <TouchableOpacity style={styles.filterButton} onPress={onFilterPress}>
               <Ionicons name="options-outline" size={22} color={Theme.primary[500]} />
             </TouchableOpacity>
           )}
@@ -233,7 +235,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
                 {suggestions.goods.length > 0 && (
                   <View style={styles.categorySection}>
                     <Text style={styles.categoryLabel}>Marchandises</Text>
-                    <FlatList
+                    <FlashList
                       data={suggestions.goods.slice(0, 3)}
                       renderItem={renderSuggestionItem}
                       keyExtractor={(item) => `goods-${item.id}`}
@@ -244,7 +246,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
                 {suggestions.containers.length > 0 && (
                   <View style={styles.categorySection}>
                     <Text style={styles.categoryLabel}>Containers</Text>
-                    <FlatList
+                    <FlashList
                       data={suggestions.containers.slice(0, 3)}
                       renderItem={renderSuggestionItem}
                       keyExtractor={(item) => `container-${item.id}`}
@@ -255,7 +257,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
                 {suggestions.clients.length > 0 && (
                   <View style={styles.categorySection}>
                     <Text style={styles.categoryLabel}>Clients</Text>
-                    <FlatList
+                    <FlashList
                       data={suggestions.clients.slice(0, 3)}
                       renderItem={renderSuggestionItem}
                       keyExtractor={(item) => `client-${item.id}`}
@@ -271,11 +273,11 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
               <>
                 <View style={styles.sectionHeader}>
                   <Text style={styles.sectionTitle}>Recherches récentes</Text>
-                  <TouchableOpacity onPress={() => {}}>
+                  <TouchableOpacity onPress={clearRecentSearches}>
                     <Text style={styles.clearAllText}>Effacer</Text>
                   </TouchableOpacity>
                 </View>
-                <FlatList
+                <FlashList
                   data={recentSearches.slice(0, 5)}
                   renderItem={renderRecentItem}
                   keyExtractor={(item, index) => `recent-${index}`}

@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card, Text, TextInput, Avatar, Chip, ActivityIndicator } from 'react-native-paper';
 import { useGetUsers } from '@src/features/admin/hooks/useGetUsers';
 import { userData } from '@src/constants/types';
@@ -82,7 +82,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
   /**
    * Render search result item
    */
-  const renderItem = ({ item, index }: { item: userData; index: number }) => (
+  const renderItem = ({ item, index }: { item: userData; index?: number }) => (
     <TouchableOpacity
       style={[
         styles.resultItem,

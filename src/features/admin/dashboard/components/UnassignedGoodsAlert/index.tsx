@@ -133,7 +133,7 @@ export const UnassignedGoodsAlert: React.FC<UnassignedGoodsAlertProps> = ({
 
             {/* Footer */}
             <View style={styles.footer}>
-              <Text style={styles.footerText}>View Goods</Text>
+              <Text style={styles.footerText}>Voir les marchandises</Text>
               <Ionicons name="chevron-forward" size={18} color={COLORS.grey} />
             </View>
           </>

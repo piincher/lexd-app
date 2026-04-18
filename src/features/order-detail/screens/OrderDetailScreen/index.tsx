@@ -7,15 +7,13 @@ import { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useGetOrderDetails } from "../../hooks/useOrderDetail";
 import { useClipboard } from "@src/hooks/useClipBoard";
-import {
-   OrderHeader,
-   OrderImageSection,
-   OrderQuickStats,
-   OrderInfoCard,
-   OrderShippingCard,
-   OrderPaymentCard,
-   OrderTimeline,
-} from "./components";
+import { OrderHeader } from "./components/OrderHeader";
+import { OrderImageSection } from "./components/OrderImageSection";
+import { OrderQuickStats } from "./components/OrderQuickStats";
+import { OrderInfoCard } from "./components/OrderInfoCard";
+import { OrderShippingCard } from "./components/OrderShippingCard";
+import { OrderPaymentCard } from "./components/OrderPaymentCard";
+import { OrderTimeline } from "./components/OrderTimeline";
 
 const OrderDetailScreen = ({
    route,

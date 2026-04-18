@@ -3,13 +3,18 @@
  * Phase 2 Container System
  */
 import React from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAssignGoodsScreen } from './hooks/useAssignGoodsScreen';
-import {
-  Header, SearchBar, SelectAllBar, GoodsListItem,
-  EmptyState, LoadingState, ErrorState, BottomActionBar,
-} from './components';
+import { Header } from './components/Header';
+import { SearchBar } from './components/SearchBar';
+import { SelectAllBar } from './components/SelectAllBar';
+import { GoodsListItem } from './components/GoodsListItem';
+import { EmptyState } from './components/EmptyState';
+import { LoadingState } from './components/LoadingState';
+import { ErrorState } from './components/ErrorState';
+import { BottomActionBar } from './components/BottomActionBar';
 import { styles } from './AssignGoodsScreen.styles';
 import { ContainerStatus } from '../../types';
 import { Theme } from '@src/constants/Theme';
@@ -52,7 +57,7 @@ export const AssignGoodsScreen: React.FC = () => {
         totalCount={filteredGoods.length}
         onToggleSelectAll={toggleSelectAll}
       />
-      <FlatList
+      <FlashList
         data={filteredGoods}
         keyExtractor={(item) => item._id}
         renderItem={({ item, index }) => (

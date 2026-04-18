@@ -7,11 +7,11 @@ import React, { useState } from 'react';
 import { 
   View, 
   StyleSheet, 
-  FlatList, 
   RefreshControl,
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, FAB, Snackbar, ActivityIndicator } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -244,7 +244,7 @@ export const ContainerListScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
       ) : (
-      <FlatList
+      <FlashList
         data={filteredContainers}
         keyExtractor={keyExtractor}
         renderItem={renderContainer}

@@ -14,7 +14,8 @@ import { Picker } from "@react-native-picker/picker";
 import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
 import { RootStackScreenProps } from "@src/navigations/type";
-import { useGetOrderDetail, useGetRoutes } from "@src/shared/hooks";
+import { useGetOrderDetail } from '@src/shared/hooks/useOrderDetail';
+import { useGetRoutes } from '@src/shared/hooks/useRoutes';
 import { formatDate } from "@src/utils/formatDate";
 import { useUpdateOrder, useUpdateStatusDelivery } from "../hooks/useOrderManagement";
 

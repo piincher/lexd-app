@@ -5,8 +5,8 @@
  * react-native-bundle-splitter for optimal bundle size and performance.
  */
 
-import React, { Suspense, ComponentType, ReactNode } from 'react';
-import { Loading, Skeleton } from '@src/shared/ui';
+import React, { ComponentType, ReactNode } from 'react';
+import { Loading, Skeleton } from '@src/components/ui/Loading/Loading';
 import { View, StyleSheet } from 'react-native';
 
 interface LazyLoadOptions {
@@ -22,7 +22,7 @@ interface LazyLoadOptions {
 
 /**
  * Higher-order component for lazy loading with bundle splitting
- * Uses react-native-bundle-splitter for optimal code splitting
+ * Uses dynamic imports compatible with React Native / Metro
  */
 export function lazyLoad<T extends ComponentType<any>>(
   importFn: () => Promise<{ default: T } | T>,
@@ -35,23 +35,58 @@ export function lazyLoad<T extends ComponentType<any>>(
     skeletonVariant = 'card',
   } = options;
 
-  // Create lazy component using React.lazy
-  const LazyComponent = React.lazy(importFn);
-
-  // Wrapper component with Suspense
+  // Wrapper component with manual dynamic import
   const LazyLoadWrapper: React.FC<React.ComponentProps<T>> = (props) => {
+    const [Component, setComponent] = React.useState<ComponentType<any> | null>(null);
     const [showFallback, setShowFallback] = React.useState(delay === 0);
 
     React.useEffect(() => {
+      let isMounted = true;
+
+      importFn().then((mod) => {
+        if (isMounted) {
+          const ResolvedComponent = (mod as any).default || mod;
+          setComponent(() => ResolvedComponent);
+        }
+      });
+
       if (delay > 0) {
         const timer = setTimeout(() => setShowFallback(true), delay);
-        return () => clearTimeout(timer);
+        return () => {
+          isMounted = false;
+          clearTimeout(timer);
+        };
       }
-    }, [delay]);
+
+      return () => {
+        isMounted = false;
+      };
+    }, []);
 
     const renderFallback = () => {
       if (fallback) return <>{fallback}</>;
-      if (useSkeleton) return <Skeleton variant={skeletonVariant} />;
+      if (useSkeleton) {
+        if (skeletonVariant === 'list') {
+          return (
+            <View style={{ padding: 16 }}>
+              <Skeleton width="100%" height={60} style={{ marginBottom: 12 }} />
+              <Skeleton width="100%" height={60} style={{ marginBottom: 12 }} />
+              <Skeleton width="100%" height={60} style={{ marginBottom: 12 }} />
+            </View>
+          );
+        }
+        if (skeletonVariant === 'detail') {
+          return (
+            <View style={{ padding: 16 }}>
+              <Skeleton width="100%" height={200} style={{ marginBottom: 16 }} />
+              <Skeleton width="80%" height={20} style={{ marginBottom: 12 }} />
+              <Skeleton width="60%" height={20} style={{ marginBottom: 12 }} />
+              <Skeleton width="40%" height={20} />
+            </View>
+          );
+        }
+        return <Skeleton width="100%" height={120} />;
+      }
       return (
         <View style={styles.fallbackContainer}>
           <Loading />
@@ -59,11 +94,11 @@ export function lazyLoad<T extends ComponentType<any>>(
       );
     };
 
-    return (
-      <Suspense fallback={showFallback ? renderFallback() : null}>
-        <LazyComponent {...props} />
-      </Suspense>
-    );
+    if (!Component) {
+      return showFallback ? renderFallback() : null;
+    }
+
+    return <Component {...props} />;
   };
 
   // Set display name for debugging

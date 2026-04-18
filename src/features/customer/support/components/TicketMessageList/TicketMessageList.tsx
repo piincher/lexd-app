@@ -4,7 +4,8 @@
  */
 
 import React, { useRef, useEffect } from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text } from 'react-native-paper';
 import { TicketMessageBubble } from '../TicketMessageBubble';
@@ -17,7 +18,7 @@ interface TicketMessageListProps {
 }
 
 export const TicketMessageList: React.FC<TicketMessageListProps> = ({ messages }) => {
-  const flatListRef = useRef<FlatList>(null);
+  const flatListRef = useRef<any>(null);
 
   useEffect(() => {
     if (messages.length > 0) {
@@ -40,7 +41,7 @@ export const TicketMessageList: React.FC<TicketMessageListProps> = ({ messages }
   }
 
   return (
-    <FlatList
+    <FlashList
       ref={flatListRef}
       data={messages}
       keyExtractor={(item) => item._id}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -42,8 +42,15 @@ const PaymentScreen: React.FC = () => {
     title: '',
     message: '',
   });
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const paymentFlow = usePaymentFlow();
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
   const { data: balanceData } = useBalanceDue();
 
   const amount = params?.amount || balanceData?.totalDue || 0;
@@ -163,7 +170,7 @@ const PaymentScreen: React.FC = () => {
         }
 
         if (attempts < maxAttempts) {
-          setTimeout(checkStatus, 2000);
+          timeoutRef.current = setTimeout(checkStatus, 2000);
         } else {
           setStatusModalConfig({
             status: 'error',
@@ -173,7 +180,7 @@ const PaymentScreen: React.FC = () => {
         }
       } catch (error) {
         if (attempts < maxAttempts) {
-          setTimeout(checkStatus, 2000);
+          timeoutRef.current = setTimeout(checkStatus, 2000);
         }
       }
     };
@@ -186,7 +193,7 @@ const PaymentScreen: React.FC = () => {
     // Card payment uses clientSecret for Stripe.js
     // This would integrate with Stripe's SDK
     // For now, we simulate success
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setStatusModalConfig({
         status: 'success',
         title: 'Payment Successful!',

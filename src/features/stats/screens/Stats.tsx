@@ -12,23 +12,21 @@ import { Ionicons } from '@expo/vector-icons';
 import { HomeTabScreenProps } from '@src/navigations/type';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
-import { withProtectedRoute } from '@src/features/auth';
+import { withProtectedRoute } from '@src/shared/hoc/withProtectedRoute';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
-import { useAdminStats } from './hooks';
-import {
-  StatsHeader,
-  PeriodSelector,
-  KPIGrid,
-  GoodsOverview,
-  ShippingModeCard,
-  PaymentOverview,
-  OutstandingCard,
-  TopCustomers,
-  RecentPaymentsList,
-  StatsSkeleton,
-  ProfitOverviewCard,
-} from './components';
+import { useAdminStats } from './hooks/useAdminStats';
+import { StatsHeader } from './components/StatsHeader';
+import { PeriodSelector } from './components/PeriodSelector';
+import { KPIGrid } from './components/KPIGrid';
+import { GoodsOverview } from './components/GoodsOverview';
+import { ShippingModeCard } from './components/ShippingModeCard';
+import { PaymentOverview } from './components/PaymentOverview';
+import { OutstandingCard } from './components/OutstandingCard';
+import { TopCustomers } from './components/TopCustomers';
+import { RecentPaymentsList } from './components/RecentPaymentsList';
+import { StatsSkeleton } from './components/StatsSkeleton';
+import { ProfitOverviewCard } from './components/ProfitOverviewCard';
 
 const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
   const { colors } = useAppTheme();

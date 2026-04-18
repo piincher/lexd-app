@@ -48,9 +48,12 @@ const getStatusConfig = (status: string) => STATUS_CONFIG[status] || STATUS_CONF
 
 interface OrderCardProps {
   order: any;
+  isSelected?: boolean;
+  isSelectionMode?: boolean;
+  onToggleSelect?: () => void;
 }
 
-export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
+export const OrderCard: React.FC<OrderCardProps> = ({ order, isSelected, isSelectionMode, onToggleSelect }) => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
@@ -71,10 +74,17 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
 
   return (
     <TouchableOpacity 
-      style={styles.container}
-      onPress={() => navigation.navigate('OrderDetailScreen' as never, { id: order._id })}
+      style={[styles.container, isSelected && styles.selectedContainer]}
+      onPress={isSelectionMode ? onToggleSelect : () => navigation.navigate('OrderDetailScreen' as never, { id: order._id })}
       activeOpacity={0.7}
     >
+      {isSelectionMode && (
+        <View style={styles.checkboxColumn}>
+          <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
+            {isSelected && <MaterialIcons name="check" size={18} color="#FFF" />}
+          </View>
+        </View>
+      )}
       {/* Status Indicator Bar */}
       <View style={[styles.statusBar, { backgroundColor: statusConfig.color }]} />
       

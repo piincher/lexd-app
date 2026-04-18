@@ -8,7 +8,6 @@ import {
   NavigationContainerRef,
 } from "@react-navigation/native";
 import { NotificationData, NotificationType } from "../services/notificationService";
-import { certificateApi } from "@src/features/profile/api/certificateApi";
 
 // ============================================================================
 // Types
@@ -176,44 +175,6 @@ const handleInvoice: NotificationHandler = (data) => {
 };
 
 /**
- * Handle CERTIFICATE_ISSUED notifications
- * Navigate to CertificateDetail using params from push payload, or fetch from API as fallback
- */
-const handleCertificateIssued: NotificationHandler = async (data) => {
-  console.log("[NotificationHandlers] Handling CERTIFICATE_ISSUED:", data);
-
-  // Use navigation params directly from push notification payload if available
-  if (data.screen === "CertificateDetail" && data.params) {
-    navigate("CertificateDetail", data.params);
-    return;
-  }
-
-  // Fallback: fetch certificate progress from API
-  try {
-    const response = await certificateApi.getProgress();
-    const progress = response.data.data;
-
-    if (progress.isCertified && progress.certificate) {
-      const cert = progress.certificate;
-      navigate("CertificateDetail", {
-        certificateId: cert.certificateId,
-        verificationCode: cert.verificationCode,
-        issuedAt: cert.issuedAt,
-        certificateUrl: cert.certificateUrl || null,
-        certificateMongoId: cert._id || data.certificateId,
-      });
-    } else {
-      console.warn("[NotificationHandlers] Certificate not found in progress, navigating to Profile");
-      navigate("Profile");
-    }
-  } catch (error) {
-    console.error("[NotificationHandlers] Error fetching certificate progress:", error);
-    // Fallback to profile screen where the certificate section is visible
-    navigate("Profile");
-  }
-};
-
-/**
  * Handle GENERAL notifications
  * Navigate to notifications screen or show in-app
  */
@@ -263,7 +224,6 @@ export const notificationHandlers: Record<NotificationType, NotificationHandler>
   CONTAINER_STATUS: handleContainerStatus,
   TICKET_REPLY: handleTicketReply,
   INVOICE: handleInvoice,
-  CERTIFICATE_ISSUED: handleCertificateIssued,
   GENERAL: handleGeneral,
   SYSTEM: handleSystem,
 };

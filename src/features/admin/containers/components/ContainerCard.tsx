@@ -14,17 +14,8 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { Badge } from '@src/components/ui';
-import { 
-  Container, 
-  ContainerStatus,
-  CONTAINER_STATUS_LABELS, 
-  CONTAINER_STATUS_COLORS,
-  SHIPPING_LINE_LABELS,
-  SHIPPING_MODE_LABELS,
-  SHIPPING_MODE_ICONS,
-  SHIPPING_MODE_COLORS,
-} from '../types';
+import { Badge } from '@src/components/ui/Badge/Badge';
+import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, CONTAINER_STATUS_COLORS, SHIPPING_LINE_LABELS, SHIPPING_MODE_LABELS, SHIPPING_MODE_ICONS, SHIPPING_MODE_COLORS } from '../types';
 
 // Statuses that can receive goods (assignable)
 const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'LOADING'];

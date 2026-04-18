@@ -235,7 +235,7 @@ const Notifications = ({ navigation }: RootStackScreenProps<"Notifications">) =>
             renderItem={renderItem}
             keyExtractor={(item) => item._id}
             ListEmptyComponent={ListEmptyComponent}
-            estimatedItemSize={100}
+
             showsVerticalScrollIndicator={false}
             refreshControl={
                <RefreshControl

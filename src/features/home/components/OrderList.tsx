@@ -6,7 +6,7 @@ import { ActivityIndicator, Text } from 'react-native-paper';
 
 import { COLORS } from '@src/constants/Colors';
 // import RetryButton from '@src/components/common/Error';
-import { useGetActiveOrder } from '@src/shared/hooks';
+import { useGetActiveOrder } from '@src/shared/hooks/useOrders';
 import OrderCard from './OrderCard';
 
 interface Props {
@@ -72,7 +72,7 @@ const ListingList = ({ Status }: Props) => {
 						</>
 					);
 				}}
-				estimatedItemSize={276}
+
 				ListFooterComponent={renderFooter}
 			/>
 		</>

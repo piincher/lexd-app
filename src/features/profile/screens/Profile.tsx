@@ -23,10 +23,10 @@ import Constants from "expo-constants";
 
 import SocialMedia from "@src/components/SocialMedia/SocialMedia";
 import { Fonts } from "@src/constants/Fonts";
-import { withProtectedRoute } from "@src/features/auth";
+import { withProtectedRoute } from "@src/shared/hoc/withProtectedRoute";
 import { HomeTabScreenProps } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetCurrentUser, useBalance } from "../hooks/useProfile";
 import { CertifiedShipperCard } from "../components/CertifiedShipperCard";
 import { MilestoneBadges } from "../components/MilestoneBadges";

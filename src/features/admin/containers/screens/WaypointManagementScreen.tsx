@@ -16,7 +16,7 @@ import {
   ImportTemplateDialog,
   SaveChangesDialog,
 } from './WaypointManagement/components';
-import { WaypointUpdateModal } from '../components';
+import { WaypointUpdateModal } from '../components/WaypointUpdateModal';
 import { styles } from './WaypointManagement/WaypointManagementScreen.styles';
 
 export const WaypointManagementScreen: React.FC = () => {

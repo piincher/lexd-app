@@ -4,12 +4,20 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { useGoodsDetailScreen } from './hooks';
-import {
-  LoadingState, ErrorState, GoodsDetailHeader, QRCard, PhotoCard, DescriptionCard,
-  ClientCard, PropertiesCard, LocationCard, FinancialCard, ReceptionCard,
-  ActionButtons, AssignContainerDialog,
-} from './components';
+import { useGoodsDetailScreen } from './hooks/useGoodsDetailScreen';
+import { LoadingState } from './components/LoadingState';
+import { ErrorState } from './components/ErrorState';
+import { GoodsDetailHeader } from './components/GoodsDetailHeader';
+import { QRCard } from './components/QRCard';
+import { PhotoCard } from './components/PhotoCard';
+import { DescriptionCard } from './components/DescriptionCard';
+import { ClientCard } from './components/ClientCard';
+import { PropertiesCard } from './components/PropertiesCard';
+import { LocationCard } from './components/LocationCard';
+import { FinancialCard } from './components/FinancialCard';
+import { ReceptionCard } from './components/ReceptionCard';
+import { ActionButtons } from './components/ActionButtons';
+import { AssignContainerDialog } from './components/AssignContainerDialog';
 import { styles } from './GoodsDetailScreen.styles';
 
 export const GoodsDetailScreen: React.FC = () => {

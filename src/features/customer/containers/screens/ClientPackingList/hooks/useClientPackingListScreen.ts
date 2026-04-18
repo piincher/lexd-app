@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { Alert, Linking, Platform, Share } from 'react-native';
 import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { useGetMyPackingList, useDownloadPackingListPDF } from '../../../hooks/useCustomerContainers';
 

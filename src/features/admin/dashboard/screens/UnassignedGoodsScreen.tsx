@@ -2,16 +2,16 @@ import React from "react";
 import {
   View,
   Text,
-  FlatList,
   TouchableOpacity,
   RefreshControl,
   StyleSheet,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-import { useUnassignedGoods } from "../hooks";
+import { useUnassignedGoods } from "../hooks/useUnassignedGoods";
 import { ClientInfo } from "@src/features/admin/goods/types";
 
 const formatDate = (dateStr: string) => {
@@ -49,7 +49,7 @@ export const UnassignedGoodsScreen: React.FC = () => {
         <Text style={styles.count}>{sortedGoods.length}</Text>
       </View>
 
-      <FlatList
+      <FlashList
         data={sortedGoods}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
@@ -91,7 +91,7 @@ export const UnassignedGoodsScreen: React.FC = () => {
                   {"  "}Reçu: {formatDate(item.receivedAt)}
                 </Text>
                 <View style={styles.modeBadge}>
-                  <Text style={styles.modeText}>{item.shippingMode || "—"}</Text>
+                  <Text style={styles.modeText}>{(item as any).shippingMode || "—"}</Text>
                 </View>
               </View>
             </TouchableOpacity>

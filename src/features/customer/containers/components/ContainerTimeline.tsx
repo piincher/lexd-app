@@ -7,14 +7,9 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
-import {
-  ContainerTimeline as ContainerTimelineType,
-  CustomerContainerStatus,
-  CUSTOMER_STATUS_COLORS,
-  CUSTOMER_TIMELINE_STEPS,
-} from '../types';
+import { ContainerTimeline as ContainerTimelineType, CustomerContainerStatus, CUSTOMER_STATUS_COLORS, CUSTOMER_TIMELINE_STEPS } from '../types';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 

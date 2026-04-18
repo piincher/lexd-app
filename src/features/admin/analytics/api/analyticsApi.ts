@@ -3,18 +3,8 @@
  * API client for analytics endpoints
  */
 
-import { apiClient } from '@src/shared/api/client';
-import {
-  DashboardData,
-  RevenueTrendsData,
-  ContainerUtilizationData,
-  CustomerAnalyticsData,
-  GoodsVolumeData,
-  PaymentMetricsData,
-  RealtimeData,
-  PeriodFilter,
-  ExportOptions,
-} from '../types';
+import { apiClient } from '@src/api/client';
+import { DashboardData, RevenueTrendsData, ContainerUtilizationData, CustomerAnalyticsData, GoodsVolumeData, PaymentMetricsData, RealtimeData, PeriodFilter, ExportOptions } from '../types';
 
 const BASE_URL = '/v2/analytics';
 

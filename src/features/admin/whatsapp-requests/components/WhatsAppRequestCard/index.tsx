@@ -5,7 +5,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Badge, Button, Card } from '@src/shared/ui';
+import { Badge } from '@src/shared/ui/Badge';
+import { Button } from '@src/shared/ui/Button';
+import { Card } from '@src/shared/ui/Card';
 import { Theme } from '@src/constants/Theme';
 
 export interface WhatsAppRequest { id: string; phoneNumber: string; message: string; status: 'pending' | 'approved' | 'rejected'; createdAt: string; customerName?: string; }

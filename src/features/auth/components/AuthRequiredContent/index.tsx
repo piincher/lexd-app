@@ -18,7 +18,7 @@ import { COLORS } from "@src/constants/Colors";
 import { IMAGES } from "@src/constants/Images";
 import { Fonts } from "@src/constants/Fonts";
 import AppButton from "@src/components/AppButton/AppButton";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface AuthRequiredContentProps {
    onLoginPress?: () => void;

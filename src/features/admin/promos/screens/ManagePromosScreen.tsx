@@ -743,7 +743,7 @@ export default function ManagePromosScreen({
           data={promos}
           renderItem={renderPromo}
           keyExtractor={(item) => item._id}
-          estimatedItemSize={220}
+
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
           refreshing={isRefetching}

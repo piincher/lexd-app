@@ -6,7 +6,9 @@
 import React, { useState } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { Screen, Card, Button } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
+import { Card } from '@src/shared/ui/Card';
+import { Button } from '@src/shared/ui/Button';
 import { Theme } from '@src/constants/Theme';
 import { useVoidGoods } from '../../hooks';
 import { styles } from './VoidGoodsScreen.styles';

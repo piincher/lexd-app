@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { RootStackScreenProps } from "@src/navigations/type";
 import { useGetUser } from "@src/hooks/useGetUser";
-import { useGetOrderOfUserById } from "@src/shared/hooks";
+import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
 
 import { useOrderStats, useLastShipments } from "../hooks/useOrderStats";
 import { useChartData } from "../hooks/useOrderStats";

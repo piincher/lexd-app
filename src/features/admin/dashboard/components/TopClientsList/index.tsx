@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
@@ -61,7 +62,7 @@ export const TopClientsList: React.FC<TopClientsListProps> = ({ clients }) => {
         <Ionicons name="trophy" size={18} color="#F59E0B" />
         <Text style={styles.title}>Top Clients avec Impayés</Text>
       </View>
-      <FlatList
+      <FlashList
         data={clients}
         renderItem={renderItem}
         keyExtractor={(item) => item.clientId}

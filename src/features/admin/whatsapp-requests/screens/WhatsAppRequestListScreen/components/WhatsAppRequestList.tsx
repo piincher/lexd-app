@@ -1,9 +1,10 @@
 /**
- * WhatsAppRequestList - FlatList wrapper for requests
+ * WhatsAppRequestList - FlashList wrapper for requests
  */
 
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
+import { RefreshControl, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Theme } from '@src/constants/Theme';
 import { WhatsAppRequest } from '../../../api/whatsappRequestApi';
 import { WhatsAppRequestCard } from './WhatsAppRequestCard';
@@ -55,7 +56,7 @@ export const WhatsAppRequestList: React.FC<WhatsAppRequestListProps> = ({
   );
 
   return (
-    <FlatList
+    <FlashList
       data={requests}
       keyExtractor={keyExtractor}
       renderItem={renderItem}

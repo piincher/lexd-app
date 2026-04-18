@@ -53,7 +53,7 @@ export const ListItemOrders = ({ loadMore, data, isFetchingNextPage, hasNextPage
 					return <RenderOrder item={item} />;
 				}}
 				ListFooterComponent={renderFooter}
-				estimatedItemSize={200}
+
 			/>
 		</>
 	);

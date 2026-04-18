@@ -13,6 +13,7 @@ import React, {
 } from "react";
 import { AppState, AppStateStatus, Platform } from "react-native";
 import { navigationRef } from "@src/navigations/navigationRef";
+import { registerCertificateNotificationHandler } from "@src/features/profile/notifications/certificateHandler";
 
 import {
   clearBadgeCount,
@@ -142,6 +143,11 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   useEffect(() => {
     // Set navigation ref for deep linking (uses shared ref from navigationRef.ts)
     setNotificationNavigationRef(navigationRef);
+  }, []);
+
+  useEffect(() => {
+    // Register profile-specific notification handlers
+    registerCertificateNotificationHandler();
   }, []);
 
   useEffect(() => {

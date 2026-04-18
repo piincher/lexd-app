@@ -9,7 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { IMAGES } from '@src/constants/Images';
 import { Fonts } from '@src/constants/Fonts';
-import { useAppTheme } from '@src/providers';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface LoginHeaderProps {
   title: string;

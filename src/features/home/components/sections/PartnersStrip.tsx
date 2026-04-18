@@ -7,7 +7,7 @@ import React from 'react';
 import { View, ScrollView, Image, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { useAppTheme } from '@src/providers';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
 import { PARTNER_LOGOS } from '../../constants/homeData';

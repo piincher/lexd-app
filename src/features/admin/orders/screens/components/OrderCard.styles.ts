@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { lightTheme } from '@src/constants/Theme';
+import { COLORS } from '@src/constants/Colors';
 
 type Colors = typeof lightTheme.colors;
 
@@ -153,6 +154,28 @@ export const createStyles = (colors: Colors) =>
       fontSize: 10,
       color: colors.text.secondary,
       fontFamily: Fonts.medium,
+    },
+    checkboxColumn: {
+      width: 44,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.background.paper,
+    },
+    checkbox: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: colors.border,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    checkboxSelected: {
+      backgroundColor: COLORS.blue || '#2196F3',
+      borderColor: COLORS.blue || '#2196F3',
+    },
+    selectedContainer: {
+      backgroundColor: '#E3F2FD',
     },
   });
 

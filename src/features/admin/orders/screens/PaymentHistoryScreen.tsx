@@ -8,7 +8,7 @@ import { View, ScrollView, StyleSheet, Image, TouchableOpacity, Alert, Linking }
 import { Text, Surface, Divider, ActivityIndicator, IconButton, Portal, Modal, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { sharePDFOnWhatsApp as sharePDFOnWhatsAppUtil } from '@src/shared/lib/pdfShare';
-import { Screen } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import { MaterialCommunityIcons } from '@expo/vector-icons';

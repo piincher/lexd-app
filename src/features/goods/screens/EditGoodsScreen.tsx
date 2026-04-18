@@ -20,7 +20,8 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
   navigation,
 }) => {
   const { goodsId } = route.params;
-  const { user, token } = useAuth((state) => ({ user: state.user, token: state.token }));
+  const user = useAuth((state) => state.user);
+  const token = useAuth((state) => state.token);
   const isAdmin = user?.role === 'admin';
   const isAuthLoading = !token; // Auth hasn't rehydrated yet if no token
   

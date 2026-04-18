@@ -14,7 +14,7 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated';
-import { useAppTheme } from '@src/providers';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { FAQItem as FAQItemType, FAQ_CATEGORY_COLORS } from '../../types';
 

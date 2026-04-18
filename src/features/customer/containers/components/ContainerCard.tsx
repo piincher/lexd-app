@@ -7,15 +7,9 @@ import React from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { Card, Text, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
-import {
-  CustomerContainer,
-  CUSTOMER_STATUS_LABELS,
-  CUSTOMER_STATUS_COLORS,
-  CUSTOMER_STATUS_BG_COLORS,
-  SHIPPING_LINE_LABELS,
-} from '../types';
+import { CustomerContainer, CUSTOMER_STATUS_LABELS, CUSTOMER_STATUS_COLORS, CUSTOMER_STATUS_BG_COLORS, SHIPPING_LINE_LABELS } from '../types';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 

@@ -7,7 +7,7 @@ import React from "react";
 import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
 import { MotiView } from "moti";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMilestoneProgress } from "../../hooks/useMilestones";
 import { BadgeCircle } from "./BadgeCircle";
 import { styles, iconMap } from "./MilestoneBadges.styles";

@@ -6,11 +6,11 @@
 import React from "react";
 import {
   View,
-  FlatList,
   TouchableOpacity,
   StyleSheet,
   RefreshControl,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { Text, ActivityIndicator } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -319,7 +319,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
             {items.length} sur {total}
           </Text>
         </View>
-        <FlatList
+        <FlashList
           data={items}
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
@@ -388,7 +388,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   // Global Search Results (Grouped)
   if (entity === "all") {
     return (
-      <FlatList
+      <FlashList
         data={[{ key: "content" }]}
         renderItem={() => (
           <>
@@ -436,7 +436,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       : renderClientItem;
 
   return (
-    <FlatList
+    <FlashList
       data={results.data || []}
       renderItem={renderItem}
       keyExtractor={(item) => item._id}

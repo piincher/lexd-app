@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Badge } from '@src/components/ui';
+import { Badge } from '@src/components/ui/Badge/Badge';
 import { Theme } from '@src/constants/Theme';
 import { Goods, ClientInfo } from '../types';
 
@@ -24,6 +24,9 @@ interface GoodsCardProps {
   goods: Goods;
   onPress?: () => void;
   onMenuPress?: () => void;
+  isSelected?: boolean;
+  isSelectionMode?: boolean;
+  onToggleSelect?: () => void;
 }
 
 const getStatusConfig = (status: string): { 
@@ -83,7 +86,7 @@ const formatCurrency = (amount: number): string => {
   return amount.toLocaleString('fr-FR');
 };
 
-export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress, onMenuPress }) => {
+export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress, onMenuPress, isSelected, isSelectionMode, onToggleSelect }) => {
   const statusConfig = getStatusConfig(goods.status);
   const hasPhoto = goods.photos && goods.photos.length > 0;
   
@@ -94,8 +97,8 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress, onMenuPres
 
   return (
     <TouchableOpacity 
-      style={styles.container}
-      onPress={onPress}
+      style={[styles.container, isSelected && styles.selectedContainer]}
+      onPress={isSelectionMode ? onToggleSelect : onPress}
       activeOpacity={0.95}
     >
       {/* Gradient Accent Bar */}
@@ -141,9 +144,15 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress, onMenuPres
           {/* ID Row */}
           <View style={styles.idRow}>
             <Text style={styles.goodsId}>{goods.goodsId}</Text>
-            <TouchableOpacity style={styles.moreButton} onPress={onMenuPress}>
-              <Ionicons name="ellipsis-horizontal" size={20} color={Theme.neutral[400]} />
-            </TouchableOpacity>
+            {isSelectionMode ? (
+              <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
+                {isSelected && <Ionicons name="checkmark" size={16} color="#FFF" />}
+              </View>
+            ) : (
+              <TouchableOpacity style={styles.moreButton} onPress={onMenuPress}>
+                <Ionicons name="ellipsis-horizontal" size={20} color={Theme.neutral[400]} />
+              </TouchableOpacity>
+            )}
           </View>
 
           {/* Description */}
@@ -371,6 +380,22 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     color: Theme.primary[700],
     letterSpacing: -0.3,
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: Theme.neutral[400],
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  checkboxSelected: {
+    backgroundColor: Theme.primary[600],
+    borderColor: Theme.primary[600],
+  },
+  selectedContainer: {
+    backgroundColor: '#E8E4F3',
   },
 });
 

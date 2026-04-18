@@ -13,7 +13,6 @@ import type { InAppNotification } from '../types';
 import { useGetUnreadCount } from '../hooks/useNotifications';
 import NotificationToast from './NotificationToast';
 import type { RootStackParamList } from '@src/navigations/type';
-import { certificateApi } from '@src/features/profile/api/certificateApi';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
@@ -125,22 +124,17 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
         break;
 
       case 'CERTIFICATE_ISSUED':
-        // Fetch certificate progress and navigate to detail screen
-        certificateApi.getProgress().then((response) => {
-          const progress = response.data.data;
-          if (progress.isCertified && progress.certificate) {
-            const cert = progress.certificate;
-            navigation.navigate('CertificateDetail', {
-              certificateId: cert.certificateId,
-              verificationCode: cert.verificationCode,
-              issuedAt: cert.issuedAt,
-              certificateUrl: cert.certificateUrl || null,
-              certificateMongoId: cert._id || data?.certificateId,
-            });
-          }
-        }).catch((err) => {
-          console.error('[NotificationProvider] Error fetching certificate:', err);
-        });
+        if (data?.certificateId && data?.verificationCode && data?.issuedAt) {
+          navigation.navigate('CertificateDetail', {
+            certificateId: data.certificateId,
+            verificationCode: data.verificationCode,
+            issuedAt: data.issuedAt,
+            certificateUrl: data.certificateUrl || null,
+            certificateMongoId: data.certificateMongoId || data.certificateId,
+          });
+        } else {
+          navigation.navigate('Profile');
+        }
         break;
 
       default:

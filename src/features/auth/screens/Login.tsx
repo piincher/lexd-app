@@ -25,7 +25,7 @@ import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
 import { IMAGES } from "@src/constants/Images";
 import { Fonts } from "@src/constants/Fonts";
 import { RootStackScreenProps } from "@src/navigations/type";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { initMixpanel } from "@src/config/Analytic";
 import { Notification } from "@src/components/Notification/Notification";
 import SocialMedia from "@src/components/SocialMedia/SocialMedia";

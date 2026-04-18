@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { View, StyleSheet, FlatList, Pressable } from "react-native";
+import { View, StyleSheet, Pressable } from "react-native";
+import { FlashList } from '@shopify/flash-list';
 import { TextInput, Text, ActivityIndicator } from "react-native-paper";
 import { COLORS } from "@src/constants/Colors";
 import { useSearchUsers } from "../../hooks/useSearchUsers";
@@ -88,7 +89,7 @@ export const UserSearch: React.FC<UserSearchProps> = ({
           <Text style={styles.resultsCount}>
             {users.length} résultat{users.length > 1 ? 's' : ''}
           </Text>
-          <FlatList
+          <FlashList
             data={users}
             keyExtractor={(item) => item._id}
             renderItem={({ item }) => (

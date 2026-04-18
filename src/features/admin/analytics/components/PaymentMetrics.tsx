@@ -8,11 +8,7 @@ import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Text, Card, useTheme, ProgressBar } from 'react-native-paper';
 import Svg, { Circle, G, Text as SvgText } from 'react-native-svg';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {
-  PaymentMetricsData,
-  PaymentMethodMetric,
-  OutstandingAgingBucket,
-} from '../types';
+import { PaymentMetricsData, PaymentMethodMetric, OutstandingAgingBucket } from '../types';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 

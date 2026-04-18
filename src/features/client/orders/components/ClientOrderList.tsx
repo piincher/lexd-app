@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Theme } from '@src/constants/Theme';
 import { EmptyState } from '@src/shared/ui/EmptyState';
 import { Order } from '../types';
@@ -34,7 +35,7 @@ export const ClientOrderList: React.FC<ClientOrderListProps> = ({
   }
 
   return (
-    <FlatList
+    <FlashList
       data={orders}
       keyExtractor={(item) => item._id}
       renderItem={({ item }) => (

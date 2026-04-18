@@ -9,11 +9,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
 import { RootStackScreenProps } from '@src/navigations/type';
 import { styles } from './ClientPackingListScreen.styles';
-import { useClientPackingListScreen } from './hooks';
-import {
-  PackingListHeader, PackingListSummary, PackingListConsignee, PackingListGoods,
-  PackingListFooter, ContactDialog, LoadingState, ErrorState,
-} from './components';
+import { useClientPackingListScreen } from './hooks/useClientPackingListScreen';
+import { PackingListHeader } from './components/PackingListHeader';
+import { PackingListSummary } from './components/PackingListSummary';
+import { PackingListConsignee } from './components/PackingListConsignee';
+import { PackingListGoods } from './components/PackingListGoods';
+import { PackingListFooter } from './components/PackingListFooter';
+import { ContactDialog } from './components/ContactDialog';
+import { LoadingState } from './components/LoadingState';
+import { ErrorState } from './components/ErrorState';
 
 const ClientPackingListScreen: React.FC<RootStackScreenProps<'ClientPackingList'>> = ({
   navigation, route,

@@ -4,15 +4,12 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { ActivityItem, ActivityType } from '../types';
-import {
-  ACTIVITY_TYPE_COLORS,
-  ACTIVITY_TYPE_ICONS,
-} from '../types';
+import { ACTIVITY_TYPE_COLORS, ACTIVITY_TYPE_ICONS } from '../types';
 
 export interface ActivityFeedProps {
   /**

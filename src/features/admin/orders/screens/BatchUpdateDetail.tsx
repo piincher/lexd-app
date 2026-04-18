@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, View } from "react-native";
 import { RadioButton } from "react-native-paper";
 import { LoadingSpinner } from "@src/components/LoadingSpinner";
 import { COLORS } from "@src/constants/Colors";
@@ -16,7 +16,7 @@ import { Picker } from "@react-native-picker/picker";
 import { useUpdateOrderStatus } from "../hooks/useOrderManagement";
 import AppButton from "@src/components/AppButton/AppButton";
 import SubmitBtn from "@src/components/SubmitBtn/SubmitBtn";
-import { useGetSeaRoutes } from "@src/shared/hooks";
+import { useGetSeaRoutes } from '@src/shared/hooks/useRoutes';
 
 const batchUpdateSchema = yup.object({
    contenairNumber: yup.string(),
@@ -50,11 +50,14 @@ const BatchUpdateDetail = ({ navigation, route }: RootStackScreenProps<"BatchUpd
    const { mutate, isPending } = useUpdateOrderStatus();
 
    const onSubmit = (data: { contenairNumber: string }) => {
-      mutate({
-         orders: ids,
-         title: pickerValue!,
-      });
-      return;
+      Alert.alert(
+         'Confirmer la mise à jour',
+         `Modifier le statut de ${ids.length} commande(s) vers "${pickerValue}" ?`,
+         [
+            { text: 'Annuler', style: 'cancel' },
+            { text: 'Confirmer', onPress: () => mutate({ orders: ids, title: pickerValue! }) },
+         ]
+      );
    };
 
    const initialValues = {

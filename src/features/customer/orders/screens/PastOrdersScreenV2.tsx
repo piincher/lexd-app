@@ -8,6 +8,7 @@ import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
 import { Input } from '@src/shared/ui/Input';
+import { Theme } from '@src/constants/Theme';
 import { usePastOrders } from '../hooks/usePastOrders';
 import { useOrderFilters } from '../hooks/useOrderFilters';
 import { OrderStatusFilter } from '../components/OrderStatusFilter';

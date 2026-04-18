@@ -18,7 +18,7 @@ import {
   Modal
 } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { Screen } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -52,6 +52,7 @@ const RecordPaymentScreen: React.FC = () => {
   const [proofImages, setProofImages] = useState<string[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [showImageModal, setShowImageModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { mutate: recordPayment, isPending, error, isError } = useRecordPayment();
 
@@ -60,8 +61,6 @@ const RecordPaymentScreen: React.FC = () => {
     
     if (!amount || parseFloat(amount) <= 0) {
       newErrors.amount = 'Please enter a valid amount';
-    } else if (parseFloat(amount) > currentBalance) {
-      newErrors.amount = `Amount cannot exceed balance (${currentBalance.toLocaleString()} FCFA)`;
     }
     
     if (!paymentMethod) {
@@ -72,13 +71,9 @@ const RecordPaymentScreen: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-    console.log('[RecordPaymentScreen] Submit clicked');
-    
-    if (!validate()) {
-      console.log('[RecordPaymentScreen] Validation failed:', errors);
-      return;
-    }
+  const submitPayment = () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
     const paymentData = {
       orderId,
@@ -89,11 +84,12 @@ const RecordPaymentScreen: React.FC = () => {
       proofImages: proofImages.length > 0 ? proofImages : undefined,
       recordedAt: new Date().toISOString(),
     };
-    
+
     console.log('[RecordPaymentScreen] Submitting payment:', paymentData);
 
     recordPayment(paymentData, {
       onSuccess: (data) => {
+        setIsSubmitting(false);
         console.log('[RecordPaymentScreen] Payment recorded:', data);
 
         const paymentV2Id = data.paymentV2Id || data.payment?.id;
@@ -117,10 +113,38 @@ const RecordPaymentScreen: React.FC = () => {
         });
       },
       onError: (err) => {
+        setIsSubmitting(false);
         console.error('[RecordPaymentScreen] Payment failed:', err);
         Alert.alert('Erreur', 'Échec de l\'enregistrement du paiement. Veuillez réessayer.');
       },
     });
+  };
+
+  const handleSubmit = () => {
+    console.log('[RecordPaymentScreen] Submit clicked');
+
+    if (!validate()) {
+      console.log('[RecordPaymentScreen] Validation failed:', errors);
+      return;
+    }
+
+    const parsedAmount = parseFloat(amount);
+
+    // Warn on overpayment
+    if (parsedAmount > currentBalance) {
+      const overage = parsedAmount - currentBalance;
+      Alert.alert(
+        'Overpayment Warning',
+        `This amount exceeds the balance due by ${overage.toLocaleString()} FCFA.\n\nBalance due: ${currentBalance.toLocaleString()} FCFA\nPayment amount: ${parsedAmount.toLocaleString()} FCFA\n\nDo you want to proceed?`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Proceed', style: 'destructive', onPress: () => submitPayment() },
+        ]
+      );
+      return;
+    }
+
+    submitPayment();
   };
 
   const pickImage = async (fromCamera: boolean) => {
@@ -336,6 +360,14 @@ const RecordPaymentScreen: React.FC = () => {
                 {getNewBalance().toLocaleString()} FCFA
               </Text>
             </View>
+            {parseFloat(amount) > currentBalance && (
+              <View style={styles.previewRow}>
+                <Text style={[styles.previewLabel, { color: '#E65100' }]}>Overpayment</Text>
+                <Text style={{ fontSize: 14, fontWeight: '600', fontFamily: Fonts.semiBold, color: '#E65100' }}>
+                  +{(parseFloat(amount) - currentBalance).toLocaleString()} FCFA
+                </Text>
+              </View>
+            )}
             <View style={styles.previewRow}>
               <Text style={styles.previewLabel}>Payment Status</Text>
               <View style={[styles.statusBadge, { 
@@ -367,7 +399,7 @@ const RecordPaymentScreen: React.FC = () => {
           mode="contained"
           onPress={handleSubmit}
           loading={isPending}
-          disabled={isPending || !amount}
+          disabled={isPending || isSubmitting || !amount}
           style={styles.submitButton}
           buttonColor={COLORS.blue}
           icon="check"

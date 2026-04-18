@@ -23,14 +23,9 @@ import {
   IconButton,
 } from "react-native-paper";
 import { DatePickerModal } from "react-native-paper-dates";
-import { format } from "date-fns";
+import { format } from "date-fns/format";
 
-import {
-  ExportEntity,
-  ExportFormat,
-  ScheduleFrequency,
-  ExportFilters,
-} from "../types";
+import { ExportEntity, ExportFormat, ScheduleFrequency, ExportFilters } from "../types";
 import {
   useExportData,
   useScheduleExport,

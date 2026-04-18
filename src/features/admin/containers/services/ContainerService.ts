@@ -5,16 +5,8 @@
 
 import { apiClientV2, apiRequest } from '@src/api/client';
 import { ApiResponse, PaginatedResponse } from '@src/api/types';
-import { 
-  Container, 
-  CreateContainerInput, 
-  UpdateContainerStatusInput,
-  AssignGoodsInput,
-  ContainerFilters,
-  PackingList,
-  Route,
-  RouteFilters,
-} from '../types';
+import { PackingList } from '../types/PackingList';
+import { Container, CreateContainerInput, UpdateContainerStatusInput, AssignGoodsInput, ContainerFilters, Route, RouteFilters } from '../types';
 
 const BASE_URL = '/containers';
 const ROUTES_URL = '/routes';

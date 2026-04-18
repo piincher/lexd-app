@@ -24,6 +24,7 @@ import { GlobalSearchBar } from "../components/GlobalSearchBar";
 import { SearchFilters } from "../components/SearchFilters";
 import { SearchResults } from "../components/SearchResults";
 import { SearchFilters as SearchFiltersType, FilterPreset } from "../api/searchApi";
+import { ExportDataModal } from "@src/features/admin/export/components/ExportDataModal";
 import { Theme } from "@src/constants/Theme";
 
 const { width, height } = Dimensions.get("window");
@@ -40,6 +41,7 @@ export const GlobalSearchScreen: React.FC = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const [selectedEntity, setSelectedEntity] = useState<EntityType>("goods");
   const [showFilters, setShowFilters] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
   const [slideAnim] = useState(new Animated.Value(width));
 
   const {
@@ -99,8 +101,19 @@ export const GlobalSearchScreen: React.FC = () => {
 
   // Handle export
   const handleExport = () => {
-    // TODO: Implement export functionality
-    console.log("Exporting results...", data);
+    setShowExportModal(true);
+  };
+
+  const entityToExportEntity = {
+    goods: "GOODS",
+    containers: "CONTAINERS",
+    clients: "CLIENTS",
+  } as const;
+
+  const entityLabels = {
+    goods: "Marchandises",
+    containers: "Containers",
+    clients: "Clients",
   };
 
   // Get results data based on entity
@@ -158,6 +171,7 @@ export const GlobalSearchScreen: React.FC = () => {
       <View style={styles.searchContainer}>
         <GlobalSearchBar
           onSearch={handleSearch}
+          onFilterPress={() => setShowFilters(true)}
           placeholder={`Rechercher ${selectedEntity}...`}
           showSuggestions={true}
         />
@@ -309,6 +323,14 @@ export const GlobalSearchScreen: React.FC = () => {
           </Animated.View>
         </View>
       </Modal>
+
+      {/* Export Modal */}
+      <ExportDataModal
+        visible={showExportModal}
+        onDismiss={() => setShowExportModal(false)}
+        entity={entityToExportEntity[selectedEntity]}
+        entityLabel={entityLabels[selectedEntity]}
+      />
     </SafeAreaView>
   );
 };

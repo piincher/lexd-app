@@ -1,11 +1,11 @@
 /**
- * GoodsList - FlatList wrapper for goods
+ * GoodsList - FlashList wrapper for goods
  * SRP: Renders list with loading, error, or empty states
  */
 
 import React, { useCallback } from 'react';
-import { View, StyleSheet, RefreshControl, ListRenderItem } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
+import { View, StyleSheet, RefreshControl } from 'react-native';
+import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -24,9 +24,10 @@ interface GoodsListProps {
   onRefresh: () => Promise<void>;
   onGoodsPress: (goodsId: string) => void;
   onAddPress?: () => void;
+  isSelectionMode?: boolean;
+  selectedIds?: string[];
+  onToggleSelect?: (id: string) => void;
 }
-
-const GOODS_CARD_HEIGHT = 160;
 
 export const GoodsList: React.FC<GoodsListProps> = ({
   goods,
@@ -37,21 +38,21 @@ export const GoodsList: React.FC<GoodsListProps> = ({
   onRefresh,
   onGoodsPress,
   onAddPress,
+  isSelectionMode,
+  selectedIds,
+  onToggleSelect,
 }) => {
   const renderItem: ListRenderItem<Goods> = useCallback(({ item }) => (
-    <GoodsCard goods={item} onPress={() => onGoodsPress(item._id)} />
-  ), [onGoodsPress]);
+    <GoodsCard
+      goods={item}
+      onPress={() => onGoodsPress(item._id)}
+      isSelectionMode={isSelectionMode}
+      isSelected={selectedIds?.includes(item._id)}
+      onToggleSelect={() => onToggleSelect?.(item._id)}
+    />
+  ), [onGoodsPress, isSelectionMode, selectedIds, onToggleSelect]);
 
   const keyExtractor = useCallback((item: Goods) => item._id, []);
-
-  const getItemLayout = useCallback((
-    _data: ArrayLike<Goods> | null | undefined,
-    index: number
-  ) => ({
-    length: GOODS_CARD_HEIGHT,
-    offset: GOODS_CARD_HEIGHT * index,
-    index,
-  }), []);
 
   if (isLoading) {
     return (
@@ -87,9 +88,7 @@ export const GoodsList: React.FC<GoodsListProps> = ({
       renderItem={renderItem}
       contentContainerStyle={styles.listContent}
       showsVerticalScrollIndicator={false}
-      estimatedItemSize={GOODS_CARD_HEIGHT}
-      getItemLayout={getItemLayout}
-      removeClippedSubviews={true}
+
       refreshControl={
         <RefreshControl
           refreshing={isRefetching}

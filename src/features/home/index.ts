@@ -1,7 +1,8 @@
 // Home Feature - Public API
 
 // Hooks
-export { useNotification, sendPushNotification } from "./hooks/useNotification";
+export { useNotification } from "./hooks/useNotification";
+export { sendPushNotification } from "@src/shared/lib/pushNotification";
 
 // Components
 export { default as OrderList } from "./components/OrderList";

@@ -9,7 +9,6 @@ import {
    ActivityIndicator,
    Alert,
    Dimensions,
-   FlatList,
    Image,
    Pressable,
    ScrollView,
@@ -18,6 +17,7 @@ import {
    TouchableOpacity,
    View,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
    useGetActiveOrdersAdmin,
@@ -126,7 +126,7 @@ const PastOrderScreen: FC = () => {
                item.clientPhone.includes(searchQuery)
          )
       );
-   })();
+   })() as productType[];
 
    if (isError) {
       return (
@@ -198,7 +198,7 @@ const PastOrderScreen: FC = () => {
          </View>
 
          {/* Orders List */}
-         <FlatList
+         <FlashList<productType>
             data={filteredData}
             keyExtractor={(item) => item._id!}
             renderItem={({ item }) => <RenderOrder item={item} />}
@@ -220,9 +220,7 @@ const PastOrderScreen: FC = () => {
             ListFooterComponent={renderFooter}
             onEndReached={loadMore}
             onEndReachedThreshold={0.5}
-            initialNumToRender={10}
-            maxToRenderPerBatch={5}
-            windowSize={10}
+            {...({ initialNumToRender: 10, maxToRenderPerBatch: 5, windowSize: 10 } as any)}
          />
       </SafeAreaView>
    );

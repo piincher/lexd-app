@@ -6,9 +6,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '@src/providers';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
-import { Button } from '@src/shared/ui';
+import { Button } from '@src/shared/ui/Button';
 
 interface FAQEmptyStateProps {
   searchQuery: string;

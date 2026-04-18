@@ -3,7 +3,7 @@
  * Provides unified storage interface using AsyncStorage
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as EncryptedStorage from './encryptedStorage';
 
 export interface StorageStats {
   totalKeys: number;
@@ -17,7 +17,7 @@ export interface StorageStats {
 export const setItem = async <T>(key: string, value: T): Promise<void> => {
   try {
     const serialized = JSON.stringify(value);
-    await AsyncStorage.setItem(key, serialized);
+    await EncryptedStorage.setItem(key, serialized);
   } catch (error) {
     console.error(`[OfflineStorage] Error setting item ${key}:`, error);
     throw new Error(`Failed to store item: ${key}`);
@@ -29,7 +29,7 @@ export const setItem = async <T>(key: string, value: T): Promise<void> => {
  */
 export const getItem = async <T>(key: string): Promise<T | null> => {
   try {
-    const value = await AsyncStorage.getItem(key);
+    const value = await EncryptedStorage.getItem(key);
     if (value === null) return null;
     return JSON.parse(value) as T;
   } catch (error) {
@@ -43,7 +43,7 @@ export const getItem = async <T>(key: string): Promise<T | null> => {
  */
 export const removeItem = async (key: string): Promise<void> => {
   try {
-    await AsyncStorage.removeItem(key);
+    await EncryptedStorage.removeItem(key);
   } catch (error) {
     console.error(`[OfflineStorage] Error removing item ${key}:`, error);
     throw new Error(`Failed to remove item: ${key}`);
@@ -55,7 +55,7 @@ export const removeItem = async (key: string): Promise<void> => {
  */
 export const getAllKeys = async (): Promise<string[]> => {
   try {
-    return await AsyncStorage.getAllKeys();
+    return await EncryptedStorage.getAllKeys();
   } catch (error) {
     console.error('[OfflineStorage] Error getting all keys:', error);
     return [];
@@ -68,7 +68,7 @@ export const getAllKeys = async (): Promise<string[]> => {
 export const multiGet = async <T>(keys: string[]): Promise<Record<string, T | null>> => {
   try {
     if (keys.length === 0) return {};
-    const keyValuePairs = await AsyncStorage.multiGet(keys);
+    const keyValuePairs = await EncryptedStorage.multiGet(keys);
     const result: Record<string, T | null> = {};
     
     keyValuePairs.forEach(([key, value]) => {
@@ -91,7 +91,7 @@ export const multiSet = async <T>(items: Record<string, T>): Promise<void> => {
       key,
       JSON.stringify(value),
     ]);
-    await AsyncStorage.multiSet(keyValuePairs as [string, string][]);
+    await EncryptedStorage.multiSet(keyValuePairs as [string, string][]);
   } catch (error) {
     console.error('[OfflineStorage] Error in multiSet:', error);
     throw new Error('Failed to store multiple items');
@@ -104,7 +104,7 @@ export const multiSet = async <T>(items: Record<string, T>): Promise<void> => {
 export const multiRemove = async (keys: string[]): Promise<void> => {
   try {
     if (keys.length === 0) return;
-    await AsyncStorage.multiRemove(keys);
+    await EncryptedStorage.multiRemove(keys);
   } catch (error) {
     console.error('[OfflineStorage] Error in multiRemove:', error);
     throw new Error('Failed to remove multiple items');
@@ -116,7 +116,7 @@ export const multiRemove = async (keys: string[]): Promise<void> => {
  */
 export const clear = async (): Promise<void> => {
   try {
-    await AsyncStorage.clear();
+    await EncryptedStorage.clear();
   } catch (error) {
     console.error('[OfflineStorage] Error clearing storage:', error);
     throw new Error('Failed to clear storage');
@@ -128,8 +128,8 @@ export const clear = async (): Promise<void> => {
  */
 export const getStorageSize = async (): Promise<StorageStats> => {
   try {
-    const keys = await AsyncStorage.getAllKeys();
-    const keyValuePairs = await AsyncStorage.multiGet(keys);
+    const keys = await EncryptedStorage.getAllKeys();
+    const keyValuePairs = await EncryptedStorage.multiGet(keys);
     
     let totalSize = 0;
     keyValuePairs.forEach(([, value]) => {

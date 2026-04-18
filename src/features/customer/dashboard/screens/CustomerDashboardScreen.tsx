@@ -27,14 +27,13 @@ import { useAuth } from '@src/store/Auth';
 import { RootStackScreenProps } from '@src/navigations/type';
 
 import { useGetDashboard, useGetActivity, useDashboardInvalidation } from '../hooks/useDashboard';
-import {
-  StatCard,
-  ActivityFeed,
-  QuickActions,
-  ShipmentPipeline,
-  ActiveContainers,
-  PaymentInsights,
-} from '../components';
+import { StatCard } from '../components/StatCard';
+import { ActivityFeed } from '../components/ActivityFeed';
+import { QuickActions } from '../components/QuickActions';
+import { ShipmentPipeline } from '../components/ShipmentPipeline';
+import { ActiveContainers } from '../components/ActiveContainers';
+import { PaymentInsights } from '../components/PaymentInsights';
+import { DashboardSkeleton } from '../components/DashboardSkeleton';
 import { QuickAction, DashboardStats } from '../types';
 
 // ============================================
@@ -93,71 +92,6 @@ const formatNumber = (num: number): string => {
 };
 
 // ============================================
-// SKELETON COMPONENT
-// ============================================
-
-const DashboardSkeleton: React.FC = () => {
-  const theme = useTheme();
-
-  return (
-    <View style={styles.skeletonContainer}>
-      {/* Header Skeleton */}
-      <View style={styles.skeletonHeader}>
-        <View style={[styles.skeletonAvatar, { backgroundColor: theme.colors.surfaceVariant }]} />
-        <View style={styles.skeletonHeaderText}>
-          <View style={[styles.skeletonLine, { width: 120, backgroundColor: theme.colors.surfaceVariant }]} />
-          <View style={[styles.skeletonLine, { width: 180, marginTop: 8, backgroundColor: theme.colors.surfaceVariant }]} />
-        </View>
-      </View>
-
-      {/* Stats Grid Skeleton */}
-      <View style={styles.statsGrid}>
-        <View style={styles.statsRow}>
-          {[1, 2].map((i) => (
-            <View key={i} style={[styles.skeletonCard, { backgroundColor: theme.colors.surfaceVariant }]} />
-          ))}
-        </View>
-        <View style={styles.statsRow}>
-          {[3, 4].map((i) => (
-            <View key={i} style={[styles.skeletonCard, { backgroundColor: theme.colors.surfaceVariant }]} />
-          ))}
-        </View>
-      </View>
-
-      {/* Quick Actions Skeleton */}
-      <View style={styles.skeletonQuickActions}>
-        <View style={[styles.skeletonLine, { width: 150, backgroundColor: theme.colors.surfaceVariant }]} />
-        <View style={styles.skeletonActionsRow}>
-          {[1, 2, 3, 4].map((i) => (
-            <View
-              key={i}
-              style={[
-                styles.skeletonActionButton,
-                { backgroundColor: theme.colors.surfaceVariant },
-              ]}
-            />
-          ))}
-        </View>
-      </View>
-
-      {/* Activity Feed Skeleton */}
-      <View style={styles.skeletonActivity}>
-        <View style={[styles.skeletonLine, { width: 150, backgroundColor: theme.colors.surfaceVariant }]} />
-        {[1, 2, 3].map((i) => (
-          <View key={i} style={styles.skeletonActivityItem}>
-            <View style={[styles.skeletonIcon, { backgroundColor: theme.colors.surfaceVariant }]} />
-            <View style={styles.skeletonActivityContent}>
-              <View style={[styles.skeletonLine, { width: '60%', backgroundColor: theme.colors.surfaceVariant }]} />
-              <View style={[styles.skeletonLine, { width: '80%', marginTop: 8, backgroundColor: theme.colors.surfaceVariant }]} />
-            </View>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-};
-
-// ============================================
 // MAIN SCREEN COMPONENT
 // ============================================
 
@@ -166,7 +100,7 @@ export const CustomerDashboardScreen: React.FC<
 > = () => {
   const theme = useTheme();
   const navigation = useNavigation();
-  const { user } = useAuth();
+  const user = useAuth((state) => state.user);
   const { invalidateDashboard } = useDashboardInvalidation();
 
   // Queries
@@ -181,11 +115,12 @@ export const CustomerDashboardScreen: React.FC<
   const {
     data: activityData,
     isLoading: isActivityLoading,
+    isError: isActivityError,
     refetch: refetchActivity,
   } = useGetActivity({ limit: 5 });
 
   const isLoading = isDashboardLoading || isActivityLoading;
-  const isError = isDashboardError;
+  const isError = isDashboardError || isActivityError;
 
   // Refresh handler
   const handleRefresh = async () => {
@@ -212,8 +147,7 @@ export const CustomerDashboardScreen: React.FC<
   };
 
   const handlePayBalance = () => {
-    // Payment feature removed
-    console.log('Payment feature removed');
+    navigation.navigate('MyPaymentHistory' as never);
   };
 
   // Always use the local French quick actions (backend ones have wrong icons)
@@ -315,7 +249,7 @@ export const CustomerDashboardScreen: React.FC<
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl
-              refreshing={isDashboardLoading}
+              refreshing={isDashboardLoading || isActivityLoading}
               onRefresh={handleRefresh}
               colors={[theme.colors.primary]}
               tintColor={theme.colors.primary}
@@ -353,7 +287,6 @@ export const CustomerDashboardScreen: React.FC<
                 value={formatCurrency(stats.balanceDue)}
                 label="Solde Du"
                 gradientColors={STAT_GRADIENTS.balance}
-                onPress={stats.balanceDue > 0 ? handlePayBalance : undefined}
                 testID="stat-balance"
               />
             </View>
@@ -378,7 +311,7 @@ export const CustomerDashboardScreen: React.FC<
                   Paiement Requis
                 </Text>
                 <Text style={[styles.balanceAlertText, { color: theme.colors.onSurfaceVariant }]}>
-                  Vous avez {formatCurrency(stats.balanceDue)} à payer. Cliquez pour régler.
+                  Vous avez {formatCurrency(stats.balanceDue)} à payer. Solde en attente.
                 </Text>
               </View>
               <MaterialCommunityIcons
@@ -521,71 +454,6 @@ const styles = StyleSheet.create({
   },
   retryButton: {
     marginTop: Theme.spacing.xl,
-  },
-  // Skeleton Styles
-  skeletonContainer: {
-    flex: 1,
-    paddingTop: Theme.spacing.sm,
-  },
-  skeletonHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: Theme.spacing.lg,
-    marginBottom: Theme.spacing.lg,
-  },
-  skeletonAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  skeletonHeaderText: {
-    marginLeft: Theme.spacing.md,
-    flex: 1,
-  },
-  skeletonLine: {
-    height: 12,
-    borderRadius: 6,
-  },
-  skeletonCard: {
-    flex: 1,
-    height: 120,
-    borderRadius: Theme.radius.lg,
-    marginBottom: Theme.spacing.md,
-  },
-  skeletonQuickActions: {
-    marginTop: Theme.spacing.lg,
-    paddingHorizontal: Theme.spacing.lg,
-  },
-  skeletonActionsRow: {
-    flexDirection: 'row',
-    gap: Theme.spacing.md,
-    marginTop: Theme.spacing.md,
-  },
-  skeletonActionButton: {
-    width: 100,
-    height: 100,
-    borderRadius: Theme.radius.lg,
-  },
-  skeletonActivity: {
-    marginTop: Theme.spacing.lg,
-    paddingHorizontal: Theme.spacing.lg,
-  },
-  skeletonActivityItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Theme.spacing.md,
-    padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral.white,
-    borderRadius: Theme.radius.md,
-  },
-  skeletonIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: Theme.radius.md,
-  },
-  skeletonActivityContent: {
-    flex: 1,
-    marginLeft: Theme.spacing.md,
   },
 });
 

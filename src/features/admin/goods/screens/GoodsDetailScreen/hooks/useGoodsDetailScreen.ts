@@ -2,8 +2,8 @@ import { useState, useCallback } from 'react';
 import { Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useGetGoodsById, useDeleteGoods, useUpdateGoodsStatus } from '../../../hooks/useGoods';
-import { useAssignGoodsToContainer } from '@src/features/admin/containers/hooks';
-import { useGetAllContainers } from '@src/features/admin/containers/hooks';
+import { useAssignGoodsToContainer } from '@src/features/admin/containers/hooks/useContainers';
+import { useGetAllContainers } from '@src/features/admin/containers/hooks/useContainers';
 
 // Utility functions
 const formatCurrency = (amount: number): string => {
@@ -121,7 +121,14 @@ export const useGoodsDetailScreen = () => {
 
   const handleStatusUpdate = useCallback((status: string) => {
     if (!goods) return;
-    updateStatusMutation.mutate({ id: goods._id, status });
+    Alert.alert(
+      'Confirmer le changement de statut',
+      `Passer cette marchandise au statut "${status}" ?`,
+      [
+        { text: 'Annuler', style: 'cancel' },
+        { text: 'Confirmer', onPress: () => updateStatusMutation.mutate({ id: goods._id, status }) },
+      ]
+    );
   }, [goods, updateStatusMutation]);
 
   const handleShareQR = useCallback(() => {

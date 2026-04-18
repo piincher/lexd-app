@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { View, Text, Pressable, ScrollView, StyleSheet } from "react-native";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 /**
  * Horizontal status filter tabs for order lists.

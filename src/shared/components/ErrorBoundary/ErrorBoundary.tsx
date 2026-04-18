@@ -9,7 +9,7 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import * as Sentry from '@sentry/react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '@src/constants/Colors';
-import { Button } from '@src/shared/ui';
+import { Button } from '@src/shared/ui/Button';
 
 export interface ErrorBoundaryProps {
   children: ReactNode;

@@ -44,7 +44,46 @@ export const useContainerDetailScreen = () => {
     await refetch(); 
     setIsRefreshing(false); 
   };
-  const handleUpdateStatus = async (newStatus: ContainerStatus) => { setStatusMenuVisible(false); if (newStatus === container?.status) return; try { await updateStatusMutation.mutateAsync({ id: containerId, data: { status: newStatus } }); Alert.alert('Succès', `Statut mis à jour: ${CONTAINER_STATUS_LABELS[newStatus]}`); } catch { Alert.alert('Erreur', 'Impossible de mettre à jour le statut'); } };
+  const handleUpdateStatus = async (newStatus: ContainerStatus) => {
+    setStatusMenuVisible(false);
+    if (newStatus === container?.status) return;
+
+    const doUpdate = async () => {
+      try {
+        await updateStatusMutation.mutateAsync({ id: containerId, data: { status: newStatus } });
+        Alert.alert('Succès', `Statut mis à jour: ${CONTAINER_STATUS_LABELS[newStatus]}`);
+      } catch {
+        Alert.alert('Erreur', 'Impossible de mettre à jour le statut');
+      }
+    };
+
+    const checkCapacityAndUpdate = () => {
+      const requiresCapacityCheck: ContainerStatus[] = ['LOADED', 'IN_TRANSIT', 'ARRIVED', 'READY_FOR_PICKUP'];
+      if (requiresCapacityCheck.includes(newStatus)) {
+        if (goodsList.length === 0) {
+          Alert.alert('Attention', 'Ce container est vide. Impossible de passer au statut ' + CONTAINER_STATUS_LABELS[newStatus] + '.');
+          return;
+        }
+        if (capacityValue > maxCapacity) {
+          Alert.alert('Alerte Capacité', `${isAirContainer ? 'Poids' : 'CBM'} du container (${capacityValue.toFixed(1)}) dépasse le maximum (${maxCapacity}). Voulez-vous continuer ?`, [
+            { text: 'Annuler', style: 'cancel' },
+            { text: 'Continuer', style: 'destructive', onPress: doUpdate }
+          ]);
+          return;
+        }
+      }
+      doUpdate();
+    };
+
+    Alert.alert(
+      'Confirmer le changement de statut',
+      `Passer le container de "${CONTAINER_STATUS_LABELS[container!.status]}" à "${CONTAINER_STATUS_LABELS[newStatus]}" ?`,
+      [
+        { text: 'Annuler', style: 'cancel' },
+        { text: 'Confirmer', onPress: checkCapacityAndUpdate }
+      ]
+    );
+  };
   const handleRemoveGoods = (goodsId: string) => { setSelectedGoodsId(goodsId); setShowRemoveGoodsDialog(true); };
   const confirmRemoveGoods = async () => { if (!selectedGoodsId) return; try { await removeGoodsMutation.mutateAsync({ containerId, goodsId: selectedGoodsId }); setShowRemoveGoodsDialog(false); setSelectedGoodsId(null); Alert.alert('Succès', 'Marchandise retirée'); } catch { Alert.alert('Erreur', 'Impossible de retirer la marchandise'); } };
   const handleDeleteContainer = () => { if (goodsList.length > 0) { Alert.alert('Impossible', 'Veuillez d\'abord retirer toutes les marchandises.'); return; } setShowDeleteDialog(true); };
@@ -55,9 +94,9 @@ export const useContainerDetailScreen = () => {
   const canMarkReadyForPickup = container?.status === 'ARRIVED';
   const canMarkDelivered = container?.status === 'READY_FOR_PICKUP';
   const handleMarkReadyForPickup = () => setShowReadyForPickupDialog(true);
-  const confirmMarkReadyForPickup = async () => { try { await markReadyForPickupMutation.mutateAsync(containerId); setShowReadyForPickupDialog(false); Alert.alert('Succès', 'Container marqué comme prêt pour le retrait'); } catch { Alert.alert('Erreur', 'Impossible de marquer le container'); } };
+  const confirmMarkReadyForPickup = async () => { if (capacityValue > maxCapacity) { Alert.alert('Alerte Capacité', isAirContainer ? `Poids du container (${totalWeight.toFixed(1)}kg) dépasse le maximum (${MAX_WEIGHT}kg). Continuer quand même ?` : `CBM du container (${capacityValue.toFixed(1)}m³) dépasse le maximum (${MAX_CBM}m³). Continuer quand même ?`, [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: async () => { try { await markReadyForPickupMutation.mutateAsync(containerId); setShowReadyForPickupDialog(false); Alert.alert('Succès', 'Container marqué comme prêt pour le retrait'); } catch { Alert.alert('Erreur', 'Impossible de marquer le container'); } } }]); return; } try { await markReadyForPickupMutation.mutateAsync(containerId); setShowReadyForPickupDialog(false); Alert.alert('Succès', 'Container marqué comme prêt pour le retrait'); } catch { Alert.alert('Erreur', 'Impossible de marquer le container'); } };
   const handleMarkDelivered = () => setShowDeliveredDialog(true);
-  const confirmMarkDelivered = async () => { try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } };
+  const confirmMarkDelivered = async () => { if (goodsList.length === 0) { Alert.alert('Attention', 'Ce container est vide. Marquer un container vide comme livré est inhabituel. Continuer ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: async () => { try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } } }]); return; } try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } };
   const handleMarkGoodsDelivered = (goodsId: string) => Alert.alert('Confirmer la livraison', 'Marquer cette marchandise comme livrée ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Marquer Livré', onPress: async () => { try { await markGoodsDeliveredMutation.mutateAsync(goodsId); Alert.alert('Succès', 'Marchandise marquée comme livrée'); } catch { Alert.alert('Erreur', 'Impossible de marquer la marchandise'); } } }]);
   const cbmProfit = containerResponse?.data?.cbmProfit ?? null;
   return { containerId, navigation, container, goodsList, cbmProfit, isLoading, isRefetching, isRefreshing, updateStatusMutation, removeGoodsMutation, deleteContainerMutation, markReadyForPickupMutation, markGoodsDeliveredMutation, markContainerDeliveredMutation, statusMenuVisible, setStatusMenuVisible, showDeleteDialog, setShowDeleteDialog, showRemoveGoodsDialog, setShowRemoveGoodsDialog, showReadyForPickupDialog, setShowReadyForPickupDialog, showDeliveredDialog, setShowDeliveredDialog, selectedGoodsId, setSelectedGoodsId, fillPercentage, fillColor, statusColor, statusLabel, currentStatusIndex, isAirContainer, capacityValue, maxCapacity, canMarkReadyForPickup, canMarkDelivered, handleRefresh, handleUpdateStatus, handleRemoveGoods, confirmRemoveGoods, handleDeleteContainer, confirmDeleteContainer, handleAssignGoods, handleGeneratePackingList, handleGoToLoadingList, handleMarkReadyForPickup, confirmMarkReadyForPickup, handleMarkDelivered, confirmMarkDelivered, handleMarkGoodsDelivered };

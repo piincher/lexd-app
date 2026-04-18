@@ -15,13 +15,11 @@ import {
 } from '../../hooks/useWaypoints';
 import { containerQueryKeys } from '../../hooks/useContainers';
 import { useQueryClient } from '@tanstack/react-query';
-import {
-  TransitStatusCard,
-  TransitTimeline,
-  TransitActionButtons,
-  StatusUpdateModal,
-  NonTransitView,
-} from './components';
+import { TransitStatusCard } from './components/TransitStatusCard';
+import { TransitTimeline } from './components/TransitTimeline';
+import { TransitActionButtons } from './components/TransitActionButtons';
+import { StatusUpdateModal } from './components/StatusUpdateModal';
+import { NonTransitView } from './components/NonTransitView';
 
 interface TransitStatusManagerProps {
   containerId: string;

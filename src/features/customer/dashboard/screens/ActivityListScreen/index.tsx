@@ -1,11 +1,12 @@
 import React from "react";
-import { View, StyleSheet, FlatList, RefreshControl } from "react-native";
+import { View, StyleSheet, RefreshControl } from "react-native";
+import { FlashList } from '@shopify/flash-list';
 import { Appbar, Text, ActivityIndicator } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetActivity } from "../../hooks/useDashboard";
 import { ActivityItem } from "../../types";
 
@@ -87,7 +88,7 @@ const ActivityListScreen: React.FC = () => {
         <Appbar.Content title="Historique des activités" />
       </Appbar.Header>
 
-      <FlatList
+      <FlashList
         data={activities}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}

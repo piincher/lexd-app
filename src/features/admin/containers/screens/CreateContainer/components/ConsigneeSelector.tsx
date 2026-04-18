@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Ionicons } from '@expo/vector-icons';
 import { Searchbar, HelperText } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
@@ -95,7 +96,7 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
       )}
       {showDropdown && consignees.length > 0 && (
         <View style={styles.dropdownCard}>
-          <FlatList
+          <FlashList
             data={consignees}
             keyExtractor={(item) => item._id}
             renderItem={renderConsigneeItem}

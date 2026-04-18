@@ -5,10 +5,9 @@ import React from 'react';
 import {
 	View,
 	StyleSheet,
-	FlatList,
 	RefreshControl,
-	ListRenderItem,
 } from 'react-native';
+import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { Goods } from '../api';
 import { GoodsCard } from './GoodsCard';
 import { GoodsEmptyState } from './GoodsEmptyState';
@@ -40,7 +39,7 @@ export const GoodsList: React.FC<GoodsListProps> = ({
 	const keyExtractor = (item: Goods) => item._id;
 
 	return (
-		<FlatList
+		<FlashList
 			data={goods}
 			renderItem={renderItem}
 			keyExtractor={keyExtractor}

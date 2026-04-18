@@ -5,12 +5,7 @@
 
 import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import { routeService } from '../api/routeApi';
-import { 
-  Route, 
-  CreateRouteInput, 
-  UpdateRouteInput,
-  RouteFilters,
-} from '../types';
+import { Route, CreateRouteInput, UpdateRouteInput, RouteFilters } from '../types';
 import { ApiClientError } from '@src/api/client';
 
 // ============================================

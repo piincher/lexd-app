@@ -27,10 +27,7 @@ import { formatRelativeTime } from '../utils/timeUtils';
 import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import type { InAppNotification } from '../types';
-import { 
-  NOTIFICATION_TYPE_CONFIG, 
-  NOTIFICATION_CATEGORY_CONFIG 
-} from '../types';
+import { NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../types';
 import { useGetNotifications, useMarkAsRead } from '../hooks/useNotifications';
 
 const { height, width } = Dimensions.get('window');

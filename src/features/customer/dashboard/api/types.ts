@@ -3,12 +3,7 @@
  * Request/Response types for dashboard API endpoints
  */
 
-import {
-  DashboardStats,
-  ActivityItem,
-  QuickAction,
-  DashboardData,
-} from '../types';
+import { DashboardStats, ActivityItem, QuickAction, DashboardData } from '../types';
 
 // ============================================
 // API RESPONSE TYPES

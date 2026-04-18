@@ -9,72 +9,6 @@ import { initMixpanel } from "@src/config/Analytic";
 import { HomeTabParamList, RootStackParamList } from "@src/navigations/type";
 import { navigationRef } from "@src/navigations/navigationRef";
 
-// Features - Admin
-import {
-   ActiveOrdersScreen as ActiveOrders,
-   UserActiveOrdersScreen as UserActiveOrders,
-   ActiveOrderDetailsScreen as ActiveOrderdetails,
-   AddOrderScreen as AddOrder,
-   AddUserScreen as AddUser,
-   AdminDashBoardScreen as AdminDashBoard,
-   BatchUpdateScreen as BatchUpdate,
-   EditOrderScreen as EditOrder,
-   PastOrderScreen as AdminPastOrders,
-   ScanCodeScreen as ScanQRCode,
-   SelectUserScreen as SelectUser,
-   SendSmsScreen as SendSms,
-   CampaignListScreen,
-   CreateCampaignScreen,
-   CreateAnnouncementScreen,
-   BatchUpdateDetailScreen as BatchUpdateDetail,
-   ChooseShippingMethodScreen as ChooseShippingMethod,
-   ShippingMethodScreen as ShippingMethod,
-   ClientManagementScreen as ClientManagement,
-   ClientDetailScreen as ClientDetails,
-   // Admin V2 Features
-   ReceiveGoodsScreen,
-   GoodsListScreen as AdminGoodsList,
-   AdminGoodsDetailScreen,
-   ConsigneeListScreen,
-   CreateConsigneeScreen,
-   ConsigneeDetailScreen,
-   // Container V2 Features
-   ContainerListScreen,
-   CreateContainerScreen,
-   ContainerDetailScreen,
-   AssignGoodsScreen,
-   PackingListScreen,
-   LoadingListScreen,
-   // Route V2 Features
-   RouteListScreen,
-   RouteFormScreen,
-   // Admin Phase 3 - Void Pattern
-   VoidGoodsListScreen,
-   VoidGoodsScreen,
-   OrderDetailWithGoodsScreen,
-   // Admin Phase 4 - All Orders
-   AllOrdersScreen,
-   OrderDetailScreen,
-   RecordPaymentScreen,
-   PaymentDetailScreen,
-   UnassignedGoodsScreen,
-   OutstandingPaymentsListScreen,
-} from "@src/features/admin";
-
-// Admin Payment History Screen (aliased to avoid conflict with payments feature)
-import AdminPaymentHistoryScreen from "@src/features/admin/orders/screens/PaymentHistoryScreen";
-
-// Admin Certificates
-import IssueCertificateScreen from "@src/features/admin/certificates/screens/IssueCertificateScreen";
-import CertificateHistoryScreen from "@src/features/admin/certificates/screens/CertificateHistoryScreen";
-import CertificateDetailAdminScreen from "@src/features/admin/certificates/screens/CertificateDetailAdminScreen";
-
-// Admin Reviews
-import AdminReviewsScreen from "@src/features/admin/reviews/screens/AdminReviewsScreen";
-
-// Admin Promos
-import ManagePromosScreen from "@src/features/admin/promos/screens/ManagePromosScreen";
-
 // Features - Auth
 import { LoginScreen as Login, VerificationScreen as Verification } from "@src/features/auth";
 
@@ -100,7 +34,11 @@ import { OnboardingScreen as OnBoarding } from "@src/features/onboarding";
 import { NewOrderDetailScreen } from "@src/features/order-detail";
 
 // Features - Payments
-import { PaymentScreen, PaymentHistoryScreen, MyPaymentHistoryScreen } from "@src/features/payments";
+import {
+   PaymentScreen,
+   PaymentHistoryScreen,
+   MyPaymentHistoryScreen,
+} from "@src/features/payments";
 import UserPaymentDetailScreen from "@src/features/payments/screens/UserPaymentDetailScreen";
 
 // Features - Orders
@@ -120,7 +58,12 @@ import {
 import CertificateDetailScreen from "@src/features/profile/screens/CertificateDetail";
 
 // Features - Goods (V2 Client)
-import { MyGoodsScreen, GoodsDetailScreen, EditGoodsScreen, ScanQRScreen as GoodsScanQR } from "@src/features/goods";
+import {
+   MyGoodsScreen,
+   GoodsDetailScreen,
+   EditGoodsScreen,
+   ScanQRScreen as GoodsScanQR,
+} from "@src/features/goods";
 
 // Features - Customer Containers (V2)
 import {
@@ -143,15 +86,13 @@ import {
    CreateTicketScreen,
 } from "@src/features/customer/support";
 
-// WhatsApp Admin Features
-import { WhatsAppRequestListScreen } from "@src/features/admin/whatsapp-requests";
-
 // Components & Others
 import FadingAnnouncement from "@src/components/Announcement/Annoncement";
 import { COLORS } from "@src/constants/Colors";
 import { useAppLaunchStore } from "@src/store/AppLaunch";
 import { useAuth } from "@src/store/Auth";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { OfflineProvider } from "@src/shared/providers";
+import { getQueryClient } from "@src/shared/lib/queryClient";
 import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
@@ -166,6 +107,61 @@ import { UpdateProvider } from "@src/context/UpdateProvider";
 import { NotificationProvider } from "@src/app/providers";
 import { ThemeProvider, useAppTheme } from "@src/providers";
 
+// Features - Admin
+import ActiveOrders from "@src/features/admin/orders/screens/ActiveOrders";
+import UserActiveOrders from "@src/features/admin/orders/screens/UserActiveOrders";
+import ActiveOrderdetails from "@src/features/admin/orders/screens/ActiveOrderDetails";
+import AddOrder from "@src/features/admin/orders/screens/AddOrder";
+import AddUser from "@src/features/admin/users/screens/AddUser";
+import AdminDashBoard from "@src/features/admin/dashboard/screens/AdminDashBoard";
+import BatchUpdate from "@src/features/admin/orders/screens/BatchUpdate";
+import EditOrder from "@src/features/admin/orders/screens/EditOrder";
+import AdminPastOrders from "@src/features/admin/orders/screens/PastOrder";
+import ScanQRCode from "@src/features/admin/tools/screens/ScanCode";
+import SelectUser from "@src/features/admin/users/screens/SelectUser";
+import SendSms from "@src/features/admin/communications/screens/SendSms";
+import CampaignListScreen from "@src/features/admin/communications/screens/CampaignListScreen";
+import CreateCampaignScreen from "@src/features/admin/communications/screens/CreateCampaignScreen";
+import CreateAnnouncementScreen from "@src/features/admin/announcements/screens/CreateAnnouncementScreen";
+import BatchUpdateDetail from "@src/features/admin/orders/screens/BatchUpdateDetail";
+import ChooseShippingMethod from "@src/features/admin/shipping/screens/ChooseShippingMethod";
+import ShippingMethod from "@src/features/admin/shipping/screens/ShippingMethod";
+import ClientManagement from "@src/features/admin/users/screens/ClientManagement";
+import ClientDetails from "@src/features/admin/users/screens/ClientDetail";
+import ReceiveGoodsScreen from "@src/features/admin/goods/screens/ReceiveGoodsScreen/ReceiveGoodsScreen";
+import AdminGoodsList from "@src/features/admin/goods/screens/GoodsListScreen";
+import AdminGoodsDetailScreen from "@src/features/admin/goods/screens/GoodsDetailScreen/GoodsDetailScreen";
+import ConsigneeListScreen from "@src/features/admin/consignees/screens/ConsigneeListScreen";
+import CreateConsigneeScreen from "@src/features/admin/consignees/screens/CreateConsigneeScreen";
+import ConsigneeDetailScreen from "@src/features/admin/consignees/screens/ConsigneeDetailScreen";
+import ContainerListScreen from "@src/features/admin/containers/screens/ContainerListScreen";
+import CreateContainerScreen from "@src/features/admin/containers/screens/CreateContainerScreen";
+import ContainerDetailScreen from "@src/features/admin/containers/screens/ContainerDetailScreen";
+import AssignGoodsScreen from "@src/features/admin/containers/screens/AssignGoods/AssignGoodsScreen";
+import PackingListScreen from "@src/features/admin/containers/screens/PackingListScreen";
+import LoadingListScreen from "@src/features/admin/containers/screens/LoadingListScreen";
+import RouteListScreen from "@src/features/admin/routes/screens/RouteListScreen";
+import RouteFormScreen from "@src/features/admin/routes/screens/RouteFormScreen";
+import VoidGoodsListScreen from "@src/features/admin/goods/screens/VoidGoodsListScreen";
+import VoidGoodsScreen from "@src/features/admin/goods/screens/VoidGoodsScreen/VoidGoodsScreen";
+import OrderDetailWithGoodsScreen from "@src/features/admin/orders/screens/OrderDetailWithGoodsScreen";
+import AllOrdersScreen from "@src/features/admin/orders/screens/AllOrdersScreen";
+import OrderDetailScreen from "@src/features/admin/orders/screens/OrderDetailScreen";
+import RecordPaymentScreen from "@src/features/admin/orders/screens/RecordPaymentScreen";
+import PaymentDetailScreen from "@src/features/admin/orders/screens/PaymentDetailScreen";
+import UnassignedGoodsScreen from "@src/features/admin/dashboard/screens/UnassignedGoodsScreen";
+import OutstandingPaymentsListScreen from "@src/features/admin/dashboard/screens/OutstandingPaymentsListScreen";
+import AdminPaymentHistoryScreen from "@src/features/admin/orders/screens/PaymentHistoryScreen";
+import IssueCertificateScreen from "@src/features/admin/certificates/screens/IssueCertificateScreen";
+import CertificateHistoryScreen from "@src/features/admin/certificates/screens/CertificateHistoryScreen";
+import CertificateDetailAdminScreen from "@src/features/admin/certificates/screens/CertificateDetailAdminScreen";
+import AdminReviewsScreen from "@src/features/admin/reviews/screens/AdminReviewsScreen";
+import ManagePromosScreen from "@src/features/admin/promos/screens/ManagePromosScreen";
+import AdminGoodsPdfExport from "@src/features/admin/export/screens/GoodsPdfExportScreen";
+import WhatsAppRequestListScreen from "@src/features/admin/whatsapp-requests/screens/WhatsAppRequestListScreen";
+import GlobalSearchScreen from "@src/features/admin/search/screens/GlobalSearchScreen";
+import SearchScreen from "@src/features/search/screens/SearchScreen";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 registerTranslation("en", enGB);
 registerTranslation("fr", fr);
@@ -175,6 +171,9 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 
+AsyncStorage.removeItem("CHINALINK_QUERY_CACHE").then(() => {
+   getQueryClient().clear();
+});
 initSentry();
 initMixpanel();
 function AppWrapper() {
@@ -240,7 +239,6 @@ function AppWrapper() {
             <Stack.Screen name="AboutUs" component={AboutUs} />
             <Stack.Screen name="faq" component={Faq} />
             <Stack.Screen name="CertificateDetail" component={CertificateDetailScreen} />
-            <Stack.Screen name="CheckRoute" component={CheckRoute} />
 
             {token ? (
                <>
@@ -261,7 +259,7 @@ function AppWrapper() {
                   <Stack.Screen
                      name="MyPaymentHistory"
                      component={MyPaymentHistoryScreen}
-                     options={{ title: 'Historique des paiements' }}
+                     options={{ title: "Historique des paiements" }}
                   />
                   <Stack.Screen name="UserPaymentDetail" component={UserPaymentDetailScreen} />
                   <Stack.Screen name="AddOrder" component={AddOrder} />
@@ -280,13 +278,19 @@ function AppWrapper() {
                   <Stack.Screen name="BatchUpdateDetail" component={BatchUpdateDetail} />
                   <Stack.Screen name="EditOrder" component={EditOrder} />
                   <Stack.Screen name="AdminDashBoard" component={AdminDashBoard} />
-                  <Stack.Screen name="OutstandingPaymentsList" component={OutstandingPaymentsListScreen} />
+                  <Stack.Screen
+                     name="OutstandingPaymentsList"
+                     component={OutstandingPaymentsListScreen}
+                  />
                   <Stack.Screen name="UserActiveOrders" component={UserActiveOrders} />
                   <Stack.Screen name="ClientManagement" component={ClientManagement} />
                   <Stack.Screen name="ClientDetails" component={ClientDetails} />
                   <Stack.Screen name="IssueCertificate" component={IssueCertificateScreen} />
                   <Stack.Screen name="CertificateHistory" component={CertificateHistoryScreen} />
-                  <Stack.Screen name="CertificateDetailAdmin" component={CertificateDetailAdminScreen} />
+                  <Stack.Screen
+                     name="CertificateDetailAdmin"
+                     component={CertificateDetailAdminScreen}
+                  />
                   <Stack.Screen name="ChooseShippingMethod" component={ChooseShippingMethod} />
                   <Stack.Screen name="ShippingMethod" component={ShippingMethod} />
                   {/* Admin V2 Screens */}
@@ -294,6 +298,7 @@ function AppWrapper() {
                   <Stack.Screen name="ReceiveGoods" component={ReceiveGoodsScreen} />
                   <Stack.Screen name="AdminGoodsList" component={AdminGoodsList} />
                   <Stack.Screen name="AdminGoodsDetail" component={AdminGoodsDetailScreen} />
+                  <Stack.Screen name="AdminGoodsPdfExport" component={AdminGoodsPdfExport} />
                   <Stack.Screen name="ConsigneeList" component={ConsigneeListScreen} />
                   <Stack.Screen name="CreateConsignee" component={CreateConsigneeScreen} />
                   <Stack.Screen name="ConsigneeDetail" component={ConsigneeDetailScreen} />
@@ -345,6 +350,9 @@ function AppWrapper() {
                   <Stack.Screen name="CampaignList" component={CampaignListScreen} />
                   <Stack.Screen name="CreateCampaign" component={CreateCampaignScreen} />
                   <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncementScreen} />
+                  {/* Search Screens */}
+                  <Stack.Screen name="GlobalSearch" component={GlobalSearchScreen} />
+                  <Stack.Screen name="Search" component={SearchScreen} />
                </>
             ) : (
                <>
@@ -454,7 +462,6 @@ const HomeBottomTab = () => {
    );
 };
 
-const client = new QueryClient();
 const ThemedApp = () => {
    const { paperTheme, navigationTheme } = useAppTheme();
 
@@ -469,7 +476,7 @@ const ThemedApp = () => {
 
 const App = () => {
    return (
-      <QueryClientProvider client={client}>
+      <OfflineProvider queryClient={getQueryClient()}>
          <ThemeProvider>
             <NotificationProvider autoRequestPermission={true}>
                <GestureHandlerRootView style={{ flex: 1 }}>
@@ -477,7 +484,7 @@ const App = () => {
                </GestureHandlerRootView>
             </NotificationProvider>
          </ThemeProvider>
-      </QueryClientProvider>
+      </OfflineProvider>
    );
 };
 

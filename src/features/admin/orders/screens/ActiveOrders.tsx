@@ -1,6 +1,6 @@
 import AppButton from "@src/components/AppButton/AppButton";
 import { ListItemOrders } from "@src/components/ListItemOrders";
-import { useGetRoutes } from "@src/shared/hooks";
+import { useGetRoutes } from '@src/shared/hooks/useRoutes';
 import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import { Searchbar, Text } from "react-native-paper";

@@ -269,7 +269,7 @@ export default function CertificateHistoryScreen({
             data={certificates}
             renderItem={renderCertificate}
             keyExtractor={(item) => item._id}
-            estimatedItemSize={260}
+
             contentContainerStyle={styles.listContainer}
             showsVerticalScrollIndicator={false}
             refreshing={isRefetching}

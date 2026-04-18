@@ -78,7 +78,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
         data={notifications}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
-        estimatedItemSize={110}
+
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         refreshControl={

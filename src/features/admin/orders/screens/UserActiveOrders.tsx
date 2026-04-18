@@ -1,6 +1,6 @@
 import { COLORS } from "@src/constants/Colors";
 import { UserHeaderInfo } from "@src/shared/components";
-import { useGetActiveOrder } from "@src/shared/hooks";
+import { useGetActiveOrder } from '@src/shared/hooks/useOrders';
 import { useAuth } from "@src/store/Auth";
 import React, { useEffect } from "react";
 import { View, StyleSheet } from "react-native";

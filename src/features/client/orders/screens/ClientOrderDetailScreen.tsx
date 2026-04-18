@@ -9,7 +9,9 @@ import { useRoute } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
 import { EmptyState } from '@src/shared/ui/EmptyState';
 import { useClientOrder } from '../hooks/useClientOrder';
-import { OrderHeader, OrderSummary, PackageList } from '../components';
+import { OrderHeader } from '../components/OrderHeader';
+import { OrderSummary } from '../components/OrderSummary';
+import { PackageList } from '../components/PackageList';
 import { OrderDetailSkeleton } from '../components/OrderDetailSkeleton';
 import { styles } from './ClientOrderDetailScreen.styles';
 

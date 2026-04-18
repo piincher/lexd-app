@@ -15,6 +15,7 @@ import {
    ScrollView,
    ActivityIndicator,
    Keyboard,
+   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -23,7 +24,7 @@ import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
 
 import { Fonts } from "@src/constants/Fonts";
 import { RootStackScreenProps } from "@src/navigations/type";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Notification } from "@src/components/Notification/Notification";
 import { useVerification } from "../hooks/useVerification";
 import { useLogin } from "../hooks/useLogin";
@@ -113,9 +114,16 @@ const Verification = ({ route, navigation }: RootStackScreenProps<"Verification"
       setCanResend(false);
       setOtp(new Array(OTP_LENGTH).fill(""));
       setActiveIndex(0);
-      setVisible(true);
-      resendOtp(phoneNumber);
-      setTimeout(() => setVisible(false), 2000);
+      resendOtp(phoneNumber, {
+         onSuccess: () => {
+            setVisible(true);
+            setTimeout(() => setVisible(false), 2000);
+         },
+         onError: () => {
+            setCanResend(true);
+            Alert.alert("Erreur", "Impossible de renvoyer le code. Veuillez reessayer.");
+         },
+      });
    }, [canResend, phoneNumber, resendOtp]);
 
    const isComplete = otp.every((d) => d !== "");

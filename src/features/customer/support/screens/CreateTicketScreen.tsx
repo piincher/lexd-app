@@ -29,7 +29,7 @@ import { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
 import { COLORS } from '@src/constants/Colors';
 import { useCreateTicket, useUploadAttachment } from '../hooks/useTickets';
-import { TicketTypeSelector } from '../components';
+import { TicketTypeSelector } from '../components/TicketTypeSelector';
 import { TicketType } from '../types';
 import { showMessage } from 'react-native-flash-message';
 

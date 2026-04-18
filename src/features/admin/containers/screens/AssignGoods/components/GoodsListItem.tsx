@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp, Layout } from 'react-native-reanimated';
-import { Badge } from '@src/components/ui';
+import { Badge } from '@src/components/ui/Badge/Badge';
 import { Theme } from '@src/constants/Theme';
 import { Goods } from '../../../../goods/types';
 

@@ -22,6 +22,9 @@ export type userData = {
 export interface userType {
 	user: userData;
 	token: string;
+	accessToken?: string;
+	refreshToken?: string;
+	expiresIn?: number;
 }
 
 export interface SmsService {

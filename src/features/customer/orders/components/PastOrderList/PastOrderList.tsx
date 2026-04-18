@@ -1,5 +1,6 @@
 import React from 'react';
-import { FlatList, RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { RefreshControl, StyleSheet, Text, View } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Theme } from '@src/constants/Theme';
 import { Order } from '../../types';
 import { PastOrderCard } from '../PastOrderCard';
@@ -37,7 +38,7 @@ export const PastOrderList: React.FC<PastOrderListProps> = ({
   }
 
   return (
-    <FlatList
+    <FlashList
       data={orders}
       keyExtractor={(item) => item._id}
       renderItem={({ item }) => (

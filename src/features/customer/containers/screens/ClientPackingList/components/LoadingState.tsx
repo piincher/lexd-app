@@ -1,5 +1,6 @@
 import React from 'react';
-import { SafeAreaView, View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
 import { COLORS } from '@src/constants/Colors';
 import { styles } from '../ClientPackingListScreen.styles';

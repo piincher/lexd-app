@@ -5,7 +5,8 @@
  */
 
 import React, { useMemo, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList, Pressable } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Pressable } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { Text, TextInput } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
@@ -193,7 +194,7 @@ export const RecipientSelector: React.FC<RecipientSelectorProps> = ({
       )}
 
       {/* Recipient list */}
-      <FlatList
+      <FlashList
         data={filtered}
         renderItem={renderRecipient}
         keyExtractor={(item) => item.id}

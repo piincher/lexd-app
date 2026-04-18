@@ -2,6 +2,9 @@ import { userType } from '@src/constants/types';
 import { deleteItemAsync, getItemAsync, setItemAsync } from 'expo-secure-store';
 import { create } from 'zustand';
 import { PersistStorage, persist } from 'zustand/middleware';
+import { resetQueryClient } from '@src/shared/lib/queryClient';
+import * as EncryptedStorage from '@src/shared/lib/encryptedStorage';
+import { apiClientV2 } from '@src/api/client';
 
 interface authType {
 	user: {
@@ -12,8 +15,10 @@ interface authType {
 		role: string;
 	};
 	token: string;
+	refreshToken: string;
+	expiresAt: number | null;
 	setAuth: (user: userType) => void;
-	logOut: () => void;
+	logOut: () => Promise<void>;
 }
 
 export const storage: PersistStorage<authType> = {
@@ -31,7 +36,7 @@ export const storage: PersistStorage<authType> = {
 
 export const useAuth = create<authType>()(
 	persist(
-		(set) => ({
+		(set, get) => ({
 			user: {
 				_id: '',
 
@@ -41,27 +46,47 @@ export const useAuth = create<authType>()(
 				role: '',
 			},
 			token: '',
-			setAuth: (user: userType) => {
-				set((state) => ({
-					...state,
-					user: {
-						...state.user,
-						...user.user,
-					},
-					token: user.token || state.token,
-				}));
+			refreshToken: '',
+			expiresAt: null,
+			setAuth: (payload: userType) => {
+				set((state) => {
+					const accessToken = payload.accessToken || payload.token || state.token;
+					const refreshToken = payload.refreshToken || state.refreshToken;
+					const expiresAt = payload.expiresIn
+						? Date.now() + payload.expiresIn * 1000
+						: state.expiresAt;
+					console.log('[Auth Store] setAuth called. token snippet:', accessToken ? accessToken.slice(0, 20) : 'none', 'refreshToken:', refreshToken ? 'yes' : 'no', 'expiresIn:', payload.expiresIn);
+					return {
+						...state,
+						user: { ...state.user, ...payload.user },
+						token: accessToken,
+						refreshToken,
+						expiresAt,
+					};
+				});
 			},
-			logOut: () => {
-				set((state) => ({
+			logOut: async () => {
+				const refreshToken = get().refreshToken;
+				if (refreshToken) {
+					try {
+						await apiClientV2.post('/auth/logout', { refreshToken }, { headers: { skipAuth: 'true' } as any });
+					} catch (e) {
+						// fire-and-forget
+					}
+				}
+				resetQueryClient();
+				await EncryptedStorage.clear();
+				set(() => ({
 					user: {
+						_id: '',
 						firstName: '',
 						lastName: '',
-						avatar: '',
-						role: '',
 						phoneNumber: '',
-						_id: '',
+						role: '',
 					},
 					token: '',
+					refreshToken: '',
+					expiresAt: null,
 				}));
 			},
 		}),

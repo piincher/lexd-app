@@ -4,14 +4,20 @@
  */
 
 import React from 'react';
-import { SafeAreaView, ScrollView, RefreshControl } from 'react-native';
-import { useContainerDetailScreen } from './hooks';
+import { ScrollView, RefreshControl } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useContainerDetailScreen } from './hooks/useContainerDetailScreen';
 import { styles } from './ContainerDetailScreen.styles';
-import {
-  ContainerDetailHeader, ContainerTimeline, ContainerCapacityCard,
-  ContainerGoodsList, ContainerWaypointSection, ContainerActionButtons,
-  ContainerDialogs, LoadingState, ErrorState, ContainerProfitCard,
-} from './components';
+import { ContainerDetailHeader } from './components/ContainerDetailHeader';
+import { ContainerTimeline } from './components/ContainerTimeline';
+import { ContainerCapacityCard } from './components/ContainerCapacityCard';
+import { ContainerGoodsList } from './components/ContainerGoodsList';
+import { ContainerWaypointSection } from './components/ContainerWaypointSection';
+import { ContainerActionButtons } from './components/ContainerActionButtons';
+import { ContainerDialogs } from './components/ContainerDialogs';
+import { LoadingState } from './components/LoadingState';
+import { ErrorState } from './components/ErrorState';
+import { ContainerProfitCard } from './components/ContainerProfitCard';
 
 /**
  * Container Delivery Flow (Option A):

@@ -79,7 +79,7 @@ export default function ClientManagement({ navigation }: RootStackScreenProps<"C
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.listContainer}
         showsVerticalScrollIndicator={false}
-        estimatedItemSize={100}
+
         ListEmptyComponent={
           <EmptyState searchQuery={searchQuery} onClear={() => setSearchQuery("")} />
         }

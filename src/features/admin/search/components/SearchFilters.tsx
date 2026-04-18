@@ -54,7 +54,7 @@ const CONTAINER_STATUSES = [
 ];
 
 const SHIPPING_MODES = [
-  { value: "SEA", label: "Maritime", icon: "boat" },
+  { value: "SEA", label: "Maritime", icon: "ferry" },
   { value: "AIR", label: "Aérien", icon: "airplane" },
 ];
 
@@ -63,6 +63,23 @@ const SHIPPING_LINES = [
   { value: "MAERSK", label: "Maersk" },
   { value: "CMA_CGM", label: "CMA CGM" },
   { value: "HAPAG_LLOYD", label: "Hapag-Lloyd" },
+];
+
+const CLIENT_ROLES = [
+  { value: "user", label: "Client" },
+  { value: "staff", label: "Staff" },
+  { value: "admin", label: "Admin" },
+  { value: "superadmin", label: "Superadmin" },
+];
+
+const CLIENT_STATUSES = [
+  { value: true, label: "Actif", color: "#10B981" },
+  { value: false, label: "Inactif", color: "#EF4444" },
+];
+
+const CLIENT_BALANCE_OPTIONS = [
+  { value: true, label: "Avec solde", color: "#6366F1" },
+  { value: false, label: "Sans solde", color: "#94A3B8" },
 ];
 
 export const SearchFilters: React.FC<SearchFiltersProps> = ({
@@ -127,6 +144,37 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
     onFiltersChange({
       ...filters,
       [type === "from" ? "dateFrom" : "dateTo"]: date,
+    });
+  };
+
+  const toggleRole = (role: string) => {
+    const currentRoles = Array.isArray(filters.role)
+      ? filters.role
+      : filters.role
+      ? [filters.role]
+      : [];
+
+    const newRoles = currentRoles.includes(role)
+      ? currentRoles.filter((r) => r !== role)
+      : [...currentRoles, role];
+
+    onFiltersChange({
+      ...filters,
+      role: newRoles.length > 0 ? newRoles : undefined,
+    });
+  };
+
+  const setIsActive = (isActive: boolean | undefined) => {
+    onFiltersChange({
+      ...filters,
+      isActive: filters.isActive === isActive ? undefined : isActive,
+    });
+  };
+
+  const setHasBalance = (hasBalance: boolean | undefined) => {
+    onFiltersChange({
+      ...filters,
+      hasBalance: filters.hasBalance === hasBalance ? undefined : hasBalance,
     });
   };
 
@@ -299,6 +347,98 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
     </>
   );
 
+  const renderClientFilters = () => (
+    <>
+      {/* Account Status Filter */}
+      <View style={styles.filterSection}>
+        <Text style={styles.filterLabel}>Statut du compte</Text>
+        <View style={styles.chipContainer}>
+          {CLIENT_STATUSES.map((status) => (
+            <Chip
+              key={status.label}
+              selected={filters.isActive === status.value}
+              onPress={() => setIsActive(status.value)}
+              style={[
+                styles.chip,
+                filters.isActive === status.value && {
+                  backgroundColor: status.color + "20",
+                },
+              ]}
+              textStyle={[
+                styles.chipText,
+                filters.isActive === status.value && {
+                  color: status.color,
+                },
+              ]}
+            >
+              {status.label}
+            </Chip>
+          ))}
+        </View>
+      </View>
+
+      {/* Balance Filter */}
+      <View style={styles.filterSection}>
+        <Text style={styles.filterLabel}>Solde</Text>
+        <View style={styles.chipContainer}>
+          {CLIENT_BALANCE_OPTIONS.map((option) => (
+            <Chip
+              key={option.label}
+              selected={filters.hasBalance === option.value}
+              onPress={() => setHasBalance(option.value)}
+              style={[
+                styles.chip,
+                filters.hasBalance === option.value && {
+                  backgroundColor: option.color + "20",
+                },
+              ]}
+              textStyle={[
+                styles.chipText,
+                filters.hasBalance === option.value && {
+                  color: option.color,
+                },
+              ]}
+            >
+              {option.label}
+            </Chip>
+          ))}
+        </View>
+      </View>
+
+      {/* Role Filter */}
+      <View style={styles.filterSection}>
+        <Text style={styles.filterLabel}>Rôle</Text>
+        <View style={styles.chipContainer}>
+          {CLIENT_ROLES.map((role) => (
+            <Chip
+              key={role.value}
+              selected={
+                Array.isArray(filters.role)
+                  ? filters.role.includes(role.value)
+                  : filters.role === role.value
+              }
+              onPress={() => toggleRole(role.value)}
+              style={[
+                styles.chip,
+                (Array.isArray(filters.role)
+                  ? filters.role.includes(role.value)
+                  : filters.role === role.value) && styles.chipSelected,
+              ]}
+              textStyle={[
+                styles.chipText,
+                (Array.isArray(filters.role)
+                  ? filters.role.includes(role.value)
+                  : filters.role === role.value) && styles.chipTextSelected,
+              ]}
+            >
+              {role.label}
+            </Chip>
+          ))}
+        </View>
+      </View>
+    </>
+  );
+
   return (
     <View style={styles.container}>
       {/* Header with Presets */}
@@ -328,6 +468,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
       >
         {entity === "goods" && renderGoodsFilters()}
         {entity === "containers" && renderContainerFilters()}
+        {entity === "clients" && renderClientFilters()}
 
         {/* Active Filters Summary */}
         {hasActiveFilters && (

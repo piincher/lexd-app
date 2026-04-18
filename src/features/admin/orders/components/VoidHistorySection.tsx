@@ -3,8 +3,9 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import { Card } from '@src/shared/ui';
+import { View, Text, StyleSheet } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { Card } from '@src/shared/ui/Card';
 import { lightTheme } from '@src/constants/Theme';
 import { VoidHistoryItem } from '../api/types';
 
@@ -25,7 +26,7 @@ export const VoidHistorySection: React.FC<VoidHistorySectionProps> = ({ history 
   return (
     <Card variant="elevated" style={styles.card}>
       <Text style={styles.title}>Void History ({history.length})</Text>
-      <FlatList
+      <FlashList
         data={history}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}

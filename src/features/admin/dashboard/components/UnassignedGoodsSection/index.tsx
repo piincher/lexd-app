@@ -49,7 +49,7 @@ export const UnassignedGoodsSection: React.FC = () => {
         total={totalCount}
         byShippingMode={byShippingMode}
         byAge={byAge}
-        onPress={() => navigation.navigate("UnassignedGoods")}
+        onPress={() => navigation.navigate(totalCount > 0 ? "UnassignedGoods" : "AdminGoodsList")}
       />
     </View>
   );

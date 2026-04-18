@@ -154,7 +154,7 @@ export default function MyReviewsScreen({
           data={reviews}
           renderItem={renderReview}
           keyExtractor={(item) => item._id}
-          estimatedItemSize={200}
+
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
           refreshing={isRefetching}

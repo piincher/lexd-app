@@ -86,7 +86,7 @@ export const OrderList: React.FC<OrderListProps> = ({
 			data={data?.pages?.flatMap((page) => page) || []}
 			keyExtractor={(item) => item._id!}
 			renderItem={({ item }) => renderItem(item)}
-			estimatedItemSize={276}
+
 			ListFooterComponent={renderFooter}
 		/>
 	);

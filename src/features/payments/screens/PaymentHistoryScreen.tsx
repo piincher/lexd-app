@@ -3,26 +3,18 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
   TouchableOpacity,
   RefreshControl,
   SafeAreaView,
   ActivityIndicator,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { usePaymentHistory } from '../hooks/usePayments';
-import {
-  PaymentHistoryItem,
-  PaymentStatus,
-  PaymentProvider,
-  PAYMENT_STATUS_COLORS,
-  PAYMENT_STATUS_LABELS,
-  PROVIDER_ICONS,
-  PROVIDER_LABELS,
-} from '../types';
+import { PaymentHistoryItem, PaymentStatus, PaymentProvider, PAYMENT_STATUS_COLORS, PAYMENT_STATUS_LABELS, PROVIDER_ICONS, PROVIDER_LABELS } from '../types';
 
 const STATUS_FILTERS: { label: string; value: PaymentStatus | 'ALL' }[] = [
   { label: 'All', value: 'ALL' },
@@ -386,7 +378,7 @@ const PaymentHistoryScreen: React.FC = () => {
   // Render filter buttons
   const renderFilterButtons = () => (
     <View style={styles.filterContainer}>
-      <FlatList
+      <FlashList
         horizontal
         data={STATUS_FILTERS}
         keyExtractor={(item) => item.value}
@@ -469,7 +461,7 @@ const PaymentHistoryScreen: React.FC = () => {
       {error ? (
         renderErrorState()
       ) : (
-        <FlatList
+        <FlashList
           data={payments}
           keyExtractor={(item) => item.id}
           renderItem={renderPaymentItem}

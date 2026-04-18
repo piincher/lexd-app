@@ -8,7 +8,7 @@ import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
-import { useAppTheme } from '@src/providers';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useAuth } from '@src/store/Auth';
 import { Header } from '../components/Header';
 import Banner from '../components/Banner';

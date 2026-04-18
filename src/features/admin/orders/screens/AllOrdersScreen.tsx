@@ -11,7 +11,7 @@ import { Searchbar, Button, IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AuthenticatedStackParamList } from '@src/navigation/types';
-import { Screen } from '@src/shared/ui';
+import { Screen } from '@src/shared/ui/Screen';
 import { COLORS } from '@src/constants/Colors';
 import { useGetAllOrders, useSyncOrderStatuses } from '../hooks/useOrderManagement';
 import { OrderCard } from './components/OrderCard';
@@ -19,6 +19,8 @@ import { OrdersStats } from './components/OrdersStats';
 import { EmptyOrders } from './components/EmptyOrders';
 import { AddOrderButton } from './components/AddOrderButton';
 import { OrderCardSkeleton, OrderCardFooterSkeleton } from './components/OrderCardSkeleton';
+import { OrderBulkActionBar } from './components/OrderBulkActionBar';
+import { useOrderBulkActions } from './hooks/useOrderBulkActions';
 import { styles } from './AllOrdersScreen.styles';
 
 const STATUS_TABS = [
@@ -106,9 +108,27 @@ const AllOrdersScreen: React.FC = () => {
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  const {
+    selectedOrderIds,
+    isSelectionMode,
+    setIsSelectionMode,
+    toggleSelectOrder,
+    toggleSelectAllOrders,
+    exitSelectionMode,
+    isBatchUpdating,
+    handleChangeOrderStatus,
+  } = useOrderBulkActions(filteredOrders, refetch);
+
   const renderOrderCard = ({ item }: { item: any }) => {
     if (!item) return null;
-    return <OrderCard order={item} />;
+    return (
+      <OrderCard
+        order={item}
+        isSelectionMode={isSelectionMode}
+        isSelected={selectedOrderIds.includes(item._id)}
+        onToggleSelect={() => toggleSelectOrder(item._id)}
+      />
+    );
   };
 
   if (error) {
@@ -128,14 +148,25 @@ const AllOrdersScreen: React.FC = () => {
       header={{ 
         title: 'Orders', 
         rightAction: (
-          <IconButton
-            icon="sync"
-            size={24}
-            onPress={handleSyncOrderStatuses}
-            loading={isSyncing}
-            disabled={isSyncing}
-            iconColor={COLORS.blue}
-          />
+          <View style={{ flexDirection: 'row' }}>
+            <IconButton
+              icon={isSelectionMode ? 'close' : 'checkbox-multiple-marked-outline'}
+              size={24}
+              onPress={() => {
+                if (isSelectionMode) exitSelectionMode();
+                else setIsSelectionMode(true);
+              }}
+              iconColor={COLORS.blue}
+            />
+            <IconButton
+              icon="sync"
+              size={24}
+              onPress={handleSyncOrderStatuses}
+              loading={isSyncing}
+              disabled={isSyncing}
+              iconColor={COLORS.blue}
+            />
+          </View>
         )
       }} 
       scrollable={false}
@@ -185,7 +216,7 @@ const AllOrdersScreen: React.FC = () => {
               data={filteredOrders}
               keyExtractor={(item, index) => item?._id || `order-${index}`}
               renderItem={renderOrderCard}
-              estimatedItemSize={180}
+
               refreshControl={<RefreshControl refreshing={false} onRefresh={refetch} />}
               onEndReached={loadMore}
               onEndReachedThreshold={0.3}
@@ -200,7 +231,17 @@ const AllOrdersScreen: React.FC = () => {
           )}
         </View>
 
-        <AddOrderButton />
+        {!isSelectionMode && <AddOrderButton />}
+        {isSelectionMode && (
+          <OrderBulkActionBar
+            selectedCount={selectedOrderIds.length}
+            totalCount={filteredOrders.length}
+            isPending={isBatchUpdating}
+            onToggleSelectAll={toggleSelectAllOrders}
+            onChangeStatus={handleChangeOrderStatus}
+            onCancel={exitSelectionMode}
+          />
+        )}
       </View>
     </Screen>
   );

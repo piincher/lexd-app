@@ -26,7 +26,7 @@ import { DatePickerModal } from "react-native-paper-dates";
 import { SCREEN_WIDTH } from "@src/constants/Dimensions";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useGetOrderDetails } from "@src/shared/hooks";
+import { useGetOrderDetails } from '@src/shared/hooks/useOrderDetail';
 
 import Entypo from "@expo/vector-icons/Entypo";
 import { useGetCategory } from "../../hooks/useCategory";

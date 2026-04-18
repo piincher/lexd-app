@@ -262,12 +262,19 @@ export interface PaymentHistory {
  */
 export const recordPayment = async (data: PaymentRecord) => {
 	console.log('[API recordPayment] Submitting:', data);
+
+	// Generate idempotency key rounded to the nearest minute
+	const minuteTimestamp = Math.floor(Date.now() / 60000) * 60000;
+	const idempotencyKey = `${data.orderId}-${data.amount}-${data.paymentMethod}-${minuteTimestamp}`;
+
 	try {
 		const response = await api.post<{
 			message: string;
 			payment: PaymentHistory;
 			order: productType;
-		}>(`${API_URL.single}/payment`, data);
+		}>(`${API_URL.single}/payment`, data, {
+			headers: { 'X-Idempotency-Key': idempotencyKey },
+		});
 		console.log('[API recordPayment] Success:', response.data);
 		return response.data;
 	} catch (error) {

@@ -40,14 +40,12 @@ import {
   useFormatNumber,
 } from '../hooks/useAnalytics';
 
-import {
-  KPICards,
-  RevenueChart,
-  ContainerUtilizationChart,
-  TopCustomersChart,
-  GoodsVolumeChart,
-  PaymentMetrics,
-} from '../components';
+import { KPICards } from '../components/KPICards';
+import { RevenueChart } from '../components/RevenueChart';
+import { ContainerUtilizationChart } from '../components/ContainerUtilizationChart';
+import { TopCustomersChart } from '../components/TopCustomersChart';
+import { GoodsVolumeChart } from '../components/GoodsVolumeChart';
+import { PaymentMetrics } from '../components/PaymentMetrics';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 

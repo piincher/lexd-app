@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Text, IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Card } from '@src/shared/ui';
+import { Card } from '@src/shared/ui/Card';
 import { COLORS } from '@src/constants/Colors';
 import { styles, MAP_HEIGHT } from './TrackingMapView.styles';
 

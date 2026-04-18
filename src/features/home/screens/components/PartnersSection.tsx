@@ -1,5 +1,5 @@
 import { Fonts } from "@src/constants/Fonts";
-import { useAppTheme } from "@src/providers";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 

@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Alert, Linking, ActivityIndicator } from 'react-native';
 import { Text, Surface, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { format } from 'date-fns';
+import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { sharePDFOnWhatsApp, sharePDFGeneric } from '@src/shared/lib/pdfShare';
 import { COLORS } from '@src/constants/Colors';
