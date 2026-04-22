@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useGetActiveOrdersAdmin } from "../hooks/useOrderManagement";
 import { Category } from "../components/Category";
 import { Header } from "@src/components/Header/Header";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Calendar, useCalendar } from "@src/components/Calendar/Calendar";
 import { getSafeDate } from "@src/utils/formatDate";

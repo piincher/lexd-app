@@ -10,11 +10,14 @@ import {
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
+import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useMyReviews, useReviewStats } from "../hooks/useReviews";
 import type { Review } from "../api";
 import { ReviewsListSkeleton } from "../components/ReviewsListSkeleton";
+import { NotificationBell } from "@src/features/notifications";
 
 const formatDate = (dateString: string): string => {
   try {
@@ -96,6 +99,7 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
 export default function MyReviewsScreen({
   navigation,
 }: RootStackScreenProps<"MyReviews">) {
+  const { colors } = useAppTheme();
   const [page, setPage] = useState(1);
 
   const { data, isLoading, isRefetching, refetch } = useMyReviews(page);
@@ -123,12 +127,12 @@ export default function MyReviewsScreen({
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={[styles.header, { backgroundColor: Theme.colors.background.card, borderBottomColor: colors.border }]}>
         <View style={styles.headerTop}>
           <TouchableOpacity
-            style={styles.backButton}
+            style={[styles.backButton, { backgroundColor: colors.background.default }]}
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
           >
@@ -140,6 +144,11 @@ export default function MyReviewsScreen({
               {totalReviews} avis au total
             </Text>
           </View>
+          <NotificationBell
+            onPress={() => navigation.navigate("Notifications" as never)}
+            size={24}
+            color="#1F2937"
+          />
         </View>
       </View>
 
@@ -182,7 +191,7 @@ export default function MyReviewsScreen({
             totalPages > 1 ? (
               <View style={styles.paginationContainer}>
                 <TouchableOpacity
-                  style={[styles.paginationButton, page <= 1 && styles.paginationButtonDisabled]}
+                  style={[styles.paginationButton, { borderColor: colors.border }, page <= 1 && styles.paginationButtonDisabled]}
                   onPress={handlePrevPage}
                   disabled={page <= 1}
                   activeOpacity={0.7}
@@ -199,6 +208,7 @@ export default function MyReviewsScreen({
                 <TouchableOpacity
                   style={[
                     styles.paginationButton,
+                    { borderColor: colors.border },
                     page >= totalPages && styles.paginationButtonDisabled,
                   ]}
                   onPress={handleNextPage}
@@ -223,7 +233,6 @@ export default function MyReviewsScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
   },
 
   /* Header */
@@ -231,9 +240,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: Platform.OS === "android" ? 12 : 20,
     paddingBottom: 16,
-    backgroundColor: "white",
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
   },
   headerTop: {
     flexDirection: "row",
@@ -243,7 +250,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "#F3F4F6",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
@@ -283,7 +289,7 @@ const styles = StyleSheet.create({
 
   /* Summary card */
   summaryCard: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
@@ -315,7 +321,7 @@ const styles = StyleSheet.create({
 
   /* Card */
   card: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -438,11 +444,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
   },
   paginationButtonDisabled: {
     opacity: 0.4,

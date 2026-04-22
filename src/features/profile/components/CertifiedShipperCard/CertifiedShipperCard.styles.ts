@@ -5,8 +5,8 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 
-export const createStyles = (colors: any, isDark: boolean) =>
-  StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => {
+  const styles = StyleSheet.create({
     card: {
       backgroundColor: isDark ? "rgba(255,255,255,0.1)" : colors.background.paper || "#f5f5f5",
       borderRadius: 16, padding: 16, marginBottom: 12,
@@ -99,5 +99,9 @@ export const createStyles = (colors: any, isDark: boolean) =>
     chevronHint: {
       position: "absolute", top: 16, right: 16,
     },
-    chevronHintColor: isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.3)",
   });
+  return {
+    ...styles,
+    chevronHintColor: isDark ? "rgba(255,255,255,0.4)" : "rgba(0,0,0,0.3)",
+  };
+};

@@ -1,16 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   actionBar: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
+    borderTopColor: colors.border,
     paddingHorizontal: 16,
     paddingVertical: 12,
     flexDirection: 'row',
@@ -23,10 +22,10 @@ export const styles = StyleSheet.create({
   },
   actionBarButton: {
     flex: 1,
-    borderColor: COLORS.primary,
+    borderColor: colors.primary.main,
   },
   actionBarButtonPrimary: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.primary.main,
   },
   actionBarButtonLabel: {
     fontFamily: Fonts.meduim,
@@ -35,6 +34,6 @@ export const styles = StyleSheet.create({
   actionBarButtonLabelPrimary: {
     fontFamily: Fonts.bold,
     fontSize: 14,
-    color: '#FFFFFF',
+    color: colors.text.inverse,
   },
 });

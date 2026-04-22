@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Alert } from 'react-native';
 // Direct import from useGoods.ts to get the mutation hook
 import { useReceiveGoods as useReceiveGoodsMutationFn } from './useGoods';

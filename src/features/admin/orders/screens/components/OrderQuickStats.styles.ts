@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -8,7 +9,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     padding: 16,
     borderRadius: 16,
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

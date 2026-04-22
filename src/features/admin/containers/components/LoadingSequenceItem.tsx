@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.lg,
     padding: Theme.spacing.md,
     ...Theme.shadows.sm,

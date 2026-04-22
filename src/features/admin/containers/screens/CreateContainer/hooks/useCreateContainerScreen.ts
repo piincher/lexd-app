@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useCreateContainer } from '../../../hooks';
 import { useGetActiveRoutes } from '../../../../routes/hooks/useRoutes';
 import { useGetConsignees, Consignee } from '../../../../consignees';
@@ -25,7 +25,6 @@ interface FormErrors {
   submit?: string;
 }
 
-const SHIPPING_MODES: ShippingMode[] = ['SEA', 'AIR'];
 const SEA_SHIPPING_LINES: ShippingLine[] = ['MSC', 'MAERSK', 'CMA_CGM', 'HAPAG_LLOYD'];
 
 export const useCreateContainerScreen = () => {
@@ -33,7 +32,7 @@ export const useCreateContainerScreen = () => {
 
   // Form state
   const [formData, setFormData] = useState<ContainerFormData>({
-    shippingMode: '',
+    shippingMode: 'SEA',
     shippingLine: '',
     routeId: '',
     consigneeId: '',
@@ -48,8 +47,23 @@ export const useCreateContainerScreen = () => {
   const [showConsigneeDropdown, setShowConsigneeDropdown] = useState<boolean>(false);
   const [showRouteMenu, setShowRouteMenu] = useState<boolean>(false);
 
+  const consigneeSearchParams = useMemo(() => {
+    const search = consigneeSearchQuery.trim();
+    // Normalize phone-like searches by removing formatting characters
+    // so they match the DB format (phones stored without spaces/dashes/parens)
+    const isPhoneLike = /^[\d\s\-+()]+$/.test(search);
+    const normalizedSearch = isPhoneLike ? search.replace(/[^\d+]/g, '') : search;
+
+    return {
+      isActive: true,
+      page: 1,
+      limit: 20,
+      ...(normalizedSearch.length >= 2 ? { search: normalizedSearch } : {}),
+    };
+  }, [consigneeSearchQuery]);
+
   // Data fetching
-  const { data: consigneesData, isLoading: isLoadingConsignees } = useGetConsignees();
+  const { data: consigneesData, isLoading: isLoadingConsignees } = useGetConsignees(consigneeSearchParams);
   const { 
     data: routesData, 
     isLoading: isLoadingRoutes,
@@ -59,27 +73,34 @@ export const useCreateContainerScreen = () => {
 
   const consignees: Consignee[] = consigneesData || [];
   // Extract routes from response - backend returns { data: { routes: [...] } }
-  const routes: Route[] = (routesData?.data?.routes as Route[]) || [];
+  const routes: Route[] = ((routesData?.data?.routes || []) as unknown as Route[]).filter(
+    (route) => route.shippingMode === 'SEA'
+  );
 
   // Filter consignees based on search
   const filteredConsignees = useMemo(() => {
     if (!consigneeSearchQuery.trim()) return consignees;
-    const query = consigneeSearchQuery.toLowerCase();
-    return consignees.filter(
-      (c) =>
+    const query = consigneeSearchQuery.trim().toLowerCase();
+    const phoneQuery = query.replace(/[^\d+]/g, '');
+
+    return consignees.filter((c) => {
+      const phone = c.phone?.toLowerCase() || '';
+      const normalizedPhone = phone.replace(/[^\d+]/g, '');
+
+      return (
         c.name.toLowerCase().includes(query) ||
-        c.phone?.toLowerCase().includes(query) ||
+        phone.includes(query) ||
+        (phoneQuery.length > 0 && normalizedPhone.includes(phoneQuery)) ||
         c.warehouseAddress?.toLowerCase().includes(query) ||
         c._id?.toLowerCase().includes(query)
-    );
+      );
+    });
   }, [consignees, consigneeSearchQuery]);
 
   // Get available shipping lines based on mode
   const availableShippingLines = useMemo(() => {
-    if (formData.shippingMode === 'SEA') return SEA_SHIPPING_LINES;
-    if (formData.shippingMode === 'AIR') return ['AIR_STANDARD'];
-    return [];
-  }, [formData.shippingMode]);
+    return SEA_SHIPPING_LINES;
+  }, []);
 
   // Validation
   const validateForm = useCallback((): boolean => {
@@ -93,8 +114,7 @@ export const useCreateContainerScreen = () => {
       newErrors.routeId = 'La route est requise';
     }
 
-    // Shipping line is only required for SEA mode
-    if (formData.shippingMode === 'SEA' && !formData.shippingLine) {
+    if (!formData.shippingLine) {
       newErrors.shippingLine = 'La compagnie est requise';
     }
 
@@ -117,15 +137,6 @@ export const useCreateContainerScreen = () => {
       setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   }, [errors]);
-
-  // Handle shipping mode selection
-  const handleSelectShippingMode = useCallback((mode: ShippingMode) => {
-    updateField('shippingMode', mode);
-    updateField('shippingLine', '');
-    updateField('routeId', '');
-    setSelectedRoute(null);
-    setErrors((prev) => ({ ...prev, shippingMode: undefined, routeId: undefined }));
-  }, [updateField]);
 
   // Handle route selection
   const handleSelectRoute = useCallback((route: Route) => {
@@ -162,8 +173,8 @@ export const useCreateContainerScreen = () => {
     if (!validateForm()) return;
 
     const submitData = {
-      shippingMode: formData.shippingMode as ShippingMode,
-      shippingLine: formData.shippingLine ? (formData.shippingLine as ShippingLine) : undefined,
+      shippingMode: 'SEA' as ShippingMode,
+      shippingLine: formData.shippingLine as ShippingLine,
       routeId: formData.routeId,
       consigneeId: formData.consigneeId,
       actualContainerNumber: formData.actualContainerNumber.trim() || undefined,
@@ -195,7 +206,6 @@ export const useCreateContainerScreen = () => {
     consigneeSearchQuery,
     showConsigneeDropdown,
     showRouteMenu,
-    shippingModes: SHIPPING_MODES,
     availableShippingLines,
     consignees,
     routes,
@@ -206,7 +216,6 @@ export const useCreateContainerScreen = () => {
     createMutation,
     isSubmitting: createMutation.isPending,
     navigation,
-    handleSelectShippingMode,
     handleSelectRoute,
     handleClearRoute,
     handleSelectConsignee,

@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Menu } from 'react-native-paper';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 import {
   ContainerStatus,
   CONTAINER_STATUS_COLORS,
   SHIPPING_MODE_ICONS,
   SHIPPING_MODE_LABELS,
 } from '../../types';
-import { styles } from '../ContainerDetailScreen.styles';
+import {  createStyles  } from '../ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+
+interface ConsigneeInfo {
+  name?: string;
+  phone?: string;
+  warehouseAddress?: string;
+}
 
 interface ContainerDetailHeaderProps {
   containerNumber?: string;
@@ -23,6 +32,7 @@ interface ContainerDetailHeaderProps {
   setStatusMenuVisible: (visible: boolean) => void;
   onUpdateStatus: (status: ContainerStatus) => void;
   onBack: () => void;
+  consignee?: ConsigneeInfo;
 }
 
 const TIMELINE_STEPS: { status: ContainerStatus; label: string; icon: string }[] = [
@@ -51,7 +61,11 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
   setStatusMenuVisible,
   onUpdateStatus,
   onBack,
+  consignee,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  const navigation = useNavigation();
   const handleUpdateStatus = (newStatus: ContainerStatus) => {
     setStatusMenuVisible(false);
     onUpdateStatus(newStatus);
@@ -71,35 +85,42 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
           <Ionicons name="arrow-back" size={24} color="#FFF" />
         </TouchableOpacity>
 
-        <Menu
-          visible={statusMenuVisible}
-          onDismiss={() => setStatusMenuVisible(false)}
-          anchor={
-            <TouchableOpacity
-              style={[styles.statusBadge, { backgroundColor: statusColor }]}
-              onPress={() => setStatusMenuVisible(true)}
-            >
-              <Text style={styles.statusText}>{statusLabel}</Text>
-              <Ionicons name="chevron-down" size={16} color="#FFF" />
-            </TouchableOpacity>
-          }
-        >
-          {TIMELINE_STEPS.map((step) => (
-            <Menu.Item
-              key={step.status}
-              onPress={() => handleUpdateStatus(step.status)}
-              title={step.label}
-              leadingIcon={() => (
-                <Ionicons
-                  name={step.icon as any}
-                  size={20}
-                  color={CONTAINER_STATUS_COLORS[step.status]}
-                />
-              )}
-              style={status === step.status ? styles.menuItemActive : undefined}
-            />
-          ))}
-        </Menu>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <Menu
+            visible={statusMenuVisible}
+            onDismiss={() => setStatusMenuVisible(false)}
+            anchor={
+              <TouchableOpacity
+                style={[styles.statusBadge, { backgroundColor: statusColor }]}
+                onPress={() => setStatusMenuVisible(true)}
+              >
+                <Text style={styles.statusText}>{statusLabel}</Text>
+                <Ionicons name="chevron-down" size={16} color="#FFF" />
+              </TouchableOpacity>
+            }
+          >
+            {TIMELINE_STEPS.map((step) => (
+              <Menu.Item
+                key={step.status}
+                onPress={() => handleUpdateStatus(step.status)}
+                title={step.label}
+                leadingIcon={() => (
+                  <Ionicons
+                    name={step.icon as any}
+                    size={20}
+                    color={CONTAINER_STATUS_COLORS[step.status]}
+                  />
+                )}
+                style={status === step.status ? styles.menuItemActive : undefined}
+              />
+            ))}
+          </Menu>
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={22}
+            color="#FFF"
+          />
+        </View>
       </View>
 
       <Animated.View entering={FadeInUp.delay(100)} style={styles.headerContent}>
@@ -117,6 +138,14 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
             />
             <Text style={styles.shippingLineText}>
               {SHIPPING_MODE_LABELS[mappedShippingMode]}
+            </Text>
+          </View>
+        )}
+        {consignee?.phone && mappedShippingMode === 'AIR' && (
+          <View style={styles.consigneeContainer}>
+            <Ionicons name="call-outline" size={14} color="rgba(255,255,255,0.8)" />
+            <Text style={styles.consigneeText}>
+              {consignee.name} — {consignee.phone}
             </Text>
           </View>
         )}

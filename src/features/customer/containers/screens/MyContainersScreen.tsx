@@ -9,9 +9,9 @@ import { FlashList } from '@shopify/flash-list';
 import { Appbar, Text, Button, Chip, Searchbar, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { RootStackScreenProps } from '@src/navigations/type';
+import type { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetMyContainers } from '../hooks/useCustomerContainers';
 import { ContainerCard } from '../components/ContainerCard';
 import { ContainerListSkeleton } from '../components/ContainerListSkeleton';
@@ -38,6 +38,103 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
   const theme = useTheme();
   const [modeFilter, setModeFilter] = useState<FilterMode>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.paper,
+    },
+    headerTitle: {
+      fontFamily: Fonts.bold,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 32,
+    },
+    loadingText: {
+      marginTop: 16,
+      fontFamily: Fonts.meduim,
+      color: colors.text.secondary,
+    },
+    errorTitle: {
+      fontSize: 18,
+      fontFamily: Fonts.bold,
+      color: colors.text.secondary,
+      marginTop: 16,
+    },
+    errorText: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+      textAlign: 'center',
+      marginTop: 8,
+    },
+    retryButton: {
+      marginTop: 24,
+    },
+    filtersContainer: {
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      backgroundColor: colors.background.card,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.neutral[200],
+    },
+    filterRow: {
+      flexDirection: 'row',
+      gap: 10,
+    },
+    filterChip: {
+      borderRadius: 20,
+      height: 36,
+      backgroundColor: colors.background.paper,
+    },
+    searchContainer: {
+      paddingHorizontal: 16,
+      paddingTop: 12,
+      paddingBottom: 4,
+      backgroundColor: colors.background.card,
+    },
+    searchBar: {
+      backgroundColor: colors.background.paper,
+      borderRadius: 12,
+      height: 44,
+    },
+    searchInput: {
+      fontFamily: Fonts.regular,
+      fontSize: 14,
+      minHeight: 0,
+      paddingVertical: 0,
+    },
+    listContent: {
+      paddingVertical: 8,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 32,
+    },
+    emptyTitle: {
+      fontSize: 20,
+      fontFamily: Fonts.bold,
+      color: colors.text.secondary,
+      marginTop: 16,
+    },
+    emptyText: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+      textAlign: 'center',
+      marginTop: 8,
+      marginBottom: 24,
+    },
+    emptyButton: {
+      marginTop: 8,
+    },
+  }), [colors, isDark]);
 
   // Build API filters - only include shippingMode when not ALL
   const filters = useMemo(() => {
@@ -71,7 +168,7 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
       <MaterialCommunityIcons
         name="container-off"
         size={80}
-        color={COLORS.SlateGray}
+        color={colors.status.success}
       />
       <Text style={styles.emptyTitle}>Aucun container</Text>
       <Text style={styles.emptyText}>
@@ -120,14 +217,14 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
                 },
               ]}
               textStyle={{
-                color: isSelected ? '#fff' : theme.colors.onSurface,
+                color: isSelected ? colors.text.inverse : theme.colors.onSurface,
                 fontFamily: isSelected ? Fonts.bold : Fonts.meduim,
               }}
               icon={() => (
                 <MaterialCommunityIcons
                   name={option.icon}
                   size={16}
-                  color={isSelected ? '#fff' : theme.colors.onSurfaceVariant}
+                  color={isSelected ? colors.text.inverse : theme.colors.onSurfaceVariant}
                 />
               )}
             >
@@ -231,101 +328,5 @@ const MyContainersScreen: React.FC<RootStackScreenProps<'MyContainers'>> = ({
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.lightBackground,
-  },
-  headerTitle: {
-    fontFamily: Fonts.bold,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  loadingText: {
-    marginTop: 16,
-    fontFamily: Fonts.meduim,
-    color: COLORS.DimGray,
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-    marginTop: 16,
-  },
-  errorText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.DimGray,
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  retryButton: {
-    marginTop: 24,
-  },
-  filtersContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: COLORS.white,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.Silver,
-  },
-  filterRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  filterChip: {
-    borderRadius: 20,
-    height: 36,
-    backgroundColor: COLORS.lightBackground,
-  },
-  searchContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 12,
-    paddingBottom: 4,
-    backgroundColor: COLORS.white,
-  },
-  searchBar: {
-    backgroundColor: COLORS.lightBackground,
-    borderRadius: 12,
-    height: 44,
-  },
-  searchInput: {
-    fontFamily: Fonts.regular,
-    fontSize: 14,
-    minHeight: 0,
-    paddingVertical: 0,
-  },
-  listContent: {
-    paddingVertical: 8,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  emptyTitle: {
-    fontSize: 20,
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-    marginTop: 16,
-  },
-  emptyText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.DimGray,
-    textAlign: 'center',
-    marginTop: 8,
-    marginBottom: 24,
-  },
-  emptyButton: {
-    marginTop: 8,
-  },
-});
 
 export default MyContainersScreen;

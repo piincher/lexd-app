@@ -17,7 +17,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
 import { DatePickerModal } from "react-native-paper-dates";
 import { Fonts } from "@src/constants/Fonts";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
+import { Theme } from "@src/constants/Theme";
 import {
   useAdminPromos,
   useCreatePromo,
@@ -847,7 +848,7 @@ export default function ManagePromosScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: Theme.colors.background.default,
   },
 
   /* Header */
@@ -855,9 +856,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: Platform.OS === "android" ? 12 : 20,
     paddingBottom: 16,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
   },
   headerTop: {
     flexDirection: "row",
@@ -867,7 +868,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
@@ -889,9 +890,9 @@ const styles = StyleSheet.create({
 
   /* Filter chips */
   filterContainer: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
     paddingVertical: 12,
   },
   filterScrollContent: {
@@ -902,9 +903,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: Theme.colors.neutral[200],
   },
   filterChipActive: {
     backgroundColor: "#d4a843",
@@ -940,7 +941,7 @@ const styles = StyleSheet.create({
 
   /* Card */
   card: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -1003,7 +1004,7 @@ const styles = StyleSheet.create({
     gap: 10,
     marginTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "#F3F4F6",
+    borderTopColor: Theme.colors.neutral[100],
     paddingTop: 12,
   },
   editButton: {
@@ -1063,7 +1064,7 @@ const styles = StyleSheet.create({
   },
   resetFilterButton: {
     marginTop: 16,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
@@ -1086,11 +1087,11 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: Theme.colors.neutral[200],
   },
   paginationButtonDisabled: {
     opacity: 0.4,
@@ -1125,7 +1126,7 @@ const styles = StyleSheet.create({
 const formStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: Theme.colors.background.default,
   },
   header: {
     flexDirection: "row",
@@ -1133,9 +1134,9 @@ const formStyles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: Platform.OS === "android" ? 12 : 8,
     paddingBottom: 16,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
   },
   headerTitle: {
     fontSize: 20,
@@ -1159,7 +1160,7 @@ const formStyles = StyleSheet.create({
     marginBottom: 6,
   },
   input: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -1167,7 +1168,7 @@ const formStyles = StyleSheet.create({
     fontFamily: Fonts.regular,
     color: "#1F2937",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: Theme.colors.neutral[200],
   },
   textArea: {
     minHeight: 80,
@@ -1176,12 +1177,12 @@ const formStyles = StyleSheet.create({
   dateButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 13,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: Theme.colors.neutral[200],
     gap: 8,
   },
   dateButtonText: {
@@ -1205,9 +1206,9 @@ const formStyles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: Theme.colors.neutral[200],
   },
   optionChipSelected: {
     backgroundColor: "#d4a843",
@@ -1231,7 +1232,7 @@ const formStyles = StyleSheet.create({
     flex: 1,
     paddingVertical: 14,
     borderRadius: 12,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     alignItems: "center",
   },
   cancelButtonText: {

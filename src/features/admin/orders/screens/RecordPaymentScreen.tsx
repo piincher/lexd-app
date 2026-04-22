@@ -3,7 +3,7 @@
  * For cash, bank transfer, or mobile money payments made by clients
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { 
   Text, 
@@ -19,10 +19,11 @@ import {
 } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRecordPayment } from '../hooks/useOrderManagement';
+import { hapticSuccess } from '@src/shared/lib/haptics';
 import * as ImagePicker from 'expo-image-picker';
 
 const PAYMENT_METHODS = [
@@ -34,6 +35,199 @@ const PAYMENT_METHODS = [
 ];
 
 const RecordPaymentScreen: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+      backgroundColor: colors.background.default,
+    },
+    summaryCard: {
+      padding: 16,
+      borderRadius: 12,
+      marginBottom: 16,
+      elevation: 2,
+    },
+    summaryTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      marginBottom: 12,
+      color: colors.text.primary,
+    },
+    summaryRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginVertical: 4,
+    },
+    summaryLabel: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+    },
+    summaryValue: {
+      fontSize: 14,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+    },
+    divider: {
+      marginVertical: 12,
+    },
+    formCard: {
+      padding: 16,
+      borderRadius: 12,
+      marginBottom: 16,
+      elevation: 2,
+    },
+    sectionTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      marginBottom: 16,
+      color: colors.text.primary,
+    },
+    inputGroup: {
+      marginBottom: 16,
+    },
+    label: {
+      fontSize: 14,
+      fontWeight: '500',
+      fontFamily: Fonts.medium,
+      marginBottom: 8,
+      color: colors.text.primary,
+    },
+    hint: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      marginBottom: 8,
+    },
+    radioItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    radioIcon: {
+      marginLeft: 8,
+    },
+    radioButton: {
+      flex: 1,
+    },
+    imageContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 10,
+    },
+    imageWrapper: {
+      position: 'relative',
+    },
+    proofImage: {
+      width: 100,
+      height: 100,
+      borderRadius: 8,
+    },
+    removeButton: {
+      position: 'absolute',
+      top: -8,
+      right: -8,
+      backgroundColor: colors.background.card,
+      borderRadius: 12,
+    },
+    addImageButton: {
+      width: 100,
+      height: 100,
+      borderRadius: 8,
+      borderWidth: 2,
+      borderColor: colors.primary.main,
+      borderStyle: 'dashed',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: colors.background.default,
+    },
+    addImageText: {
+      fontSize: 12,
+      color: colors.primary.main,
+      fontFamily: Fonts.medium,
+      marginTop: 4,
+    },
+    previewCard: {
+      padding: 16,
+      borderRadius: 12,
+      marginBottom: 16,
+      elevation: 2,
+      backgroundColor: colors.background.paper,
+    },
+    previewTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      marginBottom: 12,
+      color: colors.primary.main,
+    },
+    previewRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginVertical: 6,
+    },
+    previewLabel: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+    },
+    previewValue: {
+      fontSize: 14,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+    },
+    statusBadge: {
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 12,
+    },
+    statusText: {
+      fontSize: 12,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+    },
+    errorCard: {
+      padding: 16,
+      borderRadius: 12,
+      marginBottom: 16,
+      backgroundColor: colors.status.error,
+    },
+    errorText: {
+      color: colors.status.error,
+      fontFamily: Fonts.medium,
+    },
+    submitButton: {
+      marginVertical: 16,
+      paddingVertical: 8,
+      borderRadius: 10,
+    },
+    submitLabel: {
+      fontSize: 16,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+    },
+    modalContent: {
+      backgroundColor: colors.background.card,
+      padding: 20,
+      margin: 20,
+      borderRadius: 12,
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      marginBottom: 16,
+      textAlign: 'center',
+    },
+    modalButton: {
+      marginVertical: 8,
+    },
+  }), [colors, isDark]);
   const route = useRoute();
   const navigation = useNavigation();
   const { orderId, orderCode, clientName, clientPhone, currentBalance, totalAmount } = route.params as {
@@ -121,6 +315,7 @@ const RecordPaymentScreen: React.FC = () => {
   };
 
   const handleSubmit = () => {
+    hapticSuccess();
     console.log('[RecordPaymentScreen] Submit clicked');
 
     if (!validate()) {
@@ -212,7 +407,7 @@ const RecordPaymentScreen: React.FC = () => {
   };
 
   return (
-    <Screen header={{ title: 'Record Payment' }}>
+    <Screen header={{ title: 'Record Payment', showNotificationBell: true }}>
       <ScrollView style={styles.container}>
         {/* Order Summary */}
         <Surface style={styles.summaryCard}>
@@ -270,7 +465,7 @@ const RecordPaymentScreen: React.FC = () => {
                   <MaterialCommunityIcons 
                     name={method.icon as any} 
                     size={20} 
-                    color={COLORS.grey}
+                    color={colors.text.secondary}
                     style={styles.radioIcon}
                   />
                   <RadioButton.Item
@@ -336,7 +531,7 @@ const RecordPaymentScreen: React.FC = () => {
                   style={styles.addImageButton}
                   onPress={() => setShowImageModal(true)}
                 >
-                  <MaterialCommunityIcons name="camera-plus" size={32} color={COLORS.blue} />
+                  <MaterialCommunityIcons name="camera-plus" size={32} color={colors.primary.main} />
                   <Text style={styles.addImageText}>Add Photo</Text>
                 </TouchableOpacity>
               )}
@@ -375,8 +570,8 @@ const RecordPaymentScreen: React.FC = () => {
                                 getPaymentStatus() === 'PARTIAL' ? '#FFF3E0' : '#FFEBEE'
               }]}>
                 <Text style={[styles.statusText, { 
-                  color: getPaymentStatus() === 'PAID' ? '#4CAF50' : 
-                         getPaymentStatus() === 'PARTIAL' ? '#FF9800' : '#F44336'
+                  color: getPaymentStatus() === 'PAID' ? colors.status.success : 
+                         getPaymentStatus() === 'PARTIAL' ? colors.accent.goldDark : colors.status.error
                 }]}>
                   {getPaymentStatus()}
                 </Text>
@@ -401,7 +596,7 @@ const RecordPaymentScreen: React.FC = () => {
           loading={isPending}
           disabled={isPending || isSubmitting || !amount}
           style={styles.submitButton}
-          buttonColor={COLORS.blue}
+          buttonColor={colors.primary.main}
           icon="check"
           labelStyle={styles.submitLabel}
         >
@@ -445,198 +640,5 @@ const RecordPaymentScreen: React.FC = () => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#F5F7FA',
-  },
-  summaryCard: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    elevation: 2,
-  },
-  summaryTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    marginBottom: 12,
-    color: '#1A1A2E',
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 4,
-  },
-  summaryLabel: {
-    fontSize: 14,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-  },
-  summaryValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    color: '#1A1A2E',
-  },
-  divider: {
-    marginVertical: 12,
-  },
-  formCard: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    elevation: 2,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    marginBottom: 16,
-    color: '#1A1A2E',
-  },
-  inputGroup: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '500',
-    fontFamily: Fonts.medium,
-    marginBottom: 8,
-    color: '#333',
-  },
-  hint: {
-    fontSize: 12,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-    marginBottom: 8,
-  },
-  radioItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  radioIcon: {
-    marginLeft: 8,
-  },
-  radioButton: {
-    flex: 1,
-  },
-  imageContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
-  },
-  imageWrapper: {
-    position: 'relative',
-  },
-  proofImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-  },
-  removeButton: {
-    position: 'absolute',
-    top: -8,
-    right: -8,
-    backgroundColor: '#FFF',
-    borderRadius: 12,
-  },
-  addImageButton: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-    borderWidth: 2,
-    borderColor: COLORS.blue,
-    borderStyle: 'dashed',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5F7FA',
-  },
-  addImageText: {
-    fontSize: 12,
-    color: COLORS.blue,
-    fontFamily: Fonts.medium,
-    marginTop: 4,
-  },
-  previewCard: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    elevation: 2,
-    backgroundColor: '#E3F2FD',
-  },
-  previewTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    marginBottom: 12,
-    color: '#1976D2',
-  },
-  previewRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginVertical: 6,
-  },
-  previewLabel: {
-    fontSize: 14,
-    color: '#666',
-    fontFamily: Fonts.regular,
-  },
-  previewValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    color: '#1A1A2E',
-  },
-  statusBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-  },
-  errorCard: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    backgroundColor: '#FFEBEE',
-  },
-  errorText: {
-    color: '#F44336',
-    fontFamily: Fonts.medium,
-  },
-  submitButton: {
-    marginVertical: 16,
-    paddingVertical: 8,
-    borderRadius: 10,
-  },
-  submitLabel: {
-    fontSize: 16,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-  },
-  modalContent: {
-    backgroundColor: 'white',
-    padding: 20,
-    margin: 20,
-    borderRadius: 12,
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  modalButton: {
-    marginVertical: 8,
-  },
-});
 
 export default RecordPaymentScreen;

@@ -48,7 +48,7 @@ export const RouteStopsManager: React.FC<RouteStopsManagerProps> = ({
     <View style={styles.container}>
       <View style={styles.inputRow}>
         <View style={styles.inputWrapper}>
-          <Input placeholder="Nouvelle escale..." value={newStop} onChangeText={setNewStop} leftIcon="location-outline" onSubmitEditing={handleAdd} />
+          <Input placeholder="Nouvelle escale..." value={newStop} onChangeText={setNewStop} onSubmitEditing={handleAdd} />
         </View>
         <Button title="Ajouter" onPress={handleAdd} icon="add" size="small" disabled={!newStop.trim()} />
       </View>

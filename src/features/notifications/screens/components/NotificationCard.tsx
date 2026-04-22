@@ -147,7 +147,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     marginHorizontal: 16,
     marginVertical: 5,
     borderRadius: 16,
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     ...Theme.shadows.sm,
   },
   unreadCard: {
-    backgroundColor: '#FAFBFF',
+    backgroundColor: Theme.colors.background.elevated,
     borderWidth: 1,
     borderColor: Theme.primary[100],
   },

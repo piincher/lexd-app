@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useQueryClient } from '@tanstack/react-query';
 import { Alert } from 'react-native';
 import { useGetContainerById, useGetUnassignedGoods, useAssignGoodsToContainer, containerQueryKeys } from '../../../hooks';
@@ -12,7 +12,7 @@ type RouteParams = { containerId: string };
 type NavigationProp = NativeStackNavigationProp<AdminV2StackParamList>;
 const MAX_CONTAINER_CBM = 67;
 const MAX_CONTAINER_WEIGHT = 28000; // kg
-const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'LOADING'];
+const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'EMPTY_TO_WAREHOUSE', 'LOADING'];
 const canReceiveGoods = (status: ContainerStatus): boolean => ASSIGNABLE_STATUSES.includes(status);
 
 export interface UseAssignGoodsScreenReturn {
@@ -57,16 +57,22 @@ export const useAssignGoodsScreen = (): UseAssignGoodsScreenReturn => {
   const containerStatus = container?.status as ContainerStatus;
   const isAssignable = canReceiveGoods(containerStatus);
 
+  // Filter by shipping mode compatibility + search query (defense in depth)
+  const modeFilteredGoods = useMemo(() => {
+    if (!container?.shippingMode) return unassignedGoods;
+    return unassignedGoods.filter((g) => g.shippingMode === container.shippingMode);
+  }, [unassignedGoods, container?.shippingMode]);
+
   const filteredGoods = useMemo(() => {
-    if (!searchQuery.trim()) return unassignedGoods;
+    if (!searchQuery.trim()) return modeFilteredGoods;
     const query = searchQuery.toLowerCase();
-    return unassignedGoods.filter((goods) => {
+    return modeFilteredGoods.filter((goods) => {
       const goodsIdMatch = goods.goodsId.toLowerCase().includes(query);
       const clientNameMatch = typeof goods.clientId === 'object' && goods.clientId &&
         (goods.clientId.firstName.toLowerCase().includes(query) || goods.clientId.lastName.toLowerCase().includes(query));
       return goodsIdMatch || clientNameMatch;
     });
-  }, [searchQuery, unassignedGoods]);
+  }, [searchQuery, modeFilteredGoods]);
 
   // For AIR containers, use weight (kg); for SEA, use CBM (m³)
   const maxCapacity = isAirContainer ? MAX_CONTAINER_WEIGHT : MAX_CONTAINER_CBM;

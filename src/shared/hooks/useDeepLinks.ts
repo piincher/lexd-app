@@ -22,10 +22,16 @@ interface ParsedLink {
 /**
  * Parse a deep link URL into screen name and params.
  * This is a best-effort parser that mirrors the linking config.
+ * Supports both custom scheme (chinalinkexpress://) and universal links (https://chinalinkexpress.com/...)
  */
 function parseDeepLink(url: string): ParsedLink | null {
-  // Remove scheme prefix
-  const path = url.replace(/^chinalinkexpress:\/\//, "");
+  // Remove scheme prefix — supports custom scheme and universal links
+  const path = url
+    .replace(/^chinalinkexpress:\/\//, "")
+    .replace(/^https:\/\/chinalinkexpress\.com\//, "")
+    .replace(/^https:\/\/www\.chinalinkexpress\.com\//, "")
+    .replace(/^http:\/\/chinalinkexpress\.com\//, "")
+    .replace(/^http:\/\/www\.chinalinkexpress\.com\//, "");
   const [route, queryString] = path.split("?");
   const segments = route.split("/").filter(Boolean);
 
@@ -63,6 +69,8 @@ function parseDeepLink(url: string): ParsedLink | null {
       return { screen: "HomeTab", params: { screen: "Profile" } };
     case "tracking":
       return { screen: "ContainerTracking", params: { containerId: second, ...params } };
+    case "s":
+      return { screen: "SharedShipment", params: { token: second, ...params } };
     case "order":
       return { screen: "OrderDetail", params: { id: second, ...params } };
     case "ticket":
@@ -77,9 +85,10 @@ function parseDeepLink(url: string): ParsedLink | null {
       return { screen: "Notifications", params };
     }
     case "payments": {
-      if (second === "history") return { screen: "PaymentHistory", params };
-      if (second === "portal") return { screen: "PaymentPortal", params };
-      if (second === "confirmation") return { screen: "PaymentConfirmation", params };
+      if (second === "history") return { screen: "PaymentHistoryScreen", params };
+      if (second === "portal") return { screen: "MyPaymentHistory", params };
+      if (second === "confirmation") return { screen: "MyPaymentHistory", params };
+      if (second) return { screen: "UserPaymentDetail", params: { paymentId: second, ...params } };
       return { screen: "MyPaymentHistory", params };
     }
     case "faq":
@@ -88,12 +97,8 @@ function parseDeepLink(url: string): ParsedLink | null {
       return { screen: "AboutUs", params };
     case "route-check":
       return { screen: "CheckRoute", params };
-    case "sea-order":
-      return { screen: "SeaShippingOrderDetails", params: { id: second, ...params } };
     case "batch":
       return { screen: "BatchUpdateDetail", params: { data: second, ...params } };
-    case "map":
-      return { screen: "Map", params: { id: second, ...params } };
     case "scan":
       return { screen: "ScanQRCode", params };
     case "active-order":
@@ -110,7 +115,7 @@ function parseDeepLink(url: string): ParsedLink | null {
         if (third === "new") return { screen: "AddOrder", params };
         return { screen: "OrderDetailScreen", params: { id: second, ...params } };
       }
-      if (second === "payments") return { screen: "PaymentManagement", params };
+      if (second === "payments") return { screen: "OutstandingPaymentsList", params };
       if (second === "goods") return { screen: "AdminGoodsList", params };
       if (second === "containers") return { screen: "ContainerList", params };
       if (second === "clients") return { screen: "ClientManagement", params };
@@ -156,8 +161,7 @@ function parseDeepLink(url: string): ParsedLink | null {
     case "unassigned":
       return { screen: "UnassignedGoods", params };
     case "whatsapp": {
-      if (second) return { screen: "WhatsAppRequestDetail", params: { requestId: second, ...params } };
-      return { screen: "WhatsAppRequests", params };
+      return { screen: "WhatsAppRequests", params: { requestId: second, ...params } };
     }
     case "campaigns": {
       if (second === "new") return { screen: "CreateCampaign", params };
@@ -167,10 +171,8 @@ function parseDeepLink(url: string): ParsedLink | null {
       if (second === "new") return { screen: "CreateAnnouncement", params };
       return { screen: "CreateAnnouncement", params };
     }
-    case "search": {
-      if (second === "v2") return { screen: "Search", params };
+    case "search":
       return { screen: "GlobalSearch", params };
-    }
     case "badges":
       return { screen: "Badges", params };
     case "reviews":

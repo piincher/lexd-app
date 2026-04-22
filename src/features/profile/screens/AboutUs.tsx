@@ -306,7 +306,7 @@ const AboutUs = () => {
                flexDirection: "row",
                alignItems: "center",
                gap: 8,
-               backgroundColor: "#FFF",
+               backgroundColor: Theme.colors.background.card,
                paddingHorizontal: 20,
                paddingVertical: 10,
                borderRadius: 24,

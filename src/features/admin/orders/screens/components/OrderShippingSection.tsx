@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 import { Text, Surface, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
-import { styles } from './OrderShippingSection.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './OrderShippingSection.styles';
 
 interface OrderShippingSectionProps {
   order: any;
@@ -15,6 +15,7 @@ interface ShippingRowProps {
   label: string;
   value: string;
   iconColor?: string;
+  styles: ReturnType<typeof createStyles>;
 }
 
 const ShippingRow: React.FC<ShippingRowProps> = ({
@@ -22,6 +23,7 @@ const ShippingRow: React.FC<ShippingRowProps> = ({
   label,
   value,
   iconColor = '#6B7280',
+  styles,
 }) => (
   <View style={styles.row}>
     <View style={styles.rowLeft}>
@@ -69,6 +71,8 @@ const formatDateSafe = (dateValue: any): string => {
 };
 
 export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ order }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
   const position = getPositionFromRoute(order);
   const departureDate = formatDateSafe(order?.departureDate);
   const receiptDate = formatDateSafe(order?.dateOfReceipt);
@@ -76,7 +80,7 @@ export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ orde
   return (
     <Surface style={styles.container}>
       <View style={styles.header}>
-        <MaterialCommunityIcons name="truck-fast" size={22} color={COLORS.blue} />
+        <MaterialCommunityIcons name="truck-fast" size={22} color={colors.primary.main} />
         <Text style={styles.title}>Expédition & Logistique</Text>
       </View>
 
@@ -99,42 +103,12 @@ export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ orde
 
       <Divider style={styles.divider} />
 
-      <ShippingRow
-        icon="identifier"
-        label="N° Conteneur"
-        value={order?.contenairNumber}
-        iconColor="#1976D2"
-      />
-      <ShippingRow
-        icon="handshake"
-        label="Transporteur"
-        value={order?.partenaire}
-        iconColor="#7B1FA2"
-      />
-      <ShippingRow
-        icon="map-marker-radius"
-        label="Position actuelle"
-        value={position}
-        iconColor="#E65100"
-      />
-      <ShippingRow
-        icon="calendar-arrow-right"
-        label="Date de départ"
-        value={departureDate}
-        iconColor="#9C27B0"
-      />
-      <ShippingRow
-        icon="calendar-check"
-        label="Date de réception"
-        value={receiptDate}
-        iconColor="#4CAF50"
-      />
-      <ShippingRow
-        icon="package-variant"
-        label="Type de colis"
-        value={order?.category?.name || order?.typeOfPackage || 'Général'}
-        iconColor="#00796B"
-      />
+      <ShippingRow styles={styles} icon="identifier" label="N° Conteneur" value={order?.contenairNumber} iconColor="#1976D2" />
+      <ShippingRow styles={styles} icon="handshake" label="Transporteur" value={order?.partenaire} iconColor="#7B1FA2" />
+      <ShippingRow styles={styles} icon="map-marker-radius" label="Position actuelle" value={position} iconColor="#E65100" />
+      <ShippingRow styles={styles} icon="calendar-arrow-right" label="Date de départ" value={departureDate} iconColor="#9C27B0" />
+      <ShippingRow styles={styles} icon="calendar-check" label="Date de réception" value={receiptDate} iconColor="#4CAF50" />
+      <ShippingRow styles={styles} icon="package-variant" label="Type de colis" value={order?.category?.name || order?.typeOfPackage || 'Général'} iconColor="#00796B" />
     </Surface>
   );
 };

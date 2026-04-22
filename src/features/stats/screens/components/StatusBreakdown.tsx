@@ -89,7 +89,7 @@ export const StatusBreakdown: React.FC<StatusBreakdownProps> = ({ statusCounts, 
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 18,
     ...Theme.shadows.sm,

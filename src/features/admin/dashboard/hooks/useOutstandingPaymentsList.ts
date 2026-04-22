@@ -4,7 +4,8 @@
  */
 
 import { useState, useCallback } from 'react';
-import { useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { getOutstandingPaymentsList } from '../api/dashboardApi';
 import type { OutstandingPaymentsListData } from '../types';
 

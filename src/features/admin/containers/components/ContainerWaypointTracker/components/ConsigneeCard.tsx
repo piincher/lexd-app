@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Card, Button } from 'react-native-paper';
+import { Theme } from '@src/constants/Theme';
 import { ConsigneeInfo } from '../../../types';
 
 interface ConsigneeCardProps {
@@ -70,6 +71,7 @@ const styles = StyleSheet.create({
   consigneeCard: {
     borderRadius: 16,
     overflow: 'hidden',
+    backgroundColor: Theme.colors.background.card,
   },
   consigneeGradient: {
     borderRadius: 16,

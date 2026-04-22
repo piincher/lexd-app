@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Image, Pressable, ScrollView } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
 import { imagesType } from '@src/api/order';
-import { styles } from './OrderImageGallery.styles';
+import { createStyles } from './OrderImageGallery.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface OrderImageGalleryProps {
   images?: imagesType;
@@ -12,13 +12,15 @@ interface OrderImageGalleryProps {
 
 export const OrderImageGallery: React.FC<OrderImageGalleryProps> = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const hasImages = images && images.length > 0;
 
   if (!hasImages) {
     return (
       <Surface style={styles.container}>
         <View style={styles.placeholder}>
-          <MaterialCommunityIcons name="package-variant" size={48} color="#D1D5DB" />
+          <MaterialCommunityIcons name="package-variant" size={48} color={colors.text.disabled} />
           <Text style={styles.placeholderText}>Aucune photo disponible</Text>
         </View>
       </Surface>
@@ -36,7 +38,7 @@ export const OrderImageGallery: React.FC<OrderImageGalleryProps> = ({ images }) 
 
       {/* Image count badge */}
       <View style={styles.countBadge}>
-        <MaterialCommunityIcons name="image-multiple" size={14} color="#FFF" />
+        <MaterialCommunityIcons name="image-multiple" size={14} color={colors.text.inverse} />
         <Text style={styles.countText}>
           {activeIndex + 1}/{images.length}
         </Text>

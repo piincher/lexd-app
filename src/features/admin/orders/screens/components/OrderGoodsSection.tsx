@@ -2,17 +2,74 @@
  * OrderGoodsSection - Displays goods attached to an order
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface OrderGoodsSectionProps {
   goods: any[];
 }
 
 export const OrderGoodsSection: React.FC<OrderGoodsSectionProps> = ({ goods }) => {
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      margin: 16,
+      marginTop: 8,
+      padding: 16,
+      borderRadius: 12,
+      backgroundColor: colors.background.card,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    title: {
+      fontSize: 16,
+      fontWeight: '600',
+      marginLeft: 8,
+      color: colors.text.primary,
+    },
+    goodsItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    goodsInfo: {
+      flex: 1,
+    },
+    goodsCode: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: colors.text.primary,
+    },
+    goodsDescription: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      marginTop: 2,
+    },
+    goodsMeta: {
+      alignItems: 'flex-end',
+    },
+    cbm: {
+      fontSize: 13,
+      fontWeight: '500',
+      color: colors.primary.main,
+    },
+    weight: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      marginTop: 2,
+    },
+  }), [colors, isDark]);
+
   if (!goods || goods.length === 0) {
     return null;
   }
@@ -20,7 +77,7 @@ export const OrderGoodsSection: React.FC<OrderGoodsSectionProps> = ({ goods }) =
   return (
     <Surface style={styles.container}>
       <View style={styles.header}>
-        <MaterialCommunityIcons name="package-variant" size={20} color={COLORS.primary} />
+        <MaterialCommunityIcons name="package-variant" size={20} color={colors.primary.main} />
         <Text style={styles.title}>Marchandises ({goods.length})</Text>
       </View>
 
@@ -41,60 +98,5 @@ export const OrderGoodsSection: React.FC<OrderGoodsSectionProps> = ({ goods }) =
     </Surface>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 16,
-    marginTop: 8,
-    padding: 16,
-    borderRadius: 12,
-    backgroundColor: '#fff',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginLeft: 8,
-    color: '#333',
-  },
-  goodsItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  goodsInfo: {
-    flex: 1,
-  },
-  goodsCode: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-  },
-  goodsDescription: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 2,
-  },
-  goodsMeta: {
-    alignItems: 'flex-end',
-  },
-  cbm: {
-    fontSize: 13,
-    fontWeight: '500',
-    color: COLORS.primary,
-  },
-  weight: {
-    fontSize: 12,
-    color: '#666',
-    marginTop: 2,
-  },
-});
 
 export default OrderGoodsSection;

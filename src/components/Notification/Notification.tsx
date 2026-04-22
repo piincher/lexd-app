@@ -1,8 +1,9 @@
 import { StyleSheet, View } from 'react-native';
 import { Snackbar, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { useMemo } from 'react';
 
 interface NotificationProps {
 	message: string;
@@ -12,12 +13,24 @@ interface NotificationProps {
 	Icon?: React.ComponentType<any>;
 }
 export const Notification = ({ message, type, visible, onDismissSnackBar }: NotificationProps) => {
+	const { colors } = useAppTheme();
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				text: {
+					fontFamily: Fonts.black,
+					fontSize: 16,
+					color: colors.text.primary,
+				},
+			}),
+		[colors],
+	);
 	return (
 		<Snackbar
 			visible={visible}
 			onDismiss={onDismissSnackBar}
 			style={{
-				backgroundColor: '#FFF',
+				backgroundColor: colors.background.card,
 			}}
 			duration={3000}
 		>
@@ -26,17 +39,9 @@ export const Notification = ({ message, type, visible, onDismissSnackBar }: Noti
 				<MaterialCommunityIcons
 					name={type === 'success' ? 'check-circle' : 'alert-circle'}
 					size={24}
-					color={type === 'success' ? COLORS.green : COLORS.redShade}
+					color={type === 'success' ? colors.status.success : colors.status.error}
 				/>
 			</View>
 		</Snackbar>
 	);
 };
-
-export const styles = StyleSheet.create({
-	text: {
-		fontFamily: Fonts.black,
-		fontSize: 16,
-		color: COLORS.black,
-	},
-});

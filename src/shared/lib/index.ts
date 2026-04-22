@@ -86,3 +86,11 @@ export {
 } from './formatters';
 
 // formatCurrency is exported from './currency' above
+
+export {
+  hapticLight,
+  hapticMedium,
+  hapticSuccess,
+  hapticError,
+  hapticSelection,
+} from './haptics';

@@ -2,7 +2,7 @@
 // Encapsulates all logic for the ScanQRScreen
 
 import { useState } from 'react';
-import { RootStackScreenProps } from '@src/navigations/type';
+import type { RootStackScreenProps } from '@src/navigations/type';
 import { useScanQR } from '../../hooks';
 import { ScanQRResponse } from '../../api';
 

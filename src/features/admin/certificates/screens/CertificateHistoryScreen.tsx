@@ -14,9 +14,10 @@ import { FlashList } from "@shopify/flash-list";
 import * as Clipboard from "expo-clipboard";
 import { useListCertificates, useDownloadCertificate } from "../hooks/useCertificateAdmin";
 import { CertificateRecord } from "../api";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { Fonts } from "@src/constants/Fonts";
 import { showMessage } from "react-native-flash-message";
+import { Theme } from "@src/constants/Theme";
 
 type FilterChip = {
   label: string;
@@ -340,7 +341,7 @@ export default function CertificateHistoryScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: Theme.colors.background.default,
   },
 
   /* Header */
@@ -348,9 +349,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: Platform.OS === "android" ? 12 : 20,
     paddingBottom: 16,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
   },
   headerTop: {
     flexDirection: "row",
@@ -360,7 +361,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
@@ -382,9 +383,9 @@ const styles = StyleSheet.create({
 
   /* Filter chips */
   filterContainer: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
     paddingVertical: 12,
   },
   filterScrollContent: {
@@ -395,9 +396,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: Theme.colors.neutral[200],
   },
   filterChipActive: {
     backgroundColor: "#d4a843",
@@ -433,7 +434,7 @@ const styles = StyleSheet.create({
 
   /* Card */
   card: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -462,7 +463,7 @@ const styles = StyleSheet.create({
   },
   copyButton: {
     padding: 4,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderRadius: 6,
   },
   badgeRow: {
@@ -582,7 +583,7 @@ const styles = StyleSheet.create({
   },
   resetFilterButton: {
     marginTop: 16,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
@@ -605,11 +606,11 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: Theme.colors.neutral[200],
   },
   paginationButtonDisabled: {
     opacity: 0.4,

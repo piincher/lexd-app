@@ -42,6 +42,8 @@ const initialFormData: EditGoodsFormData = {
 export const useEditGoodsScreen = (goodsId: string, isAdmin: boolean) => {
   const navigation = useNavigation();
   const [formData, setFormData] = useState<EditGoodsFormData>(initialFormData);
+  const [existingPhotos, setExistingPhotos] = useState<string[]>([]);
+  const [newPhotoUris, setNewPhotoUris] = useState<string[]>([]);
 
   const { data: goods, isLoading, isError, error } = useGetGoodsDetail(goodsId);
   const updateMutation = useUpdateGoods();
@@ -67,8 +69,21 @@ export const useEditGoodsScreen = (goodsId: string, isAdmin: boolean) => {
         receivedByName: goods.receivedByName || '',
         useDimensions: hasDimensions,
       });
+      // Load existing photos (prefer photos over images for consistency)
+      const photos = goods.photos?.length ? goods.photos : (goods.images || []);
+      setExistingPhotos(photos);
     }
   }, [goods]);
+
+  const handlePhotoSelected = useCallback((uri: string) => {
+    setNewPhotoUris((prev) => [...prev, uri]);
+  }, []);
+
+  const handlePhotoRemoved = useCallback((uri: string) => {
+    // Could be an existing photo or a new one
+    setExistingPhotos((prev) => prev.filter((p) => p !== uri));
+    setNewPhotoUris((prev) => prev.filter((p) => p !== uri));
+  }, []);
 
   // Calculated CBM from dimensions
   const calculatedCBM = useMemo(() => {
@@ -126,6 +141,8 @@ export const useEditGoodsScreen = (goodsId: string, isAdmin: boolean) => {
       warehouseLocation: formData.location.trim().toUpperCase(),
       shippingMode: formData.shippingMode,
       receivedByName: formData.receivedByName.trim(),
+      photosToKeep: existingPhotos,
+      newPhotoUris: newPhotoUris.length > 0 ? newPhotoUris : undefined,
     };
 
     // Dimensions / CBM
@@ -156,10 +173,13 @@ export const useEditGoodsScreen = (goodsId: string, isAdmin: boolean) => {
         },
       }
     );
-  }, [formData, isAdmin, canEdit, goodsId, updateMutation, navigation]);
+  }, [formData, isAdmin, canEdit, goodsId, updateMutation, navigation, existingPhotos, newPhotoUris]);
 
   // Only show error state after loading is complete
   const showError = !isLoading && (isError || !canEdit);
+
+  // Combined photo list for display (existing + new)
+  const allPhotoUris = [...existingPhotos, ...newPhotoUris];
 
   return {
     formData,
@@ -177,5 +197,8 @@ export const useEditGoodsScreen = (goodsId: string, isAdmin: boolean) => {
     calculatedTotalCost,
     updateField,
     handleSave,
+    photoUris: allPhotoUris,
+    onPhotoSelected: handlePhotoSelected,
+    onPhotoRemoved: handlePhotoRemoved,
   };
 };

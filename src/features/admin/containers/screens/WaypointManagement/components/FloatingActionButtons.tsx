@@ -18,7 +18,7 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
         <Ionicons name="download" size={20} color={Theme.primary[600]} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.fab} onPress={onAddWaypoint}>
-        <Ionicons name="add" size={24} color="#FFF" />
+        <Ionicons name="add" size={24} color={Theme.colors.background.card} />
       </TouchableOpacity>
     </View>
   );
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',

@@ -1,11 +1,12 @@
 /**
  * Customer Dashboard Components
- * Reusable UI components for the dashboard feature
+ * Premium, production-ready UI components
  */
 
-export { StatCard, type StatCardProps } from './StatCard';
-export { ActivityFeed, type ActivityFeedProps } from './ActivityFeed';
-export { QuickActions, type QuickActionsProps } from './QuickActions';
-export { ShipmentPipeline, type ShipmentPipelineProps } from './ShipmentPipeline';
-export { ActiveContainers, type ActiveContainersProps } from './ActiveContainers';
-export { PaymentInsights, type PaymentInsightsProps } from './PaymentInsights';
+export { HeroSection } from './HeroSection';
+export { SmartActions } from './SmartActions';
+export { JourneyMap } from './JourneyMap';
+export { ContainerStack } from './ContainerStack';
+export { ActivityTimeline } from './ActivityTimeline';
+export { DashboardSkeleton } from './DashboardSkeleton';
+export { DashboardErrorState } from './DashboardErrorState';

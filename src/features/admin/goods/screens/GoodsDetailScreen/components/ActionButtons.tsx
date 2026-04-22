@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
-import { styles } from '../GoodsDetailScreen.styles';
+import {  createStyles  } from '../GoodsDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ActionButtonsProps {
   onEdit: () => void;
   onDelete: () => void;
 }
 
-export const ActionButtons: React.FC<ActionButtonsProps> = ({ onEdit, onDelete }) => (
+export const ActionButtons: React.FC<ActionButtonsProps> = ({ onEdit, onDelete }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  return (
   <View style={styles.actionButtons}>
     <Button
       mode="contained"
@@ -32,3 +36,4 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ onEdit, onDelete }
     </Button>
   </View>
 );
+};

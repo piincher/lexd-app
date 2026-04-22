@@ -1,11 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 // import { LoadingSpinner } from '@src/components/common/LoadingSpinner';
+import { useMemo } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import { OrderListSkeleton } from '@src/features/orders/components/OrderListSkeleton';
 
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 // import RetryButton from '@src/components/common/Error';
 import { useGetActiveOrder } from '@src/shared/hooks/useOrders';
 import OrderCard from './OrderCard';
@@ -15,10 +16,30 @@ interface Props {
 }
 const ListingList = ({ Status }: Props) => {
 	const navigation = useNavigation();
+	const { colors } = useAppTheme();
 	const { data, isLoading, isError, fetchNextPage, refetch, hasNextPage, isFetchingNextPage } = useGetActiveOrder();
+
+	const styles = useMemo(() => StyleSheet.create({
+		buttonContainer: {
+			flex: 1,
+			alignItems: 'center',
+			justifyContent: 'center',
+			backgroundColor: colors.background.card,
+			borderRadius: 8,
+			paddingVertical: 12,
+			paddingHorizontal: 16,
+			elevation: 2,
+		},
+		buttonText: {
+			fontSize: 16,
+			color: colors.text.primary,
+			fontWeight: 'bold',
+		},
+	}), [colors]);
+
 	const renderFooter = () => {
 		if (isFetchingNextPage) {
-			return <ActivityIndicator size='small' color={COLORS.blue} animating />;
+			return <ActivityIndicator size='small' color={colors.primary.main} animating />;
 		} else if (hasNextPage) {
 			return (
 				<TouchableOpacity style={styles.buttonContainer} onPress={loadMore}>
@@ -81,20 +102,3 @@ const ListingList = ({ Status }: Props) => {
 };
 
 export default ListingList;
-const styles = StyleSheet.create({
-	buttonContainer: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#FFFFFF',
-		borderRadius: 8,
-		paddingVertical: 12,
-		paddingHorizontal: 16,
-		elevation: 2,
-	},
-	buttonText: {
-		fontSize: 16,
-		color: '#000000',
-		fontWeight: 'bold',
-	},
-});

@@ -3,18 +3,21 @@
  * Displays list of active (non-voided) goods with CBM and cost
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { OrderGoodsItem } from '../../types';
-import { styles } from '../OrderTotalsBreakdownScreen.styles';
+import { createStyles } from '../OrderTotalsBreakdownScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ActiveGoodsBreakdownProps {
   goods: OrderGoodsItem[];
 }
 
 export const ActiveGoodsBreakdown: React.FC<ActiveGoodsBreakdownProps> = ({ goods }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.card}>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Theme.spacing.md }}>

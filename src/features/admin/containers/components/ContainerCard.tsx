@@ -18,7 +18,7 @@ import { Badge } from '@src/components/ui/Badge/Badge';
 import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, CONTAINER_STATUS_COLORS, SHIPPING_LINE_LABELS, SHIPPING_MODE_LABELS, SHIPPING_MODE_ICONS, SHIPPING_MODE_COLORS } from '../types';
 
 // Statuses that can receive goods (assignable)
-const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'LOADING'];
+const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'EMPTY_TO_WAREHOUSE', 'LOADING'];
 
 const canReceiveGoods = (status: ContainerStatus): boolean => 
   ASSIGNABLE_STATUSES.includes(status);
@@ -189,7 +189,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius['2xl'],
     marginHorizontal: Theme.spacing.lg,
     marginVertical: Theme.spacing.sm,

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { styles } from '../GoodsDetailScreen.styles';
+import {  createStyles  } from '../GoodsDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 
 interface ReceptionCardProps {
@@ -14,6 +15,8 @@ interface ReceptionCardProps {
 }
 
 export const ReceptionCard: React.FC<ReceptionCardProps> = ({ receivedAt, receivedByName, receivedBy, formatDate }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   // Get receiver name from receivedByName or from populated receivedBy object
   const receiverName = receivedByName || 
     (receivedBy ? `${receivedBy.firstName || ''} ${receivedBy.lastName || ''}`.trim() : null) || 

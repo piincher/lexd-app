@@ -1,12 +1,12 @@
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import React, { useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 
 import AppButton from "@src/components/AppButton/AppButton";
 import { Header } from "@src/components/Header/Header";
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { userData } from "@src/constants/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useGetUsers } from "../hooks/useUserManagement";
@@ -15,6 +15,7 @@ import { TextInput } from "react-native-paper";
 import RenderListItem from "@src/components/RenderListItem/RenderListItem";
 
 const SelectUser = ({ navigation }: RootStackScreenProps<"SelectUser">) => {
+   const { colors } = useAppTheme();
    const [selectedUser, setSelectedUser] = useState<userData>();
    const { data } = useGetUsers();
    const [search, setSearch] = useState<string>("");
@@ -37,7 +38,7 @@ const SelectUser = ({ navigation }: RootStackScreenProps<"SelectUser">) => {
    };
 
    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
          <Header title="Choisir un client" navigation={navigation} />
          <TextInput
             label="Rechercher un client"
@@ -95,7 +96,7 @@ const RenderUserItem = ({
             </Text>
             <Text style={[styles.userRole]}>+{item.phoneNumber}</Text>
          </View>
-         <MaterialIcons name="navigate-next" size={24} color={COLORS.blue} />
+         <MaterialIcons name="navigate-next" size={24} color="#22C55E" />
       </Pressable>
    );
 };

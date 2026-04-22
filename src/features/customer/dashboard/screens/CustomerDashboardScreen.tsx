@@ -1,464 +1,78 @@
 /**
  * CustomerDashboardScreen
- * Main customer dashboard with stats, quick actions, and activity feed
+ * Billion-dollar logistics dashboard — premium, scalable, production-ready
  */
 
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  ScrollView,
-  RefreshControl,
-  Pressable,
-} from 'react-native';
-import {
-  Appbar,
-  Text,
-  Button,
-  useTheme,
-  Avatar,
-} from 'react-native-paper';
+import { ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { NotificationBell } from '@src/features/notifications';
-import { useNavigation } from '@react-navigation/native';
-
-import { Theme } from '@src/constants/Theme';
-import { useAuth } from '@src/store/Auth';
-import { RootStackScreenProps } from '@src/navigations/type';
-
-import { useGetDashboard, useGetActivity, useDashboardInvalidation } from '../hooks/useDashboard';
-import { StatCard } from '../components/StatCard';
-import { ActivityFeed } from '../components/ActivityFeed';
-import { QuickActions } from '../components/QuickActions';
-import { ShipmentPipeline } from '../components/ShipmentPipeline';
-import { ActiveContainers } from '../components/ActiveContainers';
-import { PaymentInsights } from '../components/PaymentInsights';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import type { RootStackScreenProps } from '@src/navigations/type';
+import { useCustomerDashboard } from '../hooks/useCustomerDashboard';
+import { HeroSection } from '../components/HeroSection';
+import { SmartActions } from '../components/SmartActions';
+import { JourneyMap } from '../components/JourneyMap';
+import { ContainerStack } from '../components/ContainerStack';
+import { ActivityTimeline } from '../components/ActivityTimeline';
 import { DashboardSkeleton } from '../components/DashboardSkeleton';
-import { QuickAction, DashboardStats } from '../types';
-import * as Haptics from 'expo-haptics';
-
-// ============================================
-// DEFAULT QUICK ACTIONS
-// ============================================
-
-const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
-  {
-    id: 'view-goods',
-    label: 'Voir mes marchandises',
-    icon: 'package-variant-closed',
-    route: 'MyGoods',
-  },
-  {
-    id: 'view-containers',
-    label: 'Mes containers',
-    icon: 'ferry',
-    route: 'MyContainers',
-  },
-  // Chat feature hidden - not in use
-  // {
-  //   id: 'contact-support',
-  //   label: 'Contacter support',
-  //   icon: 'chat',
-  //   route: 'SelectAdminToChatWith',
-  // },
-];
-
-// ============================================
-// STAT CARD GRADIENTS
-// ============================================
-
-const STAT_GRADIENTS = {
-  goods: ['#8B5CF6', '#7C3AED', '#6D28D9'] as const,
-  containers: ['#0EA5E9', '#0284C7', '#0369A1'] as const,
-  spent: ['#10B981', '#059669', '#047857'] as const,
-  balance: ['#F59E0B', '#D97706', '#B45309'] as const,
-};
-
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
-
-const formatCurrency = (amount: number): string => {
-  const num = Number(amount) || 0;
-  if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M F`;
-  if (num >= 1_000) return `${Math.round(num / 1_000)}K F`;
-  return `${Math.round(num)} F`;
-};
-
-const formatNumber = (num: number): string => {
-  if (num >= 1000) {
-    return `${(num / 1000).toFixed(1)}K`;
-  }
-  return num.toString();
-};
-
-// ============================================
-// MAIN SCREEN COMPONENT
-// ============================================
+import { DashboardErrorState } from '../components/DashboardErrorState';
 
 export const CustomerDashboardScreen: React.FC<
   RootStackScreenProps<'CustomerDashboard'>
 > = () => {
-  const theme = useTheme();
-  const navigation = useNavigation();
-  const user = useAuth((state) => state.user);
-  const { invalidateDashboard } = useDashboardInvalidation();
-
-  // Queries
+  const { colors } = useAppTheme();
   const {
-    data: dashboardData,
-    isLoading: isDashboardLoading,
-    isError: isDashboardError,
-    error: dashboardError,
-    refetch: refetchDashboard,
-  } = useGetDashboard();
+    user, welcomeMessage, stats, containers, quickActions, activities,
+    isLoading, isError, errorMessage, refresh,
+    handleNotifications, handleViewAllActivity, handleActionPress,
+    handleViewGoods, handleViewContainers, handleViewSpent, handleContainerPress,
+  } = useCustomerDashboard();
 
-  const {
-    data: activityData,
-    isLoading: isActivityLoading,
-    isError: isActivityError,
-    refetch: refetchActivity,
-  } = useGetActivity({ limit: 5 });
-
-  const isLoading = isDashboardLoading || isActivityLoading;
-  const isError = isDashboardError || isActivityError;
-
-  // Refresh handler
-  const handleRefresh = async () => {
-    await Promise.all([refetchDashboard(), refetchActivity()]);
-  };
-
-  // Action press handler
-  const handleActionPress =
-    (action: QuickAction) => {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      if (action.route) {
-        navigation.navigate(action.route as never);
-      } else if (action.action) {
-        action.action();
-      }
-    };
-
-  // Navigation handlers
-  const handleNotifications = () => {
-    navigation.navigate('Notifications' as never);
-  };
-
-  const handleViewAllActivity = () => {
-    navigation.navigate('ActivityList' as never);
-  };
-
-  const handlePayBalance = () => {
-    navigation.navigate('MyPaymentHistory' as never);
-  };
-
-  // Always use the local French quick actions (backend ones have wrong icons)
-  const quickActions = DEFAULT_QUICK_ACTIONS;
-
-  // Stats data
-  const stats: DashboardStats = dashboardData?.stats || {
-    totalGoods: 0,
-    goodsByStatus: {},
-    totalContainers: 0,
-    activeContainers: 0,
-    totalSpent: 0,
-    totalPaid: 0,
-    balanceDue: 0,
-  };
-
-  // Containers data
-  const containers = dashboardData?.containers || [];
-
-  // Container press handler
-  const handleContainerPress = (containerId: string) => {
-    if (containerId) {
-      (navigation as any).navigate('ContainerTracking', { containerId });
-    } else {
-      navigation.navigate('MyContainers' as never);
-    }
-  };
-
-  // Welcome message based on time
-  const getWelcomeMessage = (): string => {
-    const hour = new Date().getHours();
-    const name = user?.firstName || 'Client';
-    if (hour < 12) return `Bonjour, ${name} ☀️`;
-    if (hour < 18) return `Bon après-midi, ${name} 👋`;
-    return `Bonsoir, ${name} 🌙`;
-  };
-
-  // Render error state
   if (isError) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Appbar.Header>
-          <Appbar.Content title="Tableau de Bord" />
-        </Appbar.Header>
-        <View style={styles.centerContainer}>
-          <MaterialCommunityIcons
-            name="alert-circle-outline"
-            size={64}
-            color={theme.colors.error}
-          />
-          <Text style={styles.errorTitle}>Erreur de chargement</Text>
-          <Text style={styles.errorText}>
-            {dashboardError?.message || 'Impossible de charger le tableau de bord'}
-          </Text>
-          <Button
-            mode="contained"
-            onPress={handleRefresh}
-            style={styles.retryButton}
-          >
-            Réessayer
-          </Button>
-        </View>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
+        <DashboardErrorState message={errorMessage} onRetry={refresh} />
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <Appbar.Header style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Avatar.Text
-            size={40}
-            label={(user?.firstName?.[0] || 'C').toUpperCase()}
-            style={{ backgroundColor: theme.colors.primary }}
-            color={Theme.neutral.white}
-          />
-          <View style={styles.headerText}>
-            <Text style={styles.welcomeText}>{getWelcomeMessage()}</Text>
-            <Text style={[styles.subtitle, { color: theme.colors.onSurfaceVariant }]}>
-              Suivez vos marchandises en temps réel
-            </Text>
-          </View>
-        </View>
-        <NotificationBell
-          onPress={handleNotifications}
-          size={24}
-          color={theme.colors.onSurface}
-        />
-      </Appbar.Header>
-
-      {/* Main Content */}
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
       {isLoading ? (
         <DashboardSkeleton />
       ) : (
         <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollContent}
           showsVerticalScrollIndicator={false}
           refreshControl={
-            <RefreshControl
-              refreshing={isDashboardLoading || isActivityLoading}
-              onRefresh={handleRefresh}
-              colors={[theme.colors.primary]}
-              tintColor={theme.colors.primary}
-            />
+            <RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={colors.primary.main} />
           }
         >
-          {/* Stats Grid */}
-          <View style={styles.statsGrid}>
-            <View style={styles.statsRow}>
-              <StatCard
-                icon="package-variant"
-                value={formatNumber(stats.totalGoods)}
-                label="Marchandises"
-                gradientColors={STAT_GRADIENTS.goods}
-                testID="stat-goods"
-                onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
-              />
-              <StatCard
-                icon="ferry"
-                value={formatNumber(stats.activeContainers)}
-                label="En Transit"
-                gradientColors={STAT_GRADIENTS.containers}
-                testID="stat-containers"
-                onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
-              />
-            </View>
-            <View style={styles.statsRow}>
-              <StatCard
-                icon="cash-multiple"
-                value={formatCurrency(stats.totalSpent)}
-                label="Total Dépensé"
-                gradientColors={STAT_GRADIENTS.spent}
-                testID="stat-spent"
-                onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
-              />
-              <StatCard
-                icon="credit-card-clock"
-                value={formatCurrency(stats.balanceDue)}
-                label="Solde Dû"
-                gradientColors={STAT_GRADIENTS.balance}
-                testID="stat-balance"
-                onPress={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
-              />
-            </View>
-          </View>
-
-          {/* Balance Alert */}
-          {stats.balanceDue > 0 && (
-            <Pressable
-              style={[
-                styles.balanceAlert,
-                { backgroundColor: `${Theme.status.error}15` },
-              ]}
-              onPress={handlePayBalance}
-            >
-              <MaterialCommunityIcons
-                name="alert-circle"
-                size={24}
-                color={Theme.status.error}
-              />
-              <View style={styles.balanceAlertContent}>
-                <Text style={[styles.balanceAlertTitle, { color: Theme.status.error }]}>
-                  Paiement Requis
-                </Text>
-                <Text style={[styles.balanceAlertText, { color: theme.colors.onSurfaceVariant }]}>
-                  Vous avez {formatCurrency(stats.balanceDue)} à payer. Solde en attente.
-                </Text>
-              </View>
-              <MaterialCommunityIcons
-                name="chevron-right"
-                size={24}
-                color={Theme.status.error}
-              />
-            </Pressable>
-          )}
-
-          {/* Quick Actions */}
-          <QuickActions
-            actions={quickActions}
-            dashboardData={{ stats, quickActions, recentActivity: [] }}
-            onActionPress={handleActionPress}
-            testID="quick-actions"
+          <HeroSection
+            user={user}
+            welcomeMessage={welcomeMessage}
+            stats={stats}
+            onViewGoods={handleViewGoods}
+            onViewContainers={handleViewContainers}
+            onViewSpent={handleViewSpent}
+            onNotifications={handleNotifications}
           />
 
-          {/* Shipment Pipeline */}
-          <ShipmentPipeline
-            goodsByStatus={stats.goodsByStatus}
-            totalGoods={stats.totalGoods}
-          />
+          <SmartActions actions={quickActions} onActionPress={handleActionPress} />
 
-          {/* Active Containers */}
-          <ActiveContainers
-            containers={containers}
-            onContainerPress={handleContainerPress}
-          />
+          <JourneyMap goodsByStatus={stats.goodsByStatus} totalGoods={stats.totalGoods} />
 
-          {/* Payment Insights */}
-          <PaymentInsights
-            totalSpent={stats.totalSpent}
-            totalPaid={stats.totalPaid || 0}
-            balanceDue={stats.balanceDue}
-          />
+          <ContainerStack containers={containers} onContainerPress={handleContainerPress} />
 
-          {/* Activity Feed */}
-          <ActivityFeed
-            activities={activityData?.activities || []}
+          <ActivityTimeline
+            activities={activities}
             showViewAll
             onViewAll={handleViewAllActivity}
             maxItems={5}
-            testID="activity-feed"
           />
-
-          {/* Bottom Spacing */}
-          <View style={styles.bottomSpacing} />
         </ScrollView>
       )}
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.neutral[50],
-  },
-  header: {
-    backgroundColor: 'transparent',
-    elevation: 0,
-  },
-  headerLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    marginLeft: Theme.spacing.md,
-  },
-  headerText: {
-    marginLeft: Theme.spacing.md,
-  },
-  welcomeText: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  subtitle: {
-    fontSize: 13,
-    marginTop: 2,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingTop: Theme.spacing.sm,
-  },
-  statsGrid: {
-    paddingHorizontal: 16,
-    gap: 10,
-  },
-  statsRow: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  balanceAlert: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginHorizontal: Theme.spacing.lg,
-    marginTop: Theme.spacing.lg,
-    padding: Theme.spacing.lg,
-    borderRadius: Theme.radius.lg,
-  },
-  balanceAlertContent: {
-    flex: 1,
-    marginLeft: Theme.spacing.md,
-  },
-  balanceAlertTitle: {
-    fontSize: 15,
-    fontWeight: '700',
-  },
-  balanceAlertText: {
-    fontSize: 13,
-    marginTop: 2,
-  },
-  bottomSpacing: {
-    height: Theme.spacing['4xl'],
-  },
-  // Error State
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: Theme.spacing['3xl'],
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-    marginTop: Theme.spacing.lg,
-  },
-  errorText: {
-    fontSize: 14,
-    color: Theme.neutral[500],
-    textAlign: 'center',
-    marginTop: Theme.spacing.sm,
-  },
-  retryButton: {
-    marginTop: Theme.spacing.xl,
-  },
-});
 
 export default CustomerDashboardScreen;

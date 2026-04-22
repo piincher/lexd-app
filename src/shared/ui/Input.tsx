@@ -3,8 +3,9 @@
  */
 
 import React, { forwardRef } from 'react';
-import { ViewStyle, TextStyle } from 'react-native';
-import { TextInput, TextInputProps as PaperTextInputProps } from 'react-native-paper';
+import type { ViewStyle, TextStyle } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import type { TextInputProps as PaperTextInputProps } from 'react-native-paper';
 
 export type InputVariant = 'default' | 'filled' | 'outlined' | 'underlined';
 export type InputSize = 'small' | 'medium' | 'large';

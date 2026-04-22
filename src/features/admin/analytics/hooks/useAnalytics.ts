@@ -3,7 +3,8 @@
  * React Query hooks for analytics data fetching
  */
 
-import { useQuery, useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import * as analyticsApi from '../api/analyticsApi';
 import { DashboardData, RevenueTrendsData, ContainerUtilizationData, CustomerAnalyticsData, GoodsVolumeData, PaymentMetricsData, RealtimeData, PeriodFilter, ExportOptions } from '../types';
 

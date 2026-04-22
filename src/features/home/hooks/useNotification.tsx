@@ -1,11 +1,12 @@
-import { COLORS } from "@src/constants/Colors";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 
 export const useNotification = () => {
+	const { colors } = useAppTheme();
 	const [expoPushToken, setExpoPushToken] = useState("");
 	const [channels, setChannels] = useState<Notifications.NotificationChannel[]>([]);
 	const [notification, setNotification] = useState<Notifications.Notification | undefined>(
@@ -13,7 +14,7 @@ export const useNotification = () => {
 	);
 
 	useEffect(() => {
-		registerForPushNotificationsAsync().then((token) => token && setExpoPushToken(token));
+		registerForPushNotificationsAsync(colors.primary.main).then((token) => token && setExpoPushToken(token));
 
 		if (Platform.OS === "android") {
 			Notifications.getNotificationChannelsAsync().then((value) => setChannels(value ?? []));
@@ -30,12 +31,12 @@ export const useNotification = () => {
 			notificationListener.remove();
 			responseListener.remove();
 		};
-	}, []);
+	}, [colors.primary.main]);
 
 	return { expoPushToken, channels, notification };
 };
 
-async function registerForPushNotificationsAsync() {
+async function registerForPushNotificationsAsync(lightColor: string) {
 	let token;
 
 	if (Platform.OS === "android") {
@@ -43,7 +44,7 @@ async function registerForPushNotificationsAsync() {
 			name: "default",
 			importance: Notifications.AndroidImportance.MAX,
 			vibrationPattern: [0, 250, 250, 250],
-			lightColor: COLORS.blue,
+			lightColor,
 		});
 	}
 
@@ -69,5 +70,3 @@ async function registerForPushNotificationsAsync() {
 
 	return token;
 }
-
-

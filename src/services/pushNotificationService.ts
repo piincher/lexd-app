@@ -4,7 +4,7 @@
  * Integrates with backend Expo Push API
  */
 
-import axiosInstance from "@src/api/client";
+import { apiClientV2 as axiosInstance } from "@src/api/client";
 import Constants from "expo-constants";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -53,6 +53,8 @@ export interface NotificationData {
   goodsId?: string;
   screen?: string;
   deepLink?: string;
+  badge?: number;
+  unreadCount?: number;
   [key: string]: any;
 }
 
@@ -100,17 +102,17 @@ const API_URL = {
   // Push token management
   registerDevice: "/push/register",
   unregisterDevice: "/push/unregister",
-  getTokens: "/notifications/tokens",
-  deleteToken: (id: string) => `/notifications/tokens/${id}`,
+  getTokens: "/push/tokens",
+  deleteToken: (id: string) => `/push/tokens/${id}`,
   
   // Notification history
-  getNotifications: "/notifications",
-  markAsRead: (id: string) => `/notifications/${id}/read`,
-  markAllAsRead: "/notifications/read-all",
-  getUnreadCount: "/notifications/unread",
+  getNotifications: "/push",
+  markAsRead: (id: string) => `/push/${id}/read`,
+  markAllAsRead: "/push/read-all",
+  getUnreadCount: "/push/unread",
   
   // Test
-  sendTest: "/notifications/test",
+  sendTest: "/push/test",
 };
 
 // ============================================================================
@@ -625,6 +627,8 @@ export const initializePushNotifications = (): void => {
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
       shouldPlaySound: true,
       shouldSetBadge: true,
     }),

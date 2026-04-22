@@ -9,10 +9,10 @@ import { View, RefreshControl, ScrollView, Text, Alert } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Searchbar, Button, IconButton } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { AuthenticatedStackParamList } from '@src/navigation/types';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { AuthenticatedStackParamList } from '@src/navigation/types';
 import { Screen } from '@src/shared/ui/Screen';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetAllOrders, useSyncOrderStatuses } from '../hooks/useOrderManagement';
 import { OrderCard } from './components/OrderCard';
 import { OrdersStats } from './components/OrdersStats';
@@ -21,7 +21,7 @@ import { AddOrderButton } from './components/AddOrderButton';
 import { OrderCardSkeleton, OrderCardFooterSkeleton } from './components/OrderCardSkeleton';
 import { OrderBulkActionBar } from './components/OrderBulkActionBar';
 import { useOrderBulkActions } from './hooks/useOrderBulkActions';
-import { styles } from './AllOrdersScreen.styles';
+import { createStyles } from './AllOrdersScreen.styles';
 
 const STATUS_TABS = [
   { key: undefined, label: 'All' },
@@ -35,6 +35,8 @@ type NavigationProp = NativeStackNavigationProp<AuthenticatedStackParamList>;
 
 const AllOrdersScreen: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
 
@@ -156,7 +158,7 @@ const AllOrdersScreen: React.FC = () => {
                 if (isSelectionMode) exitSelectionMode();
                 else setIsSelectionMode(true);
               }}
-              iconColor={COLORS.blue}
+              iconColor={colors.primary.main}
             />
             <IconButton
               icon="sync"
@@ -164,7 +166,7 @@ const AllOrdersScreen: React.FC = () => {
               onPress={handleSyncOrderStatuses}
               loading={isSyncing}
               disabled={isSyncing}
-              iconColor={COLORS.blue}
+              iconColor={colors.primary.main}
             />
           </View>
         )
@@ -182,7 +184,7 @@ const AllOrdersScreen: React.FC = () => {
           value={searchQuery}
           style={styles.searchBar}
           inputStyle={styles.searchInput}
-          iconColor={COLORS.blue}
+          iconColor={colors.primary.main}
         />
 
         {/* Status Tabs */}
@@ -198,8 +200,8 @@ const AllOrdersScreen: React.FC = () => {
               mode={statusFilter === tab.key ? 'contained' : 'outlined'}
               onPress={() => setStatusFilter(tab.key)}
               style={styles.tabButton}
-              buttonColor={statusFilter === tab.key ? COLORS.blue : undefined}
-              textColor={statusFilter === tab.key ? '#FFF' : COLORS.grey}
+              buttonColor={statusFilter === tab.key ? colors.primary.main : undefined}
+              textColor={statusFilter === tab.key ? colors.text.inverse : colors.text.secondary}
               compact
             >
               {tab.label}
@@ -217,7 +219,7 @@ const AllOrdersScreen: React.FC = () => {
               keyExtractor={(item, index) => item?._id || `order-${index}`}
               renderItem={renderOrderCard}
 
-              refreshControl={<RefreshControl refreshing={false} onRefresh={refetch} />}
+              refreshControl={<RefreshControl refreshing={isFetching} onRefresh={refetch} />}
               onEndReached={loadMore}
               onEndReachedThreshold={0.3}
               onMomentumScrollBegin={handleMomentumScrollBegin}

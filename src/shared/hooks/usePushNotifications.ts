@@ -21,7 +21,7 @@ import {
   processNotificationData,
   setNotificationNavigationRef,
 } from "../notifications/notificationHandlers";
-import { NavigationContainerRef } from "@react-navigation/native";
+import type { NavigationContainerRef } from "@react-navigation/native";
 
 // ============================================================================
 // Types

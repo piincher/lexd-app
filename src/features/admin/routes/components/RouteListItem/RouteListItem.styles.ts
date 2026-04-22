@@ -5,12 +5,12 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   card: {
     marginHorizontal: Theme.spacing.lg,
     marginBottom: Theme.spacing.md,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     ...Theme.shadows.sm,
   },
   content: {
@@ -39,13 +39,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   details: {
     flexDirection: 'row',
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
     paddingTop: Theme.spacing.md,
     gap: Theme.spacing.lg,
   },
@@ -57,6 +57,6 @@ export const styles = StyleSheet.create({
   detailText: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
 });

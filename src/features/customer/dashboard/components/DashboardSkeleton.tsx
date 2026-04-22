@@ -1,59 +1,95 @@
-/**
- * DashboardSkeleton
- * Loading skeleton for dashboard
- */
-
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, StyleSheet, Animated } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
+
+const Shimmer = ({ style }: { style: any }) => {
+  const theme = useTheme();
+  const shimmer = useRef(new Animated.Value(-1)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.timing(shimmer, {
+        toValue: 1,
+        duration: 1500,
+        useNativeDriver: true,
+      })
+    );
+    loop.start();
+    return () => loop.stop();
+  }, []);
+
+  const translateX = shimmer.interpolate({
+    inputRange: [-1, 1],
+    outputRange: [-200, 400],
+  });
+
+  return (
+    <View style={[style, { overflow: 'hidden', backgroundColor: theme.colors.surfaceVariant }]}>
+      <Animated.View
+        style={{
+          width: '40%',
+          height: '100%',
+          backgroundColor: 'rgba(255,255,255,0.08)',
+          transform: [{ translateX }],
+        }}
+      />
+    </View>
+  );
+};
 
 export const DashboardSkeleton: React.FC = () => {
   const theme = useTheme();
 
   return (
     <View style={styles.container}>
-      {/* Header Skeleton */}
-      <View style={styles.header}>
-        <View style={[styles.avatar, { backgroundColor: theme.colors.surfaceVariant }]} />
-        <View style={styles.headerText}>
-          <View style={[styles.line, { width: 120, backgroundColor: theme.colors.surfaceVariant }]} />
-          <View style={[styles.line, { width: 180, marginTop: 8, backgroundColor: theme.colors.surfaceVariant }]} />
+      {/* Header */}
+      <View style={[styles.row, { paddingHorizontal: 16, marginBottom: 16, marginTop: 8 }]}>
+        <Shimmer style={{ width: 40, height: 40, borderRadius: 20 }} />
+        <View style={{ flex: 1, marginLeft: 12, gap: 8 }}>
+          <Shimmer style={{ width: 100, height: 12, borderRadius: 6 }} />
+          <Shimmer style={{ width: 160, height: 18, borderRadius: 6 }} />
         </View>
+        <Shimmer style={{ width: 44, height: 44, borderRadius: 14 }} />
       </View>
 
-      {/* Stats Grid Skeleton */}
-      <View style={styles.statsGrid}>
-        {[1, 2, 3, 4].map((i) => (
-          <View
-            key={i}
-            style={[styles.card, { backgroundColor: theme.colors.surfaceVariant }]}
-          />
-        ))}
+      {/* Hero Card */}
+      <View style={{ paddingHorizontal: 16, marginBottom: 8 }}>
+        <Shimmer style={{ width: '100%', height: 140, borderRadius: 24 }} />
       </View>
 
-      {/* Quick Actions Skeleton */}
-      <View style={styles.section}>
-        <View style={[styles.line, { width: 150, backgroundColor: theme.colors.surfaceVariant }]} />
-        <View style={styles.actionsRow}>
-          {[1, 2, 3, 4].map((i) => (
-            <View
-              key={i}
-              style={[styles.actionButton, { backgroundColor: theme.colors.surfaceVariant }]}
-            />
+      {/* Actions */}
+      <View style={{ marginTop: 20, paddingHorizontal: 16 }}>
+        <Shimmer style={{ width: 120, height: 14, borderRadius: 6, marginBottom: 12 }} />
+        <View style={[styles.row, { gap: 12 }]}>
+          {[1, 2].map((i) => (
+            <Shimmer key={i} style={{ flex: 1, height: 140, borderRadius: 20 }} />
           ))}
         </View>
       </View>
 
-      {/* Activity Feed Skeleton */}
-      <View style={styles.section}>
-        <View style={[styles.line, { width: 150, backgroundColor: theme.colors.surfaceVariant }]} />
+      {/* Journey */}
+      <View style={{ marginTop: 24, paddingHorizontal: 16 }}>
+        <Shimmer style={{ width: 160, height: 14, borderRadius: 6, marginBottom: 16 }} />
+        <View style={[styles.row, { gap: 8 }]}>
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <View key={i} style={{ alignItems: 'center', gap: 6 }}>
+              <Shimmer style={{ width: 40, height: 40, borderRadius: 20 }} />
+              <Shimmer style={{ width: 40, height: 10, borderRadius: 4 }} />
+              <Shimmer style={{ width: 20, height: 12, borderRadius: 4 }} />
+            </View>
+          ))}
+        </View>
+      </View>
+
+      {/* Activity */}
+      <View style={{ marginTop: 24, paddingHorizontal: 16 }}>
+        <Shimmer style={{ width: 120, height: 14, borderRadius: 6, marginBottom: 16 }} />
         {[1, 2, 3].map((i) => (
-          <View key={i} style={styles.activityItem}>
-            <View style={[styles.icon, { backgroundColor: theme.colors.surfaceVariant }]} />
-            <View style={styles.activityContent}>
-              <View style={[styles.line, { width: '60%', backgroundColor: theme.colors.surfaceVariant }]} />
-              <View style={[styles.line, { width: '80%', marginTop: 8, backgroundColor: theme.colors.surfaceVariant }]} />
+          <View key={i} style={[styles.row, { marginBottom: 16 }]}>
+            <Shimmer style={{ width: 36, height: 36, borderRadius: 12 }} />
+            <View style={{ flex: 1, marginLeft: 14, gap: 8 }}>
+              <Shimmer style={{ width: '60%', height: 14, borderRadius: 4 }} />
+              <Shimmer style={{ width: '80%', height: 12, borderRadius: 4 }} />
             </View>
           </View>
         ))}
@@ -63,72 +99,8 @@ export const DashboardSkeleton: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: Theme.spacing.sm,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: Theme.spacing.lg,
-    marginBottom: Theme.spacing.lg,
-  },
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-  headerText: {
-    marginLeft: Theme.spacing.md,
-    flex: 1,
-  },
-  line: {
-    height: 12,
-    borderRadius: 6,
-  },
-  statsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: Theme.spacing.lg,
-    gap: Theme.spacing.md,
-  },
-  card: {
-    width: '47%',
-    aspectRatio: 1,
-    borderRadius: Theme.radius.lg,
-    marginBottom: Theme.spacing.md,
-  },
-  section: {
-    marginTop: Theme.spacing.lg,
-    paddingHorizontal: Theme.spacing.lg,
-  },
-  actionsRow: {
-    flexDirection: 'row',
-    gap: Theme.spacing.md,
-    marginTop: Theme.spacing.md,
-  },
-  actionButton: {
-    width: 100,
-    height: 100,
-    borderRadius: Theme.radius.lg,
-  },
-  activityItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: Theme.spacing.md,
-    padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral.white,
-    borderRadius: Theme.radius.md,
-  },
-  icon: {
-    width: 44,
-    height: 44,
-    borderRadius: Theme.radius.md,
-  },
-  activityContent: {
-    flex: 1,
-    marginLeft: Theme.spacing.md,
-  },
+  container: { flex: 1, paddingTop: 8 },
+  row: { flexDirection: 'row', alignItems: 'center' },
 });
 
 export default DashboardSkeleton;

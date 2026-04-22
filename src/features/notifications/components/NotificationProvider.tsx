@@ -112,14 +112,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
 
       case 'PAYMENT':
         if (data?.paymentId) {
-          navigation.navigate('PaymentConfirmation', {
-            paymentId: data.paymentId,
-            transactionReference: '',
-            amount: 0,
-            currency: 'XOF',
-            paymentMethod: '',
-            goodsCount: 0,
-          });
+          navigation.navigate('MyPaymentHistory');
         }
         break;
 

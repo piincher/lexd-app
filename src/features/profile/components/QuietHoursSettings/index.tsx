@@ -3,12 +3,12 @@
  * Do not disturb hours configuration
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet, Switch } from "react-native";
 import { Card, Text, Button } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { QuietHours } from "../../hooks/useNotificationSettings";
 
 interface QuietHoursSettingsProps {
@@ -22,6 +22,71 @@ export const QuietHoursSettings: React.FC<QuietHoursSettingsProps> = ({
    onToggle,
    onEditPress,
 }) => {
+   const { colors } = useAppTheme();
+
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            sectionTitle: {
+               fontSize: 14,
+               fontWeight: "600",
+               color: colors.text.secondary,
+               textTransform: "uppercase",
+               marginBottom: 8,
+               marginLeft: 4,
+            },
+            card: {
+               marginBottom: 16,
+               borderRadius: 12,
+               elevation: 2,
+               backgroundColor: colors.background.default,
+            },
+            quietHoursHeader: {
+               flexDirection: "row",
+               alignItems: "center",
+               justifyContent: "space-between",
+            },
+            quietHoursLeft: {
+               flexDirection: "row",
+               alignItems: "center",
+               flex: 1,
+            },
+            iconContainer: {
+               width: 48,
+               height: 48,
+               borderRadius: 12,
+               justifyContent: "center",
+               alignItems: "center",
+            },
+            quietHoursTitle: {
+               fontSize: 16,
+               fontWeight: "600",
+               color: colors.text.primary,
+            },
+            quietHoursSubtitle: {
+               fontSize: 14,
+               color: colors.text.secondary,
+               marginTop: 2,
+            },
+            quietHoursDetails: {
+               marginTop: 16,
+               paddingTop: 16,
+               borderTopWidth: 1,
+               borderTopColor: colors.border,
+            },
+            quietHoursDescription: {
+               fontSize: 14,
+               color: colors.text.secondary,
+               marginBottom: 12,
+               lineHeight: 20,
+            },
+            editTimeButton: {
+               borderColor: colors.primary.main,
+            },
+         }),
+      [colors]
+   );
+
    return (
       <>
          <Text style={styles.sectionTitle}>Quiet Hours</Text>
@@ -44,8 +109,8 @@ export const QuietHoursSettings: React.FC<QuietHoursSettingsProps> = ({
                   <Switch
                      value={quietHours.enabled}
                      onValueChange={onToggle}
-                     trackColor={{ false: "#E5E7EB", true: COLORS.primary + "50" }}
-                     thumbColor={quietHours.enabled ? COLORS.primary : "#FFF"}
+                     trackColor={{ false: colors.neutral[200], true: colors.primary.main + "50" }}
+                     thumbColor={quietHours.enabled ? colors.primary.main : colors.background.default}
                   />
                </View>
 
@@ -58,7 +123,7 @@ export const QuietHoursSettings: React.FC<QuietHoursSettingsProps> = ({
                         mode="outlined"
                         onPress={onEditPress}
                         style={styles.editTimeButton}
-                        textColor={COLORS.primary}
+                        textColor={colors.primary.main}
                      >
                         Edit Times
                      </Button>
@@ -69,62 +134,3 @@ export const QuietHoursSettings: React.FC<QuietHoursSettingsProps> = ({
       </>
    );
 };
-
-const styles = StyleSheet.create({
-   sectionTitle: {
-      fontSize: 14,
-      fontWeight: "600",
-      color: "#6B7280",
-      textTransform: "uppercase",
-      marginBottom: 8,
-      marginLeft: 4,
-   },
-   card: {
-      marginBottom: 16,
-      borderRadius: 12,
-      elevation: 2,
-      backgroundColor: "#FFF",
-   },
-   quietHoursHeader: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-   },
-   quietHoursLeft: {
-      flexDirection: "row",
-      alignItems: "center",
-      flex: 1,
-   },
-   iconContainer: {
-      width: 48,
-      height: 48,
-      borderRadius: 12,
-      justifyContent: "center",
-      alignItems: "center",
-   },
-   quietHoursTitle: {
-      fontSize: 16,
-      fontWeight: "600",
-      color: COLORS.dark,
-   },
-   quietHoursSubtitle: {
-      fontSize: 14,
-      color: "#6B7280",
-      marginTop: 2,
-   },
-   quietHoursDetails: {
-      marginTop: 16,
-      paddingTop: 16,
-      borderTopWidth: 1,
-      borderTopColor: "#E5E7EB",
-   },
-   quietHoursDescription: {
-      fontSize: 14,
-      color: "#6B7280",
-      marginBottom: 12,
-      lineHeight: 20,
-   },
-   editTimeButton: {
-      borderColor: COLORS.primary,
-   },
-});

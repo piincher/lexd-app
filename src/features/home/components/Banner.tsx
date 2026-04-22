@@ -1,5 +1,5 @@
-import { COLORS } from "@src/constants/Colors";
-import React, { useEffect, useState } from "react";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import React, { useEffect, useMemo, useState } from "react";
 import {
    Dimensions,
    StyleSheet,
@@ -31,6 +31,7 @@ const Banner = () => {
    const [fallbackLoading, setFallbackLoading] = useState<boolean>(true);
    const navigation = useNavigation<any>();
    const { copyToClipboard } = useClipboard();
+   const { colors } = useAppTheme();
 
    const { data: banners, isLoading: bannersLoading, isError } = useHomeBanners();
    const bannerClick = useHomeBannerClick();
@@ -81,6 +82,38 @@ const Banner = () => {
 
    const isLoading = hasDynamicBanners ? bannersLoading : fallbackLoading;
 
+   const styles = useMemo(() => StyleSheet.create({
+      container: {
+         marginTop: 16,
+         marginBottom: 8,
+         alignItems: "center",
+      },
+      loadingContainer: {
+         height: BANNER_HEIGHT,
+         justifyContent: "center",
+         alignItems: "center",
+      },
+      bannerImage: {
+         width: BANNER_WIDTH,
+         height: BANNER_HEIGHT,
+         borderRadius: 16,
+         marginHorizontal: 16,
+      },
+      paginationActive: {
+         backgroundColor: colors.primary.main,
+      },
+      paginationInactive: {
+         backgroundColor: colors.text.secondary,
+      },
+      paginationDot: {
+         width: 8,
+         height: 8,
+         borderRadius: 4,
+         marginHorizontal: 4,
+         marginTop: 12,
+      },
+   }), [colors]);
+
    if (isLoading) {
       return (
          <View style={styles.container}>
@@ -121,37 +154,5 @@ const Banner = () => {
       </View>
    );
 };
-
-const styles = StyleSheet.create({
-   container: {
-      marginTop: 16,
-      marginBottom: 8,
-      alignItems: "center",
-   },
-   loadingContainer: {
-      height: BANNER_HEIGHT,
-      justifyContent: "center",
-      alignItems: "center",
-   },
-   bannerImage: {
-      width: BANNER_WIDTH,
-      height: BANNER_HEIGHT,
-      borderRadius: 16,
-      marginHorizontal: 16,
-   },
-   paginationActive: {
-      backgroundColor: COLORS.blue,
-   },
-   paginationInactive: {
-      backgroundColor: COLORS.grey,
-   },
-   paginationDot: {
-      width: 8,
-      height: 8,
-      borderRadius: 4,
-      marginHorizontal: 4,
-      marginTop: 12,
-   },
-});
 
 export default Banner;

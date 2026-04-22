@@ -44,8 +44,9 @@ export const MENU_CATEGORIES: MenuCategory[] = [
     icon: "truck-delivery",
     items: [
       { id: "l1", title: "Containers", route: "ContainerList" },
-      { id: "l2", title: "Consignees", route: "ConsigneeList" },
-      { id: "l3", title: "Routes", route: "RouteList" },
+      { id: "l2", title: "Airway Bills", route: "AirwayBillList" },
+      { id: "l3", title: "Consignees", route: "ConsigneeList" },
+      { id: "l4", title: "Routes", route: "RouteList" },
     ],
   },
   {

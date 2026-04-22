@@ -10,7 +10,7 @@ import {
 import { MotiView } from "moti";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { navigationProps } from "@src/navigations/type";
+import type { navigationProps } from "@src/navigations/type";
 import { getCertificateDownloadUrl, CertificateProgress } from "../../api/certificateApi";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from "./CertifiedShipperCard.styles";

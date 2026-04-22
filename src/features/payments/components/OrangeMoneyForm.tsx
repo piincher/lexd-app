@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { OrangeMoneyFormProps } from '../types';
 
@@ -19,8 +19,199 @@ const OrangeMoneyForm: React.FC<OrangeMoneyFormProps> = ({
   error,
   disabled = false,
 }) => {
+  const { colors } = useAppTheme();
   const [isFocused, setIsFocused] = useState(false);
   const [showInstructions, setShowInstructions] = useState(true);
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          padding: 16,
+        },
+        title: {
+          fontSize: 20,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginBottom: 20,
+        },
+        inputContainer: {
+          marginBottom: 20,
+        },
+        label: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+          marginBottom: 8,
+        },
+        inputWrapper: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.background.default,
+          borderRadius: 12,
+          borderWidth: 2,
+          borderColor: colors.neutral[200],
+          overflow: 'hidden',
+        },
+        inputWrapperFocused: {
+          borderColor: colors.primary.main,
+        },
+        inputWrapperError: {
+          borderColor: colors.status.error,
+        },
+        inputWrapperDisabled: {
+          backgroundColor: colors.neutral[200] + '50',
+        },
+        countryCode: {
+          paddingHorizontal: 16,
+          paddingVertical: 14,
+          backgroundColor: colors.neutral[200] + '30',
+          borderRightWidth: 1,
+          borderRightColor: colors.neutral[200],
+        },
+        countryCodeText: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        input: {
+          flex: 1,
+          paddingHorizontal: 16,
+          paddingVertical: 14,
+          fontSize: 18,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+        },
+        validIcon: {
+          marginRight: 12,
+        },
+        errorContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 8,
+        },
+        errorText: {
+          marginLeft: 6,
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.status.error,
+        },
+        helperText: {
+          marginTop: 8,
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        instructionsHeader: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingVertical: 12,
+          marginBottom: 0,
+        },
+        instructionsTitle: {
+          flex: 1,
+          marginLeft: 8,
+          fontSize: 16,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+        },
+        instructionsContent: {
+          backgroundColor: colors.background.default,
+          borderRadius: 12,
+          padding: 16,
+          marginBottom: 20,
+        },
+        stepContainer: {
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          marginBottom: 12,
+        },
+        stepNumber: {
+          width: 24,
+          height: 24,
+          borderRadius: 12,
+          backgroundColor: colors.primary.main,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 12,
+        },
+        stepNumberText: {
+          fontSize: 12,
+          fontFamily: Fonts.bold,
+          color: colors.text.inverse,
+        },
+        stepText: {
+          flex: 1,
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.primary,
+          lineHeight: 20,
+        },
+        noteContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.status.success + '10',
+          borderRadius: 8,
+          padding: 12,
+          marginTop: 8,
+        },
+        noteText: {
+          flex: 1,
+          marginLeft: 8,
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.status.success,
+        },
+        supportedContainer: {
+          marginTop: 8,
+        },
+        supportedTitle: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+          marginBottom: 12,
+        },
+        countryTags: {
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: 8,
+        },
+        countryTag: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.neutral[200] + '30',
+          borderRadius: 16,
+          paddingHorizontal: 12,
+          paddingVertical: 6,
+        },
+        countryTagCode: {
+          fontSize: 12,
+          fontFamily: Fonts.bold,
+          color: colors.primary.main,
+          marginRight: 4,
+        },
+        countryTagName: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        processingContainer: {
+          alignItems: 'center',
+          padding: 24,
+          backgroundColor: colors.primary.main + '08',
+          borderRadius: 12,
+          marginTop: 16,
+        },
+        processingText: {
+          marginTop: 12,
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.primary.main,
+          textAlign: 'center',
+        },
+      }),
+    [colors]
+  );
 
   // Format phone number as user types
   const handlePhoneChange = (text: string) => {
@@ -55,6 +246,38 @@ const OrangeMoneyForm: React.FC<OrangeMoneyFormProps> = ({
     ? 'Please enter a valid Orange Money number (07XXXXXXXX)'
     : null;
 
+  /**
+   * Instruction Step Component
+   */
+  interface InstructionStepProps {
+    number: number;
+    text: string;
+  }
+
+  const InstructionStep: React.FC<InstructionStepProps> = ({ number, text }) => (
+    <View style={styles.stepContainer}>
+      <View style={styles.stepNumber}>
+        <Text style={styles.stepNumberText}>{number}</Text>
+      </View>
+      <Text style={styles.stepText}>{text}</Text>
+    </View>
+  );
+
+  /**
+   * Country Tag Component
+   */
+  interface CountryTagProps {
+    code: string;
+    name: string;
+  }
+
+  const CountryTag: React.FC<CountryTagProps> = ({ code, name }) => (
+    <View style={styles.countryTag}>
+      <Text style={styles.countryTagCode}>{code}</Text>
+      <Text style={styles.countryTagName}>{name}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Orange Money Payment</Text>
@@ -80,7 +303,7 @@ const OrangeMoneyForm: React.FC<OrangeMoneyFormProps> = ({
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             placeholder="07XXXXXXXX"
-            placeholderTextColor={COLORS.lightGray}
+            placeholderTextColor={colors.text.disabled}
             keyboardType="phone-pad"
             maxLength={10}
             editable={!disabled}
@@ -91,7 +314,7 @@ const OrangeMoneyForm: React.FC<OrangeMoneyFormProps> = ({
             <MaterialCommunityIcons
               name="check-circle"
               size={24}
-              color={COLORS.green}
+              color={colors.status.success}
               style={styles.validIcon}
             />
           )}
@@ -102,7 +325,7 @@ const OrangeMoneyForm: React.FC<OrangeMoneyFormProps> = ({
             <MaterialCommunityIcons
               name="alert-circle"
               size={16}
-              color={COLORS.redShade}
+              color={colors.status.error}
             />
             <Text style={styles.errorText}>
               {error || validationError}
@@ -124,13 +347,13 @@ const OrangeMoneyForm: React.FC<OrangeMoneyFormProps> = ({
         <MaterialCommunityIcons
           name="information"
           size={20}
-          color={COLORS.blue}
+          color={colors.primary.main}
         />
         <Text style={styles.instructionsTitle}>How to Pay</Text>
         <MaterialCommunityIcons
           name={showInstructions ? 'chevron-up' : 'chevron-down'}
           size={20}
-          color={COLORS.grey}
+          color={colors.text.secondary}
         />
       </TouchableOpacity>
 
@@ -161,7 +384,7 @@ const OrangeMoneyForm: React.FC<OrangeMoneyFormProps> = ({
             <MaterialCommunityIcons
               name="shield-check"
               size={16}
-              color={COLORS.green}
+              color={colors.status.success}
             />
             <Text style={styles.noteText}>
               Your payment is secure and encrypted. We never store your PIN.
@@ -183,7 +406,7 @@ const OrangeMoneyForm: React.FC<OrangeMoneyFormProps> = ({
       {/* Processing Indicator */}
       {disabled && (
         <View style={styles.processingContainer}>
-          <ActivityIndicator size="large" color={COLORS.blue} />
+          <ActivityIndicator size="large" color={colors.primary.main} />
           <Text style={styles.processingText}>
             Sending payment request to your phone...
           </Text>
@@ -192,223 +415,5 @@ const OrangeMoneyForm: React.FC<OrangeMoneyFormProps> = ({
     </View>
   );
 };
-
-/**
- * Instruction Step Component
- */
-interface InstructionStepProps {
-  number: number;
-  text: string;
-}
-
-const InstructionStep: React.FC<InstructionStepProps> = ({ number, text }) => (
-  <View style={styles.stepContainer}>
-    <View style={styles.stepNumber}>
-      <Text style={styles.stepNumberText}>{number}</Text>
-    </View>
-    <Text style={styles.stepText}>{text}</Text>
-  </View>
-);
-
-/**
- * Country Tag Component
- */
-interface CountryTagProps {
-  code: string;
-  name: string;
-}
-
-const CountryTag: React.FC<CountryTagProps> = ({ code, name }) => (
-  <View style={styles.countryTag}>
-    <Text style={styles.countryTagCode}>{code}</Text>
-    <Text style={styles.countryTagName}>{name}</Text>
-  </View>
-);
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-    marginBottom: 20,
-  },
-  inputContainer: {
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.black,
-    marginBottom: 8,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: COLORS.lightGray,
-    overflow: 'hidden',
-  },
-  inputWrapperFocused: {
-    borderColor: COLORS.blue,
-  },
-  inputWrapperError: {
-    borderColor: COLORS.redShade,
-  },
-  inputWrapperDisabled: {
-    backgroundColor: COLORS.lightGray + '50',
-  },
-  countryCode: {
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    backgroundColor: COLORS.lightGray + '30',
-    borderRightWidth: 1,
-    borderRightColor: COLORS.lightGray,
-  },
-  countryCodeText: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-  },
-  input: {
-    flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
-    fontSize: 18,
-    fontFamily: Fonts.medium,
-    color: COLORS.black,
-  },
-  validIcon: {
-    marginRight: 12,
-  },
-  errorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-  },
-  errorText: {
-    marginLeft: 6,
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.redShade,
-  },
-  helperText: {
-    marginTop: 8,
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-  },
-  instructionsHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    marginBottom: showInstructions => showInstructions ? 0 : 16,
-  },
-  instructionsTitle: {
-    flex: 1,
-    marginLeft: 8,
-    fontSize: 16,
-    fontFamily: Fonts.medium,
-    color: COLORS.black,
-  },
-  instructionsContent: {
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 20,
-  },
-  stepContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 12,
-  },
-  stepNumber: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: COLORS.blue,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  stepNumberText: {
-    fontSize: 12,
-    fontFamily: Fonts.bold,
-    color: COLORS.white,
-  },
-  stepText: {
-    flex: 1,
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.black,
-    lineHeight: 20,
-  },
-  noteContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.green + '10',
-    borderRadius: 8,
-    padding: 12,
-    marginTop: 8,
-  },
-  noteText: {
-    flex: 1,
-    marginLeft: 8,
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.green,
-  },
-  supportedContainer: {
-    marginTop: 8,
-  },
-  supportedTitle: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.grey,
-    marginBottom: 12,
-  },
-  countryTags: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-  },
-  countryTag: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.lightGray + '30',
-    borderRadius: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  countryTagCode: {
-    fontSize: 12,
-    fontFamily: Fonts.bold,
-    color: COLORS.blue,
-    marginRight: 4,
-  },
-  countryTagName: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-  },
-  processingContainer: {
-    alignItems: 'center',
-    padding: 24,
-    backgroundColor: COLORS.blue + '08',
-    borderRadius: 12,
-    marginTop: 16,
-  },
-  processingText: {
-    marginTop: 12,
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.blue,
-    textAlign: 'center',
-  },
-});
 
 export default OrangeMoneyForm;

@@ -78,6 +78,11 @@ export interface Goods {
   description: string;
   status: GoodsStatus;
   containerId?: string | ContainerInfo;
+  // Dual-ledger fields
+  weightBasedCBM?: number;
+  clientChargeableCBM?: number;
+  clientUnitPrice?: number;
+  clientTotalCost?: number;
   unitPrice: number;
   totalCost: number;
   amountPaid: number;

@@ -4,6 +4,7 @@ export { OnboardingIndicator } from "./OnboardingIndicator";
 export { OnboardingCTA } from "./OnboardingCTA";
 export { OnboardingProgress } from "./OnboardingProgress";
 export { OnboardingBackground } from "./OnboardingBackground";
+export { OnboardingPager } from "./OnboardingPager";
 
 // Legacy exports (kept for backward compatibility)
 export { OnboardingBackdrop } from "./OnboardingBackdrop";

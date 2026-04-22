@@ -14,6 +14,7 @@
 export type ContainerTransitStatus =
   | 'DEPARTED_ORIGIN'
   | 'AT_SEA'
+  | 'IN_AIR'
   | 'ARRIVED_TRANSIT_PORT'
   | 'DEPARTED_TRANSIT_PORT'
   | 'ARRIVED_DESTINATION_PORT'
@@ -63,9 +64,19 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
   },
   AT_SEA: {
     status: 'AT_SEA',
-    label: 'En Mer',
-    description: 'En transit maritime vers le port de destination',
+    label: 'En Transit',
+    description: 'En transit vers la destination',
     icon: 'boat',
+    color: '#0EA5E9',
+    waypointIndex: 1,
+    allowedPreviousStatuses: ['DEPARTED_ORIGIN', 'ARRIVED_TRANSIT_PORT', 'DEPARTED_TRANSIT_PORT'],
+    isFinalStatus: false,
+  },
+  IN_AIR: {
+    status: 'IN_AIR',
+    label: 'En Transit Aérien',
+    description: 'En transit aérien vers la destination',
+    icon: 'airplane',
     color: '#0EA5E9',
     waypointIndex: 1,
     allowedPreviousStatuses: ['DEPARTED_ORIGIN', 'ARRIVED_TRANSIT_PORT', 'DEPARTED_TRANSIT_PORT'],
@@ -78,7 +89,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     icon: 'anchor',
     color: '#8B5CF6',
     waypointIndex: 2,
-    allowedPreviousStatuses: ['AT_SEA'],
+    allowedPreviousStatuses: ['AT_SEA', 'IN_AIR'],
     isFinalStatus: false,
   },
   DEPARTED_TRANSIT_PORT: {
@@ -162,8 +173,17 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
  * @param status - The transit status
  * @returns French label string
  */
-export const getTransitStatusLabel = (status: ContainerTransitStatus): string => {
-  return TRANSIT_STATUS_INFO[status]?.label || status;
+export const getTransitStatusLabel = (status: ContainerTransitStatus, shippingMode?: 'SEA' | 'AIR'): string => {
+  const info = TRANSIT_STATUS_INFO[status];
+  if (!info) return status;
+  // Shipping-mode-aware labels
+  if (status === 'AT_SEA' && shippingMode === 'AIR') {
+    return 'En Transit Aérien';
+  }
+  if (status === 'AT_SEA' && shippingMode === 'SEA') {
+    return 'En Mer';
+  }
+  return info.label;
 };
 
 /**
@@ -280,6 +300,7 @@ export interface TransitStatusHistory {
 export const TRANSIT_STATUS_ORDER: ContainerTransitStatus[] = [
   'DEPARTED_ORIGIN',
   'AT_SEA',
+  'IN_AIR',
   'ARRIVED_TRANSIT_PORT',
   'DEPARTED_TRANSIT_PORT',
   'ARRIVED_DESTINATION_PORT',
@@ -295,7 +316,8 @@ export const TRANSIT_STATUS_ORDER: ContainerTransitStatus[] = [
  */
 export const TRANSIT_STATUS_LABELS: Record<ContainerTransitStatus, string> = {
   DEPARTED_ORIGIN: 'Départ Origine',
-  AT_SEA: 'En Mer',
+  AT_SEA: 'En Transit',
+  IN_AIR: 'En Transit Aérien',
   ARRIVED_TRANSIT_PORT: 'Arrivé Port Transit',
   DEPARTED_TRANSIT_PORT: 'Départ Port Transit',
   ARRIVED_DESTINATION_PORT: 'Arrivé Port Destination',
@@ -312,6 +334,7 @@ export const TRANSIT_STATUS_LABELS: Record<ContainerTransitStatus, string> = {
 export const TRANSIT_STATUS_COLORS: Record<ContainerTransitStatus, string> = {
   DEPARTED_ORIGIN: '#3B82F6',
   AT_SEA: '#0EA5E9',
+  IN_AIR: '#0EA5E9',
   ARRIVED_TRANSIT_PORT: '#8B5CF6',
   DEPARTED_TRANSIT_PORT: '#6366F1',
   ARRIVED_DESTINATION_PORT: '#10B981',
@@ -328,6 +351,7 @@ export const TRANSIT_STATUS_COLORS: Record<ContainerTransitStatus, string> = {
 export const TRANSIT_STATUS_ICONS: Record<ContainerTransitStatus, string> = {
   DEPARTED_ORIGIN: 'flag',
   AT_SEA: 'boat',
+  IN_AIR: 'airplane',
   ARRIVED_TRANSIT_PORT: 'anchor',
   DEPARTED_TRANSIT_PORT: 'arrow-forward',
   ARRIVED_DESTINATION_PORT: 'location',

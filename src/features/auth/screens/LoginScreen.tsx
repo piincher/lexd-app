@@ -5,13 +5,13 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, Linking, Platform, ScrollView, StyleSheet } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 
 import { Notification } from "@src/components/Notification/Notification";
 import { Screen } from "@src/shared/ui/Screen";
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { PublicStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { useLoginForm } from "../hooks/useLoginForm";
@@ -22,7 +22,7 @@ import { SubmitButton } from "../components/SubmitButton";
 import { SecurityNote } from "../components/SecurityNote";
 import { LoginFooter } from "../components/LoginFooter";
 
-export const LoginScreen: React.FC<PublicStackScreenProps<"Login">> = ({ navigation }) => {
+export const LoginScreen: React.FC<RootStackScreenProps<"Login">> = ({ navigation }) => {
   const { colors, isDark } = useAppTheme();
   const [showSuccess, setShowSuccess] = useState(false);
   const { phone, setPhone, selectedCountry, setSelectedCountry, showCountryPicker, setShowCountryPicker, error, handleSubmit, isLoading, isSuccess, fullPhone, countries } = useLoginForm();
@@ -53,7 +53,10 @@ export const LoginScreen: React.FC<PublicStackScreenProps<"Login">> = ({ navigat
             <SubmitButton onPress={handleSubmit} isLoading={isLoading} />
           </Animated.View>
           <SecurityNote />
-          <LoginFooter />
+          <LoginFooter
+            onTermsPress={() => Linking.openURL("https://www.chinalinkexpress.com/fr/terms")}
+            onPrivacyPress={() => Linking.openURL("https://www.chinalinkexpress.com/fr/privacy")}
+          />
         </ScrollView>
       </KeyboardAvoidingView>
     </Screen>

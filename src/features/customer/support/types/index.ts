@@ -49,6 +49,15 @@ export interface RateTicketInput {
   rating: number;
 }
 
+export interface TicketFilters {
+  status?: TicketStatus[];
+  type?: TicketType[];
+  priority?: TicketPriority[];
+  search?: string;
+  page?: number;
+  limit?: number;
+}
+
 // Ticket type labels in French
 export const TICKET_TYPE_LABELS: Record<TicketType, string> = {
   ORDER_ISSUE: 'Problème de commande',

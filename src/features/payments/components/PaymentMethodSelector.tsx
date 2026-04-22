@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { ShimmerBlock } from '@src/shared/ui';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { usePaymentProviders } from '../hooks/usePayments';
 import type { PaymentProvider, PaymentMethodSelectorProps } from '../types';
@@ -27,8 +27,178 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   disabled = false,
   showFees = true,
 }) => {
+  const { colors } = useAppTheme();
   const { data, isLoading, error } = usePaymentProviders();
   const providers = data?.providers ?? [];
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          padding: 16,
+        },
+        title: {
+          fontSize: 20,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginBottom: 16,
+        },
+        loadingContainer: {
+          padding: 40,
+          alignItems: 'center',
+        },
+        loadingText: {
+          marginTop: 12,
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        errorContainer: {
+          padding: 40,
+          alignItems: 'center',
+        },
+        errorText: {
+          marginTop: 12,
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.status.error,
+          textAlign: 'center',
+        },
+        amountBanner: {
+          backgroundColor: colors.primary.main + '10',
+          borderRadius: 12,
+          padding: 16,
+          marginBottom: 16,
+          alignItems: 'center',
+        },
+        amountLabel: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        amountValue: {
+          fontSize: 24,
+          fontFamily: Fonts.bold,
+          color: colors.primary.main,
+          marginTop: 4,
+        },
+        methodsList: {
+          gap: 12,
+        },
+        methodCard: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.background.default,
+          borderRadius: 12,
+          padding: 16,
+          borderWidth: 2,
+          borderColor: 'transparent',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 4,
+          elevation: 2,
+        },
+        methodCardSelected: {
+          borderColor: colors.primary.main,
+          backgroundColor: colors.primary.main + '08',
+        },
+        methodCardError: {
+          borderColor: colors.status.error,
+        },
+        methodCardDisabled: {
+          opacity: 0.5,
+        },
+        methodIconContainer: {
+          width: 48,
+          height: 48,
+          borderRadius: 24,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 12,
+        },
+        methodInfo: {
+          flex: 1,
+        },
+        methodName: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        methodDescription: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          marginTop: 2,
+        },
+        feeText: {
+          fontSize: 11,
+          fontFamily: Fonts.medium,
+          color: colors.accent.goldDark,
+          marginTop: 4,
+        },
+        methodRight: {
+          marginLeft: 12,
+        },
+        selectedIndicator: {
+          width: 24,
+          height: 24,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        unselectedIndicator: {
+          width: 24,
+          height: 24,
+          borderRadius: 12,
+          borderWidth: 2,
+          borderColor: colors.neutral[200],
+        },
+        feeBreakdown: {
+          marginTop: 24,
+          padding: 16,
+          backgroundColor: colors.background.default,
+          borderRadius: 12,
+        },
+        feeBreakdownTitle: {
+          fontSize: 14,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginBottom: 12,
+        },
+        feeRow: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginBottom: 8,
+        },
+        feeLabel: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        feeValue: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+        },
+        totalRow: {
+          marginTop: 8,
+          paddingTop: 8,
+          borderTopWidth: 1,
+          borderTopColor: colors.neutral[200],
+        },
+        totalLabel: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        totalValue: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.primary.main,
+        },
+      }),
+    [colors]
+  );
 
   if (isLoading) {
     return (
@@ -53,13 +223,57 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <MaterialCommunityIcons name="alert-circle" size={32} color={COLORS.redShade} />
+        <MaterialCommunityIcons name="alert-circle" size={32} color={colors.status.error} />
         <Text style={styles.errorText}>
           Failed to load payment methods. Please try again.
         </Text>
       </View>
     );
   }
+
+  /**
+   * Fee breakdown component
+   */
+  interface FeeBreakdownProps {
+    provider: PaymentProvider;
+    amount: number;
+  }
+
+  const FeeBreakdown: React.FC<FeeBreakdownProps> = ({ provider, amount }) => {
+    const { data } = usePaymentProviders();
+    const providerInfo = data?.providers?.find(p => p.code === provider);
+    
+    if (!providerInfo?.feeExample) return null;
+
+    const fee = providerInfo.feeExample;
+
+    return (
+      <View style={styles.feeBreakdown}>
+        <Text style={styles.feeBreakdownTitle}>Fee Breakdown</Text>
+        
+        <View style={styles.feeRow}>
+          <Text style={styles.feeLabel}>Subtotal</Text>
+          <Text style={styles.feeValue}>{fee.amountFCFA.toLocaleString()} FCFA</Text>
+        </View>
+        
+        <View style={styles.feeRow}>
+          <Text style={styles.feeLabel}>
+            Processing Fee ({providerInfo.feeExample.feePercentage})
+          </Text>
+          <Text style={styles.feeValue}>
+            {fee.totalFeeFCFA.toLocaleString()} FCFA
+          </Text>
+        </View>
+        
+        <View style={[styles.feeRow, styles.totalRow]}>
+          <Text style={styles.totalLabel}>Total</Text>
+          <Text style={styles.totalValue}>
+            {(fee.amountFCFA + fee.totalFeeFCFA).toLocaleString()} FCFA
+          </Text>
+        </View>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -120,7 +334,7 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
                     <MaterialCommunityIcons
                       name="check-circle"
                       size={24}
-                      color={COLORS.blue}
+                      color={colors.primary.main}
                     />
                   </View>
                 ) : (
@@ -151,214 +365,5 @@ const getProviderDescription = (provider: PaymentProvider): string => {
   };
   return descriptions[provider];
 };
-
-/**
- * Fee breakdown component
- */
-interface FeeBreakdownProps {
-  provider: PaymentProvider;
-  amount: number;
-}
-
-const FeeBreakdown: React.FC<FeeBreakdownProps> = ({ provider, amount }) => {
-  const { data } = usePaymentProviders();
-  const providerInfo = data?.providers?.find(p => p.code === provider);
-  
-  if (!providerInfo?.feeExample) return null;
-
-  const fee = providerInfo.feeExample;
-
-  return (
-    <View style={styles.feeBreakdown}>
-      <Text style={styles.feeBreakdownTitle}>Fee Breakdown</Text>
-      
-      <View style={styles.feeRow}>
-        <Text style={styles.feeLabel}>Subtotal</Text>
-        <Text style={styles.feeValue}>{fee.amountFCFA.toLocaleString()} FCFA</Text>
-      </View>
-      
-      <View style={styles.feeRow}>
-        <Text style={styles.feeLabel}>
-          Processing Fee ({providerInfo.feeExample.feePercentage})
-        </Text>
-        <Text style={styles.feeValue}>
-          {fee.totalFeeFCFA.toLocaleString()} FCFA
-        </Text>
-      </View>
-      
-      <View style={[styles.feeRow, styles.totalRow]}>
-        <Text style={styles.totalLabel}>Total</Text>
-        <Text style={styles.totalValue}>
-          {(fee.amountFCFA + fee.totalFeeFCFA).toLocaleString()} FCFA
-        </Text>
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-    marginBottom: 16,
-  },
-  loadingContainer: {
-    padding: 40,
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-  },
-  errorContainer: {
-    padding: 40,
-    alignItems: 'center',
-  },
-  errorText: {
-    marginTop: 12,
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.redShade,
-    textAlign: 'center',
-  },
-  amountBanner: {
-    backgroundColor: COLORS.blue + '10',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    alignItems: 'center',
-  },
-  amountLabel: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-  },
-  amountValue: {
-    fontSize: 24,
-    fontFamily: Fonts.bold,
-    color: COLORS.blue,
-    marginTop: 4,
-  },
-  methodsList: {
-    gap: 12,
-  },
-  methodCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    padding: 16,
-    borderWidth: 2,
-    borderColor: 'transparent',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  methodCardSelected: {
-    borderColor: COLORS.blue,
-    backgroundColor: COLORS.blue + '08',
-  },
-  methodCardError: {
-    borderColor: COLORS.redShade,
-  },
-  methodCardDisabled: {
-    opacity: 0.5,
-  },
-  methodIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  methodInfo: {
-    flex: 1,
-  },
-  methodName: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-  },
-  methodDescription: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    marginTop: 2,
-  },
-  feeText: {
-    fontSize: 11,
-    fontFamily: Fonts.medium,
-    color: COLORS.orange,
-    marginTop: 4,
-  },
-  methodRight: {
-    marginLeft: 12,
-  },
-  selectedIndicator: {
-    width: 24,
-    height: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  unselectedIndicator: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: COLORS.lightGray,
-  },
-  feeBreakdown: {
-    marginTop: 24,
-    padding: 16,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-  },
-  feeBreakdownTitle: {
-    fontSize: 14,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-    marginBottom: 12,
-  },
-  feeRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  feeLabel: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-  },
-  feeValue: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.black,
-  },
-  totalRow: {
-    marginTop: 8,
-    paddingTop: 8,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.lightGray,
-  },
-  totalLabel: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-  },
-  totalValue: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.blue,
-  },
-});
 
 export default PaymentMethodSelector;

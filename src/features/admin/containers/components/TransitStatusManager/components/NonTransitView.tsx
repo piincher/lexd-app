@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     paddingTop: Theme.spacing.lg,
   },
   card: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius['2xl'],
     marginBottom: Theme.spacing.lg,
     ...Theme.shadows.md,
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   helperCard: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius['2xl'],
     ...Theme.shadows.sm,
   },

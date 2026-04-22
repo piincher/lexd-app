@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { WavePaymentFormProps } from '../types';
 
@@ -21,8 +21,269 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
   onOpenWaveApp,
   disabled = false,
 }) => {
+  const { colors } = useAppTheme();
   const [showQrCode, setShowQrCode] = useState(true);
   const [imageError, setImageError] = useState(false);
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          padding: 16,
+        },
+        title: {
+          fontSize: 20,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginBottom: 20,
+        },
+        qrSection: {
+          backgroundColor: colors.background.default,
+          borderRadius: 16,
+          padding: 16,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.05,
+          shadowRadius: 8,
+          elevation: 2,
+        },
+        qrToggle: {
+          flexDirection: 'row',
+          backgroundColor: colors.neutral[200] + '30',
+          borderRadius: 12,
+          padding: 4,
+          marginBottom: 16,
+        },
+        toggleButton: {
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingVertical: 10,
+          borderRadius: 8,
+          gap: 6,
+        },
+        toggleButtonActive: {
+          backgroundColor: colors.primary.main,
+        },
+        toggleText: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+        },
+        toggleTextActive: {
+          color: colors.text.inverse,
+        },
+        qrContainer: {
+          alignItems: 'center',
+        },
+        qrImage: {
+          width: 220,
+          height: 220,
+          borderRadius: 12,
+          backgroundColor: colors.background.default,
+        },
+        qrPlaceholder: {
+          width: 220,
+          height: 220,
+          borderRadius: 12,
+          backgroundColor: colors.neutral[200] + '30',
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        qrPlaceholderText: {
+          marginTop: 12,
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        qrInstructions: {
+          marginTop: 16,
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+          textAlign: 'center',
+        },
+        appLinkContainer: {
+          alignItems: 'center',
+          paddingVertical: 20,
+        },
+        waveIconContainer: {
+          width: 80,
+          height: 80,
+          borderRadius: 40,
+          backgroundColor: colors.primary.main + '10',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 16,
+        },
+        appLinkTitle: {
+          fontSize: 18,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginBottom: 8,
+        },
+        appLinkDescription: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          textAlign: 'center',
+          marginBottom: 20,
+          paddingHorizontal: 20,
+        },
+        openAppButton: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.primary.main,
+          borderRadius: 12,
+          paddingVertical: 14,
+          paddingHorizontal: 24,
+          gap: 8,
+        },
+        openAppButtonDisabled: {
+          opacity: 0.6,
+        },
+        openAppButtonText: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.inverse,
+        },
+        divider: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginVertical: 24,
+        },
+        dividerLine: {
+          flex: 1,
+          height: 1,
+          backgroundColor: colors.neutral[200],
+        },
+        dividerText: {
+          marginHorizontal: 12,
+          fontSize: 12,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+        },
+        manualEntry: {
+          backgroundColor: colors.background.default,
+          borderRadius: 16,
+          padding: 16,
+        },
+        manualEntryTitle: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginBottom: 4,
+        },
+        manualEntryDescription: {
+          fontSize: 13,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          marginBottom: 12,
+        },
+        phoneInputContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+        },
+        countryCodeBadge: {
+          backgroundColor: colors.primary.main + '10',
+          borderRadius: 8,
+          paddingHorizontal: 12,
+          paddingVertical: 14,
+          marginRight: 8,
+        },
+        countryCodeText: {
+          fontSize: 14,
+          fontFamily: Fonts.bold,
+          color: colors.primary.main,
+        },
+        phoneButton: {
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          backgroundColor: colors.neutral[200] + '30',
+          borderRadius: 8,
+          paddingHorizontal: 12,
+          paddingVertical: 14,
+        },
+        phoneButtonDisabled: {
+          opacity: 0.6,
+        },
+        phoneButtonText: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+        },
+        instructions: {
+          marginTop: 24,
+        },
+        instructionHeader: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 12,
+        },
+        instructionTitle: {
+          marginLeft: 8,
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        instructionItem: {
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          marginBottom: 10,
+        },
+        instructionIcon: {
+          width: 28,
+          height: 28,
+          borderRadius: 14,
+          backgroundColor: colors.primary.main + '10',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 10,
+        },
+        instructionText: {
+          flex: 1,
+          fontSize: 13,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          lineHeight: 18,
+        },
+        securityNote: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.status.success + '08',
+          borderRadius: 12,
+          padding: 12,
+          marginTop: 20,
+        },
+        securityText: {
+          flex: 1,
+          marginLeft: 8,
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.status.success,
+        },
+        processingOverlay: {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(255,255,255,0.9)',
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        processingText: {
+          marginTop: 12,
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.primary.main,
+        },
+      }),
+    [colors]
+  );
 
   // Handle opening Wave app
   const handleOpenWaveApp = async () => {
@@ -47,6 +308,23 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
     }
   };
 
+  /**
+   * Instruction Item Component
+   */
+  interface InstructionItemProps {
+    icon: string;
+    text: string;
+  }
+
+  const InstructionItem: React.FC<InstructionItemProps> = ({ icon, text }) => (
+    <View style={styles.instructionItem}>
+      <View style={styles.instructionIcon}>
+        <MaterialCommunityIcons name={icon as any} size={16} color={colors.primary.main} />
+      </View>
+      <Text style={styles.instructionText}>{text}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Wave Payment</Text>
@@ -61,7 +339,7 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
             <MaterialCommunityIcons
               name="qrcode"
               size={18}
-              color={showQrCode ? COLORS.white : COLORS.grey}
+              color={showQrCode ? colors.text.inverse : colors.text.secondary}
             />
             <Text style={[styles.toggleText, showQrCode && styles.toggleTextActive]}>
               Scan QR
@@ -75,7 +353,7 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
             <MaterialCommunityIcons
               name="cellphone"
               size={18}
-              color={!showQrCode ? COLORS.white : COLORS.grey}
+              color={!showQrCode ? colors.text.inverse : colors.text.secondary}
             />
             <Text style={[styles.toggleText, !showQrCode && styles.toggleTextActive]}>
               Wave App
@@ -97,7 +375,7 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
                 <MaterialCommunityIcons
                   name="qrcode-scan"
                   size={64}
-                  color={COLORS.lightGray}
+                  color={colors.neutral[200]}
                 />
                 <Text style={styles.qrPlaceholderText}>
                   QR code will appear here
@@ -115,7 +393,7 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
               <MaterialCommunityIcons
                 name="wave"
                 size={48}
-                color={COLORS.blue}
+                color={colors.primary.main}
               />
             </View>
             
@@ -136,7 +414,7 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
               <MaterialCommunityIcons
                 name="open-in-app"
                 size={20}
-                color={COLORS.white}
+                color={colors.text.inverse}
               />
               <Text style={styles.openAppButtonText}>
                 Open Wave App
@@ -179,7 +457,7 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
             <MaterialCommunityIcons
               name="chevron-right"
               size={20}
-              color={COLORS.grey}
+              color={colors.text.secondary}
             />
           </TouchableOpacity>
         </View>
@@ -191,7 +469,7 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
           <MaterialCommunityIcons
             name="information"
             size={18}
-            color={COLORS.blue}
+            color={colors.primary.main}
           />
           <Text style={styles.instructionTitle}>How to pay with Wave</Text>
         </View>
@@ -219,7 +497,7 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
         <MaterialCommunityIcons
           name="shield-check"
           size={16}
-          color={COLORS.green}
+          color={colors.status.success}
         />
         <Text style={styles.securityText}>
           Your payment is protected by Wave's security. We never store your PIN.
@@ -229,7 +507,7 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
       {/* Processing State */}
       {disabled && (
         <View style={styles.processingOverlay}>
-          <ActivityIndicator size="large" color={COLORS.blue} />
+          <ActivityIndicator size="large" color={colors.primary.main} />
           <Text style={styles.processingText}>
             Waiting for payment confirmation...
           </Text>
@@ -238,278 +516,5 @@ const WavePaymentForm: React.FC<WavePaymentFormProps> = ({
     </View>
   );
 };
-
-/**
- * Instruction Item Component
- */
-interface InstructionItemProps {
-  icon: string;
-  text: string;
-}
-
-const InstructionItem: React.FC<InstructionItemProps> = ({ icon, text }) => (
-  <View style={styles.instructionItem}>
-    <View style={styles.instructionIcon}>
-      <MaterialCommunityIcons name={icon as any} size={16} color={COLORS.blue} />
-    </View>
-    <Text style={styles.instructionText}>{text}</Text>
-  </View>
-);
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-    marginBottom: 20,
-  },
-  qrSection: {
-    backgroundColor: COLORS.white,
-    borderRadius: 16,
-    padding: 16,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  qrToggle: {
-    flexDirection: 'row',
-    backgroundColor: COLORS.lightGray + '30',
-    borderRadius: 12,
-    padding: 4,
-    marginBottom: 16,
-  },
-  toggleButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    borderRadius: 8,
-    gap: 6,
-  },
-  toggleButtonActive: {
-    backgroundColor: COLORS.blue,
-  },
-  toggleText: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.grey,
-  },
-  toggleTextActive: {
-    color: COLORS.white,
-  },
-  qrContainer: {
-    alignItems: 'center',
-  },
-  qrImage: {
-    width: 220,
-    height: 220,
-    borderRadius: 12,
-    backgroundColor: COLORS.white,
-  },
-  qrPlaceholder: {
-    width: 220,
-    height: 220,
-    borderRadius: 12,
-    backgroundColor: COLORS.lightGray + '30',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  qrPlaceholderText: {
-    marginTop: 12,
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-  },
-  qrInstructions: {
-    marginTop: 16,
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.grey,
-    textAlign: 'center',
-  },
-  appLinkContainer: {
-    alignItems: 'center',
-    paddingVertical: 20,
-  },
-  waveIconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: COLORS.blue + '10',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  appLinkTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-    marginBottom: 8,
-  },
-  appLinkDescription: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    textAlign: 'center',
-    marginBottom: 20,
-    paddingHorizontal: 20,
-  },
-  openAppButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.blue,
-    borderRadius: 12,
-    paddingVertical: 14,
-    paddingHorizontal: 24,
-    gap: 8,
-  },
-  openAppButtonDisabled: {
-    opacity: 0.6,
-  },
-  openAppButtonText: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.white,
-  },
-  divider: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 24,
-  },
-  dividerLine: {
-    flex: 1,
-    height: 1,
-    backgroundColor: COLORS.lightGray,
-  },
-  dividerText: {
-    marginHorizontal: 12,
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    color: COLORS.grey,
-  },
-  manualEntry: {
-    backgroundColor: COLORS.white,
-    borderRadius: 16,
-    padding: 16,
-  },
-  manualEntryTitle: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-    marginBottom: 4,
-  },
-  manualEntryDescription: {
-    fontSize: 13,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    marginBottom: 12,
-  },
-  phoneInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  countryCodeBadge: {
-    backgroundColor: COLORS.blue + '10',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 14,
-    marginRight: 8,
-  },
-  countryCodeText: {
-    fontSize: 14,
-    fontFamily: Fonts.bold,
-    color: COLORS.blue,
-  },
-  phoneButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.lightGray + '30',
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 14,
-  },
-  phoneButtonDisabled: {
-    opacity: 0.6,
-  },
-  phoneButtonText: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.black,
-  },
-  instructions: {
-    marginTop: 24,
-  },
-  instructionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  instructionTitle: {
-    marginLeft: 8,
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-  },
-  instructionItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 10,
-  },
-  instructionIcon: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: COLORS.blue + '10',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  instructionText: {
-    flex: 1,
-    fontSize: 13,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    lineHeight: 18,
-  },
-  securityNote: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.green + '08',
-    borderRadius: 12,
-    padding: 12,
-    marginTop: 20,
-  },
-  securityText: {
-    flex: 1,
-    marginLeft: 8,
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.green,
-  },
-  processingOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(255,255,255,0.9)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  processingText: {
-    marginTop: 12,
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.blue,
-  },
-});
 
 export default WavePaymentForm;

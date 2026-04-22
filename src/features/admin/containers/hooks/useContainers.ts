@@ -3,11 +3,13 @@
  * Phase 3: Container System with Route Integration
  */
 
-import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { containerService } from '../services/ContainerService';
-import { PackingList } from '../types/PackingList';
+import { PackingList } from '../types';
 import { Container, CreateContainerInput, UpdateContainerStatusInput, AssignGoodsInput, ContainerFilters, Route, ShippingMode } from '../types';
 import { ApiClientError } from '@src/api/client';
+import { ApiResponse } from '@src/api/types';
 
 // ============================================
 // QUERY KEYS
@@ -38,7 +40,7 @@ export const containerQueryKeys = {
  */
 export const useGetActiveRoutesForMode = (
   mode: ShippingMode | undefined,
-  options?: UseQueryOptions<ApiResponse<Route[]>, ApiClientError>
+  options?: UseQueryOptions<ApiResponse<{ routes: Route[] }>, ApiClientError>
 ) => {
   return useQuery({
     queryKey: containerQueryKeys.routesByMode(mode || ''),
@@ -110,6 +112,31 @@ export const useGetUnassignedGoods = (
     queryFn: () => containerService.getUnassignedGoods(shippingMode),
     staleTime: 2 * 60 * 1000,
     ...options,
+  });
+};
+
+export const useGetClientAllocations = (
+  containerId: string | undefined,
+  options?: UseQueryOptions<any, ApiClientError>
+) => {
+  return useQuery({
+    queryKey: [...containerQueryKeys.detail(containerId || ''), 'client-allocations'],
+    queryFn: () => containerService.getClientAllocations(containerId!),
+    enabled: !!containerId,
+    staleTime: 2 * 60 * 1000,
+    ...options,
+  });
+};
+
+export const useReconcileContainer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ containerId, agentCBM, agentUnitCost }: { containerId: string; agentCBM: number; agentUnitCost?: number }) =>
+      containerService.reconcileContainer(containerId, agentCBM, agentUnitCost),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: containerQueryKeys.detail(variables.containerId) });
+      queryClient.invalidateQueries({ queryKey: containerQueryKeys.lists() });
+    },
   });
 };
 

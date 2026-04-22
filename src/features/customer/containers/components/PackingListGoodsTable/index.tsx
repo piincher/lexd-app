@@ -4,13 +4,13 @@
  * SRP: Display goods items in a table format
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card, Divider, Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
-import { styles } from './PackingListGoodsTable.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './PackingListGoodsTable.styles';
 
 interface GoodsItem {
   goodsId: string;
@@ -27,6 +27,8 @@ export const PackingListGoodsTable: React.FC<PackingListGoodsTableProps> = ({
   items,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Card style={styles.sectionCard}>

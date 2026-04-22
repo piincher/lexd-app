@@ -3,7 +3,8 @@
  * Phase 3: Route Management System
  */
 
-import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { routeService } from '../api/routeApi';
 import { Route, CreateRouteInput, UpdateRouteInput, RouteFilters } from '../types';
 import { ApiClientError } from '@src/api/client';

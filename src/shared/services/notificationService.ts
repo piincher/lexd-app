@@ -39,6 +39,8 @@ export interface NotificationData {
   certificateId?: string;
   goodsId?: string;
   message?: string;
+  badge?: number;
+  unreadCount?: number;
   [key: string]: any;
 }
 
@@ -300,10 +302,14 @@ export const scheduleLocalNotification = async (
 
     if (trigger.date) {
       // Schedule for a specific date/time
-      notificationTrigger = { date: trigger.date };
+      notificationTrigger = {
+        type: Notifications.SchedulableTriggerInputTypes.DATE,
+        date: trigger.date,
+      };
     } else if (trigger.seconds) {
       // Schedule after a delay
       notificationTrigger = {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
         seconds: trigger.seconds,
         repeats: trigger.repeats || false,
       };
@@ -651,6 +657,8 @@ export const initializeNotifications = (): void => {
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
       shouldShowAlert: true,
+      shouldShowBanner: true,
+      shouldShowList: true,
       shouldPlaySound: true,
       shouldSetBadge: true,
     }),

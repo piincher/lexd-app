@@ -3,11 +3,11 @@
  * SRP: Layout composition only — each section is a dedicated component
  */
 
-import React from 'react';
-import { ScrollView, RefreshControl } from 'react-native';
+import React, { useMemo } from 'react';
+import { ScrollView, RefreshControl, StyleSheet } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetOrderDetail } from '@src/shared/hooks/useOrderDetail';
 import { useGetRoutes } from '@src/shared/hooks/useRoutes';
 import { useUpdateOrder } from '../hooks/useOrderManagement';
@@ -22,9 +22,25 @@ import { OrderActions } from './components/OrderActions';
 import { OrderGoodsSection } from './components/OrderGoodsSection';
 import { OrderDetailSkeleton } from './components/OrderDetailSkeleton';
 import { EmptyOrders } from './components/EmptyOrders';
-import { styles } from './OrderDetailScreen.styles';
+
 
 const OrderDetailScreen: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.default,
+    },
+    contentContainer: {
+      paddingVertical: 4,
+      paddingBottom: 100,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  }), [colors, isDark]);
   const route = useRoute();
   const navigation = useNavigation();
   const { id } = route.params as { id: string };
@@ -82,7 +98,7 @@ const OrderDetailScreen: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Screen header={{ title: 'Détails commande' }}>
+      <Screen header={{ title: 'Détails commande', showNotificationBell: true }}>
         <OrderDetailSkeleton />
       </Screen>
     );
@@ -90,7 +106,7 @@ const OrderDetailScreen: React.FC = () => {
 
   if (!order) {
     return (
-      <Screen header={{ title: 'Détails commande' }}>
+      <Screen header={{ title: 'Détails commande', showNotificationBell: true }}>
         <EmptyOrders />
       </Screen>
     );
@@ -101,6 +117,7 @@ const OrderDetailScreen: React.FC = () => {
       header={{
         title: 'Détails commande',
         subtitle: order?.code,
+        showNotificationBell: true,
       }}
     >
       <ScrollView
@@ -110,8 +127,8 @@ const OrderDetailScreen: React.FC = () => {
           <RefreshControl
             refreshing={isLoading}
             onRefresh={refetch}
-            colors={[COLORS.blue]}
-            tintColor={COLORS.blue}
+            colors={[colors.primary.main]}
+            tintColor={colors.primary.main}
           />
         }
         showsVerticalScrollIndicator={false}

@@ -3,12 +3,12 @@
  * Complete form for editing goods information - mirrors all fields from registration
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, TextInput, Card, HelperText, Switch } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsFormData {
   description: string;
@@ -35,7 +35,125 @@ interface GoodsFormProps {
 const ACCENT = '#16A34A';
 
 export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculatedCBM, calculatedTotalCost }) => {
+  const { colors } = useAppTheme();
   const isSea = data.shippingMode === 'SEA';
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      gap: 12,
+    },
+    card: {
+      borderRadius: 12,
+      elevation: 1,
+      backgroundColor: colors.background.card,
+    },
+    sectionHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 12,
+      gap: 8,
+    },
+    sectionTitle: {
+      fontFamily: Fonts.bold,
+      fontSize: 15,
+      color: colors.text.primary,
+      flex: 1,
+    },
+    row: {
+      flexDirection: 'row',
+      gap: 12,
+    },
+    input: {
+      backgroundColor: 'transparent',
+    },
+    halfInput: {
+      flex: 1,
+    },
+    thirdInput: {
+      flex: 1,
+    },
+    textArea: {
+      backgroundColor: 'transparent',
+      minHeight: 80,
+    },
+    inputOutline: {
+      borderRadius: 8,
+    },
+    shippingRow: {
+      flexDirection: 'row',
+      gap: 12,
+    },
+    shippingOption: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 8,
+      paddingVertical: 14,
+      borderRadius: 10,
+      backgroundColor: colors.background.paper,
+      borderWidth: 1.5,
+      borderColor: colors.border,
+    },
+    shippingOptionActive: {
+      backgroundColor: ACCENT,
+      borderColor: ACCENT,
+    },
+    shippingText: {
+      fontFamily: Fonts.bold,
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    shippingTextActive: {
+      color: colors.text.inverse,
+    },
+    switchRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+    },
+    switchLabel: {
+      fontFamily: Fonts.meduim,
+      fontSize: 12,
+      color: colors.text.secondary,
+    },
+    cbmBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+      marginTop: 8,
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      backgroundColor: colors.background.paper,
+      borderRadius: 8,
+      alignSelf: 'flex-start',
+    },
+    cbmText: {
+      fontFamily: Fonts.bold,
+      fontSize: 13,
+      color: ACCENT,
+    },
+    totalCostRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginTop: 10,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      backgroundColor: colors.background.paper,
+      borderRadius: 8,
+    },
+    totalCostLabel: {
+      fontFamily: Fonts.meduim,
+      fontSize: 13,
+      color: colors.text.secondary,
+    },
+    totalCostValue: {
+      fontFamily: Fonts.bold,
+      fontSize: 14,
+      color: ACCENT,
+    },
+  }), [colors]);
 
   return (
     <View style={styles.container}>
@@ -51,14 +169,14 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
               style={[styles.shippingOption, data.shippingMode === 'SEA' && styles.shippingOptionActive]}
               onPress={() => onChange('shippingMode', 'SEA')}
             >
-              <MaterialCommunityIcons name="ferry" size={24} color={data.shippingMode === 'SEA' ? '#FFF' : COLORS.DimGray} />
+              <MaterialCommunityIcons name="ferry" size={24} color={data.shippingMode === 'SEA' ? colors.text.inverse : colors.text.secondary} />
               <Text style={[styles.shippingText, data.shippingMode === 'SEA' && styles.shippingTextActive]}>Maritime</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.shippingOption, data.shippingMode === 'AIR' && styles.shippingOptionActive]}
               onPress={() => onChange('shippingMode', 'AIR')}
             >
-              <MaterialCommunityIcons name="airplane" size={24} color={data.shippingMode === 'AIR' ? '#FFF' : COLORS.DimGray} />
+              <MaterialCommunityIcons name="airplane" size={24} color={data.shippingMode === 'AIR' ? colors.text.inverse : colors.text.secondary} />
               <Text style={[styles.shippingText, data.shippingMode === 'AIR' && styles.shippingTextActive]}>Aérien</Text>
             </TouchableOpacity>
           </View>
@@ -81,7 +199,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             numberOfLines={3}
             style={styles.textArea}
             outlineStyle={styles.inputOutline}
-            outlineColor="#E0E0E0"
+            outlineColor={colors.border}
             activeOutlineColor={ACCENT}
           />
         </Card.Content>
@@ -103,7 +221,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
               keyboardType="numeric"
               style={[styles.input, styles.halfInput]}
               outlineStyle={styles.inputOutline}
-              outlineColor="#E0E0E0"
+              outlineColor={colors.border}
               activeOutlineColor={ACCENT}
               right={<TextInput.Affix text="pcs" />}
             />
@@ -115,7 +233,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
               keyboardType="decimal-pad"
               style={[styles.input, styles.halfInput]}
               outlineStyle={styles.inputOutline}
-              outlineColor="#E0E0E0"
+              outlineColor={colors.border}
               activeOutlineColor={ACCENT}
               right={<TextInput.Affix text="kg" />}
             />
@@ -151,7 +269,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
                     keyboardType="decimal-pad"
                     style={[styles.input, styles.thirdInput]}
                     outlineStyle={styles.inputOutline}
-                    outlineColor="#E0E0E0"
+                    outlineColor={colors.border}
                     activeOutlineColor={ACCENT}
                     right={<TextInput.Affix text="cm" />}
                   />
@@ -163,7 +281,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
                     keyboardType="decimal-pad"
                     style={[styles.input, styles.thirdInput]}
                     outlineStyle={styles.inputOutline}
-                    outlineColor="#E0E0E0"
+                    outlineColor={colors.border}
                     activeOutlineColor={ACCENT}
                     right={<TextInput.Affix text="cm" />}
                   />
@@ -175,7 +293,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
                     keyboardType="decimal-pad"
                     style={[styles.input, styles.thirdInput]}
                     outlineStyle={styles.inputOutline}
-                    outlineColor="#E0E0E0"
+                    outlineColor={colors.border}
                     activeOutlineColor={ACCENT}
                     right={<TextInput.Affix text="cm" />}
                   />
@@ -196,7 +314,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
                 keyboardType="decimal-pad"
                 style={styles.input}
                 outlineStyle={styles.inputOutline}
-                outlineColor="#E0E0E0"
+                outlineColor={colors.border}
                 activeOutlineColor={ACCENT}
                 right={<TextInput.Affix text="m³" />}
               />
@@ -220,7 +338,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             keyboardType="decimal-pad"
             style={styles.input}
             outlineStyle={styles.inputOutline}
-            outlineColor="#E0E0E0"
+            outlineColor={colors.border}
             activeOutlineColor={ACCENT}
             right={<TextInput.Affix text={isSea ? 'FCFA/m³' : 'FCFA/kg'} />}
           />
@@ -250,7 +368,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             autoCapitalize="characters"
             style={styles.input}
             outlineStyle={styles.inputOutline}
-            outlineColor="#E0E0E0"
+            outlineColor={colors.border}
             activeOutlineColor={ACCENT}
             placeholder="Ex: C3"
           />
@@ -272,7 +390,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             onChangeText={(value) => onChange('receivedByName', value)}
             style={styles.input}
             outlineStyle={styles.inputOutline}
-            outlineColor="#E0E0E0"
+            outlineColor={colors.border}
             activeOutlineColor={ACCENT}
           />
         </Card.Content>
@@ -280,120 +398,3 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 12,
-  },
-  card: {
-    borderRadius: 12,
-    elevation: 1,
-    backgroundColor: '#FFF',
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 12,
-    gap: 8,
-  },
-  sectionTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 15,
-    color: COLORS.DarkGrey,
-    flex: 1,
-  },
-  row: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  input: {
-    backgroundColor: 'transparent',
-  },
-  halfInput: {
-    flex: 1,
-  },
-  thirdInput: {
-    flex: 1,
-  },
-  textArea: {
-    backgroundColor: 'transparent',
-    minHeight: 80,
-  },
-  inputOutline: {
-    borderRadius: 8,
-  },
-  shippingRow: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  shippingOption: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 14,
-    borderRadius: 10,
-    backgroundColor: '#F5F5F5',
-    borderWidth: 1.5,
-    borderColor: '#E0E0E0',
-  },
-  shippingOptionActive: {
-    backgroundColor: ACCENT,
-    borderColor: ACCENT,
-  },
-  shippingText: {
-    fontFamily: Fonts.bold,
-    fontSize: 14,
-    color: COLORS.DimGray,
-  },
-  shippingTextActive: {
-    color: '#FFF',
-  },
-  switchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  switchLabel: {
-    fontFamily: Fonts.meduim,
-    fontSize: 12,
-    color: COLORS.DimGray,
-  },
-  cbmBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    marginTop: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    backgroundColor: '#F0FDF4',
-    borderRadius: 8,
-    alignSelf: 'flex-start',
-  },
-  cbmText: {
-    fontFamily: Fonts.bold,
-    fontSize: 13,
-    color: ACCENT,
-  },
-  totalCostRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    backgroundColor: '#F0FDF4',
-    borderRadius: 8,
-  },
-  totalCostLabel: {
-    fontFamily: Fonts.meduim,
-    fontSize: 13,
-    color: COLORS.DimGray,
-  },
-  totalCostValue: {
-    fontFamily: Fonts.bold,
-    fontSize: 14,
-    color: ACCENT,
-  },
-});

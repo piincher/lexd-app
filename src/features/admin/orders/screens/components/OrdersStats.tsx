@@ -2,15 +2,17 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
-import { Fonts } from '@src/constants/Fonts';
-import { styles } from './OrdersStats.styles';
+import { createStyles } from './OrdersStats.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface OrdersStatsProps {
   orders: any[];
 }
 
 export const OrdersStats: React.FC<OrdersStatsProps> = ({ orders }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   const stats = useMemo(() => {
     if (!orders || !Array.isArray(orders)) {
       return { total: 0, inTransit: 0, pending: 0, delivered: 0, totalValue: 0 };
@@ -60,8 +62,8 @@ export const OrdersStats: React.FC<OrdersStatsProps> = ({ orders }) => {
         <StatCard
           value={stats.total}
           label="Total Orders"
-          icon={<MaterialCommunityIcons name="package-variant" size={18} color={COLORS.blue} />}
-          color={COLORS.blue}
+          icon={<MaterialCommunityIcons name="package-variant" size={18} color={colors.primary.main} />}
+          color={colors.primary.main}
         />
         <StatCard
           value={stats.inTransit}

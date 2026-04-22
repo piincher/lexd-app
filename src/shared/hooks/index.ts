@@ -7,6 +7,8 @@ export * from './useNotification';
 export * from './useRoutes';
 export * from './useOrderDetail';
 
+export * from './useHaptics';
+
 // Keep existing exports for backward compatibility
 export {
   usePushNotifications,

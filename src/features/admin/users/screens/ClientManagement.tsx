@@ -3,7 +3,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import { FlashList } from "@shopify/flash-list";
 
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { userData } from "@src/constants/types";
 import { useBlockandUnblockUser, useGetUsers } from "../hooks/useUserManagement";
 import { useClientStats } from "../hooks/useClientStats";
@@ -17,6 +18,7 @@ import { styles } from "./ClientManagement.styles";
 const SEARCH_PLACEHOLDER = "Rechercher par nom, téléphone ou email...";
 
 export default function ClientManagement({ navigation }: RootStackScreenProps<"ClientManagement">) {
+  const { isDark } = useAppTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [pendingClientId, setPendingClientId] = useState<string | null>(null);
   const { data } = useGetUsers();
@@ -56,7 +58,7 @@ export default function ClientManagement({ navigation }: RootStackScreenProps<"C
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
-      <StatusBar style="light" />
+      <StatusBar style={isDark ? 'light' : 'dark'} />
       
       <ClientHeader
         totalClients={clients.length}

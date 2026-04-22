@@ -4,14 +4,13 @@
  * SRP: Display loading skeleton
  */
 
-import React from 'react';
-import { View } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { Appbar, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ShimmerBlock } from '@src/shared/ui';
-import { styles } from './PackingListSkeleton.styles';
 
 interface PackingListSkeletonProps {
   onBack: () => void;
@@ -19,6 +18,24 @@ interface PackingListSkeletonProps {
 
 export const PackingListSkeleton: React.FC<PackingListSkeletonProps> = ({ onBack }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.paper,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 32,
+    },
+    loadingText: {
+      marginTop: 16,
+      fontFamily: Fonts.meduim,
+      color: colors.text.secondary,
+    },
+  }), [colors, isDark]);
 
   return (
     <SafeAreaView style={styles.container}>

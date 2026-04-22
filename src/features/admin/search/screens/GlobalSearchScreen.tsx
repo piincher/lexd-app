@@ -18,7 +18,7 @@ import { Text, FAB, IconButton, ActivityIndicator } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAdvancedSearch, useFilterPresets } from "../hooks/useSearch";
 import { GlobalSearchBar } from "../components/GlobalSearchBar";
 import { SearchFilters } from "../components/SearchFilters";
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     justifyContent: "center",
     alignItems: "center",
     ...Theme.shadows.sm,
@@ -375,7 +375,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.sm,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.sm,
     overflow: "hidden",
   },

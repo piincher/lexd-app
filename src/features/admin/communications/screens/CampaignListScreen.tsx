@@ -13,7 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { showMessage } from "react-native-flash-message";
 
 import { Fonts } from "@src/constants/Fonts";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import {
   useAdminCampaigns,
   useCancelCampaign,
@@ -77,6 +77,8 @@ const getSegmentLabel = (segment: string): string => {
       return "Clients actifs";
     case "inactive_customers":
       return "Clients inactifs";
+    case "container_customers":
+      return "Clients d'un conteneur";
     default:
       return segment;
   }
@@ -136,6 +138,12 @@ const CampaignCard = ({
             {getSegmentLabel(campaign.targetSegment)}
           </Text>
         </View>
+        {campaign.targetSegment === "container_customers" && campaign.containerId && (
+          <View style={styles.metaRow}>
+            <Ionicons name="cube-outline" size={13} color="#6B7280" />
+            <Text style={styles.metaText}>Conteneur: {campaign.containerId.slice(-6)}</Text>
+          </View>
+        )}
         <View style={styles.metaRow}>
           <Ionicons name="calendar-outline" size={13} color="#6B7280" />
           <Text style={styles.metaText}>{formatDate(campaign.scheduledAt)}</Text>

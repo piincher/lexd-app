@@ -3,13 +3,13 @@
  * Includes receipt viewing and WhatsApp sharing capabilities
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, ScrollView, StyleSheet, Image, TouchableOpacity, Alert, Linking } from 'react-native';
 import { Text, Surface, Divider, ActivityIndicator, IconButton, Portal, Modal, Button } from 'react-native-paper';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { sharePDFOnWhatsApp as sharePDFOnWhatsAppUtil } from '@src/shared/lib/pdfShare';
 import { Screen } from '@src/shared/ui/Screen';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -43,6 +43,251 @@ const formatPhoneForWhatsApp = (phone: string): string => {
 };
 
 const PaymentHistoryScreen: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.default,
+    },
+    contentContainer: {
+      padding: 16,
+      paddingBottom: 32,
+    },
+    summaryCard: {
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 16,
+      backgroundColor: colors.background.card,
+      elevation: 2,
+    },
+    backfillButton: {
+      borderRadius: 8,
+      marginBottom: 16,
+      paddingVertical: 2,
+    },
+    summaryRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    summaryItem: {
+      flex: 1,
+      alignItems: 'center',
+    },
+    summaryDivider: {
+      width: 1,
+      height: 40,
+      backgroundColor: colors.border,
+    },
+    summaryLabel: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      marginBottom: 4,
+    },
+    summaryValue: {
+      fontSize: 16,
+      fontWeight: '700',
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
+    },
+    paymentCard: {
+      marginBottom: 12,
+      padding: 16,
+      borderRadius: 12,
+      backgroundColor: colors.background.card,
+      elevation: 2,
+    },
+    paymentHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    methodContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    methodIcon: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: colors.background.paper,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 12,
+    },
+    methodText: {
+      fontSize: 14,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+    },
+    dateText: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      marginTop: 2,
+    },
+    amountText: {
+      fontSize: 16,
+      fontWeight: '700',
+      fontFamily: Fonts.bold,
+      color: colors.status.success,
+    },
+    divider: {
+      marginVertical: 12,
+    },
+    detailsContainer: {
+      gap: 8,
+    },
+    detailRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+    },
+    detailLabel: {
+      fontSize: 13,
+      color: colors.text.secondary,
+      fontFamily: Fonts.medium,
+      minWidth: 100,
+    },
+    detailValue: {
+      fontSize: 13,
+      fontWeight: '500',
+      fontFamily: Fonts.medium,
+      color: colors.text.primary,
+      flex: 1,
+    },
+    notesContainer: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 6,
+      backgroundColor: colors.accent.goldLight,
+      padding: 10,
+      borderRadius: 8,
+      marginTop: 4,
+    },
+    notesText: {
+      flex: 1,
+      fontSize: 13,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      lineHeight: 18,
+    },
+    actionsContainer: {
+      flexDirection: 'row',
+      gap: 8,
+    },
+    actionButton: {
+      flex: 1,
+      borderRadius: 8,
+      borderColor: colors.primary.main,
+    },
+    whatsappButton: {
+      flex: 1,
+      borderRadius: 8,
+    },
+    imagesContainer: {
+      marginTop: 12,
+    },
+    imagesLabel: {
+      fontSize: 13,
+      fontWeight: '500',
+      fontFamily: Fonts.medium,
+      color: colors.text.primary,
+      marginBottom: 8,
+    },
+    imagesRow: {
+      flexDirection: 'row',
+      gap: 8,
+    },
+    thumbnail: {
+      width: 80,
+      height: 80,
+      borderRadius: 8,
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    loadingText: {
+      marginTop: 12,
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 32,
+    },
+    errorTitle: {
+      fontSize: 18,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      color: colors.status.error,
+      marginTop: 16,
+    },
+    errorText: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      textAlign: 'center',
+      marginTop: 8,
+      marginBottom: 16,
+    },
+    retryButton: {
+      backgroundColor: colors.primary.main,
+      paddingHorizontal: 24,
+      paddingVertical: 12,
+      borderRadius: 8,
+    },
+    retryText: {
+      color: colors.text.inverse,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+    },
+    emptyContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 64,
+    },
+    emptyTitle: {
+      fontSize: 18,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+      marginTop: 16,
+    },
+    emptyText: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      textAlign: 'center',
+      marginTop: 8,
+      paddingHorizontal: 32,
+    },
+    modalContent: {
+      backgroundColor: '#000',
+      margin: 20,
+      borderRadius: 12,
+      overflow: 'hidden',
+      height: 400,
+    },
+    closeButton: {
+      position: 'absolute',
+      top: 8,
+      right: 8,
+      zIndex: 1,
+      backgroundColor: 'rgba(255,255,255,0.3)',
+    },
+    fullImage: {
+      width: '100%',
+      height: '100%',
+    },
+  }), [colors, isDark]);
   const route = useRoute();
   const navigation = useNavigation<any>();
   const { orderId, orderCode, clientName, clientPhone } = route.params as {
@@ -159,7 +404,7 @@ const PaymentHistoryScreen: React.FC = () => {
               <MaterialCommunityIcons
                 name={(PAYMENT_METHOD_ICONS[payment.paymentMethod] || 'cash') as any}
                 size={20}
-                color={COLORS.blue}
+                color={colors.primary.main}
               />
             </View>
             <View>
@@ -180,7 +425,7 @@ const PaymentHistoryScreen: React.FC = () => {
         <View style={styles.detailsContainer}>
           {payment.referenceNumber && (
             <View style={styles.detailRow}>
-              <MaterialCommunityIcons name="identifier" size={16} color={COLORS.grey} />
+              <MaterialCommunityIcons name="identifier" size={16} color={colors.text.secondary} />
               <Text style={styles.detailLabel}>Référence:</Text>
               <Text style={styles.detailValue}>{payment.referenceNumber}</Text>
             </View>
@@ -188,14 +433,14 @@ const PaymentHistoryScreen: React.FC = () => {
 
           {payment.receiptNumber && (
             <View style={styles.detailRow}>
-              <MaterialCommunityIcons name="receipt" size={16} color={COLORS.grey} />
+              <MaterialCommunityIcons name="receipt" size={16} color={colors.text.secondary} />
               <Text style={styles.detailLabel}>N° Reçu:</Text>
               <Text style={styles.detailValue}>{payment.receiptNumber}</Text>
             </View>
           )}
 
           <View style={styles.detailRow}>
-            <MaterialCommunityIcons name="account" size={16} color={COLORS.grey} />
+            <MaterialCommunityIcons name="account" size={16} color={colors.text.secondary} />
             <Text style={styles.detailLabel}>Enregistré par:</Text>
             <Text style={styles.detailValue}>
               {payment.recordedBy?.firstName} {payment.recordedBy?.lastName}
@@ -204,7 +449,7 @@ const PaymentHistoryScreen: React.FC = () => {
 
           {payment.notes && (
             <View style={styles.notesContainer}>
-              <MaterialCommunityIcons name="note-text" size={16} color={COLORS.grey} />
+              <MaterialCommunityIcons name="note-text" size={16} color={colors.text.secondary} />
               <Text style={styles.notesText}>{payment.notes}</Text>
             </View>
           )}
@@ -221,7 +466,7 @@ const PaymentHistoryScreen: React.FC = () => {
                   onPress={() => handleViewReceipt(payment.receiptUrl)}
                   style={styles.actionButton}
                   icon="file-pdf-box"
-                  textColor={COLORS.blue}
+                  textColor={colors.primary.main}
                   compact
                 >
                   Voir le reçu
@@ -265,9 +510,9 @@ const PaymentHistoryScreen: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Screen header={{ title: 'Historique des paiements' }}>
+      <Screen header={{ title: 'Historique des paiements', showNotificationBell: true }}>
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={COLORS.blue} />
+          <ActivityIndicator size="large" color={colors.primary.main} />
           <Text style={styles.loadingText}>Chargement des paiements...</Text>
         </View>
       </Screen>
@@ -276,9 +521,9 @@ const PaymentHistoryScreen: React.FC = () => {
 
   if (error) {
     return (
-      <Screen header={{ title: 'Historique des paiements' }}>
+      <Screen header={{ title: 'Historique des paiements', showNotificationBell: true }}>
         <View style={styles.errorContainer}>
-          <MaterialCommunityIcons name="alert-circle" size={48} color={COLORS.redShade} />
+          <MaterialCommunityIcons name="alert-circle" size={48} color={colors.status.error} />
           <Text style={styles.errorTitle}>Échec du chargement</Text>
           <Text style={styles.errorText}>{(error as Error).message}</Text>
           <TouchableOpacity style={styles.retryButton} onPress={() => refetch()}>
@@ -292,7 +537,7 @@ const PaymentHistoryScreen: React.FC = () => {
   const totalPaid = payments?.reduce((sum: number, p: any) => sum + (p.amount || 0), 0) || 0;
 
   return (
-    <Screen header={{ title: 'Historique des paiements', subtitle: orderCode }}>
+    <Screen header={{ title: 'Historique des paiements', subtitle: orderCode, showNotificationBell: true }}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         {payments && payments.length > 0 ? (
           <>
@@ -319,7 +564,7 @@ const PaymentHistoryScreen: React.FC = () => {
                 mode="contained"
                 onPress={() => runBackfill()}
                 style={styles.backfillButton}
-                buttonColor={COLORS.blue}
+                buttonColor={colors.primary.main}
                 icon={isBackfilling ? undefined : "sync"}
                 loading={isBackfilling}
                 disabled={isBackfilling}
@@ -332,7 +577,7 @@ const PaymentHistoryScreen: React.FC = () => {
           </>
         ) : (
           <View style={styles.emptyContainer}>
-            <MaterialCommunityIcons name="cash-remove" size={64} color={COLORS.lightGray} />
+            <MaterialCommunityIcons name="cash-remove" size={64} color={colors.neutral[200]} />
             <Text style={styles.emptyTitle}>Aucun paiement</Text>
             <Text style={styles.emptyText}>
               Aucun paiement n'a été enregistré pour cette commande.
@@ -362,250 +607,5 @@ const PaymentHistoryScreen: React.FC = () => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5F7FA',
-  },
-  contentContainer: {
-    padding: 16,
-    paddingBottom: 32,
-  },
-  summaryCard: {
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    backgroundColor: '#fff',
-    elevation: 2,
-  },
-  backfillButton: {
-    borderRadius: 8,
-    marginBottom: 16,
-    paddingVertical: 2,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  summaryItem: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  summaryDivider: {
-    width: 1,
-    height: 40,
-    backgroundColor: '#E5E7EB',
-  },
-  summaryLabel: {
-    fontSize: 12,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-    marginBottom: 4,
-  },
-  summaryValue: {
-    fontSize: 16,
-    fontWeight: '700',
-    fontFamily: Fonts.bold,
-    color: '#1A1A2E',
-  },
-  paymentCard: {
-    marginBottom: 12,
-    padding: 16,
-    borderRadius: 12,
-    backgroundColor: '#FFF',
-    elevation: 2,
-  },
-  paymentHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  methodContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  methodIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#E3F2FD',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  methodText: {
-    fontSize: 14,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    color: '#1A1A2E',
-  },
-  dateText: {
-    fontSize: 12,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-    marginTop: 2,
-  },
-  amountText: {
-    fontSize: 16,
-    fontWeight: '700',
-    fontFamily: Fonts.bold,
-    color: '#4CAF50',
-  },
-  divider: {
-    marginVertical: 12,
-  },
-  detailsContainer: {
-    gap: 8,
-  },
-  detailRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  detailLabel: {
-    fontSize: 13,
-    color: COLORS.grey,
-    fontFamily: Fonts.medium,
-    minWidth: 100,
-  },
-  detailValue: {
-    fontSize: 13,
-    fontWeight: '500',
-    fontFamily: Fonts.medium,
-    color: '#333',
-    flex: 1,
-  },
-  notesContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 6,
-    backgroundColor: '#FFF8E1',
-    padding: 10,
-    borderRadius: 8,
-    marginTop: 4,
-  },
-  notesText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#666',
-    fontFamily: Fonts.regular,
-    lineHeight: 18,
-  },
-  actionsContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  actionButton: {
-    flex: 1,
-    borderRadius: 8,
-    borderColor: COLORS.blue,
-  },
-  whatsappButton: {
-    flex: 1,
-    borderRadius: 8,
-  },
-  imagesContainer: {
-    marginTop: 12,
-  },
-  imagesLabel: {
-    fontSize: 13,
-    fontWeight: '500',
-    fontFamily: Fonts.medium,
-    color: '#333',
-    marginBottom: 8,
-  },
-  imagesRow: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  thumbnail: {
-    width: 80,
-    height: 80,
-    borderRadius: 8,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    marginTop: 12,
-    fontSize: 14,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 32,
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    color: COLORS.redShade,
-    marginTop: 16,
-  },
-  errorText: {
-    fontSize: 14,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-    textAlign: 'center',
-    marginTop: 8,
-    marginBottom: 16,
-  },
-  retryButton: {
-    backgroundColor: COLORS.blue,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    borderRadius: 8,
-  },
-  retryText: {
-    color: '#FFF',
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-  },
-  emptyContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 64,
-  },
-  emptyTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    color: '#1A1A2E',
-    marginTop: 16,
-  },
-  emptyText: {
-    fontSize: 14,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-    textAlign: 'center',
-    marginTop: 8,
-    paddingHorizontal: 32,
-  },
-  modalContent: {
-    backgroundColor: '#000',
-    margin: 20,
-    borderRadius: 12,
-    overflow: 'hidden',
-    height: 400,
-  },
-  closeButton: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    zIndex: 1,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-  },
-  fullImage: {
-    width: '100%',
-    height: '100%',
-  },
-});
 
 export default PaymentHistoryScreen;

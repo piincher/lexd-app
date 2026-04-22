@@ -14,7 +14,6 @@ import Animated, {
    withTiming,
 } from "react-native-reanimated";
 
-import { COLORS } from "@src/constants/Colors";
 import { IMAGES } from "@src/constants/Images";
 import { Fonts } from "@src/constants/Fonts";
 import AppButton from "@src/components/AppButton/AppButton";

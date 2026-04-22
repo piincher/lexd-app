@@ -4,7 +4,8 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import type { ViewStyle, TextStyle } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type BadgeVariant = 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info' | 'custom';

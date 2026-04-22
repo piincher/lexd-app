@@ -21,8 +21,9 @@
  * - chinalinkexpress://faq                   → FAQScreen
  */
 
-import { LinkingOptions } from "@react-navigation/native";
-import { RootStackParamList } from "@src/navigations/type";
+import type { LinkingOptions } from "@react-navigation/native";
+import { Linking } from "react-native";
+import type { RootStackParamList } from "@src/navigations/type";
 
 /** Screens that require authentication to access via deep link */
 const AUTH_REQUIRED_SCREENS = new Set<string>([
@@ -37,9 +38,6 @@ const AUTH_REQUIRED_SCREENS = new Set<string>([
   "NotificationDetail",
   "NotificationSettings",
   "MyPaymentHistory",
-  "PaymentHistory",
-  "PaymentPortal",
-  "PaymentConfirmation",
   "UserPaymentDetail",
   "MyReviews",
   "Badges",
@@ -100,12 +98,10 @@ const AUTH_REQUIRED_SCREENS = new Set<string>([
   "OrderPaymentHistory",
   "PaymentScreen",
   "WhatsAppRequests",
-  "WhatsAppRequestDetail",
   "CampaignList",
   "CreateCampaign",
   "CreateAnnouncement",
   "GlobalSearch",
-  "Search",
   "ManagePromos",
   "AdminReviews",
 ]);
@@ -144,15 +140,11 @@ const screensConfig: any = {
   NotificationDetail: "notifications/detail",
   NotificationSettings: "notifications/settings",
   MyPaymentHistory: "payments",
-  PaymentHistory: "payments/history",
-  PaymentPortal: "payments/portal",
-  PaymentConfirmation: "payments/confirmation",
   faq: "faq",
   AboutUs: "about",
   CheckRoute: "route-check",
-  SeaShippingOrderDetails: "sea-order/:id",
+  SharedShipment: "s/:token",
   BatchUpdateDetail: "batch/:data",
-  Map: "map/:id",
   ScanQRCode: "scan",
   ActiveOrderDetails: "active-order/:id",
   UserActiveOrders: "user-orders/:type",
@@ -180,12 +172,10 @@ const screensConfig: any = {
   ScanQR: "scan-qr",
   UnassignedGoods: "unassigned",
   WhatsAppRequests: "whatsapp",
-  WhatsAppRequestDetail: "whatsapp/:requestId",
   CampaignList: "campaigns",
   CreateCampaign: "campaigns/new",
   CreateAnnouncement: "announcements/new",
   GlobalSearch: "search",
-  Search: "search/v2",
   Badges: "badges",
   MyReviews: "reviews",
   ManagePromos: "promos",
@@ -219,8 +209,47 @@ const screensConfig: any = {
 
 /** React Navigation linking configuration */
 export const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: ["chinalinkexpress://"],
+  prefixes: [
+    "chinalinkexpress://",
+    "https://chinalinkexpress.com",
+    "https://www.chinalinkexpress.com",
+    "http://chinalinkexpress.com",
+    "http://www.chinalinkexpress.com",
+  ],
   config: {
     screens: screensConfig,
   },
+  // Custom getInitialURL to handle universal links that may come through
+  // with query parameters or fragments that need cleaning
+  getInitialURL: async () => {
+    const url = await Linking.getInitialURL();
+    if (url) {
+      // Remove any tracking/query params that might interfere with path matching
+      return cleanUniversalLink(url);
+    }
+    return null;
+  },
+  // Custom subscribe to handle universal link events while app is running
+  subscribe: (listener) => {
+    const subscription = Linking.addEventListener("url", ({ url }) => {
+      listener(cleanUniversalLink(url));
+    });
+    return () => subscription.remove();
+  },
 };
+
+/**
+ * Clean a universal link URL by removing query parameters and fragments
+ * that might interfere with React Navigation path matching.
+ * Preserves the path structure needed for deep linking.
+ */
+function cleanUniversalLink(url: string): string {
+  try {
+    const parsed = new URL(url);
+    // Reconstruct URL with just scheme, host, and pathname
+    // This removes ?query=params and #fragments
+    return `${parsed.protocol}//${parsed.host}${parsed.pathname}`;
+  } catch {
+    return url;
+  }
+}

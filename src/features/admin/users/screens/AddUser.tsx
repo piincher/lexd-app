@@ -2,9 +2,8 @@ import AuthInputField from '@src/components/AuthInput/AuthInput';
 import Form from '@src/components/Form/Form';
 import { Notification } from '@src/components/Notification/Notification';
 import SubmitBtn from '@src/components/SubmitBtn/SubmitBtn';
-import { COLORS } from '@src/constants/Colors';
-import { RootStackScreenProps } from '@src/navigations/type';
-import React, { useEffect, useState } from 'react';
+import type { RootStackScreenProps } from '@src/navigations/type';
+import React, { useEffect, useState, useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import * as yup from 'yup';
 import { useCreateUser } from '../hooks/useUserManagement';
@@ -13,6 +12,8 @@ import { Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '@src/components/Header/Header';
 import { useSignupStore } from '@src/features/auth';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+
 const signupSchema = yup.object({
 	firstName: yup.string().required('Prenom est requis'),
 	lastName: yup.string().required('Nom est requis'),
@@ -41,6 +42,51 @@ const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
 	const [visible, setVisible] = useState(false);
 	const { mutate, isSuccess, isPending } = useCreateUser();
 	const [selectedCode, setSelectedCode] = useState<string>('ML  +223');
+	const { colors, isDark } = useAppTheme();
+
+	const styles = useMemo(() => StyleSheet.create({
+		formContainer: { width: '100%' },
+
+		containerStyle: {
+			marginBottom: 20,
+		},
+		link: {
+			marginTop: 20,
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+		},
+		container: {
+			alignItems: 'center',
+			paddingHorizontal: 15,
+			backgroundColor: colors.background.default,
+		},
+		imageContainer: {
+			width: 200,
+			height: 200,
+			borderStyle: 'solid',
+			borderWidth: 8,
+			padding: 0,
+			justifyContent: 'center',
+			borderRadius: 100,
+			borderColor: colors.neutral[200],
+			elevation: 10,
+		},
+		image: {
+			width: '100%',
+			height: '100%',
+			borderRadius: 100,
+		},
+		imagePicker: {
+			position: 'absolute',
+			right: 5,
+			bottom: 5,
+			backgroundColor: colors.text.secondary,
+			padding: 8,
+			borderRadius: 100,
+			elevation: 20,
+		},
+	}), [colors, isDark]);
 
 	const SignUpData = useSignupStore((state) => state.updateCode);
 
@@ -79,8 +125,8 @@ const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
 
 	return (
 		<Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
-			<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-				<Header title='Ajouter un utilisateur' navigation={navigation} />
+			<SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
+				<Header title='Ajouter un utilisateur' navigation={navigation} showNotificationBell />
 				<ScrollView
 					contentContainerStyle={styles.container}
 					keyboardShouldPersistTaps='always'
@@ -116,48 +162,5 @@ const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
 		</Form>
 	);
 };
-const styles = StyleSheet.create({
-	formContainer: { width: '100%' },
-
-	containerStyle: {
-		marginBottom: 20,
-	},
-	link: {
-		marginTop: 20,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-	},
-	container: {
-		alignItems: 'center',
-		paddingHorizontal: 15,
-		backgroundColor: COLORS.white,
-	},
-	imageContainer: {
-		width: 200,
-		height: 200,
-		borderStyle: 'solid',
-		borderWidth: 8,
-		padding: 0,
-		justifyContent: 'center',
-		borderRadius: 100,
-		borderColor: '#E0E0E0',
-		elevation: 10,
-	},
-	image: {
-		width: '100%',
-		height: '100%',
-		borderRadius: 100,
-	},
-	imagePicker: {
-		position: 'absolute',
-		right: 5,
-		bottom: 5,
-		backgroundColor: 'grey',
-		padding: 8,
-		borderRadius: 100,
-		elevation: 20,
-	},
-});
 
 export default AddUser;

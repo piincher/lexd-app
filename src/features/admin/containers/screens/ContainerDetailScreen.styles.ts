@@ -4,7 +4,7 @@ import { Theme } from '@src/constants/Theme';
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const MAX_CBM = 67; // Standard 40ft container capacity
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F7FC',
@@ -14,10 +14,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  centerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   loadingText: {
     marginTop: Theme.spacing.md,
     fontSize: 16,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   errorContainer: {
     flex: 1,
@@ -29,13 +34,13 @@ const styles = StyleSheet.create({
     marginTop: Theme.spacing.lg,
     fontSize: 18,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   backButton: {
     marginTop: Theme.spacing.xl,
     paddingVertical: Theme.spacing.md,
     paddingHorizontal: Theme.spacing.xl,
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     borderRadius: Theme.radius.lg,
   },
   backButtonText: {
@@ -102,6 +107,22 @@ const styles = StyleSheet.create({
     color: 'rgba(255,255,255,0.8)',
     fontWeight: '500',
   },
+  consigneeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: Theme.spacing.sm,
+    gap: Theme.spacing.sm,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+  },
+  consigneeText: {
+    fontSize: 12,
+    color: '#FFF',
+    fontWeight: '500',
+  },
   actualNumber: {
     marginTop: Theme.spacing.sm,
     fontSize: 13,
@@ -115,7 +136,7 @@ const styles = StyleSheet.create({
     paddingBottom: Theme.spacing['4xl'],
   },
   card: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius['2xl'],
     padding: Theme.spacing.lg,
     marginBottom: Theme.spacing.lg,
@@ -136,10 +157,10 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 17,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   goodsCountBadge: {
-    backgroundColor: Theme.primary[100],
+    backgroundColor: colors.primary[100],
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.xs,
     borderRadius: Theme.radius.full,
@@ -147,7 +168,7 @@ const styles = StyleSheet.create({
   goodsCountText: {
     fontSize: 14,
     fontWeight: '700',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   capacityInfo: {
     flexDirection: 'row',
@@ -157,17 +178,17 @@ const styles = StyleSheet.create({
   capacityValue: {
     fontSize: 36,
     fontWeight: '800',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   capacityUnit: {
     fontSize: 18,
     fontWeight: '600',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   capacityMax: {
     marginLeft: Theme.spacing.sm,
     fontSize: 15,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   progressContainer: {
     flexDirection: 'row',
@@ -177,7 +198,7 @@ const styles = StyleSheet.create({
   progressBackground: {
     flex: 1,
     height: 10,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: Theme.radius.full,
     overflow: 'hidden',
   },
@@ -196,7 +217,7 @@ const styles = StyleSheet.create({
     marginTop: Theme.spacing.lg,
     paddingTop: Theme.spacing.lg,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
   },
   statItem: {
     flex: 1,
@@ -205,17 +226,17 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   statLabel: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     marginTop: Theme.spacing.xs,
   },
   statDivider: {
     width: 1,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
   },
   timeline: {
     flexDirection: 'row',
@@ -232,7 +253,7 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: Theme.spacing.sm,
@@ -247,7 +268,7 @@ const styles = StyleSheet.create({
     right: '50%',
     left: '50%',
     height: 2,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     marginLeft: 14,
     marginRight: -14,
     zIndex: -1,
@@ -255,15 +276,15 @@ const styles = StyleSheet.create({
   timelineLabel: {
     fontSize: 11,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textAlign: 'center',
   },
   timelineLabelActive: {
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     fontWeight: '600',
   },
   timelineLabelCurrent: {
-    color: Theme.primary[600],
+    color: colors.primary[600],
     fontWeight: '700',
   },
   datesContainer: {
@@ -273,7 +294,7 @@ const styles = StyleSheet.create({
     marginTop: Theme.spacing.lg,
     paddingTop: Theme.spacing.lg,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
   },
   dateItem: {
     flex: 1,
@@ -282,13 +303,13 @@ const styles = StyleSheet.create({
   dateLabel: {
     fontSize: 11,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     marginBottom: Theme.spacing.xs,
   },
   dateValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   emptyGoods: {
     alignItems: 'center',
@@ -305,13 +326,13 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 17,
     fontWeight: '700',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.sm,
   },
   emptySubtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textAlign: 'center',
     paddingHorizontal: Theme.spacing.xl,
   },
@@ -322,14 +343,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: Theme.radius.lg,
   },
   goodsIcon: {
     width: 44,
     height: 44,
     borderRadius: Theme.radius.md,
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Theme.spacing.md,
@@ -340,12 +361,12 @@ const styles = StyleSheet.create({
   goodsId: {
     fontSize: 15,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   goodsDescription: {
     fontSize: 13,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: Theme.spacing.xs,
   },
   goodsMeta: {
@@ -356,11 +377,11 @@ const styles = StyleSheet.create({
   goodsMetaText: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   goodsMetaDot: {
     fontSize: 12,
-    color: Theme.neutral[300],
+    color: colors.neutral[300],
     marginHorizontal: Theme.spacing.sm,
   },
   removeButton: {
@@ -379,7 +400,7 @@ const styles = StyleSheet.create({
   pickedUpByText: {
     fontSize: 11,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   goodsActions: {
@@ -417,43 +438,43 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: Theme.spacing.lg,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderWidth: 1,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
     gap: Theme.spacing.sm,
   },
   actionButtonTextSecondary: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   actionButtonDanger: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: Theme.spacing.lg,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     gap: Theme.spacing.sm,
   },
   actionButtonTextDanger: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.status.error,
+    color: colors.status.error,
   },
   actionButtonTextDisabled: {
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   deleteHint: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textAlign: 'center',
     fontStyle: 'italic',
   },
   menuItemActive: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
   },
   dialogTitle: {
     textAlign: 'center',
@@ -461,7 +482,7 @@ const styles = StyleSheet.create({
   },
   dialogText: {
     textAlign: 'center',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     lineHeight: 20,
   },
   // Phase 4: List Buttons (Packing List & Loading List)
@@ -477,7 +498,7 @@ const styles = StyleSheet.create({
   },
   packingListButton: {
     borderWidth: 1,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
   },
   loadingListButton: {
     borderWidth: 1,
@@ -507,7 +528,7 @@ const styles = StyleSheet.create({
   listButtonSubtitle: {
     fontSize: 11,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   // Phase 3: Route Card Styles
   routeCard: {
@@ -542,7 +563,7 @@ const styles = StyleSheet.create({
   routeName: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     flex: 1,
   },
   routePath: {
@@ -559,13 +580,13 @@ const styles = StyleSheet.create({
   routeLocationLabel: {
     fontSize: 11,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     marginBottom: Theme.spacing.xs,
   },
   routeLocationValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     textAlign: 'center',
   },
   routeArrow: {
@@ -577,7 +598,7 @@ const styles = StyleSheet.create({
     gap: Theme.spacing.lg,
     paddingTop: Theme.spacing.md,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[200],
+    borderTopColor: colors.neutral[200],
   },
   routeDetailItem: {
     flexDirection: 'row',
@@ -587,7 +608,7 @@ const styles = StyleSheet.create({
   routeDetailText: {
     fontSize: 13,
     fontWeight: '500',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   // Waypoint tracker section
   loadingCard: {
@@ -597,5 +618,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export { styles, SCREEN_WIDTH, MAX_CBM };
-export default styles;
+export { createStyles, SCREEN_WIDTH, MAX_CBM };
+export default createStyles;

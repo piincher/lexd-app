@@ -3,14 +3,14 @@
  * SRP: Show receipt preview, view/download/share actions (including PDF via WhatsApp)
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, Alert, Linking, ActivityIndicator } from 'react-native';
 import { Text, Surface, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { sharePDFOnWhatsApp, sharePDFGeneric } from '@src/shared/lib/pdfShare';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
 const PAYMENT_METHOD_LABELS: Record<string, string> = {
@@ -58,6 +58,73 @@ export const ReceiptSection: React.FC<ReceiptSectionProps> = ({
   loading,
 }) => {
   const [isSharing, setIsSharing] = useState(false);
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      padding: 16,
+      borderRadius: 12,
+      marginBottom: 16,
+      elevation: 2,
+      backgroundColor: colors.background.card,
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    cardTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      marginLeft: 8,
+      color: colors.text.primary,
+    },
+    receiptPreview: {
+      alignItems: 'center',
+      paddingVertical: 24,
+      backgroundColor: colors.background.paper,
+      borderRadius: 12,
+      marginBottom: 16,
+    },
+    receiptText: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      marginTop: 8,
+    },
+    receiptNumber: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      fontFamily: Fonts.medium,
+      marginTop: 4,
+    },
+    receiptActions: {
+      flexDirection: 'row',
+      gap: 12,
+      marginBottom: 12,
+    },
+    receiptButton: {
+      flex: 1,
+      borderRadius: 8,
+    },
+    shareButton: {
+      borderRadius: 8,
+      paddingVertical: 4,
+    },
+    loader: {
+      marginTop: 8,
+    },
+    noReceiptContainer: {
+      alignItems: 'center',
+      paddingVertical: 32,
+    },
+    noReceiptText: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      marginTop: 8,
+    },
+  }), [colors]);
 
   const handleViewReceipt = () => {
     if (receiptUrl) {
@@ -134,7 +201,7 @@ export const ReceiptSection: React.FC<ReceiptSectionProps> = ({
   return (
     <Surface style={styles.card}>
       <View style={styles.cardHeader}>
-        <MaterialCommunityIcons name="file-document" size={24} color={COLORS.blue} />
+        <MaterialCommunityIcons name="file-document" size={24} color={colors.primary.main} />
         <Text style={styles.cardTitle}>Reçu de paiement</Text>
       </View>
 
@@ -154,7 +221,7 @@ export const ReceiptSection: React.FC<ReceiptSectionProps> = ({
               onPress={handleViewReceipt}
               style={styles.receiptButton}
               icon="eye"
-              textColor={COLORS.blue}
+              textColor={colors.primary.main}
             >
               Voir
             </Button>
@@ -163,7 +230,7 @@ export const ReceiptSection: React.FC<ReceiptSectionProps> = ({
               onPress={handleShareGeneric}
               style={styles.receiptButton}
               icon="share-variant"
-              textColor={COLORS.blue}
+              textColor={colors.primary.main}
               disabled={isSharing}
             >
               Partager
@@ -189,82 +256,15 @@ export const ReceiptSection: React.FC<ReceiptSectionProps> = ({
         </>
       ) : loading ? (
         <View style={styles.noReceiptContainer}>
-          <ActivityIndicator size="large" color={COLORS.blue} />
+          <ActivityIndicator size="large" color={colors.primary.main} />
           <Text style={styles.noReceiptText}>Génération du reçu en cours...</Text>
         </View>
       ) : (
         <View style={styles.noReceiptContainer}>
-          <MaterialCommunityIcons name="file-hidden" size={48} color={COLORS.grey} />
+          <MaterialCommunityIcons name="file-hidden" size={48} color={colors.text.secondary} />
           <Text style={styles.noReceiptText}>Aucun reçu disponible</Text>
         </View>
       )}
     </Surface>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    elevation: 2,
-    backgroundColor: '#FFF',
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    marginLeft: 8,
-    color: '#1A1A2E',
-  },
-  receiptPreview: {
-    alignItems: 'center',
-    paddingVertical: 24,
-    backgroundColor: '#F5F5F5',
-    borderRadius: 12,
-    marginBottom: 16,
-  },
-  receiptText: {
-    fontSize: 14,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-    marginTop: 8,
-  },
-  receiptNumber: {
-    fontSize: 12,
-    color: COLORS.grey,
-    fontFamily: Fonts.medium,
-    marginTop: 4,
-  },
-  receiptActions: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 12,
-  },
-  receiptButton: {
-    flex: 1,
-    borderRadius: 8,
-  },
-  shareButton: {
-    borderRadius: 8,
-    paddingVertical: 4,
-  },
-  loader: {
-    marginTop: 8,
-  },
-  noReceiptContainer: {
-    alignItems: 'center',
-    paddingVertical: 32,
-  },
-  noReceiptText: {
-    fontSize: 14,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-    marginTop: 8,
-  },
-});

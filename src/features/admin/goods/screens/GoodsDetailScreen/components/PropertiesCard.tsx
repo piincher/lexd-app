@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { styles } from '../GoodsDetailScreen.styles';
+import {  createStyles  } from '../GoodsDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 
 interface PropertiesCardProps {
@@ -18,7 +19,10 @@ export const PropertiesCard: React.FC<PropertiesCardProps> = ({
   weight,
   quantity,
   dimensions,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  return (
   <Card style={styles.sectionCard}>
     <Card.Content>
       <View style={styles.sectionHeader}>
@@ -57,3 +61,4 @@ export const PropertiesCard: React.FC<PropertiesCardProps> = ({
     </Card.Content>
   </Card>
 );
+};

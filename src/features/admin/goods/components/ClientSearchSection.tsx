@@ -3,12 +3,12 @@
  * Improved with better visual feedback, clear button, and results list
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card, Text, TextInput, Avatar, Chip, ActivityIndicator } from 'react-native-paper';
 import { useGetUsers } from '@src/features/admin/hooks/useGetUsers';
 import { userData } from '@src/constants/types';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ClientSearchSectionProps {
   selectedClient: userData | null;
@@ -25,6 +25,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
   const [showResults, setShowResults] = useState(false);
 
   const { data: users, isLoading, error: fetchError } = useGetUsers();
+  const { colors, isDark } = useAppTheme();
   
   // Debug logging
   console.log('ClientSearchSection - Users:', users?.length || 0, 'Error:', fetchError?.message || 'none');
@@ -79,6 +80,179 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
     setShowResults(false);
   };
 
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      marginVertical: 8,
+      borderRadius: 12,
+      backgroundColor: colors.background.card,
+    },
+    cardError: {
+      borderWidth: 1,
+      borderColor: colors.status.error,
+    },
+    cardContent: {
+      padding: 16,
+    },
+    sectionLabel: {
+      fontSize: 14,
+      fontWeight: '700',
+      marginBottom: 12,
+      color: colors.text.primary,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+    searchContainer: {
+      position: 'relative',
+    },
+    searchInput: {
+      backgroundColor: colors.background.card,
+    },
+    selectedClient: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 16,
+      backgroundColor: colors.background.paper,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    selectedAvatar: {
+      backgroundColor: colors.status.success,
+    },
+    selectedInfo: {
+      flex: 1,
+      marginLeft: 12,
+    },
+    selectedName: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: colors.text.primary,
+    },
+    selectedPhone: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      marginTop: 2,
+    },
+    changeChip: {
+      marginLeft: 8,
+      borderColor: colors.status.success,
+    },
+    changeChipText: {
+      color: colors.status.success,
+      fontSize: 12,
+      fontWeight: '600',
+    },
+    resultsWrapper: {
+      marginTop: 8,
+    },
+    resultsContainer: {
+      maxHeight: 250,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 12,
+      backgroundColor: colors.background.card,
+      overflow: 'hidden',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 4,
+    },
+    resultsHeader: {
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+      backgroundColor: colors.background.paper,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    resultsHeaderText: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      fontWeight: '600',
+    },
+    resultsList: {
+      paddingVertical: 4,
+    },
+    resultItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+      backgroundColor: colors.background.card,
+    },
+    resultItemLast: {
+      borderBottomWidth: 0,
+    },
+    avatar: {
+      backgroundColor: colors.background.paper,
+    },
+    resultInfo: {
+      marginLeft: 12,
+      flex: 1,
+    },
+    resultName: {
+      fontSize: 15,
+      fontWeight: '600',
+      color: colors.text.primary,
+    },
+    resultPhone: {
+      fontSize: 13,
+      color: colors.text.secondary,
+      marginTop: 2,
+    },
+    loadingContainer: {
+      padding: 20,
+      alignItems: 'center',
+      backgroundColor: colors.background.paper,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    loadingText: {
+      marginTop: 8,
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    noResultsContainer: {
+      padding: 24,
+      alignItems: 'center',
+      backgroundColor: colors.background.paper,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    noResultsIcon: {
+      backgroundColor: colors.background.paper,
+      marginBottom: 12,
+    },
+    noResults: {
+      fontSize: 15,
+      fontWeight: '600',
+      color: colors.text.secondary,
+      textAlign: 'center',
+    },
+    noResultsHint: {
+      fontSize: 13,
+      color: colors.text.disabled,
+      textAlign: 'center',
+      marginTop: 4,
+    },
+    errorText: {
+      color: colors.status.error,
+      fontSize: 12,
+      marginTop: 8,
+      marginLeft: 4,
+    },
+    debugText: {
+      fontSize: 11,
+      color: colors.text.disabled,
+      marginTop: 4,
+      fontStyle: 'italic',
+    },
+  }), [colors, isDark]);
+
   /**
    * Render search result item
    */
@@ -95,7 +269,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
         size={40}
         label={`${item.firstName?.[0] || ''}${item.lastName?.[0] || ''}`}
         style={styles.avatar}
-        color={COLORS.Crimson || '#dc3545'}
+        color={colors.status.success}
       />
       <View style={styles.resultInfo}>
         <Text style={styles.resultName}>
@@ -127,7 +301,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
                 selectedClient.lastName?.[0] || ''
               }`}
               style={styles.selectedAvatar}
-              color="#fff"
+              color={colors.text.inverse}
             />
             <View style={styles.selectedInfo}>
               <Text style={styles.selectedName}>
@@ -154,20 +328,20 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
               placeholder="Rechercher un client (nom ou téléphone)"
               mode="outlined"
               error={!!error}
-              outlineColor="#e0e0e0"
-              activeOutlineColor={COLORS.Crimson || '#dc3545'}
+              outlineColor={colors.border}
+              activeOutlineColor={colors.status.success}
               style={styles.searchInput}
               right={
                 searchQuery.length > 0 ? (
                   <TextInput.Icon 
                     icon="close-circle" 
                     onPress={handleClearSearch}
-                    color="#999"
+                    color={colors.text.disabled}
                   />
                 ) : (
                   <TextInput.Icon 
                     icon="magnify" 
-                    color="#999"
+                    color={colors.text.disabled}
                   />
                 )
               }
@@ -185,7 +359,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
               <View style={styles.resultsWrapper}>
                 {isLoading ? (
                   <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="small" color={COLORS.Crimson || '#dc3545'} />
+                    <ActivityIndicator size="small" color={colors.status.success} />
                     <Text style={styles.loadingText}>Chargement...</Text>
                   </View>
                 ) : filteredUsers.length > 0 ? (
@@ -209,7 +383,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
                       size={48} 
                       icon="account-off" 
                       style={styles.noResultsIcon}
-                      color="#999"
+                      color={colors.text.disabled}
                     />
                     <Text style={styles.noResults}>Aucun client trouvé</Text>
                     <Text style={styles.noResultsHint}>
@@ -227,178 +401,5 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
     </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginVertical: 8,
-    borderRadius: 12,
-    backgroundColor: '#fff',
-  },
-  cardError: {
-    borderWidth: 1,
-    borderColor: COLORS.danger || '#dc3545',
-  },
-  cardContent: {
-    padding: 16,
-  },
-  sectionLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    marginBottom: 12,
-    color: '#333',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  searchContainer: {
-    position: 'relative',
-  },
-  searchInput: {
-    backgroundColor: '#fff',
-  },
-  selectedClient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#f8f9fa',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-  },
-  selectedAvatar: {
-    backgroundColor: COLORS.Crimson || '#dc3545',
-  },
-  selectedInfo: {
-    flex: 1,
-    marginLeft: 12,
-  },
-  selectedName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-  },
-  selectedPhone: {
-    fontSize: 14,
-    color: '#666',
-    marginTop: 2,
-  },
-  changeChip: {
-    marginLeft: 8,
-    borderColor: COLORS.Crimson || '#dc3545',
-  },
-  changeChipText: {
-    color: COLORS.Crimson || '#dc3545',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  resultsWrapper: {
-    marginTop: 8,
-  },
-  resultsContainer: {
-    maxHeight: 250,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 12,
-    backgroundColor: '#fff',
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  resultsHeader: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    backgroundColor: '#f8f9fa',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
-  },
-  resultsHeaderText: {
-    fontSize: 12,
-    color: '#666',
-    fontWeight: '600',
-  },
-  resultsList: {
-    paddingVertical: 4,
-  },
-  resultItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-    backgroundColor: '#fff',
-  },
-  resultItemLast: {
-    borderBottomWidth: 0,
-  },
-  avatar: {
-    backgroundColor: '#fce4ec',
-  },
-  resultInfo: {
-    marginLeft: 12,
-    flex: 1,
-  },
-  resultName: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#333',
-  },
-  resultPhone: {
-    fontSize: 13,
-    color: '#666',
-    marginTop: 2,
-  },
-  loadingContainer: {
-    padding: 20,
-    alignItems: 'center',
-    backgroundColor: '#f8f9fa',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-  },
-  loadingText: {
-    marginTop: 8,
-    fontSize: 14,
-    color: '#666',
-  },
-  noResultsContainer: {
-    padding: 24,
-    alignItems: 'center',
-    backgroundColor: '#f8f9fa',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-  },
-  noResultsIcon: {
-    backgroundColor: '#e9ecef',
-    marginBottom: 12,
-  },
-  noResults: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#666',
-    textAlign: 'center',
-  },
-  noResultsHint: {
-    fontSize: 13,
-    color: '#999',
-    textAlign: 'center',
-    marginTop: 4,
-  },
-  errorText: {
-    color: COLORS.danger || '#dc3545',
-    fontSize: 12,
-    marginTop: 8,
-    marginLeft: 4,
-  },
-  debugText: {
-    fontSize: 11,
-    color: '#999',
-    marginTop: 4,
-    fontStyle: 'italic',
-  },
-});
 
 export default ClientSearchSection;

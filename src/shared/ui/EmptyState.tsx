@@ -6,7 +6,8 @@
  */
 
 import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import type { ViewStyle } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button } from './Button';
 import { useAppTheme } from '@src/providers/ThemeProvider';

@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     color: Theme.status.error,
   },
   input: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
   },
 });

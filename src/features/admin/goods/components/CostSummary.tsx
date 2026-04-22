@@ -3,10 +3,10 @@
  * Supports both AIR (weight-based) and SEA (CBM-based) shipping modes
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Text, Divider } from 'react-native-paper';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface CostSummaryProps {
   cbm: number;
@@ -27,6 +27,7 @@ export const CostSummary: React.FC<CostSummaryProps> = ({
   totalCost,
   shippingMode = 'SEA',
 }) => {
+  const { colors, isDark } = useAppTheme();
   const isAirShipping = shippingMode === 'AIR';
   
   // For AIR: need weight and unitPrice
@@ -38,6 +39,73 @@ export const CostSummary: React.FC<CostSummaryProps> = ({
   if (!hasRequiredValues) {
     return null;
   }
+
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      marginVertical: 8,
+      borderRadius: 12,
+      backgroundColor: colors.background.card,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    cardContent: {
+      padding: 16,
+    },
+    sectionLabel: {
+      fontSize: 14,
+      fontWeight: '700',
+      marginBottom: 16,
+      color: colors.text.primary,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 8,
+    },
+    label: {
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    value: {
+      fontSize: 15,
+      fontWeight: '600',
+      color: colors.text.primary,
+    },
+    divider: {
+      height: 1,
+      backgroundColor: colors.border,
+      marginVertical: 12,
+    },
+    totalRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: 4,
+    },
+    totalLabel: {
+      fontSize: 16,
+      fontWeight: '700',
+      color: colors.text.primary,
+    },
+    totalValueContainer: {
+      flexDirection: 'row',
+      alignItems: 'baseline',
+    },
+    totalValue: {
+      fontSize: 22,
+      fontWeight: '700',
+      color: colors.status.success,
+    },
+    totalCurrency: {
+      fontSize: 14,
+      fontWeight: '600',
+      color: colors.status.success,
+      marginLeft: 4,
+    },
+  }), [colors, isDark]);
 
   return (
     <Card style={styles.card} elevation={2}>
@@ -80,72 +148,5 @@ export const CostSummary: React.FC<CostSummaryProps> = ({
     </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginVertical: 8,
-    borderRadius: 12,
-    backgroundColor: '#fff8f8',
-    borderWidth: 1,
-    borderColor: '#ffcdd2',
-  },
-  cardContent: {
-    padding: 16,
-  },
-  sectionLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    marginBottom: 16,
-    color: '#333',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  label: {
-    fontSize: 14,
-    color: '#666',
-  },
-  value: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#333',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#ffcdd2',
-    marginVertical: 12,
-  },
-  totalRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 4,
-  },
-  totalLabel: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#333',
-  },
-  totalValueContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-  },
-  totalValue: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: COLORS.Crimson || '#dc3545',
-  },
-  totalCurrency: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: COLORS.Crimson || '#dc3545',
-    marginLeft: 4,
-  },
-});
 
 export default CostSummary;

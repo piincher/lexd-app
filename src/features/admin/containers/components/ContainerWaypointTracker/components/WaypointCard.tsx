@@ -176,7 +176,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
 
 const styles = StyleSheet.create({
   waypointCard: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.xl,
     marginBottom: Theme.spacing.md,
     overflow: 'hidden',

@@ -5,8 +5,8 @@
  */
 
 import { MD3LightTheme, MD3DarkTheme } from 'react-native-paper';
-import { Theme as NavigationTheme } from '@react-navigation/native';
-import { Appearance } from 'react-native';
+import type { Theme as NavigationTheme } from '@react-navigation/native';
+import { getAppThemeMode } from './themeState';
 
 // ============================================
 // Color Palette - Light Theme
@@ -100,9 +100,13 @@ export const lightTheme = {
     // Feedback Colors
     feedback: {
       successBg: '#F0FDF4',
+      successDark: '#166534',
       warningBg: '#FEF9C3',
+      warningDark: '#92400E',
       errorBg: '#FEF2F2',
+      errorDark: '#991B1B',
       infoBg: '#EFF6FF',
+      infoDark: '#1E40AF',
     },
   },
 
@@ -311,9 +315,13 @@ export const darkTheme = {
     // Feedback Colors
     feedback: {
       successBg: '#14532D',
+      successDark: '#BBF7D0',
       warningBg: '#713F12',
+      warningDark: '#FDE68A',
       errorBg: '#7F1D1D',
+      errorDark: '#FECACA',
       infoBg: '#1E3A8A',
+      infoDark: '#BFDBFE',
     },
   },
 
@@ -495,7 +503,7 @@ export interface ThemeContextType {
   colors: typeof lightTheme.colors;
   paperTheme: typeof paperLightTheme;
   navigationTheme: NavigationTheme;
-  statusBarTheme: typeof statusBarLightTheme;
+  statusBarTheme: typeof statusBarLightTheme | typeof statusBarDarkTheme;
 }
 
 export type AppTheme = typeof lightTheme;
@@ -597,61 +605,105 @@ const darkCOLORS = {
   dark: '#F9FAFB',
 } as unknown as typeof lightCOLORS;
 
+// ============================================
+// Reactive COLORS proxy (syncs with app theme toggle)
+// ============================================
 export const COLORS = new Proxy({} as typeof lightCOLORS, {
   get(_, prop) {
     if (typeof prop !== 'string') return undefined;
-    const scheme = Appearance.getColorScheme() || 'light';
+    const scheme = getAppThemeMode();
     const source = scheme === 'dark' ? darkCOLORS : lightCOLORS;
     return source[prop as keyof typeof lightCOLORS];
   },
 });
 
 // ============================================
-// Static Theme Export (for direct color access)
+// Reactive Theme Export (syncs with app theme toggle)
 // ============================================
-export const Theme = {
-  neutral: lightTheme.colors.neutral,
-  primary: lightTheme.colors.primary,
-  accent: lightTheme.colors.accent,
-  status: lightTheme.colors.status,
-  shadows: lightTheme.shadows,
-  gradients: lightTheme.gradients,
-  radius: lightTheme.borderRadius,
-  spacing: lightTheme.spacing,
+function getCurrentTheme() {
+  const scheme = getAppThemeMode();
+  return scheme === 'dark' ? darkTheme : lightTheme;
+}
+
+export const Theme = new Proxy({} as {
+  neutral: typeof lightTheme.colors.neutral;
+  primary: typeof lightTheme.colors.primary;
+  accent: typeof lightTheme.colors.accent;
+  status: typeof lightTheme.colors.status;
+  shadows: typeof lightTheme.shadows;
+  gradients: typeof lightTheme.gradients;
+  radius: typeof lightTheme.borderRadius;
+  spacing: typeof lightTheme.spacing;
+  typography: typeof lightTheme.typography;
+  feedback: typeof lightTheme.colors.feedback;
   colors: {
-    primary: lightTheme.colors.primary,
-    secondary: {
-      main: lightTheme.colors.accent.gold,
-      light: lightTheme.colors.accent.goldLight,
-      dark: lightTheme.colors.accent.goldDark,
-    },
-    error: {
-      main: lightTheme.colors.status.error,
-      light: '#FEE2E2',
-      dark: '#991B1B',
-    },
-    warning: {
-      main: lightTheme.colors.status.warning,
-      light: '#FEF9C3',
-      dark: '#92400E',
-    },
-    success: {
-      main: lightTheme.colors.status.success,
-      light: '#F0FDF4',
-      dark: '#166534',
-    },
-    info: {
-      main: lightTheme.colors.status.info,
-      light: '#EFF6FF',
-      dark: '#1E40AF',
-    },
-    accent: lightTheme.colors.accent,
-    status: lightTheme.colors.status,
-    background: lightTheme.colors.background,
-    text: lightTheme.colors.text,
-    neutral: lightTheme.colors.neutral,
+    primary: typeof lightTheme.colors.primary;
+    secondary: { main: string; light: string; dark: string };
+    error: { main: string; light: string; dark: string };
+    warning: { main: string; light: string; dark: string };
+    success: { main: string; light: string; dark: string };
+    info: { main: string; light: string; dark: string };
+    accent: typeof lightTheme.colors.accent;
+    status: typeof lightTheme.colors.status;
+    background: typeof lightTheme.colors.background;
+    text: typeof lightTheme.colors.text;
+    neutral: typeof lightTheme.colors.neutral;
+    feedback: typeof lightTheme.colors.feedback;
+  };
+}, {
+  get(_, prop) {
+    const t = getCurrentTheme();
+    switch (prop) {
+      case 'neutral': return t.colors.neutral;
+      case 'primary': return t.colors.primary;
+      case 'accent': return t.colors.accent;
+      case 'status': return t.colors.status;
+      case 'shadows': return t.shadows;
+      case 'gradients': return t.gradients;
+      case 'radius': return t.borderRadius;
+      case 'spacing': return t.spacing;
+      case 'typography': return t.typography;
+      case 'feedback': return t.colors.feedback;
+      case 'colors':
+        return {
+          primary: t.colors.primary,
+          secondary: {
+            main: t.colors.accent.gold,
+            light: t.colors.accent.goldLight,
+            dark: t.colors.accent.goldDark,
+          },
+          error: {
+            main: t.colors.status.error,
+            light: t.colors.feedback.errorBg,
+            dark: t.colors.feedback.errorDark,
+          },
+          warning: {
+            main: t.colors.status.warning,
+            light: t.colors.feedback.warningBg,
+            dark: t.colors.feedback.warningDark,
+          },
+          success: {
+            main: t.colors.status.success,
+            light: t.colors.feedback.successBg,
+            dark: t.colors.feedback.successDark,
+          },
+          info: {
+            main: t.colors.status.info,
+            light: t.colors.feedback.infoBg,
+            dark: t.colors.feedback.infoDark,
+          },
+          accent: t.colors.accent,
+          status: t.colors.status,
+          background: t.colors.background,
+          text: t.colors.text,
+          neutral: t.colors.neutral,
+          feedback: t.colors.feedback,
+        };
+      default:
+        return undefined;
+    }
   },
-};
+});
 
 export default {
   light: lightTheme,

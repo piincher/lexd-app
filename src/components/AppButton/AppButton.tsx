@@ -1,7 +1,8 @@
-import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
-import React, { FC } from 'react';
-import { Text, StyleSheet, Pressable, ActivityIndicator, StyleProp, ViewStyle } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import React, { FC, useMemo } from 'react';
+import { Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
+import type { StyleProp, ViewStyle } from 'react-native';
 
 interface Props {
 	title: string;
@@ -13,9 +14,35 @@ interface Props {
 }
 
 const AppButton: FC<Props> = ({ title, onPress, busy, style, disabled, background }) => {
+	const { colors } = useAppTheme();
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				container: {
+					width: '100%',
+					minHeight: 48,
+					borderRadius: 12,
+					backgroundColor: colors.primary.main,
+					alignItems: 'center',
+					justifyContent: 'center',
+				},
+				title: {
+					color: colors.text.inverse,
+					fontSize: 14,
+					fontFamily: Fonts.black,
+				},
+			}),
+		[colors]
+	);
+
 	return (
 		<Pressable
-			style={[style, styles.container, { backgroundColor: disabled ? COLORS.grey : background || COLORS.blue }]}
+			style={[
+				style,
+				styles.container,
+				{ backgroundColor: disabled ? colors.action.disabledBackground : background || colors.primary.main },
+			]}
 			onPress={onPress}
 			disabled={disabled}
 		>
@@ -23,21 +50,5 @@ const AppButton: FC<Props> = ({ title, onPress, busy, style, disabled, backgroun
 		</Pressable>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		width: '100%',
-		minHeight: 48,
-		borderRadius: 12,
-		backgroundColor: COLORS.blue,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	title: {
-		color: COLORS.white,
-		fontSize: 14,
-		fontFamily: Fonts.black,
-	},
-});
 
 export default AppButton;

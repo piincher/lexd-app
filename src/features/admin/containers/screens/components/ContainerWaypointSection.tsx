@@ -4,7 +4,7 @@
  * Updated: Conditionally renders TransitStatusManager for IN_TRANSIT containers
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -18,7 +18,8 @@ import { useGetContainerById, containerQueryKeys } from '../../hooks/useContaine
 import { ContainerWaypointTracker } from '../../components/ContainerWaypointTracker';
 import { TransitStatusManager } from '../../components/TransitStatusManager';
 import { InitializeWaypointsButton } from '../../components/TransitStatusManager/components/InitializeWaypointsButton';
-import { styles } from '../ContainerDetailScreen.styles';
+import {  createStyles  } from '../ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface ContainerWaypointSectionProps {
@@ -32,6 +33,8 @@ export const ContainerWaypointSection: React.FC<ContainerWaypointSectionProps> =
   containerNumber: propContainerNumber,
   containerStatus: propContainerStatus,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const queryClient = useQueryClient();
   
   // Fetch container data if status not provided via props

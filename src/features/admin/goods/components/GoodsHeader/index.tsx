@@ -5,17 +5,20 @@
 
 import React, { useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { Text, Menu, Chip } from 'react-native-paper';
+import { Text, Menu, Chip, Divider } from 'react-native-paper';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { styles } from './GoodsHeader.styles';
 
 // Local StatusBadge component to avoid any import issues
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
+  const { colors } = useAppTheme();
   const STATUS_CONFIG: Record<string, { label: string; color: string; bgColor: string }> = {
     RECEIVED_AT_WAREHOUSE: { label: 'En Entrepot', color: '#2196F3', bgColor: '#E3F2FD' },
+    PACKED: { label: 'Colis préparé', color: '#7C4DFF', bgColor: '#EDE7F6' },
     ASSIGNED_TO_CONTAINER: { label: 'Assigne', color: '#FF9800', bgColor: '#FFF3E0' },
     LOADED_IN_CONTAINER: { label: 'Charge', color: '#9C27B0', bgColor: '#F3E5F5' },
     IN_TRANSIT: { label: 'En Transit', color: '#3F51B5', bgColor: '#E8EAF6' },
@@ -24,7 +27,7 @@ const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
     DELIVERED: { label: 'Livre', color: '#757575', bgColor: '#F5F5F5' },
   };
 
-  const config = STATUS_CONFIG[status] || { label: status, color: '#666666', bgColor: '#F5F5F5' };
+  const config = STATUS_CONFIG[status] || { label: status, color: colors.text.muted, bgColor: colors.background.paper };
 
   return (
     <Chip
@@ -92,7 +95,7 @@ export const GoodsHeader: React.FC<GoodsHeaderProps> = ({
             }}
             title="Pret pour retrait"
           />
-          <Menu.Divider />
+          <Divider />
           <Menu.Item
             onPress={() => {
               setMenuVisible(false);

@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { View, Text, TouchableOpacity, Pressable, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -6,9 +6,10 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
 
 import { userData } from "@src/constants/types";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { getInitials, getAvatarColor } from "../../lib/clientUtils";
-import { styles } from "./ClientCard.styles";
+import { createStyles } from "./ClientCard.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { ClientCardSkeleton } from "./ClientCardSkeleton";
 
 interface ClientCardProps {
@@ -24,6 +25,8 @@ export const ClientCard: React.FC<ClientCardProps> = ({
   index,
   isLoading = false,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   if (isLoading) {
     return <ClientCardSkeleton />;
   }

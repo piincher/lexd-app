@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Header } from "@src/components/Header/Header";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { useCalendar, Calendar } from "@src/components/Calendar/Calendar";
 import { AntDesign } from "@expo/vector-icons";
 import AppButton from "@src/components/AppButton/AppButton";
 import { Picker } from "@react-native-picker/picker";
-import { COLORS } from "@src/constants/Colors";
+
 import { Fonts } from "@src/constants/Fonts";
 import { useMutateBetweenDate } from "../hooks/useOrderManagement";
 import { LoadingSpinner } from "@src/components/LoadingSpinner";
@@ -29,6 +30,45 @@ const Status = [
 ];
 
 const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
+   const { colors, isDark } = useAppTheme();
+   const styles = useMemo(() => StyleSheet.create({
+      routeContainer: {
+         borderColor: colors.border,
+         borderWidth: 0.5,
+         padding: 10,
+         margin: 20,
+      },
+      valueStyle: {
+         fontFamily: Fonts.bold,
+      },
+      picker: {
+         width: "100%",
+         fontFamily: Fonts.bold,
+      },
+      selectionControls: {
+         flexDirection: "row",
+         justifyContent: "space-between",
+         marginHorizontal: 20,
+         marginTop: 10,
+         marginBottom: 10,
+      },
+      selectButton: {
+         flex: 1,
+         marginRight: 10,
+         backgroundColor: colors.primary.main,
+      },
+      selectButtonText: {
+         color: colors.text.inverse,
+      },
+      clearButton: {
+         flex: 1,
+         marginLeft: 10,
+         backgroundColor: colors.neutral[200],
+      },
+      clearButtonText: {
+         color: colors.text.secondary,
+      },
+   }), [colors, isDark]);
    const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
    const [pickerValue, setPickerValue] = useState(Status[0].title);
    const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
@@ -96,7 +136,7 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
    };
 
    return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
          <Header
             title="Batch Update Orders"
             navigation={navigation}
@@ -164,42 +204,3 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
 };
 
 export default BatchUpdate;
-
-const styles = StyleSheet.create({
-   routeContainer: {
-      borderColor: COLORS.grey,
-      borderWidth: 0.5,
-      padding: 10,
-      margin: 20,
-   },
-   valueStyle: {
-      fontFamily: Fonts.bold,
-   },
-   picker: {
-      width: "100%",
-      fontFamily: Fonts.bold,
-   },
-   selectionControls: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginHorizontal: 20,
-      marginTop: 10,
-      marginBottom: 10,
-   },
-   selectButton: {
-      flex: 1,
-      marginRight: 10,
-      backgroundColor: COLORS.blue,
-   },
-   selectButtonText: {
-      color: COLORS.white,
-   },
-   clearButton: {
-      flex: 1,
-      marginLeft: 10,
-      backgroundColor: COLORS.lightGray,
-   },
-   clearButtonText: {
-      color: COLORS.DarkGrey,
-   },
-});

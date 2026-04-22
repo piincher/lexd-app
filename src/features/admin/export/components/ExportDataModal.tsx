@@ -26,6 +26,7 @@ import { DatePickerModal } from "react-native-paper-dates";
 import { format } from "date-fns/format";
 
 import { ExportEntity, ExportFormat, ScheduleFrequency, ExportFilters } from "../types";
+import { Theme } from "@src/constants/Theme";
 import {
   useExportData,
   useScheduleExport,
@@ -350,7 +351,7 @@ const styles = StyleSheet.create({
   container: {
     width: "90%",
     maxHeight: "85%",
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
   },
   header: {
@@ -359,7 +360,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#e0e0e0",
+    borderBottomColor: Theme.colors.neutral[200],
   },
   title: {
     fontWeight: "600",
@@ -383,7 +384,7 @@ const styles = StyleSheet.create({
   dateButton: {
     flex: 1,
     padding: 12,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: Theme.colors.background.paper,
     borderRadius: 8,
     alignItems: "center",
   },
@@ -404,7 +405,7 @@ const styles = StyleSheet.create({
     gap: 12,
     padding: 16,
     borderTopWidth: 1,
-    borderTopColor: "#e0e0e0",
+    borderTopColor: Theme.colors.neutral[200],
   },
   button: {
     minWidth: 100,

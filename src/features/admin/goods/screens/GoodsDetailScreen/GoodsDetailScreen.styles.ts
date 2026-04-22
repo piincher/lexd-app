@@ -1,12 +1,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
 const { width } = Dimensions.get('window');
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
   },
   centered: {
     justifyContent: 'center',
@@ -69,7 +68,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: 'hidden',
     elevation: 4,
-    shadowColor: Theme.primary[600],
+    shadowColor: colors.primary[600],
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 12,
@@ -85,18 +84,18 @@ export const styles = StyleSheet.create({
   qrTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 10,
   },
   qrContent: {
     alignItems: 'center',
   },
   qrImageContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
     padding: 16,
     borderRadius: 16,
     borderWidth: 2,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
     elevation: 2,
   },
   qrImage: {
@@ -106,12 +105,12 @@ export const styles = StyleSheet.create({
   qrHint: {
     marginTop: 12,
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     fontStyle: 'italic',
   },
   shareButton: {
     marginTop: 16,
-    borderColor: Theme.primary[600],
+    borderColor: colors.primary[600],
     borderRadius: 10,
   },
   qrEmpty: {
@@ -121,7 +120,7 @@ export const styles = StyleSheet.create({
   qrEmptyText: {
     marginTop: 12,
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
 
   // Photo Card
@@ -131,15 +130,11 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 3,
   },
-  photo: {
-    width: '100%',
-    height: 200,
-  },
   photoWrapper: {
     position: 'relative',
   },
   photo: {
-    width,
+    width: '100%',
     height: 200,
   },
   photoOverlay: {
@@ -175,11 +170,11 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     borderRadius: 16,
     elevation: 2,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
   },
   financialCard: {
     borderLeftWidth: 4,
-    borderLeftColor: Theme.status.success,
+    borderLeftColor: colors.status.success,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -189,18 +184,18 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 10,
   },
   description: {
     fontSize: 15,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     lineHeight: 22,
   },
   trackingNumber: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     letterSpacing: 0.5,
   },
 
@@ -215,7 +210,7 @@ export const styles = StyleSheet.create({
   clientName: {
     fontSize: 17,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   clientPhoneRow: {
     flexDirection: 'row',
@@ -224,7 +219,7 @@ export const styles = StyleSheet.create({
   },
   clientPhone: {
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginLeft: 6,
   },
 
@@ -238,31 +233,31 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 16,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: 12,
     marginHorizontal: 4,
   },
   propertyItemHighlight: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     borderWidth: 2,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
   },
   propertyLabel: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 6,
     fontWeight: '500',
   },
   propertyValue: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginTop: 4,
   },
   propertyValueHighlight: {
     fontSize: 20,
     fontWeight: '800',
-    color: Theme.primary[600],
+    color: colors.primary[600],
     marginTop: 4,
   },
 
@@ -270,14 +265,14 @@ export const styles = StyleSheet.create({
   dimensionsBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     padding: 14,
     borderRadius: 10,
   },
   dimensionsText: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginLeft: 10,
   },
 
@@ -302,17 +297,17 @@ export const styles = StyleSheet.create({
   },
   locationLabel: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: 2,
   },
   locationValue: {
     fontSize: 15,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   locationSubtext: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
 
@@ -327,33 +322,33 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     padding: 14,
     borderRadius: 10,
     marginVertical: 8,
   },
   financialLabel: {
     fontSize: 14,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   financialLabelHighlight: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   financialValue: {
     fontSize: 15,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   financialValueTotal: {
     fontSize: 20,
     fontWeight: '800',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   divider: {
     marginVertical: 8,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
   },
   paymentStatusContainer: {
     marginTop: 16,
@@ -371,19 +366,19 @@ export const styles = StyleSheet.create({
   },
   receptionItem: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     padding: 14,
     borderRadius: 12,
   },
   receptionLabel: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: 4,
   },
   receptionValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
 
   // Action Buttons
@@ -395,13 +390,13 @@ export const styles = StyleSheet.create({
   },
   editButton: {
     flex: 1,
-    backgroundColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
     borderRadius: 12,
     elevation: 2,
   },
   deleteButton: {
     flex: 1,
-    borderColor: Theme.status.error,
+    borderColor: colors.status.error,
     borderRadius: 12,
     borderWidth: 1.5,
   },
@@ -414,6 +409,6 @@ export const styles = StyleSheet.create({
   emptyText: {
     marginTop: 16,
     fontSize: 16,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
 });

@@ -72,8 +72,10 @@ export interface Goods {
   weight: number;
   quantity: number;
   photos: string[];
+  images?: string[];
   description: string;
   expressTrackingNumber?: string;
+  shippingMode?: 'AIR' | 'SEA';
   status: GoodsStatus;
   containerId?: string | ContainerInfo;
   unitPrice: number;
@@ -82,8 +84,16 @@ export interface Goods {
   paymentStatus: PaymentStatus;
   qrCodeData: string;
   qrCodeImageUrl?: string;
+  airwayBillId?: string | AirwayBillInfo;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface AirwayBillInfo {
+  _id: string;
+  awbNumber: string;
+  flightNumber: string;
+  status: string;
 }
 
 // ============================================
@@ -209,6 +219,7 @@ export interface GoodsListItem {
   actualCBM: number;
   totalCost: number;
   photos: string[];
+  images?: string[];
   clientName?: string;
 }
 

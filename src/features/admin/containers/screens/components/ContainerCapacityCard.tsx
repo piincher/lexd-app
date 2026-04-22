@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
-import { styles, MAX_CBM } from '../ContainerDetailScreen.styles';
+import {  createStyles, MAX_CBM  } from '../ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ContainerCapacityCardProps {
   totalCBM: number;
@@ -18,6 +19,8 @@ export const ContainerCapacityCard: React.FC<ContainerCapacityCardProps> = ({
   maxCBM = MAX_CBM,
   isAir = false,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const unit = isAir ? 'kg' : 'CBM';
   const getStatusColor = (percentage: number): string => {
     if (percentage > 90) return '#EF4444'; // red

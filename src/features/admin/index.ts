@@ -21,7 +21,7 @@ export * from "./tools";
 export * from "./consignees";
 export * from "./containers";
 export * from "./goods";
-export * from "./routes";
+export * from "./routes/screens";
 
 // Certificates
 export * from "./certificates";

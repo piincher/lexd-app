@@ -2,7 +2,8 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { NavigationProp } from "@react-navigation/native";
+import type { NavigationProp } from "@react-navigation/native";
+import { NotificationBell } from "@src/features/notifications";
 
 import { StatCard } from "../StatCard";
 import { styles } from "./ClientHeader.styles";
@@ -35,7 +36,11 @@ export const ClientHeader: React.FC<ClientHeaderProps> = ({
           <Text style={styles.title}>Gestion Clients</Text>
           <Text style={styles.subtitle}>{totalClients} clients au total</Text>
         </View>
-        <View style={styles.placeholder} />
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications')}
+          size={22}
+          color="#FFF"
+        />
       </View>
 
       <View style={styles.stats}>

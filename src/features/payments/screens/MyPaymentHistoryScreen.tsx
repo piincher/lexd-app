@@ -1,10 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { RefreshControl, Linking, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
 import { EmptyState } from '@src/shared/ui/EmptyState';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMyPaymentHistory } from '../hooks/useMyPaymentHistory';
 import { useDownloadReceipt, useShareReceipt } from '../hooks';
 import { PaymentHistoryCard } from '../components/PaymentHistoryCard';
@@ -13,6 +13,7 @@ import { PaymentHistoryItem } from '../types';
 
 export const MyPaymentHistoryScreen: React.FC = () => {
   const navigation = useNavigation<any>();
+  const { colors } = useAppTheme();
   const {
     payments,
     isLoading,
@@ -25,6 +26,25 @@ export const MyPaymentHistoryScreen: React.FC = () => {
 
   const { downloadReceipt } = useDownloadReceipt();
   const { shareReceipt } = useShareReceipt();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        listContent: {
+          padding: 16,
+          gap: 12,
+        },
+        loadingContainer: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        footerLoader: {
+          paddingVertical: 16,
+        },
+      }),
+    []
+  );
 
   const handleViewReceipt = useCallback((url: string) => {
     Linking.openURL(url);
@@ -56,7 +76,7 @@ export const MyPaymentHistoryScreen: React.FC = () => {
 
   if (isLoading && payments.length === 0) {
     return (
-      <Screen header={{ title: 'Historique des paiements', showBack: true, onBackPress: () => navigation.goBack() }}>
+      <Screen header={{ title: 'Historique des paiements', showBack: true, onBackPress: () => navigation.goBack(), showNotificationBell: true }}>
         <PaymentHistorySkeleton />
       </Screen>
     );
@@ -67,7 +87,8 @@ export const MyPaymentHistoryScreen: React.FC = () => {
       header={{
         title: 'Historique des paiements',
         showBack: true,
-        onBackPress: () => navigation.goBack()
+        onBackPress: () => navigation.goBack(),
+        showNotificationBell: true
       }}
       scrollable={false}
     >
@@ -94,7 +115,7 @@ export const MyPaymentHistoryScreen: React.FC = () => {
           refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} />}
           ListFooterComponent={
             isFetchingNextPage ? (
-              <ActivityIndicator style={styles.footerLoader} color={COLORS.green} />
+              <ActivityIndicator style={styles.footerLoader} color={colors.status.success} />
             ) : null
           }
         />
@@ -102,20 +123,5 @@ export const MyPaymentHistoryScreen: React.FC = () => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  listContent: {
-    padding: 16,
-    gap: 12,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  footerLoader: {
-    paddingVertical: 16,
-  },
-});
 
 export default MyPaymentHistoryScreen;

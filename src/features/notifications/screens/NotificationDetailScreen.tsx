@@ -3,7 +3,7 @@
  * Shows full notification details with action buttons
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { 
   View, 
   StyleSheet, 
@@ -12,14 +12,14 @@ import {
 } from 'react-native';
 import { Text, Surface, Button, Divider } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, { FadeInUp, FadeIn } from 'react-native-reanimated';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { formatFullDate } from '../utils/timeUtils';
 
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { Header } from '@src/components/Header/Header';
-import type { navigationProps, RootStackParamList } from '@src/navigations/type';
+import type { RootStackParamList } from '@src/navigations/type';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG, NOTIFICATION_PRIORITY_CONFIG } from '../types';
 import { useMarkAsRead, useDeleteNotification } from '../hooks/useNotifications';
@@ -28,22 +28,173 @@ type NotificationDetailScreenProps = NativeStackScreenProps<
   RootStackParamList,
   'NotificationDetail'
 >;
-
-// Extend RootStackParamList for this screen
-declare module '@src/navigations/type' {
-  export type RootStackParamList = {
-    // ... existing routes
-    NotificationDetail: { notification: import('../types').InAppNotification };
-  };
-}
+type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({ 
   navigation, 
   route 
 }) => {
+  const { colors } = useAppTheme();
   const { notification } = route.params;
   const { mutate: markAsRead } = useMarkAsRead();
   const { mutate: deleteNotification } = useDeleteNotification();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.paper,
+    },
+    scrollView: {
+      flex: 1,
+    },
+    iconCard: {
+      margin: 16,
+      padding: 24,
+      borderRadius: 16,
+      alignItems: 'center',
+      backgroundColor: colors.background.card,
+    },
+    iconContainer: {
+      width: 80,
+      height: 80,
+      borderRadius: 40,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    typeLabel: {
+      fontFamily: Fonts.bold,
+      fontSize: 18,
+      color: colors.text.primary,
+      marginBottom: 8,
+    },
+    categoryBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 12,
+      paddingVertical: 4,
+      borderRadius: 12,
+      gap: 4,
+    },
+    categoryText: {
+      fontFamily: Fonts.medium,
+      fontSize: 12,
+    },
+    contentCard: {
+      margin: 16,
+      marginTop: 0,
+      padding: 20,
+      borderRadius: 16,
+      backgroundColor: colors.background.card,
+    },
+    headerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      gap: 12,
+    },
+    title: {
+      fontFamily: Fonts.bold,
+      fontSize: 20,
+      color: colors.text.primary,
+      flex: 1,
+    },
+    priorityBadge: {
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderRadius: 4,
+    },
+    priorityText: {
+      fontFamily: Fonts.bold,
+      fontSize: 10,
+      color: colors.text.inverse,
+    },
+    divider: {
+      marginVertical: 16,
+      backgroundColor: colors.border,
+    },
+    message: {
+      fontFamily: Fonts.regular,
+      fontSize: 16,
+      color: colors.text.secondary,
+      lineHeight: 24,
+    },
+    metaContainer: {
+      gap: 12,
+    },
+    metaItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    metaText: {
+      fontFamily: Fonts.regular,
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    dataCard: {
+      margin: 16,
+      marginTop: 0,
+      padding: 20,
+      borderRadius: 16,
+      backgroundColor: colors.background.card,
+    },
+    dataTitle: {
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      color: colors.text.primary,
+      marginBottom: 12,
+    },
+    dataItem: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    dataLabel: {
+      fontFamily: Fonts.medium,
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    dataValue: {
+      fontFamily: Fonts.bold,
+      fontSize: 14,
+      color: colors.text.primary,
+    },
+    actionContainer: {
+      margin: 16,
+      marginTop: 8,
+    },
+    actionButton: {
+      borderRadius: 12,
+      backgroundColor: colors.primary.main,
+    },
+    actionButtonContent: {
+      paddingVertical: 8,
+      flexDirection: 'row-reverse',
+    },
+    deleteContainer: {
+      margin: 16,
+      marginTop: 8,
+      alignItems: 'center',
+    },
+    deleteButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      padding: 12,
+    },
+    deleteText: {
+      fontFamily: Fonts.medium,
+      fontSize: 14,
+      color: colors.status.error,
+    },
+    bottomSpacer: {
+      height: 32,
+    },
+  }), [colors]);
 
   // Mark as read when screen opens
   useEffect(() => {
@@ -73,7 +224,7 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
           certificateMongoId: notification.data.certificateMongoId || notification.data.certificateId,
         });
       } else {
-        navigation.navigate('Profile');
+        navigation.navigate('HomeTab', { screen: 'Profile' });
       }
     } else if (notification.data?.orderId) {
       navigation.navigate('OrderDetail', { id: notification.data.orderId });
@@ -92,7 +243,7 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <Header title="Détail" navigation={navigation} />
+      <Header title="Détail" navigation={navigation} showNotificationBell />
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         {/* Icon Card */}
@@ -100,9 +251,9 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
           <Surface style={styles.iconCard} elevation={2}>
             <View style={[styles.iconContainer, { backgroundColor: categoryConfig.color }]}>
               <MaterialCommunityIcons 
-                name={typeConfig.icon as any} 
+                name={typeConfig.icon as MaterialIconName} 
                 size={48} 
-                color={COLORS.white} 
+                color={colors.text.inverse} 
               />
             </View>
             
@@ -110,7 +261,7 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
             
             <View style={[styles.categoryBadge, { backgroundColor: categoryConfig.backgroundColor }]}>
               <MaterialCommunityIcons 
-                name={categoryConfig.icon as any} 
+                name={categoryConfig.icon as MaterialIconName} 
                 size={14} 
                 color={categoryConfig.color} 
               />
@@ -141,7 +292,7 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
 
             <View style={styles.metaContainer}>
               <View style={styles.metaItem}>
-                <MaterialCommunityIcons name="clock-outline" size={18} color={COLORS.grey} />
+                <MaterialCommunityIcons name="clock-outline" size={18} color={colors.text.secondary} />
                 <Text style={styles.metaText}>{createdAt}</Text>
               </View>
 
@@ -149,7 +300,7 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
                 <MaterialCommunityIcons 
                   name={notification.isRead ? "email-open-outline" : "email-outline"} 
                   size={18} 
-                  color={notification.isRead ? COLORS.green : COLORS.grey} 
+                  color={notification.isRead ? colors.status.success : colors.text.secondary} 
                 />
                 <Text style={styles.metaText}>
                   {notification.isRead ? 'Lue' : 'Non lue'}
@@ -221,7 +372,7 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
         {/* Delete Button */}
         <Animated.View entering={FadeInUp.delay(500)} style={styles.deleteContainer}>
           <Pressable onPress={handleDelete} style={styles.deleteButton}>
-            <MaterialCommunityIcons name="delete-outline" size={20} color={COLORS.danger} />
+            <MaterialCommunityIcons name="delete-outline" size={20} color={colors.status.error} />
             <Text style={styles.deleteText}>Supprimer cette notification</Text>
           </Pressable>
         </Animated.View>
@@ -231,162 +382,5 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.lightBackground,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  iconCard: {
-    margin: 16,
-    padding: 24,
-    borderRadius: 16,
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-  },
-  iconContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  typeLabel: {
-    fontFamily: Fonts.bold,
-    fontSize: 18,
-    color: COLORS.DarkGrey,
-    marginBottom: 8,
-  },
-  categoryBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-    gap: 4,
-  },
-  categoryText: {
-    fontFamily: Fonts.medium,
-    fontSize: 12,
-  },
-  contentCard: {
-    margin: 16,
-    marginTop: 0,
-    padding: 20,
-    borderRadius: 16,
-    backgroundColor: COLORS.white,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gap: 12,
-  },
-  title: {
-    fontFamily: Fonts.bold,
-    fontSize: 20,
-    color: COLORS.DarkGrey,
-    flex: 1,
-  },
-  priorityBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  priorityText: {
-    fontFamily: Fonts.bold,
-    fontSize: 10,
-    color: COLORS.white,
-  },
-  divider: {
-    marginVertical: 16,
-    backgroundColor: COLORS.border,
-  },
-  message: {
-    fontFamily: Fonts.regular,
-    fontSize: 16,
-    color: COLORS.DimGray,
-    lineHeight: 24,
-  },
-  metaContainer: {
-    gap: 12,
-  },
-  metaItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  metaText: {
-    fontFamily: Fonts.regular,
-    fontSize: 14,
-    color: COLORS.grey,
-  },
-  dataCard: {
-    margin: 16,
-    marginTop: 0,
-    padding: 20,
-    borderRadius: 16,
-    backgroundColor: COLORS.white,
-  },
-  dataTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 16,
-    color: COLORS.DarkGrey,
-    marginBottom: 12,
-  },
-  dataItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
-  },
-  dataLabel: {
-    fontFamily: Fonts.medium,
-    fontSize: 14,
-    color: COLORS.DimGray,
-  },
-  dataValue: {
-    fontFamily: Fonts.bold,
-    fontSize: 14,
-    color: COLORS.DarkGrey,
-  },
-  actionContainer: {
-    margin: 16,
-    marginTop: 8,
-  },
-  actionButton: {
-    borderRadius: 12,
-    backgroundColor: COLORS.blue,
-  },
-  actionButtonContent: {
-    paddingVertical: 8,
-    flexDirection: 'row-reverse',
-  },
-  deleteContainer: {
-    margin: 16,
-    marginTop: 8,
-    alignItems: 'center',
-  },
-  deleteButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    padding: 12,
-  },
-  deleteText: {
-    fontFamily: Fonts.medium,
-    fontSize: 14,
-    color: COLORS.danger,
-  },
-  bottomSpacer: {
-    height: 32,
-  },
-});
 
 export default NotificationDetailScreen;

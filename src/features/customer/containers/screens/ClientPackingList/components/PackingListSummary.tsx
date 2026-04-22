@@ -2,13 +2,13 @@
  * PackingListSummary - Container summary card
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Chip, Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SHIPPING_MODE_LABELS } from '../../../types';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface PackingListSummaryProps {
   containerNumber?: string;
@@ -20,7 +20,7 @@ interface PackingListSummaryProps {
   departureDate?: string;
   arrivalDate?: string;
   getShippingModeIcon: (mode: string) => string;
-  getStatusColor: (status: string) => string;
+  getStatusColor: (status: string) => { bg: string; text: string; icon: string } | string;
   formatDate: (date?: string) => string;
 }
 
@@ -29,10 +29,32 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
   departureDate, arrivalDate, getShippingModeIcon, getStatusColor, formatDate,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    card: { marginHorizontal: 16, marginBottom: 16, elevation: 2 },
+    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
+    containerInfo: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+    containerTextContainer: { marginLeft: 12 },
+    containerLabel: { fontFamily: Fonts.regular, fontSize: 12, color: colors.status.success },
+    containerNumber: { fontFamily: Fonts.bold, fontSize: 16, color: colors.text.secondary, marginTop: 2 },
+    statusChip: { borderRadius: 16 },
+    statusText: { fontFamily: Fonts.meduim, fontSize: 12 },
+    modeRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: colors.border },
+    modeText: { fontFamily: Fonts.meduim, fontSize: 14, color: colors.text.secondary, marginLeft: 8 },
+    totalsContainer: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 16, paddingVertical: 12, backgroundColor: colors.background.paper, borderRadius: 8 },
+    totalItem: { alignItems: 'center' },
+    totalValue: { fontFamily: Fonts.bold, fontSize: 16, color: colors.text.secondary, marginTop: 4 },
+    totalLabel: { fontFamily: Fonts.regular, fontSize: 12, color: colors.status.success, marginTop: 2 },
+    datesContainer: { flexDirection: 'row', justifyContent: 'space-between' },
+    dateItem: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+    dateLabel: { fontFamily: Fonts.regular, fontSize: 12, color: colors.status.success, marginLeft: 6 },
+    dateValue: { fontFamily: Fonts.meduim, fontSize: 12, color: colors.text.secondary, marginLeft: 4 },
+  }), [colors, isDark]);
+
   const rawStatusColor = status ? getStatusColor(status) : null;
   const statusColorObj = rawStatusColor && typeof rawStatusColor === 'object' ? rawStatusColor as any : null;
-  const statusBg = statusColorObj?.bg || '#F3F4F6';
-  const statusText = statusColorObj?.text || (typeof rawStatusColor === 'string' ? rawStatusColor : COLORS.DimGray);
+  const statusBg = statusColorObj?.bg || colors.background.paper;
+  const statusText = statusColorObj?.text || (typeof rawStatusColor === 'string' ? rawStatusColor : colors.text.secondary);
 
   return (
     <Card style={styles.card}>
@@ -54,7 +76,7 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
 
         {shippingMode && (
           <View style={styles.modeRow}>
-            <MaterialCommunityIcons name={getShippingModeIcon(shippingMode) as any} size={18} color={COLORS.DimGray} />
+            <MaterialCommunityIcons name={getShippingModeIcon(shippingMode) as any} size={18} color={colors.text.secondary} />
             <Text style={styles.modeText}>
               {SHIPPING_MODE_LABELS[shippingMode.toUpperCase() as 'SEA' | 'AIR'] || shippingMode}
             </Text>
@@ -81,12 +103,12 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
 
         <View style={styles.datesContainer}>
           <View style={styles.dateItem}>
-            <MaterialCommunityIcons name="calendar-export" size={16} color={COLORS.DimGray} />
+            <MaterialCommunityIcons name="calendar-export" size={16} color={colors.text.secondary} />
             <Text style={styles.dateLabel}>Départ:</Text>
             <Text style={styles.dateValue}>{formatDate(departureDate)}</Text>
           </View>
           <View style={styles.dateItem}>
-            <MaterialCommunityIcons name="calendar-import" size={16} color={COLORS.DimGray} />
+            <MaterialCommunityIcons name="calendar-import" size={16} color={colors.text.secondary} />
             <Text style={styles.dateLabel}>Arrivée:</Text>
             <Text style={styles.dateValue}>{formatDate(arrivalDate)}</Text>
           </View>
@@ -95,26 +117,5 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
     </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  card: { marginHorizontal: 16, marginBottom: 16, elevation: 2 },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
-  containerInfo: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  containerTextContainer: { marginLeft: 12 },
-  containerLabel: { fontFamily: Fonts.regular, fontSize: 12, color: COLORS.SlateGray },
-  containerNumber: { fontFamily: Fonts.bold, fontSize: 16, color: COLORS.DarkGrey, marginTop: 2 },
-  statusChip: { borderRadius: 16 },
-  statusText: { fontFamily: Fonts.meduim, fontSize: 12 },
-  modeRow: { flexDirection: 'row', alignItems: 'center', marginBottom: 16, paddingBottom: 12, borderBottomWidth: 1, borderBottomColor: '#E2E8F0' },
-  modeText: { fontFamily: Fonts.meduim, fontSize: 14, color: COLORS.DimGray, marginLeft: 8 },
-  totalsContainer: { flexDirection: 'row', justifyContent: 'space-around', marginBottom: 16, paddingVertical: 12, backgroundColor: '#F8FAFC', borderRadius: 8 },
-  totalItem: { alignItems: 'center' },
-  totalValue: { fontFamily: Fonts.bold, fontSize: 16, color: COLORS.DarkGrey, marginTop: 4 },
-  totalLabel: { fontFamily: Fonts.regular, fontSize: 12, color: COLORS.SlateGray, marginTop: 2 },
-  datesContainer: { flexDirection: 'row', justifyContent: 'space-between' },
-  dateItem: { flexDirection: 'row', alignItems: 'center', flex: 1 },
-  dateLabel: { fontFamily: Fonts.regular, fontSize: 12, color: COLORS.SlateGray, marginLeft: 6 },
-  dateValue: { fontFamily: Fonts.meduim, fontSize: 12, color: COLORS.DarkGrey, marginLeft: 4 },
-});
 
 export default PackingListSummary;

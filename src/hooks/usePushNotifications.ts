@@ -25,8 +25,9 @@ import {
   getNotificationHistory,
   NotificationLog,
   clearBadgeCount,
+  setBadgeCount as setNativeBadgeCount,
 } from "@src/services/pushNotificationService";
-import { NavigationContainerRef } from "@react-navigation/native";
+import type { NavigationContainerRef } from "@react-navigation/native";
 
 // ============================================================================
 // Types
@@ -189,15 +190,22 @@ export const usePushNotifications = (
 
         setLastNotification(notification);
 
-        // Increment badge count
-        if (autoIncrementBadge) {
+        const payloadUnreadCount = getNotificationUnreadCount(notification);
+        if (payloadUnreadCount !== null) {
+          setUnreadCount(payloadUnreadCount);
+          if (autoIncrementBadge) {
+            setNativeBadgeCount(payloadUnreadCount).then(() => {
+              setBadgeCount(payloadUnreadCount);
+            });
+          }
+        } else if (autoIncrementBadge) {
           incrementBadgeCount().then(() => {
             getBadgeCount().then(setBadgeCount);
           });
         }
 
         // Refresh unread count
-        refreshUnreadCount();
+        void refreshUnreadCount();
 
         // Call custom handler if provided
         onNotificationReceived?.(notification);
@@ -406,6 +414,8 @@ export const usePushNotifications = (
           prev.map((n) => ({ ...n, status: "READ" as const, readAt: new Date().toISOString() }))
         );
         setUnreadCount(0);
+        await clearBadgeCount();
+        setBadgeCount(0);
       }
       return success;
     } catch (err) {
@@ -421,6 +431,8 @@ export const usePushNotifications = (
     try {
       const count = await getUnreadCount();
       setUnreadCount(count);
+      await setNativeBadgeCount(count);
+      setBadgeCount(count);
     } catch (err) {
       console.error("[usePushNotifications] Error refreshing unread count:", err);
     }
@@ -433,6 +445,7 @@ export const usePushNotifications = (
     try {
       await clearBadgeCount();
       setBadgeCount(0);
+      setUnreadCount(0);
     } catch (err) {
       console.error("[usePushNotifications] Error clearing badge:", err);
     }
@@ -470,6 +483,26 @@ export const usePushNotifications = (
     refreshUnreadCount,
     clearBadge,
   };
+};
+
+const getNotificationUnreadCount = (
+  notification: Notifications.Notification
+): number | null => {
+  const content = notification.request.content;
+  const data = content.data as NotificationData | undefined;
+  const contentBadge = (content as { badge?: unknown }).badge;
+
+  return normalizeNotificationCount(
+    data?.unreadCount ?? data?.badge ?? contentBadge
+  );
+};
+
+const normalizeNotificationCount = (value: unknown): number | null => {
+  const count = Number(value);
+  if (!Number.isFinite(count) || count < 0) {
+    return null;
+  }
+  return Math.floor(count);
 };
 
 // ============================================================================
@@ -512,7 +545,7 @@ const handleDeepLink = (
       }
       break;
     case "Payments":
-      navigationRef.navigate("Payments");
+      navigationRef.navigate("MyPaymentHistory");
       break;
     case "Home":
     default:

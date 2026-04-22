@@ -3,7 +3,7 @@
  * Extracted from ContainerTrackingScreen to follow SRP
  */
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { Text } from 'react-native-paper';
@@ -12,7 +12,7 @@ import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint, SEGMENT_TYPE_LABELS, SEGMENT_TYPE_ICONS } from '@src/shared/types/containerWaypoints';
 import {
   getExtendedStatusLabel,
@@ -46,6 +46,194 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
   isExpanded,
   onToggle,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    timelineConnector: {
+      alignItems: 'center',
+      height: 24,
+    },
+    connectorLine: {
+      width: 3,
+      height: 24,
+      borderRadius: 2,
+    },
+    waypointCard: {
+      backgroundColor: colors.background.card,
+      borderRadius: 16,
+      overflow: 'hidden',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.05,
+      shadowRadius: 2,
+      elevation: 2,
+    },
+    waypointCardCurrent: {
+      borderWidth: 2,
+      borderColor: '#3B82F6',
+      shadowColor: '#3B82F6',
+      shadowOpacity: 0.15,
+      elevation: 4,
+    },
+    waypointCardCompleted: {
+      opacity: 0.85,
+    },
+    waypointCardDakar: {
+      borderWidth: 2,
+      borderColor: '#0EA5E9',
+      elevation: 4,
+    },
+    waypointCardBorder: {
+      borderWidth: 2,
+      borderColor: '#F59E0B',
+      elevation: 4,
+    },
+    waypointCardWarehouse: {
+      borderWidth: 2,
+      borderColor: '#8B5CF6',
+      elevation: 4,
+    },
+    wpStatusBar: {
+      height: 4,
+      width: '100%',
+    },
+    wpContent: {
+      padding: 16,
+    },
+    wpHeader: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      marginBottom: 10,
+    },
+    wpNumber: {
+      width: 36,
+      height: 36,
+      borderRadius: 18,
+      backgroundColor: isDark ? 'rgba(16, 185, 129, 0.2)' : '#DCFCE7',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 12,
+    },
+    wpNumberText: {
+      fontSize: 16,
+      fontFamily: Fonts.bold,
+      color: '#16A34A',
+    },
+    wpTitleContainer: {
+      flex: 1,
+    },
+    wpLocation: {
+      fontSize: 16,
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
+    },
+    wpCode: {
+      fontSize: 12,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+      marginTop: 2,
+    },
+    wpStatusBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 20,
+      gap: 4,
+    },
+    wpStatusText: {
+      fontSize: 10,
+      fontFamily: Fonts.bold,
+    },
+    wpTypeRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      marginBottom: 8,
+      flexWrap: 'wrap',
+    },
+    wpTypeBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.background.paper,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 20,
+      gap: 4,
+    },
+    wpTypeBadgeText: {
+      fontSize: 11,
+      fontFamily: Fonts.meduim,
+      color: colors.text.secondary,
+    },
+    currentBadge: {
+      backgroundColor: '#3B82F6',
+      paddingHorizontal: 10,
+      paddingVertical: 2,
+      borderRadius: 20,
+    },
+    currentBadgeText: {
+      fontSize: 9,
+      fontFamily: Fonts.bold,
+      color: colors.text.inverse,
+    },
+    wpQuickInfo: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 12,
+    },
+    wpInfoItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+    },
+    wpInfoText: {
+      fontSize: 12,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+    },
+    wpExpandIndicator: {
+      alignItems: 'center',
+      marginTop: 6,
+    },
+    wpDetails: {
+      marginTop: 8,
+    },
+    wpDetailDivider: {
+      height: 1,
+      backgroundColor: colors.border,
+      marginBottom: 10,
+    },
+    wpDetailRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingVertical: 6,
+    },
+    wpDetailLabel: {
+      fontSize: 13,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+    },
+    wpDetailValue: {
+      fontSize: 13,
+      fontFamily: Fonts.meduim,
+      color: colors.text.primary,
+    },
+    wpNotes: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 6,
+      backgroundColor: colors.background.paper,
+      padding: 10,
+      borderRadius: 8,
+      marginTop: 8,
+    },
+    wpNotesText: {
+      fontSize: 12,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+      flex: 1,
+    },
+  }), [colors, isDark]);
   const rotation = useSharedValue(isExpanded ? '180deg' : '0deg');
 
   useEffect(() => {
@@ -142,7 +330,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
             </View>
 
             {/* Status badge */}
-            <View style={[styles.wpStatusBadge, { backgroundColor: `${statusColor}20` }]}>
+            <View style={[styles.wpStatusBadge, { backgroundColor: `${statusColor}${isDark ? '35' : '15'}` }]}>
               <Ionicons
                 name={getExtendedStatusIcon(waypoint.status as ExtendedWaypointStatus) as any}
                 size={14}
@@ -162,7 +350,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
                       waypoint.segmentType === 'AIR' ? 'airplane' :
                       waypoint.segmentType === 'ROAD' ? 'car' : 'cube') as any}
                 size={12}
-                color="#6B7280"
+                color={colors.text.secondary}
               />
               <Text style={styles.wpTypeBadgeText}>
                 {waypoint.segmentType || 'Transport'}
@@ -201,7 +389,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
               <Ionicons
                 name="chevron-down"
                 size={18}
-                color="#9CA3AF"
+                color={colors.text.secondary}
               />
             </Animated.View>
           </View>
@@ -293,7 +481,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
               ) : null}
               {waypoint.notes ? (
                 <View style={styles.wpNotes}>
-                  <Ionicons name="chatbubble-outline" size={12} color="#6B7280" />
+                  <Ionicons name="chatbubble-outline" size={12} color={colors.text.secondary} />
                   <Text style={styles.wpNotesText}>{waypoint.notes}</Text>
                 </View>
               ) : null}
@@ -304,191 +492,3 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  timelineConnector: {
-    alignItems: 'center',
-    height: 24,
-  },
-  connectorLine: {
-    width: 3,
-    height: 24,
-    borderRadius: 2,
-  },
-  waypointCard: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  waypointCardCurrent: {
-    borderWidth: 2,
-    borderColor: '#3B82F6',
-    shadowColor: '#3B82F6',
-    shadowOpacity: 0.15,
-    elevation: 4,
-  },
-  waypointCardCompleted: {
-    opacity: 0.85,
-  },
-  waypointCardDakar: {
-    borderWidth: 2,
-    borderColor: '#0EA5E9',
-    elevation: 4,
-  },
-  waypointCardBorder: {
-    borderWidth: 2,
-    borderColor: '#F59E0B',
-    elevation: 4,
-  },
-  waypointCardWarehouse: {
-    borderWidth: 2,
-    borderColor: '#8B5CF6',
-    elevation: 4,
-  },
-  wpStatusBar: {
-    height: 4,
-    width: '100%',
-  },
-  wpContent: {
-    padding: 16,
-  },
-  wpHeader: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 10,
-  },
-  wpNumber: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: '#DCFCE7',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  wpNumberText: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: '#16A34A',
-  },
-  wpTitleContainer: {
-    flex: 1,
-  },
-  wpLocation: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-  },
-  wpCode: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.DimGray,
-    marginTop: 2,
-  },
-  wpStatusBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 20,
-    gap: 4,
-  },
-  wpStatusText: {
-    fontSize: 10,
-    fontFamily: Fonts.bold,
-  },
-  wpTypeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    marginBottom: 8,
-    flexWrap: 'wrap',
-  },
-  wpTypeBadge: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F3F4F6',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 20,
-    gap: 4,
-  },
-  wpTypeBadgeText: {
-    fontSize: 11,
-    fontFamily: Fonts.meduim,
-    color: '#6B7280',
-  },
-  currentBadge: {
-    backgroundColor: '#3B82F6',
-    paddingHorizontal: 10,
-    paddingVertical: 2,
-    borderRadius: 20,
-  },
-  currentBadgeText: {
-    fontSize: 9,
-    fontFamily: Fonts.bold,
-    color: '#FFF',
-  },
-  wpQuickInfo: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  wpInfoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  wpInfoText: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: '#6B7280',
-  },
-  wpExpandIndicator: {
-    alignItems: 'center',
-    marginTop: 6,
-  },
-  wpDetails: {
-    marginTop: 8,
-  },
-  wpDetailDivider: {
-    height: 1,
-    backgroundColor: '#E5E7EB',
-    marginBottom: 10,
-  },
-  wpDetailRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 6,
-  },
-  wpDetailLabel: {
-    fontSize: 13,
-    fontFamily: Fonts.regular,
-    color: COLORS.DimGray,
-  },
-  wpDetailValue: {
-    fontSize: 13,
-    fontFamily: Fonts.meduim,
-    color: COLORS.DarkGrey,
-  },
-  wpNotes: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: 6,
-    backgroundColor: '#F9FAFB',
-    padding: 10,
-    borderRadius: 8,
-    marginTop: 8,
-  },
-  wpNotesText: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: '#6B7280',
-    flex: 1,
-  },
-});

@@ -1,11 +1,11 @@
 import RenderListItem from "@src/components/RenderListItem/RenderListItem";
-import { COLORS } from "@src/constants/Colors";
-import { RootStackParamList, RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackParamList, RootStackScreenProps } from "@src/navigations/type";
 import { useShippingMode } from "@src/store/shippingMode";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useMemo } from "react";
 import { View, StyleSheet, Text, Pressable } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 type Item = {
    id: string;
@@ -22,6 +22,29 @@ const ShippingMethod = ({ navigation }: RootStackScreenProps<"ShippingMethod">) 
    const [selectedItem, setSelectedItem] = useState<DataType[number] | undefined>(undefined);
    const setType = useShippingMode((state) => state.setType);
    const items = list;
+   const { colors, isDark } = useAppTheme();
+
+   const styles = useMemo(() => StyleSheet.create({
+      container: {
+         flex: 1,
+         backgroundColor: colors.background.default,
+      },
+      userName: {
+         fontSize: 20,
+         fontWeight: "bold",
+      },
+      userRole: {
+         fontSize: 14,
+         color: colors.text.secondary,
+      },
+      buttonContainer: {
+         position: "absolute",
+         bottom: 0,
+         width: "100%",
+         padding: 20,
+         backgroundColor: colors.background.card,
+      },
+   }), [colors, isDark]);
 
    const handleTypeChange = (item: Item) => {
       setType(item.title);
@@ -48,27 +71,5 @@ const ShippingMethod = ({ navigation }: RootStackScreenProps<"ShippingMethod">) 
       </SafeAreaView>
    );
 };
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: COLORS.white,
-   },
-   userName: {
-      fontSize: 20,
-      fontWeight: "bold",
-   },
-   userRole: {
-      fontSize: 14,
-      color: "#666",
-   },
-   buttonContainer: {
-      position: "absolute",
-      bottom: 0,
-      width: "100%",
-      padding: 20,
-      backgroundColor: "white",
-   },
-});
 
 export default ShippingMethod;

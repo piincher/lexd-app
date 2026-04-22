@@ -9,27 +9,37 @@ import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 
 interface GoodsListHeaderProps {
   total: number;
   pendingCount: number;
 }
 
-export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({ total, pendingCount }) => (
-  <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
-    <View style={styles.headerTop}>
-      <View>
-        <Text style={styles.greeting}>Bonjour! 👋</Text>
-        <Text style={styles.title}>Marchandises</Text>
+export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({ total, pendingCount }) => {
+  const navigation = useNavigation();
+  return (
+    <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
+      <View style={styles.headerTop}>
+        <View>
+          <Text style={styles.greeting}>Bonjour! 👋</Text>
+          <Text style={styles.title}>Marchandises</Text>
+        </View>
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color={Theme.neutral[800]}
+        />
       </View>
-    </View>
 
-    <View style={styles.statsRow}>
-      <StatCard value={total} label="Total" icon="cube" gradient={Theme.gradients.primary} />
-      <StatCard value={pendingCount} label="En attente" icon="time" gradient={Theme.gradients.ocean} />
-    </View>
-  </LinearGradient>
-);
+      <View style={styles.statsRow}>
+        <StatCard value={total} label="Total" icon="cube" gradient={Theme.gradients.primary} />
+        <StatCard value={pendingCount} label="En attente" icon="time" gradient={Theme.gradients.ocean} />
+      </View>
+    </LinearGradient>
+  );
+};
 
 interface StatCardProps {
   value: number;
@@ -81,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.md,
     ...Theme.shadows.sm,

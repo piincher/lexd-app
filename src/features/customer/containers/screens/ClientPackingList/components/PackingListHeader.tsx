@@ -3,10 +3,13 @@
  * App bar header with back button and actions for packing list screen
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Appbar, ProgressBar } from 'react-native-paper';
-import { styles } from '../ClientPackingListScreen.styles';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from '../ClientPackingListScreen.styles';
 
 export interface PackingListHeaderProps {
   onBack: () => void;
@@ -21,13 +24,21 @@ export const PackingListHeader: React.FC<PackingListHeaderProps> = ({
   onShare,
   downloadProgress,
 }) => {
+  const navigation = useNavigation();
   const isDownloading = downloadProgress > 0;
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View>
       <Appbar.Header style={styles.header}>
         <Appbar.BackAction onPress={onBack} />
         <Appbar.Content title="Liste de Colisage" />
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={22}
+          color={colors.text.primary}
+        />
         <Appbar.Action
           icon="file-download"
           onPress={onDownload}

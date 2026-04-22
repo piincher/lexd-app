@@ -52,7 +52,7 @@ export const ClientOrderCard: React.FC<ClientOrderCardProps> = ({ order, onPress
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     padding: Theme.spacing.md,
     marginBottom: Theme.spacing.md,

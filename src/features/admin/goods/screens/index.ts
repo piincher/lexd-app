@@ -9,17 +9,23 @@ export { default as GoodsListScreenDefault } from './GoodsListScreen';
 // GoodsDetailScreen
 export { GoodsDetailScreen } from './GoodsDetailScreen';
 export { 
-  StatusBadge,
   GoodsDetailHeader,
-  GoodsDetailInfo,
-  GoodsDetailPhysicalProps,
-  GoodsDetailLocation,
-  GoodsDetailPricing,
-  GoodsDetailReception,
-  GoodsDetailQRCode,
-  GoodsDetailPhoto,
-  GoodsDetailActions,
-  GoodsDetailSkeleton,
+  GoodsPhotoSection,
+  GoodsDetailProperties,
+  GoodsDetailTimeline,
+  GoodsDetailFinancial,
+  QRCard,
+  PhotoCard,
+  DescriptionCard,
+  ClientCard,
+  PropertiesCard,
+  LocationCard,
+  FinancialCard,
+  ReceptionCard,
+  ActionButtons,
+  AssignContainerDialog,
+  LoadingState,
+  ErrorState,
 } from './GoodsDetailScreen/components';
 export { useGoodsDetailScreen } from './GoodsDetailScreen/hooks';
 

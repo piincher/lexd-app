@@ -30,8 +30,6 @@ export { goodsQueryKeys } from './useGoods';
 // SCREEN-SPECIFIC HOOKS
 // ============================================
 export { useGoodsList } from './useGoodsList';
-export { useGoodsDetail } from './useGoodsDetail';
-export { useGoodsDetailScreen } from './useGoodsDetailScreen';
 // Note: useReceiveGoods mutation hook is exported from useGoods.ts above
 export { useReceiveGoodsForm } from './useReceiveGoodsForm';
 

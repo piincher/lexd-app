@@ -7,7 +7,7 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { MotiView } from "moti";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { navigationProps } from "@src/navigations/type";
+import type { navigationProps } from "@src/navigations/type";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMyBadges, useCheckBadges } from "../../hooks/useBadges";
 import { BadgeItem } from "./BadgeItem";

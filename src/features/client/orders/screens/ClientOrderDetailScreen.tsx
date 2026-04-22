@@ -42,7 +42,7 @@ export const ClientOrderDetailScreen: React.FC = () => {
   const { order, activePackages } = data;
 
   return (
-    <Screen header={{ title: 'Détails de la Commande', showBack: true }}>
+    <Screen header={{ title: 'Détails de la Commande', showBack: true, showNotificationBell: true }}>
       <View style={styles.container}>
         <OrderHeader order={order} />
         <OrderSummary order={order} />

@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   wrapper: {
     marginBottom: 12,
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 14,
     shadowColor: "#000",

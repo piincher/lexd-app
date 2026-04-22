@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text } from "react-native";
 import { Card } from "react-native-paper";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Fonts } from "@src/constants/Fonts";
-import styles from "../Stats.styles";
+import { createStyles } from "../Stats.styles";
 
 interface QuickStatsProps {
   totalShipments: number;
@@ -20,42 +20,45 @@ interface StatCardProps {
   color: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ label, value, color }) => (
-  <View style={styles.statItem}>
-    <Text style={[styles.statLabel, { color }]}>{label}</Text>
-    <Text style={[styles.statValue, { color }]}>{value}</Text>
-  </View>
-);
-
 export const QuickStats: React.FC<QuickStatsProps> = ({
   totalShipments,
   statusCounts,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
+  const StatCard: React.FC<StatCardProps> = ({ label, value, color }) => (
+    <View style={styles.statItem}>
+      <Text style={[styles.statLabel, { color }]}>{label}</Text>
+      <Text style={[styles.statValue, { color }]}>{value}</Text>
+    </View>
+  );
+
   return (
-    <Card style={[styles.statsCard, { backgroundColor: COLORS.Silver }]}>
-      <Text style={[styles.sectionTitle, { color: COLORS.black }]}>
+    <Card style={[styles.statsCard, { backgroundColor: colors.background.paper }]}>
+      <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
         Statistiques
       </Text>
       <View style={styles.statsRow}>
         <StatCard
           label="Total des expéditions"
           value={totalShipments.toString()}
-          color={COLORS.blue}
+          color={colors.primary.main}
         />
         <StatCard
           label="Chargé"
           value={statusCounts.Active.toString()}
-          color={COLORS.orange}
+          color={colors.status.warning}
         />
         <StatCard
           label="In Transit"
           value={statusCounts["In Transit"].toString()}
-          color={COLORS.green}
+          color={colors.status.success}
         />
         <StatCard
           label="Livré"
           value={statusCounts.Delivered.toString()}
-          color={COLORS.redShade}
+          color={colors.status.error}
         />
       </View>
     </Card>

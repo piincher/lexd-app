@@ -3,12 +3,12 @@
  * Master toggle for push notifications with permission warning
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet, Switch } from "react-native";
 import { Card, Text } from "react-native-paper";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface NotificationChannelTogglesProps {
   enabled: boolean;
@@ -21,6 +21,67 @@ export const NotificationChannelToggles: React.FC<NotificationChannelTogglesProp
   permissionStatus,
   onToggle,
 }) => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        card: {
+          marginBottom: 16,
+          borderRadius: 12,
+          elevation: 2,
+          backgroundColor: colors.background.default,
+        },
+        masterToggle: {
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        },
+        masterToggleLeft: {
+          flexDirection: "row",
+          alignItems: "center",
+          flex: 1,
+        },
+        iconContainer: {
+          width: 48,
+          height: 48,
+          borderRadius: 12,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+        masterToggleText: {
+          marginLeft: 16,
+        },
+        masterToggleTitle: {
+          fontSize: 16,
+          fontWeight: "600",
+          color: colors.text.primary,
+        },
+        masterToggleSubtitle: {
+          fontSize: 14,
+          color: colors.text.secondary,
+          marginTop: 2,
+        },
+        warningCard: {
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: colors.background.paper,
+          padding: 12,
+          borderRadius: 8,
+          marginBottom: 16,
+          borderWidth: 1,
+          borderColor: "#FCD34D",
+        },
+        warningText: {
+          flex: 1,
+          marginLeft: 8,
+          fontSize: 14,
+          color: "#92400E",
+        },
+      }),
+    [colors]
+  );
+
   return (
     <>
       <Card style={styles.card}>
@@ -29,13 +90,13 @@ export const NotificationChannelToggles: React.FC<NotificationChannelTogglesProp
             <View
               style={[
                 styles.iconContainer,
-                { backgroundColor: enabled ? COLORS.primary : "#E5E7EB" },
+                { backgroundColor: enabled ? colors.primary.main : colors.neutral[200] },
               ]}
             >
               <Ionicons
                 name={enabled ? "notifications" : "notifications-off"}
                 size={24}
-                color={enabled ? "#FFF" : "#6B7280"}
+                color={enabled ? colors.background.default : colors.text.secondary}
               />
             </View>
             <View style={styles.masterToggleText}>
@@ -48,8 +109,8 @@ export const NotificationChannelToggles: React.FC<NotificationChannelTogglesProp
           <Switch
             value={enabled}
             onValueChange={onToggle}
-            trackColor={{ false: "#E5E7EB", true: COLORS.primary + "50" }}
-            thumbColor={enabled ? COLORS.primary : "#FFF"}
+            trackColor={{ false: colors.neutral[200], true: colors.primary.main + "50" }}
+            thumbColor={enabled ? colors.primary.main : colors.background.default}
           />
         </Card.Content>
       </Card>
@@ -65,58 +126,3 @@ export const NotificationChannelToggles: React.FC<NotificationChannelTogglesProp
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 16,
-    borderRadius: 12,
-    elevation: 2,
-    backgroundColor: "#FFF",
-  },
-  masterToggle: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  masterToggleLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-  },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  masterToggleText: {
-    marginLeft: 16,
-  },
-  masterToggleTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: COLORS.dark,
-  },
-  masterToggleSubtitle: {
-    fontSize: 14,
-    color: "#6B7280",
-    marginTop: 2,
-  },
-  warningCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFFBEB",
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#FCD34D",
-  },
-  warningText: {
-    flex: 1,
-    marginLeft: 8,
-    fontSize: 14,
-    color: "#92400E",
-  },
-});

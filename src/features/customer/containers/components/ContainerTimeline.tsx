@@ -3,7 +3,7 @@
  * Maersk-style visual timeline showing container journey
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -11,7 +11,7 @@ import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { ContainerTimeline as ContainerTimelineType, CustomerContainerStatus, CUSTOMER_STATUS_COLORS, CUSTOMER_TIMELINE_STEPS } from '../types';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ContainerTimelineProps {
   timeline: ContainerTimelineType;
@@ -97,13 +97,110 @@ const getStepIcon = (
   return iconMap[stepKey];
 };
 
+/**
+ * Get progress bar width based on current status
+ */
+const getProgressWidth = (status: CustomerContainerStatus) => {
+  const widths = {
+    BOOKED: '0%',
+    IN_TRANSIT: '25%',
+    ARRIVED: '50%',
+    READY_FOR_PICKUP: '75%',
+    DELIVERED: '100%',
+  } as const;
+  return widths[status] || '0%';
+};
+
 export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
   timeline,
   currentStatus,
   estimatedArrival,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
   const primaryColor = theme.colors.primary;
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      marginVertical: 16,
+    },
+    progressBarContainer: {
+      height: 4,
+      marginHorizontal: 24,
+      marginBottom: -14,
+      position: 'relative',
+    },
+    progressBarBackground: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: colors.neutral[200],
+      borderRadius: 2,
+    },
+    progressBarFill: {
+      height: '100%',
+      borderRadius: 2,
+    },
+    stepsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingHorizontal: 16,
+    },
+    stepWrapper: {
+      alignItems: 'center',
+      flex: 1,
+    },
+    stepDot: {
+      width: 28,
+      height: 28,
+      borderRadius: 14,
+      backgroundColor: colors.neutral[200],
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 8,
+    },
+    stepDotCompleted: {
+      backgroundColor: colors.status.success,
+    },
+    stepDotCurrent: {
+      backgroundColor: colors.background.card,
+      borderWidth: 3,
+      transform: [{ scale: 1.1 }],
+    },
+    stepDotFuture: {
+      backgroundColor: colors.background.paper,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    stepLabel: {
+      fontSize: 11,
+      fontFamily: Fonts.meduim,
+      color: colors.text.primary,
+      textAlign: 'center',
+      marginBottom: 4,
+    },
+    stepLabelCurrent: {
+      fontFamily: Fonts.bold,
+    },
+    stepLabelFuture: {
+      color: colors.text.secondary,
+    },
+    stepDate: {
+      fontSize: 10,
+      fontFamily: Fonts.regular,
+      textAlign: 'center',
+    },
+    stepDateCompleted: {
+      color: colors.text.primary,
+    },
+    stepDateFuture: {
+      color: colors.text.secondary,
+    },
+    estimatedText: {
+      fontSize: 9,
+      fontFamily: Fonts.meduim,
+      marginTop: 4,
+      textAlign: 'center',
+    },
+  }), [colors, isDark]);
 
   return (
     <View style={styles.container}>
@@ -153,7 +250,7 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
                   <MaterialCommunityIcons
                     name={getStepIcon(step.key)}
                     size={14}
-                    color={COLORS.DimGray}
+                    color={colors.text.secondary}
                   />
                 )}
               </View>
@@ -196,101 +293,3 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
     </View>
   );
 };
-
-/**
- * Get progress bar width based on current status
- */
-const getProgressWidth = (status: CustomerContainerStatus): string => {
-  const widths: Record<CustomerContainerStatus, string> = {
-    BOOKED: '0%',
-    IN_TRANSIT: '25%',
-    ARRIVED: '50%',
-    READY_FOR_PICKUP: '75%',
-    DELIVERED: '100%',
-  };
-  return widths[status] || '0%';
-};
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: 16,
-  },
-  progressBarContainer: {
-    height: 4,
-    marginHorizontal: 24,
-    marginBottom: -14,
-    position: 'relative',
-  },
-  progressBarBackground: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: COLORS.Silver,
-    borderRadius: 2,
-  },
-  progressBarFill: {
-    height: '100%',
-    borderRadius: 2,
-    transitionProperty: 'width',
-    transitionDuration: '300ms',
-  },
-  stepsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-  },
-  stepWrapper: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  stepDot: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: COLORS.Silver,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  stepDotCompleted: {
-    backgroundColor: COLORS.green,
-  },
-  stepDotCurrent: {
-    backgroundColor: '#FFFFFF',
-    borderWidth: 3,
-    transform: [{ scale: 1.1 }],
-  },
-  stepDotFuture: {
-    backgroundColor: '#F1F5F9',
-    borderWidth: 1,
-    borderColor: COLORS.Silver,
-  },
-  stepLabel: {
-    fontSize: 11,
-    fontFamily: Fonts.meduim,
-    color: COLORS.DarkGrey,
-    textAlign: 'center',
-    marginBottom: 4,
-  },
-  stepLabelCurrent: {
-    fontFamily: Fonts.bold,
-  },
-  stepLabelFuture: {
-    color: COLORS.DimGray,
-  },
-  stepDate: {
-    fontSize: 10,
-    fontFamily: Fonts.regular,
-    textAlign: 'center',
-  },
-  stepDateCompleted: {
-    color: COLORS.DarkGrey,
-  },
-  stepDateFuture: {
-    color: COLORS.SlateGray,
-  },
-  estimatedText: {
-    fontSize: 9,
-    fontFamily: Fonts.meduim,
-    marginTop: 4,
-    textAlign: 'center',
-  },
-});

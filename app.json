@@ -66,6 +66,10 @@
       "config": {
         "usesNonExemptEncryption": false
       },
+      "associatedDomains": [
+        "applinks:chinalinkexpress.com",
+        "applinks:www.chinalinkexpress.com"
+      ],
       "infoPlist": {
         "LSApplicationQueriesSchemes": [
           "itms-apps"
@@ -83,6 +87,25 @@
       },
       "googleServicesFile": "./google-services.json",
       "package": "com.nuvotech.chinalinkexpress",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "chinalinkexpress.com",
+              "pathPrefix": "/"
+            },
+            {
+              "scheme": "https",
+              "host": "www.chinalinkexpress.com",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
       "notification": {
         "color": "#8B5CF6",
         "androidMode": "default",

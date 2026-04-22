@@ -8,25 +8,39 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '@src/constants/Fonts';
 
 interface SmsBalanceHeaderProps {
   smsBalance: number;
+  hasExpiringSoon?: boolean;
+  hasExpired?: boolean;
   onBack: () => void;
 }
 
 export const SmsBalanceHeader: React.FC<SmsBalanceHeaderProps> = ({
   smsBalance,
+  hasExpiringSoon = false,
+  hasExpired = false,
   onBack,
 }) => {
+  const navigation = useNavigation();
+
   const balanceStatus =
-    smsBalance > 100 ? 'good' : smsBalance > 20 ? 'low' : 'critical';
+    hasExpired ? 'critical' :
+    hasExpiringSoon ? 'low' :
+    smsBalance > 100 ? 'good' :
+    smsBalance > 20 ? 'low' : 'critical';
+
   const statusColor =
     balanceStatus === 'good'
       ? '#10B981'
       : balanceStatus === 'low'
         ? '#F59E0B'
         : '#EF4444';
+
+  const alertIcon = hasExpired ? 'alert-circle' : hasExpiringSoon ? 'warning' : undefined;
 
   return (
     <View style={styles.container}>
@@ -36,15 +50,25 @@ export const SmsBalanceHeader: React.FC<SmsBalanceHeaderProps> = ({
         </TouchableOpacity>
         <View>
           <Text style={styles.title}>Envoyer SMS</Text>
-          <Text style={styles.subtitle}>Messagerie groupee</Text>
+          <Text style={styles.subtitle}>Messagerie groupée</Text>
         </View>
       </View>
 
-      <View style={[styles.balancePill, { backgroundColor: statusColor + '15' }]}>
-        <Ionicons name="chatbubble-ellipses" size={14} color={statusColor} />
-        <Text style={[styles.balanceText, { color: statusColor }]}>
-          {smsBalance} SMS
-        </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={22}
+          color={Theme.neutral[800]}
+        />
+        <View style={[styles.balancePill, { backgroundColor: statusColor + '15' }]}>
+          {alertIcon && (
+            <Ionicons name={alertIcon as any} size={14} color={statusColor} style={{ marginRight: 4 }} />
+          )}
+          <Ionicons name="chatbubble-ellipses" size={14} color={statusColor} />
+          <Text style={[styles.balanceText, { color: statusColor }]}>
+            {smsBalance} SMS
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -57,7 +81,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
     borderBottomColor: Theme.neutral[100],
   },
@@ -101,3 +125,5 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export default SmsBalanceHeader;

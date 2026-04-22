@@ -4,11 +4,11 @@
  * SRP: Display export action buttons
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Button, useTheme } from 'react-native-paper';
-import { COLORS } from '@src/constants/Colors';
-import { styles } from './PackingListExportActions.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './PackingListExportActions.styles';
 
 interface PackingListExportActionsProps {
   onShare: () => void;
@@ -22,6 +22,8 @@ export const PackingListExportActions: React.FC<PackingListExportActionsProps> =
   isDownloading,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.actionBar}>

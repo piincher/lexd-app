@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.sm,
     overflow: 'hidden',
   },

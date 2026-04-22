@@ -6,6 +6,7 @@
 
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, ScrollView } from 'react-native';
+import { Theme } from '@src/constants/Theme';
 import { ClientGoodsGroup } from '../../../types/packingList';
 
 interface ClientSelectorProps {
@@ -115,7 +116,7 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     marginHorizontal: 16,
     marginVertical: 12,
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     borderWidth: 1,
-    borderColor: '#e5e7eb',
+    borderColor: Theme.neutral[200],
   },
   label: {
     fontSize: 12,
@@ -140,7 +141,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: '#f9fafb',
+    backgroundColor: Theme.colors.neutral[50],
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 14,
@@ -164,7 +165,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: '#ffffff',
+    backgroundColor: Theme.colors.background.card,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: '70%',
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#e5e7eb',
+    borderBottomColor: Theme.neutral[200],
   },
   modalTitle: {
     fontSize: 18,
@@ -197,7 +198,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
+    borderBottomColor: Theme.colors.neutral[100],
   },
   clientItemSelected: {
     backgroundColor: '#f0fdf4',

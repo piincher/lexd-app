@@ -4,6 +4,7 @@ import { View, StyleSheet } from "react-native";
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
 import { MotiView } from "moti";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import Animated, {
    Easing,
    useAnimatedStyle,
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const SocialMedia: FC<Props> = ({ color }: Props) => {
+   const { isDark } = useAppTheme();
    const _handlePressButtonAsync = async (url: string) => {
       await WebBrowser.openBrowserAsync(url);
    };
@@ -80,7 +82,7 @@ const SocialMedia: FC<Props> = ({ color }: Props) => {
             from={{ opacity: 0, translateY: 50 }}
             animate={{ opacity: 1, translateY: 0 }}
             transition={{ type: "spring", delay: 200 }}
-            style={styles.iconContainer}
+            style={[styles.iconContainer, { backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)' }]}
          >
             <SocialIcon
                IconComponent={AnimatedIcon}
@@ -117,7 +119,6 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       gap: 30,
       paddingVertical: 20,
-      backgroundColor: "rgba(255,255,255,0.15)",
       borderRadius: 30,
       marginHorizontal: 20,
       shadowColor: "#000",

@@ -7,8 +7,8 @@ import React, { useState, useEffect } from "react";
 import { View, StyleSheet, TextInput } from "react-native";
 import { Card, Text, IconButton, Button } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useGoodsReview, useSubmitReview } from "../../hooks/useReviews";
 
 // ------------------------------------
@@ -28,6 +28,8 @@ const StarRating: React.FC<StarRatingProps> = ({
   disabled,
   size = 36,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <View style={styles.starContainer}>
       {[1, 2, 3, 4, 5].map((star) => (
@@ -35,7 +37,7 @@ const StarRating: React.FC<StarRatingProps> = ({
           key={star}
           icon={star <= rating ? "star" : "star-outline"}
           size={size}
-          iconColor={star <= rating ? "#FFB800" : COLORS.grey}
+          iconColor={star <= rating ? "#FFB800" : colors.text.disabled}
           onPress={() => !disabled && onRatingChange(star)}
           disabled={disabled}
           style={styles.starButton}
@@ -60,6 +62,7 @@ export const ReviewPrompt: React.FC<ReviewPromptProps> = ({
   goodsLabel,
   onReviewSubmitted,
 }) => {
+  const { colors } = useAppTheme();
   const { data: existingReview, isLoading: isLoadingReview } =
     useGoodsReview(goodsId);
   const submitMutation = useSubmitReview();
@@ -160,9 +163,9 @@ export const ReviewPrompt: React.FC<ReviewPromptProps> = ({
         <StarRating rating={rating} onRatingChange={setRating} />
 
         <TextInput
-          style={styles.commentInput}
+          style={[styles.commentInput, { borderColor: colors.border, color: colors.text.primary, backgroundColor: colors.background.card }]}
           placeholder="Ajoutez un commentaire (facultatif)"
-          placeholderTextColor={COLORS.grey}
+          placeholderTextColor={colors.text.disabled}
           value={comment}
           onChangeText={setComment}
           multiline
@@ -180,6 +183,7 @@ export const ReviewPrompt: React.FC<ReviewPromptProps> = ({
           disabled={rating === 0 || submitMutation.isPending}
           style={styles.submitButton}
           labelStyle={styles.submitButtonLabel}
+          buttonColor={colors.primary.main}
         >
           Envoyer mon avis
         </Button>
@@ -209,20 +213,20 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: Fonts.meduim,
     fontSize: 16,
-    color: COLORS.DarkGrey,
+    color: '#1F2937',
     textAlign: "center",
   },
   goodsLabel: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DimGray,
+    color: '#6B7280',
     textAlign: "center",
     marginTop: 4,
   },
   subtitle: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DimGray,
+    color: '#6B7280',
     textAlign: "center",
     marginTop: 4,
     marginBottom: 4,
@@ -240,19 +244,16 @@ const styles = StyleSheet.create({
     minHeight: 80,
     maxHeight: 150,
     borderWidth: 1,
-    borderColor: COLORS.grey,
     borderRadius: 8,
     padding: 12,
     marginTop: 8,
     fontFamily: Fonts.regular,
     fontSize: 14,
-    color: '#000000',
-    backgroundColor: COLORS.white,
   },
   charCount: {
     fontFamily: Fonts.regular,
     fontSize: 11,
-    color: COLORS.grey,
+    color: '#9CA3AF',
     alignSelf: "flex-end",
     marginTop: 4,
   },
@@ -267,20 +268,20 @@ const styles = StyleSheet.create({
   },
   successIcon: {
     fontSize: 32,
-    color: COLORS.green,
+    color: '#22C55E',
     marginBottom: 8,
   },
   successText: {
     fontFamily: Fonts.meduim,
     fontSize: 16,
-    color: COLORS.green,
+    color: '#22C55E',
     textAlign: "center",
     marginBottom: 4,
   },
   commentPreview: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DimGray,
+    color: '#6B7280',
     textAlign: "center",
     marginTop: 4,
     fontStyle: "italic",
@@ -288,7 +289,7 @@ const styles = StyleSheet.create({
   thanksText: {
     fontFamily: Fonts.meduim,
     fontSize: 14,
-    color: COLORS.green,
+    color: '#22C55E',
     textAlign: "center",
     marginTop: 8,
   },

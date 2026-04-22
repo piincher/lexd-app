@@ -1,73 +1,32 @@
-/**
- * DashboardErrorState
- * Error state view for dashboard loading failures
- */
-
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Appbar, Text, Button, useTheme } from 'react-native-paper';
+import { Text, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
-export interface DashboardErrorStateProps {
-  message?: string;
+interface Props {
+  message: string;
   onRetry: () => void;
 }
 
-export const DashboardErrorState: React.FC<DashboardErrorStateProps> = ({
-  message = 'Impossible de charger le tableau de bord',
-  onRetry,
-}) => {
-  const theme = useTheme();
-
+export const DashboardErrorState: React.FC<Props> = ({ message, onRetry }) => {
+  const { colors } = useAppTheme();
   return (
-    <View style={styles.container}>
-      <Appbar.Header>
-        <Appbar.Content title="Tableau de Bord" />
-      </Appbar.Header>
-      <View style={styles.content}>
-        <MaterialCommunityIcons
-          name="alert-circle-outline"
-          size={64}
-          color={theme.colors.error}
-        />
-        <Text style={styles.title}>Erreur de chargement</Text>
-        <Text style={[styles.message, { color: Theme.neutral[500] }]}>
-          {message}
-        </Text>
-        <Button mode="contained" onPress={onRetry} style={styles.button}>
-          Réessayer
-        </Button>
-      </View>
+    <View style={[styles.container, { backgroundColor: colors.background.default }]}>
+      <MaterialCommunityIcons name="alert-circle-outline" size={64} color={colors.status.error} />
+      <Text style={[styles.title, { color: colors.text.primary }]}>Erreur de chargement</Text>
+      <Text style={[styles.subtitle, { color: colors.text.secondary }]}>{message}</Text>
+      <Button mode="contained" onPress={onRetry} style={{ marginTop: 20 }}>
+        Réessayer
+      </Button>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.neutral[50],
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: Theme.spacing['3xl'],
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-    marginTop: Theme.spacing.lg,
-  },
-  message: {
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: Theme.spacing.sm,
-  },
-  button: {
-    marginTop: Theme.spacing.xl,
-  },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 32 },
+  title: { fontSize: 18, fontWeight: '700', marginTop: 16 },
+  subtitle: { fontSize: 14, textAlign: 'center', marginTop: 8 },
 });
 
 export default DashboardErrorState;

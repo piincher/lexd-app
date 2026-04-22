@@ -15,7 +15,8 @@ export type CampaignStatus =
 export type TargetSegment =
   | "all"
   | "active_customers"
-  | "inactive_customers";
+  | "inactive_customers"
+  | "container_customers";
 
 export interface CampaignRecord {
   _id: string;
@@ -24,6 +25,7 @@ export interface CampaignRecord {
   scheduledAt: string;
   status: CampaignStatus;
   targetSegment: TargetSegment;
+  containerId?: string | null;
   sentCount: number;
   failedCount: number;
   batchId: string | null;
@@ -42,6 +44,7 @@ export interface CreateCampaignInput {
   body: string;
   scheduledAt: string; // ISO string
   targetSegment: TargetSegment;
+  containerId?: string;
   status: "draft" | "scheduled";
 }
 

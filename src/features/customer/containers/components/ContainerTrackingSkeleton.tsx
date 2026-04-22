@@ -12,6 +12,7 @@ import { ShimmerBlock } from '@src/shared/ui';
 const WaypointSkeletonItem: React.FC<{ showConnector?: boolean }> = ({
   showConnector = true,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View>
       {showConnector && (
@@ -19,7 +20,7 @@ const WaypointSkeletonItem: React.FC<{ showConnector?: boolean }> = ({
           <ShimmerBlock width={3} height={24} borderRadius={2} />
         </View>
       )}
-      <View style={styles.waypointCard}>
+      <View style={[styles.waypointCard, { backgroundColor: colors.background.card }]}>
         <ShimmerBlock width="100%" height={4} borderRadius={0} />
         <View style={styles.waypointContent}>
           <View style={styles.wpHeader}>
@@ -123,7 +124,7 @@ export const ContainerTrackingSkeleton: React.FC = () => {
             style={{ marginBottom: 16 }}
           />
           {[...Array(5)].map((_, i) => (
-            <View key={i} style={styles.timelineDetailRow}>
+            <View key={i} style={[styles.timelineDetailRow, { borderBottomColor: colors.border }]}>
               <ShimmerBlock width={100} height={14} borderRadius={3} />
               <ShimmerBlock width={120} height={14} borderRadius={3} />
             </View>
@@ -176,7 +177,7 @@ export const ContainerTrackingSkeleton: React.FC = () => {
             borderRadius={3}
             style={{ marginBottom: 12 }}
           />
-          <View style={styles.contactInfo}>
+          <View style={[styles.contactInfo, { backgroundColor: cardBg }]}>
             <ShimmerBlock width="100%" height={14} borderRadius={3} />
           </View>
           <ShimmerBlock
@@ -244,7 +245,6 @@ const styles = StyleSheet.create({
     height: 24,
   },
   waypointCard: {
-    backgroundColor: '#FFFFFF',
     borderRadius: 16,
     overflow: 'hidden',
     shadowColor: '#000',
@@ -285,7 +285,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 8,
     borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
   },
   goodsSectionHeader: {
     flexDirection: 'row',
@@ -314,7 +313,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   contactInfo: {
-    backgroundColor: '#FFFFFF',
     padding: 12,
     borderRadius: 8,
     marginBottom: 12,

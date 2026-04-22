@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 
 interface HeaderProps {
   containerNumber: string;
@@ -15,6 +17,7 @@ export const Header: React.FC<HeaderProps> = ({
   onBack,
   onSave,
 }) => {
+  const navigation = useNavigation();
   return (
     <LinearGradient
       colors={[Theme.primary[600], Theme.primary[800]]}
@@ -27,9 +30,16 @@ export const Header: React.FC<HeaderProps> = ({
           <Ionicons name="arrow-back" size={24} color="#FFF" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Gestion Waypoints</Text>
-        <TouchableOpacity style={styles.saveIconButton} onPress={onSave}>
-          <Ionicons name="save" size={22} color="#FFF" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <TouchableOpacity style={styles.saveIconButton} onPress={onSave}>
+            <Ionicons name="save" size={22} color="#FFF" />
+          </TouchableOpacity>
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={22}
+            color="#FFF"
+          />
+        </View>
       </View>
       <Text style={styles.headerSubtitle}>{containerNumber}</Text>
     </LinearGradient>

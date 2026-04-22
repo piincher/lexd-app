@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F7FC',
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   formCard: {
     borderRadius: Theme.radius['2xl'],
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     ...Theme.shadows.md,
   },
   formContent: {

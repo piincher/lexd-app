@@ -14,10 +14,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { DatePickerModal } from "react-native-paper-dates";
 import { showMessage } from "react-native-flash-message";
+import { NotificationBell } from "@src/features/notifications";
 
 import { Fonts } from "@src/constants/Fonts";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { useCreateCampaign } from "../hooks/useCampaigns";
+import { useGetAllContainers } from "../../containers/hooks/useContainers";
 import type { TargetSegment } from "../api/campaignApi";
 
 // ── Constants ─────────────────────────────────────────────────────────────
@@ -38,6 +40,11 @@ const SEGMENT_OPTIONS: { label: string; sublabel: string; value: TargetSegment }
     sublabel: "Pas de connexion depuis plus de 90 jours",
     value: "inactive_customers",
   },
+  {
+    label: "Clients d'un conteneur",
+    sublabel: "Envoyer aux clients avec marchandises dans un conteneur",
+    value: "container_customers",
+  },
 ];
 
 // ── Screen ────────────────────────────────────────────────────────────────
@@ -53,8 +60,10 @@ const CreateCampaignScreen = ({
   );
   const [saveAsDraft, setSaveAsDraft] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedContainerId, setSelectedContainerId] = useState<string | null>(null);
 
   const { mutate: createCampaign, isPending } = useCreateCampaign();
+  const { data: containersData, isLoading: isLoadingContainers } = useGetAllContainers();
 
   const formatScheduledDate = (date: Date) =>
     date.toLocaleDateString("fr-FR", {
@@ -74,6 +83,10 @@ const CreateCampaignScreen = ({
       showMessage({ message: "Le message est requis", type: "warning" });
       return;
     }
+    if (segment === "container_customers" && !selectedContainerId) {
+      showMessage({ message: "Veuillez sélectionner un conteneur", type: "warning" });
+      return;
+    }
     if (!saveAsDraft && scheduledDate <= new Date()) {
       showMessage({
         message: "La date de planification doit être dans le futur",
@@ -88,6 +101,7 @@ const CreateCampaignScreen = ({
         body: body.trim(),
         scheduledAt: scheduledDate.toISOString(),
         targetSegment: segment,
+        containerId: selectedContainerId || undefined,
         status: saveAsDraft ? "draft" : "scheduled",
       },
       {
@@ -106,7 +120,10 @@ const CreateCampaignScreen = ({
     );
   };
 
-  const isValid = title.trim().length > 0 && body.trim().length > 0;
+  const isValid =
+    title.trim().length > 0 &&
+    body.trim().length > 0 &&
+    (segment !== "container_customers" || !!selectedContainerId);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -116,7 +133,11 @@ const CreateCampaignScreen = ({
           <Ionicons name="arrow-back" size={24} color="#111827" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Nouvelle campagne</Text>
-        <View style={{ width: 24 }} />
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color="#111827"
+        />
       </View>
 
       <KeyboardAvoidingView
@@ -187,7 +208,12 @@ const CreateCampaignScreen = ({
                   styles.segmentOption,
                   segment === opt.value && styles.segmentOptionActive,
                 ]}
-                onPress={() => setSegment(opt.value)}
+                onPress={() => {
+                  setSegment(opt.value);
+                  if (opt.value !== "container_customers") {
+                    setSelectedContainerId(null);
+                  }
+                }}
               >
                 <View style={styles.segmentRadio}>
                   {segment === opt.value && (
@@ -208,6 +234,53 @@ const CreateCampaignScreen = ({
               </TouchableOpacity>
             ))}
           </View>
+
+          {/* Container Picker */}
+          {segment === "container_customers" && (
+            <View style={styles.field}>
+              <Text style={styles.label}>Conteneur cible</Text>
+              {isLoadingContainers ? (
+                <ActivityIndicator size="small" color="#8B5CF6" />
+              ) : (
+                <View style={styles.containerList}>
+                  {(containersData?.data?.containers || containersData?.data || []).map(
+                    (container: any) => {
+                      const isSelected = selectedContainerId === container._id;
+                      return (
+                        <TouchableOpacity
+                          key={container._id}
+                          style={[
+                            styles.containerItem,
+                            isSelected && styles.containerItemActive,
+                          ]}
+                          onPress={() => setSelectedContainerId(container._id)}
+                        >
+                          <Ionicons
+                            name={isSelected ? "radio-button-on" : "radio-button-off"}
+                            size={18}
+                            color={isSelected ? "#8B5CF6" : "#D1D5DB"}
+                          />
+                          <View style={{ flex: 1 }}>
+                            <Text
+                              style={[
+                                styles.containerItemText,
+                                isSelected && styles.containerItemTextActive,
+                              ]}
+                            >
+                              {container.virtualContainerNumber || container.containerNumber}
+                            </Text>
+                            <Text style={styles.containerItemSubtext}>
+                              {container.shippingMode} · {container.status}
+                            </Text>
+                          </View>
+                        </TouchableOpacity>
+                      );
+                    }
+                  )}
+                </View>
+              )}
+            </View>
+          )}
 
           {/* Schedule date */}
           {!saveAsDraft && (
@@ -321,7 +394,7 @@ const styles = StyleSheet.create({
   content: { padding: 16, gap: 20, paddingBottom: 40 },
 
   field: { gap: 8 },
-  label: { fontFamily: Fonts.semibold, fontSize: 14, color: "#374151" },
+  label: { fontFamily: Fonts.semiBold, fontSize: 14, color: "#374151" },
 
   input: {
     backgroundColor: "#fff",
@@ -351,7 +424,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   previewLabel: {
-    fontFamily: Fonts.semibold,
+    fontFamily: Fonts.semiBold,
     fontSize: 12,
     color: "#7C3AED",
     textTransform: "uppercase",
@@ -491,4 +564,35 @@ const styles = StyleSheet.create({
   },
   submitBtnDisabled: { backgroundColor: "#C4B5FD" },
   submitBtnText: { fontFamily: Fonts.bold, fontSize: 15, color: "#fff" },
+
+  containerList: { gap: 8 },
+  containerItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+  containerItemActive: {
+    borderColor: "#8B5CF6",
+    backgroundColor: "#FAFAFE",
+  },
+  containerItemText: {
+    fontFamily: Fonts.medium,
+    fontSize: 14,
+    color: "#374151",
+  },
+  containerItemTextActive: {
+    color: "#7C3AED",
+  },
+  containerItemSubtext: {
+    fontFamily: Fonts.regular,
+    fontSize: 12,
+    color: "#9CA3AF",
+    marginTop: 2,
+  },
 });

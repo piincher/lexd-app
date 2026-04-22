@@ -1,8 +1,8 @@
-import { COLORS } from "@src/constants/Colors";
-import { Fonts } from "@src/constants/Fonts";
-import React from "react";
+import React, { useMemo } from "react";
 import { Pressable, StyleSheet, Text, View, Platform } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { Fonts } from "@src/constants/Fonts";
 
 interface CategoryProps {
    statusChange: string;
@@ -17,6 +17,66 @@ export const Category = ({
    onStatusChange,
    status,
 }: CategoryProps) => {
+   const { colors } = useAppTheme();
+   const styles = useMemo(() => StyleSheet.create({
+      container: {
+         flexDirection: "row",
+         justifyContent: "space-between",
+         marginHorizontal: 10,
+         padding: 8,
+         backgroundColor: colors.background.paper,
+         borderRadius: 16,
+         shadowColor: "#000",
+         shadowOffset: { width: 0, height: 2 },
+         shadowOpacity: 0.08,
+         shadowRadius: 8,
+         elevation: 4,
+         marginBottom: 16,
+         borderWidth: 0.5,
+         borderColor: colors.border,
+      },
+      tab: {
+         flex: 1,
+         marginHorizontal: 4,
+         paddingVertical: 12,
+         borderRadius: 12,
+         alignItems: "center",
+         justifyContent: "center",
+         backgroundColor: "transparent",
+         borderWidth: 0.5,
+         borderColor: colors.border,
+      },
+      activeTab: {
+         backgroundColor: colors.primary.main,
+         shadowColor: "#000",
+         shadowOffset: { width: 0, height: 4 },
+         shadowOpacity: 0.2,
+         shadowRadius: 8,
+         elevation: 6,
+         borderWidth: 0,
+      },
+      pressedTab: {
+         opacity: Platform.OS === "web" ? 0.9 : 0.8,
+      },
+      tabContent: {
+         flexDirection: "row",
+         alignItems: "center",
+         gap: 8,
+      },
+      tabText: {
+         fontFamily: Fonts.meduim,
+         fontSize: 14,
+         fontWeight: "500",
+      },
+      activeTabText: {
+         fontFamily: Fonts.bold,
+         fontWeight: "600",
+      },
+      icon: {
+         marginRight: 4,
+      },
+   }), [colors]);
+
    const getStatusText = (title: string) => {
       switch (title) {
          case "Active":
@@ -46,13 +106,13 @@ export const Category = ({
    const getStatusColor = (title: string) => {
       switch (title) {
          case "Active":
-            return COLORS.blue;
+            return colors.primary.main;
          case "In Transit":
-            return COLORS.orange;
+            return colors.accent.gold;
          case "Delivered":
-            return COLORS.green;
+            return colors.status.success;
          default:
-            return COLORS.grey;
+            return colors.text.secondary;
       }
    };
 
@@ -85,14 +145,14 @@ export const Category = ({
                      <MaterialIcons
                         name={icon}
                         size={20}
-                        color={isActive ? COLORS.white : color}
+                        color={isActive ? colors.text.inverse : color}
                         style={styles.icon}
                      />
                      <Text
                         style={[
                            styles.tabText,
                            isActive && styles.activeTabText,
-                           { color: isActive ? COLORS.white : color },
+                           { color: isActive ? colors.text.inverse : color },
                         ]}
                      >
                         {text}
@@ -104,62 +164,3 @@ export const Category = ({
       </View>
    );
 };
-
-export const styles = StyleSheet.create({
-   container: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginHorizontal: 10,
-      padding: 8,
-      backgroundColor: COLORS.lightBackground,
-      borderRadius: 16,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.08,
-      shadowRadius: 8,
-      elevation: 4,
-      marginBottom: 16,
-      borderWidth: 0.5,
-      borderColor: COLORS.border,
-   },
-   tab: {
-      flex: 1,
-      marginHorizontal: 4,
-      paddingVertical: 12,
-      borderRadius: 12,
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "transparent",
-      borderWidth: 0.5,
-      borderColor: COLORS.border,
-   },
-   activeTab: {
-      backgroundColor: COLORS.blue,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.2,
-      shadowRadius: 8,
-      elevation: 6,
-      borderWidth: 0,
-   },
-   pressedTab: {
-      opacity: Platform.OS === "web" ? 0.9 : 0.8,
-   },
-   tabContent: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 8,
-   },
-   tabText: {
-      fontFamily: Fonts.meduim,
-      fontSize: 14,
-      fontWeight: "500",
-   },
-   activeTabText: {
-      fontFamily: Fonts.bold,
-      fontWeight: "600",
-   },
-   icon: {
-      marginRight: 4,
-   },
-});

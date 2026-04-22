@@ -1,33 +1,21 @@
-/**
- * OnboardingScreen - Modern onboarding experience
- * Features: Animated backgrounds, smooth transitions, progress indicators
- */
-
-import React, { useCallback } from "react";
-import {
-  View,
-  StyleSheet,
-  Dimensions,
-  Animated,
-  StatusBar,
-} from "react-native";
-import { FlashList } from '@shopify/flash-list';
+import React, { useCallback, useMemo } from "react";
+import { StatusBar, View, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { PublicStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useOnboarding } from "../hooks/useOnboarding";
-import { OnboardingSlide } from "../components/OnboardingSlide";
-import { OnboardingIndicator } from "../components/OnboardingIndicator";
-import { OnboardingCTA } from "../components/OnboardingCTA";
-import { OnboardingProgress } from "../components/OnboardingProgress";
 import { OnboardingBackground } from "../components/OnboardingBackground";
+import { OnboardingPager } from "../components";
+import { createStyles } from "./OnboardingScreen.styles";
+import { getOnboardingBackgroundColors } from "./onboardingColors";
 
-interface Props extends PublicStackScreenProps<"OnBoarding"> {}
-
-const { width, height } = Dimensions.get("window");
-
-const AnimatedFlashList = Animated.createAnimatedComponent(FlashList) as any;
+type Props = RootStackScreenProps<"OnBoarding">;
 
 export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
+  const { width, height } = useWindowDimensions();
+  const { isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(), []);
+
   const {
     scrollX,
     currentIndex,
@@ -39,107 +27,45 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
     completeOnboarding,
     goToNext,
     flatListRef,
-  } = useOnboarding();
+  } = useOnboarding(width);
+
+  const backgroundColors = useMemo(
+    () => getOnboardingBackgroundColors(bgColors, isDark),
+    [bgColors, isDark]
+  );
 
   const handleComplete = useCallback(() => {
     completeOnboarding();
     navigation.replace("CheckRoute");
   }, [completeOnboarding, navigation]);
 
-  // Interpolate background color based on scroll position
   const backgroundColor = scrollX.interpolate({
-    inputRange: bgColors.map((_, i) => i * width),
-    outputRange: bgColors,
+    inputRange: backgroundColors.map((_, i) => i * width),
+    outputRange: backgroundColors,
   });
-
-  const renderItem = useCallback(
-    ({ item, index }: { item: typeof slides[0]; index: number }) => (
-      <OnboardingSlide
-        slide={item}
-        index={index}
-        totalSlides={slides.length}
-        width={width}
-      />
-    ),
-    [slides.length]
-  );
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-      
-      {/* Animated Background */}
       <OnboardingBackground backgroundColor={backgroundColor} />
 
-      <SafeAreaView style={styles.safeArea}>
-        {/* Progress Bar */}
-        <OnboardingProgress
-          currentIndex={currentIndex}
-          totalSlides={slides.length}
+      <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
+        <OnboardingPager
+          slides={slides}
           scrollX={scrollX}
+          currentIndex={currentIndex}
+          isLastSlide={isLastSlide}
           width={width}
-        />
-
-        {/* Slides */}
-        <AnimatedFlashList
-          ref={flatListRef}
-          data={slides}
-          renderItem={renderItem}
-          keyExtractor={(item: any) => item.id}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          bounces={false}
-          onScroll={handleScroll}
+          height={height}
+          flatListRef={flatListRef}
+          handleScroll={handleScroll}
           onMomentumScrollEnd={onMomentumScrollEnd}
-          scrollEventThrottle={16}
-          getItemLayout={(_: any, index: number) => ({
-            length: width,
-            offset: width * index,
-            index,
-          })}
-          contentContainerStyle={styles.flatListContent}
+          onNext={goToNext}
+          onComplete={handleComplete}
         />
-
-        {/* Bottom Section */}
-        <View style={styles.bottomSection}>
-          {/* Dot Indicators */}
-          <OnboardingIndicator
-            scrollX={scrollX}
-            count={slides.length}
-            currentIndex={currentIndex}
-            width={width}
-          />
-
-          {/* CTA Buttons */}
-          <OnboardingCTA
-            isLastSlide={isLastSlide}
-            onPress={isLastSlide ? handleComplete : goToNext}
-            onSkip={handleComplete}
-            currentIndex={currentIndex}
-            totalSlides={slides.length}
-          />
-        </View>
       </SafeAreaView>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  safeArea: {
-    flex: 1,
-  },
-  flatListContent: {
-    flexGrow: 1,
-  },
-  bottomSection: {
-    paddingHorizontal: 24,
-    paddingBottom: 32,
-    gap: 24,
-  },
-});
 
 export default OnboardingScreen;

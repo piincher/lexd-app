@@ -89,6 +89,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     const isPaid = item.paymentStatus === "PAID";
     const statusColors: Record<string, string> = {
       RECEIVED_AT_WAREHOUSE: "#6366F1",
+      PACKED: "#7C4DFF",
       ASSIGNED_TO_CONTAINER: "#8B5CF6",
       LOADED_IN_CONTAINER: "#EC4899",
       IN_TRANSIT: "#F59E0B",

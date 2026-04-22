@@ -1,23 +1,22 @@
 import { StyleSheet } from 'react-native';
 import { lightTheme } from '@src/constants/Theme';
-import { COLORS } from '@src/constants/Colors';
 
 export const MAP_HEIGHT = 280;
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   container: {
     marginHorizontal: lightTheme.spacing.lg,
     marginVertical: lightTheme.spacing.md,
     overflow: 'hidden',
   },
   mapContainer: {
-    backgroundColor: lightTheme.colors.background.paper,
+    backgroundColor: colors.background.paper,
     position: 'relative',
     overflow: 'hidden',
   },
   gridBackground: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#E8F4FD',
+    backgroundColor: colors.background.paper,
     opacity: 0.5,
   },
   routeContainer: {
@@ -29,7 +28,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     width: '60%',
     height: 3,
-    backgroundColor: COLORS.gold,
+    backgroundColor: colors.accent.gold,
     opacity: 0.6,
     transform: [{ rotate: '-10deg' }],
   },
@@ -38,7 +37,7 @@ export const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: COLORS.gold,
+    backgroundColor: colors.accent.gold,
   },
   marker: {
     position: 'absolute',
@@ -50,12 +49,12 @@ export const styles = StyleSheet.create({
     ...lightTheme.shadows.md,
   },
   currentMarker: {
-    backgroundColor: COLORS.green,
+    backgroundColor: colors.status.success,
     left: '20%',
     top: '40%',
   },
   destinationMarker: {
-    backgroundColor: COLORS.gold,
+    backgroundColor: colors.accent.gold,
     right: '20%',
     top: '35%',
   },
@@ -64,7 +63,7 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: COLORS.green,
+    backgroundColor: colors.status.success,
     opacity: 0.2,
   },
   zoomControls: {
@@ -80,7 +79,7 @@ export const styles = StyleSheet.create({
   },
   infoContainer: {
     padding: lightTheme.spacing.md,
-    backgroundColor: lightTheme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   locationRow: {
     flexDirection: 'row',
@@ -89,14 +88,14 @@ export const styles = StyleSheet.create({
   },
   locationLabel: {
     fontSize: 13,
-    color: lightTheme.colors.text.secondary,
+    color: colors.text.secondary,
     marginLeft: 6,
     marginRight: 4,
   },
   locationValue: {
     fontSize: 13,
     fontWeight: '600',
-    color: lightTheme.colors.text.primary,
+    color: colors.text.primary,
   },
   centerContainer: {
     height: MAP_HEIGHT,
@@ -107,30 +106,30 @@ export const styles = StyleSheet.create({
   loadingText: {
     marginTop: lightTheme.spacing.md,
     fontSize: 14,
-    color: lightTheme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   errorTitle: {
     marginTop: lightTheme.spacing.md,
     fontSize: 16,
     fontWeight: '600',
-    color: lightTheme.colors.status.error,
+    color: colors.status.error,
   },
   errorText: {
     marginTop: lightTheme.spacing.xs,
     fontSize: 13,
-    color: lightTheme.colors.text.secondary,
+    color: colors.text.secondary,
     textAlign: 'center',
   },
   emptyTitle: {
     marginTop: lightTheme.spacing.md,
     fontSize: 16,
     fontWeight: '600',
-    color: lightTheme.colors.text.primary,
+    color: colors.text.primary,
   },
   emptyText: {
     marginTop: lightTheme.spacing.xs,
     fontSize: 13,
-    color: lightTheme.colors.text.secondary,
+    color: colors.text.secondary,
     textAlign: 'center',
   },
 });

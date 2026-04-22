@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert } from "react-native";
 import { Screen } from "@src/shared/ui/Screen";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { useCreateAnnouncement } from "../hooks/useCreateAnnouncement";
 import { AnnouncementForm } from "../components/AnnouncementForm";
 

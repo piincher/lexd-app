@@ -5,9 +5,9 @@ import Slider from "@src/features/admin/orders/components/Slider";
 import { ListItem } from "../ListItem/ListItem";
 import { Button, Text } from "react-native-paper";
 import { Pressable, StyleSheet, View, Alert } from "react-native";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Fonts } from "@src/constants/Fonts";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@src/store/Auth";
 import { formatDate } from "@src/utils/formatDate";
 import { AntDesign, MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
@@ -18,6 +18,7 @@ import { useDeleteOrder } from "@src/features/admin/orders/hooks/useOrderManagem
 import { useClipboard } from "@src/hooks/useClipBoard";
 
 export const RenderOrder = ({ item }: { item: productType }) => {
+   const { colors } = useAppTheme();
    const { role } = useAuth((state) => state.user);
    const shippingMode = useShippingMode((state) => state.type);
    const navigation = useNavigation();
@@ -35,8 +36,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
 
    useGetOrderDetails(item._id!);
 
-   // Get the actual status value from the item (this is the key fix)
-   const orderStatus = item.status; // Using item.status instead of currentRoute.title
+   const orderStatus = item.status;
 
    const customerInfo = [
       { label: "Nom du client", value: item.clientName, icon: "person" },
@@ -80,9 +80,9 @@ export const RenderOrder = ({ item }: { item: productType }) => {
                  label: "Statut de paiement",
                  value:
                     item.paymentStatus === "Paid" ? (
-                       <Text style={{ color: COLORS.success, fontFamily: Fonts.meduim }}>Payé</Text>
+                       <Text style={{ color: colors.status.success, fontFamily: Fonts.meduim }}>Payé</Text>
                     ) : (
-                       <Text style={{ color: COLORS.danger, fontFamily: Fonts.meduim }}>
+                       <Text style={{ color: colors.status.error, fontFamily: Fonts.meduim }}>
                           Non payé
                        </Text>
                     ),
@@ -98,8 +98,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
          });
          return;
       }
-      const routeName = shippingMode === "sea" ? "SeaShippingOrderDetails" : "OrderDetail";
-      navigation.navigate(routeName, {
+      navigation.navigate("OrderDetail", {
          id: item._id!,
       });
    };
@@ -127,6 +126,171 @@ export const RenderOrder = ({ item }: { item: productType }) => {
       }
    };
 
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            container: {
+               flex: 1,
+               backgroundColor: colors.background.default,
+            },
+            headerCard: {
+               backgroundColor: colors.background.card,
+               borderRadius: 16,
+               padding: 16,
+               shadowColor: "#000",
+               shadowOffset: { width: 0, height: 2 },
+               shadowOpacity: 0.1,
+               shadowRadius: 8,
+               elevation: 3,
+               marginBottom: 16,
+            },
+            headerContent: {
+               flex: 1,
+            },
+            progressContainer: {
+               marginBottom: 16,
+            },
+            progressTitle: {
+               fontSize: 14,
+               fontWeight: "600",
+               fontFamily: Fonts.medium,
+               color: colors.text.primary,
+               marginBottom: 8,
+            },
+            progressTrack: {
+               flexDirection: "row",
+               justifyContent: "space-between",
+               alignItems: "center",
+            },
+            progressStep: {
+               alignItems: "center",
+            },
+            progressText: {
+               fontSize: 12,
+               fontWeight: "500",
+               fontFamily: Fonts.regular,
+               color: colors.text.secondary,
+               marginTop: 4,
+            },
+            statusContainer: {
+               flexDirection: "row",
+               alignItems: "center",
+               marginBottom: 8,
+            },
+            statusBadge: {
+               flexDirection: "row",
+               alignItems: "center",
+               paddingHorizontal: 12,
+               paddingVertical: 6,
+               borderRadius: 20,
+               marginRight: 12,
+               backgroundColor: colors.primary.main,
+            },
+            paid: {
+               backgroundColor: colors.status.success,
+            },
+            unpaid: {
+               backgroundColor: colors.status.error,
+            },
+            statusText: {
+               fontSize: 12,
+               fontWeight: "600",
+               fontFamily: Fonts.medium,
+               color: colors.text.inverse,
+            },
+            orderId: {
+               fontSize: 18,
+               fontWeight: "700",
+               fontFamily: Fonts.bold,
+               color: colors.text.primary,
+            },
+            dateText: {
+               fontSize: 14,
+               color: colors.text.secondary,
+               fontFamily: Fonts.regular,
+            },
+            card: {
+               backgroundColor: colors.background.card,
+               borderRadius: 16,
+               padding: 16,
+               shadowColor: "#000",
+               shadowOffset: { width: 0, height: 2 },
+               shadowOpacity: 0.1,
+               shadowRadius: 8,
+               elevation: 3,
+               marginBottom: 16,
+            },
+            sliderContainer: {
+               marginBottom: 16,
+               borderRadius: 16,
+               overflow: "hidden",
+               shadowColor: "#000",
+               shadowOffset: { width: 0, height: 2 },
+               shadowOpacity: 0.1,
+               shadowRadius: 8,
+               elevation: 3,
+            },
+            sectionTitle: {
+               fontSize: 16,
+               fontWeight: "700",
+               fontFamily: Fonts.bold,
+               color: colors.text.primary,
+               marginBottom: 12,
+               paddingBottom: 8,
+               borderBottomWidth: 1,
+               borderBottomColor: colors.border,
+            },
+            adminActions: {
+               flexDirection: "row",
+               justifyContent: "space-between",
+               marginHorizontal: 16,
+               marginTop: 16,
+            },
+            adminButton: {
+               flexDirection: "row",
+               alignItems: "center",
+               paddingHorizontal: 16,
+               paddingVertical: 12,
+               borderRadius: 12,
+               backgroundColor: colors.background.card,
+               borderWidth: 1,
+               borderColor: colors.border,
+               shadowColor: "#000",
+               shadowOffset: { width: 0, height: 2 },
+               shadowOpacity: 0.05,
+               shadowRadius: 4,
+               elevation: 2,
+            },
+            adminButtonText: {
+               marginLeft: 8,
+               fontSize: 14,
+               fontFamily: Fonts.medium,
+            },
+            primaryButton: {
+               width: "90%",
+               alignSelf: "center",
+               backgroundColor: colors.primary.main,
+               marginVertical: 16,
+               borderRadius: 12,
+               height: 50,
+               shadowColor: "#000",
+               shadowOffset: { width: 0, height: 4 },
+               shadowOpacity: 0.2,
+               shadowRadius: 8,
+               elevation: 4,
+            },
+            buttonContent: {
+               justifyContent: "center",
+            },
+            buttonText: {
+               fontFamily: Fonts.medium,
+               color: colors.text.inverse,
+               fontSize: 16,
+            },
+         }),
+      [colors],
+   );
+
    return (
       <SafeAreaView style={styles.container}>
          <CustomModal
@@ -147,7 +311,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
                   <Text style={styles.progressTitle}>Suivi de la commande</Text>
                   <View style={styles.progressTrack}>
                      <View style={styles.progressStep}>
-                        <MaterialIcons name="check" size={20} color={COLORS.success} />
+                        <MaterialIcons name="check" size={20} color={colors.status.success} />
                         <Text style={styles.progressText}>Commande passée</Text>
                      </View>
                      <View style={styles.progressStep}>
@@ -160,8 +324,8 @@ export const RenderOrder = ({ item }: { item: productType }) => {
                            size={20}
                            color={
                               orderStatus === "In Transit" || orderStatus === "Delivered"
-                                 ? COLORS.success
-                                 : COLORS.grey
+                                 ? colors.status.success
+                                 : colors.text.secondary
                            }
                         />
                         <Text style={styles.progressText}>En transit</Text>
@@ -170,7 +334,7 @@ export const RenderOrder = ({ item }: { item: productType }) => {
                         <MaterialIcons
                            name={orderStatus === "Delivered" ? "check" : "circle"}
                            size={20}
-                           color={orderStatus === "Delivered" ? COLORS.success : COLORS.grey}
+                           color={orderStatus === "Delivered" ? colors.status.success : colors.text.secondary}
                         />
                         <Text style={styles.progressText}>Livré</Text>
                      </View>
@@ -185,9 +349,9 @@ export const RenderOrder = ({ item }: { item: productType }) => {
                      ]}
                   >
                      {item.paymentStatus === "Paid" ? (
-                        <MaterialIcons name="check-circle" size={16} color={COLORS.white} />
+                        <MaterialIcons name="check-circle" size={16} color={colors.text.inverse} />
                      ) : (
-                        <MaterialIcons name="warning" size={16} color={COLORS.white} />
+                        <MaterialIcons name="warning" size={16} color={colors.text.inverse} />
                      )}
                      <Text style={styles.statusText}>
                         {item.paymentStatus === "Paid" ? "Payé" : "Non payé"}
@@ -251,11 +415,11 @@ export const RenderOrder = ({ item }: { item: productType }) => {
          {role === "admin" && (
             <View style={styles.adminActions}>
                <Pressable onPress={handleEdit} style={styles.adminButton}>
-                  <AntDesign name="edit" size={20} color={COLORS.blue} />
+                  <AntDesign name="edit" size={20} color={colors.primary.main} />
                   <Text style={styles.adminButtonText}>Modifier</Text>
                </Pressable>
                <Pressable onPress={showDeleteModal} style={styles.adminButton}>
-                  <FontAwesome5 name="trash-alt" size={20} color={COLORS.danger} />
+                  <FontAwesome5 name="trash-alt" size={20} color={colors.status.error} />
                   <Text style={styles.adminButtonText}>Supprimer</Text>
                </Pressable>
             </View>
@@ -273,164 +437,3 @@ export const RenderOrder = ({ item }: { item: productType }) => {
       </SafeAreaView>
    );
 };
-
-export const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: COLORS.white,
-   },
-   headerCard: {
-      backgroundColor: COLORS.white,
-      borderRadius: 16,
-      padding: 16,
-      shadowColor: COLORS.shadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 3,
-      marginBottom: 16,
-   },
-   headerContent: {
-      flex: 1,
-   },
-   progressContainer: {
-      marginBottom: 16,
-   },
-   progressTitle: {
-      fontSize: 14,
-      fontWeight: "600",
-      fontFamily: Fonts.medium,
-      color: COLORS.dark,
-      marginBottom: 8,
-   },
-   progressTrack: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-   },
-   progressStep: {
-      alignItems: "center",
-   },
-   progressText: {
-      fontSize: 12,
-      fontWeight: "500",
-      fontFamily: Fonts.regular,
-      color: COLORS.grey,
-      marginTop: 4,
-   },
-   statusContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      marginBottom: 8,
-   },
-   statusBadge: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingHorizontal: 12,
-      paddingVertical: 6,
-      borderRadius: 20,
-      marginRight: 12,
-      backgroundColor: COLORS.blue,
-   },
-   paid: {
-      backgroundColor: COLORS.success,
-   },
-   unpaid: {
-      backgroundColor: COLORS.danger,
-   },
-   statusText: {
-      fontSize: 12,
-      fontWeight: "600",
-      fontFamily: Fonts.medium,
-      color: COLORS.white,
-   },
-   orderId: {
-      fontSize: 18,
-      fontWeight: "700",
-      fontFamily: Fonts.bold,
-      color: COLORS.dark,
-   },
-   dateText: {
-      fontSize: 14,
-      color: COLORS.grey,
-      fontFamily: Fonts.regular,
-   },
-   card: {
-      backgroundColor: COLORS.white,
-      borderRadius: 16,
-      padding: 16,
-      shadowColor: COLORS.shadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 3,
-      marginBottom: 16,
-   },
-   sliderContainer: {
-      marginBottom: 16,
-      borderRadius: 16,
-      overflow: "hidden",
-      shadowColor: COLORS.shadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 3,
-   },
-   sectionTitle: {
-      fontSize: 16,
-      fontWeight: "700",
-      fontFamily: Fonts.bold,
-      color: COLORS.dark,
-      marginBottom: 12,
-      paddingBottom: 8,
-      borderBottomWidth: 1,
-      borderBottomColor: COLORS.border,
-   },
-   adminActions: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginHorizontal: 16,
-      marginTop: 16,
-   },
-   adminButton: {
-      flexDirection: "row",
-      alignItems: "center",
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-      borderRadius: 12,
-      backgroundColor: COLORS.white,
-      borderWidth: 1,
-      borderColor: COLORS.border,
-      shadowColor: COLORS.shadow,
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.05,
-      shadowRadius: 4,
-      elevation: 2,
-   },
-   adminButtonText: {
-      marginLeft: 8,
-      fontSize: 14,
-      fontFamily: Fonts.medium,
-   },
-   primaryButton: {
-      width: "90%",
-      alignSelf: "center",
-      backgroundColor: COLORS.blue,
-      marginVertical: 16,
-      borderRadius: 12,
-      height: 50,
-      shadowColor: COLORS.shadow,
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.2,
-      shadowRadius: 8,
-      elevation: 4,
-   },
-   buttonContent: {
-      justifyContent: "center",
-   },
-   buttonText: {
-      fontFamily: Fonts.medium,
-      color: COLORS.white,
-      fontSize: 16,
-   },
-});

@@ -3,13 +3,9 @@
  */
 
 import React from 'react';
-import { 
-  View, 
-  StyleSheet, 
-  ViewStyle,
-  TouchableOpacity,
-} from 'react-native';
-import { COLORS } from '@src/constants/Colors';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import type { ViewStyle } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type CardVariant = 'default' | 'outlined' | 'elevated' | 'flat';
 export type CardPadding = 'none' | 'small' | 'medium' | 'large';
@@ -42,30 +38,29 @@ export const Card: React.FC<CardProps> = ({
   testID,
   accessibilityLabel,
 }) => {
+  const { colors } = useAppTheme();
   const paddingValue = paddingMap[padding];
 
-  // Map our variants to react-native-paper modes
-  const mode = variant === 'outlined' ? 'outlined' : 'elevated';
   const isFlat = variant === 'flat' || variant === 'default';
 
-  const backgroundColor = isFlat 
-    ? COLORS.Silver 
-    : COLORS.white;
+  const backgroundColor = isFlat
+    ? colors.background.paper
+    : colors.background.card;
 
-  const borderColor = variant === 'outlined' ? COLORS.inputBorder : undefined;
+  const borderColor = variant === 'outlined' ? colors.border : undefined;
 
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      style={[{ 
-        margin: 0, 
+      style={[{
+        margin: 0,
         padding: paddingValue,
         backgroundColor,
         borderRadius: 12,
         borderColor,
         borderWidth: variant === 'outlined' ? 1 : 0,
-        shadowColor: variant === 'elevated' ? COLORS.black : 'transparent',
+        shadowColor: variant === 'elevated' ? '#000' : 'transparent',
         shadowOffset: variant === 'elevated' ? { width: 0, height: 2 } : { width: 0, height: 0 },
         shadowOpacity: variant === 'elevated' ? 0.1 : 0,
         shadowRadius: variant === 'elevated' ? 4 : 0,

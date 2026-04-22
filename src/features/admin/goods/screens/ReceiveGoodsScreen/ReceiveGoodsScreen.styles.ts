@@ -5,29 +5,32 @@
 
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f7fa',
+    backgroundColor: colors.background.default,
   },
   keyboardView: {
     flex: 1,
   },
+  scrollContent: {
+    flexGrow: 1,
+  },
   header: {
     paddingHorizontal: 16,
     paddingVertical: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    borderBottomColor: colors.border,
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#333',
+    color: colors.text.primary,
   },
   headerSubtitle: {
     fontSize: 14,
-    color: '#666',
+    color: colors.text.secondary,
     marginTop: 2,
   },
   formContainer: {
@@ -36,18 +39,18 @@ export const styles = StyleSheet.create({
   submitButton: {
     margin: 16,
     marginTop: 8,
-    backgroundColor: '#dc3545',
+    backgroundColor: colors.status.error,
     borderRadius: 8,
   },
   submitButtonContent: {
     paddingVertical: 8,
   },
   snackbar: {
-    backgroundColor: '#333',
+    backgroundColor: colors.background.paper,
   },
   dialog: {
     borderRadius: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.card,
   },
   dialogTitle: {
     textAlign: 'center',
@@ -55,7 +58,7 @@ export const styles = StyleSheet.create({
   },
   dialogText: {
     textAlign: 'center',
-    color: '#666',
+    color: colors.text.secondary,
     fontSize: 15,
   },
   dialogActions: {
@@ -65,14 +68,13 @@ export const styles = StyleSheet.create({
   dialogButton: {
     paddingHorizontal: 32,
   },
-  // Choice Dialog Styles
   choiceDialog: {
     borderRadius: 16,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.card,
   },
   choiceDialogText: {
     textAlign: 'center',
-    color: '#666',
+    color: colors.text.secondary,
     fontSize: 15,
     marginTop: 8,
   },
@@ -87,7 +89,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
   },
   assignButton: {
-    backgroundColor: '#dc3545',
+    backgroundColor: colors.status.error,
   },
   choiceDivider: {
     flexDirection: 'row',
@@ -97,11 +99,11 @@ export const styles = StyleSheet.create({
   },
   dividerLine: {
     flex: 1,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: colors.border,
   },
   dividerText: {
     marginHorizontal: 12,
-    color: '#999',
+    color: colors.text.disabled,
     fontSize: 14,
   },
 });

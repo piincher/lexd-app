@@ -30,7 +30,7 @@ export const FAQScreen: React.FC = () => {
 
   if (isLoading) {
     return (
-      <Screen header={{ title: 'FAQ', showBack: true }} scrollable={false}>
+      <Screen header={{ title: 'FAQ', showBack: true, showNotificationBell: true }} scrollable={false}>
         <FAQSkeleton />
       </Screen>
     );
@@ -38,7 +38,7 @@ export const FAQScreen: React.FC = () => {
 
   return (
     <Screen
-      header={{ title: 'Centre d\'aide', showBack: true }}
+      header={{ title: 'Centre d\'aide', showBack: true, showNotificationBell: true }}
       footer={<FAQContactButton />}
       scrollable={false}
     >

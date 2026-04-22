@@ -1,19 +1,20 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS } from '@src/constants/Colors';
-import { Fonts } from '@src/constants/Fonts';
-import { styles } from './EmptyOrders.styles';
+import { createStyles } from './EmptyOrders.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const EmptyOrders: React.FC = () => {
   const navigation = useNavigation();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <MaterialCommunityIcons name="package-variant-closed" size={48} color={COLORS.grey} />
+        <MaterialCommunityIcons name="package-variant-closed" size={48} color={colors.text.secondary} />
       </View>
       <Text style={styles.title}>No Orders Found</Text>
       <Text style={styles.subtitle}>
@@ -23,7 +24,7 @@ export const EmptyOrders: React.FC = () => {
         mode="contained"
         onPress={() => navigation.navigate('AddOrder' as never)}
         style={styles.button}
-        buttonColor={COLORS.blue}
+        buttonColor={colors.primary.main}
         icon="plus"
       >
         Create New Order

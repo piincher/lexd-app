@@ -5,11 +5,11 @@ import { imagesType } from "@src/api/order";
 import AuthInputField from "@src/components/AuthInput/AuthInput";
 import Form from "@src/components/Form/Form";
 import SubmitBtn from "@src/components/SubmitBtn/SubmitBtn";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Fonts } from "@src/constants/Fonts";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import * as ImagePicker from "expo-image-picker";
-import React, { useEffect, useId, useState } from "react";
+import React, { useEffect, useId, useState, useMemo } from "react";
 import {
    Image,
    KeyboardAvoidingView,
@@ -76,6 +76,61 @@ interface order {
 // 'marchandises sont arrivées au port et ont été stockées.(Kalaban-Coura pres de FEBAK +22376696177/+22350005142',
 
 const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => {
+   const { colors, isDark } = useAppTheme();
+   const styles = useMemo(() => StyleSheet.create({
+      formContainer: { width: "100%" },
+      containerStyle: {
+         marginBottom: 20,
+      },
+      link: {
+         marginTop: 20,
+         flexDirection: "row",
+         justifyContent: "space-between",
+         alignItems: "center",
+      },
+      container: {
+         alignItems: "center",
+         paddingHorizontal: 15,
+         backgroundColor: colors.background.default,
+      },
+      imageContainer: {
+         width: "100%",
+         height: 200,
+         borderStyle: "solid",
+         borderWidth: 8,
+         padding: 0,
+         justifyContent: "center",
+         borderColor: colors.border,
+         elevation: 10,
+      },
+      image: {
+         width: "100%",
+         height: "100%",
+      },
+      imagePicker: {
+         backgroundColor: colors.text.secondary,
+         padding: 8,
+         borderRadius: 100,
+         elevation: 20,
+      },
+      pickerStyle: { width: "100%", height: 50 },
+      optionContainer: {
+         flexDirection: "row",
+         alignItems: "center",
+         marginVertical: 10,
+      },
+      optionLabel: {
+         fontFamily: Fonts.regular,
+         fontSize: 16,
+         marginLeft: 10,
+      },
+      shippingModeContainer: {
+         width: "100%",
+         marginVertical: 20,
+         borderColor: colors.border,
+         borderWidth: 1,
+      },
+   }), [colors, isDark]);
    const data = Math.random().toString(36).substring(7);
    const [uploadProgress, setUploadProgress] = useState(0);
 
@@ -346,7 +401,7 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
    };
    return (
       <Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={signupSchema}>
-         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+         <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
             <AutoCalculateTotal shippingMode="sea" />
             <ScrollView
                contentContainerStyle={styles.container}
@@ -366,7 +421,7 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
                      visible={visible}
                      onDismiss={onDismissSnackBar}
                      style={{
-                        backgroundColor: COLORS.white,
+                        backgroundColor: colors.background.card,
                         top: -50,
                      }}
                      duration={3000}
@@ -413,7 +468,7 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
                   </View>
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                      {isLoading ? (
-                        <ActivityIndicator size="large" color={COLORS.blue} />
+                        <ActivityIndicator size="large" color={colors.primary.main} />
                      ) : (
                         selectedImages?.map((image) => (
                            <Pressable
@@ -469,7 +524,7 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
                         name="quantity"
                      />
 
-                     <View style={{ borderColor: COLORS.grey, borderWidth: 1 }}>
+                     <View style={{ borderColor: colors.border, borderWidth: 1 }}>
                         <Picker
                            mode="dropdown"
                            placeholder="Choisir Categorie"
@@ -537,61 +592,5 @@ export function mapRange(options: MapRangeOptions) {
 
    return result;
 }
-
-const styles = StyleSheet.create({
-   formContainer: { width: "100%" },
-
-   containerStyle: {
-      marginBottom: 20,
-   },
-   link: {
-      marginTop: 20,
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-   },
-   container: {
-      alignItems: "center",
-      paddingHorizontal: 15,
-      backgroundColor: COLORS.white,
-   },
-   imageContainer: {
-      width: "100%",
-      height: 200,
-      borderStyle: "solid",
-      borderWidth: 8,
-      padding: 0,
-      justifyContent: "center",
-      borderColor: "#E0E0E0",
-      elevation: 10,
-   },
-   image: {
-      width: "100%",
-      height: "100%",
-   },
-   imagePicker: {
-      backgroundColor: "grey",
-      padding: 8,
-      borderRadius: 100,
-      elevation: 20,
-   },
-   pickerStyle: { width: "100%", height: 50 },
-   optionContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      marginVertical: 10,
-   },
-   optionLabel: {
-      fontFamily: Fonts.regular,
-      fontSize: 16,
-      marginLeft: 10,
-   },
-   shippingModeContainer: {
-      width: "100%",
-      marginVertical: 20,
-      borderColor: COLORS.grey,
-      borderWidth: 1,
-   },
-});
 
 export default EditOrder;

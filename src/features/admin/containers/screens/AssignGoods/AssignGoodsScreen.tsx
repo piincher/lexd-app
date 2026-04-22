@@ -2,7 +2,7 @@
  * AssignGoodsScreen - Screen to assign unassigned goods to a container
  * Phase 2 Container System
  */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,11 +15,14 @@ import { EmptyState } from './components/EmptyState';
 import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
 import { BottomActionBar } from './components/BottomActionBar';
-import { styles } from './AssignGoodsScreen.styles';
+import { createStyles } from './AssignGoodsScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerStatus } from '../../types';
 import { Theme } from '@src/constants/Theme';
 
 export const AssignGoodsScreen: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const {
     container, filteredGoods, selectedGoods, searchQuery,
     isLoading, isRefetching, error, isAssignable,
@@ -73,7 +76,7 @@ export const AssignGoodsScreen: React.FC = () => {
         refreshControl={
           <RefreshControl refreshing={isRefetching} onRefresh={handleRefresh} tintColor={Theme.primary[500]} />
         }
-        ListEmptyComponent={<EmptyState searchQuery={searchQuery} />}
+        ListEmptyComponent={<EmptyState searchQuery={searchQuery} shippingMode={container?.shippingMode} />}
       />
       <BottomActionBar
         selectedCount={selectedGoods.length}

@@ -1,6 +1,6 @@
 /**
  * Customer Dashboard Feature
- * Main dashboard for customers to view stats, quick actions, and activity feed
+ * Premium dashboard for customers to view stats, actions, and activity
  */
 
 // API
@@ -19,6 +19,8 @@ export {
   useDashboardInvalidation,
 } from './hooks/useDashboard';
 
+export { useCustomerDashboard } from './hooks/useCustomerDashboard';
+
 // Types
 export type {
   DashboardStats,
@@ -35,11 +37,14 @@ export {
 } from './types';
 
 // Components
-export { StatCard, ActivityFeed, QuickActions } from './components';
-export type {
-  StatCardProps,
-  ActivityFeedProps,
-  QuickActionsProps,
+export {
+  HeroSection,
+  SmartActions,
+  JourneyMap,
+  ContainerStack,
+  ActivityTimeline,
+  DashboardSkeleton,
+  DashboardErrorState,
 } from './components';
 
 // Screens

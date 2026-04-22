@@ -21,12 +21,13 @@ const fetchMyOrders = async (): Promise<Order[]> => {
 export interface UseMyOrdersReturn {
   data: Order[] | undefined;
   isLoading: boolean;
+  isRefetching: boolean;
   error: Error | null;
   refetch: () => void;
 }
 
 export const useMyOrders = (): UseMyOrdersReturn => {
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, isLoading, isRefetching, error, refetch } = useQuery({
     queryKey: myOrdersQueryKeys.lists(),
     queryFn: fetchMyOrders,
     staleTime: 5 * 60 * 1000,
@@ -35,6 +36,7 @@ export const useMyOrders = (): UseMyOrdersReturn => {
   return {
     data,
     isLoading,
+    isRefetching,
     error,
     refetch,
   };

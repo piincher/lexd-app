@@ -4,24 +4,36 @@
  * Auto-assigns goods to order (< 7 days) or creates new order
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Snackbar, Portal, Dialog } from 'react-native-paper';
 import { useReceiveGoodsScreen } from './hooks/useReceiveGoodsScreen';
 import { ReceiveGoodsForm } from './components/ReceiveGoodsForm';
-import { styles } from './ReceiveGoodsScreen.styles';
-import { COLORS } from '@src/constants/Colors';
+import { createStyles } from './ReceiveGoodsScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 
 export const ReceiveGoodsScreen: React.FC = () => {
+  const navigation = useNavigation();
   const { form, ui, actions } = useReceiveGoodsScreen();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.keyboardView}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.header}>
-            <Text style={styles.headerTitle}>Réception Marchandise</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Text style={styles.headerTitle}>Réception Marchandise</Text>
+              <NotificationBell
+                onPress={() => navigation.navigate('Notifications' as never)}
+                size={24}
+                color={colors.text.secondary}
+              />
+            </View>
             <Text style={styles.headerSubtitle}>Enregistrer une nouvelle marchandise</Text>
           </View>
 
@@ -69,7 +81,7 @@ export const ReceiveGoodsScreen: React.FC = () => {
         <Portal>
           {/* Success Dialog */}
           <Dialog visible={ui.showSuccessDialog} onDismiss={actions.dismissSuccess} style={styles.dialog}>
-            <Dialog.Icon icon="check-circle" size={48} color={COLORS.success || '#28a745'} />
+            <Dialog.Icon icon="check-circle" size={48} color={colors.status.success} />
             <Dialog.Title style={styles.dialogTitle}>Succès</Dialog.Title>
             <Dialog.Content>
               <Text style={styles.dialogText}>{ui.successMessage}</Text>

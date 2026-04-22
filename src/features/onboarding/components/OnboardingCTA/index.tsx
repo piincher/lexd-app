@@ -7,11 +7,10 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  Animated,
+  useWindowDimensions,
 } from "react-native";
-import { Fonts } from "@src/constants/Fonts";
 import { AntDesign } from "@expo/vector-icons";
+import { styles } from "./OnboardingCTA.styles";
 
 interface OnboardingCTAProps {
   isLastSlide: boolean;
@@ -27,6 +26,8 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
   onSkip,
   currentIndex,
 }) => {
+  const { width } = useWindowDimensions();
+  const isNarrow = width < 360;
   // Show skip button only on first 2 slides
   const showSkip = currentIndex < 2;
 
@@ -37,8 +38,16 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
           style={[styles.button, styles.primaryButton]}
           onPress={onPress}
           activeOpacity={0.9}
+          accessibilityRole="button"
         >
-          <Text style={styles.primaryText}>Commencer</Text>
+          <Text
+            style={styles.primaryText}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            maxFontSizeMultiplier={1.15}
+          >
+            Commencer
+          </Text>
           <AntDesign name="arrow-right" size={20} color="#8B5CF6" style={styles.icon} />
         </TouchableOpacity>
       </View>
@@ -48,93 +57,47 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        {showSkip ? (
-          <TouchableOpacity
-            style={styles.skipButton}
-            onPress={onSkip}
-            activeOpacity={0.7}
-          >
-            <Text style={styles.skipText}>Passer</Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.placeholder} />
-        )}
+        <View style={styles.skipSlot}>
+          {showSkip ? (
+            <TouchableOpacity
+              style={styles.skipButton}
+              onPress={onSkip}
+              activeOpacity={0.7}
+              accessibilityRole="button"
+            >
+              <Text
+                style={styles.skipText}
+                numberOfLines={1}
+                adjustsFontSizeToFit
+                maxFontSizeMultiplier={1.15}
+              >
+                Passer
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
 
-        <TouchableOpacity
-          style={[styles.button, styles.nextButton]}
-          onPress={onPress}
-          activeOpacity={0.9}
-        >
-          <Text style={styles.nextText}>Suivant</Text>
-          <AntDesign name="right" size={16} color="#FFFFFF" style={styles.iconSmall} />
-        </TouchableOpacity>
+        <View style={styles.nextSlot}>
+          <TouchableOpacity
+            style={[styles.button, styles.nextButton, isNarrow && styles.nextButtonCompact]}
+            onPress={onPress}
+            activeOpacity={0.9}
+            accessibilityRole="button"
+          >
+            <Text
+              style={styles.nextText}
+              numberOfLines={1}
+              adjustsFontSizeToFit
+              maxFontSizeMultiplier={1.15}
+            >
+              Suivant
+            </Text>
+            <AntDesign name="right" size={16} color="#FFFFFF" style={styles.iconSmall} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-  },
-  row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 16,
-    borderRadius: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  primaryButton: {
-    backgroundColor: "#FFFFFF",
-    width: "100%",
-  },
-  nextButton: {
-    backgroundColor: "rgba(255, 255, 255, 0.25)",
-    paddingHorizontal: 28,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
-  },
-  skipButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-  },
-  skipText: {
-    color: "rgba(255, 255, 255, 0.8)",
-    fontSize: 16,
-    fontFamily: Fonts.medium,
-    fontWeight: "500",
-  },
-  primaryText: {
-    color: "#8B5CF6",
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    fontWeight: "700",
-  },
-  nextText: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontFamily: Fonts.semiBold,
-    fontWeight: "600",
-  },
-  icon: {
-    marginLeft: 8,
-  },
-  iconSmall: {
-    marginLeft: 6,
-  },
-  placeholder: {
-    width: 60,
-  },
-});
 
 export default OnboardingCTA;

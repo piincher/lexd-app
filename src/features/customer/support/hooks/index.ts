@@ -12,3 +12,5 @@ export {
   useUploadAttachment,
   ticketQueryKeys,
 } from './useTickets';
+
+export { useTicketFilters } from './useTicketFilters';

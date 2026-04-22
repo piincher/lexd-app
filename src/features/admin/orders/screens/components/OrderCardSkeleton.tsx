@@ -15,6 +15,7 @@ import Animated, {
   interpolate,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Theme } from '@src/constants/Theme';
 
 const SKELETON_BG = '#E8EFF5';
 
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   card: {
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     marginHorizontal: 12,
     marginVertical: 6,

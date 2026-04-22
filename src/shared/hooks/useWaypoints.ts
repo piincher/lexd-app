@@ -1,4 +1,5 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { waypointService } from '@src/shared/services/waypointService';
 import { WaypointsResponse } from '@src/shared/types/containerWaypoints';
 import { ApiClientError } from '@src/api/client';

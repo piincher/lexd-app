@@ -3,7 +3,7 @@
  * Card displaying container summary for customer list view
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card, Text, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -11,7 +11,7 @@ import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { CustomerContainer, CUSTOMER_STATUS_LABELS, CUSTOMER_STATUS_COLORS, CUSTOMER_STATUS_BG_COLORS, SHIPPING_LINE_LABELS } from '../types';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import * as Haptics from 'expo-haptics';
 
 interface ContainerCardProps {
@@ -21,7 +21,6 @@ interface ContainerCardProps {
 
 // Primary color constant (matching the app's primary green)
 const PRIMARY_COLOR = '#16A34A';
-const PRIMARY_LIGHT = '#DCFCE7';
 
 /**
  * Format date for display
@@ -55,6 +54,155 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
   container,
   onPress,
 }) => {
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      marginHorizontal: 16,
+      marginVertical: 8,
+      borderRadius: 12,
+      elevation: 2,
+      backgroundColor: colors.background.card,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.06,
+      shadowRadius: 4,
+    },
+    content: {
+      padding: 16,
+    },
+    headerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      marginBottom: 16,
+    },
+    titleSection: {
+      flex: 1,
+      marginRight: 12,
+    },
+    containerNumberContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    modeIcon: {
+      marginRight: 8,
+    },
+    containerNumber: {
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      color: colors.text.primary,
+    },
+    shippingLine: {
+      fontFamily: Fonts.regular,
+      fontSize: 12,
+      color: colors.text.secondary,
+    },
+    statusChip: {
+      height: 28,
+      borderRadius: 6,
+    },
+    routeRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 16,
+      paddingHorizontal: 4,
+    },
+    routeLocation: {
+      flex: 1,
+    },
+    routeLocationRight: {
+      alignItems: 'flex-end',
+    },
+    routeLabel: {
+      fontFamily: Fonts.regular,
+      fontSize: 11,
+      color: colors.text.secondary,
+      marginBottom: 4,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+    routeValue: {
+      fontFamily: Fonts.bold,
+      fontSize: 14,
+      color: colors.text.primary,
+    },
+    routeArrow: {
+      alignItems: 'center',
+      paddingHorizontal: 16,
+      minWidth: 60,
+    },
+    arrowLine: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    transitDays: {
+      fontFamily: Fonts.meduim,
+      fontSize: 11,
+      color: PRIMARY_COLOR,
+      marginTop: 2,
+    },
+    readyBanner: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#F59E0B',
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      borderRadius: 8,
+      marginBottom: 12,
+    },
+    readyBannerText: {
+      fontFamily: Fonts.bold,
+      fontSize: 12,
+      color: colors.text.inverse,
+      marginLeft: 8,
+    },
+    infoBanner: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: isDark ? 'rgba(14, 165, 233, 0.15)' : '#E0F2FE',
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      borderRadius: 8,
+      marginBottom: 12,
+    },
+    infoBannerText: {
+      fontFamily: Fonts.meduim,
+      fontSize: 12,
+      color: PRIMARY_COLOR,
+      marginLeft: 6,
+    },
+    arrivedBanner: {
+      backgroundColor: isDark ? 'rgba(16, 185, 129, 0.15)' : '#D1FAE5',
+    },
+    arrivedBannerText: {
+      color: colors.status.success,
+    },
+    footerRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+    },
+    footerItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    footerText: {
+      fontFamily: Fonts.regular,
+      fontSize: 12,
+      color: colors.text.secondary,
+      marginLeft: 6,
+    },
+    footerTextPrimary: {
+      color: PRIMARY_COLOR,
+    },
+  }), [colors, isDark]);
+
   const handlePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     onPress?.();
@@ -138,7 +286,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
               <MaterialCommunityIcons
                 name="truck-delivery-outline"
                 size={16}
-                color={COLORS.white}
+                color={colors.text.inverse}
               />
               <Text style={styles.readyBannerText}>
                 Prêt pour retrait - Contactez l'entrepôt
@@ -164,7 +312,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
               <MaterialCommunityIcons
                 name="check-circle-outline"
                 size={14}
-                color={COLORS.success}
+                color={colors.status.success}
               />
               <Text style={[styles.infoBannerText, styles.arrivedBannerText]}>
                 Arrivé le {formatDate(container.timeline.arrivedAt)}
@@ -178,7 +326,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
               <MaterialCommunityIcons
                 name="package-variant"
                 size={16}
-                color={COLORS.DimGray}
+                color={colors.text.secondary}
               />
               <Text style={styles.footerText}>
                 {goodsCount} marchandise{hasMultipleGoods ? 's' : ''}
@@ -203,149 +351,3 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-    borderRadius: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
-  },
-  content: {
-    padding: 16,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 16,
-  },
-  titleSection: {
-    flex: 1,
-    marginRight: 12,
-  },
-  containerNumberContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  modeIcon: {
-    marginRight: 8,
-  },
-  containerNumber: {
-    fontFamily: Fonts.bold,
-    fontSize: 16,
-    color: COLORS.DarkGrey,
-  },
-  shippingLine: {
-    fontFamily: Fonts.regular,
-    fontSize: 12,
-    color: COLORS.DimGray,
-  },
-  statusChip: {
-    height: 28,
-    borderRadius: 6,
-  },
-  routeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-    paddingHorizontal: 4,
-  },
-  routeLocation: {
-    flex: 1,
-  },
-  routeLocationRight: {
-    alignItems: 'flex-end',
-  },
-  routeLabel: {
-    fontFamily: Fonts.regular,
-    fontSize: 11,
-    color: COLORS.SlateGray,
-    marginBottom: 4,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  routeValue: {
-    fontFamily: Fonts.bold,
-    fontSize: 14,
-    color: COLORS.DarkGrey,
-  },
-  routeArrow: {
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    minWidth: 60,
-  },
-  arrowLine: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  transitDays: {
-    fontFamily: Fonts.meduim,
-    fontSize: 11,
-    color: PRIMARY_COLOR,
-    marginTop: 2,
-  },
-  readyBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#F59E0B',
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  readyBannerText: {
-    fontFamily: Fonts.bold,
-    fontSize: 12,
-    color: COLORS.white,
-    marginLeft: 8,
-  },
-  infoBanner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#E0F2FE',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  infoBannerText: {
-    fontFamily: Fonts.meduim,
-    fontSize: 12,
-    color: PRIMARY_COLOR,
-    marginLeft: 6,
-  },
-  arrivedBanner: {
-    backgroundColor: '#D1FAE5',
-  },
-  arrivedBannerText: {
-    color: COLORS.success,
-  },
-  footerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.Silver,
-  },
-  footerItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  footerText: {
-    fontFamily: Fonts.regular,
-    fontSize: 12,
-    color: COLORS.DimGray,
-    marginLeft: 6,
-  },
-  footerTextPrimary: {
-    color: PRIMARY_COLOR,
-  },
-});

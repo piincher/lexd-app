@@ -1,10 +1,12 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Ionicons } from '@expo/vector-icons';
-import { Searchbar, HelperText } from 'react-native-paper';
+import { Searchbar, HelperText, ActivityIndicator } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
 import { Consignee } from '../../../../consignees';
+import { createStyles } from './ConsigneeSelector.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ConsigneeSelectorProps {
   selectedConsigneeId: string;
@@ -12,6 +14,7 @@ interface ConsigneeSelectorProps {
   consignees: Consignee[];
   searchQuery: string;
   showDropdown: boolean;
+  isLoading?: boolean;
   error?: string;
   onSearchChange: (query: string) => void;
   onToggleDropdown: (show: boolean) => void;
@@ -25,12 +28,15 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
   consignees,
   searchQuery,
   showDropdown,
+  isLoading = false,
   error,
   onSearchChange,
   onToggleDropdown,
   onSelectConsignee,
   onClearConsignee,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const renderConsigneeItem = ({ item }: { item: Consignee }) => (
     <TouchableOpacity
       style={styles.consigneeItem}
@@ -42,6 +48,11 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
       <View style={styles.consigneeItemContent}>
         <Text style={styles.consigneeItemName}>{item.name}</Text>
         <Text style={styles.consigneeItemPhone}>{item.phone}</Text>
+        {!!item.warehouseAddress && (
+          <Text style={styles.consigneeItemAddress} numberOfLines={1}>
+            {item.warehouseAddress}
+          </Text>
+        )}
       </View>
       <Ionicons name="chevron-forward" size={20} color={Theme.neutral[400]} />
     </TouchableOpacity>
@@ -94,116 +105,34 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
           {error}
         </HelperText>
       )}
-      {showDropdown && consignees.length > 0 && (
+      {showDropdown && (
         <View style={styles.dropdownCard}>
-          <FlashList
-            data={consignees}
-            keyExtractor={(item) => item._id}
-            renderItem={renderConsigneeItem}
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
-          />
+          {isLoading ? (
+            <View style={styles.dropdownState}>
+              <ActivityIndicator size="small" color={Theme.primary[500]} />
+              <Text style={styles.dropdownStateText}>Recherche en cours...</Text>
+            </View>
+          ) : consignees.length > 0 ? (
+            <FlashList
+              data={consignees}
+              keyExtractor={(item) => item._id}
+              renderItem={renderConsigneeItem}
+              showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="handled"
+              style={styles.resultsList}
+            />
+          ) : (
+            <View style={styles.dropdownState}>
+              <Ionicons name="search-outline" size={20} color={Theme.neutral[400]} />
+              <Text style={styles.dropdownStateText}>
+                {searchQuery.trim()
+                  ? 'Aucun destinataire trouvé pour cette recherche'
+                  : 'Commencez à saisir un nom ou un téléphone'}
+              </Text>
+            </View>
+          )}
         </View>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: Theme.spacing.md,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Theme.neutral[800],
-    marginBottom: Theme.spacing.xs,
-  },
-  required: {
-    color: Theme.status.error,
-  },
-  searchbar: {
-    backgroundColor: Theme.neutral[100],
-    borderRadius: Theme.radius.md,
-  },
-  searchbarInput: {
-    fontSize: 14,
-  },
-  dropdownCard: {
-    backgroundColor: Theme.neutral.white,
-    borderRadius: Theme.radius.md,
-    marginTop: Theme.spacing.xs,
-    maxHeight: 200,
-    borderWidth: 1,
-    borderColor: Theme.neutral[200],
-  },
-  consigneeItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: Theme.spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
-  },
-  consigneeItemIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Theme.primary[50],
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Theme.spacing.md,
-  },
-  consigneeItemContent: {
-    flex: 1,
-  },
-  consigneeItemName: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Theme.neutral[800],
-  },
-  consigneeItemPhone: {
-    fontSize: 12,
-    color: Theme.neutral[500],
-    marginTop: 2,
-  },
-  selectedConsigneeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: Theme.neutral[50],
-    borderRadius: Theme.radius.md,
-    padding: Theme.spacing.md,
-    borderWidth: 1,
-    borderColor: Theme.primary[300],
-  },
-  selectedConsigneeContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  selectedConsigneeIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: Theme.primary[500],
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Theme.spacing.md,
-  },
-  selectedConsigneeInfo: {
-    flex: 1,
-  },
-  selectedConsigneeName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Theme.neutral[800],
-  },
-  selectedConsigneeLabel: {
-    fontSize: 12,
-    color: Theme.neutral[500],
-    marginTop: 2,
-  },
-  clearConsigneeButton: {
-    padding: Theme.spacing.sm,
-  },
-});

@@ -26,7 +26,7 @@ export const CapacityCard: React.FC<CapacityCardProps> = ({ totalCBM, maxCBM }) 
 
 const styles = StyleSheet.create({
   capacityCard: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius['2xl'],
     padding: Theme.spacing.lg,
     marginBottom: Theme.spacing.lg,

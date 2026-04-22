@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 
 interface HeaderProps {
   containerNumber: string;
@@ -19,6 +21,7 @@ export const Header: React.FC<HeaderProps> = ({
   onBack,
   onGoToLoadingList,
 }) => {
+  const navigation = useNavigation();
   return (
     <LinearGradient
       colors={[Theme.primary[600], Theme.primary[800]]}
@@ -31,9 +34,16 @@ export const Header: React.FC<HeaderProps> = ({
           <Ionicons name="arrow-back" size={24} color="#FFF" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Liste de Colisage</Text>
-        <TouchableOpacity style={styles.loadingListButton} onPress={onGoToLoadingList}>
-          <Ionicons name="list" size={20} color="#FFF" />
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+          <TouchableOpacity style={styles.loadingListButton} onPress={onGoToLoadingList}>
+            <Ionicons name="list" size={20} color="#FFF" />
+          </TouchableOpacity>
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={22}
+            color="#FFF"
+          />
+        </View>
       </View>
       <Text style={styles.headerSubtitle}>{containerNumber}</Text>
       <Text style={styles.headerMeta}>

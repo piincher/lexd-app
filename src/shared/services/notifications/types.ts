@@ -92,26 +92,26 @@ export const defaultNotificationPreferences: NotificationPreference[] = [
   {
     type: 'ORDER_UPDATE',
     enabled: true,
-    label: 'Order Updates',
-    description: 'Receive updates about your orders',
+    label: 'Mises a jour des commandes',
+    description: 'Recevez des mises a jour sur vos commandes',
   },
   {
     type: 'PAYMENT',
     enabled: true,
-    label: 'Payment Notifications',
-    description: 'Get notified about payment confirmations',
+    label: 'Notifications de paiement',
+    description: 'Soyez informe des confirmations de paiement',
   },
   {
     type: 'CONTAINER_STATUS',
     enabled: true,
-    label: 'Container Updates',
-    description: 'Track your container status changes',
+    label: 'Suivi des conteneurs',
+    description: 'Suivez les changements de statut de vos conteneurs',
   },
   {
     type: 'TICKET_REPLY',
     enabled: true,
-    label: 'Support Replies',
-    description: 'Receive replies from customer support',
+    label: 'Reponses du support',
+    description: 'Recevez les reponses du service client',
   },
   // {
   //   type: 'INVOICE',
@@ -128,7 +128,7 @@ export const defaultNotificationPreferences: NotificationPreference[] = [
   {
     type: 'GENERAL',
     enabled: true,
-    label: 'General Notifications',
-    description: 'Other important announcements',
+    label: 'Notifications generales',
+    description: 'Autres annonces importantes',
   },
 ];

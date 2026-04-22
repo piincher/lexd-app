@@ -2,7 +2,8 @@
  * useSearch hooks - React Query hooks for search functionality
  */
 
-import { useQuery, useQueryClient, UseQueryOptions } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { UseQueryOptions } from "@tanstack/react-query";
 import { useState, useEffect, useRef } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import debounce from "lodash/debounce";

@@ -1,6 +1,7 @@
 /**
  * PartnersStrip
- * Horizontal scrollable partner/carrier logos
+ * "Trusted by" horizontal scroll of carrier logos with
+ * refined card styling and subtle backdrop.
  */
 
 import React from 'react';
@@ -11,18 +12,17 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
 import { PARTNER_LOGOS } from '../../constants/homeData';
+import { SectionHeader } from '../SectionHeader';
 
 export const PartnersStrip: React.FC = () => {
   const { colors } = useAppTheme();
 
   return (
     <Animated.View
-      entering={FadeInDown.delay(800).duration(500).springify()}
+      entering={FadeInDown.delay(400).duration(500).springify()}
       style={styles.container}
     >
-      <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
-        Nos Partenaires
-      </Text>
+      <SectionHeader title="Nos Partenaires" subtitle="Nous collaborons avec les leaders mondiaux du transport" align="center" />
 
       <ScrollView
         horizontal
@@ -46,24 +46,19 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 32,
   },
-  sectionTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 18,
-    marginBottom: 14,
-    paddingHorizontal: 16,
-  },
   scrollContent: {
     paddingHorizontal: 16,
-    gap: 10,
+    gap: 12,
   },
   logoCard: {
-    borderRadius: 12,
-    padding: 14,
+    borderRadius: 14,
+    paddingVertical: 16,
+    paddingHorizontal: 18,
     ...Theme.shadows.sm,
   },
   logo: {
-    width: 72,
-    height: 36,
+    width: 76,
+    height: 38,
     resizeMode: 'contain',
   },
 });

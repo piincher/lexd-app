@@ -8,7 +8,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { MotiView } from "moti";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { navigationProps } from "@src/navigations/type";
+import type { navigationProps } from "@src/navigations/type";
 import { useMyReviews, useReviewStats } from "@src/shared/hooks/useReviews";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { StarRating } from "./StarRating";

@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
-import { View, StyleSheet, Image, ImageSourcePropType, StyleProp, ImageStyle } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
+import type { ImageSourcePropType, StyleProp, ImageStyle } from 'react-native';
 
 interface Props {
 	img: ImageSourcePropType;

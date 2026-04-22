@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F7FC',
@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
   },
   progressBarCurrent: {
     height: '100%',
-    backgroundColor: Theme.neutral[400],
+    backgroundColor: colors.neutral[400],
   },
   progressBarSelected: {
     height: '100%',
@@ -121,11 +121,11 @@ export const styles = StyleSheet.create({
   warningText: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.status.error,
+    color: colors.status.error,
     marginLeft: 8,
   },
   warningTextOrange: {
-    color: Theme.status.warning,
+    color: colors.status.warning,
   },
   nonAssignableBanner: {
     flexDirection: 'row',
@@ -161,7 +161,7 @@ export const styles = StyleSheet.create({
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius.full,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.sm,
@@ -173,7 +173,7 @@ export const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 15,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     paddingVertical: 4,
   },
 
@@ -193,12 +193,12 @@ export const styles = StyleSheet.create({
   selectAllText: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.primary[600],
+    color: colors.primary[600],
     marginLeft: Theme.spacing.sm,
   },
   resultsText: {
     fontSize: 12,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     fontWeight: '500',
   },
 
@@ -212,7 +212,7 @@ export const styles = StyleSheet.create({
   goodsCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     marginHorizontal: Theme.spacing.lg,
     marginVertical: Theme.spacing.xs,
     padding: Theme.spacing.md,
@@ -220,9 +220,9 @@ export const styles = StyleSheet.create({
     ...Theme.shadows.sm,
   },
   goodsCardSelected: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     borderWidth: 1,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
   },
   checkboxContainer: {
     marginRight: Theme.spacing.md,
@@ -232,14 +232,14 @@ export const styles = StyleSheet.create({
     height: 24,
     borderRadius: 6,
     borderWidth: 2,
-    borderColor: Theme.neutral[300],
-    backgroundColor: Theme.neutral.white,
+    borderColor: colors.neutral[300],
+    backgroundColor: colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkboxSelected: {
-    backgroundColor: Theme.primary[500],
-    borderColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
+    borderColor: colors.primary[500],
   },
   imageContainer: {
     width: 70,
@@ -270,11 +270,11 @@ export const styles = StyleSheet.create({
   goodsId: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   description: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: 8,
   },
   goodsMeta: {
@@ -287,7 +287,7 @@ export const styles = StyleSheet.create({
   },
   metaText: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginLeft: 4,
     maxWidth: 100,
   },
@@ -309,13 +309,13 @@ export const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.sm,
   },
   emptySubtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textAlign: 'center',
     paddingHorizontal: Theme.spacing.xl,
   },
@@ -344,16 +344,16 @@ export const styles = StyleSheet.create({
   selectionCount: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   selectionCBM: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.primary[600],
+    color: colors.primary[600],
     marginTop: 2,
   },
   selectionCBMError: {
-    color: Theme.status.error,
+    color: colors.status.error,
   },
   assignButton: {
     borderRadius: Theme.radius.full,
@@ -376,7 +376,7 @@ export const styles = StyleSheet.create({
     color: '#FFF',
   },
   assignButtonTextDisabled: {
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
 
   // Loading & Error States
@@ -394,19 +394,19 @@ export const styles = StyleSheet.create({
   errorTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginTop: Theme.spacing.lg,
     marginBottom: Theme.spacing.sm,
   },
   errorSubtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textAlign: 'center',
     marginBottom: Theme.spacing.xl,
   },
   retryButton: {
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     paddingVertical: Theme.spacing.md,
     paddingHorizontal: Theme.spacing.xl,
     borderRadius: Theme.radius.full,

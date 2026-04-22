@@ -7,3 +7,4 @@ export { BenefitsGrid } from './BenefitsGrid';
 export { ComparisonCard } from './ComparisonCard';
 export { CertificateVerifier } from './CertificateVerifier';
 export { PartnersStrip } from './PartnersStrip';
+export { NuvotechSection } from './NuvotechSection';

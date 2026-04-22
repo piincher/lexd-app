@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { ViewStyle, TextStyle } from 'react-native';
+import type { ViewStyle, TextStyle } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
 import type { ButtonProps as PaperButtonProps } from 'react-native-paper';
 

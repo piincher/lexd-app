@@ -27,7 +27,6 @@ export const RouteFormFields: React.FC<RouteFormFieldsProps> = ({
         value={formData.origin}
         onChangeText={(value) => onUpdateField('origin', value)}
         placeholder="Ex: Chine (Guangzhou)"
-        leftIcon="location-outline"
         error={errors.origin}
         containerStyle={styles.input}
       />
@@ -37,7 +36,6 @@ export const RouteFormFields: React.FC<RouteFormFieldsProps> = ({
         value={formData.destination}
         onChangeText={(value) => onUpdateField('destination', value)}
         placeholder="Ex: Mali (Bamako)"
-        leftIcon="flag-outline"
         error={errors.destination}
         containerStyle={styles.input}
       />
@@ -47,7 +45,6 @@ export const RouteFormFields: React.FC<RouteFormFieldsProps> = ({
         value={formData.price?.toString() || ''}
         onChangeText={(value) => onUpdateField('price', parseFloat(value) || 0)}
         placeholder="0.00"
-        leftIcon="cash-outline"
         keyboardType="numeric"
         error={errors.price}
         containerStyle={styles.input}
@@ -58,7 +55,6 @@ export const RouteFormFields: React.FC<RouteFormFieldsProps> = ({
         value={formData.scheduleDate || ''}
         onChangeText={(value) => onUpdateField('scheduleDate', value)}
         placeholder="YYYY-MM-DD"
-        leftIcon="calendar-outline"
         error={errors.scheduleDate}
         containerStyle={styles.input}
       />
@@ -69,7 +65,6 @@ export const RouteFormFields: React.FC<RouteFormFieldsProps> = ({
           value={formData.shippingMode === 'AIR' ? 'Aérien' : 'Maritime'}
           onChangeText={() => {}}
           editable={false}
-          leftIcon={formData.shippingMode === 'AIR' ? 'airplane-outline' : 'boat-outline'}
           containerStyle={styles.input}
         />
       </View>

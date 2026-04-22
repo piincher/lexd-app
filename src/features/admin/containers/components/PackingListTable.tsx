@@ -154,13 +154,16 @@ export const PackingListTable: React.FC<PackingListTableProps> = ({
             </Text>
             {showPhotos && (
               <View style={[styles.cell, { flex: 0.6 }, styles.photoCell]}>
-                {item.photos && item.photos.length > 0 ? (
-                  <Image source={{ uri: item.photos[0] }} style={styles.photo} />
-                ) : (
-                  <View style={styles.noPhoto}>
-                    <Ionicons name="image-outline" size={16} color={Theme.neutral[400]} />
-                  </View>
-                )}
+                {(() => {
+                  const photoUrls = item.photos?.length ? item.photos : (item.images || []);
+                  return photoUrls.length > 0 ? (
+                    <Image source={{ uri: photoUrls[0] }} style={styles.photo} />
+                  ) : (
+                    <View style={styles.noPhoto}>
+                      <Ionicons name="image-outline" size={16} color={Theme.neutral[400]} />
+                    </View>
+                  );
+                })()}
               </View>
             )}
             <Text style={[styles.cell, { flex: 0.8 }, styles.cellNumeric]}>
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   rowEven: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
   },
   rowOdd: {
     backgroundColor: Theme.neutral[50],

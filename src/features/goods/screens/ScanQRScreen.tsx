@@ -1,7 +1,7 @@
 // Goods Feature - ScanQRScreen
 // Screen for scanning QR codes to identify goods or containers
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import {
 	Text,
@@ -14,9 +14,9 @@ import {
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { RootStackScreenProps } from '@src/navigations/type';
+import type { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useScanQR } from '../hooks';
 import { ScanQRResponse } from '../api';
 
@@ -34,12 +34,75 @@ type ScanMode = 'camera' | 'manual';
 
 const ScanQRScreen = ({ navigation }: RootStackScreenProps<'ScanQR'>) => {
 	const theme = useTheme();
+	const { colors } = useAppTheme();
 	const [scanMode, setScanMode] = useState<ScanMode>('camera');
 	const [manualCode, setManualCode] = useState('');
 	const [snackbarVisible, setSnackbarVisible] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 
 	const { mutate: scanQR, isPending } = useScanQR();
+
+	const styles = useMemo(() => StyleSheet.create({
+		container: {
+			flex: 1,
+			backgroundColor: colors.background.default,
+		},
+		headerTitle: {
+			fontFamily: Fonts.bold,
+		},
+		centerContainer: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+		loadingText: {
+			marginTop: 16,
+			fontFamily: Fonts.meduim,
+			color: colors.text.secondary,
+		},
+		manualContainer: {
+			flex: 1,
+			backgroundColor: colors.background.default,
+		},
+		manualContent: {
+			flexGrow: 1,
+			paddingHorizontal: 24,
+			paddingTop: 40,
+			paddingBottom: 24,
+			alignItems: 'center',
+		},
+		manualIcon: {
+			marginBottom: 24,
+		},
+		manualTitle: {
+			fontSize: 24,
+			fontFamily: Fonts.bold,
+			color: colors.text.primary,
+			marginBottom: 8,
+		},
+		manualDescription: {
+			fontSize: 14,
+			fontFamily: Fonts.regular,
+			color: colors.text.secondary,
+			textAlign: 'center',
+			marginBottom: 32,
+			lineHeight: 20,
+		},
+		input: {
+			width: '100%',
+			marginBottom: 24,
+			backgroundColor: colors.background.card,
+		},
+		submitButton: {
+			width: '100%',
+			paddingVertical: 8,
+			marginBottom: 16,
+		},
+		switchButton: {
+			width: '100%',
+			paddingVertical: 8,
+		},
+	}), [colors]);
 
 	const handleScan = (data: string) => {
 		processQRCode(data);
@@ -181,67 +244,5 @@ const ScanQRScreen = ({ navigation }: RootStackScreenProps<'ScanQR'>) => {
 		</SafeAreaView>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: 'white',
-	},
-	headerTitle: {
-		fontFamily: Fonts.bold,
-	},
-	centerContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	loadingText: {
-		marginTop: 16,
-		fontFamily: Fonts.meduim,
-		color: COLORS.DimGray,
-	},
-	manualContainer: {
-		flex: 1,
-		backgroundColor: 'white',
-	},
-	manualContent: {
-		flexGrow: 1,
-		paddingHorizontal: 24,
-		paddingTop: 40,
-		paddingBottom: 24,
-		alignItems: 'center',
-	},
-	manualIcon: {
-		marginBottom: 24,
-	},
-	manualTitle: {
-		fontSize: 24,
-		fontFamily: Fonts.bold,
-		color: COLORS.DarkGrey,
-		marginBottom: 8,
-	},
-	manualDescription: {
-		fontSize: 14,
-		fontFamily: Fonts.regular,
-		color: COLORS.DimGray,
-		textAlign: 'center',
-		marginBottom: 32,
-		lineHeight: 20,
-	},
-	input: {
-		width: '100%',
-		marginBottom: 24,
-		backgroundColor: 'white',
-	},
-	submitButton: {
-		width: '100%',
-		paddingVertical: 8,
-		marginBottom: 16,
-	},
-	switchButton: {
-		width: '100%',
-		paddingVertical: 8,
-	},
-});
 
 export default ScanQRScreen;

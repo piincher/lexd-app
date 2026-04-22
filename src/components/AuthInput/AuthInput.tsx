@@ -1,16 +1,9 @@
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useFormikContext } from "formik";
-import React, { Dispatch, FC, useEffect } from "react";
-import {
-   Pressable,
-   StyleProp,
-   StyleSheet,
-   Text,
-   TextInputProps,
-   View,
-   ViewStyle,
-} from "react-native";
+import React, { Dispatch, FC, useEffect, useMemo } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import type { StyleProp, TextInputProps, ViewStyle } from "react-native";
 import Animated, {
    useAnimatedStyle,
    useSharedValue,
@@ -39,6 +32,7 @@ interface Props {
 }
 
 const AuthInputField: FC<Props> = (props) => {
+   const { colors } = useAppTheme();
    const inputTransformValue = useSharedValue(0);
    const {
       onRightIconPress,
@@ -77,6 +71,44 @@ const AuthInputField: FC<Props> = (props) => {
       handleSubmit();
    };
 
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            defaultInput: {
+               borderWidth: 0.5,
+               width: "70%",
+               minHeight: 48,
+               borderColor: colors.border,
+            },
+            headerContainer: {
+               flexDirection: "row",
+               justifyContent: "space-between",
+               alignItems: "center",
+            },
+            label: {
+               color: colors.text.primary,
+               padding: 5,
+               fontSize: 16,
+               fontFamily: Fonts.meduim,
+            },
+            rightIcon: {
+               width: 40,
+               height: 40,
+               position: "absolute",
+               top: 0,
+               right: 0,
+               justifyContent: "center",
+            },
+            descriptionText: {
+               color: colors.primary.main,
+               fontSize: 12,
+               fontFamily: Fonts.regular,
+               marginVertical: 5,
+            },
+         }),
+      [colors]
+   );
+
    return (
       <Animated.View style={[containerStyle, inputStyle]}>
          <View style={styles.headerContainer}>
@@ -85,7 +117,7 @@ const AuthInputField: FC<Props> = (props) => {
          </View>
          <View
             style={{
-               borderColor: errorMsg ? COLORS.redShade : COLORS.grey,
+               borderColor: errorMsg ? colors.status.error : colors.border,
                borderWidth: 0.5,
                borderRadius: 8,
             }}
@@ -116,35 +148,5 @@ const AuthInputField: FC<Props> = (props) => {
       </Animated.View>
    );
 };
-
-const styles = StyleSheet.create({
-   defaultInput: {
-      borderWidth: 0.5,
-      width: "70%",
-      minHeight: 48,
-      borderColor: COLORS.grey,
-   },
-   headerContainer: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-   label: {
-      color: COLORS.black,
-      padding: 5,
-      fontSize: 16,
-      fontFamily: Fonts.meduim,
-   },
-   rightIcon: {
-      width: 40,
-      height: 40,
-      position: "absolute",
-      top: 0,
-      right: 0,
-      justifyContent: "center",
-   },
-   descriptionText: {
-      color: COLORS.blue,
-      fontSize: 12,
-      fontFamily: Fonts.regular,
-      marginVertical: 5,
-   },
-});
 
 export default AuthInputField;

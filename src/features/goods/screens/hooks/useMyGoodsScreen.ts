@@ -2,8 +2,8 @@
 // Handles all business logic for the MyGoodsScreen
 
 import { useState, useCallback, useMemo } from 'react';
-import { NavigationProp } from '@react-navigation/native';
-import { RootStackParamList } from '@src/navigations/type';
+import type { NavigationProp } from '@react-navigation/native';
+import type { RootStackParamList } from '@src/navigations/type';
 import { useGetMyGoods } from '../../hooks';
 import { GoodsStatus, Goods } from '../../api';
 

@@ -8,7 +8,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { AuthenticatedStackParamList } from '@src/navigation/types';
+import type { AuthenticatedStackParamList } from '@src/navigation/types';
 
 import { ClientOrdersListScreen } from '../orders/screens/ClientOrdersListScreen';
 import { ClientOrderDetailScreen } from '../orders/screens/ClientOrderDetailScreen';

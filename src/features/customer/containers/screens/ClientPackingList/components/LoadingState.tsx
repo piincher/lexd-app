@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native-paper';
-import { COLORS } from '@src/constants/Colors';
-import { styles } from '../ClientPackingListScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from '../ClientPackingListScreen.styles';
 import { ShimmerBlock } from '@src/shared/ui';
 
 export const LoadingState: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ padding: 16, gap: 12 }}>

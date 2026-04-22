@@ -1,6 +1,8 @@
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Fonts } from "@src/constants/Fonts";
-import { StyleSheet, Text, View, StyleProp, ViewStyle } from "react-native";
+import { useMemo } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 interface RowDetailsProps {
@@ -11,9 +13,39 @@ interface RowDetailsProps {
 }
 
 export const RowDetails = ({ label, value, icon, style }: RowDetailsProps) => {
+   const { colors } = useAppTheme();
+   const styles = useMemo(() => StyleSheet.create({
+      rowContainer: {
+         flexDirection: "row",
+         alignItems: "center",
+         justifyContent: "space-between",
+         paddingVertical: 12,
+         paddingHorizontal: 16,
+      },
+      icon: {
+         marginRight: 12,
+      },
+      labelContainer: {
+         flex: 1,
+      },
+      textLabelStyle: {
+         color: colors.text.secondary,
+         fontFamily: Fonts.meduim,
+         fontSize: 14,
+      },
+      valueContainer: {
+         alignItems: "flex-end",
+      },
+      textValue: {
+         color: colors.text.primary,
+         fontFamily: Fonts.bold,
+         fontSize: 16,
+      },
+   }), [colors]);
+
    return (
       <View style={[styles.rowContainer, style]}>
-         {icon && <MaterialIcons name={icon} size={20} color={COLORS.blue} style={styles.icon} />}
+         {icon && <MaterialIcons name={icon} size={20} color={colors.primary.main} style={styles.icon} />}
          <View style={styles.labelContainer}>
             <Text style={styles.textLabelStyle}>{label}</Text>
          </View>
@@ -23,32 +55,3 @@ export const RowDetails = ({ label, value, icon, style }: RowDetailsProps) => {
       </View>
    );
 };
-
-export const styles = StyleSheet.create({
-   rowContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      paddingVertical: 12,
-      paddingHorizontal: 16,
-   },
-   icon: {
-      marginRight: 12,
-   },
-   labelContainer: {
-      flex: 1,
-   },
-   textLabelStyle: {
-      color: COLORS.grey,
-      fontFamily: Fonts.meduim,
-      fontSize: 14,
-   },
-   valueContainer: {
-      alignItems: "flex-end",
-   },
-   textValue: {
-      color: COLORS.DarkGrey,
-      fontFamily: Fonts.bold,
-      fontSize: 16,
-   },
-});

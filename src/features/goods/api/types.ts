@@ -53,12 +53,25 @@ export interface Goods {
   qrCode?: string;
   qrCodeImageUrl?: string;
   qrCodeData?: string;
+  airwayBillId?: {
+    _id: string;
+    awbNumber: string;
+    flightNumber: string;
+    airline: string;
+    departureAirport: string;
+    arrivalAirport: string;
+    departureDate?: string;
+    estimatedArrivalDate?: string;
+    actualArrivalDate?: string;
+    status: string;
+  };
   createdAt: string;
   location?: GoodsLocation;
 }
 
 export type GoodsStatus = 
   | 'RECEIVED_AT_WAREHOUSE'
+  | 'PACKED'
   | 'ASSIGNED_TO_CONTAINER'
   | 'LOADED_IN_CONTAINER'
   | 'IN_TRANSIT'
@@ -124,4 +137,6 @@ export interface UpdateGoodsInput {
   shippingMode?: 'AIR' | 'SEA';
   dimensions?: { length: number; width: number; height: number };
   receivedByName?: string;
+  photosToKeep?: string[];
+  newPhotoUris?: string[];
 }

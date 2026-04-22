@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: Theme.spacing.sm,
   },
   input: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
   },
   multilineInput: {
     minHeight: 80,

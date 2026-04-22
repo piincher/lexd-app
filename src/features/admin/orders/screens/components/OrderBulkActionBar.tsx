@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderTopWidth: 1,
     borderTopColor: Theme.neutral[200],
     padding: 12,

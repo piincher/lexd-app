@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '../../../../../shared/ui';
-import { styles } from '../ContainerDetailScreen.styles';
+import { Theme } from '@src/constants/Theme';
+import {  createStyles  } from '../ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ErrorStateProps {
   onBack: () => void;
 }
 
-export const ErrorState: React.FC<ErrorStateProps> = ({ onBack }) => (
+export const ErrorState: React.FC<ErrorStateProps> = ({ onBack }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  return (
   <SafeAreaView style={styles.container}>
     <View style={styles.centerContent}>
       <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
@@ -20,3 +24,4 @@ export const ErrorState: React.FC<ErrorStateProps> = ({ onBack }) => (
     </View>
   </SafeAreaView>
 );
+};

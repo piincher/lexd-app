@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     minWidth: 80,
     alignItems: 'center',
     padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.lg,
   },
   summaryItemValue: {

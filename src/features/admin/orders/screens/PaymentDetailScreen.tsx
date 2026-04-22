@@ -122,7 +122,8 @@ const PaymentDetailScreen: React.FC = () => {
       header={{ 
         title: 'Détails du paiement',
         showBack: true, 
-        onBackPress: () => navigation.goBack() 
+        onBackPress: () => navigation.goBack(),
+        showNotificationBell: true,
       }}
     >
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

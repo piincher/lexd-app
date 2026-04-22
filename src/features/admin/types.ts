@@ -4,7 +4,7 @@
  */
 
 // Re-export all route types from the routes feature
-export {
+export type {
   // Domain entities
   ShippingMode,
   ShippingLine,
@@ -17,7 +17,9 @@ export {
   
   // UI State types
   RouteFormData,
-  
+} from './routes/types';
+
+export {
   // Display constants
   SHIPPING_MODE_LABELS,
   SHIPPING_MODE_COLORS,

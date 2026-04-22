@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Surface, Button, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { COLORS } from '@src/constants/Colors';
-import { Fonts } from '@src/constants/Fonts';
-import { styles } from './PaymentSection.styles';
+import { createStyles } from './PaymentSection.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface PaymentSectionProps {
   order: any;
@@ -25,6 +24,8 @@ const parseCBM = (value: any): string => {
 
 export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
   const navigation = useNavigation();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   // Parse prices safely
   const isAir = order?.shippingMode === 'air';
@@ -104,7 +105,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
   return (
     <Surface style={styles.container}>
       <View style={styles.header}>
-        <MaterialCommunityIcons name="credit-card" size={22} color={COLORS.blue} />
+        <MaterialCommunityIcons name="credit-card" size={22} color={colors.primary.main} />
         <Text style={styles.title}>Payment Details</Text>
       </View>
 
@@ -197,7 +198,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
             mode="contained"
             onPress={handleRecordPayment}
             style={styles.payButton}
-            buttonColor={COLORS.blue}
+            buttonColor={colors.primary.main}
             icon="cash-plus"
             labelStyle={styles.buttonLabel}
           >
@@ -209,7 +210,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
           mode="outlined"
           onPress={handleViewHistory}
           style={styles.historyButton}
-          textColor={COLORS.blue}
+          textColor={colors.primary.main}
           icon="history"
           labelStyle={styles.buttonLabel}
         >
@@ -219,7 +220,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
 
       {/* Admin Note */}
       <View style={styles.adminNote}>
-        <MaterialCommunityIcons name="information" size={16} color={COLORS.grey} />
+        <MaterialCommunityIcons name="information" size={16} color={colors.text.secondary} />
         <Text style={styles.adminNoteText}>
           Record payments made by clients via cash, bank transfer, or mobile money.
           The client will receive a notification of the recorded payment.

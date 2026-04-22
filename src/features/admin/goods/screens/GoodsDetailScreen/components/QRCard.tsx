@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Image } from 'react-native';
 import { Card, Button, Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { styles } from '../GoodsDetailScreen.styles';
+import {  createStyles  } from '../GoodsDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface QRCardProps {
   hasQRCode: boolean;
@@ -13,7 +14,10 @@ interface QRCardProps {
   onShare: () => void;
 }
 
-export const QRCard: React.FC<QRCardProps> = ({ hasQRCode, qrCodeImageUrl, goodsId, onShare }) => (
+export const QRCard: React.FC<QRCardProps> = ({ hasQRCode, qrCodeImageUrl, goodsId, onShare }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  return (
   <Card style={styles.qrCard}>
     <LinearGradient colors={['#FFFFFF', '#F8F7FC']} style={styles.qrGradient}>
       <View style={styles.qrHeader}>
@@ -46,3 +50,4 @@ export const QRCard: React.FC<QRCardProps> = ({ hasQRCode, qrCodeImageUrl, goods
     </LinearGradient>
   </Card>
 );
+};

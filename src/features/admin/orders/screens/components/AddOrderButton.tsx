@@ -1,16 +1,34 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { COLORS } from '@src/constants/Colors';
-import { styles } from './AddOrderButton.styles';
-import { AuthenticatedStackParamList } from '@src/navigation/types';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StyleSheet } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import type { AuthenticatedStackParamList } from '@src/navigation/types';
 
 type NavigationProp = NativeStackNavigationProp<AuthenticatedStackParamList>;
 
 export const AddOrderButton: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      position: 'absolute',
+      right: 16,
+      bottom: 20,
+      alignItems: 'flex-end',
+      gap: 12,
+    },
+    fab: {
+      backgroundColor: colors.primary.main,
+      borderRadius: 12,
+    },
+    fabManual: {
+      backgroundColor: colors.status.success,
+      borderRadius: 12,
+    },
+  }), [colors, isDark]);
 
   return (
     <View style={styles.container}>
@@ -23,7 +41,7 @@ export const AddOrderButton: React.FC = () => {
           phoneNumber: '',
           pushTokens: []
         })}
-        color="#FFF"
+        color={colors.text.inverse}
         label="New Order"
       />
     </View>

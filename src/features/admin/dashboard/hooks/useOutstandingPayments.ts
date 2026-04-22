@@ -3,7 +3,8 @@
  * SRP: Data fetching and business logic ONLY (<100 lines)
  */
 
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { getOutstandingPayments } from '../api/dashboardApi';
 import type { OutstandingPaymentsData } from '../types';
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { Theme } from '@src/constants/Theme';
 import { ShimmerBlock } from '@src/shared/ui';
 
 interface PaymentHistorySkeletonProps {
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 12,
     elevation: 2,
-    backgroundColor: 'white',
+    backgroundColor: Theme.colors.background.card,
     padding: 16,
     marginBottom: 12,
   },

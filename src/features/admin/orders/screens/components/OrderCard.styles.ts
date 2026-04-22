@@ -1,11 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { lightTheme } from '@src/constants/Theme';
-import { COLORS } from '@src/constants/Colors';
 
-type Colors = typeof lightTheme.colors;
-
-export const createStyles = (colors: Colors) =>
+export const createStyles = (colors: any, isDark: boolean) =>
   StyleSheet.create({
     container: {
       backgroundColor: colors.background.card,
@@ -171,11 +167,11 @@ export const createStyles = (colors: Colors) =>
       alignItems: 'center',
     },
     checkboxSelected: {
-      backgroundColor: COLORS.blue || '#2196F3',
-      borderColor: COLORS.blue || '#2196F3',
+      backgroundColor: colors.primary.main,
+      borderColor: colors.primary.main,
     },
     selectedContainer: {
-      backgroundColor: '#E3F2FD',
+      backgroundColor: colors.background.paper,
     },
   });
 

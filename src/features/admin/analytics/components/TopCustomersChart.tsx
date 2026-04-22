@@ -4,6 +4,7 @@
  */
 
 import React from 'react';
+import { Theme } from '@src/constants/Theme';
 import { View, StyleSheet, Dimensions, ScrollView } from 'react-native';
 import { Text, Card, Avatar, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Theme.colors.neutral[100],
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#F3F4F6',
+    borderBottomColor: Theme.colors.neutral[100],
   },
   rankContainer: {
     alignItems: 'center',

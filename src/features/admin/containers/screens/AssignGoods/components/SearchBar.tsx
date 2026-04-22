@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   searchInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.md,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.sm,

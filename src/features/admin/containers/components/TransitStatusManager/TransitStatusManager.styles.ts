@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   // Container styles
   container: {
     flex: 1,
   },
   card: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius['2xl'],
     padding: Theme.spacing.lg,
     marginBottom: Theme.spacing.lg,
@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 17,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
 
   // StatusCard styles
   statusCard: {
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.lg,
     marginBottom: Theme.spacing.md,
@@ -47,13 +47,13 @@ const styles = StyleSheet.create({
   statusLabel: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginBottom: Theme.spacing.xs,
   },
   statusDescription: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: Theme.spacing.md,
   },
   timestampContainer: {
@@ -65,15 +65,15 @@ const styles = StyleSheet.create({
   timestampLabel: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   timestampValue: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   notesContainer: {
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: Theme.radius.md,
     padding: Theme.spacing.md,
     marginTop: Theme.spacing.sm,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   notesText: {
     fontSize: 13,
     fontWeight: '500',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     lineHeight: 20,
   },
 
@@ -112,15 +112,15 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   timelineDotCompleted: {
-    backgroundColor: Theme.status.success,
+    backgroundColor: colors.status.success,
   },
   timelineDotCurrent: {
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     transform: [{ scale: 1.2 }],
     ...Theme.shadows.md,
   },
   timelineDotPending: {
-    backgroundColor: Theme.neutral[300],
+    backgroundColor: colors.neutral[300],
   },
   timelineConnector: {
     position: 'absolute',
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     top: 18,
     width: 2,
     height: '100%',
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
   },
   timelineContent: {
     flex: 1,
@@ -137,19 +137,19 @@ const styles = StyleSheet.create({
   timelineStatusLabel: {
     fontSize: 15,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.xs,
   },
   timelineWaypointName: {
     fontSize: 13,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: Theme.spacing.xs,
   },
   timelineTimestamp: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
 
   // ActionButtons styles
@@ -169,13 +169,13 @@ const styles = StyleSheet.create({
     gap: Theme.spacing.sm,
   },
   actionButtonPrimary: {
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     ...Theme.shadows.md,
   },
   actionButtonSecondary: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderWidth: 1,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
   },
   actionButtonIcon: {
     width: 20,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: Theme.spacing.md,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     marginTop: Theme.spacing.sm,
   },
 
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderTopLeftRadius: Theme.radius['3xl'],
     borderTopRightRadius: Theme.radius['3xl'],
     padding: Theme.spacing['2xl'],
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     textAlign: 'center',
     marginBottom: Theme.spacing['2xl'],
   },
@@ -229,25 +229,25 @@ const styles = StyleSheet.create({
     minWidth: 120,
   },
   statusBoxCurrent: {
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
   },
   statusBoxNew: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
   },
   arrowIcon: {
     width: 24,
     height: 24,
-    tintColor: Theme.neutral[400],
+    tintColor: colors.neutral[400],
   },
   notesInput: {
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: Theme.radius.lg,
     padding: Theme.spacing.lg,
     minHeight: 100,
     textAlignVertical: 'top',
     fontSize: 15,
     fontWeight: '500',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginBottom: Theme.spacing['2xl'],
   },
   buttonRow: {
@@ -258,17 +258,15 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: Theme.spacing.lg,
     borderRadius: Theme.radius.xl,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     alignItems: 'center',
   },
   confirmButton: {
     flex: 1,
     paddingVertical: Theme.spacing.lg,
     borderRadius: Theme.radius.xl,
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     alignItems: 'center',
     ...Theme.shadows.md,
   },
 });
-
-export default styles;

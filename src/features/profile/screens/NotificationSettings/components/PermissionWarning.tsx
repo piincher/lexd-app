@@ -13,7 +13,7 @@ export const PermissionWarning: React.FC<PermissionWarningProps> = ({ visible })
     <View style={styles.warningCard}>
       <MaterialIcons name="info" size={20} color="#F59E0B" />
       <Text style={styles.warningText}>
-        Notifications are disabled. Enable them to receive important updates.
+        Les notifications sont desactivees. Activez-les pour recevoir les mises a jour importantes.
       </Text>
     </View>
   );

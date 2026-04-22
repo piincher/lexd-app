@@ -6,7 +6,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Text, IconButton, Button } from 'react-native-paper';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
 interface StarRatingProps {
@@ -15,18 +15,31 @@ interface StarRatingProps {
   disabled?: boolean;
 }
 
+const staticStyles = StyleSheet.create({
+  starContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 8,
+  },
+  starButton: {
+    margin: 0,
+  },
+});
+
 const StarRating: React.FC<StarRatingProps> = ({ rating, onRatingChange, disabled }) => {
+  const { colors } = useAppTheme();
+
   return (
-    <View style={styles.starContainer}>
+    <View style={staticStyles.starContainer}>
       {[1, 2, 3, 4, 5].map((star) => (
         <IconButton
           key={star}
           icon={star <= rating ? 'star' : 'star-outline'}
           size={32}
-          iconColor={star <= rating ? '#FFB800' : COLORS.SlateGray}
+          iconColor={star <= rating ? '#FFB800' : colors.text.disabled}
           onPress={() => !disabled && onRatingChange(star)}
           disabled={disabled}
-          style={styles.starButton}
+          style={staticStyles.starButton}
         />
       ))}
     </View>
@@ -48,6 +61,47 @@ export const TicketRatingSection: React.FC<TicketRatingSectionProps> = ({
   hasRated,
   isPending,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      marginTop: 16,
+      borderRadius: 12,
+    },
+    title: {
+      fontFamily: Fonts.meduim,
+      fontSize: 16,
+      color: colors.text.primary,
+      textAlign: 'center',
+    },
+    subtitle: {
+      fontFamily: Fonts.regular,
+      fontSize: 13,
+      color: colors.text.secondary,
+      textAlign: 'center',
+      marginTop: 4,
+      marginBottom: 8,
+    },
+    starContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginVertical: 8,
+    },
+    starButton: {
+      margin: 0,
+    },
+    button: {
+      marginTop: 8,
+      borderRadius: 8,
+    },
+    thanksText: {
+      fontFamily: Fonts.meduim,
+      fontSize: 14,
+      color: colors.status.success,
+      textAlign: 'center',
+      marginTop: 8,
+    },
+  }), [colors]);
+
   if (hasRated) {
     return (
       <Card style={styles.container} mode="elevated">
@@ -79,43 +133,3 @@ export const TicketRatingSection: React.FC<TicketRatingSectionProps> = ({
     </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 16,
-    borderRadius: 12,
-  },
-  title: {
-    fontFamily: Fonts.meduim,
-    fontSize: 16,
-    color: COLORS.DarkGrey,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontFamily: Fonts.regular,
-    fontSize: 13,
-    color: COLORS.DimGray,
-    textAlign: 'center',
-    marginTop: 4,
-    marginBottom: 8,
-  },
-  starContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 8,
-  },
-  starButton: {
-    margin: 0,
-  },
-  button: {
-    marginTop: 8,
-    borderRadius: 8,
-  },
-  thanksText: {
-    fontFamily: Fonts.meduim,
-    fontSize: 14,
-    color: COLORS.green,
-    textAlign: 'center',
-    marginTop: 8,
-  },
-});

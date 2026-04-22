@@ -6,6 +6,10 @@ import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tansta
 import { notificationApi } from '../api/notificationApi';
 import type { GetNotificationsParams, NotificationFilters, InAppNotification } from '../types';
 import { showMessage } from 'react-native-flash-message';
+import {
+  clearBadgeCount,
+  setBadgeCount as setNativeBadgeCount,
+} from '@src/shared/services/notificationService';
 
 // ============================================
 // QUERY KEYS
@@ -117,10 +121,13 @@ export const useMarkAsRead = () => {
 
       // Optimistically update unread count
       if (previousUnread) {
+        const count = Math.max(0, (previousUnread as { count: number }).count - 1);
         queryClient.setQueryData(notificationQueryKeys.unread(), {
           ...previousUnread,
-          count: Math.max(0, (previousUnread as { count: number }).count - 1),
+          count,
+          hasNew: count > 0,
         });
+        void setNativeBadgeCount(count);
       }
 
       return { previousLists, previousUnread };
@@ -134,6 +141,7 @@ export const useMarkAsRead = () => {
       }
       if (context?.previousUnread) {
         queryClient.setQueryData(notificationQueryKeys.unread(), context.previousUnread);
+        void setNativeBadgeCount((context.previousUnread as { count: number }).count);
       }
       showMessage({
         message: 'Erreur lors de la mise à jour',
@@ -186,6 +194,7 @@ export const useMarkAllAsRead = () => {
 
       // Reset unread count
       queryClient.setQueryData(notificationQueryKeys.unread(), { count: 0, hasNew: false });
+      void clearBadgeCount();
 
       return { previousLists, previousUnread };
     },
@@ -197,6 +206,7 @@ export const useMarkAllAsRead = () => {
       }
       if (context?.previousUnread) {
         queryClient.setQueryData(notificationQueryKeys.unread(), context.previousUnread);
+        void setNativeBadgeCount((context.previousUnread as { count: number }).count);
       }
       showMessage({
         message: 'Erreur lors de la mise à jour',

@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import { FlashList } from '@shopify/flash-list';
 import { TextInput, Text, ActivityIndicator } from "react-native-paper";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useSearchUsers } from "../../hooks/useSearchUsers";
 import { User } from "../../api/searchUsers";
 
@@ -22,6 +22,100 @@ export const UserSearch: React.FC<UserSearchProps> = ({
   );
   const users = data?.data || [];
   const hasSearched = searchQuery.length >= 3 && !isLoading;
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      marginVertical: 16,
+    },
+    label: {
+      fontSize: 14,
+      fontWeight: "500",
+      marginBottom: 8,
+      color: colors.text.secondary,
+    },
+    input: {
+      backgroundColor: colors.background.card,
+    },
+    hint: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      marginTop: 8,
+      fontStyle: "italic",
+    },
+    searching: {
+      fontSize: 12,
+      color: colors.primary.main,
+      marginTop: 8,
+    },
+    resultsContainer: {
+      marginTop: 12,
+    },
+    resultsCount: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      marginBottom: 8,
+    },
+    list: {
+      maxHeight: 200,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 8,
+      backgroundColor: colors.background.card,
+    },
+    userItem: {
+      padding: 12,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    userName: {
+      fontSize: 16,
+      fontWeight: "500",
+      color: colors.text.primary,
+    },
+    userPhone: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      marginTop: 4,
+    },
+    noResults: {
+      textAlign: "center",
+      color: colors.text.secondary,
+      marginTop: 16,
+      fontStyle: "italic",
+    },
+    selectedContainer: {
+      marginVertical: 16,
+    },
+    selectedLabel: {
+      fontSize: 14,
+      fontWeight: "500",
+      marginBottom: 8,
+      color: colors.text.secondary,
+    },
+    selectedCard: {
+      backgroundColor: colors.background.paper,
+      padding: 16,
+      borderRadius: 8,
+      borderLeftWidth: 4,
+      borderLeftColor: colors.primary.main,
+    },
+    selectedName: {
+      fontSize: 18,
+      fontWeight: "600",
+      color: colors.text.primary,
+    },
+    selectedPhone: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      marginTop: 4,
+    },
+    changeText: {
+      color: colors.primary.main,
+      marginTop: 8,
+      textAlign: "right",
+    },
+  }), [colors, isDark]);
 
   const handleSelect = useCallback((user: User) => {
     console.log(`[UserSearch] Selected user: ${user._id} - ${user.firstName} ${user.lastName}`);
@@ -58,7 +152,7 @@ export const UserSearch: React.FC<UserSearchProps> = ({
         left={<TextInput.Icon icon="magnify" />}
         right={
           isLoading || isFetching ? (
-            <TextInput.Icon icon={() => <ActivityIndicator size={20} color={COLORS.blue} />} />
+            <TextInput.Icon icon={() => <ActivityIndicator size={20} color={colors.primary.main} />} />
           ) : null
         }
         keyboardType="phone-pad"
@@ -108,96 +202,3 @@ export const UserSearch: React.FC<UserSearchProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginVertical: 16,
-  },
-  label: {
-    fontSize: 14,
-    fontWeight: "500",
-    marginBottom: 8,
-    color: COLORS.darkGrey,
-  },
-  input: {
-    backgroundColor: COLORS.white,
-  },
-  hint: {
-    fontSize: 12,
-    color: COLORS.grey,
-    marginTop: 8,
-    fontStyle: "italic",
-  },
-  searching: {
-    fontSize: 12,
-    color: COLORS.blue,
-    marginTop: 8,
-  },
-  resultsContainer: {
-    marginTop: 12,
-  },
-  resultsCount: {
-    fontSize: 12,
-    color: COLORS.grey,
-    marginBottom: 8,
-  },
-  list: {
-    maxHeight: 200,
-    borderWidth: 1,
-    borderColor: COLORS.lightGrey,
-    borderRadius: 8,
-    backgroundColor: COLORS.white,
-  },
-  userItem: {
-    padding: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.lightGrey,
-  },
-  userName: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: COLORS.black,
-  },
-  userPhone: {
-    fontSize: 14,
-    color: COLORS.grey,
-    marginTop: 4,
-  },
-  noResults: {
-    textAlign: "center",
-    color: COLORS.grey,
-    marginTop: 16,
-    fontStyle: "italic",
-  },
-  selectedContainer: {
-    marginVertical: 16,
-  },
-  selectedLabel: {
-    fontSize: 14,
-    fontWeight: "500",
-    marginBottom: 8,
-    color: COLORS.darkGrey,
-  },
-  selectedCard: {
-    backgroundColor: COLORS.lightBackground || "#F5F5F5",
-    padding: 16,
-    borderRadius: 8,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.blue,
-  },
-  selectedName: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: COLORS.black,
-  },
-  selectedPhone: {
-    fontSize: 14,
-    color: COLORS.grey,
-    marginTop: 4,
-  },
-  changeText: {
-    color: COLORS.blue,
-    marginTop: 8,
-    textAlign: "right",
-  },
-});

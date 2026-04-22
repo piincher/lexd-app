@@ -1,7 +1,8 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useNotificationSettings } from './NotificationSettings/hooks/useNotificationSettings';
 import {
   Header,
@@ -16,7 +17,9 @@ import { styles } from './NotificationSettings/NotificationSettings.styles';
 
 const NotificationSettingsScreen: React.FC = () => {
   const navigation = useNavigation();
+  const { colors } = useAppTheme();
   const {
+    isLoading,
     masterEnabled,
     preferences,
     permissionStatus,
@@ -30,6 +33,20 @@ const NotificationSettingsScreen: React.FC = () => {
     getIconForType,
     getColorForType,
   } = useNotificationSettings();
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Header navigation={navigation} />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.primary.main} />
+          <Text style={[styles.loadingText, { color: colors.text.secondary }]}>
+            Chargement des parametres...
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>

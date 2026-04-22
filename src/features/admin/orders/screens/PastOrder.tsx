@@ -1,7 +1,6 @@
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { productType } from "@src/api/order";
 import AppButton from "@src/components/AppButton/AppButton";
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
 import * as Clipboard from "expo-clipboard";
 import React, { FC, useEffect, useState } from "react";
@@ -36,6 +35,7 @@ const LOGISTICS_COLORS = {
    error: "#DC143C", // Crimson
    light: "#F8F9FA", // Light gray
    dark: "#212529", // Dark gray
+   white: "#FFFFFF",
    gray: {
       100: "#F8F9FA",
       200: "#E9ECEF",
@@ -141,7 +141,6 @@ const PastOrderScreen: FC = () => {
                   title="Réessayer"
                   onPress={refetch}
                   style={styles.retryButton}
-                  textStyle={styles.retryButtonText}
                />
             </View>
          </View>
@@ -383,7 +382,7 @@ const RenderOrder = ({ item }: { item: productType }) => {
                   onPress={() => copyToClipboard(item.code!)}
                   style={styles.copyButton}
                >
-                  <Ionicons name="copy-outline" size={20} color={COLORS.white} />
+                  <Ionicons name="copy-outline" size={20} color="#FFFFFF" />
                   <Text style={styles.copyButtonText}>Copier le code</Text>
                </TouchableOpacity>
 
@@ -462,7 +461,7 @@ const styles = StyleSheet.create({
       color: LOGISTICS_COLORS.gray[600],
    },
    activeFilterText: {
-      color: COLORS.white,
+      color: "#FFFFFF",
    },
    toggleContainer: {
       flexDirection: "row",
@@ -485,7 +484,7 @@ const styles = StyleSheet.create({
       color: LOGISTICS_COLORS.gray[600],
    },
    activeToggleText: {
-      color: COLORS.white,
+      color: "#FFFFFF",
    },
    toggleSeparator: {
       width: 1,
@@ -564,8 +563,8 @@ const styles = StyleSheet.create({
       color: LOGISTICS_COLORS.gray[700],
    },
    trackingCode: {
-      backgroundColor: COLORS.blue,
-      color: COLORS.white,
+      backgroundColor: "#1E90FF",
+      color: "#FFFFFF",
       paddingVertical: 4,
       paddingHorizontal: 12,
       borderRadius: 8,
@@ -607,7 +606,7 @@ const styles = StyleSheet.create({
       borderRadius: 12,
    },
    copyButtonText: {
-      color: COLORS.white,
+      color: "#FFFFFF",
       marginLeft: 8,
       fontFamily: Fonts.bold,
    },
@@ -689,7 +688,7 @@ const styles = StyleSheet.create({
       paddingHorizontal: 30,
    },
    retryButtonText: {
-      color: COLORS.white,
+      color: "#FFFFFF",
       fontFamily: Fonts.bold,
    },
 });

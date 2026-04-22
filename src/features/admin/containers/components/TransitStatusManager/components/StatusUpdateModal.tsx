@@ -10,6 +10,7 @@ import { Portal, Dialog, Button, TextInput, HelperText } from 'react-native-pape
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { ContainerWaypoint, WaypointStatus } from '../../../types/waypoints';
+import { WAYPOINT_STATUS_COLORS } from '@src/shared/types/containerWaypoints';
 
 interface StatusUpdateModalProps {
   visible: boolean;
@@ -31,14 +32,6 @@ const WAYPOINT_STATUS_LABELS: Record<WaypointStatus, string> = {
   CANCELLED: 'Annulé',
 };
 
-// Waypoint status colors
-const WAYPOINT_STATUS_COLORS: Record<WaypointStatus, string> = {
-  PENDING: '#9CA3AF',
-  IN_PROGRESS: '#3B82F6',
-  COMPLETED: '#10B981',
-  DELAYED: '#EF4444',
-  CANCELLED: '#6B7280',
-};
 
 export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
   visible,
@@ -210,7 +203,7 @@ const styles = StyleSheet.create({
     marginTop: Theme.spacing.md,
   },
   notesInput: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
   },
   actions: {
     paddingHorizontal: Theme.spacing.lg,

@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     borderRadius: Theme.radius.md,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.md,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
   },
   dropdownButtonError: {
     borderColor: Theme.status.error,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   menuContent: {
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     width: '85%',
   },
 });

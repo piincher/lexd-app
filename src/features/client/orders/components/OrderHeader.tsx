@@ -35,6 +35,6 @@ const styles = StyleSheet.create({
   orderCode: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral.grey900,
+    color: Theme.neutral[900],
   },
 });

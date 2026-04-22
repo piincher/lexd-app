@@ -1,9 +1,9 @@
+import { useMemo } from 'react';
 import { FlashList } from '@shopify/flash-list';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { OrderListSkeleton } from '@src/features/orders/components/OrderListSkeleton';
-
-import { COLORS } from '@src/constants/Colors';
 
 export interface OrderItem {
 	_id?: string;
@@ -54,6 +54,30 @@ export const OrderList: React.FC<OrderListProps> = ({
 	renderItem,
 	emptyMessage = 'Aucune commande',
 }) => {
+	const { colors, isDark } = useAppTheme();
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				buttonContainer: {
+					flex: 1,
+					alignItems: 'center',
+					justifyContent: 'center',
+					backgroundColor: colors.background.card,
+					borderRadius: 8,
+					paddingVertical: 12,
+					paddingHorizontal: 16,
+					elevation: 2,
+				},
+				buttonText: {
+					fontSize: 16,
+					color: colors.text.primary,
+					fontWeight: 'bold',
+				},
+			}),
+		[colors, isDark]
+	);
+
 	const loadMore = () => {
 		if (hasNextPage) {
 			fetchNextPage();
@@ -62,7 +86,7 @@ export const OrderList: React.FC<OrderListProps> = ({
 
 	const renderFooter = () => {
 		if (isFetchingNextPage) {
-			return <ActivityIndicator size='small' color={COLORS.blue} animating />;
+			return <ActivityIndicator size='small' color={colors.primary.main} animating />;
 		} else if (hasNextPage) {
 			return (
 				<TouchableOpacity style={styles.buttonContainer} onPress={loadMore}>
@@ -92,23 +116,5 @@ export const OrderList: React.FC<OrderListProps> = ({
 		/>
 	);
 };
-
-const styles = StyleSheet.create({
-	buttonContainer: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-		backgroundColor: '#FFFFFF',
-		borderRadius: 8,
-		paddingVertical: 12,
-		paddingHorizontal: 16,
-		elevation: 2,
-	},
-	buttonText: {
-		fontSize: 16,
-		color: '#000000',
-		fontWeight: 'bold',
-	},
-});
 
 export default OrderList;

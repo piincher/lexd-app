@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { ViewStyle } from 'react-native';
+import type { ViewStyle, StyleProp } from 'react-native';
 import { Card as PaperCard } from 'react-native-paper';
 
 export type CardVariant = 'default' | 'outlined' | 'elevated' | 'flat';
@@ -15,7 +15,7 @@ export interface CardProps {
   padding?: CardPadding;
   onPress?: () => void;
   disabled?: boolean;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   testID?: string;
   accessibilityLabel?: string;
 }

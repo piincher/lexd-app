@@ -3,7 +3,7 @@
  * Displays a single notification in the list with swipe actions
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, Pressable, Dimensions } from 'react-native';
 import { Text, Surface, Avatar } from 'react-native-paper';
 import { Swipeable } from 'react-native-gesture-handler';
@@ -15,7 +15,7 @@ import Animated, {
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { formatRelativeTime } from '../utils/timeUtils';
 
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { InAppNotification } from '../types';
 import { NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../types';
@@ -37,9 +37,117 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   onDelete,
   index = 0,
 }) => {
+  const { colors } = useAppTheme();
   // Get config based on notification properties
   const typeConfig = NOTIFICATION_TYPE_CONFIG[notification.type] || NOTIFICATION_TYPE_CONFIG.GENERAL;
   const categoryConfig = NOTIFICATION_CATEGORY_CONFIG[notification.category] || NOTIFICATION_CATEGORY_CONFIG.INFO;
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      backgroundColor: colors.background.card,
+      marginHorizontal: 16,
+      marginVertical: 4,
+      borderRadius: 12,
+      overflow: 'hidden',
+    },
+    unreadContainer: {
+      backgroundColor: colors.background.paper,
+    },
+    pressed: {
+      opacity: 0.7,
+    },
+    surface: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 12,
+      borderRadius: 12,
+    },
+    iconContainer: {
+      width: 48,
+      height: 48,
+      borderRadius: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 12,
+    },
+    content: {
+      flex: 1,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 4,
+    },
+    title: {
+      fontFamily: Fonts.medium,
+      fontSize: 15,
+      color: colors.text.primary,
+      flex: 1,
+    },
+    unreadTitle: {
+      fontFamily: Fonts.bold,
+    },
+    unreadDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      marginLeft: 8,
+    },
+    message: {
+      fontFamily: Fonts.regular,
+      fontSize: 13,
+      color: colors.text.secondary,
+      lineHeight: 18,
+      marginBottom: 8,
+    },
+    footer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    typeBadge: {
+      backgroundColor: colors.neutral[200],
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderRadius: 4,
+    },
+    typeText: {
+      fontFamily: Fonts.medium,
+      fontSize: 11,
+    },
+    time: {
+      fontFamily: Fonts.regular,
+      fontSize: 12,
+      color: colors.text.secondary,
+    },
+    chevron: {
+      marginLeft: 4,
+    },
+    swipeAction: {
+      width: 80,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginVertical: 4,
+    },
+    leftAction: {
+      backgroundColor: colors.status.success,
+      borderTopLeftRadius: 12,
+      borderBottomLeftRadius: 12,
+      marginLeft: 16,
+    },
+    rightAction: {
+      backgroundColor: colors.status.error,
+      borderTopRightRadius: 12,
+      borderBottomRightRadius: 12,
+      marginRight: 16,
+    },
+    swipeActionText: {
+      fontFamily: Fonts.medium,
+      fontSize: 12,
+      color: colors.text.inverse,
+      marginTop: 4,
+    },
+  }), [colors]);
 
   // Format relative time
   const relativeTime = formatRelativeTime(notification.createdAt);
@@ -50,7 +158,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     
     return (
       <View style={[styles.swipeAction, styles.leftAction]}>
-        <MaterialCommunityIcons name="check-circle" size={28} color={COLORS.white} />
+        <MaterialCommunityIcons name="check-circle" size={28} color={colors.text.inverse} />
         <Text style={styles.swipeActionText}>Lu</Text>
       </View>
     );
@@ -60,7 +168,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   const renderRightActions = () => {
     return (
       <View style={[styles.swipeAction, styles.rightAction]}>
-        <MaterialCommunityIcons name="delete" size={28} color={COLORS.white} />
+        <MaterialCommunityIcons name="delete" size={28} color={colors.text.inverse} />
         <Text style={styles.swipeActionText}>Suppr.</Text>
       </View>
     );
@@ -98,7 +206,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
             pressed && styles.pressed,
             !notification.isRead && styles.unreadContainer
           ]}
-          android_ripple={{ color: COLORS.Silver }}
+          android_ripple={{ color: colors.neutral[200] }}
         >
           <Surface style={styles.surface} elevation={0}>
             {/* Icon Container */}
@@ -148,7 +256,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
             <MaterialCommunityIcons 
               name="chevron-right" 
               size={20} 
-              color={COLORS.grey} 
+              color={colors.text.secondary} 
               style={styles.chevron}
             />
           </Surface>
@@ -157,112 +265,5 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: COLORS.white,
-    marginHorizontal: 16,
-    marginVertical: 4,
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
-  unreadContainer: {
-    backgroundColor: COLORS.FeatherWhite,
-  },
-  pressed: {
-    opacity: 0.7,
-  },
-  surface: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 12,
-  },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  content: {
-    flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  title: {
-    fontFamily: Fonts.medium,
-    fontSize: 15,
-    color: COLORS.DarkGrey,
-    flex: 1,
-  },
-  unreadTitle: {
-    fontFamily: Fonts.bold,
-  },
-  unreadDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginLeft: 8,
-  },
-  message: {
-    fontFamily: Fonts.regular,
-    fontSize: 13,
-    color: COLORS.DimGray,
-    lineHeight: 18,
-    marginBottom: 8,
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  typeBadge: {
-    backgroundColor: COLORS.lightergray,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  typeText: {
-    fontFamily: Fonts.medium,
-    fontSize: 11,
-  },
-  time: {
-    fontFamily: Fonts.regular,
-    fontSize: 12,
-    color: COLORS.grey,
-  },
-  chevron: {
-    marginLeft: 4,
-  },
-  swipeAction: {
-    width: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 4,
-  },
-  leftAction: {
-    backgroundColor: COLORS.green,
-    borderTopLeftRadius: 12,
-    borderBottomLeftRadius: 12,
-    marginLeft: 16,
-  },
-  rightAction: {
-    backgroundColor: COLORS.danger,
-    borderTopRightRadius: 12,
-    borderBottomRightRadius: 12,
-    marginRight: 16,
-  },
-  swipeActionText: {
-    fontFamily: Fonts.medium,
-    fontSize: 12,
-    color: COLORS.white,
-    marginTop: 4,
-  },
-});
 
 export default NotificationItem;

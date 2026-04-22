@@ -76,7 +76,7 @@ export const NotificationFilterTabs: React.FC<NotificationFilterTabsProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.default,
     paddingBottom: 12,
     borderBottomWidth: 1,
     borderBottomColor: Theme.neutral[100],

@@ -24,18 +24,20 @@ import Constants from "expo-constants";
 import SocialMedia from "@src/components/SocialMedia/SocialMedia";
 import { Fonts } from "@src/constants/Fonts";
 import { withProtectedRoute } from "@src/shared/hoc/withProtectedRoute";
-import { HomeTabScreenProps } from "@src/navigations/type";
+import type { HomeTabScreenProps } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
-import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useGetCurrentUser, useBalance } from "../hooks/useProfile";
 import { CertifiedShipperCard } from "../components/CertifiedShipperCard";
 import { MilestoneBadges } from "../components/MilestoneBadges";
 import { BadgesSection } from "../components/BadgesSection";
 import { ReviewsSection } from "../components/ReviewsSection";
+import { ProfileChartsSection } from "../components/ProfileChartsSection";
 import { useCertificateProgress } from "../hooks/useCertificate";
 import { ThemeToggle } from "@src/components/ThemeToggle";
 import { useGetUnreadCount } from "@src/features/notifications";
-import * as Haptics from 'expo-haptics';
+import * as Haptics from "expo-haptics";
+import { hapticLight } from "@src/shared/lib/haptics";
 
 // ─── Menu Configuration ─────────────────────────────────────────
 type MenuItem = {
@@ -88,15 +90,14 @@ const MENU_SECTIONS: { title: string; items: MenuItem[] }[] = [
             iconBg: "rgba(34,197,94,0.1)",
             iconColor: "#22C55E",
          },
-         // Chat feature hidden - not in use
-         // {
-         //    title: "Centre d'assistance",
-         //    subtitle: "Contactez notre equipe",
-         //    icon: "headset",
-         //    screen: "SelectAdminToChatWith",
-         //    iconBg: "rgba(59,130,246,0.1)",
-         //    iconColor: "#3B82F6",
-         // },
+         {
+            title: "Centre d'assistance",
+            subtitle: "Ouvrir un ticket ou suivre une demande",
+            icon: "lifebuoy",
+            screen: "TicketList",
+            iconBg: "rgba(59,130,246,0.1)",
+            iconColor: "#3B82F6",
+         },
          {
             title: "A propos de ChinaLink",
             subtitle: "En savoir plus sur nous",
@@ -104,6 +105,19 @@ const MENU_SECTIONS: { title: string; items: MenuItem[] }[] = [
             screen: "AboutUs",
             iconBg: "rgba(139,92,246,0.1)",
             iconColor: "#8B5CF6",
+         },
+      ],
+   },
+   {
+      title: "Application",
+      items: [
+         {
+            title: "Introduction",
+            subtitle: "Revoir le guide de demarrage",
+            icon: "play-circle-outline",
+            screen: "OnBoarding",
+            iconBg: "rgba(236,72,153,0.1)",
+            iconColor: "#EC4899",
          },
       ],
    },
@@ -241,7 +255,10 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                      styles.quickStatCard,
                      { backgroundColor: cardBg, borderColor: cardBorder },
                   ]}
-                  onPress={() => navigation.navigate("PastOrders" as any)}
+                  onPress={() => {
+                     hapticLight();
+                     navigation.navigate("PastOrders" as any);
+                  }}
                >
                   <View style={[styles.quickStatIcon, { backgroundColor: "rgba(59,130,246,0.1)" }]}>
                      <MaterialCommunityIcons
@@ -265,7 +282,10 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                      styles.quickStatCard,
                      { backgroundColor: cardBg, borderColor: cardBorder },
                   ]}
-                  onPress={() => navigation.navigate("MyGoods" as any)}
+                  onPress={() => {
+                     hapticLight();
+                     navigation.navigate("MyGoods" as any);
+                  }}
                >
                   <View style={[styles.quickStatIcon, { backgroundColor: "rgba(34,197,94,0.1)" }]}>
                      <MaterialCommunityIcons name="cube-outline" size={20} color="#22C55E" />
@@ -285,7 +305,10 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                      styles.quickStatCard,
                      { backgroundColor: cardBg, borderColor: cardBorder },
                   ]}
-                  onPress={() => navigation.navigate("MyContainers" as any)}
+                  onPress={() => {
+                     hapticLight();
+                     navigation.navigate("MyContainers" as any);
+                  }}
                >
                   <View style={[styles.quickStatIcon, { backgroundColor: "rgba(245,158,11,0.1)" }]}>
                      <MaterialCommunityIcons name="truck-outline" size={20} color="#F59E0B" />
@@ -299,7 +322,60 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                      color={colors.text.disabled}
                   />
                </Pressable>
+
+               <Pressable
+                  style={[
+                     styles.quickStatCard,
+                     { backgroundColor: cardBg, borderColor: cardBorder },
+                  ]}
+                  onPress={() => {
+                     hapticLight();
+                     navigation.navigate("MyPaymentHistory" as any);
+                  }}
+               >
+                  <View style={[styles.quickStatIcon, { backgroundColor: "rgba(16,185,129,0.1)" }]}>
+                     <MaterialCommunityIcons
+                        name="receipt-text-outline"
+                        size={20}
+                        color="#10B981"
+                     />
+                  </View>
+                  <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>
+                     Paiements
+                  </Text>
+                  <MaterialCommunityIcons
+                     name="chevron-right"
+                     size={16}
+                     color={colors.text.disabled}
+                  />
+               </Pressable>
+
+               <Pressable
+                  style={[
+                     styles.quickStatCard,
+                     { backgroundColor: cardBg, borderColor: cardBorder },
+                  ]}
+                  onPress={() => {
+                     hapticLight();
+                     navigation.navigate("TicketList" as any);
+                  }}
+               >
+                  <View style={[styles.quickStatIcon, { backgroundColor: "rgba(59,130,246,0.1)" }]}>
+                     <MaterialCommunityIcons name="headset" size={20} color="#3B82F6" />
+                  </View>
+                  <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>
+                     Support
+                  </Text>
+                  <MaterialCommunityIcons
+                     name="chevron-right"
+                     size={16}
+                     color={colors.text.disabled}
+                  />
+               </Pressable>
             </Animated.View>
+
+            {/* ─── Charts Section ─── */}
+            <ProfileChartsSection />
 
             {/* ─── Achievements Section ─── */}
             <Animated.View entering={FadeInDown.delay(200).duration(400).springify()}>
@@ -374,7 +450,11 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                                  style={({ pressed }) => [
                                     styles.menuItem,
                                     pressed && styles.menuItemPressed,
-                                    pressed && { backgroundColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)' },
+                                    pressed && {
+                                       backgroundColor: isDark
+                                          ? "rgba(255,255,255,0.03)"
+                                          : "rgba(0,0,0,0.02)",
+                                    },
                                  ]}
                                  onPress={() => {
                                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -450,7 +530,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
                   Made with love by nuvotech.tech team
                </Text>
                <Text style={[styles.madeWithLoveDetail, { color: colors.text.disabled }]}>
-                  Nanjing - Paris | +8617865673053
+                  Nanjing - Paris | +8617865673053(whatsapp)
                </Text>
             </Animated.View>
          </ScrollView>
@@ -582,12 +662,14 @@ const styles = StyleSheet.create({
    /* ── Quick Stats ── */
    quickStatsRow: {
       flexDirection: "row",
+      flexWrap: "wrap",
+      justifyContent: "center",
       paddingHorizontal: 16,
       gap: 10,
       marginTop: 16,
    },
    quickStatCard: {
-      flex: 1,
+      width: "31%",
       alignItems: "center",
       paddingVertical: 14,
       paddingHorizontal: 8,

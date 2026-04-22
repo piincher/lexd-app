@@ -4,7 +4,8 @@
  */
 
 import React, { ReactElement } from 'react';
-import { render, RenderOptions, RenderResult } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
+import type { RenderOptions, RenderResult } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // Create a fresh QueryClient for each test

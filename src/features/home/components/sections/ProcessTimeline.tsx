@@ -1,26 +1,44 @@
 /**
  * ProcessTimeline
- * "How it works" vertical timeline with numbered steps
+ * "How it works" — animated vertical timeline with icon steps
+ * and a drawing connector line effect.
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { FontAwesome6 } from '@expo/vector-icons';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  FadeInDown,
+} from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
 import { WORKFLOW_STEPS } from '../../constants/homeData';
+import { SectionHeader } from '../SectionHeader';
 
 export const ProcessTimeline: React.FC = () => {
   const { colors } = useAppTheme();
+  const lineProgress = useSharedValue(0);
+
+  useEffect(() => {
+    lineProgress.value = withTiming(1, { duration: 1500 });
+  }, []);
+
+  const lineStyle = useAnimatedStyle(() => ({
+    opacity: lineProgress.value,
+    transform: [{ scaleY: lineProgress.value }],
+  }));
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
-        Comment ca Marche ?
-      </Text>
+      <SectionHeader
+        title="Comment ca Marche ?"
+        subtitle="5 etapes simples pour expedier vos marchandises"
+      />
 
       <View style={styles.timeline}>
         {WORKFLOW_STEPS.map((step, index) => {
@@ -29,29 +47,32 @@ export const ProcessTimeline: React.FC = () => {
           return (
             <Animated.View
               key={index}
-              entering={FadeInDown.delay(500 + index * 100).duration(400).springify()}
+              entering={FadeInDown.delay(300 + index * 120).duration(400).springify()}
               style={styles.stepRow}
             >
               {/* Timeline column */}
               <View style={styles.timelineCol}>
                 <View style={[styles.stepCircle, { backgroundColor: step.color }]}>
-                  <Text style={styles.stepNumber}>{index + 1}</Text>
+                  <FontAwesome6 name={step.icon} size={14} color="#FFF" />
                 </View>
                 {!isLast && (
-                  <View style={[styles.timelineLine, { backgroundColor: `${step.color}30` }]} />
+                  <Animated.View
+                    style={[
+                      styles.timelineLine,
+                      { backgroundColor: `${step.color}35` },
+                      lineStyle,
+                    ]}
+                  />
                 )}
               </View>
 
-              {/* Content */}
+              {/* Content card */}
               <View
                 style={[
                   styles.stepCard,
                   { backgroundColor: colors.background.card },
                 ]}
               >
-                <View style={[styles.stepIconBg, { backgroundColor: `${step.color}12` }]}>
-                  <FontAwesome6 name={step.icon} size={16} color={step.color} />
-                </View>
                 <View style={styles.stepContent}>
                   <Text style={[styles.stepTitle, { color: colors.text.primary }]}>
                     {step.title}
@@ -59,6 +80,9 @@ export const ProcessTimeline: React.FC = () => {
                   <Text style={[styles.stepDesc, { color: colors.text.secondary }]}>
                     {step.description}
                   </Text>
+                </View>
+                <View style={[styles.stepIndexBadge, { backgroundColor: `${step.color}14` }]}>
+                  <Text style={[styles.stepIndexText, { color: step.color }]}>{index + 1}</Text>
                 </View>
               </View>
             </Animated.View>
@@ -74,11 +98,6 @@ const styles = StyleSheet.create({
     marginTop: 32,
     paddingHorizontal: 16,
   },
-  sectionTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 20,
-    marginBottom: 16,
-  },
   timeline: {
     gap: 0,
   },
@@ -87,43 +106,38 @@ const styles = StyleSheet.create({
   },
   timelineCol: {
     alignItems: 'center',
-    width: 40,
+    width: 44,
     marginRight: 12,
   },
   stepCircle: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,
-  },
-  stepNumber: {
-    fontFamily: Fonts.bold,
-    fontSize: 14,
-    color: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 4,
+    elevation: 3,
   },
   timelineLine: {
     width: 2,
     flex: 1,
     marginVertical: 2,
+    transformOrigin: 'top',
   },
   stepCard: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    justifyContent: 'space-between',
+    gap: 10,
     padding: 14,
     borderRadius: 14,
-    marginBottom: 8,
+    marginBottom: 10,
     ...Theme.shadows.sm,
-  },
-  stepIconBg: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   stepContent: {
     flex: 1,
@@ -131,11 +145,22 @@ const styles = StyleSheet.create({
   stepTitle: {
     fontFamily: Fonts.bold,
     fontSize: 14,
-    marginBottom: 2,
+    marginBottom: 3,
   },
   stepDesc: {
     fontFamily: Fonts.regular,
     fontSize: 12,
     lineHeight: 17,
+  },
+  stepIndexBadge: {
+    width: 26,
+    height: 26,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  stepIndexText: {
+    fontFamily: Fonts.bold,
+    fontSize: 12,
   },
 });

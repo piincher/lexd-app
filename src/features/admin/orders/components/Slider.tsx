@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
 	Image,
 	StyleSheet,
@@ -9,7 +9,7 @@ import {
 	Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const Screen_Width = Dimensions.get('window').width;
 
@@ -22,6 +22,33 @@ interface bannerImageProps {
 
 const Slider = ({ bannerImages }: bannerImageProps) => {
 	const [imgActive, setActive] = useState(0);
+	const { colors } = useAppTheme();
+	const styles = useMemo(() => StyleSheet.create({
+		container: {
+			flex: 1,
+			backgroundColor: colors.background.default,
+		},
+		wrap: {
+			width: Screen_Width - 32,
+			height: Screen_Width,
+			marginHorizontal: 16,
+		},
+		wrapDot: {
+			position: 'absolute',
+			bottom: 0,
+			flexDirection: 'row',
+			alignSelf: 'center',
+		},
+		dotActive: {
+			margin: 3,
+			color: colors.text.inverse,
+		},
+		dot: {
+			margin: 3,
+			color: colors.neutral[200],
+		},
+	}), [colors]);
+
 	const onChange = (nativeEvent: NativeScrollEvent) => {
 		if (nativeEvent) {
 			const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
@@ -59,29 +86,3 @@ const Slider = ({ bannerImages }: bannerImageProps) => {
 };
 
 export default Slider;
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: COLORS.white,
-	},
-	wrap: {
-		width: Screen_Width - 32,
-		height: Screen_Width,
-		marginHorizontal: 16,
-	},
-	wrapDot: {
-		position: 'absolute',
-		bottom: 0,
-		flexDirection: 'row',
-		alignSelf: 'center',
-	},
-	dotActive: {
-		margin: 3,
-		color: COLORS.white,
-	},
-	dot: {
-		margin: 3,
-		color: '#E8EFF5',
-	},
-});

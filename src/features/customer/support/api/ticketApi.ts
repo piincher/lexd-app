@@ -4,6 +4,7 @@
  */
 
 import { apiClientV2, uploadFile } from '@src/api/client';
+import { TicketFilters } from '../types';
 import { ApiResponse, GetTicketsResponse, GetTicketResponse, CreateTicketRequest, CreateTicketResponse, AddMessageRequest, AddMessageResponse, RateTicketRequest, RateTicketResponse, UploadAttachmentResponse } from './types';
 
 const axios = apiClientV2;
@@ -15,13 +16,35 @@ const BASE_URL = '/tickets';
 export const ticketApi = {
   /**
    * Get all tickets for the current customer
-   * @param status Optional status filter
+   * @param filters Optional filters
    * @returns List of tickets
    */
-  getTickets: (status?: string) =>
-    axios.get<ApiResponse<GetTicketsResponse>>(BASE_URL, {
-      params: status && status !== 'ALL' ? { status } : undefined,
-    }),
+  getTickets: (filters?: TicketFilters) => {
+    const params: Record<string, string | number | undefined> = {};
+
+    if (filters?.status?.length) {
+      params.status = filters.status.join(',');
+    }
+    if (filters?.type?.length) {
+      params.type = filters.type.join(',');
+    }
+    if (filters?.priority?.length) {
+      params.priority = filters.priority.join(',');
+    }
+    if (filters?.search) {
+      params.search = filters.search;
+    }
+    if (filters?.page !== undefined) {
+      params.page = filters.page;
+    }
+    if (filters?.limit !== undefined) {
+      params.limit = filters.limit;
+    }
+
+    return axios.get<ApiResponse<GetTicketsResponse>>(BASE_URL, {
+      params: Object.keys(params).length ? params : undefined,
+    });
+  },
 
   /**
    * Get a specific ticket by ID

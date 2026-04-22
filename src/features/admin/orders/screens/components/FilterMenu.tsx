@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text, Menu, Divider } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
-import { styles } from '../AllOrdersScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from '../AllOrdersScreen.styles';
 
 interface FilterMenuProps {
   statusFilter: string | null;
@@ -12,6 +12,8 @@ interface FilterMenuProps {
 
 export const FilterMenu: React.FC<FilterMenuProps> = ({ statusFilter, onSelect }) => {
   const [visible, setVisible] = useState(false);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Menu
@@ -19,7 +21,7 @@ export const FilterMenu: React.FC<FilterMenuProps> = ({ statusFilter, onSelect }
       onDismiss={() => setVisible(false)}
       anchor={
         <TouchableOpacity style={styles.filterButton} onPress={() => setVisible(true)}>
-          <MaterialIcons name="filter-list" size={20} color={COLORS.blue} />
+          <MaterialIcons name="filter-list" size={20} color={colors.primary.main} />
           <Text style={styles.filterText}>Filter</Text>
         </TouchableOpacity>
       }

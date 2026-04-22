@@ -4,15 +4,15 @@
  * SRP: Display document header information
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card, Divider, Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
-import { styles } from './PackingListHeader.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './PackingListHeader.styles';
 
 interface PackingListHeaderProps {
   containerNumber: string;
@@ -43,6 +43,8 @@ export const PackingListHeader: React.FC<PackingListHeaderProps> = ({
   generatedAt,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Card style={[styles.documentCard, styles.headerCard]}>
@@ -66,7 +68,7 @@ export const PackingListHeader: React.FC<PackingListHeaderProps> = ({
             <MaterialCommunityIcons
               name={getShippingModeIcon(shippingMode)}
               size={16}
-              color={COLORS.DimGray}
+              color={colors.text.secondary}
             />
             <Text style={styles.metaText}>{shippingLineLabel}</Text>
           </View>
@@ -74,7 +76,7 @@ export const PackingListHeader: React.FC<PackingListHeaderProps> = ({
             <MaterialCommunityIcons
               name="calendar"
               size={16}
-              color={COLORS.DimGray}
+              color={colors.text.secondary}
             />
             <Text style={styles.metaText}>{formatDate(generatedAt)}</Text>
           </View>

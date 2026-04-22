@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
     borderBottomColor: Theme.neutral.grey200,
   },

@@ -4,13 +4,14 @@
  * SRP: Display packing list footer information
  */
 
-import React from 'react';
-import { View } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
-import { styles } from './PackingListFooter.styles';
+import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface PackingListFooterProps {
   generatedAt?: string;
@@ -29,6 +30,32 @@ export const PackingListFooter: React.FC<PackingListFooterProps> = ({
   generatedAt,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    footer: {
+      alignItems: 'center',
+      paddingVertical: 32,
+    },
+    footerText: {
+      fontFamily: Fonts.regular,
+      fontSize: 12,
+      color: colors.text.secondary,
+      marginTop: 8,
+    },
+    footerSubtext: {
+      fontFamily: Fonts.bold,
+      fontSize: 13,
+      color: colors.text.primary,
+      marginTop: 4,
+    },
+    footerRoute: {
+      fontFamily: Fonts.meduim,
+      fontSize: 11,
+      color: colors.status.success,
+      marginTop: 4,
+    },
+  }), [colors, isDark]);
 
   return (
     <View style={styles.footer}>

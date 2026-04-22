@@ -3,7 +3,7 @@
  * In-app toast notification that slides in from top
  */
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import { 
   View, 
   StyleSheet, 
@@ -26,7 +26,7 @@ import { BlurView } from 'expo-blur';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import * as Haptics from 'expo-haptics';
 
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { InAppNotification } from '../types';
 import { NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../types';
@@ -48,10 +48,74 @@ const NotificationToast: React.FC<NotificationToastProps> = ({
   onPress,
   autoDismissDelay = 5000,
 }) => {
+  const { colors } = useAppTheme();
   const translateY = useSharedValue(-200);
   const opacity = useSharedValue(0);
   const scale = useSharedValue(0.9);
   const dismissTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      zIndex: 9999,
+      paddingTop: (StatusBar.currentHeight || 0) + 8,
+      paddingHorizontal: 16,
+    },
+    toastContainer: {
+      borderRadius: 16,
+      overflow: 'hidden',
+    },
+    surface: {
+      borderRadius: 16,
+      overflow: 'hidden',
+      borderLeftWidth: 4,
+      backgroundColor: 'rgba(30, 30, 30, 0.95)',
+    },
+    content: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 12,
+      paddingRight: 8,
+    },
+    iconContainer: {
+      width: 44,
+      height: 44,
+      borderRadius: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    textContainer: {
+      flex: 1,
+      marginLeft: 12,
+      marginRight: 8,
+    },
+    title: {
+      fontFamily: Fonts.bold,
+      fontSize: 15,
+      color: colors.text.inverse,
+    },
+    message: {
+      fontFamily: Fonts.regular,
+      fontSize: 13,
+      color: 'rgba(255, 255, 255, 0.8)',
+      marginTop: 2,
+      lineHeight: 18,
+    },
+    closeButton: {
+      padding: 4,
+    },
+    progressContainer: {
+      height: 3,
+      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    },
+    progressBar: {
+      height: '100%',
+      width: '100%',
+    },
+  }), [colors]);
 
   // Reset and start timer when notification changes
   useEffect(() => {
@@ -155,7 +219,7 @@ const NotificationToast: React.FC<NotificationToastProps> = ({
                 <MaterialCommunityIcons 
                   name={typeConfig.icon as any} 
                   size={24} 
-                  color={COLORS.white} 
+                  color={colors.text.inverse} 
                 />
               </View>
 
@@ -178,7 +242,7 @@ const NotificationToast: React.FC<NotificationToastProps> = ({
                 <MaterialCommunityIcons 
                   name="close" 
                   size={18} 
-                  color={COLORS.white} 
+                  color={colors.text.inverse} 
                 />
               </Pressable>
             </Pressable>
@@ -198,68 +262,5 @@ const NotificationToast: React.FC<NotificationToastProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 9999,
-    paddingTop: (StatusBar.currentHeight || 0) + 8,
-    paddingHorizontal: 16,
-  },
-  toastContainer: {
-    borderRadius: 16,
-    overflow: 'hidden',
-  },
-  surface: {
-    borderRadius: 16,
-    overflow: 'hidden',
-    borderLeftWidth: 4,
-    backgroundColor: 'rgba(30, 30, 30, 0.95)',
-  },
-  content: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    paddingRight: 8,
-  },
-  iconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  textContainer: {
-    flex: 1,
-    marginLeft: 12,
-    marginRight: 8,
-  },
-  title: {
-    fontFamily: Fonts.bold,
-    fontSize: 15,
-    color: COLORS.white,
-  },
-  message: {
-    fontFamily: Fonts.regular,
-    fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.8)',
-    marginTop: 2,
-    lineHeight: 18,
-  },
-  closeButton: {
-    padding: 4,
-  },
-  progressContainer: {
-    height: 3,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-  },
-  progressBar: {
-    height: '100%',
-    width: '100%',
-  },
-});
 
 export default NotificationToast;

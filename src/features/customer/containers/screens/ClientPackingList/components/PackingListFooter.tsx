@@ -4,11 +4,12 @@
  * SRP: Display action buttons for packing list operations
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Button, useTheme } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-import { styles } from '../ClientPackingListScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from '../ClientPackingListScreen.styles';
 
 interface PackingListFooterProps {
   onDownloadPDF: () => void;
@@ -22,10 +23,12 @@ export const PackingListFooter: React.FC<PackingListFooterProps> = ({
   isDownloading,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <LinearGradient
-      colors={['#FFFFFF', '#F8FAFC']}
+      colors={[colors.background.card, colors.background.paper]}
       style={styles.actionBar}
       start={{ x: 0, y: 0 }}
       end={{ x: 0, y: 1 }}

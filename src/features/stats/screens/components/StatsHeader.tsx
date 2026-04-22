@@ -10,6 +10,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 
 interface StatsHeaderProps {
   firstName?: string;
@@ -33,6 +35,7 @@ const formatDate = (): string => {
 };
 
 export const StatsHeader: React.FC<StatsHeaderProps> = ({ firstName, totalOrders }) => {
+  const navigation = useNavigation();
   return (
     <LinearGradient
       colors={Theme.gradients.primary}
@@ -47,9 +50,16 @@ export const StatsHeader: React.FC<StatsHeaderProps> = ({ firstName, totalOrders
           </Text>
           <Text style={styles.subtitle}>Tableau de bord</Text>
         </View>
-        <View style={styles.summaryPill}>
-          <Ionicons name="cube" size={14} color={Theme.primary[600]} />
-          <Text style={styles.summaryText}>{totalOrders} commandes</Text>
+        <View style={styles.actions}>
+          <View style={styles.summaryPill}>
+            <Ionicons name="cube" size={14} color={Theme.primary[600]} />
+            <Text style={styles.summaryText}>{totalOrders} commandes</Text>
+          </View>
+          <NotificationBell
+            onPress={() => (navigation as any).navigate('Notifications')}
+            size={22}
+            color="#FFF"
+          />
         </View>
       </View>
       <View style={styles.dateRow}>
@@ -87,6 +97,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: Fonts.regular,
     color: 'rgba(255,255,255,0.8)',
+  },
+  actions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
   },
   summaryPill: {
     flexDirection: 'row',

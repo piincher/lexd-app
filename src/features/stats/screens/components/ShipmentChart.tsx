@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Dimensions } from 'react-native';
 import { BarChart } from 'react-native-gifted-charts';
-import COLORS from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
-import styles from '../Stats.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from '../Stats.styles';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -20,6 +20,9 @@ export const ShipmentChart: React.FC<ShipmentChartProps> = ({
   hasChartData,
   chartData,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
+
   if (!hasChartData) {
     return (
       <View style={styles.card}>
@@ -42,22 +45,21 @@ export const ShipmentChart: React.FC<ShipmentChartProps> = ({
         barBorderRadius={6}
         spacing={16}
         yAxisTextStyle={{
-          color: COLORS.grayDark,
+          color: colors.text.secondary,
           fontSize: 12,
           fontFamily: Fonts.regular,
         }}
         xAxisLabelTextStyle={{
-          color: COLORS.grayDark,
+          color: colors.text.secondary,
           fontSize: 12,
           fontFamily: Fonts.regular,
         }}
         hideRules
         hideYAxisText={false}
-        yAxisColor={COLORS.grayMedium}
-        xAxisColor={COLORS.grayMedium}
+        yAxisColor={colors.border}
+        xAxisColor={colors.border}
         noOfSections={5}
         maxValue={Math.max(...chartData.map(d => d.value), 1)}
-        minValue={0}
       />
     </View>
   );

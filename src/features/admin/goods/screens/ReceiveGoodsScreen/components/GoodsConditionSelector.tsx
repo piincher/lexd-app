@@ -3,13 +3,13 @@
  * Radio-style selection for new/used/damaged
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { Controller } from 'react-hook-form';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { GoodsConditionSelectorProps } from '../../types';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 type ConditionOption = {
   value: 'new' | 'used' | 'damaged';
@@ -47,6 +47,86 @@ export const GoodsConditionSelector: React.FC<GoodsConditionSelectorProps> = ({
   control,
   errors,
 }) => {
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      marginVertical: 8,
+      borderRadius: 12,
+      backgroundColor: colors.background.card,
+    },
+    cardContent: {
+      padding: 16,
+    },
+    sectionLabel: {
+      fontSize: 14,
+      fontWeight: '700',
+      marginBottom: 16,
+      color: colors.text.primary,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+    optionsContainer: {
+      gap: 12,
+    },
+    option: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 16,
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: colors.border,
+      backgroundColor: colors.background.paper,
+    },
+    optionSelected: {
+      backgroundColor: colors.background.card,
+      borderWidth: 2,
+    },
+    iconContainer: {
+      width: 48,
+      height: 48,
+      borderRadius: 12,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 12,
+    },
+    textContainer: {
+      flex: 1,
+    },
+    optionLabel: {
+      fontSize: 15,
+      fontWeight: '700',
+      marginBottom: 4,
+    },
+    optionDescription: {
+      fontSize: 13,
+      color: colors.text.secondary,
+    },
+    radio: {
+      width: 24,
+      height: 24,
+      borderRadius: 12,
+      borderWidth: 2,
+      borderColor: colors.neutral[200],
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    radioSelected: {
+      borderColor: colors.status.success,
+    },
+    radioInner: {
+      width: 12,
+      height: 12,
+      borderRadius: 6,
+    },
+    errorText: {
+      color: colors.status.error,
+      fontSize: 12,
+      marginTop: 8,
+      marginLeft: 4,
+    },
+  }), [colors, isDark]);
+
   return (
     <Card style={styles.card} elevation={2}>
       <Card.Content style={styles.cardContent}>
@@ -102,80 +182,4 @@ export const GoodsConditionSelector: React.FC<GoodsConditionSelectorProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  card: {
-    marginVertical: 8,
-    borderRadius: 12,
-    backgroundColor: '#fff',
-  },
-  cardContent: {
-    padding: 16,
-  },
-  sectionLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    marginBottom: 16,
-    color: '#333',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  optionsContainer: {
-    gap: 12,
-  },
-  option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#e9ecef',
-    backgroundColor: '#f8f9fa',
-  },
-  optionSelected: {
-    backgroundColor: '#fff',
-    borderWidth: 2,
-  },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  textContainer: {
-    flex: 1,
-  },
-  optionLabel: {
-    fontSize: 15,
-    fontWeight: '700',
-    marginBottom: 4,
-  },
-  optionDescription: {
-    fontSize: 13,
-    color: '#666',
-  },
-  radio: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: '#ccc',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  radioSelected: {
-    borderColor: COLORS.Crimson || '#dc3545',
-  },
-  radioInner: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
-  errorText: {
-    color: COLORS.danger || '#dc3545',
-    fontSize: 12,
-    marginTop: 8,
-    marginLeft: 4,
-  },
-});
+export default GoodsConditionSelector;

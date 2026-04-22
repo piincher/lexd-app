@@ -22,3 +22,6 @@ export { Checkbox, type CheckboxProps, type CheckboxSize } from './Checkbox';
 export { ConfirmDialog, type ConfirmDialogProps } from './ConfirmDialog';
 export { EmptyState, type EmptyStateProps } from './EmptyState';
 export { ShimmerBlock } from './ShimmerBlock';
+export { GoodsPhotosUpload, type GoodsPhotosUploadProps } from './GoodsPhotosUpload';
+export { PhotoGallery, type PhotoGalleryProps } from './PhotoGallery';
+export { GoodsImage, type GoodsImageProps } from './GoodsImage';

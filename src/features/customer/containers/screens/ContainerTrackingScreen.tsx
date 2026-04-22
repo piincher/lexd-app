@@ -3,7 +3,7 @@
  * Maersk-style detailed tracking view with waypoint journey
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   StyleSheet,
@@ -26,11 +26,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
-import { RootStackScreenProps } from '@src/navigations/type';
+import type { RootStackScreenProps } from '@src/navigations/type';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetContainerDetails } from '../hooks/useCustomerContainers';
 import { useGetWaypoints } from '@src/shared/hooks/useWaypoints';
+import { NotificationBell } from '@src/features/notifications';
 // Waypoint logic moved to WaypointCard component
 import { ContainerTimeline } from '../components/ContainerTimeline';
 import { WaypointCard } from '../components/WaypointCard';
@@ -48,6 +49,183 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
   const theme = useTheme();
   const [contactDialogVisible, setContactDialogVisible] = useState(false);
   const [expandedWaypoint, setExpandedWaypoint] = useState<number | null>(null);
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.paper,
+    },
+    headerTitle: {
+      fontFamily: Fonts.bold,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 32,
+    },
+    loadingText: {
+      marginTop: 16,
+      fontFamily: Fonts.meduim,
+      color: colors.text.secondary,
+    },
+    errorTitle: {
+      fontSize: 18,
+      fontFamily: Fonts.bold,
+      color: colors.text.secondary,
+      marginTop: 16,
+    },
+    errorText: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+      textAlign: 'center',
+      marginTop: 8,
+    },
+    retryButton: {
+      marginTop: 24,
+    },
+    scrollContent: {
+      padding: 16,
+    },
+    headerCard: {
+      marginBottom: 16,
+      elevation: 2,
+    },
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    containerIconContainer: {
+      width: 56,
+      height: 56,
+      borderRadius: 28,
+      backgroundColor: '#E0F2FE',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 16,
+    },
+    headerInfo: {
+      flex: 1,
+    },
+    containerNumber: {
+      fontFamily: Fonts.bold,
+      fontSize: 20,
+      color: colors.text.secondary,
+    },
+    shippingLine: {
+      fontFamily: Fonts.regular,
+      fontSize: 14,
+      color: colors.text.secondary,
+      marginTop: 2,
+    },
+    statusChip: {
+      height: 32,
+    },
+
+    // Progress summary
+    progressRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around',
+    },
+    progressItem: {
+      alignItems: 'center',
+      flex: 1,
+    },
+    progressValue: {
+      fontFamily: Fonts.bold,
+      fontSize: 24,
+      color: colors.text.secondary,
+    },
+    progressLabel: {
+      fontFamily: Fonts.regular,
+      fontSize: 11,
+      color: colors.text.secondary,
+      marginTop: 2,
+    },
+    progressDivider: {
+      width: 1,
+      height: 40,
+      backgroundColor: colors.border,
+    },
+
+    // Journey section
+    journeySection: {
+      marginBottom: 16,
+    },
+    journeySectionTitle: {
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      color: colors.text.secondary,
+      marginBottom: 16,
+    },
+
+    // Section cards
+    sectionCard: {
+      marginBottom: 16,
+      elevation: 1,
+    },
+    sectionTitle: {
+      fontFamily: Fonts.bold,
+      fontSize: 16,
+      color: colors.text.secondary,
+      marginBottom: 16,
+    },
+    estimatedArrivalContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    estimatedArrivalText: {
+      fontFamily: Fonts.meduim,
+      fontSize: 14,
+      color: colors.text.secondary,
+      marginLeft: 8,
+    },
+    timelineDetailRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      paddingVertical: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    timelineDetailLabel: {
+      fontFamily: Fonts.regular,
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    timelineDetailValue: {
+      fontFamily: Fonts.meduim,
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    pickupCard: {
+      backgroundColor: colors.accent.goldLight,
+    },
+    helpContainer: {
+      alignItems: 'center',
+      paddingVertical: 24,
+    },
+    helpText: {
+      fontFamily: Fonts.regular,
+      fontSize: 14,
+      color: colors.text.secondary,
+      marginBottom: 12,
+    },
+    helpButton: {
+      borderColor: colors.status.success,
+    },
+    dialogText: {
+      fontSize: 14,
+      marginBottom: 8,
+      fontFamily: Fonts.regular,
+    },
+    dialogLabel: {
+      fontFamily: Fonts.bold,
+      color: colors.text.secondary,
+    },
+  }), [colors, isDark]);
 
   const {
     data: container,
@@ -108,6 +286,11 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
         <Appbar.Header>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Suivi Container" />
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={24}
+            color={theme.colors.onSurface}
+          />
         </Appbar.Header>
         <ContainerTrackingSkeleton />
       </SafeAreaView>
@@ -120,6 +303,11 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
         <Appbar.Header>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Suivi Container" />
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={24}
+            color={theme.colors.onSurface}
+          />
         </Appbar.Header>
         <View style={styles.centerContainer}>
           <MaterialCommunityIcons
@@ -139,8 +327,8 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
     );
   }
 
-  const statusColor = CUSTOMER_STATUS_COLORS[container.status] || '#6B7280';
-  const statusBgColor = CUSTOMER_STATUS_BG_COLORS[container.status] || '#F3F4F6';
+  const statusColor = CUSTOMER_STATUS_COLORS[container.status] || colors.text.secondary;
+  const statusBgColor = CUSTOMER_STATUS_BG_COLORS[container.status] || colors.background.paper;
   const waypoints = waypointsData?.waypoints || [];
   const currentWaypointIndex = waypointsData?.currentWaypointIndex ?? -1;
   const progressPercentage = waypointsData?.progressPercentage ?? 0;
@@ -152,6 +340,11 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
         <Appbar.Content
           title="Suivi Container"
           titleStyle={styles.headerTitle}
+        />
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color={theme.colors.onSurface}
         />
       </Appbar.Header>
 
@@ -379,181 +572,5 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.lightBackground,
-  },
-  headerTitle: {
-    fontFamily: Fonts.bold,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  loadingText: {
-    marginTop: 16,
-    fontFamily: Fonts.meduim,
-    color: COLORS.DimGray,
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-    marginTop: 16,
-  },
-  errorText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.DimGray,
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  retryButton: {
-    marginTop: 24,
-  },
-  scrollContent: {
-    padding: 16,
-  },
-  headerCard: {
-    marginBottom: 16,
-    elevation: 2,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  containerIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#E0F2FE',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 16,
-  },
-  headerInfo: {
-    flex: 1,
-  },
-  containerNumber: {
-    fontFamily: Fonts.bold,
-    fontSize: 20,
-    color: COLORS.DarkGrey,
-  },
-  shippingLine: {
-    fontFamily: Fonts.regular,
-    fontSize: 14,
-    color: COLORS.DimGray,
-    marginTop: 2,
-  },
-  statusChip: {
-    height: 32,
-  },
-
-  // Progress summary
-  progressRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  progressItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  progressValue: {
-    fontFamily: Fonts.bold,
-    fontSize: 24,
-    color: COLORS.DarkGrey,
-  },
-  progressLabel: {
-    fontFamily: Fonts.regular,
-    fontSize: 11,
-    color: COLORS.DimGray,
-    marginTop: 2,
-  },
-  progressDivider: {
-    width: 1,
-    height: 40,
-    backgroundColor: '#E5E7EB',
-  },
-
-  // Journey section
-  journeySection: {
-    marginBottom: 16,
-  },
-  journeySectionTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 16,
-    color: COLORS.DarkGrey,
-    marginBottom: 16,
-  },
-
-  // Section cards
-  sectionCard: {
-    marginBottom: 16,
-    elevation: 1,
-  },
-  sectionTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 16,
-    color: COLORS.DarkGrey,
-    marginBottom: 16,
-  },
-  estimatedArrivalContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  estimatedArrivalText: {
-    fontFamily: Fonts.meduim,
-    fontSize: 14,
-    color: COLORS.DarkGrey,
-    marginLeft: 8,
-  },
-  timelineDetailRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E5E7EB',
-  },
-  timelineDetailLabel: {
-    fontFamily: Fonts.regular,
-    fontSize: 14,
-    color: COLORS.DimGray,
-  },
-  timelineDetailValue: {
-    fontFamily: Fonts.meduim,
-    fontSize: 14,
-    color: COLORS.DarkGrey,
-  },
-  pickupCard: {
-    backgroundColor: '#FEF3C7',
-  },
-  helpContainer: {
-    alignItems: 'center',
-    paddingVertical: 24,
-  },
-  helpText: {
-    fontFamily: Fonts.regular,
-    fontSize: 14,
-    color: COLORS.DimGray,
-    marginBottom: 12,
-  },
-  helpButton: {
-    borderColor: COLORS.SlateGray,
-  },
-  dialogText: {
-    fontSize: 14,
-    marginBottom: 8,
-    fontFamily: Fonts.regular,
-  },
-  dialogLabel: {
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-  },
-});
 
 export default ContainerTrackingScreen;

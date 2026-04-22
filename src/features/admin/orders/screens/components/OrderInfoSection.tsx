@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Surface, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
-import { Fonts } from '@src/constants/Fonts';
-import { styles } from './OrderInfoSection.styles';
+import { createStyles } from './OrderInfoSection.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { formatDate } from '@src/utils/formatDate';
 
 interface OrderInfoSectionProps {
@@ -36,19 +35,10 @@ const parsePrice = (value: any): number => {
   return isNaN(num) ? 0 : num;
 };
 
-const InfoItem: React.FC<InfoItemProps> = ({ icon, label, value, iconColor = COLORS.grey }) => (
-  <View style={styles.infoItem}>
-    <View style={styles.iconContainer}>
-      <MaterialCommunityIcons name={icon as any} size={20} color={iconColor} />
-    </View>
-    <View style={styles.infoContent}>
-      <Text style={styles.infoLabel}>{label}</Text>
-      <Text style={styles.infoValue} numberOfLines={1}>{value}</Text>
-    </View>
-  </View>
-);
-
 export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   // Parse values safely from v1 API (strings need to be converted)
   const quantity = parseNumber(order?.quantity) ?? 1;
   const packageWeight = parseString(order?.packageWeight);
@@ -71,6 +61,18 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
 
   const lastUpdate = order?.updatedAt ? formatDate(order.updatedAt) : 'N/A';
   const createdDate = order?.createdAt ? formatDate(order.createdAt) : 'N/A';
+
+  const InfoItem: React.FC<InfoItemProps> = ({ icon, label, value, iconColor = colors.text.secondary }) => (
+    <View style={styles.infoItem}>
+      <View style={styles.iconContainer}>
+        <MaterialCommunityIcons name={icon as any} size={20} color={iconColor} />
+      </View>
+      <View style={styles.infoContent}>
+        <Text style={styles.infoLabel}>{label}</Text>
+        <Text style={styles.infoValue} numberOfLines={1}>{value}</Text>
+      </View>
+    </View>
+  );
 
   return (
     <Surface style={styles.container}>
@@ -194,7 +196,7 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
           <Divider style={styles.divider} />
           <View style={styles.notesSection}>
             <View style={styles.notesHeader}>
-              <MaterialCommunityIcons name="note-text" size={18} color={COLORS.grey} />
+              <MaterialCommunityIcons name="note-text" size={18} color={colors.text.secondary} />
               <Text style={styles.notesTitle}>Notes</Text>
             </View>
             <Text style={styles.notesText}>{order.note}</Text>

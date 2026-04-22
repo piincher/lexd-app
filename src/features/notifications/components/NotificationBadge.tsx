@@ -4,7 +4,7 @@
  * Can be used with any icon or component
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import Animated, { 
@@ -12,10 +12,9 @@ import Animated, {
   withSpring,
   withSequence,
   useSharedValue,
-  useEffect,
 } from 'react-native-reanimated';
 
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
 interface NotificationBadgeProps {
@@ -32,13 +31,15 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
   showZero = false,
   maxCount = 99,
   size = 'medium',
-  color = COLORS.danger,
+  color: colorProp,
   pulse = false,
 }) => {
+  const { colors } = useAppTheme();
+  const color = colorProp ?? colors.status.error;
   const scale = useSharedValue(1);
 
   // Pulse animation when count changes
-  useEffect(() => {
+  React.useEffect(() => {
     if (pulse && count > 0) {
       scale.value = withSequence(
         withSpring(1.3, { damping: 10 }),
@@ -66,6 +67,20 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
 
   const currentSize = sizeStyles[size];
 
+  const styles = useMemo(() => StyleSheet.create({
+    badge: {
+      borderRadius: 100,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1.5,
+      borderColor: colors.background.default,
+    },
+    text: {
+      fontFamily: Fonts.bold,
+      color: colors.text.inverse,
+    },
+  }), [colors]);
+
   return (
     <Animated.View 
       style={[
@@ -85,19 +100,5 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  badge: {
-    borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1.5,
-    borderColor: COLORS.white,
-  },
-  text: {
-    fontFamily: Fonts.bold,
-    color: COLORS.white,
-  },
-});
 
 export default NotificationBadge;

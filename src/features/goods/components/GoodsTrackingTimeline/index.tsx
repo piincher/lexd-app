@@ -20,11 +20,12 @@ interface GoodsTrackingTimelineProps {
 }
 
 const STATUS_CONFIG: Record<string, { icon: string; color: string; bgColor: string }> = {
-	RECEIVED_AT_WAREHOUSE: { icon: '📦', color: Theme.status.info, bgColor: Theme.feedback.infoBg },
-	ASSIGNED_TO_CONTAINER: { icon: '📋', color: Theme.status.warning, bgColor: Theme.feedback.warningBg },
+	RECEIVED_AT_WAREHOUSE: { icon: '📦', color: Theme.status.info, bgColor: Theme.colors.feedback.infoBg },
+	PACKED: { icon: '📦', color: '#7C4DFF', bgColor: '#EDE7F6' },
+	ASSIGNED_TO_CONTAINER: { icon: '📋', color: Theme.status.warning, bgColor: Theme.colors.feedback.warningBg },
 	LOADED_IN_CONTAINER: { icon: '🚢', color: '#9C27B0', bgColor: '#F3E5F5' },
 	IN_TRANSIT: { icon: '✈️', color: '#3F51B5', bgColor: '#E8EAF6' },
-	ARRIVED_DESTINATION: { icon: '🏁', color: Theme.status.success, bgColor: Theme.feedback.successBg },
+	ARRIVED_DESTINATION: { icon: '🏁', color: Theme.status.success, bgColor: Theme.colors.feedback.successBg },
 	READY_FOR_PICKUP: { icon: '📍', color: Theme.primary.main, bgColor: Theme.primary[50] },
 	DELIVERED: { icon: '✅', color: Theme.neutral[600], bgColor: Theme.neutral[100] },
 };

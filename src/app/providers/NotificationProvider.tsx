@@ -11,9 +11,13 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { AppState, AppStateStatus, Platform } from "react-native";
+import { AppState, Platform } from "react-native";
+import type { AppStateStatus } from "react-native";
+import { useQueryClient } from "@tanstack/react-query";
 import { navigationRef } from "@src/navigations/navigationRef";
 import { registerCertificateNotificationHandler } from "@src/features/profile/notifications/certificateHandler";
+import { notificationApi } from "@src/features/notifications/api";
+import { notificationQueryKeys } from "@src/features/notifications/hooks";
 
 import {
   clearBadgeCount,
@@ -114,6 +118,8 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   autoRequestPermission = false,
   showPermissionAlert = true,
 }) => {
+  const queryClient = useQueryClient();
+
   // State
   const [pushToken, setPushToken] = useState<string | null>(null);
   const [permissionStatus, setPermissionStatus] =
@@ -285,10 +291,18 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
         setLastNotification(notification);
 
-        // Increment badge count
-        incrementBadgeCount().then(() => {
-          getBadgeCount().then(setBadgeCountState);
-        });
+        const unreadCount = getNotificationUnreadCount(notification);
+
+        if (unreadCount !== null) {
+          void applyUnreadCount(unreadCount);
+        } else {
+          incrementBadgeCount().then(() => {
+            getBadgeCount().then(setBadgeCountState);
+          });
+          incrementUnreadQueryCount();
+        }
+
+        refreshNotificationQueries();
       }
     );
 
@@ -303,7 +317,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
       notificationListener.current?.remove();
       responseListener.current?.remove();
     };
-  }, []);
+  }, [queryClient]);
 
   // ============================================================================
   // App State Handling
@@ -316,9 +330,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
         appState.current.match(/inactive|background/) &&
         nextAppState === "active"
       ) {
-        // Clear badge when app is opened
-        await clearBadgeCount();
-        setBadgeCountState(0);
+        await refreshUnreadCountFromServer();
       }
 
       appState.current = nextAppState;
@@ -329,7 +341,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     return () => {
       subscription.remove();
     };
-  }, []);
+  }, [queryClient]);
 
   // ============================================================================
   // Handlers
@@ -347,6 +359,57 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
       // Process deep link
       processNotificationData(data);
     }
+  };
+
+  const updateUnreadQueryCount = (count: number) => {
+    queryClient.setQueryData(notificationQueryKeys.unread(), (current: any) => ({
+      ...(current || {}),
+      count,
+      hasNew: count > 0,
+    }));
+  };
+
+  const incrementUnreadQueryCount = () => {
+    queryClient.setQueryData(notificationQueryKeys.unread(), (current: any) => {
+      const count = Math.max(0, Number(current?.count || 0) + 1);
+      return {
+        ...(current || {}),
+        count,
+        hasNew: count > 0,
+      };
+    });
+  };
+
+  const applyUnreadCount = async (count: number) => {
+    updateUnreadQueryCount(count);
+    await setBadgeCount(count);
+    setBadgeCountState(count);
+  };
+
+  const refreshUnreadCountFromServer = async () => {
+    const authToken = useAuth.getState().token;
+
+    if (!authToken || authToken.trim() === "") {
+      await clearBadgeCount();
+      setBadgeCountState(0);
+      return;
+    }
+
+    try {
+      const unreadData = await notificationApi.getUnreadCount();
+      await applyUnreadCount(unreadData.count);
+    } catch (err) {
+      console.error("[NotificationProvider] Error refreshing unread count:", err);
+    }
+  };
+
+  const refreshNotificationQueries = () => {
+    void queryClient.invalidateQueries({ queryKey: notificationQueryKeys.all });
+
+    setTimeout(() => {
+      void queryClient.invalidateQueries({ queryKey: notificationQueryKeys.all });
+      void refreshUnreadCountFromServer();
+    }, 1000);
   };
 
   // ============================================================================
@@ -530,6 +593,26 @@ export const useNotificationContext = (): NotificationContextValue => {
   }
 
   return context;
+};
+
+const getNotificationUnreadCount = (
+  notification: Notifications.Notification
+): number | null => {
+  const content = notification.request.content;
+  const data = content.data as NotificationData | undefined;
+  const contentBadge = (content as { badge?: unknown }).badge;
+
+  return normalizeNotificationCount(
+    data?.unreadCount ?? data?.badge ?? contentBadge
+  );
+};
+
+const normalizeNotificationCount = (value: unknown): number | null => {
+  const count = Number(value);
+  if (!Number.isFinite(count) || count < 0) {
+    return null;
+  }
+  return Math.floor(count);
 };
 
 export default NotificationProvider;

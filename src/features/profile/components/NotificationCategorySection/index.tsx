@@ -3,12 +3,14 @@
  * Category toggles for notification types
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet, Switch } from "react-native";
 import { Card, Text, Divider, List } from "react-native-paper";
-import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
-import { COLORS } from "@src/constants/Colors";
+type IoniconsName = React.ComponentProps<typeof Ionicons>["name"];
+
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import {
   NotificationType,
   NotificationPreference,
@@ -19,38 +21,71 @@ interface NotificationCategorySectionProps {
   onToggle: (type: NotificationType, value: boolean) => void;
 }
 
-const getIconForType = (type: NotificationType): string => {
-  const iconMap: Record<NotificationType, string> = {
-    ORDER_UPDATE: "package",
-    PAYMENT: "creditcard",
-    CONTAINER_STATUS: "box",
-    TICKET_REPLY: "message1",
-    INVOICE: "filetext1",
+const getIconForType = (type: NotificationType): IoniconsName => {
+  const iconMap: Record<NotificationType, IoniconsName> = {
+    ORDER_UPDATE: "cube",
+    PAYMENT: "card",
+    CONTAINER_STATUS: "archive",
+    TICKET_REPLY: "chatbubble-ellipses",
+    INVOICE: "document-text",
     CERTIFICATE_ISSUED: "trophy",
-    GENERAL: "bells",
-    SYSTEM: "setting",
+    GENERAL: "notifications",
+    SYSTEM: "settings",
   };
-  return iconMap[type] || "bells";
-};
-
-const getColorForType = (type: NotificationType): string => {
-  const colorMap: Record<NotificationType, string> = {
-    ORDER_UPDATE: COLORS.primary,
-    PAYMENT: "#10B981",
-    CONTAINER_STATUS: "#3B82F6",
-    TICKET_REPLY: "#F59E0B",
-    INVOICE: "#EF4444",
-    CERTIFICATE_ISSUED: "#F4D03F",
-    GENERAL: "#6B7280",
-    SYSTEM: "#8B5CF6",
-  };
-  return colorMap[type] || COLORS.primary;
+  return iconMap[type] || "notifications";
 };
 
 export const NotificationCategorySection: React.FC<NotificationCategorySectionProps> = ({
   preferences,
   onToggle,
 }) => {
+  const { colors } = useAppTheme();
+
+  const getColorForType = (type: NotificationType): string => {
+    const colorMap: Record<NotificationType, string> = {
+      ORDER_UPDATE: colors.primary.main,
+      PAYMENT: "#10B981",
+      CONTAINER_STATUS: "#3B82F6",
+      TICKET_REPLY: "#F59E0B",
+      INVOICE: "#EF4444",
+      CERTIFICATE_ISSUED: "#F4D03F",
+      GENERAL: "#6B7280",
+      SYSTEM: "#8B5CF6",
+    };
+    return colorMap[type] || colors.primary.main;
+  };
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        sectionTitle: {
+          fontSize: 14,
+          fontWeight: "600",
+          color: colors.text.secondary,
+          textTransform: "uppercase",
+          marginBottom: 8,
+          marginLeft: 4,
+        },
+        card: {
+          marginBottom: 16,
+          borderRadius: 12,
+          elevation: 2,
+          backgroundColor: colors.background.default,
+        },
+        preferenceItem: {
+          paddingVertical: 12,
+        },
+        typeIcon: {
+          width: 40,
+          height: 40,
+          borderRadius: 10,
+          justifyContent: "center",
+          alignItems: "center",
+        },
+      }),
+    [colors]
+  );
+
   return (
     <>
       <Text style={styles.sectionTitle}>Notification Types</Text>
@@ -68,7 +103,7 @@ export const NotificationCategorySection: React.FC<NotificationCategorySectionPr
                     { backgroundColor: getColorForType(pref.type) + "20" },
                   ]}
                 >
-                  <AntDesign
+                  <Ionicons
                     name={getIconForType(pref.type)}
                     size={20}
                     color={getColorForType(pref.type)}
@@ -79,8 +114,8 @@ export const NotificationCategorySection: React.FC<NotificationCategorySectionPr
                 <Switch
                   value={pref.enabled}
                   onValueChange={(value) => onToggle(pref.type, value)}
-                  trackColor={{ false: "#E5E7EB", true: COLORS.primary + "50" }}
-                  thumbColor={pref.enabled ? COLORS.primary : "#FFF"}
+                  trackColor={{ false: colors.neutral[200], true: colors.primary.main + "50" }}
+                  thumbColor={pref.enabled ? colors.primary.main : colors.background.default}
                 />
               )}
               style={styles.preferenceItem}
@@ -91,30 +126,3 @@ export const NotificationCategorySection: React.FC<NotificationCategorySectionPr
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#6B7280",
-    textTransform: "uppercase",
-    marginBottom: 8,
-    marginLeft: 4,
-  },
-  card: {
-    marginBottom: 16,
-    borderRadius: 12,
-    elevation: 2,
-    backgroundColor: "#FFF",
-  },
-  preferenceItem: {
-    paddingVertical: 12,
-  },
-  typeIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

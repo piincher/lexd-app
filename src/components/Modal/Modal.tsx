@@ -1,16 +1,8 @@
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import React, { useMemo } from "react";
-import {
-   Modal,
-   Pressable,
-   StyleProp,
-   StyleSheet,
-   Text,
-   TextStyle,
-   View,
-   ViewStyle,
-} from "react-native";
+import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import type { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 interface CustomModalProps {
    visible: boolean;

@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '../../../../../constants/Theme';
-import { styles } from '../ContainerDetailScreen.styles';
+import {  createStyles  } from '../ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
-export const LoadingState: React.FC = () => (
+export const LoadingState: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  return (
   <SafeAreaView style={styles.container}>
     <View style={styles.loadingContainer}>
       <ActivityIndicator size="large" color={Theme.primary[500]} />
@@ -12,3 +16,4 @@ export const LoadingState: React.FC = () => (
     </View>
   </SafeAreaView>
 );
+};

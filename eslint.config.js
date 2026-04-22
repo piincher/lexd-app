@@ -8,5 +8,11 @@ module.exports = defineConfig([
   reactCompiler.configs.recommended,
   {
     ignores: ["dist/*", "node_modules/*", ".expo/*"],
-  }
+  },
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unsafe-function-type": "error",
+    },
+  },
 ]);

@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 20,
     padding: 24,
     alignItems: 'center',

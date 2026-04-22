@@ -1,7 +1,6 @@
 import type { CompositeScreenProps, NavigatorScreenParams } from "@react-navigation/native";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
    HomeTab: NavigatorScreenParams<HomeTabParamList>;
@@ -21,9 +20,8 @@ export type RootStackParamList = {
    PastOrders: undefined;
    AboutUs: undefined;
    UserAdd: undefined;
-   AdmninPastOrders: undefined;
+   AdminPastOrders: undefined;
    SendSms: undefined;
-   Map: { id: string };
    ActiveOrderDetails: { id: string };
    ScanQRCode: undefined;
    Notifications: undefined;
@@ -35,9 +33,10 @@ export type RootStackParamList = {
    OutstandingPaymentsList: undefined;
    ChooseShippingMethod: undefined;
    ShippingMethod: undefined;
-   SeaShippingOrderDetails: { id: string };
    BatchUpdateDetail: { data: string[] };
-   faq: undefined;
+   FAQ: undefined;
+   PublicTrackingResult: { trackingNumber: string; data: unknown };
+   SharedShipment: { token: string };
 
    ClientManagement: undefined;
    ClientDetails: { id: string };
@@ -78,21 +77,17 @@ export type RootStackParamList = {
    LoadingList: { containerId: string };
    // Customer Loading List
    ClientLoadingList: { containerId: string };
+   // Airway Bill Features
+   AirwayBillList: undefined;
+   AirwayBillDetail: { airwayBillId: string };
+   CreateAirwayBill: undefined;
+   AssignAirwayGoods: { airwayBillId: string };
+   AirwayBillTracking: { airwayBillId: string };
+   CargoBagDetail: { cargoBagId: string; airwayBillId: string };
    // WhatsApp Admin
-   WhatsAppRequests: undefined;
-   WhatsAppRequestDetail: { requestId: string };
+   WhatsAppRequests: { requestId?: string } | undefined;
    // Customer Payment Features
-   PaymentPortal: undefined;
-   PaymentHistory: undefined;
    MyPaymentHistory: undefined;
-   PaymentConfirmation: {
-      paymentId: string;
-      transactionReference: string;
-      amount: number;
-      currency: string;
-      paymentMethod: string;
-      goodsCount: number;
-   };
    NotificationDetail: {
       notification: import("../features/notifications/types").InAppNotification;
    };
@@ -120,8 +115,6 @@ export type RootStackParamList = {
       };
    };
    PaymentHistoryScreen: undefined;
-   // Admin Payment Management
-   PaymentManagement: undefined;
    PaymentScreen: {
       orderId: string;
       orderCode: string;
@@ -129,13 +122,6 @@ export type RootStackParamList = {
       clientPhone?: string;
       currentBalance: number;
       totalAmount: number;
-   };
-   // Admin Order Payment History
-   AdminOrderPaymentHistory: {
-      orderId: string;
-      orderCode: string;
-      clientName?: string;
-      clientPhone?: string;
    };
 
    // Badges Screen
@@ -152,7 +138,6 @@ export type RootStackParamList = {
    ActivityList: undefined;
    // Search Screens
    GlobalSearch: undefined;
-   Search: undefined;
    // Client Certificate Detail
    CertificateDetail: {
       certificateId: string;
@@ -193,10 +178,10 @@ export type RootStackParamList = {
       notes?: string;
       receiptUrl?: string;
       proofImages?: string[];
-      goodsIds?: Array<{
+      goodsIds?: {
          goodsId: string;
          description: string;
-      }>;
+      }[];
    };
    // User Payment Detail Screen (payments recorded by admin on user's behalf)
    UserPaymentDetail: {
@@ -218,9 +203,13 @@ export type HomeTabParamList = {
    MyContainers: undefined;
    CustomerDashboard: undefined;
    Orders: undefined;
+   AdminGoodsList: undefined;
+   ContainerList: undefined;
 };
 
 export type navigationProps = NativeStackNavigationProp<RootStackParamList>;
+
+export type PublicNavigationProp = navigationProps;
 
 export type HomeTabScreenProps<T extends keyof HomeTabParamList> = CompositeScreenProps<
    BottomTabScreenProps<HomeTabParamList, T>,
@@ -229,6 +218,8 @@ export type HomeTabScreenProps<T extends keyof HomeTabParamList> = CompositeScre
 
 declare global {
    namespace ReactNavigation {
+      // React Navigation uses this empty extension for global route type registration.
+      // eslint-disable-next-line @typescript-eslint/no-empty-object-type
       interface RootParamList extends RootStackParamList {}
    }
 }

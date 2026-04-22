@@ -3,12 +3,13 @@
  * Refactored: Composition pattern
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
-import { RootStackScreenProps } from '@src/navigations/type';
-import { styles } from './ClientPackingListScreen.styles';
+import type { RootStackScreenProps } from '@src/navigations/type';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './ClientPackingListScreen.styles';
 import { useClientPackingListScreen } from './hooks/useClientPackingListScreen';
 import { PackingListHeader } from './components/PackingListHeader';
 import { PackingListSummary } from './components/PackingListSummary';
@@ -22,6 +23,8 @@ import { ErrorState } from './components/ErrorState';
 const ClientPackingListScreen: React.FC<RootStackScreenProps<'ClientPackingList'>> = ({
   navigation, route,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const screen = useClientPackingListScreen(route.params.containerId);
   if (screen.isLoading) return <LoadingState />;
   if (screen.isError || !screen.packingList) {

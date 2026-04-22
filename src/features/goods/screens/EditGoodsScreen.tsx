@@ -3,23 +3,27 @@
  * Allows clients to edit goods information before container assignment
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Appbar, Button, Text } from 'react-native-paper';
 import { ShimmerBlock } from '@src/shared/ui';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { RootStackScreenProps } from '@src/navigations/type';
-import { COLORS } from '@src/constants/Colors';
+import type { RootStackScreenProps } from '@src/navigations/type';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { useEditGoodsScreen } from './hooks/useEditGoodsScreen';
 import { GoodsForm } from '../components';
 import { useAuth } from '@src/store/Auth';
+import { hapticSuccess } from '@src/shared/lib/haptics';
+import { NotificationBell } from '@src/features/notifications';
+import { GoodsPhotosUpload } from '@src/shared/ui';
 
 const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
   route,
   navigation,
 }) => {
+  const { colors } = useAppTheme();
   const { goodsId } = route.params;
   const user = useAuth((state) => state.user);
   const token = useAuth((state) => state.token);
@@ -37,7 +41,57 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
     calculatedTotalCost,
     updateField,
     handleSave,
+    photoUris,
+    onPhotoSelected,
+    onPhotoRemoved,
   } = useEditGoodsScreen(goodsId, isAdmin);
+
+  const handleSaveWithHaptic = () => {
+    hapticSuccess();
+    handleSave();
+  };
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.paper,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 32,
+    },
+    scrollContent: {
+      padding: 16,
+      paddingBottom: 32,
+    },
+    loadingText: {
+      marginTop: 16,
+      fontFamily: Fonts.meduim,
+      color: colors.text.secondary,
+    },
+    errorTitle: {
+      fontSize: 18,
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
+      marginTop: 16,
+    },
+    errorText: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+      textAlign: 'center',
+      marginTop: 8,
+    },
+    backButton: {
+      marginTop: 24,
+    },
+    saveButton: {
+      marginTop: 24,
+      borderRadius: 8,
+    },
+  }), [colors]);
 
   if (isAuthLoading || isLoading) {
     return (
@@ -45,6 +99,11 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
         <Appbar.Header>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Modifier" />
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={24}
+            color={colors.text.secondary}
+          />
         </Appbar.Header>
         <View style={{ padding: 16, gap: 16 }}>
           <ShimmerBlock width={'60%'} height={18} borderRadius={4} />
@@ -64,9 +123,14 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
         <Appbar.Header>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Modifier" />
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={24}
+            color={colors.text.secondary}
+          />
         </Appbar.Header>
         <View style={styles.centerContainer}>
-          <MaterialCommunityIcons name={!isAdmin ? "shield-lock" : "lock"} size={64} color={COLORS.SlateGray} />
+          <MaterialCommunityIcons name={!isAdmin ? "shield-lock" : "lock"} size={64} color={colors.status.success} />
           <Text style={styles.errorTitle}>Modification impossible</Text>
           <Text style={styles.errorText}>
             {error || 'Les marchandises ne peuvent être modifiées après leur assignation à un conteneur.'}
@@ -84,6 +148,11 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
       <Appbar.Header>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Modifier la marchandise" />
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color={colors.text.secondary}
+        />
       </Appbar.Header>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
@@ -94,9 +163,15 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
           calculatedTotalCost={calculatedTotalCost}
         />
 
+        <GoodsPhotosUpload
+          photoUris={photoUris}
+          onPhotoSelected={onPhotoSelected}
+          onPhotoRemoved={onPhotoRemoved}
+        />
+
         <Button
           mode="contained"
-          onPress={handleSave}
+          onPress={handleSaveWithHaptic}
           loading={isSaving}
           disabled={isSaving}
           style={styles.saveButton}
@@ -108,47 +183,5 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.lightBackground,
-  },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  scrollContent: {
-    padding: 16,
-    paddingBottom: 32,
-  },
-  loadingText: {
-    marginTop: 16,
-    fontFamily: Fonts.meduim,
-    color: COLORS.DimGray,
-  },
-  errorTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
-    marginTop: 16,
-  },
-  errorText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.DimGray,
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  backButton: {
-    marginTop: 24,
-  },
-  saveButton: {
-    marginTop: 24,
-    borderRadius: 8,
-  },
-});
 
 export default EditGoodsScreen;

@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card, Text, Chip, DataTable } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { styles } from '../ClientPackingListScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from '../ClientPackingListScreen.styles';
 
 interface Goods {
   _id?: string;
@@ -25,6 +26,9 @@ export const PackingListGoods: React.FC<PackingListGoodsProps> = ({
   goods,
   getStatusColor,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   if (goods.length === 0) {
     return (
       <Card style={styles.sectionCard}>
@@ -33,7 +37,7 @@ export const PackingListGoods: React.FC<PackingListGoodsProps> = ({
             <MaterialCommunityIcons
               name="package-variant-closed"
               size={24}
-              color="#6B7280"
+              color={colors.text.secondary}
             />
             <Text style={styles.sectionTitle}>Marchandises</Text>
           </View>
@@ -41,7 +45,7 @@ export const PackingListGoods: React.FC<PackingListGoodsProps> = ({
             <MaterialCommunityIcons
               name="package-variant-remove"
               size={48}
-              color="#9CA3AF"
+              color={colors.text.secondary}
             />
             <Text style={styles.emptyStateText}>Aucune marchandise</Text>
           </View>
@@ -57,7 +61,7 @@ export const PackingListGoods: React.FC<PackingListGoodsProps> = ({
           <MaterialCommunityIcons
             name="package-variant-closed"
             size={24}
-            color="#6B7280"
+            color={colors.text.secondary}
           />
           <Text style={styles.sectionTitle}>
             Marchandises ({goods.length})
@@ -77,7 +81,7 @@ export const PackingListGoods: React.FC<PackingListGoodsProps> = ({
           {goods.map((item, index) => {
             const rawColor = getStatusColor(item.status || '');
             const statusBg = typeof rawColor === 'string' ? rawColor : rawColor.bg;
-            const statusText = typeof rawColor === 'string' ? '#FFF' : rawColor.text;
+            const statusText = typeof rawColor === 'string' ? colors.text.inverse : rawColor.text;
             const cbmValue = item.actualCBM ?? item.cbm;
             return (
               <DataTable.Row key={item._id || item.goodsId || `goods-${index}`} style={styles.tableRow}>

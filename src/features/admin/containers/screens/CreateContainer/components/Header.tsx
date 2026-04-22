@@ -3,12 +3,15 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 
 interface HeaderProps {
   onBack: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ onBack }) => {
+  const navigation = useNavigation();
   return (
     <LinearGradient 
       colors={Theme.gradients.primary} 
@@ -29,9 +32,11 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
           Créez un container pour regrouper les marchandises
         </Text>
       </View>
-      <View style={styles.headerIcon}>
-        <Ionicons name="cube" size={32} color="rgba(255,255,255,0.3)" />
-      </View>
+      <NotificationBell
+        onPress={() => navigation.navigate('Notifications' as never)}
+        size={24}
+        color="#FFF"
+      />
     </LinearGradient>
   );
 };

@@ -1,0 +1,106 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": [
+          "CZCJLA5GHT.com.nuvotech.chinalinkexpress"
+        ],
+        "components": [
+          {
+            "/": "/",
+            "comment": "App homepage"
+          },
+          {
+            "/": "/home",
+            "comment": "Home tab"
+          },
+          {
+            "/": "/dashboard",
+            "comment": "Customer dashboard"
+          },
+          {
+            "/": "/containers",
+            "comment": "My containers"
+          },
+          {
+            "/": "/goods-list",
+            "comment": "Goods list"
+          },
+          {
+            "/": "/goods/*",
+            "comment": "Goods detail"
+          },
+          {
+            "/": "/orders",
+            "comment": "Orders"
+          },
+          {
+            "/": "/profile",
+            "comment": "Profile"
+          },
+          {
+            "/": "/tracking/*",
+            "comment": "Container tracking"
+          },
+          {
+            "/": "/order/*",
+            "comment": "Order detail"
+          },
+          {
+            "/": "/ticket/*",
+            "comment": "Ticket detail"
+          },
+          {
+            "/": "/support",
+            "comment": "Support tickets"
+          },
+          {
+            "/": "/support/new",
+            "comment": "Create ticket"
+          },
+          {
+            "/": "/notifications",
+            "comment": "Notifications"
+          },
+          {
+            "/": "/payments",
+            "comment": "Payments"
+          },
+          {
+            "/": "/faq",
+            "comment": "FAQ"
+          },
+          {
+            "/": "/about",
+            "comment": "About us"
+          },
+          {
+            "/": "/route-check",
+            "comment": "Route check"
+          },
+          {
+            "/": "/scan",
+            "comment": "Scan QR"
+          },
+          {
+            "/": "/login",
+            "comment": "Login"
+          },
+          {
+            "/": "/verify",
+            "comment": "Verification"
+          },
+          {
+            "/": "/admin/*",
+            "comment": "Admin screens"
+          }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": [
+      "CZCJLA5GHT.com.nuvotech.chinalinkexpress"
+    ]
+  }
+}

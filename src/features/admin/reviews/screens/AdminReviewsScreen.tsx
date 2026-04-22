@@ -14,7 +14,9 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
 import { Fonts } from "@src/constants/Fonts";
-import { RootStackScreenProps } from "@src/navigations/type";
+import { NotificationBell } from "@src/features/notifications";
+import type { RootStackScreenProps } from "@src/navigations/type";
+import { Theme } from "@src/constants/Theme";
 import {
   useAdminReviews,
   useAdminReviewStats,
@@ -308,6 +310,11 @@ export default function AdminReviewsScreen({
               {totalReviews} avis au total
             </Text>
           </View>
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={24}
+            color="#1F2937"
+          />
         </View>
       </View>
 
@@ -440,7 +447,7 @@ export default function AdminReviewsScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: Theme.colors.background.default,
   },
 
   /* Header */
@@ -448,9 +455,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: Platform.OS === "android" ? 12 : 20,
     paddingBottom: 16,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
   },
   headerTop: {
     flexDirection: "row",
@@ -460,7 +467,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
@@ -482,7 +489,7 @@ const styles = StyleSheet.create({
 
   /* Stats card */
   statsCard: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     marginHorizontal: 16,
     marginTop: 12,
     borderRadius: 16,
@@ -532,7 +539,7 @@ const styles = StyleSheet.create({
   distributionTrack: {
     flex: 1,
     height: 6,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderRadius: 3,
     overflow: "hidden",
   },
@@ -557,9 +564,9 @@ const styles = StyleSheet.create({
 
   /* Filter chips */
   filterContainer: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
     paddingVertical: 12,
     marginTop: 12,
   },
@@ -571,9 +578,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: Theme.colors.neutral[200],
   },
   filterChipActive: {
     backgroundColor: "#d4a843",
@@ -609,7 +616,7 @@ const styles = StyleSheet.create({
 
   /* Card */
   card: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -744,7 +751,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   responseInput: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -764,7 +771,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 10,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
   },
   cancelButtonText: {
     fontSize: 14,
@@ -810,7 +817,7 @@ const styles = StyleSheet.create({
   },
   resetFilterButton: {
     marginTop: 16,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
@@ -833,11 +840,11 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: Theme.colors.neutral[200],
   },
   paginationButtonDisabled: {
     opacity: 0.4,

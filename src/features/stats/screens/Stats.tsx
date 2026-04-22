@@ -9,7 +9,7 @@ import { View, ScrollView, StyleSheet, RefreshControl, TouchableOpacity } from '
 import { Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { HomeTabScreenProps } from '@src/navigations/type';
+import type { HomeTabScreenProps } from '@src/navigations/type';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { withProtectedRoute } from '@src/shared/hoc/withProtectedRoute';
@@ -109,6 +109,7 @@ const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
     outstanding,
     profitSummary,
     isLoadingProfit,
+    isFetchingPeriodData,
   } = useAdminStats();
 
   const [refreshing, setRefreshing] = React.useState(false);
@@ -155,7 +156,7 @@ const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl
-            refreshing={refreshing}
+            refreshing={refreshing || isFetchingPeriodData}
             onRefresh={onRefresh}
             tintColor={Theme.primary[500]}
             colors={[Theme.primary[500]]}

@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
-import { Fonts } from '@src/constants/Fonts';
-import { styles } from './OrderDetailHeader.styles';
+import { createStyles } from './OrderDetailHeader.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface OrderDetailHeaderProps {
   order: any;
@@ -55,6 +54,9 @@ const STATUS_CONFIG: Record<string, {
 };
 
 export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   const statusConfig = STATUS_CONFIG[order?.status] || STATUS_CONFIG.Inactive;
   const initials = order?.clientName?.split(' ').map((n: string) => n[0]).join('') || '?';
   const orderPrice = parsePrice(order?.calculatedTotal) || 
@@ -132,7 +134,7 @@ export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) =
         </View>
         {order?.isGoodsLinked && (
           <View style={styles.linkedBadge}>
-            <MaterialCommunityIcons name="link-variant" size={12} color="#FFF" />
+            <MaterialCommunityIcons name="link-variant" size={12} color={colors.text.inverse} />
             <Text style={styles.linkedText}>Linked to Goods</Text>
           </View>
         )}

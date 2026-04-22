@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet, ScrollView, Linking, Alert } from "react-native";
 import {
    Text,
@@ -9,11 +9,12 @@ import {
    IconButton,
 } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useRoute, useNavigation } from "@react-navigation/native";
+import type { RouteProp } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { useGetConsigneeById, useDeleteConsignee } from "../hooks";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 type ConsigneeStackParamList = {
    ConsigneeList: undefined;
@@ -28,6 +29,150 @@ const ConsigneeDetailScreen: React.FC = () => {
    const route = useRoute<ConsigneeDetailRouteProp>();
    const navigation = useNavigation<NavigationProp>();
    const { id } = route.params;
+
+   const { colors, isDark } = useAppTheme();
+
+   const styles = useMemo(() => StyleSheet.create({
+      container: {
+         flex: 1,
+         backgroundColor: colors.background.paper,
+      },
+      centered: {
+         justifyContent: "center",
+         alignItems: "center",
+      },
+      header: {
+         flexDirection: "row",
+         alignItems: "center",
+         justifyContent: "space-between",
+         paddingHorizontal: 8,
+         paddingVertical: 8,
+         backgroundColor: colors.background.card,
+         borderBottomWidth: 1,
+         borderBottomColor: colors.border,
+      },
+      headerTitle: {
+         fontSize: 18,
+         fontWeight: "600",
+         color: colors.text.secondary,
+      },
+      scrollView: {
+         flex: 1,
+      },
+      mainCard: {
+         margin: 16,
+         marginBottom: 8,
+         borderRadius: 12,
+         backgroundColor: colors.background.card,
+      },
+      nameSection: {
+         flexDirection: "row",
+         alignItems: "center",
+         justifyContent: "space-between",
+      },
+      name: {
+         fontSize: 24,
+         fontWeight: "700",
+         color: colors.text.secondary,
+         flex: 1,
+      },
+      statusChip: {
+         height: 28,
+      },
+      statusChipText: {
+         color: colors.text.inverse,
+         fontWeight: "600",
+      },
+      infoCard: {
+         marginHorizontal: 16,
+         marginBottom: 12,
+         borderRadius: 12,
+         backgroundColor: colors.background.card,
+      },
+      sectionTitle: {
+         fontSize: 16,
+         fontWeight: "600",
+         color: colors.text.secondary,
+         marginBottom: 16,
+      },
+      infoItem: {
+         flexDirection: "row",
+         alignItems: "flex-start",
+         marginBottom: 16,
+      },
+      infoContent: {
+         marginLeft: 12,
+         flex: 1,
+      },
+      infoLabel: {
+         fontSize: 12,
+         color: colors.text.secondary,
+         marginBottom: 2,
+      },
+      infoValue: {
+         fontSize: 16,
+         color: colors.text.secondary,
+         fontWeight: "500",
+      },
+      addressText: {
+         marginLeft: 12,
+         fontSize: 16,
+         color: colors.text.secondary,
+         flex: 1,
+         lineHeight: 22,
+      },
+      statsContainer: {
+         flexDirection: "row",
+         justifyContent: "space-around",
+      },
+      statItem: {
+         alignItems: "center",
+      },
+      statNumber: {
+         fontSize: 32,
+         fontWeight: "700",
+         color: colors.status.success,
+      },
+      statLabel: {
+         fontSize: 14,
+         color: colors.text.secondary,
+         marginTop: 4,
+      },
+      actionButtons: {
+         flexDirection: "row",
+         marginHorizontal: 16,
+         marginTop: 8,
+         marginBottom: 12,
+         gap: 12,
+      },
+      actionButton: {
+         flex: 1,
+         borderRadius: 12,
+      },
+      callButton: {
+         backgroundColor: colors.primary.main,
+      },
+      whatsappButton: {
+         backgroundColor: "#25D366",
+      },
+      deleteButton: {
+         marginHorizontal: 16,
+         marginBottom: 32,
+         borderColor: colors.status.error,
+         borderRadius: 12,
+      },
+      loadingText: {
+         marginTop: 16,
+         fontSize: 16,
+         color: colors.text.secondary,
+      },
+      errorText: {
+         marginTop: 16,
+         fontSize: 16,
+         color: colors.status.error,
+         marginBottom: 16,
+      },
+   }), [colors, isDark]);
 
    const { data: consignee, isLoading, error } = useGetConsigneeById(id);
    const { mutate: deleteConsignee, isPending: isDeleting } = useDeleteConsignee();
@@ -73,7 +218,7 @@ const ConsigneeDetailScreen: React.FC = () => {
    if (isLoading) {
       return (
          <SafeAreaView style={[styles.container, styles.centered]}>
-            <ActivityIndicator size="large" color={COLORS.Crimson} />
+            <ActivityIndicator size="large" color={colors.status.success} />
             <Text style={styles.loadingText}>Chargement...</Text>
          </SafeAreaView>
       );
@@ -82,7 +227,7 @@ const ConsigneeDetailScreen: React.FC = () => {
    if (error || !consignee) {
       return (
          <SafeAreaView style={[styles.container, styles.centered]}>
-            <Ionicons name="alert-circle-outline" size={48} color={COLORS.danger} />
+            <Ionicons name="alert-circle-outline" size={48} color={colors.status.error} />
             <Text style={styles.errorText}>Erreur lors du chargement</Text>
             <Button mode="contained" onPress={() => navigation.goBack()}>
                Retour
@@ -98,10 +243,10 @@ const ConsigneeDetailScreen: React.FC = () => {
                icon="arrow-left"
                size={24}
                onPress={() => navigation.goBack()}
-               iconColor={COLORS.DarkGrey}
+               iconColor={colors.text.secondary}
             />
             <Text style={styles.headerTitle}>Détails du destinataire</Text>
-            <IconButton icon="pencil" size={24} onPress={handleEdit} iconColor={COLORS.Crimson} />
+            <IconButton icon="pencil" size={24} onPress={handleEdit} iconColor={colors.status.success} />
          </View>
 
          <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -112,7 +257,7 @@ const ConsigneeDetailScreen: React.FC = () => {
                      <Chip
                         style={[
                            styles.statusChip,
-                           { backgroundColor: consignee.isActive ? COLORS.green : COLORS.grey },
+                           { backgroundColor: consignee.isActive ? colors.status.success : colors.text.secondary },
                         ]}
                         textStyle={styles.statusChipText}
                      >
@@ -127,7 +272,7 @@ const ConsigneeDetailScreen: React.FC = () => {
                   <Text style={styles.sectionTitle}>Informations de contact</Text>
 
                   <View style={styles.infoItem}>
-                     <Ionicons name="call-outline" size={20} color={COLORS.Crimson} />
+                     <Ionicons name="call-outline" size={20} color={colors.status.success} />
                      <View style={styles.infoContent}>
                         <Text style={styles.infoLabel}>Téléphone</Text>
                         <Text style={styles.infoValue}>{consignee.phone}</Text>
@@ -136,7 +281,7 @@ const ConsigneeDetailScreen: React.FC = () => {
 
                   {consignee.email && (
                      <View style={styles.infoItem}>
-                        <Ionicons name="mail-outline" size={20} color={COLORS.Crimson} />
+                        <Ionicons name="mail-outline" size={20} color={colors.status.success} />
                         <View style={styles.infoContent}>
                            <Text style={styles.infoLabel}>Email</Text>
                            <Text style={styles.infoValue}>{consignee.email}</Text>
@@ -150,7 +295,7 @@ const ConsigneeDetailScreen: React.FC = () => {
                <Card.Content>
                   <Text style={styles.sectionTitle}>Adresse de l'entrepôt</Text>
                   <View style={styles.infoItem}>
-                     <Ionicons name="location-outline" size={20} color={COLORS.Crimson} />
+                     <Ionicons name="location-outline" size={20} color={colors.status.success} />
                      <Text style={styles.addressText}>{consignee.warehouseAddress}</Text>
                   </View>
                </Card.Content>
@@ -193,7 +338,7 @@ const ConsigneeDetailScreen: React.FC = () => {
                mode="outlined"
                onPress={handleDelete}
                style={styles.deleteButton}
-               textColor={COLORS.danger}
+               textColor={colors.status.error}
                loading={isDeleting}
                disabled={isDeleting}
             >
@@ -203,147 +348,5 @@ const ConsigneeDetailScreen: React.FC = () => {
       </SafeAreaView>
    );
 };
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: COLORS.lightBackground,
-   },
-   centered: {
-      justifyContent: "center",
-      alignItems: "center",
-   },
-   header: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      paddingHorizontal: 8,
-      paddingVertical: 8,
-      backgroundColor: COLORS.white,
-      borderBottomWidth: 1,
-      borderBottomColor: COLORS.border,
-   },
-   headerTitle: {
-      fontSize: 18,
-      fontWeight: "600",
-      color: COLORS.DarkGrey,
-   },
-   scrollView: {
-      flex: 1,
-   },
-   mainCard: {
-      margin: 16,
-      marginBottom: 8,
-      borderRadius: 12,
-      backgroundColor: COLORS.white,
-   },
-   nameSection: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-   },
-   name: {
-      fontSize: 24,
-      fontWeight: "700",
-      color: COLORS.DarkGrey,
-      flex: 1,
-   },
-   statusChip: {
-      height: 28,
-   },
-   statusChipText: {
-      color: COLORS.white,
-      fontWeight: "600",
-   },
-   infoCard: {
-      marginHorizontal: 16,
-      marginBottom: 12,
-      borderRadius: 12,
-      backgroundColor: COLORS.white,
-   },
-   sectionTitle: {
-      fontSize: 16,
-      fontWeight: "600",
-      color: COLORS.DarkGrey,
-      marginBottom: 16,
-   },
-   infoItem: {
-      flexDirection: "row",
-      alignItems: "flex-start",
-      marginBottom: 16,
-   },
-   infoContent: {
-      marginLeft: 12,
-      flex: 1,
-   },
-   infoLabel: {
-      fontSize: 12,
-      color: COLORS.DimGray,
-      marginBottom: 2,
-   },
-   infoValue: {
-      fontSize: 16,
-      color: COLORS.DarkGrey,
-      fontWeight: "500",
-   },
-   addressText: {
-      marginLeft: 12,
-      fontSize: 16,
-      color: COLORS.DarkGrey,
-      flex: 1,
-      lineHeight: 22,
-   },
-   statsContainer: {
-      flexDirection: "row",
-      justifyContent: "space-around",
-   },
-   statItem: {
-      alignItems: "center",
-   },
-   statNumber: {
-      fontSize: 32,
-      fontWeight: "700",
-      color: COLORS.Crimson,
-   },
-   statLabel: {
-      fontSize: 14,
-      color: COLORS.DimGray,
-      marginTop: 4,
-   },
-   actionButtons: {
-      flexDirection: "row",
-      marginHorizontal: 16,
-      marginTop: 8,
-      marginBottom: 12,
-      gap: 12,
-   },
-   actionButton: {
-      flex: 1,
-      borderRadius: 12,
-   },
-   callButton: {
-      backgroundColor: COLORS.blue,
-   },
-   whatsappButton: {
-      backgroundColor: "#25D366",
-   },
-   deleteButton: {
-      marginHorizontal: 16,
-      marginBottom: 32,
-      borderColor: COLORS.danger,
-      borderRadius: 12,
-   },
-   loadingText: {
-      marginTop: 16,
-      fontSize: 16,
-      color: COLORS.DimGray,
-   },
-   errorText: {
-      marginTop: 16,
-      fontSize: 16,
-      color: COLORS.danger,
-      marginBottom: 16,
-   },
-});
 
 export default ConsigneeDetailScreen;

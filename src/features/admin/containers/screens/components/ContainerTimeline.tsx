@@ -3,7 +3,7 @@
  * Displays TIMELINE_STEPS with current status highlighted
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
@@ -12,7 +12,8 @@ import {
   TIMELINE_STEPS,
   CONTAINER_STATUS_COLORS,
 } from '../../types';
-import { styles } from '../ContainerDetailScreen.styles';
+import {  createStyles  } from '../ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ContainerTimelineProps {
   currentStatus: ContainerStatus;
@@ -23,6 +24,8 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
   currentStatus,
   currentStatusIndex,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <Animated.View entering={FadeInUp.delay(300)} style={styles.card}>
       <View style={styles.cardHeader}>

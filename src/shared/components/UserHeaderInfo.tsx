@@ -3,7 +3,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NotificationBell } from '@src/features/notifications';
-import { navigationProps } from '@src/navigations/type';
+import type { navigationProps } from '@src/navigations/type';
 
 interface UserHeaderInfoProps {
 	firstName: string;

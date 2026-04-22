@@ -388,7 +388,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     borderTopWidth: 1,
     borderTopColor: Theme.neutral[100],
     paddingTop: 14,

@@ -8,7 +8,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text, Button, Chip, List, useTheme } from 'react-native-paper';
 
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { CustomerGoodsInContainer } from '../types';
 
 interface ContainerGoodsSectionProps {
@@ -68,10 +68,12 @@ export const ContainerGoodsSection: React.FC<ContainerGoodsSectionProps> = ({
   containerId,
   onViewPackingList,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
-    <View style={styles.sectionCard}>
+    <View style={[styles.sectionCard, { backgroundColor: colors.background.card }]}>
       <View style={styles.goodsSectionHeader}>
-        <Text style={styles.sectionTitle}>
+        <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
           Mes Marchandises ({goods?.length || 0})
         </Text>
         <Button
@@ -83,7 +85,7 @@ export const ContainerGoodsSection: React.FC<ContainerGoodsSectionProps> = ({
           Liste de Colisage
         </Button>
       </View>
-      <Text style={styles.goodsSubtitle}>
+      <Text style={[styles.goodsSubtitle, { color: colors.text.secondary }]}>
         Vos marchandises dans ce container
       </Text>
       {goods?.map((item) => (
@@ -96,7 +98,6 @@ export const ContainerGoodsSection: React.FC<ContainerGoodsSectionProps> = ({
 const styles = StyleSheet.create({
   sectionCard: {
     marginBottom: 16,
-    backgroundColor: COLORS.white,
     borderRadius: 12,
     padding: 16,
     elevation: 1,
@@ -104,7 +105,6 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: COLORS.DarkGrey,
   },
   goodsSectionHeader: {
     flexDirection: 'row',
@@ -115,7 +115,6 @@ const styles = StyleSheet.create({
   goodsSubtitle: {
     fontFamily: Fonts.regular,
     fontSize: 12,
-    color: COLORS.DimGray,
     marginBottom: 12,
   },
   goodsItem: {
@@ -128,7 +127,6 @@ const styles = StyleSheet.create({
   goodsCbm: {
     fontFamily: Fonts.meduim,
     fontSize: 12,
-    color: COLORS.DimGray,
     marginBottom: 4,
   },
 });

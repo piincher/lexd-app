@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { Theme } from '@src/constants/Theme';
 import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Text, Card, useTheme, ProgressBar } from 'react-native-paper';
 import Svg, { Circle, G, Text as SvgText } from 'react-native-svg';
@@ -442,7 +443,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Theme.colors.neutral[100],
   },
   tabText: {
     fontSize: 12,
@@ -469,7 +470,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
   },
   statBox: {
-    backgroundColor: '#F9FAFB',
+    backgroundColor: Theme.colors.neutral[50],
     padding: 12,
     borderRadius: 12,
     alignItems: 'center',
@@ -487,7 +488,7 @@ const styles = StyleSheet.create({
   },
   statusSection: {
     borderTopWidth: 1,
-    borderTopColor: '#F3F4F6',
+    borderTopColor: Theme.colors.neutral[100],
     paddingTop: 16,
   },
   sectionTitle: {
@@ -505,7 +506,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: Theme.colors.neutral[50],
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 8,

@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     marginBottom: Theme.spacing.md,
     borderRadius: Theme.radius.xl,
     overflow: 'hidden',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.sm,
   },
   header: {

@@ -6,21 +6,25 @@ import { Theme } from '@src/constants/Theme';
 
 interface EmptyStateProps {
   searchQuery: string;
+  shippingMode?: 'AIR' | 'SEA';
 }
 
-export const EmptyState: React.FC<EmptyStateProps> = ({ searchQuery }) => {
+export const EmptyState: React.FC<EmptyStateProps> = ({ searchQuery, shippingMode }) => {
+  const modeLabel = shippingMode === 'AIR' ? 'aériennes' : shippingMode === 'SEA' ? 'maritimes' : '';
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#F3F0FF', '#EDE9FE']} style={styles.iconContainer}>
         <Ionicons name="cube-outline" size={64} color={Theme.primary[400]} />
       </LinearGradient>
       <Text style={styles.title}>
-        {searchQuery ? 'Aucun résultat' : 'Aucune marchandise disponible'}
+        {searchQuery ? 'Aucun résultat' : modeLabel ? `Aucune marchandise ${modeLabel} disponible` : 'Aucune marchandise disponible'}
       </Text>
       <Text style={styles.subtitle}>
         {searchQuery
           ? 'Essayez une autre recherche'
-          : 'Toutes les marchandises sont déjà assignées à des containers'}
+          : modeLabel
+            ? `Toutes les marchandises ${modeLabel} sont déjà assignées ou aucune n'a été reçue à l'entrepôt`
+            : 'Toutes les marchandises sont déjà assignées à des containers'}
       </Text>
     </View>
   );

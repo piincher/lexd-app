@@ -12,6 +12,9 @@ import { FlashList } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { NotificationBell } from "@src/features/notifications";
+import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 import { useOutstandingPaymentsList } from "../hooks/useOutstandingPaymentsList";
 
@@ -27,6 +30,7 @@ const getStatusConfig = (status: string) => {
 
 export const OutstandingPaymentsListScreen: React.FC = () => {
   const navigation = useNavigation<any>();
+  const { isDark } = useAppTheme();
   const {
     items,
     pagination,
@@ -127,9 +131,11 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
           <Ionicons name="arrow-back" size={24} color="#1F2937" />
         </TouchableOpacity>
         <Text style={styles.title}>Impayés</Text>
-        <View style={styles.countBadge}>
-          <Text style={styles.countText}>{pagination?.total ?? 0}</Text>
-        </View>
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color="#1F2937"
+        />
       </View>
 
       <View style={styles.searchRow}>
@@ -221,7 +227,7 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
       />
 
       {isLoading && !isRefetching && (
-        <View style={styles.loadingOverlay}>
+        <View style={[styles.loadingOverlay, { backgroundColor: isDark ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.6)' }]}>
           <ActivityIndicator size="large" color="#EF4444" />
         </View>
       )}
@@ -239,7 +245,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 16,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
     borderBottomColor: "#F3F4F6",
   },
@@ -266,7 +272,7 @@ const styles = StyleSheet.create({
   searchRow: {
     paddingHorizontal: 16,
     paddingVertical: 10,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
   },
   searchBox: {
     flexDirection: "row",
@@ -287,7 +293,7 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingHorizontal: 16,
     paddingBottom: 10,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
     borderBottomColor: "#F3F4F6",
   },
@@ -313,7 +319,7 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   card: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
@@ -434,7 +440,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     alignItems: "center",
     justifyContent: "center",
     shadowColor: "#000",
@@ -455,7 +461,6 @@ const styles = StyleSheet.create({
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(255,255,255,0.6)",
     alignItems: "center",
     justifyContent: "center",
   },

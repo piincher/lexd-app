@@ -3,7 +3,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint, WaypointStatus } from '../../../types/waypoints';
+import { WAYPOINT_STATUS_COLORS } from '@src/shared/types/containerWaypoints';
 
 interface TransitStatusCardProps {
   containerNumber: string;
@@ -23,14 +25,6 @@ const WAYPOINT_STATUS_LABELS: Record<WaypointStatus, string> = {
   CANCELLED: 'Annulé',
 };
 
-// Waypoint status colors
-const WAYPOINT_STATUS_COLORS: Record<WaypointStatus, string> = {
-  PENDING: '#9CA3AF',
-  IN_PROGRESS: '#3B82F6',
-  COMPLETED: '#10B981',
-  DELAYED: '#EF4444',
-  CANCELLED: '#6B7280',
-};
 
 // Waypoint status icons
 const WAYPOINT_STATUS_ICONS: Record<WaypointStatus, string> = {
@@ -57,6 +51,7 @@ export const TransitStatusCard: React.FC<TransitStatusCardProps> = ({
   progressPercentage,
   isLoading,
 }) => {
+  const { isDark } = useAppTheme();
   const currentStatus = (currentWaypoint?.status || 'IN_PROGRESS') as WaypointStatus;
   const currentStatusColor = WAYPOINT_STATUS_COLORS[currentStatus];
   const currentStatusLabel = WAYPOINT_STATUS_LABELS[currentStatus];
@@ -122,7 +117,7 @@ export const TransitStatusCard: React.FC<TransitStatusCardProps> = ({
           <View
             style={[
               styles.statusIconContainer,
-              { backgroundColor: `${currentStatusColor}20` },
+              { backgroundColor: `${currentStatusColor}${isDark ? '35' : '15'}` },
             ]}
           >
             <Ionicons
@@ -160,7 +155,7 @@ export const TransitStatusCard: React.FC<TransitStatusCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius['2xl'],
     marginHorizontal: Theme.spacing.lg,
     marginVertical: Theme.spacing.md,

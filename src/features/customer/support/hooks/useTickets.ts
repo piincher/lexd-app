@@ -3,16 +3,17 @@
  * TanStack Query hooks for ticket data fetching and mutations
  */
 
-import { useQuery, useMutation, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { ticketApi } from '../api/ticketApi';
-import { Ticket, TicketStatus, CreateTicketInput, AddMessageInput, RateTicketInput } from '../types';
+import { Ticket, TicketFilters, CreateTicketInput, AddMessageInput, RateTicketInput } from '../types';
 import { ApiClientError } from '@src/api/client';
 
 // Query keys factory
 export const ticketQueryKeys = {
   all: ['tickets'] as const,
   lists: () => [...ticketQueryKeys.all, 'list'] as const,
-  list: (status?: string) => [...ticketQueryKeys.lists(), status || 'ALL'] as const,
+  list: (filters?: TicketFilters) => [...ticketQueryKeys.lists(), filters || {}] as const,
   details: () => [...ticketQueryKeys.all, 'detail'] as const,
   detail: (id: string) => [...ticketQueryKeys.details(), id] as const,
   messages: (id: string) => [...ticketQueryKeys.detail(id), 'messages'] as const,
@@ -21,13 +22,13 @@ export const ticketQueryKeys = {
 // No polling - refetch on focus/reconnect only to reduce backend load
 
 /**
- * Hook to fetch all tickets with optional status filter
+ * Hook to fetch all tickets with optional filters
  */
-export const useGetTickets = (status?: string, options?: UseQueryOptions<Ticket[], ApiClientError>) => {
+export const useGetTickets = (filters?: TicketFilters, options?: UseQueryOptions<Ticket[], ApiClientError>) => {
   return useQuery({
-    queryKey: ticketQueryKeys.list(status),
+    queryKey: ticketQueryKeys.list(filters),
     queryFn: async () => {
-      const response = await ticketApi.getTickets(status);
+      const response = await ticketApi.getTickets(filters);
       return response.data.data.tickets;
     },
     select: (data) => data,

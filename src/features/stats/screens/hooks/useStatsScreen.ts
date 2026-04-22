@@ -1,7 +1,7 @@
 import { useGetCurrentUser } from '@src/shared/hooks/useUser';
 import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
 import { productType } from "@src/api/order";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 export interface Order {
   id: string;
@@ -68,6 +68,8 @@ export const useStatsScreen = (): UseStatsScreenReturn => {
     refetch: refetchOrders,
   } = useGetOrderOfUserById(user?._id ?? "");
 
+  const { colors } = useAppTheme();
+
   const statusCounts = useOrderStatusCounts(orders);
   const totalShipments = Object.values(statusCounts).reduce((sum, count) => sum + count, 0);
   const lastShipments = getLastShipments(orders);
@@ -77,7 +79,7 @@ export const useStatsScreen = (): UseStatsScreenReturn => {
     value: statusCounts[status],
     label: status,
     frontColor:
-      status === "Active" ? COLORS.orange : status === "In Transit" ? COLORS.green : COLORS.redShade,
+      status === "Active" ? colors.accent.goldDark : status === "In Transit" ? colors.status.success : colors.status.error,
   }));
 
   return {

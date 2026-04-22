@@ -56,7 +56,6 @@ export const SearchResultsV2: React.FC<SearchResultsV2Props> = ({
           placeholder="Rechercher..."
           value={query}
           onChangeText={updateQuery}
-          leftIcon="search"
           containerStyle={styles.searchInput}
         />
         <Button variant="secondary" onPress={() => setShowFilters(true)}>

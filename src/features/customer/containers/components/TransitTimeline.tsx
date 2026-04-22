@@ -4,7 +4,7 @@
  * Updated: Shows Dakar as main port with road route and prominent consignee section
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -20,10 +20,10 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Card, Divider } from 'react-native-paper';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
-import { Theme } from '@src/constants/Theme';
+import { Theme, COLORS } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
-import { ContainerWaypoint, WAYPOINT_STATUS_COLORS, WAYPOINT_TYPE_ICONS, TRANSPORT_MODE_ICONS } from '../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { ContainerWaypoint, WAYPOINT_TYPE_ICONS, TRANSPORT_MODE_ICONS } from '../types';
 import { TimelineWaypointCard } from './TimelineWaypointCard';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -48,6 +48,8 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
   lastUpdateTimestamp,
   consignee,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   // Split waypoints into categories
   const { completedWaypoints, currentWaypoint, upcomingWaypoints } = (() => {
     const completed = waypoints.slice(0, currentWaypointIndex);
@@ -443,7 +445,7 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
                   
                   {/* Warehouse Address */}
                   <View style={styles.addressRow}>
-                    <Ionicons name="map-marker" size={16} color="rgba(255,255,255,0.8)" />
+                    <Ionicons name="location" size={16} color="rgba(255,255,255,0.8)" />
                     <Text style={styles.addressText}>{consignee.warehouseAddress}</Text>
                   </View>
                 </View>
@@ -459,10 +461,10 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.background.default,
   },
   headerCard: {
     marginHorizontal: Theme.spacing.lg,
@@ -515,7 +517,7 @@ const styles = StyleSheet.create({
   },
   progressFill: {
     height: '100%',
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius.full,
   },
   progressText: {
@@ -602,7 +604,7 @@ const styles = StyleSheet.create({
   routeFlowText: {
     fontSize: 11,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.text.primary,
     marginTop: 2,
   },
   routeFlowTextHighlight: {
@@ -612,7 +614,7 @@ const styles = StyleSheet.create({
   },
   routeFlowSubtext: {
     fontSize: 9,
-    color: Theme.neutral[500],
+    color: colors.text.secondary,
   },
   routeFlowTransit: {
     alignItems: 'center',
@@ -742,7 +744,7 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -768,7 +770,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   summaryCard: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     marginHorizontal: Theme.spacing.lg,
     marginTop: Theme.spacing.lg,
     padding: Theme.spacing.lg,
@@ -894,7 +896,7 @@ const styles = StyleSheet.create({
   phoneButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background.card,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.sm,
     borderRadius: Theme.radius.lg,

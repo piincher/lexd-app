@@ -3,10 +3,12 @@
  * Reusable component for selecting date ranges with presets
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity, Modal } from 'react-native';
-import { Text, Button, useTheme, IconButton, Card } from 'react-native-paper';
+import { Text, Button, IconButton, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 // ============================================
@@ -111,7 +113,8 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
   minDate,
   maxDate,
 }) => {
-  const theme = useTheme();
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   
   const [selectedPreset, setSelectedPreset] = useState<DateRangePreset>(initialPreset);
   const [startDate, setStartDate] = useState<Date>(initialRange?.startDate || getPresetRange('month').startDate);
@@ -201,7 +204,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
                 <MaterialCommunityIcons
                   name={preset.icon as any}
                   size={20}
-                  color={selectedPreset === preset.key ? '#FFFFFF' : '#6B7280'}
+                  color={selectedPreset === preset.key ? colors.text.inverse : colors.text.secondary}
                 />
                 <Text
                   style={[
@@ -225,12 +228,12 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
                 style={styles.dateField}
                 onPress={() => setShowStartPicker(true)}
               >
-                <MaterialCommunityIcons name="calendar-start" size={20} color="#6B7280" />
+                <MaterialCommunityIcons name="calendar-start" size={20} color={colors.text.secondary} />
                 <View style={styles.dateFieldContent}>
                   <Text style={styles.dateFieldLabel}>Date de début</Text>
                   <Text style={styles.dateFieldValue}>{formatDate(startDate)}</Text>
                 </View>
-                <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                <MaterialCommunityIcons name="chevron-right" size={20} color={colors.text.muted} />
               </TouchableOpacity>
 
               {/* End Date */}
@@ -243,7 +246,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
                   <Text style={styles.dateFieldLabel}>Date de fin</Text>
                   <Text style={styles.dateFieldValue}>{formatDate(endDate)}</Text>
                 </View>
-                <MaterialCommunityIcons name="chevron-right" size={20} color="#9CA3AF" />
+                <MaterialCommunityIcons name="chevron-right" size={20} color={colors.text.muted} />
               </TouchableOpacity>
             </View>
           )}
@@ -305,14 +308,14 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
 // STYLES
 // ============================================
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'flex-end',
   },
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 20,
@@ -327,7 +330,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1F2937',
+    color: colors.text.primary,
   },
   presetsContainer: {
     flexDirection: 'row',
@@ -342,32 +345,32 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: colors.background.paper,
     borderWidth: 1,
     borderColor: 'transparent',
   },
   presetButtonActive: {
-    backgroundColor: '#3B82F6',
-    borderColor: '#3B82F6',
+    backgroundColor: colors.status.info,
+    borderColor: colors.status.info,
   },
   presetLabel: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#6B7280',
+    color: colors.text.secondary,
   },
   presetLabelActive: {
-    color: '#FFFFFF',
+    color: colors.text.inverse,
   },
   customDateContainer: {
     marginBottom: 20,
     padding: 16,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: colors.background.paper,
     borderRadius: 12,
   },
   customDateTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#374151',
+    color: colors.text.primary,
     marginBottom: 12,
   },
   dateField: {
@@ -375,7 +378,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
     borderRadius: 8,
     marginBottom: 8,
   },
@@ -385,30 +388,30 @@ const styles = StyleSheet.create({
   },
   dateFieldLabel: {
     fontSize: 11,
-    color: '#6B7280',
+    color: colors.text.secondary,
   },
   dateFieldValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1F2937',
+    color: colors.text.primary,
     marginTop: 2,
   },
   summaryContainer: {
     alignItems: 'center',
     paddingVertical: 16,
     borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
+    borderTopColor: colors.border,
     marginBottom: 16,
   },
   summaryLabel: {
     fontSize: 12,
-    color: '#6B7280',
+    color: colors.text.secondary,
     marginBottom: 4,
   },
   summaryValue: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1F2937',
+    color: colors.text.primary,
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -416,7 +419,7 @@ const styles = StyleSheet.create({
   },
   cancelButton: {
     flex: 1,
-    borderColor: '#D1D5DB',
+    borderColor: colors.border,
   },
   confirmButton: {
     flex: 1,

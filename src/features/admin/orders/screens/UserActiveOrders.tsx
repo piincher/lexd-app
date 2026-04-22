@@ -1,12 +1,13 @@
-import { COLORS } from "@src/constants/Colors";
+
 import { UserHeaderInfo } from "@src/shared/components";
 import { useGetActiveOrder } from '@src/shared/hooks/useOrders';
 import { useAuth } from "@src/store/Auth";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { View, StyleSheet } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Category } from "../components/Category";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { ListItemOrders } from "@src/components/ListItemOrders";
 import { useShippingMode } from "@src/store/shippingMode";
 
@@ -17,6 +18,13 @@ const status = [
 ];
 
 const UserActiveOrders = ({ navigation }: RootStackScreenProps<"UserActiveOrders">) => {
+   const { colors, isDark } = useAppTheme();
+   const styles = useMemo(() => StyleSheet.create({
+      container: {
+         flex: 1,
+         backgroundColor: colors.background.default,
+      },
+   }), [colors, isDark]);
    const [statusChange, setStatusChange] = React.useState("Active");
    const { firstName, lastName } = useAuth((state) => state.user);
    const type = useShippingMode((state) => state.type);
@@ -61,12 +69,5 @@ const UserActiveOrders = ({ navigation }: RootStackScreenProps<"UserActiveOrders
       </SafeAreaView>
    );
 };
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: COLORS.white,
-   },
-});
 
 export default UserActiveOrders;

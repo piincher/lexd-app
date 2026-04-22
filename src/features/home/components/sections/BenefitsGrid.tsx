@@ -1,6 +1,7 @@
 /**
  * BenefitsGrid
- * "Why ChinaLink Express?" 2-column feature grid
+ * "Why ChinaLink Express?" — 2-column vertical cards with large icons
+ * and colored top borders for visual distinction.
  */
 
 import React from 'react';
@@ -12,25 +13,30 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
 import { BENEFITS } from '../../constants/homeData';
+import { SectionHeader } from '../SectionHeader';
 
 export const BenefitsGrid: React.FC = () => {
   const { colors } = useAppTheme();
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
-        Pourquoi ChinaLink Express ?
-      </Text>
+      <SectionHeader
+        title="Pourquoi ChinaLink Express ?"
+        subtitle="Les avantages qui font la difference"
+      />
 
       <View style={styles.grid}>
         {BENEFITS.map((benefit, index) => (
           <Animated.View
             key={benefit.label}
-            entering={FadeInDown.delay(600 + index * 80).duration(400).springify()}
+            entering={FadeInDown.delay(200 + index * 80).duration(400).springify()}
             style={[styles.card, { backgroundColor: colors.background.card }]}
           >
+            {/* Colored top accent */}
+            <View style={[styles.topAccent, { backgroundColor: benefit.color }]} />
+
             <View style={[styles.iconCircle, { backgroundColor: `${benefit.color}12` }]}>
-              <FontAwesome6 name={benefit.icon} size={18} color={benefit.color} />
+              <FontAwesome6 name={benefit.icon} size={22} color={benefit.color} />
             </View>
             <Text style={[styles.label, { color: colors.text.primary }]}>{benefit.label}</Text>
           </Animated.View>
@@ -45,11 +51,6 @@ const styles = StyleSheet.create({
     marginTop: 32,
     paddingHorizontal: 16,
   },
-  sectionTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 20,
-    marginBottom: 14,
-  },
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -57,24 +58,32 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '48%',
-    flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    paddingVertical: 14,
-    paddingHorizontal: 12,
-    borderRadius: 14,
+    paddingVertical: 18,
+    paddingHorizontal: 10,
+    borderRadius: 16,
+    overflow: 'hidden',
     ...Theme.shadows.sm,
   },
+  topAccent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 3,
+    borderRadius: 1.5,
+  },
   iconCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 12,
+    width: 48,
+    height: 48,
+    borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 10,
   },
   label: {
     fontFamily: Fonts.meduim,
     fontSize: 13,
-    flexShrink: 1,
+    textAlign: 'center',
   },
 });

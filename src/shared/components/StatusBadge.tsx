@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { Chip } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsStatus } from '../types';
 
 interface StatusBadgeProps {
@@ -20,9 +21,10 @@ const STATUS_CONFIG: Record<GoodsStatus, { label: string; color: string }> = {
 };
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+  const { colors } = useAppTheme();
   const config = STATUS_CONFIG[status] || {
     label: status,
-    color: '#666666',
+    color: colors.text.muted,
   };
 
   return (

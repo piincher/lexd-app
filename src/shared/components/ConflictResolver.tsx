@@ -3,7 +3,7 @@
  * UI for resolving sync conflicts between local and server data
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import { QueuedAction } from '../lib/offlineQueue';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export interface ConflictData {
   action: QueuedAction;
@@ -42,6 +44,8 @@ export const ConflictResolver: React.FC<ConflictResolverProps> = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState<'server' | 'client' | null>(null);
   const [showDetails, setShowDetails] = useState(false);
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   if (!conflict) return null;
 
@@ -169,7 +173,7 @@ export const ConflictResolver: React.FC<ConflictResolverProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -178,7 +182,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     width: '100%',
     maxHeight: '90%',
@@ -191,36 +195,36 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#333',
+    color: colors.text.primary,
     marginTop: 12,
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
+    color: colors.text.secondary,
     textAlign: 'center',
     marginTop: 8,
   },
   actionInfo: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.background.paper,
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
   },
   actionLabel: {
     fontSize: 12,
-    color: '#666',
+    color: colors.text.secondary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   actionValue: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#333',
+    color: colors.text.primary,
     marginTop: 4,
   },
   actionTime: {
     fontSize: 12,
-    color: '#999',
+    color: colors.text.muted,
     marginTop: 4,
   },
   comparisonContainer: {
@@ -230,28 +234,28 @@ const styles = StyleSheet.create({
   },
   versionCard: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.background.paper,
     borderRadius: 12,
     borderWidth: 2,
     borderColor: 'transparent',
     overflow: 'hidden',
   },
   selectedCard: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#E8F5E9',
+    borderColor: colors.status.success,
+    backgroundColor: colors.feedback.successBg,
   },
   versionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
     gap: 8,
   },
   versionTitle: {
     flex: 1,
     fontSize: 14,
     fontWeight: '600',
-    color: '#333',
+    color: colors.text.primary,
   },
   versionContent: {
     maxHeight: 150,
@@ -259,7 +263,7 @@ const styles = StyleSheet.create({
   },
   versionText: {
     fontSize: 13,
-    color: '#666',
+    color: colors.text.secondary,
     fontFamily: 'monospace',
   },
   actions: {
@@ -270,32 +274,32 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 14,
     borderRadius: 10,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.background.paper,
     alignItems: 'center',
   },
   cancelButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#666',
+    color: colors.text.secondary,
   },
   resolveButton: {
     flex: 1,
     padding: 14,
     borderRadius: 10,
-    backgroundColor: '#2196F3',
+    backgroundColor: colors.status.info,
     alignItems: 'center',
   },
   resolveButtonDisabled: {
-    backgroundColor: '#BDBDBD',
+    backgroundColor: colors.text.disabled,
   },
   resolveButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: colors.text.inverse,
   },
   helpText: {
     fontSize: 12,
-    color: '#999',
+    color: colors.text.muted,
     textAlign: 'center',
     marginTop: 16,
   },

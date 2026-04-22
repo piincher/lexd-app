@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Image, ScrollView } from 'react-native';
 import { Card, Text } from 'react-native-paper';
-import { styles } from '../GoodsDetailScreen.styles';
+import {  createStyles  } from '../GoodsDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface PhotoCardProps {
   photoUrls?: string[];
 }
 
 export const PhotoCard: React.FC<PhotoCardProps> = ({ photoUrls }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const urls = photoUrls?.filter(Boolean) || [];
   if (urls.length === 0) return null;
 

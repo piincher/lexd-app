@@ -4,10 +4,10 @@
  * Improved with better padding, borders, and placeholder styling
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Text, HelperText } from 'react-native-paper';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface FormInputProps {
   label: string;
@@ -36,6 +36,51 @@ export const FormInput: React.FC<FormInputProps> = ({
   suffix,
   disabled = false,
 }) => {
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      marginBottom: 4,
+    },
+    label: {
+      fontSize: 13,
+      fontWeight: '600',
+      marginBottom: 6,
+      color: colors.text.secondary,
+    },
+    input: {
+      backgroundColor: colors.background.card,
+      fontSize: 15,
+    },
+    inputContent: {
+      paddingVertical: 12,
+      paddingHorizontal: 12,
+    },
+    inputWithSuffix: {
+      paddingRight: 8,
+    },
+    multilineInput: {
+      minHeight: 80,
+      textAlignVertical: 'top',
+    },
+    inputDisabled: {
+      backgroundColor: colors.background.paper,
+    },
+    outline: {
+      borderRadius: 8,
+      borderWidth: 1,
+    },
+    suffixText: {
+      color: colors.text.secondary,
+      fontSize: 13,
+      fontWeight: '500',
+    },
+    errorText: {
+      fontSize: 12,
+      marginTop: 2,
+    },
+  }), [colors, isDark]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -60,10 +105,10 @@ export const FormInput: React.FC<FormInputProps> = ({
         ]}
         right={suffix ? <TextInput.Affix text={` ${suffix}`} textStyle={styles.suffixText} /> : undefined}
         mode="outlined"
-        outlineColor="#e0e0e0"
-        activeOutlineColor={COLORS.Crimson || '#dc3545'}
+        outlineColor={colors.border}
+        activeOutlineColor={colors.status.success}
         outlineStyle={styles.outline}
-        placeholderTextColor="#aaa"
+        placeholderTextColor={colors.text.disabled}
         dense
       />
       {error && (
@@ -74,48 +119,5 @@ export const FormInput: React.FC<FormInputProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 4,
-  },
-  label: {
-    fontSize: 13,
-    fontWeight: '600',
-    marginBottom: 6,
-    color: '#555',
-  },
-  input: {
-    backgroundColor: '#fff',
-    fontSize: 15,
-  },
-  inputContent: {
-    paddingVertical: 12,
-    paddingHorizontal: 12,
-  },
-  inputWithSuffix: {
-    paddingRight: 8,
-  },
-  multilineInput: {
-    minHeight: 80,
-    textAlignVertical: 'top',
-  },
-  inputDisabled: {
-    backgroundColor: '#f5f5f5',
-  },
-  outline: {
-    borderRadius: 8,
-    borderWidth: 1,
-  },
-  suffixText: {
-    color: '#666',
-    fontSize: 13,
-    fontWeight: '500',
-  },
-  errorText: {
-    fontSize: 12,
-    marginTop: 2,
-  },
-});
 
 export default FormInput;

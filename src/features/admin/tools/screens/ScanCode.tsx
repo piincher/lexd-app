@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Button } from 'react-native';
 import { CameraView, Camera, BarcodeScanningResult } from 'expo-camera';
 import { useUpdateStatusDelivery } from '../../orders/hooks/useOrderManagement';
 import { CustomModal } from '@src/components/Modal/Modal';
-import { RootStackScreenProps } from '@src/navigations/type';
+import type { RootStackScreenProps } from '@src/navigations/type';
 
 export default function ScanQRCode({ navigation }: RootStackScreenProps<'ScanQRCode'>) {
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);

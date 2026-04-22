@@ -13,7 +13,7 @@ import styles from './ClientOrdersListScreen.styles';
 
 export const ClientOrdersListScreen: React.FC = () => {
   const navigation = useNavigation();
-  const { data: orders, isLoading } = useMyOrders();
+  const { data: orders, isLoading, isRefetching, refetch } = useMyOrders();
 
   const handleOrderPress = useCallback(
     (order: Order) => {
@@ -25,13 +25,15 @@ export const ClientOrdersListScreen: React.FC = () => {
   return (
     <Screen
       variant="default"
-      header={{ title: 'Mes Commandes' }}
+      header={{ title: 'Mes Commandes', showNotificationBell: true }}
       scrollable={false}
     >
       <ClientOrderList
         orders={orders ?? []}
         isLoading={isLoading}
+        isRefetching={isRefetching}
         onOrderPress={handleOrderPress}
+        onRefresh={refetch}
       />
     </Screen>
   );

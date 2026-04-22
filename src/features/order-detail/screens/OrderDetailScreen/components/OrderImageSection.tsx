@@ -19,8 +19,9 @@ export const OrderImageSection: React.FC<OrderImageSectionProps> = ({ images, go
 
    if (goodsIds && goodsIds.length > 0) {
       goodsIds.forEach((goods) => {
-         if (Array.isArray(goods.photos)) {
-            goods.photos.forEach((url: string) => {
+         const urls = goods.photos?.length ? goods.photos : (goods.images || []);
+         if (Array.isArray(urls)) {
+            urls.forEach((url: string) => {
                if (url && !allPhotos.includes(url)) allPhotos.push(url);
             });
          }

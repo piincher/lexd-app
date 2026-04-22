@@ -19,7 +19,8 @@ import { Portal, Modal, Button } from 'react-native-paper';
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import Animated, { FadeIn, SlideInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
-import { WaypointStatus } from '../types/WaypointStatus';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { WaypointStatus } from '@src/shared/types/containerWaypoints';
 import { ContainerWaypoint, SegmentType } from '../types';
 import {
   ExtendedWaypointStatus,
@@ -54,6 +55,7 @@ export const WaypointUpdateModal: React.FC<WaypointUpdateModalProps> = ({
   onSave,
   onUploadDocument,
 }) => {
+  const { isDark } = useAppTheme();
   const [status, setStatus] = useState<ExtendedWaypointStatus>('PENDING');
   const [actualArrival, setActualArrival] = useState<Date | null>(null);
   const [actualDeparture, setActualDeparture] = useState<Date | null>(null);
@@ -180,7 +182,7 @@ export const WaypointUpdateModal: React.FC<WaypointUpdateModalProps> = ({
           <Animated.View entering={SlideInUp} style={styles.modalContent}>
             {/* Header */}
             <View style={styles.header}>
-              <View style={[styles.headerIcon, { backgroundColor: getExtendedStatusColor(status) + '20' }]}>
+              <View style={[styles.headerIcon, { backgroundColor: getExtendedStatusColor(status) + (isDark ? '35' : '15') }]}>
                 <Ionicons name="location" size={28} color={getExtendedStatusColor(status)} />
               </View>
               <View style={styles.headerText}>
@@ -223,7 +225,7 @@ export const WaypointUpdateModal: React.FC<WaypointUpdateModalProps> = ({
                     {quickActions.map((action) => (
                       <TouchableOpacity
                         key={action.id}
-                        style={[styles.quickActionButton, { backgroundColor: action.color + '15' }]}
+                        style={[styles.quickActionButton, { backgroundColor: action.color + (isDark ? '28' : '12') }]}
                         onPress={() => handleQuickAction(action)}
                       >
                         <Ionicons name={action.icon as any} size={20} color={action.color} />
@@ -488,7 +490,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderTopLeftRadius: Theme.radius['3xl'],
     borderTopRightRadius: Theme.radius['3xl'],
     maxHeight: '90%',
@@ -596,7 +598,7 @@ const styles = StyleSheet.create({
     color: Theme.neutral[800],
   },
   dropdownMenu: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderWidth: 1,
     borderColor: Theme.neutral[200],
     borderRadius: Theme.radius.lg,

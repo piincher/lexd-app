@@ -3,11 +3,11 @@
  * Improved with fixed layout for dimension fields and better toggle styling
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text, Card, TouchableRipple } from "react-native-paper";
 import { FormInput } from "./FormInput";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface DimensionsInputProps {
    useDimensions: boolean;
@@ -43,6 +43,109 @@ export const DimensionsInput: React.FC<DimensionsInputProps> = ({
    errors,
    calculatedCBM,
 }) => {
+   const { colors, isDark } = useAppTheme();
+
+   const styles = useMemo(() => StyleSheet.create({
+      card: {
+         marginVertical: 8,
+         borderRadius: 12,
+         backgroundColor: colors.background.card,
+      },
+      cardContent: {
+         padding: 16,
+      },
+      toggleContainer: {
+         borderRadius: 12,
+         backgroundColor: colors.background.paper,
+         borderWidth: 1,
+         borderColor: colors.border,
+      },
+      toggleRow: {
+         flexDirection: "row",
+         justifyContent: "space-between",
+         alignItems: "center",
+         padding: 16,
+      },
+      toggleInfo: {
+         flex: 1,
+      },
+      toggleLabel: {
+         fontSize: 15,
+         fontWeight: "700",
+         color: colors.text.primary,
+      },
+      toggleHint: {
+         fontSize: 13,
+         color: colors.text.secondary,
+         marginTop: 2,
+      },
+      toggleSwitch: {
+         width: 52,
+         height: 32,
+         borderRadius: 16,
+         backgroundColor: colors.neutral[200],
+         padding: 4,
+         marginLeft: 12,
+      },
+      toggleSwitchActive: {
+         backgroundColor: colors.status.success,
+      },
+      toggleThumb: {
+         width: 24,
+         height: 24,
+         borderRadius: 12,
+         backgroundColor: colors.background.card,
+         shadowColor: "#000",
+         shadowOffset: { width: 0, height: 2 },
+         shadowOpacity: 0.2,
+         shadowRadius: 2,
+         elevation: 2,
+      },
+      toggleThumbActive: {
+         transform: [{ translateX: 20 }],
+      },
+      dimensionsContainer: {
+         marginTop: 20,
+      },
+      row: {
+         flexDirection: "row",
+         justifyContent: "space-between",
+         marginHorizontal: -6,
+      },
+      dimensionColumn: {
+         flex: 1,
+         marginHorizontal: 6,
+      },
+      calculatedContainer: {
+         marginTop: 16,
+         alignItems: "center",
+      },
+      calculatedBadge: {
+         flexDirection: "row",
+         alignItems: "center",
+         backgroundColor: colors.background.paper,
+         paddingHorizontal: 16,
+         paddingVertical: 8,
+         borderRadius: 20,
+         borderWidth: 1,
+         borderColor: colors.border,
+      },
+      calculatedLabel: {
+         fontSize: 13,
+         color: colors.status.success,
+         fontWeight: "600",
+         marginRight: 8,
+      },
+      calculatedValue: {
+         fontSize: 15,
+         fontWeight: "700",
+         color: colors.status.success,
+      },
+      directCbmContainer: {
+         marginTop: 16,
+      },
+   }), [colors, isDark]);
+
    return (
       <Card style={styles.card} elevation={2}>
          <Card.Content style={styles.cardContent}>
@@ -132,106 +235,5 @@ export const DimensionsInput: React.FC<DimensionsInputProps> = ({
       </Card>
    );
 };
-
-const styles = StyleSheet.create({
-   card: {
-      marginVertical: 8,
-      borderRadius: 12,
-      backgroundColor: "#fff",
-   },
-   cardContent: {
-      padding: 16,
-   },
-   toggleContainer: {
-      borderRadius: 12,
-      backgroundColor: "#f8f9fa",
-      borderWidth: 1,
-      borderColor: "#e9ecef",
-   },
-   toggleRow: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      padding: 16,
-   },
-   toggleInfo: {
-      flex: 1,
-   },
-   toggleLabel: {
-      fontSize: 15,
-      fontWeight: "700",
-      color: "#333",
-   },
-   toggleHint: {
-      fontSize: 13,
-      color: "#666",
-      marginTop: 2,
-   },
-   toggleSwitch: {
-      width: 52,
-      height: 32,
-      borderRadius: 16,
-      backgroundColor: "#ccc",
-      padding: 4,
-      marginLeft: 12,
-   },
-   toggleSwitchActive: {
-      backgroundColor: COLORS.Crimson || "#dc3545",
-   },
-   toggleThumb: {
-      width: 24,
-      height: 24,
-      borderRadius: 12,
-      backgroundColor: "#fff",
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      elevation: 2,
-   },
-   toggleThumbActive: {
-      transform: [{ translateX: 20 }],
-   },
-   dimensionsContainer: {
-      marginTop: 20,
-   },
-   row: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginHorizontal: -6,
-   },
-   dimensionColumn: {
-      flex: 1,
-      marginHorizontal: 6,
-   },
-   calculatedContainer: {
-      marginTop: 16,
-      alignItems: "center",
-   },
-   calculatedBadge: {
-      flexDirection: "row",
-      alignItems: "center",
-      backgroundColor: "#fce4ec",
-      paddingHorizontal: 16,
-      paddingVertical: 8,
-      borderRadius: 20,
-      borderWidth: 1,
-      borderColor: "#f8bbd9",
-   },
-   calculatedLabel: {
-      fontSize: 13,
-      color: COLORS.Crimson || "#dc3545",
-      fontWeight: "600",
-      marginRight: 8,
-   },
-   calculatedValue: {
-      fontSize: 15,
-      fontWeight: "700",
-      color: COLORS.Crimson || "#dc3545",
-   },
-   directCbmContainer: {
-      marginTop: 16,
-   },
-});
 
 export default DimensionsInput;

@@ -17,7 +17,7 @@ import { Text, FAB, Snackbar, ActivityIndicator } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetAllContainers, containerQueryKeys, useContainerStats } from '../hooks/useContainers';
 import { ContainerCard } from '../components/ContainerCard';
 import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, CONTAINER_STATUS_COLORS } from '../types';
@@ -35,7 +35,7 @@ type AdminV2StackParamList = {
 type NavigationProp = NativeStackNavigationProp<AdminV2StackParamList>;
 
 // Statuses that can receive goods (assignable)
-const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'LOADING'];
+const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'EMPTY_TO_WAREHOUSE', 'LOADING'];
 
 // Check if container can receive goods
 const canReceiveGoods = (status: ContainerStatus): boolean => 
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.sm,
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
   statCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.md,
     minWidth: 140,
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.sm,
     overflow: 'hidden',
   },

@@ -4,7 +4,7 @@ import { SearchResultsV2 } from '../components/SearchResultsV2';
 
 export const SearchScreen: React.FC = () => {
   return (
-    <Screen header={{ title: 'Rechercher' }}>
+    <Screen header={{ title: 'Rechercher', showNotificationBell: true }}>
       <SearchResultsV2 />
     </Screen>
   );

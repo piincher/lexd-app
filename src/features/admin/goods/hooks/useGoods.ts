@@ -3,7 +3,8 @@
  * Following React best practices and clean architecture
  */
 
-import { useMutation, useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { goodsService } from '../services/GoodsService';
 import { Goods, ReceiveGoodsInput, GoodsFilters, AssignToContainerInput, GoodsFormData, GoodsFormErrors } from '../types';
 import { ApiResponse, PaginatedResponse } from '@src/api/types';

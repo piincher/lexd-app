@@ -31,7 +31,7 @@ export const ClientLegend: React.FC<ClientLegendProps> = ({ weightDistribution }
 
 const styles = StyleSheet.create({
   legendCard: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius['2xl'],
     padding: Theme.spacing.lg,
     marginBottom: Theme.spacing.lg,

@@ -103,14 +103,7 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
         break;
       case 'PAYMENT':
         if (notifData?.paymentId) {
-          navigation.navigate('PaymentConfirmation', {
-            paymentId: notifData.paymentId,
-            transactionReference: '',
-            amount: 0,
-            currency: 'XOF',
-            paymentMethod: '',
-            goodsCount: 0,
-          });
+          navigation.navigate('MyPaymentHistory');
         }
         break;
       case 'CERTIFICATE_ISSUED':

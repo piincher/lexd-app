@@ -25,7 +25,7 @@ export const SERVICES = [
     deliveryTime: '2 a 3 semaines',
     icon: 'plane' as const,
     gradient: ['#0EA5E9', '#0284C7'] as [string, string],
-    navigateTo: 'faq' as const,
+    navigateTo: 'ChooseShippingMethod' as const,
   },
   {
     id: 'sea',
@@ -34,7 +34,7 @@ export const SERVICES = [
     deliveryTime: '6 a 8 semaines',
     icon: 'ship' as const,
     gradient: ['#8B5CF6', '#7C3AED'] as [string, string],
-    navigateTo: 'AboutUs' as const,
+    navigateTo: 'ChooseShippingMethod' as const,
   },
 ] as const;
 

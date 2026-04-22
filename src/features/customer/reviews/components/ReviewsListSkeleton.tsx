@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
+import { Theme } from '@src/constants/Theme';
 import { ShimmerBlock } from '@src/shared/ui';
 
 interface ReviewsListSkeletonProps {
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   summaryCard: {
-    backgroundColor: 'white',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   card: {
-    backgroundColor: 'white',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,

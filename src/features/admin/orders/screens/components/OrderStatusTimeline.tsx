@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
-import { Fonts } from '@src/constants/Fonts';
-import { styles } from './OrderStatusTimeline.styles';
+import { createStyles } from './OrderStatusTimeline.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface OrderStatusTimelineProps {
   order: any;
@@ -25,13 +24,16 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
   routeData,
   onStatusUpdate 
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   const currentStatus = order?.currentStatus || 'Order arrived at warehouse';
   const currentIndex = STATUS_ORDER.findIndex(s => s.key === currentStatus);
 
   return (
     <Surface style={styles.container}>
       <View style={styles.header}>
-        <MaterialCommunityIcons name="routes" size={22} color={COLORS.blue} />
+        <MaterialCommunityIcons name="routes" size={22} color={colors.primary.main} />
         <Text style={styles.title}>Shipping Timeline</Text>
       </View>
 
@@ -68,7 +70,7 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
                 <MaterialCommunityIcons 
                   name={isCompleted ? 'check' : status.icon as any} 
                   size={16} 
-                  color={isCompleted ? '#FFF' : COLORS.grey} 
+                  color={isCompleted ? colors.text.inverse : colors.text.secondary} 
                 />
               </View>
 
@@ -95,7 +97,7 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
         <View style={styles.locationSection}>
           <Text style={styles.locationLabel}>Current Location</Text>
           <View style={styles.locationCard}>
-            <MaterialCommunityIcons name="map-marker" size={20} color={COLORS.blue} />
+            <MaterialCommunityIcons name="map-marker" size={20} color={colors.primary.main} />
             <Text style={styles.locationText}>
               {order.route[order.route.length - 1]?.coordinates?.[0]?.location || 'Unknown'}
             </Text>

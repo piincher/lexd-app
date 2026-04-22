@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     marginHorizontal: Theme.spacing.lg,
     marginTop: Theme.spacing.lg,
     padding: Theme.spacing.lg,

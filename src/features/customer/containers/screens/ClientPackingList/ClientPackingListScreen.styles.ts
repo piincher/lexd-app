@@ -1,17 +1,79 @@
 import {StyleSheet} from 'react-native';
-import {COLORS} from '@src/constants/Colors';
 import {Fonts} from '@src/constants/Fonts';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightBackground,
+    backgroundColor: colors.background.paper,
   },
   headerTitle: {
     fontFamily: Fonts.bold,
   },
   progressBar: {
     height: 3,
+  },
+  header: {
+    backgroundColor: colors.background.card,
+    elevation: 4,
+  },
+  centerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 32,
+  },
+  emptyStateContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 32,
+  },
+  emptyStateText: {
+    fontFamily: Fonts.regular,
+    fontSize: 14,
+    color: colors.text.secondary,
+    marginTop: 12,
+  },
+  colNumber: {
+    flex: 0.5,
+  },
+  colDescription: {
+    flex: 2,
+  },
+  colCBM: {
+    flex: 1,
+  },
+  colWeight: {
+    flex: 1,
+  },
+  colQuantity: {
+    flex: 0.8,
+  },
+  colStatus: {
+    flex: 1.2,
+  },
+  rowNumber: {
+    fontFamily: Fonts.meduim,
+    fontSize: 13,
+    color: colors.text.secondary,
+  },
+  descriptionText: {
+    fontFamily: Fonts.regular,
+    fontSize: 13,
+    color: colors.text.secondary,
+  },
+  numericText: {
+    fontFamily: Fonts.meduim,
+    fontSize: 13,
+    color: colors.text.secondary,
+    textAlign: 'right',
+  },
+  statusChip: {
+    borderRadius: 12,
+    height: 28,
+  },
+  statusChipText: {
+    fontFamily: Fonts.meduim,
+    fontSize: 11,
   },
   centerContainer: {
     flex: 1,
@@ -22,18 +84,18 @@ export const styles = StyleSheet.create({
   loadingText: {
     marginTop: 16,
     fontFamily: Fonts.meduim,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
   },
   errorTitle: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     marginTop: 16,
   },
   errorText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     textAlign: 'center',
     marginTop: 8,
   },
@@ -61,7 +123,7 @@ export const styles = StyleSheet.create({
   routeBannerTitle: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: '#0369A1',
+    color: colors.primary.main,
     marginLeft: 8,
   },
   routeBannerFlow: {
@@ -82,7 +144,7 @@ export const styles = StyleSheet.create({
   routeBannerLabel: {
     fontFamily: Fonts.regular,
     fontSize: 11,
-    color: '#64748B',
+    color: colors.text.secondary,
     marginTop: 4,
   },
   routeBannerValue: {
@@ -94,7 +156,7 @@ export const styles = StyleSheet.create({
   routeBannerSubtext: {
     fontFamily: Fonts.regular,
     fontSize: 10,
-    color: '#64748B',
+    color: colors.text.secondary,
   },
   routeBannerArrow: {
     paddingHorizontal: 4,
@@ -104,7 +166,7 @@ export const styles = StyleSheet.create({
     elevation: 2,
   },
   headerCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
   },
   documentHeader: {
     flexDirection: 'row',
@@ -125,13 +187,13 @@ export const styles = StyleSheet.create({
   documentTitle: {
     fontFamily: Fonts.bold,
     fontSize: 18,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     letterSpacing: 1,
   },
   documentSubtitle: {
     fontFamily: Fonts.meduim,
     fontSize: 16,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginTop: 4,
   },
   headerDivider: {
@@ -148,7 +210,7 @@ export const styles = StyleSheet.create({
   metaText: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginLeft: 6,
   },
   statusCard: {
@@ -192,7 +254,7 @@ export const styles = StyleSheet.create({
   routeInfoTitle: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: '#0369A1',
+    color: colors.primary.main,
     marginLeft: 8,
   },
   routeFlow: {
@@ -214,13 +276,13 @@ export const styles = StyleSheet.create({
   routeFlowLabel: {
     fontFamily: Fonts.regular,
     fontSize: 10,
-    color: '#64748B',
+    color: colors.text.secondary,
     marginTop: 4,
   },
   routeFlowValue: {
     fontFamily: Fonts.bold,
     fontSize: 13,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     marginTop: 2,
     textAlign: 'center',
   },
@@ -231,7 +293,7 @@ export const styles = StyleSheet.create({
   routeFlowSubtext: {
     fontFamily: Fonts.regular,
     fontSize: 9,
-    color: '#64748B',
+    color: colors.text.secondary,
   },
   routeFlowArrow: {
     paddingHorizontal: 4,
@@ -246,7 +308,7 @@ export const styles = StyleSheet.create({
   routeInfoText: {
     fontFamily: Fonts.regular,
     fontSize: 12,
-    color: '#64748B',
+    color: colors.text.secondary,
     marginLeft: 8,
     flex: 1,
   },
@@ -267,14 +329,14 @@ export const styles = StyleSheet.create({
   pickupSectionTitle: {
     fontFamily: Fonts.bold,
     fontSize: 14,
-    color: '#FFF',
+    color: colors.text.inverse,
     marginLeft: 8,
     letterSpacing: 0.5,
   },
   warehouseMainName: {
     fontFamily: Fonts.bold,
     fontSize: 18,
-    color: '#FFF',
+    color: colors.text.inverse,
   },
   warehouseMainAddress: {
     fontFamily: Fonts.meduim,
@@ -293,7 +355,7 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
   },
   consigneeInfoCard: {
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -306,7 +368,7 @@ export const styles = StyleSheet.create({
   consigneeInfoName: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     marginLeft: 12,
   },
   consigneeInfoPhone: {
@@ -318,7 +380,7 @@ export const styles = StyleSheet.create({
   consigneeInfoAddress: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginLeft: 12,
     flex: 1,
   },
@@ -329,7 +391,7 @@ export const styles = StyleSheet.create({
   requiredDocsText: {
     fontFamily: Fonts.meduim,
     fontSize: 12,
-    color: '#FFF',
+    color: colors.text.inverse,
     marginLeft: 8,
     flex: 1,
   },
@@ -345,7 +407,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     marginLeft: 12,
   },
   sectionDivider: {
@@ -365,13 +427,13 @@ export const styles = StyleSheet.create({
   infoLabel: {
     fontFamily: Fonts.regular,
     fontSize: 12,
-    color: COLORS.SlateGray,
+    color: colors.status.success,
     marginBottom: 2,
   },
   infoValue: {
     fontFamily: Fonts.meduim,
     fontSize: 15,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     lineHeight: 20,
   },
   consigneeActions: {
@@ -380,7 +442,7 @@ export const styles = StyleSheet.create({
   },
   actionButton: {
     flex: 1,
-    borderColor: '#DDD',
+    borderColor: colors.border,
   },
   routeContainer: {
     paddingHorizontal: 8,
@@ -400,12 +462,12 @@ export const styles = StyleSheet.create({
   routeLabel: {
     fontFamily: Fonts.regular,
     fontSize: 12,
-    color: COLORS.SlateGray,
+    color: colors.status.success,
   },
   routeValue: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   routeLine: {
     flexDirection: 'row',
@@ -416,7 +478,7 @@ export const styles = StyleSheet.create({
   routeLineBar: {
     width: 2,
     height: 30,
-    backgroundColor: COLORS.Silver,
+    backgroundColor: colors.neutral[200],
   },
   routeTransitInfo: {
     flexDirection: 'row',
@@ -426,12 +488,12 @@ export const styles = StyleSheet.create({
   transitDays: {
     fontFamily: Fonts.regular,
     fontSize: 12,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginLeft: 8,
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#F1F5F9',
+    backgroundColor: colors.background.paper,
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderTopLeftRadius: 8,
@@ -440,20 +502,20 @@ export const styles = StyleSheet.create({
   tableHeaderCell: {
     fontFamily: Fonts.bold,
     fontSize: 12,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   tableRow: {
     flexDirection: 'row',
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+    borderBottomColor: colors.border,
   },
   tableRowEven: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
   },
   tableRowOdd: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.background.paper,
   },
   tableRowLast: {
     borderBottomLeftRadius: 8,
@@ -463,17 +525,17 @@ export const styles = StyleSheet.create({
   tableCell: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   goodsId: {
     fontFamily: Fonts.meduim,
     fontSize: 13,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   goodsDescription: {
     fontFamily: Fonts.regular,
     fontSize: 11,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginTop: 2,
   },
   summaryContainer: {
@@ -490,22 +552,22 @@ export const styles = StyleSheet.create({
   summaryLabel: {
     fontFamily: Fonts.meduim,
     fontSize: 14,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
   },
   summaryValue: {
     fontFamily: Fonts.bold,
     fontSize: 14,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   instructionsCard: {
-    backgroundColor: '#FFFBEB',
-    borderColor: '#FDE68A',
+    backgroundColor: colors.accent.goldLight,
+    borderColor: colors.accent.goldLight,
     borderWidth: 1,
   },
   instructionsText: {
     fontFamily: Fonts.regular,
     fontSize: 14,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     lineHeight: 20,
   },
   footer: {
@@ -515,19 +577,19 @@ export const styles = StyleSheet.create({
   footerText: {
     fontFamily: Fonts.regular,
     fontSize: 12,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginTop: 8,
   },
   footerSubtext: {
     fontFamily: Fonts.bold,
     fontSize: 13,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     marginTop: 4,
   },
   footerRoute: {
     fontFamily: Fonts.meduim,
     fontSize: 11,
-    color: COLORS.SlateGray,
+    color: colors.status.success,
     marginTop: 4,
   },
   bottomPadding: {
@@ -540,7 +602,7 @@ export const styles = StyleSheet.create({
   },
   dialogLabel: {
     fontFamily: Fonts.bold,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   // Fixed Action Bar
   actionBar: {
@@ -548,9 +610,9 @@ export const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
     borderTopWidth: 1,
-    borderTopColor: '#E2E8F0',
+    borderTopColor: colors.border,
     paddingHorizontal: 16,
     paddingVertical: 12,
     flexDirection: 'row',
@@ -563,10 +625,10 @@ export const styles = StyleSheet.create({
   },
   actionBarButton: {
     flex: 1,
-    borderColor: COLORS.primary,
+    borderColor: colors.primary.main,
   },
   actionBarButtonPrimary: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.primary.main,
   },
   actionBarButtonLabel: {
     fontFamily: Fonts.meduim,
@@ -575,6 +637,6 @@ export const styles = StyleSheet.create({
   actionBarButtonLabelPrimary: {
     fontFamily: Fonts.bold,
     fontSize: 14,
-    color: '#FFFFFF',
+    color: colors.text.inverse,
   },
 });

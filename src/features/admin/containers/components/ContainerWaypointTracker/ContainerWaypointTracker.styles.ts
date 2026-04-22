@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
   },
   header: {
     marginHorizontal: Theme.spacing.lg,
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     marginHorizontal: Theme.spacing.lg,
     marginTop: Theme.spacing.lg,
     padding: Theme.spacing.lg,
@@ -45,17 +45,17 @@ export const styles = StyleSheet.create({
   progressNumber: {
     fontSize: 24,
     fontWeight: '800',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   progressLabel: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: Theme.spacing.xs,
   },
   progressDivider: {
     width: 1,
     height: 40,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
   },
   timelineContainer: {
     paddingHorizontal: Theme.spacing.lg,
@@ -70,17 +70,17 @@ export const styles = StyleSheet.create({
     top: -20,
     width: 2,
     height: 30,
-    backgroundColor: Theme.neutral[300],
+    backgroundColor: colors.neutral[300],
     zIndex: 0,
   },
   connectorCompleted: {
-    backgroundColor: Theme.status.success,
+    backgroundColor: colors.status.success,
   },
   connectorCurrent: {
-    backgroundColor: Theme.status.info,
+    backgroundColor: colors.status.info,
   },
   waypointCard: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius.xl,
     marginBottom: Theme.spacing.md,
     overflow: 'hidden',
@@ -88,7 +88,7 @@ export const styles = StyleSheet.create({
   },
   waypointCardCurrent: {
     borderWidth: 2,
-    borderColor: Theme.status.info,
+    borderColor: colors.status.info,
     ...Theme.shadows.md,
   },
   waypointCardCompleted: {
@@ -133,7 +133,7 @@ export const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: Theme.primary[100],
+    backgroundColor: colors.primary[100],
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Theme.spacing.md,
@@ -147,7 +147,7 @@ export const styles = StyleSheet.create({
   waypointNumberText: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   waypointNumberTextDakar: {
     color: '#FFF',
@@ -159,7 +159,7 @@ export const styles = StyleSheet.create({
   waypointLocation: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   waypointLocationDakar: {
     fontSize: 18,
@@ -167,7 +167,7 @@ export const styles = StyleSheet.create({
   },
   waypointCode: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   waypointBadges: {
@@ -189,7 +189,7 @@ export const styles = StyleSheet.create({
   routeDisplayBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
     paddingHorizontal: Theme.spacing.sm,
     paddingVertical: 4,
     borderRadius: Theme.radius.full,
@@ -212,7 +212,7 @@ export const styles = StyleSheet.create({
   typeBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.xs,
     borderRadius: Theme.radius.full,
@@ -220,7 +220,7 @@ export const styles = StyleSheet.create({
   },
   typeBadgeText: {
     fontSize: 11,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     fontWeight: '500',
   },
   categoryBadge: {
@@ -236,7 +236,7 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
   },
   currentIndicator: {
-    backgroundColor: Theme.status.info,
+    backgroundColor: colors.status.info,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: 2,
     borderRadius: Theme.radius.full,
@@ -258,7 +258,7 @@ export const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 12,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   expandIndicator: {
     alignItems: 'center',
@@ -269,7 +269,7 @@ export const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     marginVertical: Theme.spacing.md,
   },
   section: {
@@ -278,7 +278,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.sm,
   },
   timesGrid: {
@@ -292,16 +292,16 @@ export const styles = StyleSheet.create({
   },
   timeLabel: {
     fontSize: 11,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: 2,
   },
   timeValue: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   timePending: {
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     fontStyle: 'italic',
   },
   detailRow: {
@@ -312,18 +312,18 @@ export const styles = StyleSheet.create({
   },
   detailLabel: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     width: 80,
   },
   detailValue: {
     flex: 1,
     fontSize: 13,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     fontWeight: '500',
   },
   notesContainer: {
     flexDirection: 'row',
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     padding: Theme.spacing.md,
     borderRadius: Theme.radius.lg,
     gap: Theme.spacing.sm,
@@ -331,10 +331,10 @@ export const styles = StyleSheet.create({
   notesText: {
     flex: 1,
     fontSize: 13,
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   portActionsContainer: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     padding: Theme.spacing.md,
     borderRadius: Theme.radius.lg,
     marginBottom: Theme.spacing.md,
@@ -342,7 +342,7 @@ export const styles = StyleSheet.create({
   portActionsTitle: {
     fontSize: 12,
     fontWeight: '700',
-    color: Theme.primary[700],
+    color: colors.primary[700],
     marginBottom: Theme.spacing.sm,
   },
   portActionsGrid: {
@@ -375,12 +375,12 @@ export const styles = StyleSheet.create({
     gap: Theme.spacing.sm,
   },
   actionButtonPrimary: {
-    backgroundColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
   },
   actionButtonSecondary: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     borderWidth: 1,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
   },
   actionButtonTextPrimary: {
     color: '#FFF',
@@ -388,7 +388,7 @@ export const styles = StyleSheet.create({
     fontWeight: '600',
   },
   actionButtonTextSecondary: {
-    color: Theme.primary[600],
+    color: colors.primary[600],
     fontSize: 14,
     fontWeight: '600',
   },

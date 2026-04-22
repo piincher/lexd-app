@@ -4,14 +4,8 @@
  */
 
 import React from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ViewStyle,
-  TextStyle,
-} from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import type { ViewStyle, TextStyle } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type CheckboxSize = 'small' | 'medium' | 'large';

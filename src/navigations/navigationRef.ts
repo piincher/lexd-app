@@ -1,5 +1,5 @@
 import { createNavigationContainerRef } from "@react-navigation/native";
-import { RootStackParamList } from "./type";
+import type { RootStackParamList } from "./type";
 
 /**
  * Shared navigation ref for use outside of React components.

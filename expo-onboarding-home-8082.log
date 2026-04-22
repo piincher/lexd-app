@@ -1,0 +1,47 @@
+env: load .env.local .env
+env: export EXPO_UNSTABLE_METRO_OPTIMIZE_GRAPH EXPO_UNSTABLE_TREE_SHAKING SENTRY_AUTH_TOKEN
+Starting project at C:\Users\hp\workspace\chinalink\chinalinexpress
+Using src/app as the root directory for Expo Router.
+React Compiler enabled
+Starting Metro Bundler
+
+warning: Bundler cache is empty, rebuilding (this may take a minute)
+Waiting on http://localhost:8082
+Logs for your project will appear below.
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  4.0% (2/4)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  4.0% ( 17/184)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  4.0% ( 65/372)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  4.9% (187/873)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  4.9% ( 285/1297)
+Android node_modules\expo\AppEntry.js ▓░░░░░░░░░░░░░░░  9.1% ( 436/1447)
+Android node_modules\expo\AppEntry.js ▓░░░░░░░░░░░░░░░ 12.0% ( 592/1711)
+Android node_modules\expo\AppEntry.js ▓▓░░░░░░░░░░░░░░ 14.7% ( 741/1931)
+Android node_modules\expo\AppEntry.js ▓▓▓░░░░░░░░░░░░░ 19.9% ( 899/2015)
+Android node_modules\expo\AppEntry.js ▓▓▓▓░░░░░░░░░░░░ 28.2% (1098/2069)
+Android node_modules\expo\AppEntry.js ▓▓▓▓░░░░░░░░░░░░ 28.2% (1286/2589)
+Android node_modules\expo\AppEntry.js ▓▓▓▓░░░░░░░░░░░░ 28.6% (1478/2765)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓░░░░░░░░░░░ 32.7% (1607/2840)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓░░░░░░░░░░░ 35.8% (1751/2925)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓░░░░░░░░░░ 38.7% (1965/3158)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓░░░░░░░░░░ 40.7% (2194/3437)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓▓▓▓░░░░░░░ 56.4% (2622/3492)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓▓▓▓▓░░░░░░ 65.3% (2920/3614)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓▓▓▓▓▓░░░░░ 74.3% (3238/3757)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓▓▓▓▓▓▓░░░░ 79.7% (3447/3862)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░ 85.5% (3670/4003)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓░░░ 85.5% (3875/4226)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓░░ 88.4% (4223/4519)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░ 97.3% (4629/4695)
+Android node_modules\expo\AppEntry.js ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓░ 99.9% (4808/4809)
+Android Bundled 95186ms node_modules\expo\AppEntry.js (4818 modules)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 2834ms node_modules\expo\AppEntry.js (1 module)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 2088ms node_modules\expo\AppEntry.js (1 module)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 1647ms node_modules\expo\AppEntry.js (1 module)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 1132ms node_modules\expo\AppEntry.js (1 module)
+Android node_modules\expo\AppEntry.js ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 997ms node_modules\expo\AppEntry.js (1 module)

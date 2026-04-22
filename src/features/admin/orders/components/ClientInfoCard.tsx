@@ -3,11 +3,11 @@
  * SRP: Show client name, phone, and provide communication actions
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet, Alert, Linking } from 'react-native';
 import { Text, Surface, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
 interface ClientInfoCardProps {
@@ -32,6 +32,62 @@ export const ClientInfoCard: React.FC<ClientInfoCardProps> = ({
   amount,
   receiptUrl,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      padding: 16,
+      borderRadius: 12,
+      marginBottom: 16,
+      elevation: 2,
+      backgroundColor: colors.background.card,
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    cardTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      marginLeft: 8,
+      color: colors.text.primary,
+    },
+    clientRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    clientInfo: {
+      marginLeft: 12,
+      flex: 1,
+    },
+    clientName: {
+      fontSize: 16,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+    },
+    clientPhone: {
+      fontSize: 14,
+      color: colors.primary.main,
+      fontFamily: Fonts.regular,
+      marginTop: 2,
+      textDecorationLine: 'underline',
+    },
+    clientActions: {
+      flexDirection: 'row',
+      gap: 12,
+    },
+    actionButton: {
+      flex: 1,
+      borderRadius: 8,
+    },
+    whatsappButton: {
+      flex: 1,
+    },
+  }), [colors]);
+
   const handleCallClient = () => {
     if (!clientPhone) {
       Alert.alert('Error', 'Client phone number not available');
@@ -72,12 +128,12 @@ export const ClientInfoCard: React.FC<ClientInfoCardProps> = ({
   return (
     <Surface style={styles.card}>
       <View style={styles.cardHeader}>
-        <MaterialCommunityIcons name="account" size={24} color={COLORS.blue} />
+        <MaterialCommunityIcons name="account" size={24} color={colors.primary.main} />
         <Text style={styles.cardTitle}>Client Information</Text>
       </View>
 
       <View style={styles.clientRow}>
-        <MaterialCommunityIcons name="account-circle" size={40} color={COLORS.grey} />
+        <MaterialCommunityIcons name="account-circle" size={40} color={colors.text.secondary} />
         <View style={styles.clientInfo}>
           <Text style={styles.clientName}>{clientName || 'Unknown'}</Text>
           {clientPhone && (
@@ -95,7 +151,7 @@ export const ClientInfoCard: React.FC<ClientInfoCardProps> = ({
             onPress={handleCallClient}
             style={styles.actionButton}
             icon="phone"
-            textColor={COLORS.blue}
+            textColor={colors.primary.main}
           >
             Call
           </Button>
@@ -113,58 +169,3 @@ export const ClientInfoCard: React.FC<ClientInfoCardProps> = ({
     </Surface>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    elevation: 2,
-    backgroundColor: '#FFF',
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    marginLeft: 8,
-    color: '#1A1A2E',
-  },
-  clientRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  clientInfo: {
-    marginLeft: 12,
-    flex: 1,
-  },
-  clientName: {
-    fontSize: 16,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    color: '#1A1A2E',
-  },
-  clientPhone: {
-    fontSize: 14,
-    color: COLORS.blue,
-    fontFamily: Fonts.regular,
-    marginTop: 2,
-    textDecorationLine: 'underline',
-  },
-  clientActions: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  actionButton: {
-    flex: 1,
-    borderRadius: 8,
-  },
-  whatsappButton: {
-    flex: 1,
-  },
-});

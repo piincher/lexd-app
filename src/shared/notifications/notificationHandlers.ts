@@ -3,10 +3,8 @@
  * Handles navigation and actions for different notification types
  */
 
-import {
-  CommonActions,
-  NavigationContainerRef,
-} from "@react-navigation/native";
+import { CommonActions } from "@react-navigation/native";
+import type { NavigationContainerRef } from "@react-navigation/native";
 import { NotificationData, NotificationType } from "../services/notificationService";
 
 // ============================================================================

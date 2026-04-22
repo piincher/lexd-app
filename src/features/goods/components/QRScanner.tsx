@@ -6,6 +6,8 @@ import { View, StyleSheet, Text, Pressable, Dimensions } from 'react-native';
 import { Button, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 // Try to import expo-barcode-scanner, fallback to mock if not available
 let BarCodeScanner: any;
@@ -30,6 +32,7 @@ interface QRScannerProps {
 
 export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onCancel }) => {
 	const theme = useTheme();
+	const { colors } = useAppTheme();
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState(false);
 	const [torchEnabled, setTorchEnabled] = useState(false);
@@ -65,8 +68,8 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onCancel }) => {
 						size={80}
 						color={theme.colors.primary}
 					/>
-					<Text style={styles.unavailableTitle}>Scanner non disponible</Text>
-					<Text style={styles.unavailableText}>
+					<Text style={[styles.unavailableTitle, { color: colors.text.primary }]}>Scanner non disponible</Text>
+					<Text style={[styles.unavailableText, { color: colors.text.secondary }]}>
 						Le scanner QR code nécessite l'installation de expo-barcode-scanner.
 					</Text>
 					<Button mode="contained" onPress={onCancel} style={styles.button}>
@@ -89,8 +92,8 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onCancel }) => {
 		return (
 			<View style={styles.container}>
 				<MaterialCommunityIcons name="camera-off" size={64} color="#666" />
-				<Text style={styles.permissionTitle}>Accès caméra refusé</Text>
-				<Text style={styles.permissionText}>
+				<Text style={[styles.permissionTitle, { color: colors.text.primary }]}>Accès caméra refusé</Text>
+				<Text style={[styles.permissionText, { color: colors.text.secondary }]}>
 					Veuillez autoriser l'accès à la caméra dans les paramètres de l'application pour scanner les QR codes.
 				</Text>
 				<Button mode="contained" onPress={onCancel} style={styles.button}>
@@ -285,13 +288,11 @@ const styles = StyleSheet.create({
 	permissionTitle: {
 		fontSize: 20,
 		fontFamily: Fonts.bold,
-		color: '#333',
 		marginTop: 16,
 	},
 	permissionText: {
 		fontSize: 14,
 		fontFamily: Fonts.regular,
-		color: '#666',
 		textAlign: 'center',
 		marginTop: 8,
 		marginHorizontal: 32,
@@ -304,19 +305,17 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingHorizontal: 32,
-		backgroundColor: 'white',
+		backgroundColor: Theme.colors.background.card,
 		width: '100%',
 	},
 	unavailableTitle: {
 		fontSize: 20,
 		fontFamily: Fonts.bold,
-		color: '#333',
 		marginTop: 16,
 	},
 	unavailableText: {
 		fontSize: 14,
 		fontFamily: Fonts.regular,
-		color: '#666',
 		textAlign: 'center',
 		marginTop: 8,
 	},

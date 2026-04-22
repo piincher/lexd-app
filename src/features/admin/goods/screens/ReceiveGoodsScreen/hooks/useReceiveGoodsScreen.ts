@@ -6,11 +6,11 @@
 
 import { useState, useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Alert } from 'react-native';
 import { useReceiveGoodsForm } from './useReceiveGoodsForm';
 import { useReceiveGoods as useReceiveGoodsMutation } from '../../../hooks';
-import { AuthenticatedStackParamList } from '@src/navigations/types';
+import type { AuthenticatedStackParamList } from '@src/navigation/types';
 import { getOrdersBasedOnUserId, placeOrder, productType } from '@src/api/order';
 import { assignGoodsToOrder } from '@src/features/orders/api/assignGoodsToOrder';
 import { useQueryClient } from '@tanstack/react-query';
@@ -211,12 +211,17 @@ export const useReceiveGoodsScreen = () => {
 
       console.log('[ReceiveGoods] Parsed:', { orderAction, orderCode, goodsId, orderIsNull: orderObj === null });
 
-      // Step 2: If backend created the order AND returned it, use that
-      if (orderAction && orderObj && orderCode) {
-        if (orderAction === 'added_to_existing') {
-          setSuccessMessage(`Marchandise ajoutée à la commande ${orderCode}`);
+      // Step 2: If backend handled order assignment, use that response.
+      if (orderAction) {
+        if (orderObj && orderCode) {
+          if (orderAction === 'added_to_existing') {
+            setSuccessMessage(`Marchandise ajoutée à la commande ${orderCode}`);
+          } else {
+            setSuccessMessage(`Nouvelle commande ${orderCode} créée avec la marchandise`);
+          }
         } else {
-          setSuccessMessage(`Nouvelle commande ${orderCode} créée avec la marchandise`);
+          console.warn('[ReceiveGoods] Backend reported order action without order object:', orderAction);
+          setSuccessMessage('Marchandise enregistrée, mais la commande automatique n\'a pas été retournée');
         }
       } else if (goodsId && formHook.selectedClient) {
         // Backend did NOT create the order (order is null), handle on frontend

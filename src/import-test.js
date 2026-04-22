@@ -236,7 +236,7 @@ customerScreens.forEach(([path, desc]) => testImport(path, desc));
 
 // Other Screens
 const otherScreens = [
-  ['./features/auth/screens/Login', 'LoginScreen'],
+  ['./features/auth/screens/LoginScreen', 'LoginScreen'],
   ['./features/auth/screens/Verification', 'VerificationScreen'],
   ['./features/chat/screens/Chat', 'ChatScreen'],
   ['./features/chat/screens/ChatRoom', 'ChatRoomScreen'],
@@ -245,7 +245,6 @@ const otherScreens = [
   ['./features/goods/screens/MyGoodsScreen', 'MyGoodsScreen'],
   ['./features/goods/screens/ScanQRScreen', 'ScanQRScreen'],
   ['./features/home/screens/HomeScreen', 'HomeScreen'],
-  ['./features/home/screens/Notifications', 'HomeNotificationsScreen'],
   ['./features/support/screens/FAQScreen', 'FAQScreen'],
   ['./features/notifications/screens/NotificationDetailScreen', 'NotificationDetailScreen'],
   ['./features/notifications/screens/NotificationsScreen', 'NotificationsScreen'],

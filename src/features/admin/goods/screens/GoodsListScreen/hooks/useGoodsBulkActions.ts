@@ -145,6 +145,7 @@ export const useGoodsBulkActions = (goods: any[], onRefresh?: () => Promise<void
   const statusOptions = useMemo(
     () => [
       { label: 'Recu au depot', value: 'RECEIVED_AT_WAREHOUSE' },
+      { label: 'Colis préparé', value: 'PACKED' },
       { label: 'Assigne au conteneur', value: 'ASSIGNED_TO_CONTAINER' },
       { label: 'Charge dans conteneur', value: 'LOADED_IN_CONTAINER' },
       { label: 'En transit', value: 'IN_TRANSIT' },

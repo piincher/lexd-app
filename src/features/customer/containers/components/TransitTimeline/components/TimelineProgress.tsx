@@ -4,6 +4,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface TimelineProgressProps {
   progress: number;
@@ -15,17 +16,20 @@ export const TimelineProgress: React.FC<TimelineProgressProps> = ({
   progress,
   completedCount,
   totalCount,
-}) => (
-  <View style={styles.container}>
-    <View style={styles.background}>
-      <View style={[styles.fill, { width: `${progress}%` }]} />
+}) => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={styles.container}>
+      <View style={styles.background}>
+        <View style={[styles.fill, { width: `${progress}%`, backgroundColor: colors.background.card }]} />
+      </View>
+      <Text style={styles.text}>{Math.round(progress)}% complété</Text>
+      <Text style={styles.steps}>
+        {completedCount} / {totalCount} étapes
+      </Text>
     </View>
-    <Text style={styles.text}>{Math.round(progress)}% complété</Text>
-    <Text style={styles.steps}>
-      {completedCount} / {totalCount} étapes
-    </Text>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -39,7 +43,6 @@ const styles = StyleSheet.create({
   },
   fill: {
     height: '100%',
-    backgroundColor: '#FFF',
     borderRadius: Theme.radius.full,
   },
   text: {

@@ -3,10 +3,11 @@ import { View, ScrollView, StyleSheet, Share } from "react-native";
 import { Text, Appbar, Button } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useGetOrderDetails } from "../../hooks/useOrderDetail";
 import { useClipboard } from "@src/hooks/useClipBoard";
+import { useCreateShareToken } from "@src/features/public/hooks/useCreateShareToken";
 import { OrderHeader } from "./components/OrderHeader";
 import { OrderImageSection } from "./components/OrderImageSection";
 import { OrderQuickStats } from "./components/OrderQuickStats";
@@ -24,6 +25,7 @@ const OrderDetailScreen = ({
    const { colors } = useAppTheme();
    const { data: order, isPending, isError, error, refetch } = useGetOrderDetails(id);
    const { copyToClipboard } = useClipboard();
+   const { mutateAsync: createShareToken } = useCreateShareToken();
 
    const styles = useMemo(
       () =>
@@ -72,12 +74,24 @@ const OrderDetailScreen = ({
    const handleShare = useCallback(async () => {
       if (!order) return;
       try {
+         const result = await createShareToken({
+            type: 'order',
+            resourceReference: order.code || id,
+         });
          await Share.share({
-            message: `Commande ${order.code}\nStatut: ${order.status}\nClient: ${order.clientName}`,
+            message: `Suivez ma commande ChinaLink Express: ${order.code}\n${result.url}`,
             title: `Commande ${order.code}`,
          });
-      } catch {}
-   }, [order]);
+      } catch {
+         // Fallback to plain text share if API fails
+         try {
+            await Share.share({
+               message: `Commande ${order.code}\nStatut: ${order.status}\nClient: ${order.clientName}`,
+               title: `Commande ${order.code}`,
+            });
+         } catch {}
+      }
+   }, [order, id, createShareToken]);
 
    const handleCopyCode = useCallback(() => {
       if (order?.code) copyToClipboard(order.code);

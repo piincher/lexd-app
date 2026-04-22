@@ -2,16 +2,17 @@
  * Badge - Reusable status badge component
  */
 
-import React from 'react';
-import { View, Text, StyleSheet, ViewStyle } from 'react-native';
-import { COLORS } from '@src/constants/Colors';
+import React, { useMemo } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import type { ViewStyle } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
-export type BadgeVariant = 
-  | 'default' 
-  | 'primary' 
-  | 'success' 
-  | 'warning' 
-  | 'danger' 
+export type BadgeVariant =
+  | 'default'
+  | 'primary'
+  | 'success'
+  | 'warning'
+  | 'danger'
   | 'info'
   | 'neutral';
 
@@ -30,27 +31,55 @@ export const Badge: React.FC<BadgeProps> = ({
   size = 'small',
   style,
 }) => {
+  const { colors: themeColors } = useAppTheme();
+
   const getColors = () => {
     switch (variant) {
       case 'default':
       case 'primary':
-        return { bg: COLORS.Silver, text: COLORS.DarkGrey };
+        return { bg: themeColors.neutral[200], text: themeColors.text.secondary };
       case 'success':
-        return { bg: COLORS.lightBackground, text: COLORS.heading };
+        return { bg: themeColors.background.paper, text: themeColors.text.primary };
       case 'warning':
-        return { bg: COLORS.lightyellow + '20', text: COLORS.orange };
+        return { bg: themeColors.accent.goldLight + '20', text: themeColors.accent.goldDark };
       case 'danger':
-        return { bg: COLORS.danger + '15', text: COLORS.danger };
+        return { bg: themeColors.status.error + '15', text: themeColors.status.error };
       case 'info':
-        return { bg: COLORS.blueTransparent, text: COLORS.navy };
+        return { bg: themeColors.primary.main + '15', text: themeColors.primary.dark };
       case 'neutral':
-        return { bg: COLORS.Silver, text: COLORS.DarkGrey };
+        return { bg: themeColors.neutral[200], text: themeColors.text.secondary };
       default:
-        return { bg: COLORS.Silver, text: COLORS.DarkGrey };
+        return { bg: themeColors.neutral[200], text: themeColors.text.secondary };
     }
   };
 
   const colors = getColors();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        base: {
+          borderRadius: 20,
+          alignSelf: 'flex-start',
+        },
+        small: {
+          paddingHorizontal: 10,
+          paddingVertical: 4,
+        },
+        medium: {
+          paddingHorizontal: 14,
+          paddingVertical: 6,
+        },
+        text: {
+          fontSize: 12,
+          fontWeight: '600',
+        },
+        mediumText: {
+          fontSize: 14,
+        },
+      }),
+    [themeColors],
+  );
 
   return (
     <View
@@ -68,27 +97,5 @@ export const Badge: React.FC<BadgeProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  base: {
-    borderRadius: 20,
-    alignSelf: 'flex-start',
-  },
-  small: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  medium: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-  },
-  text: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  mediumText: {
-    fontSize: 14,
-  },
-});
 
 export default Badge;

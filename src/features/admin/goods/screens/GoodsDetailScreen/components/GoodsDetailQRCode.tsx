@@ -86,7 +86,7 @@ const styles = {
     alignItems: 'center' as const,
   },
   qrImageContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Theme.colors.background.card,
     padding: 16,
     borderRadius: 16,
     borderWidth: 2,

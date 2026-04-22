@@ -156,6 +156,25 @@ export class ContainerService {
     const params = shippingMode ? `?shippingMode=${shippingMode}` : '';
     return apiRequest.get(this.client, `/goods/unassigned${params}`);
   }
+
+  // ============================================
+  // DUAL-LEDGER PROFIT RECONCILIATION
+  // ============================================
+
+  async reconcileContainer(
+    containerId: string,
+    agentCBM: number,
+    agentUnitCost?: number
+  ): Promise<ApiResponse<any>> {
+    return apiRequest.post(this.client, `${BASE_URL}/${containerId}/reconcile`, {
+      agentCBM,
+      ...(agentUnitCost ? { agentUnitCost } : {}),
+    });
+  }
+
+  async getClientAllocations(containerId: string): Promise<ApiResponse<any>> {
+    return apiRequest.get(this.client, `${BASE_URL}/${containerId}/client-allocations`);
+  }
 }
 
 export const containerService = ContainerService.getInstance();

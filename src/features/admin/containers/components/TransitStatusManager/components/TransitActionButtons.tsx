@@ -4,6 +4,7 @@ import { Button, ActivityIndicator, Portal, Dialog } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { ContainerWaypoint, WaypointStatus } from '../../../types/waypoints';
 import { lightTheme } from '@src/constants/Theme';
+import { WAYPOINT_STATUS_COLORS } from '@src/shared/types/containerWaypoints';
 
 interface TransitActionButtonsProps {
   currentWaypoint?: ContainerWaypoint;
@@ -20,14 +21,6 @@ const WAYPOINT_STATUS_LABELS: Record<WaypointStatus, string> = {
   CANCELLED: 'Annulé',
 };
 
-// Waypoint status colors
-const WAYPOINT_STATUS_COLORS: Record<WaypointStatus, string> = {
-  PENDING: '#9CA3AF',
-  IN_PROGRESS: '#3B82F6',
-  COMPLETED: '#10B981',
-  DELAYED: '#EF4444',
-  CANCELLED: '#6B7280',
-};
 
 // Available actions based on current status
 const getAvailableActions = (currentStatus: WaypointStatus): { status: WaypointStatus; label: string; icon: string }[] => {

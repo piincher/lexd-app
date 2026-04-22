@@ -4,7 +4,7 @@
  * Simple version - displays loading position and sequence
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   StyleSheet,
@@ -20,8 +20,9 @@ import {
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { RootStackScreenProps } from '@src/navigations/type';
-import { COLORS } from '@src/constants/Colors';
+import type { RootStackScreenProps } from '@src/navigations/type';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { NotificationBell } from '@src/features/notifications';
 
 export const ClientLoadingListScreen: React.FC<RootStackScreenProps<'ClientLoadingList'>> = ({
   route,
@@ -29,12 +30,53 @@ export const ClientLoadingListScreen: React.FC<RootStackScreenProps<'ClientLoadi
 }) => {
   const { containerId } = route.params;
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.paper,
+    },
+    content: {
+      flex: 1,
+      padding: 16,
+    },
+    card: {
+      marginVertical: 8,
+      borderRadius: 12,
+    },
+    iconContainer: {
+      alignItems: 'center',
+      marginVertical: 24,
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      textAlign: 'center',
+      marginBottom: 16,
+      color: colors.text.primary,
+    },
+    divider: {
+      marginVertical: 16,
+    },
+    description: {
+      fontSize: 14,
+      lineHeight: 22,
+      color: colors.text.secondary,
+      textAlign: 'center',
+    },
+  }), [colors, isDark]);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Appbar.Header style={{ backgroundColor: COLORS.primary[600] }}>
-        <Appbar.BackAction color="#fff" onPress={() => navigation.goBack()} />
-        <Appbar.Content title="Plan de Chargement" titleStyle={{ color: '#fff' }} />
+      <Appbar.Header style={{ backgroundColor: colors.primary.dark }}>
+        <Appbar.BackAction color={colors.text.inverse} onPress={() => navigation.goBack()} />
+        <Appbar.Content title="Plan de Chargement" titleStyle={{ color: colors.text.inverse }} />
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color={colors.text.inverse}
+        />
       </Appbar.Header>
 
       <ScrollView
@@ -49,7 +91,7 @@ export const ClientLoadingListScreen: React.FC<RootStackScreenProps<'ClientLoadi
               <MaterialCommunityIcons
                 name="truck-delivery"
                 size={64}
-                color={COLORS.primary[500]}
+                color={colors.primary.main}
               />
             </View>
             <Text style={styles.title}>Fonctionnalité à venir</Text>
@@ -67,40 +109,5 @@ export const ClientLoadingListScreen: React.FC<RootStackScreenProps<'ClientLoadi
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  content: {
-    flex: 1,
-    padding: 16,
-  },
-  card: {
-    marginVertical: 8,
-    borderRadius: 12,
-  },
-  iconContainer: {
-    alignItems: 'center',
-    marginVertical: 24,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 16,
-    color: '#333',
-  },
-  divider: {
-    marginVertical: 16,
-  },
-  description: {
-    fontSize: 14,
-    lineHeight: 22,
-    color: '#666',
-    textAlign: 'center',
-  },
-});
 
 export default ClientLoadingListScreen;

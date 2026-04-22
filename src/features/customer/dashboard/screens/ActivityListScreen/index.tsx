@@ -8,7 +8,8 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetActivity } from "../../hooks/useDashboard";
-import { ActivityListSkeleton } from "../../components/ActivityListSkeleton";
+import { NotificationBell } from "@src/features/notifications";
+
 import { ActivityItem } from "../../types";
 
 const ActivityListScreen: React.FC = () => {
@@ -55,8 +56,15 @@ const ActivityListScreen: React.FC = () => {
         <Appbar.Header>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Activités" />
+          <NotificationBell
+            onPress={() => navigation.navigate("Notifications" as never)}
+            size={24}
+            color={colors.text.primary}
+          />
         </Appbar.Header>
-        <ActivityListSkeleton />
+        <View style={[styles.center, { flex: 1 }]}>
+          <Text style={[styles.loadingText, { color: colors.text.secondary }]}>Chargement...</Text>
+        </View>
       </SafeAreaView>
     );
   }
@@ -67,6 +75,11 @@ const ActivityListScreen: React.FC = () => {
         <Appbar.Header>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Appbar.Content title="Activités" />
+          <NotificationBell
+            onPress={() => navigation.navigate("Notifications" as never)}
+            size={24}
+            color={colors.text.primary}
+          />
         </Appbar.Header>
         <View style={styles.center}>
           <Text style={[styles.errorText, { color: colors.text.secondary }]}>
@@ -82,6 +95,11 @@ const ActivityListScreen: React.FC = () => {
       <Appbar.Header>
         <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Content title="Historique des activités" />
+        <NotificationBell
+          onPress={() => navigation.navigate("Notifications" as never)}
+          size={24}
+          color={colors.text.primary}
+        />
       </Appbar.Header>
 
       <FlashList
@@ -90,7 +108,7 @@ const ActivityListScreen: React.FC = () => {
         renderItem={renderItem}
         contentContainerStyle={styles.listContent}
         refreshControl={
-          <RefreshControl refreshing={isLoading} onPress={refetch} />
+          <RefreshControl refreshing={isLoading} onRefresh={refetch} />
         }
         ListEmptyComponent={
           <View style={styles.emptyContainer}>

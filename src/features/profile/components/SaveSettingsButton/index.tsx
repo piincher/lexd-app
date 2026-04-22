@@ -3,11 +3,10 @@
  * Save action button for settings screens
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
-
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface SaveSettingsButtonProps {
   onPress: () => void;
@@ -22,6 +21,23 @@ export const SaveSettingsButton: React.FC<SaveSettingsButtonProps> = ({
   disabled = false,
   label = "Save Settings",
 }) => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        button: {
+          marginHorizontal: 16,
+          marginBottom: 16,
+          borderRadius: 12,
+        },
+        buttonContent: {
+          paddingVertical: 8,
+        },
+      }),
+    []
+  );
+
   return (
     <Button
       mode="contained"
@@ -30,20 +46,9 @@ export const SaveSettingsButton: React.FC<SaveSettingsButtonProps> = ({
       disabled={disabled || loading}
       style={styles.button}
       contentStyle={styles.buttonContent}
-      buttonColor={COLORS.primary}
+      buttonColor={colors.primary.main}
     >
       {label}
     </Button>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    marginHorizontal: 16,
-    marginBottom: 16,
-    borderRadius: 12,
-  },
-  buttonContent: {
-    paddingVertical: 8,
-  },
-});

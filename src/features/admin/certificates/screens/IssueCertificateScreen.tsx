@@ -23,7 +23,8 @@ import {
   useDownloadCertificate,
 } from "../hooks/useCertificateAdmin";
 import { CertificateUser, CertificateRecord } from "../api";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
+import { Theme } from "@src/constants/Theme";
 
 type UserCardProps = {
   user: CertificateUser;
@@ -399,7 +400,7 @@ export default function IssueCertificateScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: Theme.colors.background.default,
   },
   header: {
     flexDirection: "row",
@@ -407,9 +408,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: Platform.OS === "android" ? 16 : 8,
     paddingBottom: 16,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
     gap: 12,
   },
   backButton: {
@@ -428,14 +429,14 @@ const styles = StyleSheet.create({
   searchContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
   },
   searchInputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderRadius: 12,
     paddingHorizontal: 16,
     height: 48,
@@ -456,7 +457,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   userCard: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
@@ -534,9 +535,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   bottomPanel: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderTopWidth: 1,
-    borderTopColor: "#E5E7EB",
+    borderTopColor: Theme.colors.neutral[200],
     padding: 16,
     gap: 12,
   },
@@ -551,7 +552,7 @@ const styles = StyleSheet.create({
     color: "#1F2937",
   },
   noteInput: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -603,7 +604,7 @@ const styles = StyleSheet.create({
   },
   successCard: {
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 20,
     marginBottom: 24,
@@ -636,7 +637,7 @@ const styles = StyleSheet.create({
   },
   successCardDivider: {
     height: 1,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
   },
   verificationCode: {
     fontSize: 16,
@@ -651,7 +652,7 @@ const styles = StyleSheet.create({
   },
   copyButton: {
     padding: 4,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderRadius: 6,
   },
   downloadButton: {
@@ -708,7 +709,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
     width: "100%",
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     paddingVertical: 14,
     marginBottom: 12,

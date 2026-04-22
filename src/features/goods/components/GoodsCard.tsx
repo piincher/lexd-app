@@ -2,12 +2,13 @@
 // Pure presentational component for displaying a single goods item
 
 import React, { useMemo } from 'react';
-import { View, StyleSheet, Image, Pressable } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { Goods } from '../api';
 import { StatusBadge } from './StatusBadge';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { GoodsImage } from '@src/shared/ui/GoodsImage';
 
 interface GoodsCardProps {
 	goods: Goods;
@@ -25,7 +26,7 @@ const truncateText = (text: string, maxLength: number): string => {
 
 export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 	const { colors } = useAppTheme();
-	const images = goods.photos || [];
+	const images = goods.photos?.length ? goods.photos : (goods.images || []);
 
 	const styles = useMemo(
 		() =>
@@ -33,7 +34,13 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 				card: {
 					marginHorizontal: 16,
 					marginVertical: 8,
+					borderRadius: 20,
+					overflow: 'hidden',
 					elevation: 2,
+					shadowColor: colors.text.primary,
+					shadowOffset: { width: 0, height: 2 },
+					shadowOpacity: 0.08,
+					shadowRadius: 8,
 				},
 				content: {
 					flexDirection: 'row',
@@ -41,19 +48,13 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 				},
 				imageContainer: {
 					marginRight: 12,
+					position: 'relative',
 				},
-				image: {
-					width: 80,
-					height: 80,
-					borderRadius: 8,
-				},
-				placeholderImage: {
-					backgroundColor: colors.background.paper,
-					justifyContent: 'center',
-					alignItems: 'center',
-				},
-				placeholderText: {
-					fontSize: 32,
+				badgeOverlay: {
+					position: 'absolute',
+					top: 6,
+					left: 6,
+					zIndex: 1,
 				},
 				infoContainer: {
 					flex: 1,
@@ -98,13 +99,18 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 				<Card.Content style={styles.content}>
 					{/* Image Thumbnail */}
 					<View style={styles.imageContainer}>
-						{images.length > 0 ? (
-							<Image source={{ uri: images[0] }} style={styles.image} />
-						) : (
-							<View style={[styles.image, styles.placeholderImage]}>
-								<Text style={styles.placeholderText}>📦</Text>
+						{goods.status && (
+							<View style={styles.badgeOverlay}>
+								<StatusBadge status={goods.status} />
 							</View>
 						)}
+						<GoodsImage
+							uri={images[0]}
+							width={100}
+							height={100}
+							borderRadius={16}
+							placeholderSize="medium"
+						/>
 					</View>
 
 					{/* Info Section */}
@@ -113,7 +119,6 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 							<Text style={styles.goodsId} variant="titleSmall">
 								{goods.goodsId}
 							</Text>
-							<StatusBadge status={goods.status} />
 						</View>
 
 						<Text style={styles.description} variant="bodyMedium">

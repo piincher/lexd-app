@@ -17,7 +17,6 @@ import { Text, Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 
 import { useAuth } from '@src/store/Auth';
-import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 

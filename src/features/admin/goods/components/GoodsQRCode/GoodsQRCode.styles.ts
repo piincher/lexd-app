@@ -30,7 +30,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   imageContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Theme.colors.background.card,
     padding: 16,
     borderRadius: 16,
     borderWidth: 2,

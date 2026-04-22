@@ -158,6 +158,10 @@ export class ApiClientError extends Error {
  */
 const shouldRetry = (error: AxiosError, retryCount: number): boolean => {
   if (retryCount >= 3) return false;
+
+  const method = error.config?.method?.toLowerCase();
+  const isSafeMethod = !method || ['get', 'head', 'options'].includes(method);
+  if (!isSafeMethod) return false;
   
   // Retry on network errors or 5xx server errors
   if (!error.response) return true;

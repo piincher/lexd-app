@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 
 interface PartnersSectionProps {
    colors: any;
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
       gap: 12,
    },
    logoContainer: {
-      backgroundColor: "#fff",
+      backgroundColor: Theme.colors.background.card,
       borderRadius: 12,
       padding: 12,
       shadowColor: "#000",

@@ -8,7 +8,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { MotiView } from "moti";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { navigationProps } from "@src/navigations/type";
+import type { navigationProps } from "@src/navigations/type";
 import { CertificateProgress } from "../../api/certificateApi";
 import { createStyles } from "./CertifiedShipperCard.styles";
 

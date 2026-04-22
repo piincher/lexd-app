@@ -1,7 +1,7 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
-import { HomeTabScreenProps } from "@src/navigations/type";
+import type { HomeTabScreenProps } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
 import { useShippingMode } from "@src/store/shippingMode";
 import React, { useCallback, useMemo, useState } from "react";
@@ -19,6 +19,7 @@ import { withProtectedRoute } from "@src/shared/hoc/withProtectedRoute";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { NotificationBell } from "@src/features/notifications";
 import { productType } from "@src/api/order";
 import { OrderListCard } from "../components/OrderListCard";
 import { OrderStatusFilter } from "../components/OrderStatusFilter";
@@ -30,13 +31,13 @@ type MenuItemType = { id: string; title: string; route: any; param?: string };
 
 const ADMIN_MENU: MenuItemType[] = [
    { id: "0", title: "Ajouter une commande", route: "SelectUser" },
-   { id: "1", title: "Voir les commandes", route: "SelectShippingMethod" },
+   { id: "1", title: "Voir les commandes", route: "AllOrders" },
    { id: "2", title: "Ajouter un utilisateur", route: "UserAdd" },
    { id: "3", title: "Batch Update", route: "BatchUpdate" },
    { id: "4", title: "Marquer comme livré", route: "ScanQRCode" },
    { id: "5", title: "Les colis recupérés", route: "AdminPastOrders" },
-   { id: "6", title: "Chercher des colis d'un client", route: "SearchOrder" },
-   { id: "7", title: "Liste des utilisateurs", route: "UserList" },
+   { id: "6", title: "Chercher des colis d'un client", route: "GlobalSearch" },
+   { id: "7", title: "Liste des utilisateurs", route: "ClientManagement" },
 ];
 
 const MANAGER_MENU: MenuItemType[] = [
@@ -156,15 +157,22 @@ const CustomerOrders: React.FC = () => {
       >
          {/* Header */}
          <View style={styles.header}>
-            <Text style={[styles.headerTitle, { color: colors.text.primary }]}>
-               Mes Commandes
-            </Text>
-            <Text style={[styles.headerSubtitle, { color: colors.text.secondary }]}>
-               {statusCounts[statusFilter as keyof typeof statusCounts] ?? 0} commande
-               {(statusCounts[statusFilter as keyof typeof statusCounts] ?? 0) !== 1
-                  ? "s"
-                  : ""}
-            </Text>
+            <View>
+               <Text style={[styles.headerTitle, { color: colors.text.primary }]}>
+                  Mes Commandes
+               </Text>
+               <Text style={[styles.headerSubtitle, { color: colors.text.secondary }]}>
+                  {statusCounts[statusFilter as keyof typeof statusCounts] ?? 0} commande
+                  {(statusCounts[statusFilter as keyof typeof statusCounts] ?? 0) !== 1
+                     ? "s"
+                     : ""}
+               </Text>
+            </View>
+            <NotificationBell
+               onPress={() => (navigation as any).navigate("Notifications")}
+               size={24}
+               color={colors.text.primary}
+            />
          </View>
 
          {/* Status filter */}
@@ -242,6 +250,9 @@ const styles = StyleSheet.create({
       paddingHorizontal: 20,
       paddingTop: 16,
       paddingBottom: 14,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
    },
    headerTitle: {
       fontSize: 22,

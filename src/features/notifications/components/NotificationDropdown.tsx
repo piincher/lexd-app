@@ -24,7 +24,7 @@ import { BlurView } from 'expo-blur';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { formatRelativeTime } from '../utils/timeUtils';
 
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { InAppNotification } from '../types';
 import { NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../types';
@@ -46,6 +46,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
   onSeeAll,
   onNotificationPress,
 }) => {
+  const { colors } = useAppTheme();
   const { data, isLoading, refetch } = useGetNotifications({ limit: 5 });
   const { mutate: markAsRead } = useMarkAsRead();
   
@@ -86,10 +87,10 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
               entering={SlideInDown.springify().damping(15)}
               exiting={SlideOutUp.duration(200)}
             >
-              <Surface style={styles.surface} elevation={4}>
+              <Surface style={[styles.surface, { backgroundColor: colors.background.card }]} elevation={4}>
                 {/* Header */}
                 <View style={styles.header}>
-                  <Text style={styles.title}>Notifications</Text>
+                  <Text style={[styles.title, { color: colors.text.primary }]}>Notifications</Text>
                   
                   <View style={styles.headerActions}>
                     <Pressable 
@@ -99,7 +100,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                       <MaterialCommunityIcons 
                         name="check-all" 
                         size={20} 
-                        color={COLORS.blue} 
+                        color={colors.primary.main} 
                       />
                     </Pressable>
                     
@@ -107,7 +108,7 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                       <MaterialCommunityIcons 
                         name="close" 
                         size={20} 
-                        color={COLORS.DimGray} 
+                        color={colors.text.secondary} 
                       />
                     </Pressable>
                   </View>
@@ -125,9 +126,9 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                     <MaterialCommunityIcons 
                       name="bell-off-outline" 
                       size={40} 
-                      color={COLORS.grey} 
+                      color={colors.text.disabled} 
                     />
-                    <Text style={styles.emptyText}>Aucune notification</Text>
+                    <Text style={[styles.emptyText, { color: colors.text.secondary }]}>Aucune notification</Text>
                   </View>
                 ) : (
                   <ScrollView 
@@ -154,11 +155,11 @@ const NotificationDropdown: React.FC<NotificationDropdownProps> = ({
                   }}
                   style={styles.footer}
                 >
-                  <Text style={styles.seeAllText}>Voir tout</Text>
+                  <Text style={[styles.seeAllText, { color: colors.primary.main }]}>Voir tout</Text>
                   <MaterialCommunityIcons 
                     name="arrow-right" 
                     size={16} 
-                    color={COLORS.blue} 
+                    color={colors.primary.main} 
                   />
                 </Pressable>
               </Surface>
@@ -182,6 +183,7 @@ const NotificationDropdownItem: React.FC<NotificationDropdownItemProps> = ({
   onPress,
   isLast,
 }) => {
+  const { colors } = useAppTheme();
   const typeConfig = NOTIFICATION_TYPE_CONFIG[notification.type] || NOTIFICATION_TYPE_CONFIG.GENERAL;
   const categoryConfig = NOTIFICATION_CATEGORY_CONFIG[notification.category] || NOTIFICATION_CATEGORY_CONFIG.INFO;
 
@@ -192,8 +194,9 @@ const NotificationDropdownItem: React.FC<NotificationDropdownItemProps> = ({
       onPress={onPress}
       style={({ pressed }) => [
         styles.item,
-        pressed && styles.itemPressed,
-        !notification.isRead && styles.unreadItem,
+        { backgroundColor: colors.background.card },
+        pressed && { backgroundColor: colors.background.paper },
+        !notification.isRead && { backgroundColor: colors.background.elevated },
         isLast && styles.lastItem
       ]}
     >
@@ -211,16 +214,17 @@ const NotificationDropdownItem: React.FC<NotificationDropdownItemProps> = ({
         <Text 
           style={[
             styles.itemTitle,
+            { color: colors.text.primary },
             !notification.isRead && styles.unreadText
           ]}
           numberOfLines={1}
         >
           {notification.title}
         </Text>
-        <Text style={styles.itemMessage} numberOfLines={2}>
+        <Text style={[styles.itemMessage, { color: colors.text.secondary }]} numberOfLines={2}>
           {notification.message}
         </Text>
-        <Text style={styles.itemTime}>{relativeTime}</Text>
+        <Text style={[styles.itemTime, { color: colors.text.disabled }]}>{relativeTime}</Text>
       </View>
 
       {/* Unread Indicator */}
@@ -248,7 +252,6 @@ const styles = StyleSheet.create({
   surface: {
     borderRadius: 16,
     overflow: 'hidden',
-    backgroundColor: COLORS.white,
   },
   header: {
     flexDirection: 'row',
@@ -259,7 +262,6 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: Fonts.bold,
     fontSize: 18,
-    color: COLORS.DarkGrey,
   },
   headerActions: {
     flexDirection: 'row',
@@ -279,7 +281,6 @@ const styles = StyleSheet.create({
   emptyText: {
     fontFamily: Fonts.medium,
     fontSize: 14,
-    color: COLORS.grey,
     marginTop: 12,
   },
   list: {
@@ -289,13 +290,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
-    backgroundColor: COLORS.white,
-  },
-  itemPressed: {
-    backgroundColor: COLORS.lightergray,
-  },
-  unreadItem: {
-    backgroundColor: COLORS.FeatherWhite,
   },
   lastItem: {
     borderBottomWidth: 0,
@@ -314,7 +308,6 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontFamily: Fonts.medium,
     fontSize: 14,
-    color: COLORS.DarkGrey,
   },
   unreadText: {
     fontFamily: Fonts.bold,
@@ -322,14 +315,12 @@ const styles = StyleSheet.create({
   itemMessage: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DimGray,
     marginTop: 2,
     lineHeight: 18,
   },
   itemTime: {
     fontFamily: Fonts.regular,
     fontSize: 11,
-    color: COLORS.grey,
     marginTop: 4,
   },
   unreadIndicator: {
@@ -348,7 +339,6 @@ const styles = StyleSheet.create({
   seeAllText: {
     fontFamily: Fonts.medium,
     fontSize: 14,
-    color: COLORS.blue,
   },
 });
 

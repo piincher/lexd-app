@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import {
   View,
   Text,
@@ -8,8 +8,8 @@ import {
   StyleSheet,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { COLORS } from "@src/constants/Colors";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useValidatePromo } from "../../hooks";
 import type { ValidationResult } from "../../api";
 
@@ -36,6 +36,7 @@ const PromoCodeInput: React.FC<PromoCodeInputProps> = ({
   const [errorMessage, setErrorMessage] = useState("");
 
   const validatePromo = useValidatePromo();
+  const { colors, isDark } = useAppTheme();
 
   const handleApply = useCallback(() => {
     const trimmed = code.trim().toUpperCase();
@@ -88,6 +89,88 @@ const PromoCodeInput: React.FC<PromoCodeInputProps> = ({
     return `−${formatAmount(appliedResult.discountAmount ?? 0)} FCFA`;
   };
 
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      paddingHorizontal: 16,
+      paddingVertical: 8,
+    },
+    inputRow: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+    },
+    input: {
+      flex: 1,
+      height: 44,
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 10,
+      paddingHorizontal: 12,
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.text.primary,
+      backgroundColor: colors.background.card,
+    },
+    applyButton: {
+      height: 44,
+      paddingHorizontal: 16,
+      borderRadius: 10,
+      backgroundColor: colors.primary.main,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    applyButtonDisabled: {
+      backgroundColor: colors.neutral[200],
+    },
+    applyButtonText: {
+      fontSize: 14,
+      fontFamily: Fonts.bold,
+      color: colors.text.inverse,
+    },
+    errorText: {
+      marginTop: 6,
+      fontSize: 12,
+      fontFamily: Fonts.regular,
+      color: colors.status.error,
+    },
+    successCard: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginHorizontal: 16,
+      marginVertical: 8,
+      paddingHorizontal: 12,
+      paddingVertical: 10,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: colors.status.success + "40",
+      backgroundColor: colors.status.success + "10",
+    },
+    successContent: {
+      flexDirection: "row",
+      alignItems: "center",
+      flex: 1,
+      gap: 8,
+    },
+    successTextContainer: {
+      flex: 1,
+    },
+    successTitle: {
+      fontSize: 13,
+      fontFamily: Fonts.bold,
+      color: colors.status.success,
+    },
+    successDiscount: {
+      fontSize: 12,
+      fontFamily: Fonts.medium,
+      color: colors.status.success,
+      marginTop: 2,
+    },
+    removeButton: {
+      padding: 4,
+    },
+  }), [colors, isDark]);
+
   // Success state: show applied promo card
   if (appliedResult && appliedCode) {
     return (
@@ -96,7 +179,7 @@ const PromoCodeInput: React.FC<PromoCodeInputProps> = ({
           <MaterialCommunityIcons
             name="check-circle"
             size={20}
-            color={COLORS.success}
+            color={colors.status.success}
           />
           <View style={styles.successTextContainer}>
             <Text style={styles.successTitle}>
@@ -106,7 +189,7 @@ const PromoCodeInput: React.FC<PromoCodeInputProps> = ({
           </View>
         </View>
         <TouchableOpacity onPress={handleRemove} style={styles.removeButton}>
-          <MaterialCommunityIcons name="close" size={18} color={COLORS.grey} />
+          <MaterialCommunityIcons name="close" size={18} color={colors.text.secondary} />
         </TouchableOpacity>
       </View>
     );
@@ -119,7 +202,7 @@ const PromoCodeInput: React.FC<PromoCodeInputProps> = ({
         <TextInput
           style={styles.input}
           placeholder="Code promo"
-          placeholderTextColor={COLORS.placeHolder}
+          placeholderTextColor={colors.text.disabled}
           value={code}
           onChangeText={(text) => {
             setCode(text.toUpperCase());
@@ -138,7 +221,7 @@ const PromoCodeInput: React.FC<PromoCodeInputProps> = ({
           activeOpacity={0.8}
         >
           {validatePromo.isPending ? (
-            <ActivityIndicator size="small" color={COLORS.white} />
+            <ActivityIndicator size="small" color={colors.text.inverse} />
           ) : (
             <Text style={styles.applyButtonText}>Appliquer</Text>
           )}
@@ -150,87 +233,5 @@ const PromoCodeInput: React.FC<PromoCodeInputProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-  },
-  inputRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  input: {
-    flex: 1,
-    height: 44,
-    borderWidth: 1,
-    borderColor: COLORS.inputBorder,
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.black,
-    backgroundColor: COLORS.white,
-  },
-  applyButton: {
-    height: 44,
-    paddingHorizontal: 16,
-    borderRadius: 10,
-    backgroundColor: COLORS.blue,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  applyButtonDisabled: {
-    backgroundColor: COLORS.lightGray,
-  },
-  applyButtonText: {
-    fontSize: 14,
-    fontFamily: Fonts.bold,
-    color: COLORS.white,
-  },
-  errorText: {
-    marginTop: 6,
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.danger,
-  },
-  successCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginHorizontal: 16,
-    marginVertical: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.success + "40",
-    backgroundColor: COLORS.success + "10",
-  },
-  successContent: {
-    flexDirection: "row",
-    alignItems: "center",
-    flex: 1,
-    gap: 8,
-  },
-  successTextContainer: {
-    flex: 1,
-  },
-  successTitle: {
-    fontSize: 13,
-    fontFamily: Fonts.bold,
-    color: COLORS.success,
-  },
-  successDiscount: {
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    color: COLORS.success,
-    marginTop: 2,
-  },
-  removeButton: {
-    padding: 4,
-  },
-});
 
 export default PromoCodeInput;

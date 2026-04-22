@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Alert, Image, StyleSheet, Text, View } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { RadioButton } from "react-native-paper";
 import { LoadingSpinner } from "@src/components/LoadingSpinner";
-import { COLORS } from "@src/constants/Colors";
+
 import { IMAGES } from "@src/constants/Images";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import AuthFormContainer from "@src/components/AuthFormContainer/AuthFormContainer";
 import AppInput from "@src/components/AppInput/AppInput";
 import { Fonts } from "@src/constants/Fonts";
@@ -42,6 +43,13 @@ const steps = [
 ];
 
 const BatchUpdateDetail = ({ navigation, route }: RootStackScreenProps<"BatchUpdateDetail">) => {
+   const { colors } = useAppTheme();
+   const styles = useMemo(() => StyleSheet.create({
+      containerStyle: {
+         marginBottom: 20,
+      },
+      pickerStyle: { width: "100%", height: 50 },
+   }), [colors]);
    const [pickerValue, setPickerValue] = useState<string | null>(null);
    const [category, setCategory] = useState<string | null>(steps[0].title);
 
@@ -75,7 +83,7 @@ const BatchUpdateDetail = ({ navigation, route }: RootStackScreenProps<"BatchUpd
                Quelle action souhaitez-vous faire ?
             </Text>
 
-            <View style={{ borderColor: COLORS.grey, borderWidth: 1 }}>
+            <View style={{ borderColor: colors.border, borderWidth: 1 }}>
                <Picker
                   mode="dialog"
                   placeholder="Choisir Categorie"

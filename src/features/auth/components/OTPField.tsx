@@ -1,7 +1,8 @@
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import React, { forwardRef, useMemo } from 'react';
-import { StyleSheet, TextInput, TextInputProps } from 'react-native';
+import { StyleSheet, TextInput } from 'react-native';
+import type { TextInputProps } from 'react-native';
 
 interface Props extends TextInputProps {
 	ref: any;

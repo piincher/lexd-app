@@ -10,6 +10,8 @@ import { FlashList } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { Theme } from "@src/constants/Theme";
+import { NotificationBell } from "@src/features/notifications";
 
 import { useUnassignedGoods } from "../hooks/useUnassignedGoods";
 import { ClientInfo } from "@src/features/admin/goods/types";
@@ -46,7 +48,11 @@ export const UnassignedGoodsScreen: React.FC = () => {
           <Ionicons name="arrow-back" size={24} color="#1F2937" />
         </TouchableOpacity>
         <Text style={styles.title}>Marchandises Non Assignées</Text>
-        <Text style={styles.count}>{sortedGoods.length}</Text>
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color="#1F2937"
+        />
       </View>
 
       <FlashList
@@ -118,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 16,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
     borderBottomColor: "#F3F4F6",
   },
@@ -145,7 +151,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   card: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,

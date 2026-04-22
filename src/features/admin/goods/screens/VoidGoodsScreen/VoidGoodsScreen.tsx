@@ -3,7 +3,7 @@
  * Responsibility: Layout composition only (<100 lines)
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
@@ -11,7 +11,8 @@ import { Card } from '@src/shared/ui/Card';
 import { Button } from '@src/shared/ui/Button';
 import { Theme } from '@src/constants/Theme';
 import { useVoidGoods } from '../../hooks';
-import { styles } from './VoidGoodsScreen.styles';
+import { createStyles } from './VoidGoodsScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const VOID_REASONS = [
   { key: 'DAMAGED', label: 'Damaged' },
@@ -21,6 +22,8 @@ const VOID_REASONS = [
 ];
 
 export const VoidGoodsScreen: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const navigation = useNavigation();
   const route = useRoute<any>();
   const { goodsId, goodsTrackingCode, cbm } = route.params;
@@ -50,7 +53,7 @@ export const VoidGoodsScreen: React.FC = () => {
   };
 
   return (
-    <Screen header={{ title: 'Void Goods' }}>
+    <Screen header={{ title: 'Void Goods', showNotificationBell: true }}>
       <View style={styles.container}>
         <Card variant="elevated" style={styles.warningCard}>
           <Text style={styles.warningTitle}>⚠️ Warning</Text>

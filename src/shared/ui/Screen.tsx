@@ -4,17 +4,12 @@
  */
 
 import React from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  ViewStyle,
-  StatusBar,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
+import type { ViewStyle, StyleProp } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 
 export type ScreenVariant = 'default' | 'plain' | 'card';
 
@@ -23,6 +18,7 @@ export interface HeaderConfig {
   showBack?: boolean;
   onBackPress?: () => void;
   rightAction?: React.ReactNode;
+  showNotificationBell?: boolean;
 }
 
 export interface ScreenProps {
@@ -30,8 +26,8 @@ export interface ScreenProps {
   variant?: ScreenVariant;
   scrollable?: boolean;
   safeArea?: boolean;
-  style?: ViewStyle;
-  contentStyle?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
+  contentStyle?: StyleProp<ViewStyle>;
   header?: React.ReactNode | HeaderConfig;
   footer?: React.ReactNode;
 }
@@ -47,6 +43,7 @@ export const Screen: React.FC<ScreenProps> = ({
   footer,
 }) => {
   const { colors, isDark } = useAppTheme();
+  const navigation = useNavigation();
 
   // Render header based on type
   const renderHeader = () => {
@@ -77,7 +74,15 @@ export const Screen: React.FC<ScreenProps> = ({
           <Text style={[styles.headerTitle, { color: colors.text.primary }]}>
             {headerConfig.title}
           </Text>
-          {headerConfig.rightAction ? (
+          {headerConfig.showNotificationBell ? (
+            <View style={styles.rightAction}>
+              <NotificationBell
+                onPress={() => (navigation as any).navigate('Notifications')}
+                size={22}
+                color={colors.text.primary}
+              />
+            </View>
+          ) : headerConfig.rightAction ? (
             <View style={styles.rightAction}>{headerConfig.rightAction}</View>
           ) : (
             <View style={styles.rightPlaceholder} />

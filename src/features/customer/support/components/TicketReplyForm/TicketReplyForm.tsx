@@ -3,11 +3,11 @@
  * Input form for sending replies to tickets
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { View, StyleSheet, TextInput as RNTextInput } from 'react-native';
 import { IconButton, useTheme } from 'react-native-paper';
-import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface TicketReplyFormProps {
   onSend: (message: string) => void;
@@ -16,6 +16,7 @@ interface TicketReplyFormProps {
 
 export const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSend, isPending }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
   const [message, setMessage] = useState('');
   const inputRef = useRef<RNTextInput>(null);
 
@@ -24,6 +25,32 @@ export const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSend, isPend
     onSend(message);
     setMessage('');
   };
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      backgroundColor: colors.background.default,
+      borderTopWidth: 1,
+      borderTopColor: colors.neutral[200],
+      padding: 12,
+    },
+    inputWrapper: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: colors.background.paper,
+      borderRadius: 24,
+      paddingHorizontal: 16,
+      minHeight: 48,
+    },
+    textInput: {
+      flex: 1,
+      fontFamily: Fonts.regular,
+      fontSize: 15,
+      color: colors.text.primary,
+      maxHeight: 100,
+      paddingTop: 8,
+      paddingBottom: 8,
+    },
+  }), [colors, isDark]);
 
   return (
     <View style={styles.container}>
@@ -36,7 +63,7 @@ export const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSend, isPend
           onChangeText={setMessage}
           multiline
           maxLength={1000}
-          placeholderTextColor={COLORS.SlateGray}
+          placeholderTextColor={colors.text.secondary}
         />
         <IconButton
           icon="send"
@@ -50,29 +77,3 @@ export const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSend, isPend
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: COLORS.white,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.Silver,
-    padding: 12,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.FeatherWhite,
-    borderRadius: 24,
-    paddingHorizontal: 16,
-    minHeight: 48,
-  },
-  textInput: {
-    flex: 1,
-    fontFamily: Fonts.regular,
-    fontSize: 15,
-    color: COLORS.DarkGrey,
-    maxHeight: 100,
-    paddingTop: 8,
-    paddingBottom: 8,
-  },
-});

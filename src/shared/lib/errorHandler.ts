@@ -5,7 +5,6 @@
 
 import * as Sentry from '@sentry/react-native';
 import { showMessage } from 'react-native-flash-message';
-import { COLORS } from '@src/constants/Colors';
 
 export interface ErrorContext {
   component?: string;
@@ -23,13 +22,19 @@ export interface HandledError {
   timestamp: string;
 }
 
+export interface ToastColors {
+  backgroundColor: string;
+  textColor: string;
+}
+
 /**
  * Handles async errors with proper logging and user feedback
  */
 export function handleAsyncError(
   error: unknown,
   context: string | ErrorContext,
-  showUserFeedback: boolean = true
+  showUserFeedback: boolean = true,
+  colors?: ToastColors
 ): HandledError {
   const errorContext: ErrorContext = typeof context === 'string' 
     ? { component: context } 
@@ -70,7 +75,7 @@ export function handleAsyncError(
 
   // Show user feedback
   if (showUserFeedback) {
-    showErrorToast(message);
+    showErrorToast(message, 3000, colors);
   }
 
   return handledError;
@@ -82,7 +87,8 @@ export function handleAsyncError(
 export function handleApiError(
   error: unknown,
   endpoint: string,
-  context?: Omit<ErrorContext, 'action'>
+  context?: Omit<ErrorContext, 'action'>,
+  colors?: ToastColors
 ): HandledError {
   const errorContext: ErrorContext = {
     ...context,
@@ -124,7 +130,7 @@ export function handleApiError(
       }
   }
 
-  return handleAsyncError(error, errorContext, true);
+  return handleAsyncError(error, errorContext, true, colors);
 }
 
 /**
@@ -133,7 +139,8 @@ export function handleApiError(
 export function handleFormError(
   error: unknown,
   formName: string,
-  context?: Omit<ErrorContext, 'action'>
+  context?: Omit<ErrorContext, 'action'>,
+  colors?: ToastColors
 ): HandledError {
   const errorContext: ErrorContext = {
     ...context,
@@ -142,19 +149,19 @@ export function handleFormError(
 
   const message = extractErrorMessage(error) || 'Erreur de validation du formulaire';
 
-  return handleAsyncError(error, errorContext, true);
+  return handleAsyncError(error, errorContext, true, colors);
 }
 
 /**
  * Shows error toast message
  */
-export function showErrorToast(message: string, duration: number = 3000): void {
+export function showErrorToast(message: string, duration: number = 3000, colors?: ToastColors): void {
   showMessage({
     message: 'Erreur',
     description: message,
     type: 'danger',
-    backgroundColor: COLORS.danger,
-    color: COLORS.white,
+    backgroundColor: colors?.backgroundColor || '#dc3545',
+    color: colors?.textColor || '#FFFFFF',
     duration,
     icon: 'danger',
   });
@@ -163,13 +170,13 @@ export function showErrorToast(message: string, duration: number = 3000): void {
 /**
  * Shows success toast message
  */
-export function showSuccessToast(message: string, duration: number = 3000): void {
+export function showSuccessToast(message: string, duration: number = 3000, colors?: ToastColors): void {
   showMessage({
     message: 'Succès',
     description: message,
     type: 'success',
-    backgroundColor: COLORS.success,
-    color: COLORS.white,
+    backgroundColor: colors?.backgroundColor || '#28a745',
+    color: colors?.textColor || '#FFFFFF',
     duration,
     icon: 'success',
   });
@@ -178,13 +185,13 @@ export function showSuccessToast(message: string, duration: number = 3000): void
 /**
  * Shows warning toast message
  */
-export function showWarningToast(message: string, duration: number = 3000): void {
+export function showWarningToast(message: string, duration: number = 3000, colors?: ToastColors): void {
   showMessage({
     message: 'Attention',
     description: message,
     type: 'warning',
-    backgroundColor: COLORS.orange,
-    color: COLORS.white,
+    backgroundColor: colors?.backgroundColor || '#ff9800',
+    color: colors?.textColor || '#FFFFFF',
     duration,
     icon: 'warning',
   });
@@ -193,13 +200,13 @@ export function showWarningToast(message: string, duration: number = 3000): void
 /**
  * Shows info toast message
  */
-export function showInfoToast(message: string, duration: number = 3000): void {
+export function showInfoToast(message: string, duration: number = 3000, colors?: ToastColors): void {
   showMessage({
     message: 'Information',
     description: message,
     type: 'info',
-    backgroundColor: COLORS.Crimson,
-    color: COLORS.white,
+    backgroundColor: colors?.backgroundColor || '#17a2b8',
+    color: colors?.textColor || '#FFFFFF',
     duration,
     icon: 'info',
   });

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Image, Pressable, StyleSheet, Platform } from "react-native";
 import { Text } from "react-native-paper";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { NotificationBell } from "@src/features/notifications";
 import { IMAGES } from "@src/constants/Images";
 import { useNavigation } from "@react-navigation/native";
@@ -31,7 +31,7 @@ export const Header = () => {
          {/* Action Buttons */}
          <View style={styles.actions}>
             <Pressable
-               onPress={() => navigation.navigate("faq" as never)}
+               onPress={() => navigation.navigate("CheckRoute" as never)}
                style={({ pressed }) => [
                   styles.iconButton,
                   {
@@ -43,10 +43,10 @@ export const Header = () => {
                ]}
                hitSlop={8}
                accessibilityRole="button"
-               accessibilityLabel="FAQ"
+               accessibilityLabel="Suivre un envoi"
             >
-               <MaterialCommunityIcons
-                  name="help-circle-outline"
+               <AntDesign
+                  name="search"
                   size={20}
                   color={colors.primary.main}
                />
@@ -67,27 +67,6 @@ export const Header = () => {
                   color={colors.primary.main}
                />
             </View>
-            <Pressable
-               onPress={() => navigation.navigate("AboutUs" as never)}
-               style={({ pressed }) => [
-                  styles.iconButton,
-                  {
-                     backgroundColor: isDark
-                        ? 'rgba(74,222,128,0.12)'
-                        : 'rgba(34,197,94,0.08)',
-                  },
-                  pressed && styles.iconButtonPressed,
-               ]}
-               hitSlop={8}
-               accessibilityRole="button"
-               accessibilityLabel="À propos"
-            >
-               <MaterialCommunityIcons
-                  name="information-outline"
-                  size={20}
-                  color={colors.primary.main}
-               />
-            </Pressable>
          </View>
       </View>
    );

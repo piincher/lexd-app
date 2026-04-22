@@ -10,14 +10,30 @@ export const calculateDashboardStats = (
 ) => ({
   totalGoods: goodsData?.data?.data?.length || goodsData?.data?.goods?.length || 0,
   pendingContainers: containersData?.data?.length || containersData?.data?.containers?.length || 0,
-  smsBalance: smsData?.[2]?.availableUnits || 0,
+  smsBalance: smsData?.reduce((sum: number, sub: any) => sum + (sub.availableUnits || 0), 0) || 0,
 });
 
-export const calculateSMSBalance = (smsData: any) => {
-  const totalUnits = smsData?.[2]?.availableUnits || 0;
-  const usedUnits = smsData?.[2]?.usedUnits || 0;
-  const percentageUsed = totalUnits > 0 ? usedUnits / (totalUnits + usedUnits) : 0;
-  const status = percentageUsed < 0.3 ? "success" : percentageUsed < 0.7 ? "warning" : "danger";
+export interface SMSBalanceSummary {
+  totalUnits: number;
+  status: "success" | "warning" | "danger";
+  daysRemaining: number;
+  expirationDateShort: string | null;
+  hasExpired: boolean;
+  hasExpiringSoon: boolean;
+}
 
-  return { totalUnits, usedUnits, percentageUsed, status };
+export const calculateSMSBalance = (smsData: any): SMSBalanceSummary => {
+  const totalUnits = smsData?.reduce((sum: number, sub: any) => sum + (sub.availableUnits || 0), 0) || 0;
+  const hasExpired = smsData?.some((sub: any) => sub.isExpired) || false;
+  const hasExpiringSoon = smsData?.some((sub: any) => sub.isExpiringSoon) || false;
+
+  // Determine status based on urgency
+  const status: SMSBalanceSummary["status"] = hasExpired ? "danger" : hasExpiringSoon ? "warning" : totalUnits > 100 ? "success" : totalUnits > 20 ? "warning" : "danger";
+
+  // Find the most critical subscription for display
+  const criticalSub = smsData?.find((sub: any) => sub.isExpired || sub.isExpiringSoon) || smsData?.[0];
+  const daysRemaining = criticalSub?.daysRemaining || 0;
+  const expirationDateShort = criticalSub?.expirationDateShort || null;
+
+  return { totalUnits, status, daysRemaining, expirationDateShort, hasExpired, hasExpiringSoon };
 };

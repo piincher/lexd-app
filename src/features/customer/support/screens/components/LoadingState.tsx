@@ -3,15 +3,30 @@
  * Displays loading indicator for ticket detail screen
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ShimmerBlock } from '@src/shared/ui';
 
 export const LoadingState: React.FC = () => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 32,
+    },
+    text: {
+      marginTop: 16,
+      fontFamily: Fonts.meduim,
+      color: colors.text.secondary,
+    },
+  }), [colors, isDark]);
 
   return (
     <View style={styles.container}>
@@ -28,17 +43,3 @@ export const LoadingState: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 32,
-  },
-  text: {
-    marginTop: 16,
-    fontFamily: Fonts.meduim,
-    color: COLORS.DimGray,
-  },
-});

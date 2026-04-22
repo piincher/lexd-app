@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Alert } from 'react-native';
 import { ContainerWaypoint, SeaSegment, RoadSegment, RouteTemplate, WaypointStatus, SegmentType } from '../../../types';
 

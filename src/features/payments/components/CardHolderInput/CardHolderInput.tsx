@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     borderColor: Theme.neutral.grey300,
     borderRadius: 8,
     paddingHorizontal: Theme.spacing.md,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
   },
   focused: {
     borderColor: Theme.colors.primary.main,

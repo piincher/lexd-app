@@ -31,13 +31,12 @@ export const PastOrdersScreenV2: React.FC = () => {
   const orders = data?.orders ?? [];
 
   return (
-    <Screen variant="plain" scrollable={false}>
+    <Screen variant="plain" scrollable={false} header={{ title: 'Commandes Passées', showNotificationBell: true }}>
       <View style={styles.searchContainer}>
         <Input
           placeholder="Rechercher une commande..."
           value={filters.searchQuery}
           onChangeText={setSearchQuery}
-          leftIcon="search"
         />
       </View>
       <OrderStatusFilter

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   ScrollView,
@@ -20,9 +20,12 @@ import {
   LoadingState,
   ErrorDisplay,
 } from './RouteForm/components';
-import { styles } from './RouteForm/RouteForm.styles';
+import { createStyles } from './RouteForm/RouteForm.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const RouteFormScreen: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const {
     formData,
     errors,

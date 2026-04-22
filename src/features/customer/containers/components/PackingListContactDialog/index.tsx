@@ -4,12 +4,11 @@
  * SRP: Display consignee contact information dialog
  */
 
-import React from 'react';
-import { Linking } from 'react-native';
+import React, { useMemo } from 'react';
+import { Linking, StyleSheet } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
-import { styles } from './PackingListContactDialog.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface Consignee {
   name: string;
@@ -28,6 +27,20 @@ export const PackingListContactDialog: React.FC<PackingListContactDialogProps> =
   onDismiss,
   consignee,
 }) => {
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    dialogText: {
+      fontSize: 14,
+      marginBottom: 8,
+      fontFamily: Fonts.regular,
+    },
+    dialogLabel: {
+      fontFamily: Fonts.bold,
+      color: colors.text.secondary,
+    },
+  }), [colors, isDark]);
+
   const handleCall = () => {
     if (consignee.phone) {
       Linking.openURL(`tel:${consignee.phone}`);

@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     padding: Theme.spacing.lg,
   },
   dropdown: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     width: '80%',
     maxWidth: 300,

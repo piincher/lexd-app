@@ -7,24 +7,36 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 
 interface WhatsAppRequestHeaderProps {
   onRefresh: () => void;
 }
 
-export const WhatsAppRequestHeader: React.FC<WhatsAppRequestHeaderProps> = ({ onRefresh }) => (
+export const WhatsAppRequestHeader: React.FC<WhatsAppRequestHeaderProps> = ({ onRefresh }) => {
+  const navigation = useNavigation();
+  return (
   <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
     <View style={styles.headerTop}>
       <View>
         <Text style={styles.headerGreeting}>Service Client</Text>
         <Text style={styles.headerTitle}>WhatsApp Requests</Text>
       </View>
-      <TouchableOpacity style={styles.iconButton} onPress={onRefresh}>
-        <Ionicons name="refresh" size={24} color={Theme.neutral[700]} />
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', gap: 8 }}>
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color={Theme.neutral[700]}
+        />
+        <TouchableOpacity style={styles.iconButton} onPress={onRefresh}>
+          <Ionicons name="refresh" size={24} color={Theme.neutral[700]} />
+        </TouchableOpacity>
+      </View>
     </View>
   </LinearGradient>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -55,7 +67,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.sm,

@@ -1,6 +1,6 @@
 // CircleUI.tsx
-import { COLORS } from "@src/constants/Colors";
-import React from "react";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import React, { useMemo } from "react";
 import { StyleSheet } from "react-native";
 import Animated, {
    Easing,
@@ -17,6 +17,7 @@ interface Props {
 }
 
 const CircleUI: React.FC<Props> = ({ size, position }) => {
+   const { colors } = useAppTheme();
    const rotation = useSharedValue(0);
    const scale = useSharedValue(1);
 
@@ -45,6 +46,26 @@ const CircleUI: React.FC<Props> = ({ size, position }) => {
          break;
    }
 
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            circleContainer: {
+               position: "absolute",
+            },
+            outerCircle: {
+               backgroundColor: colors.primary.main,
+               opacity: 0.1,
+               position: "absolute",
+            },
+            innerCircle: {
+               backgroundColor: colors.primary.main,
+               opacity: 0.05,
+               position: "absolute",
+            },
+         }),
+      [colors],
+   );
+
    return (
       <Animated.View
          style={[
@@ -71,20 +92,4 @@ const CircleUI: React.FC<Props> = ({ size, position }) => {
       </Animated.View>
    );
 };
-
-const styles = StyleSheet.create({
-   circleContainer: {
-      position: "absolute",
-   },
-   outerCircle: {
-      backgroundColor: COLORS.blue,
-      opacity: 0.1,
-      position: "absolute",
-   },
-   innerCircle: {
-      backgroundColor: COLORS.blue,
-      opacity: 0.05,
-      position: "absolute",
-   },
-});
 export default CircleUI;

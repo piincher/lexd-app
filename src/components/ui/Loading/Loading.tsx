@@ -3,14 +3,9 @@
  */
 
 import React from 'react';
-import { 
-  View, 
-  ActivityIndicator, 
-  Text, 
-  StyleSheet,
-  ViewStyle,
-} from 'react-native';
-import { COLORS } from '@src/constants/Colors';
+import { View, ActivityIndicator, Text, StyleSheet } from 'react-native';
+import type { ViewStyle } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export interface LoadingProps {
   message?: string;
@@ -25,18 +20,20 @@ export const Loading: React.FC<LoadingProps> = ({
   fullScreen = false,
   style,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <View style={[
       styles.container,
-      fullScreen && [styles.fullScreen, { backgroundColor: COLORS.white }],
+      fullScreen && [styles.fullScreen, { backgroundColor: colors.background.default }],
       style,
     ]}>
-      <ActivityIndicator 
-        size={size} 
-        color={COLORS.Crimson}
+      <ActivityIndicator
+        size={size}
+        color={colors.primary.main}
       />
       {message && (
-        <Text style={[styles.message, { color: COLORS.DarkGrey }]}>{message}</Text>
+        <Text style={[styles.message, { color: colors.text.primary }]}>{message}</Text>
       )}
     </View>
   );
@@ -55,6 +52,8 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   borderRadius = 4,
   style,
 }) => {
+  const { colors, isDark } = useAppTheme();
+
   const dynamicStyle: ViewStyle = {
     width: width as ViewStyle['width'],
     height,
@@ -62,12 +61,13 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   };
 
   return (
-    <View 
+    <View
       style={[
         styles.skeleton,
         dynamicStyle,
+        { backgroundColor: isDark ? colors.neutral[700] : colors.neutral[200] },
         style,
-      ]} 
+      ]}
     />
   );
 };
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   skeleton: {
-    backgroundColor: COLORS.Silver,
+    overflow: 'hidden',
   },
 });
 

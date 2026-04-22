@@ -12,11 +12,11 @@ import {
 } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { useGetConsignees, useToggleConsigneeStatus } from "../hooks";
 import { Consignee } from "../api";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 type ConsigneeStackParamList = {
    ConsigneeList: undefined;
@@ -33,18 +33,20 @@ interface ConsigneeCardProps {
 }
 
 const ConsigneeCard: React.FC<ConsigneeCardProps> = ({ consignee, onPress, onToggleStatus }) => {
+   const { colors } = useAppTheme();
+
    return (
-      <Card style={styles.card} onPress={onPress}>
+      <Card style={[styles.card, { backgroundColor: colors.background.card }]} onPress={onPress}>
          <Card.Content>
             <View style={styles.cardHeader}>
                <View style={styles.nameContainer}>
-                  <Text style={styles.name}>{consignee.name}</Text>
+                  <Text style={[styles.name, { color: colors.text.primary }]}>{consignee.name}</Text>
                   <Chip
                      style={[
                         styles.statusChip,
-                        { backgroundColor: consignee.isActive ? COLORS.green : COLORS.grey },
+                        { backgroundColor: consignee.isActive ? colors.status.success : colors.text.disabled },
                      ]}
-                     textStyle={styles.statusChipText}
+                     textStyle={[styles.statusChipText, { color: colors.background.default }]}
                   >
                      {consignee.isActive ? "Actif" : "Inactif"}
                   </Chip>
@@ -53,26 +55,26 @@ const ConsigneeCard: React.FC<ConsigneeCardProps> = ({ consignee, onPress, onTog
                   <Ionicons
                      name={consignee.isActive ? "toggle" : "toggle-outline"}
                      size={28}
-                     color={consignee.isActive ? COLORS.green : COLORS.grey}
+                     color={consignee.isActive ? colors.status.success : colors.text.disabled}
                   />
                </TouchableOpacity>
             </View>
 
             <View style={styles.infoRow}>
-               <Ionicons name="call-outline" size={16} color={COLORS.DimGray} />
-               <Text style={styles.infoText}>{consignee.phone}</Text>
+               <Ionicons name="call-outline" size={16} color={colors.text.secondary} />
+               <Text style={[styles.infoText, { color: colors.text.secondary }]}>{consignee.phone}</Text>
             </View>
 
             {consignee.email && (
                <View style={styles.infoRow}>
-                  <Ionicons name="mail-outline" size={16} color={COLORS.DimGray} />
-                  <Text style={styles.infoText}>{consignee.email}</Text>
+                  <Ionicons name="mail-outline" size={16} color={colors.text.secondary} />
+                  <Text style={[styles.infoText, { color: colors.text.secondary }]}>{consignee.email}</Text>
                </View>
             )}
 
             <View style={styles.infoRow}>
-               <Ionicons name="cube-outline" size={16} color={COLORS.DimGray} />
-               <Text style={styles.infoText}>
+               <Ionicons name="cube-outline" size={16} color={colors.text.secondary} />
+               <Text style={[styles.infoText, { color: colors.text.secondary }]}>
                   {consignee.assignedContainersCount} conteneur(s) assigné(s)
                </Text>
             </View>
@@ -83,6 +85,7 @@ const ConsigneeCard: React.FC<ConsigneeCardProps> = ({ consignee, onPress, onTog
 
 const ConsigneeListScreen: React.FC = () => {
    const navigation = useNavigation<NavigationProp>();
+   const { colors } = useAppTheme();
    const [searchQuery, setSearchQuery] = useState("");
 
    const { data: consignees, isLoading, error, refetch } = useGetConsignees();
@@ -110,19 +113,19 @@ const ConsigneeListScreen: React.FC = () => {
 
    if (isLoading) {
       return (
-         <SafeAreaView style={[styles.container, styles.centered]}>
-            <ActivityIndicator size="large" color={COLORS.Crimson} />
-            <Text style={styles.loadingText}>Chargement des destinataires...</Text>
+         <SafeAreaView style={[styles.container, styles.centered, { backgroundColor: colors.background.default }]}>
+            <ActivityIndicator size="large" color={colors.primary.main} />
+            <Text style={[styles.loadingText, { color: colors.text.secondary }]}>Chargement des destinataires...</Text>
          </SafeAreaView>
       );
    }
 
    if (error) {
       return (
-         <SafeAreaView style={[styles.container, styles.centered]}>
-            <Ionicons name="alert-circle-outline" size={48} color={COLORS.danger} />
-            <Text style={styles.errorText}>Erreur lors du chargement</Text>
-            <Button mode="contained" onPress={() => refetch()} style={styles.retryButton}>
+         <SafeAreaView style={[styles.container, styles.centered, { backgroundColor: colors.background.default }]}>
+            <Ionicons name="alert-circle-outline" size={48} color={colors.status.error} />
+            <Text style={[styles.errorText, { color: colors.status.error }]}>Erreur lors du chargement</Text>
+            <Button mode="contained" onPress={() => refetch()} style={[styles.retryButton, { backgroundColor: colors.primary.main }]}>
                Réessayer
             </Button>
          </SafeAreaView>
@@ -130,10 +133,10 @@ const ConsigneeListScreen: React.FC = () => {
    }
 
    return (
-      <SafeAreaView style={styles.container}>
-         <View style={styles.header}>
-            <Text style={styles.headerTitle}>Destinataires Bamako</Text>
-            <Text style={styles.headerSubtitle}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
+         <View style={[styles.header, { backgroundColor: colors.background.card, borderBottomColor: colors.border }]}>
+            <Text style={[styles.headerTitle, { color: colors.text.primary }]}>Destinataires Bamako</Text>
+            <Text style={[styles.headerSubtitle, { color: colors.text.secondary }]}>
                {filteredConsignees.length} destinataire(s)
             </Text>
          </View>
@@ -142,8 +145,8 @@ const ConsigneeListScreen: React.FC = () => {
             placeholder="Rechercher par nom ou téléphone"
             onChangeText={setSearchQuery}
             value={searchQuery}
-            style={styles.searchBar}
-            iconColor={COLORS.DimGray}
+            style={[styles.searchBar, { backgroundColor: colors.background.card }]}
+            iconColor={colors.text.secondary}
          />
 
          <FlashList
@@ -160,8 +163,8 @@ const ConsigneeListScreen: React.FC = () => {
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={
                <View style={styles.emptyContainer}>
-                  <Ionicons name="people-outline" size={64} color={COLORS.SlateGray} />
-                  <Text style={styles.emptyText}>
+                  <Ionicons name="people-outline" size={64} color={colors.text.disabled} />
+                  <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
                      {searchQuery
                         ? "Aucun destinataire ne correspond à votre recherche"
                         : "Aucun destinataire enregistré"}
@@ -171,10 +174,10 @@ const ConsigneeListScreen: React.FC = () => {
          />
 
          <FAB
-            style={styles.fab}
+            style={[styles.fab, { backgroundColor: colors.primary.main }]}
             icon="plus"
             onPress={() => navigation.navigate("CreateConsignee")}
-            color={COLORS.white}
+            color={colors.background.default}
          />
       </SafeAreaView>
    );
@@ -183,7 +186,6 @@ const ConsigneeListScreen: React.FC = () => {
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor: COLORS.lightBackground,
    },
    centered: {
       justifyContent: "center",
@@ -192,23 +194,18 @@ const styles = StyleSheet.create({
    header: {
       paddingHorizontal: 16,
       paddingVertical: 16,
-      backgroundColor: COLORS.white,
       borderBottomWidth: 1,
-      borderBottomColor: COLORS.border,
    },
    headerTitle: {
       fontSize: 24,
       fontWeight: "700",
-      color: COLORS.DarkGrey,
    },
    headerSubtitle: {
       fontSize: 14,
-      color: COLORS.DimGray,
       marginTop: 4,
    },
    searchBar: {
       margin: 16,
-      backgroundColor: COLORS.white,
       borderRadius: 12,
       elevation: 2,
    },
@@ -219,7 +216,6 @@ const styles = StyleSheet.create({
    card: {
       marginBottom: 12,
       borderRadius: 12,
-      backgroundColor: COLORS.white,
       elevation: 2,
    },
    cardHeader: {
@@ -236,7 +232,6 @@ const styles = StyleSheet.create({
    name: {
       fontSize: 18,
       fontWeight: "600",
-      color: COLORS.DarkGrey,
       flex: 1,
    },
    statusChip: {
@@ -245,7 +240,6 @@ const styles = StyleSheet.create({
    },
    statusChipText: {
       fontSize: 12,
-      color: COLORS.white,
       fontWeight: "500",
    },
    infoRow: {
@@ -256,13 +250,11 @@ const styles = StyleSheet.create({
    infoText: {
       marginLeft: 8,
       fontSize: 14,
-      color: COLORS.DimGray,
    },
    fab: {
       position: "absolute",
       right: 16,
       bottom: 24,
-      backgroundColor: COLORS.Crimson,
    },
    emptyContainer: {
       alignItems: "center",
@@ -272,22 +264,18 @@ const styles = StyleSheet.create({
    emptyText: {
       marginTop: 16,
       fontSize: 16,
-      color: COLORS.DimGray,
       textAlign: "center",
    },
    loadingText: {
       marginTop: 16,
       fontSize: 16,
-      color: COLORS.DimGray,
    },
    errorText: {
       marginTop: 16,
       fontSize: 16,
-      color: COLORS.danger,
    },
    retryButton: {
       marginTop: 16,
-      backgroundColor: COLORS.Crimson,
    },
 });
 

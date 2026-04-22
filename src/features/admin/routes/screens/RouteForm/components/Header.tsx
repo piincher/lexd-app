@@ -3,7 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { NavigationProp } from '@react-navigation/native';
+import { NotificationBell } from '@src/features/notifications';
+import type { NavigationProp } from '@react-navigation/native';
 
 interface HeaderProps {
   isEditMode: boolean;
@@ -36,9 +37,11 @@ export const Header: React.FC<HeaderProps> = ({ isEditMode, navigation }) => {
           }
         </Text>
       </View>
-      <View style={styles.headerIcon}>
-        <Ionicons name="map" size={32} color="rgba(255,255,255,0.3)" />
-      </View>
+      <NotificationBell
+        onPress={() => navigation.navigate('Notifications' as never)}
+        size={24}
+        color="#FFF"
+      />
     </LinearGradient>
   );
 };

@@ -108,6 +108,7 @@ export const useAdminStats = () => {
 
   const isLoading = isLoadingDashboard && !dashboard;
   const isError = isDashboardError && !dashboard;
+  const isFetchingPeriodData = isLoadingCustomers || isLoadingPayments || isLoadingGoods;
 
   const refetch = useCallback(() => {
     refetchDashboard();
@@ -192,6 +193,7 @@ export const useAdminStats = () => {
     user,
     isLoading,
     isError,
+    isFetchingPeriodData,
     refetch,
     period,
     setPeriod,

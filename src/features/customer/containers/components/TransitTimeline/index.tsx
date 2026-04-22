@@ -2,20 +2,20 @@
  * TransitTimeline - Customer-facing transit timeline
  * Refactored: Composed from smaller components, < 150 lines
  */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Card, Divider } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint } from '../../types';
 import { TimelineWaypointCard } from '../TimelineWaypointCard';
 import { useTimelineData } from './hooks/useTimelineData';
 import { formatTimestamp } from './components/TimelineDateMarker';
 import { RouteFlow } from './components/RouteFlow';
-import { styles } from './TransitTimeline.styles';
+import { createStyles } from './TransitTimeline.styles';
 
 interface Props {
   waypoints: ContainerWaypoint[];
@@ -28,6 +28,8 @@ interface Props {
 export const TransitTimeline: React.FC<Props> = ({
   waypoints, currentWaypointIndex, containerNumber, lastUpdateTimestamp, consignee,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { completedWaypoints, currentWaypoint, finalDestination, dakarWaypoint } = 
     useTimelineData(waypoints, currentWaypointIndex);
 
@@ -88,7 +90,7 @@ export const TransitTimeline: React.FC<Props> = ({
             <Text style={styles.summaryLabel}>Départ</Text>
             <Text style={styles.summaryValue}>{waypoints[0]?.location || 'N/A'}</Text>
           </View>
-          <Ionicons name="arrow-forward" size={20} color={Theme.neutral[400]} />
+          <Ionicons name="arrow-forward" size={20} color={colors.text.secondary} />
           <View style={styles.summaryItem}>
             <Ionicons name="flag-outline" size={20} color={Theme.status.success} />
             <Text style={styles.summaryLabel}>Arrivée</Text>
@@ -99,7 +101,7 @@ export const TransitTimeline: React.FC<Props> = ({
 
       <Animated.View entering={FadeInUp.delay(400)} style={styles.arrivalCard}>
         <LinearGradient colors={['#FEF3C7', '#FFFBEB']} style={styles.arrivalGradient}>
-          <View style={styles.arrivalIconContainer}><Ionicons name="flag" size={28} color={COLORS.orange} /></View>
+          <View style={styles.arrivalIconContainer}><Ionicons name="flag" size={28} color={colors.accent.goldDark} /></View>
           <View style={styles.arrivalContent}>
             <Text style={styles.arrivalLabel}>Arrivée Estimée</Text>
             <Text style={styles.arrivalValue}>{getETA()}</Text>
@@ -127,7 +129,7 @@ export const TransitTimeline: React.FC<Props> = ({
             <LinearGradient colors={['#8B5CF6', '#7C3AED']} style={styles.pickupGradient}>
               <Card.Content>
                 <View style={styles.pickupHeader}>
-                  <Ionicons name="location" size={28} color="#FFF" />
+                  <Ionicons name="location" size={28} color={colors.text.inverse} />
                   <Text style={styles.pickupTitle}>POINT DE RETRAIT</Text>
                 </View>
                 <Text style={styles.warehouseName}>{consignee.name}</Text>

@@ -4,6 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 import { CapacityIndicator } from './CapacityIndicator';
 import { Container, ContainerStatus, CONTAINER_STATUS_LABELS } from '../../../types';
 
@@ -30,6 +32,7 @@ export const Header: React.FC<HeaderProps> = ({
   maxCapacity = MAX_CONTAINER_CBM,
   onBack,
 }) => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <LinearGradient colors={Theme.gradients.primary} style={styles.header}>
@@ -40,8 +43,20 @@ export const Header: React.FC<HeaderProps> = ({
           <View style={styles.headerInfo}>
             <Text style={styles.headerTitle}>Assigner des marchandises</Text>
             <Text style={styles.headerSubtitle}>{container?.virtualContainerNumber}</Text>
+            {container?.shippingMode && (
+              <View style={[styles.modeBadge, { backgroundColor: container.shippingMode === 'AIR' ? 'rgba(239,68,68,0.3)' : 'rgba(59,130,246,0.3)' }]}>
+                <Ionicons name={container.shippingMode === 'AIR' ? 'airplane' : 'boat'} size={12} color="#FFF" />
+                <Text style={styles.modeBadgeText}>
+                  {container.shippingMode === 'AIR' ? 'Aérien uniquement' : 'Maritime uniquement'}
+                </Text>
+              </View>
+            )}
           </View>
-          <View style={styles.placeholder} />
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={22}
+            color="#FFF"
+          />
         </View>
 
         <CapacityIndicator
@@ -105,6 +120,20 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'rgba(255,255,255,0.8)',
     marginTop: 2,
+  },
+  modeBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 12,
+    marginTop: 4,
+  },
+  modeBadgeText: {
+    fontSize: 11,
+    color: '#FFF',
+    fontWeight: '600',
   },
   placeholder: {
     width: 40,

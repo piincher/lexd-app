@@ -17,6 +17,7 @@ import { Goods } from '../types';
 
 const STATUS_COLORS: Record<string, string> = {
   RECEIVED_AT_WAREHOUSE: '#2196F3',
+  PACKED: '#7C4DFF',
   ASSIGNED_TO_CONTAINER: '#FF9800',
   LOADED_IN_CONTAINER: '#9C27B0',
   IN_TRANSIT: '#3F51B5',
@@ -28,6 +29,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 const STATUS_LABELS: Record<string, string> = {
   RECEIVED_AT_WAREHOUSE: 'In Warehouse',
+  PACKED: 'Packed',
   ASSIGNED_TO_CONTAINER: 'Assigned',
   LOADED_IN_CONTAINER: 'Loaded',
   IN_TRANSIT: 'In Transit',
@@ -117,6 +119,7 @@ export const VoidGoodsListScreen: React.FC = () => {
       header={{
         title: 'Void Goods',
         subtitle: 'Manage and void goods',
+        showNotificationBell: true,
       }}
     >
       <View style={styles.container}>

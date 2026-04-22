@@ -6,7 +6,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Card } from '@src/shared/ui/Card';
-import { lightTheme } from '@src/constants/Theme';
+import { Theme } from '@src/constants/Theme';
 import { OrderGoods } from '../api/types';
 
 interface VoidedGoodsSectionProps {
@@ -36,32 +36,32 @@ export const VoidedGoodsSection: React.FC<VoidedGoodsSectionProps> = ({ goods })
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: lightTheme.spacing.lg,
-    padding: lightTheme.spacing.lg,
+    marginBottom: Theme.spacing.lg,
+    padding: Theme.spacing.lg,
     borderLeftWidth: 4,
-    borderLeftColor: lightTheme.colors.status.error,
+    borderLeftColor: Theme.colors.status.error,
   },
   title: {
-    fontSize: lightTheme.typography.h4.fontSize,
+    fontSize: Theme.typography.h4.fontSize,
     fontWeight: '600',
-    color: lightTheme.colors.status.error,
-    marginBottom: lightTheme.spacing.md,
+    color: Theme.colors.status.error,
+    marginBottom: Theme.spacing.md,
   },
   goodsItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: lightTheme.spacing.sm,
+    paddingVertical: Theme.spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: lightTheme.colors.neutral[200],
+    borderBottomColor: Theme.colors.neutral[200],
   },
   goodsCode: {
-    fontSize: lightTheme.typography.body.fontSize,
-    color: lightTheme.colors.text.secondary,
+    fontSize: Theme.typography.body.fontSize,
+    color: Theme.colors.text.secondary,
     textDecorationLine: 'line-through',
   },
   goodsCBM: {
-    fontSize: lightTheme.typography.body.fontSize,
-    color: lightTheme.colors.text.muted,
+    fontSize: Theme.typography.body.fontSize,
+    color: Theme.colors.text.muted,
   },
 });
 

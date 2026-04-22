@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     marginTop: Theme.spacing.sm,
   },
   segmentCard: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.lg,
     marginBottom: Theme.spacing.lg,
     padding: Theme.spacing.lg,

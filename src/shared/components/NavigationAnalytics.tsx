@@ -6,7 +6,8 @@
  */
 
 import React, { useRef, useCallback } from 'react';
-import { NavigationContainer, useNavigationContainerRef, NavigationState } from '@react-navigation/native';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import type { NavigationState } from '@react-navigation/native';
 import { useAnalytics } from '../hooks/useAnalytics';
 
 interface NavigationAnalyticsProps {

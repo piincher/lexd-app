@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 import { Alert } from 'react-native';
 import * as Print from 'expo-print';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetContainerById, useGetPackingList } from '../../../hooks';
 import { Container } from '../../../types';
 import { Goods } from '../../../../goods/types';

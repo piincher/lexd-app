@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   sectionCard: {
     marginBottom: 16,
     elevation: 1,
@@ -15,7 +14,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     marginLeft: 12,
   },
   sectionDivider: {
@@ -35,13 +34,13 @@ export const styles = StyleSheet.create({
   infoLabel: {
     fontFamily: Fonts.regular,
     fontSize: 12,
-    color: COLORS.SlateGray,
+    color: colors.status.success,
     marginBottom: 2,
   },
   infoValue: {
     fontFamily: Fonts.meduim,
     fontSize: 15,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     lineHeight: 20,
   },
   consigneeActions: {
@@ -50,6 +49,6 @@ export const styles = StyleSheet.create({
   },
   actionButton: {
     flex: 1,
-    borderColor: '#DDD',
+    borderColor: colors.border,
   },
 });

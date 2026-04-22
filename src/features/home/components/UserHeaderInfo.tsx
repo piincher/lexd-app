@@ -1,7 +1,8 @@
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { navigationProps } from '@src/navigations/type';
+import type { navigationProps } from '@src/navigations/type';
 import { NotificationBell } from '@src/features/notifications';
 
 interface UserHeaderInfoProps {
@@ -11,6 +12,29 @@ interface UserHeaderInfoProps {
 }
 
 export const UserHeaderInfo = ({ firstName, lastName, navigation }: UserHeaderInfoProps) => {
+	const { colors } = useAppTheme();
+	const styles = useMemo(() => StyleSheet.create({
+		container: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			alignContent: 'center',
+			marginHorizontal: 20,
+		},
+		notificationContainer: {
+			width: 40,
+			height: 40,
+			borderWidth: 0.2,
+			borderRadius: 40,
+			justifyContent: 'center',
+			alignItems: 'center',
+			borderColor: colors.border,
+		},
+
+		textContent: { color: colors.primary.main, fontSize: 18, fontFamily: Fonts.bold },
+		activeOrderText: { marginLeft: 20, fontSize: 26, color: colors.primary.main, fontFamily: Fonts.bold, marginVertical: 10 },
+	}), [colors]);
+
 	return (
 		<>
 			<View style={styles.container}>
@@ -21,7 +45,7 @@ export const UserHeaderInfo = ({ firstName, lastName, navigation }: UserHeaderIn
 					<NotificationBell
 						onPress={() => navigation?.navigate('Notifications')}
 						size={24}
-						color={COLORS.black}
+						color={colors.text.primary}
 					/>
 				</View>
 			</View>
@@ -29,25 +53,3 @@ export const UserHeaderInfo = ({ firstName, lastName, navigation }: UserHeaderIn
 		</>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		alignContent: 'center',
-		marginHorizontal: 20,
-	},
-	notificationContainer: {
-		width: 40,
-		height: 40,
-		borderWidth: 0.2,
-		borderRadius: 40,
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderColor: COLORS.grey,
-	},
-
-	textContent: { color: COLORS.blue, fontSize: 18, fontFamily: Fonts.bold },
-	activeOrderText: { marginLeft: 20, fontSize: 26, color: COLORS.blue, fontFamily: Fonts.bold, marginVertical: 10 },
-});

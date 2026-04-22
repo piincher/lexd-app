@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: Theme.spacing.lg,
     gap: Theme.spacing.sm,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderTopWidth: 1,
     borderTopColor: Theme.neutral[100],
   },

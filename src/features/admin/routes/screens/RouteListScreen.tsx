@@ -17,7 +17,7 @@ import { Text, FAB, Snackbar, ActivityIndicator, Card } from 'react-native-paper
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useGetRoutes, routeQueryKeys, useRouteStats } from '../hooks/useRoutes';
 import { Route, ShippingMode, SHIPPING_MODE_LABELS, SHIPPING_MODE_COLORS } from '../types';
 import { useQueryClient } from '@tanstack/react-query';
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.sm,
@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
   statCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.md,
     minWidth: 140,
@@ -474,7 +474,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.sm,
     overflow: 'hidden',
   },
@@ -500,7 +500,7 @@ const styles = StyleSheet.create({
   routeCard: {
     marginBottom: Theme.spacing.md,
     borderRadius: Theme.radius.xl,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.sm,
   },
   routeCardContent: {

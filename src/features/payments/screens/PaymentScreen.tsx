@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,8 +10,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { NotificationBell } from '@src/features/notifications';
 import PaymentMethodSelector from '../components/PaymentMethodSelector';
 import OrangeMoneyForm from '../components/OrangeMoneyForm';
 import WavePaymentForm from '../components/WavePaymentForm';
@@ -32,6 +33,79 @@ const PaymentScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const params = route.params as PaymentScreenParams;
+  const { colors } = useAppTheme();
+  
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flex: 1,
+          backgroundColor: colors.background.default,
+        },
+        header: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingHorizontal: 16,
+          paddingVertical: 12,
+          borderBottomWidth: 1,
+          borderBottomColor: colors.border,
+        },
+        backButton: {
+          padding: 8,
+        },
+        headerTitle: {
+          fontSize: 18,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        placeholder: {
+          width: 40,
+        },
+        content: {
+          flex: 1,
+        },
+        footer: {
+          padding: 16,
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+        },
+        totalContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 16,
+        },
+        totalLabel: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+        },
+        totalAmount: {
+          fontSize: 20,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        payButton: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: colors.primary.main,
+          borderRadius: 12,
+          paddingVertical: 16,
+          gap: 8,
+        },
+        payButtonDisabled: {
+          backgroundColor: colors.neutral[200],
+        },
+        payButtonText: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.inverse,
+        },
+      }),
+    [colors]
+  );
   
   const [selectedProvider, setSelectedProvider] = useState<PaymentProvider | null>(null);
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -267,12 +341,16 @@ const PaymentScreen: React.FC = () => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.black} />
+          <MaterialCommunityIcons name="arrow-left" size={24} color={colors.text.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>
           {selectedProvider ? 'Payment Details' : 'Select Payment Method'}
         </Text>
-        <View style={styles.placeholder} />
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color={colors.text.primary}
+        />
       </View>
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
@@ -312,7 +390,7 @@ const PaymentScreen: React.FC = () => {
                   <MaterialCommunityIcons
                     name="arrow-right"
                     size={20}
-                    color={COLORS.white}
+                    color={colors.text.inverse}
                   />
                 )}
               </TouchableOpacity>
@@ -335,73 +413,5 @@ const PaymentScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.lightGray + '30',
-  },
-  backButton: {
-    padding: 8,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-  },
-  placeholder: {
-    width: 40,
-  },
-  content: {
-    flex: 1,
-  },
-  footer: {
-    padding: 16,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.lightGray + '30',
-  },
-  totalContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  totalLabel: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-  },
-  totalAmount: {
-    fontSize: 20,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-  },
-  payButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: COLORS.blue,
-    borderRadius: 12,
-    paddingVertical: 16,
-    gap: 8,
-  },
-  payButtonDisabled: {
-    backgroundColor: COLORS.lightGray,
-  },
-  payButtonText: {
-    fontSize: 16,
-    fontFamily: Fonts.bold,
-    color: COLORS.white,
-  },
-});
 
 export default PaymentScreen;

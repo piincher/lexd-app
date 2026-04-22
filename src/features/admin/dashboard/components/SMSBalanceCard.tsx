@@ -10,8 +10,11 @@ import { useAppTheme } from "@src/providers/ThemeProvider";
 interface SMSBalanceCardProps {
   balance: {
     totalUnits: number;
-    percentageUsed: number;
     status: "success" | "warning" | "danger";
+    daysRemaining?: number;
+    expirationDateShort?: string | null;
+    hasExpired?: boolean;
+    hasExpiringSoon?: boolean;
   };
 }
 
@@ -42,8 +45,8 @@ const STATUS_META: Record<
 export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
   const { colors, isDark } = useAppTheme();
   const meta = STATUS_META[balance.status] || STATUS_META.success;
-  const pctUsed = Math.round(balance.percentageUsed * 100);
-  const pctRemaining = 100 - pctUsed;
+  const showExpiry = balance.hasExpired || balance.hasExpiringSoon || (balance.daysRemaining !== undefined && balance.daysRemaining <= 30);
+  const progressWidth = balance.hasExpired ? 5 : balance.hasExpiringSoon ? 25 : Math.min(100, Math.max(10, balance.totalUnits / 3));
 
   const styles = useMemo(
     () =>
@@ -199,18 +202,32 @@ export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
 
         <View style={styles.progressTrack}>
           <View
-            style={[styles.progressFill, { width: `${Math.max(2, pctRemaining)}%` }]}
+            style={[styles.progressFill, { width: `${progressWidth}%` }]}
           />
         </View>
 
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            <Text style={styles.footerStrong}>{pctUsed}%</Text> utilisés
-          </Text>
-          <Text style={styles.footerText}>
-            <Text style={styles.footerStrong}>{pctRemaining}%</Text> disponibles
-          </Text>
-        </View>
+        {showExpiry && balance.expirationDateShort ? (
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>
+              <Text style={[styles.footerStrong, { color: meta.color }]}>
+                {balance.hasExpired ? 'Expiré' : balance.daysRemaining + ' jours'}
+              </Text>
+              {' '}restants
+            </Text>
+            <Text style={styles.footerText}>
+              Expire le <Text style={styles.footerStrong}>{balance.expirationDateShort}</Text>
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>
+              <Text style={styles.footerStrong}>{balance.totalUnits.toLocaleString()}</Text> SMS disponibles
+            </Text>
+            <Text style={styles.footerText}>
+              Statut <Text style={[styles.footerStrong, { color: meta.color }]}>{meta.label}</Text>
+            </Text>
+          </View>
+        )}
       </LinearGradient>
     </View>
   );

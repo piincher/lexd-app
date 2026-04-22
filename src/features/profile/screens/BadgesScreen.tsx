@@ -19,7 +19,8 @@ import { MotiView } from "moti";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Fonts } from "@src/constants/Fonts";
-import { navigationProps } from "@src/navigations/type";
+import type { navigationProps } from "@src/navigations/type";
+import { NotificationBell } from "@src/features/notifications";
 import { useMyBadges, useCheckBadges } from "../hooks/useBadges";
 import { BadgesScreenSkeleton } from "./BadgesScreenSkeleton";
 import type { UserBadge } from "../api/badgeApi";
@@ -226,7 +227,11 @@ const BadgesScreen: React.FC = () => {
             <MaterialCommunityIcons name="arrow-left" size={24} color="#FFFFFF" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Mes Badges</Text>
-          <View style={styles.headerSpacer} />
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={24}
+            color="#FFFFFF"
+          />
         </View>
 
         {isLoading ? (

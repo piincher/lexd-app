@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Switch, StyleSheet } from 'react-native';
 import { Text, Card, Button } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { QuietHours } from '../hooks/useNotificationSettings';
 
 interface QuietHoursCardProps {
@@ -16,9 +16,74 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
   onToggle,
   onEditPress,
 }) => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        card: {
+          marginBottom: 16,
+          borderRadius: 12,
+          elevation: 2,
+          backgroundColor: colors.background.default,
+        },
+        sectionTitle: {
+          fontSize: 14,
+          fontWeight: '600',
+          color: colors.text.secondary,
+          textTransform: 'uppercase',
+          marginBottom: 8,
+          marginLeft: 4,
+        },
+        quietHoursHeader: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        },
+        quietHoursLeft: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          flex: 1,
+        },
+        iconContainer: {
+          width: 48,
+          height: 48,
+          borderRadius: 12,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        quietHoursTitle: {
+          fontSize: 16,
+          fontWeight: '600',
+          color: colors.text.primary,
+        },
+        quietHoursSubtitle: {
+          fontSize: 14,
+          color: colors.text.secondary,
+          marginTop: 2,
+        },
+        quietHoursDetails: {
+          marginTop: 16,
+          paddingTop: 16,
+          borderTopWidth: 1,
+          borderTopColor: colors.border,
+        },
+        quietHoursDescription: {
+          fontSize: 14,
+          color: colors.text.secondary,
+          marginBottom: 12,
+          lineHeight: 20,
+        },
+        editTimeButton: {
+          borderColor: colors.primary.main,
+        },
+      }),
+    [colors]
+  );
+
   return (
     <>
-      <Text style={styles.sectionTitle}>Quiet Hours</Text>
+      <Text style={styles.sectionTitle}>Heures silencieuses</Text>
       <Card style={styles.card}>
         <Card.Content>
           <View style={styles.quietHoursHeader}>
@@ -27,34 +92,34 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
                 <Ionicons name="moon" size={24} color="#6366F1" />
               </View>
               <View>
-                <Text style={styles.quietHoursTitle}>Quiet Hours</Text>
+                <Text style={styles.quietHoursTitle}>Heures silencieuses</Text>
                 <Text style={styles.quietHoursSubtitle}>
                   {quietHours.enabled
                     ? `${quietHours.startTime} - ${quietHours.endTime}`
-                    : 'Disabled'}
+                    : 'Desactivees'}
                 </Text>
               </View>
             </View>
             <Switch
               value={quietHours.enabled}
               onValueChange={onToggle}
-              trackColor={{ false: '#E5E7EB', true: COLORS.primary + '50' }}
-              thumbColor={quietHours.enabled ? COLORS.primary : '#FFF'}
+              trackColor={{ false: colors.neutral[200], true: colors.primary.main + '50' }}
+              thumbColor={quietHours.enabled ? colors.primary.main : colors.background.default}
             />
           </View>
 
           {quietHours.enabled && (
             <View style={styles.quietHoursDetails}>
               <Text style={styles.quietHoursDescription}>
-                Notifications will be silenced during these hours. Emergency
-                alerts may still come through.
+                Les notifications seront silencieuses pendant ces heures. Les
+                alertes urgentes peuvent toutefois etre recues.
               </Text>
               <Button
                 mode="outlined"
                 onPress={onEditPress}
                 style={styles.editTimeButton}
               >
-                Edit Times
+                Modifier les horaires
               </Button>
             </View>
           )}
@@ -63,62 +128,3 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 16,
-    borderRadius: 12,
-    elevation: 2,
-    backgroundColor: '#FFF',
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#6B7280',
-    textTransform: 'uppercase',
-    marginBottom: 8,
-    marginLeft: 4,
-  },
-  quietHoursHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  quietHoursLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  quietHoursTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: COLORS.dark,
-  },
-  quietHoursSubtitle: {
-    fontSize: 14,
-    color: '#6B7280',
-    marginTop: 2,
-  },
-  quietHoursDetails: {
-    marginTop: 16,
-    paddingTop: 16,
-    borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
-  },
-  quietHoursDescription: {
-    fontSize: 14,
-    color: '#6B7280',
-    marginBottom: 12,
-    lineHeight: 20,
-  },
-  editTimeButton: {
-    borderColor: COLORS.primary,
-  },
-});

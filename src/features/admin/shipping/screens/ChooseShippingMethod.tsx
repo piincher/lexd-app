@@ -1,8 +1,9 @@
 import RenderListItem from '@src/components/RenderListItem/RenderListItem';
-import { RootStackParamList, RootStackScreenProps } from '@src/navigations/type';
+import type { RootStackParamList, RootStackScreenProps } from '@src/navigations/type';
 import { useShippingMode } from '@src/store/shippingMode';
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, Text, Pressable } from 'react-native';
+import { Theme } from '@src/constants/Theme';
 import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -58,14 +59,14 @@ const styles = StyleSheet.create({
 	},
 	userRole: {
 		fontSize: 14,
-		color: '#666',
+		color: Theme.neutral[500],
 	},
 	buttonContainer: {
 		position: 'absolute',
 		bottom: 0,
 		width: '100%',
 		padding: 20,
-		backgroundColor: 'white',
+		backgroundColor: Theme.colors.background.card,
 	},
 });
 

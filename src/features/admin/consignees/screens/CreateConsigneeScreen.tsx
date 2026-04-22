@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { Text, TextInput, Button, HelperText, ActivityIndicator } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { useCreateConsignee } from "../hooks";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 type ConsigneeStackParamList = {
    ConsigneeList: undefined;
@@ -24,6 +24,74 @@ interface FormErrors {
 
 const CreateConsigneeScreen: React.FC = () => {
    const navigation = useNavigation<NavigationProp>();
+
+   const { colors, isDark } = useAppTheme();
+
+   const styles = useMemo(() => StyleSheet.create({
+      container: {
+         flex: 1,
+         backgroundColor: colors.background.paper,
+      },
+      keyboardView: {
+         flex: 1,
+      },
+      header: {
+         flexDirection: "row",
+         alignItems: "center",
+         justifyContent: "space-between",
+         paddingHorizontal: 16,
+         paddingVertical: 16,
+         backgroundColor: colors.background.card,
+         borderBottomWidth: 1,
+         borderBottomColor: colors.border,
+      },
+      headerTitle: {
+         fontSize: 18,
+         fontWeight: "600",
+         color: colors.text.secondary,
+      },
+      scrollView: {
+         flex: 1,
+      },
+      subtitle: {
+         fontSize: 14,
+         color: colors.text.secondary,
+         marginHorizontal: 16,
+         marginTop: 16,
+         marginBottom: 8,
+      },
+      form: {
+         padding: 16,
+      },
+      inputContainer: {
+         marginBottom: 16,
+      },
+      label: {
+         fontSize: 14,
+         fontWeight: "600",
+         color: colors.text.secondary,
+         marginBottom: 8,
+      },
+      required: {
+         color: colors.status.error,
+      },
+      input: {
+         backgroundColor: colors.background.card,
+      },
+      textArea: {
+         height: 80,
+         textAlignVertical: "top",
+      },
+      submitButton: {
+         marginHorizontal: 16,
+         marginBottom: 32,
+         backgroundColor: colors.status.success,
+         borderRadius: 12,
+      },
+      submitButtonContent: {
+         paddingVertical: 8,
+      },
+   }), [colors, isDark]);
 
    const [formData, setFormData] = useState({
       name: "",
@@ -89,7 +157,7 @@ const CreateConsigneeScreen: React.FC = () => {
                <Ionicons
                   name="arrow-back"
                   size={24}
-                  color={COLORS.DarkGrey}
+                  color={colors.text.secondary}
                   onPress={() => navigation.goBack()}
                />
                <Text style={styles.headerTitle}>Nouveau destinataire</Text>
@@ -117,8 +185,8 @@ const CreateConsigneeScreen: React.FC = () => {
                         placeholder="Nom et prénom du destinataire"
                         style={styles.input}
                         error={!!errors.name}
-                        outlineColor={COLORS.border}
-                        activeOutlineColor={COLORS.Crimson}
+                        outlineColor={colors.border}
+                        activeOutlineColor={colors.status.success}
                         left={<TextInput.Icon icon="account" />}
                      />
                      {errors.name && <HelperText type="error">{errors.name}</HelperText>}
@@ -136,8 +204,8 @@ const CreateConsigneeScreen: React.FC = () => {
                         style={styles.input}
                         error={!!errors.phone}
                         keyboardType="phone-pad"
-                        outlineColor={COLORS.border}
-                        activeOutlineColor={COLORS.Crimson}
+                        outlineColor={colors.border}
+                        activeOutlineColor={colors.status.success}
                         left={<TextInput.Icon icon="phone" />}
                      />
                      {errors.phone && <HelperText type="error">{errors.phone}</HelperText>}
@@ -154,8 +222,8 @@ const CreateConsigneeScreen: React.FC = () => {
                         error={!!errors.email}
                         keyboardType="email-address"
                         autoCapitalize="none"
-                        outlineColor={COLORS.border}
-                        activeOutlineColor={COLORS.Crimson}
+                        outlineColor={colors.border}
+                        activeOutlineColor={colors.status.success}
                         left={<TextInput.Icon icon="email" />}
                      />
                      {errors.email && <HelperText type="error">{errors.email}</HelperText>}
@@ -174,8 +242,8 @@ const CreateConsigneeScreen: React.FC = () => {
                         error={!!errors.warehouseAddress}
                         multiline
                         numberOfLines={3}
-                        outlineColor={COLORS.border}
-                        activeOutlineColor={COLORS.Crimson}
+                        outlineColor={colors.border}
+                        activeOutlineColor={colors.status.success}
                         left={<TextInput.Icon icon="map-marker" />}
                      />
                      {errors.warehouseAddress && (
@@ -199,71 +267,5 @@ const CreateConsigneeScreen: React.FC = () => {
       </SafeAreaView>
    );
 };
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      backgroundColor: COLORS.lightBackground,
-   },
-   keyboardView: {
-      flex: 1,
-   },
-   header: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
-      paddingHorizontal: 16,
-      paddingVertical: 16,
-      backgroundColor: COLORS.white,
-      borderBottomWidth: 1,
-      borderBottomColor: COLORS.border,
-   },
-   headerTitle: {
-      fontSize: 18,
-      fontWeight: "600",
-      color: COLORS.DarkGrey,
-   },
-   scrollView: {
-      flex: 1,
-   },
-   subtitle: {
-      fontSize: 14,
-      color: COLORS.DimGray,
-      marginHorizontal: 16,
-      marginTop: 16,
-      marginBottom: 8,
-   },
-   form: {
-      padding: 16,
-   },
-   inputContainer: {
-      marginBottom: 16,
-   },
-   label: {
-      fontSize: 14,
-      fontWeight: "600",
-      color: COLORS.DarkGrey,
-      marginBottom: 8,
-   },
-   required: {
-      color: COLORS.danger,
-   },
-   input: {
-      backgroundColor: COLORS.white,
-   },
-   textArea: {
-      height: 80,
-      textAlignVertical: "top",
-   },
-   submitButton: {
-      marginHorizontal: 16,
-      marginBottom: 32,
-      backgroundColor: COLORS.Crimson,
-      borderRadius: 12,
-   },
-   submitButtonContent: {
-      paddingVertical: 8,
-   },
-});
 
 export default CreateConsigneeScreen;

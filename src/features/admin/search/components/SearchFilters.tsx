@@ -29,6 +29,7 @@ interface SearchFiltersProps {
 // Status options for each entity
 const GOODS_STATUSES = [
   { value: "RECEIVED_AT_WAREHOUSE", label: "Entrepôt", color: "#6366F1" },
+  { value: "PACKED", label: "Préparé", color: "#7C4DFF" },
   { value: "ASSIGNED_TO_CONTAINER", label: "Assigné", color: "#8B5CF6" },
   { value: "LOADED_IN_CONTAINER", label: "Chargé", color: "#EC4899" },
   { value: "IN_TRANSIT", label: "Transit", color: "#F59E0B" },

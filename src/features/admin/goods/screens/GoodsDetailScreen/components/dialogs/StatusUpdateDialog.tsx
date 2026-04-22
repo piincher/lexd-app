@@ -11,6 +11,7 @@ interface StatusUpdateDialogProps {
 
 const AVAILABLE_STATUSES: { value: GoodsStatus; label: string }[] = [
   { value: 'RECEIVED_AT_WAREHOUSE', label: 'En Entrepôt' },
+  { value: 'PACKED', label: 'Colis préparé' },
   { value: 'ASSIGNED_TO_CONTAINER', label: 'Assigné au Container' },
   { value: 'LOADED_IN_CONTAINER', label: 'Chargé' },
   { value: 'IN_TRANSIT', label: 'En Transit' },

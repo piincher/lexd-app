@@ -1,0 +1,60 @@
+import React, { useMemo } from 'react';
+import { Pressable, StyleSheet } from 'react-native';
+import { Text } from 'react-native-paper';
+import { FontAwesome6 } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Fonts } from '@src/constants/Fonts';
+import { hapticLight } from '@src/shared/lib/haptics';
+
+interface CreateOrderCTAProps {
+  onPress: () => void;
+}
+
+export const CreateOrderCTA: React.FC<CreateOrderCTAProps> = ({ onPress }) => {
+  const { colors } = useAppTheme();
+
+  const handlePress = () => {
+    hapticLight();
+    onPress();
+  };
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 10,
+          marginHorizontal: 16,
+          marginTop: 16,
+          paddingVertical: 14,
+          paddingHorizontal: 20,
+          borderRadius: 14,
+          backgroundColor: colors.primary.main,
+        },
+        pressed: {
+          opacity: 0.88,
+          transform: [{ scale: 0.98 }],
+        },
+        text: {
+          fontFamily: Fonts.bold,
+          fontSize: 15,
+          color: '#FFF',
+        },
+      }),
+    [colors.primary.main]
+  );
+
+  return (
+    <Pressable
+      onPress={handlePress}
+      style={({ pressed }) => [styles.container, pressed && styles.pressed]}
+      accessibilityRole="button"
+      accessibilityLabel="Nouvelle Expedition"
+    >
+      <FontAwesome6 name="plus" size={16} color="#FFF" />
+      <Text style={styles.text}>Nouvelle Expedition</Text>
+    </Pressable>
+  );
+};

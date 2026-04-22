@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Theme } from '@src/constants/Theme';
 import { Ionicons } from '@expo/vector-icons';
 
 interface SelectAllBarProps {
@@ -23,7 +24,7 @@ export const SelectAllBar: React.FC<SelectAllBarProps> = ({
     <View style={styles.selectAllBar}>
       <TouchableOpacity style={styles.selectAllButton} onPress={onToggleSelectAll}>
         <View style={[styles.checkbox, isAllSelected && styles.checkboxSelected]}>
-          {isAllSelected && <Ionicons name="checkmark" size={18} color="#FFF" />}
+          {isAllSelected && <Ionicons name="checkmark" size={18} color={Theme.colors.background.card} />}
         </View>
         <Text style={styles.selectAllText}>
           {isAllSelected ? 'Tout désélectionner' : 'Tout sélectionner'}
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 2,
     borderColor: '#CED4DA',
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,

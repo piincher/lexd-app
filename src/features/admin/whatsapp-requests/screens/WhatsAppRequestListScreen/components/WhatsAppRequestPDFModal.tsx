@@ -41,7 +41,7 @@ export const WhatsAppRequestPDFModal: React.FC<WhatsAppRequestPDFModalProps> = (
 
 const styles = StyleSheet.create({
   modalContainer: {
-    backgroundColor: 'white',
+    backgroundColor: Theme.colors.background.card,
     padding: 20,
     margin: 20,
     borderRadius: Theme.radius.xl,

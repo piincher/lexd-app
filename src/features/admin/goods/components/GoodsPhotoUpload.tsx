@@ -3,11 +3,11 @@
  * Improved with consistent styling and better visual feedback
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, Image, Alert } from 'react-native';
 import { Card, Text, Button, IconButton } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsPhotoUploadProps {
   photoUri: string | null;
@@ -20,6 +20,8 @@ export const GoodsPhotoUpload: React.FC<GoodsPhotoUploadProps> = ({
   onPhotoSelected,
   onPhotoRemoved,
 }) => {
+  const { colors, isDark } = useAppTheme();
+
   /**
    * Request permissions and pick image from camera
    */
@@ -62,6 +64,73 @@ export const GoodsPhotoUpload: React.FC<GoodsPhotoUploadProps> = ({
     }
   };
 
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      marginVertical: 8,
+      borderRadius: 12,
+      backgroundColor: colors.background.card,
+    },
+    cardContent: {
+      padding: 16,
+    },
+    sectionLabel: {
+      fontSize: 14,
+      fontWeight: '700',
+      marginBottom: 16,
+      color: colors.text.primary,
+      textTransform: 'uppercase',
+      letterSpacing: 0.5,
+    },
+    uploadContainer: {
+      alignItems: 'center',
+    },
+    buttonRow: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      width: '100%',
+    },
+    button: {
+      flex: 1,
+      marginHorizontal: 8,
+      borderColor: colors.status.success,
+      borderRadius: 8,
+      borderWidth: 1.5,
+    },
+    buttonContent: {
+      paddingVertical: 8,
+    },
+    hintText: {
+      fontSize: 12,
+      color: colors.text.disabled,
+      marginTop: 12,
+      textAlign: 'center',
+      fontStyle: 'italic',
+    },
+    photoContainer: {
+      alignItems: 'center',
+    },
+    photoWrapper: {
+      position: 'relative',
+      borderRadius: 12,
+      overflow: 'hidden',
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 4,
+      elevation: 4,
+    },
+    photo: {
+      width: 240,
+      height: 180,
+      resizeMode: 'cover',
+    },
+    removeButton: {
+      position: 'absolute',
+      top: 8,
+      right: 8,
+    },
+  }), [colors, isDark]);
+
   return (
     <Card style={styles.card} elevation={2}>
       <Card.Content style={styles.cardContent}>
@@ -74,9 +143,9 @@ export const GoodsPhotoUpload: React.FC<GoodsPhotoUploadProps> = ({
               <IconButton
                 icon="close-circle"
                 size={28}
-                iconColor="#fff"
+                iconColor={colors.text.inverse}
                 style={styles.removeButton}
-                containerColor={COLORS.danger || '#dc3545'}
+                containerColor={colors.status.error}
                 onPress={onPhotoRemoved}
               />
             </View>
@@ -90,7 +159,7 @@ export const GoodsPhotoUpload: React.FC<GoodsPhotoUploadProps> = ({
                 style={styles.button}
                 contentStyle={styles.buttonContent}
                 icon="camera"
-                textColor={COLORS.Crimson || '#dc3545'}
+                textColor={colors.status.success}
               >
                 Prendre photo
               </Button>
@@ -100,7 +169,7 @@ export const GoodsPhotoUpload: React.FC<GoodsPhotoUploadProps> = ({
                 style={styles.button}
                 contentStyle={styles.buttonContent}
                 icon="image"
-                textColor={COLORS.Crimson || '#dc3545'}
+                textColor={colors.status.success}
               >
                 Galerie
               </Button>
@@ -114,72 +183,5 @@ export const GoodsPhotoUpload: React.FC<GoodsPhotoUploadProps> = ({
     </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginVertical: 8,
-    borderRadius: 12,
-    backgroundColor: '#fff',
-  },
-  cardContent: {
-    padding: 16,
-  },
-  sectionLabel: {
-    fontSize: 14,
-    fontWeight: '700',
-    marginBottom: 16,
-    color: '#333',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  uploadContainer: {
-    alignItems: 'center',
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '100%',
-  },
-  button: {
-    flex: 1,
-    marginHorizontal: 8,
-    borderColor: COLORS.Crimson || '#dc3545',
-    borderRadius: 8,
-    borderWidth: 1.5,
-  },
-  buttonContent: {
-    paddingVertical: 8,
-  },
-  hintText: {
-    fontSize: 12,
-    color: '#999',
-    marginTop: 12,
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
-  photoContainer: {
-    alignItems: 'center',
-  },
-  photoWrapper: {
-    position: 'relative',
-    borderRadius: 12,
-    overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  photo: {
-    width: 240,
-    height: 180,
-    resizeMode: 'cover',
-  },
-  removeButton: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-  },
-});
 
 export default GoodsPhotoUpload;

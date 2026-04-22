@@ -5,7 +5,7 @@
 
 import { useState, useCallback } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAdvancedSearch, useFilterPresets } from "./useSearch";
 import { FilterPreset, SearchFilters } from "../api/searchApi";
 

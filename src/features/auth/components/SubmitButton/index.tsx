@@ -8,6 +8,7 @@ import { Text, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Fonts } from "@src/constants/Fonts";
+import { hapticMedium } from "@src/shared/lib/haptics";
 
 interface SubmitButtonProps {
   onPress: () => void;
@@ -15,9 +16,15 @@ interface SubmitButtonProps {
   text?: string;
 }
 
-export const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, isLoading, text = "Continuer" }) => (
+export const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, isLoading, text = "Continuer" }) => {
+  const handlePress = () => {
+    hapticMedium();
+    onPress();
+  };
+
+  return (
   <Pressable
-    onPress={onPress}
+    onPress={handlePress}
     disabled={isLoading}
     style={({ pressed }) => [
       styles.container,
@@ -41,7 +48,8 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, isLoading, 
       )}
     </LinearGradient>
   </Pressable>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: { marginTop: 20, borderRadius: 16, overflow: "hidden" },

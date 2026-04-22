@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F8F7FC',
@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
   },
   formCard: {
     borderRadius: Theme.radius['2xl'],
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     ...Theme.shadows.md,
   },
   formContent: {
@@ -66,11 +66,11 @@ export const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.sm,
   },
   required: {
-    color: Theme.status.error,
+    color: colors.status.error,
   },
   // Phase 3: Mode Selection Styles
   modeSelectionContainer: {
@@ -83,18 +83,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: Theme.spacing.lg,
     borderWidth: 2,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderRadius: Theme.radius.xl,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     gap: Theme.spacing.sm,
   },
   modeButtonError: {
-    borderColor: Theme.status.error,
+    borderColor: colors.status.error,
   },
   modeButtonText: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   modeCheckBadge: {
     position: 'absolute',
@@ -112,17 +112,17 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderRadius: Theme.radius.md,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.md,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
   },
   dropdownButtonError: {
-    borderColor: Theme.status.error,
+    borderColor: colors.status.error,
   },
   dropdownButtonLoading: {
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
   },
   dropdownButtonContent: {
     flexDirection: 'row',
@@ -132,19 +132,19 @@ export const styles = StyleSheet.create({
   dropdownButtonText: {
     fontSize: 15,
     fontWeight: '500',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   dropdownButtonPlaceholder: {
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   menuContent: {
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     width: '85%',
   },
   routeMenuItem: {
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
+    borderBottomColor: colors.neutral[100],
   },
   noRoutesContainer: {
     marginTop: Theme.spacing.sm,
@@ -155,7 +155,7 @@ export const styles = StyleSheet.create({
   },
   noRoutesText: {
     fontSize: 13,
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     lineHeight: 18,
     marginLeft: Theme.spacing.lg,
   },
@@ -163,7 +163,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     paddingVertical: Theme.spacing.sm,
     paddingHorizontal: Theme.spacing.md,
     borderRadius: Theme.radius.md,
@@ -181,11 +181,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     borderRadius: Theme.radius.lg,
     padding: Theme.spacing.md,
     borderWidth: 1,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
   },
   selectedRouteContent: {
     flexDirection: 'row',
@@ -196,7 +196,7 @@ export const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -207,7 +207,7 @@ export const styles = StyleSheet.create({
   selectedRouteName: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   selectedRouteDetails: {
     flexDirection: 'row',
@@ -217,12 +217,12 @@ export const styles = StyleSheet.create({
   },
   selectedRouteMeta: {
     fontSize: 13,
-    color: Theme.primary[600],
+    color: colors.primary[600],
     fontWeight: '500',
   },
   selectedRoutePath: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   clearRouteButton: {
     padding: Theme.spacing.xs,
@@ -234,13 +234,13 @@ export const styles = StyleSheet.create({
     marginTop: -Theme.spacing.md,
     marginBottom: Theme.spacing.lg,
     padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: Theme.radius.md,
   },
   routeDescriptionText: {
     flex: 1,
     fontSize: 13,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     lineHeight: 18,
   },
   readOnlyField: {
@@ -249,30 +249,30 @@ export const styles = StyleSheet.create({
     gap: Theme.spacing.sm,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.md,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: Theme.radius.md,
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
   },
   readOnlyText: {
     fontSize: 15,
     fontWeight: '500',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   divider: {
     marginVertical: Theme.spacing.lg,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
   },
   searchBar: {
     borderRadius: Theme.radius.md,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     elevation: 0,
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
   },
   searchInput: {
     fontSize: 15,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   dropdownCard: {
     marginTop: Theme.spacing.sm,
@@ -287,7 +287,7 @@ export const styles = StyleSheet.create({
   dropdownLoadingText: {
     marginTop: Theme.spacing.sm,
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   dropdownEmpty: {
     padding: Theme.spacing.xl,
@@ -296,7 +296,7 @@ export const styles = StyleSheet.create({
   dropdownEmptyText: {
     marginTop: Theme.spacing.sm,
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textAlign: 'center',
   },
   consigneeItem: {
@@ -304,13 +304,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     padding: Theme.spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
+    borderBottomColor: colors.neutral[100],
   },
   consigneeItemIcon: {
     width: 40,
     height: 40,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -321,27 +321,27 @@ export const styles = StyleSheet.create({
   consigneeItemName: {
     fontSize: 15,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   consigneeItemPhone: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   consigneeItemAddress: {
     fontSize: 12,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     marginTop: 2,
   },
   selectedConsigneeContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     borderRadius: Theme.radius.lg,
     padding: Theme.spacing.md,
     borderWidth: 1,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
   },
   selectedConsigneeContent: {
     flexDirection: 'row',
@@ -351,7 +351,7 @@ export const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -361,11 +361,11 @@ export const styles = StyleSheet.create({
   selectedConsigneeName: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   selectedConsigneeLabel: {
     fontSize: 13,
-    color: Theme.primary[600],
+    color: colors.primary[600],
     marginTop: 2,
   },
   clearConsigneeButton: {
@@ -375,11 +375,11 @@ export const styles = StyleSheet.create({
   optionalSectionTitle: {
     fontSize: 15,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     marginBottom: Theme.spacing.lg,
   },
   input: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
   },
   submitButtonContainer: {
     marginTop: Theme.spacing.xl,
@@ -412,9 +412,7 @@ export const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 14,
-    color: Theme.status.error,
+    color: colors.status.error,
     fontWeight: '500',
   },
 });
-
-export default styles;

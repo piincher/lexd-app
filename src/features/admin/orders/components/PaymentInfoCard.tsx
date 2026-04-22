@@ -3,11 +3,11 @@
  * SRP: Show payment ID, amount, method, status, date, reference, and notes
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Surface, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
 interface PaymentInfoCardProps {
@@ -29,7 +29,7 @@ const PAYMENT_METHODS: Record<string, { label: string; icon: string; color: stri
   CARD: { label: 'Card', icon: 'credit-card', color: '#9C27B0' },
 };
 
-const getStatusConfig = (status: string) => {
+const getStatusConfig = (status: string, colors: any) => {
   switch (status?.toUpperCase()) {
     case 'COMPLETED':
     case 'PAID':
@@ -40,7 +40,7 @@ const getStatusConfig = (status: string) => {
     case 'FAILED':
       return { color: '#F44336', bgColor: '#FFEBEE', label: 'Failed' };
     default:
-      return { color: COLORS.grey, bgColor: '#F5F5F5', label: status || 'Unknown' };
+      return { color: colors.text.secondary, bgColor: colors.background.paper, label: status || 'Unknown' };
   }
 };
 
@@ -65,17 +65,117 @@ export const PaymentInfoCard: React.FC<PaymentInfoCardProps> = ({
   referenceNumber,
   notes,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      padding: 16,
+      borderRadius: 12,
+      marginBottom: 16,
+      elevation: 2,
+      backgroundColor: colors.background.card,
+    },
+    cardHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 16,
+    },
+    cardTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      marginLeft: 8,
+      color: colors.text.primary,
+    },
+    amountContainer: {
+      alignItems: 'center',
+      paddingVertical: 16,
+      backgroundColor: colors.status.success + '15',
+      borderRadius: 12,
+      marginBottom: 16,
+    },
+    amountLabel: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      marginBottom: 4,
+    },
+    amountValue: {
+      fontSize: 28,
+      fontWeight: '700',
+      fontFamily: Fonts.bold,
+      color: colors.status.success,
+    },
+    divider: {
+      marginVertical: 12,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 8,
+    },
+    infoLabel: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+    },
+    infoValue: {
+      fontSize: 14,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+      flex: 1,
+      textAlign: 'right',
+      marginLeft: 16,
+    },
+    methodContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    methodText: {
+      fontSize: 14,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+      marginLeft: 6,
+    },
+    statusBadge: {
+      paddingHorizontal: 12,
+      paddingVertical: 4,
+      borderRadius: 16,
+    },
+    statusText: {
+      fontSize: 12,
+      fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+    },
+    notesContainer: {
+      marginTop: 8,
+    },
+    notesLabel: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      fontFamily: Fonts.regular,
+      marginBottom: 8,
+    },
+    notesText: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.text.primary,
+      lineHeight: 20,
+    },
+  }), [colors]);
+
   const methodConfig = PAYMENT_METHODS[paymentMethod] || { 
     label: paymentMethod, 
     icon: 'cash', 
-    color: COLORS.grey 
+    color: colors.text.secondary 
   };
-  const statusConfig = getStatusConfig(status);
+  const statusConfig = getStatusConfig(status, colors);
 
   return (
     <Surface style={styles.card}>
       <View style={styles.cardHeader}>
-        <MaterialCommunityIcons name="receipt" size={24} color={COLORS.blue} />
+        <MaterialCommunityIcons name="receipt" size={24} color={colors.primary.main} />
         <Text style={styles.cardTitle}>Payment Information</Text>
       </View>
 
@@ -138,102 +238,3 @@ export const PaymentInfoCard: React.FC<PaymentInfoCardProps> = ({
     </Surface>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    elevation: 2,
-    backgroundColor: '#FFF',
-  },
-  cardHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    marginLeft: 8,
-    color: '#1A1A2E',
-  },
-  amountContainer: {
-    alignItems: 'center',
-    paddingVertical: 16,
-    backgroundColor: '#E8F5E9',
-    borderRadius: 12,
-    marginBottom: 16,
-  },
-  amountLabel: {
-    fontSize: 14,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-    marginBottom: 4,
-  },
-  amountValue: {
-    fontSize: 28,
-    fontWeight: '700',
-    fontFamily: Fonts.bold,
-    color: COLORS.success,
-  },
-  divider: {
-    marginVertical: 12,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 8,
-  },
-  infoLabel: {
-    fontSize: 14,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-  },
-  infoValue: {
-    fontSize: 14,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    color: '#1A1A2E',
-    flex: 1,
-    textAlign: 'right',
-    marginLeft: 16,
-  },
-  methodContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  methodText: {
-    fontSize: 14,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-    marginLeft: 6,
-  },
-  statusBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 16,
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: '600',
-    fontFamily: Fonts.semiBold,
-  },
-  notesContainer: {
-    marginTop: 8,
-  },
-  notesLabel: {
-    fontSize: 14,
-    color: COLORS.grey,
-    fontFamily: Fonts.regular,
-    marginBottom: 8,
-  },
-  notesText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: '#1A1A2E',
-    lineHeight: 20,
-  },
-});

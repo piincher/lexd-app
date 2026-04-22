@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   sectionCard: {
     marginBottom: 16,
     elevation: 1,
@@ -15,7 +14,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     marginLeft: 12,
   },
   sectionDivider: {
@@ -23,7 +22,7 @@ export const styles = StyleSheet.create({
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#F1F5F9',
+    backgroundColor: colors.background.paper,
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderTopLeftRadius: 8,
@@ -32,20 +31,20 @@ export const styles = StyleSheet.create({
   tableHeaderCell: {
     fontFamily: Fonts.bold,
     fontSize: 12,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   tableRow: {
     flexDirection: 'row',
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderBottomWidth: 1,
-    borderBottomColor: '#E2E8F0',
+    borderBottomColor: colors.border,
   },
   tableRowEven: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
   },
   tableRowOdd: {
-    backgroundColor: '#F8FAFC',
+    backgroundColor: colors.background.paper,
   },
   tableRowLast: {
     borderBottomLeftRadius: 8,
@@ -55,17 +54,17 @@ export const styles = StyleSheet.create({
   tableCell: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   goodsId: {
     fontFamily: Fonts.meduim,
     fontSize: 13,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   goodsDescription: {
     fontFamily: Fonts.regular,
     fontSize: 11,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginTop: 2,
   },
 });

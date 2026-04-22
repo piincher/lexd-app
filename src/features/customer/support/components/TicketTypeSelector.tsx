@@ -3,13 +3,13 @@
  * Dropdown selector for ticket types with icons
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Menu, Button, Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { TicketType, TICKET_TYPE_LABELS, TICKET_TYPE_ICONS } from '../types';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface TicketTypeSelectorProps {
   value: TicketType | null;
@@ -25,6 +25,7 @@ export const TicketTypeSelector: React.FC<TicketTypeSelectorProps> = ({
   disabled = false,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
   const [visible, setVisible] = React.useState(false);
 
   const openMenu = () => setVisible(true);
@@ -37,6 +38,35 @@ export const TicketTypeSelector: React.FC<TicketTypeSelectorProps> = ({
 
   const selectedLabel = value ? TICKET_TYPE_LABELS[value] : 'Sélectionner un type';
   const selectedIcon = value ? TICKET_TYPE_ICONS[value] : 'help-circle';
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      marginBottom: 16,
+    },
+    label: {
+      fontFamily: Fonts.meduim,
+      fontSize: 14,
+      color: colors.text.secondary,
+      marginBottom: 8,
+    },
+    button: {
+      borderColor: colors.neutral[200],
+      borderRadius: 8,
+    },
+    buttonContent: {
+      justifyContent: 'flex-start',
+      height: 48,
+    },
+    menu: {
+      backgroundColor: colors.background.card,
+      borderRadius: 8,
+      width: 280,
+    },
+    menuItem: {
+      fontFamily: Fonts.regular,
+      fontSize: 14,
+    },
+  }), [colors, isDark]);
 
   return (
     <View style={styles.container}>
@@ -76,34 +106,5 @@ export const TicketTypeSelector: React.FC<TicketTypeSelectorProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
-  label: {
-    fontFamily: Fonts.meduim,
-    fontSize: 14,
-    color: COLORS.DimGray,
-    marginBottom: 8,
-  },
-  button: {
-    borderColor: COLORS.Silver,
-    borderRadius: 8,
-  },
-  buttonContent: {
-    justifyContent: 'flex-start',
-    height: 48,
-  },
-  menu: {
-    backgroundColor: COLORS.white,
-    borderRadius: 8,
-    width: 280,
-  },
-  menuItem: {
-    fontFamily: Fonts.regular,
-    fontSize: 14,
-  },
-});
 
 export default TicketTypeSelector;

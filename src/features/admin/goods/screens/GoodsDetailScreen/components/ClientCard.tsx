@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card, Text, Avatar } from 'react-native-paper';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { styles } from '../GoodsDetailScreen.styles';
+import {  createStyles  } from '../GoodsDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ClientCardProps {
   client: any;
 }
 
-export const ClientCard: React.FC<ClientCardProps> = ({ client }) => (
+export const ClientCard: React.FC<ClientCardProps> = ({ client }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  return (
   <Card style={styles.sectionCard}>
     <Card.Content>
       <View style={styles.sectionHeader}>
@@ -36,3 +40,4 @@ export const ClientCard: React.FC<ClientCardProps> = ({ client }) => (
     </Card.Content>
   </Card>
 );
+};

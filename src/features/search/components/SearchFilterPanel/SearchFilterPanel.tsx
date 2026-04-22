@@ -106,7 +106,7 @@ export const SearchFilterPanel: React.FC<SearchFilterPanelProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     padding: Theme.spacing.lg,
     borderRadius: 16,
   },

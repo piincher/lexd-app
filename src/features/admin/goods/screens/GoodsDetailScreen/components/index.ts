@@ -11,3 +11,7 @@ export { FinancialCard } from './FinancialCard';
 export { ReceptionCard } from './ReceptionCard';
 export { ActionButtons } from './ActionButtons';
 export { AssignContainerDialog } from './AssignContainerDialog';
+export { GoodsPhotoSection } from './GoodsPhotoSection';
+export { GoodsDetailProperties } from './GoodsDetailProperties';
+export { GoodsDetailTimeline } from './GoodsDetailTimeline';
+export { GoodsDetailFinancial } from './GoodsDetailFinancial';

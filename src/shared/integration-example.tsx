@@ -7,6 +7,7 @@ import React from 'react';
 import { View, Text, Button, ScrollView, StyleSheet } from 'react-native';
 import { QueryClient, useQuery, useQueryClient } from '@tanstack/react-query';
 import { showMessage } from 'react-native-flash-message';
+import { Theme } from '@src/constants/Theme';
 
 // Import offline features
 import {
@@ -117,7 +118,7 @@ function CreateOrderExample() {
         return response.json();
       },
       // Optimistic update - UI updates immediately
-      onOptimisticUpdate: async (variables, qc) => {
+      onOptimisticUpdate: async (variables: any, qc: any) => {
         const tempOrder = {
           id: `temp-${Date.now()}`,
           ...variables,
@@ -133,7 +134,7 @@ function CreateOrderExample() {
         });
       },
       // Rollback if mutation fails
-      onRollback: async (variables, context, qc) => {
+      onRollback: async (variables: any, context: any, qc: any) => {
         qc.invalidateQueries({ queryKey: ['orders'] });
 
         showMessage({
@@ -180,7 +181,7 @@ function UpdateOrderExample({ orderId }: { orderId: string }) {
         });
         return response.json();
       },
-      onOptimisticUpdate: async (variables, qc) => {
+      onOptimisticUpdate: async (variables: any, qc: any) => {
         // Update the specific order in cache
         qc.setQueryData(['orders', orderId], (old: any) => ({
           ...old,
@@ -194,7 +195,7 @@ function UpdateOrderExample({ orderId }: { orderId: string }) {
           )
         );
       },
-      onRollback: async (variables, context, qc) => {
+      onRollback: async (variables: any, context: any, qc: any) => {
         qc.invalidateQueries({ queryKey: ['orders'] });
       },
       metadata: { entityType: 'orders', entityId: orderId },
@@ -323,7 +324,7 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   section: {
-    backgroundColor: 'white',
+    backgroundColor: Theme.colors.background.card,
     margin: 16,
     padding: 16,
     borderRadius: 8,
@@ -355,7 +356,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     padding: 16,
-    backgroundColor: 'white',
+    backgroundColor: Theme.colors.background.card,
     borderTopWidth: 1,
     borderTopColor: '#e0e0e0',
   },

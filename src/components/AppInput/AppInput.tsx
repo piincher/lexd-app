@@ -1,7 +1,8 @@
-import { COLORS } from '@src/constants/Colors';
 import ContactNumberField from "@src/features/auth/components/ContactField";
-import React, { FC } from 'react';
-import { Keyboard, Pressable, StyleSheet, TextInput, TextInputProps, View, Text, Platform } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import React, { FC, useMemo } from 'react';
+import { Keyboard, Pressable, StyleSheet, TextInput, View, Platform } from 'react-native';
+import type { TextInputProps } from 'react-native';
 
 interface Props extends TextInputProps {
 	selectedCode: string;
@@ -11,33 +12,45 @@ interface Props extends TextInputProps {
 }
 
 const AppInput: FC<Props> = (props) => {
-	return (
-		<>
-			<Pressable onPress={Keyboard.dismiss}>
-				<View style={{ flexDirection: 'row', backgroundColor: COLORS.white }}>
-					{Platform.OS === 'android' && props.phone && (
-						<ContactNumberField
-							code={props.code}
-							selectedCode={props.selectedCode}
-							setSelectedCode={props.setSelectedCode}
-						/>
-					)}
+	const { colors } = useAppTheme();
 
-					<TextInput {...props} spellCheck style={[styles.input, props.style]} placeholderTextColor={COLORS.grey} />
-				</View>
-			</Pressable>
-		</>
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				row: {
+					flexDirection: 'row',
+					backgroundColor: colors.background.card,
+				},
+				input: {
+					padding: 10,
+					flex: 1,
+					width: '100%',
+					color: colors.text.primary,
+				},
+			}),
+		[colors]
+	);
+
+	return (
+		<Pressable onPress={Keyboard.dismiss}>
+			<View style={styles.row}>
+				{Platform.OS === 'android' && props.phone && (
+					<ContactNumberField
+						code={props.code}
+						selectedCode={props.selectedCode}
+						setSelectedCode={props.setSelectedCode}
+					/>
+				)}
+
+				<TextInput
+					{...props}
+					spellCheck
+					style={[styles.input, props.style]}
+					placeholderTextColor={colors.text.disabled}
+				/>
+			</View>
+		</Pressable>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {},
-	input: {
-		padding: 10,
-		flex: 1,
-		// borderRightColor: COLORS.lightCrimson,
-		width: '100%',
-	},
-});
 
 export default AppInput;

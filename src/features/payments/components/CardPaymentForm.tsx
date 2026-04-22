@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   View,
   Text,
@@ -7,18 +7,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { CardPaymentFormProps, CardDetails, SavedCard } from '../types';
-
-// Card brand configuration with icons
-const CARD_BRAND_CONFIG: Record<string, { icon: string; color: string; label: string }> = {
-  visa: { icon: 'credit-card', color: '#1A1F71', label: 'Visa' },
-  mastercard: { icon: 'credit-card', color: '#EB001B', label: 'Mastercard' },
-  amex: { icon: 'credit-card', color: '#006FCF', label: 'American Express' },
-  discover: { icon: 'credit-card', color: '#FF6000', label: 'Discover' },
-  default: { icon: 'credit-card', color: COLORS.grey, label: 'Card' },
-};
 
 const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
   onCardChange,
@@ -27,6 +18,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
   savedCards = [],
   onUseSavedCard,
 }) => {
+  const { colors } = useAppTheme();
   const [card, setCard] = useState<CardDetails>({
     number: '',
     expiryMonth: '',
@@ -40,6 +32,239 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
   const [showCvv, setShowCvv] = useState(false);
   const [selectedSavedCard, setSelectedSavedCard] = useState<string | null>(null);
   const [saveCard, setSaveCard] = useState(false);
+
+  // Card brand configuration with icons
+  const CARD_BRAND_CONFIG: Record<string, { icon: string; color: string; label: string }> = {
+    visa: { icon: 'credit-card', color: '#1A1F71', label: 'Visa' },
+    mastercard: { icon: 'credit-card', color: '#EB001B', label: 'Mastercard' },
+    amex: { icon: 'credit-card', color: '#006FCF', label: 'American Express' },
+    discover: { icon: 'credit-card', color: '#FF6000', label: 'Discover' },
+    default: { icon: 'credit-card', color: colors.text.secondary, label: 'Card' },
+  };
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          padding: 16,
+        },
+        title: {
+          fontSize: 20,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginBottom: 20,
+        },
+        savedCardsSection: {
+          marginBottom: 20,
+        },
+        savedCardsTitle: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+          marginBottom: 12,
+        },
+        savedCardItem: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.background.default,
+          borderRadius: 12,
+          padding: 12,
+          marginBottom: 8,
+          borderWidth: 2,
+          borderColor: 'transparent',
+        },
+        savedCardItemSelected: {
+          borderColor: colors.primary.main,
+          backgroundColor: colors.primary.main + '08',
+        },
+        savedCardIconContainer: {
+          width: 44,
+          height: 44,
+          borderRadius: 22,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: 12,
+        },
+        savedCardInfo: {
+          flex: 1,
+        },
+        savedCardNumber: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+        },
+        savedCardExpiry: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          marginTop: 2,
+        },
+        useNewCardButton: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingVertical: 12,
+        },
+        useNewCardText: {
+          marginLeft: 8,
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.primary.main,
+        },
+        cardPreview: {
+          marginBottom: 24,
+          alignItems: 'center',
+        },
+        cardBackground: {
+          width: '100%',
+          maxWidth: 320,
+          aspectRatio: 1.586,
+          backgroundColor: colors.primary.main,
+          borderRadius: 16,
+          padding: 20,
+          justifyContent: 'space-between',
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.2,
+          shadowRadius: 8,
+          elevation: 4,
+        },
+        cardChip: {
+          width: 50,
+          height: 35,
+          backgroundColor: colors.accent.gold + '80',
+          borderRadius: 6,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        cardNumber: {
+          fontSize: 22,
+          fontFamily: Fonts.mono || Fonts.medium,
+          color: colors.text.inverse,
+          letterSpacing: 2,
+        },
+        cardBottom: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
+        },
+        cardLabel: {
+          fontSize: 10,
+          fontFamily: Fonts.regular,
+          color: colors.text.inverse + '80',
+          textTransform: 'uppercase',
+        },
+        cardValue: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.inverse,
+          marginTop: 4,
+        },
+        cardBrandIconContainer: {
+          width: 50,
+          height: 40,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        inputGroup: {
+          marginBottom: 16,
+        },
+        label: {
+          fontSize: 14,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+          marginBottom: 8,
+        },
+        inputContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.background.default,
+          borderRadius: 12,
+          borderWidth: 1,
+          borderColor: colors.neutral[200],
+          paddingHorizontal: 12,
+        },
+        inputContainerError: {
+          borderColor: colors.status.error,
+        },
+        input: {
+          flex: 1,
+          paddingVertical: 14,
+          paddingHorizontal: 10,
+          fontSize: 16,
+          fontFamily: Fonts.medium,
+          color: colors.text.primary,
+        },
+        errorText: {
+          marginTop: 4,
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.status.error,
+        },
+        row: {
+          flexDirection: 'row',
+        },
+        flex1: {
+          flex: 1,
+        },
+        marginRight: {
+          marginRight: 12,
+        },
+        expiryInput: {
+          width: 50,
+          textAlign: 'center',
+        },
+        expirySeparator: {
+          fontSize: 16,
+          fontFamily: Fonts.medium,
+          color: colors.text.secondary,
+          marginHorizontal: 8,
+          alignSelf: 'center',
+        },
+        cvvInput: {
+          textAlign: 'center',
+        },
+        saveCardContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginTop: 8,
+          marginBottom: 16,
+        },
+        checkbox: {
+          width: 20,
+          height: 20,
+          borderRadius: 4,
+          borderWidth: 2,
+          borderColor: colors.text.secondary,
+          marginRight: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        checkboxChecked: {
+          backgroundColor: colors.primary.main,
+          borderColor: colors.primary.main,
+        },
+        saveCardText: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.primary,
+        },
+        securityContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.status.success + '08',
+          borderRadius: 8,
+          padding: 12,
+        },
+        securityText: {
+          flex: 1,
+          marginLeft: 8,
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.status.success,
+        },
+      }),
+    [colors]
+  );
 
   // Detect card brand from number
   const detectCardBrand = (number: string): string => {
@@ -234,7 +459,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
               </Text>
             </View>
             {selectedSavedCard === savedCard.id && (
-              <MaterialCommunityIcons name="check-circle" size={24} color={COLORS.blue} />
+              <MaterialCommunityIcons name="check-circle" size={24} color={colors.primary.main} />
             )}
           </TouchableOpacity>
         ))}
@@ -243,7 +468,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
           style={styles.useNewCardButton}
           onPress={() => setSelectedSavedCard(null)}
         >
-          <MaterialCommunityIcons name="plus-circle" size={20} color={COLORS.blue} />
+          <MaterialCommunityIcons name="plus-circle" size={20} color={colors.primary.main} />
           <Text style={styles.useNewCardText}>Use a different card</Text>
         </TouchableOpacity>
       </View>
@@ -270,7 +495,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
       <View style={styles.cardPreview}>
         <View style={styles.cardBackground}>
           <View style={styles.cardChip}>
-            <MaterialCommunityIcons name="chip" size={32} color={COLORS.yellow} />
+            <MaterialCommunityIcons name="chip" size={32} color={colors.accent.gold} />
           </View>
           <Text style={styles.cardNumber}>
             {card.number || '•••• •••• •••• ••••'}
@@ -292,7 +517,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
               <MaterialCommunityIcons
                 name="credit-card"
                 size={32}
-                color="#FFF"
+                color={colors.text.inverse}
               />
             </View>
           </View>
@@ -306,20 +531,20 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
           styles.inputContainer,
           errors.number && touched.number && styles.inputContainerError,
         ]}>
-          <MaterialCommunityIcons name="credit-card" size={20} color={COLORS.grey} />
+          <MaterialCommunityIcons name="credit-card" size={20} color={colors.text.secondary} />
           <TextInput
             style={styles.input}
             value={card.number}
             onChangeText={handleNumberChange}
             onBlur={() => setTouched(prev => ({ ...prev, number: true }))}
             placeholder="1234 5678 9012 3456"
-            placeholderTextColor={COLORS.lightGray}
+            placeholderTextColor={colors.text.disabled}
             keyboardType="number-pad"
             maxLength={19}
             editable={!disabled}
           />
           {card.number.length > 0 && !errors.number && (
-            <MaterialCommunityIcons name="check-circle" size={20} color={COLORS.green} />
+            <MaterialCommunityIcons name="check-circle" size={20} color={colors.status.success} />
           )}
         </View>
         {errors.number && touched.number && (
@@ -337,7 +562,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
               value={card.expiryMonth}
               onChangeText={handleMonthChange}
               placeholder="MM"
-              placeholderTextColor={COLORS.lightGray}
+              placeholderTextColor={colors.text.disabled}
               keyboardType="number-pad"
               maxLength={2}
               editable={!disabled}
@@ -348,7 +573,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
               value={card.expiryYear}
               onChangeText={handleYearChange}
               placeholder="YY"
-              placeholderTextColor={COLORS.lightGray}
+              placeholderTextColor={colors.text.disabled}
               keyboardType="number-pad"
               maxLength={2}
               editable={!disabled}
@@ -371,7 +596,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
               onChangeText={handleCvvChange}
               onBlur={() => setTouched(prev => ({ ...prev, cvv: true }))}
               placeholder={cardBrand === 'amex' ? '1234' : '123'}
-              placeholderTextColor={COLORS.lightGray}
+              placeholderTextColor={colors.text.disabled}
               keyboardType="number-pad"
               maxLength={cardBrand === 'amex' ? 4 : 3}
               secureTextEntry={!showCvv}
@@ -381,7 +606,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
               <MaterialCommunityIcons
                 name={showCvv ? 'eye-off' : 'eye'}
                 size={20}
-                color={COLORS.grey}
+                color={colors.text.secondary}
               />
             </TouchableOpacity>
           </View>
@@ -398,14 +623,14 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
           styles.inputContainer,
           errors.holderName && touched.holderName && styles.inputContainerError,
         ]}>
-          <MaterialCommunityIcons name="account" size={20} color={COLORS.grey} />
+          <MaterialCommunityIcons name="account" size={20} color={colors.text.secondary} />
           <TextInput
             style={styles.input}
             value={card.holderName}
             onChangeText={handleNameChange}
             onBlur={() => setTouched(prev => ({ ...prev, holderName: true }))}
             placeholder="JOHN DOE"
-            placeholderTextColor={COLORS.lightGray}
+            placeholderTextColor={colors.text.disabled}
             autoCapitalize="characters"
             editable={!disabled}
           />
@@ -423,7 +648,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
       >
         <View style={[styles.checkbox, saveCard && styles.checkboxChecked]}>
           {saveCard && (
-            <MaterialCommunityIcons name="check" size={14} color={COLORS.white} />
+            <MaterialCommunityIcons name="check" size={14} color={colors.text.inverse} />
           )}
         </View>
         <Text style={styles.saveCardText}>Save card for future payments</Text>
@@ -431,7 +656,7 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
 
       {/* Security Note */}
       <View style={styles.securityContainer}>
-        <MaterialCommunityIcons name="shield-check" size={16} color={COLORS.green} />
+        <MaterialCommunityIcons name="shield-check" size={16} color={colors.status.success} />
         <Text style={styles.securityText}>
           Your card details are encrypted and secure. We use 256-bit SSL encryption.
         </Text>
@@ -439,225 +664,5 @@ const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: Fonts.bold,
-    color: COLORS.black,
-    marginBottom: 20,
-  },
-  savedCardsSection: {
-    marginBottom: 20,
-  },
-  savedCardsTitle: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.grey,
-    marginBottom: 12,
-  },
-  savedCardItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 8,
-    borderWidth: 2,
-    borderColor: 'transparent',
-  },
-  savedCardItemSelected: {
-    borderColor: COLORS.blue,
-    backgroundColor: COLORS.blue + '08',
-  },
-  savedCardIconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 12,
-  },
-  savedCardInfo: {
-    flex: 1,
-  },
-  savedCardNumber: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.black,
-  },
-  savedCardExpiry: {
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    marginTop: 2,
-  },
-  useNewCardButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-  },
-  useNewCardText: {
-    marginLeft: 8,
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.blue,
-  },
-  cardPreview: {
-    marginBottom: 24,
-    alignItems: 'center',
-  },
-  cardBackground: {
-    width: '100%',
-    maxWidth: 320,
-    aspectRatio: 1.586,
-    backgroundColor: COLORS.blue,
-    borderRadius: 16,
-    padding: 20,
-    justifyContent: 'space-between',
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  cardChip: {
-    width: 50,
-    height: 35,
-    backgroundColor: COLORS.yellow + '80',
-    borderRadius: 6,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cardNumber: {
-    fontSize: 22,
-    fontFamily: Fonts.mono || Fonts.medium,
-    color: COLORS.white,
-    letterSpacing: 2,
-  },
-  cardBottom: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-  },
-  cardLabel: {
-    fontSize: 10,
-    fontFamily: Fonts.regular,
-    color: COLORS.white + '80',
-    textTransform: 'uppercase',
-  },
-  cardValue: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.white,
-    marginTop: 4,
-  },
-  cardBrandIconContainer: {
-    width: 50,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  inputGroup: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 14,
-    fontFamily: Fonts.medium,
-    color: COLORS.black,
-    marginBottom: 8,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: COLORS.lightGray,
-    paddingHorizontal: 12,
-  },
-  inputContainerError: {
-    borderColor: COLORS.redShade,
-  },
-  input: {
-    flex: 1,
-    paddingVertical: 14,
-    paddingHorizontal: 10,
-    fontSize: 16,
-    fontFamily: Fonts.medium,
-    color: COLORS.black,
-  },
-  errorText: {
-    marginTop: 4,
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.redShade,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  flex1: {
-    flex: 1,
-  },
-  marginRight: {
-    marginRight: 12,
-  },
-  expiryInput: {
-    width: 50,
-    textAlign: 'center',
-  },
-  expirySeparator: {
-    fontSize: 16,
-    fontFamily: Fonts.medium,
-    color: COLORS.grey,
-    marginHorizontal: 8,
-    alignSelf: 'center',
-  },
-  cvvInput: {
-    textAlign: 'center',
-  },
-  saveCardContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 8,
-    marginBottom: 16,
-  },
-  checkbox: {
-    width: 20,
-    height: 20,
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: COLORS.grey,
-    marginRight: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  checkboxChecked: {
-    backgroundColor: COLORS.blue,
-    borderColor: COLORS.blue,
-  },
-  saveCardText: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.black,
-  },
-  securityContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: COLORS.green + '08',
-    borderRadius: 8,
-    padding: 12,
-  },
-  securityText: {
-    flex: 1,
-    marginLeft: 8,
-    fontSize: 12,
-    fontFamily: Fonts.regular,
-    color: COLORS.green,
-  },
-});
 
 export default CardPaymentForm;

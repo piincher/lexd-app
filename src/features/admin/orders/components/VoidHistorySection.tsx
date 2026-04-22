@@ -6,7 +6,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Card } from '@src/shared/ui/Card';
-import { lightTheme } from '@src/constants/Theme';
+import { Theme } from '@src/constants/Theme';
 import { VoidHistoryItem } from '../api/types';
 
 interface VoidHistorySectionProps {
@@ -38,35 +38,35 @@ export const VoidHistorySection: React.FC<VoidHistorySectionProps> = ({ history 
 
 const styles = StyleSheet.create({
   card: {
-    marginBottom: lightTheme.spacing.lg,
-    padding: lightTheme.spacing.lg,
+    marginBottom: Theme.spacing.lg,
+    padding: Theme.spacing.lg,
   },
   title: {
-    fontSize: lightTheme.typography.h4.fontSize,
+    fontSize: Theme.typography.h4.fontSize,
     fontWeight: '600',
-    color: lightTheme.colors.text.primary,
-    marginBottom: lightTheme.spacing.md,
+    color: Theme.colors.text.primary,
+    marginBottom: Theme.spacing.md,
   },
   historyItem: {
-    paddingVertical: lightTheme.spacing.sm,
+    paddingVertical: Theme.spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: lightTheme.colors.neutral[200],
+    borderBottomColor: Theme.colors.neutral[200],
   },
   goodsId: {
-    fontSize: lightTheme.typography.body.fontSize,
-    color: lightTheme.colors.text.primary,
+    fontSize: Theme.typography.body.fontSize,
+    color: Theme.colors.text.primary,
   },
   reason: {
-    fontSize: lightTheme.typography.bodySmall.fontSize,
-    color: lightTheme.colors.status.error,
+    fontSize: Theme.typography.bodySmall.fontSize,
+    color: Theme.colors.status.error,
   },
   voidedAt: {
-    fontSize: lightTheme.typography.caption.fontSize,
-    color: lightTheme.colors.text.secondary,
+    fontSize: Theme.typography.caption.fontSize,
+    color: Theme.colors.text.secondary,
   },
   voidedBy: {
-    fontSize: lightTheme.typography.caption.fontSize,
-    color: lightTheme.colors.text.muted,
+    fontSize: Theme.typography.caption.fontSize,
+    color: Theme.colors.text.muted,
   },
 });
 

@@ -1,5 +1,4 @@
 export { Header } from './Header';
-export { ShippingModeSelector } from './ShippingModeSelector';
 export { RouteSelector } from './RouteSelector';
 export { RouteDetailsCard } from './RouteDetailsCard';
 export { ConsigneeSelector } from './ConsigneeSelector';

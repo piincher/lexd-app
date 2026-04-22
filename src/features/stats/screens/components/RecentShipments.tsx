@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text } from "react-native";
 import { Card } from "react-native-paper";
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Fonts } from "@src/constants/Fonts";
-import styles from "../Stats.styles";
+import { createStyles } from "../Stats.styles";
 
 interface Order {
   code: string;
@@ -15,42 +15,45 @@ interface RecentShipmentsProps {
   shipments: Order[];
 }
 
-const StatusBadge = ({ status }: { status: string }) => {
-  let badgeColor = COLORS.placeHolder;
-  let displayText = status;
-
-  if (status === "Active") {
-    badgeColor = COLORS.orange;
-    displayText = "Chargé";
-  } else if (status === "In Transit") {
-    badgeColor = COLORS.green;
-    displayText = "En Transit";
-  } else if (status === "Delivered") {
-    badgeColor = COLORS.redShade;
-    displayText = "Livré";
-  }
-
-  return (
-    <View style={[styles.statusBadge, { backgroundColor: badgeColor }]}>
-      <Text style={styles.statusText}>{displayText}</Text>
-    </View>
-  );
-};
-
 export const RecentShipments: React.FC<RecentShipmentsProps> = ({ shipments }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
+  const StatusBadge = ({ status }: { status: string }) => {
+    let badgeColor = "#9CA3AF";
+    let displayText = status;
+
+    if (status === "Active") {
+      badgeColor = "#F59E0B";
+      displayText = "Chargé";
+    } else if (status === "In Transit") {
+      badgeColor = "#22C55E";
+      displayText = "En Transit";
+    } else if (status === "Delivered") {
+      badgeColor = "#EF4444";
+      displayText = "Livré";
+    }
+
+    return (
+      <View style={[styles.statusBadge, { backgroundColor: badgeColor }]}>
+        <Text style={styles.statusText}>{displayText}</Text>
+      </View>
+    );
+  };
+
   return (
-    <Card style={[styles.recentCard, { backgroundColor: COLORS.white }]}>
-      <Text style={[styles.sectionTitle, { color: COLORS.blue }]}>
+    <Card style={[styles.recentCard, { backgroundColor: colors.background.card }]}>
+      <Text style={[styles.sectionTitle, { color: colors.primary.main }]}>
         Les expeditions recentes
       </Text>
       {shipments.length > 0 ? (
         shipments.map((order) => (
           <View key={order.code} style={styles.shipmentRow}>
             <View style={styles.shipmentInfo}>
-              <Text style={[styles.shipmentId, { color: COLORS.blue }]}>
+              <Text style={[styles.shipmentId, { color: colors.primary.main }]}>
                 #{order.code}
               </Text>
-              <Text style={[styles.shipmentDate, { color: COLORS.black }]}>
+              <Text style={[styles.shipmentDate, { color: colors.text.primary }]}>
                 {new Date(order.createdAt).toDateString()}
               </Text>
             </View>
@@ -58,7 +61,7 @@ export const RecentShipments: React.FC<RecentShipmentsProps> = ({ shipments }) =
           </View>
         ))
       ) : (
-        <Text style={[styles.emptyText, { color: COLORS.redShade, marginTop: 8 }]}>
+        <Text style={[styles.emptyText, { color: colors.status.error, marginTop: 8 }]}>
           Pas d'expeditions
         </Text>
       )}

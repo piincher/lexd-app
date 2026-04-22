@@ -3,11 +3,12 @@
  * Refactored: Composition pattern with extracted components
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useContainerDetailScreen } from './hooks/useContainerDetailScreen';
-import { styles } from './ContainerDetailScreen.styles';
+import { createStyles } from './ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerDetailHeader } from './components/ContainerDetailHeader';
 import { ContainerTimeline } from './components/ContainerTimeline';
 import { ContainerCapacityCard } from './components/ContainerCapacityCard';
@@ -18,6 +19,7 @@ import { ContainerDialogs } from './components/ContainerDialogs';
 import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
 import { ContainerProfitCard } from './components/ContainerProfitCard';
+import { ContainerReconciliationModal } from './components/ContainerReconciliationModal';
 
 /**
  * Container Delivery Flow (Option A):
@@ -34,17 +36,20 @@ import { ContainerProfitCard } from './components/ContainerProfitCard';
  */
 
 export const ContainerDetailScreen: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const screen = useContainerDetailScreen();
   if (screen.isLoading) return <LoadingState />;
   if (!screen.container) return <ErrorState onBack={() => screen.navigation.goBack()} />;
 
   const { container, goodsList, cbmProfit, isRefreshing, statusColor, statusLabel,
-    currentStatusIndex, fillPercentage, fillColor, isAirContainer, capacityValue, maxCapacity, handleRefresh } = screen;
+    currentStatusIndex, fillPercentage, fillColor, isAirContainer, capacityValue, maxCapacity, handleRefresh, consignee } = screen;
   const { containerId, statusMenuVisible, setStatusMenuVisible, handleUpdateStatus } = screen;
   const { showDeleteDialog, setShowDeleteDialog, confirmDeleteContainer } = screen;
   const { showRemoveGoodsDialog, setShowRemoveGoodsDialog, confirmRemoveGoods } = screen;
   const { showReadyForPickupDialog, setShowReadyForPickupDialog, confirmMarkReadyForPickup } = screen;
   const { showDeliveredDialog, setShowDeliveredDialog, confirmMarkDelivered } = screen;
+  const { showReconcileModal, setShowReconcileModal, handleReconcile, reconcileMutation } = screen;
   const { handleRemoveGoods, handleMarkGoodsDelivered, handleAssignGoods } = screen;
   const { handleMarkDelivered, canMarkDelivered } = screen;
   const { handleGeneratePackingList, handleGoToLoadingList, handleMarkReadyForPickup } = screen;
@@ -54,7 +59,7 @@ export const ContainerDetailScreen: React.FC = () => {
       <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}>
         <ContainerDetailHeader
           containerNumber={container.virtualContainerNumber || container.containerNumber}
-          shippingMode={container.shippingMode}
+          shippingMode={container.shippingMode?.toLowerCase() as 'air' | 'sea' | 'land'}
           status={container.status}
           statusColor={statusColor}
           statusLabel={statusLabel}
@@ -62,10 +67,16 @@ export const ContainerDetailScreen: React.FC = () => {
           setStatusMenuVisible={setStatusMenuVisible}
           onUpdateStatus={handleUpdateStatus}
           onBack={() => screen.navigation.goBack()}
+          consignee={consignee}
         />
         <ContainerTimeline currentStatus={container.status} currentStatusIndex={currentStatusIndex} />
         <ContainerCapacityCard totalCBM={capacityValue} fillPercentage={fillPercentage} fillColor={fillColor} maxCBM={maxCapacity} isAir={isAirContainer} />
-        {cbmProfit && <ContainerProfitCard cbmProfit={cbmProfit} />}
+        {cbmProfit && (
+          <ContainerProfitCard
+            cbmProfit={cbmProfit}
+            onReconcile={container?.reconciliationStatus !== 'RECONCILED' ? () => setShowReconcileModal(true) : undefined}
+          />
+        )}
         <ContainerWaypointSection 
           containerId={containerId} 
           containerStatus={container.status}
@@ -100,6 +111,18 @@ export const ContainerDetailScreen: React.FC = () => {
         setShowDeliveredDialog={setShowDeliveredDialog}
         onConfirmDelivered={confirmMarkDelivered}
       />
+      {cbmProfit?.dualLedger && (
+        <ContainerReconciliationModal
+          visible={showReconcileModal}
+          onDismiss={() => setShowReconcileModal(false)}
+          onConfirm={handleReconcile}
+          isLoading={reconcileMutation.isPending}
+          containerNumber={container.virtualContainerNumber || container.containerNumber}
+          clientTotalCBM={cbmProfit.dualLedger.clientTotalCBM}
+          clientTotalRevenue={cbmProfit.dualLedger.clientTotalRevenue}
+          currentAgentUnitCost={cbmProfit.dualLedger.agentUnitCost}
+        />
+      )}
     </SafeAreaView>
   );
 };

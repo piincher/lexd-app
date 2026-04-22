@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import { Alert } from 'react-native';
-import { useGetContainerById, useUpdateContainerStatus, useRemoveGoodsFromContainer, useDeleteContainer, useMarkReadyForPickup, useMarkGoodsDelivered, useMarkContainerDelivered, containerQueryKeys } from '../../hooks';
+import { useGetContainerById, useUpdateContainerStatus, useRemoveGoodsFromContainer, useDeleteContainer, useMarkReadyForPickup, useMarkGoodsDelivered, useMarkContainerDelivered, useReconcileContainer, containerQueryKeys } from '../../hooks';
 import { waypointQueryKeys } from '../../hooks/useWaypoints';
 import { Container, ContainerStatus, CONTAINER_STATUS_COLORS, CONTAINER_STATUS_LABELS } from '../../types';
 import { Goods } from '../../../goods/types';
@@ -21,12 +21,14 @@ export const useContainerDetailScreen = () => {
   const [showRemoveGoodsDialog, setShowRemoveGoodsDialog] = useState(false);
   const [showReadyForPickupDialog, setShowReadyForPickupDialog] = useState(false);
   const [showDeliveredDialog, setShowDeliveredDialog] = useState(false);
+  const [showReconcileModal, setShowReconcileModal] = useState(false);
   const [selectedGoodsId, setSelectedGoodsId] = useState<string | null>(null);
   const { data: containerResponse, isLoading, isRefetching, refetch } = useGetContainerById(containerId);
   const updateStatusMutation = useUpdateContainerStatus(), removeGoodsMutation = useRemoveGoodsFromContainer();
   const deleteContainerMutation = useDeleteContainer(), markReadyForPickupMutation = useMarkReadyForPickup();
   const markGoodsDeliveredMutation = useMarkGoodsDelivered();
   const markContainerDeliveredMutation = useMarkContainerDelivered();
+  const reconcileMutation = useReconcileContainer();
   const container: Container | undefined = containerResponse?.data?.container || containerResponse?.data;
   const goodsList: Goods[] = (() => { if (!container) return []; const g = (container as any).goodsIds; return (Array.isArray(g) && g.length > 0 && typeof g[0] === 'object') ? g as Goods[] : container?.goods || []; })();
   const isAirContainer = container?.shippingMode === 'AIR';
@@ -99,5 +101,21 @@ export const useContainerDetailScreen = () => {
   const confirmMarkDelivered = async () => { if (goodsList.length === 0) { Alert.alert('Attention', 'Ce container est vide. Marquer un container vide comme livré est inhabituel. Continuer ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: async () => { try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } } }]); return; } try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } };
   const handleMarkGoodsDelivered = (goodsId: string) => Alert.alert('Confirmer la livraison', 'Marquer cette marchandise comme livrée ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Marquer Livré', onPress: async () => { try { await markGoodsDeliveredMutation.mutateAsync(goodsId); Alert.alert('Succès', 'Marchandise marquée comme livrée'); } catch { Alert.alert('Erreur', 'Impossible de marquer la marchandise'); } } }]);
   const cbmProfit = containerResponse?.data?.cbmProfit ?? null;
-  return { containerId, navigation, container, goodsList, cbmProfit, isLoading, isRefetching, isRefreshing, updateStatusMutation, removeGoodsMutation, deleteContainerMutation, markReadyForPickupMutation, markGoodsDeliveredMutation, markContainerDeliveredMutation, statusMenuVisible, setStatusMenuVisible, showDeleteDialog, setShowDeleteDialog, showRemoveGoodsDialog, setShowRemoveGoodsDialog, showReadyForPickupDialog, setShowReadyForPickupDialog, showDeliveredDialog, setShowDeliveredDialog, selectedGoodsId, setSelectedGoodsId, fillPercentage, fillColor, statusColor, statusLabel, currentStatusIndex, isAirContainer, capacityValue, maxCapacity, canMarkReadyForPickup, canMarkDelivered, handleRefresh, handleUpdateStatus, handleRemoveGoods, confirmRemoveGoods, handleDeleteContainer, confirmDeleteContainer, handleAssignGoods, handleGeneratePackingList, handleGoToLoadingList, handleMarkReadyForPickup, confirmMarkReadyForPickup, handleMarkDelivered, confirmMarkDelivered, handleMarkGoodsDelivered };
+  const consignee = (container as any)?.consigneeId && typeof (container as any).consigneeId === 'object'
+    ? {
+        name: (container as any).consigneeId.name,
+        phone: (container as any).consigneeId.phone,
+        warehouseAddress: (container as any).consigneeId.warehouseAddress,
+      }
+    : undefined;
+  const handleReconcile = async (agentCBM: number, agentUnitCost?: number) => {
+    try {
+      await reconcileMutation.mutateAsync({ containerId, agentCBM, agentUnitCost });
+      setShowReconcileModal(false);
+      Alert.alert('Succès', 'Container réconcilié avec succès');
+    } catch (error: any) {
+      Alert.alert('Erreur', error?.response?.data?.message || 'Impossible de réconcilier le container');
+    }
+  };
+  return { containerId, navigation, container, goodsList, cbmProfit, isLoading, isRefetching, isRefreshing, updateStatusMutation, removeGoodsMutation, deleteContainerMutation, markReadyForPickupMutation, markGoodsDeliveredMutation, markContainerDeliveredMutation, reconcileMutation, statusMenuVisible, setStatusMenuVisible, showDeleteDialog, setShowDeleteDialog, showRemoveGoodsDialog, setShowRemoveGoodsDialog, showReadyForPickupDialog, setShowReadyForPickupDialog, showDeliveredDialog, setShowDeliveredDialog, showReconcileModal, setShowReconcileModal, selectedGoodsId, setSelectedGoodsId, fillPercentage, fillColor, statusColor, statusLabel, currentStatusIndex, isAirContainer, capacityValue, maxCapacity, canMarkReadyForPickup, canMarkDelivered, handleRefresh, handleUpdateStatus, handleRemoveGoods, confirmRemoveGoods, handleDeleteContainer, confirmDeleteContainer, handleAssignGoods, handleGeneratePackingList, handleGoToLoadingList, handleMarkReadyForPickup, confirmMarkReadyForPickup, handleMarkDelivered, confirmMarkDelivered, handleMarkGoodsDelivered, handleReconcile, consignee };
 };

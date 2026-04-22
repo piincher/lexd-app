@@ -28,8 +28,6 @@ export interface AuthenticatedStackParamList {
     phoneNumber: string;
     pushTokens: string[];
   };
-  OrderTotalsBreakdown: undefined;
-  
   // Goods Screens
   ReceiveGoods: undefined;
   
@@ -61,10 +59,6 @@ export interface AuthenticatedStackParamList {
  * Public Stack Parameters
  * Routes available without authentication
  */
-export interface PublicStackParamList {
-  PublicTracking: undefined;
-  PublicTrackingResult: undefined;
-}
 
 /**
  * Screen props type helper for authenticated screens
@@ -89,7 +83,6 @@ export const REQUIRES_AUTH: Array<keyof AuthenticatedStackParamList> = [
   'MyPaymentHistory',
   'AllOrders',
   'AddOrder',
-  'OrderTotalsBreakdown',
   'ReceiveGoods',
   'PaymentDetail',
 ];

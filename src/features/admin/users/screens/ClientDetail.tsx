@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { useGetUser } from "@src/hooks/useGetUser";
 import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
 

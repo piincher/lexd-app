@@ -15,6 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { NotificationBell } from '@src/features/notifications';
 import { usePaymentHistory } from '../hooks/usePayments';
 import { PaymentHistoryItem, PaymentStatus, PaymentProvider, PAYMENT_STATUS_COLORS, PAYMENT_STATUS_LABELS, PROVIDER_ICONS, PROVIDER_LABELS } from '../types';
 
@@ -453,7 +454,11 @@ const PaymentHistoryScreen: React.FC = () => {
           <MaterialCommunityIcons name="arrow-left" size={24} color={colors.text.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Payment History</Text>
-        <View style={styles.placeholder} />
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color={colors.text.primary}
+        />
       </View>
 
       {/* Filters */}

@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { Chip } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsStatus } from '../../../types';
 
 interface StatusBadgeProps {
@@ -11,6 +12,7 @@ interface StatusBadgeProps {
 
 const STATUS_CONFIG: Record<GoodsStatus, { label: string; color: string; bgColor: string }> = {
   RECEIVED_AT_WAREHOUSE: { label: 'En Entrepôt', color: '#2196F3', bgColor: '#E3F2FD' },
+  PACKED: { label: 'Colis préparé', color: '#7C4DFF', bgColor: '#EDE7F6' },
   ASSIGNED_TO_CONTAINER: { label: 'Assigné', color: '#FF9800', bgColor: '#FFF3E0' },
   LOADED_IN_CONTAINER: { label: 'Chargé', color: '#9C27B0', bgColor: '#F3E5F5' },
   IN_TRANSIT: { label: 'En Transit', color: '#3F51B5', bgColor: '#E8EAF6' },
@@ -20,10 +22,11 @@ const STATUS_CONFIG: Record<GoodsStatus, { label: string; color: string; bgColor
 };
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
+  const { colors } = useAppTheme();
   const config = STATUS_CONFIG[status] || { 
     label: status, 
-    color: '#666666', 
-    bgColor: '#F5F5F5' 
+    color: colors.text.muted, 
+    bgColor: colors.background.paper 
   };
   
   return (

@@ -26,7 +26,7 @@ export const OrderDetailWithGoodsScreen: React.FC = () => {
 
   if (isLoading || !data) {
     return (
-      <Screen header={{ title: 'Order Details' }}>
+      <Screen header={{ title: 'Order Details', showNotificationBell: true }}>
         <OrderDetailSkeleton />
       </Screen>
     );
@@ -36,7 +36,7 @@ export const OrderDetailWithGoodsScreen: React.FC = () => {
 
   return (
     <Screen 
-      header={{ title: `Order ${order.code}` }}
+      header={{ title: `Order ${order.code}`, showNotificationBell: true }}
       footer={
         <RecalculateButton 
           onPress={() => recalculate(orderId)}

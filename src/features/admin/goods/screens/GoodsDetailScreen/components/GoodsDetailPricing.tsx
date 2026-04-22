@@ -100,7 +100,7 @@ const styles = {
     marginBottom: 12,
     borderRadius: 16,
     elevation: 2,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Theme.colors.background.card,
   },
   financialCard: {
     borderLeftWidth: 4,

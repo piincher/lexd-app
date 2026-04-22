@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Theme.colors.background.card,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 20,

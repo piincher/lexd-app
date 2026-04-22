@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Button, Snackbar, Portal, Dialog, Card, Divider } from 'react-native-paper';
+import { Button, Snackbar, Portal, Dialog, Card, Divider, Text } from 'react-native-paper';
 import { ClientSearchSection } from '../ClientSearchSection';
 import { GoodsPhotoUpload } from '../GoodsPhotoUpload';
 import { CostSummary } from '../CostSummary';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface Client {
   phoneNumber: string;
@@ -46,6 +46,42 @@ export const ReceivedGoodsList: React.FC<ReceivedGoodsListProps> = ({
   showSuccessDialog,
   onDismissSuccess,
 }) => {
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    submitButton: {
+      marginTop: 8,
+      backgroundColor: colors.status.success,
+      borderRadius: 8,
+    },
+    submitButtonContent: {
+      paddingVertical: 8,
+    },
+    snackbar: {
+      backgroundColor: colors.background.paper,
+    },
+    dialog: {
+      borderRadius: 16,
+      backgroundColor: colors.background.card,
+    },
+    dialogTitle: {
+      textAlign: 'center',
+      fontWeight: '700',
+    },
+    dialogText: {
+      textAlign: 'center',
+      color: colors.text.secondary,
+      fontSize: 15,
+    },
+    dialogActions: {
+      justifyContent: 'center',
+      paddingBottom: 16,
+    },
+    dialogButton: {
+      paddingHorizontal: 32,
+    },
+  }), [colors, isDark]);
+
   return (
     <>
       <ClientSearchSection
@@ -89,7 +125,7 @@ export const ReceivedGoodsList: React.FC<ReceivedGoodsListProps> = ({
 
       <Portal>
         <Dialog visible={showSuccessDialog} onDismiss={onDismissSuccess} style={styles.dialog}>
-          <Dialog.Icon icon="check-circle" size={48} color={COLORS.success || '#28a745'} />
+          <Dialog.Icon icon="check-circle" size={48} color={colors.status.success} />
           <Dialog.Title style={styles.dialogTitle}>Succès</Dialog.Title>
           <Dialog.Content>
             <Text style={styles.dialogText}>Marchandise enregistrée avec succès!</Text>
@@ -105,36 +141,4 @@ export const ReceivedGoodsList: React.FC<ReceivedGoodsListProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  submitButton: {
-    marginTop: 8,
-    backgroundColor: COLORS.Crimson || '#dc3545',
-    borderRadius: 8,
-  },
-  submitButtonContent: {
-    paddingVertical: 8,
-  },
-  snackbar: {
-    backgroundColor: '#333',
-  },
-  dialog: {
-    borderRadius: 16,
-    backgroundColor: '#fff',
-  },
-  dialogTitle: {
-    textAlign: 'center',
-    fontWeight: '700',
-  },
-  dialogText: {
-    textAlign: 'center',
-    color: '#666',
-    fontSize: 15,
-  },
-  dialogActions: {
-    justifyContent: 'center',
-    paddingBottom: 16,
-  },
-  dialogButton: {
-    paddingHorizontal: 32,
-  },
-});
+export default ReceivedGoodsList;

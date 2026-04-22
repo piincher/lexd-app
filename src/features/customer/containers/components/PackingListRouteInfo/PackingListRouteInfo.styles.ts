@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   // Banner styles
   routeBannerCard: {
     marginBottom: 16,
@@ -21,7 +20,7 @@ export const styles = StyleSheet.create({
   routeBannerTitle: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: '#0369A1',
+    color: colors.primary.main,
     marginLeft: 8,
   },
   routeBannerFlow: {
@@ -42,7 +41,7 @@ export const styles = StyleSheet.create({
   routeBannerLabel: {
     fontFamily: Fonts.regular,
     fontSize: 11,
-    color: '#64748B',
+    color: colors.text.secondary,
     marginTop: 4,
   },
   routeBannerValue: {
@@ -54,7 +53,7 @@ export const styles = StyleSheet.create({
   routeBannerSubtext: {
     fontFamily: Fonts.regular,
     fontSize: 10,
-    color: '#64748B',
+    color: colors.text.secondary,
   },
   routeBannerArrow: {
     paddingHorizontal: 4,
@@ -72,12 +71,12 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     marginLeft: 12,
   },
   sectionDivider: {
     height: 1,
-    backgroundColor: '#E2E8F0',
+    backgroundColor: colors.border,
     marginBottom: 16,
   },
   routeContainer: {
@@ -98,12 +97,12 @@ export const styles = StyleSheet.create({
   routeLabel: {
     fontFamily: Fonts.regular,
     fontSize: 12,
-    color: COLORS.SlateGray,
+    color: colors.status.success,
   },
   routeValue: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
   },
   routeLine: {
     flexDirection: 'row',
@@ -114,7 +113,7 @@ export const styles = StyleSheet.create({
   routeLineBar: {
     width: 2,
     height: 30,
-    backgroundColor: COLORS.Silver,
+    backgroundColor: colors.neutral[200],
   },
   routeTransitInfo: {
     flexDirection: 'row',
@@ -124,7 +123,7 @@ export const styles = StyleSheet.create({
   transitDays: {
     fontFamily: Fonts.regular,
     fontSize: 12,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginLeft: 8,
   },
 });

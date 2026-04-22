@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import { Text, useTheme, Chip } from 'react-native-paper';
 import Svg, { Path, Circle, Line, G, Text as SvgText, Rect, Defs, LinearGradient, Stop } from 'react-native-svg';
+import { Theme } from '@src/constants/Theme';
 import { RevenueTrendPoint, GrowthComparison } from '../types';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -323,7 +324,7 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
   },
@@ -356,7 +357,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: '#F3F4F6',
+    backgroundColor: Theme.neutral[100],
   },
   periodButtonText: {
     fontSize: 13,

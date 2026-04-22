@@ -39,6 +39,7 @@ import {
 import { ExportDataModal } from "../components/ExportDataModal";
 import { BackupManager } from "../components/BackupManager";
 import { ExportEntity, ExportLog, ExportFormat } from "../types";
+import { Theme } from "@src/constants/Theme";
 
 const ENTITY_CONFIG: Record<ExportEntity, { label: string; icon: string; color: string }> = {
   GOODS: { label: "Goods", icon: "package-variant", color: "#2196F3" },
@@ -372,14 +373,14 @@ export const DataExportScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: Theme.colors.background.paper,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 8,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
   },
   headerTitle: {
     fontWeight: "600",
@@ -391,7 +392,7 @@ const styles = StyleSheet.create({
   statsCard: {
     margin: 16,
     marginTop: 0,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
   },
   statsTitle: {
     marginBottom: 12,
@@ -426,7 +427,7 @@ const styles = StyleSheet.create({
   quickExportButton: {
     alignItems: "center",
     padding: 12,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     borderWidth: 2,
     minWidth: 80,

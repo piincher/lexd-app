@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const createStyles = () => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    overflow: "hidden" as const,
+  },
+  safeArea: {
+    flex: 1,
   },
 });

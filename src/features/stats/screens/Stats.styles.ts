@@ -1,8 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { COLORS } from "@src/constants/Colors";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
 	safeArea: {
 		flex: 1,
 	},
@@ -49,6 +48,7 @@ export const styles = StyleSheet.create({
 		fontFamily: Fonts.bold,
 		marginBottom: 12,
 		textAlign: "center",
+		color: colors.text.primary,
 	},
 	statsRow: {
 		flexDirection: "row",
@@ -75,6 +75,29 @@ export const styles = StyleSheet.create({
 		marginBottom: 16,
 		elevation: 2,
 	},
+	card: {
+		borderRadius: 16,
+		padding: 16,
+		marginBottom: 16,
+		elevation: 2,
+	},
+	cardTitle: {
+		fontSize: 18,
+		fontFamily: Fonts.bold,
+		marginBottom: 12,
+		color: colors.text.primary,
+	},
+	emptyStateContainer: {
+		paddingVertical: 32,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	emptyStateText: {
+		fontSize: 16,
+		fontFamily: Fonts.regular,
+		color: colors.text.secondary,
+		textAlign: 'center',
+	},
 	emptyCard: {
 		borderRadius: 16,
 		padding: 24,
@@ -98,7 +121,7 @@ export const styles = StyleSheet.create({
 		alignItems: "center",
 		paddingVertical: 12,
 		borderBottomWidth: 1,
-		borderBottomColor: "#00000010",
+		borderBottomColor: colors.border,
 	},
 	shipmentInfo: {},
 	shipmentId: {
@@ -118,13 +141,14 @@ export const styles = StyleSheet.create({
 	statusText: {
 		fontSize: 12,
 		fontFamily: Fonts.meduim,
-		color: "#fff",
+		color: colors.text.inverse,
 	},
 	errorText: {
 		fontSize: 18,
 		fontFamily: Fonts.bold,
 		textAlign: "center",
 		marginBottom: 16,
+		color: colors.text.primary,
 	},
 	retryButton: {
 		padding: 8,
@@ -132,7 +156,8 @@ export const styles = StyleSheet.create({
 	retryText: {
 		fontSize: 16,
 		fontFamily: Fonts.bold,
+		color: colors.primary.main,
 	},
 });
 
-export default styles;
+export default createStyles;

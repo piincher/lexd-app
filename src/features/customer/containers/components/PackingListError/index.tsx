@@ -4,14 +4,13 @@
  * SRP: Display error state with retry option
  */
 
-import React from 'react';
-import { View } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { Appbar, Text, Button, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
-import { styles } from './PackingListError.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface PackingListErrorProps {
   onBack: () => void;
@@ -25,6 +24,36 @@ export const PackingListError: React.FC<PackingListErrorProps> = ({
   message,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.paper,
+    },
+    centerContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 32,
+    },
+    errorTitle: {
+      fontSize: 18,
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
+      marginTop: 16,
+    },
+    errorText: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+      textAlign: 'center',
+      marginTop: 8,
+    },
+    retryButton: {
+      marginTop: 24,
+    },
+  }), [colors, isDark]);
 
   return (
     <SafeAreaView style={styles.container}>

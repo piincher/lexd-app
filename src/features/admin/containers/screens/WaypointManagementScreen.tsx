@@ -1,7 +1,7 @@
 /**
  * WaypointManagementScreen - Full screen for managing container waypoints
  */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useWaypointManagementScreen, NewWaypointForm } from './WaypointManagement/hooks';
@@ -17,9 +17,12 @@ import {
   SaveChangesDialog,
 } from './WaypointManagement/components';
 import { WaypointUpdateModal } from '../components/WaypointUpdateModal';
-import { styles } from './WaypointManagement/WaypointManagementScreen.styles';
+import { createStyles } from './WaypointManagement/WaypointManagementScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const WaypointManagementScreen: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const {
     containerNumber,
     waypoints,

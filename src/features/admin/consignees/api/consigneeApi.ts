@@ -1,4 +1,5 @@
 import { apiV2 } from "@src/api/client";
+import { AxiosResponse } from "axios";
 
 const axios = apiV2;
 
@@ -32,6 +33,23 @@ export interface UpdateConsigneeInput {
   isActive?: boolean;
 }
 
+export interface GetConsigneesParams {
+  isActive?: boolean;
+  search?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface ConsigneeListResponse {
+  consignees: Consignee[];
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}
+
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
@@ -40,22 +58,22 @@ export interface ApiResponse<T> {
 }
 
 export const consigneeApi = {
-  getAll: (): Promise<ApiResponse<Consignee[]>> =>
-    axios.get(BASE_URL),
+  getAll: (params?: GetConsigneesParams) =>
+    axios.get<ApiResponse<Consignee[] | ConsigneeListResponse>>(BASE_URL, { params }),
 
-  getById: (id: string): Promise<ApiResponse<Consignee>> =>
+  getById: (id: string): Promise<AxiosResponse<ApiResponse<{ consignee: Consignee }>>> =>
     axios.get(`${BASE_URL}/${id}`),
 
-  create: (data: CreateConsigneeInput): Promise<ApiResponse<Consignee>> =>
+  create: (data: CreateConsigneeInput): Promise<AxiosResponse<ApiResponse<{ consignee: Consignee }>>> =>
     axios.post(BASE_URL, data),
 
-  update: (id: string, data: UpdateConsigneeInput): Promise<ApiResponse<Consignee>> =>
+  update: (id: string, data: UpdateConsigneeInput): Promise<AxiosResponse<ApiResponse<{ consignee: Consignee }>>> =>
     axios.patch(`${BASE_URL}/${id}`, data),
 
-  delete: (id: string): Promise<ApiResponse<void>> =>
+  delete: (id: string): Promise<AxiosResponse<ApiResponse<void>>> =>
     axios.delete(`${BASE_URL}/${id}`),
 
-  toggleStatus: (id: string, isActive: boolean): Promise<ApiResponse<Consignee>> =>
+  toggleStatus: (id: string, isActive: boolean): Promise<AxiosResponse<ApiResponse<{ consignee: Consignee }>>> =>
     axios.patch(`${BASE_URL}/${id}`, { isActive }),
 };
 

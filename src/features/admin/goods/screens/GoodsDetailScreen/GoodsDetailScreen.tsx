@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, RefreshControl, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Card, Text } from 'react-native-paper';
@@ -9,23 +9,29 @@ import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
 import { GoodsDetailHeader } from './components/GoodsDetailHeader';
 import { QRCard } from './components/QRCard';
-import { PhotoCard } from './components/PhotoCard';
+import { GoodsPhotoSection } from './components/GoodsPhotoSection';
 import { DescriptionCard } from './components/DescriptionCard';
 import { ClientCard } from './components/ClientCard';
-import { PropertiesCard } from './components/PropertiesCard';
+import { GoodsDetailProperties } from './components/GoodsDetailProperties';
 import { LocationCard } from './components/LocationCard';
-import { FinancialCard } from './components/FinancialCard';
+import { GoodsDetailFinancial } from './components/GoodsDetailFinancial';
+import { GoodsDetailTimeline } from './components/GoodsDetailTimeline';
 import { ReceptionCard } from './components/ReceptionCard';
 import { ActionButtons } from './components/ActionButtons';
 import { AssignContainerDialog } from './components/AssignContainerDialog';
-import { styles } from './GoodsDetailScreen.styles';
+import { AssignAirwayBillDialog } from './components/AssignAirwayBillDialog';
+import { createStyles } from './GoodsDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const GoodsDetailScreen: React.FC = () => {
-  const { state, loading, dialogs, containers, mutations, actions } = useGoodsDetailScreen();
-  const { goods, client, container, balanceDue, hasQRCode } = state;
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  const { state, loading, dialogs, containers, airwayBills, mutations, actions } = useGoodsDetailScreen();
+  const { goods, client, container, hasQRCode } = state;
   const { isLoading, isRefetching, refetch } = loading;
   const { menuVisible, assignDialogVisible, selectedContainerId, setMenuVisible, setAssignDialogVisible, setSelectedContainerId } = dialogs;
   const { isAssigning } = mutations;
+  const isAirShipping = goods?.shippingMode === 'AIR';
 
   if (isLoading) return <LoadingState />;
   if (!goods) return <ErrorState />;
@@ -36,10 +42,13 @@ export const GoodsDetailScreen: React.FC = () => {
         goods={goods}
         container={container}
         hasContainers={containers.hasContainers}
+        hasAirwayBills={airwayBills.hasAirwayBills}
         menuVisible={menuVisible}
         onMenuToggle={setMenuVisible}
         onStatusUpdate={actions.handleStatusUpdate}
         onAssignPress={actions.handleAssignPress}
+        onUnassignPress={actions.handleUnassignFromAirwayBill}
+        canUnassign={state.canUnassignFromAwb}
         onDelete={actions.handleDelete}
         onBack={actions.handleGoBack}
       />
@@ -53,7 +62,7 @@ export const GoodsDetailScreen: React.FC = () => {
           goodsId={goods.goodsId}
           onShare={actions.handleShareQR}
         />
-        <PhotoCard photoUrls={goods.photos} />
+        <GoodsPhotoSection photoUrls={goods.photos?.length ? goods.photos : (goods.images || [])} goodsId={goods.goodsId} />
         <DescriptionCard description={goods.description} />
         {goods.expressTrackingNumber ? (
           <Card style={styles.sectionCard}>
@@ -67,35 +76,35 @@ export const GoodsDetailScreen: React.FC = () => {
           </Card>
         ) : null}
         <ClientCard client={client} />
-        <PropertiesCard
-          actualCBM={goods.actualCBM}
-          weight={goods.weight}
-          quantity={goods.quantity}
-          dimensions={goods.dimensions}
-        />
-        <LocationCard warehouseLocation={goods.warehouseLocation} container={container} />
-        <FinancialCard
-          unitPrice={goods?.unitPrice || 0}
-          totalCost={goods?.totalCost || 0}
-          amountPaid={goods?.amountPaid || 0}
-          balanceDue={balanceDue}
-          paymentStatus={goods?.paymentStatus || 'UNPAID'}
-          getPaymentStatusColor={actions.getPaymentStatusColor}
-          formatCurrency={actions.formatCurrency}
-        />
+        <GoodsDetailProperties goods={goods} />
+        <LocationCard warehouseLocation={goods.warehouseLocation} container={container} airwayBill={goods?.airwayBillId} />
+        <GoodsDetailTimeline status={goods.status} shippingMode={goods.shippingMode} />
+        <GoodsDetailFinancial goods={goods} />
         <ReceptionCard receivedAt={goods.receivedAt} receivedByName={goods.receivedByName} receivedBy={goods.receivedBy} formatDate={actions.formatDate} />
         <ActionButtons onEdit={actions.handleNavigateToEdit} onDelete={actions.handleDelete} />
         <View style={{ height: 40 }} />
       </ScrollView>
-      <AssignContainerDialog
-        visible={assignDialogVisible}
-        containers={containers.containers}
-        selectedContainerId={selectedContainerId}
-        isAssigning={isAssigning}
-        onSelect={setSelectedContainerId}
-        onDismiss={() => setAssignDialogVisible(false)}
-        onConfirm={actions.handleAssignToContainer}
-      />
+      {isAirShipping ? (
+        <AssignAirwayBillDialog
+          visible={assignDialogVisible}
+          airwayBills={airwayBills.airwayBills}
+          selectedAirwayBillId={dialogs.selectedAirwayBillId}
+          isAssigning={isAssigning}
+          onSelect={dialogs.setSelectedAirwayBillId}
+          onDismiss={() => setAssignDialogVisible(false)}
+          onConfirm={actions.handleAssignToAirwayBill}
+        />
+      ) : (
+        <AssignContainerDialog
+          visible={assignDialogVisible}
+          containers={containers.containers}
+          selectedContainerId={selectedContainerId}
+          isAssigning={isAssigning}
+          onSelect={setSelectedContainerId}
+          onDismiss={() => setAssignDialogVisible(false)}
+          onConfirm={actions.handleAssignToContainer}
+        />
+      )}
     </SafeAreaView>
   );
 };

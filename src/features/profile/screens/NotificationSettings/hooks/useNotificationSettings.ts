@@ -17,8 +17,8 @@ export interface QuietHours {
 }
 
 export const useNotificationSettings = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [masterEnabled, setMasterEnabled] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [masterEnabled, setMasterEnabled] = useState(false);
   const [preferences, setPreferences] = useState<NotificationPreference[]>(
     defaultNotificationPreferences
   );
@@ -38,6 +38,8 @@ export const useNotificationSettings = () => {
       setMasterEnabled(status === 'granted');
     } catch (error) {
       console.error('Error loading notification settings:', error);
+      setPermissionStatus('denied');
+      setMasterEnabled(false);
     } finally {
       setIsLoading(false);
     }
@@ -63,11 +65,11 @@ export const useNotificationSettings = () => {
         setPermissionStatus('granted');
       } else {
         Alert.alert(
-          'Permission Required',
-          'Please enable notifications in your device settings to receive updates.',
+          'Autorisation requise',
+          'Veuillez activer les notifications dans les parametres de votre appareil pour recevoir les mises a jour.',
           [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'Open Settings', onPress: openSettings },
+            { text: 'Annuler', style: 'cancel' },
+            { text: 'Ouvrir les parametres', onPress: openSettings },
           ]
         );
       }
@@ -89,7 +91,7 @@ export const useNotificationSettings = () => {
             pref.type === type ? { ...pref, enabled: !value } : pref
           )
         );
-        Alert.alert('Error', 'Failed to update preference. Please try again.');
+        Alert.alert('Erreur', 'Echec de la mise a jour de la preference. Veuillez reessayer.');
       }
     } catch (error) {
       console.error('Error updating preference:', error);
@@ -118,16 +120,16 @@ export const useNotificationSettings = () => {
 
   const getIconForType = useCallback((type: NotificationType): string => {
     const iconMap: Record<NotificationType, string> = {
-      ORDER_UPDATE: 'package',
-      PAYMENT: 'credit-card',
-      CONTAINER_STATUS: 'cube',
-      TICKET_REPLY: 'message-circle',
-      INVOICE: 'file-text',
-      CERTIFICATE_ISSUED: 'award',
-      GENERAL: 'bell',
+      ORDER_UPDATE: 'cube',
+      PAYMENT: 'card',
+      CONTAINER_STATUS: 'archive',
+      TICKET_REPLY: 'chatbubble-ellipses',
+      INVOICE: 'document-text',
+      CERTIFICATE_ISSUED: 'trophy',
+      GENERAL: 'notifications',
       SYSTEM: 'settings',
     };
-    return iconMap[type] || 'bell';
+    return iconMap[type] || 'notifications';
   }, []);
 
   const getColorForType = useCallback((type: NotificationType): string => {

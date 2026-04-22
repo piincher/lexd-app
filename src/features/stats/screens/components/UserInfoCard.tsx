@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Avatar, Card } from "react-native-paper";
-import { COLORS } from "@src/constants/Colors";
-import styles from "../Stats.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "../Stats.styles";
 
 interface UserInfoCardProps {
   firstName?: string;
@@ -15,8 +15,11 @@ export const UserInfoCard: React.FC<UserInfoCardProps> = ({
   phoneNumber,
   role,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
+
   return (
-    <Card style={[styles.userCard, { backgroundColor: COLORS.surface }]}>
+    <Card style={[styles.userCard, { backgroundColor: colors.background.card }]}>
       <View style={styles.userCardContent}>
         <Avatar.Image
           size={72}
@@ -25,13 +28,13 @@ export const UserInfoCard: React.FC<UserInfoCardProps> = ({
           }}
         />
         <View style={styles.userInfo}>
-          <Text style={[styles.userName, { color: COLORS.DarkGrey }]} numberOfLines={1}>
+          <Text style={[styles.userName, { color: colors.text.primary }]} numberOfLines={1}>
             {firstName || "—"}
           </Text>
-          <Text style={[styles.userDetail, { color: COLORS.DarkGrey }]}>
+          <Text style={[styles.userDetail, { color: colors.text.secondary }]}>
             {phoneNumber || "No phone"}
           </Text>
-          <Text style={[styles.userDetail, { color: COLORS.DarkGrey }]}>
+          <Text style={[styles.userDetail, { color: colors.text.secondary }]}>
             {role || "User"}
           </Text>
         </View>

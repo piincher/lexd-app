@@ -1,218 +1,362 @@
-import api from '@src/api/client';
-import AuthInputField from '@src/components/AuthInput/AuthInput';
-import Form from '@src/components/Form/Form';
-import SubmitBtn from '@src/components/SubmitBtn/SubmitBtn';
-import React, { useEffect } from 'react';
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
+/**
+ * CheckRoute Screen
+ * Public shipment tracking by tracking code.
+ */
+
+import React, { useCallback, useMemo, useState } from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import { Appbar, Chip, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as yup from 'yup';
-import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
-import { useCheckRoute } from '../hooks/useRoute';
-import { IMAGES } from '@src/constants/Images';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Animated, { FadeIn, FadeInUp } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
+
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
-import Constants from 'expo-constants';
-import * as WebBrowser from 'expo-web-browser';
-import SocialMedia from '@src/components/SocialMedia/SocialMedia';
-const CheckRouteSchema = yup.object({
-	code: yup.string().trim().required('Le numero de suivi est requis'),
-});
+import { ShimmerBlock } from '@src/shared/ui';
 
-interface newUser {
-	code: string;
-}
-const initialValues = {
-	code: '',
+import { useCheckRoute } from '../hooks/useCheckRoute';
+import { useRecentSearches } from '../hooks/useRecentSearches';
+import { TrackingForm } from '../components/TrackingForm';
+import { TrackingTimeline } from '../components/TrackingTimeline';
+
+const parseErrorMessage = (error: unknown): string => {
+  if (!error) return '';
+  if (typeof error === 'object' && error !== null) {
+    const maybe = error as { response?: { data?: { message?: string } }; message?: string };
+    if (maybe.response?.data?.message) return maybe.response.data.message;
+    if (maybe.message) return maybe.message;
+  }
+  return 'Une erreur est survenue. Veuillez réessayer.';
 };
 
-interface StepIndicatorProps {
-	steps: Array<{
-		id: string;
-		title: string;
-		time: string;
-	}>;
-	currentStep: number;
-	time?: string;
-}
-
-const StepIndicator = ({ steps, currentStep, time }: StepIndicatorProps) => {
-	return (
-		<View style={styles2.container}>
-			{steps?.map((step, index) => {
-				const date = new Date(step.time ?? new Date());
-				const formattedDate = date.toISOString().split('T')[0];
-				const hours = date.getUTCHours().toString().padStart(2, '0');
-				const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-				const formattedDateTime = `${formattedDate} ${hours}:${minutes}`;
-
-				return (
-					<View key={step.id} style={styles2.stepContainer}>
-						<View style={styles2.stepInnerContainer}>
-							<View style={[styles2.circle, index <= currentStep && styles2.activeCircle]}>
-								<Text style={[styles2.stepText, index <= currentStep && styles2.activeStepText]}>{index + 1}</Text>
-							</View>
-							<Text style={[styles2.label, index <= currentStep && styles2.activeLabel]} numberOfLines={3}>
-								{formattedDateTime}
-							</Text>
-							<Text style={[styles2.label, index <= currentStep && styles2.activeLabel]} numberOfLines={3}>
-								{step?.title}
-							</Text>
-						</View>
-						{index < steps.length - 1 && <View style={[styles2.line, index < currentStep && styles2.activeLine]} />}
-					</View>
-				);
-			})}
-		</View>
-	);
+const formatUpdatedAt = (iso?: string): string | null => {
+  if (!iso) return null;
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toLocaleString('fr-FR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 };
 
-const styles2 = StyleSheet.create({
-	container: {
-		flexDirection: 'column',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	stepContainer: {
-		flexDirection: 'column',
-		alignItems: 'center',
-		marginBottom: 20,
-	},
-	stepInnerContainer: {
-		alignItems: 'center',
-		marginBottom: 5, // Space between the circle and the label
-	},
-	circle: {
-		width: 30,
-		height: 30,
-		borderRadius: 15,
-		backgroundColor: '#ccc',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	activeCircle: {
-		backgroundColor: '#4caf50',
-	},
-	stepText: {
-		color: '#fff',
-	},
-	activeStepText: {
-		color: '#fff',
-	},
-	label: {
-		marginTop: 5,
-		color: '#ccc',
-		textAlign: 'center',
-	},
-	activeLabel: {
-		color: '#4caf50',
-	},
-	line: {
-		width: 2,
-		height: 30,
-		backgroundColor: '#ccc',
-	},
-	activeLine: {
-		backgroundColor: '#4caf50',
-	},
-});
+const CheckRouteScreen: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const navigation = useNavigation<any>();
+  const [code, setCode] = useState('');
+  const { mutate, data, isPending, isError, error, reset } = useCheckRoute();
+  const { recent, push: pushRecent, clear: clearRecent } = useRecentSearches();
 
-const steps = [
-	'Commande recue',
-	'Commande en cours de traitement',
-	'Commande en cours de livraison',
-	'Commande livree',
-	'Commande annulee',
-	'Commande en  de traitement',
-	'Commande en cours de livraison',
-];
-const CheckRoute = () => {
-	const [loading, setLoading] = React.useState(false);
-	const [currentStep, setCurrentStep] = React.useState(0);
-	const { mutate, data, isPending } = useCheckRoute();
+  const handleSubmit = useCallback(
+    (override?: string) => {
+      const payload = (override ?? code).trim().toUpperCase();
+      if (!payload) return;
+      reset();
+      mutate(
+        { code: payload },
+        {
+          onSuccess: (result) => {
+            if (result?.route && result.route.length > 0) {
+              pushRecent(payload);
+            }
+          },
+        }
+      );
+    },
+    [code, mutate, pushRecent, reset]
+  );
 
-	console.log(data);
+  const handleRecentPress = (value: string) => {
+    setCode(value);
+    handleSubmit(value);
+  };
 
-	const _handlePressButtonAsync = async (url: string) => {
-		let result = await WebBrowser.openBrowserAsync(url);
-	};
-	const handleSubmit = async (values: newUser) => {
-		mutate({
-			code: values.code.trim(),
-		});
-	};
-	useEffect(() => {
-		setCurrentStep(data?.route.length ?? 0);
-	}, [data]);
-	0;
-	const date = new Date(data?.updatedAt ?? new Date());
-	const formattedDate = date.toISOString().split('T')[0];
-	const hours = date.getUTCHours().toString().padStart(2, '0');
-	const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-	const formattedDateTime = `${formattedDate} ${hours}:${minutes}`;
+  const route = data?.route ?? [];
+  const hasResult = route.length > 0;
+  const currentStep = route.length;
+  const errorMessage = isError ? parseErrorMessage(error) : null;
 
-	return (
-		<SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-			<Form initialValues={initialValues} onSubmit={handleSubmit} validationSchema={CheckRouteSchema}>
-				<ScrollView style={{ width: '90%' }} showsVerticalScrollIndicator={false}>
-					<Image
-						source={require('../../../../assets/images/logoYellow.png')}
-						style={{ height: 120, width: 120, alignSelf: 'center' }}
-					/>
-					<Text style={{ textAlign: 'center', fontFamily: Fonts.black, fontSize: 17 }}>
-						Verifier le trajet de votre colis en entrant le numero de suivi
-					</Text>
-					<AuthInputField
-						label='Entre Le numero de Suivi'
-						placeholder='Entrez le numero de suivi: CLEXXXXXXXX'
-						containerStyle={styles.containerStyle}
-						name='code'
-						rightIcon={<AntDesign name='search1' size={24} color='black' />}
-					/>
-					{isPending && (
-						<View style={{ marginVertical: 16, alignItems: 'center' }}>
-							<ShimmerBlock width={200} height={16} borderRadius={4} />
-						</View>
-					)}
-					{data?.route.length ?? 0 > 0 ? (
-						<ScrollView>
-							<Text style={{ textAlign: 'center', marginBottom: 25, fontFamily: Fonts.bold, fontSize: 18 }}>
-								Le trajet de votre colis{' '}
-							</Text>
-							<View>
-								<StepIndicator steps={data?.route!} currentStep={currentStep} time={formattedDateTime} />
-							</View>
-						</ScrollView>
-					) : (
-						<Image source={IMAGES.search} style={{ width: 'auto', height: 250 }} />
-					)}
+  const cardBg = isDark ? 'rgba(255,255,255,0.04)' : '#FFFFFF';
+  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
 
-					{/* social media icons such instagram ,facebook and tik tok */}
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flex: 1,
+          backgroundColor: colors.background.default,
+        },
+        header: {
+          backgroundColor: colors.background.default,
+          elevation: 0,
+        },
+        headerTitle: {
+          fontSize: 18,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+        },
+        scroll: {
+          flex: 1,
+        },
+        scrollContent: {
+          padding: 16,
+          paddingBottom: 48,
+        },
+        hero: {
+          marginBottom: 20,
+        },
+        heroTitle: {
+          fontSize: 22,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginBottom: 6,
+        },
+        heroSubtitle: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          lineHeight: 20,
+        },
+        card: {
+          borderRadius: 16,
+          borderWidth: 1,
+          borderColor: cardBorder,
+          backgroundColor: cardBg,
+          padding: 16,
+        },
+        cardSpacer: {
+          height: 16,
+        },
+        sectionHeader: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: 12,
+        },
+        sectionTitle: {
+          fontSize: 13,
+          fontFamily: Fonts.meduim,
+          color: colors.text.secondary,
+          textTransform: 'uppercase',
+          letterSpacing: 0.5,
+        },
+        recentRow: {
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: 8,
+        },
+        clearBtn: {
+          fontSize: 12,
+          fontFamily: Fonts.meduim,
+          color: colors.primary.main,
+        },
+        resultHeader: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          marginBottom: 12,
+        },
+        resultCode: {
+          fontSize: 16,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          letterSpacing: 1,
+        },
+        resultMeta: {
+          fontSize: 12,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          marginTop: 2,
+        },
+        emptyState: {
+          alignItems: 'center',
+          paddingVertical: 32,
+        },
+        emptyIcon: {
+          width: 72,
+          height: 72,
+          borderRadius: 36,
+          backgroundColor: isDark ? 'rgba(34,197,94,0.12)' : 'rgba(34,197,94,0.08)',
+          alignItems: 'center',
+          justifyContent: 'center',
+          marginBottom: 16,
+        },
+        emptyTitle: {
+          fontSize: 15,
+          fontFamily: Fonts.bold,
+          color: colors.text.primary,
+          marginBottom: 4,
+          textAlign: 'center',
+        },
+        emptyText: {
+          fontSize: 13,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          textAlign: 'center',
+          paddingHorizontal: 16,
+        },
+        errorCard: {
+          flexDirection: 'row',
+          alignItems: 'flex-start',
+          padding: 14,
+          borderRadius: 12,
+          backgroundColor: `${colors.status.error}15`,
+          gap: 10,
+        },
+        errorTitle: {
+          fontSize: 14,
+          fontFamily: Fonts.bold,
+          color: colors.status.error,
+        },
+        errorText: {
+          fontSize: 13,
+          fontFamily: Fonts.regular,
+          color: colors.text.secondary,
+          marginTop: 2,
+        },
+        loadingBlock: {
+          gap: 10,
+        },
+      }),
+    [colors, cardBg, cardBorder, isDark]
+  );
 
-					{/* About China Link Express   */}
-				</ScrollView>
-			</Form>
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <Appbar.Header style={styles.header} statusBarHeight={0}>
+        {navigation.canGoBack() ? (
+          <Appbar.BackAction onPress={() => navigation.goBack()} color={colors.text.primary} />
+        ) : null}
+        <Appbar.Content
+          title="Suivi de colis"
+          titleStyle={styles.headerTitle}
+          accessibilityLabel="Suivi de colis"
+        />
+      </Appbar.Header>
 
-			<SocialMedia _handlePressButtonAsync={_handlePressButtonAsync} />
-			<Text>App version: {Constants.expoConfig?.version}</Text>
-		</SafeAreaView>
-	);
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.hero}>
+            <Text style={styles.heroTitle}>Où est votre colis ?</Text>
+            <Text style={styles.heroSubtitle}>
+              Entrez votre numéro de suivi pour voir l'avancement de votre envoi en temps réel.
+            </Text>
+          </View>
+
+          <View style={styles.card}>
+            <TrackingForm
+              value={code}
+              onChange={setCode}
+              onSubmit={() => handleSubmit()}
+              isSubmitting={isPending}
+            />
+
+            {recent.length > 0 && !hasResult && !isPending && !errorMessage ? (
+              <View style={{ marginTop: 16 }}>
+                <View style={styles.sectionHeader}>
+                  <Text style={styles.sectionTitle}>Recherches récentes</Text>
+                  <Pressable onPress={clearRecent} hitSlop={8} accessibilityRole="button">
+                    <Text style={styles.clearBtn}>Effacer</Text>
+                  </Pressable>
+                </View>
+                <View style={styles.recentRow}>
+                  {recent.map((value) => (
+                    <Chip
+                      key={value}
+                      icon="history"
+                      onPress={() => handleRecentPress(value)}
+                      compact
+                      accessibilityLabel={`Rechercher ${value}`}
+                    >
+                      {value}
+                    </Chip>
+                  ))}
+                </View>
+              </View>
+            ) : null}
+          </View>
+
+          <View style={styles.cardSpacer} />
+
+          {isPending ? (
+            <Animated.View entering={FadeIn.duration(200)} style={styles.card}>
+              <View style={styles.loadingBlock}>
+                <ShimmerBlock width="60%" height={18} borderRadius={6} />
+                <ShimmerBlock width="40%" height={12} borderRadius={4} />
+                <View style={{ height: 12 }} />
+                <ShimmerBlock width="100%" height={48} borderRadius={8} />
+                <ShimmerBlock width="100%" height={48} borderRadius={8} />
+                <ShimmerBlock width="100%" height={48} borderRadius={8} />
+              </View>
+            </Animated.View>
+          ) : errorMessage ? (
+            <Animated.View entering={FadeInUp.duration(200)} style={styles.errorCard}>
+              <MaterialCommunityIcons
+                name="alert-circle-outline"
+                size={22}
+                color={colors.status.error}
+              />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.errorTitle}>Code introuvable</Text>
+                <Text style={styles.errorText}>{errorMessage}</Text>
+              </View>
+            </Animated.View>
+          ) : hasResult ? (
+            <Animated.View entering={FadeInUp.duration(240)} style={styles.card}>
+              <View style={styles.resultHeader}>
+                <MaterialCommunityIcons
+                  name="package-variant-closed-check"
+                  size={22}
+                  color={colors.primary.main}
+                  style={{ marginRight: 10 }}
+                />
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.resultCode}>{code.trim().toUpperCase()}</Text>
+                  {formatUpdatedAt(data?.updatedAt) ? (
+                    <Text style={styles.resultMeta}>
+                      Dernière mise à jour : {formatUpdatedAt(data?.updatedAt)}
+                    </Text>
+                  ) : null}
+                </View>
+              </View>
+              <TrackingTimeline steps={route} currentStep={currentStep} />
+            </Animated.View>
+          ) : (
+            <View style={[styles.card, styles.emptyState]}>
+              <View style={styles.emptyIcon}>
+                <MaterialCommunityIcons
+                  name="cube-scan"
+                  size={36}
+                  color={colors.primary.main}
+                />
+              </View>
+              <Text style={styles.emptyTitle}>Aucun colis sélectionné</Text>
+              <Text style={styles.emptyText}>
+                Saisissez votre numéro de suivi ci-dessus pour commencer.
+              </Text>
+            </View>
+          )}
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
 };
-const styles = StyleSheet.create({
-	formContainer: { width: '100%', alignItems: 'center', justifyContent: 'center' },
 
-	containerStyle: {
-		marginBottom: 20,
-		marginTop: 10,
-	},
-	iconContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		marginTop: 10,
-		marginBottom: 10,
-	},
-	iconStyle: {
-		marginRight: 50,
-	},
-});
-
-export default CheckRoute;
+export default CheckRouteScreen;

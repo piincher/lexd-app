@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { styles } from '../ContainerDetailScreen.styles';
+import {  createStyles  } from '../ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface ContainerActionButtonsProps {
@@ -27,6 +28,8 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
   canMarkReadyForPickup,
   canMarkDelivered,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <Animated.View entering={FadeInUp.delay(500)} style={styles.actionsCard}>
       {/* Mark Ready for Pickup Button */}

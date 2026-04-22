@@ -21,6 +21,9 @@ export {
   useMarkReadyForPickup,
   useMarkContainerDelivered,
   useMarkGoodsDelivered,
+  // Dual-ledger profit reconciliation hooks
+  useReconcileContainer,
+  useGetClientAllocations,
 } from './useContainers';
 
 export { containerQueryKeys } from './useContainers';

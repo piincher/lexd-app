@@ -4,14 +4,14 @@
  * SRP: Display shipping route information
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
-import { styles } from './PackingListRouteInfo.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './PackingListRouteInfo.styles';
 
 interface PackingListRouteInfoProps {
   origin: string;
@@ -26,6 +26,9 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
   estimatedTransitDays,
   showDetailed = false,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   if (showDetailed) {
     return (
       <Card style={styles.sectionCard}>
@@ -34,7 +37,7 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
             <MaterialCommunityIcons
               name="routes"
               size={24}
-              color={COLORS.primary}
+              color={colors.primary.main}
             />
             <Text style={styles.sectionTitle}>Itinéraire Détaillé</Text>
           </View>
@@ -42,7 +45,7 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
           
           <View style={styles.routeContainer}>
             <View style={styles.routePoint}>
-              <View style={[styles.routeDot, { backgroundColor: COLORS.primary }]} />
+              <View style={[styles.routeDot, { backgroundColor: colors.primary.main }]} />
               <View style={styles.routeContent}>
                 <Text style={styles.routeLabel}>Origine</Text>
                 <Text style={styles.routeValue}>{origin}</Text>
@@ -52,7 +55,7 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
             <View style={styles.routeLine}>
               <View style={styles.routeLineBar} />
               <View style={styles.routeTransitInfo}>
-                <MaterialCommunityIcons name="ferry" size={14} color="#64748B" />
+                <MaterialCommunityIcons name="ferry" size={14} color={colors.text.secondary} />
                 <Text style={styles.transitDays}>~{estimatedTransitDays} jours</Text>
               </View>
             </View>
@@ -68,13 +71,13 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
             <View style={styles.routeLine}>
               <View style={styles.routeLineBar} />
               <View style={styles.routeTransitInfo}>
-                <MaterialCommunityIcons name="truck-delivery" size={14} color="#64748B" />
+                <MaterialCommunityIcons name="truck-delivery" size={14} color={colors.text.secondary} />
                 <Text style={styles.transitDays}>Transport routier</Text>
               </View>
             </View>
             
             <View style={styles.routePoint}>
-              <View style={[styles.routeDot, { backgroundColor: COLORS.green }]} />
+              <View style={[styles.routeDot, { backgroundColor: colors.status.success }]} />
               <View style={styles.routeContent}>
                 <Text style={styles.routeLabel}>Destination Finale</Text>
                 <Text style={styles.routeValue}>{destination}</Text>
@@ -96,18 +99,18 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
       >
         <Card.Content>
           <View style={styles.routeBannerHeader}>
-            <MaterialCommunityIcons name="routes" size={24} color="#0284C7" />
+            <MaterialCommunityIcons name="routes" size={24} color={colors.primary.main} />
             <Text style={styles.routeBannerTitle}>Itinéraire Via Dakar, Sénégal</Text>
           </View>
           
           <View style={styles.routeBannerFlow}>
             <View style={styles.routeBannerItem}>
-              <MaterialCommunityIcons name="flag" size={20} color="#0EA5E9" />
+              <MaterialCommunityIcons name="flag" size={20} color={colors.primary.main} />
               <Text style={styles.routeBannerLabel}>Chine</Text>
             </View>
             
             <View style={styles.routeBannerArrow}>
-              <MaterialCommunityIcons name="arrow-right" size={16} color="#94A3B8" />
+              <MaterialCommunityIcons name="arrow-right" size={16} color={colors.text.secondary} />
             </View>
             
             <View style={[styles.routeBannerItem, styles.routeBannerHighlight]}>
@@ -117,7 +120,7 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
             </View>
             
             <View style={styles.routeBannerArrow}>
-              <MaterialCommunityIcons name="arrow-right" size={16} color="#94A3B8" />
+              <MaterialCommunityIcons name="arrow-right" size={16} color={colors.text.secondary} />
             </View>
             
             <View style={styles.routeBannerItem}>

@@ -3,11 +3,12 @@
  * Extracted to keep ContainerDetailScreen under 100 lines
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Text } from 'react-native';
 import { Portal, Dialog, Button } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
-import { styles } from '../ContainerDetailScreen.styles';
+import {  createStyles  } from '../ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ContainerDialogsProps {
   // Delete dialog
@@ -54,6 +55,8 @@ export const ContainerDialogs: React.FC<ContainerDialogsProps> = ({
   setShowDeliveredDialog,
   onConfirmDelivered,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <>
       {/* Delete Confirmation Dialog */}

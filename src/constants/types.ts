@@ -40,4 +40,17 @@ export interface SmsService {
 	expirationDate: string;
 	creationDate: string;
 	lastUpdateDate: string;
+	// Enriched fields from backend
+	countryName: string;
+	countryFlag: string;
+	daysRemaining: number;
+	totalDays: number;
+	daysElapsed: number;
+	progressPercentage: number;
+	isExpired: boolean;
+	isExpiringSoon: boolean;
+	isPending: boolean;
+	isActive: boolean;
+	expirationDateFormatted: string;
+	expirationDateShort: string;
 }

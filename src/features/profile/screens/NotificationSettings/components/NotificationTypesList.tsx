@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Card, Divider, List, Switch } from 'react-native-paper';
-import { AntDesign } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
+import { Ionicons } from '@expo/vector-icons';
+
+type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   NotificationPreference,
   NotificationType,
@@ -21,9 +23,42 @@ export const NotificationTypesList: React.FC<NotificationTypesListProps> = ({
   getIconForType,
   getColorForType,
 }) => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        card: {
+          marginBottom: 16,
+          borderRadius: 12,
+          elevation: 2,
+          backgroundColor: colors.background.default,
+        },
+        sectionTitle: {
+          fontSize: 14,
+          fontWeight: '600',
+          color: colors.text.secondary,
+          textTransform: 'uppercase',
+          marginBottom: 8,
+          marginLeft: 4,
+        },
+        preferenceItem: {
+          paddingVertical: 12,
+        },
+        typeIcon: {
+          width: 40,
+          height: 40,
+          borderRadius: 10,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+      }),
+    [colors]
+  );
+
   return (
     <>
-      <Text style={styles.sectionTitle}>Notification Types</Text>
+      <Text style={styles.sectionTitle}>Types de notifications</Text>
       <Card style={styles.card}>
         {preferences.map((pref, index) => (
           <React.Fragment key={pref.type}>
@@ -38,8 +73,8 @@ export const NotificationTypesList: React.FC<NotificationTypesListProps> = ({
                     { backgroundColor: getColorForType(pref.type) + '20' },
                   ]}
                 >
-                  <AntDesign
-                    name={getIconForType(pref.type)}
+                  <Ionicons
+                    name={getIconForType(pref.type) as IoniconsName}
                     size={20}
                     color={getColorForType(pref.type)}
                   />
@@ -49,8 +84,8 @@ export const NotificationTypesList: React.FC<NotificationTypesListProps> = ({
                 <Switch
                   value={pref.enabled}
                   onValueChange={(value) => onToggle(pref.type, value)}
-                  trackColor={{ false: '#E5E7EB', true: COLORS.primary + '50' }}
-                  thumbColor={pref.enabled ? COLORS.primary : '#FFF'}
+                  trackColor={{ false: colors.neutral[200], true: colors.primary.main + '50' }}
+                  thumbColor={pref.enabled ? colors.primary.main : colors.background.default}
                 />
               )}
               style={styles.preferenceItem}
@@ -61,30 +96,3 @@ export const NotificationTypesList: React.FC<NotificationTypesListProps> = ({
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: 16,
-    borderRadius: 12,
-    elevation: 2,
-    backgroundColor: '#FFF',
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#6B7280',
-    textTransform: 'uppercase',
-    marginBottom: 8,
-    marginLeft: 4,
-  },
-  preferenceItem: {
-    paddingVertical: 12,
-  },
-  typeIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});

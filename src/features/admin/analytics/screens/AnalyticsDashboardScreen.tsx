@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
   periodSelectorContainer: {
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.sm,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
     borderBottomColor: Theme.neutral[200],
   },

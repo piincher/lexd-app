@@ -210,6 +210,32 @@ export interface Container {
   waypoints?: import('./waypoints').ContainerWaypoint[];
   currentWaypointIndex?: number;
   waypointTemplateUsed?: string;
+  // Profit / Reconciliation
+  reconciliationStatus?: 'PENDING' | 'ESTIMATED' | 'RECONCILED';
+  clientTotalCBM?: number;
+  clientTotalRevenue?: number;
+  agentTotalCBM?: number;
+  agentTotalCost?: number;
+  realTimeProfit?: number;
+  reconciledProfit?: number;
+  profitGap?: number;
+  unbilledCapacityCost?: number;
+  cbmProfit?: {
+    revenue: number;
+    cost: number;
+    profit: number;
+    profitMargin: number;
+    totalCBM: number;
+    clientTotalCBM: number;
+    agentTotalCBM: number;
+    realTimeProfit: number;
+    reconciledProfit: number;
+    profitGap: number;
+    unbilledCapacityCost: number;
+    agentCBMCostPerUnit: number;
+    reconciliationStatus: string;
+    goodsBreakdown: any[];
+  };
 }
 
 // ============================================

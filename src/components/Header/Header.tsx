@@ -1,10 +1,13 @@
-import { Text, View, StyleSheet, Pressable, StyleProp, ViewStyle } from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { navigationProps, RootStackParamList } from "@src/navigations/type";
-import { COLORS } from "@src/constants/Colors";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { navigationProps, RootStackParamList } from "@src/navigations/type";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { NotificationBell } from "@src/features/notifications";
+import { useMemo } from "react";
 
 interface HeaderProps {
    title: string;
@@ -12,6 +15,7 @@ interface HeaderProps {
    navigation: navigationProps;
    rightIconHandler?: () => void;
    rightIconAccessibilityLabel?: string;
+   showNotificationBell?: boolean;
    style?: StyleProp<ViewStyle>;
 }
 
@@ -21,8 +25,52 @@ export const Header = ({
    navigation,
    rightIconHandler,
    rightIconAccessibilityLabel = "Action",
+   showNotificationBell = false,
    style,
 }: HeaderProps) => {
+   const { colors } = useAppTheme();
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            safeArea: {
+               flex: 0,
+               backgroundColor: colors.background.card,
+            },
+            container: {
+               flexDirection: "row",
+               justifyContent: "space-between",
+               alignItems: "center",
+               paddingVertical: 16,
+               paddingHorizontal: 16,
+               backgroundColor: colors.background.card,
+               borderBottomWidth: 1,
+               borderBottomColor: colors.border,
+            },
+            backButton: {
+               padding: 8,
+               minWidth: 44,
+            },
+            iconButton: {
+               padding: 8,
+            },
+            pressed: {
+               opacity: 0.7,
+            },
+            title: {
+               flex: 1,
+               textAlign: "center",
+               color: colors.text.primary,
+               fontSize: 20,
+               fontFamily: Fonts.bold,
+               fontWeight: "700",
+            },
+            placeholder: {
+               minWidth: 44,
+            },
+         }),
+      [colors],
+   );
+
    return (
       <SafeAreaView edges={["top"]} style={[styles.safeArea, style]}>
          <View style={styles.container}>
@@ -32,12 +80,18 @@ export const Header = ({
                accessibilityRole="button"
                accessibilityLabel="Retour"
             >
-               <MaterialIcons name="arrow-back" size={28} color={COLORS.blue} />
+               <MaterialIcons name="arrow-back" size={28} color={colors.primary.main} />
             </Pressable>
 
             <Text style={styles.title}>{title}</Text>
 
-            {rightIcon && (
+            {showNotificationBell ? (
+               <NotificationBell
+                  onPress={() => navigation.navigate("Notifications" as never)}
+                  size={24}
+                  color={colors.text.secondary}
+               />
+            ) : rightIcon ? (
                <Pressable
                   onPress={rightIconHandler}
                   style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
@@ -46,42 +100,10 @@ export const Header = ({
                >
                   {rightIcon}
                </Pressable>
+            ) : (
+               <View style={styles.placeholder} />
             )}
          </View>
       </SafeAreaView>
    );
 };
-
-const styles = StyleSheet.create({
-   safeArea: {
-      flex: 0,
-      backgroundColor: COLORS.white,
-   },
-   container: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      paddingVertical: 16,
-      paddingHorizontal: 16,
-      backgroundColor: COLORS.white,
-      borderBottomWidth: 1,
-      borderBottomColor: COLORS.border,
-   },
-   backButton: {
-      padding: 8,
-   },
-   iconButton: {
-      padding: 8,
-   },
-   pressed: {
-      opacity: 0.7,
-   },
-   title: {
-      flex: 1,
-      textAlign: "center",
-      color: COLORS.DarkGrey,
-      fontSize: 20,
-      fontFamily: Fonts.bold,
-      fontWeight: "700",
-   },
-});

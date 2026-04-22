@@ -9,6 +9,8 @@ import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { NotificationBell } from '@src/features/notifications';
+import { useNavigation } from '@react-navigation/native';
 
 interface GoodsListHeaderProps {
   total: number;
@@ -43,14 +45,16 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
   onExportPress,
   isSelectionMode,
   onToggleSelectionMode,
-}) => (
-  <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
-    <View style={styles.headerTop}>
-      <View>
-        <Text style={styles.greeting}>Bonjour! 👋</Text>
-        <Text style={styles.title}>Marchandises</Text>
-      </View>
-      <View style={{ flexDirection: 'row', gap: 8 }}>
+}) => {
+  const navigation = useNavigation();
+  return (
+    <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
+      <View style={styles.headerTop}>
+        <View>
+          <Text style={styles.greeting}>Bonjour! 👋</Text>
+          <Text style={styles.title}>Marchandises</Text>
+        </View>
+        <View style={{ flexDirection: 'row', gap: 8 }}>
         {onToggleSelectionMode && (
           <TouchableOpacity onPress={onToggleSelectionMode} style={styles.exportButton} activeOpacity={0.8}>
             <Ionicons
@@ -65,15 +69,21 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
             <Ionicons name="document-text" size={22} color={Theme.primary[500]} />
           </TouchableOpacity>
         )}
+        </View>
       </View>
-    </View>
 
-    <View style={styles.statsRow}>
+      <View style={styles.statsRow}>
       <StatCard value={total} label="Total" icon="cube" gradient={Theme.gradients.primary} />
       <StatCard value={pendingCount} label="En attente" icon="time" gradient={Theme.gradients.ocean} />
-    </View>
-  </LinearGradient>
-);
+      </View>
+      <NotificationBell
+        onPress={() => navigation.navigate('Notifications' as never)}
+        size={24}
+        color={Theme.neutral[800]}
+      />
+    </LinearGradient>
+  );
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -106,7 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.md,
     ...Theme.shadows.sm,
@@ -123,7 +133,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.sm,

@@ -368,7 +368,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     marginVertical: 3,
     borderRadius: 12,
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     borderWidth: 1,
     borderColor: Theme.neutral[100],
   },

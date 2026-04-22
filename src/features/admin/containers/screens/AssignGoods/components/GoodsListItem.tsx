@@ -27,7 +27,8 @@ export const GoodsListItem: React.FC<GoodsListItemProps> = ({
     return 'Client inconnu';
   })();
 
-  const hasPhoto = goods.photos && goods.photos.length > 0;
+  const photoUrls = goods.photos?.length ? goods.photos : (goods.images || []);
+  const hasPhoto = photoUrls.length > 0;
 
   return (
     <Animated.View entering={FadeInUp.delay(index * 50).springify()} layout={Layout.springify()}>
@@ -35,13 +36,13 @@ export const GoodsListItem: React.FC<GoodsListItemProps> = ({
         {/* Selection Checkbox */}
         <View style={styles.checkboxContainer}>
           <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-            {isSelected && <Ionicons name="checkmark" size={18} color="#FFF" />}
+            {isSelected && <Ionicons name="checkmark" size={18} color={Theme.colors.background.card} />}
           </View>
         </View>
         {/* Goods Image */}
         <View style={styles.imageContainer}>
           {hasPhoto ? (
-            <Image source={{ uri: goods.photos[0] }} style={styles.image} />
+            <Image source={{ uri: photoUrls[0] }} style={styles.image} />
           ) : (
             <LinearGradient colors={['#F3F0FF', '#E8E4F3']} style={styles.placeholderImage}>
               <Ionicons name="cube" size={24} color={Theme.primary[400]} />
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     marginBottom: 8,
     borderWidth: 2,

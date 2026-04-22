@@ -17,6 +17,7 @@ import { getActiveOrders, productType } from "@src/api/order";
 import { ListItemOrders } from "@src/components/ListItemOrders";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { PastOrderCardSkeleton } from "@src/features/customer/orders/components/PastOrderCardSkeleton";
+import { NotificationBell } from "@src/features/notifications";
 
 const ORDERKEY = "past-orders";
 
@@ -258,7 +259,11 @@ const PastOrders: React.FC = () => {
             <MaterialCommunityIcons name="arrow-left" size={24} color={colors.text.primary} />
           </Pressable>
           <Text style={styles.headerTitle}>Commandes Terminées</Text>
-          <View style={styles.placeholder} />
+          <NotificationBell
+            onPress={() => navigation.navigate('Notifications' as never)}
+            size={24}
+            color={colors.text.primary}
+          />
         </View>
         <PastOrderCardSkeleton count={5} />
       </SafeAreaView>
@@ -273,7 +278,11 @@ const PastOrders: React.FC = () => {
           <MaterialCommunityIcons name="arrow-left" size={24} color={colors.text.primary} />
         </Pressable>
         <Text style={styles.headerTitle}>Commandes Terminées</Text>
-        <View style={styles.placeholder} />
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color={colors.text.primary}
+        />
       </View>
 
       {/* Filters */}

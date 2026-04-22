@@ -27,7 +27,7 @@ export const TrackOrderScreen: React.FC = () => {
   }, [orderCode, refetch]);
 
   return (
-    <Screen header={{ title: 'Suivi de Commande' }}>
+    <Screen header={{ title: 'Suivi de Commande', showNotificationBell: true }}>
       <View style={styles.container}>
         <Card style={styles.inputCard}>
           <Input

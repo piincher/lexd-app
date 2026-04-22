@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
+import { Theme } from '@src/constants/Theme';
 
 export const styles = StyleSheet.create({
   wrapper: {
     paddingHorizontal: 16,
     paddingVertical: 16,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
     borderBottomColor: "#E2E8F0",
   },

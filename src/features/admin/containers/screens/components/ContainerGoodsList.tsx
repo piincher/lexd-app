@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Goods } from '../../../goods/types';
 import { Theme } from '../../../../../constants/Theme';
-import { styles } from '../ContainerDetailScreen.styles';
+import {  createStyles  } from '../ContainerDetailScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ContainerGoodsListProps {
   goodsList: Goods[];
@@ -18,6 +19,8 @@ export const ContainerGoodsList: React.FC<ContainerGoodsListProps> = ({
   onRemoveGoods,
   onMarkDelivered,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   if (goodsList.length === 0) {
     return (
       <Animated.View entering={FadeInUp} style={styles.card}>

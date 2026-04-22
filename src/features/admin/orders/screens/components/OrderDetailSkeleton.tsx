@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { Surface } from 'react-native-paper';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const { width } = Dimensions.get('window');
 
@@ -10,20 +10,25 @@ const SkeletonItem: React.FC<{ width: number | string; height: number; borderRad
   height,
   borderRadius = 4,
   marginBottom = 0,
-}) => (
-  <View
-    style={[
-      styles.skeleton,
-      { width: w, height, borderRadius, marginBottom },
-    ]}
-  />
-);
+}) => {
+  const { colors, isDark } = useAppTheme();
+  return (
+    <View
+      style={[
+        styles.skeleton,
+        { width: w, height, borderRadius, marginBottom, backgroundColor: isDark ? colors.neutral[700] : colors.neutral[200] } as any,
+      ]}
+    />
+  );
+};
 
 export const OrderDetailSkeleton: React.FC = () => {
+  const { colors } = useAppTheme();
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background.default }]}>
       {/* Header Skeleton */}
-      <Surface style={styles.card}>
+      <Surface style={[styles.card, { backgroundColor: colors.background.card }]}>
         <View style={styles.headerRow}>
           <View style={styles.avatarSection}>
             <SkeletonItem width={50} height={50} borderRadius={12} />
@@ -34,7 +39,7 @@ export const OrderDetailSkeleton: React.FC = () => {
           </View>
           <SkeletonItem width={80} height={28} borderRadius={14} />
         </View>
-        <View style={styles.divider} />
+        <View style={[styles.divider, { backgroundColor: colors.border }]} />
         <View style={styles.row}>
           <SkeletonItem width={100} height={16} />
           <SkeletonItem width={120} height={20} />
@@ -42,7 +47,7 @@ export const OrderDetailSkeleton: React.FC = () => {
       </Surface>
 
       {/* Payment Skeleton */}
-      <Surface style={styles.card}>
+      <Surface style={[styles.card, { backgroundColor: colors.background.card }]}>
         <SkeletonItem width={150} height={18} marginBottom={16} />
         <View style={styles.paymentStatus}>
           <SkeletonItem width={50} height={50} borderRadius={25} marginBottom={0} />
@@ -51,13 +56,13 @@ export const OrderDetailSkeleton: React.FC = () => {
             <SkeletonItem width={150} height={22} />
           </View>
         </View>
-        <View style={styles.divider} />
+        <View style={[styles.divider, { backgroundColor: colors.border }]} />
         <SkeletonItem width="100%" height={40} marginBottom={12} />
         <SkeletonItem width="100%" height={40} />
       </Surface>
 
       {/* Info Skeleton */}
-      <Surface style={styles.card}>
+      <Surface style={[styles.card, { backgroundColor: colors.background.card }]}>
         <SkeletonItem width={150} height={18} marginBottom={16} />
         {[1, 2, 3, 4].map((i) => (
           <View key={i} style={styles.infoRow}>
@@ -71,7 +76,7 @@ export const OrderDetailSkeleton: React.FC = () => {
       </Surface>
 
       {/* Timeline Skeleton */}
-      <Surface style={styles.card}>
+      <Surface style={[styles.card, { backgroundColor: colors.background.card }]}>
         <SkeletonItem width={150} height={18} marginBottom={16} />
         <View style={styles.timeline}>
           {[1, 2, 3, 4, 5].map((i) => (
@@ -96,16 +101,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 12,
-    backgroundColor: '#F5F7FA',
   },
   card: {
     marginBottom: 12,
     padding: 16,
     borderRadius: 16,
-    backgroundColor: '#FFF',
   },
   skeleton: {
-    backgroundColor: '#E0E0E0',
     overflow: 'hidden',
   },
   headerRow: {
@@ -122,7 +124,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: '#F0F0F0',
     marginVertical: 12,
   },
   row: {

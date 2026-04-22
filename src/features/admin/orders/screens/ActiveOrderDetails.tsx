@@ -1,18 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Pressable, ScrollView, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Appbar, Button, Chip, Divider, Surface } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Picker } from "@react-native-picker/picker";
 import { Fonts } from "@src/constants/Fonts";
-import { RootStackScreenProps } from "@src/navigations/type";
+import { NotificationBell } from "@src/features/notifications";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useGetOrderDetail } from "@src/shared/hooks/useOrderDetail";
 import { useGetRoutes } from "@src/shared/hooks/useRoutes";
 import { formatDate } from "@src/utils/formatDate";
 import { useUpdateOrder, useUpdateStatusDelivery } from "../hooks/useOrderManagement";
-import createStyles from "./components/OrderCard.styles";
-import COLORS from "@src/constants/Colors";
 
 // ── Types ──────────────────────────────────────────
 
@@ -47,7 +46,6 @@ const ActiveOrderDetails = ({
    navigation,
 }: RootStackScreenProps<"ActiveOrderDetails">) => {
    const { colors, isDark } = useAppTheme();
-   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
    // ── Info row helper ──
    const InfoRow = ({
@@ -171,13 +169,22 @@ const ActiveOrderDetails = ({
          <Appbar.Header style={styles.appbar}>
             <Appbar.BackAction onPress={() => navigation.goBack()} />
             <Appbar.Content title={item?.code || "Commande"} titleStyle={styles.appbarTitle} />
+            <Appbar.Action
+              icon={() => (
+                <NotificationBell
+                  onPress={() => navigation.navigate('Notifications' as never)}
+                  size={22}
+                  color="#1A1A2E"
+                />
+              )}
+            />
          </Appbar.Header>
 
          <ScrollView
             contentContainerStyle={styles.scrollContent}
             showsVerticalScrollIndicator={false}
             refreshControl={
-               <RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor={COLORS.blue} />
+               <RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor={colors.primary.main} />
             }
          >
             {/* ── 1. Header card ── */}
@@ -291,7 +298,7 @@ const ActiveOrderDetails = ({
             {/* ── 3. Order info ── */}
             <Surface style={styles.card}>
                <View style={styles.sectionHeader}>
-                  <MaterialCommunityIcons name="information" size={20} color={COLORS.blue} />
+                  <MaterialCommunityIcons name="information" size={20} color={colors.primary.main} />
                   <Text style={styles.sectionTitle}>Informations</Text>
                </View>
 
@@ -351,7 +358,7 @@ const ActiveOrderDetails = ({
             {/* ── 4. Route timeline ── */}
             <Surface style={styles.card}>
                <View style={styles.sectionHeader}>
-                  <MaterialCommunityIcons name="routes" size={20} color={COLORS.blue} />
+                  <MaterialCommunityIcons name="routes" size={20} color={colors.primary.main} />
                   <Text style={styles.sectionTitle}>Suivi de l'expédition</Text>
                </View>
 
@@ -476,7 +483,7 @@ const ActiveOrderDetails = ({
                      onPress={updateTransiteStatus}
                      icon="update"
                      style={styles.updateBtn}
-                     buttonColor={COLORS.blue}
+                     buttonColor={colors.primary.main}
                      labelStyle={styles.btnLabel}
                   >
                      Mettre à jour le statut
@@ -506,8 +513,8 @@ const ActiveOrderDetails = ({
                      })
                   }
                   icon="package-variant"
-                  style={styles.goodsBtn}
-                  textColor={COLORS.blue}
+                  style={[styles.goodsBtn, { borderColor: colors.primary.main }]}
+                  textColor={colors.primary.main}
                   labelStyle={styles.btnLabel}
                >
                   Voir avec Marchandises
@@ -818,7 +825,6 @@ const styles = StyleSheet.create({
    },
    goodsBtn: {
       borderRadius: 12,
-      borderColor: COLORS.blue,
       paddingVertical: 4,
    },
    btnLabel: {

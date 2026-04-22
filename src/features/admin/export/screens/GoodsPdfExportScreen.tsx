@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   dateBtn: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14, paddingVertical: 12, borderRadius: Theme.radius.lg, borderWidth: 1, borderColor: Theme.neutral[200], backgroundColor: Theme.neutral[50], marginBottom: Theme.spacing.xl },
   dateBtnText: { fontSize: 14, fontWeight: '500', color: Theme.neutral[700] },
   chip: { backgroundColor: Theme.primary[50], marginBottom: Theme.spacing.xl, alignSelf: 'flex-start' },
-  card: { backgroundColor: Theme.neutral.white, borderRadius: Theme.radius.xl, padding: Theme.spacing.xl, marginBottom: Theme.spacing.xl, ...Theme.shadows.sm, alignItems: 'center' },
+  card: { backgroundColor: Theme.colors.background.card, borderRadius: Theme.radius.xl, padding: Theme.spacing.xl, marginBottom: Theme.spacing.xl, ...Theme.shadows.sm, alignItems: 'center' },
   cardLabel: { fontSize: 14, fontWeight: '600', color: Theme.neutral[500], marginBottom: 4 },
   cardValue: { fontSize: 32, fontWeight: '800', color: Theme.primary[600] },
   exportBtn: { marginTop: Theme.spacing.lg, borderRadius: Theme.radius.lg },

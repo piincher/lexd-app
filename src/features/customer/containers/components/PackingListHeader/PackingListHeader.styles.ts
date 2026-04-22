@@ -1,14 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   documentCard: {
     marginBottom: 16,
     elevation: 2,
   },
   headerCard: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.background.card,
   },
   documentHeader: {
     flexDirection: 'row',
@@ -18,7 +17,7 @@ export const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 12,
-    backgroundColor: '#E0F2FE',
+    backgroundColor: colors.background.paper,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -29,13 +28,13 @@ export const styles = StyleSheet.create({
   documentTitle: {
     fontFamily: Fonts.bold,
     fontSize: 18,
-    color: COLORS.DarkGrey,
+    color: colors.text.primary,
     letterSpacing: 1,
   },
   documentSubtitle: {
     fontFamily: Fonts.meduim,
     fontSize: 16,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginTop: 4,
   },
   headerDivider: {
@@ -52,7 +51,7 @@ export const styles = StyleSheet.create({
   metaText: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginLeft: 6,
   },
 });

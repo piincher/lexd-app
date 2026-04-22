@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   pickupSectionCard: {
     marginBottom: 16,
     borderRadius: 12,
@@ -20,14 +19,14 @@ export const styles = StyleSheet.create({
   pickupSectionTitle: {
     fontFamily: Fonts.bold,
     fontSize: 14,
-    color: '#FFF',
+    color: colors.text.inverse,
     marginLeft: 8,
     letterSpacing: 0.5,
   },
   warehouseMainName: {
     fontFamily: Fonts.bold,
     fontSize: 18,
-    color: '#FFF',
+    color: colors.text.inverse,
   },
   warehouseMainAddress: {
     fontFamily: Fonts.meduim,
@@ -46,7 +45,7 @@ export const styles = StyleSheet.create({
     marginBottom: 8,
   },
   consigneeInfoCard: {
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
@@ -59,7 +58,7 @@ export const styles = StyleSheet.create({
   consigneeInfoName: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: COLORS.DarkGrey,
+    color: colors.text.secondary,
     marginLeft: 12,
   },
   consigneeInfoPhone: {
@@ -71,7 +70,7 @@ export const styles = StyleSheet.create({
   consigneeInfoAddress: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: COLORS.DimGray,
+    color: colors.text.secondary,
     marginLeft: 12,
     flex: 1,
   },
@@ -82,7 +81,7 @@ export const styles = StyleSheet.create({
   requiredDocsText: {
     fontFamily: Fonts.meduim,
     fontSize: 12,
-    color: '#FFF',
+    color: colors.text.inverse,
     marginLeft: 8,
     flex: 1,
   },

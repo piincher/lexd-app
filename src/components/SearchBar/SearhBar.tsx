@@ -1,9 +1,10 @@
 // SearchBar.tsx
-import React from "react";
+import React, { useMemo } from "react";
 import { Searchbar } from "react-native-paper";
-import { StyleSheet, StyleProp, ViewStyle } from "react-native";
+import { StyleSheet } from "react-native";
+import type { StyleProp, ViewStyle } from "react-native";
 
-import { COLORS } from "@src/constants/Colors";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface SearchBarProps {
    placeholder?: string;
@@ -18,6 +19,20 @@ const SearchBar: React.FC<SearchBarProps> = ({
    onChangeSearch,
    customStyle,
 }) => {
+   const { colors } = useAppTheme();
+   const styles = useMemo(
+      () =>
+         StyleSheet.create({
+            searchbar: {
+               marginBottom: 16,
+               borderRadius: 0,
+               backgroundColor: colors.background.card,
+               borderColor: colors.primary.main,
+               borderWidth: 0.5,
+            },
+         }),
+      [colors],
+   );
    return (
       <Searchbar
          placeholder={placeholder || "Search..."}
@@ -27,15 +42,5 @@ const SearchBar: React.FC<SearchBarProps> = ({
       />
    );
 };
-
-const styles = StyleSheet.create({
-   searchbar: {
-      marginBottom: 16,
-      borderRadius: 0,
-      backgroundColor: COLORS.white,
-      borderColor: COLORS.blue,
-      borderWidth: 0.5,
-   },
-});
 
 export default SearchBar;

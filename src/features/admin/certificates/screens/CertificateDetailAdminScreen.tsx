@@ -18,8 +18,9 @@ import {
   useDownloadCertificate,
   useRevokeCertificate,
 } from "../hooks/useCertificateAdmin";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 
 const formatDate = (dateString: string): string => {
   try {
@@ -294,7 +295,7 @@ export default function CertificateDetailAdminScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: Theme.colors.background.default,
   },
 
   /* Header */
@@ -304,16 +305,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: Platform.OS === "android" ? 12 : 20,
     paddingBottom: 16,
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E5E7EB",
+    borderBottomColor: Theme.colors.neutral[200],
     gap: 14,
   },
   backButton: {
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     justifyContent: "center",
     alignItems: "center",
   },
@@ -344,7 +345,7 @@ const styles = StyleSheet.create({
   },
   copyButton: {
     padding: 6,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     borderRadius: 8,
   },
 
@@ -402,7 +403,7 @@ const styles = StyleSheet.create({
     paddingLeft: 4,
   },
   sectionCard: {
-    backgroundColor: "white",
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     shadowColor: "#000",
@@ -441,7 +442,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.neutral[100],
     marginVertical: 4,
   },
 

@@ -1,4 +1,4 @@
-import { Appearance } from 'react-native';
+import { getAppThemeMode } from './themeState';
 
 const lightColors = {
 	// colors used in signup form,
@@ -123,7 +123,7 @@ const darkColors = {
 export const COLORS = new Proxy({} as Record<keyof typeof lightColors, string>, {
 	get(_, prop) {
 		if (typeof prop !== 'string') return undefined;
-		const scheme = Appearance.getColorScheme() || 'light';
+		const scheme = getAppThemeMode();
 		const source = scheme === 'dark' ? darkColors : lightColors;
 		return source[prop as keyof typeof lightColors] ?? lightColors[prop as keyof typeof lightColors];
 	},

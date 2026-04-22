@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
   },
   header: {
     paddingTop: Theme.spacing.lg,
@@ -44,7 +44,7 @@ export const styles = StyleSheet.create({
   },
   tabContainer: {
     flexDirection: 'row',
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     padding: Theme.spacing.sm,
     gap: Theme.spacing.sm,
     ...Theme.shadows.sm,
@@ -59,15 +59,15 @@ export const styles = StyleSheet.create({
     gap: Theme.spacing.xs,
   },
   tabActive: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
   },
   tabText: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   tabTextActive: {
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   content: {
     flex: 1,
@@ -83,16 +83,16 @@ export const styles = StyleSheet.create({
   segmentsTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginTop: Theme.spacing.sm,
   },
   segmentsSubtitle: {
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: Theme.spacing.xs,
   },
   segmentCard: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.lg,
     marginBottom: Theme.spacing.md,
@@ -107,7 +107,7 @@ export const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: `${Theme.status.info}15`,
+    backgroundColor: `${colors.status.info}15`,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Theme.spacing.md,
@@ -118,16 +118,16 @@ export const styles = StyleSheet.create({
   segmentRoute: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   segmentVessel: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   segmentVehicle: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   segmentBadge: {
@@ -149,7 +149,7 @@ export const styles = StyleSheet.create({
   },
   segmentDetailText: {
     fontSize: 13,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   fabContainer: {
     position: 'absolute',
@@ -162,7 +162,7 @@ export const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.lg,
@@ -171,7 +171,7 @@ export const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.md,
@@ -186,25 +186,25 @@ export const styles = StyleSheet.create({
   formLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     marginBottom: Theme.spacing.xs,
   },
   formInput: {
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderRadius: Theme.radius.md,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.md,
     fontSize: 15,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   formSelect: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderRadius: Theme.radius.md,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.md,
@@ -213,10 +213,10 @@ export const styles = StyleSheet.create({
   formSelectText: {
     flex: 1,
     fontSize: 15,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   templateCard: {
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.lg,
     marginBottom: Theme.spacing.md,
@@ -230,17 +230,17 @@ export const styles = StyleSheet.create({
   templateName: {
     fontSize: 15,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   templateDescription: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   templateItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     padding: Theme.spacing.md,
     borderRadius: Theme.radius.lg,
     marginBottom: Theme.spacing.md,
@@ -249,7 +249,7 @@ export const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Theme.spacing.md,
@@ -259,7 +259,7 @@ export const styles = StyleSheet.create({
   },
   templateStats: {
     fontSize: 11,
-    color: Theme.primary[500],
+    color: colors.primary[500],
     marginTop: 4,
     fontWeight: '600',
   },
@@ -268,13 +268,13 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: Theme.spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
+    borderBottomColor: colors.neutral[100],
   },
   templateWaypointNumber: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: Theme.primary[100],
+    backgroundColor: colors.primary[100],
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Theme.spacing.sm,
@@ -282,7 +282,7 @@ export const styles = StyleSheet.create({
   templateWaypointLocation: {
     flex: 1,
     fontSize: 14,
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   actionButtons: {
     flexDirection: 'row',
@@ -301,14 +301,14 @@ export const styles = StyleSheet.create({
   },
   dialogText: {
     fontSize: 14,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     textAlign: 'center',
     marginBottom: Theme.spacing.lg,
   },
   saveSummary: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     padding: Theme.spacing.lg,
     borderRadius: Theme.radius.lg,
   },
@@ -318,11 +318,11 @@ export const styles = StyleSheet.create({
   saveSummaryValue: {
     fontSize: 24,
     fontWeight: '800',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   saveSummaryLabel: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 4,
   },
 });

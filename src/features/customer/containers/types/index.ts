@@ -251,16 +251,6 @@ export const WAYPOINT_STATUS_LABELS: Record<WaypointStatus, string> = {
 };
 
 /**
- * Waypoint status colors
- */
-export const WAYPOINT_STATUS_COLORS: Record<WaypointStatus, string> = {
-  PENDING: '#9CA3AF',
-  IN_TRANSIT: '#3B82F6',
-  ARRIVED: '#10B981',
-  DEPARTED: '#8B5CF6',
-};
-
-/**
  * Waypoint type display labels (French)
  */
 export const WAYPOINT_TYPE_LABELS: Record<WaypointType, string> = {

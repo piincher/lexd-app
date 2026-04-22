@@ -55,8 +55,8 @@ interface OrderCardProps {
 
 export const OrderCard: React.FC<OrderCardProps> = ({ order, isSelected, isSelectionMode, onToggleSelect }) => {
   const navigation = useNavigation();
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   
   // Defensive check
   if (!order) {

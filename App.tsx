@@ -7,7 +7,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { linking } from "@src/shared/lib/deepLinking";
 // import * as Sentry from "@sentry/react-native";
 import { initMixpanel } from "@src/config/Analytic";
-import { HomeTabParamList, RootStackParamList } from "@src/navigations/type";
+import type { HomeTabParamList, RootStackParamList } from "@src/navigations/type";
 import { navigationRef } from "@src/navigations/navigationRef";
 
 // Features - Auth
@@ -73,6 +73,7 @@ import {
    ClientPackingListScreen,
    ClientLoadingListScreen,
 } from "@src/features/customer/containers";
+import AirwayBillTrackingScreen from "@src/features/goods/screens/AirwayBillTrackingScreen";
 
 // Features - Stats
 import { StatsScreen as Stats } from "@src/features/stats";
@@ -142,6 +143,12 @@ import ContainerDetailScreen from "@src/features/admin/containers/screens/Contai
 import AssignGoodsScreen from "@src/features/admin/containers/screens/AssignGoods/AssignGoodsScreen";
 import PackingListScreen from "@src/features/admin/containers/screens/PackingListScreen";
 import LoadingListScreen from "@src/features/admin/containers/screens/LoadingListScreen";
+// Airway Bill Screens
+import AirwayBillListScreen from "@src/features/admin/airwayBills/screens/AirwayBillListScreen";
+import AirwayBillDetailScreen from "@src/features/admin/airwayBills/screens/AirwayBillDetailScreen";
+import CreateAirwayBillScreen from "@src/features/admin/airwayBills/screens/CreateAirwayBillScreen";
+import AssignAirwayGoodsScreen from "@src/features/admin/airwayBills/screens/AssignGoodsScreen";
+import CargoBagDetailScreen from "@src/features/admin/airwayBills/screens/CargoBagDetailScreen";
 import RouteListScreen from "@src/features/admin/routes/screens/RouteListScreen";
 import RouteFormScreen from "@src/features/admin/routes/screens/RouteFormScreen";
 import VoidGoodsListScreen from "@src/features/admin/goods/screens/VoidGoodsListScreen";
@@ -161,8 +168,8 @@ import AdminReviewsScreen from "@src/features/admin/reviews/screens/AdminReviews
 import ManagePromosScreen from "@src/features/admin/promos/screens/ManagePromosScreen";
 import AdminGoodsPdfExport from "@src/features/admin/export/screens/GoodsPdfExportScreen";
 import WhatsAppRequestListScreen from "@src/features/admin/whatsapp-requests/screens/WhatsAppRequestListScreen";
+import SharedShipmentScreen from "@src/features/public/screens/SharedShipmentScreen";
 import GlobalSearchScreen from "@src/features/admin/search/screens/GlobalSearchScreen";
-import SearchScreen from "@src/features/search/screens/SearchScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 registerTranslation("en", enGB);
@@ -228,12 +235,16 @@ function AppWrapper() {
          <ThemeStatusBar style={isDark ? "light" : "dark"} />
          <FadingAnnouncement />
 
-         <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {appLaunch && <Stack.Screen name="OnBoarding" component={OnBoarding} />}
-
+         <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName={appLaunch ? "OnBoarding" : "HomeTab"}
+         >
+            <Stack.Screen name="OnBoarding" component={OnBoarding} />
             <Stack.Screen name="HomeTab" component={HomeBottomTab} />
             <Stack.Screen name="AboutUs" component={AboutUs} />
-            <Stack.Screen name="faq" component={Faq} />
+            <Stack.Screen name="FAQ" component={Faq} />
+            <Stack.Screen name="CheckRoute" component={CheckRoute} />
+            <Stack.Screen name="SharedShipment" component={SharedShipmentScreen} />
             <Stack.Screen name="CertificateDetail" component={CertificateDetailScreen} />
 
             {token ? (
@@ -264,7 +275,7 @@ function AppWrapper() {
                   <Stack.Screen name="SelectUser" component={SelectUser} />
                   <Stack.Screen name="PastOrders" component={PastOrders} />
                   <Stack.Screen name="UserAdd" component={AddUser} />
-                  <Stack.Screen name="AdmninPastOrders" component={AdminPastOrders} />
+                  <Stack.Screen name="AdminPastOrders" component={AdminPastOrders} />
                   <Stack.Screen name="SendSms" component={SendSms} />
                   <Stack.Screen name="ActiveOrderDetails" component={ActiveOrderdetails} />
                   <Stack.Screen name="ScanQRCode" component={ScanQRCode} />
@@ -305,6 +316,12 @@ function AppWrapper() {
                   <Stack.Screen name="AssignGoods" component={AssignGoodsScreen} />
                   <Stack.Screen name="PackingList" component={PackingListScreen} />
                   <Stack.Screen name="LoadingList" component={LoadingListScreen} />
+                  {/* Airway Bill Screens */}
+                  <Stack.Screen name="AirwayBillList" component={AirwayBillListScreen} />
+                  <Stack.Screen name="AirwayBillDetail" component={AirwayBillDetailScreen} />
+                  <Stack.Screen name="CreateAirwayBill" component={CreateAirwayBillScreen} />
+                  <Stack.Screen name="AssignAirwayGoods" component={AssignAirwayGoodsScreen} />
+                  <Stack.Screen name="CargoBagDetail" component={CargoBagDetailScreen} />
                   {/* Route V2 Screens */}
                   <Stack.Screen name="RouteList" component={RouteListScreen} />
                   <Stack.Screen name="RouteForm" component={RouteFormScreen} />
@@ -321,12 +338,9 @@ function AppWrapper() {
                   <Stack.Screen name="ContainerTracking" component={ContainerTrackingScreen} />
                   <Stack.Screen name="ClientPackingList" component={ClientPackingListScreen} />
                   <Stack.Screen name="ClientLoadingList" component={ClientLoadingListScreen} />
+                  <Stack.Screen name="AirwayBillTracking" component={AirwayBillTrackingScreen} />
                   {/* WhatsApp Admin Screens */}
                   <Stack.Screen name="WhatsAppRequests" component={WhatsAppRequestListScreen} />
-                  <Stack.Screen
-                     name="WhatsAppRequestDetail"
-                     component={WhatsAppRequestListScreen}
-                  />
                   {/* Customer Support Screens */}
                   <Stack.Screen name="TicketList" component={TicketListScreen} />
                   <Stack.Screen name="TicketDetail" component={TicketDetailScreen} />
@@ -348,7 +362,6 @@ function AppWrapper() {
                   <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncementScreen} />
                   {/* Search Screens */}
                   <Stack.Screen name="GlobalSearch" component={GlobalSearchScreen} />
-                  <Stack.Screen name="Search" component={SearchScreen} />
                </>
             ) : (
                <>
@@ -406,7 +419,7 @@ const HomeBottomTab = () => {
       {
          name: "Orders" as const,
          component: Orders,
-         show: !adminRole,
+         show: !adminRole && !!token,
          options: {
             tabBarLabel: "Commandes",
             tabBarAccessibilityLabel: "Commandes",
@@ -418,7 +431,7 @@ const HomeBottomTab = () => {
       {
          name: "MyGoods" as const,
          component: MyGoodsScreen,
-         show: !adminRole,
+         show: !adminRole && !!token,
          options: {
             tabBarLabel: "Mes Marchandises",
             tabBarAccessibilityLabel: "Mes Marchandises",
@@ -445,6 +458,28 @@ const HomeBottomTab = () => {
          options: {
             tabBarIcon: ({ focused, color, size }: any) => (
                <Entypo name="pie-chart" focused={focused} color={color} size={size} />
+            ),
+         },
+      },
+      {
+         name: "AdminGoodsList" as const,
+         component: AdminGoodsList,
+         show: adminRole,
+         options: {
+            tabBarLabel: "Marchandises",
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <FontAwesome5 name="box" size={size} color={color} focused={focused} />
+            ),
+         },
+      },
+      {
+         name: "ContainerList" as const,
+         component: ContainerListScreen,
+         show: adminRole,
+         options: {
+            tabBarLabel: "Conteneurs",
+            tabBarIcon: ({ focused, color, size }: any) => (
+               <FontAwesome5 name="ship" size={size} color={color} focused={focused} />
             ),
          },
       },

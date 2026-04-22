@@ -3,11 +3,11 @@
  * Displays a single FAQ question/answer with accordion functionality
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { COLORS } from '@src/constants/Colors';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { FAQItem as FAQItemType } from '../types/faq.types';
 
 // Enable LayoutAnimation on Android
@@ -21,11 +21,51 @@ interface FAQItemProps {
 
 export const FAQItem: React.FC<FAQItemProps> = ({ item }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { colors, isDark } = useAppTheme();
 
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setIsExpanded(!isExpanded);
   };
+
+  const styles = useMemo(() => StyleSheet.create({
+    container: {
+      backgroundColor: colors.background.card,
+      borderRadius: 12,
+      marginBottom: 12,
+      overflow: 'hidden',
+      elevation: 2,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+    },
+    questionContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      padding: 16,
+    },
+    question: {
+      flex: 1,
+      fontSize: 16,
+      fontFamily: Fonts.semiBold,
+      color: colors.text.primary,
+      marginRight: 8,
+    },
+    answerContainer: {
+      paddingHorizontal: 16,
+      paddingBottom: 16,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+    },
+    answer: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+      lineHeight: 20,
+    },
+  }), [colors, isDark]);
 
   return (
     <View style={styles.container}>
@@ -38,7 +78,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({ item }) => {
         <MaterialCommunityIcons
           name={isExpanded ? 'chevron-up' : 'chevron-down'}
           size={24}
-          color={COLORS.primary}
+          color={colors.primary.main}
         />
       </TouchableOpacity>
       
@@ -50,44 +90,5 @@ export const FAQItem: React.FC<FAQItemProps> = ({ item }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    marginBottom: 12,
-    overflow: 'hidden',
-    elevation: 2,
-    shadowColor: COLORS.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
-  questionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-  },
-  question: {
-    flex: 1,
-    fontSize: 16,
-    fontFamily: Fonts.semiBold,
-    color: COLORS.darkText,
-    marginRight: 8,
-  },
-  answerContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.lightGray + '30',
-  },
-  answer: {
-    fontSize: 14,
-    fontFamily: Fonts.regular,
-    color: COLORS.grey,
-    lineHeight: 20,
-  },
-});
 
 export default FAQItem;

@@ -4,13 +4,13 @@
  * SRP: Display consignee details and contact actions
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Linking } from 'react-native';
 import { Card, Divider, Text, Button, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
-import { styles } from './PackingListConsignee.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './PackingListConsignee.styles';
 
 interface Consignee {
   name: string;
@@ -30,6 +30,8 @@ export const PackingListConsignee: React.FC<PackingListConsigneeProps> = ({
   onContactPress,
 }) => {
   const theme = useTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const handleOpenMaps = () => {
     if (consignee.warehouseAddress) {
@@ -53,7 +55,7 @@ export const PackingListConsignee: React.FC<PackingListConsigneeProps> = ({
         
         <View style={styles.consigneeInfo}>
           <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="office-building" size={20} color={COLORS.DimGray} />
+            <MaterialCommunityIcons name="office-building" size={20} color={colors.text.secondary} />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>Destinataire</Text>
               <Text style={styles.infoValue}>{consignee.name}</Text>
@@ -61,7 +63,7 @@ export const PackingListConsignee: React.FC<PackingListConsigneeProps> = ({
           </View>
 
           <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="map-marker" size={20} color={COLORS.DimGray} />
+            <MaterialCommunityIcons name="map-marker" size={20} color={colors.text.secondary} />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>Adresse de l'entrepôt</Text>
               <Text style={styles.infoValue}>{consignee.warehouseAddress}</Text>
@@ -69,7 +71,7 @@ export const PackingListConsignee: React.FC<PackingListConsigneeProps> = ({
           </View>
 
           <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="phone" size={20} color={COLORS.DimGray} />
+            <MaterialCommunityIcons name="phone" size={20} color={colors.text.secondary} />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>Téléphone</Text>
               <Text style={styles.infoValue}>{consignee.phone}</Text>
@@ -78,7 +80,7 @@ export const PackingListConsignee: React.FC<PackingListConsigneeProps> = ({
 
           {consignee.businessHours && (
             <View style={styles.infoRow}>
-              <MaterialCommunityIcons name="clock-outline" size={20} color={COLORS.DimGray} />
+              <MaterialCommunityIcons name="clock-outline" size={20} color={colors.text.secondary} />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Heures d'ouverture</Text>
                 <Text style={styles.infoValue}>{consignee.businessHours}</Text>

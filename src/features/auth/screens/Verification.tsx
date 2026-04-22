@@ -23,8 +23,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import Animated, { FadeInDown, FadeIn } from "react-native-reanimated";
 
 import { Fonts } from "@src/constants/Fonts";
-import { RootStackScreenProps } from "@src/navigations/type";
+import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { hapticMedium } from '@src/shared/lib/haptics';
 import { Notification } from "@src/components/Notification/Notification";
 import { useVerification } from "../hooks/useVerification";
 import { useLogin } from "../hooks/useLogin";
@@ -103,6 +104,7 @@ const Verification = ({ route, navigation }: RootStackScreenProps<"Verification"
    }, [otp]);
 
    const handleConfirm = useCallback(() => {
+      hapticMedium();
       const code = otp.join("");
       if (code.length !== OTP_LENGTH) return;
       verify({ phone: phoneNumber, otp: code });

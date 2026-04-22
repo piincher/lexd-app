@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+
+type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
 import { Theme } from '@src/constants/Theme';
 import { Badge } from '@src/shared/ui/Badge';
 import { SearchResult } from '../../types';
@@ -10,11 +12,10 @@ interface SearchResultCardProps {
   onPress: (result: SearchResult) => void;
 }
 
-const TYPE_CONFIG: Record<SearchResult['type'], { icon: string; color: string; label: string }> = {
+const TYPE_CONFIG: Record<SearchResult['type'], { icon: IoniconsName; color: string; label: string }> = {
   order: { icon: 'cube-outline', color: Theme.colors.primary.main, label: 'Commande' },
-  goods: { icon: 'package-outline', color: Theme.colors.success.main, label: 'Marchandise' },
+  goods: { icon: 'archive-outline', color: Theme.colors.success.main, label: 'Marchandise' },
   container: { icon: 'boat-outline', color: Theme.colors.info.main, label: 'Conteneur' },
-  invoice: { icon: 'document-text-outline', color: Theme.colors.warning.main, label: 'Facture' },
 };
 
 export const SearchResultCard: React.FC<SearchResultCardProps> = ({ result, onPress }) => {
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     marginBottom: Theme.spacing.md,
     borderWidth: 1,

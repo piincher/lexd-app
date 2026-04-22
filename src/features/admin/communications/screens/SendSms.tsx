@@ -15,7 +15,7 @@ import * as Haptics from 'expo-haptics';
 
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
-import { RootStackScreenProps } from '@src/navigations/type';
+import type { RootStackScreenProps } from '@src/navigations/type';
 import { useGetUsers } from '../../hooks/useGetUsers';
 import { useGetOrderBaseonDate } from '../../orders/hooks/useOrderManagement';
 import { useSendNotificationSms } from '../hooks/useNotifications';
@@ -23,6 +23,7 @@ import { useViewSmsBalance } from '@src/shared/hooks/useOrders';
 import { Calendar, useCalendar } from '@src/components/Calendar/Calendar';
 
 import { SmsBalanceHeader } from '../components/SmsBalanceHeader';
+import { SmsSubscriptionList } from '../components/SmsSubscriptionList';
 import { RecipientSelector, Recipient } from '../components/RecipientSelector';
 import { MessageComposer } from '../components/MessageComposer';
 import { SendConfirmationModal } from '../components/SendConfirmationModal';
@@ -55,8 +56,10 @@ const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
   // Calendar
   const { open, date, onConfirmSingle, onDismissSingle, setOpen } = useCalendar();
 
-  // SMS balance
-  const smsBalance = smsData?.[2]?.availableUnits || 0;
+  // SMS balance & subscriptions
+  const smsBalance = smsData?.reduce((sum, sub) => sum + (sub.availableUnits || 0), 0) || 0;
+  const hasExpiringSoon = smsData?.some((sub) => sub.isExpiringSoon) || false;
+  const hasExpired = smsData?.some((sub) => sub.isExpired) || false;
 
   // Handle send success — show overlay, then reset form
   useEffect(() => {
@@ -181,7 +184,18 @@ const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <SmsBalanceHeader smsBalance={smsBalance} onBack={() => navigation.goBack()} />
+      <SmsBalanceHeader
+        smsBalance={smsBalance}
+        hasExpiringSoon={hasExpiringSoon}
+        hasExpired={hasExpired}
+        onBack={() => navigation.goBack()}
+      />
+
+      {smsData && smsData.length > 0 && (
+        <View style={styles.subscriptionSection}>
+          <SmsSubscriptionList subscriptions={smsData} />
+        </View>
+      )}
 
       <KeyboardAvoidingView
         style={styles.flex}
@@ -189,7 +203,7 @@ const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
         <View style={styles.content}>
-          <View style={styles.recipientSection}>
+          <View style={[styles.recipientSection, styles.recipientSectionWithSubs]}>
             <RecipientSelector
             mode={mode}
             onModeChange={handleModeChange}
@@ -268,8 +282,17 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
   },
+  subscriptionSection: {
+    maxHeight: 280,
+    marginHorizontal: 16,
+    marginTop: 8,
+    marginBottom: 8,
+  },
   recipientSection: {
     flex: 1,
+  },
+  recipientSectionWithSubs: {
+    marginTop: 4,
   },
   successOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -279,7 +302,7 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   successCard: {
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 24,
     paddingVertical: 36,
     paddingHorizontal: 40,

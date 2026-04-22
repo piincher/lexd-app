@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Card } from '@src/shared/ui/Card';
-import { COLORS } from '@src/constants/Colors';
-import { styles, MAP_HEIGHT } from './TrackingMapView.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles, MAP_HEIGHT } from './TrackingMapView.styles';
 
 interface Location { lat: number; lng: number; }
 
@@ -20,11 +20,13 @@ export const TrackingMapView: React.FC<TrackingMapViewProps> = ({
   currentLocation, destination, route, isLoading = false, error = null,
 }) => {
   const [zoom, setZoom] = useState(1);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   if (isLoading) return (
     <Card style={styles.container}>
       <View style={styles.centerContainer}>
-        <MaterialCommunityIcons name="map-clock" size={48} color={COLORS.SlateGray} />
+        <MaterialCommunityIcons name="map-clock" size={48} color={colors.status.success} />
         <Text style={styles.loadingText}>Chargement de la carte...</Text>
       </View>
     </Card>
@@ -33,7 +35,7 @@ export const TrackingMapView: React.FC<TrackingMapViewProps> = ({
   if (error) return (
     <Card style={styles.container}>
       <View style={styles.centerContainer}>
-        <MaterialCommunityIcons name="map-marker-off" size={48} color={COLORS.danger} />
+        <MaterialCommunityIcons name="map-marker-off" size={48} color={colors.status.error} />
         <Text style={styles.errorTitle}>Carte indisponible</Text>
         <Text style={styles.errorText}>{error}</Text>
       </View>
@@ -43,7 +45,7 @@ export const TrackingMapView: React.FC<TrackingMapViewProps> = ({
   if (!currentLocation) return (
     <Card style={styles.container}>
       <View style={styles.centerContainer}>
-        <MaterialCommunityIcons name="map-marker-question" size={48} color={COLORS.grey} />
+        <MaterialCommunityIcons name="map-marker-question" size={48} color={colors.text.secondary} />
         <Text style={styles.emptyTitle}>Position non disponible</Text>
         <Text style={styles.emptyText}>La localisation sera affichée ici</Text>
       </View>
@@ -63,28 +65,28 @@ export const TrackingMapView: React.FC<TrackingMapViewProps> = ({
           </View>
         )}
         <View style={[styles.marker, styles.currentMarker]}>
-          <MaterialCommunityIcons name="truck-delivery" size={24} color="#FFF" />
+          <MaterialCommunityIcons name="truck-delivery" size={24} color={colors.text.inverse} />
           <View style={styles.markerPulse} />
         </View>
         {destination && (
           <View style={[styles.marker, styles.destinationMarker]}>
-            <MaterialCommunityIcons name="flag-checkered" size={24} color="#FFF" />
+            <MaterialCommunityIcons name="flag-checkered" size={24} color={colors.text.inverse} />
           </View>
         )}
         <View style={styles.zoomControls}>
-          <IconButton icon="plus" size={20} onPress={() => setZoom(z => Math.min(z + 0.2, 2))} style={styles.zoomButton} iconColor={COLORS.DarkGrey} />
-          <IconButton icon="minus" size={20} onPress={() => setZoom(z => Math.max(z - 0.2, 0.6))} style={styles.zoomButton} iconColor={COLORS.DarkGrey} />
+          <IconButton icon="plus" size={20} onPress={() => setZoom(z => Math.min(z + 0.2, 2))} style={styles.zoomButton} iconColor={colors.text.secondary} />
+          <IconButton icon="minus" size={20} onPress={() => setZoom(z => Math.max(z - 0.2, 0.6))} style={styles.zoomButton} iconColor={colors.text.secondary} />
         </View>
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.locationRow}>
-          <MaterialCommunityIcons name="map-marker" size={18} color={COLORS.green} />
+          <MaterialCommunityIcons name="map-marker" size={18} color={colors.status.success} />
           <Text style={styles.locationLabel}>Position:</Text>
           <Text style={styles.locationValue}>{currentLocation.lat.toFixed(4)}, {currentLocation.lng.toFixed(4)}</Text>
         </View>
         {destination && (
           <View style={styles.locationRow}>
-            <MaterialCommunityIcons name="flag" size={18} color={COLORS.gold} />
+            <MaterialCommunityIcons name="flag" size={18} color={colors.accent.gold} />
             <Text style={styles.locationLabel}>Destination:</Text>
             <Text style={styles.locationValue}>{destination.lat.toFixed(4)}, {destination.lng.toFixed(4)}</Text>
           </View>

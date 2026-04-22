@@ -4,7 +4,8 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import type { ViewStyle } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withRepeat,

@@ -3,17 +3,20 @@
  * Displays the unit price per CBM for the order
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { styles } from '../OrderTotalsBreakdownScreen.styles';
+import { createStyles } from '../OrderTotalsBreakdownScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface UnitPriceCardProps {
   unitPrice: number;
 }
 
 export const UnitPriceCard: React.FC<UnitPriceCardProps> = ({ unitPrice }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.card}>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Theme.spacing.md }}>

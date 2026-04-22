@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Dimensions, StyleSheet, View, Animated } from 'react-native';
-import { FlashList, FlashListProps } from '@shopify/flash-list';
+import { FlashList } from '@shopify/flash-list';
+import type { FlashListProps } from '@shopify/flash-list';
 
 //import components
 import ImgSliderItem from '../ImageSlider/ImageSlider';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const { width, height } = Dimensions.get('window');
 
@@ -16,6 +17,7 @@ interface Props {
 const AnimatedFlashList = Animated.createAnimatedComponent(FlashList) as React.ComponentType<FlashListProps<{ public_id: string; url: string }>>;
 
 const CardView = ({ images, onPress }: Props) => {
+	const { colors } = useAppTheme();
 	const [activeIndex, setActiveIndex] = useState(0);
 	// Use useState with lazy initializer for React Compiler compatibility
 	const [scrollX] = useState(() => new Animated.Value(0));
@@ -26,6 +28,35 @@ const CardView = ({ images, onPress }: Props) => {
 		const newIndex = Math.floor(contentOffset.x / viewSize.width);
 		setActiveIndex(newIndex);
 	};
+
+	const styles = useMemo(
+		() =>
+			StyleSheet.create({
+				container: {
+					display: 'flex',
+					alignItems: 'center',
+					width: width,
+					height: height / 2.5,
+					borderRadius: 10,
+				},
+				pagination: {
+					flexDirection: 'row',
+					position: 'absolute',
+					left: '35%',
+
+					bottom: 10,
+					alignSelf: 'center',
+				},
+				bullet: {
+					width: 10,
+					height: 10,
+					borderRadius: 5,
+					margin: 5,
+					backgroundColor: colors.background.card,
+				},
+			}),
+		[colors],
+	);
 
 	return (
 		<View style={styles.container}>
@@ -61,30 +92,5 @@ const CardView = ({ images, onPress }: Props) => {
 		</View>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		display: 'flex',
-		alignItems: 'center',
-		width: width,
-		height: height / 2.5,
-		borderRadius: 10,
-	},
-	pagination: {
-		flexDirection: 'row',
-		position: 'absolute',
-		left: '35%',
-
-		bottom: 10,
-		alignSelf: 'center',
-	},
-	bullet: {
-		width: 10,
-		height: 10,
-		borderRadius: 5,
-		margin: 5,
-		backgroundColor: COLORS.white,
-	},
-});
 
 export default CardView;

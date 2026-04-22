@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { styles } from './OrderActions.styles';
 
 interface OrderActionsProps {
@@ -14,6 +14,8 @@ export const OrderActions: React.FC<OrderActionsProps> = ({
   onUpdateStatus,
   isUpdating,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <View style={styles.container}>
       <View style={styles.primaryActions}>
@@ -22,7 +24,7 @@ export const OrderActions: React.FC<OrderActionsProps> = ({
           onPress={onUpdateStatus}
           icon="pencil"
           style={styles.updateButton}
-          buttonColor={COLORS.blue}
+          buttonColor={colors.primary.main}
           labelStyle={styles.buttonLabel}
           disabled={isUpdating}
         >

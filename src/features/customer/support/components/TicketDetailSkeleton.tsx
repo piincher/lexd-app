@@ -8,7 +8,6 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { ShimmerBlock } from '@src/shared/ui';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { COLORS } from '@src/constants/Colors';
 
 const InfoCardSkeleton: React.FC = () => {
   const { colors, isDark } = useAppTheme();
@@ -19,7 +18,7 @@ const InfoCardSkeleton: React.FC = () => {
         styles.infoCard,
         {
           backgroundColor: colors.background.card,
-          borderColor: isDark ? 'rgba(255,255,255,0.06)' : COLORS.Silver,
+          borderColor: isDark ? 'rgba(255,255,255,0.06)' : colors.border,
         },
       ]}
     >
@@ -90,7 +89,7 @@ const MessageBubbleSkeleton: React.FC<{ isCustomer?: boolean }> = ({ isCustomer 
         height={60}
         borderRadius={12}
         style={{
-          backgroundColor: isCustomer ? colors.primary : COLORS.white,
+          backgroundColor: isCustomer ? colors.primary.main : colors.background.card,
         }}
       />
       {isCustomer && <View style={{ width: 8 }} />}
@@ -108,7 +107,7 @@ const RatingCardSkeleton: React.FC = () => {
         styles.ratingCard,
         {
           backgroundColor: colors.background.card,
-          borderColor: isDark ? 'rgba(255,255,255,0.06)' : COLORS.Silver,
+          borderColor: isDark ? 'rgba(255,255,255,0.06)' : colors.border,
         },
       ]}
     >
@@ -157,7 +156,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: COLORS.Silver,
     marginVertical: 12,
   },
   infoRow: {

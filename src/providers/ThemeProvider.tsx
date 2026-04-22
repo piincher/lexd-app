@@ -18,6 +18,7 @@ import {
   statusBarLightTheme,
   statusBarDarkTheme,
 } from '../constants/Theme';
+import { setAppThemeMode } from '../constants/themeState';
 
 // Storage key
 const THEME_STORAGE_KEY = '@chinalink_theme_mode';
@@ -49,6 +50,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     }
     return theme === 'dark';
   })();
+
+  // Sync reactive static exports so Theme/COLORS stay correct
+  useEffect(() => {
+    setAppThemeMode(isDark ? 'dark' : 'light');
+  }, [isDark]);
 
   // Get current theme colors
   const colors = isDark ? darkTheme.colors : lightTheme.colors;

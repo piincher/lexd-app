@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Text, Divider } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { DimensionsInput } from '../DimensionsInput';
 import { FormInput } from '../FormInput';
 
@@ -45,6 +46,8 @@ export const GoodsVerificationForm: React.FC<GoodsVerificationFormProps> = ({
   onChangeField,
   onToggleDimensions,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <>
       {/* Goods Information */}
@@ -159,10 +162,10 @@ export const GoodsVerificationForm: React.FC<GoodsVerificationFormProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   card: {
     borderRadius: 12,
-    backgroundColor: '#fff',
+    backgroundColor: colors.background.card,
     marginBottom: 16,
   },
   content: {
@@ -172,7 +175,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '700',
     marginBottom: 16,
-    color: '#333',
+    color: colors.text.primary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -187,6 +190,6 @@ const styles = StyleSheet.create({
   },
   divider: {
     marginVertical: 16,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: colors.border,
   },
 });

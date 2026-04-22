@@ -14,6 +14,7 @@ import { GoodsStatus } from '../../../types';
 const STATUS_FILTERS: { key: GoodsStatus | 'all'; label: string; icon: string }[] = [
   { key: 'all', label: 'Tous', icon: 'apps' },
   { key: 'RECEIVED_AT_WAREHOUSE', label: 'Entrepôt', icon: 'home' },
+  { key: 'PACKED', label: 'Préparé', icon: 'cube-send' },
   { key: 'ASSIGNED_TO_CONTAINER', label: 'Container', icon: 'cube' },
   { key: 'LOADED_IN_CONTAINER', label: 'Chargé', icon: 'archive' },
   { key: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral.white,
+    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.sm,
     overflow: 'hidden',
   },

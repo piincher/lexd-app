@@ -1,48 +1,37 @@
 /**
  * Ticket Card Component
- * Preview card for ticket list view
+ * Modern preview card for ticket list view
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
-import { Card, Text, useTheme } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { Ticket, TICKET_TYPE_LABELS, TICKET_TYPE_ICONS } from '../types';
 import { TicketStatusBadge } from './TicketStatusBadge';
 import { Fonts } from '@src/constants/Fonts';
-import { COLORS } from '@src/constants/Colors';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface TicketCardProps {
   ticket: Ticket;
   onPress?: () => void;
 }
 
-/**
- * Format date for display
- */
 const formatDate = (dateString: string): string => {
   try {
     const date = new Date(dateString);
     const now = new Date();
     const diffInHours = (now.getTime() - date.getTime()) / (1000 * 60 * 60);
-
-    if (diffInHours < 24) {
-      return format(date, 'HH:mm', { locale: fr });
-    }
-    if (diffInHours < 48) {
-      return 'Hier';
-    }
+    if (diffInHours < 24) return format(date, 'HH:mm', { locale: fr });
+    if (diffInHours < 48) return 'Hier';
     return format(date, 'dd MMM', { locale: fr });
   } catch {
     return '';
   }
 };
 
-/**
- * Get last message preview
- */
 const getLastMessagePreview = (ticket: Ticket): string | null => {
   if (ticket.messages.length === 0) {
     return ticket.description.substring(0, 100) + (ticket.description.length > 100 ? '...' : '');
@@ -53,154 +42,74 @@ const getLastMessagePreview = (ticket: Ticket): string | null => {
   return prefix + preview + (lastMessage.message.length > 60 ? '...' : '');
 };
 
-export const TicketCard: React.FC<TicketCardProps> = ({
-  ticket,
-  onPress,
-}) => {
-  const theme = useTheme();
+const BORDER_COLORS: Record<string, string> = {
+  LOW: '#9CA3AF', MEDIUM: '#3B82F6', HIGH: '#F97316', URGENT: '#EF4444',
+};
+
+export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onPress }) => {
+  const { colors } = useAppTheme();
   const typeIcon = TICKET_TYPE_ICONS[ticket.type];
   const typeLabel = TICKET_TYPE_LABELS[ticket.type];
   const lastMessage = getLastMessagePreview(ticket);
-  const hasNewMessages = ticket.messages.some(
+  const hasUnread = ticket.messages.some(
     (m) => m.sender === 'ADMIN' && new Date(m.createdAt) > new Date(ticket.updatedAt)
   );
+  const borderColor = BORDER_COLORS[ticket.priority];
+
+  const styles = useMemo(() => StyleSheet.create({
+    card: {
+      marginHorizontal: 16, marginVertical: 6, borderRadius: 16,
+      backgroundColor: colors.background.card, ...Theme.shadows.md, overflow: 'hidden',
+    },
+    borderAccent: { width: 4, backgroundColor: borderColor },
+    content: { flex: 1, padding: 14 },
+    headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 },
+    metaRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+    typeLabel: { fontFamily: Fonts.regular, fontSize: 11, color: colors.text.secondary },
+    subject: { fontFamily: Fonts.meduim, fontSize: 15, color: colors.text.primary, marginBottom: 6 },
+    preview: { fontFamily: Fonts.regular, fontSize: 13, color: colors.text.secondary, lineHeight: 18, marginBottom: 10 },
+    footer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+    footerLeft: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+    dateText: { fontFamily: Fonts.regular, fontSize: 12, color: colors.text.secondary },
+    unreadDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.primary.main },
+  }), [colors, borderColor]);
 
   return (
     <Pressable onPress={onPress}>
-      <Card style={styles.card} mode="elevated">
-        <Card.Content style={styles.content}>
-          {/* Header Row */}
-          <View style={styles.headerRow}>
-            <View style={styles.ticketNumberContainer}>
-              <MaterialCommunityIcons
-                name={typeIcon as any}
-                size={18}
-                color={theme.colors.primary}
-                style={styles.typeIcon}
-              />
-              <Text style={styles.ticketNumber}>{ticket.ticketNumber}</Text>
+      <View style={styles.card}>
+        <View style={{ flexDirection: 'row' }}>
+          <View style={styles.borderAccent} />
+          <View style={styles.content}>
+            <View style={styles.headerRow}>
+              <View style={styles.metaRow}>
+                <MaterialCommunityIcons name={typeIcon as any} size={14} color={colors.text.secondary} />
+                <Text style={styles.typeLabel}>{typeLabel}</Text>
+              </View>
+              <TicketStatusBadge status={ticket.status} />
             </View>
-            <TicketStatusBadge status={ticket.status} />
-          </View>
-
-          {/* Type Label */}
-          <Text style={styles.typeLabel}>{typeLabel}</Text>
-
-          {/* Subject */}
-          <Text style={styles.subject} numberOfLines={1}>
-            {ticket.subject}
-          </Text>
-
-          {/* Last Message Preview */}
-          {lastMessage && (
-            <View style={styles.previewContainer}>
-              <Text style={styles.previewText} numberOfLines={2}>
-                {lastMessage}
-              </Text>
-              {hasNewMessages && (
-                <View style={styles.unreadBadge}>
-                  <MaterialCommunityIcons name="circle" size={8} color={theme.colors.primary} />
-                </View>
-              )}
+            <Text style={styles.subject} numberOfLines={1}>{ticket.subject}</Text>
+            {lastMessage && <Text style={styles.preview} numberOfLines={2}>{lastMessage}</Text>}
+            <View style={styles.footer}>
+              <View style={styles.footerLeft}>
+                <MaterialCommunityIcons name="clock-outline" size={12} color={colors.text.secondary} />
+                <Text style={styles.dateText}>{formatDate(ticket.updatedAt)}</Text>
+                {ticket.messages.length > 0 && (
+                  <>
+                    <Text style={styles.dateText}>·</Text>
+                    <MaterialCommunityIcons name="message-outline" size={12} color={colors.text.secondary} />
+                    <Text style={styles.dateText}>{ticket.messages.length}</Text>
+                  </>
+                )}
+              </View>
+              {hasUnread && <View style={styles.unreadDot} />}
             </View>
-          )}
-
-          {/* Footer */}
-          <View style={styles.footer}>
-            <MaterialCommunityIcons name="clock-outline" size={14} color={COLORS.DimGray} />
-            <Text style={styles.dateText}>{formatDate(ticket.updatedAt)}</Text>
-            {ticket.messages.length > 0 && (
-              <>
-                <View style={styles.dot} />
-                <MaterialCommunityIcons name="message-outline" size={14} color={COLORS.DimGray} />
-                <Text style={styles.dateText}>{ticket.messages.length} message{ticket.messages.length > 1 ? 's' : ''}</Text>
-              </>
-            )}
           </View>
-        </Card.Content>
-      </Card>
+        </View>
+      </View>
     </Pressable>
   );
 };
 
 TicketCard.displayName = 'TicketCard';
-
-const styles = StyleSheet.create({
-  card: {
-    marginHorizontal: 16,
-    marginVertical: 6,
-    elevation: 2,
-    borderRadius: 12,
-  },
-  content: {
-    padding: 16,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  ticketNumberContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  typeIcon: {
-    marginRight: 8,
-  },
-  ticketNumber: {
-    fontFamily: Fonts.bold,
-    fontSize: 14,
-    color: COLORS.DarkGrey,
-  },
-  typeLabel: {
-    fontFamily: Fonts.regular,
-    fontSize: 12,
-    color: COLORS.DimGray,
-    marginBottom: 4,
-  },
-  subject: {
-    fontFamily: Fonts.meduim,
-    fontSize: 15,
-    color: COLORS.DarkGrey,
-    marginBottom: 8,
-  },
-  previewContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    backgroundColor: COLORS.FeatherWhite,
-    padding: 10,
-    borderRadius: 8,
-    marginBottom: 12,
-  },
-  previewText: {
-    flex: 1,
-    fontFamily: Fonts.regular,
-    fontSize: 13,
-    color: COLORS.DimGray,
-    lineHeight: 18,
-  },
-  unreadBadge: {
-    marginLeft: 8,
-    marginTop: 4,
-  },
-  footer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dateText: {
-    fontFamily: Fonts.regular,
-    fontSize: 12,
-    color: COLORS.SlateGray,
-    marginLeft: 4,
-  },
-  dot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: COLORS.SlateGray,
-    marginHorizontal: 8,
-  },
-});
 
 export default TicketCard;
