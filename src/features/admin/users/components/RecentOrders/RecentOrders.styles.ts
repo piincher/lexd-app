@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../lib/constants";
+import { Theme } from "@src/constants/Theme";
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.card,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 20,
     padding: 20,
     shadowColor: "#000",
@@ -21,16 +21,16 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "700",
-    color: COLORS.dark,
+    color: Theme.colors.text.primary,
   },
   viewAll: {
     fontSize: 14,
-    color: COLORS.primary,
+    color: Theme.colors.primary.main,
     fontWeight: "600",
   },
   emptyText: {
     fontSize: 15,
-    color: COLORS.muted,
+    color: Theme.colors.text.secondary,
     textAlign: "center",
     paddingVertical: 20,
   },
@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.border,
+    borderBottomColor: Theme.colors.neutral[200],
   },
   orderItemLast: {
     borderBottomWidth: 0,
@@ -49,11 +49,11 @@ export const styles = StyleSheet.create({
   orderId: {
     fontSize: 16,
     fontWeight: "700",
-    color: COLORS.dark,
+    color: Theme.colors.text.primary,
   },
   orderDate: {
     fontSize: 13,
-    color: COLORS.muted,
+    color: Theme.colors.text.secondary,
     marginTop: 2,
   },
   statusPill: {

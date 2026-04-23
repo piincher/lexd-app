@@ -51,7 +51,7 @@ export const GoodsListScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F7FC' },
+  container: { flex: 1, backgroundColor: Theme.colors.background.default },
   snackbar: { backgroundColor: Theme.neutral[800], borderRadius: Theme.radius.lg, marginBottom: Theme.spacing.lg },
 });
 

@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   detailsGrid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#F8F9FA',
+    backgroundColor: Theme.colors.background.paper,
     borderRadius: 8,
     padding: 10,
   },

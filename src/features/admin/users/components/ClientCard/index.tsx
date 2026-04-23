@@ -25,8 +25,8 @@ export const ClientCard: React.FC<ClientCardProps> = ({
   index,
   isLoading = false,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   if (isLoading) {
     return <ClientCardSkeleton />;
   }

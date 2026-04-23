@@ -6,6 +6,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
+import { Theme } from "@src/constants/Theme";
 
 export const NotificationInfoFooter: React.FC = () => {
   return (
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 13,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     textAlign: "center",
     lineHeight: 18,
   },

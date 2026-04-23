@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   summaryContainer: {
     flexDirection: 'row',
@@ -445,7 +445,7 @@ const styles = StyleSheet.create({
   summaryValue: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
   },
   tabsContainer: {
     flexDirection: 'row',
@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   content: {
     marginTop: 8,
@@ -472,7 +472,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
     marginBottom: 12,
   },
   stackedBarContainer: {
@@ -500,13 +500,13 @@ const styles = StyleSheet.create({
   legendLabel: {
     fontSize: 13,
     fontWeight: '500',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
     flex: 1,
   },
   legendValue: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   legendDetails: {
     flexDirection: 'row',
@@ -516,7 +516,7 @@ const styles = StyleSheet.create({
   },
   legendDetail: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   shippingItem: {
     marginBottom: 14,
@@ -542,16 +542,16 @@ const styles = StyleSheet.create({
   shippingLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   shippingCount: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   shippingValue: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   shippingBarContainer: {
     flexDirection: 'row',
@@ -563,7 +563,7 @@ const styles = StyleSheet.create({
   shippingBarBackground: {
     flex: 1,
     height: 6,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: Theme.colors.neutral[200],
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -573,7 +573,7 @@ const styles = StyleSheet.create({
   },
   shippingCBM: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     minWidth: 60,
     textAlign: 'right',
   },
@@ -590,17 +590,17 @@ const styles = StyleSheet.create({
   },
   trendLabel: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   trendValue: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
     marginTop: 2,
   },
   noData: {
     textAlign: 'center',
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     paddingVertical: 20,
   },
 });

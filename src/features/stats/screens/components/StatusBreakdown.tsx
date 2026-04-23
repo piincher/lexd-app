@@ -21,7 +21,7 @@ const STATUS_CONFIG = [
   { key: 'active' as const, label: 'Charge', color: '#F59E0B', icon: 'ellipse' },
   { key: 'inTransit' as const, label: 'En Transit', color: '#3B82F6', icon: 'airplane' },
   { key: 'delivered' as const, label: 'Livre', color: '#10B981', icon: 'checkmark-circle' },
-  { key: 'inactive' as const, label: 'Inactif', color: '#6B7280', icon: 'pause-circle' },
+  { key: 'inactive' as const, label: 'Inactif', color: Theme.colors.text.secondary, icon: 'pause-circle' },
 ];
 
 const StatusRow: React.FC<{

@@ -24,6 +24,7 @@ export type NotificationType =
   | "PAYMENT"
   | "CONTAINER_STATUS"
   | "TICKET_REPLY"
+  | "TICKET_CREATED"
   | "INVOICE"
   | "CERTIFICATE_ISSUED"
   | "GENERAL"
@@ -31,17 +32,22 @@ export type NotificationType =
 
 export interface NotificationData {
   type: NotificationType;
+  screen?: string;
   orderId?: string;
   paymentId?: string;
   containerId?: string;
   ticketId?: string;
   invoiceId?: string;
   certificateId?: string;
+  verificationCode?: string;
+  issuedAt?: string;
+  certificateUrl?: string | null;
+  certificateMongoId?: string;
   goodsId?: string;
   message?: string;
   badge?: number;
   unreadCount?: number;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface PushNotificationPayload {
@@ -513,6 +519,7 @@ export const getChannelIdForType = (type: NotificationType): string => {
     PAYMENT: NOTIFICATION_CHANNELS.PAYMENTS,
     CONTAINER_STATUS: NOTIFICATION_CHANNELS.CONTAINERS,
     TICKET_REPLY: NOTIFICATION_CHANNELS.TICKETS,
+    TICKET_CREATED: NOTIFICATION_CHANNELS.TICKETS,
     INVOICE: NOTIFICATION_CHANNELS.INVOICES,
     CERTIFICATE_ISSUED: NOTIFICATION_CHANNELS.CERTIFICATES,
     GENERAL: NOTIFICATION_CHANNELS.DEFAULT,

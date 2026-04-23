@@ -8,6 +8,7 @@
 import { useEffect, useRef } from "react";
 import { Linking } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CommonActions } from "@react-navigation/native";
 import { navigationRef } from "@src/navigations/navigationRef";
 import { useAuth } from "@src/store/Auth";
 import { isAuthRequiredScreen } from "@src/shared/lib/deepLinking";
@@ -16,7 +17,7 @@ const PENDING_DEEP_LINK_KEY = "CHINALINK_PENDING_DEEP_LINK";
 
 interface ParsedLink {
   screen: string;
-  params?: Record<string, string>;
+  params?: Record<string, unknown>;
 }
 
 /**
@@ -123,6 +124,8 @@ function parseDeepLink(url: string): ParsedLink | null {
       if (second === "batch") return { screen: "BatchUpdate", params };
       if (second === "search") return { screen: "GlobalSearch", params };
       if (second === "reviews") return { screen: "AdminReviews", params };
+      if (second === "support" && third) return { screen: "AdminTicketDetail", params: { ticketId: third, ...params } };
+      if (second === "support") return { screen: "AdminTicketList", params };
       if (second === "promos") return { screen: "ManagePromos", params };
       if (second === "certificates") {
         if (third === "issue") return { screen: "IssueCertificate", params };
@@ -228,11 +231,19 @@ export function navigateToDeepLink(parsed: ParsedLink): void {
 
   try {
     if (parsed.screen === "HomeTab" && parsed.params?.screen) {
-      navigationRef.navigate("HomeTab", {
-        screen: parsed.params.screen as any,
-      });
+      navigationRef.dispatch(
+        CommonActions.navigate({
+          name: "HomeTab",
+          params: { screen: parsed.params.screen },
+        })
+      );
     } else {
-      navigationRef.navigate(parsed.screen as any, parsed.params as any);
+      navigationRef.dispatch(
+        CommonActions.navigate({
+          name: parsed.screen,
+          params: parsed.params,
+        })
+      );
     }
   } catch (err) {
     console.warn("[DeepLink] Navigation failed:", err);
@@ -282,7 +293,7 @@ export function useDeepLinks() {
         storePendingDeepLink(url);
         // Navigate to login so user can authenticate
         if (navigationRef.isReady()) {
-          navigationRef.navigate("Login" as any);
+          navigationRef.dispatch(CommonActions.navigate({ name: "Login" }));
         }
       } else {
         navigateToDeepLink(parsed);

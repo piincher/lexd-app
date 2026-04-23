@@ -12,6 +12,7 @@ import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint, SEGMENT_TYPE_LABELS, SEGMENT_TYPE_ICONS } from '@src/shared/types/containerWaypoints';
 import {
@@ -273,7 +274,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
                 ? { backgroundColor: '#10B981' }
                 : isCurrent
                 ? { backgroundColor: '#3B82F6' }
-                : { backgroundColor: '#D1D5DB' },
+                : { backgroundColor: Theme.neutral[300] },
             ]}
           />
         </View>

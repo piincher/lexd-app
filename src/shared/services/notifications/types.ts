@@ -16,6 +16,7 @@ export type NotificationType =
   | 'PAYMENT'
   | 'CONTAINER_STATUS'
   | 'TICKET_REPLY'
+  | 'TICKET_CREATED'
   // | 'INVOICE' // Feature removed
   | 'CERTIFICATE_ISSUED'
   | 'GENERAL'
@@ -23,15 +24,20 @@ export type NotificationType =
 
 export interface NotificationData {
   type: NotificationType;
+  screen?: string;
   orderId?: string;
   paymentId?: string;
   containerId?: string;
   ticketId?: string;
   // invoiceId?: string; // Feature removed
   certificateId?: string;
+  verificationCode?: string;
+  issuedAt?: string;
+  certificateUrl?: string | null;
+  certificateMongoId?: string;
   goodsId?: string;
   message?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface PushNotificationPayload {

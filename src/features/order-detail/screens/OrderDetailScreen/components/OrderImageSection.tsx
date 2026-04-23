@@ -3,6 +3,7 @@ import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { Text, Card } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { imagesType } from "@src/api/order";
+import { Theme } from "@src/constants/Theme";
 
 interface OrderImageSectionProps {
    images?: imagesType;
@@ -32,7 +33,7 @@ export const OrderImageSection: React.FC<OrderImageSectionProps> = ({ images, go
       return (
          <Card style={styles.card}>
             <View style={[styles.image, styles.placeholder]}>
-               <MaterialCommunityIcons name="package-variant" size={56} color="#D1D5DB" />
+               <MaterialCommunityIcons name="package-variant" size={56} color={Theme.colors.text.disabled} />
                <Text style={styles.placeholderText}>Aucune photo</Text>
             </View>
          </Card>
@@ -81,13 +82,13 @@ const styles = StyleSheet.create({
       marginRight: 4,
    },
    placeholder: {
-      backgroundColor: "#F3F4F6",
+      backgroundColor: Theme.colors.background.paper,
       justifyContent: "center",
       alignItems: "center",
    },
    placeholderText: {
       marginTop: 8,
       fontSize: 13,
-      color: "#9CA3AF",
+      color: Theme.colors.text.disabled,
    },
 });

@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     padding: Theme.spacing.md,
     marginBottom: Theme.spacing.md,
     borderWidth: 1,
-    borderColor: Theme.neutral.grey200,
+    borderColor: Theme.neutral[200],
   },
   header: {
     flexDirection: 'row',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   orderCode: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral.grey900,
+    color: Theme.neutral[900],
   },
   details: {
     marginBottom: Theme.spacing.md,
@@ -81,11 +81,11 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: Theme.neutral.grey600,
+    color: Theme.neutral[600],
   },
   value: {
     fontSize: 14,
-    color: Theme.neutral.grey800,
+    color: Theme.neutral[800],
     fontWeight: '500',
   },
   cost: {
@@ -98,11 +98,11 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingTop: Theme.spacing.sm,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral.grey100,
+    borderTopColor: Theme.neutral[100],
   },
   date: {
     fontSize: 12,
-    color: Theme.neutral.grey500,
+    color: Theme.neutral[500],
   },
 });
 

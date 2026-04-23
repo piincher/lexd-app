@@ -106,7 +106,7 @@ export default function CertificateDetailAdminScreen({
           onPress={() => navigation.goBack()}
           activeOpacity={0.7}
         >
-          <Ionicons name="arrow-back" size={24} color="#1F2937" />
+          <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Détails du certificat</Text>
       </View>
@@ -120,7 +120,7 @@ export default function CertificateDetailAdminScreen({
           <MaterialIcons name="verified" size={28} color="#d4a843" />
           <Text style={styles.certificateIdText}>{certificate.certificateId}</Text>
           <TouchableOpacity onPress={handleCopyCode} style={styles.copyButton}>
-            <Ionicons name="copy-outline" size={20} color="#6B7280" />
+            <Ionicons name="copy-outline" size={20} color={Theme.colors.text.secondary} />
           </TouchableOpacity>
         </View>
 
@@ -153,7 +153,7 @@ export default function CertificateDetailAdminScreen({
           <Text style={styles.sectionTitle}>Informations du client</Text>
           <View style={styles.sectionCard}>
             <View style={styles.infoRow}>
-              <Ionicons name="person-outline" size={18} color="#6B7280" />
+              <Ionicons name="person-outline" size={18} color={Theme.colors.text.secondary} />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Nom complet</Text>
                 <Text style={styles.infoValue}>{clientName}</Text>
@@ -161,7 +161,7 @@ export default function CertificateDetailAdminScreen({
             </View>
             <View style={styles.divider} />
             <View style={styles.infoRow}>
-              <Ionicons name="call-outline" size={18} color="#6B7280" />
+              <Ionicons name="call-outline" size={18} color={Theme.colors.text.secondary} />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Numéro de téléphone</Text>
                 <Text style={styles.infoValue}>{certificate.userId.phoneNumber}</Text>
@@ -175,7 +175,7 @@ export default function CertificateDetailAdminScreen({
           <Text style={styles.sectionTitle}>Informations du certificat</Text>
           <View style={styles.sectionCard}>
             <View style={styles.infoRow}>
-              <Ionicons name="calendar-outline" size={18} color="#6B7280" />
+              <Ionicons name="calendar-outline" size={18} color={Theme.colors.text.secondary} />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Date d'émission</Text>
                 <Text style={styles.infoValue}>{formatDate(certificate.issuedAt)}</Text>
@@ -183,7 +183,7 @@ export default function CertificateDetailAdminScreen({
             </View>
             <View style={styles.divider} />
             <View style={styles.infoRow}>
-              <Ionicons name="key-outline" size={18} color="#6B7280" />
+              <Ionicons name="key-outline" size={18} color={Theme.colors.text.secondary} />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Code de vérification</Text>
                 <Text style={[styles.infoValue, styles.verificationCode]}>
@@ -193,7 +193,7 @@ export default function CertificateDetailAdminScreen({
             </View>
             <View style={styles.divider} />
             <View style={styles.infoRow}>
-              <MaterialIcons name="inventory" size={18} color="#6B7280" />
+              <MaterialIcons name="inventory" size={18} color={Theme.colors.text.secondary} />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>CBM à l'émission</Text>
                 <Text style={styles.infoValue}>
@@ -203,7 +203,7 @@ export default function CertificateDetailAdminScreen({
             </View>
             <View style={styles.divider} />
             <View style={styles.infoRow}>
-              <MaterialIcons name="flag" size={18} color="#6B7280" />
+              <MaterialIcons name="flag" size={18} color={Theme.colors.text.secondary} />
               <View style={styles.infoContent}>
                 <Text style={styles.infoLabel}>Seuil requis</Text>
                 <Text style={styles.infoValue}>{certificate.thresholdCBM} CBM</Text>
@@ -220,7 +220,7 @@ export default function CertificateDetailAdminScreen({
               {certificate.issuedBy && (
                 <>
                   <View style={styles.infoRow}>
-                    <Ionicons name="shield-checkmark-outline" size={18} color="#6B7280" />
+                    <Ionicons name="shield-checkmark-outline" size={18} color={Theme.colors.text.secondary} />
                     <View style={styles.infoContent}>
                       <Text style={styles.infoLabel}>Émis par</Text>
                       <Text style={styles.infoValue}>
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
 
   /* Scroll */
@@ -341,7 +341,7 @@ const styles = StyleSheet.create({
   certificateIdText: {
     fontSize: 20,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   copyButton: {
     padding: 6,
@@ -398,7 +398,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     marginBottom: 10,
     paddingLeft: 4,
   },
@@ -426,13 +426,13 @@ const styles = StyleSheet.create({
   infoLabel: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     marginBottom: 2,
   },
   infoValue: {
     fontSize: 15,
     fontFamily: Fonts.meduim,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   verificationCode: {
     fontSize: 16,
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
   noteLabel: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     marginBottom: 4,
   },
   noteText: {

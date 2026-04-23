@@ -20,7 +20,7 @@ const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> =
   Active: { label: 'Charge', color: '#F59E0B', bg: '#FFFBEB' },
   'In Transit': { label: 'En Transit', color: '#3B82F6', bg: '#EFF6FF' },
   Delivered: { label: 'Livre', color: '#10B981', bg: '#F0FDF4' },
-  Inactive: { label: 'Inactif', color: '#6B7280', bg: '#F3F4F6' },
+  Inactive: { label: 'Inactif', color: Theme.colors.text.secondary, bg: Theme.colors.background.paper },
 };
 
 const SHIPPING_ICON: Record<string, string> = {

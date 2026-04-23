@@ -3,9 +3,11 @@ import { Text, View, StyleSheet, Button } from 'react-native';
 import { CameraView, Camera, BarcodeScanningResult } from 'expo-camera';
 import { useUpdateStatusDelivery } from '../../orders/hooks/useOrderManagement';
 import { CustomModal } from '@src/components/Modal/Modal';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { RootStackScreenProps } from '@src/navigations/type';
 
 export default function ScanQRCode({ navigation }: RootStackScreenProps<'ScanQRCode'>) {
+	const { colors } = useAppTheme();
 	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	const [scanned, setScanned] = useState(false);
 	const [trackingNumber, setTrackingNumber] = useState('');
@@ -41,10 +43,18 @@ export default function ScanQRCode({ navigation }: RootStackScreenProps<'ScanQRC
 	}, [isSuccess]);
 
 	if (hasPermission === null) {
-		return <Text>Requesting for camera permission</Text>;
+		return (
+			<View style={[styles.container, { backgroundColor: colors.background.default }]}>
+				<Text style={{ color: colors.text.primary }}>Requesting for camera permission</Text>
+			</View>
+		);
 	}
 	if (hasPermission === false) {
-		return <Text>S'il vous plait Autorize l'access au camera pour scanner</Text>;
+		return (
+			<View style={[styles.container, { backgroundColor: colors.background.default }]}>
+				<Text style={{ color: colors.text.primary }}>S'il vous plait Autorize l'access au camera pour scanner</Text>
+			</View>
+		);
 	}
 
 	return (

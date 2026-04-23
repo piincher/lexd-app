@@ -75,7 +75,7 @@ const CertificateCard = ({ certificate, onDownload, isDownloading, onPress }: Ce
         <View style={styles.certificateIdContainer}>
           <Text style={styles.certificateId}>{certificate.certificateId}</Text>
           <TouchableOpacity onPress={handleCopyCode} style={styles.copyButton}>
-            <Ionicons name="copy-outline" size={18} color="#6B7280" />
+            <Ionicons name="copy-outline" size={18} color={Theme.colors.text.secondary} />
           </TouchableOpacity>
         </View>
         <View style={styles.badgeRow}>
@@ -96,19 +96,19 @@ const CertificateCard = ({ certificate, onDownload, isDownloading, onPress }: Ce
 
       {/* Client info */}
       <View style={styles.cardRow}>
-        <Ionicons name="person-outline" size={16} color="#6B7280" />
+        <Ionicons name="person-outline" size={16} color={Theme.colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {certificate.userId.firstName} {certificate.userId.lastName}
         </Text>
       </View>
       <View style={styles.cardRow}>
-        <Ionicons name="call-outline" size={16} color="#6B7280" />
+        <Ionicons name="call-outline" size={16} color={Theme.colors.text.secondary} />
         <Text style={styles.cardRowText}>{certificate.userId.phoneNumber}</Text>
       </View>
 
       {/* CBM at issuance */}
       <View style={styles.cardRow}>
-        <MaterialIcons name="inventory" size={16} color="#6B7280" />
+        <MaterialIcons name="inventory" size={16} color={Theme.colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {certificate.totalCBMAtIssuance.toFixed(2)} CBM (seuil : {certificate.thresholdCBM} CBM)
         </Text>
@@ -116,14 +116,14 @@ const CertificateCard = ({ certificate, onDownload, isDownloading, onPress }: Ce
 
       {/* Issue date */}
       <View style={styles.cardRow}>
-        <Ionicons name="calendar-outline" size={16} color="#6B7280" />
+        <Ionicons name="calendar-outline" size={16} color={Theme.colors.text.secondary} />
         <Text style={styles.cardRowText}>{formatDate(certificate.issuedAt)}</Text>
       </View>
 
       {/* Issued by (MANUAL only) */}
       {certificate.type === "MANUAL" && certificate.issuedBy && (
         <View style={styles.cardRow}>
-          <Ionicons name="shield-checkmark-outline" size={16} color="#6B7280" />
+          <Ionicons name="shield-checkmark-outline" size={16} color={Theme.colors.text.secondary} />
           <Text style={styles.cardRowText}>
             Émis par {certificate.issuedBy.firstName} {certificate.issuedBy.lastName}
           </Text>
@@ -221,7 +221,7 @@ export default function CertificateHistoryScreen({
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
           >
-            <Ionicons name="arrow-back" size={24} color="#1F2937" />
+            <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitle}>Certificats émis</Text>
@@ -277,7 +277,7 @@ export default function CertificateHistoryScreen({
             onRefresh={refetch}
             ListEmptyComponent={
               <View style={styles.emptyContainer}>
-                <MaterialIcons name="verified" size={64} color="#D1D5DB" />
+                <MaterialIcons name="verified" size={64} color={Theme.neutral[300]} />
                 <Text style={styles.emptyTitle}>Aucun certificat trouvé</Text>
                 <Text style={styles.emptySubtitle}>
                   {activeFilter !== "all"
@@ -372,13 +372,13 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     marginBottom: 2,
   },
   headerSubtitle: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* Filter chips */
@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
   filterChipText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
   filterChipTextActive: {
     color: "#FFFFFF",
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 15,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* List */
@@ -458,7 +458,7 @@ const styles = StyleSheet.create({
   certificateId: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     marginRight: 8,
   },
   copyButton: {
@@ -515,7 +515,7 @@ const styles = StyleSheet.create({
   cardRowText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
     flex: 1,
   },
 
@@ -570,14 +570,14 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: "#374151",
+    color: Theme.colors.text.secondary,
     marginTop: 16,
     marginBottom: 6,
   },
   emptySubtitle: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     textAlign: "center",
     lineHeight: 20,
   },
@@ -591,7 +591,7 @@ const styles = StyleSheet.create({
   resetFilterText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
 
   /* Pagination */
@@ -618,6 +618,6 @@ const styles = StyleSheet.create({
   paginationText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
 });

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Card } from '@src/shared/ui/Card';
 import { Badge } from '@src/shared/ui/Badge';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { AirwayBillWaypoint, AirwayBillWaypointStatus } from '../../types';
 
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 16, fontWeight: '800' },
   subtitle: { fontSize: 12, marginTop: 3 },
   empty: { fontSize: 13, lineHeight: 19, marginTop: 8 },
-  progressTrack: { height: 6, borderRadius: 99, backgroundColor: '#E5E7EB', overflow: 'hidden', marginBottom: 14 },
+  progressTrack: { height: 6, borderRadius: 99, backgroundColor: Theme.colors.neutral[200], overflow: 'hidden', marginBottom: 14 },
   progressFill: { height: '100%', borderRadius: 99 },
   item: { flexDirection: 'row', position: 'relative', paddingBottom: 16 },
   iconWrap: { width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center', zIndex: 1 },

@@ -7,14 +7,13 @@ import React, { useMemo } from "react";
 import { View, StyleSheet, Switch } from "react-native";
 import { Card, Text, Divider, List } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-
-type IoniconsName = React.ComponentProps<typeof Ionicons>["name"];
-
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import {
   NotificationType,
   NotificationPreference,
 } from "@src/shared/services/notificationService";
+
+type IoniconsName = React.ComponentProps<typeof Ionicons>["name"];
 
 interface NotificationCategorySectionProps {
   preferences: NotificationPreference[];
@@ -27,6 +26,7 @@ const getIconForType = (type: NotificationType): IoniconsName => {
     PAYMENT: "card",
     CONTAINER_STATUS: "archive",
     TICKET_REPLY: "chatbubble-ellipses",
+    TICKET_CREATED: "ticket",
     INVOICE: "document-text",
     CERTIFICATE_ISSUED: "trophy",
     GENERAL: "notifications",
@@ -44,13 +44,14 @@ export const NotificationCategorySection: React.FC<NotificationCategorySectionPr
   const getColorForType = (type: NotificationType): string => {
     const colorMap: Record<NotificationType, string> = {
       ORDER_UPDATE: colors.primary.main,
-      PAYMENT: "#10B981",
-      CONTAINER_STATUS: "#3B82F6",
-      TICKET_REPLY: "#F59E0B",
-      INVOICE: "#EF4444",
-      CERTIFICATE_ISSUED: "#F4D03F",
-      GENERAL: "#6B7280",
-      SYSTEM: "#8B5CF6",
+      PAYMENT: colors.status.success,
+      CONTAINER_STATUS: colors.status.info,
+      TICKET_REPLY: colors.status.warning,
+      TICKET_CREATED: colors.status.warning,
+      INVOICE: colors.status.error,
+      CERTIFICATE_ISSUED: colors.accent.gold,
+      GENERAL: colors.text.secondary,
+      SYSTEM: colors.primary.main,
     };
     return colorMap[type] || colors.primary.main;
   };

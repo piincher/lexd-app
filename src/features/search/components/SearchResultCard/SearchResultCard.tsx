@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: Theme.spacing.md,
     borderWidth: 1,
-    borderColor: Theme.neutral.grey200,
+    borderColor: Theme.neutral[200],
   },
   iconContainer: {
     width: 48,
@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.neutral.grey900,
+    color: Theme.neutral[900],
     flex: 1,
     marginRight: Theme.spacing.sm,
   },
   description: {
     fontSize: 14,
-    color: Theme.neutral.grey600,
+    color: Theme.neutral[600],
     marginBottom: Theme.spacing.sm,
   },
   footer: {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 12,
-    color: Theme.neutral.grey500,
+    color: Theme.neutral[500],
   },
   price: {
     fontSize: 14,

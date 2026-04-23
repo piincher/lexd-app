@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../lib/constants";
+import { Theme } from "@src/constants/Theme";
 
 export const styles = StyleSheet.create({
   container: {
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   card: {
     width: "48%",
-    backgroundColor: COLORS.card,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 16,
     alignItems: "center",
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 3,
     borderWidth: 1,
-    borderColor: "#f0f0f0",
+    borderColor: Theme.colors.neutral[200],
   },
   iconContainer: {
     width: 44,
@@ -34,12 +34,12 @@ export const styles = StyleSheet.create({
   value: {
     fontSize: 26,
     fontWeight: "800",
-    color: COLORS.dark,
+    color: Theme.colors.text.primary,
     marginBottom: 4,
   },
   label: {
     fontSize: 13,
-    color: COLORS.muted,
+    color: Theme.colors.text.secondary,
     fontWeight: "600",
     textAlign: "center",
   },

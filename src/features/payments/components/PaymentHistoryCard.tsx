@@ -6,6 +6,7 @@ import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { Fonts } from '@src/constants/Fonts';
 import type { PaymentHistoryItem } from '../types';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface PaymentHistoryCardProps {
@@ -30,7 +31,7 @@ const STATUS_CONFIG: Record<string, { color: string; label: string }> = {
   PENDING: { color: '#F59E0B', label: 'En attente' },
   PROCESSING: { color: '#3B82F6', label: 'En cours' },
   FAILED: { color: '#EF4444', label: 'Échoué' },
-  CANCELLED: { color: '#6B7280', label: 'Annulé' },
+  CANCELLED: { color: Theme.colors.text.muted, label: 'Annulé' },
   REFUNDED: { color: '#8B5CF6', label: 'Remboursé' },
 };
 

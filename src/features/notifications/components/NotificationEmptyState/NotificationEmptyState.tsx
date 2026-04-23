@@ -21,7 +21,7 @@ export const NotificationEmptyState: React.FC<NotificationEmptyStateProps> = ({ 
 
   return (
     <View style={styles.container}>
-      <Ionicons name="notifications-off-outline" size={64} color={Theme.neutral.grey400} />
+      <Ionicons name="notifications-off-outline" size={64} color={Theme.neutral[400]} />
       <Text style={styles.text}>{getMessage()}</Text>
     </View>
   );
@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
   text: {
     marginTop: Theme.spacing.md,
     fontSize: 16,
-    color: Theme.neutral.grey500,
+    color: Theme.neutral[500],
   },
 });

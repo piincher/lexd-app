@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../lib/constants";
+import { Theme } from "@src/constants/Theme";
 
 export const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.card,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 20,
     padding: 20,
     marginBottom: 24,
@@ -16,12 +16,12 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "700",
-    color: COLORS.dark,
+    color: Theme.colors.text.primary,
     marginBottom: 16,
     textAlign: "center",
   },
   emptyContainer: {
-    backgroundColor: COLORS.card,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 20,
     padding: 40,
     marginBottom: 24,
@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: COLORS.muted,
+    color: Theme.colors.text.secondary,
     marginTop: 16,
     textAlign: "center",
   },

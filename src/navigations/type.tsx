@@ -129,6 +129,9 @@ export type RootStackParamList = {
    // Reviews Screens
    MyReviews: undefined;
    AdminReviews: undefined;
+   // Admin Support
+   AdminTicketList: undefined;
+   AdminTicketDetail: { ticketId: string };
    // Promos Screen
    ManagePromos: undefined;
    // Campaign Screens

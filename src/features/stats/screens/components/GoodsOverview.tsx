@@ -236,7 +236,7 @@ export const GoodsOverview: React.FC<GoodsOverviewProps> = ({ goodsVolume, isLoa
             <View style={styles.statusSection}>
               {byStatus.map((item, index) => {
                 const statusKey = item.status?.toLowerCase().replace(/\s+/g, '_');
-                const color = STATUS_COLORS[statusKey] || '#6B7280';
+                const color = STATUS_COLORS[statusKey] || Theme.colors.text.secondary;
                 const label = STATUS_LABELS[statusKey] || item.status || 'Autre';
                 const percentage = totalGoods > 0 ? (item.count / totalGoods) * 100 : 0;
 

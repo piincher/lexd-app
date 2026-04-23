@@ -11,7 +11,7 @@ interface PastOrderCardProps {
 }
 
 const STATUS_COLORS: Record<OrderStatus, { bg: string; text: string; label: string }> = {
-  draft: { bg: Theme.neutral.grey200, text: Theme.neutral.grey700, label: 'Brouillon' },
+  draft: { bg: Theme.neutral[200], text: Theme.neutral[700], label: 'Brouillon' },
   pending: { bg: Theme.colors.warning.light + '30', text: Theme.colors.warning.main, label: 'En attente' },
   confirmed: { bg: Theme.colors.info.light + '30', text: Theme.colors.info.main, label: 'Confirmé' },
   in_transit: { bg: Theme.colors.primary.light + '30', text: Theme.colors.primary.main, label: 'En transit' },
@@ -37,11 +37,11 @@ export const PastOrderCard: React.FC<PastOrderCardProps> = ({ order, onPress }) 
       
       <View style={styles.details}>
         <View style={styles.row}>
-          <Ionicons name="location-outline" size={16} color={Theme.neutral.grey500} />
+          <Ionicons name="location-outline" size={16} color={Theme.neutral[500]} />
           <Text style={styles.detailText}>{order.destination?.address ?? 'N/A'}</Text>
         </View>
         <View style={styles.row}>
-          <Ionicons name="cube-outline" size={16} color={Theme.neutral.grey500} />
+          <Ionicons name="cube-outline" size={16} color={Theme.neutral[500]} />
           <Text style={styles.detailText}>
             {order.shippingMode === 'air' ? 'Fret Aérien' : 'Fret Maritime'}
           </Text>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     padding: Theme.spacing.md,
     marginBottom: Theme.spacing.md,
     borderWidth: 1,
-    borderColor: Theme.neutral.grey200,
+    borderColor: Theme.neutral[200],
   },
   header: {
     flexDirection: 'row',
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   orderNumber: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral.grey900,
+    color: Theme.neutral[900],
   },
   details: {
     marginBottom: Theme.spacing.md,
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   },
   detailText: {
     fontSize: 14,
-    color: Theme.neutral.grey600,
+    color: Theme.neutral[600],
     marginLeft: Theme.spacing.sm,
   },
   footer: {
@@ -99,11 +99,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: Theme.spacing.sm,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral.grey100,
+    borderTopColor: Theme.neutral[100],
   },
   date: {
     fontSize: 12,
-    color: Theme.neutral.grey500,
+    color: Theme.neutral[500],
   },
   amount: {
     fontSize: 16,

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 
 interface PermissionWarningProps {
   visible: boolean;
@@ -23,17 +24,17 @@ const styles = StyleSheet.create({
   warningCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFFBEB',
+    backgroundColor: Theme.colors.feedback.warningBg,
     padding: 12,
     borderRadius: 8,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#FCD34D',
+    borderColor: Theme.colors.status.warning,
   },
   warningText: {
     flex: 1,
     marginLeft: 8,
     fontSize: 14,
-    color: '#92400E',
+    color: Theme.colors.feedback.warningDark,
   },
 });

@@ -4,7 +4,7 @@ import { Theme } from '@src/constants/Theme';
 export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F7FC',
+    backgroundColor: colors.background.default,
   },
 
   // Header Styles
@@ -156,7 +156,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   searchContainer: {
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
-    backgroundColor: '#F8F7FC',
+    backgroundColor: colors.background.default,
   },
   searchInputContainer: {
     flexDirection: 'row',
@@ -184,7 +184,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.sm,
-    backgroundColor: '#F8F7FC',
+    backgroundColor: colors.background.default,
   },
   selectAllButton: {
     flexDirection: 'row',

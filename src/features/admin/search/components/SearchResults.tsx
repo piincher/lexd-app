@@ -556,7 +556,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: Theme.colors.background.card,
   },
   resultIconContainer: {
     marginRight: Theme.spacing.md,

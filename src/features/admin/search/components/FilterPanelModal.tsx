@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: width * 0.85,
     maxWidth: 360,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.xl,
   },
   closeButton: {

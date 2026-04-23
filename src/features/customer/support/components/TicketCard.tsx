@@ -12,12 +12,15 @@ import { fr } from 'date-fns/locale';
 import { Ticket, TICKET_TYPE_LABELS, TICKET_TYPE_ICONS } from '../types';
 import { TicketStatusBadge } from './TicketStatusBadge';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface TicketCardProps {
   ticket: Ticket;
   onPress?: () => void;
 }
+
+type MaterialCommunityIconName = keyof typeof MaterialCommunityIcons.glyphMap;
 
 const formatDate = (dateString: string): string => {
   try {
@@ -48,7 +51,7 @@ const BORDER_COLORS: Record<string, string> = {
 
 export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onPress }) => {
   const { colors } = useAppTheme();
-  const typeIcon = TICKET_TYPE_ICONS[ticket.type];
+  const typeIcon = TICKET_TYPE_ICONS[ticket.type] as MaterialCommunityIconName;
   const typeLabel = TICKET_TYPE_LABELS[ticket.type];
   const lastMessage = getLastMessagePreview(ticket);
   const hasUnread = ticket.messages.some(
@@ -82,7 +85,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onPress }) => {
           <View style={styles.content}>
             <View style={styles.headerRow}>
               <View style={styles.metaRow}>
-                <MaterialCommunityIcons name={typeIcon as any} size={14} color={colors.text.secondary} />
+                <MaterialCommunityIcons name={typeIcon} size={14} color={colors.text.secondary} />
                 <Text style={styles.typeLabel}>{typeLabel}</Text>
               </View>
               <TicketStatusBadge status={ticket.status} />

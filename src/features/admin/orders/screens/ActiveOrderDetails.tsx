@@ -7,6 +7,7 @@ import { Picker } from "@react-native-picker/picker";
 import { Fonts } from "@src/constants/Fonts";
 import { NotificationBell } from "@src/features/notifications";
 import type { RootStackScreenProps } from "@src/navigations/type";
+import { Theme } from "@src/constants/Theme";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useGetOrderDetail } from "@src/shared/hooks/useOrderDetail";
 import { useGetRoutes } from "@src/shared/hooks/useRoutes";
@@ -532,10 +533,10 @@ export default ActiveOrderDetails;
 const styles = StyleSheet.create({
    container: {
       flex: 1,
-      backgroundColor: "#F5F7FA",
+      backgroundColor: Theme.colors.background.default,
    },
    appbar: {
-      backgroundColor: "#FFF",
+      backgroundColor: Theme.colors.background.card,
       elevation: 0,
    },
    appbarTitle: {
@@ -553,7 +554,7 @@ const styles = StyleSheet.create({
       marginBottom: 12,
       padding: 16,
       borderRadius: 16,
-      backgroundColor: "#FFF",
+      backgroundColor: Theme.colors.background.card,
       elevation: 2,
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 2 },
@@ -590,12 +591,12 @@ const styles = StyleSheet.create({
    clientName: {
       fontSize: 16,
       fontWeight: "600",
-      color: "#1A1A2E",
+      color: Theme.colors.text.primary,
       fontFamily: Fonts.semiBold,
    },
    clientPhone: {
       fontSize: 12,
-      color: "#9E9E9E",
+      color: Theme.colors.text.secondary,
       fontFamily: Fonts.regular,
       marginTop: 1,
    },
@@ -605,17 +606,17 @@ const styles = StyleSheet.create({
       alignItems: "center",
       paddingTop: 12,
       borderTopWidth: 1,
-      borderTopColor: "#F0F0F0",
+      borderTopColor: Theme.colors.border,
    },
    priceLabel: {
       fontSize: 10,
-      color: "#9E9E9E",
+      color: Theme.colors.text.secondary,
       fontFamily: Fonts.medium,
    },
    priceValue: {
       fontSize: 17,
       fontWeight: "700",
-      color: "#1A1A2E",
+      color: Theme.colors.text.primary,
       fontFamily: Fonts.bold,
    },
 
@@ -632,18 +633,18 @@ const styles = StyleSheet.create({
    statValue: {
       fontSize: 16,
       fontWeight: "700",
-      color: "#1A1A2E",
+      color: Theme.colors.text.primary,
       fontFamily: Fonts.bold,
    },
    statLabel: {
       fontSize: 10,
-      color: "#9E9E9E",
+      color: Theme.colors.text.secondary,
       fontFamily: Fonts.medium,
    },
    statDivider: {
       width: 1,
       height: 36,
-      backgroundColor: "#F0F0F0",
+      backgroundColor: Theme.colors.border,
    },
 
    // Section header
@@ -656,7 +657,7 @@ const styles = StyleSheet.create({
    sectionTitle: {
       fontSize: 16,
       fontWeight: "600",
-      color: "#1A1A2E",
+      color: Theme.colors.text.primary,
       fontFamily: Fonts.semiBold,
    },
 
@@ -681,20 +682,20 @@ const styles = StyleSheet.create({
    },
    infoLabel: {
       fontSize: 13,
-      color: "#6B7280",
+      color: Theme.colors.text.secondary,
       fontFamily: Fonts.medium,
    },
    infoValue: {
       fontSize: 13,
       fontWeight: "600",
-      color: "#1A1A2E",
+      color: Theme.colors.text.primary,
       fontFamily: Fonts.semiBold,
       maxWidth: "45%",
       textAlign: "right",
    },
    divider: {
       marginVertical: 6,
-      backgroundColor: "#F0F0F0",
+      backgroundColor: Theme.colors.border,
    },
 
    // Notes
@@ -702,14 +703,14 @@ const styles = StyleSheet.create({
       flexDirection: "row",
       alignItems: "flex-start",
       gap: 8,
-      backgroundColor: "#FFF8E1",
+      backgroundColor: Theme.colors.feedback.warningBg,
       borderRadius: 10,
       padding: 12,
    },
    noteText: {
       flex: 1,
       fontSize: 13,
-      color: "#666",
+      color: Theme.colors.text.secondary,
       fontFamily: Fonts.regular,
       lineHeight: 18,
    },
@@ -728,29 +729,29 @@ const styles = StyleSheet.create({
       width: 32,
       height: 32,
       borderRadius: 16,
-      backgroundColor: "#F3F4F6",
+      backgroundColor: Theme.colors.background.paper,
       justifyContent: "center",
       alignItems: "center",
    },
    routeTitle: {
       fontSize: 14,
       fontWeight: "600",
-      color: "#1A1A2E",
+      color: Theme.colors.text.primary,
       fontFamily: Fonts.semiBold,
       flex: 1,
    },
    routeDivider: {
       marginVertical: 10,
-      backgroundColor: "#F0F0F0",
+      backgroundColor: Theme.colors.border,
    },
 
    // Picker (transit)
    pickerWrapper: {
       marginLeft: 42,
-      backgroundColor: "#F8F9FA",
+      backgroundColor: Theme.colors.background.paper,
       borderRadius: 10,
       borderWidth: 1,
-      borderColor: "#E0E0E0",
+      borderColor: Theme.colors.border,
       overflow: "hidden",
    },
    picker: {
@@ -775,36 +776,36 @@ const styles = StyleSheet.create({
       top: -6,
       width: 2,
       height: 16,
-      backgroundColor: "#E0E0E0",
+      backgroundColor: Theme.colors.border,
    },
    connectorActive: {
-      backgroundColor: "#4CAF50",
+      backgroundColor: Theme.colors.status.success,
    },
    timelineCircle: {
       width: 20,
       height: 20,
       borderRadius: 10,
-      backgroundColor: "#F3F4F6",
+      backgroundColor: Theme.colors.background.paper,
       borderWidth: 2,
-      borderColor: "#E0E0E0",
+      borderColor: Theme.colors.border,
       justifyContent: "center",
       alignItems: "center",
       marginRight: 12,
       zIndex: 1,
    },
    timelineCircleActive: {
-      backgroundColor: "#4CAF50",
-      borderColor: "#4CAF50",
+      backgroundColor: Theme.colors.status.success,
+      borderColor: Theme.colors.status.success,
    },
    timelineLabel: {
       flex: 1,
       fontSize: 13,
-      color: "#6B7280",
+      color: Theme.colors.text.secondary,
       fontFamily: Fonts.regular,
       lineHeight: 18,
    },
    timelineLabelActive: {
-      color: "#1A1A2E",
+      color: Theme.colors.text.primary,
       fontWeight: "600",
       fontFamily: Fonts.semiBold,
    },

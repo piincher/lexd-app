@@ -340,11 +340,11 @@ const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
             </View>
             <View style={[
               styles.statusBadge,
-              { backgroundColor: route.isActive ? '#DEF7EC' : '#F3F4F6' }
+              { backgroundColor: route.isActive ? Theme.colors.feedback.successBg : Theme.colors.background.paper }
             ]}>
               <Text style={[
                 styles.statusText,
-                { color: route.isActive ? '#059669' : '#6B7280' }
+                { color: route.isActive ? Theme.colors.status.success : Theme.colors.text.secondary }
               ]}>
                 {route.isActive ? 'Active' : 'Inactive'}
               </Text>
@@ -394,7 +394,7 @@ const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F7FC',
+    backgroundColor: Theme.colors.background.default,
   },
   header: {
     paddingHorizontal: Theme.spacing.xl,

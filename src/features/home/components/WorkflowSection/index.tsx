@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 
 interface WorkflowSectionProps {
    colors: any;
@@ -39,8 +40,8 @@ const WORKFLOW_STEPS = [
 
 export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ colors }) => {
    const textColor = colors.text?.primary ?? colors.text;
-   const textSecondary = colors.text?.secondary ?? (colors.textSecondary || "#6B7280");
-   const cardBg = colors.background?.card ?? "#fff";
+   const textSecondary = colors.text?.secondary ?? (colors.textSecondary || Theme.colors.text.secondary);
+   const cardBg = colors.background?.card ?? Theme.colors.background.card;
 
    return (
       <View style={styles.section}>

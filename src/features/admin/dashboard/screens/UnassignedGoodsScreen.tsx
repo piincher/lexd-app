@@ -45,13 +45,13 @@ export const UnassignedGoodsScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#1F2937" />
+          <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
         </TouchableOpacity>
         <Text style={styles.title}>Marchandises Non Assignées</Text>
         <NotificationBell
           onPress={() => navigation.navigate('Notifications' as never)}
           size={24}
-          color="#1F2937"
+          color={Theme.colors.text.primary}
         />
       </View>
 
@@ -88,11 +88,11 @@ export const UnassignedGoodsScreen: React.FC = () => {
                       {item.daysWaiting}j
                     </Text>
                   </View>
-                  <Ionicons name="chevron-forward" size={18} color="#9CA3AF" style={{ marginTop: 8 }} />
+                  <Ionicons name="chevron-forward" size={18} color={Theme.colors.text.muted} style={{ marginTop: 8 }} />
                 </View>
               </View>
               <View style={styles.footer}>
-                <Ionicons name="time-outline" size={13} color="#9CA3AF" />
+                <Ionicons name="time-outline" size={13} color={Theme.colors.text.muted} />
                 <Text style={styles.date}>
                   {"  "}Reçu: {formatDate(item.receivedAt)}
                 </Text>
@@ -117,7 +117,7 @@ export const UnassignedGoodsScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F7FA",
+    backgroundColor: Theme.colors.background.default,
   },
   header: {
     flexDirection: "row",
@@ -126,12 +126,12 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
+    borderBottomColor: Theme.colors.border,
   },
   title: {
     fontSize: 17,
     fontWeight: "700",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     flex: 1,
     textAlign: "center",
   },
@@ -180,22 +180,22 @@ const styles = StyleSheet.create({
   goodsId: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   description: {
     fontSize: 13,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 2,
   },
   client: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#374151",
+    color: Theme.colors.text.secondary,
     marginTop: 4,
   },
   phone: {
     fontSize: 12,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 1,
   },
   right: {
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
   },
   date: {
     fontSize: 12,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     flex: 1,
   },
   modeBadge: {
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 16,
   },
 });

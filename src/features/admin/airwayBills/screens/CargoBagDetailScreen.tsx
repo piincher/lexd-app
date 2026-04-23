@@ -7,6 +7,7 @@ import { View, Text, ScrollView, RefreshControl, TouchableOpacity, StyleSheet } 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Badge } from '@src/shared/ui/Badge';
 import { Button } from '@src/shared/ui/Button';
@@ -15,7 +16,7 @@ import { Card } from '@src/shared/ui/Card';
 import { useCargoBagDetailScreen } from './hooks/useCargoBagDetailScreen';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-  PACKED: { label: 'Emballé', color: '#6B7280' },
+  PACKED: { label: 'Emballé', color: Theme.colors.text.secondary },
   CHECKED_IN: { label: 'Enregistré', color: '#3B82F6' },
   LOADED: { label: 'Chargé', color: '#D4AF37' },
   IN_TRANSIT: { label: 'En transit', color: '#3B82F6' },

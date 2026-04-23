@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: Theme.neutral.grey500,
+    color: Theme.neutral[500],
   },
 });

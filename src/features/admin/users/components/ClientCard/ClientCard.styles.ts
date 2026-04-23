@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export const createStyles = (colors: any) => StyleSheet.create({
+export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   wrapper: {
     marginBottom: 12,
   },
@@ -22,7 +22,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     shadowOpacity: 0.04,
   },
   blockedCard: {
-    backgroundColor: "#FEF2F2",
+    backgroundColor: isDark ? "#7F1D1D" : "#FEF2F2",
   },
   accentBorder: {
     position: "absolute",
@@ -62,14 +62,14 @@ export const createStyles = (colors: any) => StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#1F2937",
+    color: colors.text.primary,
     flex: 1,
     marginRight: 8,
   },
   blockedBadge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FEE2E2",
+    backgroundColor: isDark ? "#7F1D1D" : "#FEE2E2",
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 20,
@@ -78,7 +78,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   blockedText: {
     fontSize: 11,
     fontWeight: "700",
-    color: "#EF4444",
+    color: isDark ? "#FCA5A5" : "#EF4444",
   },
   detailRow: {
     flexDirection: "row",
@@ -88,12 +88,12 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   phone: {
     fontSize: 14,
-    color: "#4B5563",
+    color: colors.text.secondary,
     fontWeight: "500",
   },
   email: {
     fontSize: 13,
-    color: "#6B7280",
+    color: colors.text.secondary,
     fontWeight: "400",
     flex: 1,
   },
@@ -105,9 +105,9 @@ export const createStyles = (colors: any) => StyleSheet.create({
     justifyContent: "center",
   },
   blockButton: {
-    backgroundColor: "#FEE2E2",
+    backgroundColor: isDark ? "#7F1D1D" : "#FEE2E2",
   },
   unblockButton: {
-    backgroundColor: "#DCFCE7",
+    backgroundColor: isDark ? "#14532D" : "#DCFCE7",
   },
 });

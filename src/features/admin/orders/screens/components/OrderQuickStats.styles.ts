@@ -31,17 +31,17 @@ export const styles = StyleSheet.create({
   statValue: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1A1A2E',
+    color: Theme.colors.text.primary,
     fontFamily: Fonts.bold,
   },
   statLabel: {
     fontSize: 11,
-    color: '#9E9E9E',
+    color: Theme.colors.text.secondary,
     fontFamily: Fonts.medium,
   },
   divider: {
     width: 1,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: Theme.colors.neutral[200],
     marginVertical: 4,
   },
 });

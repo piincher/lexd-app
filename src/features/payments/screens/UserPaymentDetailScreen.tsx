@@ -17,6 +17,7 @@ import { Text, Surface, Divider, Chip } from 'react-native-paper';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { format } from 'date-fns/format';
@@ -32,13 +33,17 @@ const METHOD_CONFIG: Record<string, { icon: string; color: string; label: string
   CARD: { icon: 'credit-card', color: '#6366F1', label: 'Carte Bancaire' },
 };
 
-const STATUS_CONFIG: Record<string, { color: string; bgColor: string; label: string }> = {
-  COMPLETED: { color: '#10B981', bgColor: '#F0FDF4', label: 'Complété' },
-  PENDING: { color: '#F59E0B', bgColor: '#FEF3C7', label: 'En attente' },
-  PROCESSING: { color: '#3B82F6', bgColor: '#DBEAFE', label: 'En cours' },
-  FAILED: { color: '#EF4444', bgColor: '#FEE2E2', label: 'Échoué' },
-  CANCELLED: { color: '#6B7280', bgColor: '#F3F4F6', label: 'Annulé' },
-  REFUNDED: { color: '#8B5CF6', bgColor: '#F5F3FF', label: 'Remboursé' },
+const getStatusConfig = (status: string, isDark: boolean) => {
+  const configs: Record<string, { color: string; lightBg: string; darkBg: string; label: string }> = {
+    COMPLETED: { color: '#10B981', lightBg: '#F0FDF4', darkBg: '#14532D', label: 'Complété' },
+    PENDING: { color: '#F59E0B', lightBg: '#FEF3C7', darkBg: '#78350F', label: 'En attente' },
+    PROCESSING: { color: '#3B82F6', lightBg: '#DBEAFE', darkBg: '#1E3A8A', label: 'En cours' },
+    FAILED: { color: '#EF4444', lightBg: '#FEE2E2', darkBg: '#7F1D1D', label: 'Échoué' },
+    CANCELLED: { color: Theme.colors.text.secondary, lightBg: '#F3F4F6', darkBg: '#374151', label: 'Annulé' },
+    REFUNDED: { color: '#8B5CF6', lightBg: '#F5F3FF', darkBg: '#4C1D95', label: 'Remboursé' },
+  };
+  const config = configs[status] || configs.PENDING;
+  return { ...config, bgColor: isDark ? config.darkBg : config.lightBg };
 };
 
 interface RouteParams {
@@ -230,7 +235,7 @@ const UserPaymentDetailScreen: React.FC = () => {
   );
 
   const methodConfig = METHOD_CONFIG[payment.paymentMethod] || { icon: 'cash', color: '#10B981', label: payment.paymentMethod };
-  const statusConfig = STATUS_CONFIG[payment.status] || STATUS_CONFIG.PENDING;
+  const statusConfig = getStatusConfig(payment.status, false);
   const receiptUrl = payment.receiptUrl || payment.metadata?.receiptUrl;
 
   const formatDate = (dateStr?: string | null) => {

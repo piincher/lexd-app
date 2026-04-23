@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { Theme } from "@src/constants/Theme";
 
 export const InfoSection: React.FC = () => {
    return (
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
    },
    infoText: {
       fontSize: 13,
-      color: "#9CA3AF",
+      color: Theme.colors.text.disabled,
       textAlign: "center",
       lineHeight: 18,
    },

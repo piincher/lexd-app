@@ -20,7 +20,7 @@ const MODE_CONFIG: Record<TransportMode, { icon: keyof typeof Ionicons.glyphMap;
   truck: { icon: 'car', label: 'Route', color: '#F59E0B' },
   air: { icon: 'airplane', label: 'Air', color: '#8B5CF6' },
   train: { icon: 'train', label: 'Train', color: '#10B981' },
-  warehouse: { icon: 'home', label: 'Entrepôt', color: '#6B7280' },
+  warehouse: { icon: 'home', label: 'Entrepôt', color: Theme.colors.text.secondary },
 };
 
 const SIZE_CONFIG = {

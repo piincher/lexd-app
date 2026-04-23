@@ -120,7 +120,7 @@ export const ContainerProfitCard: React.FC<ContainerProfitCardProps> = ({ cbmPro
           <Row
             label={`CBM facturé aux clients (${dl.clientTotalCBM.toFixed(2)} CBM)`}
             value={fmt(dl.clientTotalRevenue)}
-            valueColor="#1F2937"
+            valueColor={Theme.colors.text.primary}
           />
           <Row
             label="Coût estimé (temps réel)"
@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   marginBadge: {
     borderRadius: 20,
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   },
   statusDate: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     fontWeight: '500',
   },
   profitBox: {
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   },
   profitLabel: {
     fontSize: 12,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     marginBottom: 4,
     fontWeight: '600',
     textTransform: 'uppercase',
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
   },
   profitSub: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     marginTop: 6,
     textAlign: 'center',
   },
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
   ledgerTitle: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginTop: 4,
@@ -310,12 +310,12 @@ const styles = StyleSheet.create({
   rowLabel: {
     flex: 1,
     fontSize: 13,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     flexShrink: 1,
   },
   rowLabelHighlight: {
     fontWeight: '600',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
   },
   rowValue: {
     fontSize: 13,

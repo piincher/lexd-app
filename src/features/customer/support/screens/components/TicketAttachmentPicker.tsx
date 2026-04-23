@@ -7,6 +7,7 @@ import React from 'react';
 import { View, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { Text, IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   image: { width: '100%', height: '100%' },
-  remove: { position: 'absolute', top: -8, right: -8, margin: 0, backgroundColor: '#fff', borderRadius: 10 },
+  remove: { position: 'absolute', top: -8, right: -8, margin: 0, backgroundColor: Theme.colors.background.card, borderRadius: 10 },
   addBtn: {
     width: 80,
     height: 80,

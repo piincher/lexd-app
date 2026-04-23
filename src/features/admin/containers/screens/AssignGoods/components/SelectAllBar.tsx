@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: Theme.colors.background.paper,
     borderBottomWidth: 1,
     borderBottomColor: '#E9ECEF',
   },

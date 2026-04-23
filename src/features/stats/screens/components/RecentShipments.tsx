@@ -20,17 +20,17 @@ export const RecentShipments: React.FC<RecentShipmentsProps> = ({ shipments }) =
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const StatusBadge = ({ status }: { status: string }) => {
-    let badgeColor = "#9CA3AF";
+    let badgeColor = colors.text.muted;
     let displayText = status;
 
     if (status === "Active") {
-      badgeColor = "#F59E0B";
+      badgeColor = colors.status.warning;
       displayText = "Chargé";
     } else if (status === "In Transit") {
-      badgeColor = "#22C55E";
+      badgeColor = colors.status.success;
       displayText = "En Transit";
     } else if (status === "Delivered") {
-      badgeColor = "#EF4444";
+      badgeColor = colors.status.error;
       displayText = "Livré";
     }
 

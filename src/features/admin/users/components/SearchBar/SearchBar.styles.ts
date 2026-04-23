@@ -7,17 +7,17 @@ export const styles = StyleSheet.create({
     paddingVertical: 16,
     backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#E2E8F0",
+    borderBottomColor: Theme.colors.neutral[200],
   },
   container: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F1F5F9",
+    backgroundColor: Theme.colors.background.paper,
     borderRadius: 14,
     paddingHorizontal: 16,
     height: 52,
     borderWidth: 1,
-    borderColor: "#E2E8F0",
+    borderColor: Theme.colors.neutral[200],
   },
   icon: {
     marginRight: 12,
@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 15,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     fontWeight: "500",
   },
   clearButton: {
@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     width: 22,
     height: 22,
     borderRadius: 11,
-    backgroundColor: "#9CA3AF",
+    backgroundColor: Theme.colors.text.disabled,
     alignItems: "center",
     justifyContent: "center",
   },

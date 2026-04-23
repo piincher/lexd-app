@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   callButton: {
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 8,
   },
   callButtonLabel: {

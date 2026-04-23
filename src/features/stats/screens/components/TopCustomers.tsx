@@ -19,7 +19,7 @@ interface TopCustomersProps {
   isLoading?: boolean;
 }
 
-const RANK_COLORS = ['#F59E0B', '#9CA3AF', '#CD7F32', '#6B7280', '#6B7280'];
+const RANK_COLORS = [Theme.colors.status.warning, Theme.colors.text.muted, '#CD7F32', Theme.colors.text.secondary, Theme.colors.text.secondary];
 
 const formatAmount = (amount: number | undefined | null): string => {
   const num = Number(amount) || 0;
@@ -30,7 +30,7 @@ const formatAmount = (amount: number | undefined | null): string => {
 
 const CustomerRow: React.FC<{ customer: TopCustomer; rank: number }> = ({ customer, rank }) => {
   const { colors } = useAppTheme();
-  const rankColor = RANK_COLORS[rank] || '#6B7280';
+  const rankColor = RANK_COLORS[rank] || Theme.colors.text.secondary;
   const isTopThree = rank < 3;
 
   const styles = useMemo(

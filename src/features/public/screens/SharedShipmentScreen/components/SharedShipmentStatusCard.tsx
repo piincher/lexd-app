@@ -32,14 +32,14 @@ const STATUS_CONFIG: Record<string, { color: string; icon: string; label: string
   LOADED: { color: '#0EA5E9', icon: 'ferry', label: 'Chargé' },
   ARRIVED: { color: '#10B981', icon: 'map-marker-check', label: 'Arrivé' },
   DISCHARGED: { color: '#10B981', icon: 'download', label: 'Déchargé' },
-  Pending: { color: '#6B7280', icon: 'clock-outline', label: 'En Attente' },
+  Pending: { color: Theme.colors.text.secondary, icon: 'clock-outline', label: 'En Attente' },
   Active: { color: '#F59E0B', icon: 'progress-check', label: 'Actif' },
   Delivered: { color: '#059669', icon: 'check-circle', label: 'Livré' },
   Cancelled: { color: '#EF4444', icon: 'close-circle', label: 'Annulé' },
 };
 
 const getStatusConfig = (status: string) => {
-  return STATUS_CONFIG[status] || { color: '#6B7280', icon: 'help-circle', label: status };
+  return STATUS_CONFIG[status] || { color: Theme.colors.text.secondary, icon: 'help-circle', label: status };
 };
 
 export const SharedShipmentStatusCard: React.FC<Props> = ({ reference, status, type }) => {

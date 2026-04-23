@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     padding: Theme.spacing.md,
     backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral.grey200,
+    borderBottomColor: Theme.neutral[200],
   },
   unread: {
     backgroundColor: Theme.colors.primary.light + '20',
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Theme.neutral.grey100,
+    backgroundColor: Theme.neutral[100],
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Theme.spacing.md,
@@ -103,21 +103,21 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '500',
-    color: Theme.neutral.grey800,
+    color: Theme.neutral[800],
     marginBottom: Theme.spacing.xs,
   },
   unreadText: {
     fontWeight: '700',
-    color: Theme.neutral.grey900,
+    color: Theme.neutral[900],
   },
   message: {
     fontSize: 14,
-    color: Theme.neutral.grey600,
+    color: Theme.neutral[600],
     marginBottom: Theme.spacing.xs,
   },
   time: {
     fontSize: 12,
-    color: Theme.neutral.grey400,
+    color: Theme.neutral[400],
   },
   unreadDot: {
     width: 8,

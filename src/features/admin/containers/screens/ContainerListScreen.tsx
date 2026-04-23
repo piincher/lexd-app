@@ -349,7 +349,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, gradient }) => 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F7FC',
+    backgroundColor: Theme.colors.background.default,
   },
   header: {
     paddingHorizontal: Theme.spacing.xl,

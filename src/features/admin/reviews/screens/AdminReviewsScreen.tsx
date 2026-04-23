@@ -118,7 +118,7 @@ const ReviewCard = ({ review, onRespond, isResponding }: ReviewCardProps) => {
       {/* Client info */}
       {user && (
         <View style={styles.clientRow}>
-          <Ionicons name="person-outline" size={16} color="#6B7280" />
+          <Ionicons name="person-outline" size={16} color={Theme.colors.text.secondary} />
           <Text style={styles.clientName}>
             {user.firstName} {user.lastName}
           </Text>
@@ -150,7 +150,7 @@ const ReviewCard = ({ review, onRespond, isResponding }: ReviewCardProps) => {
 
       {/* Date */}
       <View style={styles.dateRow}>
-        <Ionicons name="calendar-outline" size={14} color="#6B7280" />
+        <Ionicons name="calendar-outline" size={14} color={Theme.colors.text.secondary} />
         <Text style={styles.dateText}>{formatDate(review.createdAt)}</Text>
       </View>
 
@@ -182,7 +182,7 @@ const ReviewCard = ({ review, onRespond, isResponding }: ReviewCardProps) => {
               <TextInput
                 style={styles.responseInput}
                 placeholder="Votre réponse..."
-                placeholderTextColor="#9CA3AF"
+                placeholderTextColor={Theme.colors.text.muted}
                 value={responseText}
                 onChangeText={setResponseText}
                 multiline
@@ -302,7 +302,7 @@ export default function AdminReviewsScreen({
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
           >
-            <Ionicons name="arrow-back" size={24} color="#1F2937" />
+            <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitle}>Avis Clients</Text>
@@ -313,7 +313,7 @@ export default function AdminReviewsScreen({
           <NotificationBell
             onPress={() => navigation.navigate('Notifications' as never)}
             size={24}
-            color="#1F2937"
+            color={Theme.colors.text.primary}
           />
         </View>
       </View>
@@ -384,7 +384,7 @@ export default function AdminReviewsScreen({
           onRefresh={refetch}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <MaterialIcons name="rate-review" size={64} color="#D1D5DB" />
+              <MaterialIcons name="rate-review" size={64} color={Theme.neutral[300]} />
               <Text style={styles.emptyTitle}>Aucun avis trouvé</Text>
               <Text style={styles.emptySubtitle}>
                 {activeFilter !== "all"
@@ -478,13 +478,13 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     marginBottom: 2,
   },
   headerSubtitle: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* Stats card */
@@ -512,12 +512,12 @@ const styles = StyleSheet.create({
   statsAverage: {
     fontSize: 32,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   statsTotal: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 4,
   },
   statsRight: {
@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
   distributionStar: {
     fontSize: 12,
     fontFamily: Fonts.meduim,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     width: 12,
     textAlign: "right",
   },
@@ -551,7 +551,7 @@ const styles = StyleSheet.create({
   distributionCount: {
     fontSize: 12,
     fontFamily: Fonts.meduim,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     width: 24,
     textAlign: "right",
   },
@@ -589,7 +589,7 @@ const styles = StyleSheet.create({
   filterChipText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
   filterChipTextActive: {
     color: "#FFFFFF",
@@ -606,7 +606,7 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 15,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* List */
@@ -635,13 +635,13 @@ const styles = StyleSheet.create({
   clientName: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     flex: 1,
   },
   clientPhone: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
   cardHeader: {
     flexDirection: "row",
@@ -652,7 +652,7 @@ const styles = StyleSheet.create({
   goodsId: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     flexShrink: 1,
     marginRight: 8,
   },
@@ -683,7 +683,7 @@ const styles = StyleSheet.create({
   commentText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
     marginTop: 8,
     lineHeight: 20,
   },
@@ -698,7 +698,7 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* Admin response (existing) */
@@ -717,13 +717,13 @@ const styles = StyleSheet.create({
   responseText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#374151",
+    color: Theme.colors.text.secondary,
     lineHeight: 20,
   },
   responseDate: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 6,
   },
 
@@ -757,7 +757,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     minHeight: 80,
     textAlignVertical: "top",
   },
@@ -776,7 +776,7 @@ const styles = StyleSheet.create({
   cancelButtonText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
   submitButton: {
     paddingVertical: 8,
@@ -804,14 +804,14 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: "#374151",
+    color: Theme.colors.text.secondary,
     marginTop: 16,
     marginBottom: 6,
   },
   emptySubtitle: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     textAlign: "center",
     lineHeight: 20,
   },
@@ -825,7 +825,7 @@ const styles = StyleSheet.create({
   resetFilterText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
 
   /* Pagination */
@@ -852,6 +852,6 @@ const styles = StyleSheet.create({
   paginationText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
 });

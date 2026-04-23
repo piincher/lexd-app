@@ -570,7 +570,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: Theme.colors.background.card,
   },
   header: {
     flexDirection: "row",
@@ -673,7 +673,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   modalContent: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: Theme.colors.background.card,
     borderTopLeftRadius: Theme.radius["2xl"],
     borderTopRightRadius: Theme.radius["2xl"],
     maxHeight: "70%",

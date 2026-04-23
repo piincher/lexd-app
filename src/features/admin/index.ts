@@ -32,5 +32,8 @@ export * from "./search";
 // Announcements
 export * from "./announcements";
 
+// Support
+export * from "./support";
+
 // All Admin screens have been migrated to feature-based architecture.
 // Import from: @src/features/admin

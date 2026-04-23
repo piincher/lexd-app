@@ -231,7 +231,11 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({
     } else if (notification.data?.containerId) {
       navigation.navigate('ContainerTracking', { containerId: notification.data.containerId });
     } else if (notification.data?.ticketId) {
-      navigation.navigate('TicketDetail', { ticketId: notification.data.ticketId });
+      if (notification.data.screen === 'AdminTicketDetail') {
+        navigation.navigate('AdminTicketDetail', { ticketId: notification.data.ticketId });
+      } else {
+        navigation.navigate('TicketDetail', { ticketId: notification.data.ticketId });
+      }
     }
   };
 

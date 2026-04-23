@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { styles } from './OrderQuickStats.styles';
 
 interface OrderQuickStatsProps {
@@ -35,6 +36,7 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
   cbm,
   shippingMode,
 }) => {
+  const { colors, isDark } = useAppTheme();
   // Parse values safely to handle v1 API string responses
   const parsedQuantity = quantity !== undefined && quantity !== '' 
     ? parseInt(String(quantity), 10) || 0 
@@ -54,24 +56,24 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
         icon="package-variant-closed"
         value={String(parsedQuantity)}
         label="Colis"
-        color="#1976D2"
-        bgColor="#E3F2FD"
+        color={isDark ? '#93C5FD' : '#1976D2'}
+        bgColor={isDark ? '#1E3A8A' : '#E3F2FD'}
       />
       <View style={styles.divider} />
       <StatItem
         icon="weight"
         value={parsedWeight ? `${parsedWeight} kg` : '--'}
         label="Poids"
-        color="#E65100"
-        bgColor="#FFF3E0"
+        color={isDark ? '#FDBA74' : '#E65100'}
+        bgColor={isDark ? '#7C2D12' : '#FFF3E0'}
       />
       <View style={styles.divider} />
       <StatItem
         icon="cube-outline"
         value={parsedCBM ? `${parsedCBM} m³` : '--'}
         label="CBM (m³)"
-        color="#2E7D32"
-        bgColor="#E8F5E9"
+        color={isDark ? '#86EFAC' : '#2E7D32'}
+        bgColor={isDark ? '#14532D' : '#E8F5E9'}
       />
       {shippingMode === 'sea' && (
         <>
@@ -80,8 +82,8 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
             icon="ferry"
             value={shippingMode}
             label="Mode"
-            color="#00796B"
-            bgColor="#E0F2F1"
+            color={isDark ? '#6FE7DE' : '#00796B'}
+            bgColor={isDark ? '#134E4A' : '#E0F2F1'}
           />
         </>
       )}

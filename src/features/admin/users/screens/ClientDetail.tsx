@@ -15,8 +15,10 @@ import { ProfileCard } from "../components/ProfileCard";
 import { StatGrid } from "../components/StatGrid";
 import { StatusChart } from "../components/StatusChart";
 import { RecentOrders } from "../components/RecentOrders";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 export default function ClientDetail({ route }: RootStackScreenProps<"ClientDetails">) {
+  const { colors } = useAppTheme();
   const { id } = route.params;
   const { data: user } = useGetUser(id);
   const { data: orders, isLoading, isError, refetch } = useGetOrderOfUserById(id);
@@ -29,7 +31,7 @@ export default function ClientDetail({ route }: RootStackScreenProps<"ClientDeta
   if (isError) return <ErrorState onRetry={refetch} />;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -62,7 +64,6 @@ export default function ClientDetail({ route }: RootStackScreenProps<"ClientDeta
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f8f9fa",
   },
   scrollContainer: {
     padding: 24,

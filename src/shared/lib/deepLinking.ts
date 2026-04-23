@@ -34,6 +34,8 @@ const AUTH_REQUIRED_SCREENS = new Set<string>([
   "TicketDetail",
   "TicketList",
   "CreateTicket",
+  "AdminTicketDetail",
+  "AdminTicketList",
   "Notifications",
   "NotificationDetail",
   "NotificationSettings",
@@ -98,6 +100,8 @@ const AUTH_REQUIRED_SCREENS = new Set<string>([
   "OrderPaymentHistory",
   "PaymentScreen",
   "WhatsAppRequests",
+  "AdminTicketList",
+  "AdminTicketDetail",
   "CampaignList",
   "CreateCampaign",
   "CreateAnnouncement",
@@ -111,9 +115,12 @@ export const isAuthRequiredScreen = (screenName: string): boolean => {
   return AUTH_REQUIRED_SCREENS.has(screenName);
 };
 
-// Deep link path config — cast to any to avoid React Navigation's overly
-// strict PathConfigMap typing with complex nested structures.
-const screensConfig: any = {
+type ScreensConfig = NonNullable<LinkingOptions<RootStackParamList>["config"]>["screens"];
+
+// Deep link path config. The cast below keeps compatibility with legacy route
+// names that are still registered in App.tsx but not fully modeled in the root
+// navigation type yet.
+const screensConfig = {
   HomeTab: {
     screens: {
       Home: "home",
@@ -136,6 +143,8 @@ const screensConfig: any = {
   TicketDetail: "ticket/:ticketId",
   TicketList: "support",
   CreateTicket: "support/new",
+  AdminTicketList: "admin/support",
+  AdminTicketDetail: "admin/support/:ticketId",
   Notifications: "notifications",
   NotificationDetail: "notifications/detail",
   NotificationSettings: "notifications/settings",
@@ -205,7 +214,7 @@ const screensConfig: any = {
   EditOrder: "admin/order/:id/edit",
   VoidGoodsList: "admin/void-goods",
   VoidGoods: "admin/void-goods/:id",
-};
+} as ScreensConfig;
 
 /** React Navigation linking configuration */
 export const linking: LinkingOptions<RootStackParamList> = {

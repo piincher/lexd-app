@@ -64,7 +64,7 @@ export const TopCustomersChart: React.FC<TopCustomersChartProps> = ({
         <View style={styles.header}>
           <Text style={styles.title}>Top Clients</Text>
           <View style={styles.summaryBadge}>
-            <MaterialCommunityIcons name="account-group" size={14} color="#6B7280" />
+            <MaterialCommunityIcons name="account-group" size={14} color={Theme.colors.text.secondary} />
             <Text style={styles.summaryText}>{customers.length} clients</Text>
           </View>
         </View>
@@ -112,13 +112,13 @@ export const TopCustomersChart: React.FC<TopCustomersChartProps> = ({
                   {/* Stats Row */}
                   <View style={styles.statsRow}>
                     <View style={styles.stat}>
-                      <MaterialCommunityIcons name="package-variant" size={12} color="#6B7280" />
+                      <MaterialCommunityIcons name="package-variant" size={12} color={Theme.colors.text.secondary} />
                       <Text style={styles.statText}>
                         {customer.goodsStats.totalGoods} march.
                       </Text>
                     </View>
                     <View style={styles.stat}>
-                      <MaterialCommunityIcons name="swap-horizontal" size={12} color="#6B7280" />
+                      <MaterialCommunityIcons name="swap-horizontal" size={12} color={Theme.colors.text.secondary} />
                       <Text style={styles.statText}>
                         {customer.transactionCount} trans.
                       </Text>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   summaryBadge: {
     flexDirection: 'row',
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   },
   summaryText: {
     fontSize: 12,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   list: {
     maxHeight: 320,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   rankText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#9CA3AF',
+    color: Theme.colors.text.disabled,
     marginBottom: 4,
   },
   infoContainer: {
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   customerName: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
     flex: 1,
   },
   returningBadge: {
@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
   },
   customerPhone: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     marginTop: 2,
   },
   statsRow: {
@@ -251,14 +251,14 @@ const styles = StyleSheet.create({
   },
   statText: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   barContainer: {
     marginTop: 8,
   },
   barBackground: {
     height: 6,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: Theme.colors.neutral[200],
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   revenueText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
     marginTop: 4,
     textAlign: 'right',
   },

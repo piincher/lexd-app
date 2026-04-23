@@ -38,7 +38,7 @@ export const SearchFilterPanel: React.FC<SearchFilterPanelProps> = ({
       <View style={styles.header}>
         <Text style={styles.title}>Filtres</Text>
         <TouchableOpacity onPress={onClose}>
-          <Ionicons name="close" size={24} color={Theme.neutral.grey600} />
+          <Ionicons name="close" size={24} color={Theme.neutral[600]} />
         </TouchableOpacity>
       </View>
 
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral.grey900,
+    color: Theme.neutral[900],
   },
   section: {
     marginBottom: Theme.spacing.lg,
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.neutral.grey800,
+    color: Theme.neutral[800],
     marginBottom: Theme.spacing.md,
   },
   categories: {
@@ -139,14 +139,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.sm,
     borderRadius: 20,
-    backgroundColor: Theme.neutral.grey100,
+    backgroundColor: Theme.neutral[100],
   },
   activeCategory: {
     backgroundColor: Theme.colors.primary.main,
   },
   categoryText: {
     fontSize: 14,
-    color: Theme.neutral.grey600,
+    color: Theme.neutral[600],
   },
   activeCategoryText: {
     color: Theme.neutral.white,
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
   },
   priceSeparator: {
     fontSize: 16,
-    color: Theme.neutral.grey600,
+    color: Theme.neutral[600],
   },
   actions: {
     flexDirection: 'row',

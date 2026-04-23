@@ -27,12 +27,12 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, loading, te
   return (
     <Pressable onPress={handlePress} disabled={loading} style={({ pressed }) => [styles.container, pressed && !loading && styles.pressed]}>
       <LinearGradient
-        colors={loading ? ['#9CA3AF', '#9CA3AF'] : Theme.gradients.primary.slice(0, 2) as [string, string]}
+        colors={loading ? [Theme.colors.text.muted, Theme.colors.text.muted] : Theme.gradients.primary.slice(0, 2) as [string, string]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.gradient}
       >
-        {loading ? <ActivityIndicator size="small" color="#FFF" /> : <Text style={styles.text}>{text}</Text>}
+        {loading ? <ActivityIndicator size="small" color={Theme.colors.background.card} /> : <Text style={styles.text}>{text}</Text>}
       </LinearGradient>
     </Pressable>
   );
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   container: { borderRadius: 16, overflow: 'hidden', marginTop: 8 },
   pressed: { opacity: 0.9, transform: [{ scale: 0.98 }] },
   gradient: { alignItems: 'center', justifyContent: 'center', paddingVertical: 16 },
-  text: { fontSize: 16, fontFamily: Fonts.bold, color: '#FFF', letterSpacing: 0.3 },
+  text: { fontSize: 16, fontFamily: Fonts.bold, color: Theme.colors.background.card, letterSpacing: 0.3 },
 });
 
 export default SubmitButton;

@@ -197,7 +197,7 @@ export default function IssueCertificateScreen({
                   onPress={() => handleCopyCode(issuedCertificate.certificateId, "Code")}
                   style={styles.copyButton}
                 >
-                  <Ionicons name="copy-outline" size={18} color="#6B7280" />
+                  <Ionicons name="copy-outline" size={18} color={Theme.colors.text.secondary} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -217,7 +217,7 @@ export default function IssueCertificateScreen({
                   onPress={() => handleCopyCode(issuedCertificate.verificationCode, "Code de vérification")}
                   style={styles.copyButton}
                 >
-                  <Ionicons name="copy-outline" size={18} color="#6B7280" />
+                  <Ionicons name="copy-outline" size={18} color={Theme.colors.text.secondary} />
                 </TouchableOpacity>
               </View>
             </View>
@@ -240,7 +240,7 @@ export default function IssueCertificateScreen({
             </TouchableOpacity>
           ) : (
             <View style={styles.generatingContainer}>
-              <ActivityIndicator size="small" color="#9CA3AF" />
+              <ActivityIndicator size="small" color={Theme.colors.text.muted} />
               <Text style={styles.generatingText}>PDF en cours de génération...</Text>
             </View>
           )}
@@ -294,7 +294,7 @@ export default function IssueCertificateScreen({
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color="#1F2937" />
+            <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
           </TouchableOpacity>
           <View>
             <Text style={styles.headerTitle}>Émettre un certificat</Text>
@@ -307,11 +307,11 @@ export default function IssueCertificateScreen({
         {/* Search Bar */}
         <View style={styles.searchContainer}>
           <View style={styles.searchInputContainer}>
-            <Ionicons name="search" size={20} color="#9CA3AF" style={styles.searchIcon} />
+            <Ionicons name="search" size={20} color={Theme.colors.text.muted} style={styles.searchIcon} />
             <TextInput
               style={styles.searchInput}
               placeholder="Rechercher par nom ou téléphone..."
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={Theme.colors.text.muted}
               value={searchQuery}
               onChangeText={setSearchQuery}
               autoCapitalize="none"
@@ -319,7 +319,7 @@ export default function IssueCertificateScreen({
             />
             {searchQuery ? (
               <TouchableOpacity onPress={() => setSearchQuery("")} style={styles.clearButton}>
-                <Ionicons name="close-circle" size={20} color="#9CA3AF" />
+                <Ionicons name="close-circle" size={20} color={Theme.colors.text.muted} />
               </TouchableOpacity>
             ) : null}
           </View>
@@ -342,7 +342,7 @@ export default function IssueCertificateScreen({
               showsVerticalScrollIndicator={false}
               ListEmptyComponent={
                 <View style={styles.emptyContainer}>
-                  <MaterialIcons name="person-search" size={48} color="#D1D5DB" />
+                  <MaterialIcons name="person-search" size={48} color={Theme.neutral[300]} />
                   <Text style={styles.emptyText}>
                     {searchQuery.length < 2
                       ? "Tapez au moins 2 caractères pour rechercher"
@@ -367,7 +367,7 @@ export default function IssueCertificateScreen({
             <TextInput
               style={styles.noteInput}
               placeholder="Note personnalisée (optionnel)"
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={Theme.colors.text.muted}
               value={customNote}
               onChangeText={setCustomNote}
               maxLength={500}
@@ -419,11 +419,11 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: "700",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   headerSubtitle: {
     fontSize: 13,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 2,
   },
   searchContainer: {
@@ -447,7 +447,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     paddingVertical: 0,
   },
   clearButton: {
@@ -486,7 +486,7 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   certBadge: {
     backgroundColor: "#FEF3C7",
@@ -502,7 +502,7 @@ const styles = StyleSheet.create({
   },
   userPhone: {
     fontSize: 14,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginBottom: 2,
   },
   userCBM: {
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 14,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
   emptyContainer: {
     justifyContent: "center",
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 15,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     textAlign: "center",
   },
   bottomPanel: {
@@ -549,7 +549,7 @@ const styles = StyleSheet.create({
   selectedName: {
     fontSize: 15,
     fontWeight: "600",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   noteInput: {
     backgroundColor: Theme.colors.neutral[100],
@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 14,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     minHeight: 48,
     textAlignVertical: "top",
   },
@@ -598,7 +598,7 @@ const styles = StyleSheet.create({
   successTitle: {
     fontSize: 22,
     fontWeight: "700",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     marginBottom: 24,
     textAlign: "center",
   },
@@ -624,12 +624,12 @@ const styles = StyleSheet.create({
   },
   successCardLabel: {
     fontSize: 14,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     fontWeight: "500",
   },
   successCardValue: {
     fontSize: 14,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     fontWeight: "600",
     flexShrink: 1,
     textAlign: "right",
@@ -684,7 +684,7 @@ const styles = StyleSheet.create({
   },
   generatingText: {
     fontSize: 14,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     fontStyle: "italic",
   },
   whatsappButton: {
@@ -726,7 +726,7 @@ const styles = StyleSheet.create({
   },
   backTextButtonText: {
     fontSize: 15,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     fontWeight: "500",
   },
 });

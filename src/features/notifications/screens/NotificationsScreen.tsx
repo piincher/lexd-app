@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useCallback, useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
 
@@ -87,41 +87,6 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
     navigation.navigate('NotificationDetail', { notification });
   }, [navigation]);
 
-  const navigateByType = (notification: InAppNotification) => {
-    const { type, data: notifData } = notification;
-    const effectiveType = notifData?.type === 'CERTIFICATE_ISSUED' ? 'CERTIFICATE_ISSUED' : type;
-
-    switch (effectiveType) {
-      case 'ORDER_UPDATE':
-        if (notifData?.orderId) navigation.navigate('OrderDetail', { id: notifData.orderId });
-        break;
-      case 'CONTAINER_STATUS':
-        if (notifData?.containerId) navigation.navigate('ContainerTracking', { containerId: notifData.containerId });
-        break;
-      case 'TICKET_REPLY':
-        if (notifData?.ticketId) navigation.navigate('TicketDetail', { ticketId: notifData.ticketId });
-        break;
-      case 'PAYMENT':
-        if (notifData?.paymentId) {
-          navigation.navigate('MyPaymentHistory');
-        }
-        break;
-      case 'CERTIFICATE_ISSUED':
-        if (notifData?.certificateId && notifData?.verificationCode && notifData?.issuedAt) {
-          navigation.navigate('CertificateDetail', {
-            certificateId: notifData.certificateId,
-            verificationCode: notifData.verificationCode,
-            issuedAt: notifData.issuedAt,
-            certificateUrl: notifData.certificateUrl || null,
-            certificateMongoId: notifData.certificateMongoId || notifData.certificateId,
-          });
-        } else {
-          navigation.navigate('Profile');
-        }
-        break;
-    }
-  };
-
   const handleLoadMore = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
@@ -146,7 +111,7 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
 
       <NotificationList
         notifications={notifications}
-        isLoading={isLoading && !data?.pages?.length}
+        isLoading={isLoading && notifications.length === 0}
         isFetching={isFetching}
         isError={isError}
         isFetchingNextPage={isFetchingNextPage}

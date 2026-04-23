@@ -64,14 +64,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.sm,
     borderRadius: 20,
-    backgroundColor: Theme.neutral.grey100,
+    backgroundColor: Theme.neutral[100],
   },
   activeFilter: {
     backgroundColor: Theme.colors.primary.main,
   },
   filterText: {
     fontSize: 14,
-    color: Theme.neutral.grey600,
+    color: Theme.neutral[600],
   },
   activeFilterText: {
     color: Theme.neutral.white,

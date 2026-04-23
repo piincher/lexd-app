@@ -6,6 +6,7 @@
 import { CommonActions } from "@react-navigation/native";
 import type { NavigationContainerRef } from "@react-navigation/native";
 import { NotificationData, NotificationType } from "../services/notificationService";
+import type { RootStackParamList } from "@src/navigations/type";
 
 // ============================================================================
 // Types
@@ -18,14 +19,14 @@ export interface NotificationHandlersMap {
 }
 
 // Navigation ref to be set from the root navigator
-let navigationRef: NavigationContainerRef<any> | null = null;
+let navigationRef: NavigationContainerRef<RootStackParamList> | null = null;
 
 /**
  * Set the navigation reference for deep linking
  * @param ref Navigation container reference
  */
 export const setNotificationNavigationRef = (
-  ref: NavigationContainerRef<any> | null
+  ref: NavigationContainerRef<RootStackParamList> | null
 ): void => {
   navigationRef = ref;
 };
@@ -34,7 +35,7 @@ export const setNotificationNavigationRef = (
  * Get the current navigation reference
  * @returns Navigation container reference
  */
-export const getNavigationRef = (): NavigationContainerRef<any> | null => {
+export const getNavigationRef = (): NavigationContainerRef<RootStackParamList> | null => {
   return navigationRef;
 };
 
@@ -43,9 +44,9 @@ export const getNavigationRef = (): NavigationContainerRef<any> | null => {
  * @param screenName Screen name
  * @param params Screen params
  */
-const navigate = (screenName: string, params?: Record<string, any>): void => {
+const navigate = (screenName: string, params?: Record<string, unknown>): void => {
   if (navigationRef?.isReady()) {
-    navigationRef.navigate(screenName as never, params as never);
+    navigationRef.dispatch(CommonActions.navigate({ name: screenName, params }));
   } else {
     console.warn(
       "[NotificationHandlers] Navigation not ready, queuing navigation to:",
@@ -54,41 +55,7 @@ const navigate = (screenName: string, params?: Record<string, any>): void => {
     // Queue the navigation for when the navigator is ready
     setTimeout(() => {
       if (navigationRef?.isReady()) {
-        navigationRef.navigate(screenName as never, params as never);
-      }
-    }, 1000);
-  }
-};
-
-/**
- * Reset navigation stack and navigate to a screen
- * Useful for authentication flows or deep linking
- * @param screenName Screen name
- * @param params Screen params
- */
-const resetAndNavigate = (
-  screenName: string,
-  params?: Record<string, any>
-): void => {
-  if (navigationRef?.isReady()) {
-    navigationRef.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: screenName, params }],
-      })
-    );
-  } else {
-    console.warn(
-      "[NotificationHandlers] Navigation not ready for reset navigation"
-    );
-    setTimeout(() => {
-      if (navigationRef?.isReady()) {
-        navigationRef.dispatch(
-          CommonActions.reset({
-            index: 0,
-            routes: [{ name: screenName, params }],
-          })
-        );
+        navigationRef.dispatch(CommonActions.navigate({ name: screenName, params }));
       }
     }, 1000);
   }
@@ -157,10 +124,21 @@ const handleTicketReply: NotificationHandler = (data) => {
   console.log("[NotificationHandlers] Handling TICKET_REPLY:", data);
 
   if (data.ticketId) {
-    navigate("TicketDetail", { ticketId: data.ticketId });
+    const screen = data.screen === "AdminTicketDetail" ? "AdminTicketDetail" : "TicketDetail";
+    navigate(screen, { ticketId: data.ticketId });
   } else {
     // Fallback to ticket list
     navigate("TicketList");
+  }
+};
+
+const handleTicketCreated: NotificationHandler = (data) => {
+  console.log("[NotificationHandlers] Handling TICKET_CREATED:", data);
+
+  if (data.ticketId) {
+    navigate("AdminTicketDetail", { ticketId: data.ticketId });
+  } else {
+    navigate("AdminTicketList");
   }
 };
 
@@ -170,6 +148,11 @@ const handleTicketReply: NotificationHandler = (data) => {
  */
 const handleInvoice: NotificationHandler = (data) => {
   console.log("[NotificationHandlers] INVOICE feature removed:", data);
+};
+
+const handleCertificateIssued: NotificationHandler = (data) => {
+  console.log("[NotificationHandlers] Handling CERTIFICATE_ISSUED:", data);
+  navigate("Profile");
 };
 
 /**
@@ -221,7 +204,9 @@ export const notificationHandlers: Record<NotificationType, NotificationHandler>
   PAYMENT: handlePayment,
   CONTAINER_STATUS: handleContainerStatus,
   TICKET_REPLY: handleTicketReply,
+  TICKET_CREATED: handleTicketCreated,
   INVOICE: handleInvoice,
+  CERTIFICATE_ISSUED: handleCertificateIssued,
   GENERAL: handleGeneral,
   SYSTEM: handleSystem,
 };
@@ -244,8 +229,8 @@ export const processNotification = (
       return true;
     } catch (error) {
       console.error(
-        `[NotificationHandlers] Error processing notification type ${type}:",
-        error`
+        `[NotificationHandlers] Error processing notification type ${type}:`,
+        error
       );
       // Fallback to general handler
       handleGeneral(data);
@@ -273,7 +258,7 @@ export const processNotificationData = (data: NotificationData): boolean => {
   // Fallback: if no type but screen is specified, navigate directly
   if (data.screen && typeof data.screen === "string") {
     console.log("[NotificationHandlers] Navigating via screen field:", data.screen);
-    navigate(data.screen, data.params || {});
+    navigate(data.screen, isRecord(data.params) ? data.params : {});
     return true;
   }
 
@@ -287,6 +272,9 @@ export const processNotificationData = (data: NotificationData): boolean => {
 // ============================================================================
 
 const customHandlers: Map<string, NotificationHandler> = new Map();
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
 
 /**
  * Register a custom notification handler

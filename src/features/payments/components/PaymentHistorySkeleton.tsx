@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
     borderTopWidth: 1,
-    borderTopColor: '#E5E7EB',
+    borderTopColor: Theme.neutral[200],
     paddingTop: 12,
   },
 });

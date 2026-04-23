@@ -69,7 +69,6 @@ export const OrderDetailWithGoodsScreen: React.FC = () => {
           <Button
             title="← Retour à la vue classique"
             onPress={() => navigation.navigate('ActiveOrderDetails', { id: orderId })}
-            color="#666"
           />
         </View>
       </View>

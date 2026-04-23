@@ -40,7 +40,7 @@ const StarRating: React.FC<{ rating: number; size?: number }> = ({ rating, size 
           key={star}
           name={star <= rating ? "star" : "star-outline"}
           size={size}
-          color={star <= rating ? "#d4a843" : "#D1D5DB"}
+          color={star <= rating ? "#d4a843" : Theme.colors.text.disabled}
         />
       ))}
     </View>
@@ -81,7 +81,7 @@ const ReviewCard = ({ review }: ReviewCardProps) => {
 
       {/* Date */}
       <View style={styles.dateRow}>
-        <Ionicons name="calendar-outline" size={14} color="#6B7280" />
+        <Ionicons name="calendar-outline" size={14} color={Theme.colors.text.secondary} />
         <Text style={styles.dateText}>{formatDate(review.createdAt)}</Text>
       </View>
 
@@ -136,7 +136,7 @@ export default function MyReviewsScreen({
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
           >
-            <Ionicons name="arrow-back" size={24} color="#1F2937" />
+            <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitle}>Mes Avis</Text>
@@ -147,7 +147,7 @@ export default function MyReviewsScreen({
           <NotificationBell
             onPress={() => navigation.navigate("Notifications" as never)}
             size={24}
-            color="#1F2937"
+            color={colors.text.primary}
           />
         </View>
       </View>
@@ -180,7 +180,7 @@ export default function MyReviewsScreen({
           }
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <MaterialIcons name="rate-review" size={64} color="#D1D5DB" />
+              <MaterialIcons name="rate-review" size={64} color={Theme.colors.text.disabled} />
               <Text style={styles.emptyTitle}>Aucun avis</Text>
               <Text style={styles.emptySubtitle}>
                 Vous n'avez pas encore laissé d'avis
@@ -199,7 +199,7 @@ export default function MyReviewsScreen({
                   <Ionicons
                     name="chevron-back"
                     size={20}
-                    color={page <= 1 ? "#D1D5DB" : "#1F2937"}
+                    color={page <= 1 ? Theme.colors.text.disabled : colors.text.primary}
                   />
                 </TouchableOpacity>
                 <Text style={styles.paginationText}>
@@ -218,7 +218,7 @@ export default function MyReviewsScreen({
                   <Ionicons
                     name="chevron-forward"
                     size={20}
-                    color={page >= totalPages ? "#D1D5DB" : "#1F2937"}
+                    color={page >= totalPages ? Theme.colors.text.disabled : colors.text.primary}
                   />
                 </TouchableOpacity>
               </View>
@@ -260,13 +260,13 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     marginBottom: 2,
   },
   headerSubtitle: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* Loading */
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 15,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* List */
@@ -303,13 +303,13 @@ const styles = StyleSheet.create({
   summaryAverage: {
     fontSize: 20,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     marginTop: 8,
   },
   summaryCount: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 2,
   },
 
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
   goodsId: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     flexShrink: 1,
     marginRight: 8,
   },
@@ -355,23 +355,23 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   badgeMaritime: {
-    backgroundColor: "#DBEAFE",
+    backgroundColor: Theme.colors.feedback.infoBg,
   },
   badgeMaritimeText: {
-    color: "#1D4ED8",
+    color: Theme.colors.feedback.infoDark,
   },
   badgeAerien: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: Theme.colors.feedback.warningBg,
   },
   badgeAerienText: {
-    color: "#92400E",
+    color: Theme.colors.feedback.warningDark,
   },
 
   /* Comment */
   commentText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
     marginTop: 8,
     lineHeight: 20,
   },
@@ -386,12 +386,12 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* Admin response */
   responseContainer: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.background.paper,
     borderRadius: 10,
     padding: 12,
     marginTop: 12,
@@ -399,13 +399,13 @@ const styles = StyleSheet.create({
   responseLabel: {
     fontSize: 12,
     fontFamily: Fonts.bold,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginBottom: 4,
   },
   responseText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#374151",
+    color: Theme.colors.text.primary,
     lineHeight: 20,
   },
 
@@ -420,14 +420,14 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: "#374151",
+    color: Theme.colors.text.primary,
     marginTop: 16,
     marginBottom: 6,
   },
   emptySubtitle: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     textAlign: "center",
     lineHeight: 20,
   },
@@ -455,6 +455,6 @@ const styles = StyleSheet.create({
   paginationText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
 });

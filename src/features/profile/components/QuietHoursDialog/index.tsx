@@ -6,6 +6,7 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import { Portal, Dialog, Button, Text } from "react-native-paper";
+import { Theme } from "@src/constants/Theme";
 
 interface QuietHoursDialogProps {
   visible: boolean;
@@ -54,12 +55,12 @@ export const QuietHoursDialog: React.FC<QuietHoursDialogProps> = ({
 const styles = StyleSheet.create({
   dialogText: {
     fontSize: 14,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
   timeDisplay: {
     fontSize: 18,
     fontWeight: "600",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     marginTop: 16,
     textAlign: "center",
   },

@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Theme } from '@src/constants/Theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Badge } from '@src/shared/ui/Badge';
@@ -28,7 +29,7 @@ interface CargoBagDetailCardProps {
 }
 
 const STATUS_CONFIG: Record<CargoBagStatus, { label: string; variant: 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info' | 'custom'; color: string }> = {
-  PACKED: { label: 'Emballé', variant: 'custom', color: '#6B7280' },
+  PACKED: { label: 'Emballé', variant: 'custom', color: Theme.colors.text.secondary },
   CHECKED_IN: { label: 'Enregistré', variant: 'info', color: '#3B82F6' },
   LOADED: { label: 'Chargé', variant: 'warning', color: '#D4AF37' },
   IN_TRANSIT: { label: 'En transit', variant: 'info', color: '#3B82F6' },

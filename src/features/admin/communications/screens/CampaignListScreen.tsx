@@ -14,6 +14,7 @@ import { showMessage } from "react-native-flash-message";
 
 import { Fonts } from "@src/constants/Fonts";
 import type { RootStackScreenProps } from "@src/navigations/type";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import {
   useAdminCampaigns,
   useCancelCampaign,
@@ -37,18 +38,18 @@ const formatDate = (dateString: string): string => {
   }
 };
 
-const getStatusStyle = (status: CampaignStatus) => {
+const getStatusStyle = (status: CampaignStatus, isDark: boolean) => {
   switch (status) {
     case "scheduled":
-      return { bg: "#DBEAFE", text: "#1D4ED8" };
+      return { bg: isDark ? "#1E3A8A" : "#DBEAFE", text: isDark ? "#93C5FD" : "#1D4ED8" };
     case "sending":
-      return { bg: "#FEF3C7", text: "#D97706" };
+      return { bg: isDark ? "#78350F" : "#FEF3C7", text: isDark ? "#FCD34D" : "#D97706" };
     case "sent":
-      return { bg: "#DCFCE7", text: "#15803D" };
+      return { bg: isDark ? "#14532D" : "#DCFCE7", text: isDark ? "#86EFAC" : "#15803D" };
     case "cancelled":
-      return { bg: "#FEE2E2", text: "#DC2626" };
+      return { bg: isDark ? "#7F1D1D" : "#FEE2E2", text: isDark ? "#FCA5A5" : "#DC2626" };
     default:
-      return { bg: "#F3F4F6", text: "#6B7280" };
+      return { bg: isDark ? "#374151" : "#F3F4F6", text: isDark ? "#D1D5DB" : "#6B7280" };
   }
 };
 
@@ -103,6 +104,7 @@ interface CampaignCardProps {
   onCancel: (id: string) => void;
   onSendNow: (id: string) => void;
   isSending: boolean;
+  styles: ReturnType<typeof createStyles>;
 }
 
 const CampaignCard = ({
@@ -110,8 +112,10 @@ const CampaignCard = ({
   onCancel,
   onSendNow,
   isSending,
+  styles,
 }: CampaignCardProps) => {
-  const statusStyle = getStatusStyle(campaign.status);
+  const { colors, isDark } = useAppTheme();
+  const statusStyle = getStatusStyle(campaign.status, isDark);
   const canAct = campaign.status === "draft" || campaign.status === "scheduled";
 
   return (
@@ -133,29 +137,29 @@ const CampaignCard = ({
 
       <View style={styles.cardMeta}>
         <View style={styles.metaRow}>
-          <Ionicons name="people-outline" size={13} color="#6B7280" />
-          <Text style={styles.metaText}>
+          <Ionicons name="people-outline" size={13} color={colors.text.secondary} />
+          <Text style={[styles.metaText, { color: colors.text.secondary }]}>
             {getSegmentLabel(campaign.targetSegment)}
           </Text>
         </View>
         {campaign.targetSegment === "container_customers" && campaign.containerId && (
           <View style={styles.metaRow}>
-            <Ionicons name="cube-outline" size={13} color="#6B7280" />
-            <Text style={styles.metaText}>Conteneur: {campaign.containerId.slice(-6)}</Text>
+            <Ionicons name="cube-outline" size={13} color={colors.text.secondary} />
+            <Text style={[styles.metaText, { color: colors.text.secondary }]}>Conteneur: {campaign.containerId.slice(-6)}</Text>
           </View>
         )}
         <View style={styles.metaRow}>
-          <Ionicons name="calendar-outline" size={13} color="#6B7280" />
-          <Text style={styles.metaText}>{formatDate(campaign.scheduledAt)}</Text>
+          <Ionicons name="calendar-outline" size={13} color={colors.text.secondary} />
+          <Text style={[styles.metaText, { color: colors.text.secondary }]}>{formatDate(campaign.scheduledAt)}</Text>
         </View>
       </View>
 
       {campaign.status === "sent" && (
         <View style={styles.statsRow}>
           <Text style={styles.statText}>
-            <Text style={{ color: "#15803D" }}>{campaign.sentCount} envoyés</Text>
+            <Text style={{ color: isDark ? "#86EFAC" : "#15803D" }}>{campaign.sentCount} envoyés</Text>
             {campaign.failedCount > 0 && (
-              <Text style={{ color: "#DC2626" }}>
+              <Text style={{ color: isDark ? "#FCA5A5" : "#DC2626" }}>
                 {" · "}
                 {campaign.failedCount} échoués
               </Text>
@@ -197,6 +201,7 @@ const CampaignCard = ({
 const CampaignListScreen = ({
   navigation,
 }: RootStackScreenProps<"CampaignList">) => {
+  const { colors, isDark } = useAppTheme();
   const [activeFilter, setActiveFilter] = useState<FilterKey>("all");
   const [sendingId, setSendingId] = useState<string | null>(null);
 
@@ -264,16 +269,18 @@ const CampaignListScreen = ({
 
   const campaigns = data?.campaigns ?? [];
 
+  const dynamicStyles = createStyles(colors, isDark);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={dynamicStyles.container}>
       {/* Header */}
-      <View style={styles.header}>
+      <View style={dynamicStyles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#111827" />
+          <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Campagnes Push</Text>
+        <Text style={dynamicStyles.headerTitle}>Campagnes Push</Text>
         <TouchableOpacity
-          style={styles.addBtn}
+          style={dynamicStyles.addBtn}
           onPress={() => navigation.navigate("CreateCampaign")}
         >
           <Ionicons name="add" size={22} color="#fff" />
@@ -281,20 +288,20 @@ const CampaignListScreen = ({
       </View>
 
       {/* Filter chips */}
-      <View style={styles.filtersRow}>
+      <View style={dynamicStyles.filtersRow}>
         {FILTERS.map((f) => (
           <TouchableOpacity
             key={f.key}
             style={[
-              styles.chip,
-              activeFilter === f.key && styles.chipActive,
+              dynamicStyles.chip,
+              activeFilter === f.key && dynamicStyles.chipActive,
             ]}
             onPress={() => setActiveFilter(f.key)}
           >
             <Text
               style={[
-                styles.chipText,
-                activeFilter === f.key && styles.chipTextActive,
+                dynamicStyles.chipText,
+                activeFilter === f.key && dynamicStyles.chipTextActive,
               ]}
             >
               {f.label}
@@ -305,16 +312,16 @@ const CampaignListScreen = ({
 
       {/* List */}
       {isLoading ? (
-        <ActivityIndicator style={{ marginTop: 40 }} color="#8B5CF6" />
+        <ActivityIndicator style={{ marginTop: 40 }} color={colors.primary.main} />
       ) : campaigns.length === 0 ? (
-        <View style={styles.empty}>
-          <Ionicons name="megaphone-outline" size={48} color="#D1D5DB" />
-          <Text style={styles.emptyText}>Aucune campagne</Text>
+        <View style={dynamicStyles.empty}>
+          <Ionicons name="megaphone-outline" size={48} color={colors.text.disabled} />
+          <Text style={dynamicStyles.emptyText}>Aucune campagne</Text>
           <TouchableOpacity
-            style={styles.emptyBtn}
+            style={dynamicStyles.emptyBtn}
             onPress={() => navigation.navigate("CreateCampaign")}
           >
-            <Text style={styles.emptyBtnText}>Créer une campagne</Text>
+            <Text style={dynamicStyles.emptyBtnText}>Créer une campagne</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -331,6 +338,7 @@ const CampaignListScreen = ({
               onCancel={handleCancel}
               onSendNow={handleSendNow}
               isSending={sendingId === item._id}
+              styles={dynamicStyles}
             />
           )}
         />
@@ -343,130 +351,131 @@ export default CampaignListScreen;
 
 // ── Styles ────────────────────────────────────────────────────────────────
 
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F9FAFB" },
+const createStyles = (colors: any, isDark: boolean) =>
+  StyleSheet.create({
+    container: { flex: 1, backgroundColor: colors.background.default },
 
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
-  },
-  headerTitle: {
-    flex: 1,
-    marginLeft: 12,
-    fontFamily: Fonts.bold,
-    fontSize: 18,
-    color: "#111827",
-  },
-  addBtn: {
-    backgroundColor: "#8B5CF6",
-    borderRadius: 8,
-    padding: 6,
-  },
+    header: {
+      flexDirection: "row",
+      alignItems: "center",
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      backgroundColor: colors.background.card,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    headerTitle: {
+      flex: 1,
+      marginLeft: 12,
+      fontFamily: Fonts.bold,
+      fontSize: 18,
+      color: colors.text.primary,
+    },
+    addBtn: {
+      backgroundColor: "#8B5CF6",
+      borderRadius: 8,
+      padding: 6,
+    },
 
-  filtersRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
-  },
-  chip: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    backgroundColor: "#F3F4F6",
-  },
-  chipActive: { backgroundColor: "#EDE9FE" },
-  chipText: { fontFamily: Fonts.medium, fontSize: 13, color: "#6B7280" },
-  chipTextActive: { color: "#7C3AED" },
+    filtersRow: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 8,
+      paddingHorizontal: 16,
+      paddingVertical: 12,
+      backgroundColor: colors.background.card,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    chip: {
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 20,
+      backgroundColor: isDark ? colors.background.paper : "#F3F4F6",
+    },
+    chipActive: { backgroundColor: isDark ? "#4C1D95" : "#EDE9FE" },
+    chipText: { fontFamily: Fonts.medium, fontSize: 13, color: colors.text.secondary },
+    chipTextActive: { color: isDark ? "#C4B5FD" : "#7C3AED" },
 
-  card: {
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    shadowColor: "#000",
-    shadowOpacity: 0.04,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  cardHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 6,
-  },
-  cardTitle: {
-    flex: 1,
-    fontFamily: Fonts.bold,
-    fontSize: 15,
-    color: "#111827",
-    marginRight: 8,
-  },
-  badge: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 12,
-  },
-  badgeText: { fontFamily: Fonts.medium, fontSize: 12 },
+    card: {
+      backgroundColor: colors.background.card,
+      borderRadius: 12,
+      padding: 16,
+      marginBottom: 12,
+      shadowColor: "#000",
+      shadowOpacity: 0.04,
+      shadowOffset: { width: 0, height: 2 },
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    cardHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      marginBottom: 6,
+    },
+    cardTitle: {
+      flex: 1,
+      fontFamily: Fonts.bold,
+      fontSize: 15,
+      color: colors.text.primary,
+      marginRight: 8,
+    },
+    badge: {
+      paddingHorizontal: 8,
+      paddingVertical: 3,
+      borderRadius: 12,
+    },
+    badgeText: { fontFamily: Fonts.medium, fontSize: 12 },
 
-  cardBody: {
-    fontFamily: Fonts.regular,
-    fontSize: 13,
-    color: "#6B7280",
-    marginBottom: 10,
-    lineHeight: 18,
-  },
+    cardBody: {
+      fontFamily: Fonts.regular,
+      fontSize: 13,
+      color: colors.text.secondary,
+      marginBottom: 10,
+      lineHeight: 18,
+    },
 
-  cardMeta: { gap: 4, marginBottom: 8 },
-  metaRow: { flexDirection: "row", alignItems: "center", gap: 4 },
-  metaText: { fontFamily: Fonts.regular, fontSize: 12, color: "#6B7280" },
+    cardMeta: { gap: 4, marginBottom: 8 },
+    metaRow: { flexDirection: "row", alignItems: "center", gap: 4 },
+    metaText: { fontFamily: Fonts.regular, fontSize: 12, color: colors.text.secondary },
 
-  statsRow: { marginBottom: 8 },
-  statText: { fontFamily: Fonts.medium, fontSize: 13 },
+    statsRow: { marginBottom: 8 },
+    statText: { fontFamily: Fonts.medium, fontSize: 13 },
 
-  actions: { flexDirection: "row", gap: 8, marginTop: 4 },
-  sendBtn: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 6,
-    backgroundColor: "#8B5CF6",
-    borderRadius: 8,
-    paddingVertical: 10,
-  },
-  sendBtnText: { fontFamily: Fonts.medium, fontSize: 13, color: "#fff" },
-  cancelBtn: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-  },
-  cancelBtnText: { fontFamily: Fonts.medium, fontSize: 13, color: "#6B7280" },
+    actions: { flexDirection: "row", gap: 8, marginTop: 4 },
+    sendBtn: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 6,
+      backgroundColor: "#8B5CF6",
+      borderRadius: 8,
+      paddingVertical: 10,
+    },
+    sendBtnText: { fontFamily: Fonts.medium, fontSize: 13, color: "#fff" },
+    cancelBtn: {
+      paddingHorizontal: 16,
+      paddingVertical: 10,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    cancelBtnText: { fontFamily: Fonts.medium, fontSize: 13, color: colors.text.secondary },
 
-  empty: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 12,
-  },
-  emptyText: { fontFamily: Fonts.medium, fontSize: 15, color: "#9CA3AF" },
-  emptyBtn: {
-    backgroundColor: "#8B5CF6",
-    borderRadius: 8,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  emptyBtnText: { fontFamily: Fonts.medium, fontSize: 14, color: "#fff" },
-});
+    empty: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 12,
+    },
+    emptyText: { fontFamily: Fonts.medium, fontSize: 15, color: colors.text.disabled },
+    emptyBtn: {
+      backgroundColor: "#8B5CF6",
+      borderRadius: 8,
+      paddingHorizontal: 20,
+      paddingVertical: 10,
+    },
+    emptyBtnText: { fontFamily: Fonts.medium, fontSize: 14, color: "#fff" },
+  });

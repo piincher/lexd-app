@@ -4,7 +4,7 @@ import { Theme } from '@src/constants/Theme';
 export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F7FC',
+    backgroundColor: colors.background.default,
   },
   keyboardView: {
     flex: 1,

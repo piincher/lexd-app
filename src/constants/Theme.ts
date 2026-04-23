@@ -649,6 +649,8 @@ export const Theme = new Proxy({} as {
     text: typeof lightTheme.colors.text;
     neutral: typeof lightTheme.colors.neutral;
     feedback: typeof lightTheme.colors.feedback;
+    border: typeof lightTheme.colors.border;
+    divider: typeof lightTheme.colors.divider;
   };
 }, {
   get(_, prop) {
@@ -698,6 +700,8 @@ export const Theme = new Proxy({} as {
           text: t.colors.text,
           neutral: t.colors.neutral,
           feedback: t.colors.feedback,
+          border: t.colors.border,
+          divider: t.colors.divider,
         };
       default:
         return undefined;

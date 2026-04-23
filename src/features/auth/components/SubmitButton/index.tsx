@@ -8,6 +8,7 @@ import { Text, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 import { hapticMedium } from "@src/shared/lib/haptics";
 
 interface SubmitButtonProps {
@@ -33,17 +34,17 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, isLoading, 
     ]}
   >
     <LinearGradient
-      colors={isLoading ? ["#9CA3AF", "#9CA3AF"] : ["#22C55E", "#16A34A"]}
+      colors={isLoading ? [Theme.colors.text.disabled, Theme.colors.text.disabled] : [Theme.colors.primary.main, Theme.colors.primary.dark]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={styles.gradient}
     >
       {isLoading ? (
-        <ActivityIndicator size="small" color="#FFF" />
+        <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
       ) : (
         <>
           <Text style={styles.text}>{text}</Text>
-          <MaterialCommunityIcons name="arrow-right" size={20} color="#FFF" />
+          <MaterialCommunityIcons name="arrow-right" size={20} color={Theme.colors.text.inverse} />
         </>
       )}
     </LinearGradient>
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     gap: 8,
     paddingVertical: 16,
   },
-  text: { fontSize: 16, fontFamily: Fonts.bold, color: "#FFF", letterSpacing: 0.3 },
+  text: { fontSize: 16, fontFamily: Fonts.bold, color: Theme.colors.text.inverse, letterSpacing: 0.3 },
 });
 
 export default SubmitButton;

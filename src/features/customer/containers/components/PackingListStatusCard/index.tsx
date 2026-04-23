@@ -9,6 +9,7 @@ import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { styles } from './PackingListStatusCard.styles';
@@ -27,7 +28,7 @@ const getStatusColor = (status: string) => {
     READY_FOR_PICKUP: { bg: '#FEF3C7', text: '#F59E0B', icon: '#F59E0B' },
     DELIVERED: { bg: '#DCFCE7', text: '#22C55E', icon: '#22C55E' },
   };
-  return colors[status] || { bg: '#F3F4F6', text: '#6B7280', icon: '#6B7280' };
+  return colors[status] || { bg: Theme.colors.background.paper, text: Theme.colors.text.secondary, icon: Theme.colors.text.secondary };
 };
 
 const formatDate = (dateString?: string): string => {

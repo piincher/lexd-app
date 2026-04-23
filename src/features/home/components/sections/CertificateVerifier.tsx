@@ -83,11 +83,11 @@ export const CertificateVerifier: React.FC = () => {
               state.kind === 'success' && styles.inputSuccess,
             ]}
           >
-            <FontAwesome6 name="hashtag" size={14} color={colors.text.muted ?? '#9CA3AF'} style={styles.inputIcon} />
+            <FontAwesome6 name="hashtag" size={14} color={colors.text.muted ?? Theme.colors.text.muted} style={styles.inputIcon} />
             <TextInput
               style={[styles.input, { color: colors.text.primary }]}
               placeholder="Ex: CLE-XXXX-XXXX"
-              placeholderTextColor={colors.text.muted ?? '#9CA3AF'}
+              placeholderTextColor={colors.text.muted ?? Theme.colors.text.muted}
               value={code}
               onChangeText={(text) => {
                 setCode(text.toUpperCase());
@@ -101,7 +101,7 @@ export const CertificateVerifier: React.FC = () => {
             />
             {code.length > 0 && state.kind !== 'loading' && (
               <Pressable onPress={handleReset} hitSlop={8}>
-                <FontAwesome6 name="xmark" size={14} color={colors.text.muted ?? '#9CA3AF'} />
+                <FontAwesome6 name="xmark" size={14} color={colors.text.muted ?? Theme.colors.text.muted} />
               </Pressable>
             )}
           </View>
@@ -116,12 +116,12 @@ export const CertificateVerifier: React.FC = () => {
             disabled={!code.trim() || state.kind === 'loading'}
           >
             <LinearGradient
-              colors={code.trim() ? ['#22C55E', '#16A34A'] : ['#9CA3AF', '#9CA3AF']}
+              colors={code.trim() ? [Theme.colors.status.success, Theme.colors.status.success] : [Theme.colors.text.muted, Theme.colors.text.muted]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.verifyButtonGradient}
             >
-              {state.kind === 'loading' ? <ActivityIndicator size="small" color="#FFF" /> : <FontAwesome6 name="magnifying-glass" size={16} color="#FFF" />}
+              {state.kind === 'loading' ? <ActivityIndicator size="small" color={Theme.colors.background.card} /> : <FontAwesome6 name="magnifying-glass" size={16} color={Theme.colors.background.card} />}
             </LinearGradient>
           </Pressable>
         </View>

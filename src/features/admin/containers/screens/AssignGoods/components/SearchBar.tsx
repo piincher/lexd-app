@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
-    backgroundColor: '#F8F7FC',
+    backgroundColor: Theme.colors.background.default,
   },
   searchInputContainer: {
     flexDirection: 'row',

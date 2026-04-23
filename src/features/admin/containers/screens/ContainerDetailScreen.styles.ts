@@ -7,7 +7,7 @@ const MAX_CBM = 67; // Standard 40ft container capacity
 const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F7FC',
+    backgroundColor: colors.background.default,
   },
   loadingContainer: {
     flex: 1,

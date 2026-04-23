@@ -72,7 +72,7 @@ export const ContainerReconciliationModal: React.FC<ContainerReconciliationModal
               )}
             </View>
             <TouchableOpacity onPress={handleDismiss} style={styles.closeBtn}>
-              <Ionicons name="close" size={22} color="#6B7280" />
+              <Ionicons name="close" size={22} color={Theme.colors.text.secondary} />
             </TouchableOpacity>
           </View>
 
@@ -188,11 +188,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   subtitle: {
     fontSize: 13,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     marginTop: 2,
   },
   closeBtn: {
@@ -212,11 +212,11 @@ const styles = StyleSheet.create({
   },
   contextText: {
     fontSize: 13,
-    color: '#4B5563',
+    color: Theme.colors.text.secondary,
   },
   contextBold: {
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   inputGroup: {
     marginBottom: 14,
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
     marginBottom: 6,
   },
   input: {
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
     backgroundColor: Theme.colors.background.elevated,
   },
   inputError: {
@@ -268,12 +268,12 @@ const styles = StyleSheet.create({
   },
   previewLabel: {
     fontSize: 13,
-    color: '#4B5563',
+    color: Theme.colors.text.secondary,
   },
   previewValue: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   previewValueBold: {
     fontSize: 14,

@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.neutral.grey800,
+    color: Theme.neutral[800],
     marginBottom: Theme.spacing.md,
   },
   packageCard: {
@@ -57,16 +57,16 @@ const styles = StyleSheet.create({
   trackingCode: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral.grey800,
+    color: Theme.neutral[800],
   },
   packageDescription: {
     fontSize: 14,
-    color: Theme.neutral.grey600,
+    color: Theme.neutral[600],
     marginBottom: Theme.spacing.xs,
   },
   packageCBM: {
     fontSize: 13,
-    color: Theme.neutral.grey500,
+    color: Theme.neutral[500],
     fontWeight: '500',
   },
 });

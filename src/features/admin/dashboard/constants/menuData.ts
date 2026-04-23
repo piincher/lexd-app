@@ -60,9 +60,10 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       { id: "c4", title: "Issue Certificate", route: "IssueCertificate" },
       { id: "c5", title: "Certificate History", route: "CertificateHistory" },
       { id: "c6", title: "Avis Clients", route: "AdminReviews" },
-      { id: "c7", title: "Promotions", route: "ManagePromos" },
-      { id: "c8", title: "Push Campaigns", route: "CampaignList" },
-      { id: "c9", title: "Announcements", route: "CreateAnnouncement" },
+      { id: "c7", title: "Tickets Support", route: "AdminTicketList" },
+      { id: "c8", title: "Promotions", route: "ManagePromos" },
+      { id: "c9", title: "Push Campaigns", route: "CampaignList" },
+      { id: "c10", title: "Announcements", route: "CreateAnnouncement" },
     ],
   },
   {

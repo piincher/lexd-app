@@ -243,7 +243,7 @@ const PromoForm = ({ form, onChange, onOptionChange, onSubmit, onCancel, isSubmi
             value={form.code}
             onChangeText={(v) => onChange("code", v.toUpperCase())}
             placeholder="ex: WELCOME20"
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor={Theme.colors.text.muted}
             autoCapitalize="characters"
           />
         </View>
@@ -255,7 +255,7 @@ const PromoForm = ({ form, onChange, onOptionChange, onSubmit, onCancel, isSubmi
             value={form.name}
             onChangeText={(v) => onChange("name", v)}
             placeholder="Nom de la promotion"
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor={Theme.colors.text.muted}
           />
         </View>
 
@@ -266,7 +266,7 @@ const PromoForm = ({ form, onChange, onOptionChange, onSubmit, onCancel, isSubmi
             value={form.description}
             onChangeText={(v) => onChange("description", v)}
             placeholder="Description (optionnel)"
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor={Theme.colors.text.muted}
             multiline
             numberOfLines={3}
           />
@@ -288,7 +288,7 @@ const PromoForm = ({ form, onChange, onOptionChange, onSubmit, onCancel, isSubmi
             value={form.value}
             onChangeText={(v) => onChange("value", v)}
             placeholder={form.type === "PERCENTAGE" ? "ex: 20" : "ex: 5000"}
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor={Theme.colors.text.muted}
             keyboardType="numeric"
           />
         </View>
@@ -301,7 +301,7 @@ const PromoForm = ({ form, onChange, onOptionChange, onSubmit, onCancel, isSubmi
               value={form.maxDiscount}
               onChangeText={(v) => onChange("maxDiscount", v)}
               placeholder="ex: 10000"
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={Theme.colors.text.muted}
               keyboardType="numeric"
             />
           </View>
@@ -314,7 +314,7 @@ const PromoForm = ({ form, onChange, onOptionChange, onSubmit, onCancel, isSubmi
             value={form.minOrderAmount}
             onChangeText={(v) => onChange("minOrderAmount", v)}
             placeholder="ex: 20000"
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor={Theme.colors.text.muted}
             keyboardType="numeric"
           />
         </View>
@@ -357,7 +357,7 @@ const PromoForm = ({ form, onChange, onOptionChange, onSubmit, onCancel, isSubmi
               value={form.maxUsages}
               onChangeText={(v) => onChange("maxUsages", v)}
               placeholder="ex: 100"
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={Theme.colors.text.muted}
               keyboardType="numeric"
             />
           </View>
@@ -369,7 +369,7 @@ const PromoForm = ({ form, onChange, onOptionChange, onSubmit, onCancel, isSubmi
               value={form.maxPerUser}
               onChangeText={(v) => onChange("maxPerUser", v)}
               placeholder="1"
-              placeholderTextColor="#9CA3AF"
+              placeholderTextColor={Theme.colors.text.muted}
               keyboardType="numeric"
             />
           </View>
@@ -482,7 +482,7 @@ const PromoCard = ({ promo, onEdit, onDeactivate }: PromoCardProps) => {
 
       {/* Value */}
       <View style={styles.cardRow}>
-        <MaterialCommunityIcons name="tag-outline" size={16} color="#6B7280" />
+        <MaterialCommunityIcons name="tag-outline" size={16} color={Theme.colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {isPercentage ? `${promo.value}%` : `${promo.value} FCFA`}
           {promo.maxDiscount != null ? ` (max ${promo.maxDiscount} FCFA)` : ""}
@@ -491,7 +491,7 @@ const PromoCard = ({ promo, onEdit, onDeactivate }: PromoCardProps) => {
 
       {/* Dates */}
       <View style={styles.cardRow}>
-        <Ionicons name="calendar-outline" size={16} color="#6B7280" />
+        <Ionicons name="calendar-outline" size={16} color={Theme.colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {formatDate(promo.validFrom)} — {formatDate(promo.validUntil)}
         </Text>
@@ -499,7 +499,7 @@ const PromoCard = ({ promo, onEdit, onDeactivate }: PromoCardProps) => {
 
       {/* Usage */}
       <View style={styles.cardRow}>
-        <MaterialIcons name="people-outline" size={16} color="#6B7280" />
+        <MaterialIcons name="people-outline" size={16} color={Theme.colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {promo.currentUsages}/{promo.maxUsages ?? "∞"} utilisations
         </Text>
@@ -508,7 +508,7 @@ const PromoCard = ({ promo, onEdit, onDeactivate }: PromoCardProps) => {
       {/* Min order */}
       {promo.minOrderAmount != null && (
         <View style={styles.cardRow}>
-          <MaterialIcons name="attach-money" size={16} color="#6B7280" />
+          <MaterialIcons name="attach-money" size={16} color={Theme.colors.text.secondary} />
           <Text style={styles.cardRowText}>Min. commande : {promo.minOrderAmount} FCFA</Text>
         </View>
       )}
@@ -697,7 +697,7 @@ export default function ManagePromosScreen({
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
           >
-            <Ionicons name="arrow-back" size={24} color="#1F2937" />
+            <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitle}>Gestion des Promotions</Text>
@@ -751,7 +751,7 @@ export default function ManagePromosScreen({
           onRefresh={refetch}
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <MaterialCommunityIcons name="tag-off-outline" size={64} color="#D1D5DB" />
+              <MaterialCommunityIcons name="tag-off-outline" size={64} color={Theme.neutral[300]} />
               <Text style={styles.emptyTitle}>Aucune promotion trouvée</Text>
               <Text style={styles.emptySubtitle}>
                 {activeFilter !== "all"
@@ -822,7 +822,7 @@ export default function ManagePromosScreen({
               onPress={closeForm}
               activeOpacity={0.7}
             >
-              <Ionicons name="close" size={24} color="#1F2937" />
+              <Ionicons name="close" size={24} color={Theme.colors.text.primary} />
             </TouchableOpacity>
             <Text style={formStyles.headerTitle}>
               {editingPromo ? "Modifier la promotion" : "Créer une promotion"}
@@ -879,13 +879,13 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     marginBottom: 2,
   },
   headerSubtitle: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* Filter chips */
@@ -914,7 +914,7 @@ const styles = StyleSheet.create({
   filterChipText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
   filterChipTextActive: {
     color: "#FFFFFF",
@@ -931,7 +931,7 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 15,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
 
   /* List */
@@ -960,13 +960,13 @@ const styles = StyleSheet.create({
   promoCode: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     letterSpacing: 1,
   },
   promoName: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 2,
   },
   badgeRow: {
@@ -994,7 +994,7 @@ const styles = StyleSheet.create({
   cardRowText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
     flex: 1,
   },
 
@@ -1051,14 +1051,14 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: "#374151",
+    color: Theme.colors.text.secondary,
     marginTop: 16,
     marginBottom: 6,
   },
   emptySubtitle: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     textAlign: "center",
     lineHeight: 20,
   },
@@ -1072,7 +1072,7 @@ const styles = StyleSheet.create({
   resetFilterText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
 
   /* Pagination */
@@ -1099,7 +1099,7 @@ const styles = StyleSheet.create({
   paginationText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
 
   /* FAB */
@@ -1141,7 +1141,7 @@ const formStyles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontFamily: Fonts.bold,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   scrollView: {
     flex: 1,
@@ -1156,7 +1156,7 @@ const formStyles = StyleSheet.create({
   fieldLabel: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: "#374151",
+    color: Theme.colors.text.secondary,
     marginBottom: 6,
   },
   input: {
@@ -1166,7 +1166,7 @@ const formStyles = StyleSheet.create({
     paddingVertical: 12,
     fontSize: 15,
     fontFamily: Fonts.regular,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     borderWidth: 1,
     borderColor: Theme.colors.neutral[200],
   },
@@ -1188,11 +1188,11 @@ const formStyles = StyleSheet.create({
   dateButtonText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     flex: 1,
   },
   dateButtonPlaceholder: {
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
   },
   row: {
     flexDirection: "row",
@@ -1217,7 +1217,7 @@ const formStyles = StyleSheet.create({
   optionChipText: {
     fontSize: 13,
     fontFamily: Fonts.meduim,
-    color: "#4B5563",
+    color: Theme.colors.text.secondary,
   },
   optionChipTextSelected: {
     color: "#FFFFFF",
@@ -1238,7 +1238,7 @@ const formStyles = StyleSheet.create({
   cancelButtonText: {
     fontSize: 15,
     fontFamily: Fonts.meduim,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
   submitButton: {
     flex: 1,

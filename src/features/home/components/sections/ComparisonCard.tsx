@@ -36,7 +36,7 @@ export const ComparisonCard: React.FC = () => {
       >
         <ComparisonScoreBar score={COMPARISON_SUMMARY.chinalinkScore} total={COMPARISON_SUMMARY.totalFeatures} color="#22C55E" label="ChinaLink Express" />
         <View style={{ height: 14 }} />
-        <ComparisonScoreBar score={COMPARISON_SUMMARY.othersScore} total={COMPARISON_SUMMARY.totalFeatures} color="#9CA3AF" label="Autres transporteurs" />
+        <ComparisonScoreBar score={COMPARISON_SUMMARY.othersScore} total={COMPARISON_SUMMARY.totalFeatures} color={Theme.colors.text.muted} label="Autres transporteurs" />
       </Animated.View>
 
       {/* Table */}

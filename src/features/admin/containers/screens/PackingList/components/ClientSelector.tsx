@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#6b7280',
+    color: Theme.colors.text.secondary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 8,
@@ -146,17 +146,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 14,
     borderWidth: 1,
-    borderColor: '#d1d5db',
+    borderColor: Theme.neutral[300],
   },
   selectorText: {
     fontSize: 15,
     fontWeight: '500',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
     flex: 1,
   },
   chevron: {
     fontSize: 12,
-    color: '#6b7280',
+    color: Theme.colors.text.secondary,
     marginLeft: 8,
   },
   modalOverlay: {
@@ -182,11 +182,11 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#111827',
+    color: Theme.colors.text.primary,
   },
   closeButton: {
     fontSize: 20,
-    color: '#6b7280',
+    color: Theme.colors.text.secondary,
     padding: 4,
   },
   clientList: {
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
   },
   clientItemText: {
     fontSize: 16,
-    color: '#374151',
+    color: Theme.colors.text.secondary,
     fontWeight: '500',
   },
   clientItemTextSelected: {
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   },
   clientMeta: {
     fontSize: 13,
-    color: '#6b7280',
+    color: Theme.colors.text.secondary,
     marginTop: 4,
   },
   checkmark: {

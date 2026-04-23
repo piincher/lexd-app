@@ -41,7 +41,7 @@ export const SearchSortDropdown: React.FC<SearchSortDropdownProps> = ({
     <>
       <TouchableOpacity style={styles.button} onPress={() => setVisible(true)}>
         <Text style={styles.buttonText}>{selectedOption?.label}</Text>
-        <Ionicons name="chevron-down" size={16} color={Theme.neutral.grey600} />
+        <Ionicons name="chevron-down" size={16} color={Theme.neutral[600]} />
       </TouchableOpacity>
 
       <Modal
@@ -95,12 +95,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.sm,
-    backgroundColor: Theme.neutral.grey100,
+    backgroundColor: Theme.neutral[100],
     borderRadius: 8,
   },
   buttonText: {
     fontSize: 14,
-    color: Theme.neutral.grey700,
+    color: Theme.neutral[700],
     marginRight: Theme.spacing.sm,
   },
   overlay: {
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
-    color: Theme.neutral.grey800,
+    color: Theme.neutral[800],
   },
   activeOptionText: {
     fontWeight: '600',

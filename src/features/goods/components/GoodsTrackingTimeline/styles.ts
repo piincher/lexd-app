@@ -1,6 +1,7 @@
 // GoodsTrackingTimeline - Styles
 
 import { StyleSheet } from 'react-native';
+import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
 
 export const styles = StyleSheet.create({
@@ -25,7 +26,7 @@ export const styles = StyleSheet.create({
 	},
 	currentIconContainer: {
 		borderWidth: 3,
-		borderColor: Theme.primary.main,
+		borderColor: Theme.colors.primary.main,
 		transform: [{ scale: 1.1 }],
 	},
 	icon: {
@@ -49,7 +50,7 @@ export const styles = StyleSheet.create({
 		marginBottom: Theme.spacing.xs,
 	},
 	statusText: {
-		fontFamily: Theme.typography.bodySmall.fontFamily,
+		fontFamily: Fonts.regular,
 		fontSize: 14,
 		textTransform: 'capitalize',
 		fontWeight: '700',
@@ -78,7 +79,7 @@ export const styles = StyleSheet.create({
 		top: 0,
 		bottom: 0,
 		width: 4,
-		backgroundColor: Theme.primary.main,
+		backgroundColor: Theme.colors.primary.main,
 		borderRadius: Theme.radius.xs,
 	},
 });

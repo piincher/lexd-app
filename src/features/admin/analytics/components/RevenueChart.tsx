@@ -169,7 +169,7 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({
         </View>
         {showComparison && comparisonData && (
           <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: '#9CA3AF' }]} />
+            <View style={[styles.legendDot, { backgroundColor: Theme.colors.text.muted }]} />
             <Text style={styles.legendText}>Période précédente</Text>
           </View>
         )}
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   growthBadge: {
     paddingHorizontal: 10,
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
   periodButtonText: {
     fontSize: 13,
     fontWeight: '500',
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   legend: {
     flexDirection: 'row',
@@ -382,11 +382,11 @@ const styles = StyleSheet.create({
   },
   legendText: {
     fontSize: 12,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   noData: {
     textAlign: 'center',
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     marginTop: 100,
   },
 });

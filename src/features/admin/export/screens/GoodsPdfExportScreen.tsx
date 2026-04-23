@@ -100,7 +100,7 @@ export const GoodsPdfExportScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F7FC' },
+  container: { flex: 1, backgroundColor: Theme.colors.background.default },
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: Theme.spacing.xl, paddingVertical: Theme.spacing.lg },
   backButton: { padding: 4, width: 32 },
   title: { fontSize: 18, fontWeight: '700', color: Theme.neutral[800] },

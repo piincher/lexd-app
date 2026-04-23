@@ -9,6 +9,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import { getPaymentHistory } from '@src/api/order';
 import { Screen } from '@src/shared/ui/Screen';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { PaymentInfoCard } from '../components/PaymentInfoCard';
 import { ClientInfoCard } from '../components/ClientInfoCard';
 import { OrderInfoCard } from '../components/OrderInfoCard';
@@ -41,6 +42,7 @@ interface PaymentDetailScreenProps {
 }
 
 const PaymentDetailScreen: React.FC = () => {
+  const { colors } = useAppTheme();
   const route = useRoute();
   const navigation = useNavigation();
   const queryClient = useQueryClient();
@@ -174,7 +176,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#F5F7FA',
   },
   bottomSpacer: {
     height: 32,

@@ -5,7 +5,6 @@
  */
 
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -60,7 +59,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     // Keep only last 100 notification IDs to prevent memory leak
     if (seenNotificationsRef.current.size > 100) {
       const first = seenNotificationsRef.current.values().next().value;
-      seenNotificationsRef.current.delete(first);
+      if (first) seenNotificationsRef.current.delete(first);
     }
 
     setCurrentNotification(notification);
@@ -83,7 +82,8 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
     const { type, data } = notification;
 
     // Check both the notification type and data.type for certificate notifications
-    const effectiveType = data?.type === 'CERTIFICATE_ISSUED' ? 'CERTIFICATE_ISSUED' : type;
+    const effectiveType =
+      data?.type === 'CERTIFICATE_ISSUED' || data?.type === 'TICKET_CREATED' ? data.type : type;
 
     switch (effectiveType) {
       case 'ORDER_UPDATE':
@@ -101,6 +101,14 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
       case 'TICKET_REPLY':
         if (data?.ticketId) {
           navigation.navigate('TicketDetail', { ticketId: data.ticketId });
+        }
+        break;
+
+      case 'TICKET_CREATED':
+        if (data?.ticketId) {
+          navigation.navigate('AdminTicketDetail', { ticketId: data.ticketId });
+        } else {
+          navigation.navigate('AdminTicketList');
         }
         break;
 
@@ -126,7 +134,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
             certificateMongoId: data.certificateMongoId || data.certificateId,
           });
         } else {
-          navigation.navigate('Profile');
+          navigation.navigate('HomeTab', { screen: 'Profile' });
         }
         break;
 

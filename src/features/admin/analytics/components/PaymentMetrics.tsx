@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   collectionBadge: {
     flexDirection: 'row',
@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
   tabText: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   overviewContent: {
     gap: 16,
@@ -478,12 +478,12 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
     marginTop: 4,
   },
   statLabel: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
     marginTop: 2,
   },
   statusSection: {
@@ -494,7 +494,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
     marginBottom: 12,
   },
   statusGrid: {
@@ -518,12 +518,12 @@ const styles = StyleSheet.create({
   },
   statusLabel: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   statusCount: {
     fontSize: 12,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   methodsContent: {
     marginTop: 8,
@@ -554,7 +554,7 @@ const styles = StyleSheet.create({
   methodName: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
     marginBottom: 4,
   },
   methodProgress: {
@@ -567,11 +567,11 @@ const styles = StyleSheet.create({
   methodPercentage: {
     fontSize: 13,
     fontWeight: '700',
-    color: '#1F2937',
+    color: Theme.colors.text.primary,
   },
   methodTotal: {
     fontSize: 10,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   agingContent: {
     marginTop: 8,
@@ -579,7 +579,7 @@ const styles = StyleSheet.create({
   agingTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
     marginBottom: 12,
   },
   agingContainer: {
@@ -596,11 +596,11 @@ const styles = StyleSheet.create({
   agingRange: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#374151',
+    color: Theme.colors.text.secondary,
   },
   agingCount: {
     fontSize: 11,
-    color: '#6B7280',
+    color: Theme.colors.text.secondary,
   },
   agingBarContainer: {
     flexDirection: 'row',
@@ -609,7 +609,7 @@ const styles = StyleSheet.create({
   },
   agingBarBackground: {
     height: 8,
-    backgroundColor: '#E5E7EB',
+    backgroundColor: Theme.colors.neutral[200],
     borderRadius: 4,
     overflow: 'hidden',
   },

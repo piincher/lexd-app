@@ -29,7 +29,7 @@ export const SearchPagination: React.FC<SearchPaginationProps> = ({
         <Ionicons
           name="chevron-back"
           size={20}
-          color={canGoPrevious ? Theme.neutral.grey700 : Theme.neutral.grey400}
+          color={canGoPrevious ? Theme.neutral[700] : Theme.neutral[400]}
         />
       </TouchableOpacity>
 
@@ -45,7 +45,7 @@ export const SearchPagination: React.FC<SearchPaginationProps> = ({
         <Ionicons
           name="chevron-forward"
           size={20}
-          color={canGoNext ? Theme.neutral.grey700 : Theme.neutral.grey400}
+          color={canGoNext ? Theme.neutral[700] : Theme.neutral[400]}
         />
       </TouchableOpacity>
     </View>
@@ -64,15 +64,15 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Theme.neutral.grey100,
+    backgroundColor: Theme.neutral[100],
     justifyContent: 'center',
     alignItems: 'center',
   },
   disabledButton: {
-    backgroundColor: Theme.neutral.grey50,
+    backgroundColor: Theme.neutral[50],
   },
   pageInfo: {
     fontSize: 14,
-    color: Theme.neutral.grey700,
+    color: Theme.neutral[700],
   },
 });

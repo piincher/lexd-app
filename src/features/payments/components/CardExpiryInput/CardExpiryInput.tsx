@@ -33,7 +33,7 @@ export const CardExpiryInput: React.FC<CardExpiryInputProps> = ({
         <Ionicons
           name="calendar-outline"
           size={20}
-          color={Theme.neutral.grey500}
+          color={Theme.neutral[500]}
           style={styles.icon}
         />
         <TextInput
@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral.grey700,
+    color: Theme.neutral[700],
     marginBottom: Theme.spacing.xs,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: Theme.neutral.grey300,
+    borderColor: Theme.neutral[300],
     borderRadius: 8,
     paddingHorizontal: Theme.spacing.md,
     backgroundColor: Theme.colors.background.card,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 48,
     fontSize: 16,
-    color: Theme.neutral.grey900,
+    color: Theme.neutral[900],
   },
   errorText: {
     fontSize: 12,

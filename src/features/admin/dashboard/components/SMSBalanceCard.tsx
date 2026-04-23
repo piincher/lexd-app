@@ -144,7 +144,7 @@ export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
         },
         progressFill: {
           height: "100%",
-          backgroundColor: "#FFF",
+          backgroundColor: Theme.colors.background.card,
           borderRadius: 4,
         },
         footer: {

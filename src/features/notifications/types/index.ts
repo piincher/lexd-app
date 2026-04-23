@@ -7,6 +7,7 @@ export type NotificationType =
   | 'PAYMENT'
   | 'CONTAINER_STATUS'
   | 'TICKET_REPLY'
+  | 'TICKET_CREATED'
   | 'INVOICE'
   | 'CERTIFICATE_ISSUED'
   | 'SYSTEM'
@@ -22,13 +23,19 @@ export interface InAppNotification {
   title: string;
   message: string;
   data?: {
+    type?: NotificationType | string;
+    screen?: string;
     orderId?: string;
     containerId?: string;
     ticketId?: string;
     invoiceId?: string;
     paymentId?: string;
     certificateId?: string;
-    [key: string]: any;
+    verificationCode?: string;
+    issuedAt?: string;
+    certificateUrl?: string | null;
+    certificateMongoId?: string;
+    [key: string]: unknown;
   };
   actionUrl?: string;
   actionLabel?: string;
@@ -94,6 +101,11 @@ export const NOTIFICATION_TYPE_CONFIG: Record<NotificationType, {
     label: 'Support', 
     icon: 'message-reply',
     description: 'Nouvelle réponse au ticket'
+  },
+  TICKET_CREATED: {
+    label: 'Nouveau ticket',
+    icon: 'ticket-confirmation',
+    description: 'Nouvelle demande support client'
   },
   INVOICE: {
     label: 'Facture',

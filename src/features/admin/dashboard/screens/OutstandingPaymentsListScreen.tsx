@@ -94,7 +94,7 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
             <Ionicons
               name="chevron-forward"
               size={18}
-              color="#9CA3AF"
+              color={Theme.colors.text.muted}
               style={{ marginTop: 8 }}
             />
           </View>
@@ -128,19 +128,19 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#1F2937" />
+          <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
         </TouchableOpacity>
         <Text style={styles.title}>Impayés</Text>
         <NotificationBell
           onPress={() => navigation.navigate('Notifications' as never)}
           size={24}
-          color="#1F2937"
+          color={Theme.colors.text.primary}
         />
       </View>
 
       <View style={styles.searchRow}>
         <View style={styles.searchBox}>
-          <Ionicons name="search" size={18} color="#9CA3AF" />
+          <Ionicons name="search" size={18} color={Theme.colors.text.muted} />
           <TextInput
             style={styles.searchInput}
             placeholder="Rechercher un client ou ID..."
@@ -151,7 +151,7 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
           />
           {localSearch.length > 0 && (
             <TouchableOpacity onPress={onClearSearch}>
-              <Ionicons name="close-circle" size={18} color="#9CA3AF" />
+              <Ionicons name="close-circle" size={18} color={Theme.colors.text.muted} />
             </TouchableOpacity>
           )}
         </View>
@@ -238,7 +238,7 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F7FA",
+    backgroundColor: Theme.colors.background.default,
   },
   header: {
     flexDirection: "row",
@@ -247,12 +247,12 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: Theme.colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
+    borderBottomColor: Theme.colors.border,
   },
   title: {
     fontSize: 17,
     fontWeight: "700",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
     flex: 1,
     textAlign: "center",
   },
@@ -277,7 +277,7 @@ const styles = StyleSheet.create({
   searchBox: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.background.paper,
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 14,
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   filterRow: {
     flexDirection: "row",
@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 20,
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.background.paper,
   },
   filterChipActive: {
     backgroundColor: "#1F2937",
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   filterChipText: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
   },
   filterChipTextActive: {
     color: "white",
@@ -348,22 +348,22 @@ const styles = StyleSheet.create({
   goodsId: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   description: {
     fontSize: 13,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 2,
   },
   client: {
     fontSize: 13,
     fontWeight: "600",
-    color: "#374151",
+    color: Theme.colors.text.secondary,
     marginTop: 4,
   },
   phone: {
     fontSize: 12,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 1,
   },
   right: {
@@ -389,7 +389,7 @@ const styles = StyleSheet.create({
   },
   metric: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: Theme.colors.background.default,
     borderRadius: 10,
     padding: 10,
     alignItems: "center",
@@ -400,13 +400,13 @@ const styles = StyleSheet.create({
   metricLabel: {
     fontSize: 11,
     fontWeight: "600",
-    color: "#9CA3AF",
+    color: Theme.colors.text.disabled,
     marginBottom: 2,
   },
   metricValue: {
     fontSize: 13,
     fontWeight: "700",
-    color: "#1F2937",
+    color: Theme.colors.text.primary,
   },
   metricValuePaid: {
     fontSize: 13,
@@ -425,7 +425,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: "#6B7280",
+    color: Theme.colors.text.secondary,
     marginTop: 16,
   },
   pagination: {
@@ -450,12 +450,12 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   pageButtonDisabled: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: Theme.colors.background.paper,
   },
   pageText: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#374151",
+    color: Theme.colors.text.secondary,
     minWidth: 80,
     textAlign: "center",
   },

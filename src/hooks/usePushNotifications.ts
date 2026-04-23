@@ -4,6 +4,7 @@
  * Integrates with backend Expo Push API
  */
 
+import { CommonActions } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -13,11 +14,9 @@ import {
   getUnreadCount,
   NotificationData,
   NotificationPermissionStatus,
-  NotificationType,
   registerDevice,
   requestPermissions,
   unregisterDevice,
-  handleNotification,
   handleNotificationResponse,
   incrementBadgeCount,
   markAsRead,
@@ -28,6 +27,7 @@ import {
   setBadgeCount as setNativeBadgeCount,
 } from "@src/services/pushNotificationService";
 import type { NavigationContainerRef } from "@react-navigation/native";
+import type { RootStackParamList } from "@src/navigations/type";
 
 // ============================================================================
 // Types
@@ -80,7 +80,7 @@ export interface UsePushNotificationsOptions {
   /** Whether to auto-register on mount */
   autoRegister?: boolean;
   /** Navigation ref for deep linking */
-  navigationRef?: NavigationContainerRef<any> | null;
+  navigationRef?: NavigationContainerRef<RootStackParamList> | null;
   /** Callback when notification is received (foreground) */
   onNotificationReceived?: (notification: Notifications.Notification) => void;
   /** Callback when notification is tapped */
@@ -514,42 +514,59 @@ const normalizeNotificationCount = (value: unknown): number | null => {
  */
 const handleDeepLink = (
   data: NotificationData,
-  navigationRef: NavigationContainerRef<any>
+  navigationRef: NavigationContainerRef<RootStackParamList>
 ): void => {
   if (!data?.screen) return;
 
-  const { screen, containerId, goodsId, invoiceId, ticketId, orderId } = data;
+  const { screen, containerId, goodsId, ticketId, orderId } = data;
 
   // Navigate based on screen type
   switch (screen) {
     case "ContainerDetail":
     case "ContainerTracking":
       if (containerId) {
-        navigationRef.navigate("ContainerDetail", { containerId });
+        navigationRef.dispatch(CommonActions.navigate({
+          name: "ContainerDetail",
+          params: { containerId },
+        }));
       }
       break;
     case "GoodsDetail":
       if (goodsId) {
-        navigationRef.navigate("GoodsDetail", { goodsId });
+        navigationRef.dispatch(CommonActions.navigate({ name: "GoodsDetail", params: { goodsId } }));
       }
       break;
     // InvoiceDetail case removed - finance feature deleted
     case "TicketDetail":
       if (ticketId) {
-        navigationRef.navigate("TicketDetail", { ticketId });
+        navigationRef.dispatch(CommonActions.navigate({ name: "TicketDetail", params: { ticketId } }));
       }
+      break;
+    case "AdminTicketDetail":
+      if (ticketId) {
+        navigationRef.dispatch(CommonActions.navigate({
+          name: "AdminTicketDetail",
+          params: { ticketId },
+        }));
+      }
+      break;
+    case "AdminTicketList":
+      navigationRef.dispatch(CommonActions.navigate({ name: "AdminTicketList" }));
       break;
     case "OrderDetail":
       if (orderId) {
-        navigationRef.navigate("OrderDetail", { orderId });
+        navigationRef.dispatch(CommonActions.navigate({ name: "OrderDetail", params: { id: orderId } }));
       }
       break;
     case "Payments":
-      navigationRef.navigate("MyPaymentHistory");
+      navigationRef.dispatch(CommonActions.navigate({ name: "MyPaymentHistory" }));
       break;
     case "Home":
     default:
-      navigationRef.navigate("Home");
+      navigationRef.dispatch(CommonActions.navigate({
+        name: "HomeTab",
+        params: { screen: "Home" },
+      }));
       break;
   }
 };

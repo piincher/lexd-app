@@ -168,6 +168,10 @@ import AdminReviewsScreen from "@src/features/admin/reviews/screens/AdminReviews
 import ManagePromosScreen from "@src/features/admin/promos/screens/ManagePromosScreen";
 import AdminGoodsPdfExport from "@src/features/admin/export/screens/GoodsPdfExportScreen";
 import WhatsAppRequestListScreen from "@src/features/admin/whatsapp-requests/screens/WhatsAppRequestListScreen";
+import {
+   AdminTicketDetailScreen,
+   AdminTicketListScreen,
+} from "@src/features/admin/support";
 import SharedShipmentScreen from "@src/features/public/screens/SharedShipmentScreen";
 import GlobalSearchScreen from "@src/features/admin/search/screens/GlobalSearchScreen";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -341,6 +345,9 @@ function AppWrapper() {
                   <Stack.Screen name="AirwayBillTracking" component={AirwayBillTrackingScreen} />
                   {/* WhatsApp Admin Screens */}
                   <Stack.Screen name="WhatsAppRequests" component={WhatsAppRequestListScreen} />
+                  {/* Admin Support Screens */}
+                  <Stack.Screen name="AdminTicketList" component={AdminTicketListScreen} />
+                  <Stack.Screen name="AdminTicketDetail" component={AdminTicketDetailScreen} />
                   {/* Customer Support Screens */}
                   <Stack.Screen name="TicketList" component={TicketListScreen} />
                   <Stack.Screen name="TicketDetail" component={TicketDetailScreen} />

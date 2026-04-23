@@ -6,6 +6,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Theme } from '@src/constants/Theme';
 import { useWhatsAppRequestListScreen } from './hooks/useWhatsAppRequestListScreen';
 import { WhatsAppRequestHeader } from './components/WhatsAppRequestHeader';
 import { WhatsAppRequestStats } from './components/WhatsAppRequestStats';
@@ -90,7 +91,7 @@ export const WhatsAppRequestListScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8F7FC' },
+  container: { flex: 1, backgroundColor: Theme.colors.background.default },
   headerContent: { backgroundColor: 'transparent' },
 });
 

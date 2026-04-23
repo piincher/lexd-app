@@ -338,7 +338,7 @@ export const GlobalSearchScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F7FC",
+    backgroundColor: Theme.colors.background.default,
   },
   header: {
     paddingHorizontal: Theme.spacing.lg,
@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: width * 0.85,
     maxWidth: 360,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.xl,
   },
   closeFilterButton: {

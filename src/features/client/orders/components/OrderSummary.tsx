@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   summaryLabel: {
     fontSize: 12,
-    color: Theme.neutral.grey500,
+    color: Theme.neutral[500],
     marginBottom: Theme.spacing.xs,
   },
   summaryValue: {
@@ -65,6 +65,6 @@ const styles = StyleSheet.create({
   summaryDivider: {
     width: 1,
     height: 40,
-    backgroundColor: Theme.neutral.grey200,
+    backgroundColor: Theme.neutral[200],
   },
 });

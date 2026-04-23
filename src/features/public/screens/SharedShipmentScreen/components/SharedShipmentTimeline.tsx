@@ -28,11 +28,11 @@ const STATUS_CONFIG: Record<string, { color: string; icon: string; label: string
   received: { color: '#6366F1', icon: 'package-variant', label: 'Reçu' },
   in_container: { color: '#3B82F6', icon: 'ferry', label: 'En Container' },
   shipped: { color: '#0EA5E9', icon: 'ferry', label: 'Expédié' },
-  pending: { color: '#6B7280', icon: 'clock-outline', label: 'En Attente' },
+  pending: { color: Theme.colors.text.secondary, icon: 'clock-outline', label: 'En Attente' },
 };
 
 const getStatusConfig = (status: string) => {
-  return STATUS_CONFIG[status] || { color: '#6B7280', icon: 'help-circle', label: status };
+  return STATUS_CONFIG[status] || { color: Theme.colors.text.secondary, icon: 'help-circle', label: status };
 };
 
 export const SharedShipmentTimeline: React.FC<Props> = ({ timeline }) => {

@@ -16,6 +16,7 @@ import { ClientSearchSection } from '../../../components/ClientSearchSection';
 import { CostSummary } from '../../../components/CostSummary';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 
 interface ReceiveGoodsFormProps extends ReceiveGoodsFormSectionProps {
   // Client selection
@@ -247,7 +248,7 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
                     onPress={() => setValue('receivedDate', '')}
                     hitSlop={8}
                   >
-                    <MaterialCommunityIcons name="close-circle" size={18} color="#9CA3AF" />
+                    <MaterialCommunityIcons name="close-circle" size={18} color={Theme.colors.text.muted} />
                   </Pressable>
                 )}
               </Pressable>
@@ -333,7 +334,7 @@ const styles = StyleSheet.create({
   dateButtonText: {
     flex: 1,
     fontSize: 15,
-    color: '#374151',
+    color: Theme.colors.text.secondary,
   },
   dateError: {
     fontSize: 12,
