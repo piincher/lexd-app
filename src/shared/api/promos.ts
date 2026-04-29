@@ -1,4 +1,4 @@
-import { apiV2 } from "@src/api/client";
+import { apiV2 } from "./client";
 
 const BASE_URL = "/promos";
 

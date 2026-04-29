@@ -11,6 +11,13 @@ interface CountryCode {
 const COUNTRIES: CountryCode[] = [
    { code: "223", flag: "🇲🇱", country: "Mali" },
    { code: "225", flag: "🇨🇮", country: "Côte d'Ivoire" },
+   { code: "221", flag: "🇸🇳", country: "Sénégal" },
+   { code: "226", flag: "🇧🇫", country: "Burkina Faso" },
+   { code: "224", flag: "🇬🇳", country: "Guinée" },
+   { code: "228", flag: "🇹🇬", country: "Togo" },
+   { code: "229", flag: "🇧🇯", country: "Bénin" },
+   { code: "233", flag: "🇬🇭", country: "Ghana" },
+   { code: "86",  flag: "🇨🇳", country: "Chine" },
 ];
 
 const SPECIAL_PHONES = ["22376696177", "22317865673"];

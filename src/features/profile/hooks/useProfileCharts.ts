@@ -9,7 +9,7 @@ import type { DashboardStats } from '@src/features/customer/dashboard/types';
 import { useBalanceDue } from '@src/features/payments/hooks/usePayments';
 import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
 import { useGetCurrentUser } from '@src/shared/hooks/useUser';
-import type { productType } from '@src/api/order';
+import type { productType } from '@src/shared/types/order';
 
 const MONTH_NAMES = ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'];
 

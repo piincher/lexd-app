@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { trackingApi } from '../api/trackingApi';
 import { trackingQueryKeys } from '../constants/queryKeys';
-import { ApiClientError } from '@src/api/client';
+import { ApiClientError } from '../api';
 
 export interface ETACalculation {
   estimatedArrival: string;

@@ -1,7 +1,9 @@
 /**
- * Shared Types Index
- * Centralized type exports for cross-feature usage
+ * Shared Types Barrel Export
+ * Import all shared types from here instead of feature-specific paths
  */
 
-// Goods types
-export * from './goods';
+export * from "./api";
+export * from "./goods";
+export * from "./order";
+export * from "./user";

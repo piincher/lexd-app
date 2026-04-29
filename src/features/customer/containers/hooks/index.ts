@@ -11,6 +11,9 @@ export {
   useCustomerContainerInvalidation,
 } from './useCustomerContainers';
 
+export { useContainerTrackingScreen } from './useContainerTrackingScreen';
+export { useMyContainersScreen } from './useMyContainersScreen';
+
 // ============================================
 // TRACKING HOOKS
 // ============================================
@@ -22,21 +25,21 @@ export {
   useGetMyTrackingEvents,
   useGetDeliveryProgress,
   useGetEstimatedDelivery,
-  
+
   // Public tracking queries
   useGetPublicTracking,
   useVerifyContainerNumber,
-  
+
   // Mutations
   useMarkEventsAsRead,
   useSubscribeToTrackingUpdates,
   useUnsubscribeFromTrackingUpdates,
-  
+
   // Utilities
   useIsNearDestination,
   useDaysUntilDelivery,
   useHasUnreadTrackingEvents,
-  
+
   // Query keys
   trackingQueryKeys,
-} from './useCustomerTracking';
+} from './tracking';

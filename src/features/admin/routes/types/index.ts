@@ -51,7 +51,17 @@ export interface Route {
 /**
  * Input for creating a route
  */
-export type CreateRouteInput = Omit<Route, '_id' | 'createdBy' | 'createdAt' | 'updatedAt'>;
+export interface CreateRouteInput {
+  name: string;
+  shippingMode: ShippingMode;
+  origin: string | Route['origin'];
+  destination: string | Route['destination'];
+  shippingLine?: ShippingLine | '';
+  estimatedTransitDays: number;
+  waypoints?: RouteWaypointDraft[];
+  description?: string;
+  isActive?: boolean;
+}
 
 /**
  * Input for updating a route
@@ -85,6 +95,7 @@ export interface RouteFormData {
   destination: string;
   shippingLine: ShippingLine | '';
   estimatedTransitDays: string;
+  waypoints: RouteWaypointDraft[];
   description: string;
   isActive: boolean;
 }
@@ -239,11 +250,24 @@ export interface RouteWaypoint {
   location: {
     city: string;
     country: string;
+    countryCode?: string;
+    portCode?: string;
+    coordinates?: {
+      latitude: number;
+      longitude: number;
+    };
   };
   estimatedDaysFromStart: number;
   description: string;
   type: 'PORT' | 'AIRPORT' | 'CUSTOMS' | 'ROAD' | 'WAREHOUSE' | 'BORDER';
+  segmentType?: 'SEA' | 'AIR' | 'ROAD' | 'WAREHOUSE';
+  terminal?: string;
+  carrier?: string;
+  notifyOnArrival?: boolean;
+  notifyOnDeparture?: boolean;
 }
+
+export type RouteWaypointDraft = Omit<RouteWaypoint, 'id'> & { id?: string };
 
 /**
  * Navigation prop type for route screens

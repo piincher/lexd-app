@@ -140,3 +140,44 @@ export interface UpdateGoodsInput {
   photosToKeep?: string[];
   newPhotoUris?: string[];
 }
+
+// ============================================
+// AIRWAY BILL TYPES (for tracking screen)
+// ============================================
+
+export interface AirwayBillGoodsItem {
+  _id: string;
+  goodsId: string;
+  status?: string;
+}
+
+export interface TrackingWaypoint {
+  _id?: string;
+  order: number;
+  segmentType: 'AIR' | 'CUSTOMS' | 'WAREHOUSE' | 'ROAD' | 'CONTAINER';
+  status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'DELAYED' | 'CANCELLED';
+  description?: string;
+  shortName?: string;
+  estimatedArrival?: string | null;
+  actualArrival?: string | null;
+  location: {
+    city?: string;
+    country?: string;
+    portCode?: string;
+    warehouse?: string;
+  };
+}
+
+export interface AirwayBill {
+  _id: string;
+  awbNumber: string;
+  flightNumber?: string;
+  airline?: string;
+  departureAirport?: string;
+  arrivalAirport?: string;
+  status: string;
+  waypoints?: TrackingWaypoint[];
+  currentWaypointIndex?: number;
+  waypointProgressPercentage?: number;
+  goodsIds: (string | AirwayBillGoodsItem)[];
+}

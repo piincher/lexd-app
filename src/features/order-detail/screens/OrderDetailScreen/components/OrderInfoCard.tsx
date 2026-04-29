@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Card, Divider } from "react-native-paper";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
-import { productType } from "@src/api/order";
+import { productType } from "@src/features/orders/api";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface OrderInfoCardProps {

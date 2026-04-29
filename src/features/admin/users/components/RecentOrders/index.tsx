@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-import { productType } from "@src/api/order";
+import { productType } from "@src/shared/types/order";
 import { STATUS_CONFIG } from "../../lib/constants";
 import { styles } from "./RecentOrders.styles";
 

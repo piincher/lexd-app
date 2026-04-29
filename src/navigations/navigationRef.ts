@@ -1,8 +1,2 @@
-import { createNavigationContainerRef } from "@react-navigation/native";
-import type { RootStackParamList } from "./type";
-
-/**
- * Shared navigation ref for use outside of React components.
- * Pass this as the `ref` prop to NavigationContainer.
- */
-export const navigationRef = createNavigationContainerRef<RootStackParamList>();
+// Re-export shim — moved to src/app/navigation/navigationRef.ts
+export * from '../app/navigation/navigationRef';

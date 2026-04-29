@@ -1,2 +1,3 @@
 // Order Hooks
-export { useOrderDetail } from "./useOrderDetail";
+export { useGetOrderDetail } from "./useOrderDetail";
+export { useCustomerOrders } from "./useCustomerOrders";

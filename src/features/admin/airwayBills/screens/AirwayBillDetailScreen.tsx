@@ -1,26 +1,16 @@
 import React from 'react';
-import { ScrollView, TouchableOpacity, RefreshControl } from 'react-native';
+import { ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { AirwayBillSkeleton } from './components';
 import { useAirwayBillDetailScreen } from './hooks';
-import {
-  AirwayBillDetailHeader,
-  AirwayBillStatusMenu,
-  AirwayBillInfoCard,
-  AirwayBillTimeline,
-  AirwayBillStatsRow,
-  AirwayBillGoodsList,
-  AirwayBillDetailActions,
-  CargoBagList,
-  CargoBagCreateDialog,
-} from './components';
+import { styles } from './AirwayBillDetailScreen.styles';
+import { AirwayBillSkeleton, CargoBagCreateDialog } from './components';
+import { AirwayBillDetailBody } from '../components/AirwayBillDetailBody';
 
 export const AirwayBillDetailScreen: React.FC = () => {
   const { colors } = useAppTheme();
   const {
-    airwayBill, isLoading, goodsList,
+    airwayBill, waypointPayload, isLoading, goodsList,
     flightLabel, routeLabel, consignee,
     nextStatuses, menuVisible, statusLabels, statusColors,
     handleStatusChange, handleDelete, handleBack, openMenu, closeMenu,
@@ -35,50 +25,46 @@ export const AirwayBillDetailScreen: React.FC = () => {
 
   if (isLoading || !airwayBill) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
         <AirwayBillSkeleton />
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }} edges={['bottom']}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]} edges={['bottom']}>
       <ScrollView
-        contentContainerStyle={{ padding: 16, paddingBottom: 60 }}
+        contentContainerStyle={styles.scrollContent}
         refreshControl={
           <RefreshControl refreshing={isRefreshingCargoBags} onRefresh={handleRefreshCargoBags} tintColor={colors.primary.main} />
         }
       >
-        <AirwayBillDetailHeader onBack={handleBack} title="Détail AWB">
-          <AirwayBillStatusMenu
-            visible={menuVisible}
-            onDismiss={closeMenu}
-            anchor={
-              <TouchableOpacity onPress={openMenu}>
-                <Ionicons name="ellipsis-vertical" size={24} color={colors.neutral[800]} />
-              </TouchableOpacity>
-            }
-            nextStatuses={nextStatuses}
-            statusLabels={statusLabels}
-            statusColors={statusColors}
-            onStatusChange={handleStatusChange}
-            onDelete={handleDelete}
-            disabled={isUpdatingStatus}
-          />
-        </AirwayBillDetailHeader>
-        <AirwayBillInfoCard airwayBill={airwayBill} flightLabel={flightLabel} routeLabel={routeLabel} consignee={consignee} />
-        <AirwayBillTimeline currentStatus={airwayBill.status} statusLabels={statusLabels} statusColors={statusColors} />
-        <AirwayBillStatsRow totalPackages={airwayBill.totalPackages} totalWeight={airwayBill.totalWeight} />
-        <CargoBagList
+        <AirwayBillDetailBody
+          airwayBill={airwayBill}
+          waypointPayload={waypointPayload}
+          goodsList={goodsList}
+          flightLabel={flightLabel}
+          routeLabel={routeLabel}
+          consignee={consignee}
+          nextStatuses={nextStatuses}
+          menuVisible={menuVisible}
+          statusLabels={statusLabels}
+          statusColors={statusColors}
+          handleStatusChange={handleStatusChange}
+          handleDelete={handleDelete}
+          openMenu={openMenu}
+          closeMenu={closeMenu}
+          handleAssignPress={handleAssignPress}
+          handleBack={handleBack}
+          airwayBillId={airwayBillId}
+          isUpdatingStatus={isUpdatingStatus}
           cargoBags={cargoBags}
-          onBagPress={handleBagPress}
-          onCreatePress={() => setCreateBagVisible(true)}
-          loading={isLoadingCargoBags}
-          refreshing={isRefreshingCargoBags}
-          onRefresh={handleRefreshCargoBags}
+          isLoadingCargoBags={isLoadingCargoBags}
+          setCreateBagVisible={setCreateBagVisible}
+          handleBagPress={handleBagPress}
+          handleRefreshCargoBags={handleRefreshCargoBags}
+          isRefreshingCargoBags={isRefreshingCargoBags}
         />
-        <AirwayBillGoodsList goodsList={goodsList} cargoBags={cargoBags} airwayBillId={airwayBillId} onAssignPress={handleAssignPress} />
-        <AirwayBillDetailActions hasGoods={goodsList.length > 0} onAssignPress={handleAssignPress} />
       </ScrollView>
       <CargoBagCreateDialog
         visible={createBagVisible}

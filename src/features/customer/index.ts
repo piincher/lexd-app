@@ -1,15 +1,22 @@
 /**
  * Customer Feature Module
- * Customer-facing features for ChinaLink Express
+ * Public API for customer-facing features
  */
 
-// Dashboard Feature
-export * from './dashboard';
-
-// Containers Feature
+// Containers
 export * from './containers';
 
-// Support Feature
+// Dashboard
+export * from './dashboard';
+
+// Orders
+export * from './orders';
+
+// Promos
+export * from './promos';
+
+// Reviews
+export * from './reviews';
+
+// Support
 export * from './support';
-
-

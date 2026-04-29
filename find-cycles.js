@@ -67,7 +67,7 @@ function findCycles(startFile, targetFile, visited, pathStack) {
   return cycles;
 }
 
-const colorsFile = 'src/constants/Colors.ts';
+const colorsFile = 'src/shared/constants/Colors.ts';
 const cycles = findCycles(colorsFile, colorsFile);
 console.log('Cycles involving Colors.ts:', cycles.length);
 for (const cycle of cycles.slice(0, 10)) {

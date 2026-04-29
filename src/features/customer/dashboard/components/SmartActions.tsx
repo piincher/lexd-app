@@ -11,26 +11,24 @@ interface Props {
   onActionPress: (action: QuickAction) => void;
 }
 
-const ACTION_META: Record<string, { icon: string; tint: string; gradient: readonly [string, string] }> = {
+const ACTION_META: Record<string, { icon: string; tint: string; gradient: readonly [string, string]; sublabel: string }> = {
   'view-goods': {
     icon: 'cube',
     tint: '#8B5CF6',
     gradient: ['#8B5CF6', '#A78BFA'] as const,
+    sublabel: 'Voir vos colis',
   },
   'view-containers': {
     icon: 'boat',
     tint: '#0EA5E9',
     gradient: ['#0EA5E9', '#38BDF8'] as const,
-  },
-  'payment-history': {
-    icon: 'receipt',
-    tint: '#10B981',
-    gradient: ['#10B981', '#34D399'] as const,
+    sublabel: 'Suivi maritime',
   },
   'support': {
     icon: 'chatbubble-ellipses',
     tint: '#F59E0B',
     gradient: ['#F59E0B', '#FBBF24'] as const,
+    sublabel: 'Contactez-nous',
   },
 };
 
@@ -80,7 +78,7 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
       <Text style={styles.header}>Actions Rapides</Text>
       <View style={styles.grid}>
         {actions.map((action) => {
-          const meta = ACTION_META[action.id] || { icon: 'apps', tint: colors.primary.main, gradient: ['#64748B', '#94A3B8'] as const };
+          const meta = ACTION_META[action.id] || { icon: 'apps', tint: colors.primary.main, gradient: ['#64748B', '#94A3B8'] as const, sublabel: 'Appuyez pour voir' };
           return (
             <Pressable
               key={action.id}
@@ -106,7 +104,7 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
                 <Text style={styles.label} numberOfLines={1}>
                   {action.label}
                 </Text>
-                <Text style={styles.sublabel}>Appuyez pour voir</Text>
+                <Text style={styles.sublabel}>{meta.sublabel}</Text>
               </View>
             </Pressable>
           );

@@ -19,8 +19,12 @@ import { Theme } from '@src/constants/Theme';
 import { ClientGoodsGroup } from '../types/packingList';
 import { PackingListTable } from './PackingListTable';
 
-// Enable layout animations on Android
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+const isNewArchitectureEnabled = Boolean(
+  (globalThis as { nativeFabricUIManager?: unknown }).nativeFabricUIManager
+);
+
+// Enable layout animations on Android old architecture
+if (Platform.OS === 'android' && !isNewArchitectureEnabled && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
@@ -112,6 +116,11 @@ export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
               <View style={styles.summaryItem}>
                 <Text style={styles.summaryValue}>{goods.length}</Text>
                 <Text style={styles.summaryLabel}>Colis</Text>
+              </View>
+              <View style={styles.summaryDivider} />
+              <View style={styles.summaryItem}>
+                <Text style={styles.summaryValue}>{summary.totalQuantity}</Text>
+                <Text style={styles.summaryLabel}>Articles</Text>
               </View>
               <View style={styles.summaryDivider} />
               <View style={styles.summaryItem}>

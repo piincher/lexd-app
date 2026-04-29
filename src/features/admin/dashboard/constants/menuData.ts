@@ -63,7 +63,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       { id: "c7", title: "Tickets Support", route: "AdminTicketList" },
       { id: "c8", title: "Promotions", route: "ManagePromos" },
       { id: "c9", title: "Push Campaigns", route: "CampaignList" },
-      { id: "c10", title: "Announcements", route: "CreateAnnouncement" },
+      { id: "c10", title: "Announcements", route: "AnnouncementList" },
     ],
   },
   {
@@ -73,6 +73,7 @@ export const MENU_CATEGORIES: MenuCategory[] = [
     items: [
       { id: "t1", title: "Scan QR Code", route: "ScanQRCode" },
       { id: "t2", title: "Statistics", route: "Stats" },
+      { id: "t3", title: "Data Export", route: "DataExport" },
     ],
   },
 ];

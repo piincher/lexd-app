@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useGetAllGoods, goodsQueryKeys } from './useGoods';
 import { GoodsFilters, GoodsStatus } from '../types';
 import { ApiClientError } from '@src/api/client';
-import { userData } from '@src/constants/types';
+import { userData } from '@src/shared/types/user';
 
 interface DateRange {
   startDate: string;

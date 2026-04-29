@@ -58,11 +58,18 @@ export const JourneyMap: React.FC<Props> = ({ goodsByStatus, totalGoods }) => {
         },
         label: { fontSize: 10, fontWeight: '700', marginTop: 8, textAlign: 'center' },
         count: { fontSize: 12, fontWeight: '800', marginTop: 2 },
+        emptyState: {
+          alignItems: 'center',
+          paddingVertical: 32,
+          borderRadius: 16,
+          marginHorizontal: 16,
+          gap: 8,
+        },
+        emptyTitle: { fontSize: 14, fontWeight: '700', marginTop: 4 },
+        emptyText: { fontSize: 12, textAlign: 'center', paddingHorizontal: 24 },
       }),
     [colors]
   );
-
-  if (totalGoods === 0) return null;
 
   return (
     <View style={styles.container}>
@@ -73,61 +80,73 @@ export const JourneyMap: React.FC<Props> = ({ goodsByStatus, totalGoods }) => {
         </View>
       </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
-        <View style={styles.track}>
-          {STAGES.map((stage, index) => {
-            const count = goodsByStatus[stage.key] || 0;
-            const isActive = count > 0;
-            const isLast = index === STAGES.length - 1;
-
-            return (
-              <React.Fragment key={stage.key}>
-                <View style={styles.stage}>
-                  <View
-                    style={[
-                      styles.dotWrapper,
-                      {
-                        borderColor: isActive ? stage.color : colors.neutral[300],
-                        backgroundColor: isActive ? `${stage.color}15` : colors.background.card,
-                      },
-                    ]}
-                  >
-                    {isActive && (
-                      <View style={[styles.pulse, { backgroundColor: `${stage.color}25` }]} />
-                    )}
-                    <Ionicons
-                      name={stage.icon as any}
-                      size={isActive ? 18 : 16}
-                      color={isActive ? stage.color : colors.text.disabled}
-                    />
-                  </View>
-                  <Text
-                    style={[
-                      styles.label,
-                      { color: isActive ? colors.text.secondary : colors.text.disabled },
-                    ]}
-                  >
-                    {stage.label}
-                  </Text>
-                  <Text style={[styles.count, { color: isActive ? stage.color : colors.text.disabled }]}>
-                    {count}
-                  </Text>
-                </View>
-                {!isLast && (
-                  <View
-                    style={[
-                      styles.line,
-                      {
-                        backgroundColor: isActive ? stage.color : colors.neutral[200],
-                      },
-                    ]}
-                  />
-                )}
-              </React.Fragment>
-            );
-          })}
+      {totalGoods === 0 ? (
+        <View style={[styles.emptyState, { backgroundColor: colors.background.card }]}>
+          <Ionicons name="cube-outline" size={40} color={colors.text.disabled} />
+          <Text style={[styles.emptyTitle, { color: colors.text.primary }]}>
+            Aucune marchandise
+          </Text>
+          <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
+            Vos marchandises apparaîtront ici une fois enregistrées.
+          </Text>
         </View>
-      </ScrollView>
+      ) : (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scroll}>
+          <View style={styles.track}>
+            {STAGES.map((stage, index) => {
+              const count = goodsByStatus[stage.key] || 0;
+              const isActive = count > 0;
+              const isLast = index === STAGES.length - 1;
+
+              return (
+                <React.Fragment key={stage.key}>
+                  <View style={styles.stage}>
+                    <View
+                      style={[
+                        styles.dotWrapper,
+                        {
+                          borderColor: isActive ? stage.color : colors.neutral[300],
+                          backgroundColor: isActive ? `${stage.color}15` : colors.background.card,
+                        },
+                      ]}
+                    >
+                      {isActive && (
+                        <View style={[styles.pulse, { backgroundColor: `${stage.color}25` }]} />
+                      )}
+                      <Ionicons
+                        name={stage.icon as any}
+                        size={isActive ? 18 : 16}
+                        color={isActive ? stage.color : colors.text.disabled}
+                      />
+                    </View>
+                    <Text
+                      style={[
+                        styles.label,
+                        { color: isActive ? colors.text.secondary : colors.text.disabled },
+                      ]}
+                    >
+                      {stage.label}
+                    </Text>
+                    <Text style={[styles.count, { color: isActive ? stage.color : colors.text.disabled }]}>
+                      {count}
+                    </Text>
+                  </View>
+                  {!isLast && (
+                    <View
+                      style={[
+                        styles.line,
+                        {
+                          backgroundColor: isActive ? stage.color : colors.neutral[200],
+                        },
+                      ]}
+                    />
+                  )}
+                </React.Fragment>
+              );
+            })}
+          </View>
+        </ScrollView>
+      )}
     </View>
   );
 };

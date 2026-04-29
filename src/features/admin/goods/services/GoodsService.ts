@@ -4,7 +4,7 @@
  */
 
 import { apiClientV2, apiRequest, uploadFile } from '@src/api/client';
-import { ApiResponse, PaginatedResponse } from '@src/api/types';
+import { ApiResponse, PaginatedResponse } from '@src/shared/types/api';
 import { Goods, ReceiveGoodsInput, UpdateLocationInput, GoodsFilters } from '../types';
 
 /**

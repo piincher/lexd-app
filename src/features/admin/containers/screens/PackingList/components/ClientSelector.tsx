@@ -26,7 +26,7 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
   const normalizedSelectedId = selectedClientId ? String(selectedClientId).trim() : null;
   const selectedClient = clients.find(c => String(c.clientId).trim() === normalizedSelectedId);
   const displayText = selectedClient 
-    ? `👤 ${selectedClient.clientName} (${selectedClient.goods.length} colis)`
+    ? `👤 ${selectedClient.clientName} (${selectedClient.goods.length} colis • ${selectedClient.summary.totalQuantity || selectedClient.summary.totalItems || 0} articles)`
     : '📋 Tous les clients';
 
   return (
@@ -99,7 +99,7 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
                         👤 {client.clientName}
                       </Text>
                       <Text style={styles.clientMeta}>
-                        {client.goods.length} colis • {client.summary.totalCBM.toFixed(2)} m³
+                        {client.goods.length} colis • {client.summary.totalQuantity || client.summary.totalItems || 0} articles • {client.summary.totalCBM.toFixed(2)} m³
                       </Text>
                     </View>
                     {isSelected && <Text style={styles.checkmark}>✓</Text>}

@@ -4,7 +4,7 @@
  */
 
 import { apiClientV2, apiRequest } from '@src/api/client';
-import { ApiResponse } from '@src/api/types';
+import { ApiResponse } from '@src/shared/types/api';
 import {
   CustomerTrackingInfo,
   PublicTrackingInfo,

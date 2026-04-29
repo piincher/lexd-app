@@ -1,4 +1,4 @@
-import { fetchAllUsers } from "@src/api/auth";
+import { fetchAllUsers } from "@src/features/admin/users/api/userApi";
 import { useQuery } from "@tanstack/react-query";
 
 const USERSKEY = "users";
@@ -6,6 +6,9 @@ const USERSKEY = "users";
 export const useGetUsers = () => {
 	return useQuery({
 		queryKey: [USERSKEY],
-		queryFn: fetchAllUsers,
+		queryFn: async () => {
+			const response = await fetchAllUsers();
+			return response.data;
+		},
 	});
 };

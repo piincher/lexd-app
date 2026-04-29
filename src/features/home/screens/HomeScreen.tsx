@@ -3,7 +3,7 @@
  * Thin orchestrator composing home page sections
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
@@ -23,10 +23,8 @@ import {
   ServiceShowcase,
   ProcessTimeline,
   BenefitsGrid,
-  ComparisonCard,
   CertificateVerifier,
   PartnersStrip,
-  NuvotechSection,
 } from '../components/sections';
 
 const HomeScreen: React.FC = () => {
@@ -35,6 +33,13 @@ const HomeScreen: React.FC = () => {
   const token = useAuth((state) => state.token);
   const firstName = useAuth((state) => state.user?.firstName);
   const { whatsappStyle, scrollHandler } = useHomeScreen();
+
+  // Redirect authenticated users to dashboard — Home is for guests only
+  useEffect(() => {
+    if (token) {
+      navigation.navigate('CustomerDashboard' as never);
+    }
+  }, [token, navigation]);
 
   const handleServicePress = (route: string) => {
     if (route === 'ChooseShippingMethod') {
@@ -61,10 +66,8 @@ const HomeScreen: React.FC = () => {
         <ServiceShowcase onServicePress={handleServicePress} />
         <ProcessTimeline />
         <BenefitsGrid />
-        <ComparisonCard />
         <CertificateVerifier />
         <PartnersStrip />
-        <NuvotechSection />
         <View style={styles.bottomSpacing} />
       </Animated.ScrollView>
 

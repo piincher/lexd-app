@@ -6,7 +6,7 @@
 // Re-export tracking types
 export * from './tracking';
 
-import { GoodsStatus } from '../../../goods/types';
+import { GoodsStatus } from '@src/shared/types';
 
 // ============================================
 // STATUS TYPES

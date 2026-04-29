@@ -5,7 +5,7 @@
  * for tracking app performance in production.
  */
 
-import analytics from '@react-native-firebase/analytics';
+import { trackEvent } from './analytics';
 import { addBreadcrumb, captureException } from './sentry';
 
 interface PerformanceMark {
@@ -213,8 +213,8 @@ class PerformanceMonitor {
     if (!mark.duration) return;
 
     try {
-      // Log to Firebase Analytics
-      await analytics().logEvent('performance_mark', {
+      // Log to Mixpanel
+      await trackEvent('performance_mark', {
         mark_name: mark.name,
         duration_ms: Math.round(mark.duration),
         ...this.flattenMetadata(mark.metadata),
@@ -252,7 +252,7 @@ class PerformanceMonitor {
    */
   private async logMetric(metric: PerformanceMetric): Promise<void> {
     try {
-      await analytics().logEvent('performance_metric', {
+      await trackEvent('performance_metric', {
         metric_name: metric.name,
         metric_value: metric.value,
         metric_unit: metric.unit,

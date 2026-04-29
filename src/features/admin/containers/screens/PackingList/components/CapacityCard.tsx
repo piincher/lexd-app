@@ -35,7 +35,7 @@ export const CapacityCard: React.FC<CapacityCardProps> = ({ summary }) => {
           </View>
           <View style={styles.capacityStatDivider} />
           <View style={styles.capacityStat}>
-            <Text style={styles.capacityStatValue}>{summary.totalPackages}</Text>
+            <Text style={styles.capacityStatValue}>{summary.totalQuantity || summary.totalPackages || 0}</Text>
             <Text style={styles.capacityStatLabel}>Articles</Text>
           </View>
           <View style={styles.capacityStatDivider} />

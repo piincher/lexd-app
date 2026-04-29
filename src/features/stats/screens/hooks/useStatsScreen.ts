@@ -1,6 +1,6 @@
 import { useGetCurrentUser } from '@src/shared/hooks/useUser';
 import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
-import { productType } from "@src/api/order";
+import { productType } from "@src/shared/types/order";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
 export interface Order {

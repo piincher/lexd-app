@@ -2,13 +2,11 @@
  * useOutstandingPaymentsList - Hook for fetching paginated outstanding payments
  * SRP: Data fetching and business logic ONLY
  */
-
 import { useState, useCallback } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import type { UseQueryOptions } from '@tanstack/react-query';
+import { useNavigation } from '@react-navigation/native';
+import { useQuery, useQueryClient, type UseQueryOptions } from '@tanstack/react-query';
 import { getOutstandingPaymentsList } from '../api/dashboardApi';
 import type { OutstandingPaymentsListData } from '../types';
-
 export const outstandingPaymentsListKeys = {
   all: ['outstandingPaymentsList'] as const,
   list: (filters: { page: number; limit: number; status?: string; search?: string }) =>
@@ -19,10 +17,12 @@ export const useOutstandingPaymentsList = (
   options?: Omit<UseQueryOptions<OutstandingPaymentsListData, Error>, 'queryKey' | 'queryFn'>
 ) => {
   const queryClient = useQueryClient();
+  const navigation = useNavigation<any>();
   const [page, setPage] = useState(1);
   const [limit] = useState(20);
   const [status, setStatus] = useState<string | undefined>(undefined);
   const [search, setSearch] = useState('');
+  const [localSearch, setLocalSearch] = useState('');
 
   const { data, isLoading, isRefetching, refetch, error } = useQuery<OutstandingPaymentsListData, Error>({
     queryKey: outstandingPaymentsListKeys.list({ page, limit, status, search }),
@@ -41,6 +41,19 @@ export const useOutstandingPaymentsList = (
     setPage(1);
   }, []);
 
+  const handleSearchChange = useCallback((text: string) => {
+    setLocalSearch(text);
+  }, []);
+
+  const handleSearchSubmit = useCallback(() => {
+    handleSearch(localSearch);
+  }, [localSearch, handleSearch]);
+
+  const handleClearSearch = useCallback(() => {
+    setLocalSearch('');
+    handleSearch('');
+  }, [handleSearch]);
+
   const handleStatusChange = useCallback((newStatus?: string) => {
     setStatus(newStatus);
     setPage(1);
@@ -58,6 +71,10 @@ export const useOutstandingPaymentsList = (
     }
   }, [page]);
 
+  const handleItemPress = useCallback((goodsId: string) => {
+    navigation.navigate('AdminGoodsDetail', { goodsId });
+  }, [navigation]);
+
   return {
     items: data?.items || [],
     pagination: data?.pagination,
@@ -68,13 +85,16 @@ export const useOutstandingPaymentsList = (
     limit,
     status,
     search,
+    localSearch,
     handleRefresh,
     handleSearch,
+    handleSearchChange,
+    handleSearchSubmit,
+    handleClearSearch,
     handleStatusChange,
     handleNextPage,
     handlePrevPage,
+    handleItemPress,
     setPage,
   };
 };
-
-export default useOutstandingPaymentsList;

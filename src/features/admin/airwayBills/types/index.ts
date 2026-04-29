@@ -86,8 +86,12 @@ export interface AirwayBillWaypoint {
 }
 
 export interface AirwayBillWaypointPayload {
-  airwayBillId: string;
-  awbNumber: string;
+  airwayBillId?: string;
+  awbNumber?: string;
+  cargoBagId?: string;
+  bagNumber?: string;
+  routeKey?: string;
+  routeName?: string;
   shippingMode: 'AIR';
   status: AirwayBillStatus;
   journeyStatus: AirwayBillJourneyStatus;
@@ -96,6 +100,14 @@ export interface AirwayBillWaypointPayload {
   totalWaypoints: number;
   progressPercentage: number;
   hasWaypoints: boolean;
+}
+
+export interface AirCargoRouteOption {
+  key: string;
+  name: string;
+  description: string;
+  origin: string;
+  destination: string;
 }
 
 export interface AirwayBill {
@@ -115,7 +127,9 @@ export interface AirwayBill {
   totalWaypoints?: number;
   journeyStatus?: AirwayBillJourneyStatus;
   waypointProgressPercentage?: number;
-  goodsIds: string[];
+  routeKey?: string;
+  routeName?: string;
+  goodsIds: (string | AirwayBillGoods)[];
   totalWeight: number;
   totalPackages: number;
   capacityWeight: number;
@@ -123,6 +137,18 @@ export interface AirwayBill {
   createdBy: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface AirwayBillGoods {
+  _id: string;
+  goodsId: string;
+  description?: string;
+  weight?: number;
+  quantity?: number;
+  status?: string;
+  clientId?: string | { firstName?: string; lastName?: string };
+  cargoBagId?: string | null;
+  photos?: string[];
 }
 
 export interface AirwayBillConsignee {
@@ -149,6 +175,7 @@ export interface CreateAirwayBillInput {
   departureDate?: string;
   estimatedArrivalDate?: string;
   consigneeId?: string;
+  routeKey?: string;
   capacityWeight?: number;
   notes?: string;
 }
@@ -162,6 +189,7 @@ export interface UpdateAirwayBillInput {
   estimatedArrivalDate?: string;
   actualArrivalDate?: string;
   consigneeId?: string | null;
+  routeKey?: string;
   capacityWeight?: number;
   notes?: string;
 }
@@ -223,7 +251,14 @@ export interface CargoBag {
   totalPackages: number;
   totalWeight: number;
   goodsCount: number;
-  goodsIds: string[];
+  goodsIds: (string | AirwayBillGoods)[];
+  routeKey?: string;
+  routeName?: string;
+  waypoints?: AirwayBillWaypoint[];
+  currentWaypointIndex?: number;
+  totalWaypoints?: number;
+  journeyStatus?: AirwayBillJourneyStatus;
+  waypointProgressPercentage?: number;
   notes?: string;
   arrivedAt?: string | null;
   createdAt: string;
@@ -240,9 +275,9 @@ export interface AssignGoodsToBagInput {
 }
 
 export const CARGO_BAG_STATUS_TRANSITIONS: Record<CargoBagStatus, CargoBagStatus[]> = {
-  PACKED: ['CHECKED_IN'],
-  CHECKED_IN: ['LOADED'],
-  LOADED: ['IN_TRANSIT'],
+  PACKED: ['CHECKED_IN', 'LOADED'],
+  CHECKED_IN: ['PACKED', 'LOADED'],
+  LOADED: ['CHECKED_IN', 'IN_TRANSIT'],
   IN_TRANSIT: ['ARRIVED'],
   ARRIVED: ['CLEARED'],
   CLEARED: [],

@@ -7,7 +7,7 @@ import React, { useState, useMemo } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Card, Text, TextInput, Avatar, Chip, ActivityIndicator } from 'react-native-paper';
 import { useGetUsers } from '@src/features/admin/hooks/useGetUsers';
-import { userData } from '@src/constants/types';
+import { userData } from '@src/shared/types/user';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ClientSearchSectionProps {

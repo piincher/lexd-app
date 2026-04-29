@@ -1,21 +1,26 @@
 /**
- * Input - Simplified wrapper around react-native-paper TextInput
+ * Input - Comprehensive reusable text input component
+ * Supports multiple variants, validation states, and accessibility
  */
 
-import React, { forwardRef } from 'react';
-import type { ViewStyle, TextStyle } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import type { TextInputProps as PaperTextInputProps } from 'react-native-paper';
+import React, { forwardRef, useMemo } from 'react';
+import { View, TextInput as RNTextInput, Text, StyleSheet } from 'react-native';
+import type { ViewStyle, TextStyle, TextInputProps as RNTextInputProps } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type InputVariant = 'default' | 'filled' | 'outlined' | 'underlined';
 export type InputSize = 'small' | 'medium' | 'large';
 
-export interface InputProps extends Omit<PaperTextInputProps, 'style' | 'mode'> {
+export interface InputProps extends Omit<RNTextInputProps, 'style'> {
   label?: string;
   error?: string;
   helper?: string;
   variant?: InputVariant;
   size?: InputSize;
+  leftIcon?: keyof typeof Ionicons.glyphMap;
+  rightIcon?: keyof typeof Ionicons.glyphMap;
+  onRightIconPress?: () => void;
   containerStyle?: ViewStyle;
   inputStyle?: TextStyle;
   labelStyle?: TextStyle;
@@ -24,48 +29,200 @@ export interface InputProps extends Omit<PaperTextInputProps, 'style' | 'mode'> 
   fullWidth?: boolean;
 }
 
-const sizeMap = {
-  small: { height: 40, fontSize: 14 },
-  medium: { height: 48, fontSize: 16 },
-  large: { height: 56, fontSize: 18 },
-};
-
-export const Input = forwardRef<React.ElementRef<typeof TextInput>, InputProps>(({
+export const Input = forwardRef<RNTextInput, InputProps>(({
   label,
   error,
   helper,
   variant = 'outlined',
   size = 'medium',
+  leftIcon,
+  rightIcon,
+  onRightIconPress,
   containerStyle,
   inputStyle,
-  style,
+  labelStyle,
+  helperStyle,
+  errorStyle,
   fullWidth = false,
+  editable = true,
   ...textInputProps
 }, ref) => {
+  const { colors } = useAppTheme();
   const hasError = !!error;
 
-  // Map variant to react-native-paper mode
-  const mode = variant === 'filled' ? 'flat' : 'outlined';
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          marginBottom: 16,
+        },
+        fullWidth: {
+          width: '100%',
+        },
+        label: {
+          fontSize: 14,
+          fontWeight: '600',
+          marginBottom: 8,
+          color: colors.text.secondary,
+        },
+        inputContainer: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: colors.background.card,
+        },
+        // Variants
+        default: {
+          borderWidth: 1,
+          borderColor: colors.border,
+          borderRadius: 8,
+        },
+        filled: {
+          backgroundColor: colors.neutral[200],
+          borderRadius: 8,
+        },
+        outlined: {
+          borderWidth: 1,
+          borderColor: colors.border,
+          borderRadius: 12,
+        },
+        underlined: {
+          borderBottomWidth: 2,
+          borderBottomColor: colors.border,
+          backgroundColor: 'transparent',
+        },
+        // Sizes
+        small: {
+          paddingVertical: 8,
+          paddingHorizontal: 12,
+          minHeight: 40,
+        },
+        medium: {
+          paddingVertical: 12,
+          paddingHorizontal: 16,
+          minHeight: 48,
+        },
+        large: {
+          paddingVertical: 16,
+          paddingHorizontal: 20,
+          minHeight: 56,
+        },
+        errorBorder: {
+          borderColor: colors.status.error,
+        },
+        disabled: {
+          backgroundColor: colors.neutral[200],
+          opacity: 0.7,
+        },
+        // Input
+        input: {
+          flex: 1,
+          fontSize: 16,
+          color: colors.text.primary,
+        },
+        smallInput: {
+          fontSize: 14,
+        },
+        mediumInput: {
+          fontSize: 16,
+        },
+        largeInput: {
+          fontSize: 18,
+        },
+        inputWithLeftIcon: {
+          marginLeft: 8,
+        },
+        inputWithRightIcon: {
+          marginRight: 8,
+        },
+        leftIcon: {
+          marginLeft: 4,
+        },
+        rightIcon: {
+          marginRight: 4,
+        },
+        // Helper/Error
+        helperText: {
+          fontSize: 12,
+          color: colors.text.secondary,
+          marginTop: 4,
+        },
+        errorText: {
+          fontSize: 12,
+          color: colors.status.error,
+          marginTop: 4,
+        },
+      }),
+    [colors],
+  );
 
-  const sizeConfig = sizeMap[size];
+  const containerStyles = [
+    styles.container,
+    fullWidth && styles.fullWidth,
+    containerStyle,
+  ];
+
+  const inputContainerStyles = [
+    styles.inputContainer,
+    styles[variant],
+    styles[size],
+    hasError && styles.errorBorder,
+    !editable && styles.disabled,
+  ];
+
+  const inputStyles = [
+    styles.input,
+    styles[`${size}Input`],
+    leftIcon && styles.inputWithLeftIcon,
+    rightIcon && styles.inputWithRightIcon,
+    inputStyle,
+  ];
+
+  const iconSize = size === 'small' ? 18 : size === 'large' ? 24 : 20;
+  const iconColor = hasError ? colors.status.error : colors.text.secondary;
 
   return (
-    <TextInput
-      ref={ref}
-      label={label}
-      mode={mode}
-      error={hasError}
-      style={[
-        {
-          height: sizeConfig.height,
-          fontSize: sizeConfig.fontSize,
-          width: fullWidth ? '100%' : undefined,
-        },
-        inputStyle,
-        style,
-      ]}
-      {...textInputProps}
-    />
+    <View style={containerStyles}>
+      {label && (
+        <Text style={[styles.label, labelStyle]}>
+          {label}
+        </Text>
+      )}
+      <View style={inputContainerStyles}>
+        {leftIcon && (
+          <Ionicons
+            name={leftIcon}
+            size={iconSize}
+            color={iconColor}
+            style={styles.leftIcon}
+          />
+        )}
+        <RNTextInput
+          ref={ref}
+          style={inputStyles}
+          placeholderTextColor={colors.text.disabled}
+          editable={editable}
+          {...textInputProps}
+        />
+        {rightIcon && (
+          <Ionicons
+            name={rightIcon}
+            size={iconSize}
+            color={iconColor}
+            style={styles.rightIcon}
+            onPress={onRightIconPress}
+          />
+        )}
+      </View>
+      {hasError ? (
+        <Text style={[styles.errorText, errorStyle]}>
+          {error}
+        </Text>
+      ) : helper ? (
+        <Text style={[styles.helperText, helperStyle]}>
+          {helper}
+        </Text>
+      ) : null}
+    </View>
   );
 });
 

@@ -3,8 +3,9 @@
  */
 
 import React from 'react';
-import { View, Text, RefreshControl, StyleSheet } from 'react-native';
+import { View, Text, RefreshControl, StyleSheet, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
+import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { EmptyState } from '@src/shared/ui/EmptyState';
 import { CargoBag } from '../../types';
@@ -60,6 +61,14 @@ export const CargoBagList: React.FC<CargoBagListProps> = ({
             <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
               Sacs de cargo ({cargoBags.length})
             </Text>
+            <TouchableOpacity
+              activeOpacity={0.85}
+              onPress={onCreatePress}
+              style={[styles.createButton, { backgroundColor: colors.primary.main }]}
+            >
+              <Ionicons name="add" size={16} color="#fff" />
+              <Text style={styles.createButtonText}>Sac</Text>
+            </TouchableOpacity>
           </View>
         }
       />
@@ -72,6 +81,15 @@ const styles = StyleSheet.create({
   listContent: { paddingHorizontal: 16, paddingVertical: 12 },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
   sectionTitle: { fontSize: 16, fontWeight: '700' },
+  createButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 10,
+  },
+  createButtonText: { color: '#fff', fontSize: 13, fontWeight: '700' },
 });
 
 export default CargoBagList;

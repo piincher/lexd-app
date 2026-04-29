@@ -118,11 +118,11 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({ chil
         }
         break;
 
-      case 'PAYMENT':
-        if (data?.paymentId) {
-          navigation.navigate('MyPaymentHistory');
-        }
-        break;
+      // case 'PAYMENT':
+      //   if (data?.paymentId) {
+      //     navigation.navigate('MyPaymentHistory');
+      //   }
+      //   break;
 
       case 'CERTIFICATE_ISSUED':
         if (data?.certificateId && data?.verificationCode && data?.issuedAt) {

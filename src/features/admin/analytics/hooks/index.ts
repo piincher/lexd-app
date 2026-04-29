@@ -4,6 +4,7 @@
  */
 
 export {
+  analyticsQueryKeys,
   useGetDashboard,
   useGetRealtimeMetrics,
   useGetRevenueTrends,
@@ -17,10 +18,9 @@ export {
   useFormatNumber,
   useFormatPercentage,
   useTrendIndicator,
-  // Legacy hooks
   useGetDailyRevenueTrend,
   useGetAllContainersProfitability,
   useGetRevenueTrendsLegacy,
-} from './useAnalytics';
+} from './analytics';
 
-export { analyticsQueryKeys } from './useAnalytics';
+export { useAnalyticsDashboard } from './useAnalyticsDashboard';

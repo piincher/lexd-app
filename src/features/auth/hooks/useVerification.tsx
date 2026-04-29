@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import { verifyPhoneOtp } from '@src/api/auth';
+import { verifyPhoneOtp } from '../api';
 import { useAuth } from '@src/store/Auth';
 import { useMutation } from '@tanstack/react-query';
 import { useNotificationContext } from '@src/app/providers/NotificationProvider';

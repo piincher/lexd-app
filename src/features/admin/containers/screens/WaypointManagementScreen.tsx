@@ -1,79 +1,36 @@
 /**
  * WaypointManagementScreen - Full screen for managing container waypoints
  */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useWaypointManagementScreen, NewWaypointForm } from './WaypointManagement/hooks';
+import { useWaypointManagementScreen } from './WaypointManagement/hooks';
 import {
   Header,
   TabNavigation,
-  SeaSegmentsSection,
-  RoadSegmentsSection,
-  WaypointTracker,
   FloatingActionButtons,
   AddWaypointDialog,
   ImportTemplateDialog,
   SaveChangesDialog,
 } from './WaypointManagement/components';
 import { WaypointUpdateModal } from '../components/WaypointUpdateModal';
+import { WaypointTabContent } from '../components/WaypointTabContent';
 import { createStyles } from './WaypointManagement/WaypointManagementScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const WaypointManagementScreen: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const {
-    containerNumber,
-    waypoints,
-    seaSegments,
-    roadSegments,
-    activeTab,
-    currentWaypointIndex,
-    updateModalVisible,
-    selectedWaypointIndex,
-    showAddWaypointDialog,
-    showTemplateDialog,
-    showSaveDialog,
-    newWaypoint,
-    routeTemplates,
-    navigation,
-    setActiveTab,
-    setUpdateModalVisible,
-    setShowAddWaypointDialog,
-    setShowTemplateDialog,
-    setShowSaveDialog,
-    handleMarkArrived,
-    handleMarkDeparted,
-    handleUpdateInfo,
-    handleSaveWaypointUpdate,
-    handleAddWaypoint,
-    handleImportTemplate,
-    handleSaveChanges,
-    updateNewWaypointField,
+    containerNumber, waypoints, seaSegments, roadSegments, activeTab,
+    currentWaypointIndex, updateModalVisible, selectedWaypointIndex,
+    showAddWaypointDialog, showTemplateDialog, showSaveDialog,
+    newWaypoint, routeTemplates, navigation, setActiveTab,
+    setUpdateModalVisible, setShowAddWaypointDialog, setShowTemplateDialog,
+    setShowSaveDialog, handleMarkArrived, handleMarkDeparted,
+    handleUpdateInfo, handleSaveWaypointUpdate, handleAddWaypoint,
+    handleImportTemplate, handleSaveChanges, updateNewWaypointField,
   } = useWaypointManagementScreen();
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case 'waypoints':
-        return (
-          <WaypointTracker
-            waypoints={waypoints}
-            currentWaypointIndex={currentWaypointIndex}
-            containerNumber={containerNumber}
-            onMarkArrived={handleMarkArrived}
-            onMarkDeparted={handleMarkDeparted}
-            onUpdateInfo={handleUpdateInfo}
-          />
-        );
-      case 'sea':
-        return <SeaSegmentsSection seaSegments={seaSegments} />;
-      case 'road':
-        return <RoadSegmentsSection roadSegments={roadSegments} />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -83,7 +40,19 @@ export const WaypointManagementScreen: React.FC = () => {
         onSave={() => setShowSaveDialog(true)}
       />
       <TabNavigation activeTab={activeTab} onTabChange={setActiveTab} />
-      <View style={styles.content}>{renderTabContent()}</View>
+      <View style={styles.content}>
+        <WaypointTabContent
+          activeTab={activeTab}
+          waypoints={waypoints}
+          currentWaypointIndex={currentWaypointIndex}
+          containerNumber={containerNumber}
+          seaSegments={seaSegments}
+          roadSegments={roadSegments}
+          onMarkArrived={handleMarkArrived}
+          onMarkDeparted={handleMarkDeparted}
+          onUpdateInfo={handleUpdateInfo}
+        />
+      </View>
       <FloatingActionButtons
         onAddWaypoint={() => setShowAddWaypointDialog(true)}
         onImportTemplate={() => setShowTemplateDialog(true)}

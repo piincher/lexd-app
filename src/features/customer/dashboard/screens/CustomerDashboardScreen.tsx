@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { RootStackScreenProps } from '@src/navigations/type';
 import { useCustomerDashboard } from '../hooks/useCustomerDashboard';
+import { useHideTabBarOnScroll } from '@src/shared/lib';
 import { HeroSection } from '../components/HeroSection';
 import { SmartActions } from '../components/SmartActions';
 import { JourneyMap } from '../components/JourneyMap';
@@ -21,11 +22,12 @@ export const CustomerDashboardScreen: React.FC<
   RootStackScreenProps<'CustomerDashboard'>
 > = () => {
   const { colors } = useAppTheme();
+  const { onScroll } = useHideTabBarOnScroll();
   const {
     user, welcomeMessage, stats, containers, quickActions, activities,
     isLoading, isError, errorMessage, refresh,
     handleNotifications, handleViewAllActivity, handleActionPress,
-    handleViewGoods, handleViewContainers, handleViewSpent, handleContainerPress,
+    handleViewGoods, handleViewContainers, handleContainerPress,
   } = useCustomerDashboard();
 
   if (isError) {
@@ -43,6 +45,8 @@ export const CustomerDashboardScreen: React.FC<
       ) : (
         <ScrollView
           showsVerticalScrollIndicator={false}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
           refreshControl={
             <RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={colors.primary.main} />
           }
@@ -53,7 +57,6 @@ export const CustomerDashboardScreen: React.FC<
             stats={stats}
             onViewGoods={handleViewGoods}
             onViewContainers={handleViewContainers}
-            onViewSpent={handleViewSpent}
             onNotifications={handleNotifications}
           />
 

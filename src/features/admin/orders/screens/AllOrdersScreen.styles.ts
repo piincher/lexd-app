@@ -57,6 +57,22 @@ export const createStyles = (colors: any, isDark: boolean) =>
       fontWeight: '500',
       color: colors.primary.main,
     },
+    headerActionsRow: {
+      flexDirection: 'row',
+    },
+    errorContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 20,
+    },
+    errorText: {
+      color: 'red',
+      textAlign: 'center',
+    },
+    listContentContainer: {
+      paddingBottom: 80,
+    },
   });
 
 export default createStyles;

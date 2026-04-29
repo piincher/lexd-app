@@ -1,18 +1,28 @@
 import { useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useCreateAirwayBill, useSearchAirwayBillConsignees } from '../../hooks/useAirwayBills';
-import { AirwayBillConsignee } from '../../types';
+import { useCreateAirwayBill, useGetAirCargoRouteOptions, useSearchAirwayBillConsignees } from '../../hooks/useAirwayBills';
+import { AirCargoRouteOption, AirwayBillConsignee } from '../../types';
+
+const DEFAULT_ROUTE: AirCargoRouteOption = {
+  key: 'GUANGZHOU_HK_ADDIS_BAMAKO',
+  name: 'Guangzhou-Hong Kong-Addis Ababa-Bamako',
+  description: 'Guangzhou → Hong Kong → Addis Ababa → Bamako Airport → Customs → ChinaLink Warehouse.',
+  origin: 'Guangzhou, China',
+  destination: 'ChinaLink Warehouse, Bamako',
+};
 
 export const useCreateAirwayBillScreen = () => {
   const navigation = useNavigation();
   const createMutation = useCreateAirwayBill();
+  const { data: routeData } = useGetAirCargoRouteOptions();
 
   const [flightNumber, setFlightNumber] = useState('');
-  const [airline, setAirline] = useState('');
-  const [departureAirport, setDepartureAirport] = useState('');
-  const [arrivalAirport, setArrivalAirport] = useState('');
+  const [airline, setAirline] = useState('Ethiopian Airlines');
+  const [departureAirport, setDepartureAirport] = useState('HKG');
+  const [arrivalAirport, setArrivalAirport] = useState('BKO');
   const [notes, setNotes] = useState('');
   const [capacityWeight, setCapacityWeight] = useState<number>(28000);
+  const [selectedRouteKey, setSelectedRouteKey] = useState(DEFAULT_ROUTE.key);
   const [consigneeSearchQuery, setConsigneeSearchQuery] = useState('');
   const [showConsigneeDropdown, setShowConsigneeDropdown] = useState(false);
   const [selectedConsignee, setSelectedConsignee] = useState<AirwayBillConsignee | null>(null);
@@ -25,6 +35,11 @@ export const useCreateAirwayBillScreen = () => {
 
   const { data: consignees = [], isLoading: isLoadingConsignees } =
     useSearchAirwayBillConsignees(normalizedConsigneeSearch);
+
+  const routeOptions = useMemo(
+    () => routeData?.data?.routes?.length ? routeData.data.routes : [DEFAULT_ROUTE],
+    [routeData]
+  );
 
   const handleConsigneeSearchChange = (query: string) => {
     setConsigneeSearchQuery(query);
@@ -48,6 +63,7 @@ export const useCreateAirwayBillScreen = () => {
         airline: airline.trim() || undefined,
         departureAirport: departureAirport.trim().toUpperCase() || undefined,
         arrivalAirport: arrivalAirport.trim().toUpperCase() || undefined,
+        routeKey: selectedRouteKey,
         consigneeId: selectedConsignee?._id,
         capacityWeight: Number(capacityWeight) || 28000,
         notes: notes.trim() || undefined,
@@ -59,8 +75,9 @@ export const useCreateAirwayBillScreen = () => {
   };
 
   return {
-    values: { flightNumber, airline, departureAirport, arrivalAirport, notes, capacityWeight },
-    setters: { setFlightNumber, setAirline, setDepartureAirport, setArrivalAirport, setNotes, setCapacityWeight },
+    values: { flightNumber, airline, departureAirport, arrivalAirport, notes, capacityWeight, selectedRouteKey },
+    setters: { setFlightNumber, setAirline, setDepartureAirport, setArrivalAirport, setNotes, setCapacityWeight, setSelectedRouteKey },
+    routeOptions,
     consignee: {
       selected: selectedConsignee,
       consignees,

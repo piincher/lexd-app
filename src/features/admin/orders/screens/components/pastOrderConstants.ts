@@ -1,0 +1,22 @@
+export const LOGISTICS_COLORS = {
+  primary: '#00008B',
+  secondary: '#FFD700',
+  accent: '#1E90FF',
+  success: '#2E8B57',
+  warning: '#FF8C00',
+  error: '#DC143C',
+  light: '#F8F9FA',
+  dark: '#212529',
+  white: '#FFFFFF',
+  gray: {
+    100: '#F8F9FA',
+    200: '#E9ECEF',
+    300: '#DEE2E6',
+    400: '#CED4DA',
+    500: '#ADB5BD',
+    600: '#6C757D',
+    700: '#495057',
+    800: '#343A40',
+    900: '#212529',
+  },
+};

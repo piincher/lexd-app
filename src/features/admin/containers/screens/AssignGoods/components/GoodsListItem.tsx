@@ -6,6 +6,7 @@ import Animated, { FadeInUp, Layout } from 'react-native-reanimated';
 import { Badge } from '@src/components/ui/Badge/Badge';
 import { Theme } from '@src/constants/Theme';
 import { Goods } from '../../../../goods/types';
+import { normalizePhotos } from '@src/shared/lib';
 
 interface GoodsListItemProps {
   goods: Goods;
@@ -27,7 +28,7 @@ export const GoodsListItem: React.FC<GoodsListItemProps> = ({
     return 'Client inconnu';
   })();
 
-  const photoUrls = goods.photos?.length ? goods.photos : (goods.images || []);
+  const photoUrls = normalizePhotos(goods);
   const hasPhoto = photoUrls.length > 0;
 
   return (

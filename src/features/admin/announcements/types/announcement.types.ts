@@ -6,17 +6,51 @@ export interface Announcement {
   _id: string;
   title: string;
   message: string;
-  link?: string;
-  isActive: boolean;
-  publishDate: string;
-  expirationDate?: string;
+  type: "INFO" | "WARNING" | "SUCCESS" | "URGENT" | "PROMOTION" | "MAINTENANCE";
+  placement: "TOP_BANNER" | "HOME_CARD" | "MODAL" | "INBOX";
+  audience: "ALL" | "CLIENTS" | "ADMINS" | "SPECIFIC_USERS" | "SEGMENT";
+  priority: number;
+  status: "DRAFT" | "PUBLISHED" | "ARCHIVED";
+  startAt: string;
+  endAt?: string | null;
+  dismissible: boolean;
+  requiresAcknowledgement: boolean;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  ctaScreen?: string | null;
+  createdAt?: string;
 }
 
 export interface CreateAnnouncementInput {
   title: string;
   message: string;
-  link?: string;
-  isActive: boolean;
-  publishDate?: string;
-  expirationDate?: string;
+  type: Announcement["type"];
+  placement: Announcement["placement"];
+  audience: Announcement["audience"];
+  priority: number;
+  status: Announcement["status"];
+  startAt: string;
+  endAt?: string | null;
+  dismissible: boolean;
+  requiresAcknowledgement: boolean;
+  ctaLabel?: string | null;
+  ctaUrl?: string | null;
+  ctaScreen?: string | null;
+  targeting?: {
+    shippingModes?: string[];
+    goodsStatuses?: string[];
+    destinationCountries?: string[];
+    destinationCities?: string[];
+    routeIds?: string[];
+  };
+}
+
+export interface AnnouncementListResult {
+  items: Announcement[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
 }

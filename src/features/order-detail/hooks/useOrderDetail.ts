@@ -1,4 +1,4 @@
-import { getOrderDetails } from '@src/api/order';
+import { getOrderDetails } from '@src/features/orders/api';
 import { ORDERKEY } from '@src/constants/queryKey';
 import { useQuery } from '@tanstack/react-query';
 

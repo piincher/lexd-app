@@ -1,4 +1,4 @@
-import { getBalance, getCurrentUser } from "@src/api/auth";
+import { getBalance, getCurrentUser } from "@src/features/auth/api";
 import { processTopUp } from "@src/api/topUp";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 

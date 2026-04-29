@@ -21,7 +21,8 @@ export const GoodsPhotoGallery: React.FC<GoodsPhotoGalleryProps> = ({
   onUpload,
   onView,
 }) => {
-  const hasPhotos = photos && photos.length > 0;
+  const safePhotos = Array.isArray(photos) ? photos : [];
+  const hasPhotos = safePhotos.length > 0;
 
   return (
     <Card style={styles.container}>
@@ -29,21 +30,21 @@ export const GoodsPhotoGallery: React.FC<GoodsPhotoGalleryProps> = ({
         <View style={styles.header}>
           <MaterialCommunityIcons name="image-multiple" size={20} color={Theme.primary[600]} />
           <Text style={styles.title}>Photos</Text>
-          <Text style={styles.count}>({photos?.length || 0})</Text>
+          <Text style={styles.count}>({safePhotos.length})</Text>
         </View>
 
         {hasPhotos ? (
           <View style={styles.gallery}>
-            {photos.slice(0, 4).map((photo, index) => (
+            {safePhotos.slice(0, 4).map((photo, index) => (
               <TouchableOpacity
                 key={index}
                 style={styles.photoContainer}
                 onPress={() => onView?.(index)}
               >
                 <Image source={{ uri: photo }} style={styles.photo} resizeMode="cover" />
-                {index === 3 && photos.length > 4 && (
+                {index === 3 && safePhotos.length > 4 && (
                   <View style={styles.overlay}>
-                    <Text style={styles.overlayText}>+{photos.length - 4}</Text>
+                    <Text style={styles.overlayText}>+{safePhotos.length - 4}</Text>
                   </View>
                 )}
               </TouchableOpacity>

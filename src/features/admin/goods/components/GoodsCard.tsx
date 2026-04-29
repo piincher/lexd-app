@@ -7,6 +7,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { Goods } from '../types';
+import { normalizePhotos } from '@src/shared/lib';
 import { GoodsCardStatus } from './GoodsCardStatus';
 import { GoodsCardImage } from './GoodsCardImage';
 import { GoodsCardClient } from './GoodsCardClient';
@@ -24,7 +25,7 @@ interface GoodsCardProps {
 export const GoodsCard: React.FC<GoodsCardProps> = ({
   goods, onPress, onMenuPress, isSelected, isSelectionMode, onToggleSelect,
 }) => {
-  const photoUrls = goods.photos?.length ? goods.photos : goods.images || [];
+  const photoUrls = normalizePhotos(goods);
 
   return (
     <TouchableOpacity

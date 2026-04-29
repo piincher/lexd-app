@@ -1,4 +1,4 @@
-import { loginPhoneOtpApple, sendPhoneOtp } from "@src/api/auth";
+import { loginPhoneOtpApple, sendPhoneOtp } from "../api";
 import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@src/store/Auth";
 import { useNotificationContext } from "@src/app/providers/NotificationProvider";

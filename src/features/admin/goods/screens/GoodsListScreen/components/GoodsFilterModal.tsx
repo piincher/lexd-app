@@ -8,7 +8,7 @@ import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Text, Button, Chip, Modal, Portal, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { userData } from '@src/constants/types';
+import { userData } from '@src/shared/types/user';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
 import { DateRangePicker, DateRange } from '@src/components/DateRangePicker';
 

@@ -29,6 +29,12 @@ export {
 export { containerQueryKeys } from './useContainers';
 
 // ============================================
+// SCREEN HOOKS
+// ============================================
+
+export { useContainerListScreen } from './useContainerListScreen';
+
+// ============================================
 // WAYPOINT HOOKS
 // ============================================
 
@@ -36,7 +42,7 @@ export {
   // Queries
   useGetWaypoints,
   useGetTrackingStatus,
-  
+
   // Mutations
   useInitializeWaypoints,
   useUpdateWaypoint,
@@ -48,11 +54,11 @@ export {
   useBulkUpdateWaypoints,
   useMarkWaypointsCompleted,
   useUpdateCurrentPosition,
-  
+
   // Utilities
   useWaypointStats,
   useHasWaypoints,
-  
+
   // Query keys
   waypointQueryKeys,
 } from './useWaypoints';

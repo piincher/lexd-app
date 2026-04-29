@@ -13,7 +13,11 @@ interface GoodsPhotoSectionProps {
 
 export const GoodsPhotoSection: React.FC<GoodsPhotoSectionProps> = ({ photoUrls }) => {
   const { colors } = useAppTheme();
-  const urls = photoUrls?.filter(Boolean) || [];
+  const urls = Array.isArray(photoUrls)
+    ? photoUrls.filter(Boolean)
+    : typeof photoUrls === 'string'
+      ? [photoUrls]
+      : [];
 
   return (
     <Card style={[styles.card, { backgroundColor: colors.background.card }]}>

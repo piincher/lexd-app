@@ -94,3 +94,51 @@ export {
   hapticError,
   hapticSelection,
 } from './haptics';
+
+export {
+  normalizePhotos,
+  type PhotoNormalizeInput,
+} from './normalizePhotos';
+
+export {
+  useThemedToasts,
+  type ToastOptions,
+} from './use-themed-toasts';
+
+export { usePressScale } from './use-press-scale';
+
+export { useGlobalPending } from './use-global-pending';
+
+export {
+  listItemSpring,
+  quickSpring,
+  fadeInUp,
+  fadeInDown,
+  fadeIn,
+  staggeredFadeIn,
+  easing,
+} from './layout-animations';
+
+export { useHideTabBarOnScroll } from './use-hide-tab-bar-on-scroll';
+
+// Theme hooks
+export {
+  useAppTheme,
+  useThemeStyles,
+  useThemeColors,
+  useIsDarkMode,
+  useThemeColor,
+  useThemedStyles,
+  useThemeToggle,
+  useShadowStyles,
+  useBorderRadius,
+  useSpacing,
+  useCardStyles,
+  useTextStyles,
+} from './hooks/useTheme';
+
+// Clipboard hook
+export { useClipboard } from './hooks/useClipboard';
+
+// Confirmation hook
+export { useConfirmationNotification } from './hooks/useConfirmation';

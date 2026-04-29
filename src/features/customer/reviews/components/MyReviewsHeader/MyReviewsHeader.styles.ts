@@ -1,0 +1,38 @@
+import { StyleSheet, Platform } from "react-native";
+import { Theme } from "@src/constants/Theme";
+import { Fonts } from "@src/constants/Fonts";
+
+export const styles = StyleSheet.create({
+  header: {
+    paddingHorizontal: 24,
+    paddingTop: Platform.OS === "android" ? 12 : 20,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+  },
+  headerTop: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 14,
+  },
+  headerTitleContainer: {
+    flex: 1,
+  },
+  headerTitle: {
+    fontSize: 22,
+    fontFamily: Fonts.bold,
+    color: Theme.colors.text.primary,
+    marginBottom: 2,
+  },
+  headerSubtitle: {
+    fontSize: 14,
+    fontFamily: Fonts.meduim,
+    color: Theme.colors.text.secondary,
+  },
+});

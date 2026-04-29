@@ -1,4 +1,4 @@
-import { getOrderById, getSeaRouteById } from "@src/api/order";
+import { getOrderById, getSeaRouteById } from "../api";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetOrderDetail = (orderId: string) => {

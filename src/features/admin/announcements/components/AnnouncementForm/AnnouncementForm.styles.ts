@@ -11,11 +11,25 @@ export const styles = StyleSheet.create({
   flex: {
     flex: 1,
   },
+  label: {
+    fontSize: 12,
+    fontWeight: "700",
+    marginBottom: 4,
+  },
+  picker: {
+    minHeight: 48,
+  },
   toggleRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 8,
+  },
+  toggleText: {
+    fontSize: 16,
+  },
+  messageInput: {
+    height: 100,
   },
   actions: {
     flexDirection: "row",

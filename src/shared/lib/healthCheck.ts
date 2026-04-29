@@ -303,8 +303,8 @@ export function scheduleHealthChecks(
 export async function reportHealthStatus(result: HealthCheckResult): Promise<void> {
   try {
     // Send to analytics
-    const { default: analytics } = await import('@react-native-firebase/analytics');
-    await analytics().logEvent('health_check', {
+    const { trackEvent } = await import('./analytics');
+    await trackEvent('health_check', {
       healthy: result.healthy,
       api_healthy: result.checks.api,
       database_healthy: result.checks.database,

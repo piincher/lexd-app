@@ -31,7 +31,7 @@ export const SummaryCard: React.FC<SummaryCardProps> = ({ summary, formatDate })
             <Text style={styles.summaryItemLabel}>Total Colis</Text>
           </View>
           <View style={styles.summaryItem}>
-            <Text style={styles.summaryItemValue}>{summary.totalPackages}</Text>
+            <Text style={styles.summaryItemValue}>{summary.totalQuantity || summary.totalPackages || 0}</Text>
             <Text style={styles.summaryItemLabel}>Total Articles</Text>
           </View>
           <View style={styles.summaryItem}>

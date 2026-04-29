@@ -173,6 +173,8 @@ export const NOTIFICATION_PRIORITY_CONFIG: Record<string, { color: string; label
 // PUBLIC NOTIFICATION TYPES (Privacy-Conscious)
 // ============================================
 
+export type FilterTab = 'all' | 'unread' | 'system';
+
 export type PublicNotificationType = 'GOODS_ARRIVED' | 'GOODS_ASSIGNED';
 
 /**

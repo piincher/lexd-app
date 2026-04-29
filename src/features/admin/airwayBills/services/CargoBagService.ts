@@ -9,9 +9,16 @@ import {
   CreateCargoBagInput,
   UpdateCargoBagInput,
   CargoBagListResponse,
+  AirwayBillWaypointPayload,
+  UpdateAirwayBillWaypointInput,
 } from '../types';
 
 const BASE_URL = '/cargo-bags';
+
+interface CargoBagGoodsResult {
+  success: string[];
+  failed: { goodsId?: string; error?: string }[];
+}
 
 class CargoBagServiceClass {
   private readonly client = apiClientV2;
@@ -24,6 +31,22 @@ class CargoBagServiceClass {
     return apiRequest.get(this.client, `${BASE_URL}/${id}`);
   }
 
+  async getWaypoints(id: string): Promise<{ data: AirwayBillWaypointPayload }> {
+    return apiRequest.get(this.client, `${BASE_URL}/${id}/waypoints`);
+  }
+
+  async initializeWaypoints(id: string): Promise<{ data: AirwayBillWaypointPayload }> {
+    return apiRequest.post(this.client, `${BASE_URL}/${id}/waypoints/initialize`, {});
+  }
+
+  async updateWaypoint(
+    id: string,
+    waypointIndex: number,
+    input: UpdateAirwayBillWaypointInput
+  ): Promise<{ data: AirwayBillWaypointPayload }> {
+    return apiRequest.patch(this.client, `${BASE_URL}/${id}/waypoints/${waypointIndex}`, input);
+  }
+
   async create(input: CreateCargoBagInput): Promise<{ data: { cargoBag: CargoBag } }> {
     return apiRequest.post(this.client, BASE_URL, input);
   }
@@ -32,15 +55,15 @@ class CargoBagServiceClass {
     return apiRequest.patch(this.client, `${BASE_URL}/${id}`, input);
   }
 
-  async delete(id: string): Promise<any> {
+  async delete(id: string): Promise<unknown> {
     return apiRequest.delete(this.client, `${BASE_URL}/${id}`);
   }
 
-  async addGoods(id: string, goodsIds: string[]): Promise<{ data: { results: any; cargoBag: CargoBag } }> {
+  async addGoods(id: string, goodsIds: string[]): Promise<{ data: { results: CargoBagGoodsResult; cargoBag: CargoBag } }> {
     return apiRequest.post(this.client, `${BASE_URL}/${id}/goods`, { goodsIds });
   }
 
-  async removeGoods(id: string, goodsId: string): Promise<any> {
+  async removeGoods(id: string, goodsId: string): Promise<unknown> {
     return apiRequest.delete(this.client, `${BASE_URL}/${id}/goods/${goodsId}`);
   }
 

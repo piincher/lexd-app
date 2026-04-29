@@ -49,3 +49,9 @@ export {
   type LocalNotificationTrigger,
   type NotificationPreference,
 } from "./notificationService";
+
+// Migrated legacy services
+export * from "./sentry";
+export * from "./token";
+export * from "./translate";
+export * as PushNotificationService from "./pushNotificationService";

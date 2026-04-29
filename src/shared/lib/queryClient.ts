@@ -58,21 +58,25 @@ export const createQueryClient = (): QueryClient => {
         staleTime: 5 * 60 * 1000,
         // Keep cached data for 24 hours
         gcTime: 24 * 60 * 60 * 1000,
-        // Retry failed queries 3 times with exponential backoff
+        // Retry failed queries only once, and not on network errors
         retry: (failureCount, error: any) => {
           // Don't retry on 4xx errors (client errors)
           if (error?.response?.status >= 400 && error?.response?.status < 500) {
             return false;
           }
-          return failureCount < 3;
+          // Don't retry network errors (backend down / no connection)
+          if (error?.message === 'Network Error' || !error?.response) {
+            return false;
+          }
+          return failureCount < 1;
         },
         retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-        // Refetch on window focus (when app comes to foreground)
-        refetchOnWindowFocus: true,
-        // Refetch on reconnect
-        refetchOnReconnect: true,
-        // Don't refetch on mount if data is fresh
-        refetchOnMount: 'always',
+        // Mobile apps don't need window focus refetching
+        refetchOnWindowFocus: false,
+        // Refetch on reconnect only if data is stale
+        refetchOnReconnect: 'always',
+        // Only refetch on mount if data is stale
+        refetchOnMount: false,
       },
       mutations: {
         // Retry mutations once on failure

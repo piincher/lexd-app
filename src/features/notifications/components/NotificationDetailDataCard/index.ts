@@ -1,0 +1,1 @@
+export { NotificationDetailDataCard } from './NotificationDetailDataCard';

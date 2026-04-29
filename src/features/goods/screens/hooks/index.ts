@@ -2,3 +2,4 @@
 
 export { useMyGoodsScreen } from './useMyGoodsScreen';
 export { useScanQRScreen } from './useScanQRScreen';
+export { useEditGoodsScreen } from './useEditGoodsScreen';

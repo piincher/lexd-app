@@ -1,8 +1,10 @@
 import React, { memo } from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
-import { productType } from "@src/api/order";
-import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Pressable, StyleSheet } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { productType } from "../../api";
+import { getStep, STEP_STATUS_CONFIG, STEP_PROGRESS } from "./utils";
+import { OrderCardHeader } from "./components/OrderCardHeader";
+import { OrderCardProgress } from "./components/OrderCardProgress";
 
 /**
  * Compact order card for list display.
@@ -15,71 +17,11 @@ interface OrderListCardProps {
    onPress: () => void;
 }
 
-// -- Status helpers --
-
-const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-   Active: { label: "En cours", color: "#1B365D", bg: "#E8EEF4" },
-   "In Transit": { label: "En transit", color: "#2D8FDB", bg: "#E8F4FD" },
-   Delivered: { label: "Livré", color: "#1AAE7E", bg: "#E6F7F1" },
-   Inactive: { label: "En attente", color: "#8E99A4", bg: "#F0F2F4" },
-   Arrived: { label: "Arrivé", color: "#F59E0B", bg: "#FEF3C7" },
-};
-
-type StepIndex = 0 | 1 | 2 | 3 | 4;
-
-const STEP_PROGRESS: Record<StepIndex, number> = {
-   0: 5,
-   1: 25,
-   2: 50,
-   3: 75,
-   4: 100,
-};
-
-const STEP_STATUS_CONFIG: Record<StepIndex, { label: string; color: string; bg: string }> = {
-   0: STATUS_CONFIG.Inactive,
-   1: STATUS_CONFIG.Active,
-   2: STATUS_CONFIG["In Transit"],
-   3: STATUS_CONFIG.Arrived,
-   4: STATUS_CONFIG.Delivered,
-};
-
-// Exact matches against admin STATUS_ORDER keys
-const CURRENT_STATUS_MAP: Record<string, StepIndex> = {
-   "Order arrived at warehouse": 1,
-   "Order in Processing": 1,
-   "Order in Transit": 2,
-   "Order in Arrived": 3,
-   "Delivered": 4,
-};
-
-const getStep = (status?: string, currentStatus?: string): StepIndex => {
-   if (currentStatus && currentStatus in CURRENT_STATUS_MAP) {
-      return CURRENT_STATUS_MAP[currentStatus];
-   }
-   switch (status) {
-      case "Delivered": return 4;
-      case "In Transit": return 2;
-      case "Active": return 1;
-      default: return 0;
-   }
-};
-
-const formatShortDate = (dateStr?: string): string => {
-   if (!dateStr) return "--";
-   const date = new Date(dateStr);
-   if (isNaN(date.getTime())) return "--";
-   return date.toLocaleDateString("fr-FR", {
-      day: "numeric",
-      month: "short",
-   });
-};
-
 const OrderListCardInner: React.FC<OrderListCardProps> = ({ order, onPress }) => {
    const { colors } = useAppTheme();
    const step = getStep(order.status, order.currentStatus);
    const statusCfg = STEP_STATUS_CONFIG[step];
    const progress = STEP_PROGRESS[step];
-   const isSeaShipping = order.shippingMode === "sea";
 
    return (
       <Pressable
@@ -93,80 +35,19 @@ const OrderListCardInner: React.FC<OrderListCardProps> = ({ order, onPress }) =>
             },
          ]}
       >
-         {/* Row 1: Icon + Code + Status + Chevron */}
-         <View style={styles.topRow}>
-            <View style={[styles.iconBox, { backgroundColor: colors.background.paper }]}>
-               <MaterialCommunityIcons
-                  name={isSeaShipping ? "ferry" : "airplane"}
-                  size={20}
-                  color={colors.primary.dark}
-               />
-            </View>
-
-            <View style={styles.topInfo}>
-               <Text
-                  style={[styles.orderCode, { color: colors.text.primary }]}
-                  numberOfLines={1}
-               >
-                  {order.code || "---"}
-               </Text>
-               <View style={styles.metaRow}>
-                  <Feather
-                     name="calendar"
-                     size={12}
-                     color={colors.text.disabled}
-                  />
-                  <Text style={[styles.metaText, { color: colors.text.secondary }]}>
-                     {formatShortDate(order.departureDate)}
-                  </Text>
-                  <View style={[styles.metaDot, { backgroundColor: colors.border }]} />
-                  <MaterialCommunityIcons
-                     name="package-variant"
-                     size={12}
-                     color={colors.text.disabled}
-                  />
-                  <Text style={[styles.metaText, { color: colors.text.secondary }]}>
-                     {order.quantity ?? 1} colis
-                  </Text>
-               </View>
-            </View>
-
-            <View style={[styles.statusBadge, { backgroundColor: statusCfg.bg }]}>
-               <Text style={[styles.statusText, { color: statusCfg.color }]}>
-                  {statusCfg.label}
-               </Text>
-            </View>
-
-            <Feather
-               name="chevron-right"
-               size={18}
-               color={colors.text.disabled}
-               style={styles.chevron}
-            />
-         </View>
-
-         {/* Row 2: Progress bar */}
-         <View style={styles.progressRow}>
-            <View
-               style={[
-                  styles.progressTrack,
-                  { backgroundColor: colors.border },
-               ]}
-            >
-               <View
-                  style={[
-                     styles.progressFill,
-                     {
-                        backgroundColor: statusCfg.color,
-                        width: `${progress}%`,
-                     },
-                  ]}
-               />
-            </View>
-            <Text style={[styles.progressLabel, { color: colors.text.disabled }]}>
-               {progress}%
-            </Text>
-         </View>
+         <OrderCardHeader
+            orderCode={order.code}
+            departureDate={order.departureDate}
+            quantity={order.quantity}
+            shippingMode={order.shippingMode}
+            statusLabel={statusCfg.label}
+            statusColor={statusCfg.color}
+            statusBg={statusCfg.bg}
+         />
+         <OrderCardProgress
+            progress={progress}
+            fillColor={statusCfg.color}
+         />
       </Pressable>
    );
 };
@@ -185,73 +66,5 @@ const styles = StyleSheet.create({
       shadowOpacity: 0.04,
       shadowRadius: 4,
       elevation: 2,
-   },
-   topRow: {
-      flexDirection: "row",
-      alignItems: "center",
-   },
-   iconBox: {
-      width: 38,
-      height: 38,
-      borderRadius: 10,
-      justifyContent: "center",
-      alignItems: "center",
-      marginRight: 10,
-   },
-   topInfo: {
-      flex: 1,
-      marginRight: 8,
-   },
-   orderCode: {
-      fontSize: 15,
-      fontWeight: "700",
-   },
-   metaRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      marginTop: 3,
-      gap: 4,
-   },
-   metaText: {
-      fontSize: 11,
-   },
-   metaDot: {
-      width: 3,
-      height: 3,
-      borderRadius: 1.5,
-   },
-   statusBadge: {
-      paddingHorizontal: 8,
-      paddingVertical: 4,
-      borderRadius: 6,
-   },
-   statusText: {
-      fontSize: 11,
-      fontWeight: "600",
-   },
-   chevron: {
-      marginLeft: 6,
-   },
-   progressRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      marginTop: 10,
-      gap: 8,
-   },
-   progressTrack: {
-      flex: 1,
-      height: 4,
-      borderRadius: 2,
-      overflow: "hidden",
-   },
-   progressFill: {
-      height: "100%",
-      borderRadius: 2,
-   },
-   progressLabel: {
-      fontSize: 10,
-      fontWeight: "600",
-      width: 28,
-      textAlign: "right",
    },
 });

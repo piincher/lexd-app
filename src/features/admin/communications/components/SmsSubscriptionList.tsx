@@ -7,7 +7,7 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { SmsService } from '@src/constants/types';
+import { SmsService } from '@src/shared/types/user';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
 import { SmsSubscriptionCard } from './SmsSubscriptionCard';

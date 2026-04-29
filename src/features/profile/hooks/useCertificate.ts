@@ -59,7 +59,7 @@ export const useCertificateProgress = () => {
       }
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 2,
+    // Use global retry config
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
   });
 };

@@ -19,18 +19,18 @@ import {
   Checkbox,
   TextInput,
   Divider,
-  ActivityIndicator,
   IconButton,
+  Menu,
 } from "react-native-paper";
 import { DatePickerModal } from "react-native-paper-dates";
-import { format } from "date-fns/format";
+import { format as formatDate } from "date-fns/format";
 
 import { ExportEntity, ExportFormat, ScheduleFrequency, ExportFilters } from "../types";
 import { Theme } from "@src/constants/Theme";
 import {
   useExportData,
   useScheduleExport,
-} from "../hooks/useExport";
+} from "../hooks";
 
 interface ExportDataModalProps {
   visible: boolean;
@@ -50,6 +50,119 @@ const SCHEDULE_FREQUENCIES: { value: ScheduleFrequency; label: string }[] = [
   { value: "WEEKLY", label: "Weekly" },
   { value: "MONTHLY", label: "Monthly" },
 ];
+
+const STATUS_OPTIONS: Record<ExportEntity, { value: string; label: string }[]> = {
+  GOODS: [
+    { value: "RECEIVED_AT_WAREHOUSE", label: "Received at Warehouse" },
+    { value: "PACKED", label: "Packed" },
+    { value: "ASSIGNED_TO_CONTAINER", label: "Assigned to Container" },
+    { value: "LOADED_IN_CONTAINER", label: "Loaded in Container" },
+    { value: "IN_TRANSIT", label: "In Transit" },
+    { value: "ARRIVED_DESTINATION", label: "Arrived at Destination" },
+    { value: "READY_FOR_PICKUP", label: "Ready for Pickup" },
+    { value: "DELIVERED", label: "Delivered" },
+    { value: "VOID", label: "Void" },
+  ],
+  CONTAINERS: [
+    { value: "BOOKED", label: "Booked" },
+    { value: "EMPTY_TO_WAREHOUSE", label: "Empty to Warehouse" },
+    { value: "LOADING", label: "Loading" },
+    { value: "LOADED", label: "Loaded" },
+    { value: "IN_TRANSIT", label: "In Transit" },
+    { value: "ARRIVED", label: "Arrived" },
+    { value: "DISCHARGED", label: "Discharged" },
+    { value: "READY_FOR_PICKUP", label: "Ready for Pickup" },
+    { value: "DELIVERED", label: "Delivered" },
+  ],
+  PAYMENTS: [
+    { value: "PENDING", label: "Pending" },
+    { value: "COMPLETED", label: "Completed" },
+    { value: "FAILED", label: "Failed" },
+    { value: "REFUNDED", label: "Refunded" },
+  ],
+  CLIENTS: [],
+  USERS: [
+    { value: "user", label: "User" },
+    { value: "staff", label: "Staff" },
+    { value: "admin", label: "Admin" },
+    { value: "superadmin", label: "Superadmin" },
+  ],
+  INVOICES: [],
+  EXPENSES: [],
+  ROUTES: [
+    { value: "ACTIVE", label: "Active" },
+    { value: "INACTIVE", label: "Inactive" },
+    { value: "COMPLETED", label: "Completed" },
+  ],
+  CONSIGNEES: [
+    { value: "ACTIVE", label: "Active" },
+    { value: "INACTIVE", label: "Inactive" },
+  ],
+  TICKETS: [
+    { value: "OPEN", label: "Open" },
+    { value: "IN_PROGRESS", label: "In Progress" },
+    { value: "RESOLVED", label: "Resolved" },
+    { value: "CLOSED", label: "Closed" },
+  ],
+  NOTIFICATIONS: [
+    { value: "PENDING", label: "Pending" },
+    { value: "SENT", label: "Sent" },
+    { value: "FAILED", label: "Failed" },
+  ],
+};
+
+// Status picker sub-component
+const StatusPicker: React.FC<{
+  entity: ExportEntity;
+  value: string;
+  onSelect: (value: string) => void;
+}> = ({ entity, value, onSelect }) => {
+  const [visible, setVisible] = useState(false);
+  const options = STATUS_OPTIONS[entity] || [];
+  const selectedLabel = options.find((o) => o.value === value)?.label || (value ? value : "All Statuses");
+
+  if (options.length === 0) {
+    return (
+      <TextInput
+        mode="outlined"
+        placeholder="e.g., COMPLETED, PENDING"
+        value={value}
+        onChangeText={onSelect}
+        style={styles.input}
+      />
+    );
+  }
+
+  return (
+    <Menu
+      visible={visible}
+      onDismiss={() => setVisible(false)}
+      anchor={
+        <TouchableOpacity onPress={() => setVisible(true)} style={styles.statusPicker} activeOpacity={0.8}>
+          <Text variant="bodyMedium" style={value ? styles.statusPickerValue : styles.statusPickerPlaceholder}>
+            {selectedLabel}
+          </Text>
+          <IconButton icon="chevron-down" size={20} style={{ margin: 0 }} />
+        </TouchableOpacity>
+      }
+    >
+      <Menu.Item
+        onPress={() => { onSelect(""); setVisible(false); }}
+        title="All Statuses"
+        trailingIcon={value === "" ? "check" : undefined}
+      />
+      <Divider />
+      {options.map((option) => (
+        <Menu.Item
+          key={option.value}
+          onPress={() => { onSelect(option.value); setVisible(false); }}
+          title={option.label}
+          trailingIcon={value === option.value ? "check" : undefined}
+        />
+      ))}
+    </Menu>
+  );
+};
 
 export const ExportDataModal: React.FC<ExportDataModalProps> = ({
   visible,
@@ -75,7 +188,12 @@ export const ExportDataModal: React.FC<ExportDataModalProps> = ({
   const exportMutation = useExportData();
   const scheduleMutation = useScheduleExport();
 
-  const handleDateConfirm = (params: { date: Date }) => {
+  const handleDateConfirm = (params: { date?: Date }) => {
+    if (!params.date) {
+      setShowDatePicker(false);
+      return;
+    }
+
     if (datePickerMode === "start") {
       setStartDate(params.date);
     } else {
@@ -191,7 +309,7 @@ export const ExportDataModal: React.FC<ExportDataModalProps> = ({
                 }}
               >
                 <Text variant="bodyMedium">
-                  {startDate ? format(startDate, "MMM dd, yyyy") : "Start Date"}
+                  {startDate ? formatDate(startDate, "MMM dd, yyyy") : "Start Date"}
                 </Text>
               </TouchableOpacity>
               <Text variant="bodyLarge"> to </Text>
@@ -203,7 +321,7 @@ export const ExportDataModal: React.FC<ExportDataModalProps> = ({
                 }}
               >
                 <Text variant="bodyMedium">
-                  {endDate ? format(endDate, "MMM dd, yyyy") : "End Date"}
+                  {endDate ? formatDate(endDate, "MMM dd, yyyy") : "End Date"}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -214,12 +332,10 @@ export const ExportDataModal: React.FC<ExportDataModalProps> = ({
             <Text variant="titleMedium" style={styles.sectionTitle}>
               Status Filter (Optional)
             </Text>
-            <TextInput
-              mode="outlined"
-              placeholder="e.g., COMPLETED, PENDING"
+            <StatusPicker
+              entity={entity}
               value={status}
-              onChangeText={setStatus}
-              style={styles.input}
+              onSelect={(value) => setStatus(value)}
             />
 
             <Divider style={styles.divider} />
@@ -409,6 +525,25 @@ const styles = StyleSheet.create({
   },
   button: {
     minWidth: 100,
+  },
+  statusPicker: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    backgroundColor: Theme.colors.background.paper,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: Theme.colors.neutral[300],
+    marginTop: 8,
+  },
+  statusPickerValue: {
+    flex: 1,
+  },
+  statusPickerPlaceholder: {
+    flex: 1,
+    color: Theme.colors.neutral[500],
   },
 });
 

@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import type { RootStackScreenProps } from "@src/navigations/type";
-import { useGetUser } from "@src/hooks/useGetUser";
+import { useGetUser } from "@src/features/users/hooks/useGetUser";
 import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
 
 import { useOrderStats, useLastShipments } from "../hooks/useOrderStats";

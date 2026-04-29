@@ -1,43 +1,66 @@
-import { blockUnblockUser, createUser, fetchAllUsers, register } from "@src/api/auth";
-import { USER_KEY } from "@src/constants/queryKey";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+/**
+ * User Management Hooks
+ * SRP-compliant: each hook does ONE thing
+ */
+import { useMutation, useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { showMessage } from "react-native-flash-message";
+
+import * as userApi from "../api/userApi";
 
 const USERS_KEY = "admin_users";
 
-export const useGetUsers = () => {
-   return useQuery({
-      queryKey: [USERS_KEY],
-      queryFn: fetchAllUsers,
-   });
+// Fetch users with infinite scroll pagination
+export const useGetUsers = (filters: Omit<userApi.UserListFilters, "page"> = {}) => {
+  return useInfiniteQuery({
+    queryKey: [USERS_KEY, filters],
+    queryFn: ({ pageParam = 1 }) => userApi.fetchAllUsers({ ...filters, page: pageParam }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.meta.page < lastPage.meta.totalPages) {
+        return lastPage.meta.page + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
+  });
 };
 
+// Create user
 export const useCreateUser = () => {
-   const queryClient = useQueryClient();
-   return useMutation({
-      mutationFn: createUser,
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [USERS_KEY] });
-      },
-   });
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: userApi.createUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [USERS_KEY] });
+      showMessage({ message: "Utilisateur créé", type: "success" });
+    },
+    onError: (error: any) => {
+      showMessage({ message: "Erreur", description: error.message, type: "danger" });
+    },
+  });
 };
 
+// Block / unblock user
 export const useBlockandUnblockUser = () => {
-   const queryClient = useQueryClient();
-   return useMutation({
-      mutationFn: blockUnblockUser,
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [USERS_KEY] });
-      },
-   });
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: userApi.blockUnblockUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [USERS_KEY] });
+    },
+  });
 };
 
-// Migrated from useAddUser.tsx - uses register API (for user self-registration)
-export const useRegisterUser = () => {
-   const queryClient = useQueryClient();
-   return useMutation({
-      mutationFn: register,
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [USER_KEY] });
-      },
-   });
+// Delete user (soft delete)
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: userApi.deleteUser,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: [USERS_KEY] });
+      showMessage({ message: data.message || "Utilisateur supprimé", type: "success" });
+    },
+    onError: (error: any) => {
+      showMessage({ message: "Erreur de suppression", description: error.message, type: "danger" });
+    },
+  });
 };

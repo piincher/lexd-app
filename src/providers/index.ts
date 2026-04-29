@@ -1,11 +1,2 @@
-/**
- * App Providers - Public API
- */
-
-export {
-  ThemeProvider,
-  useAppTheme,
-  useThemeStyles,
-} from './ThemeProvider';
-
-export type { ThemeContextType } from '../constants/Theme';
+// Re-export shim — moved to src/app/providers/
+export * from '../app/providers';

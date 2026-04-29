@@ -12,7 +12,7 @@ import { ShimmerBlock } from "@src/shared/ui";
 import { SwiperFlatList } from "react-native-swiper-flatlist";
 import { useNavigation } from "@react-navigation/native";
 import { showMessage } from "react-native-flash-message";
-import { useClipboard } from "@src/hooks/useClipBoard";
+import { useClipboard } from "@src/shared/lib/hooks/useClipboard";
 import { useHomeBanners, useHomeBannerClick } from "../hooks/useHomeBanners";
 import type { PromoBanner } from "@src/shared/api/promos";
 

@@ -47,5 +47,5 @@ export interface SeaStatusTimelineProps {
 }
 
 // Re-export shared types for convenience
-export type { productType as OrderProductType } from '@src/api/order';
+export type { productType as OrderProductType } from '@src/features/orders/api';
 export type { Coordinate as SeaCoordinate, CoordinateDetails, RouteType } from '@src/api/seaRoutes';

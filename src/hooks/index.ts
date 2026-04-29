@@ -1,5 +1,6 @@
 /**
  * Custom Hooks - Public API
+ * Backward-compatible re-exports from FSD locations
  */
 
 // Theme hooks
@@ -16,16 +17,16 @@ export {
   useSpacing,
   useCardStyles,
   useTextStyles,
-} from './useTheme';
+} from '@src/shared/lib/hooks/useTheme';
 
 // User hooks
-export { useGetUser } from './useGetUser';
+export { useGetUser } from '@src/features/users/hooks/useGetUser';
 
 // Announcement hooks
-export { useAddAnoncement, useFetchAnnouncement } from './useAnnouncement';
+export { useAddAnoncement, useFetchAnnouncement } from '@src/features/announcements/hooks/useAnnouncement';
 
 // Clipboard hooks
-export { useClipBoard } from './useClipBoard';
+export { useClipboard } from '@src/shared/lib/hooks/useClipboard';
 
 // Confirmation hooks
-export { useConfirmation } from './useConfirmation';
+export { useConfirmationNotification } from '@src/shared/lib/hooks/useConfirmation';

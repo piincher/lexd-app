@@ -35,7 +35,7 @@ import {
   useDeleteBackup,
   useTriggerBackup,
   useGetSchedulerStatus,
-} from "../hooks/useExport";
+} from "../hooks";
 import { Backup } from "../types";
 
 interface BackupManagerProps {

@@ -27,7 +27,6 @@ export interface UseCustomerDashboardReturn {
   handleActionPress: (action: QuickAction) => void;
   handleViewGoods: () => void;
   handleViewContainers: () => void;
-  handleViewSpent: () => void;
   handleContainerPress: (containerId: string) => void;
 }
 
@@ -57,7 +56,6 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
   }, [navigation]);
   const handleViewGoods = useCallback(() => navigation.navigate('MyGoods'), [navigation]);
   const handleViewContainers = useCallback(() => navigation.navigate('MyContainers'), [navigation]);
-  const handleViewSpent = useCallback(() => navigation.navigate('MyPaymentHistory'), [navigation]);
   const handleContainerPress = useCallback((containerId: string) => {
     if (containerId) {
       navigation.navigate('ContainerTracking', { containerId });
@@ -82,7 +80,6 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
     handleActionPress,
     handleViewGoods,
     handleViewContainers,
-    handleViewSpent,
     handleContainerPress,
   };
 };

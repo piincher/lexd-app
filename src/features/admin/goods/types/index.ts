@@ -4,6 +4,7 @@
  */
 
 import { BaseFilters } from '@src/api/types';
+import { userData } from '@src/shared/types/user';
 
 // ============================================
 // DOMAIN ENTITIES
@@ -187,6 +188,37 @@ export interface GoodsFormData {
   receivedByName: string;
   expressTrackingNumber: string;
   receivedDate: string;
+}
+
+/**
+ * Hook options for receive goods form
+ */
+export interface UseReceiveGoodsFormOptions {
+  initialQuantity?: number;
+}
+
+/**
+ * Hook return type for receive goods form
+ */
+export interface UseReceiveGoodsFormReturn {
+  formData: GoodsFormData;
+  errors: GoodsFormErrors;
+  selectedClient: userData | null;
+  photoUris: string[];
+  useDimensions: boolean;
+  setFormField: (field: keyof GoodsFormData, value: string) => void;
+  setSelectedClient: (client: userData | null) => void;
+  addPhotoUri: (uri: string) => void;
+  removePhotoUri: (uri: string) => void;
+  setUseDimensions: (use: boolean) => void;
+  clearFieldError: (field: keyof GoodsFormErrors) => void;
+  clearAllErrors: () => void;
+  resetForm: () => void;
+  validateForm: () => boolean;
+  calculatedCBM: number;
+  totalCost: number;
+  isFormValid: boolean;
+  buildSubmitData: () => ReceiveGoodsInput | null;
 }
 
 /**

@@ -13,7 +13,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 const { width: W, height: H } = Dimensions.get('window');
 
 export interface PhotoGalleryProps {
-  photoUrls?: string[];
+  photoUrls?: string[] | string;
   imageHeight?: number;
   showCounter?: boolean;
   editable?: boolean;
@@ -29,12 +29,19 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   const [idx, setIdx] = useState(0);
   const fade = useSharedValue(0);
 
+  // Defensively coerce to array - handles corrupted string data from backend
+  const safePhotoUrls = Array.isArray(photoUrls)
+    ? photoUrls.filter((url): url is string => typeof url === 'string' && url.length > 0)
+    : typeof photoUrls === 'string' && photoUrls.length > 0
+      ? [photoUrls]
+      : [];
+
   const open = useCallback((i: number) => { setIdx(i); setVisible(true); fade.value = withTiming(1, { duration: 250 }); }, [fade]);
   const close = useCallback(() => { fade.value = withTiming(0, { duration: 200 }, (f) => { if (f) runOnJS(setVisible)(false); }); }, [fade]);
   const animatedStyle = useAnimatedStyle(() => ({ opacity: fade.value }));
-  const go = (d: number) => { const n = idx + d; if (n >= 0 && n < photoUrls.length) setIdx(n); };
+  const go = (d: number) => { const n = idx + d; if (n >= 0 && n < safePhotoUrls.length) setIdx(n); };
 
-  if (!photoUrls.length) {
+  if (!safePhotoUrls.length) {
     return (
       <TouchableOpacity activeOpacity={0.8} onPress={editable ? onAddPhoto : undefined} style={[s.empty, { backgroundColor: colors.background.card }]}>
         <Ionicons name="images-outline" size={40} color={colors.text.disabled} />
@@ -47,11 +54,11 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   return (
     <View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.strip}>
-        {photoUrls.map((url, i) => (
+        {safePhotoUrls.map((url, i) => (
           <TouchableOpacity key={`${url}_${i}`} activeOpacity={0.9} onPress={() => open(i)} style={s.wrap}>
             <Image source={{ uri: url }} style={[s.photo, { height: imageHeight }]} contentFit="cover" />
-            {showCounter && photoUrls.length > 1 && (
-              <View style={s.badge}><Text style={s.badgeText}>{i + 1} / {photoUrls.length}</Text></View>
+            {showCounter && safePhotoUrls.length > 1 && (
+              <View style={s.badge}><Text style={s.badgeText}>{i + 1} / {safePhotoUrls.length}</Text></View>
             )}
           </TouchableOpacity>
         ))}
@@ -61,17 +68,17 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         <Animated.View style={[s.backdrop, animatedStyle]}>
           <TouchableOpacity activeOpacity={1} style={StyleSheet.absoluteFillObject} onPress={close} />
           <View style={s.header} pointerEvents="box-none">
-            <Text style={s.headerText}>{idx + 1} / {photoUrls.length}</Text>
+            <Text style={s.headerText}>{idx + 1} / {safePhotoUrls.length}</Text>
             <TouchableOpacity onPress={close} style={s.closeBtn}><Ionicons name="close" size={28} color="#fff" /></TouchableOpacity>
           </View>
           <View style={s.navRow} pointerEvents="box-none">
             {idx > 0 && <TouchableOpacity onPress={() => go(-1)} style={s.chevron}><Ionicons name="chevron-back" size={36} color="#fff" /></TouchableOpacity>}
             <View style={{ flex: 1 }} />
-            {idx < photoUrls.length - 1 && <TouchableOpacity onPress={() => go(1)} style={s.chevron}><Ionicons name="chevron-forward" size={36} color="#fff" /></TouchableOpacity>}
+            {idx < safePhotoUrls.length - 1 && <TouchableOpacity onPress={() => go(1)} style={s.chevron}><Ionicons name="chevron-forward" size={36} color="#fff" /></TouchableOpacity>}
           </View>
           <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} contentOffset={{ x: idx * W, y: 0 }}
             onMomentumScrollEnd={(e) => setIdx(Math.round(e.nativeEvent.contentOffset.x / W))} style={{ zIndex: 103 }} contentContainerStyle={{ alignItems: 'center' }}>
-            {photoUrls.map((url, i) => (
+            {safePhotoUrls.map((url, i) => (
               <View key={`v_${url}_${i}`} style={s.page}>
                 <Image source={{ uri: url }} style={s.viewerImg} contentFit="contain" />
               </View>

@@ -6,11 +6,14 @@ import { useGetContainerById, useUpdateContainerStatus, useRemoveGoodsFromContai
 import { waypointQueryKeys } from '../../hooks/useWaypoints';
 import { Container, ContainerStatus, CONTAINER_STATUS_COLORS, CONTAINER_STATUS_LABELS } from '../../types';
 import { Goods } from '../../../goods/types';
+import { CbmProfit, DualLedger } from '../../types/containerProfit';
 import { Theme } from '@src/constants/Theme';
 
 const MAX_CBM = 67;
 const MAX_WEIGHT = 28000; // kg
 const TIMELINE_STEPS: ContainerStatus[] = ['BOOKED','EMPTY_TO_WAREHOUSE','LOADING','LOADED','IN_TRANSIT','ARRIVED','READY_FOR_PICKUP'];
+
+export type ContainerDetailScreenState = ReturnType<typeof useContainerDetailScreen>;
 
 export const useContainerDetailScreen = () => {
   const route = useRoute(), navigation = useNavigation(), queryClient = useQueryClient();
@@ -100,7 +103,40 @@ export const useContainerDetailScreen = () => {
   const handleMarkDelivered = () => setShowDeliveredDialog(true);
   const confirmMarkDelivered = async () => { if (goodsList.length === 0) { Alert.alert('Attention', 'Ce container est vide. Marquer un container vide comme livré est inhabituel. Continuer ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: async () => { try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } } }]); return; } try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } };
   const handleMarkGoodsDelivered = (goodsId: string) => Alert.alert('Confirmer la livraison', 'Marquer cette marchandise comme livrée ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Marquer Livré', onPress: async () => { try { await markGoodsDeliveredMutation.mutateAsync(goodsId); Alert.alert('Succès', 'Marchandise marquée comme livrée'); } catch { Alert.alert('Erreur', 'Impossible de marquer la marchandise'); } } }]);
-  const cbmProfit = containerResponse?.data?.cbmProfit ?? null;
+  // Compute fallback CBM profit from goods if backend returns zero client CBM
+  const rawCbmProfit: CbmProfit | null = containerResponse?.data?.cbmProfit ?? null;
+  const cbmProfit: CbmProfit | null = (() => {
+    if (!rawCbmProfit || !goodsList.length) return rawCbmProfit;
+
+    // If backend already provides valid dualLedger with non-zero clientTotalCBM, use it
+    if (rawCbmProfit.dualLedger && rawCbmProfit.dualLedger.clientTotalCBM > 0) {
+      return rawCbmProfit;
+    }
+
+    // Calculate client total CBM from goods actualCBM
+    const clientTotalCBM = goodsList.reduce((sum, g: any) => sum + (parseFloat(g?.actualCBM) || 0), 0);
+    if (clientTotalCBM <= 0) return rawCbmProfit;
+
+    const clientUnitPrice = 300000;
+    const agentUnitCost = rawCbmProfit.dualLedger?.agentUnitCost || rawCbmProfit.cbmCostPerUnit || 278000;
+    const clientTotalRevenue = clientTotalCBM * clientUnitPrice;
+    const realTimeProfit = clientTotalRevenue - (clientTotalCBM * agentUnitCost);
+
+    const dualLedger: DualLedger = {
+      ...(rawCbmProfit.dualLedger || {}),
+      clientTotalCBM,
+      clientTotalRevenue,
+      realTimeProfit,
+      agentUnitCost,
+      reconciliationStatus: rawCbmProfit.dualLedger?.reconciliationStatus || 'PENDING',
+    } as DualLedger;
+
+    return {
+      ...rawCbmProfit,
+      totalCBM: clientTotalCBM,
+      dualLedger,
+    };
+  })();
   const consignee = (container as any)?.consigneeId && typeof (container as any).consigneeId === 'object'
     ? {
         name: (container as any).consigneeId.name,

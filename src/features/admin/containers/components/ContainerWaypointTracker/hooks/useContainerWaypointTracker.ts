@@ -3,7 +3,11 @@ import { Linking, Alert, LayoutAnimation, Platform, UIManager } from 'react-nati
 import { ContainerWaypoint, ExtendedWaypointStatus } from '../../../types';
 import { getLocationCategory, getExtendedStatusLabel, getQuickActions, isValidStatusTransition } from '../../../types/waypointStatus';
 
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+const isNewArchitectureEnabled = Boolean(
+  (globalThis as { nativeFabricUIManager?: unknown }).nativeFabricUIManager
+);
+
+if (Platform.OS === 'android' && !isNewArchitectureEnabled && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 

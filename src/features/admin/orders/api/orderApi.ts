@@ -1,5 +1,6 @@
-import { apiV2 } from '@src/api/client';
+import { apiClient, apiV2 } from '@src/api/client';
 import { AxiosResponse } from 'axios';
+import { productType } from '@src/api/order';
 import { OrderWithGoods, OrderWithGoodsSeparated, OrderTotalsBreakdown } from './types';
 
 const axios = apiV2;
@@ -15,7 +16,35 @@ const isVoidGoods = (goods: { status?: string; isVoid?: boolean }): boolean => {
   return goods.status === 'void' || goods.isVoid === true;
 };
 
+type RouteType = {
+  currentStatus: string;
+  orderDetail: Array<{
+    id: string;
+    status: string;
+    coordinates: Array<{
+      latitude: number;
+      longitude: number;
+      location: string;
+      note?: string;
+    }>;
+  }>;
+};
+
 export const orderApi = {
+  /**
+   * Get order details by ID
+   * GET /order/:id/single
+   */
+  getOrderDetails: (id: string): Promise<productType> =>
+    apiClient.get<productType>(`/order/${id}/single`).then((res) => res.data),
+
+  /**
+   * Get all routes
+   * GET /route/routes
+   */
+  getRoutes: (): Promise<RouteType[]> =>
+    apiClient.get<RouteType[]>(`/route/routes`).then((res) => res.data),
+
   /**
    * Get order with goods details
    * GET /api/v1/orders/:id/with-goods

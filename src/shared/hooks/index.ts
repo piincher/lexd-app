@@ -8,6 +8,9 @@ export * from './useRoutes';
 export * from './useOrderDetail';
 
 export * from './useHaptics';
+export * from './useAnalytics';
+export * from './useComponentAnalytics';
+export * from './componentAnalytics';
 
 // Keep existing exports for backward compatibility
 export {
@@ -15,3 +18,6 @@ export {
   type UsePushNotificationsReturn,
   type UsePushNotificationsOptions,
 } from './usePushNotifications';
+
+export * from './deepLinks';
+export * from './useOfflineMutation';

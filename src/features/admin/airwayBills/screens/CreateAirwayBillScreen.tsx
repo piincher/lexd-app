@@ -9,10 +9,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '@src/constants/Theme';
 import { AirwayBillFlightFields } from './components/AirwayBillFlightFields';
 import { ConsigneePicker } from './components/ConsigneePicker';
+import { AirCargoRoutePicker } from './components/AirCargoRoutePicker';
 import { useCreateAirwayBillScreen } from './hooks/useCreateAirwayBillScreen';
 
 export const CreateAirwayBillScreen: React.FC = () => {
-  const { values, setters, consignee, isSubmitting, handleSubmit } = useCreateAirwayBillScreen();
+  const { values, setters, routeOptions, consignee, isSubmitting, handleSubmit } = useCreateAirwayBillScreen();
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -31,6 +32,11 @@ export const CreateAirwayBillScreen: React.FC = () => {
           onToggleDropdown={consignee.setShowDropdown}
           onSelect={consignee.handleSelect}
           onClear={consignee.handleClear}
+        />
+        <AirCargoRoutePicker
+          routes={routeOptions}
+          selectedRouteKey={values.selectedRouteKey}
+          onSelect={setters.setSelectedRouteKey}
         />
         <AirwayBillFlightFields
           flightNumber={values.flightNumber}

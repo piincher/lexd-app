@@ -4,7 +4,7 @@
  */
 
 import { apiClientV2, apiRequest } from '@src/api/client';
-import { ApiResponse, PaginatedResponse } from '@src/api/types';
+import { ApiResponse, PaginatedResponse } from '@src/shared/types/api';
 import { PackingList } from '../types/PackingList';
 import { Container, CreateContainerInput, UpdateContainerStatusInput, AssignGoodsInput, ContainerFilters, Route, RouteFilters } from '../types';
 

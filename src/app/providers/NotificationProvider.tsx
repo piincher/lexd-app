@@ -119,6 +119,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
   showPermissionAlert = true,
 }) => {
   const queryClient = useQueryClient();
+  const authToken = useAuth((state) => state.token);
 
   // State
   const [pushToken, setPushToken] = useState<string | null>(null);
@@ -215,24 +216,16 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
 
   // Listen for auth state changes and retry registration when user logs in
   useEffect(() => {
-    const unsubscribe = useAuth.subscribe((state) => {
-      const authToken = state.token;
-      
-      // If we have an auth token and haven't registered yet, trigger registration
-      if (authToken && authToken.trim() !== '' && permissionStatus === "granted" && autoRegister && !isRegistered) {
-        console.log("[NotificationProvider] Auth token detected, triggering registration...");
-        hasAttemptedRegistration.current = false; // Reset to allow retry
-      }
-    });
-
-    return () => unsubscribe();
-  }, [permissionStatus, autoRegister, isRegistered]);
+    // If we have an auth token and haven't registered yet, trigger registration
+    if (authToken && authToken.trim() !== '' && permissionStatus === "granted" && autoRegister && !isRegistered) {
+      console.log("[NotificationProvider] Auth token detected, triggering registration...");
+      hasAttemptedRegistration.current = false; // Reset to allow retry
+    }
+  }, [authToken, permissionStatus, autoRegister, isRegistered]);
 
   useEffect(() => {
     const getTokenAndRegister = async () => {
       if (permissionStatus === "granted" && autoRegister && !isRegistered && !hasAttemptedRegistration.current) {
-        const authToken = useAuth.getState().token;
-        
         // Mark that we've attempted registration (even if no auth token)
         hasAttemptedRegistration.current = true;
         
@@ -277,7 +270,7 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     };
 
     getTokenAndRegister();
-  }, [permissionStatus, autoRegister, isRegistered, useAuth.getState().token]);
+  }, [permissionStatus, autoRegister, isRegistered, authToken]);
 
   // ============================================================================
   // Notification Listeners

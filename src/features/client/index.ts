@@ -1,26 +1,26 @@
 /**
  * Client Feature Module
- * Client-facing features for order management and tracking
+ * Public API for client-facing order management and tracking
  */
 
-// Navigation
-export { ClientNavigator } from './navigation/ClientNavigator';
+// Navigator
+export { ClientNavigator } from './screens/ClientNavigator';
 
-// Screens (from orders sub-feature)
+// Order Screens
 export {
   ClientOrderDetailScreen,
   ClientOrdersListScreen,
   TrackOrderScreen,
 } from './orders/screens';
 
-// Hooks (from orders sub-feature)
+// Order Hooks
 export {
   useClientOrder,
   useMyOrders,
   useTrackOrder,
 } from './orders/hooks';
 
-// Types (from orders sub-feature)
+// Order Types
 export type {
   Order,
   OrderFilters,

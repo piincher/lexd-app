@@ -2,8 +2,9 @@ import React from "react";
 import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { Text, Card } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { imagesType } from "@src/api/order";
+import { imagesType } from "@src/features/orders/api";
 import { Theme } from "@src/constants/Theme";
+import { normalizePhotos } from "@src/shared/lib";
 
 interface OrderImageSectionProps {
    images?: imagesType;
@@ -20,12 +21,10 @@ export const OrderImageSection: React.FC<OrderImageSectionProps> = ({ images, go
 
    if (goodsIds && goodsIds.length > 0) {
       goodsIds.forEach((goods) => {
-         const urls = goods.photos?.length ? goods.photos : (goods.images || []);
-         if (Array.isArray(urls)) {
-            urls.forEach((url: string) => {
-               if (url && !allPhotos.includes(url)) allPhotos.push(url);
-            });
-         }
+         const urls = normalizePhotos(goods);
+         urls.forEach((url: string) => {
+            if (url && !allPhotos.includes(url)) allPhotos.push(url);
+         });
       });
    }
 

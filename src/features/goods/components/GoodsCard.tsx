@@ -9,6 +9,7 @@ import { StatusBadge } from './StatusBadge';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsImage } from '@src/shared/ui/GoodsImage';
+import { normalizePhotos } from '@src/shared/lib';
 
 interface GoodsCardProps {
 	goods: Goods;
@@ -26,7 +27,7 @@ const truncateText = (text: string, maxLength: number): string => {
 
 export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 	const { colors } = useAppTheme();
-	const images = goods.photos?.length ? goods.photos : (goods.images || []);
+	const images = normalizePhotos(goods);
 
 	const styles = useMemo(
 		() =>

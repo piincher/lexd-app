@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { View, Image, Pressable, ScrollView } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { imagesType } from '@src/api/order';
+import { imagesType } from '@src/shared/types/order';
 import { createStyles } from './OrderImageGallery.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 

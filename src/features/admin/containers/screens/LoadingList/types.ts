@@ -1,5 +1,5 @@
 import { Container } from '../../types';
-import { Goods } from '../../../../goods/types';
+import { Goods } from '@src/shared/types';
 
 export interface LoadingListItem {
   sequenceNumber: number;

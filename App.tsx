@@ -2,9 +2,12 @@ import "react-native-gesture-handler";
 import * as Sentry from "@sentry/react-native";
 import { AntDesign, Entypo, FontAwesome5 } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+import { CommonActions, NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { linking } from "@src/shared/lib/deepLinking";
+import * as Haptics from "expo-haptics";
+import { ScrollDirectionProvider } from "@src/providers/ScrollDirectionProvider";
+import { useTabBarStore } from "@src/store/tabBarStore";
 // import * as Sentry from "@sentry/react-native";
 import { initMixpanel } from "@src/config/Analytic";
 import type { HomeTabParamList, RootStackParamList } from "@src/navigations/type";
@@ -34,14 +37,6 @@ import { OnboardingScreen as OnBoarding } from "@src/features/onboarding";
 // Features - Order Detail
 import { NewOrderDetailScreen } from "@src/features/order-detail";
 
-// Features - Payments
-import {
-   PaymentScreen,
-   PaymentHistoryScreen,
-   MyPaymentHistoryScreen,
-} from "@src/features/payments";
-import UserPaymentDetailScreen from "@src/features/payments/screens/UserPaymentDetailScreen";
-
 // Features - Orders
 import { OrdersScreen as Orders } from "@src/features/orders";
 
@@ -59,12 +54,10 @@ import {
 import CertificateDetailScreen from "@src/features/profile/screens/CertificateDetail";
 
 // Features - Goods (V2 Client)
-import {
-   MyGoodsScreen,
-   GoodsDetailScreen,
-   EditGoodsScreen,
-   ScanQRScreen as GoodsScanQR,
-} from "@src/features/goods";
+import MyGoodsScreen from "@src/features/goods/screens/MyGoodsScreen";
+import GoodsDetailScreen from "@src/features/goods/screens/GoodsDetailScreen";
+import EditGoodsScreen from "@src/features/goods/screens/EditGoodsScreen";
+import { ScanQRScreen as GoodsScanQR } from "@src/features/goods/screens/ScanQRScreen";
 
 // Features - Customer Containers (V2)
 import {
@@ -89,7 +82,7 @@ import {
 } from "@src/features/customer/support";
 
 // Components & Others
-import FadingAnnouncement from "@src/components/Announcement/Annoncement";
+import { AppAnnouncementHost } from "@src/features/announcements";
 import { COLORS } from "@src/constants/Colors";
 import { useAppLaunchStore } from "@src/store/AppLaunch";
 import { useAuth } from "@src/store/Auth";
@@ -99,11 +92,11 @@ import * as Font from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { StatusBar as ThemeStatusBar } from "@src/components/StatusBar";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { enGB, fr, registerTranslation } from "react-native-paper-dates";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context";
 import { initSentry } from "@src/services/sentry";
 import { UpdateProvider } from "@src/context/UpdateProvider";
 import { NotificationProvider } from "@src/app/providers";
@@ -126,6 +119,7 @@ import SendSms from "@src/features/admin/communications/screens/SendSms";
 import CampaignListScreen from "@src/features/admin/communications/screens/CampaignListScreen";
 import CreateCampaignScreen from "@src/features/admin/communications/screens/CreateCampaignScreen";
 import CreateAnnouncementScreen from "@src/features/admin/announcements/screens/CreateAnnouncementScreen";
+import AnnouncementListScreen from "@src/features/admin/announcements/screens/AnnouncementListScreen";
 import BatchUpdateDetail from "@src/features/admin/orders/screens/BatchUpdateDetail";
 import ChooseShippingMethod from "@src/features/admin/shipping/screens/ChooseShippingMethod";
 import ShippingMethod from "@src/features/admin/shipping/screens/ShippingMethod";
@@ -167,6 +161,7 @@ import CertificateDetailAdminScreen from "@src/features/admin/certificates/scree
 import AdminReviewsScreen from "@src/features/admin/reviews/screens/AdminReviewsScreen";
 import ManagePromosScreen from "@src/features/admin/promos/screens/ManagePromosScreen";
 import AdminGoodsPdfExport from "@src/features/admin/export/screens/GoodsPdfExportScreen";
+import { DataExportScreen } from "@src/features/admin/export";
 import WhatsAppRequestListScreen from "@src/features/admin/whatsapp-requests/screens/WhatsAppRequestListScreen";
 import {
    AdminTicketDetailScreen,
@@ -184,14 +179,45 @@ SplashScreen.preventAutoHideAsync();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 
-AsyncStorage.removeItem("CHINALINK_QUERY_CACHE").then(() => {
-   getQueryClient().clear();
-});
+type TabBarIconProps = {
+   color: string;
+   size: number;
+};
+
+const createHomeTabRedirect = (screen: keyof HomeTabParamList) => {
+   const HomeTabRedirect = () => {
+      const setTabBarVisible = useTabBarStore((state) => state.setVisible);
+
+      useEffect(() => {
+         setTabBarVisible(true);
+         navigationRef.dispatch(
+            CommonActions.navigate({
+               name: "HomeTab",
+               params: { screen },
+            })
+         );
+      }, [setTabBarVisible]);
+
+      return null;
+   };
+
+   return HomeTabRedirect;
+};
+
+const AdminDashboardTabRedirect = createHomeTabRedirect("AdminDashBoard");
+const AdminGoodsListTabRedirect = createHomeTabRedirect("AdminGoodsList");
+const ContainerListTabRedirect = createHomeTabRedirect("ContainerList");
+const CustomerDashboardTabRedirect = createHomeTabRedirect("CustomerDashboard");
+const MyGoodsTabRedirect = createHomeTabRedirect("MyGoods");
+const MyContainersTabRedirect = createHomeTabRedirect("MyContainers");
+
 initSentry();
 initMixpanel();
+
+// Only clear legacy query cache once on app launch (not on Fast Refresh)
+const queryClient = getQueryClient();
 function AppWrapper() {
    const [appIsLoaded, setAppIsLoaded] = useState(false);
-   const navigation = useRef<any>(null);
    const appLaunch = useAppLaunchStore((state) => state.isAppLaunchFirst);
    const token = useAuth((state) => state.token);
 
@@ -237,7 +263,7 @@ function AppWrapper() {
    return (
       <SafeAreaProvider onLayout={onLayout}>
          <ThemeStatusBar style={isDark ? "light" : "dark"} />
-         <FadingAnnouncement />
+         <AppAnnouncementHost />
 
          <Stack.Navigator
             screenOptions={{ headerShown: false }}
@@ -265,14 +291,6 @@ function AppWrapper() {
                   <Stack.Screen name="RecordPaymentScreen" component={RecordPaymentScreen} />
                   <Stack.Screen name="PaymentDetail" component={PaymentDetailScreen} />
                   <Stack.Screen name="OrderPaymentHistory" component={AdminPaymentHistoryScreen} />
-                  <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
-                  <Stack.Screen name="PaymentHistoryScreen" component={PaymentHistoryScreen} />
-                  <Stack.Screen
-                     name="MyPaymentHistory"
-                     component={MyPaymentHistoryScreen}
-                     options={{ title: "Historique des paiements" }}
-                  />
-                  <Stack.Screen name="UserPaymentDetail" component={UserPaymentDetailScreen} />
                   <Stack.Screen name="AddOrder" component={AddOrder} />
                   <Stack.Screen name="ActiveOrder" component={ActiveOrders} />
                   <Stack.Screen name="OrderDetail" component={NewOrderDetailScreen} />
@@ -288,7 +306,7 @@ function AppWrapper() {
                   <Stack.Screen name="BatchUpdate" component={BatchUpdate} />
                   <Stack.Screen name="BatchUpdateDetail" component={BatchUpdateDetail} />
                   <Stack.Screen name="EditOrder" component={EditOrder} />
-                  <Stack.Screen name="AdminDashBoard" component={AdminDashBoard} />
+                  <Stack.Screen name="AdminDashBoard" component={AdminDashboardTabRedirect} />
                   <Stack.Screen
                      name="OutstandingPaymentsList"
                      component={OutstandingPaymentsListScreen}
@@ -307,14 +325,15 @@ function AppWrapper() {
                   {/* Admin V2 Screens */}
                   <Stack.Screen name="UnassignedGoods" component={UnassignedGoodsScreen} />
                   <Stack.Screen name="ReceiveGoods" component={ReceiveGoodsScreen} />
-                  <Stack.Screen name="AdminGoodsList" component={AdminGoodsList} />
+                  <Stack.Screen name="AdminGoodsList" component={AdminGoodsListTabRedirect} />
                   <Stack.Screen name="AdminGoodsDetail" component={AdminGoodsDetailScreen} />
                   <Stack.Screen name="AdminGoodsPdfExport" component={AdminGoodsPdfExport} />
+                  <Stack.Screen name="DataExport" component={DataExportScreen} />
                   <Stack.Screen name="ConsigneeList" component={ConsigneeListScreen} />
                   <Stack.Screen name="CreateConsignee" component={CreateConsigneeScreen} />
                   <Stack.Screen name="ConsigneeDetail" component={ConsigneeDetailScreen} />
                   {/* Container V2 Screens */}
-                  <Stack.Screen name="ContainerList" component={ContainerListScreen} />
+                  <Stack.Screen name="ContainerList" component={ContainerListTabRedirect} />
                   <Stack.Screen name="CreateContainer" component={CreateContainerScreen} />
                   <Stack.Screen name="ContainerDetail" component={ContainerDetailScreen} />
                   <Stack.Screen name="AssignGoods" component={AssignGoodsScreen} />
@@ -330,15 +349,18 @@ function AppWrapper() {
                   <Stack.Screen name="RouteList" component={RouteListScreen} />
                   <Stack.Screen name="RouteForm" component={RouteFormScreen} />
                   {/* Client V2 Screens */}
-                  <Stack.Screen name="MyGoods" component={MyGoodsScreen} />
+                  <Stack.Screen name="MyGoods" component={MyGoodsTabRedirect} />
                   <Stack.Screen name="GoodsDetail" component={GoodsDetailScreen} />
                   <Stack.Screen name="EditGoods" component={EditGoodsScreen} />
                   <Stack.Screen name="ScanQR" component={GoodsScanQR} />
                   {/* Customer Dashboard V2 */}
-                  <Stack.Screen name="CustomerDashboard" component={CustomerDashboardScreen} />
+                  <Stack.Screen
+                     name="CustomerDashboard"
+                     component={CustomerDashboardTabRedirect}
+                  />
                   <Stack.Screen name="ActivityList" component={ActivityListScreen} />
                   {/* Customer Container V2 Screens */}
-                  <Stack.Screen name="MyContainers" component={MyContainersScreen} />
+                  <Stack.Screen name="MyContainers" component={MyContainersTabRedirect} />
                   <Stack.Screen name="ContainerTracking" component={ContainerTrackingScreen} />
                   <Stack.Screen name="ClientPackingList" component={ClientPackingListScreen} />
                   <Stack.Screen name="ClientLoadingList" component={ClientLoadingListScreen} />
@@ -366,6 +388,7 @@ function AppWrapper() {
                   {/* Campaign Screens */}
                   <Stack.Screen name="CampaignList" component={CampaignListScreen} />
                   <Stack.Screen name="CreateCampaign" component={CreateCampaignScreen} />
+                  <Stack.Screen name="AnnouncementList" component={AnnouncementListScreen} />
                   <Stack.Screen name="CreateAnnouncement" component={CreateAnnouncementScreen} />
                   {/* Search Screens */}
                   <Stack.Screen name="GlobalSearch" component={GlobalSearchScreen} />
@@ -382,11 +405,22 @@ function AppWrapper() {
 }
 
 const HomeBottomTab = () => {
-   const admin = useAuth((state) => state.user.role);
+   const role = useAuth((state) => state.user.role);
    const token = useAuth((state) => state.token);
    const { colors } = useAppTheme();
+   const insets = useSafeAreaInsets();
+   const setTabBarVisible = useTabBarStore((state) => state.setVisible);
+   const isTabBarVisible = useTabBarStore((state) => state.isVisible);
 
-   const adminRole = admin === "admin";
+   const normalizedRole = role.trim().toLowerCase().replace(/[\s_-]/g, "");
+   const adminRole = ["admin", "superadmin"].includes(normalizedRole);
+   const showTabBar = adminRole || isTabBarVisible;
+   const bottomPadding = Math.max(insets.bottom, 8);
+   const tabBarHeight = 58 + bottomPadding;
+
+   useEffect(() => {
+      setTabBarVisible(true);
+   }, [adminRole, token, setTabBarVisible]);
 
    // Build tab config array — React Navigation requires stable children,
    // so we filter the array BEFORE rendering instead of using && inside JSX
@@ -397,8 +431,8 @@ const HomeBottomTab = () => {
          show: !adminRole && !token,
          options: {
             tabBarLabel: "Accueil",
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <AntDesign name="home" focused={focused} color={color} size={size} />
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <AntDesign name="home" color={color} size={size} />
             ),
          },
       },
@@ -408,8 +442,8 @@ const HomeBottomTab = () => {
          show: !adminRole && !!token,
          options: {
             tabBarLabel: "Tableau de Bord",
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <AntDesign name="layout" focused={focused} color={color} size={size} />
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <AntDesign name="layout" color={color} size={size} />
             ),
          },
       },
@@ -418,8 +452,9 @@ const HomeBottomTab = () => {
          component: AdminDashBoard,
          show: adminRole,
          options: {
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <AntDesign name="book" focused={focused} color={color} size={size} />
+            tabBarLabel: "Admin",
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <AntDesign name="book" color={color} size={size} />
             ),
          },
       },
@@ -430,8 +465,8 @@ const HomeBottomTab = () => {
          options: {
             tabBarLabel: "Commandes",
             tabBarAccessibilityLabel: "Commandes",
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <FontAwesome5 name="clipboard-list" size={size} color={color} focused={focused} />
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <FontAwesome5 name="clipboard-list" size={size} color={color} />
             ),
          },
       },
@@ -442,8 +477,8 @@ const HomeBottomTab = () => {
          options: {
             tabBarLabel: "Mes Marchandises",
             tabBarAccessibilityLabel: "Mes Marchandises",
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <FontAwesome5 name="box" size={size} color={color} focused={focused} />
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <FontAwesome5 name="box" size={size} color={color} />
             ),
          },
       },
@@ -453,8 +488,8 @@ const HomeBottomTab = () => {
          show: !adminRole && !!token,
          options: {
             tabBarLabel: "Containers",
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <FontAwesome5 name="ship" size={size} color={color} focused={focused} />
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <FontAwesome5 name="ship" size={size} color={color} />
             ),
          },
       },
@@ -463,8 +498,9 @@ const HomeBottomTab = () => {
          component: Stats,
          show: adminRole,
          options: {
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <Entypo name="pie-chart" focused={focused} color={color} size={size} />
+            tabBarLabel: "Stats",
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <Entypo name="pie-chart" color={color} size={size} />
             ),
          },
       },
@@ -474,8 +510,8 @@ const HomeBottomTab = () => {
          show: adminRole,
          options: {
             tabBarLabel: "Marchandises",
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <FontAwesome5 name="box" size={size} color={color} focused={focused} />
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <FontAwesome5 name="box" size={size} color={color} />
             ),
          },
       },
@@ -485,8 +521,8 @@ const HomeBottomTab = () => {
          show: adminRole,
          options: {
             tabBarLabel: "Conteneurs",
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <FontAwesome5 name="ship" size={size} color={color} focused={focused} />
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <FontAwesome5 name="ship" size={size} color={color} />
             ),
          },
       },
@@ -495,8 +531,9 @@ const HomeBottomTab = () => {
          component: Profile,
          show: true,
          options: {
-            tabBarIcon: ({ focused, color, size }: any) => (
-               <Entypo name="user" focused={focused} color={color} size={size} />
+            tabBarLabel: "Profil",
+            tabBarIcon: ({ color, size }: TabBarIconProps) => (
+               <Entypo name="user" color={color} size={size} />
             ),
          },
       },
@@ -516,9 +553,41 @@ const HomeBottomTab = () => {
             headerShown: false,
             tabBarActiveTintColor: colors.primary.main,
             tabBarInactiveTintColor: colors.text.disabled,
+            tabBarShowLabel: true,
+            tabBarLabelStyle: {
+               fontSize: 11,
+               fontWeight: "700",
+               marginTop: 2,
+            },
+            tabBarIconStyle: {
+               marginTop: 4,
+            },
+            tabBarItemStyle: {
+               height: 54,
+               paddingVertical: 3,
+            },
             tabBarStyle: {
                backgroundColor: colors.background.card,
                borderTopColor: colors.border,
+               borderTopWidth: 1,
+               display: showTabBar ? "flex" : "none",
+               height: tabBarHeight,
+               paddingBottom: bottomPadding,
+               paddingTop: 4,
+               elevation: 12,
+               shadowColor: "#000",
+               shadowOpacity: 0.08,
+               shadowRadius: 8,
+               shadowOffset: { width: 0, height: -2 },
+            },
+         }}
+         screenListeners={{
+            focus: () => {
+               setTabBarVisible(true);
+            },
+            tabPress: () => {
+               setTabBarVisible(true);
+               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
             },
          }}
       >
@@ -548,13 +617,18 @@ const ThemedApp = () => {
 };
 
 const App = () => {
+   // Stable query client reference - never recreate on re-render
+   const [stableQueryClient] = React.useState(() => queryClient);
+
    return (
-      <OfflineProvider queryClient={getQueryClient()}>
+      <OfflineProvider queryClient={stableQueryClient}>
          <ThemeProvider>
             <NotificationProvider autoRequestPermission={true}>
-               <GestureHandlerRootView style={{ flex: 1 }}>
-                  <ThemedApp />
-               </GestureHandlerRootView>
+               <ScrollDirectionProvider>
+                  <GestureHandlerRootView style={{ flex: 1 }}>
+                     <ThemedApp />
+                  </GestureHandlerRootView>
+               </ScrollDirectionProvider>
             </NotificationProvider>
          </ThemeProvider>
       </OfflineProvider>

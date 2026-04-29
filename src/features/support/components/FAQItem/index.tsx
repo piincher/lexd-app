@@ -3,20 +3,18 @@
  * Following SRP: Single purpose - FAQ accordion item (< 150 lines)
  */
 
-import React, { useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import React, { useEffect } from 'react';
+import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import Animated, {
   useAnimatedStyle,
-  withSpring,
-  useSharedValue,
   withTiming,
+  useSharedValue,
   interpolate,
   Extrapolate,
 } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Fonts } from '@src/constants/Fonts';
 import { FAQItem as FAQItemType, FAQ_CATEGORY_COLORS } from '../../types';
+import { FAQItemHeader, FAQItemAnswer } from './components';
 
 interface FAQItemProps {
   item: FAQItemType;
@@ -36,7 +34,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({
   const { colors, isDark } = useAppTheme();
   const animationProgress = useSharedValue(0);
 
-  React.useEffect(() => {
+  useEffect(() => {
     animationProgress.value = withTiming(isExpanded ? 1 : 0, {
       duration: 300,
     });
@@ -86,46 +84,19 @@ export const FAQItem: React.FC<FAQItemProps> = ({
       accessibilityState={{ expanded: isExpanded }}
       accessibilityLabel={`${item.question}. Appuyez pour ${isExpanded ? 'réduire' : 'développer'}`}
     >
-      <View style={styles.header}>
-        <View style={styles.questionRow}>
-          <View
-            style={[
-              styles.categoryIndicator,
-              { backgroundColor: categoryColor },
-            ]}
-          />
-          <Text
-            style={[
-              styles.question,
-              {
-                color: colors.text.primary,
-              },
-            ]}
-            numberOfLines={2}
-          >
-            {item.question}
-          </Text>
-        </View>
-        <Animated.View style={chevronStyle}>
-          <MaterialCommunityIcons
-            name="chevron-down"
-            size={24}
-            color={colors.text.secondary}
-          />
-        </Animated.View>
-      </View>
-
+      <FAQItemHeader
+        question={item.question}
+        categoryColor={categoryColor}
+        chevronStyle={chevronStyle}
+        textColor={colors.text.primary}
+        chevronColor={colors.text.secondary}
+      />
       {isExpanded && (
-        <Animated.View style={[styles.answerContainer, answerStyle]}>
-          <Text
-            style={[
-              styles.answer,
-              { color: colors.text.secondary },
-            ]}
-          >
-            {item.answer}
-          </Text>
-        </Animated.View>
+        <FAQItemAnswer
+          answer={item.answer}
+          answerStyle={answerStyle}
+          textColor={colors.text.secondary}
+        />
       )}
     </AnimatedTouchable>
   );
@@ -148,41 +119,6 @@ const styles = StyleSheet.create({
         elevation: 2,
       },
     }),
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    minHeight: 56,
-  },
-  questionRow: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  categoryIndicator: {
-    width: 4,
-    height: 40,
-    borderRadius: 2,
-  },
-  question: {
-    flex: 1,
-    fontFamily: Fonts.bold,
-    fontSize: 14,
-    lineHeight: 20,
-  },
-  answerContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    paddingTop: 0,
-  },
-  answer: {
-    fontFamily: Fonts.regular,
-    fontSize: 14,
-    lineHeight: 22,
-    marginLeft: 16,
   },
 });
 

@@ -8,3 +8,4 @@ export { SectionHeader } from './SectionHeader';
 export { EmptyState } from './EmptyState';
 export { LoadingSequenceList } from './LoadingSequenceList';
 export { ActionBar } from './ActionBar';
+export { ClientSelector } from './ClientSelector';

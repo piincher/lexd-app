@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
 
-import { userData } from "@src/constants/types";
+import { userData } from "@src/shared/types/user";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { getInitials, getAvatarColor } from "../../lib/clientUtils";
 import { createStyles } from "./ClientCard.styles";
@@ -15,6 +15,7 @@ import { ClientCardSkeleton } from "./ClientCardSkeleton";
 interface ClientCardProps {
   client: userData;
   onToggleBlock: (clientId: string) => void;
+  onDelete: (clientId: string) => void;
   index: number;
   isLoading?: boolean;
 }
@@ -22,6 +23,7 @@ interface ClientCardProps {
 export const ClientCard: React.FC<ClientCardProps> = ({ 
   client, 
   onToggleBlock, 
+  onDelete,
   index,
   isLoading = false,
 }) => {
@@ -50,6 +52,21 @@ export const ClientCard: React.FC<ClientCardProps> = ({
       ]
     );
   }, [client, onToggleBlock]);
+
+  const handleDelete = useCallback(() => {
+    Alert.alert(
+      "Supprimer l'utilisateur ?",
+      `Êtes-vous sûr de vouloir supprimer ${client.firstName} ${client.lastName} ? Cette action est irréversible.`,
+      [
+        { text: "Annuler", style: "cancel" },
+        {
+          text: "Supprimer",
+          style: "destructive",
+          onPress: () => onDelete(client._id),
+        },
+      ]
+    );
+  }, [client, onDelete]);
 
   return (
     <Animated.View
@@ -103,20 +120,29 @@ export const ClientCard: React.FC<ClientCardProps> = ({
           )}
         </View>
 
-        <TouchableOpacity
-          style={[
-            styles.actionButton,
-            client.blocked?.isBlocked ? styles.unblockButton : styles.blockButton,
-          ]}
-          onPress={handleBlockToggle}
-          activeOpacity={0.8}
-        >
-          <Ionicons
-            name={client.blocked?.isBlocked ? "lock-open" : "lock-closed"}
-            size={18}
-            color={client.blocked?.isBlocked ? "#10B981" : "#EF4444"}
-          />
-        </TouchableOpacity>
+        <View style={styles.actions}>
+          <TouchableOpacity
+            style={[
+              styles.actionButton,
+              client.blocked?.isBlocked ? styles.unblockButton : styles.blockButton,
+            ]}
+            onPress={handleBlockToggle}
+            activeOpacity={0.8}
+          >
+            <Ionicons
+              name={client.blocked?.isBlocked ? "lock-open" : "lock-closed"}
+              size={18}
+              color={client.blocked?.isBlocked ? "#10B981" : "#EF4444"}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.actionButton, styles.deleteButton]}
+            onPress={handleDelete}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="trash-outline" size={18} color="#EF4444" />
+          </TouchableOpacity>
+        </View>
       </Pressable>
     </Animated.View>
   );

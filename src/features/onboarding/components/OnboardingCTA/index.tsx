@@ -28,8 +28,8 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
 }) => {
   const { width } = useWindowDimensions();
   const isNarrow = width < 360;
-  // Show skip button only on first 2 slides
-  const showSkip = currentIndex < 2;
+  // Show skip button on all slides except the last one
+  const showSkip = !isLastSlide;
 
   if (isLastSlide) {
     return (

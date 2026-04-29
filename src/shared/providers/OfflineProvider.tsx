@@ -82,21 +82,19 @@ export const OfflineProvider: React.FC<OfflineProviderProps> = ({
 
   // Handle app state changes
   useEffect(() => {
+    let lastSyncTime = 0;
+    const SYNC_COOLDOWN = 30 * 1000; // Minimum 30s between foreground syncs
+
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
       if (nextAppState === 'active') {
+        const now = Date.now();
+        if (now - lastSyncTime < SYNC_COOLDOWN) return;
+
         // App came to foreground - check network and sync
         const netInfo = await NetInfo.fetch();
         
         if (netInfo.isConnected) {
-          if (showToasts) {
-            showMessage({
-              message: 'Connecté',
-              description: 'Synchronisation des données...',
-              type: 'info',
-              duration: 2000,
-            });
-          }
-          
+          lastSyncTime = now;
           await checkAndSync();
         }
       }
@@ -104,7 +102,7 @@ export const OfflineProvider: React.FC<OfflineProviderProps> = ({
 
     const subscription = AppState.addEventListener('change', handleAppStateChange);
     return () => subscription.remove();
-  }, [showToasts]);
+  }, []);
 
   // Handle hydration complete
   const handleHydrate = () => {

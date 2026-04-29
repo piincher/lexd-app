@@ -6,7 +6,7 @@
     "jsEngine": "hermes",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "experiments": {
       "reactCompiler": true
     },

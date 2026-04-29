@@ -1,270 +1,34 @@
-import React, { useState, useCallback, useMemo } from "react";
-import {
-  View,
-  StyleSheet,
-  RefreshControl,
-  Pressable,
-} from "react-native";
-import { Text, Chip } from "react-native-paper";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useNavigation } from "@react-navigation/native";
-
-import { Fonts } from "@src/constants/Fonts";
-import { LIMIT } from "@src/constants/Dimensions";
-import { getActiveOrders, productType } from "@src/api/order";
-import { ListItemOrders } from "@src/components/ListItemOrders";
-import { useAppTheme } from "@src/providers/ThemeProvider";
 import { PastOrderCardSkeleton } from "@src/features/customer/orders/components/PastOrderCardSkeleton";
-import { NotificationBell } from "@src/features/notifications";
-
-const ORDERKEY = "past-orders";
-
-type ShippingMode = "all" | "air" | "sea";
-
-interface FilterOption {
-  value: ShippingMode;
-  label: string;
-  icon: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
-}
-
-const FILTER_OPTIONS: FilterOption[] = [
-  { value: "all", label: "Tous", icon: "filter-variant" },
-  { value: "sea", label: "Maritime", icon: "ferry" },
-  { value: "air", label: "Aérien", icon: "airplane" },
-];
-
-const fetchPastOrders = async (
-  page: number,
-  shippingMethod: ShippingMode
-): Promise<productType[]> => {
-  if (shippingMethod === "all") {
-    const [airOrders, seaOrders] = await Promise.all([
-      getActiveOrders(page, "Inactive", "air"),
-      getActiveOrders(page, "Inactive", "sea"),
-    ]);
-    return [...airOrders, ...seaOrders];
-  }
-  return getActiveOrders(page, "Inactive", shippingMethod);
-};
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { usePastOrders } from "../hooks/usePastOrders";
+import {
+  PastOrdersHeader,
+  PastOrdersFilter,
+  PastOrdersCount,
+  PastOrdersEmptyState,
+  PastOrdersList,
+} from "../components";
+import { createStyles } from "./PastOrders.styles";
 
 const PastOrders: React.FC = () => {
-  const navigation = useNavigation();
   const { colors } = useAppTheme();
-  const [shippingMode, setShippingMode] = useState<ShippingMode>("all");
-
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        container: {
-          flex: 1,
-          backgroundColor: colors.background.default,
-        },
-        header: {
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          backgroundColor: colors.background.card,
-          borderBottomWidth: 1,
-          borderBottomColor: colors.border,
-        },
-        backButton: {
-          width: 40,
-          height: 40,
-          borderRadius: 20,
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        headerTitle: {
-          fontFamily: Fonts.bold,
-          fontSize: 18,
-          color: colors.text.primary,
-        },
-        placeholder: {
-          width: 40,
-        },
-        centerContainer: {
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        },
-        loadingText: {
-          marginTop: 16,
-          fontFamily: Fonts.meduim,
-          color: colors.text.secondary,
-        },
-        filtersContainer: {
-          paddingHorizontal: 16,
-          paddingVertical: 12,
-          backgroundColor: colors.background.card,
-          borderBottomWidth: 1,
-          borderBottomColor: colors.border,
-        },
-        filterRow: {
-          flexDirection: "row",
-          gap: 10,
-        },
-        filterChip: {
-          borderRadius: 20,
-          height: 36,
-          backgroundColor: colors.background.paper,
-        },
-        countContainer: {
-          paddingHorizontal: 16,
-          paddingVertical: 8,
-          backgroundColor: colors.background.default,
-        },
-        countText: {
-          fontFamily: Fonts.meduim,
-          fontSize: 14,
-          color: colors.text.secondary,
-        },
-        listContainer: {
-          flex: 1,
-        },
-        emptyContainer: {
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-          paddingHorizontal: 32,
-        },
-        emptyTitle: {
-          fontSize: 20,
-          fontFamily: Fonts.bold,
-          color: colors.text.primary,
-          marginTop: 16,
-        },
-        emptyText: {
-          fontSize: 14,
-          fontFamily: Fonts.regular,
-          color: colors.text.secondary,
-          textAlign: "center",
-          marginTop: 8,
-          marginBottom: 24,
-          lineHeight: 20,
-        },
-        browseButton: {
-          backgroundColor: colors.primary.main,
-          paddingVertical: 12,
-          paddingHorizontal: 24,
-          borderRadius: 8,
-        },
-        browseButtonText: {
-          color: colors.text.inverse,
-          fontFamily: Fonts.bold,
-          fontSize: 14,
-        },
-      }),
-    [colors]
-  );
-
+  const styles = createStyles(colors);
   const {
-    data,
-    fetchNextPage,
+    shippingMode,
+    setShippingMode,
+    orders,
+    isLoading,
     hasNextPage,
     isFetchingNextPage,
-    isLoading,
-    refetch,
-    isRefetching,
-  } = useInfiniteQuery({
-    queryKey: [ORDERKEY, shippingMode],
-    queryFn: ({ pageParam = 1 }) => fetchPastOrders(pageParam, shippingMode),
-    getNextPageParam: (lastPage, allPages) => {
-      const nextPage = lastPage.length === LIMIT ? allPages.length + 1 : undefined;
-      return nextPage;
-    },
-    initialPageParam: 1,
-  });
-
-  const orders = useMemo(() => {
-    if (!data?.pages) return [];
-    return data.pages.flatMap((page) => page);
-  }, [data]);
-
-  const loadMore = useCallback(() => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-  const renderFilterChips = () => (
-    <View style={styles.filtersContainer}>
-      <View style={styles.filterRow}>
-        {FILTER_OPTIONS.map((option) => {
-          const isSelected = shippingMode === option.value;
-          return (
-            <Chip
-              key={option.value}
-              selected={isSelected}
-              onPress={() => setShippingMode(option.value)}
-              style={[
-                styles.filterChip,
-                isSelected && { backgroundColor: colors.primary.main },
-              ]}
-              textStyle={{
-                color: isSelected ? colors.text.inverse : colors.text.secondary,
-                fontFamily: isSelected ? Fonts.bold : Fonts.meduim,
-              }}
-              icon={() => (
-                <MaterialCommunityIcons
-                  name={option.icon}
-                  size={16}
-                  color={isSelected ? colors.text.inverse : colors.text.secondary}
-                />
-              )}
-            >
-              {option.label}
-            </Chip>
-          );
-        })}
-      </View>
-    </View>
-  );
-
-  const renderEmptyState = () => (
-    <View style={styles.emptyContainer}>
-      <MaterialCommunityIcons
-        name="package-variant-closed"
-        size={80}
-        color={colors.text.disabled}
-      />
-      <Text style={styles.emptyTitle}>Aucune commande terminée</Text>
-      <Text style={styles.emptyText}>
-        {shippingMode !== "all"
-          ? `Vous n'avez pas de commandes ${
-              FILTER_OPTIONS.find((f) => f.value === shippingMode)?.label.toLowerCase()
-            } terminées.`
-          : "Vous n'avez pas encore de commandes terminées.\nElles apparaîtront ici une fois livrées."}
-      </Text>
-      <Pressable
-        style={styles.browseButton}
-        onPress={() => navigation.navigate("AddOrder" as never)}
-      >
-        <Text style={styles.browseButtonText}>Créer une commande</Text>
-      </Pressable>
-    </View>
-  );
+    loadMore,
+  } = usePastOrders();
 
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <Pressable
-            onPress={() => navigation.goBack()}
-            style={styles.backButton}
-          >
-            <MaterialCommunityIcons name="arrow-left" size={24} color={colors.text.primary} />
-          </Pressable>
-          <Text style={styles.headerTitle}>Commandes Terminées</Text>
-          <NotificationBell
-            onPress={() => navigation.navigate('Notifications' as never)}
-            size={24}
-            color={colors.text.primary}
-          />
-        </View>
+        <PastOrdersHeader />
         <PastOrderCardSkeleton count={5} />
       </SafeAreaView>
     );
@@ -272,43 +36,18 @@ const PastOrders: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Pressable onPress={() => navigation.goBack()} style={styles.backButton}>
-          <MaterialCommunityIcons name="arrow-left" size={24} color={colors.text.primary} />
-        </Pressable>
-        <Text style={styles.headerTitle}>Commandes Terminées</Text>
-        <NotificationBell
-          onPress={() => navigation.navigate('Notifications' as never)}
-          size={24}
-          color={colors.text.primary}
-        />
-      </View>
-
-      {/* Filters */}
-      {renderFilterChips()}
-
-      {/* Order Count */}
-      <View style={styles.countContainer}>
-        <Text style={styles.countText}>
-          {orders.length} commande{orders.length > 1 ? "s" : ""} terminée
-          {orders.length > 1 ? "s" : ""}
-        </Text>
-      </View>
-
-      {/* Orders List */}
+      <PastOrdersHeader />
+      <PastOrdersFilter mode={shippingMode} onChange={setShippingMode} />
+      <PastOrdersCount count={orders.length} />
       {orders.length === 0 ? (
-        renderEmptyState()
+        <PastOrdersEmptyState shippingMode={shippingMode} />
       ) : (
-        <View style={styles.listContainer}>
-          <ListItemOrders
-            data={orders}
-            loadMore={loadMore}
-            isFetchingNextPage={isFetchingNextPage}
-            hasNextPage={hasNextPage}
-            isLoading={isLoading}
-          />
-        </View>
+        <PastOrdersList
+          orders={orders}
+          loadMore={loadMore}
+          isFetchingNextPage={isFetchingNextPage}
+          hasNextPage={hasNextPage}
+        />
       )}
     </SafeAreaView>
   );

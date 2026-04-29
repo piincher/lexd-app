@@ -13,6 +13,7 @@ export * from './waypoints';
 export * from './waypointStatus';
 export * from './packingList';
 export * from './transitStatus';
+export * from './containerProfit';
 
 // ============================================
 // CONTAINER WAYPOINT TRACKER PROPS

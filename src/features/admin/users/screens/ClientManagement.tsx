@@ -1,18 +1,16 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
-import { FlashList } from "@shopify/flash-list";
 
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { userData } from "@src/constants/types";
-import { useBlockandUnblockUser, useGetUsers } from "../hooks/useUserManagement";
-import { useClientStats } from "../hooks/useClientStats";
+import { useBlockandUnblockUser, useDeleteUser, useGetUsers } from "../hooks/useUserManagement";
 import { ClientHeader } from "../components/ClientHeader";
 import { SearchBar } from "../components/SearchBar";
 import { ResultsBar } from "../components/ResultsBar";
-import { ClientCard } from "../components/ClientCard";
-import { EmptyState } from "../components/EmptyState";
+import { RoleFilterChips } from "../components/RoleFilterChips";
+import { ClientList } from "../components/ClientList";
+import { ROLE_LABELS, RoleFilter } from "../constants/roleFilters";
 import { styles } from "./ClientManagement.styles";
 
 const SEARCH_PLACEHOLDER = "Rechercher par nom, téléphone ou email...";
@@ -20,71 +18,76 @@ const SEARCH_PLACEHOLDER = "Rechercher par nom, téléphone ou email...";
 export default function ClientManagement({ navigation }: RootStackScreenProps<"ClientManagement">) {
   const { isDark } = useAppTheme();
   const [searchQuery, setSearchQuery] = useState("");
-  const [pendingClientId, setPendingClientId] = useState<string | null>(null);
-  const { data } = useGetUsers();
-  const { mutate } = useBlockandUnblockUser();
-  const clients = data ?? [];
+  const [activeRole, setActiveRole] = useState<RoleFilter>("user");
+  const [pendingId, setPendingId] = useState<string | null>(null);
 
-  const filteredClients = useMemo(() => {
-    if (!searchQuery.trim()) return clients;
-    const query = searchQuery.toLowerCase();
-    return clients.filter((c: userData) =>
-      c.firstName?.toLowerCase().includes(query) ||
-      c.lastName?.toLowerCase().includes(query) ||
-      c.phoneNumber?.toLowerCase().includes(query) ||
-      c.email?.toLowerCase().includes(query)
-    );
-  }, [clients, searchQuery]);
+  const filters = useMemo(() => ({
+    role: activeRole === "all" ? undefined : activeRole,
+    search: searchQuery.trim() || undefined,
+    limit: 50,
+  }), [activeRole, searchQuery]);
 
-  const { total, active, blocked } = useClientStats(filteredClients);
+  const { data, isFetching, hasNextPage, fetchNextPage } = useGetUsers(filters);
+  const { mutate: blockMutate } = useBlockandUnblockUser();
+  const { mutate: deleteMutate } = useDeleteUser();
 
-  const handleToggleBlock = useCallback((clientId: string) => {
-    setPendingClientId(clientId);
-    mutate(clientId, {
-      onSettled: () => {
-        setPendingClientId(null);
-      },
-    });
-  }, [mutate]);
+  const clients = useMemo(() => data?.pages.flatMap((p) => p.data) ?? [], [data]);
+  const meta = data?.pages[data.pages.length - 1]?.meta;
 
-  const renderClient = useCallback(({ item, index }: { item: userData; index: number }) => (
-    <ClientCard 
-      client={item} 
-      onToggleBlock={handleToggleBlock} 
-      index={index} 
-      isLoading={pendingClientId === item._id}
-    />
-  ), [handleToggleBlock, pendingClientId]);
+  const handleToggleBlock = useCallback((id: string) => {
+    setPendingId(id);
+    blockMutate(id, { onSettled: () => setPendingId(null) });
+  }, [blockMutate]);
+
+  const handleDelete = useCallback((id: string) => {
+    setPendingId(id);
+    deleteMutate(id, { onSettled: () => setPendingId(null) });
+  }, [deleteMutate]);
+
+  const handleRoleChange = useCallback((role: RoleFilter) => {
+    setActiveRole(role);
+    setSearchQuery("");
+  }, []);
+
+  const handleSearch = useCallback((text: string) => {
+    setSearchQuery(text);
+  }, []);
+
+  const handleLoadMore = useCallback(() => {
+    if (hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [hasNextPage, isFetching, fetchNextPage]);
+
+  const handleClear = useCallback(() => {
+    setSearchQuery("");
+  }, []);
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
-      <StatusBar style={isDark ? 'light' : 'dark'} />
-      
+      <StatusBar style={isDark ? "light" : "dark"} />
+
       <ClientHeader
-        totalClients={clients.length}
-        activeCount={active}
-        blockedCount={blocked}
+        totalClients={meta?.total ?? clients.length}
+        activeCount={meta?.totalActive ?? 0}
+        blockedCount={meta?.totalBlocked ?? 0}
         navigation={navigation}
       />
 
-      <SearchBar
-        value={searchQuery}
-        onChangeText={setSearchQuery}
-        placeholder={SEARCH_PLACEHOLDER}
-      />
+      <SearchBar value={searchQuery} onChangeText={handleSearch} placeholder={SEARCH_PLACEHOLDER} />
+      <RoleFilterChips options={ROLE_LABELS} active={activeRole} onChange={handleRoleChange} />
+      {searchQuery && <ResultsBar count={clients.length} />}
 
-      {searchQuery && <ResultsBar count={filteredClients.length} />}
-
-      <FlashList
-        data={filteredClients}
-        renderItem={renderClient}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={styles.listContainer}
-        showsVerticalScrollIndicator={false}
-
-        ListEmptyComponent={
-          <EmptyState searchQuery={searchQuery} onClear={() => setSearchQuery("")} />
-        }
+      <ClientList
+        clients={clients}
+        pendingId={pendingId}
+        searchQuery={searchQuery}
+        hasMore={!!hasNextPage}
+        isFetching={isFetching}
+        onToggleBlock={handleToggleBlock}
+        onDelete={handleDelete}
+        onLoadMore={handleLoadMore}
+        onClearSearch={handleClear}
       />
     </SafeAreaView>
   );

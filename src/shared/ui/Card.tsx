@@ -1,10 +1,11 @@
 /**
- * Card - Simplified wrapper around react-native-paper Card
+ * Card - Reusable card component with multiple variants
  */
 
 import React from 'react';
-import type { ViewStyle, StyleProp } from 'react-native';
-import { Card as PaperCard } from 'react-native-paper';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import type { ViewStyle } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type CardVariant = 'default' | 'outlined' | 'elevated' | 'flat';
 export type CardPadding = 'none' | 'small' | 'medium' | 'large';
@@ -15,7 +16,7 @@ export interface CardProps {
   padding?: CardPadding;
   onPress?: () => void;
   disabled?: boolean;
-  style?: StyleProp<ViewStyle>;
+  style?: ViewStyle;
   testID?: string;
   accessibilityLabel?: string;
 }
@@ -37,23 +38,40 @@ export const Card: React.FC<CardProps> = ({
   testID,
   accessibilityLabel,
 }) => {
+  const { colors } = useAppTheme();
   const paddingValue = paddingMap[padding];
 
-  // Map our variants to react-native-paper modes
-  const mode = variant === 'outlined' ? 'outlined' : 'elevated';
   const isFlat = variant === 'flat' || variant === 'default';
 
+  const backgroundColor = isFlat
+    ? colors.background.paper
+    : colors.background.card;
+
+  const borderColor = variant === 'outlined' ? colors.border : undefined;
+
   return (
-    <PaperCard
-      mode={isFlat ? 'elevated' : mode}
+    <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      style={[{ margin: 0, padding: paddingValue }, style]}
+      style={[{
+        margin: 0,
+        padding: paddingValue,
+        backgroundColor,
+        borderRadius: 12,
+        borderColor,
+        borderWidth: variant === 'outlined' ? 1 : 0,
+        shadowColor: variant === 'elevated' ? '#000' : 'transparent',
+        shadowOffset: variant === 'elevated' ? { width: 0, height: 2 } : { width: 0, height: 0 },
+        shadowOpacity: variant === 'elevated' ? 0.1 : 0,
+        shadowRadius: variant === 'elevated' ? 4 : 0,
+        elevation: variant === 'elevated' ? 3 : 0,
+      }, style]}
       testID={testID}
       accessibilityLabel={accessibilityLabel}
+      activeOpacity={onPress ? 0.9 : 1}
     >
       {children}
-    </PaperCard>
+    </TouchableOpacity>
   );
 };
 

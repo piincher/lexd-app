@@ -1,4 +1,4 @@
-import { imagesType } from '@src/api/order';
+import { imagesType } from '@src/shared/types/order';
 import CardView from '@src/components/ImageCaroussel/ImageCaroussel';
 import { Fonts } from '@src/constants/Fonts';
 import { Pressable, StyleSheet, Text, View } from 'react-native';

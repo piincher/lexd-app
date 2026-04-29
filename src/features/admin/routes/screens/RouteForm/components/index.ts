@@ -5,6 +5,7 @@ export { LocationSelect } from './LocationSelect';
 export { ShippingLineSelect } from './ShippingLineSelect';
 export { TransitDaysInput } from './TransitDaysInput';
 export { OptionalFieldsSection } from './OptionalFieldsSection';
+export { RouteWaypointsInput } from './RouteWaypointsInput';
 export { SubmitButton } from './SubmitButton';
 export { LoadingState } from './LoadingState';
 export { ErrorDisplay } from './ErrorDisplay';

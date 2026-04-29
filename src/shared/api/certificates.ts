@@ -1,11 +1,5 @@
-import { apiV2 } from "@src/api/client";
-
-export interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-  message: string;
-  error?: unknown;
-}
+import { apiV2 } from "./client";
+import type { ApiResponse } from "./types";
 
 export interface VerifiedCertificate {
   certificateId: string;

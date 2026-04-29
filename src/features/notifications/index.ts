@@ -42,6 +42,23 @@ export {
   useMarkAllAsRead,
   useDismissNotification,
   useDeleteNotification,
+  usePushNotifications,
+  usePushToken,
+  useNotificationPermissions,
+  useNotificationBadge,
+  useNotificationHistory,
+  useNotificationListeners,
+} from './hooks';
+
+export type {
+  UsePushNotificationsReturn,
+  UsePushNotificationsOptions,
+  UsePushTokenReturn,
+  UseNotificationPermissionsReturn,
+  UseNotificationBadgeReturn,
+  UseNotificationHistoryReturn,
+  UseNotificationListenersOptions,
+  UseNotificationListenersReturn,
 } from './hooks';
 
 // Components

@@ -10,8 +10,12 @@ import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { FAQItem as FAQItemType } from '../types/faq.types';
 
-// Enable LayoutAnimation on Android
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+const isNewArchitectureEnabled = Boolean(
+  (globalThis as { nativeFabricUIManager?: unknown }).nativeFabricUIManager
+);
+
+// Enable LayoutAnimation on Android old architecture
+if (Platform.OS === 'android' && !isNewArchitectureEnabled && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 

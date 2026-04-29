@@ -5,17 +5,17 @@ import type { RouteProp } from '@react-navigation/native';
 import type { RootStackParamList } from '@src/navigations/type';
 import { useGetAirwayBillById, useGetUnassignedAirGoods, useAssignGoodsToAirwayBill } from '../../hooks/useAirwayBills';
 import { useGetCargoBagsByAwb, useCreateCargoBag, useAddGoodsToCargoBag } from '../../hooks/useCargoBags';
+import type { AirwayBillGoods } from '../../types';
 
-interface GoodsItem {
-  _id: string; goodsId: string; description: string; weight: number; quantity: number;
-  clientId?: { firstName?: string; lastName?: string };
-  cargoBagId?: string | null;
+interface AssignmentFailure {
+  goodsId?: string;
+  error?: string;
 }
 
 export const useAssignGoodsScreen = () => {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<RootStackParamList, 'AssignAirwayGoods'>>();
-  const { airwayBillId } = route.params;
+  const { airwayBillId, cargoBagId } = route.params;
 
   const { data: airwayBillData, isLoading: isLoadingAwb } = useGetAirwayBillById(airwayBillId);
   const { data: goodsData, isLoading: isLoadingUnassigned } = useGetUnassignedAirGoods();
@@ -25,27 +25,28 @@ export const useAssignGoodsScreen = () => {
   const createBagMutation = useCreateCargoBag();
 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [selectedBagId, setSelectedBagId] = useState<string | null>(null);
+  const [selectedBagId, setSelectedBagId] = useState<string | null>(cargoBagId || null);
   const [createBagVisible, setCreateBagVisible] = useState(false);
 
   const airwayBill = airwayBillData?.data?.airwayBill;
-  const unassignedGoodsList: GoodsItem[] = goodsData?.data?.goods || [];
+  const unassignedGoodsList = useMemo(() => goodsData?.data?.goods || [], [goodsData]);
   const cargoBags = cargoBagsData?.data?.cargoBags || [];
   const capacityWeight = airwayBill?.capacityWeight || 0;
   const currentTotalWeight = airwayBill?.totalWeight || 0;
 
   // When a bag is selected, show AWB-assigned goods that are not yet in any bag
-  const awbGoodsNotInBag: GoodsItem[] = useMemo(() => {
+  const awbGoodsNotInBag: AirwayBillGoods[] = useMemo(() => {
     const awbGoods = airwayBill?.goodsIds || [];
-    return awbGoods.filter((g: any) => {
+    return awbGoods.filter((g): g is AirwayBillGoods => {
+      if (typeof g === 'string') return false;
       const goodsId = g?._id?.toString?.() || g?._id;
       const inBag = g?.cargoBagId != null;
-      return goodsId && !inBag;
+      return Boolean(goodsId) && !inBag;
     });
   }, [airwayBill]);
 
   // Use the appropriate goods list based on assignment target
-  const goodsList: GoodsItem[] = useMemo(() => {
+  const goodsList: AirwayBillGoods[] = useMemo(() => {
     if (selectedBagId) {
       return awbGoodsNotInBag;
     }
@@ -75,17 +76,18 @@ export const useAssignGoodsScreen = () => {
     if (selectedBagId) {
       try {
         const response = await assignToBagMutation.mutateAsync({ id: selectedBagId, input: { goodsIds: selectedIds }, awbId: airwayBillId });
-        const failed = response?.data?.results?.failed || [];
-        const successCount = response?.data?.results?.success?.length || 0;
+        const payload = response as { data?: { results?: { failed?: AssignmentFailure[]; success?: string[] } } };
+        const failed = payload?.data?.results?.failed || [];
+        const successCount = payload?.data?.results?.success?.length || 0;
 
         if (successCount === 0) {
-          const errorMessage = failed.map((f: any) => f.error).join('\n');
+          const errorMessage = failed.map((f) => f.error).filter(Boolean).join('\n');
           Alert.alert('Erreur', errorMessage || 'Aucune marchandise n\'a pu être assignée au sac');
           return;
         }
 
         if (failed.length > 0) {
-          const errorMessage = failed.map((f: any) => f.error).join('\n');
+          const errorMessage = failed.map((f) => f.error).filter(Boolean).join('\n');
           Alert.alert(
             'Assignation partielle',
             `${successCount} marchandise(s) assignée(s).\n${failed.length} échec(s):\n${errorMessage}`
@@ -94,16 +96,16 @@ export const useAssignGoodsScreen = () => {
           Alert.alert('Succès', `${successCount} marchandise(s) assignée(s) au sac`);
         }
         navigation.goBack();
-      } catch (error: any) {
-        Alert.alert('Erreur', error?.message || 'Échec de l\'assignation au sac');
+      } catch (error: unknown) {
+        Alert.alert('Erreur', error instanceof Error ? error.message : 'Échec de l\'assignation au sac');
       }
     } else {
       try {
         await assignMutation.mutateAsync({ id: airwayBillId, input: { goodsIds: selectedIds } });
         Alert.alert('Succès', `${selectedIds.length} marchandise(s) assignée(s)`);
         navigation.goBack();
-      } catch (error: any) {
-        Alert.alert('Erreur', error?.message || 'Échec de l\'assignation');
+      } catch (error: unknown) {
+        Alert.alert('Erreur', error instanceof Error ? error.message : 'Échec de l\'assignation');
       }
     }
   };

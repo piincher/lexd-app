@@ -4,8 +4,14 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import type { RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@src/navigations/type';
-import { useGetCargoBagById, useRemoveGoodsFromCargoBag, useUpdateCargoBagStatus } from '../../hooks/useCargoBags';
-import { CargoBagStatus } from '../../types';
+import {
+  useGetCargoBagById,
+  useGetCargoBagWaypoints,
+  useRemoveGoodsFromCargoBag,
+  useUpdateCargoBagStatus,
+  useDeleteCargoBag,
+} from '../../hooks/useCargoBags';
+import { AirwayBillGoods, CargoBagStatus } from '../../types';
 
 const STATUS_LABELS: Record<CargoBagStatus, string> = {
   PACKED: 'Emballé',
@@ -22,33 +28,40 @@ export const useCargoBagDetailScreen = () => {
   const { cargoBagId, airwayBillId } = route.params;
 
   const { data, isLoading, isFetching, refetch } = useGetCargoBagById(cargoBagId);
+  const { data: waypointData, refetch: refetchWaypoints } = useGetCargoBagWaypoints(cargoBagId);
   const removeGoodsMutation = useRemoveGoodsFromCargoBag();
   const updateStatusMutation = useUpdateCargoBagStatus();
+  const deleteCargoBagMutation = useDeleteCargoBag();
 
   const [statusMenuVisible, setStatusMenuVisible] = useState(false);
   const [removeMode, setRemoveMode] = useState(false);
   const [selectedRemoveIds, setSelectedRemoveIds] = useState<string[]>([]);
 
   const cargoBag = data?.data?.cargoBag;
-  const goodsList = useMemo(() => cargoBag?.goodsIds || [], [cargoBag]);
+  const waypointPayload = waypointData?.data;
+  const goodsList = useMemo(
+    () => (cargoBag?.goodsIds || []).filter((goods): goods is AirwayBillGoods => typeof goods !== 'string'),
+    [cargoBag]
+  );
   const isRefreshing = isFetching && !isLoading;
 
   const handleBack = useCallback(() => navigation.goBack(), [navigation]);
 
   const handleRefresh = useCallback(() => {
     refetch();
-  }, [refetch]);
+    refetchWaypoints();
+  }, [refetch, refetchWaypoints]);
 
   const handleChangeStatus = useCallback(
     async (newStatus: CargoBagStatus) => {
       setStatusMenuVisible(false);
       try {
-        await updateStatusMutation.mutateAsync({ id: cargoBagId, status: newStatus });
+        await updateStatusMutation.mutateAsync({ id: cargoBagId, status: newStatus, awbId: airwayBillId });
       } catch {
         Alert.alert('Erreur', 'Impossible de mettre à jour le statut du sac');
       }
     },
-    [cargoBagId, updateStatusMutation]
+    [cargoBagId, airwayBillId, updateStatusMutation]
   );
 
   const handleToggleRemoveMode = useCallback(() => {
@@ -89,18 +102,37 @@ export const useCargoBagDetailScreen = () => {
         },
       ]
     );
-  }, [selectedRemoveIds, cargoBagId, removeGoodsMutation]);
+  }, [selectedRemoveIds, cargoBagId, airwayBillId, removeGoodsMutation]);
 
   const handleAddGoods = useCallback(() => {
-    navigation.navigate('AssignAirwayGoods', { airwayBillId });
-  }, [navigation, airwayBillId]);
+    navigation.navigate('AssignAirwayGoods', { airwayBillId, cargoBagId });
+  }, [navigation, airwayBillId, cargoBagId]);
 
   const handleDeleteBag = useCallback(() => {
-    Alert.alert('Info', 'Utilisez l\'écran AWB pour supprimer un sac vide');
-  }, []);
+    Alert.alert(
+      'Supprimer le sac',
+      'Supprimer définitivement ce sac cargo ? Cette action est possible uniquement si le sac est vide et encore emballé.',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        {
+          text: 'Supprimer',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await deleteCargoBagMutation.mutateAsync({ id: cargoBagId, awbId: airwayBillId });
+              navigation.goBack();
+            } catch {
+              Alert.alert('Erreur', 'Impossible de supprimer ce sac. Vérifiez qu’il est vide et encore emballé.');
+            }
+          },
+        },
+      ]
+    );
+  }, [cargoBagId, airwayBillId, deleteCargoBagMutation, navigation]);
 
   return {
     cargoBag,
+    waypointPayload,
     goodsList,
     isLoading,
     isRefreshing,
@@ -118,6 +150,6 @@ export const useCargoBagDetailScreen = () => {
     handleAddGoods,
     handleDeleteBag,
     isRemoving: removeGoodsMutation.isPending,
-    isUpdatingStatus: updateStatusMutation.isPending,
+    isUpdatingStatus: updateStatusMutation.isPending || deleteCargoBagMutation.isPending,
   };
 };

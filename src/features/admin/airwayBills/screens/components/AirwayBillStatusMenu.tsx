@@ -41,7 +41,7 @@ export const AirwayBillStatusMenu: React.FC<Props> = ({
       <Menu.Item
         disabled={disabled}
         onPress={onDelete}
-        title="Supprimer"
+        title="Supprimer définitivement"
         titleStyle={{ color: colors.status.error }}
       />
     </Menu>

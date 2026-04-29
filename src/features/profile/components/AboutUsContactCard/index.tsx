@@ -1,0 +1,83 @@
+import React, { useMemo } from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
+
+interface Props {
+   onCall: () => void;
+}
+
+export const AboutUsContactCard: React.FC<Props> = ({ onCall }) => {
+   const styles = useMemo(() => makeStyles(), []);
+
+   return (
+      <Animated.View entering={FadeInDown.delay(800).duration(600)} style={styles.contactCard}>
+         <LinearGradient
+            colors={[Theme.primary[500], Theme.primary[600]]}
+            style={styles.contactGradient}
+         >
+            <Ionicons name="call-outline" size={28} color="#FFF" />
+            <Text style={styles.contactTitle}>Besoin d'aide ?</Text>
+            <Text style={styles.contactSubtitle}>
+               Notre equipe est disponible pour vous accompagner
+            </Text>
+            <TouchableOpacity
+               style={styles.contactButton}
+               onPress={onCall}
+               activeOpacity={0.8}
+            >
+               <Ionicons name="call" size={16} color={Theme.primary[600]} />
+               <Text style={styles.contactButtonText}>+86 188 5172 5957</Text>
+            </TouchableOpacity>
+         </LinearGradient>
+      </Animated.View>
+   );
+};
+
+const makeStyles = () =>
+   StyleSheet.create({
+      contactCard: {
+         marginHorizontal: 20,
+         marginTop: 16,
+         borderRadius: 16,
+         overflow: 'hidden',
+         ...Theme.shadows.sm,
+      },
+      contactGradient: {
+         alignItems: 'center',
+         padding: 24,
+         gap: 6,
+      },
+      contactTitle: {
+         fontSize: 18,
+         fontFamily: Fonts.bold,
+         fontWeight: '700',
+         color: '#FFF',
+         marginTop: 4,
+      },
+      contactSubtitle: {
+         fontSize: 12,
+         fontFamily: Fonts.regular,
+         color: 'rgba(255,255,255,0.8)',
+         textAlign: 'center',
+         marginBottom: 8,
+      },
+      contactButton: {
+         flexDirection: 'row',
+         alignItems: 'center',
+         gap: 8,
+         backgroundColor: Theme.colors.background.card,
+         paddingHorizontal: 20,
+         paddingVertical: 10,
+         borderRadius: 24,
+      },
+      contactButtonText: {
+         fontSize: 14,
+         fontFamily: Fonts.bold,
+         fontWeight: '700',
+         color: Theme.primary[600],
+      },
+   });

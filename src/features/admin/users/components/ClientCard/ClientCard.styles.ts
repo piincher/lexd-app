@@ -104,10 +104,18 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     alignItems: "center",
     justifyContent: "center",
   },
+  actions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
   blockButton: {
     backgroundColor: isDark ? "#7F1D1D" : "#FEE2E2",
   },
   unblockButton: {
     backgroundColor: isDark ? "#14532D" : "#DCFCE7",
+  },
+  deleteButton: {
+    backgroundColor: isDark ? "#7F1D1D" : "#FEE2E2",
   },
 });

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { userData } from "@src/constants/types";
+import { userData } from "@src/shared/types/user";
 
 interface ClientStats {
   total: number;

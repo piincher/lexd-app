@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { normalizePhotos } from '@src/shared/lib';
 import { Goods } from '../../goods/types';
 
 type SortField = 'goodsId' | 'description' | 'actualCBM' | 'weight' | 'quantity';
@@ -155,7 +156,7 @@ export const PackingListTable: React.FC<PackingListTableProps> = ({
             {showPhotos && (
               <View style={[styles.cell, { flex: 0.6 }, styles.photoCell]}>
                 {(() => {
-                  const photoUrls = item.photos?.length ? item.photos : (item.images || []);
+                  const photoUrls = normalizePhotos(item);
                   return photoUrls.length > 0 ? (
                     <Image source={{ uri: photoUrls[0] }} style={styles.photo} />
                   ) : (

@@ -4,7 +4,7 @@
  */
 
 import { z } from 'zod';
-import { userData } from '@src/constants/types';
+import { userData } from '@src/shared/types/user';
 
 // ============================================
 // ZOD SCHEMAS

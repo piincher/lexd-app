@@ -9,7 +9,7 @@ import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
 import { Theme } from '@src/constants/Theme';
 import type { InAppNotification } from '../../types';
-import type { FilterTab } from '../NotificationsScreen';
+import type { FilterTab } from '../../types';
 import NotificationSkeleton from '../../components/NotificationSkeleton';
 import { NotificationCard } from './NotificationCard';
 import { NotificationEmpty } from './NotificationEmpty';

@@ -61,7 +61,7 @@ export const useFAQ = (): UseFAQReturn => {
     queryFn: fetchMockFAQs,
     staleTime: 30 * 60 * 1000,
     gcTime: 60 * 60 * 1000,
-    retry: 2,
+    // Use global retry config
   });
 
   const allData = useMemo(() => data || [], [data]);

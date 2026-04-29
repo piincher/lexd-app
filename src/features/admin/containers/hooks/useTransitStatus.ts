@@ -15,7 +15,7 @@ import {
   TransitProgress,
 } from '../types/transitStatus';
 import { containerQueryKeys } from './useContainers';
-import { ApiClientError } from '@src/api/client';
+import { ApiClientError } from '../api';
 
 // ============================================
 // QUERY KEYS

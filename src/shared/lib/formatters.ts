@@ -36,6 +36,26 @@ export const formatDate = (date: Date | string | null | undefined): string => {
 };
 
 /**
+ * Formats a date using French locale with long month name
+ * @param date - Date to format (Date object or ISO string)
+ * @returns Formatted date string (e.g. "27 avril 2026") or original string on error
+ */
+export const formatDateLong = (date: Date | string | null | undefined): string => {
+  if (date === null || date === undefined) return '—';
+
+  try {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    return dateObj.toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  } catch {
+    return typeof date === 'string' ? date : '—';
+  }
+};
+
+/**
  * Formats a date and time using French locale
  * @param date - Date to format (Date object or ISO string)
  * @returns Formatted datetime string (DD/MM/YYYY HH:mm) or '—' if null/undefined

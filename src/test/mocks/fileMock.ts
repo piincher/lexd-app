@@ -1,9 +1,2 @@
-/**
- * File mock for handling static asset imports in tests
- */
-
-module.exports = {
-  __esModule: true,
-  default: 'test-file-stub',
-  ReactComponent: ({ children }: { children?: React.ReactNode }) => children,
-};
+export * from '@src/shared/test/mocks/fileMock';
+export { default } from '@src/shared/test/mocks/fileMock';

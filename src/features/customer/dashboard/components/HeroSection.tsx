@@ -12,7 +12,6 @@ interface Props {
   stats: DashboardStats;
   onViewGoods?: () => void;
   onViewContainers?: () => void;
-  onViewSpent?: () => void;
   onNotifications?: () => void;
 }
 
@@ -30,7 +29,6 @@ export const HeroSection: React.FC<Props> = ({
   stats,
   onViewGoods,
   onViewContainers,
-  onViewSpent,
   onNotifications,
 }) => {
   const { colors, isDark } = useAppTheme();
@@ -78,7 +76,7 @@ export const HeroSection: React.FC<Props> = ({
   const statItems = [
     { icon: 'cube', value: fmtN(stats.totalGoods), label: 'Marchandises', tint: '#8B5CF6', onPress: onViewGoods },
     { icon: 'boat', value: fmtN(stats.activeContainers), label: 'En Transit', tint: '#0EA5E9', onPress: onViewContainers },
-    { icon: 'cash', value: `${fmtC(stats.totalSpent)}F`, label: 'Dépensé', tint: '#10B981', onPress: onViewSpent },
+    // { icon: 'cash', value: `${fmtC(stats.totalSpent)}F`, label: 'Dépensé', tint: '#10B981', onPress: onViewSpent },
   ];
 
   const gradColors = isDark

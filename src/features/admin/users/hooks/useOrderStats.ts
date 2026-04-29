@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { productType } from "@src/api/order";
+import { productType } from "@src/shared/types/order";
 import { INITIAL_COUNTS, STATUS_LABELS } from "../lib/constants";
 
 interface OrderStats {

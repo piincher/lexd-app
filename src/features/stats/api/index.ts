@@ -4,4 +4,6 @@ export {
   getContainerUtilization,
   getPaymentMetrics,
   getGoodsVolume,
+  getContainerProfitSummary,
+  type ContainerProfitSummary,
 } from './statsApi';

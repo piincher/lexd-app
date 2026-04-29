@@ -7,7 +7,7 @@ import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Chip } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
-import { userData } from '@src/constants/types';
+import { userData } from '@src/shared/types/user';
 
 interface ActiveFilterChipsProps {
   selectedClient: userData | null;

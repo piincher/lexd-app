@@ -12,7 +12,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
-import type { FilterTab } from '../NotificationsScreen';
+import type { FilterTab } from '../../types';
 
 interface NotificationEmptyProps {
   filter: FilterTab;
