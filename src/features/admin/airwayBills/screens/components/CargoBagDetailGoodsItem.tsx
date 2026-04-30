@@ -15,13 +15,18 @@ interface Props {
 
 export const CargoBagDetailGoodsItem: React.FC<Props> = ({ item, isSelected, removeMode, onToggleSelection }) => {
   const { colors } = useAppTheme();
+  const goodsCardStyle = StyleSheet.flatten([
+    styles.goodsCard,
+    isSelected && { borderColor: colors.status.error, borderWidth: 2 },
+  ]);
+
   return (
     <TouchableOpacity
       activeOpacity={0.85}
       onPress={() => removeMode && onToggleSelection(item._id)}
       disabled={!removeMode}
     >
-      <Card style={[styles.goodsCard, isSelected && { borderColor: colors.status.error, borderWidth: 2 }]} padding="medium">
+      <Card style={goodsCardStyle} padding="medium">
         <View style={styles.goodsRow}>
           {removeMode && (
             <View style={[styles.checkbox, isSelected && { backgroundColor: colors.status.error }]}>

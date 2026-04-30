@@ -30,7 +30,7 @@ export {
 export { default as PaymentMethodSelector } from './components/PaymentMethodSelector';
 export { default as OrangeMoneyForm } from './components/OrangeMoneyForm';
 export { default as WavePaymentForm } from './components/WavePaymentForm';
-export { default as CardPaymentForm } from './components/CardPaymentForm';
+export { default as CardPaymentForm } from './components/CardPaymentForm/index';
 export { default as PaymentStatusModal } from './components/PaymentStatusModal';
 
 // Export screens

@@ -5,9 +5,8 @@
 
 import { useMemo, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useGetUnassignedGoods, containerQueryKeys } from "@src/features/admin/containers/hooks/useContainers";
-import { Goods } from "@src/features/admin/goods/types";
-import { ShippingMode } from "@src/features/admin/containers/types";
+import { useGetUnassignedGoods, containerQueryKeys } from "@src/features/admin/shared/hooks";
+import type { Goods, ShippingMode } from "@src/features/admin/shared/types";
 
 export interface UnassignedGoodsItem extends Goods {
   daysWaiting: number;

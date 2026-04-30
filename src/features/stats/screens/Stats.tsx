@@ -18,6 +18,9 @@ import { TopCustomers } from './components/TopCustomers';
 import { RecentPaymentsList } from './components/RecentPaymentsList';
 import { StatsSkeleton } from './components/StatsSkeleton';
 import { ProfitOverviewCard } from './components/ProfitOverviewCard';
+import { OperationsHealthCard } from './components/OperationsHealthCard';
+import { OperationsDrilldownCard } from './components/OperationsDrilldownCard';
+import { StaffActivityCard } from './components/StaffActivityCard';
 import { StatsErrorState } from '../components/StatsErrorState';
 
 const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
@@ -62,6 +65,10 @@ const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
         <View style={styles.sectionGap} />
         <OutstandingCard outstanding={stats.outstanding} />
         <View style={styles.sectionGap} />
+        <OperationsHealthCard operations={stats.operations} isLoading={stats.isLoadingOperations} />
+        <View style={styles.sectionGap} />
+        <OperationsDrilldownCard operations={stats.operations} isLoading={stats.isLoadingOperations} />
+        <View style={styles.sectionGap} />
         <ProfitOverviewCard profitSummary={stats.profitSummary} isLoading={stats.isLoadingProfit} />
         <View style={styles.sectionGap} />
         <GoodsOverview goodsVolume={stats.goodsVolume} isLoading={stats.isLoadingGoods} />
@@ -75,6 +82,11 @@ const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
         />
         <View style={styles.sectionGap} />
         <TopCustomers customers={stats.topCustomers} isLoading={stats.isLoadingCustomers} />
+        <View style={styles.sectionGap} />
+        <StaffActivityCard
+          staffActivity={stats.operations?.staffActivity}
+          isLoading={stats.isLoadingOperations}
+        />
         <View style={styles.sectionGap} />
         <RecentPaymentsList payments={stats.recentPayments} />
         <View style={styles.bottomPadding} />

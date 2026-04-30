@@ -1,0 +1,95 @@
+import React from 'react';
+import { View, Text } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import Animated, { FadeInUp } from 'react-native-reanimated';
+import { Theme } from '@src/constants/Theme';
+import { ContainerWaypoint } from '../../../../types/waypoints';
+import { styles } from './TransitTimeline.styles';
+import { TimelineDot, WaypointItemStatus } from './TimelineDot';
+
+const STATUS_COLORS = {
+  completed: Theme.status.success,
+  current: Theme.primary[500],
+  pending: Theme.neutral[300],
+};
+
+const STATUS_LABELS: Record<WaypointItemStatus, string> = {
+  completed: 'Terminé',
+  current: 'En cours',
+  pending: 'En attente',
+};
+
+const getWaypointStatus = (index: number, currentIndex: number): WaypointItemStatus => {
+  if (index < currentIndex) return 'completed';
+  if (index === currentIndex) return 'current';
+  return 'pending';
+};
+
+const getSegmentIcon = (segmentType?: string): keyof typeof Ionicons.glyphMap => {
+  switch (segmentType) {
+    case 'SEA': return 'boat';
+    case 'ROAD': return 'car';
+    case 'AIR': return 'airplane';
+    case 'WAREHOUSE': return 'business';
+    default: return 'location';
+  }
+};
+
+const formatTimestamp = (timestamp?: string): string => {
+  if (!timestamp) return '';
+  try {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return timestamp;
+  }
+};
+
+interface TimelineItemRowProps {
+  waypoint: ContainerWaypoint;
+  index: number;
+  totalItems: number;
+  currentWaypointIndex: number;
+}
+
+export const TimelineItemRow: React.FC<TimelineItemRowProps> = ({
+  waypoint,
+  index,
+  totalItems,
+  currentWaypointIndex,
+}) => {
+  const status = getWaypointStatus(index, currentWaypointIndex);
+  const entering = FadeInUp.delay(index * 100);
+  const icon = getSegmentIcon(waypoint.segmentType);
+  const timestamp = waypoint.actualArrival || waypoint.estimatedArrival;
+
+  return (
+    <Animated.View entering={entering} style={styles.timelineItemRow}>
+      <TimelineDot status={status} isLast={index === totalItems - 1} />
+
+      <View style={styles.statusContentContainer}>
+        <View style={styles.statusHeader}>
+          <View style={[styles.statusIconContainer, { backgroundColor: `${STATUS_COLORS[status]}20` }]}>
+            <Ionicons name={icon} size={16} color={STATUS_COLORS[status]} />
+          </View>
+          <View style={styles.statusTextContainer}>
+            <Text style={[styles.statusLabel, status === 'completed' && styles.statusLabelCompleted, status === 'current' && styles.statusLabelCurrent, status === 'pending' && styles.statusLabelPending]}>
+              {STATUS_LABELS[status]}
+            </Text>
+            <Text style={styles.waypointName}>{waypoint.location?.city || waypoint.shortName || '—'}</Text>
+            {waypoint.location?.country && <Text style={styles.countryName}>{waypoint.location.country}</Text>}
+          </View>
+        </View>
+
+        {timestamp && (
+          <View style={styles.timestampContainer}>
+            <Ionicons name="time-outline" size={12} color={Theme.neutral[400]} />
+            <Text style={styles.timestamp}>{waypoint.actualArrival ? '' : 'Est: '}{formatTimestamp(timestamp)}</Text>
+          </View>
+        )}
+
+        {waypoint.description && <Text style={styles.description}>{waypoint.description}</Text>}
+      </View>
+    </Animated.View>
+  );
+};

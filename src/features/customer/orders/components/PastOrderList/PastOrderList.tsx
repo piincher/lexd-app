@@ -4,7 +4,7 @@ import { FlashList } from '@shopify/flash-list';
 import { Theme } from '@src/constants/Theme';
 import { Order } from '../../types';
 import { PastOrderCard } from '../PastOrderCard';
-import { PastOrderCardSkeleton } from '../PastOrderCardSkeleton';
+import { PastOrderCardSkeleton } from '@src/shared/ui/PastOrderCardSkeleton';
 
 interface PastOrderListProps {
   orders: Order[];

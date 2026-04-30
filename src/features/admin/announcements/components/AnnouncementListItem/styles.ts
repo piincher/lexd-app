@@ -47,4 +47,9 @@ export const createStyles = (colors: AppColors) =>
       fontSize: 11,
       fontWeight: "700",
     },
+    actions: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 10,
+    },
   });

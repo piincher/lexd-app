@@ -4,16 +4,37 @@
  */
 
 import { apiClientV2 } from '@src/api/client';
-import { DashboardResponse, TopCustomersResponse, ContainerUtilizationResponse, PaymentMetricsResponse, GoodsVolumeResponse, PeriodFilter } from '../types';
+import {
+  DashboardResponse,
+  TopCustomersResponse,
+  ContainerUtilizationResponse,
+  PaymentMetricsResponse,
+  GoodsVolumeResponse,
+  OperationsAnalyticsResponse,
+  PeriodFilter,
+} from '../types';
 
 // All v2 responses are wrapped: { success: true, data: { ... } }
-const extractData = <T>(response: any): T => {
-  return response.data?.data ?? response.data ?? response;
+const extractData = <T>(response: { data?: unknown }): T => {
+  const payload = response.data;
+  if (payload && typeof payload === 'object' && 'data' in payload) {
+    return (payload as { data: T }).data;
+  }
+  return (payload ?? response) as T;
 };
 
 export const getDashboard = async (): Promise<DashboardResponse> => {
   const response = await apiClientV2.get('/analytics/dashboard');
   return extractData<DashboardResponse>(response);
+};
+
+export const getOperationsAnalytics = async (
+  period: PeriodFilter = '30d'
+): Promise<OperationsAnalyticsResponse> => {
+  const response = await apiClientV2.get('/analytics/operations', {
+    params: { period },
+  });
+  return extractData<OperationsAnalyticsResponse>(response);
 };
 
 export const getTopCustomers = async (
@@ -64,7 +85,7 @@ export interface ContainerProfitSummary {
     containerCount: number;
     cbmCostPerUnit: number;
   };
-  containers: Array<{
+  containers: {
     containerId: string;
     containerNumber: string;
     status: string;
@@ -76,7 +97,7 @@ export interface ContainerProfitSummary {
     profit: number;
     profitMargin: number;
     goodsCount: number;
-  }>;
+  }[];
 }
 
 export const getContainerProfitSummary = async (): Promise<ContainerProfitSummary> => {

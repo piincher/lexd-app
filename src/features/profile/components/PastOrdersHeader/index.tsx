@@ -4,7 +4,7 @@ import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { createStyles } from "./PastOrdersHeader.styles";
 
 export const PastOrdersHeader: React.FC = () => {

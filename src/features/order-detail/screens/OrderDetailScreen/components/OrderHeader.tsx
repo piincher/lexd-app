@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { productType } from "@src/features/orders/api";
+import { productType } from '@src/shared/types/order';
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
 const STATUS_MAP: Record<string, { label: string; color: string }> = {

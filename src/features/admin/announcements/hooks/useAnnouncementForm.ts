@@ -3,27 +3,38 @@ import type { Announcement, CreateAnnouncementInput } from "../types/announcemen
 
 interface UseAnnouncementFormParams {
   onSubmit: (data: CreateAnnouncementInput) => void;
+  initialValues?: Announcement;
 }
 
-export const useAnnouncementForm = ({ onSubmit }: UseAnnouncementFormParams) => {
-  const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
-  const [type, setType] = useState<Announcement["type"]>("INFO");
-  const [placement, setPlacement] = useState<Announcement["placement"]>("TOP_BANNER");
-  const [audience, setAudience] = useState<Announcement["audience"]>("ALL");
-  const [priority, setPriority] = useState("20");
-  const [status, setStatus] = useState<Announcement["status"]>("PUBLISHED");
-  const [dismissible, setDismissible] = useState(true);
-  const [requiresAck, setRequiresAck] = useState(false);
-  const [ctaLabel, setCtaLabel] = useState("");
-  const [ctaUrl, setCtaUrl] = useState("");
-  const [ctaScreen, setCtaScreen] = useState("");
-  const [shippingModes, setShippingModes] = useState("");
-  const [goodsStatuses, setGoodsStatuses] = useState("");
-  const [destinationCountries, setDestinationCountries] = useState("");
-  const [destinationCities, setDestinationCities] = useState("");
-  const [hasExpiry, setHasExpiry] = useState(false);
-  const [expiryDate, setExpiryDate] = useState<Date | undefined>(undefined);
+const joinList = (items?: string[]) => items?.join(", ") || "";
+
+export const useAnnouncementForm = ({ onSubmit, initialValues }: UseAnnouncementFormParams) => {
+  const [title, setTitle] = useState(initialValues?.title || "");
+  const [message, setMessage] = useState(initialValues?.message || "");
+  const [type, setType] = useState<Announcement["type"]>(initialValues?.type || "INFO");
+  const [placement, setPlacement] = useState<Announcement["placement"]>(
+    initialValues?.placement || "TOP_BANNER"
+  );
+  const [audience, setAudience] = useState<Announcement["audience"]>(initialValues?.audience || "ALL");
+  const [priority, setPriority] = useState(String(initialValues?.priority ?? 20));
+  const [status, setStatus] = useState<Announcement["status"]>(initialValues?.status || "PUBLISHED");
+  const [dismissible, setDismissible] = useState(initialValues?.dismissible ?? true);
+  const [requiresAck, setRequiresAck] = useState(initialValues?.requiresAcknowledgement ?? false);
+  const [ctaLabel, setCtaLabel] = useState(initialValues?.ctaLabel || "");
+  const [ctaUrl, setCtaUrl] = useState(initialValues?.ctaUrl || "");
+  const [ctaScreen, setCtaScreen] = useState(initialValues?.ctaScreen || "");
+  const [shippingModes, setShippingModes] = useState(joinList(initialValues?.targeting?.shippingModes));
+  const [goodsStatuses, setGoodsStatuses] = useState(joinList(initialValues?.targeting?.goodsStatuses));
+  const [destinationCountries, setDestinationCountries] = useState(
+    joinList(initialValues?.targeting?.destinationCountries)
+  );
+  const [destinationCities, setDestinationCities] = useState(
+    joinList(initialValues?.targeting?.destinationCities)
+  );
+  const [hasExpiry, setHasExpiry] = useState(Boolean(initialValues?.endAt));
+  const [expiryDate, setExpiryDate] = useState<Date | undefined>(
+    initialValues?.endAt ? new Date(initialValues.endAt) : undefined
+  );
   const [showDatePicker, setShowDatePicker] = useState(false);
   const handleDismissDatePicker = () => setShowDatePicker(false);
   const handleConfirmDate = (params: { date: Date }) => {

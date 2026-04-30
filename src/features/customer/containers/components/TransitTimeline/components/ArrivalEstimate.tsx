@@ -10,6 +10,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 interface ArrivalEstimateProps {
   eta: string;
   destination?: string;
+  destinationCode?: string;
   iconColor: string;
   styles: Record<string, any>;
 }
@@ -17,18 +18,23 @@ interface ArrivalEstimateProps {
 export const ArrivalEstimate: React.FC<ArrivalEstimateProps> = ({
   eta,
   destination,
+  destinationCode,
   iconColor,
   styles,
 }) => (
-  <Animated.View entering={FadeInUp.delay(400)} style={styles.arrivalCard}>
+  <Animated.View entering={FadeInUp.delay(600)} style={styles.arrivalCard}>
     <LinearGradient colors={['#FEF3C7', '#FFFBEB']} style={styles.arrivalGradient}>
       <View style={styles.arrivalIconContainer}>
         <Ionicons name="flag" size={28} color={iconColor} />
       </View>
       <View style={styles.arrivalContent}>
-        <Text style={styles.arrivalLabel}>Arrivée Estimée</Text>
+        <Text style={styles.arrivalLabel}>Arrivée Estimée à Destination</Text>
         <Text style={styles.arrivalValue}>{eta}</Text>
-        {destination && <Text style={styles.arrivalDestination}>{destination}</Text>}
+        {destination && (
+          <Text style={styles.arrivalDestination}>
+            {destination} ({destinationCode})
+          </Text>
+        )}
       </View>
     </LinearGradient>
   </Animated.View>

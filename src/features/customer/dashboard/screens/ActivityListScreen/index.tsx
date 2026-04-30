@@ -6,7 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useGetActivity } from "../../hooks/useDashboard";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 
 import {
   ActivityListHeader,

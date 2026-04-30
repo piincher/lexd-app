@@ -1,2 +1,2 @@
-// Re-export shim — moved to src/app/context/
-export * from '../app/context/UpdateProvider';
+// Re-export shim - moved to src/app/providers/
+export * from '../app/providers/UpdateProvider';

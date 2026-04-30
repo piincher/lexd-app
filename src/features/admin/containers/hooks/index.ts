@@ -76,3 +76,6 @@ export {
   useBulkUpdateTransitStatus,
   useTransitProgress,
 } from './useTransitStatus';
+
+// Waypoint Update Form Hook
+export { useWaypointUpdateForm } from './useWaypointUpdateForm';

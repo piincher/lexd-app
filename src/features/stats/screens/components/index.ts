@@ -11,3 +11,6 @@ export { TopCustomers } from './TopCustomers';
 export { RecentPaymentsList } from './RecentPaymentsList';
 export { StatsSkeleton } from './StatsSkeleton';
 export { ProfitOverviewCard } from './ProfitOverviewCard';
+export { OperationsHealthCard } from './OperationsHealthCard';
+export { OperationsDrilldownCard } from './OperationsDrilldownCard';
+export { StaffActivityCard } from './StaffActivityCard';

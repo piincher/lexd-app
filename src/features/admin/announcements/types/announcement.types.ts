@@ -18,7 +18,19 @@ export interface Announcement {
   ctaLabel?: string | null;
   ctaUrl?: string | null;
   ctaScreen?: string | null;
+  ctaParams?: Record<string, unknown>;
+  targeting?: AnnouncementTargeting;
   createdAt?: string;
+}
+
+export interface AnnouncementTargeting {
+  userIds?: string[];
+  roles?: string[];
+  shippingModes?: string[];
+  goodsStatuses?: string[];
+  destinationCountries?: string[];
+  destinationCities?: string[];
+  routeIds?: string[];
 }
 
 export interface CreateAnnouncementInput {
@@ -36,14 +48,10 @@ export interface CreateAnnouncementInput {
   ctaLabel?: string | null;
   ctaUrl?: string | null;
   ctaScreen?: string | null;
-  targeting?: {
-    shippingModes?: string[];
-    goodsStatuses?: string[];
-    destinationCountries?: string[];
-    destinationCities?: string[];
-    routeIds?: string[];
-  };
+  targeting?: AnnouncementTargeting;
 }
+
+export type UpdateAnnouncementInput = Partial<CreateAnnouncementInput>;
 
 export interface AnnouncementListResult {
   items: Announcement[];

@@ -3,7 +3,7 @@ import { View, StyleSheet, Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from "@react-navigation/native";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";

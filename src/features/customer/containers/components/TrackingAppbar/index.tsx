@@ -1,6 +1,6 @@
 import React from 'react';
 import { Appbar, useTheme } from 'react-native-paper';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import type { RootStackScreenProps } from '@src/navigations/type';
 
 interface TrackingAppbarProps {

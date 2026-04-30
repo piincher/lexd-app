@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
 
 interface StatsHeaderProps {

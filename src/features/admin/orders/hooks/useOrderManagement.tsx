@@ -1,7 +1,6 @@
 import {
    batchUpdate,
    deleteImage,
-   deleteOrder,
    editOrder,
    getActiveOrdersAdmin,
    getAllOrders,
@@ -87,16 +86,6 @@ export const useUpdateOrder = () => {
    });
 };
 
-export const useDeleteOrder = () => {
-   const queryClient = useQueryClient();
-   return useMutation({
-      mutationFn: deleteOrder,
-      onSuccess: () => {
-         queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
-      },
-   });
-};
-
 export const useUpdateOrderStatus = () => {
    const queryClient = useQueryClient();
    const navigation = useNavigation();
@@ -130,23 +119,6 @@ export const useGetOrderBaseonDate = () => {
    });
 };
 
-// Hook to get ALL orders without date/method restrictions
-export const useGetAllOrders = (status?: string) => {
-   return useInfiniteQuery({
-      queryKey: [queryKey.ORDERKEY, 'all', status],
-      queryFn: async ({ pageParam = 1 }) => {
-         const result = await getAllOrders(pageParam, status);
-         return result;
-      },
-      getNextPageParam: (lastPage, allPages) => {
-         // Stop fetching if the last page returned fewer items than LIMIT
-         if (!lastPage || lastPage.length < LIMIT) return undefined;
-         return allPages.length + 1;
-      },
-      initialPageParam: 1,
-   });
-};
-
 /**
  * Hook to record a payment for an order
  */
@@ -177,3 +149,5 @@ export const useSyncOrderStatuses = () => {
     },
   });
 };
+
+export { useGetAllOrders } from "@src/shared/hooks/useOrders";

@@ -1,5 +1,5 @@
 // Card Payment Components
-export { CardPaymentForm } from './CardPaymentForm';
+export { CardPaymentForm } from './CardPaymentForm/index';
 export { CardPaymentFormV2 } from './CardPaymentFormV2';
 
 // Card Input Components

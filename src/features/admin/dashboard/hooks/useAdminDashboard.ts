@@ -6,9 +6,9 @@
 import { useState, useCallback, useMemo } from "react";
 import { useAuth } from "@src/store/Auth";
 import { useViewSmsBalance } from '@src/shared/hooks/useOrders';
-import { useGetAllOrders } from "@src/features/admin/orders/hooks/useOrderManagement";
-import { useGetAllGoods } from "@src/features/admin/goods/hooks/useGoods";
-import { useGetAllContainers } from "@src/features/admin/containers/hooks/useContainers";
+import { useGetAllOrders } from "@src/shared/hooks/useOrders";
+import { useGetAllGoods } from "@src/shared/hooks/useAdminGoods";
+import { useGetAllContainers } from "@src/shared/hooks/useAdminContainers";
 import { calculateDashboardStats, calculateSMSBalance } from "../utils/calculations";
 
 interface RecentOrder {

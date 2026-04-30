@@ -4,10 +4,11 @@
  */
 
 import React, { forwardRef, useMemo } from 'react';
-import { View, TextInput as RNTextInput, Text, StyleSheet } from 'react-native';
+import { View, TextInput as RNTextInput, Text } from 'react-native';
 import type { ViewStyle, TextStyle, TextInputProps as RNTextInputProps } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './Input.styles';
 
 export type InputVariant = 'default' | 'filled' | 'outlined' | 'underlined';
 export type InputSize = 'small' | 'medium' | 'large';
@@ -49,111 +50,7 @@ export const Input = forwardRef<RNTextInput, InputProps>(({
 }, ref) => {
   const { colors } = useAppTheme();
   const hasError = !!error;
-
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        container: {
-          marginBottom: 16,
-        },
-        fullWidth: {
-          width: '100%',
-        },
-        label: {
-          fontSize: 14,
-          fontWeight: '600',
-          marginBottom: 8,
-          color: colors.text.secondary,
-        },
-        inputContainer: {
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: colors.background.card,
-        },
-        // Variants
-        default: {
-          borderWidth: 1,
-          borderColor: colors.border,
-          borderRadius: 8,
-        },
-        filled: {
-          backgroundColor: colors.neutral[200],
-          borderRadius: 8,
-        },
-        outlined: {
-          borderWidth: 1,
-          borderColor: colors.border,
-          borderRadius: 12,
-        },
-        underlined: {
-          borderBottomWidth: 2,
-          borderBottomColor: colors.border,
-          backgroundColor: 'transparent',
-        },
-        // Sizes
-        small: {
-          paddingVertical: 8,
-          paddingHorizontal: 12,
-          minHeight: 40,
-        },
-        medium: {
-          paddingVertical: 12,
-          paddingHorizontal: 16,
-          minHeight: 48,
-        },
-        large: {
-          paddingVertical: 16,
-          paddingHorizontal: 20,
-          minHeight: 56,
-        },
-        errorBorder: {
-          borderColor: colors.status.error,
-        },
-        disabled: {
-          backgroundColor: colors.neutral[200],
-          opacity: 0.7,
-        },
-        // Input
-        input: {
-          flex: 1,
-          fontSize: 16,
-          color: colors.text.primary,
-        },
-        smallInput: {
-          fontSize: 14,
-        },
-        mediumInput: {
-          fontSize: 16,
-        },
-        largeInput: {
-          fontSize: 18,
-        },
-        inputWithLeftIcon: {
-          marginLeft: 8,
-        },
-        inputWithRightIcon: {
-          marginRight: 8,
-        },
-        leftIcon: {
-          marginLeft: 4,
-        },
-        rightIcon: {
-          marginRight: 4,
-        },
-        // Helper/Error
-        helperText: {
-          fontSize: 12,
-          color: colors.text.secondary,
-          marginTop: 4,
-        },
-        errorText: {
-          fontSize: 12,
-          color: colors.status.error,
-          marginTop: 4,
-        },
-      }),
-    [colors],
-  );
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const containerStyles = [
     styles.container,
@@ -182,19 +79,10 @@ export const Input = forwardRef<RNTextInput, InputProps>(({
 
   return (
     <View style={containerStyles}>
-      {label && (
-        <Text style={[styles.label, labelStyle]}>
-          {label}
-        </Text>
-      )}
+      {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
       <View style={inputContainerStyles}>
         {leftIcon && (
-          <Ionicons
-            name={leftIcon}
-            size={iconSize}
-            color={iconColor}
-            style={styles.leftIcon}
-          />
+          <Ionicons name={leftIcon} size={iconSize} color={iconColor} style={styles.leftIcon} />
         )}
         <RNTextInput
           ref={ref}
@@ -214,13 +102,9 @@ export const Input = forwardRef<RNTextInput, InputProps>(({
         )}
       </View>
       {hasError ? (
-        <Text style={[styles.errorText, errorStyle]}>
-          {error}
-        </Text>
+        <Text style={[styles.errorText, errorStyle]}>{error}</Text>
       ) : helper ? (
-        <Text style={[styles.helperText, helperStyle]}>
-          {helper}
-        </Text>
+        <Text style={[styles.helperText, helperStyle]}>{helper}</Text>
       ) : null}
     </View>
   );

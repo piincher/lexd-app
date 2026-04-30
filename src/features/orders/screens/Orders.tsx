@@ -3,7 +3,7 @@ import type { HomeTabScreenProps } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { withProtectedRoute } from "@src/shared/hoc/withProtectedRoute";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { OrdersAdminMenu, MenuItemType } from "../components/OrdersAdminMenu";
 import { OrdersCustomerView } from "../components/OrdersCustomerView";
 

@@ -1,106 +1,83 @@
-/**
- * useSearchFilters - Hook for search filter management
- * Handles filter state and toggle operations
- */
+import { SearchFilters } from "../api/searchApi";
 
-import { useState, useCallback } from 'react';
-import { SearchFilters as SearchFiltersType, FilterPreset } from '../api/searchApi';
-
-interface UseSearchFiltersReturn {
-  filters: SearchFiltersType;
-  setFilters: (filters: SearchFiltersType) => void;
-  toggleStatus: (status: string) => void;
-  togglePaymentStatus: (status: string) => void;
-  setShippingMode: (mode: string) => void;
-  setShippingLine: (line: string) => void;
-  setDateRange: (type: 'from' | 'to', date: string) => void;
-  clearFilter: (key: keyof SearchFiltersType) => void;
-  hasActiveFilters: boolean;
-  resetFilters: () => void;
-}
-
-export const useSearchFilters = (initialFilters: SearchFiltersType = {}): UseSearchFiltersReturn => {
-  const [filters, setFilters] = useState<SearchFiltersType>(initialFilters);
-
-  const toggleStatus = useCallback((status: string) => {
+export const useSearchFilters = (
+  filters: SearchFilters,
+  onFiltersChange: (filters: SearchFilters) => void
+) => {
+  const toggleStatus = (status: string) => {
     const currentStatuses = Array.isArray(filters.status)
       ? filters.status
       : filters.status
       ? [filters.status]
       : [];
-
     const newStatuses = currentStatuses.includes(status)
       ? currentStatuses.filter((s) => s !== status)
       : [...currentStatuses, status];
+    onFiltersChange({ ...filters, status: newStatuses.length > 0 ? newStatuses : undefined });
+  };
 
-    setFilters((prev) => ({
-      ...prev,
-      status: newStatuses.length > 0 ? newStatuses : undefined,
-    }));
-  }, [filters.status]);
-
-  const togglePaymentStatus = useCallback((status: string) => {
+  const togglePaymentStatus = (status: string) => {
     const currentStatuses = Array.isArray(filters.paymentStatus)
       ? filters.paymentStatus
       : filters.paymentStatus
       ? [filters.paymentStatus]
       : [];
-
     const newStatuses = currentStatuses.includes(status)
       ? currentStatuses.filter((s) => s !== status)
       : [...currentStatuses, status];
+    onFiltersChange({ ...filters, paymentStatus: newStatuses.length > 0 ? newStatuses : undefined });
+  };
 
-    setFilters((prev) => ({
-      ...prev,
-      paymentStatus: newStatuses.length > 0 ? newStatuses : undefined,
-    }));
-  }, [filters.paymentStatus]);
+  const setShippingMode = (mode: string) => {
+    onFiltersChange({ ...filters, shippingMode: filters.shippingMode === mode ? undefined : mode });
+  };
 
-  const setShippingMode = useCallback((mode: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      shippingMode: prev.shippingMode === mode ? undefined : mode,
-    }));
-  }, []);
+  const setShippingLine = (line: string) => {
+    onFiltersChange({ ...filters, shippingLine: filters.shippingLine === line ? undefined : line });
+  };
 
-  const setShippingLine = useCallback((line: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      shippingLine: prev.shippingLine === line ? undefined : line,
-    }));
-  }, []);
+  const setDateRange = (type: "from" | "to", date: string) => {
+    onFiltersChange({ ...filters, [type === "from" ? "dateFrom" : "dateTo"]: date });
+  };
 
-  const setDateRange = useCallback((type: 'from' | 'to', date: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      [type === 'from' ? 'dateFrom' : 'dateTo']: date,
-    }));
-  }, []);
+  const toggleRole = (role: string) => {
+    const currentRoles = Array.isArray(filters.role)
+      ? filters.role
+      : filters.role
+      ? [filters.role]
+      : [];
+    const newRoles = currentRoles.includes(role)
+      ? currentRoles.filter((r) => r !== role)
+      : [...currentRoles, role];
+    onFiltersChange({ ...filters, role: newRoles.length > 0 ? newRoles : undefined });
+  };
 
-  const clearFilter = useCallback((key: keyof SearchFiltersType) => {
-    setFilters((prev) => {
-      const newFilters = { ...prev };
-      delete newFilters[key];
-      return newFilters;
-    });
-  }, []);
+  const setIsActive = (isActive: boolean | undefined) => {
+    onFiltersChange({ ...filters, isActive: filters.isActive === isActive ? undefined : isActive });
+  };
 
-  const resetFilters = useCallback(() => {
-    setFilters({});
-  }, []);
+  const setHasBalance = (hasBalance: boolean | undefined) => {
+    onFiltersChange({ ...filters, hasBalance: filters.hasBalance === hasBalance ? undefined : hasBalance });
+  };
+
+  const removeFilter = (key: keyof SearchFilters) => {
+    const newFilters = { ...filters };
+    delete newFilters[key];
+    onFiltersChange(newFilters);
+  };
 
   const hasActiveFilters = Object.keys(filters).length > 0;
 
   return {
-    filters,
-    setFilters,
     toggleStatus,
     togglePaymentStatus,
     setShippingMode,
     setShippingLine,
     setDateRange,
-    clearFilter,
+    toggleRole,
+    setIsActive,
+    setHasBalance,
+    removeFilter,
     hasActiveFilters,
-    resetFilters,
   };
 };

@@ -1,0 +1,58 @@
+/**
+ * ClientGoodsSection - Collapsible client section for packing list
+ */
+
+import React, { useState } from 'react';
+import { View, LayoutAnimation, Platform, UIManager } from 'react-native';
+import Animated, { FadeInUp } from 'react-native-reanimated';
+import { ClientGoodsGroup } from '../../types/packingList';
+import { PackingListTable } from '../../components/PackingListTable';
+import { styles } from './ClientGoodsSection.styles';
+import { ClientHeader } from './ClientHeader';
+import { ClientSubtotal } from './ClientSubtotal';
+
+const isNewArchitectureEnabled = Boolean((globalThis as { nativeFabricUIManager?: unknown }).nativeFabricUIManager);
+
+if (Platform.OS === 'android' && !isNewArchitectureEnabled && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+interface ClientGoodsSectionProps {
+  clientGroup: ClientGoodsGroup;
+  index: number;
+  defaultExpanded?: boolean;
+  onToggleExpand?: (expanded: boolean) => void;
+  showPhotos?: boolean;
+}
+
+export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
+  clientGroup,
+  index,
+  defaultExpanded = true,
+  onToggleExpand,
+  showPhotos = false,
+}) => {
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
+  const handleToggle = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    const newValue = !isExpanded;
+    setIsExpanded(newValue);
+    onToggleExpand?.(newValue);
+  };
+
+  return (
+    <Animated.View entering={FadeInUp.delay(index * 100)} style={styles.container}>
+      <ClientHeader clientGroup={clientGroup} isExpanded={isExpanded} onToggle={handleToggle} />
+
+      {isExpanded && (
+        <View style={styles.content}>
+          <PackingListTable goods={clientGroup.goods} showPhotos={showPhotos} startIndex={1} />
+          <ClientSubtotal clientGroup={clientGroup} />
+        </View>
+      )}
+    </Animated.View>
+  );
+};
+
+export default ClientGoodsSection;

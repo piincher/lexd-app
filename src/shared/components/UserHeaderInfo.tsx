@@ -2,7 +2,7 @@ import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import type { navigationProps } from '@src/navigations/type';
 
 interface UserHeaderInfoProps {

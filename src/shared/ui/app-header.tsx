@@ -2,37 +2,22 @@
  * AppHeader — Unified header component
  *
  * Wraps react-native-paper's Appbar.Header with consistent theming.
- * Replaces the fragmented header patterns across screens.
- *
- * Features:
- * - Consistent back button handling
- * - Theme-aware colors
- * - Optional transparent mode for hero screens
- * - Optional collapsible header with scroll tracking
- * - Right action slot for icons/menus
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
 import Animated, {
   useAnimatedStyle,
-  useSharedValue,
   interpolate,
   Extrapolation,
 } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useNavigation } from '@react-navigation/native';
+import { AppHeaderProps } from './app-header.types';
+import { styles } from './app-header.styles';
 
-export interface AppHeaderProps {
-  title: string;
-  subtitle?: string;
-  onBack?: () => void;
-  right?: React.ReactNode;
-  transparent?: boolean;
-  scrollY?: Animated.SharedValue<number>;
-  elevationThreshold?: number;
-}
+export { type AppHeaderProps } from './app-header.types';
 
 export const AppHeader: React.FC<AppHeaderProps> = ({
   title,
@@ -56,17 +41,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
 
   const canGoBack = navigation.canGoBack?.() ?? false;
 
-  // Collapsible header animation
   const animatedStyle = useAnimatedStyle(() => {
     if (!scrollY) return {};
-
     const opacity = interpolate(
       scrollY.value,
       [0, elevationThreshold],
       [0, 1],
       Extrapolation.CLAMP
     );
-
     return {
       elevation: opacity * 4,
       shadowOpacity: opacity * 0.1,
@@ -78,37 +60,21 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
       <Appbar.Header
         style={[
           styles.header,
-          {
-            backgroundColor: transparent ? 'transparent' : colors.background.default,
-          },
+          { backgroundColor: transparent ? 'transparent' : colors.background.default },
         ]}
       >
         {canGoBack ? (
-          <Appbar.BackAction
-            onPress={handleBack}
-            iconColor={colors.text.primary}
-          />
+          <Appbar.BackAction onPress={handleBack} iconColor={colors.text.primary} />
         ) : (
           <View style={styles.backPlaceholder} />
         )}
 
         <View style={styles.titleContainer}>
-          <Text
-            variant="titleLarge"
-            style={[
-              styles.title,
-              { color: colors.text.primary },
-            ]}
-            numberOfLines={1}
-          >
+          <Text variant="titleLarge" style={[styles.title, { color: colors.text.primary }]} numberOfLines={1}>
             {title}
           </Text>
           {subtitle && (
-            <Text
-              variant="bodySmall"
-              style={[styles.subtitle, { color: colors.text.secondary }]}
-              numberOfLines={1}
-            >
+            <Text variant="bodySmall" style={[styles.subtitle, { color: colors.text.secondary }]} numberOfLines={1}>
               {subtitle}
             </Text>
           )}
@@ -123,34 +89,3 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
     </Animated.View>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    elevation: 0,
-    shadowOpacity: 0,
-  },
-  backPlaceholder: {
-    width: 48,
-  },
-  titleContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontWeight: '700',
-    fontSize: 18,
-  },
-  subtitle: {
-    fontSize: 12,
-    marginTop: 2,
-  },
-  rightContainer: {
-    minWidth: 48,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-  },
-  rightPlaceholder: {
-    width: 48,
-  },
-});

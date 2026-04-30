@@ -37,6 +37,33 @@ export const createStyles = (colors: AppColors) =>
       fontSize: 18,
       fontWeight: "800",
     },
+    filters: {
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: 8,
+      paddingHorizontal: 16,
+      paddingTop: 12,
+    },
+    filterChip: {
+      borderWidth: 1,
+      borderColor: colors.border,
+      borderRadius: 8,
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      backgroundColor: colors.background.card,
+    },
+    filterChipActive: {
+      borderColor: colors.primary.main,
+      backgroundColor: colors.primary.main,
+    },
+    filterText: {
+      color: colors.text.secondary,
+      fontSize: 12,
+      fontWeight: "700",
+    },
+    filterTextActive: {
+      color: "#fff",
+    },
     loader: {
       marginTop: 40,
     },

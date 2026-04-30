@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { Theme } from "@src/constants/Theme";
 import { ReviewStats } from "../components/ReviewStats";

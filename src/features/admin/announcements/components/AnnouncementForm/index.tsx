@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Input } from "@src/shared/ui/Input";
 import { Button } from "@src/shared/ui/Button";
 import { useAnnouncementForm } from "../../hooks/useAnnouncementForm";
-import type { CreateAnnouncementInput } from "../../types/announcement.types";
+import type { Announcement, CreateAnnouncementInput } from "../../types/announcement.types";
 import { styles } from "./AnnouncementForm.styles";
 import { AnnouncementSelectFields } from "./AnnouncementSelectFields";
 import { AnnouncementTargetingFields } from "./AnnouncementTargetingFields";
@@ -14,14 +14,18 @@ import { AnnouncementExpiryPicker } from "./components/AnnouncementExpiryPicker"
 
 interface AnnouncementFormProps {
   onSubmit: (data: CreateAnnouncementInput) => void;
+  initialValues?: Announcement;
   isLoading?: boolean;
+  submitLabel?: string;
 }
 
 export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
   onSubmit,
+  initialValues,
   isLoading = false,
+  submitLabel = "Publier l'annonce",
 }) => {
-  const form = useAnnouncementForm({ onSubmit });
+  const form = useAnnouncementForm({ onSubmit, initialValues });
 
   return (
     <View style={styles.container}>
@@ -98,7 +102,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
 
       <View style={styles.actions}>
         <Button
-          title="Publier l'annonce"
+          title={submitLabel}
           variant="primary"
           onPress={form.handleSubmit}
           loading={isLoading}

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Keyboard } from 'react-native';
 import * as yup from 'yup';
 
-import { useSignupStore } from '@src/features/auth';
+import { useSignupStore } from '@src/shared/store/signupStore';
 import type { RootStackScreenProps } from '@src/navigations/type';
 import { useCreateUser } from './useUserManagement';
 

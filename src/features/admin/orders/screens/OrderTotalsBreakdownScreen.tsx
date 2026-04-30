@@ -7,7 +7,7 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
-import type { AuthenticatedStackScreenProps } from '@src/navigation/types';
+import type { RootStackScreenProps } from '@src/navigations/type';
 import { useOrderTotals } from '../hooks/useOrderTotals';
 import { createStyles } from './OrderTotalsBreakdownScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -17,11 +17,11 @@ import { VoidedGoodsBreakdown } from './components/VoidedGoodsBreakdown';
 import { SummaryCard } from './components/SummaryCard';
 
 export const OrderTotalsBreakdownScreen: React.FC<
-  AuthenticatedStackScreenProps<'OrderTotalsBreakdown'>
+  RootStackScreenProps<'OrderTotalsBreakdown'>
 > = () => {
   const { colors } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const route = useRoute<AuthenticatedStackScreenProps<'OrderTotalsBreakdown'>['route']>();
+  const route = useRoute<RootStackScreenProps<'OrderTotalsBreakdown'>['route']>();
   const { orderId } = route.params;
   const { data, isLoading } = useOrderTotals(orderId);
 

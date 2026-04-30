@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { announcementApi } from "../api/announcementApi";
+import type { Announcement } from "../types";
 import { announcementQueryKeys } from "./useActiveAnnouncements";
 
 export const useAnnouncementActions = () => {
@@ -13,6 +14,19 @@ export const useAnnouncementActions = () => {
 
   const dismiss = useMutation({
     mutationFn: announcementApi.dismiss,
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: announcementQueryKeys.active });
+      const previous = queryClient.getQueryData<Announcement[]>(announcementQueryKeys.active);
+      queryClient.setQueryData<Announcement[]>(announcementQueryKeys.active, (current = []) =>
+        current.filter((announcement) => announcement._id !== id)
+      );
+      return { previous };
+    },
+    onError: (_error, _id, context) => {
+      if (context?.previous) {
+        queryClient.setQueryData(announcementQueryKeys.active, context.previous);
+      }
+    },
     onSuccess: refresh,
   });
 

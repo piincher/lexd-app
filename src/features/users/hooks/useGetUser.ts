@@ -1,10 +1,2 @@
-import { getUser } from "@src/api/auth";
-import { queryKey } from "@src/constants/queryKey";
-import { useQuery } from "@tanstack/react-query";
-
-export const useGetUser = (userId: string) => {
-   return useQuery({
-      queryKey: [queryKey.USER_KEY, userId],
-      queryFn: () => getUser(userId),
-   });
-};
+// Re-export from shared/hooks for backward compatibility
+export { useGetUser } from "@src/shared/hooks/useGetUser";

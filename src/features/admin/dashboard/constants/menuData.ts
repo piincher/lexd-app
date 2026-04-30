@@ -74,6 +74,8 @@ export const MENU_CATEGORIES: MenuCategory[] = [
       { id: "t1", title: "Scan QR Code", route: "ScanQRCode" },
       { id: "t2", title: "Statistics", route: "Stats" },
       { id: "t3", title: "Data Export", route: "DataExport" },
+      { id: "t4", title: "Audit Trail", route: "AuditLogs" },
+      { id: "t5", title: "Notification Events", route: "NotificationEvents" },
     ],
   },
 ];

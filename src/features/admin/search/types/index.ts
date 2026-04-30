@@ -1,5 +1,2 @@
-﻿/**
- * types index
- * Placeholder – add exports as needed.
- */
+export * from "./searchResults";
 

@@ -4,9 +4,9 @@
  */
 
 import { useMemo } from 'react';
-import { useGetDashboard } from '@src/features/customer/dashboard/hooks/useDashboard';
-import type { DashboardStats } from '@src/features/customer/dashboard/types';
-import { useBalanceDue } from '@src/features/payments/hooks/usePayments';
+import { useGetDashboard } from '@src/shared/hooks/useDashboard';
+import type { DashboardStats } from '@src/shared/types/dashboard';
+import { useBalanceDue } from '@src/shared/hooks/useBalanceDue';
 import { useGetOrderOfUserById } from '@src/shared/hooks/useOrders';
 import { useGetCurrentUser } from '@src/shared/hooks/useUser';
 import type { productType } from '@src/shared/types/order';

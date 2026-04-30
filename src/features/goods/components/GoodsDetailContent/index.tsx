@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
 import { normalizePhotos } from '@src/shared/lib';
-import { ReviewPrompt } from '@src/features/customer/reviews';
+import { ReviewPrompt } from '@src/widgets/ReviewPrompt';
 import { Goods } from '../../api';
 import { GoodsDetailStatusHeader } from '../GoodsDetailStatusHeader';
 import { GoodsPhotoSection } from '../GoodsPhotoSection';

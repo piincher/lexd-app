@@ -3,8 +3,8 @@
 export {
   NotificationProvider,
   useNotificationContext,
-  type NotificationContextValue,
 } from "./NotificationProvider";
+export type { NotificationContextValue } from "./types";
 
 export {
   ThemeProvider,

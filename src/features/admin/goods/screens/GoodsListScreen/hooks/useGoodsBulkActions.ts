@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Alert } from 'react-native';
-import { useGetAllContainers } from '@src/features/admin/containers/hooks/useContainers';
+import { useGetAllContainers } from '@src/features/admin/shared/hooks';
 import { useUpdateGoodsStatus, useVoidGoods } from '../../../hooks';
 import { useAssignGoodsToContainer } from '../../../hooks/useGoods';
 

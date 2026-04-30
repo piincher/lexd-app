@@ -9,7 +9,12 @@ import { useStatsRefresh } from './useStatsRefresh';
 
 export const useAdminStats = () => {
   const data = useAdminStatsData();
-  const computations = useStatsComputations(data.dashboard, data.goodsVolume, data.paymentMetrics);
+  const computations = useStatsComputations(
+    data.dashboard,
+    data.goodsVolume,
+    data.paymentMetrics,
+    data.operations,
+  );
   const refresh = useStatsRefresh(data.refetch);
 
   return {
@@ -24,6 +29,8 @@ export const useAdminStats = () => {
     dashboard: data.dashboard,
     goodsVolume: data.goodsVolume,
     isLoadingGoods: data.isLoadingGoods,
+    operations: data.operations,
+    isLoadingOperations: data.isLoadingOperations,
     shippingModeCounts: computations.shippingModeCounts,
     paymentMetrics: data.paymentMetrics,
     paymentSummary: computations.paymentSummary,

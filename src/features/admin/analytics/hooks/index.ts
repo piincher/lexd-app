@@ -17,6 +17,7 @@ export {
   useFormatCurrency,
   useFormatNumber,
   useFormatPercentage,
+  useCompactNumberFormat,
   useTrendIndicator,
   useGetDailyRevenueTrend,
   useGetAllContainersProfitability,

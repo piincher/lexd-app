@@ -2,22 +2,16 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
+import type { AirwayBillGoods } from '../../types';
 
 interface Props {
-  item: {
-    _id: string;
-    goodsId: string;
-    description: string;
-    weight: number;
-    quantity: number;
-    clientId?: { firstName?: string; lastName?: string };
-  };
+  item: AirwayBillGoods;
   isSelected: boolean;
   onToggle: (id: string) => void;
 }
 
 export const AssignGoodsListItem: React.FC<Props> = ({ item, isSelected, onToggle }) => {
-  const clientName = item.clientId
+  const clientName = item.clientId && typeof item.clientId !== 'string'
     ? `${item.clientId.firstName || ''} ${item.clientId.lastName || ''}`.trim()
     : '';
 

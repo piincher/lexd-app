@@ -20,7 +20,7 @@ export const JourneySummary: React.FC<JourneySummaryProps> = ({
   styles,
   secondaryTextColor,
 }) => (
-  <Animated.View entering={FadeInUp.delay(300)} style={styles.summaryCard}>
+  <Animated.View entering={FadeInUp.delay(700)} style={styles.summaryCard}>
     <Text style={styles.summaryTitle}>Résumé du Voyage</Text>
     <View style={styles.summaryRow}>
       <View style={styles.summaryItem}>

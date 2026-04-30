@@ -4,7 +4,9 @@ import { PersistStorage, persist } from 'zustand/middleware';
 
 interface AppLaunchType {
 	isAppLaunchFirst: boolean | null;
+	hasHydrated: boolean;
 	setIsAppLaunchFirst: (value: boolean) => void;
+	setHasHydrated: (value: boolean) => void;
 }
 
 const storage: PersistStorage<AppLaunchType> = {
@@ -24,13 +26,20 @@ export const useAppLaunchStore = create(
 	persist<AppLaunchType>(
 		(set) => ({
 			isAppLaunchFirst: true,
+			hasHydrated: false,
 			setIsAppLaunchFirst: (value) => {
 				set(() => ({ isAppLaunchFirst: value }));
+			},
+			setHasHydrated: (value) => {
+				set(() => ({ hasHydrated: value }));
 			},
 		}),
 		{
 			name: 'AppFirstLaunch',
 			storage,
+			onRehydrateStorage: () => (state) => {
+				state?.setHasHydrated(true);
+			},
 		}
 	)
 );

@@ -14,9 +14,13 @@ interface Props {
 export const CargoBagDetailInfoCard: React.FC<Props> = ({ cargoBag }) => {
   const { colors } = useAppTheme();
   const statusConfig = CARGO_BAG_STATUS_CONFIG[cargoBag.status];
+  const bagCardStyle = StyleSheet.flatten([
+    styles.bagCard,
+    { borderLeftColor: statusConfig.color },
+  ]);
 
   return (
-    <Card style={[styles.bagCard, { borderLeftColor: statusConfig.color }]} padding="large">
+    <Card style={bagCardStyle} padding="large">
       <View style={styles.bagHeaderRow}>
         <View style={styles.bagInfo}>
           <MaterialCommunityIcons name="bag-personal-outline" size={22} color={colors.primary.main} />

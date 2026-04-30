@@ -6,13 +6,13 @@
 export {
   UpdateContext,
   UpdateProvider,
-} from './context/UpdateProvider';
+} from './providers/UpdateProvider';
 
 export {
   NotificationProvider,
   useNotificationContext,
-  type NotificationContextValue,
 } from './providers/NotificationProvider';
+export type { NotificationContextValue } from './providers/types';
 
 export {
   ThemeProvider,

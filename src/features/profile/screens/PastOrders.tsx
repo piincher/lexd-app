@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { PastOrderCardSkeleton } from "@src/features/customer/orders/components/PastOrderCardSkeleton";
+import { PastOrderCardSkeleton } from "@src/shared/ui/PastOrderCardSkeleton";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { usePastOrders } from "../hooks/usePastOrders";
 import {

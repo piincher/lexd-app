@@ -31,6 +31,16 @@ export type RootStackParamList = {
    UserActiveOrders: { type: "air" | "sea" };
    AdminDashBoard: undefined;
    OutstandingPaymentsList: undefined;
+   VoidGoodsList: undefined;
+   VoidGoods: {
+      goodsId: string;
+      goodsTrackingCode: string;
+      cbm?: number;
+   };
+   OrderDetailWithGoods: { orderId: string };
+   AllOrders: undefined;
+   OrderDetailScreen: { id: string };
+   OrderTotalsBreakdown: { orderId: string };
    ChooseShippingMethod: undefined;
    ShippingMethod: undefined;
    BatchUpdateDetail: { data: string[] };
@@ -94,7 +104,12 @@ export type RootStackParamList = {
    NotificationSettings: undefined;
    // Admin Announcements
    AnnouncementList: undefined;
-   CreateAnnouncement: undefined;
+   CreateAnnouncement: { announcementId?: string } | undefined;
+   // Admin Operations
+   AuditLogs: undefined;
+   AuditLogDetail: { auditLogId: string };
+   NotificationEvents: undefined;
+   NotificationEventDetail: { notificationEventId: string };
 
    // Admin Certificate Issuance
    IssueCertificate: undefined;

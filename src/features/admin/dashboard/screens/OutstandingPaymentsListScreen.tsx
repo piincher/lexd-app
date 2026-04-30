@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { RefreshControl } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useOutstandingPaymentsList } from '../hooks';

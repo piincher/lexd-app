@@ -12,7 +12,7 @@ import { useReceiveGoodsScreen } from './hooks/useReceiveGoodsScreen';
 import { ReceiveGoodsForm } from './components/ReceiveGoodsForm';
 import { createStyles } from './ReceiveGoodsScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
 
 export const ReceiveGoodsScreen: React.FC = () => {

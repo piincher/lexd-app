@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ExportDataModal } from "@src/features/admin/export/components/ExportDataModal";
+import { ExportDataModal } from "@src/features/admin/shared/components";
 import { Theme } from "@src/constants/Theme";
 import { useGlobalSearchScreen } from "../hooks/useGlobalSearchScreen";
 import { GlobalSearchHeader } from "../components/GlobalSearchHeader";

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, Pressable, StyleSheet, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { IMAGES } from "@src/constants/Images";
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from '@src/providers/ThemeProvider';

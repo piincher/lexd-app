@@ -7,7 +7,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { Ticket, TICKET_TYPE_LABELS } from '../../types';
 
 interface TicketHeaderProps {

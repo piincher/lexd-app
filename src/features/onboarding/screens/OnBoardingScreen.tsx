@@ -12,60 +12,60 @@ import { getOnboardingBackgroundColors } from "./onboardingColors";
 type Props = RootStackScreenProps<"OnBoarding">;
 
 export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
-  const { width, height } = useWindowDimensions();
-  const { isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(), []);
+   const { width, height } = useWindowDimensions();
+   const { isDark } = useAppTheme();
+   const styles = useMemo(() => createStyles(), []);
 
-  const {
-    scrollX,
-    currentIndex,
-    isLastSlide,
-    slides,
-    bgColors,
-    handleScroll,
-    onMomentumScrollEnd,
-    completeOnboarding,
-    goToNext,
-    flatListRef,
-  } = useOnboarding(width);
+   const {
+      scrollX,
+      currentIndex,
+      isLastSlide,
+      slides,
+      bgColors,
+      handleScroll,
+      onMomentumScrollEnd,
+      completeOnboarding,
+      goToNext,
+      flatListRef,
+   } = useOnboarding(width);
 
-  const backgroundColors = useMemo(
-    () => getOnboardingBackgroundColors(bgColors, isDark),
-    [bgColors, isDark]
-  );
+   const backgroundColors = useMemo(
+      () => getOnboardingBackgroundColors(bgColors, isDark),
+      [bgColors, isDark],
+   );
 
-  const handleComplete = useCallback(() => {
-    completeOnboarding();
-    navigation.replace("CheckRoute");
-  }, [completeOnboarding, navigation]);
+   const handleComplete = useCallback(() => {
+      completeOnboarding();
+      navigation.replace("HomeTab", undefined);
+   }, [completeOnboarding, navigation]);
 
-  const backgroundColor = scrollX.interpolate({
-    inputRange: backgroundColors.map((_, i) => i * width),
-    outputRange: backgroundColors,
-  });
+   const backgroundColor = scrollX.interpolate({
+      inputRange: backgroundColors.map((_, i) => i * width),
+      outputRange: backgroundColors,
+   });
 
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
-      <OnboardingBackground backgroundColor={backgroundColor} />
+   return (
+      <View style={styles.container}>
+         <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+         <OnboardingBackground backgroundColor={backgroundColor} />
 
-      <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
-        <OnboardingPager
-          slides={slides}
-          scrollX={scrollX}
-          currentIndex={currentIndex}
-          isLastSlide={isLastSlide}
-          width={width}
-          height={height}
-          flatListRef={flatListRef}
-          handleScroll={handleScroll}
-          onMomentumScrollEnd={onMomentumScrollEnd}
-          onNext={goToNext}
-          onComplete={handleComplete}
-        />
-      </SafeAreaView>
-    </View>
-  );
+         <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
+            <OnboardingPager
+               slides={slides}
+               scrollX={scrollX}
+               currentIndex={currentIndex}
+               isLastSlide={isLastSlide}
+               width={width}
+               height={height}
+               flatListRef={flatListRef}
+               handleScroll={handleScroll}
+               onMomentumScrollEnd={onMomentumScrollEnd}
+               onNext={goToNext}
+               onComplete={handleComplete}
+            />
+         </SafeAreaView>
+      </View>
+   );
 };
 
 export default OnboardingScreen;

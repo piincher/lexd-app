@@ -8,6 +8,7 @@ import {
   DashboardResponse,
   GoodsVolumeResponse,
   PaymentMetricsResponse,
+  OperationsAnalyticsResponse,
   KPIItem,
 } from '../types';
 
@@ -22,6 +23,7 @@ export const useStatsComputations = (
   dashboard: DashboardResponse | undefined,
   goodsVolume: GoodsVolumeResponse | undefined,
   paymentMetrics: PaymentMetricsResponse | undefined,
+  operations: OperationsAnalyticsResponse | undefined,
 ) => {
   const kpiItems: KPIItem[] = useMemo(() => {
     const kpis = dashboard?.kpis;
@@ -51,15 +53,15 @@ export const useStatsComputations = (
         bgColor: '#F5F3FF',
       },
       {
-        label: 'Paiements',
-        value: `${Number(kpis?.pendingPayments) || 0}`,
-        subtitle: 'En attente',
-        icon: 'time-outline',
+        label: 'A Recouvrer',
+        value: `${formatCurrency(operations?.summary.unpaidAmount)} F`,
+        subtitle: `${Number(operations?.summary.overdueInvoices) || 0} factures en retard`,
+        icon: 'receipt-outline',
         color: '#F59E0B',
         bgColor: '#FFFBEB',
       },
     ];
-  }, [dashboard]);
+  }, [dashboard, operations]);
 
   const shippingModeCounts = useMemo(() => {
     const byMode = goodsVolume?.byShippingMode || [];

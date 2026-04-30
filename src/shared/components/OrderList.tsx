@@ -3,7 +3,7 @@ import { FlashList } from '@shopify/flash-list';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { OrderListSkeleton } from '@src/features/orders/components/OrderListSkeleton';
+import { OrderListSkeleton } from '@src/shared/ui/OrderListSkeleton';
 
 export interface OrderItem {
 	_id?: string;

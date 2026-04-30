@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { StyleSheet, Share } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useClipboard } from "@src/shared/lib/hooks/useClipboard";
-import { useCreateShareToken } from "@src/features/public/hooks/useCreateShareToken";
+import { useCreateShareToken } from "@src/shared/hooks/useCreateShareToken";
 import { useGetOrderDetails } from "./useOrderDetail";
 
 export const useOrderDetailScreen = (id: string) => {

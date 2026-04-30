@@ -6,7 +6,7 @@ import type { navigationProps, RootStackParamList } from "@src/navigations/type"
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useMemo } from "react";
 
 interface HeaderProps {

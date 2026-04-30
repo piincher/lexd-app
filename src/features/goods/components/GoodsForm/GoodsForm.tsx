@@ -1,14 +1,14 @@
 /**
  * Goods Form Component
- * Complete form for editing goods information - mirrors all fields from registration
  */
 
-import React, { useMemo } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Text, TextInput, Card, HelperText, Switch } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Fonts } from '@src/constants/Fonts';
-import { useAppTheme } from '@src/providers/ThemeProvider';
+import React from 'react';
+import { View } from 'react-native';
+import { Text, TextInput, HelperText } from 'react-native-paper';
+import { useGoodsFormStyles } from './GoodsForm.styles';
+import { FormSection } from './FormSection';
+import { ShippingModeSelector } from './ShippingModeSelector';
+import { DimensionsSection } from './DimensionsSection';
 
 interface GoodsFormData {
   description: string;
@@ -35,366 +35,91 @@ interface GoodsFormProps {
 const ACCENT = '#16A34A';
 
 export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculatedCBM, calculatedTotalCost }) => {
-  const { colors } = useAppTheme();
+  const styles = useGoodsFormStyles();
   const isSea = data.shippingMode === 'SEA';
-
-  const styles = useMemo(() => StyleSheet.create({
-    container: {
-      gap: 12,
-    },
-    card: {
-      borderRadius: 12,
-      elevation: 1,
-      backgroundColor: colors.background.card,
-    },
-    sectionHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 12,
-      gap: 8,
-    },
-    sectionTitle: {
-      fontFamily: Fonts.bold,
-      fontSize: 15,
-      color: colors.text.primary,
-      flex: 1,
-    },
-    row: {
-      flexDirection: 'row',
-      gap: 12,
-    },
-    input: {
-      backgroundColor: 'transparent',
-    },
-    halfInput: {
-      flex: 1,
-    },
-    thirdInput: {
-      flex: 1,
-    },
-    textArea: {
-      backgroundColor: 'transparent',
-      minHeight: 80,
-    },
-    inputOutline: {
-      borderRadius: 8,
-    },
-    shippingRow: {
-      flexDirection: 'row',
-      gap: 12,
-    },
-    shippingOption: {
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 8,
-      paddingVertical: 14,
-      borderRadius: 10,
-      backgroundColor: colors.background.paper,
-      borderWidth: 1.5,
-      borderColor: colors.border,
-    },
-    shippingOptionActive: {
-      backgroundColor: ACCENT,
-      borderColor: ACCENT,
-    },
-    shippingText: {
-      fontFamily: Fonts.bold,
-      fontSize: 14,
-      color: colors.text.secondary,
-    },
-    shippingTextActive: {
-      color: colors.text.inverse,
-    },
-    switchRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 6,
-    },
-    switchLabel: {
-      fontFamily: Fonts.meduim,
-      fontSize: 12,
-      color: colors.text.secondary,
-    },
-    cbmBadge: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 6,
-      marginTop: 8,
-      paddingHorizontal: 12,
-      paddingVertical: 6,
-      backgroundColor: colors.background.paper,
-      borderRadius: 8,
-      alignSelf: 'flex-start',
-    },
-    cbmText: {
-      fontFamily: Fonts.bold,
-      fontSize: 13,
-      color: ACCENT,
-    },
-    totalCostRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginTop: 10,
-      paddingHorizontal: 12,
-      paddingVertical: 8,
-      backgroundColor: colors.background.paper,
-      borderRadius: 8,
-    },
-    totalCostLabel: {
-      fontFamily: Fonts.meduim,
-      fontSize: 13,
-      color: colors.text.secondary,
-    },
-    totalCostValue: {
-      fontFamily: Fonts.bold,
-      fontSize: 14,
-      color: ACCENT,
-    },
-  }), [colors]);
 
   return (
     <View style={styles.container}>
-      {/* Shipping Mode */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <View style={styles.sectionHeader}>
-            <MaterialCommunityIcons name="truck-delivery" size={20} color={ACCENT} />
-            <Text style={styles.sectionTitle}>Mode d'expédition</Text>
-          </View>
-          <View style={styles.shippingRow}>
-            <TouchableOpacity
-              style={[styles.shippingOption, data.shippingMode === 'SEA' && styles.shippingOptionActive]}
-              onPress={() => onChange('shippingMode', 'SEA')}
-            >
-              <MaterialCommunityIcons name="ferry" size={24} color={data.shippingMode === 'SEA' ? colors.text.inverse : colors.text.secondary} />
-              <Text style={[styles.shippingText, data.shippingMode === 'SEA' && styles.shippingTextActive]}>Maritime</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.shippingOption, data.shippingMode === 'AIR' && styles.shippingOptionActive]}
-              onPress={() => onChange('shippingMode', 'AIR')}
-            >
-              <MaterialCommunityIcons name="airplane" size={24} color={data.shippingMode === 'AIR' ? colors.text.inverse : colors.text.secondary} />
-              <Text style={[styles.shippingText, data.shippingMode === 'AIR' && styles.shippingTextActive]}>Aérien</Text>
-            </TouchableOpacity>
-          </View>
-        </Card.Content>
-      </Card>
+      <FormSection icon="truck-delivery" title="Mode d'expédition">
+        <ShippingModeSelector mode={data.shippingMode} onChange={(mode) => onChange('shippingMode', mode)} />
+      </FormSection>
 
-      {/* Description */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <View style={styles.sectionHeader}>
-            <MaterialCommunityIcons name="text-box" size={20} color={ACCENT} />
-            <Text style={styles.sectionTitle}>Description</Text>
-          </View>
+      <FormSection icon="text-box" title="Description">
+        <TextInput
+          mode="outlined" label="Description de la marchandise" value={data.description}
+          onChangeText={(v) => onChange('description', v)} multiline numberOfLines={3}
+          style={styles.textArea} outlineStyle={styles.inputOutline}
+          outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+        />
+      </FormSection>
+
+      <FormSection icon="package-variant" title="Quantité et Poids">
+        <View style={styles.row}>
           <TextInput
-            mode="outlined"
-            label="Description de la marchandise"
-            value={data.description}
-            onChangeText={(value) => onChange('description', value)}
-            multiline
-            numberOfLines={3}
-            style={styles.textArea}
-            outlineStyle={styles.inputOutline}
-            outlineColor={colors.border}
-            activeOutlineColor={ACCENT}
+            mode="outlined" label="Quantité" value={data.quantity}
+            onChangeText={(v) => onChange('quantity', v.replace(/[^0-9]/g, ''))}
+            keyboardType="numeric" style={[styles.input, styles.halfInput]}
+            outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+            right={<TextInput.Affix text="pcs" />}
           />
-        </Card.Content>
-      </Card>
+          <TextInput
+            mode="outlined" label="Poids" value={data.weight}
+            onChangeText={(v) => onChange('weight', v.replace(/[^0-9.]/g, ''))}
+            keyboardType="decimal-pad" style={[styles.input, styles.halfInput]}
+            outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+            right={<TextInput.Affix text="kg" />}
+          />
+        </View>
+      </FormSection>
 
-      {/* Quantity and Weight */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <View style={styles.sectionHeader}>
-            <MaterialCommunityIcons name="package-variant" size={20} color={ACCENT} />
-            <Text style={styles.sectionTitle}>Quantité et Poids</Text>
-          </View>
-          <View style={styles.row}>
-            <TextInput
-              mode="outlined"
-              label="Quantité"
-              value={data.quantity}
-              onChangeText={(value) => onChange('quantity', value.replace(/[^0-9]/g, ''))}
-              keyboardType="numeric"
-              style={[styles.input, styles.halfInput]}
-              outlineStyle={styles.inputOutline}
-              outlineColor={colors.border}
-              activeOutlineColor={ACCENT}
-              right={<TextInput.Affix text="pcs" />}
-            />
-            <TextInput
-              mode="outlined"
-              label="Poids"
-              value={data.weight}
-              onChangeText={(value) => onChange('weight', value.replace(/[^0-9.]/g, ''))}
-              keyboardType="decimal-pad"
-              style={[styles.input, styles.halfInput]}
-              outlineStyle={styles.inputOutline}
-              outlineColor={colors.border}
-              activeOutlineColor={ACCENT}
-              right={<TextInput.Affix text="kg" />}
-            />
-          </View>
-        </Card.Content>
-      </Card>
-
-      {/* Dimensions / CBM */}
       {isSea && (
-        <Card style={styles.card}>
-          <Card.Content>
-            <View style={styles.sectionHeader}>
-              <MaterialCommunityIcons name="ruler" size={20} color={ACCENT} />
-              <Text style={styles.sectionTitle}>Volume (CBM)</Text>
-              <View style={styles.switchRow}>
-                <Text style={styles.switchLabel}>Dimensions</Text>
-                <Switch
-                  value={data.useDimensions}
-                  onValueChange={(val) => onChange('useDimensions', val)}
-                  color={ACCENT}
-                />
-              </View>
-            </View>
-
-            {data.useDimensions ? (
-              <>
-                <View style={styles.row}>
-                  <TextInput
-                    mode="outlined"
-                    label="Longueur"
-                    value={data.length}
-                    onChangeText={(value) => onChange('length', value.replace(/[^0-9.]/g, ''))}
-                    keyboardType="decimal-pad"
-                    style={[styles.input, styles.thirdInput]}
-                    outlineStyle={styles.inputOutline}
-                    outlineColor={colors.border}
-                    activeOutlineColor={ACCENT}
-                    right={<TextInput.Affix text="cm" />}
-                  />
-                  <TextInput
-                    mode="outlined"
-                    label="Largeur"
-                    value={data.width}
-                    onChangeText={(value) => onChange('width', value.replace(/[^0-9.]/g, ''))}
-                    keyboardType="decimal-pad"
-                    style={[styles.input, styles.thirdInput]}
-                    outlineStyle={styles.inputOutline}
-                    outlineColor={colors.border}
-                    activeOutlineColor={ACCENT}
-                    right={<TextInput.Affix text="cm" />}
-                  />
-                  <TextInput
-                    mode="outlined"
-                    label="Hauteur"
-                    value={data.height}
-                    onChangeText={(value) => onChange('height', value.replace(/[^0-9.]/g, ''))}
-                    keyboardType="decimal-pad"
-                    style={[styles.input, styles.thirdInput]}
-                    outlineStyle={styles.inputOutline}
-                    outlineColor={colors.border}
-                    activeOutlineColor={ACCENT}
-                    right={<TextInput.Affix text="cm" />}
-                  />
-                </View>
-                {calculatedCBM != null && calculatedCBM > 0 && (
-                  <View style={styles.cbmBadge}>
-                    <MaterialCommunityIcons name="cube-outline" size={16} color={ACCENT} />
-                    <Text style={styles.cbmText}>CBM calculé: {calculatedCBM.toFixed(4)} m³</Text>
-                  </View>
-                )}
-              </>
-            ) : (
-              <TextInput
-                mode="outlined"
-                label="CBM (m³)"
-                value={data.cbm}
-                onChangeText={(value) => onChange('cbm', value.replace(/[^0-9.]/g, ''))}
-                keyboardType="decimal-pad"
-                style={styles.input}
-                outlineStyle={styles.inputOutline}
-                outlineColor={colors.border}
-                activeOutlineColor={ACCENT}
-                right={<TextInput.Affix text="m³" />}
-              />
-            )}
-          </Card.Content>
-        </Card>
+        <FormSection icon="ruler" title="Volume (CBM)">
+          <DimensionsSection
+            length={data.length} width={data.width} height={data.height}
+            cbm={data.cbm} useDimensions={data.useDimensions}
+            calculatedCBM={calculatedCBM}
+            onChange={(field, value) => onChange(field as keyof GoodsFormData, value)}
+          />
+        </FormSection>
       )}
 
-      {/* Unit Price */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <View style={styles.sectionHeader}>
-            <MaterialCommunityIcons name="cash" size={20} color={ACCENT} />
-            <Text style={styles.sectionTitle}>Prix unitaire</Text>
+      <FormSection icon="cash" title="Prix unitaire">
+        <TextInput
+          mode="outlined" label="Prix unitaire" value={data.unitPrice}
+          onChangeText={(v) => onChange('unitPrice', v.replace(/[^0-9.]/g, ''))}
+          keyboardType="decimal-pad" style={styles.input}
+          outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+          right={<TextInput.Affix text={isSea ? 'FCFA/m³' : 'FCFA/kg'} />}
+        />
+        {calculatedTotalCost != null && calculatedTotalCost > 0 && (
+          <View style={styles.totalCostRow}>
+            <Text style={styles.totalCostLabel}>Coût total estimé:</Text>
+            <Text style={styles.totalCostValue}>{calculatedTotalCost.toLocaleString('fr-FR')} FCFA</Text>
           </View>
-          <TextInput
-            mode="outlined"
-            label="Prix unitaire"
-            value={data.unitPrice}
-            onChangeText={(value) => onChange('unitPrice', value.replace(/[^0-9.]/g, ''))}
-            keyboardType="decimal-pad"
-            style={styles.input}
-            outlineStyle={styles.inputOutline}
-            outlineColor={colors.border}
-            activeOutlineColor={ACCENT}
-            right={<TextInput.Affix text={isSea ? 'FCFA/m³' : 'FCFA/kg'} />}
-          />
-          {calculatedTotalCost != null && calculatedTotalCost > 0 && (
-            <View style={styles.totalCostRow}>
-              <Text style={styles.totalCostLabel}>Coût total estimé:</Text>
-              <Text style={styles.totalCostValue}>
-                {calculatedTotalCost.toLocaleString('fr-FR')} FCFA
-              </Text>
-            </View>
-          )}
-        </Card.Content>
-      </Card>
+        )}
+      </FormSection>
 
-      {/* Location */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <View style={styles.sectionHeader}>
-            <MaterialCommunityIcons name="map-marker" size={20} color={ACCENT} />
-            <Text style={styles.sectionTitle}>Emplacement</Text>
-          </View>
-          <TextInput
-            mode="outlined"
-            label="Emplacement entrepôt"
-            value={data.location}
-            onChangeText={(value) => onChange('location', value.toUpperCase())}
-            autoCapitalize="characters"
-            style={styles.input}
-            outlineStyle={styles.inputOutline}
-            outlineColor={colors.border}
-            activeOutlineColor={ACCENT}
-            placeholder="Ex: C3"
-          />
-          <HelperText type="info">Format: lettre + chiffre (ex: A1, C3, D5)</HelperText>
-        </Card.Content>
-      </Card>
+      <FormSection icon="map-marker" title="Emplacement">
+        <TextInput
+          mode="outlined" label="Emplacement entrepôt" value={data.location}
+          onChangeText={(v) => onChange('location', v.toUpperCase())}
+          autoCapitalize="characters" style={styles.input}
+          outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+          placeholder="Ex: C3"
+        />
+        <HelperText type="info">Format: lettre + chiffre (ex: A1, C3, D5)</HelperText>
+      </FormSection>
 
-      {/* Received By */}
-      <Card style={styles.card}>
-        <Card.Content>
-          <View style={styles.sectionHeader}>
-            <MaterialCommunityIcons name="account-check" size={20} color={ACCENT} />
-            <Text style={styles.sectionTitle}>Réceptionnaire</Text>
-          </View>
-          <TextInput
-            mode="outlined"
-            label="Nom du réceptionnaire"
-            value={data.receivedByName}
-            onChangeText={(value) => onChange('receivedByName', value)}
-            style={styles.input}
-            outlineStyle={styles.inputOutline}
-            outlineColor={colors.border}
-            activeOutlineColor={ACCENT}
-          />
-        </Card.Content>
-      </Card>
+      <FormSection icon="account-check" title="Réceptionnaire">
+        <TextInput
+          mode="outlined" label="Nom du réceptionnaire" value={data.receivedByName}
+          onChangeText={(v) => onChange('receivedByName', v)}
+          style={styles.input} outlineStyle={styles.inputOutline}
+          outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+        />
+      </FormSection>
     </View>
   );
 };
+
+export default GoodsForm;

@@ -33,7 +33,7 @@ export interface AuthenticatedStackParamList {
   
   // Admin Announcements
   AnnouncementList: undefined;
-  CreateAnnouncement: undefined;
+  CreateAnnouncement: { announcementId?: string } | undefined;
 
   // Payment Detail Screen — TEMPORARILY DISABLED
   // PaymentDetail: {

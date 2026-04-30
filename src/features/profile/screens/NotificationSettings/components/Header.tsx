@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import type { NavigationProp } from "@react-navigation/native";
 
 interface HeaderProps {

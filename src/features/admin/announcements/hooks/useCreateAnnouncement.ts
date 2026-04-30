@@ -1,6 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { announcementAdminApi } from "../api/announcementAdminApi";
-import type { Announcement, CreateAnnouncementInput } from "../types/announcement.types";
+import type {
+  Announcement,
+  CreateAnnouncementInput,
+  UpdateAnnouncementInput,
+} from "../types/announcement.types";
 import { ANNOUNCEMENT_KEY } from "./useAnnouncements";
 
 export const useCreateAnnouncement = () => {
@@ -21,6 +25,18 @@ export const useArchiveAnnouncement = () => {
     mutationFn: (id) => announcementAdminApi.archive(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [ANNOUNCEMENT_KEY] });
+    },
+  });
+};
+
+export const useUpdateAnnouncement = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<Announcement, Error, { id: string; data: UpdateAnnouncementInput }>({
+    mutationFn: ({ id, data }) => announcementAdminApi.update(id, data),
+    onSuccess: (announcement) => {
+      queryClient.invalidateQueries({ queryKey: [ANNOUNCEMENT_KEY] });
+      queryClient.setQueryData([ANNOUNCEMENT_KEY, "detail", announcement._id], announcement);
     },
   });
 };

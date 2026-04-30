@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Theme } from '@src/constants/Theme';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
 import { CapacityIndicator } from './CapacityIndicator';
 import { Container, ContainerStatus, CONTAINER_STATUS_LABELS } from '../../../types';

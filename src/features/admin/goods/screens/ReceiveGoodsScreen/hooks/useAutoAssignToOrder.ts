@@ -6,7 +6,7 @@
 import { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getOrdersBasedOnUserId, placeOrder } from '@src/api/order';
-import { assignGoodsToOrder } from '@src/features/orders/api/assignGoodsToOrder';
+import { assignGoodsToOrder } from '@src/features/admin/shared/api';
 import { productType } from '@src/shared/types/order';
 import { queryKey } from '@src/constants/queryKey';
 

@@ -15,15 +15,27 @@ export const AppAnnouncementHost: React.FC = () => {
   const { data = [] } = useActiveAnnouncements();
   const { markRead, dismiss, acknowledge } = useAnnouncementActions();
   const [selected, setSelected] = useState<Announcement | null>(null);
+  const [hiddenIds, setHiddenIds] = useState<Set<string>>(() => new Set());
+
+  const visibleAnnouncements = useMemo(
+    () => data.filter((item) => !hiddenIds.has(item._id)),
+    [data, hiddenIds]
+  );
 
   const forcedModal = useMemo(
-    () => data.find((item) => item.requiresAcknowledgement && !item.viewerState?.acknowledgedAt),
-    [data]
+    () =>
+      visibleAnnouncements.find(
+        (item) => item.requiresAcknowledgement && !item.viewerState?.acknowledgedAt
+      ),
+    [visibleAnnouncements]
   );
 
   const banner = useMemo(
-    () => data.find((item) => item.placement === "TOP_BANNER" && !item.requiresAcknowledgement),
-    [data]
+    () =>
+      visibleAnnouncements.find(
+        (item) => item.placement === "TOP_BANNER" && !item.requiresAcknowledgement
+      ),
+    [visibleAnnouncements]
   );
 
   useEffect(() => {
@@ -36,6 +48,8 @@ export const AppAnnouncementHost: React.FC = () => {
   };
 
   const handleDismiss = (announcement: Announcement) => {
+    setHiddenIds((current) => new Set(current).add(announcement._id));
+    if (selected?._id === announcement._id) setSelected(null);
     if (canUseNetworkActions()) dismiss.mutate(announcement._id);
   };
 

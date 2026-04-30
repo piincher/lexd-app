@@ -12,10 +12,19 @@ export const useActiveAnnouncement = () => {
   });
 };
 
-export const useAdminAnnouncements = () => {
+export const useAdminAnnouncements = (filters?: { status?: Announcement["status"] }) => {
   return useQuery({
-    queryKey: [ANNOUNCEMENT_KEY, "list"],
-    queryFn: announcementAdminApi.list,
+    queryKey: [ANNOUNCEMENT_KEY, "list", filters],
+    queryFn: () => announcementAdminApi.list(filters),
+    staleTime: 60 * 1000,
+  });
+};
+
+export const useAdminAnnouncement = (id?: string) => {
+  return useQuery({
+    queryKey: [ANNOUNCEMENT_KEY, "detail", id],
+    queryFn: () => announcementAdminApi.get(id as string),
+    enabled: Boolean(id),
     staleTime: 60 * 1000,
   });
 };

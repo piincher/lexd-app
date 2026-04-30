@@ -16,26 +16,53 @@ interface PickupInfoProps {
     businessHours?: string;
   };
   onCall: (phone: string) => void;
-  iconColor: string;
   styles: Record<string, any>;
 }
 
-export const PickupInfo: React.FC<PickupInfoProps> = ({ consignee, onCall, iconColor, styles }) => (
-  <Animated.View entering={FadeInUp.delay(600)}>
+export const PickupInfo: React.FC<PickupInfoProps> = ({ consignee, onCall, styles }) => (
+  <Animated.View entering={FadeInUp.delay(800)}>
     <Card style={styles.pickupCard}>
       <LinearGradient colors={['#8B5CF6', '#7C3AED']} style={styles.pickupGradient}>
         <Card.Content>
           <View style={styles.pickupHeader}>
-            <Ionicons name="location" size={28} color={iconColor} />
-            <Text style={styles.pickupTitle}>POINT DE RETRAIT</Text>
+            <Ionicons name="location" size={28} color="#FFF" />
+            <Text style={styles.pickupTitle}>📍 POINT DE RETRAIT</Text>
           </View>
-          <Text style={styles.warehouseName}>{consignee.name}</Text>
+
+          {/* Warehouse Address */}
+          <Text style={styles.warehouseName}>ChinaLink Express Warehouse</Text>
+          <Text style={styles.warehouseAddress}>Bamako, Mali</Text>
+
           <Divider style={styles.divider} />
-          <TouchableOpacity style={styles.phoneButton} onPress={() => onCall(consignee.phone)}>
-            <Ionicons name="call" size={20} color="#7C3AED" />
-            <Text style={styles.phoneText}>{consignee.phone}</Text>
-          </TouchableOpacity>
-          <Text style={styles.hours}>{consignee.warehouseAddress}</Text>
+
+          {/* Consignee Info */}
+          <View style={styles.consigneeSection}>
+            <Text style={styles.consigneeLabel}>👤 Votre consigné:</Text>
+            <Text style={styles.consigneeName}>{consignee.name}</Text>
+
+            {/* Call Button */}
+            <TouchableOpacity
+              style={styles.phoneButton}
+              onPress={() => onCall(consignee.phone)}
+            >
+              <Ionicons name="call" size={20} color="#7C3AED" />
+              <Text style={styles.phoneText}>{consignee.phone}</Text>
+            </TouchableOpacity>
+
+            {/* Business Hours */}
+            <View style={styles.hoursRow}>
+              <Ionicons name="time-outline" size={16} color="rgba(255,255,255,0.8)" />
+              <Text style={styles.hours}>
+                {consignee.businessHours || 'Lun-Ven: 8h-17h | Sam: 9h-13h'}
+              </Text>
+            </View>
+
+            {/* Warehouse Address */}
+            <View style={styles.addressRow}>
+              <Ionicons name="location" size={16} color="rgba(255,255,255,0.8)" />
+              <Text style={styles.addressText}>{consignee.warehouseAddress}</Text>
+            </View>
+          </View>
         </Card.Content>
       </LinearGradient>
     </Card>

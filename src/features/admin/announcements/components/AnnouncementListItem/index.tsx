@@ -7,12 +7,14 @@ import { createStyles } from "./styles";
 
 interface AnnouncementListItemProps {
   item: Announcement;
+  onEdit: (id: string) => void;
   onArchive: (id: string) => void;
   isArchiving?: boolean;
 }
 
 export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
   item,
+  onEdit,
   onArchive,
   isArchiving = false,
 }) => {
@@ -40,7 +42,14 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
         <Text style={styles.meta}>{item.placement}</Text>
         <Text style={styles.meta}>{item.audience}</Text>
       </View>
-      {item.status !== "ARCHIVED" && (
+      <View style={styles.actions}>
+        <Button
+          title="Modifier"
+          variant="outline"
+          size="small"
+          onPress={() => onEdit(item._id)}
+        />
+        {item.status !== "ARCHIVED" && (
         <Button
           title="Archiver"
           variant="outline"
@@ -48,7 +57,8 @@ export const AnnouncementListItem: React.FC<AnnouncementListItemProps> = ({
           onPress={confirmArchive}
           loading={isArchiving}
         />
-      )}
+        )}
+      </View>
     </View>
   );
 };

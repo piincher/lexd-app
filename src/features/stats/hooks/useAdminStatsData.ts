@@ -12,6 +12,7 @@ import {
   getPaymentMetrics,
   getGoodsVolume,
   getContainerProfitSummary,
+  getOperationsAnalytics,
   ContainerProfitSummary,
 } from '../api/statsApi';
 import {
@@ -19,6 +20,7 @@ import {
   TopCustomersResponse,
   PaymentMetricsResponse,
   GoodsVolumeResponse,
+  OperationsAnalyticsResponse,
   PeriodFilter,
 } from '../types';
 
@@ -56,6 +58,12 @@ export const useAdminStatsData = () => {
     // Use global retry config
   });
 
+  const operationsQuery = useQuery<OperationsAnalyticsResponse>({
+    queryKey: [STATS_KEY, 'operations', period],
+    queryFn: () => getOperationsAnalytics(period),
+    staleTime: 5 * 60 * 1000,
+  });
+
   const profitQuery = useQuery<ContainerProfitSummary>({
     queryKey: [STATS_KEY, 'profit-summary'],
     queryFn: getContainerProfitSummary,
@@ -65,15 +73,30 @@ export const useAdminStatsData = () => {
 
   const isLoading = dashboardQuery.isLoading && !dashboardQuery.data;
   const isError = dashboardQuery.isError && !dashboardQuery.data;
-  const isFetchingPeriodData = customersQuery.isLoading || paymentsQuery.isLoading || goodsQuery.isLoading;
+  const isFetchingPeriodData =
+    customersQuery.isLoading || paymentsQuery.isLoading || goodsQuery.isLoading || operationsQuery.isLoading;
+  const refetchDashboard = dashboardQuery.refetch;
+  const refetchCustomers = customersQuery.refetch;
+  const refetchPayments = paymentsQuery.refetch;
+  const refetchGoods = goodsQuery.refetch;
+  const refetchOperations = operationsQuery.refetch;
+  const refetchProfit = profitQuery.refetch;
 
   const refetch = useCallback(() => {
-    dashboardQuery.refetch();
-    customersQuery.refetch();
-    paymentsQuery.refetch();
-    goodsQuery.refetch();
-    profitQuery.refetch();
-  }, [dashboardQuery.refetch, customersQuery.refetch, paymentsQuery.refetch, goodsQuery.refetch, profitQuery.refetch]);
+    refetchDashboard();
+    refetchCustomers();
+    refetchPayments();
+    refetchGoods();
+    refetchOperations();
+    refetchProfit();
+  }, [
+    refetchDashboard,
+    refetchCustomers,
+    refetchPayments,
+    refetchGoods,
+    refetchOperations,
+    refetchProfit,
+  ]);
 
   return {
     user,
@@ -86,6 +109,8 @@ export const useAdminStatsData = () => {
     refetch,
     goodsVolume: goodsQuery.data,
     isLoadingGoods: goodsQuery.isLoading,
+    operations: operationsQuery.data,
+    isLoadingOperations: operationsQuery.isLoading,
     paymentMetrics: paymentsQuery.data,
     isLoadingPayments: paymentsQuery.isLoading,
     topCustomersData: customersQuery.data,

@@ -1,7 +1,7 @@
 import React from 'react';
 import OrangeMoneyForm from './OrangeMoneyForm';
 import WavePaymentForm from './WavePaymentForm';
-import CardPaymentForm from './CardPaymentForm';
+import CardPaymentForm from './CardPaymentForm/index';
 import type { PaymentProvider, CardDetails } from '../types';
 
 interface PaymentFormSwitcherProps {

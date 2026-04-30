@@ -17,7 +17,7 @@ interface FilterOption {
 
 interface FilterChipGroupProps {
   options: FilterOption[];
-  selectedValues: string | string[];
+  selectedValues?: string | string[];
   onToggle: (value: string) => void;
   multiSelect?: boolean;
 }

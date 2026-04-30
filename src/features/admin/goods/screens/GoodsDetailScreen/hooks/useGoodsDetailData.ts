@@ -5,12 +5,12 @@ import {
   useUpdateGoodsStatus,
   useAssignGoodsToContainer,
 } from '../../../hooks/useGoods';
-import { useGetAllContainers } from '@src/features/admin/containers/hooks/useContainers';
+import { useGetAllContainers } from '@src/shared/hooks/useAdminContainers';
 import {
   useGetAllAirwayBills,
   useAssignGoodsToAirwayBill,
   useRemoveGoodsFromAirwayBill,
-} from '@src/features/admin/airwayBills/hooks/useAirwayBills';
+} from '@src/shared/hooks/useAdminAirwayBills';
 
 export const useGoodsDetailData = () => {
   const route = useRoute();

@@ -35,6 +35,18 @@ export const useFormatPercentage = () => {
   };
 };
 
+export const useCompactNumberFormat = () => {
+  return (amount: number) => {
+    if (amount >= 1000000) {
+      return `${(amount / 1000000).toFixed(1)}M`;
+    }
+    if (amount >= 1000) {
+      return `${(amount / 1000).toFixed(0)}K`;
+    }
+    return amount.toLocaleString('fr-FR');
+  };
+};
+
 export const useTrendIndicator = () => {
   return (value: number) => {
     if (value > 0) return { icon: 'trending-up', color: '#10B981', text: `+${value.toFixed(1)}%` };

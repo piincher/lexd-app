@@ -7,13 +7,15 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { dashboardApi } from '../api/dashboardApi';
 import { GetActivityParams } from '../api/types';
 
+// Re-export shared hook for backward compatibility
+export { useGetDashboard } from '@src/shared/hooks/useDashboard';
+
 // ============================================
 // QUERY KEYS
 // ============================================
 
 const QUERY_KEYS = {
   dashboard: 'customer-dashboard',
-  stats: () => [QUERY_KEYS.dashboard, 'stats'] as const,
   activity: (params?: GetActivityParams) =>
     [QUERY_KEYS.dashboard, 'activity', params] as const,
 } as const;
@@ -21,18 +23,6 @@ const QUERY_KEYS = {
 // ============================================
 // QUERY HOOKS
 // ============================================
-
-/**
- * Hook to fetch dashboard overview data (stats and quick actions)
- */
-export const useGetDashboard = () => {
-  return useQuery({
-    queryKey: QUERY_KEYS.stats(),
-    queryFn: () => dashboardApi.getDashboard(),
-    select: (response) => response.data.data,
-    staleTime: 2 * 60 * 1000, // 2 minutes
-  });
-};
 
 /**
  * Hook to fetch activity feed
@@ -59,13 +49,13 @@ export const useDashboardInvalidation = () => {
 
   const invalidateDashboard = () => {
     queryClient.invalidateQueries({
-      queryKey: [QUERY_KEYS.dashboard],
+      queryKey: ['customer-dashboard'],
     });
   };
 
   const invalidateStats = () => {
     queryClient.invalidateQueries({
-      queryKey: QUERY_KEYS.stats(),
+      queryKey: ['customer-dashboard', 'stats'],
     });
   };
 

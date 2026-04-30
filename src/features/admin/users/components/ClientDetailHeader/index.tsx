@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from "@react-navigation/native";
 import { styles } from "./ClientDetailHeader.styles";
 

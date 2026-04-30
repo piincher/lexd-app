@@ -61,6 +61,8 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
   const progressPercentage = waypointsData?.progressPercentage ?? 0;
   const statusColor = CUSTOMER_STATUS_COLORS[container.status] || '';
   const statusBgColor = CUSTOMER_STATUS_BG_COLORS[container.status] || '';
+  const eta = container.predictiveEta || container.etaPrediction || container.eta;
+  const estimatedArrival = eta?.estimatedArrival?.toString() || container.estimatedArrival;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,8 +72,8 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
         contentContainerStyle={styles.scrollContent}
       >
         <ContainerHeaderCard container={container} statusColor={statusColor} statusBgColor={statusBgColor} getShippingModeIcon={getShippingModeIcon} />
-        {container.estimatedArrival && (
-          <ETACard estimatedArrival={container.estimatedArrival} progressPercentage={progressPercentage} formatDate={formatDate} />
+        {estimatedArrival && (
+          <ETACard estimatedArrival={estimatedArrival} eta={eta} progressPercentage={progressPercentage} formatDate={formatDate} />
         )}
         {waypoints.length > 0 && (
           <ProgressSummaryCard currentWaypointIndex={currentWaypointIndex} waypointsLength={waypoints.length} progressPercentage={progressPercentage} />

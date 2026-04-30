@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import type { RootStackScreenProps } from '@src/navigations/type';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useActiveOrderDetails } from './hooks/useActiveOrderDetails';

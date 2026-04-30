@@ -2,7 +2,7 @@ import React from 'react';
 import { Share, StyleSheet } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
-import { useCreateShareToken } from '@src/features/public/hooks/useCreateShareToken';
+import { useCreateShareToken } from '@src/shared/hooks/useCreateShareToken';
 import { Goods } from '../../api';
 
 interface GoodsDetailHeaderProps {

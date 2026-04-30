@@ -11,6 +11,7 @@ import { formatTimestamp } from './TimelineDateMarker';
 
 interface TimelineHeaderProps {
   containerNumber: string;
+  progressPercentage: number;
   completedCount: number;
   totalWaypoints: number;
   lastUpdateTimestamp?: string;
@@ -19,6 +20,7 @@ interface TimelineHeaderProps {
 
 export const TimelineHeader: React.FC<TimelineHeaderProps> = ({
   containerNumber,
+  progressPercentage,
   completedCount,
   totalWaypoints,
   lastUpdateTimestamp,
@@ -35,6 +37,15 @@ export const TimelineHeader: React.FC<TimelineHeaderProps> = ({
           <Text style={styles.headerTitle}>{containerNumber}</Text>
         </View>
       </View>
+
+      {/* Progress Bar */}
+      <View style={styles.progressContainer}>
+        <View style={styles.progressBackground}>
+          <View style={[styles.progressFill, { width: `${progressPercentage}%` }]} />
+        </View>
+        <Text style={styles.progressText}>{Math.round(progressPercentage)}% complété</Text>
+      </View>
+
       <View style={styles.journeyStats}>
         <View style={styles.statItem}>
           <Ionicons name="location" size={16} color="rgba(255,255,255,0.8)" />

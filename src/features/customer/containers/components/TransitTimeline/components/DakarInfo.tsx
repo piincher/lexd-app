@@ -15,18 +15,19 @@ interface DakarInfoProps {
 }
 
 export const DakarInfo: React.FC<DakarInfoProps> = ({ dakarWaypoint, styles }) => (
-  <Animated.View entering={FadeInUp.delay(500)} style={styles.dakarInfoCard}>
+  <Animated.View entering={FadeInUp.delay(750)} style={styles.dakarInfoCard}>
     <LinearGradient colors={['#D1FAE5', '#ECFDF5']} style={styles.dakarInfoGradient}>
       <View style={styles.dakarInfoHeader}>
         <Ionicons name="boat" size={24} color="#059669" />
         <Text style={styles.dakarInfoTitle}>Port d'Arrivée Principal</Text>
       </View>
       <Text style={styles.dakarInfoText}>
-        Votre conteneur arrive à <Text style={styles.dakarInfoHighlight}>Dakar, Sénégal</Text>.
+        Votre conteneur arrive à <Text style={styles.dakarInfoHighlight}>Dakar, Sénégal</Text>. 
+        Après le dédouanement, il continuera par route vers le Mali.
       </Text>
       {dakarWaypoint.estimatedArrival && (
         <Text style={styles.dakarInfoETA}>
-          Arrivée estimée: {formatTimestamp(dakarWaypoint.estimatedArrival)}
+          Arrivée estimée à Dakar: {formatTimestamp(dakarWaypoint.estimatedArrival)}
         </Text>
       )}
     </LinearGradient>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Appbar } from 'react-native-paper';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import type { RootStackScreenProps } from '@src/navigations/type';
 import { useClientLoadingListHeaderStyles } from './ClientLoadingListHeader.styles';
 

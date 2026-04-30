@@ -9,4 +9,6 @@ export * from "./useSearchSuggestions";
 export * from "./useFilterPresets";
 export * from "./useRecentSearches";
 export * from "./useAdvancedSearch";
+export * from "./useSearchHighlight";
 export { useGlobalSearch } from "./useSearch";
+export { useSearchFilterHandlers } from "./useSearchFilterHandlers";

@@ -7,7 +7,7 @@
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useBadgesScreen } from "../hooks/useBadgesScreen";
 import { styles } from "./BadgesScreen.styles";
 import {

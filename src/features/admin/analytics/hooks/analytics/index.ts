@@ -35,5 +35,6 @@ export {
   useFormatCurrency,
   useFormatNumber,
   useFormatPercentage,
+  useCompactNumberFormat,
   useTrendIndicator,
 } from './useAnalyticsFormatting';

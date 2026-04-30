@@ -3,7 +3,7 @@ import { StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import PaymentMethodSelector from '../components/PaymentMethodSelector';
 import PaymentStatusModal from '../components/PaymentStatusModal';
 import { PaymentScreenHeader } from '../components/PaymentScreenHeader';

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import type { NavigationProp } from "@react-navigation/native";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 
 import { StatCard } from "../StatCard";
 import { styles } from "./ClientHeader.styles";

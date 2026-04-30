@@ -1,5 +1,5 @@
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Pressable, Text, View, type GestureResponderEvent } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { Announcement } from "../../types";
@@ -20,6 +20,11 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({
   const tone = getTone(announcement.type);
   const styles = createStyles(colors, tone);
 
+  const handleDismiss = (event: GestureResponderEvent) => {
+    event.stopPropagation();
+    onDismiss();
+  };
+
   return (
     <View style={styles.shell} pointerEvents="box-none">
       <Pressable
@@ -38,7 +43,7 @@ export const AnnouncementBanner: React.FC<AnnouncementBannerProps> = ({
           <Pressable
             accessibilityRole="button"
             accessibilityLabel="Masquer l'annonce"
-            onPress={onDismiss}
+            onPress={handleDismiss}
             hitSlop={8}
             style={styles.closeButton}
           >

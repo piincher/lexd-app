@@ -83,6 +83,103 @@ export interface DashboardResponse {
 }
 
 // ============================================
+// OPERATIONS DASHBOARD
+// ============================================
+
+export interface OperationsAnalyticsResponse {
+  period: string;
+  generatedAt: string;
+  summary: {
+    unpaidInvoices: number;
+    unpaidAmount: number;
+    overdueInvoices: number;
+    overdueAmount: number;
+    stuckGoods: number;
+    avgContainerFillRate: number;
+    activeContainerProfit: number;
+    highRiskAuditEvents: number;
+    failedAuditEvents: number;
+  };
+  receivables: {
+    unpaidCount: number;
+    unpaidAmount: number;
+    overdueCount: number;
+    overdueAmount: number;
+    topOverdueInvoices: {
+      invoiceId: string;
+      invoiceNumber: string;
+      customerName: string;
+      balanceDue: number;
+      daysOverdue: number;
+      dueDate: string;
+      status: string;
+    }[];
+  };
+  containerProfit: {
+    summary: {
+      totalRevenue: number;
+      totalCollected: number;
+      totalCost: number;
+      totalProfit: number;
+      totalCBM: number;
+      avgFillRate: number;
+      containerCount: number;
+      profitMargin: number;
+    };
+    topContainers: {
+      containerId: string;
+      containerNumber: string;
+      status: string;
+      goodsCount: number;
+      totalCBM: number;
+      capacityCBM: number;
+      clientRevenue: number;
+      collected: number;
+      agentCost: number;
+      profit: number;
+      unpaidAmount: number;
+      fillRate: number;
+      profitMargin: number;
+    }[];
+  };
+  goodsFlow: {
+    statusCounts: { status: string; count: number; totalCBM: number }[];
+    stuckGoods: {
+      goodsId: string;
+      status: string;
+      daysInWarehouse: number;
+      customerName: string;
+      totalCost: number;
+      balanceDue: number;
+      actualCBM: number;
+    }[];
+  };
+  staffActivity: {
+    totalActions: number;
+    highSeverityCount: number;
+    failedCount: number;
+    byAction: { action: string; count: number }[];
+    byAdmin: {
+      actorId?: string;
+      name: string;
+      count: number;
+      highSeverityCount: number;
+      failedCount: number;
+    }[];
+    recentHighRisk: {
+      id: string;
+      action: string;
+      severity: string;
+      status: string;
+      actorName: string;
+      resourceType?: string;
+      resourceDisplay?: string;
+      createdAt: string;
+    }[];
+  };
+}
+
+// ============================================
 // TOP CUSTOMERS
 // ============================================
 
@@ -140,7 +237,7 @@ export interface ContainerUtilizationResponse {
     totalRevenue: number;
     totalRevenueFCFA: number;
   }>;
-  containers: Array<{
+  containers: {
     containerId: string;
     containerNumber: string;
     shippingMode: string;
@@ -161,7 +258,7 @@ export interface ContainerUtilizationResponse {
       revenue: number;
       revenueFCFA: number;
     };
-  }>;
+  }[];
 }
 
 // ============================================
@@ -190,24 +287,24 @@ export interface PaymentMetricsResponse {
   period: string;
   summary: PaymentMetricsSummary;
   paymentMethods: PaymentMethodBreakdown[];
-  transactionStatuses: Array<{
+  transactionStatuses: {
     status: string;
     count: number;
     total: number;
     totalFCFA: number;
-  }>;
-  outstandingAging: Array<{
+  }[];
+  outstandingAging: {
     range: string;
     count: number;
     totalValue: number;
     totalValueFCFA: number;
-  }>;
-  dailyTrend: Array<{
+  }[];
+  dailyTrend: {
     date: string;
     count: number;
     total: number;
     totalFCFA: number;
-  }>;
+  }[];
 }
 
 // ============================================
@@ -222,22 +319,22 @@ export interface GoodsVolumeResponse {
     totalValue: number;
     totalValueFCFA: number;
   };
-  byStatus: Array<{
+  byStatus: {
     status: string;
     count: number;
     totalCBM: number;
     totalWeight: number;
     totalValue: number;
     totalValueFCFA: number;
-  }>;
-  byShippingMode: Array<{
+  }[];
+  byShippingMode: {
     shippingMode: string;
     count: number;
     totalCBM: number;
     totalValue: number;
     totalValueFCFA: number;
-  }>;
-  byPaymentStatus: Array<{
+  }[];
+  byPaymentStatus: {
     paymentStatus: string;
     count: number;
     totalValue: number;
@@ -246,14 +343,14 @@ export interface GoodsVolumeResponse {
     totalPaidFCFA: number;
     balanceDue: number;
     balanceDueFCFA: number;
-  }>;
-  dailyTrend: Array<{
+  }[];
+  dailyTrend: {
     date: string;
     count: number;
     totalCBM: number;
     totalValue: number;
     totalValueFCFA: number;
-  }>;
+  }[];
 }
 
 // ============================================

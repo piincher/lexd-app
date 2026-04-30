@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Menu } from 'react-native-paper';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
 import {
   ContainerStatus,

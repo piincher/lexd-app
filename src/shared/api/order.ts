@@ -1,4 +1,5 @@
 import api from './client';
+import { apiClient } from "@src/api/client";
 import { LIMIT } from '@src/constants/Dimensions';
 import { SmsService } from '@src/constants/types';
 
@@ -318,4 +319,41 @@ export const syncOrderStatuses = async () => {
 		}>;
 	}>(`${API_URL.single}/sync-statuses`);
 	return response.data;
+};
+
+// ── Assign Goods to Order (moved from features/orders/api/assignGoodsToOrder) ──
+
+export interface AssignGoodsToOrderRequest {
+  orderId: string;
+  goodsId: string;
+}
+
+export interface AssignGoodsToOrderResponse {
+  message: string;
+  order: {
+    _id: string;
+    code: string;
+    clientName: string;
+    status: string;
+    manualOrderStatus: string;
+    isGoodsLinked: boolean;
+    calculatedCBM: number;
+    calculatedTotal: number;
+    goodsCount: number;
+  };
+}
+
+/**
+ * Assign goods to an existing manual order
+ * POST /order/:orderId/assign-goods
+ */
+export const assignGoodsToOrder = async ({
+  orderId,
+  goodsId,
+}: AssignGoodsToOrderRequest): Promise<AssignGoodsToOrderResponse> => {
+  const response = await apiClient.post<AssignGoodsToOrderResponse>(
+    `/order/${orderId}/assign-goods`,
+    { goodsId }
+  );
+  return response.data;
 };

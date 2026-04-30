@@ -1,7 +1,7 @@
 // Shared Orders Hooks
 // Used across multiple features (stats, profile, admin, etc.)
 
-import { fetchSmsBalance, getActiveOrders, getOrdersBasedOnUserId } from "@src/api/order";
+import { fetchSmsBalance, getActiveOrders, getAllOrders, getOrdersBasedOnUserId } from "@src/api/order";
 import { LIMIT } from "@src/constants/Dimensions";
 import { SMSKEY } from "@src/constants/queryKey";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
@@ -33,5 +33,20 @@ export const useViewSmsBalance = (isAdmin: boolean) => {
       queryKey: [SMSKEY],
       queryFn: fetchSmsBalance,
       enabled: isAdmin,
+   });
+};
+
+export const useGetAllOrders = (status?: string) => {
+   return useInfiniteQuery({
+      queryKey: [ORDERKEY, 'all', status],
+      queryFn: async ({ pageParam = 1 }) => {
+         const result = await getAllOrders(pageParam, status);
+         return result;
+      },
+      getNextPageParam: (lastPage, allPages) => {
+         if (!lastPage || lastPage.length < LIMIT) return undefined;
+         return allPages.length + 1;
+      },
+      initialPageParam: 1,
    });
 };

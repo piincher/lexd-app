@@ -6,7 +6,7 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Appbar, ProgressBar } from 'react-native-paper';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from '../ClientPackingListScreen.styles';

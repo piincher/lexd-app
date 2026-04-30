@@ -6,7 +6,7 @@ import { Feather } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { OrderListCard } from "../OrderListCard";
 import { OrderStatusFilter } from "../OrderStatusFilter";
-import { OrderListSkeleton } from "../OrderListSkeleton";
+import { OrderListSkeleton } from "@src/shared/ui/OrderListSkeleton";
 import { productType } from "../../api";
 import { useCustomerOrders } from "../../hooks/useCustomerOrders";
 import { styles } from "./OrdersCustomerView.styles";

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { Text, Card } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { imagesType } from "@src/features/orders/api";
+import { imagesType } from '@src/shared/types/order';
 import { Theme } from "@src/constants/Theme";
 import { normalizePhotos } from "@src/shared/lib";
 

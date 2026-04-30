@@ -3,7 +3,7 @@ import { Fonts } from '@src/constants/Fonts';
 import React, { useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { navigationProps } from '@src/navigations/type';
-import { NotificationBell } from '@src/features/notifications';
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 
 interface UserHeaderInfoProps {
 	firstName: string;

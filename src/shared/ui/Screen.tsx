@@ -4,33 +4,14 @@
  */
 
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
-import type { ViewStyle, StyleProp } from 'react-native';
+import { View, ScrollView, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { NotificationBell } from '@src/features/notifications';
-import { useNavigation } from '@react-navigation/native';
+import { ScreenProps } from './Screen.types';
+import { ScreenHeader } from './ScreenHeader';
+import { styles } from './Screen.styles';
 
-export type ScreenVariant = 'default' | 'plain' | 'card';
-
-export interface HeaderConfig {
-  title: string;
-  showBack?: boolean;
-  onBackPress?: () => void;
-  rightAction?: React.ReactNode;
-  showNotificationBell?: boolean;
-}
-
-export interface ScreenProps {
-  children: React.ReactNode;
-  variant?: ScreenVariant;
-  scrollable?: boolean;
-  safeArea?: boolean;
-  style?: StyleProp<ViewStyle>;
-  contentStyle?: StyleProp<ViewStyle>;
-  header?: React.ReactNode | HeaderConfig;
-  footer?: React.ReactNode;
-}
+export { type ScreenProps, type ScreenVariant, type HeaderConfig } from './Screen.types';
 
 export const Screen: React.FC<ScreenProps> = ({
   children,
@@ -43,56 +24,6 @@ export const Screen: React.FC<ScreenProps> = ({
   footer,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const navigation = useNavigation();
-
-  // Render header based on type
-  const renderHeader = () => {
-    if (!header) return null;
-    
-    // If header is a React element, render it directly
-    if (React.isValidElement(header)) {
-      return header;
-    }
-    
-    // If header is a config object with title, render a simple header
-    const headerConfig = header as HeaderConfig;
-    if (headerConfig.title) {
-      return (
-        <View style={[styles.simpleHeader, { 
-          backgroundColor: colors.background.default,
-          borderBottomColor: colors.border,
-        }]}>
-          {headerConfig.showBack && (
-            <TouchableOpacity 
-              onPress={headerConfig.onBackPress} 
-              style={styles.backButton}
-              testID="screen-back-button"
-            >
-              <Text style={[styles.backButtonText, { color: colors.primary.main }]}>←</Text>
-            </TouchableOpacity>
-          )}
-          <Text style={[styles.headerTitle, { color: colors.text.primary }]}>
-            {headerConfig.title}
-          </Text>
-          {headerConfig.showNotificationBell ? (
-            <View style={styles.rightAction}>
-              <NotificationBell
-                onPress={() => (navigation as any).navigate('Notifications')}
-                size={22}
-                color={colors.text.primary}
-              />
-            </View>
-          ) : headerConfig.rightAction ? (
-            <View style={styles.rightAction}>{headerConfig.rightAction}</View>
-          ) : (
-            <View style={styles.rightPlaceholder} />
-          )}
-        </View>
-      );
-    }
-    
-    return null;
-  };
 
   const containerStyle = [
     styles.container,
@@ -109,7 +40,7 @@ export const Screen: React.FC<ScreenProps> = ({
 
   const renderContent = () => (
     <>
-      {renderHeader()}
+      <ScreenHeader header={header} colors={colors} />
       {scrollable ? (
         <ScrollView
           style={styles.scrollView}
@@ -127,9 +58,9 @@ export const Screen: React.FC<ScreenProps> = ({
 
   return (
     <>
-      <StatusBar 
-        barStyle={isDark ? 'light-content' : 'dark-content'} 
-        backgroundColor={colors.background.default} 
+      <StatusBar
+        barStyle={isDark ? 'light-content' : 'dark-content'}
+        backgroundColor={colors.background.default}
       />
       {safeArea ? (
         <SafeAreaView style={containerStyle} edges={['top', 'left', 'right']}>
@@ -141,48 +72,5 @@ export const Screen: React.FC<ScreenProps> = ({
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  content: {
-    flexGrow: 1,
-  },
-  cardContent: {
-    padding: 16,
-  },
-  simpleHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-  },
-  backButton: {
-    padding: 10,
-    minWidth: 44,
-  },
-  backButtonText: {
-    fontSize: 24,
-  },
-  headerTitle: {
-    flex: 1,
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  rightAction: {
-    minWidth: 44,
-    alignItems: 'flex-end',
-  },
-  rightPlaceholder: {
-    minWidth: 44,
-  },
-});
 
 export default Screen;

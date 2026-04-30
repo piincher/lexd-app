@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { NotificationBell } from "@src/features/notifications";
+import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useCreateCampaignScreen } from "../hooks/useCreateCampaignScreen";

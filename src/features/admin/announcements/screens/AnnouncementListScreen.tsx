@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
@@ -7,14 +7,23 @@ import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useAdminAnnouncements, useArchiveAnnouncement } from "../hooks";
 import { AnnouncementListItem } from "../components";
+import type { Announcement } from "../types/announcement.types";
 import { createStyles } from "./AnnouncementListScreen.styles";
+
+const FILTERS: { label: string; value?: Announcement["status"] }[] = [
+  { label: "Toutes" },
+  { label: "Publiées", value: "PUBLISHED" },
+  { label: "Brouillons", value: "DRAFT" },
+  { label: "Archivées", value: "ARCHIVED" },
+];
 
 const AnnouncementListScreen: React.FC<RootStackScreenProps<"AnnouncementList">> = ({
   navigation,
 }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
-  const { data, isLoading, refetch } = useAdminAnnouncements();
+  const [status, setStatus] = useState<Announcement["status"] | undefined>();
+  const { data, isLoading, refetch } = useAdminAnnouncements({ status });
   const archive = useArchiveAnnouncement();
   const announcements = data?.items || [];
 
@@ -32,6 +41,19 @@ const AnnouncementListScreen: React.FC<RootStackScreenProps<"AnnouncementList">>
           <Ionicons name="add" size={22} color="#fff" />
         </TouchableOpacity>
       </View>
+      <View style={styles.filters}>
+        {FILTERS.map((filter) => (
+          <TouchableOpacity
+            key={filter.label}
+            onPress={() => setStatus(filter.value)}
+            style={[styles.filterChip, status === filter.value && styles.filterChipActive]}
+          >
+            <Text style={[styles.filterText, status === filter.value && styles.filterTextActive]}>
+              {filter.label}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
       {isLoading ? (
         <ActivityIndicator style={styles.loader} color={colors.primary.main} />
@@ -46,6 +68,7 @@ const AnnouncementListScreen: React.FC<RootStackScreenProps<"AnnouncementList">>
           renderItem={({ item }) => (
             <AnnouncementListItem
               item={item}
+              onEdit={(id) => navigation.navigate("CreateAnnouncement", { announcementId: id })}
               onArchive={(id) => archive.mutate(id)}
               isArchiving={archive.isPending}
             />

@@ -1,2 +1,2 @@
-// Re-export shim â€” moved to src/app/context/UpdateProvider.tsx
-export * from '../app/context/UpdateProvider';
+// Re-export shim – moved to src/app/providers/UpdateProvider.tsx
+export * from '../app/providers/UpdateProvider';
