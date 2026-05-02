@@ -1,8 +1,7 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { navigationProps, RootStackParamList } from "@src/navigations/type";
+import type { navigationProps } from "@src/navigations/type";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,7 +11,7 @@ import { useMemo } from "react";
 interface HeaderProps {
    title: string;
    rightIcon?: React.ReactNode;
-   navigation: navigationProps;
+   navigation: Pick<navigationProps, "goBack" | "navigate">;
    rightIconHandler?: () => void;
    rightIconAccessibilityLabel?: string;
    showNotificationBell?: boolean;

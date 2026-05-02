@@ -1,7 +1,7 @@
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useFormikContext } from "formik";
-import React, { Dispatch, FC, useEffect, useMemo } from "react";
+import React, { Dispatch, FC, useCallback, useEffect, useMemo } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import type { StyleProp, TextInputProps, ViewStyle } from "react-native";
 import Animated, {
@@ -23,7 +23,7 @@ interface Props {
    rightIcon?: React.ReactNode;
    maxLength?: number;
    onRightIconPress?: () => void;
-   code?: [{ label: string; value: string }];
+   code?: { label: string; value: string }[];
    selectedCode?: string;
    setSelectedCode?: Dispatch<string>;
    phone?: boolean;
@@ -35,7 +35,6 @@ const AuthInputField: FC<Props> = (props) => {
    const { colors } = useAppTheme();
    const inputTransformValue = useSharedValue(0);
    const {
-      onRightIconPress,
       rightIcon,
       placeholder,
       label,
@@ -48,12 +47,12 @@ const AuthInputField: FC<Props> = (props) => {
       [key: string]: string;
    }>();
 
-   const shakeUI = () => {
+   const shakeUI = useCallback(() => {
       inputTransformValue.value = withSequence(
          withTiming(-10, { duration: 100 }),
-         withSpring(0, { damping: 8, mass: 0.5, stiffness: 1000, restDisplacementThreshold: 0.1 })
+         withSpring(0, { damping: 8, mass: 0.5, stiffness: 1000 })
       );
-   };
+   }, [inputTransformValue]);
    const errorMsg = touched[name] && errors[name] ? errors[name] : "";
    const inputStyle = useAnimatedStyle(() => {
       return {
@@ -65,7 +64,7 @@ const AuthInputField: FC<Props> = (props) => {
       if (errorMsg) {
          shakeUI();
       }
-   }, [errorMsg]);
+   }, [errorMsg, shakeUI]);
 
    const handleRight = () => {
       handleSubmit();

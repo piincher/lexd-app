@@ -1,13 +1,13 @@
 import ContactNumberField from "@src/features/auth/components/ContactField";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import React, { FC, useMemo } from 'react';
-import { Keyboard, Pressable, StyleSheet, TextInput, View, Platform } from 'react-native';
+import { Keyboard, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import type { TextInputProps } from 'react-native';
 
 interface Props extends TextInputProps {
-	selectedCode: string;
-	setSelectedCode: (args: string) => {};
-	code: [{ label: string; value: string }];
+	selectedCode?: string;
+	setSelectedCode?: (args: string) => void;
+	code?: { label: string; value: string }[];
 	phone?: boolean;
 }
 
@@ -34,11 +34,11 @@ const AppInput: FC<Props> = (props) => {
 	return (
 		<Pressable onPress={Keyboard.dismiss}>
 			<View style={styles.row}>
-				{Platform.OS === 'android' && props.phone && (
+				{props.phone && (
 					<ContactNumberField
 						code={props.code}
-						selectedCode={props.selectedCode}
-						setSelectedCode={props.setSelectedCode}
+						selectedCode={props.selectedCode || '🇲🇱  +223'}
+						setSelectedCode={props.setSelectedCode || (() => undefined)}
 					/>
 				)}
 

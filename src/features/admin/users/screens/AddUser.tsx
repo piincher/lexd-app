@@ -22,6 +22,7 @@ const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
 		initialValues,
 		signupSchema,
 		signUpDataCode,
+		phoneMaxLength,
 	} = useAddUser(navigation);
 
 	return (
@@ -35,6 +36,7 @@ const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
 				setSelectedCode={setSelectedCode}
 				isPending={isPending}
 				signUpDataCode={signUpDataCode}
+				phoneMaxLength={phoneMaxLength}
 			/>
 			<Notification
 				message='Utilisateur ajouté avec succès'

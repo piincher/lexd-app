@@ -11,6 +11,7 @@
  * - chinalinkexpress://goods                 → MyGoods tab
  * - chinalinkexpress://orders                → Orders tab
  * - chinalinkexpress://profile               → Profile tab
+ * - chinalinkexpress://demo                  → Guest demo preview
  * - chinalinkexpress://tracking/:id          → ContainerTrackingScreen
  * - chinalinkexpress://goods/:goodsId        → GoodsDetailScreen
  * - chinalinkexpress://order/:id             → OrderDetailScreen
@@ -124,6 +125,7 @@ const screensConfig = {
   HomeTab: {
     screens: {
       Home: "home",
+      GuestPreview: "demo",
       CustomerDashboard: "dashboard",
       MyContainers: "containers",
       MyGoods: "goods-list",
@@ -135,6 +137,7 @@ const screensConfig = {
   },
   OnBoarding: "onboarding",
   Login: "login",
+  GuestPreview: "demo-preview",
   Verification: "verify",
   ContainerTracking: "tracking/:containerId",
   GoodsDetail: "goods/:goodsId",

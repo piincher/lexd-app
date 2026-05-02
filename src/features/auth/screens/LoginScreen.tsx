@@ -5,11 +5,12 @@
  */
 
 import React, { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Linking, Platform, ScrollView, StyleSheet } from "react-native";
+import { KeyboardAvoidingView, Linking, Platform, ScrollView, StyleSheet, Text } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 
 import { Notification } from "@src/components/Notification/Notification";
 import { Screen } from "@src/shared/ui/Screen";
+import { Button } from "@src/shared/ui/Button";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -51,6 +52,10 @@ export const LoginScreen: React.FC<RootStackScreenProps<"Login">> = ({ navigatio
             <PhoneInput value={phone} onChangeText={setPhone} selectedCountry={selectedCountry} onSelectCountry={() => setShowCountryPicker(true)} error={error} showCountryPicker={showCountryPicker} onClear={() => setPhone("")} onSubmit={handleSubmit} />
             <CountryPicker visible={showCountryPicker} countries={countries} selectedCountry={selectedCountry} onSelect={(c) => { setSelectedCountry(c); setShowCountryPicker(false); }} />
             <SubmitButton onPress={handleSubmit} isLoading={isLoading} />
+            <Button title="Explorer en mode démo" onPress={() => navigation.navigate("GuestPreview")} variant="outline" size="large" fullWidth icon="eye-outline" style={styles.demoButton} />
+            <Text style={[styles.demoNote, { color: colors.text.secondary }]}>
+              Pas encore client ? Le mode démo vous montre le suivi sans créer de compte.
+            </Text>
           </Animated.View>
           <SecurityNote />
           <LoginFooter
@@ -68,6 +73,8 @@ const styles = StyleSheet.create({
   flex: { flex: 1 },
   scrollContent: { flexGrow: 1 },
   card: { marginHorizontal: 16, marginTop: -16, borderRadius: 24, borderWidth: 1, padding: 20 },
+  demoButton: { marginTop: 12 },
+  demoNote: { marginTop: 10, fontSize: 12, lineHeight: 18, textAlign: "center" },
 });
 
 export default LoginScreen;

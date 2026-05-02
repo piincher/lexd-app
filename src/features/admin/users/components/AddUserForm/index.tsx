@@ -4,6 +4,7 @@ import SubmitBtn from '@src/components/SubmitBtn/SubmitBtn';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from 'react';
 import { ScrollView, View } from 'react-native';
+import type { AnyObjectSchema } from 'yup';
 
 import { createStyles } from './AddUserForm.styles';
 
@@ -16,11 +17,12 @@ interface AddUserFormValues {
 interface AddUserFormProps {
 	initialValues: AddUserFormValues;
 	onSubmit: (values: AddUserFormValues) => void;
-	validationSchema: any;
+	validationSchema: AnyObjectSchema;
 	selectedCode: string;
 	setSelectedCode: (code: string) => void;
 	isPending: boolean;
-	signUpDataCode: string;
+	signUpDataCode: { label: string; value: string }[];
+	phoneMaxLength: number;
 }
 
 export const AddUserForm: React.FC<AddUserFormProps> = ({
@@ -31,6 +33,7 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({
 	setSelectedCode,
 	isPending,
 	signUpDataCode,
+	phoneMaxLength,
 }) => {
 	const { colors } = useAppTheme();
 	const styles = createStyles(colors);
@@ -53,7 +56,7 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({
 						selectedCode={selectedCode}
 						setSelectedCode={setSelectedCode}
 						code={signUpDataCode}
-						maxLength={8}
+						maxLength={phoneMaxLength}
 						keyboardType='number-pad'
 						phone={true}
 					/>

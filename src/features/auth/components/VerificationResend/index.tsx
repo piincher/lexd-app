@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Text, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -7,51 +7,58 @@ import { useAppTheme } from "@src/providers/ThemeProvider";
 interface VerificationResendProps {
   countdown: number;
   canResend: boolean;
+  isResending: boolean;
   onResend: () => void;
 }
 
 export const VerificationResend: React.FC<VerificationResendProps> = ({
   countdown,
   canResend,
+  isResending,
   onResend,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const resendEnabled = canResend && !isResending;
 
   return (
     <View style={styles.resendSection}>
       <Text style={[styles.resendLabel, { color: colors.text.secondary }]}>
-        Vous n'avez pas recu le code ?
+        {"Vous n'avez pas reçu le code ?"}
       </Text>
       <View style={styles.resendRow}>
         {countdown > 0 && (
-          <View style={styles.countdownBadge}>
+          <View style={[styles.countdownBadge, { backgroundColor: isDark ? "rgba(255,255,255,0.06)" : "#F3F4F6" }]}>
             <MaterialCommunityIcons name="timer-outline" size={14} color={colors.text.secondary} />
             <Text style={[styles.countdownText, { color: colors.text.secondary }]}>
-              {countdown}s
+              Disponible dans {countdown}s
             </Text>
           </View>
         )}
         <Pressable
           onPress={onResend}
-          disabled={!canResend}
+          disabled={!resendEnabled}
           style={({ pressed }) => [
             styles.resendBtn,
-            canResend && { backgroundColor: "rgba(34,197,94,0.1)" },
-            pressed && canResend && { opacity: 0.7 },
+            resendEnabled && { backgroundColor: isDark ? "rgba(34,197,94,0.16)" : "#F0FDF4" },
+            pressed && resendEnabled && { opacity: 0.7 },
           ]}
         >
-          <MaterialCommunityIcons
-            name="refresh"
-            size={16}
-            color={canResend ? "#22C55E" : colors.text.disabled}
-          />
+          {isResending ? (
+            <ActivityIndicator size="small" color={colors.primary.main} />
+          ) : (
+            <MaterialCommunityIcons
+              name="refresh"
+              size={16}
+              color={resendEnabled ? colors.primary.main : colors.text.disabled}
+            />
+          )}
           <Text
             style={[
               styles.resendBtnText,
-              { color: canResend ? "#22C55E" : colors.text.disabled },
+              { color: resendEnabled ? colors.primary.main : colors.text.disabled },
             ]}
           >
-            Renvoyer
+            {isResending ? "Envoi..." : "Renvoyer le code"}
           </Text>
         </Pressable>
       </View>
@@ -62,7 +69,7 @@ export const VerificationResend: React.FC<VerificationResendProps> = ({
 const styles = StyleSheet.create({
   resendSection: {
     alignItems: "center",
-    marginTop: 24,
+    marginTop: 22,
   },
   resendLabel: {
     fontSize: 13,
@@ -70,9 +77,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   resendRow: {
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
-    gap: 12,
+    gap: 10,
   },
   countdownBadge: {
     flexDirection: "row",

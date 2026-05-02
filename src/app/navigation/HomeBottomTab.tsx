@@ -15,6 +15,7 @@ import { useTabBarStore } from '@src/store/tabBarStore';
 
 // Screens
 import { HomeScreen } from '@src/features/home';
+import { GuestPreviewScreen } from '@src/features/guestExperience';
 import { CustomerDashboardScreen } from '@src/features/customer/dashboard';
 import { AdminDashBoard } from '@src/features/admin/dashboard';
 import { OrdersScreen as Orders } from '@src/features/orders';
@@ -23,7 +24,7 @@ import { ProfileScreen as Profile } from '@src/features/profile';
 import MyGoodsScreen from '@src/features/goods/screens/MyGoodsScreen';
 import MyContainersScreen from '@src/features/customer/containers/screens/MyContainersScreen';
 import AdminGoodsList from '@src/features/admin/goods/screens/GoodsListScreen';
-import ContainerListScreen from '@src/features/admin/containers/screens/ContainerListScreen';
+import AdminContainerListScreen from '@src/features/admin/containers/screens/ContainerListScreen';
 
 const BottomTab = createBottomTabNavigator<HomeTabParamList>();
 
@@ -71,6 +72,16 @@ export const HomeBottomTab: React.FC = () => {
       options: {
         tabBarLabel: 'Accueil',
         tabBarIcon: ({ color, size }) => <AntDesign name="home" color={color} size={size} />,
+      },
+    },
+    {
+      name: 'GuestPreview',
+      component: GuestPreviewScreen,
+      show: !adminRole && !token,
+      options: {
+        tabBarLabel: 'Démo',
+        tabBarAccessibilityLabel: 'Mode démo',
+        tabBarIcon: ({ color, size }) => <FontAwesome5 name="route" size={size} color={color} />,
       },
     },
     {
@@ -141,7 +152,7 @@ export const HomeBottomTab: React.FC = () => {
     },
     {
       name: 'ContainerList',
-      component: ContainerListScreen,
+      component: AdminContainerListScreen,
       show: adminRole,
       options: {
         tabBarLabel: 'Conteneurs',

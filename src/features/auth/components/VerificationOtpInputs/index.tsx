@@ -8,19 +8,22 @@ const OTP_LENGTH = 6;
 interface VerificationOtpInputsProps {
   otp: string[];
   activeIndex: number;
-  inputRefs: React.MutableRefObject<(TextInput | null)[]>;
+  setInputRef: (index: number, ref: TextInput | null) => void;
   onOtpChange: (value: string, index: number) => void;
   onKeyPress: (key: string, index: number) => void;
+  hasError: boolean;
 }
 
 export const VerificationOtpInputs: React.FC<VerificationOtpInputsProps> = ({
   otp,
   activeIndex,
-  inputRefs,
+  setInputRef,
   onOtpChange,
   onKeyPress,
+  hasError,
 }) => {
   const { colors, isDark } = useAppTheme();
+  const activeColor = hasError ? colors.status.error : colors.primary.main;
 
   return (
     <View style={styles.otpRow}>
@@ -35,11 +38,11 @@ export const VerificationOtpInputs: React.FC<VerificationOtpInputsProps> = ({
               styles.otpInputWrapper,
               {
                 borderColor: isActive
-                  ? "#22C55E"
+                  ? activeColor
                   : isFilled
                     ? isDark
-                      ? "rgba(34,197,94,0.4)"
-                      : "rgba(34,197,94,0.3)"
+                      ? "rgba(34,197,94,0.45)"
+                      : "rgba(34,197,94,0.35)"
                     : isDark
                       ? "rgba(255,255,255,0.1)"
                       : "#E5E7EB",
@@ -54,18 +57,20 @@ export const VerificationOtpInputs: React.FC<VerificationOtpInputsProps> = ({
             ]}
           >
             <TextInput
-              ref={(ref) => {
-                inputRefs.current[index] = ref;
-              }}
+              ref={(ref) => setInputRef(index, ref)}
               style={[styles.otpInput, { color: colors.text.primary }]}
               value={otp[index]}
               onChangeText={(val) => onOtpChange(val, index)}
               onKeyPress={({ nativeEvent }) => onKeyPress(nativeEvent.key, index)}
               keyboardType="number-pad"
+              textContentType="oneTimeCode"
+              autoComplete="sms-otp"
+              importantForAutofill="yes"
               maxLength={index === 0 ? OTP_LENGTH : 1}
               selectTextOnFocus
+              accessibilityLabel={`Chiffre ${index + 1} du code de vérification`}
             />
-            {isActive && !isFilled && <View style={styles.cursor} />}
+            {isActive && !isFilled && <View style={[styles.cursor, { backgroundColor: activeColor }]} />}
           </View>
         );
       })}
@@ -77,11 +82,12 @@ const styles = StyleSheet.create({
   otpRow: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 14,
+    gap: 8,
   },
   otpInputWrapper: {
-    width: 60,
-    height: 64,
+    flex: 1,
+    maxWidth: 52,
+    height: 58,
     borderRadius: 16,
     borderWidth: 2,
     justifyContent: "center",
@@ -101,7 +107,6 @@ const styles = StyleSheet.create({
     bottom: 14,
     width: 20,
     height: 2,
-    backgroundColor: "#22C55E",
     borderRadius: 1,
   },
 });

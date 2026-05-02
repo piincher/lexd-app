@@ -32,6 +32,7 @@ export const AppNavigator: React.FC = () => {
       <Stack.Screen name="AboutUs" component={Screens.AboutUs} />
       <Stack.Screen name="FAQ" component={Screens.Faq} />
       <Stack.Screen name="CheckRoute" component={Screens.CheckRoute} />
+      <Stack.Screen name="GuestPreview" component={Screens.GuestPreviewScreen} />
       <Stack.Screen name="SharedShipment" component={Screens.SharedShipmentScreen} />
       <Stack.Screen name="CertificateDetail" component={Screens.CertificateDetailScreen} />
 

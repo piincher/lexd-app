@@ -3,6 +3,7 @@ import { Text, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface VerificationConfirmButtonProps {
   isComplete: boolean;
@@ -15,6 +16,9 @@ export const VerificationConfirmButton: React.FC<VerificationConfirmButtonProps>
   isPending,
   onConfirm,
 }) => {
+  const { colors } = useAppTheme();
+  const isEnabled = isComplete && !isPending;
+
   return (
     <Pressable
       onPress={onConfirm}
@@ -26,7 +30,7 @@ export const VerificationConfirmButton: React.FC<VerificationConfirmButtonProps>
       ]}
     >
       <LinearGradient
-        colors={isComplete && !isPending ? ["#22C55E", "#16A34A"] : ["#9CA3AF", "#9CA3AF"]}
+        colors={isEnabled ? [colors.primary.main, colors.primary.dark] : [colors.text.disabled, colors.text.disabled]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
         style={styles.confirmGradient}
@@ -35,8 +39,8 @@ export const VerificationConfirmButton: React.FC<VerificationConfirmButtonProps>
           <ActivityIndicator size="small" color="#FFF" />
         ) : (
           <>
-            <Text style={styles.confirmText}>Valider</Text>
-            <MaterialCommunityIcons name="check" size={20} color="#FFF" />
+            <Text style={styles.confirmText}>Vérifier et continuer</Text>
+            <MaterialCommunityIcons name="arrow-right" size={20} color="#FFF" />
           </>
         )}
       </LinearGradient>
@@ -46,7 +50,7 @@ export const VerificationConfirmButton: React.FC<VerificationConfirmButtonProps>
 
 const styles = StyleSheet.create({
   confirmBtn: {
-    marginTop: 24,
+    marginTop: 22,
     borderRadius: 16,
     overflow: "hidden",
   },

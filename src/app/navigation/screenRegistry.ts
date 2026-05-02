@@ -5,6 +5,7 @@
 // Auth & Public
 export { LoginScreen as Login, VerificationScreen as Verification } from "@src/features/auth";
 export { HomeScreen } from "@src/features/home";
+export { GuestPreviewScreen } from "@src/features/guestExperience";
 export { OnboardingScreen as OnBoarding } from "@src/features/onboarding";
 export { FAQScreen as Faq } from "@src/features/support";
 export { CheckRouteScreen as CheckRoute } from "@src/features/routes";

@@ -15,6 +15,7 @@ export type RootStackParamList = {
    ActiveOrder: { type: "air" | "sea" };
    Login: undefined;
    Verification: { phoneNumber: string };
+   GuestPreview: undefined;
    OrderDetail: { id: string };
    SelectUser: undefined;
    PastOrders: undefined;
@@ -217,6 +218,7 @@ export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeSta
 
 export type HomeTabParamList = {
    Home: undefined;
+   GuestPreview: undefined;
    Profile: undefined;
    AdminDashBoard: undefined;
    Stats: undefined;

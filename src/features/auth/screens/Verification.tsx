@@ -30,20 +30,23 @@ const Verification = ({ route, navigation }: RootStackScreenProps<"Verification"
     canResend,
     visible,
     isPending,
+    isResending,
     isComplete,
     maskedPhone,
-    inputRefs,
+    errorMessage,
+    setInputRef,
     setVisible,
     handleOtpChange,
     handleKeyPress,
     handleConfirm,
     handleResend,
+    handleSupport,
   } = useVerificationScreen(phoneNumber);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
       <Notification
-        message="Code renvoye avec succes"
+        message="Code renvoyé avec succès"
         type="success"
         visible={visible}
         onDismissSnackBar={() => setVisible(false)}
@@ -58,21 +61,23 @@ const Verification = ({ route, navigation }: RootStackScreenProps<"Verification"
           showsVerticalScrollIndicator={false}
         >
           <VerificationBackButton onPress={() => navigation.goBack()} />
-          <VerificationHeader maskedPhone={maskedPhone} />
+          <VerificationHeader maskedPhone={maskedPhone} onEditPhone={() => navigation.goBack()} />
           <VerificationOtpCard
             otp={otp}
             activeIndex={activeIndex}
-            inputRefs={inputRefs}
+            setInputRef={setInputRef}
             onOtpChange={handleOtpChange}
             onKeyPress={handleKeyPress}
+            errorMessage={errorMessage}
             isComplete={isComplete}
             isPending={isPending}
             onConfirm={handleConfirm}
             countdown={countdown}
             canResend={canResend}
+            isResending={isResending}
             onResend={handleResend}
           />
-          <VerificationFooter />
+          <VerificationFooter onSupport={handleSupport} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

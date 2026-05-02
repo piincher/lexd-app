@@ -85,6 +85,8 @@ export const useLoginForm = () => {
    const clearError = useCallback(() => setError(""), []);
 
    const handleSubmit = useCallback(() => {
+      if (isPending) return;
+
       setError("");
       const validationError = getPhoneValidationError(normalizedPhone, selectedCountry);
 
@@ -100,7 +102,7 @@ export const useLoginForm = () => {
             setError(getLoginErrorMessage(err));
          }
       });
-   }, [normalizedPhone, selectedCountry, fullPhone, mutate, mixpanel]);
+   }, [isPending, normalizedPhone, selectedCountry, fullPhone, mutate, mixpanel]);
 
    return {
       // State

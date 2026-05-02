@@ -35,6 +35,7 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
     consignee,
     statusMenuVisible,
     setStatusMenuVisible,
+    updateStatusMutation,
     handleUpdateStatus,
     navigation,
     handleRemoveGoods,
@@ -52,6 +53,7 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
         statusMenuVisible={statusMenuVisible}
         setStatusMenuVisible={setStatusMenuVisible}
         onUpdateStatus={handleUpdateStatus}
+        isUpdatingStatus={updateStatusMutation.isPending}
         onBack={() => navigation.goBack()}
         consignee={consignee}
       />

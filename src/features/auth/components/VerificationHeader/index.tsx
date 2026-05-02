@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, Pressable, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -8,28 +8,40 @@ import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface VerificationHeaderProps {
   maskedPhone: string;
+  onEditPhone: () => void;
 }
 
-export const VerificationHeader: React.FC<VerificationHeaderProps> = ({ maskedPhone }) => {
-  const { colors } = useAppTheme();
+export const VerificationHeader: React.FC<VerificationHeaderProps> = ({ maskedPhone, onEditPhone }) => {
+  const { colors, isDark } = useAppTheme();
 
   return (
     <Animated.View entering={FadeInDown.delay(100).duration(500).springify()} style={styles.heroSection}>
       <LinearGradient
-        colors={["rgba(34,197,94,0.12)", "rgba(34,197,94,0.04)"]}
+        colors={isDark ? ["rgba(34,197,94,0.18)", "rgba(59,130,246,0.10)"] : ["#F0FDF4", "#EFF6FF"]}
         style={styles.heroIconCircle}
       >
-        <MaterialCommunityIcons name="message-lock-outline" size={36} color="#22C55E" />
+        <MaterialCommunityIcons name="shield-key-outline" size={34} color={colors.primary.main} />
       </LinearGradient>
 
-      <Text style={[styles.heroTitle, { color: colors.text.primary }]}>Verification</Text>
+      <Text style={[styles.heroTitle, { color: colors.text.primary }]}>Vérification sécurisée</Text>
       <Text style={[styles.heroSubtitle, { color: colors.text.secondary }]}>
-        Entrez le code a 6 chiffres envoye au
+        Entrez le code à 6 chiffres envoyé par WhatsApp ou SMS.
       </Text>
-      <View style={styles.phoneHighlight}>
-        <MaterialCommunityIcons name="phone-outline" size={14} color="#22C55E" />
-        <Text style={[styles.phoneText, { color: colors.text.primary }]}>{maskedPhone}</Text>
-      </View>
+      <Pressable
+        onPress={onEditPhone}
+        style={[styles.phoneHighlight, { backgroundColor: isDark ? "rgba(255,255,255,0.07)" : "#F9FAFB", borderColor: colors.border }]}
+        accessibilityRole="button"
+        accessibilityLabel="Modifier le numéro de téléphone"
+      >
+        <View style={[styles.phoneIcon, { backgroundColor: isDark ? "rgba(34,197,94,0.16)" : "#DCFCE7" }]}>
+          <MaterialCommunityIcons name="cellphone-check" size={16} color={colors.primary.main} />
+        </View>
+        <View style={styles.phoneCopy}>
+          <Text style={[styles.phoneLabel, { color: colors.text.secondary }]}>Numéro de connexion</Text>
+          <Text style={[styles.phoneText, { color: colors.text.primary }]}>{maskedPhone}</Text>
+        </View>
+        <MaterialCommunityIcons name="pencil-outline" size={18} color={colors.text.secondary} />
+      </Pressable>
     </Animated.View>
   );
 };
@@ -37,43 +49,59 @@ export const VerificationHeader: React.FC<VerificationHeaderProps> = ({ maskedPh
 const styles = StyleSheet.create({
   heroSection: {
     alignItems: "center",
-    marginTop: 24,
-    paddingHorizontal: 20,
+    marginTop: 18,
   },
   heroIconCircle: {
     width: 80,
     height: 80,
-    borderRadius: 24,
+    borderRadius: 26,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 18,
   },
   heroTitle: {
-    fontSize: 26,
+    fontSize: 25,
     fontFamily: Fonts.bold,
-    letterSpacing: -0.3,
     marginBottom: 6,
+    textAlign: "center",
   },
   heroSubtitle: {
     fontSize: 14,
     fontFamily: Fonts.regular,
     textAlign: "center",
     lineHeight: 20,
+    maxWidth: 320,
   },
   phoneHighlight: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
-    marginTop: 8,
-    backgroundColor: "rgba(34,197,94,0.08)",
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-    borderRadius: 20,
+    gap: 10,
+    marginTop: 18,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 16,
+    borderWidth: 1,
+    width: "100%",
+    minHeight: 58,
+  },
+  phoneIcon: {
+    width: 34,
+    height: 34,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  phoneCopy: {
+    flex: 1,
+  },
+  phoneLabel: {
+    fontSize: 11,
+    fontFamily: Fonts.medium,
+    marginBottom: 3,
   },
   phoneText: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    letterSpacing: 1,
   },
 });
 
