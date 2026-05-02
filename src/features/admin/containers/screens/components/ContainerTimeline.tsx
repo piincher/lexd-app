@@ -26,6 +26,9 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
 }) => {
   const { colors } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
+  const resolvedStatusIndex = TIMELINE_STEPS.findIndex((step) => step.status === currentStatus);
+  const activeStatusIndex = resolvedStatusIndex >= 0 ? resolvedStatusIndex : currentStatusIndex;
+
   return (
     <Animated.View entering={FadeInUp.delay(300)} style={styles.card}>
       <View style={styles.cardHeader}>
@@ -35,8 +38,8 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
 
       <View style={styles.timeline}>
         {TIMELINE_STEPS.map((step, index) => {
-          const isCompleted = index <= currentStatusIndex;
-          const isCurrent = index === currentStatusIndex;
+          const isCompleted = index <= activeStatusIndex;
+          const isCurrent = index === activeStatusIndex;
           const stepColor = CONTAINER_STATUS_COLORS[step.status];
 
           return (
@@ -70,7 +73,7 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
                 <View
                   style={[
                     styles.timelineConnector,
-                    index < currentStatusIndex && {
+                    index < activeStatusIndex && {
                       backgroundColor: stepColor,
                     },
                   ]}

@@ -1,5 +1,5 @@
 export { cargoBagQueryKeys } from './queryKeys';
-export { useGetCargoBagsByAwb } from './useCargoBagList';
+export { useGetCargoBagsByAwb, useGetCargoBagEligibleGoods } from './useCargoBagList';
 export { useGetCargoBagById } from './useCargoBagById';
 export {
   useGetCargoBagWaypoints,

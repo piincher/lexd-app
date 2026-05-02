@@ -9,10 +9,15 @@
 
 export type TrackingStatus =
   | 'BOOKED'
+  | 'EMPTY_TO_WAREHOUSE'
   | 'IN_WAREHOUSE'
   | 'LOADING'
+  | 'LOADED'
+  | 'GATE_IN_FULL'
+  | 'LOADED_ON_VESSEL'
   | 'IN_TRANSIT'
   | 'ARRIVED_PORT'
+  | 'DISCHARGED'
   | 'CUSTOMS_CLEARANCE'
   | 'INLAND_TRANSPORT'
   | 'READY_FOR_PICKUP'
@@ -163,12 +168,12 @@ export interface PublicTrackingInfo {
   };
   
   // Public timeline (simplified)
-  timeline: Array<{
+  timeline: {
     timestamp: string;
     status: TrackingStatus;
     title: string;
     location?: string;
-  }>;
+  }[];
   
   // Estimated delivery only
   estimatedArrival?: string;
@@ -183,10 +188,15 @@ export interface PublicTrackingInfo {
 
 export const TRACKING_STATUS_LABELS: Record<TrackingStatus, string> = {
   BOOKED: 'Réservé',
+  EMPTY_TO_WAREHOUSE: 'Vide vers entrepôt',
   IN_WAREHOUSE: 'En entrepôt',
   LOADING: 'En chargement',
+  LOADED: 'Chargé',
+  GATE_IN_FULL: 'Entré au port',
+  LOADED_ON_VESSEL: 'Chargé à bord',
   IN_TRANSIT: 'En transit',
   ARRIVED_PORT: 'Arrivé au port',
+  DISCHARGED: 'Déchargé',
   CUSTOMS_CLEARANCE: 'Dédouanement',
   INLAND_TRANSPORT: 'Transport intérieur',
   READY_FOR_PICKUP: 'Prêt pour retrait',
@@ -196,10 +206,15 @@ export const TRACKING_STATUS_LABELS: Record<TrackingStatus, string> = {
 
 export const TRACKING_STATUS_COLORS: Record<TrackingStatus, string> = {
   BOOKED: '#8B5CF6',
+  EMPTY_TO_WAREHOUSE: '#6366F1',
   IN_WAREHOUSE: '#6366F1',
   LOADING: '#F59E0B',
+  LOADED: '#3B82F6',
+  GATE_IN_FULL: '#06B6D4',
+  LOADED_ON_VESSEL: '#2563EB',
   IN_TRANSIT: '#3B82F6',
   ARRIVED_PORT: '#10B981',
+  DISCHARGED: '#14B8A6',
   CUSTOMS_CLEARANCE: '#F97316',
   INLAND_TRANSPORT: '#06B6D4',
   READY_FOR_PICKUP: '#22C55E',
@@ -209,10 +224,15 @@ export const TRACKING_STATUS_COLORS: Record<TrackingStatus, string> = {
 
 export const TRACKING_STATUS_DESCRIPTIONS: Record<TrackingStatus, string> = {
   BOOKED: 'Votre conteneur est réservé et attend le départ.',
+  EMPTY_TO_WAREHOUSE: 'Le conteneur vide est en route vers l\'entrepôt.',
   IN_WAREHOUSE: 'Votre marchandise est enregistrée dans notre entrepôt.',
   LOADING: 'Votre marchandise est en cours de chargement dans le conteneur.',
+  LOADED: 'Votre conteneur est chargé et se prépare pour le port.',
+  GATE_IN_FULL: 'Votre conteneur plein est entré au terminal portuaire.',
+  LOADED_ON_VESSEL: 'Votre conteneur a été chargé à bord du navire.',
   IN_TRANSIT: 'Votre conteneur est en route vers la destination.',
   ARRIVED_PORT: 'Votre conteneur est arrivé au port de destination.',
+  DISCHARGED: 'Votre conteneur a été déchargé et passe aux étapes de sortie.',
   CUSTOMS_CLEARANCE: 'Votre conteneur est en cours de dédouanement.',
   INLAND_TRANSPORT: 'Votre conteneur est transporté vers l\'entrepôt de retrait.',
   READY_FOR_PICKUP: 'Votre marchandise est prête pour le retrait!',

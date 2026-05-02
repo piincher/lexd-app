@@ -22,7 +22,7 @@ type UseMyContainersScreenReturn = {
   isFetching: boolean;
   handlers: {
     handleRefresh: () => void;
-    handleContainerPress: (id: string) => void;
+    handleContainerPress: (shipment: CustomerContainer) => void;
     handleFilterChange: (filter: FilterMode) => void;
     handleSearchChange: (query: string) => void;
   };
@@ -42,7 +42,7 @@ export const useMyContainersScreen = (
   const { data, isLoading, isError, error, refetch, isFetching } =
     useGetMyContainers(filters);
 
-  const containers = data?.containers || [];
+  const containers = useMemo(() => data?.containers || [], [data?.containers]);
 
   const filteredContainers = useMemo(() => {
     if (!searchQuery.trim()) return containers;
@@ -50,6 +50,9 @@ export const useMyContainersScreen = (
     return containers.filter(
       (c) =>
         c.virtualContainerNumber?.toLowerCase().includes(q) ||
+        c.awbNumber?.toLowerCase().includes(q) ||
+        c.airline?.toLowerCase().includes(q) ||
+        c.flightNumber?.toLowerCase().includes(q) ||
         c.shippingLine?.toLowerCase().includes(q) ||
         c.route?.name?.toLowerCase().includes(q)
     );
@@ -60,8 +63,12 @@ export const useMyContainersScreen = (
   }, [refetch]);
 
   const handleContainerPress = useCallback(
-    (id: string) => {
-      navigation.navigate('ContainerTracking', { containerId: id });
+    (shipment: CustomerContainer) => {
+      if (shipment.trackingType === 'AIRWAY_BILL' || shipment.shippingMode === 'AIR') {
+        navigation.navigate('AirwayBillTracking', { airwayBillId: shipment.airwayBillId || shipment._id });
+        return;
+      }
+      navigation.navigate('ContainerTracking', { containerId: shipment.containerId || shipment._id });
     },
     [navigation]
   );

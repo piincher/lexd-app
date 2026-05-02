@@ -48,7 +48,7 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
     >
       <Swipeable
         renderLeftActions={() => <NotificationCardLeftActions isUnread={isUnread} />}
-        renderRightActions={NotificationCardRightActions}
+        renderRightActions={() => <NotificationCardRightActions />}
         onSwipeableOpen={handleSwipeOpen}
         leftThreshold={width * 0.2}
         rightThreshold={width * 0.2}

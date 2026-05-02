@@ -84,10 +84,32 @@ export interface PackingListTracking {
   status: string;
   statusLabel: string;
   bookedAt: string;
+  emptyDispatchedAt?: string;
+  loadingStartedAt?: string;
+  loadingCompletedAt?: string;
+  gateInFullAt?: string;
+  loadedOnVesselAt?: string;
   departedAt?: string;
   arrivedAt?: string;
+  dischargedAt?: string;
   readyForPickupAt?: string;
   estimatedArrival?: string;
+  dakarPortArrivalAt?: string;
+}
+
+export interface PackingListSchedule {
+  loadDate?: string | null;
+  loadedOnVesselAt?: string | null;
+  dakarPortArrivalAt?: string | null;
+}
+
+export interface PackingListSignature {
+  signed: boolean;
+  signedBy: string;
+  signerName: string;
+  signerRole?: string;
+  signedAt: string;
+  signatureLabel?: string;
 }
 
 /**
@@ -98,6 +120,7 @@ export interface ClientPackingListSummary {
   totalCBM: number;
   totalWeight: number;
   totalPackages: number;
+  totalQuantity?: number;
 }
 
 /**
@@ -112,9 +135,12 @@ export interface ClientPackingListResponse {
     origin: string;
     destination: string;
     estimatedTransitDays: number;
+    departureDate?: string;
   };
   consignee: PackingListConsignee;
   tracking: PackingListTracking;
+  schedule?: PackingListSchedule;
+  signature?: PackingListSignature;
   items: ClientPackingListItem[];
   summary: ClientPackingListSummary;
   generatedAt: string;

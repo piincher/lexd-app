@@ -12,8 +12,8 @@ export const AirwayBillDetailScreen: React.FC = () => {
   const {
     airwayBill, waypointPayload, isLoading, goodsList,
     flightLabel, routeLabel, consignee,
-    nextStatuses, menuVisible, statusLabels, statusColors,
-    handleStatusChange, handleDelete, handleBack, openMenu, closeMenu,
+    nextStatuses, menuVisible, menuKey, statusLabels, statusColors,
+    handleStatusChange, handleWaypointStatusChange, handleDelete, handleBack, openMenu, closeMenu,
     handleAssignPress, airwayBillId, isUpdatingStatus,
     cargoBags, isLoadingCargoBags,
     createBagVisible, setCreateBagVisible,
@@ -48,9 +48,11 @@ export const AirwayBillDetailScreen: React.FC = () => {
           consignee={consignee}
           nextStatuses={nextStatuses}
           menuVisible={menuVisible}
+          menuKey={menuKey}
           statusLabels={statusLabels}
           statusColors={statusColors}
           handleStatusChange={handleStatusChange}
+          handleWaypointStatusChange={handleWaypointStatusChange}
           handleDelete={handleDelete}
           openMenu={openMenu}
           closeMenu={closeMenu}

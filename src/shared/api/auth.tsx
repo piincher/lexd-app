@@ -71,7 +71,7 @@ export const refreshAccessToken = async (refreshToken: string) => {
          refreshToken: string;
          expiresIn: number;
       };
-   }>('/auth/refresh', { refreshToken }, { headers: { skipAuth: 'true' } as any });
+   }>('/auth/refresh', { refreshToken }, { headers: { skipAuth: 'true' } });
    return response.data.data;
 };
 
@@ -84,8 +84,14 @@ export const register = async ({ firstName, lastName, phoneNumber }: userRegistr
    const response = await axiosInstance.post<userType>(API_URL.register, user);
    return response.data;
 };
+type PhoneOtpResponse = Partial<userType> & {
+   ok: boolean;
+   method?: string;
+   reviewLogin?: boolean;
+};
+
 export const sendPhoneOtp = async (phone: string) => {
-   const response = await axiosInstance.post<{ ok: boolean }>(API_URL.sendPhoneOtp, { phone });
+   const response = await axiosInstance.post<PhoneOtpResponse>(API_URL.sendPhoneOtp, { phone });
    return response.data;
 };
 export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {

@@ -17,6 +17,12 @@ export const useLoadingListData = (containerId: string, loadedItems: Set<string>
   const loadingListData = useMemo<AdminLoadingListData | null>(() => {
     if (!container) return null;
     const packingData = packingListResponse?.data?.data || packingListResponse?.data;
+    const documentContainer = {
+      ...container,
+      consignee: (container as any).consignee ||
+        (typeof (container as any).consigneeId === 'object' ? (container as any).consigneeId : null) ||
+        packingData?.container?.consignee,
+    };
     console.log('[DEBUG] Packing list data:', packingData);
     console.log('[DEBUG] Packing list clients:', packingData?.clients);
     if (packingData?.clients) {
@@ -39,7 +45,7 @@ export const useLoadingListData = (containerId: string, loadedItems: Set<string>
     console.log('[DEBUG] Final goods count:', goodsList.length);
     if (goodsList.length > 0) console.log('[DEBUG] First goods:', JSON.stringify(goodsList[0], null, 2));
     if (goodsList.length === 0) {
-      return { container, items: [], clientColors: {}, summary: { totalCBM: 0, totalWeight: 0, totalItems: 0, totalPackages: 0, capacityPercentage: 0, maxCBM: MAX_CBM, loadedItems: 0, remainingItems: 0, loadedCBM: 0, remainingCBM: MAX_CBM } };
+      return { container: documentContainer, items: [], clientColors: {}, summary: { totalCBM: 0, totalWeight: 0, totalItems: 0, totalPackages: 0, capacityPercentage: 0, maxCBM: MAX_CBM, loadedItems: 0, remainingItems: 0, loadedCBM: 0, remainingCBM: MAX_CBM } };
     }
 
     const clientColorMap = new Map<string, string>();
@@ -56,7 +62,7 @@ export const useLoadingListData = (containerId: string, loadedItems: Set<string>
     const loadedCBM = items.filter((it) => it.isLoaded).reduce((s, it) => s + (it.goods.actualCBM || 0), 0);
 
     return {
-      container, items, clientColors: Object.fromEntries(clientColorMap),
+      container: documentContainer, items, clientColors: Object.fromEntries(clientColorMap),
       summary: {
         totalCBM, totalWeight: items.reduce((s, it) => s + (it.goods.weight || 0), 0), totalItems: goodsList.length,
         totalPackages: items.reduce((s, it) => s + (it.goods.quantity || 1), 0), capacityPercentage: (totalCBM / MAX_CBM) * 100,

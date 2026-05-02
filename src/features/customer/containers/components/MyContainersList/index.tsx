@@ -10,7 +10,7 @@ interface MyContainersListProps {
   data: CustomerContainer[];
   refreshing: boolean;
   onRefresh: () => void;
-  onContainerPress: (id: string) => void;
+  onContainerPress: (shipment: CustomerContainer) => void;
 }
 
 export const MyContainersList: React.FC<MyContainersListProps> = ({
@@ -29,7 +29,7 @@ export const MyContainersList: React.FC<MyContainersListProps> = ({
       renderItem={({ item }) => (
         <ContainerCard
           container={item}
-          onPress={() => onContainerPress(item._id)}
+          onPress={() => onContainerPress(item)}
         />
       )}
       contentContainerStyle={styles.listContent}

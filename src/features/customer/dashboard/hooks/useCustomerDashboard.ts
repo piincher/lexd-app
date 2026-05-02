@@ -4,18 +4,23 @@
  */
 
 import { useCallback, useMemo } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAuth } from '@src/store/Auth';
+import type { RootStackParamList } from '@src/navigations/type';
 
 import { useGetDashboard, useGetActivity } from './useDashboard';
 import { QuickAction, DashboardStats } from '../types';
+import type { DashboardContainer } from '../api/types';
 import { DEFAULT_QUICK_ACTIONS, DEFAULT_STATS, getWelcomeMessage } from './dashboardConstants';
+import { useShipmentHome } from './useShipmentHome';
 
 export interface UseCustomerDashboardReturn {
-  user: any;
+  user: { firstName?: string } | null | undefined;
   welcomeMessage: string;
   stats: DashboardStats;
-  containers: { id: string; virtualContainerNumber: string; status: string; shippingMode?: string; shippingLine?: string; timeline?: any }[];
+  containers: DashboardContainer[];
+  shipmentHome: ReturnType<typeof useShipmentHome>;
   quickActions: QuickAction[];
   activities: import('../types').ActivityItem[];
   isLoading: boolean;
@@ -27,11 +32,11 @@ export interface UseCustomerDashboardReturn {
   handleActionPress: (action: QuickAction) => void;
   handleViewGoods: () => void;
   handleViewContainers: () => void;
-  handleContainerPress: (containerId: string) => void;
+  handleContainerPress: (shipment?: DashboardContainer) => void;
 }
 
 export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const user = useAuth((state) => state.user);
 
   const { data: dashboardData, isLoading: isDashboardLoading, isError, error, refetch: refetchDashboard } = useGetDashboard();
@@ -42,6 +47,7 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
   const quickActions = DEFAULT_QUICK_ACTIONS;
   const activities = activityData?.activities || [];
   const containers = dashboardData?.containers || [];
+  const shipmentHome = useShipmentHome(containers, stats);
   const welcomeMessage = useMemo(() => getWelcomeMessage(user?.firstName || ''), [user?.firstName]);
 
   const refresh = useCallback(async () => {
@@ -51,14 +57,16 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
   const handleNotifications = useCallback(() => navigation.navigate('Notifications'), [navigation]);
   const handleViewAllActivity = useCallback(() => navigation.navigate('ActivityList'), [navigation]);
   const handleActionPress = useCallback((action: QuickAction) => {
-    if (action.route) navigation.navigate(action.route);
+    if (action.route) navigation.dispatch(CommonActions.navigate({ name: action.route }));
     else if (action.action) action.action();
   }, [navigation]);
   const handleViewGoods = useCallback(() => navigation.navigate('MyGoods'), [navigation]);
   const handleViewContainers = useCallback(() => navigation.navigate('MyContainers'), [navigation]);
-  const handleContainerPress = useCallback((containerId: string) => {
-    if (containerId) {
-      navigation.navigate('ContainerTracking', { containerId });
+  const handleContainerPress = useCallback((shipment?: DashboardContainer) => {
+    if (shipment?.trackingType === 'AIRWAY_BILL' || shipment?.shippingMode === 'AIR') {
+      navigation.navigate('AirwayBillTracking', { airwayBillId: shipment.airwayBillId || shipment.id });
+    } else if (shipment?.id) {
+      navigation.navigate('ContainerTracking', { containerId: shipment.id });
     } else {
       navigation.navigate('MyContainers');
     }
@@ -69,6 +77,7 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
     welcomeMessage,
     stats,
     containers,
+    shipmentHome,
     quickActions,
     activities,
     isLoading: isDashboardLoading || isActivityLoading,

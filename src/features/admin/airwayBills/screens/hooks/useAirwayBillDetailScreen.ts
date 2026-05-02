@@ -25,6 +25,7 @@ export const useAirwayBillDetailScreen = () => {
 
   const {
     menuVisible,
+    menuKey,
     createBagVisible,
     setCreateBagVisible,
     openMenu,
@@ -42,6 +43,7 @@ export const useAirwayBillDetailScreen = () => {
 
   const {
     handleStatusChange,
+    handleWaypointStatusChange,
     handleDelete,
     handleBack,
     handleAssignPress,
@@ -66,9 +68,11 @@ export const useAirwayBillDetailScreen = () => {
     consignee,
     nextStatuses,
     menuVisible,
+    menuKey,
     statusLabels,
     statusColors,
     handleStatusChange,
+    handleWaypointStatusChange,
     handleDelete,
     handleBack,
     openMenu,

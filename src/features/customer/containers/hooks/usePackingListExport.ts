@@ -9,12 +9,19 @@ import { Alert, Platform, Share } from 'react-native';
 import * as Sharing from 'expo-sharing';
 import { format } from 'date-fns/format';
 import { useDownloadPackingListPDF } from './useCustomerContainers';
-import { generateShareText, blobToBase64, downloadWeb, savePDF } from '../utils/packingListExportHelpers';
+import { generateShareText, downloadWeb, savePDF } from '../utils/packingListExportHelpers';
 
 interface PackingListData {
   containerNumber: string;
   generatedAt?: string;
-  items: Array<{ goodsId: string; description: string; actualCBM: number; weight: number }>;
+  shippingLineLabel: string;
+  route: { origin: string; destination: string };
+  consignee: { name: string; phone: string; warehouseAddress: string };
+  tracking: { statusLabel: string; estimatedArrival?: string; loadingCompletedAt?: string; dakarPortArrivalAt?: string };
+  schedule?: { loadDate?: string | null; dakarPortArrivalAt?: string | null };
+  signature?: { signed?: boolean; signedBy?: string; signerName?: string; signedAt?: string; signatureLabel?: string };
+  items: { goodsId: string; description: string; actualCBM: number; weight: number; quantity?: number }[];
+  summary: { totalItems: number; totalCBM: number; totalWeight: number; totalQuantity?: number };
 }
 
 export const usePackingListExport = (
@@ -53,7 +60,7 @@ export const usePackingListExport = (
           }
         }},
       ]);
-    } catch (err) {
+    } catch {
       Alert.alert('Erreur de téléchargement', 'Impossible de télécharger le PDF. Veuillez réessayer.');
     } finally {
       setTimeout(() => setDownloadProgress(0), 1000);
@@ -78,7 +85,7 @@ export const usePackingListExport = (
         } catch (e) { console.warn('PDF share failed, falling back to text:', e); }
       }
       await Share.share({ message: generateShareText(packingList), title: `Liste de Colisage - ${packingList.containerNumber}` });
-    } catch (err) {
+    } catch {
       Alert.alert('Erreur', 'Impossible de partager la liste de colisage');
     }
   }, [containerId, packingList, downloadMutation]);

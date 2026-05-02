@@ -62,6 +62,17 @@ jest.mock('../../hooks/useCargoBags', () => ({
     },
     isLoading: false,
   }),
+  useGetCargoBagEligibleGoods: () => ({
+    data: {
+      data: {
+        goods: [
+          { _id: 'g1', goodsId: 'G-001', description: 'On AWB no bag', weight: 5, quantity: 1, cargoBagId: null },
+          { _id: 'g3', goodsId: 'G-003', description: 'Unassigned', weight: 3, quantity: 1 },
+        ],
+      },
+    },
+    isLoading: false,
+  }),
   useCreateCargoBag: () => ({
     mutateAsync: jest.fn(),
     isPending: false,
@@ -94,7 +105,7 @@ describe('useAssignGoodsScreen', () => {
     expect(result.current.goodsList[0]._id).toBe('g3');
   });
 
-  it('should show AWB goods not in bag when a bag is selected', () => {
+  it('should show eligible bag goods when a bag is selected', () => {
     const { result } = renderHook(() => useAssignGoodsScreen(), { wrapper });
 
     act(() => {
@@ -102,8 +113,7 @@ describe('useAssignGoodsScreen', () => {
     });
 
     expect(result.current.selectedBagId).toBe('bag-123');
-    expect(result.current.goodsList).toHaveLength(1);
-    expect(result.current.goodsList[0]._id).toBe('g1');
+    expect(result.current.goodsList.map((goods) => goods._id)).toEqual(['g1', 'g3']);
   });
 
   it('should clear selected IDs when switching bags', () => {

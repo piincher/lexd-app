@@ -21,7 +21,7 @@ export const MyContainersHeader: React.FC<MyContainersHeaderProps> = ({
     <Appbar.Header>
       <Appbar.BackAction onPress={onBack} />
       <Appbar.Content
-        title="Mes Containers"
+        title="Mes expéditions"
         titleStyle={showTitleStyle ? styles.headerTitle : undefined}
       />
       {onRefresh && (

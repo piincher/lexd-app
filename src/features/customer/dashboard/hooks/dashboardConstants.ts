@@ -7,7 +7,7 @@ import { QuickAction, DashboardStats } from '../types';
 
 export const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
   { id: 'view-goods', label: 'Mes marchandises', icon: 'package-variant-closed', route: 'MyGoods' },
-  { id: 'view-containers', label: 'Mes containers', icon: 'ferry', route: 'MyContainers' },
+  { id: 'view-containers', label: 'Mes expéditions', icon: 'airplane-takeoff', route: 'MyContainers' },
   // { id: 'payment-history', label: 'Historique', icon: 'receipt', route: 'MyPaymentHistory' },
   { id: 'support', label: 'Support', icon: 'chatbubble-ellipses', route: 'TicketList' },
 ];

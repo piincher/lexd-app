@@ -4,8 +4,7 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Dimensions } from 'react-native';
-import { Image } from 'expo-image';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal, Dimensions, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { useSharedValue, useAnimatedStyle, withTiming, runOnJS } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -56,7 +55,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.strip}>
         {safePhotoUrls.map((url, i) => (
           <TouchableOpacity key={`${url}_${i}`} activeOpacity={0.9} onPress={() => open(i)} style={s.wrap}>
-            <Image source={{ uri: url }} style={[s.photo, { height: imageHeight }]} contentFit="cover" />
+            <Image source={{ uri: url }} style={[s.photo, { height: imageHeight }]} resizeMode="cover" />
             {showCounter && safePhotoUrls.length > 1 && (
               <View style={s.badge}><Text style={s.badgeText}>{i + 1} / {safePhotoUrls.length}</Text></View>
             )}
@@ -80,7 +79,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
             onMomentumScrollEnd={(e) => setIdx(Math.round(e.nativeEvent.contentOffset.x / W))} style={{ zIndex: 103 }} contentContainerStyle={{ alignItems: 'center' }}>
             {safePhotoUrls.map((url, i) => (
               <View key={`v_${url}_${i}`} style={s.page}>
-                <Image source={{ uri: url }} style={s.viewerImg} contentFit="contain" />
+                <Image source={{ uri: url }} style={s.viewerImg} resizeMode="contain" />
               </View>
             ))}
           </ScrollView>

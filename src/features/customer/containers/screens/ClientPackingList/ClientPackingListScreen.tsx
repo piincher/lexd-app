@@ -33,13 +33,13 @@ const ClientPackingListScreen: React.FC<RootStackScreenProps<'ClientPackingList'
 
   const { packingList, snackbarVisible, setSnackbarVisible, snackbarMessage, contactDialogVisible, setContactDialogVisible } = screen;
   const { downloadProgress, downloadMutation, handleCallConsignee, handleOpenMaps, handleDownloadPDF, handleShare } = screen;
-  const { getShippingModeIcon, getStatusColor, formatDate, handleRefresh, isFetching } = screen;
+  const { getShippingModeIcon, getStatusColor, formatDate, formatDateTime, handleRefresh, isFetching } = screen;
 
   return (
     <SafeAreaView style={styles.container}>
       <PackingListHeader onBack={() => navigation.goBack()} onDownload={handleDownloadPDF} onShare={handleShare} downloadProgress={downloadProgress} />
       <ScrollView contentContainerStyle={styles.scrollContent} refreshControl={<RefreshControl refreshing={isFetching} onRefresh={handleRefresh} />}>
-        <PackingListSummary containerNumber={packingList.containerNumber} shippingMode={packingList.shippingMode} status={packingList.tracking?.status || 'N/A'} totalCBM={packingList.summary?.totalCBM || 0} totalWeight={packingList.summary?.totalWeight || 0} totalPackages={packingList.summary?.totalItems || 0} departureDate={packingList.route?.departureDate} arrivalDate={packingList.tracking?.estimatedArrival} getShippingModeIcon={getShippingModeIcon} getStatusColor={getStatusColor} formatDate={formatDate} />
+        <PackingListSummary containerNumber={packingList.containerNumber} shippingMode={packingList.shippingMode} status={packingList.tracking?.status || 'N/A'} totalCBM={packingList.summary?.totalCBM || 0} totalWeight={packingList.summary?.totalWeight || 0} totalPackages={packingList.summary?.totalItems || 0} departureDate={packingList.route?.departureDate} arrivalDate={packingList.tracking?.estimatedArrival} loadDate={packingList.schedule?.loadDate} dakarPortArrivalAt={packingList.schedule?.dakarPortArrivalAt || packingList.tracking?.dakarPortArrivalAt} signature={packingList.signature} getShippingModeIcon={getShippingModeIcon} getStatusColor={getStatusColor} formatDate={formatDate} formatDateTime={formatDateTime} />
         {packingList.consignee && <PackingListConsignee consignee={packingList.consignee} onContactPress={() => setContactDialogVisible(true)} onAddressPress={handleOpenMaps} />}
         <PackingListGoods goods={packingList.items || []} getStatusColor={getStatusColor} />
         <PackingListFooter onDownloadPDF={handleDownloadPDF} onShare={handleShare} isDownloading={downloadMutation.isPending} />

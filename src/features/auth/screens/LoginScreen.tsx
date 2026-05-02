@@ -25,10 +25,10 @@ import { LoginFooter } from "../components/LoginFooter";
 export const LoginScreen: React.FC<RootStackScreenProps<"Login">> = ({ navigation }) => {
   const { colors, isDark } = useAppTheme();
   const [showSuccess, setShowSuccess] = useState(false);
-  const { phone, setPhone, selectedCountry, setSelectedCountry, showCountryPicker, setShowCountryPicker, error, handleSubmit, isLoading, isSuccess, fullPhone, countries } = useLoginForm();
+  const { phone, setPhone, selectedCountry, setSelectedCountry, showCountryPicker, setShowCountryPicker, error, handleSubmit, isLoading, isSuccess, isReviewLogin, fullPhone, countries } = useLoginForm();
 
   useEffect(() => {
-    if (isSuccess && fullPhone) {
+    if (isSuccess && fullPhone && !isReviewLogin) {
       setShowSuccess(true);
       const timer = setTimeout(() => {
         setShowSuccess(false);
@@ -36,7 +36,7 @@ export const LoginScreen: React.FC<RootStackScreenProps<"Login">> = ({ navigatio
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [isSuccess, fullPhone, navigation]);
+  }, [isSuccess, isReviewLogin, fullPhone, navigation]);
 
   const cardBg = isDark ? "rgba(255,255,255,0.06)" : "#FFFFFF";
   const cardBorder = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)";

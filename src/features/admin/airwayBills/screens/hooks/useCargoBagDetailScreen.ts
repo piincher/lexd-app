@@ -9,9 +9,10 @@ import {
   useGetCargoBagWaypoints,
   useRemoveGoodsFromCargoBag,
   useUpdateCargoBagStatus,
+  useUpdateCargoBagWaypoint,
   useDeleteCargoBag,
 } from '../../hooks/useCargoBags';
-import { AirwayBillGoods, CargoBagStatus } from '../../types';
+import { AirwayBillGoods, AirwayBillWaypointStatus, CargoBagStatus } from '../../types';
 
 const STATUS_LABELS: Record<CargoBagStatus, string> = {
   PACKED: 'Emballé',
@@ -31,6 +32,7 @@ export const useCargoBagDetailScreen = () => {
   const { data: waypointData, refetch: refetchWaypoints } = useGetCargoBagWaypoints(cargoBagId);
   const removeGoodsMutation = useRemoveGoodsFromCargoBag();
   const updateStatusMutation = useUpdateCargoBagStatus();
+  const updateWaypointMutation = useUpdateCargoBagWaypoint();
   const deleteCargoBagMutation = useDeleteCargoBag();
 
   const [statusMenuVisible, setStatusMenuVisible] = useState(false);
@@ -62,6 +64,25 @@ export const useCargoBagDetailScreen = () => {
       }
     },
     [cargoBagId, airwayBillId, updateStatusMutation]
+  );
+
+  const handleWaypointStatusChange = useCallback(
+    async (waypointIndex: number, status: AirwayBillWaypointStatus) => {
+      const now = new Date().toISOString();
+      const input = {
+        status,
+        ...(status === 'IN_PROGRESS' ? { actualDeparture: now } : {}),
+        ...(status === 'COMPLETED' ? { actualArrival: now } : {}),
+        ...(status === 'DELAYED' ? { notes: "Retard signalé sur ce sac cargo" } : {}),
+      };
+
+      try {
+        await updateWaypointMutation.mutateAsync({ id: cargoBagId, waypointIndex, input });
+      } catch {
+        Alert.alert('Erreur', "Impossible de mettre à jour cette étape du sac cargo");
+      }
+    },
+    [cargoBagId, updateWaypointMutation]
   );
 
   const handleToggleRemoveMode = useCallback(() => {
@@ -142,6 +163,7 @@ export const useCargoBagDetailScreen = () => {
     setStatusMenuVisible,
     statusLabels: STATUS_LABELS,
     handleChangeStatus,
+    handleWaypointStatusChange,
     removeMode,
     selectedRemoveIds,
     handleToggleRemoveMode,
@@ -150,6 +172,6 @@ export const useCargoBagDetailScreen = () => {
     handleAddGoods,
     handleDeleteBag,
     isRemoving: removeGoodsMutation.isPending,
-    isUpdatingStatus: updateStatusMutation.isPending || deleteCargoBagMutation.isPending,
+    isUpdatingStatus: updateStatusMutation.isPending || updateWaypointMutation.isPending || deleteCargoBagMutation.isPending,
   };
 };

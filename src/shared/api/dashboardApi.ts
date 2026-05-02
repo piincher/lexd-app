@@ -10,14 +10,42 @@ const BASE_URL = '/customer/dashboard';
 
 export interface GetDashboardResponse {
   stats: import('@src/shared/types/dashboard').DashboardStats;
-  quickActions: Array<{
+  quickActions: {
     id: string;
     label: string;
     icon: string;
     route?: string;
     action?: () => void;
     color?: string;
-  }>;
+  }[];
+  containers?: {
+    id: string;
+    virtualContainerNumber: string;
+    status: string;
+    shippingMode?: string;
+    shippingLine?: string;
+    goodsCount?: number;
+    readyGoodsCount?: number;
+    goodsPreview?: {
+      goodsId?: string;
+      description?: string;
+      status?: string;
+      quantity?: number;
+    }[];
+    timeline?: {
+      bookedAt?: string;
+      emptyDispatchedAt?: string;
+      loadingStartedAt?: string;
+      loadingCompletedAt?: string;
+      gateInFullAt?: string;
+      loadedOnVesselAt?: string;
+      departedAt?: string;
+      arrivedAt?: string;
+      dischargedAt?: string;
+      readyForPickupAt?: string;
+      estimatedArrival?: string;
+    };
+  }[];
 }
 
 /**

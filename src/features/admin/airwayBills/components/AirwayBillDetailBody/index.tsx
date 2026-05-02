@@ -15,6 +15,7 @@ import {
   AirwayBillConsignee,
   AirwayBillGoods,
   AirwayBillStatus,
+  AirwayBillWaypointStatus,
   AirwayBillWaypointPayload,
   CargoBag,
 } from '../../types';
@@ -29,9 +30,11 @@ interface Props {
   consignee: AirwayBillConsignee | null;
   nextStatuses: AirwayBillStatus[];
   menuVisible: boolean;
+  menuKey: number;
   statusLabels: Record<AirwayBillStatus, string>;
   statusColors: Record<AirwayBillStatus, string>;
   handleStatusChange: (status: AirwayBillStatus) => void;
+  handleWaypointStatusChange: (waypointIndex: number, status: AirwayBillWaypointStatus) => void;
   handleDelete: () => void;
   openMenu: () => void;
   closeMenu: () => void;
@@ -56,9 +59,11 @@ export const AirwayBillDetailBody: React.FC<Props> = ({
   consignee,
   nextStatuses,
   menuVisible,
+  menuKey,
   statusLabels,
   statusColors,
   handleStatusChange,
+  handleWaypointStatusChange,
   handleDelete,
   openMenu,
   closeMenu,
@@ -76,6 +81,7 @@ export const AirwayBillDetailBody: React.FC<Props> = ({
   <>
     <AirwayBillDetailHeader onBack={handleBack} title="Détail AWB">
       <AirwayBillStatusMenu
+        key={menuKey}
         visible={menuVisible}
         onDismiss={closeMenu}
         anchor={<AirwayBillDetailMenuButton onPress={openMenu} />}
@@ -93,6 +99,8 @@ export const AirwayBillDetailBody: React.FC<Props> = ({
       waypoints={waypointPayload?.waypoints || airwayBill.waypoints || []}
       currentWaypointIndex={waypointPayload?.currentWaypointIndex ?? airwayBill.currentWaypointIndex ?? -1}
       progressPercentage={waypointPayload?.progressPercentage ?? airwayBill.waypointProgressPercentage ?? 0}
+      isUpdating={isUpdatingStatus}
+      onWaypointStatusChange={handleWaypointStatusChange}
     />
     <AirwayBillStatsRow totalPackages={airwayBill.totalPackages} totalWeight={airwayBill.totalWeight} />
     <CargoBagList

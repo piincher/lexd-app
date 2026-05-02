@@ -8,7 +8,6 @@ import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 
 interface NotificationCardLeftActionsProps {

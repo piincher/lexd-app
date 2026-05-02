@@ -17,6 +17,7 @@ interface GoodsItem {
   description: string;
   actualCBM: number;
   weight: number;
+  quantity?: number;
 }
 
 interface PackingListGoodsTableProps {
@@ -49,6 +50,7 @@ export const PackingListGoodsTable: React.FC<PackingListGoodsTableProps> = ({
         <View style={styles.tableHeader}>
           <Text style={[styles.tableHeaderCell, { flex: 0.4 }]}>N°</Text>
           <Text style={[styles.tableHeaderCell, { flex: 1.5 }]}>ID / Description</Text>
+          <Text style={[styles.tableHeaderCell, { flex: 0.5, textAlign: 'right' }]}>Qté</Text>
           <Text style={[styles.tableHeaderCell, { flex: 0.6, textAlign: 'right' }]}>CBM</Text>
           <Text style={[styles.tableHeaderCell, { flex: 0.6, textAlign: 'right' }]}>Poids</Text>
         </View>
@@ -74,6 +76,9 @@ export const PackingListGoodsTable: React.FC<PackingListGoodsTableProps> = ({
                 {item.description || '-'}
               </Text>
             </View>
+            <Text style={[styles.tableCell, { flex: 0.5, textAlign: 'right', fontWeight: '700' }]}>
+              {item.quantity || 1}
+            </Text>
             <Text style={[styles.tableCell, { flex: 0.6, textAlign: 'right' }]}>
               {item.actualCBM.toFixed(2)}
             </Text>

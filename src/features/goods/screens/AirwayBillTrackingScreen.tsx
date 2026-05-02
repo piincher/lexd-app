@@ -3,20 +3,16 @@
  */
 
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
-import { Text } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { Appbar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { Theme } from '@src/constants/Theme';
 import { useAirwayBillTracking } from '../hooks/useAirwayBillTracking';
-import {
-  AirwayBillTrackingHeader,
-  AirwayBillTrackingRouteCard,
-  AirwayBillTrackingTimeline,
-  AirwayBillTrackingGoodsList,
-} from '../components';
-import { AirwayBillTrackingWaypoints } from './components/AirwayBillTrackingWaypoints';
+import { AirwayBillTrackingContent, AirwayBillTrackingState } from '../components';
 
 export const AirwayBillTrackingScreen: React.FC = () => {
+  const navigation = useNavigation();
   const {
     awb,
     isLoading,
@@ -25,42 +21,64 @@ export const AirwayBillTrackingScreen: React.FC = () => {
     departureAirport,
     arrivalAirport,
     waypoints,
+    currentWaypoint,
     currentWaypointIndex,
     waypointProgress,
+    estimatedArrivalLabel,
+    isError,
+    error,
+    refetch,
+    isFetching,
   } = useAirwayBillTracking();
 
-  if (isLoading || !awb) {
+  if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.loadingText}>Chargement...</Text>
-      </SafeAreaView>
+      <AirwayBillTrackingState
+        loading
+        title="Chargement"
+        message="Chargement du suivi..."
+        onBack={() => navigation.goBack()}
+      />
+    );
+  }
+
+  if (isError || !awb) {
+    return (
+      <AirwayBillTrackingState
+        title="Suivi indisponible"
+        message={error instanceof Error ? error.message : "Impossible de charger cette expédition pour le moment."}
+        onBack={() => navigation.goBack()}
+        onRetry={() => refetch?.()}
+      />
     );
   }
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <AirwayBillTrackingHeader awbNumber={awb.awbNumber} flightLabel={flightLabel} />
-        <AirwayBillTrackingRouteCard departureAirport={departureAirport} arrivalAirport={arrivalAirport} />
-        {waypoints.length > 0 ? (
-          <AirwayBillTrackingWaypoints
-            waypoints={waypoints}
-            currentWaypointIndex={currentWaypointIndex}
-            progressPercentage={waypointProgress}
-          />
-        ) : (
-          <AirwayBillTrackingTimeline currentStepIndex={currentStepIndex} />
-        )}
-        <AirwayBillTrackingGoodsList goodsIds={awb.goodsIds} />
-      </ScrollView>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+        <Appbar.Content title="Suivi aérien" subtitle={awb.awbNumber} />
+      </Appbar.Header>
+      <AirwayBillTrackingContent
+        awb={awb}
+        flightLabel={flightLabel}
+        departureAirport={departureAirport}
+        arrivalAirport={arrivalAirport}
+        waypoints={waypoints}
+        currentWaypoint={currentWaypoint}
+        currentWaypointIndex={currentWaypointIndex}
+        waypointProgress={waypointProgress}
+        currentStepIndex={currentStepIndex}
+        estimatedArrivalLabel={estimatedArrivalLabel}
+        isFetching={Boolean(isFetching)}
+        onRefresh={() => refetch?.()}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Theme.neutral[50] },
-  content: { padding: Theme.spacing.lg, paddingBottom: 60 },
-  loadingText: { textAlign: 'center', marginTop: 40, color: Theme.neutral[500] },
 });
 
 export default AirwayBillTrackingScreen;

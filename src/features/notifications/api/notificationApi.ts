@@ -14,20 +14,40 @@ import type {
 
 const BASE_URL = '/notifications/in-app';
 
+type NotificationListResponse = {
+  notifications?: InAppNotification[];
+  pagination?: {
+    page?: number;
+    limit?: number;
+    total?: number;
+    pages?: number;
+  };
+};
+
+type UnreadCountBackendResponse = {
+  unreadCount?: number;
+  count?: number;
+};
+
+type MarkAllReadResponse = {
+  modifiedCount?: number;
+  updatedCount?: number;
+};
+
 /**
  * Map frontend filter to backend query params
  * Backend expects: isRead, type (not a "filter" param)
  */
 const mapFilterToParams = (params?: GetNotificationsParams) => {
   const { filter, page, limit } = params || {};
-  const mapped: Record<string, any> = { page: page || 1, limit: limit || 20 };
+  const mapped: Record<string, string | number | boolean> = { page: page || 1, limit: limit || 20 };
 
   if (filter === 'unread') {
     mapped.isRead = false;
   } else if (filter === 'system') {
     mapped.type = 'SYSTEM';
   }
-  // 'all' → no extra filter
+  // Smart filters are applied client-side so older backend endpoints keep working.
 
   return mapped;
 };
@@ -39,7 +59,7 @@ export const notificationApi = {
    * Frontend expects: { data, pagination: { totalPages } }
    */
   getNotifications: async (params?: GetNotificationsParams): Promise<PaginatedNotifications> => {
-    const response = await apiClientV2.get<ApiResponse<any>>(BASE_URL, {
+    const response = await apiClientV2.get<ApiResponse<NotificationListResponse>>(BASE_URL, {
       params: mapFilterToParams(params),
     });
     const result = response.data.data;
@@ -60,7 +80,7 @@ export const notificationApi = {
    * Frontend expects: { count, hasNew }
    */
   getUnreadCount: async (): Promise<UnreadCountResponse> => {
-    const response = await apiClientV2.get<ApiResponse<any>>(`${BASE_URL}/unread-count`);
+    const response = await apiClientV2.get<ApiResponse<UnreadCountBackendResponse>>(`${BASE_URL}/unread-count`);
     const result = response.data.data;
     return {
       count: result.unreadCount ?? result.count ?? 0,
@@ -82,7 +102,7 @@ export const notificationApi = {
    * Frontend expects: { updatedCount }
    */
   markAllAsRead: async (): Promise<{ updatedCount: number }> => {
-    const response = await apiClientV2.put<ApiResponse<any>>(`${BASE_URL}/read-all`);
+    const response = await apiClientV2.put<ApiResponse<MarkAllReadResponse>>(`${BASE_URL}/read-all`);
     const result = response.data.data;
     return { updatedCount: result.modifiedCount ?? result.updatedCount ?? 0 };
   },

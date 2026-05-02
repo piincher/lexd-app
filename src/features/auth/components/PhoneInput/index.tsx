@@ -40,9 +40,9 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
         <View style={[styles.inputWrap, { backgroundColor: inputBg, borderColor: inputBorderColor }]}>
           <TextInput
             style={[styles.input, { color: colors.text.primary }]}
-            placeholder="XX XX XX XX" placeholderTextColor={colors.text.disabled}
+            placeholder={selectedCountry.placeholder} placeholderTextColor={colors.text.disabled}
             value={value} onChangeText={(t) => onChangeText(t.replace(/[^0-9]/g, ''))}
-            keyboardType="number-pad" maxLength={8} returnKeyType="done" onSubmitEditing={onSubmit}
+            keyboardType="number-pad" maxLength={selectedCountry.inputMaxLength || selectedCountry.maxLength} returnKeyType="done" onSubmitEditing={onSubmit}
           />
           {value.length > 0 && (
             <Pressable onPress={onClear} hitSlop={8}>

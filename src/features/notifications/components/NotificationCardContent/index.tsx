@@ -22,6 +22,8 @@ interface NotificationCardContentProps {
   onPress: (notification: InAppNotification) => void;
 }
 
+type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+
 export const NotificationCardContent: React.FC<NotificationCardContentProps> = ({
   notification,
   onPress,
@@ -50,7 +52,7 @@ export const NotificationCardContent: React.FC<NotificationCardContentProps> = (
       <View style={styles.cardContent}>
         <View style={[styles.iconCircle, { backgroundColor: safeCatBgColor }]}>
           <MaterialCommunityIcons
-            name={safeIcon as any}
+            name={safeIcon as MaterialIconName}
             size={22}
             color={safeCatColor}
           />

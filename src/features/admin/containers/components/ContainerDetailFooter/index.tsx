@@ -50,7 +50,7 @@ export const ContainerDetailFooter: React.FC<ContainerDetailFooterProps> = ({
         onMarkReadyForPickup={handleMarkReadyForPickup}
         onMarkDelivered={handleMarkDelivered}
         hasGoods={goodsList.length > 0}
-        canMarkReadyForPickup={container.status === 'ARRIVED'}
+        canMarkReadyForPickup={container.status === 'ARRIVED' || container.status === 'DISCHARGED'}
         canMarkDelivered={canMarkDelivered}
       />
 

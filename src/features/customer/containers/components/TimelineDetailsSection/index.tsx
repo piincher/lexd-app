@@ -22,8 +22,14 @@ export const TimelineDetailsSection: React.FC<TimelineDetailsSectionProps> = ({
 
   const rows: { label: string; value?: string }[] = [
     { label: 'Réservé le', value: timeline.bookedAt },
+    { label: 'Vide vers entrepôt', value: timeline.emptyDispatchedAt },
+    { label: 'Chargement commencé', value: timeline.loadingStartedAt },
+    { label: 'Chargement terminé', value: timeline.loadingCompletedAt },
+    { label: 'Entré au port', value: timeline.gateInFullAt },
+    { label: 'Chargé à bord', value: timeline.loadedOnVesselAt },
     { label: 'Départ', value: timeline.departedAt },
     { label: 'Arrivé le', value: timeline.arrivedAt },
+    { label: 'Déchargé le', value: timeline.dischargedAt },
     { label: 'Prêt pour retrait', value: timeline.readyForPickupAt },
     { label: 'Livré le', value: timeline.deliveredAt },
   ];

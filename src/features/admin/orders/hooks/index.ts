@@ -12,3 +12,4 @@ export { useOrderDetailScreen } from './useOrderDetailScreen';
 export { useActiveOrdersScreen } from './useActiveOrdersScreen';
 export { useBatchUpdate } from './useBatchUpdate';
 export { useBatchUpdateDetail } from './useBatchUpdateDetail';
+export { useReceiptActions } from './useReceiptActions';

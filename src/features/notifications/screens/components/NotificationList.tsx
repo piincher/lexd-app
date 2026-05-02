@@ -8,8 +8,7 @@ import { View, StyleSheet, RefreshControl } from 'react-native';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 
 import { Theme } from '@src/constants/Theme';
-import type { InAppNotification } from '../../types';
-import type { FilterTab } from '../../types';
+import type { FilterTab, InAppNotification } from '../../types';
 import NotificationSkeleton from '../../components/NotificationSkeleton';
 import { NotificationCard } from './NotificationCard';
 import { NotificationEmpty } from './NotificationEmpty';

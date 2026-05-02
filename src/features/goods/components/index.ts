@@ -33,6 +33,9 @@ export { AirwayBillTrackingHeader } from './AirwayBillTrackingHeader';
 export { AirwayBillTrackingRouteCard } from './AirwayBillTrackingRouteCard';
 export { AirwayBillTrackingTimeline } from './AirwayBillTrackingTimeline';
 export { AirwayBillTrackingGoodsList } from './AirwayBillTrackingGoodsList';
+export { AirwayBillTrackingSummary } from './AirwayBillTrackingSummary';
+export { AirwayBillTrackingState } from './AirwayBillTrackingState';
+export { AirwayBillTrackingContent } from './AirwayBillTrackingContent';
 
 // Edit Goods components
 export { EditGoodsHeader } from './EditGoodsHeader';

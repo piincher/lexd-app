@@ -19,7 +19,7 @@ export const useAirwayBillTracking = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'AirwayBillTracking'>>();
   const { airwayBillId } = route.params;
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error, refetch, isFetching } = useQuery({
     queryKey: ['goods', 'airwayBill', airwayBillId],
     queryFn: () => airwayBillApi.getById(airwayBillId),
     enabled: !!airwayBillId,
@@ -29,7 +29,7 @@ export const useAirwayBillTracking = () => {
   const awb = data?.data?.airwayBill;
 
   if (isLoading || !awb) {
-    return { isLoading: true as const, awb: undefined };
+    return { isLoading, isError, error, refetch, isFetching, awb: undefined };
   }
 
   const currentStepIndex = AWB_STATUS_STEPS.findIndex((s) => s.key === awb.status);
@@ -53,16 +53,30 @@ export const useAirwayBillTracking = () => {
     : waypoints.length
       ? Math.round((waypoints.filter((w: TrackingWaypoint) => w.status === 'COMPLETED').length / waypoints.length) * 100)
       : 0;
+  const currentWaypoint = currentWaypointIndex >= 0 ? waypoints[currentWaypointIndex] : undefined;
+  const finalWaypoint = waypoints.find((waypoint: TrackingWaypoint) => waypoint.location?.portCode === 'MLBKO_WH');
+  const customerEtaLabel = finalWaypoint?.customerEta?.visibleToCustomer
+    ? finalWaypoint.customerEta.label
+    : null;
+  const arrivedStatus = ['ARRIVED', 'READY_FOR_PICKUP', 'DELIVERED'].includes(awb.status);
+  const operationalEta = awb.actualArrivalDate || awb.estimatedArrivalDate || currentWaypoint?.estimatedArrival || null;
+  const estimatedArrivalLabel = arrivedStatus ? operationalEta || customerEtaLabel : customerEtaLabel || operationalEta;
 
   return {
     isLoading: false as const,
+    isError,
+    error,
+    refetch,
+    isFetching,
     awb,
     currentStepIndex,
     flightLabel,
     departureAirport,
     arrivalAirport,
     waypoints,
+    currentWaypoint,
     currentWaypointIndex,
     waypointProgress,
+    estimatedArrivalLabel,
   };
 };

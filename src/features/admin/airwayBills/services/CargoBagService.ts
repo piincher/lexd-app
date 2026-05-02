@@ -9,6 +9,7 @@ import {
   CreateCargoBagInput,
   UpdateCargoBagInput,
   CargoBagListResponse,
+  CargoBagEligibleGoodsResponse,
   AirwayBillWaypointPayload,
   UpdateAirwayBillWaypointInput,
 } from '../types';
@@ -29,6 +30,10 @@ class CargoBagServiceClass {
 
   async getById(id: string): Promise<{ data: { cargoBag: CargoBag } }> {
     return apiRequest.get(this.client, `${BASE_URL}/${id}`);
+  }
+
+  async getEligibleGoods(id: string): Promise<{ data: CargoBagEligibleGoodsResponse }> {
+    return apiRequest.get(this.client, `${BASE_URL}/${id}/eligible-goods`);
   }
 
   async getWaypoints(id: string): Promise<{ data: AirwayBillWaypointPayload }> {

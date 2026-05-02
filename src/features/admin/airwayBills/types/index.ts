@@ -296,3 +296,10 @@ export interface CargoBagListResponse {
   cargoBags: CargoBag[];
   total: number;
 }
+
+export interface CargoBagEligibleGoodsResponse {
+  goods: AirwayBillGoods[];
+  count: number;
+  total?: number;
+  canAssign?: boolean;
+}

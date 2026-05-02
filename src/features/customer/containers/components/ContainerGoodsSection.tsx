@@ -4,12 +4,12 @@
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Text, Button, Chip, List, useTheme } from 'react-native-paper';
 
-import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { CustomerGoodsInContainer } from '../types';
+import { styles } from './ContainerGoodsSection.styles';
 
 interface ContainerGoodsSectionProps {
   goods: CustomerGoodsInContainer[];
@@ -63,12 +63,25 @@ const GoodsItem: React.FC<{ goods: CustomerGoodsInContainer }> = ({ goods }) => 
   );
 };
 
+const summarizeGoods = (goods: CustomerGoodsInContainer[]) => {
+  const totalCBM = goods.reduce((sum, item) => sum + (item.actualCBM || 0), 0);
+  const totalWeight = goods.reduce((sum, item) => sum + (item.weight || 0), 0);
+  const preview = goods
+    .map((item) => item.description || item.goodsId)
+    .filter(Boolean)
+    .slice(0, 3)
+    .join(', ');
+
+  return { totalCBM, totalWeight, preview };
+};
+
 export const ContainerGoodsSection: React.FC<ContainerGoodsSectionProps> = ({
   goods,
   containerId,
   onViewPackingList,
 }) => {
   const { colors } = useAppTheme();
+  const summary = summarizeGoods(goods || []);
 
   return (
     <View style={[styles.sectionCard, { backgroundColor: colors.background.card }]}>
@@ -86,47 +99,26 @@ export const ContainerGoodsSection: React.FC<ContainerGoodsSectionProps> = ({
         </Button>
       </View>
       <Text style={[styles.goodsSubtitle, { color: colors.text.secondary }]}>
-        Vos marchandises dans ce container
+        Une seule expédition, {goods?.length || 0} marchandise{(goods?.length || 0) > 1 ? 's' : ''} dans ce container
       </Text>
+      <View style={[styles.summaryBox, { backgroundColor: colors.background.paper }]}>
+        <View style={styles.summaryItem}>
+          <Text style={[styles.summaryValue, { color: colors.text.primary }]}>{summary.totalCBM.toFixed(2)}</Text>
+          <Text style={[styles.summaryLabel, { color: colors.text.secondary }]}>CBM total</Text>
+        </View>
+        <View style={styles.summaryItem}>
+          <Text style={[styles.summaryValue, { color: colors.text.primary }]}>{summary.totalWeight.toFixed(0)}</Text>
+          <Text style={[styles.summaryLabel, { color: colors.text.secondary }]}>kg total</Text>
+        </View>
+      </View>
+      {!!summary.preview && (
+        <Text style={[styles.previewText, { color: colors.text.secondary }]} numberOfLines={2}>
+          Aperçu: {summary.preview}{goods.length > 3 ? ` +${goods.length - 3} autres` : ''}
+        </Text>
+      )}
       {goods?.map((item) => (
         <GoodsItem key={item._id} goods={item} />
       ))}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionCard: {
-    marginBottom: 16,
-    borderRadius: 12,
-    padding: 16,
-    elevation: 1,
-  },
-  sectionTitle: {
-    fontFamily: Fonts.bold,
-    fontSize: 16,
-  },
-  goodsSectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  goodsSubtitle: {
-    fontFamily: Fonts.regular,
-    fontSize: 12,
-    marginBottom: 12,
-  },
-  goodsItem: {
-    paddingVertical: 4,
-    paddingHorizontal: 0,
-  },
-  goodsRightContent: {
-    alignItems: 'flex-end',
-  },
-  goodsCbm: {
-    fontFamily: Fonts.meduim,
-    fontSize: 12,
-    marginBottom: 4,
-  },
-});

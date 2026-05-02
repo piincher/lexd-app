@@ -1,33 +1,27 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Card } from '@src/shared/ui/Card';
 import { Badge } from '@src/shared/ui/Badge';
 import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { AirwayBillWaypoint, AirwayBillWaypointStatus } from '../../types';
+import {
+  AIRWAY_BILL_SEGMENT_LABELS,
+  AIRWAY_BILL_WAYPOINT_STATUS_LABELS,
+  getAirwayBillWaypointIcon,
+} from '../../constants';
+import { AirwayBillWaypointActions } from './AirwayBillWaypointActions';
 
 interface Props {
   waypoints: AirwayBillWaypoint[];
   currentWaypointIndex?: number;
   progressPercentage?: number;
+  isUpdating?: boolean;
+  onWaypointStatusChange?: (waypointIndex: number, status: AirwayBillWaypointStatus) => void;
 }
 
-const STATUS_LABELS: Record<AirwayBillWaypointStatus, string> = {
-  PENDING: 'En attente',
-  IN_PROGRESS: 'En cours',
-  COMPLETED: 'Terminé',
-  DELAYED: 'Retardé',
-  CANCELLED: 'Annulé',
-};
-
-const ICONS: Record<string, keyof typeof Ionicons.glyphMap> = {
-  AIR: 'airplane',
-  CUSTOMS: 'shield-checkmark',
-  WAREHOUSE: 'business',
-  ROAD: 'car',
-  CONTAINER: 'cube',
-};
+type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 const formatDate = (date?: string | null) => {
   if (!date) return null;
@@ -40,6 +34,8 @@ export const AirwayBillWaypointTimeline: React.FC<Props> = ({
   waypoints,
   currentWaypointIndex = -1,
   progressPercentage = 0,
+  isUpdating = false,
+  onWaypointStatusChange,
 }) => {
   const { colors } = useAppTheme();
 
@@ -48,7 +44,7 @@ export const AirwayBillWaypointTimeline: React.FC<Props> = ({
       <Card style={styles.card} padding="large">
         <Text style={[styles.title, { color: colors.text.primary }]}>Itinéraire aérien</Text>
         <Text style={[styles.empty, { color: colors.text.secondary }]}>
-          Les waypoints seront générés automatiquement dès que la route AWB est disponible.
+          Les étapes seront générées automatiquement dès que la route AWB est disponible.
         </Text>
       </Card>
     );
@@ -88,32 +84,44 @@ export const AirwayBillWaypointTimeline: React.FC<Props> = ({
       </View>
       {waypoints.map((waypoint, index) => {
         const color = statusColor(waypoint.status);
-        const icon = ICONS[waypoint.segmentType] || 'location';
+        const icon = getAirwayBillWaypointIcon(waypoint) as MaterialIconName;
         const date = formatDate(waypoint.actualArrival || waypoint.estimatedArrival);
         const isCurrent = index === currentWaypointIndex;
 
         return (
           <View key={waypoint._id || `${waypoint.order}-${index}`} style={styles.item}>
             <View style={[styles.iconWrap, { backgroundColor: `${color}18` }]}>
-              <Ionicons name={icon} size={18} color={color} />
+              <MaterialCommunityIcons name={icon} size={20} color={color} />
             </View>
             <View style={styles.itemBody}>
               <View style={styles.itemHeader}>
                 <Text style={[styles.location, { color: colors.text.primary }]}>
                   {waypoint.shortName || waypoint.location.city}
                 </Text>
-                <Text style={[styles.status, { color }]}>{STATUS_LABELS[waypoint.status]}</Text>
+                <Text style={[styles.status, { color }]}>{AIRWAY_BILL_WAYPOINT_STATUS_LABELS[waypoint.status]}</Text>
               </View>
               <Text style={[styles.description, { color: colors.text.secondary }]} numberOfLines={2}>
                 {waypoint.description || waypoint.location.warehouse || waypoint.location.country}
               </Text>
               <View style={styles.metaRow}>
                 <Text style={[styles.meta, { color: colors.text.muted }]}>
-                  {waypoint.location.portCode || waypoint.segmentType}
+                  {waypoint.location.portCode || AIRWAY_BILL_SEGMENT_LABELS[waypoint.segmentType]}
                 </Text>
                 {date && <Text style={[styles.meta, { color: colors.text.muted }]}>{date}</Text>}
+                {!!waypoint.warehouseDetails?.contactPhone && (
+                  <Text style={[styles.meta, { color: colors.text.muted }]}>
+                    {waypoint.warehouseDetails.contactPhone}
+                  </Text>
+                )}
                 {isCurrent && <Text style={[styles.current, { color }]}>Position actuelle</Text>}
               </View>
+              {!!onWaypointStatusChange && (
+                <AirwayBillWaypointActions
+                  currentStatus={waypoint.status}
+                  disabled={isUpdating}
+                  onSelectStatus={(status) => onWaypointStatusChange(index, status)}
+                />
+              )}
             </View>
             {index < waypoints.length - 1 && (
               <View style={[styles.connector, { backgroundColor: colors.neutral[200] }]} />

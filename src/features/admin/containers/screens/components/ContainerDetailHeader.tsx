@@ -35,14 +35,20 @@ interface ContainerDetailHeaderProps {
   consignee?: ConsigneeInfo;
 }
 
-const TIMELINE_STEPS: { status: ContainerStatus; label: string; icon: string }[] = [
+type HeaderStatusIcon = keyof typeof Ionicons.glyphMap;
+
+const TIMELINE_STEPS: { status: ContainerStatus; label: string; icon: HeaderStatusIcon }[] = [
   { status: 'BOOKED', label: 'Réservé', icon: 'bookmark' },
   { status: 'EMPTY_TO_WAREHOUSE', label: 'Vide vers Entrepôt', icon: 'cube-outline' },
   { status: 'LOADING', label: 'Chargement', icon: 'hammer' },
   { status: 'LOADED', label: 'Chargé', icon: 'cube' },
+  { status: 'GATE_IN_FULL', label: 'Entré au Port', icon: 'enter-outline' },
+  { status: 'LOADED_ON_VESSEL', label: 'Chargé à Bord', icon: 'boat' },
   { status: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },
   { status: 'ARRIVED', label: 'Arrivé', icon: 'flag' },
+  { status: 'DISCHARGED', label: 'Déchargé', icon: 'archive-outline' },
   { status: 'READY_FOR_PICKUP', label: 'Retrait', icon: 'checkmark-done' },
+  { status: 'DELIVERED', label: 'Livré', icon: 'checkmark-done' },
 ];
 
 const SHIPPING_MODE_MAPPING: Record<string, 'SEA' | 'AIR'> = {
@@ -72,6 +78,9 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
   };
 
   const mappedShippingMode = shippingMode ? SHIPPING_MODE_MAPPING[shippingMode] : undefined;
+  const shippingModeIcon = mappedShippingMode
+    ? SHIPPING_MODE_ICONS[mappedShippingMode] as HeaderStatusIcon
+    : undefined;
 
   return (
     <LinearGradient
@@ -106,7 +115,7 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
                 title={step.label}
                 leadingIcon={() => (
                   <Ionicons
-                    name={step.icon as any}
+                    name={step.icon}
                     size={20}
                     color={CONTAINER_STATUS_COLORS[step.status]}
                   />
@@ -132,7 +141,7 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
         {mappedShippingMode && (
           <View style={styles.shippingLineContainer}>
             <Ionicons
-              name={SHIPPING_MODE_ICONS[mappedShippingMode] as any}
+              name={shippingModeIcon}
               size={16}
               color="rgba(255,255,255,0.8)"
             />

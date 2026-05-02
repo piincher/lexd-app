@@ -10,26 +10,44 @@ import { SHIPPING_MODE_LABELS } from '../../../types';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
+type StatusColor = { bg: string; text: string; icon: string };
+type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+
 interface PackingListSummaryProps {
   containerNumber?: string;
-  shippingMode?: 'air' | 'sea';
+  shippingMode?: 'AIR' | 'SEA';
   status?: string;
   totalCBM?: number;
   totalWeight?: number;
   totalPackages?: number;
   departureDate?: string;
   arrivalDate?: string;
-  getShippingModeIcon: (mode: string) => string;
-  getStatusColor: (status: string) => { bg: string; text: string; icon: string } | string;
+  loadDate?: string | null;
+  dakarPortArrivalAt?: string | null;
+  signature?: {
+    signed?: boolean;
+    signedBy?: string;
+    signerName?: string;
+    signerRole?: string;
+    signedAt?: string;
+    signatureLabel?: string;
+  };
+  getShippingModeIcon: (mode: string) => MaterialIconName;
+  getStatusColor: (status: string) => StatusColor | string;
   formatDate: (date?: string) => string;
+  formatDateTime?: (date?: string | null) => string;
 }
+
+const isStatusColor = (value: StatusColor | string | null): value is StatusColor =>
+  !!value && typeof value === 'object';
 
 export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
   containerNumber, shippingMode, status, totalCBM, totalWeight, totalPackages,
-  departureDate, arrivalDate, getShippingModeIcon, getStatusColor, formatDate,
+  departureDate, arrivalDate, loadDate, dakarPortArrivalAt, signature, getShippingModeIcon, getStatusColor, formatDate,
+  formatDateTime,
 }) => {
   const theme = useTheme();
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const styles = useMemo(() => StyleSheet.create({
     card: { marginHorizontal: 16, marginBottom: 16, elevation: 2 },
     header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 },
@@ -49,10 +67,14 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
     dateItem: { flexDirection: 'row', alignItems: 'center', flex: 1 },
     dateLabel: { fontFamily: Fonts.regular, fontSize: 12, color: colors.status.success, marginLeft: 6 },
     dateValue: { fontFamily: Fonts.meduim, fontSize: 12, color: colors.text.secondary, marginLeft: 4 },
-  }), [colors, isDark]);
+    scheduleContainer: { gap: 10 },
+    signatureRow: { flexDirection: 'row', alignItems: 'center', marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: colors.border },
+    signatureText: { flex: 1, fontFamily: Fonts.meduim, fontSize: 12, color: colors.text.secondary, marginLeft: 8 },
+    signatureMeta: { fontFamily: Fonts.regular, fontSize: 11, color: colors.status.success, marginTop: 2 },
+  }), [colors]);
 
   const rawStatusColor = status ? getStatusColor(status) : null;
-  const statusColorObj = rawStatusColor && typeof rawStatusColor === 'object' ? rawStatusColor as any : null;
+  const statusColorObj = isStatusColor(rawStatusColor) ? rawStatusColor : null;
   const statusBg = statusColorObj?.bg || colors.background.paper;
   const statusText = statusColorObj?.text || (typeof rawStatusColor === 'string' ? rawStatusColor : colors.text.secondary);
 
@@ -76,7 +98,7 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
 
         {shippingMode && (
           <View style={styles.modeRow}>
-            <MaterialCommunityIcons name={getShippingModeIcon(shippingMode) as any} size={18} color={colors.text.secondary} />
+            <MaterialCommunityIcons name={getShippingModeIcon(shippingMode)} size={18} color={colors.text.secondary} />
             <Text style={styles.modeText}>
               {SHIPPING_MODE_LABELS[shippingMode.toUpperCase() as 'SEA' | 'AIR'] || shippingMode}
             </Text>
@@ -101,18 +123,31 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
           </View>
         </View>
 
-        <View style={styles.datesContainer}>
-          <View style={styles.dateItem}>
-            <MaterialCommunityIcons name="calendar-export" size={16} color={colors.text.secondary} />
-            <Text style={styles.dateLabel}>Départ:</Text>
-            <Text style={styles.dateValue}>{formatDate(departureDate)}</Text>
-          </View>
-          <View style={styles.dateItem}>
-            <MaterialCommunityIcons name="calendar-import" size={16} color={colors.text.secondary} />
-            <Text style={styles.dateLabel}>Arrivée:</Text>
-            <Text style={styles.dateValue}>{formatDate(arrivalDate)}</Text>
+        <View style={styles.scheduleContainer}>
+          <View style={styles.datesContainer}>
+            <View style={styles.dateItem}>
+              <MaterialCommunityIcons name="calendar-check" size={16} color={colors.text.secondary} />
+              <Text style={styles.dateLabel}>Chargement:</Text>
+              <Text style={styles.dateValue}>{formatDateTime ? formatDateTime(loadDate || departureDate) : formatDate(loadDate || departureDate)}</Text>
+            </View>
+            <View style={styles.dateItem}>
+              <MaterialCommunityIcons name="ferry" size={16} color={colors.text.secondary} />
+              <Text style={styles.dateLabel}>Dakar:</Text>
+              <Text style={styles.dateValue}>{formatDateTime ? formatDateTime(dakarPortArrivalAt || arrivalDate) : formatDate(dakarPortArrivalAt || arrivalDate)}</Text>
+            </View>
           </View>
         </View>
+        {signature?.signed && (
+          <View style={styles.signatureRow}>
+            <MaterialCommunityIcons name="signature-freehand" size={18} color={theme.colors.primary} />
+            <View>
+              <Text style={styles.signatureText}>{signature.signatureLabel || `Signé par ${signature.signedBy || 'ChinaLink Express'}`}</Text>
+              <Text style={styles.signatureMeta}>
+                {signature.signerName || 'Service Logistique'} · {formatDateTime ? formatDateTime(signature.signedAt) : formatDate(signature.signedAt)}
+              </Text>
+            </View>
+          </View>
+        )}
       </Card.Content>
     </Card>
   );

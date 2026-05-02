@@ -5,6 +5,7 @@ import {
   UpdateAirwayBillInput,
   AssignGoodsInput,
 } from '../../types';
+import { cargoBagQueryKeys } from '../cargoBags/queryKeys';
 import { airwayBillQueryKeys } from './queryKeys';
 
 export const useCreateAirwayBill = () => {
@@ -53,6 +54,7 @@ export const useUpdateAirwayBillStatus = () => {
       queryClient.invalidateQueries({ queryKey: airwayBillQueryKeys.detail(variables.id) });
       queryClient.invalidateQueries({ queryKey: airwayBillQueryKeys.waypoints(variables.id) });
       queryClient.invalidateQueries({ queryKey: airwayBillQueryKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: cargoBagQueryKeys.all });
     },
   });
 };

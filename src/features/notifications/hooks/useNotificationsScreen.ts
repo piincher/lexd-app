@@ -6,7 +6,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import * as Haptics from 'expo-haptics';
 
-import type { FilterTab } from '../types';
+import type { FilterTab, InAppNotification } from '../types';
 import {
   useGetNotificationsInfinite,
   useGetUnreadCount,
@@ -36,9 +36,14 @@ export const useNotificationsScreen = () => {
   const { mutate: markAllAsRead, isPending: isMarkingAll } = useMarkAllAsRead();
   const { mutate: deleteNotification } = useDeleteNotification();
 
-  const notifications = useMemo(
+  const allNotifications = useMemo(
     () => data?.pages.flatMap(page => page.data ?? []) || [],
     [data]
+  );
+
+  const notifications = useMemo(
+    () => filterNotifications(allNotifications, activeFilter),
+    [allNotifications, activeFilter]
   );
 
   const hasUnread = notifications.some(n => n && !n.isRead);
@@ -86,4 +91,35 @@ export const useNotificationsScreen = () => {
     handleLoadMore,
     refetch,
   };
+};
+
+const filterNotifications = (
+  notifications: InAppNotification[],
+  filter: FilterTab,
+) => {
+  if (filter === 'important') {
+    return notifications.filter((item) =>
+      item.priority === 'HIGH' ||
+      item.category === 'WARNING' ||
+      item.category === 'ERROR' ||
+      ['READY_FOR_PICKUP', 'PAYMENT_OVERDUE'].includes(String(item.data?.movementEventType || item.data?.type || ''))
+    );
+  }
+
+  if (filter === 'shipments') {
+    return notifications.filter((item) =>
+      item.type === 'CONTAINER_STATUS' ||
+      item.type === 'ORDER_UPDATE' ||
+      String(item.data?.screen || '').toLowerCase().includes('container')
+    );
+  }
+
+  if (filter === 'payments') {
+    return notifications.filter((item) =>
+      item.type === 'PAYMENT' ||
+      item.type === 'INVOICE'
+    );
+  }
+
+  return notifications;
 };

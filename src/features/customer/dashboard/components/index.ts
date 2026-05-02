@@ -4,6 +4,7 @@
  */
 
 export { HeroSection } from './HeroSection';
+export { ShipmentHomeCard } from './ShipmentHomeCard';
 export { SmartActions } from './SmartActions';
 export { JourneyMap } from './JourneyMap';
 export { ContainerStack } from './ContainerStack';

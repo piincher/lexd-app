@@ -4,7 +4,12 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import type { RouteProp } from '@react-navigation/native';
 import type { RootStackParamList } from '@src/navigations/type';
 import { useGetAirwayBillById, useGetUnassignedAirGoods, useAssignGoodsToAirwayBill } from '../../hooks/useAirwayBills';
-import { useGetCargoBagsByAwb, useCreateCargoBag, useAddGoodsToCargoBag } from '../../hooks/useCargoBags';
+import {
+  useGetCargoBagsByAwb,
+  useGetCargoBagEligibleGoods,
+  useCreateCargoBag,
+  useAddGoodsToCargoBag,
+} from '../../hooks/useCargoBags';
 import type { AirwayBillGoods } from '../../types';
 
 interface AssignmentFailure {
@@ -27,6 +32,8 @@ export const useAssignGoodsScreen = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [selectedBagId, setSelectedBagId] = useState<string | null>(cargoBagId || null);
   const [createBagVisible, setCreateBagVisible] = useState(false);
+  const { data: eligibleGoodsData, isLoading: isLoadingEligibleGoods } =
+    useGetCargoBagEligibleGoods(selectedBagId);
 
   const airwayBill = airwayBillData?.data?.airwayBill;
   const unassignedGoodsList = useMemo(() => goodsData?.data?.goods || [], [goodsData]);
@@ -34,26 +41,14 @@ export const useAssignGoodsScreen = () => {
   const capacityWeight = airwayBill?.capacityWeight || 0;
   const currentTotalWeight = airwayBill?.totalWeight || 0;
 
-  // When a bag is selected, show AWB-assigned goods that are not yet in any bag
-  const awbGoodsNotInBag: AirwayBillGoods[] = useMemo(() => {
-    const awbGoods = airwayBill?.goodsIds || [];
-    return awbGoods.filter((g): g is AirwayBillGoods => {
-      if (typeof g === 'string') return false;
-      const goodsId = g?._id?.toString?.() || g?._id;
-      const inBag = g?.cargoBagId != null;
-      return Boolean(goodsId) && !inBag;
-    });
-  }, [airwayBill]);
-
-  // Use the appropriate goods list based on assignment target
   const goodsList: AirwayBillGoods[] = useMemo(() => {
     if (selectedBagId) {
-      return awbGoodsNotInBag;
+      return eligibleGoodsData?.data?.goods || [];
     }
     return unassignedGoodsList;
-  }, [selectedBagId, awbGoodsNotInBag, unassignedGoodsList]);
+  }, [selectedBagId, eligibleGoodsData, unassignedGoodsList]);
 
-  const isLoading = selectedBagId ? isLoadingAwb : isLoadingUnassigned;
+  const isLoading = selectedBagId ? isLoadingEligibleGoods || isLoadingAwb : isLoadingUnassigned;
 
   const totalSelectedWeight = useMemo(() => {
     return goodsList.filter((g) => selectedIds.includes(g._id)).reduce((sum, g) => sum + (g.weight || 0), 0);

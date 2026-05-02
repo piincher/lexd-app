@@ -24,11 +24,13 @@ export const useGetNotifications = (params?: GetNotificationsParams) => {
   });
 };
 
-export const useGetNotificationsInfinite = (filter?: 'all' | 'unread' | 'system') => {
+export const useGetNotificationsInfinite = (filter?: GetNotificationsParams['filter']) => {
+  const isSmartFilter = filter === 'important' || filter === 'shipments' || filter === 'payments';
+
   return useInfiniteQuery({
     queryKey: notificationQueryKeys.infinite(filter),
     queryFn: ({ pageParam = 1 }) =>
-      notificationApi.getNotifications({ filter, page: pageParam, limit: 20 }),
+      notificationApi.getNotifications({ filter, page: pageParam, limit: isSmartFilter ? 60 : 20 }),
     getNextPageParam: (lastPage) => {
       const { page, totalPages } = lastPage.pagination;
       return page < totalPages ? page + 1 : undefined;

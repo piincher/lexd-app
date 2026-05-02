@@ -107,8 +107,11 @@ export type ContainerStatus =
   | 'EMPTY_TO_WAREHOUSE'
   | 'LOADING' 
   | 'LOADED' 
+  | 'GATE_IN_FULL'
+  | 'LOADED_ON_VESSEL'
   | 'IN_TRANSIT' 
   | 'ARRIVED'
+  | 'DISCHARGED'
   | 'READY_FOR_PICKUP'
   | 'DELIVERED';
 
@@ -130,8 +133,11 @@ export const TIMELINE_STEPS: TimelineStep[] = [
   { status: 'EMPTY_TO_WAREHOUSE', label: 'Vide vers Entrepôt', icon: 'cube-outline' },
   { status: 'LOADING', label: 'Chargement', icon: 'hammer' },
   { status: 'LOADED', label: 'Chargé', icon: 'cube' },
+  { status: 'GATE_IN_FULL', label: 'Entré au Port', icon: 'enter-outline' },
+  { status: 'LOADED_ON_VESSEL', label: 'Chargé à Bord', icon: 'boat' },
   { status: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },
   { status: 'ARRIVED', label: 'Arrivé', icon: 'flag' },
+  { status: 'DISCHARGED', label: 'Déchargé', icon: 'archive-outline' },
   { status: 'READY_FOR_PICKUP', label: 'Retrait', icon: 'checkmark-done' },
   { status: 'DELIVERED', label: 'Livré', icon: 'checkmark-done' },
 ];
@@ -149,8 +155,11 @@ export interface ContainerTimeline {
   emptyDispatchedAt?: string;
   loadingStartedAt?: string;
   loadingCompletedAt?: string;
+  gateInFullAt?: string;
+  loadedOnVesselAt?: string;
   departedAt?: string;
   arrivedAt?: string;
+  dischargedAt?: string;
   readyForPickupAt?: string;
   deliveredAt?: string;
   estimatedDeparture?: string;
@@ -416,8 +425,11 @@ export const CONTAINER_STATUS_LABELS: Record<ContainerStatus, string> = {
   EMPTY_TO_WAREHOUSE: 'Vide vers Entrepôt',
   LOADING: 'En Chargement',
   LOADED: 'Chargé',
+  GATE_IN_FULL: 'Entré au Port',
+  LOADED_ON_VESSEL: 'Chargé à Bord',
   IN_TRANSIT: 'En Transit',
   ARRIVED: 'Arrivé',
+  DISCHARGED: 'Déchargé',
   READY_FOR_PICKUP: 'Prêt pour Retrait',
   DELIVERED: 'Livré',
 };
@@ -431,8 +443,11 @@ export const CONTAINER_STATUS_COLORS: Record<ContainerStatus, string> = {
   EMPTY_TO_WAREHOUSE: '#6366F1',
   LOADING: '#F59E0B',
   LOADED: '#3B82F6',
+  GATE_IN_FULL: '#06B6D4',
+  LOADED_ON_VESSEL: '#2563EB',
   IN_TRANSIT: '#EC4899',
   ARRIVED: '#10B981',
+  DISCHARGED: '#14B8A6',
   READY_FOR_PICKUP: '#F97316',
   DELIVERED: '#22C55E',
 };

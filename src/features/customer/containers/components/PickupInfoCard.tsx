@@ -22,6 +22,8 @@ export const PickupInfoCard: React.FC<PickupInfoCardProps> = ({
   onContactPress,
 }) => {
   const { colors, isDark } = useAppTheme();
+  const isReady = container.status === 'READY_FOR_PICKUP';
+  const isPreparing = container.status === 'ARRIVED' || container.status === 'DISCHARGED';
 
   const styles = useMemo(() => StyleSheet.create({
     sectionCard: {
@@ -50,6 +52,22 @@ export const PickupInfoCard: React.FC<PickupInfoCardProps> = ({
       fontSize: 14,
       color: colors.text.primary,
       marginBottom: 12,
+      lineHeight: 20,
+    },
+    checklist: {
+      gap: 8,
+      marginBottom: 12,
+    },
+    checklistItem: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    checklistText: {
+      fontFamily: Fonts.regular,
+      fontSize: 13,
+      color: colors.text.primary,
+      flex: 1,
     },
     contactInfo: {
       backgroundColor: colors.background.card,
@@ -71,24 +89,40 @@ export const PickupInfoCard: React.FC<PickupInfoCardProps> = ({
     },
   }), [colors, isDark]);
 
-  if (container.status !== 'READY_FOR_PICKUP' && container.status !== 'ARRIVED') {
+  if (!isReady && !isPreparing) {
     return null;
   }
+
+  const title = isReady ? 'Prêt pour retrait' : 'Retrait en préparation';
+  const message = isReady
+    ? 'Vos marchandises peuvent être récupérées. Préparez les documents avant de venir.'
+    : 'Le container est arrivé. L’équipe prépare les marchandises et confirmera le retrait.';
 
   return (
     <View style={[styles.sectionCard, styles.pickupCard]}>
       <View style={styles.pickupHeader}>
         <MaterialCommunityIcons
-          name="information"
+          name={isReady ? 'check-circle' : 'progress-clock'}
           size={24}
           color={colors.accent.goldDark}
         />
-        <Text style={styles.pickupTitle}>Informations de Retrait</Text>
+        <Text style={styles.pickupTitle}>{title}</Text>
       </View>
-      <Text style={styles.pickupText}>
-        Votre marchandise est prête pour le retrait. Contactez
-        l'entrepôt pour organiser la collecte.
-      </Text>
+      <Text style={styles.pickupText}>{message}</Text>
+      <View style={styles.checklist}>
+        <View style={styles.checklistItem}>
+          <MaterialCommunityIcons name="card-account-details-outline" size={18} color={colors.accent.goldDark} />
+          <Text style={styles.checklistText}>{"Pièce d'identité du client ou du mandataire"}</Text>
+        </View>
+        <View style={styles.checklistItem}>
+          <MaterialCommunityIcons name="receipt" size={18} color={colors.accent.goldDark} />
+          <Text style={styles.checklistText}>Reçu de paiement ou confirmation de solde</Text>
+        </View>
+        <View style={styles.checklistItem}>
+          <MaterialCommunityIcons name="phone-message-outline" size={18} color={colors.accent.goldDark} />
+          <Text style={styles.checklistText}>{"Appelez l'entrepôt avant déplacement"}</Text>
+        </View>
+      </View>
       {container.pickupContact && (
         <View style={styles.contactInfo}>
           <Text style={styles.contactLabel}>
@@ -97,6 +131,12 @@ export const PickupInfoCard: React.FC<PickupInfoCardProps> = ({
               {container.pickupContact.address}
             </Text>
           </Text>
+          {!!container.pickupContact.phone && (
+            <Text style={[styles.contactLabel, { marginTop: 6 }]}>
+              Téléphone:{' '}
+              <Text style={styles.contactValue}>{container.pickupContact.phone}</Text>
+            </Text>
+          )}
         </View>
       )}
       <Button
@@ -105,7 +145,7 @@ export const PickupInfoCard: React.FC<PickupInfoCardProps> = ({
         style={styles.contactButton}
         icon="phone"
       >
-        Contacter l'Entrepôt
+        {"Appeler l'entrepôt"}
       </Button>
     </View>
   );

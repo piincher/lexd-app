@@ -280,7 +280,7 @@ export const WAYPOINT_TYPE_ICONS: Record<WaypointType, string> = {
   PORT: 'boat',
   WAREHOUSE: 'warehouse',
   BORDER: 'flag',
-  TERMINAL: 'business',
+  TERMINAL: 'office-building',
   DEPOT: 'cube',
 };
 

@@ -2,8 +2,7 @@
 // TanStack Query hooks for fetching goods data
 
 import { useQuery } from '@tanstack/react-query';
-import { goodsApi } from '../api';
-import { GoodsFilters } from '../api';
+import { goodsApi, type GoodsFilters } from '../api';
 
 const QUERY_KEYS = {
 	myGoods: 'my-goods',
@@ -29,7 +28,7 @@ export const useGetGoodsDetail = (goodsId: string) => {
 	return useQuery({
 		queryKey: QUERY_KEYS.goodsDetail(goodsId),
 		queryFn: () => goodsApi.getGoodsById(goodsId),
-		select: (response) => response.data.data.goods,
+		select: (response) => response.data.data,
 		enabled: !!goodsId,
 		staleTime: 0, // Always fetch fresh data on refetch
 	});

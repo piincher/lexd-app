@@ -1,24 +1,62 @@
 import * as Print from 'expo-print';
 import { AdminLoadingListData } from '../types/packingList';
 
-const SHIPPING_MODE_LABELS: Record<string, string> = { sea: 'Maritime', air: 'Aérien', land: 'Terrestre' };
+const SHIPPING_MODE_LABELS: Record<string, string> = { sea: 'Maritime', SEA: 'Maritime', air: 'Aérien', AIR: 'Aérien', land: 'Terrestre', LAND: 'Terrestre' };
 const SHIPPING_LINE_LABELS: Record<string, string> = {
   cosco: 'COSCO', maersk: 'Maersk', msc: 'MSC', 'cma-cgm': 'CMA CGM',
   evergreen: 'Evergreen', one: 'ONE', 'hapag-lloyd': 'Hapag-Lloyd', other: 'Autre',
+  COSCO: 'COSCO', MAERSK: 'Maersk', MSC: 'MSC', CMA_CGM: 'CMA CGM',
+  EVERGREEN: 'Evergreen', ONE: 'ONE', HAPAG_LLOYD: 'Hapag-Lloyd', OTHER: 'Autre',
+};
+const COMPANY_PHONE = '+223-76696177';
+
+const escapeHtml = (value: unknown) =>
+  String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+const formatLocation = (value: unknown, fallback: string) => {
+  if (!value) return fallback;
+  if (typeof value === 'string') return value;
+  const location = value as { city?: string; country?: string; name?: string };
+  return location.city || location.name || location.country || fallback;
+};
+
+const getConsigneeInfo = (container: AdminLoadingListData['container']) => {
+  const raw = (container as any).consignee || (
+    typeof (container as any).consigneeId === 'object' ? (container as any).consigneeId : null
+  );
+
+  return {
+    name: raw?.name || 'ChinaLink Express Bamako',
+    phone: raw?.phone || COMPANY_PHONE,
+    warehouseAddress: raw?.warehouseAddress || 'ChinaLink Express Warehouse - Bamako',
+  };
+};
+
+const getRouteLabel = (container: AdminLoadingListData['container']) => {
+  const route = (container as any).route || (typeof (container as any).routeId === 'object' ? (container as any).routeId : null);
+  const origin = formatLocation(route?.origin, 'Chine');
+  const destination = formatLocation(route?.destination, 'Bamako');
+  return `${origin} → ${destination}`;
 };
 
 function generateItemsHtml(items: AdminLoadingListData['items']) {
   return items.map((item) => `
     <tr style="background: ${item.isLoaded ? '#f0fdf4' : '#ffffff'}; border-left: 4px solid ${item.clientColor};">
       <td style="padding: 10px 12px; font-size: 14px; font-weight: 700; color: #166534;">${item.sequenceNumber}</td>
-      <td style="padding: 10px 12px; font-size: 12px; color: #374151; font-family: monospace;">${item.goods.goodsId}</td>
+      <td style="padding: 10px 12px; font-size: 12px; color: #374151; font-family: monospace;">${escapeHtml(item.goods.goodsId)}</td>
       <td style="padding: 10px 12px; font-size: 12px; color: #4b5563;">
         <div style="display: flex; align-items: center; gap: 6px;">
           <div style="width: 8px; height: 8px; border-radius: 50%; background: ${item.clientColor};"></div>
-          <span>${item.clientName}</span>
+          <span>${escapeHtml(item.clientName)}</span>
         </div>
       </td>
-      <td style="padding: 10px 12px; font-size: 12px; color: #4b5563;">${item.goods.description || '-'}</td>
+      <td style="padding: 10px 12px; font-size: 12px; color: #4b5563;">${escapeHtml(item.goods.description || '-')}</td>
+      <td style="padding: 10px 12px; font-size: 12px; color: #374151; text-align: center; font-weight: 700;">${item.goods.quantity || 1}</td>
       <td style="padding: 10px 12px; font-size: 12px; color: #374151; text-align: right; font-weight: 600;">${(item.goods.actualCBM || 0).toFixed(2)} m³</td>
       <td style="padding: 10px 12px; font-size: 12px; color: #374151; text-align: right; font-weight: 600;">${(item.goods.weight || 0).toFixed(0)} kg</td>
       <td style="padding: 10px 12px; text-align: center;">
@@ -34,6 +72,8 @@ export async function generateLoadingListPDF(
   data: AdminLoadingListData & { isSingleClientView?: boolean; singleClientName?: string }
 ) {
   const { container, items, summary } = data;
+  const consignee = getConsigneeInfo(container);
+  const routeLabel = getRouteLabel(container);
   const itemsHtml = generateItemsHtml(items);
 
   const html = `<!DOCTYPE html>
@@ -66,10 +106,10 @@ export async function generateLoadingListPDF(
 <body>
   <div class="header">
     <h1>📋 PLAN DE CHARGEMENT</h1>
-    <p>${container.virtualContainerNumber}</p>
+    <p>${escapeHtml(container.virtualContainerNumber)}</p>
   </div>
   <div class="info-grid">
-    <div class="info-item"><div class="info-label">Route</div><div class="info-value">Chine → Bamako</div></div>
+    <div class="info-item"><div class="info-label">Route</div><div class="info-value">${escapeHtml(routeLabel)}</div></div>
     <div class="info-item"><div class="info-label">Mode</div><div class="info-value">${SHIPPING_MODE_LABELS[container.shippingMode] || container.shippingMode}</div></div>
     <div class="info-item"><div class="info-label">Compagnie</div><div class="info-value">${SHIPPING_LINE_LABELS[container.shippingLine] || container.shippingLine}</div></div>
     <div class="info-item"><div class="info-label">Date</div><div class="info-value">${new Date().toLocaleDateString('fr-FR')}</div></div>
@@ -78,12 +118,12 @@ export async function generateLoadingListPDF(
     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
       <div>
         <div style="font-size: 10px; color: #0369a1; text-transform: uppercase; margin-bottom: 4px;">📍 Point de Retrait</div>
-        <div style="font-size: 13px; font-weight: 600; color: #0c4a6e;">${(container as any).consignee?.warehouseAddress || 'ChinaLink Express Warehouse - Bamako'}</div>
+        <div style="font-size: 13px; font-weight: 600; color: #0c4a6e;">${escapeHtml(consignee.warehouseAddress)}</div>
       </div>
       <div>
         <div style="font-size: 10px; color: #0369a1; text-transform: uppercase; margin-bottom: 4px;">👤 Consignataire</div>
-        <div style="font-size: 13px; font-weight: 600; color: #0c4a6e;">${(container as any).consignee?.name || 'N/A'}</div>
-        <div style="font-size: 12px; color: #0369a1;">📞 ${(container as any).consignee?.phone || 'N/A'}</div>
+        <div style="font-size: 13px; font-weight: 600; color: #0c4a6e;">${escapeHtml(consignee.name)}</div>
+        <div style="font-size: 12px; color: #0369a1;">📞 ${escapeHtml(consignee.phone)}</div>
       </div>
     </div>
   </div>
@@ -109,6 +149,7 @@ export async function generateLoadingListPDF(
         <th style="width: 100px;">ID</th>
         <th style="width: 120px;">Client</th>
         <th>Description</th>
+        <th style="width: 55px; text-align: center;">Qté</th>
         <th style="width: 80px; text-align: right;">CBM</th>
         <th style="width: 80px; text-align: right;">Poids</th>
         <th style="width: 100px; text-align: center;">Statut</th>
@@ -121,14 +162,14 @@ export async function generateLoadingListPDF(
     <div style="font-size: 12px; color: #78350f; text-align: center; line-height: 1.6;">
       Pour effectuer un paiement anticipé ou régler votre solde,<br>
       veuillez contacter le consignataire:<br>
-      <strong style="font-size: 14px; color: #92400e;">${(container as any).consignee?.name || 'N/A'}</strong><br>
-      📞 <strong>${(container as any).consignee?.phone || 'N/A'}</strong>
+      <strong style="font-size: 14px; color: #92400e;">${escapeHtml(consignee.name)}</strong><br>
+      📞 <strong>${escapeHtml(consignee.phone)}</strong>
     </div>
   </div>
   <div class="footer">
     <p>Document généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
     <p><strong>ChinaLink Express</strong> - Transport International</p>
-    <p>Bamako, Mali | Tél: ${(container as any).consignee?.phone || '+223 XX XX XX XX'}</p>
+    <p>Bamako, Mali | Tél: ${COMPANY_PHONE}</p>
   </div>
 </body>
 </html>`;

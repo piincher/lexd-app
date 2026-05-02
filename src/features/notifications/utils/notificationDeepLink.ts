@@ -42,7 +42,7 @@ export const handleDeepLink = (
     case "ContainerTracking":
       if (containerId) {
         navigationRef.dispatch(CommonActions.navigate({
-          name: "ContainerDetail",
+          name: "ContainerTracking",
           params: { containerId },
         }));
       }

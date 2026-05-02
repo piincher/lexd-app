@@ -3,17 +3,23 @@ import { View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Container, ContainerStatus } from '../../types';
+import { ContainerStatus } from '../../types';
 import { Theme } from '@src/constants/Theme';
 
-const STATUS_FILTERS: { key: ContainerStatus | 'all' | 'assignable'; label: string; icon: string }[] = [
+type StatusFilterIcon = keyof typeof Ionicons.glyphMap;
+
+const STATUS_FILTERS: { key: ContainerStatus | 'all' | 'assignable'; label: string; icon: StatusFilterIcon }[] = [
   { key: 'all', label: 'Tous', icon: 'apps' },
   { key: 'assignable', label: 'Peut recevoir', icon: 'add-circle' },
   { key: 'BOOKED', label: 'Réservés', icon: 'bookmark' },
   { key: 'LOADING', label: 'Chargement', icon: 'hammer' },
   { key: 'LOADED', label: 'Chargés', icon: 'cube' },
+  { key: 'GATE_IN_FULL', label: 'Port', icon: 'enter-outline' },
+  { key: 'LOADED_ON_VESSEL', label: 'À bord', icon: 'boat' },
   { key: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },
   { key: 'ARRIVED', label: 'Arrivés', icon: 'flag' },
+  { key: 'DISCHARGED', label: 'Déchargés', icon: 'archive-outline' },
+  { key: 'READY_FOR_PICKUP', label: 'Retrait', icon: 'checkmark-done' },
 ];
 
 interface ContainerStatusFilterProps {
@@ -44,7 +50,7 @@ export const ContainerStatusFilter: React.FC<ContainerStatusFilterProps> = ({
               />
             )}
             <Ionicons
-              name={filter.icon as any}
+              name={filter.icon}
               size={16}
               color={isSelected ? '#FFF' : Theme.neutral[500]}
               style={styles.filterIcon}

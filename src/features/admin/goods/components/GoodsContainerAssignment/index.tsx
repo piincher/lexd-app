@@ -58,7 +58,7 @@ export const GoodsContainerAssignment: React.FC<GoodsContainerAssignmentProps> =
           </View>
         ) : (
           <View style={styles.unassignedContainer}>
-            <MaterialCommunityIcons name="container-off" size={48} color={Theme.neutral[300]} />
+            <MaterialCommunityIcons name="package-variant-closed" size={48} color={Theme.neutral[300]} />
             <Text style={styles.unassignedText}>Non assigné à un conteneur</Text>
             <Button
               mode="contained"

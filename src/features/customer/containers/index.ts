@@ -15,6 +15,8 @@ export type {
   ClientPackingListItem,
   PackingListConsignee,
   PackingListTracking,
+  PackingListSchedule,
+  PackingListSignature,
   ClientPackingListSummary,
 } from './api/types';
 
@@ -55,6 +57,7 @@ export type {
   ShippingLine,
   CustomerGoodsInContainer,
   ContainerRoute,
+  // eslint-disable-next-line import/export -- Type and component intentionally share this public API name.
   ContainerTimeline,
   CustomerContainer,
   CustomerContainerFilters,
@@ -82,6 +85,7 @@ export {
 } from './types';
 
 // Components
+// eslint-disable-next-line import/export -- Type and component intentionally share this public API name.
 export { ContainerTimeline, ContainerCard } from './components';
 
 // Screens

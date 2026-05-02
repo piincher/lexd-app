@@ -11,7 +11,18 @@ import { Theme } from '@src/constants/Theme';
 
 const MAX_CBM = 67;
 const MAX_WEIGHT = 28000; // kg
-const TIMELINE_STEPS: ContainerStatus[] = ['BOOKED','EMPTY_TO_WAREHOUSE','LOADING','LOADED','IN_TRANSIT','ARRIVED','READY_FOR_PICKUP'];
+const TIMELINE_STEPS: ContainerStatus[] = [
+  'BOOKED',
+  'EMPTY_TO_WAREHOUSE',
+  'LOADING',
+  'LOADED',
+  'GATE_IN_FULL',
+  'LOADED_ON_VESSEL',
+  'IN_TRANSIT',
+  'ARRIVED',
+  'DISCHARGED',
+  'READY_FOR_PICKUP',
+];
 
 export type ContainerDetailScreenState = ReturnType<typeof useContainerDetailScreen>;
 
@@ -63,7 +74,15 @@ export const useContainerDetailScreen = () => {
     };
 
     const checkCapacityAndUpdate = () => {
-      const requiresCapacityCheck: ContainerStatus[] = ['LOADED', 'IN_TRANSIT', 'ARRIVED', 'READY_FOR_PICKUP'];
+      const requiresCapacityCheck: ContainerStatus[] = [
+        'LOADED',
+        'GATE_IN_FULL',
+        'LOADED_ON_VESSEL',
+        'IN_TRANSIT',
+        'ARRIVED',
+        'DISCHARGED',
+        'READY_FOR_PICKUP',
+      ];
       if (requiresCapacityCheck.includes(newStatus)) {
         if (goodsList.length === 0) {
           Alert.alert('Attention', 'Ce container est vide. Impossible de passer au statut ' + CONTAINER_STATUS_LABELS[newStatus] + '.');
@@ -96,7 +115,7 @@ export const useContainerDetailScreen = () => {
   const handleAssignGoods = () => navigation.navigate('AssignGoods' as never, { containerId } as never);
   const handleGeneratePackingList = () => { if (goodsList.length === 0) { Alert.alert('Info', 'Aucune marchandise'); return; } navigation.navigate('PackingList' as never, { containerId } as never); };
   const handleGoToLoadingList = () => { if (goodsList.length === 0) { Alert.alert('Info', 'Aucune marchandise'); return; } navigation.navigate('LoadingList' as never, { containerId } as never); };
-  const canMarkReadyForPickup = container?.status === 'ARRIVED';
+  const canMarkReadyForPickup = container?.status === 'ARRIVED' || container?.status === 'DISCHARGED';
   const canMarkDelivered = container?.status === 'READY_FOR_PICKUP';
   const handleMarkReadyForPickup = () => setShowReadyForPickupDialog(true);
   const confirmMarkReadyForPickup = async () => { if (capacityValue > maxCapacity) { Alert.alert('Alerte Capacité', isAirContainer ? `Poids du container (${totalWeight.toFixed(1)}kg) dépasse le maximum (${MAX_WEIGHT}kg). Continuer quand même ?` : `CBM du container (${capacityValue.toFixed(1)}m³) dépasse le maximum (${MAX_CBM}m³). Continuer quand même ?`, [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: async () => { try { await markReadyForPickupMutation.mutateAsync(containerId); setShowReadyForPickupDialog(false); Alert.alert('Succès', 'Container marqué comme prêt pour le retrait'); } catch { Alert.alert('Erreur', 'Impossible de marquer le container'); } } }]); return; } try { await markReadyForPickupMutation.mutateAsync(containerId); setShowReadyForPickupDialog(false); Alert.alert('Succès', 'Container marqué comme prêt pour le retrait'); } catch { Alert.alert('Erreur', 'Impossible de marquer le container'); } };

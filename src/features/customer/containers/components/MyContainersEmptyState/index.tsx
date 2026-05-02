@@ -26,19 +26,19 @@ export const MyContainersEmptyState: React.FC<MyContainersEmptyStateProps> = ({
     }
     if (modeFilter !== 'ALL') {
       const label = modeFilter === 'SEA' ? 'maritime' : 'aérien';
-      return `Aucun conteneur ${label} trouvé.`;
+      return `Aucune expédition ${label} trouvée.`;
     }
-    return "Vous n'avez pas de marchandises dans un container pour le moment.";
+    return "Vous n'avez pas encore de marchandise dans une expédition.";
   };
 
   return (
     <View style={styles.emptyContainer}>
       <MaterialCommunityIcons
-        name="container-off"
+        name="package-variant-closed"
         size={80}
         color={colors.status.success}
       />
-      <Text style={styles.emptyTitle}>Aucun container</Text>
+      <Text style={styles.emptyTitle}>Aucune expédition</Text>
       <Text style={styles.emptyText}>{getEmptyMessage()}</Text>
       {!searchQuery.trim() && (
         <Button mode="contained" onPress={onNavigateToGoods} style={styles.emptyButton}>

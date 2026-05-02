@@ -11,7 +11,7 @@ export const AirwayBillDetailMenuButton: React.FC<Props> = ({ onPress }) => {
   const { colors } = useAppTheme();
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} hitSlop={12} activeOpacity={0.7}>
       <Ionicons name="ellipsis-vertical" size={24} color={colors.neutral[800]} />
     </TouchableOpacity>
   );

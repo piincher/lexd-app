@@ -34,6 +34,8 @@ type TabBarIconProps = {
 
 interface TabConfig {
   name: keyof HomeTabParamList;
+  // React Navigation tab screens have heterogeneous route props in this config array.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   component: React.ComponentType<any>;
   show: boolean;
   options: {
@@ -114,8 +116,9 @@ export const HomeBottomTab: React.FC = () => {
       component: MyContainersScreen,
       show: !adminRole && !!token,
       options: {
-        tabBarLabel: 'Containers',
-        tabBarIcon: ({ color, size }) => <FontAwesome5 name="ship" size={size} color={color} />,
+        tabBarLabel: 'Expéditions',
+        tabBarAccessibilityLabel: 'Mes expéditions',
+        tabBarIcon: ({ color, size }) => <FontAwesome5 name="route" size={size} color={color} />,
       },
     },
     {

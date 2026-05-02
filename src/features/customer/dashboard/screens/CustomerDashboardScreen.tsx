@@ -11,6 +11,7 @@ import type { RootStackScreenProps } from '@src/navigations/type';
 import { useCustomerDashboard } from '../hooks/useCustomerDashboard';
 import { useHideTabBarOnScroll } from '@src/shared/lib';
 import { HeroSection } from '../components/HeroSection';
+import { ShipmentHomeCard } from '../components/ShipmentHomeCard';
 import { SmartActions } from '../components/SmartActions';
 import { JourneyMap } from '../components/JourneyMap';
 import { ContainerStack } from '../components/ContainerStack';
@@ -24,7 +25,7 @@ export const CustomerDashboardScreen: React.FC<
   const { colors } = useAppTheme();
   const { onScroll } = useHideTabBarOnScroll();
   const {
-    user, welcomeMessage, stats, containers, quickActions, activities,
+    user, welcomeMessage, stats, containers, shipmentHome, quickActions, activities,
     isLoading, isError, errorMessage, refresh,
     handleNotifications, handleViewAllActivity, handleActionPress,
     handleViewGoods, handleViewContainers, handleContainerPress,
@@ -58,6 +59,12 @@ export const CustomerDashboardScreen: React.FC<
             onViewGoods={handleViewGoods}
             onViewContainers={handleViewContainers}
             onNotifications={handleNotifications}
+          />
+
+          <ShipmentHomeCard
+            shipmentHome={shipmentHome}
+            onPrimaryPress={handleContainerPress}
+            onViewContainers={handleViewContainers}
           />
 
           <SmartActions actions={quickActions} onActionPress={handleActionPress} />

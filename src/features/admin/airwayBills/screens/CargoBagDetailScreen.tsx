@@ -21,7 +21,8 @@ export const CargoBagDetailScreen: React.FC = () => {
     cargoBag, waypointPayload, goodsList, isLoading, isRefreshing, handleRefresh, handleBack,
     statusMenuVisible, setStatusMenuVisible, handleChangeStatus, removeMode,
     selectedRemoveIds, handleToggleRemoveMode, handleToggleRemoveSelection,
-    handleConfirmRemove, handleAddGoods, handleDeleteBag, isRemoving, isUpdatingStatus,
+    handleConfirmRemove, handleAddGoods, handleDeleteBag, handleWaypointStatusChange,
+    isRemoving, isUpdatingStatus,
   } = useCargoBagDetail();
 
   if (isLoading || !cargoBag) {
@@ -53,6 +54,8 @@ export const CargoBagDetailScreen: React.FC = () => {
           waypoints={waypointPayload?.waypoints || cargoBag.waypoints || []}
           currentWaypointIndex={waypointPayload?.currentWaypointIndex ?? cargoBag.currentWaypointIndex ?? -1}
           progressPercentage={waypointPayload?.progressPercentage ?? cargoBag.waypointProgressPercentage ?? 0}
+          isUpdating={isUpdatingStatus}
+          onWaypointStatusChange={handleWaypointStatusChange}
         />
         <CargoBagDetailGoodsList
           goodsList={goodsList}

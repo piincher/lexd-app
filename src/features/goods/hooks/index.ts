@@ -12,7 +12,7 @@ export {
   useGoodsList,
   useGoodsDetail,
   useCreateGoods,
-  useUpdateGoods,
+  useUpdateGoods as useOfflineUpdateGoods,
   useDeleteGoods,
   useReceiveGoods,
 } from './offline';

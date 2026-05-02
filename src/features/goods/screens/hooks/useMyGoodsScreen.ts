@@ -4,7 +4,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import type { NavigationProp } from '@react-navigation/native';
 import type { RootStackParamList } from '@src/navigations/type';
-import { useGetMyGoods } from '../../hooks';
+import { useGetMyGoods } from '../../hooks/useGoodsQueries';
 import { GoodsStatus, Goods } from '../../api';
 
 export type FilterTab = 'ALL' | GoodsStatus;

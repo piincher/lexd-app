@@ -59,7 +59,7 @@ export const AirwayBillListScreen: React.FC = () => {
         }
         ListEmptyComponent={
           <EmptyState
-            icon="airplane-outline"
+            icon="airplane"
             title={searchQuery ? 'Aucun résultat' : 'Aucune lettre de transport'}
             message={searchQuery ? 'Aucune lettre de transport ne correspond à votre recherche.' : 'Créez votre première lettre de transport pour commencer.'}
             actionLabel={!searchQuery ? 'Créer un AWB' : undefined}

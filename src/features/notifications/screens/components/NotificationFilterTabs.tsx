@@ -15,11 +15,14 @@ import type { FilterTab } from '../../types';
 interface FilterTabConfig {
   key: FilterTab;
   label: string;
-  icon: string;
+  icon: React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 }
 
 const TABS: FilterTabConfig[] = [
   { key: 'all', label: 'Toutes', icon: 'bell-outline' },
+  { key: 'important', label: 'Important', icon: 'alert-circle-outline' },
+  { key: 'shipments', label: 'Expéditions', icon: 'truck-delivery-outline' },
+  { key: 'payments', label: 'Paiements', icon: 'cash-multiple' },
   { key: 'unread', label: 'Non lues', icon: 'email-outline' },
   { key: 'system', label: 'Système', icon: 'cog-outline' },
 ];
@@ -53,7 +56,7 @@ export const NotificationFilterTabs: React.FC<NotificationFilterTabsProps> = ({
             activeOpacity={0.7}
           >
             <MaterialCommunityIcons
-              name={tab.icon as any}
+              name={tab.icon}
               size={16}
               color={isActive ? '#FFF' : Theme.neutral[500]}
             />

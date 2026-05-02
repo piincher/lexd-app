@@ -2,6 +2,8 @@
  * Notification Types - In-App Notification System
  */
 
+export type FilterTab = 'all' | 'important' | 'shipments' | 'payments' | 'unread' | 'system';
+
 export type NotificationType =
   | 'ORDER_UPDATE'
   | 'PAYMENT'
@@ -58,7 +60,7 @@ export interface NotificationFilters {
 export interface GetNotificationsParams {
   page?: number;
   limit?: number;
-  filter?: 'all' | 'unread' | 'system';
+  filter?: FilterTab;
 }
 
 export interface PaginatedNotifications {
@@ -172,8 +174,6 @@ export const NOTIFICATION_PRIORITY_CONFIG: Record<string, { color: string; label
 // ============================================
 // PUBLIC NOTIFICATION TYPES (Privacy-Conscious)
 // ============================================
-
-export type FilterTab = 'all' | 'unread' | 'system';
 
 export type PublicNotificationType = 'GOODS_ARRIVED' | 'GOODS_ASSIGNED';
 

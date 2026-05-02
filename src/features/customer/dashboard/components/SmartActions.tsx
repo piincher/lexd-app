@@ -6,12 +6,14 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { QuickAction } from '../types';
 import * as Haptics from 'expo-haptics';
 
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+
 interface Props {
   actions: QuickAction[];
   onActionPress: (action: QuickAction) => void;
 }
 
-const ACTION_META: Record<string, { icon: string; tint: string; gradient: readonly [string, string]; sublabel: string }> = {
+const ACTION_META: Record<string, { icon: IoniconName; tint: string; gradient: readonly [string, string]; sublabel: string }> = {
   'view-goods': {
     icon: 'cube',
     tint: '#8B5CF6',
@@ -19,10 +21,10 @@ const ACTION_META: Record<string, { icon: string; tint: string; gradient: readon
     sublabel: 'Voir vos colis',
   },
   'view-containers': {
-    icon: 'boat',
+    icon: 'airplane',
     tint: '#0EA5E9',
     gradient: ['#0EA5E9', '#38BDF8'] as const,
-    sublabel: 'Suivi maritime',
+    sublabel: 'Maritime et aérien',
   },
   'support': {
     icon: 'chatbubble-ellipses',
@@ -78,7 +80,7 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
       <Text style={styles.header}>Actions Rapides</Text>
       <View style={styles.grid}>
         {actions.map((action) => {
-          const meta = ACTION_META[action.id] || { icon: 'apps', tint: colors.primary.main, gradient: ['#64748B', '#94A3B8'] as const, sublabel: 'Appuyez pour voir' };
+          const meta = ACTION_META[action.id] || { icon: 'apps' as IoniconName, tint: colors.primary.main, gradient: ['#64748B', '#94A3B8'] as const, sublabel: 'Appuyez pour voir' };
           return (
             <Pressable
               key={action.id}
@@ -94,7 +96,7 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
             >
               <View style={styles.iconRow}>
                 <View style={[styles.iconCircle, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
-                  <Ionicons name={meta.icon as any} size={22} color="#FFFFFF" />
+                  <Ionicons name={meta.icon} size={22} color="#FFFFFF" />
                 </View>
                 <View style={styles.arrow}>
                   <Ionicons name="arrow-forward" size={14} color="#FFFFFF" />

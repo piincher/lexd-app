@@ -17,7 +17,7 @@ export const MyContainersSearchBar: React.FC<MyContainersSearchBarProps> = ({
   return (
     <View style={styles.searchContainer}>
       <Searchbar
-        placeholder="Rechercher un container..."
+        placeholder="Rechercher AWB, container, vol..."
         onChangeText={onChangeText}
         value={value}
         style={styles.searchBar}

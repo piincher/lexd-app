@@ -3,7 +3,7 @@
  * Request/Response types for dashboard API endpoints
  */
 
-import { DashboardStats, ActivityItem, QuickAction, DashboardData } from '../types';
+import { DashboardStats, ActivityItem, QuickAction } from '../types';
 
 // ============================================
 // API RESPONSE TYPES
@@ -27,13 +27,33 @@ export interface ApiResponse<T> {
  */
 export interface DashboardContainer {
   id: string;
+  trackingType?: 'CONTAINER' | 'AIRWAY_BILL';
+  airwayBillId?: string;
   virtualContainerNumber: string;
   status: string;
+  airwayBillStatus?: string;
   shippingMode?: string;
   shippingLine?: string;
+  flightNumber?: string;
+  goodsCount?: number;
+  readyGoodsCount?: number;
+  goodsPreview?: {
+    goodsId?: string;
+    description?: string;
+    status?: string;
+    quantity?: number;
+  }[];
   timeline?: {
+    bookedAt?: string;
+    emptyDispatchedAt?: string;
+    loadingStartedAt?: string;
+    loadingCompletedAt?: string;
+    gateInFullAt?: string;
+    loadedOnVesselAt?: string;
     departedAt?: string;
     arrivedAt?: string;
+    dischargedAt?: string;
+    readyForPickupAt?: string;
     estimatedArrival?: string;
   };
 }

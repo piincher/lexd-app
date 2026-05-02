@@ -1,14 +1,12 @@
 /**
  * GoodsImage - Theme-aware image component with loading and error states
  *
- * Uses expo-image for optimized image rendering with blurhash placeholder,
- * shimmer loading state, and fallback UI on error or missing URI.
+ * Uses React Native Image with loading and fallback UI on error or missing URI.
  */
 
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import type { ViewStyle } from 'react-native';
-import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -28,9 +26,6 @@ const PLACEHOLDER_SIZES = {
   medium: { icon: 40, fontSize: 14 },
   large: { icon: 56, fontSize: 16 },
 };
-
-// Subtle neutral blurhash for loading placeholder
-const BLURHASH_PLACEHOLDER = 'L6PZfSi_.AyE_3t7t7R**0o#DgR4';
 
 export const GoodsImage: React.FC<GoodsImageProps> = ({
   uri,
@@ -97,13 +92,10 @@ export const GoodsImage: React.FC<GoodsImageProps> = ({
       <Image
         source={{ uri }}
         style={styles.image}
-        contentFit={resizeMode}
-        transition={300}
-        placeholder={{ blurhash: BLURHASH_PLACEHOLDER }}
+        resizeMode={resizeMode}
         onError={handleError}
         onLoadStart={handleLoadStart}
         onLoadEnd={handleLoadEnd}
-        cachePolicy="memory-disk"
       />
       {isLoading && !hasError && (
         <View

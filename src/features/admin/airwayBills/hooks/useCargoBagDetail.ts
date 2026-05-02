@@ -9,9 +9,10 @@ import {
   useGetCargoBagWaypoints,
   useRemoveGoodsFromCargoBag,
   useUpdateCargoBagStatus,
+  useUpdateCargoBagWaypoint,
   useDeleteCargoBag,
 } from './useCargoBags';
-import { AirwayBillGoods, CargoBagStatus } from '../types';
+import { AirwayBillGoods, AirwayBillWaypointStatus, CargoBagStatus } from '../types';
 import { CARGO_BAG_STATUS_LABELS } from '../constants';
 
 export const useCargoBagDetail = () => {
@@ -22,6 +23,7 @@ export const useCargoBagDetail = () => {
   const { data: waypointData, refetch: refetchWaypoints } = useGetCargoBagWaypoints(cargoBagId);
   const removeGoodsMutation = useRemoveGoodsFromCargoBag();
   const updateStatusMutation = useUpdateCargoBagStatus();
+  const updateWaypointMutation = useUpdateCargoBagWaypoint();
   const deleteCargoBagMutation = useDeleteCargoBag();
   const [statusMenuVisible, setStatusMenuVisible] = useState(false);
   const [removeMode, setRemoveMode] = useState(false);
@@ -37,6 +39,17 @@ export const useCargoBagDetail = () => {
     try { await updateStatusMutation.mutateAsync({ id: cargoBagId, status: newStatus, awbId: airwayBillId }); }
     catch { Alert.alert('Erreur', 'Impossible de mettre à jour le statut du sac'); }
   }, [cargoBagId, airwayBillId, updateStatusMutation]);
+  const handleWaypointStatusChange = useCallback(async (waypointIndex: number, status: AirwayBillWaypointStatus) => {
+    const now = new Date().toISOString();
+    const input = {
+      status,
+      ...(status === 'IN_PROGRESS' ? { actualDeparture: now } : {}),
+      ...(status === 'COMPLETED' ? { actualArrival: now } : {}),
+      ...(status === 'DELAYED' ? { notes: "Retard signalé sur ce sac cargo" } : {}),
+    };
+    try { await updateWaypointMutation.mutateAsync({ id: cargoBagId, waypointIndex, input }); }
+    catch { Alert.alert('Erreur', "Impossible de mettre à jour cette étape du sac cargo"); }
+  }, [cargoBagId, updateWaypointMutation]);
   const handleToggleRemoveMode = useCallback(() => { setRemoveMode(p => !p); setSelectedRemoveIds([]); }, []);
   const handleToggleRemoveSelection = useCallback((goodsId: string) => {
     setSelectedRemoveIds(prev => prev.includes(goodsId) ? prev.filter(id => id !== goodsId) : [...prev, goodsId]);
@@ -64,9 +77,9 @@ export const useCargoBagDetail = () => {
   return {
     cargoBag, waypointPayload, goodsList, isLoading, isRefreshing, handleRefresh, handleBack,
     statusMenuVisible, setStatusMenuVisible, statusLabels: CARGO_BAG_STATUS_LABELS,
-    handleChangeStatus, removeMode, selectedRemoveIds, handleToggleRemoveMode,
+    handleChangeStatus, handleWaypointStatusChange, removeMode, selectedRemoveIds, handleToggleRemoveMode,
     handleToggleRemoveSelection, handleConfirmRemove, handleAddGoods, handleDeleteBag,
     isRemoving: removeGoodsMutation.isPending,
-    isUpdatingStatus: updateStatusMutation.isPending || deleteCargoBagMutation.isPending,
+    isUpdatingStatus: updateStatusMutation.isPending || updateWaypointMutation.isPending || deleteCargoBagMutation.isPending,
   };
 };

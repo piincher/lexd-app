@@ -97,14 +97,14 @@ export interface GoodsLocation {
 
 export interface ScanQRResponse {
   type: 'goods' | 'container';
-  data: Goods | any;
+  data: Goods | Record<string, unknown>;
 }
 
 export interface ApiResponse<T> {
   success: boolean;
   data: T;
   message: string;
-  error?: any;
+  error?: unknown;
 }
 
 export interface CreateGoodsInput {
@@ -158,8 +158,28 @@ export interface TrackingWaypoint {
   status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'DELAYED' | 'CANCELLED';
   description?: string;
   shortName?: string;
+  icon?: string;
   estimatedArrival?: string | null;
   actualArrival?: string | null;
+  actualDeparture?: string | null;
+  airDetails?: {
+    actualArrival?: string | null;
+    actualDeparture?: string | null;
+  };
+  warehouseDetails?: {
+    contactPhone?: string;
+  };
+  customerEta?: {
+    label?: string;
+    minDays?: number;
+    maxDays?: number;
+    startDate?: string | null;
+    earliestDate?: string | null;
+    latestDate?: string | null;
+    scope?: string;
+    visibleToCustomer?: boolean;
+    note?: string;
+  };
   location: {
     city?: string;
     country?: string;
@@ -175,6 +195,10 @@ export interface AirwayBill {
   airline?: string;
   departureAirport?: string;
   arrivalAirport?: string;
+  departureDate?: string;
+  estimatedArrivalDate?: string;
+  actualArrivalDate?: string;
+  routeName?: string;
   status: string;
   waypoints?: TrackingWaypoint[];
   currentWaypointIndex?: number;

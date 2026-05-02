@@ -54,6 +54,10 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
   const origin = container.route?.origin || '—';
   const destination = container.route?.destination || '—';
   const transitDays = container.route?.estimatedTransitDays;
+  const isAirShipment = container.trackingType === 'AIRWAY_BILL' || container.shippingMode === 'AIR';
+  const carrierLabel = isAirShipment
+    ? [container.airline, container.flightNumber].filter(Boolean).join(' • ') || getShippingModeLabel(container.shippingMode)
+    : `${SHIPPING_LINE_LABELS[container.shippingLine] || container.shippingLine} • ${getShippingModeLabel(container.shippingMode)}`;
 
   return (
     <TouchableOpacity onPress={handlePress} activeOpacity={0.95}>
@@ -66,7 +70,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
                 <Text style={styles.containerNumber}>{container.virtualContainerNumber}</Text>
               </View>
               <Text style={styles.shippingLine}>
-                {SHIPPING_LINE_LABELS[container.shippingLine]} • {getShippingModeLabel(container.shippingMode)}
+                {carrierLabel}
               </Text>
             </View>
             <Chip style={[styles.statusChip, { backgroundColor: statusBgColor }]} textStyle={{ color: statusColor, fontFamily: 'bold', fontSize: 11 }}>
@@ -81,9 +85,9 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
             </View>
             <View style={styles.routeArrow}>
               <View style={styles.arrowLine}>
-                <MaterialCommunityIcons name="arrow-right" size={18} color={PRIMARY_COLOR} />
+                <MaterialCommunityIcons name={isAirShipment ? 'airplane-takeoff' : 'arrow-right'} size={18} color={PRIMARY_COLOR} />
               </View>
-              {transitDays ? <Text style={styles.transitDays}>~{transitDays}j</Text> : null}
+              {transitDays && !isAirShipment ? <Text style={styles.transitDays}>~{transitDays}j</Text> : null}
             </View>
             <View style={[styles.routeLocation, styles.routeLocationRight]}>
               <Text style={styles.routeLabel}>Destination</Text>

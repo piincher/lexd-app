@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 import { Alert } from 'react-native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@src/navigations/type';
-import { useUpdateAirwayBillStatus, useDeleteAirwayBill } from '../../../hooks/useAirwayBills';
-import { AirwayBillStatus } from '../../../types';
+import { useUpdateAirwayBillStatus, useDeleteAirwayBill, useUpdateAirwayBillWaypoint } from '../../../hooks/useAirwayBills';
+import { AirwayBillStatus, AirwayBillWaypointStatus } from '../../../types';
 
 export const useAirwayBillDetailActions = (
   airwayBillId: string,
@@ -11,6 +11,7 @@ export const useAirwayBillDetailActions = (
   closeMenu: () => void
 ) => {
   const updateStatusMutation = useUpdateAirwayBillStatus();
+  const updateWaypointMutation = useUpdateAirwayBillWaypoint();
   const deleteMutation = useDeleteAirwayBill();
 
   const handleStatusChange = useCallback(
@@ -26,6 +27,7 @@ export const useAirwayBillDetailActions = (
   );
 
   const handleDelete = useCallback(() => {
+    closeMenu();
     Alert.alert(
       'Suppression définitive',
       'Supprimer définitivement cet AWB ? Les sacs cargo seront supprimés et les marchandises seront détachées/remises en entrepôt.',
@@ -45,7 +47,7 @@ export const useAirwayBillDetailActions = (
         },
       ]
     );
-  }, [airwayBillId, deleteMutation, navigation]);
+  }, [airwayBillId, deleteMutation, navigation, closeMenu]);
 
   const handleBack = useCallback(() => navigation.goBack(), [navigation]);
 
@@ -54,11 +56,31 @@ export const useAirwayBillDetailActions = (
     [navigation, airwayBillId]
   );
 
+  const handleWaypointStatusChange = useCallback(
+    async (waypointIndex: number, status: AirwayBillWaypointStatus) => {
+      const now = new Date().toISOString();
+      const input = {
+        status,
+        ...(status === 'IN_PROGRESS' ? { actualDeparture: now } : {}),
+        ...(status === 'COMPLETED' ? { actualArrival: now } : {}),
+        ...(status === 'DELAYED' ? { notes: "Retard signalé par l'équipe opérationnelle" } : {}),
+      };
+
+      try {
+        await updateWaypointMutation.mutateAsync({ id: airwayBillId, waypointIndex, input });
+      } catch {
+        Alert.alert('Erreur', "Impossible de mettre à jour cette étape de l'itinéraire");
+      }
+    },
+    [airwayBillId, updateWaypointMutation]
+  );
+
   return {
     handleStatusChange,
+    handleWaypointStatusChange,
     handleDelete,
     handleBack,
     handleAssignPress,
-    isUpdatingStatus: updateStatusMutation.isPending,
+    isUpdatingStatus: updateStatusMutation.isPending || updateWaypointMutation.isPending,
   };
 };

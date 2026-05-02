@@ -15,12 +15,58 @@ const PRIMARY_COLOR = '#16A34A';
 export const StatusBanner: React.FC<StatusBannerProps> = ({ container }) => {
   const { colors } = useAppTheme();
   const styles = useContainerCardStyles();
+  const isAirShipment = container.trackingType === 'AIRWAY_BILL' || container.shippingMode === 'AIR';
 
   if (container.status === 'READY_FOR_PICKUP') {
     return (
       <View style={styles.readyBanner}>
         <MaterialCommunityIcons name="truck-delivery-outline" size={16} color={colors.text.inverse} />
-        <Text style={styles.readyBannerText}>Prêt pour retrait - Contactez l'entrepôt</Text>
+        <Text style={styles.readyBannerText}>{"Prêt pour retrait à l'entrepôt ChinaLink"}</Text>
+      </View>
+    );
+  }
+
+  if (isAirShipment && container.status === 'LOADED') {
+    return (
+      <View style={styles.infoBanner}>
+        <MaterialCommunityIcons name="airplane-takeoff" size={14} color={PRIMARY_COLOR} />
+        <Text style={styles.infoBannerText}>Prêt pour embarquement aérien</Text>
+      </View>
+    );
+  }
+
+  if (isAirShipment && container.status === 'IN_TRANSIT') {
+    return (
+      <View style={styles.infoBanner}>
+        <MaterialCommunityIcons name="airplane" size={14} color={PRIMARY_COLOR} />
+        <Text style={styles.infoBannerText}>Expédition aérienne en cours</Text>
+      </View>
+    );
+  }
+
+  if (isAirShipment && container.status === 'ARRIVED') {
+    return (
+      <View style={[styles.infoBanner, styles.arrivedBanner]}>
+        <MaterialCommunityIcons name="airplane-landing" size={14} color={colors.status.success} />
+        <Text style={[styles.infoBannerText, styles.arrivedBannerText]}>Arrivé à destination</Text>
+      </View>
+    );
+  }
+
+  if (container.status === 'GATE_IN_FULL' && container.timeline?.gateInFullAt) {
+    return (
+      <View style={styles.infoBanner}>
+        <MaterialCommunityIcons name="gate" size={14} color={PRIMARY_COLOR} />
+        <Text style={styles.infoBannerText}>Gate-in plein le {formatDate(container.timeline.gateInFullAt)}</Text>
+      </View>
+    );
+  }
+
+  if (container.status === 'LOADED_ON_VESSEL' && container.timeline?.loadedOnVesselAt) {
+    return (
+      <View style={styles.infoBanner}>
+        <MaterialCommunityIcons name="ferry" size={14} color={PRIMARY_COLOR} />
+        <Text style={styles.infoBannerText}>Chargé sur navire le {formatDate(container.timeline.loadedOnVesselAt)}</Text>
       </View>
     );
   }
