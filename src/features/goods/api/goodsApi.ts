@@ -10,7 +10,7 @@ export const goodsApi = {
     axios.get<ApiResponse<{ goods: Goods[] }>>(`${BASE_URL}/my-goods`, { params: filters }),
     
   getGoodsById: (goodsId: string) =>
-    axios.get<ApiResponse<Goods>>(`${BASE_URL}/${goodsId}`),
+    axios.get<ApiResponse<{ goods: Goods }>>(`${BASE_URL}/${goodsId}`),
     
   scanQR: (qrData: string) =>
     axios.post<ApiResponse<ScanQRResponse>>(`${BASE_URL}/scan`, { qrData }),

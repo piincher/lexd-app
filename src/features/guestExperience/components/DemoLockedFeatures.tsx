@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
+import { BlurView } from 'expo-blur';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { DemoLockedFeature } from '../types';
@@ -16,29 +18,30 @@ export const DemoLockedFeatures: React.FC<Props> = ({ features }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <View style={styles.headerCopy}>
-          <Text style={styles.eyebrow}>Accès client réel</Text>
-          <Text style={styles.title}>Modules protégés</Text>
-          <Text style={styles.subtitle}>
-            La démo montre le fonctionnement sans exposer les données clients, paiements ou notifications privées.
-          </Text>
-        </View>
-        <View style={styles.lockBadge}>
-          <FontAwesome5 name="shield-alt" size={16} color={colors.accent.gold} />
-        </View>
+        <Text style={styles.sectionTitle}>Fonctionnalités protégées</Text>
+        <MaterialCommunityIcons name="lock" size={20} color={colors.text.muted} />
       </View>
 
       {features.map((feature) => (
-        <View key={feature.id} style={styles.featureCard}>
-          <View style={styles.featureIcon}>
-            <FontAwesome5 name={feature.icon} size={15} color={colors.primary.main} />
+        <Animated.View key={feature.id} entering={FadeInDown.springify()} style={styles.card}>
+          <View style={styles.iconBox}>
+            <FontAwesome6 name={feature.icon as any} size={14} color={colors.text.muted} />
+            <View style={styles.lockOverlay}>
+              <MaterialCommunityIcons name="lock" size={10} color={colors.text.muted} />
+            </View>
           </View>
-          <View style={styles.featureCopy}>
-            <Text style={styles.featureTitle}>{feature.title}</Text>
-            <Text style={styles.featureDetail}>{feature.detail}</Text>
-            <Text style={styles.featureReason}>{feature.reason}</Text>
+
+          <View style={styles.textBlock}>
+            <Text style={styles.title}>{feature.title}</Text>
+            <Text style={styles.detail}>{feature.detail}</Text>
           </View>
-        </View>
+
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>🔒 Connexion</Text>
+          </View>
+
+          <BlurView intensity={isDark ? 10 : 20} tint={isDark ? 'dark' : 'light'} style={StyleSheet.absoluteFill} />
+        </Animated.View>
       ))}
     </View>
   );
@@ -57,74 +60,71 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
     },
     headerRow: {
       flexDirection: 'row',
-      gap: 12,
-      alignItems: 'flex-start',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       marginBottom: 12,
     },
-    headerCopy: {
-      flex: 1,
-    },
-    eyebrow: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.bold,
-      fontSize: 11,
-      textTransform: 'uppercase',
-    },
-    title: {
+    sectionTitle: {
       color: colors.text.primary,
       fontFamily: Fonts.bold,
       fontSize: 18,
-      marginTop: 4,
     },
-    subtitle: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.regular,
-      fontSize: 12,
-      lineHeight: 18,
-      marginTop: 5,
-    },
-    lockBadge: {
-      width: 38,
-      height: 38,
-      borderRadius: 14,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(251,191,36,0.12)' : '#FFFBEB',
-    },
-    featureCard: {
+    card: {
       flexDirection: 'row',
+      alignItems: 'center',
       gap: 12,
-      paddingVertical: 13,
+      paddingVertical: 14,
+      paddingHorizontal: 12,
       borderTopWidth: 1,
-      borderTopColor: isDark ? 'rgba(255,255,255,0.08)' : '#EEF2F7',
+      borderTopColor: isDark ? 'rgba(255,255,255,0.06)' : '#F1F5F9',
+      overflow: 'hidden',
+      borderRadius: 12,
     },
-    featureIcon: {
+    iconBox: {
       width: 38,
       height: 38,
       borderRadius: 12,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(74,222,128,0.12)' : '#F0FDF4',
+      backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : colors.neutral[100],
     },
-    featureCopy: {
+    lockOverlay: {
+      position: 'absolute',
+      bottom: -2,
+      right: -2,
+      width: 16,
+      height: 16,
+      borderRadius: 8,
+      backgroundColor: colors.background.card,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[200],
+    },
+    textBlock: {
       flex: 1,
     },
-    featureTitle: {
+    title: {
       color: colors.text.primary,
       fontFamily: Fonts.bold,
       fontSize: 14,
     },
-    featureDetail: {
+    detail: {
       color: colors.text.secondary,
       fontFamily: Fonts.regular,
       fontSize: 12,
       lineHeight: 17,
-      marginTop: 4,
+      marginTop: 2,
     },
-    featureReason: {
-      color: colors.primary.main,
-      fontFamily: Fonts.bold,
-      fontSize: 11,
-      marginTop: 6,
+    badge: {
+      backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[100],
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 8,
+    },
+    badgeText: {
+      color: colors.text.muted,
+      fontFamily: Fonts.medium,
+      fontSize: 10,
     },
   });

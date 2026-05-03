@@ -10,6 +10,7 @@ import {
   DEMO_DOCUMENTS,
   DEMO_FAQS,
   DEMO_NOTIFICATIONS,
+  DEMO_QUICK_ACTIONS,
   GUEST_SUPPORT_PHONE,
 } from '../data/demoContent';
 import type { DemoShipmentMode } from '../types';
@@ -24,6 +25,11 @@ export const useGuestPreview = (
     [selectedMode]
   );
 
+  const filteredGoods = useMemo(
+    () => DEMO_GOODS.filter((g) => g.mode === selectedMode),
+    [selectedMode]
+  );
+
   const handleLogin = useCallback(() => {
     navigation.navigate('Login');
   }, [navigation]);
@@ -34,15 +40,32 @@ export const useGuestPreview = (
     Linking.openURL(`https://wa.me/${phone}?text=${text}`);
   }, []);
 
+  const handleWhatsApp = useCallback(() => {
+    const phone = GUEST_SUPPORT_PHONE.replace(/[^\d]/g, '');
+    const text = encodeURIComponent("Bonjour ChinaLink, j'ai une question sur l'application.");
+    Linking.openURL(`https://wa.me/${phone}?text=${text}`);
+  }, []);
+
+  const handleAction = useCallback((id: string) => {
+    if (id === 'whatsapp' || id === 'support') {
+      handleWhatsApp();
+    } else if (id === 'login') {
+      handleLogin();
+    }
+    // 'track' and 'documents' are demo-only actions (no-op in guest mode)
+  }, [handleLogin, handleWhatsApp]);
+
   return {
     benefits: DEMO_BENEFITS,
     clientSteps: DEMO_CLIENT_STEPS,
     documents: DEMO_DOCUMENTS,
     faqs: DEMO_FAQS,
-    goods: DEMO_GOODS,
+    goods: filteredGoods,
+    allGoods: DEMO_GOODS,
     lockedFeatures: DEMO_LOCKED_FEATURES,
     metrics: DEMO_METRICS,
     notifications: DEMO_NOTIFICATIONS,
+    quickActions: DEMO_QUICK_ACTIONS,
     shipments: DEMO_SHIPMENTS,
     selectedMode,
     selectedShipment,
@@ -50,5 +73,7 @@ export const useGuestPreview = (
     setSelectedMode,
     handleLogin,
     handleContact,
+    handleWhatsApp,
+    handleAction,
   };
 };

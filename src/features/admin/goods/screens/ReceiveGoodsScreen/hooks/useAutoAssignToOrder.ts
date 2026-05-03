@@ -12,6 +12,17 @@ import { queryKey } from '@src/constants/queryKey';
 
 const RECENT_ORDER_DAYS = 7;
 
+const PARTNER_BY_SHIPMENT_LINE: Record<string, string> = {
+  AIR_ML_STANDARD: 'Air Mali Standard',
+  SEA_ML_DAKAR: 'Sea Mali Dakar',
+  SEA_ML_ABIDJAN: 'Sea Mali Abidjan',
+  SEA_ML_LAGOS: 'Sea Mali Lagos',
+  SEA_ML_TEMA: 'Sea Mali Tema',
+};
+
+const getPartnerFromShipmentLine = (shipmentLine: string): string =>
+  PARTNER_BY_SHIPMENT_LINE[shipmentLine] || shipmentLine.replace(/_/g, ' ');
+
 const isRecentOrder = (order: productType, days: number): boolean => {
   const createdAt = order.createdAt || order.departureDate;
   if (!createdAt) return false;
@@ -71,11 +82,12 @@ export const useAutoAssignToOrder = () => {
         const shippingMode = (goodsData.shippingMode || 'SEA').toLowerCase() as 'air' | 'sea';
         const totalPrice = goodsData.unitPrice * (shippingMode === 'air' ? goodsData.weight : (goodsData.actualCBM || 0));
         const shipmentLine = shippingMode === 'air' ? 'AIR_ML_STANDARD' : 'SEA_ML_DAKAR';
+        const partenaire = getPartnerFromShipmentLine(shipmentLine);
         const newOrderData = {
           clientName: `${client.firstName} ${client.lastName}`.trim(), clientPhone: client.phoneNumber || '',
           packageWeight: goodsData.weight, quantity: goodsData.quantity, unitPrice: goodsData.unitPrice,
           shippingMode, packageCBM: (goodsData.actualCBM || 0).toString(), userId: client._id,
-          status: 'Active', images: [], partenaire: 'AFA', shipmentLine,
+          status: 'Active', images: [], partenaire, shipmentLine,
           destinationCountry: 'ML', departureDate: new Date().toISOString(), priceTotal: totalPrice,
         } as unknown as productType;
         console.log('[AutoAssign] Creating order with data:', JSON.stringify(newOrderData));

@@ -1,141 +1,64 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeInDown, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { DemoMetric } from '../types';
 
-interface Props {
-  metrics: DemoMetric[];
-}
+interface Props { metrics: DemoMetric[]; }
 
-const getToneColor = (colors: ReturnType<typeof useAppTheme>['colors'], tone: DemoMetric['tone']) => {
-  if (tone === 'success') return colors.status.success;
-  if (tone === 'warning') return colors.status.warning;
-  if (tone === 'info') return colors.status.info;
-  return colors.text.secondary;
+const getTone = (c: ReturnType<typeof useAppTheme>['colors'], t: DemoMetric['tone']) => {
+  switch (t) { case 'success': return c.status.success; case 'info': return c.status.info; case 'warning': return c.status.warning; case 'primary': return c.primary.main; default: return c.text.secondary; }
+};
+
+const Card: React.FC<{ m: DemoMetric; i: number; colors: ReturnType<typeof useAppTheme>['colors']; isDark: boolean }> = ({ m, i, colors, isDark }) => {
+  const s = useSharedValue(1);
+  const tone = getTone(colors, m.tone);
+  const a = useAnimatedStyle(() => ({ transform: [{ scale: s.value }] }));
+  return (
+    <TouchableOpacity activeOpacity={0.9} onPressIn={() => { s.value = withSpring(0.97); }} onPressOut={() => { s.value = withSpring(1); }} style={{ width: '48%' }}>
+      <Animated.View
+        entering={FadeInDown.delay(i * 100)}
+        style={[
+          styles.card,
+          { backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : colors.background.card, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)', shadowColor: isDark ? '#000' : 'rgba(0,0,0,0.06)' },
+          a,
+        ]}
+      >
+        <View style={[styles.icon, { backgroundColor: `${tone}18` }]}><FontAwesome6 name={m.icon as React.ComponentProps<typeof FontAwesome6>['name']} size={16} color={tone} /></View>
+        <Text style={[styles.val, { color: colors.text.primary }]}>{m.value}</Text>
+        <Text style={[styles.lab, { color: colors.text.primary }]}>{m.label}</Text>
+        <Text style={[styles.det, { color: colors.text.secondary }]}>{m.detail}</Text>
+        {m.change && (
+          <View style={[styles.pill, { backgroundColor: colors.feedback.successBg }]}>
+            <Text style={[styles.pillText, { color: colors.feedback.successDark }]}>{m.change}</Text>
+          </View>
+        )}
+      </Animated.View>
+    </TouchableOpacity>
+  );
 };
 
 export const GuestCommandCenter: React.FC<Props> = ({ metrics }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
-
   return (
-    <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <View>
-          <Text style={styles.eyebrow}>Tableau de bord client</Text>
-          <Text style={styles.title}>Aperçu opérationnel</Text>
-        </View>
-        <View style={styles.liveBadge}>
-          <View style={styles.liveDot} />
-          <Text style={styles.liveText}>Démo</Text>
-        </View>
-      </View>
-
+    <View style={[styles.container, { backgroundColor: isDark ? colors.background.paper : colors.background.card, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)' }]}>
       <View style={styles.grid}>
-        {metrics.map((metric) => {
-          const toneColor = getToneColor(colors, metric.tone);
-          return (
-            <View key={metric.id} style={styles.metricCard}>
-              <View style={[styles.metricIcon, { backgroundColor: `${toneColor}1A` }]}>
-                <FontAwesome5 name={metric.icon} size={14} color={toneColor} />
-              </View>
-              <Text style={styles.metricValue}>{metric.value}</Text>
-              <Text style={styles.metricLabel}>{metric.label}</Text>
-              <Text style={styles.metricDetail}>{metric.detail}</Text>
-            </View>
-          );
-        })}
+        {metrics.map((m, i) => (<Card key={m.id} m={m} i={i} colors={colors} isDark={isDark} />))}
       </View>
     </View>
   );
 };
 
-const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
-  StyleSheet.create({
-    container: {
-      marginHorizontal: 20,
-      marginTop: 14,
-      borderRadius: 18,
-      padding: 16,
-      backgroundColor: colors.background.card,
-      borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
-    },
-    headerRow: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      gap: 12,
-    },
-    eyebrow: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.bold,
-      fontSize: 12,
-    },
-    title: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 22,
-      marginTop: 4,
-    },
-    liveBadge: {
-      minHeight: 34,
-      borderRadius: 999,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 7,
-      paddingHorizontal: 11,
-      backgroundColor: isDark ? 'rgba(74,222,128,0.12)' : '#F0FDF4',
-    },
-    liveDot: {
-      width: 7,
-      height: 7,
-      borderRadius: 4,
-      backgroundColor: colors.primary.main,
-    },
-    liveText: {
-      color: colors.primary.main,
-      fontFamily: Fonts.bold,
-      fontSize: 11,
-    },
-    grid: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: 10,
-      marginTop: 16,
-    },
-    metricCard: {
-      width: '48%',
-      minHeight: 132,
-      borderRadius: 14,
-      padding: 12,
-      backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : '#F9FAFB',
-    },
-    metricIcon: {
-      width: 34,
-      height: 34,
-      borderRadius: 12,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    metricValue: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 22,
-      marginTop: 10,
-    },
-    metricLabel: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 12,
-      marginTop: 3,
-    },
-    metricDetail: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.regular,
-      fontSize: 11,
-      marginTop: 3,
-    },
-  });
+const styles = StyleSheet.create({
+  container: { marginHorizontal: 20, marginTop: 24, borderRadius: 18, padding: 16, borderWidth: 1 },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 12 },
+  card: { borderRadius: 14, padding: 12, borderWidth: 1, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 3 },
+  icon: { width: 36, height: 36, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  val: { fontFamily: Fonts.bold, fontSize: 22, marginTop: 10 },
+  lab: { fontFamily: Fonts.bold, fontSize: 12, marginTop: 3 },
+  det: { fontFamily: Fonts.regular, fontSize: 11, marginTop: 3, lineHeight: 16 },
+  pill: { alignSelf: 'flex-start', marginTop: 8, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 3 },
+  pillText: { fontFamily: Fonts.medium, fontSize: 11 },
+});

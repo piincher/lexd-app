@@ -104,7 +104,7 @@ export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ orde
       <Divider style={styles.divider} />
 
       <ShippingRow styles={styles} icon="identifier" label="N° Conteneur" value={order?.contenairNumber} iconColor="#1976D2" />
-      <ShippingRow styles={styles} icon="handshake" label="Transporteur" value={order?.partenaire} iconColor="#7B1FA2" />
+      <ShippingRow styles={styles} icon="handshake" label="Transporteur" value={order?.partenaire || 'Non spécifié'} iconColor="#7B1FA2" />
       <ShippingRow styles={styles} icon="map-marker-radius" label="Position actuelle" value={position} iconColor="#E65100" />
       <ShippingRow styles={styles} icon="calendar-arrow-right" label="Date de départ" value={departureDate} iconColor="#9C27B0" />
       <ShippingRow styles={styles} icon="calendar-check" label="Date de réception" value={receiptDate} iconColor="#4CAF50" />

@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import Animated, { FadeInDown, useAnimatedStyle, useSharedValue, withTiming, withDelay } from 'react-native-reanimated';
+import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 import type { DemoShipment } from '../types';
 
 interface Props {
@@ -12,114 +14,83 @@ interface Props {
 export const DemoShipmentCard: React.FC<Props> = ({ shipment }) => {
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
-  const iconName = shipment.mode === 'air' ? 'plane-departure' : 'ship';
-
+  const progress = useSharedValue(0);
+  useEffect(() => {
+    progress.value = withDelay(400, withTiming(shipment.progress, { duration: 1000 }));
+  }, [shipment.progress, progress]);
+  const barStyle = useAnimatedStyle(() => ({
+    width: `${progress.value * 100}%`,
+  }));
+  const modeLabel = shipment.mode === 'air' ? 'Aérien' : 'Maritime';
+  const modeIcon = shipment.mode === 'air' ? 'plane' : 'ship';
+  const awb = shipment.mode === 'air' ? shipment.airwayBillNumber : shipment.containerNumber;
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.card}>
-        <View style={styles.headerRow}>
-          <View style={styles.iconBox}>
-            <FontAwesome5 name={iconName} size={20} color={colors.primary.main} />
-          </View>
-          <View style={styles.titleBlock}>
-            <Text style={styles.eyebrow}>{shipment.label}</Text>
-            <Text style={styles.route}>{shipment.route}</Text>
-          </View>
+    <Animated.View entering={FadeInDown.duration(600).delay(200)} style={styles.card}>
+      <View style={styles.topRow}>
+        <View style={styles.modeBadge}>
+          <FontAwesome6 name={modeIcon} size={14} color={colors.primary.main} />
+          <Text style={styles.modeText}>{modeLabel}</Text>
         </View>
-
-        <View style={styles.statusRow}>
-          <View style={styles.metric}>
-            <Text style={styles.metricValue}>{shipment.status}</Text>
-            <Text style={styles.metricLabel}>Statut actuel</Text>
-          </View>
-          <View style={styles.metric}>
-            <Text style={styles.metricValue}>{shipment.goodsCount}</Text>
-            <Text style={styles.metricLabel}>Marchandises</Text>
-          </View>
+        <View style={[styles.statusBadge, { backgroundColor: `${shipment.statusColor}20` }]}>
+          <Text style={[styles.statusText, { color: shipment.statusColor }]}>{shipment.status}</Text>
         </View>
-
-        <Text style={styles.eta}>{shipment.eta}</Text>
-        <Text style={styles.preview}>Exemple : {shipment.goodsPreview.join(', ')}</Text>
       </View>
-    </View>
+      <Text style={styles.awb}>{awb}</Text>
+      <Text style={styles.route}>{shipment.route}</Text>
+      <View style={styles.progressTrack}>
+        <Animated.View style={[styles.progressFill, { backgroundColor: shipment.statusColor }, barStyle]} />
+      </View>
+      <View style={styles.infoRow}>
+        <View style={styles.infoPill}>
+          <MaterialCommunityIcons name="package-variant" size={14} color={colors.text.secondary} />
+          <Text style={styles.infoText}>{shipment.goodsCount} articles</Text>
+        </View>
+        <View style={styles.infoPill}>
+          <MaterialCommunityIcons name="weight-kilogram" size={14} color={colors.text.secondary} />
+          <Text style={styles.infoText}>{shipment.weight}</Text>
+        </View>
+        <View style={styles.infoPill}>
+          <MaterialCommunityIcons name="cube-outline" size={14} color={colors.text.secondary} />
+          <Text style={styles.infoText}>{shipment.volume}</Text>
+        </View>
+      </View>
+      <Text style={styles.eta}>Arrivée estimée: {shipment.etaDate}</Text>
+    </Animated.View>
   );
 };
 
 const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
   StyleSheet.create({
-    wrapper: {
-      paddingHorizontal: 20,
-      marginTop: 16,
-    },
     card: {
-      borderRadius: 16,
-      padding: 16,
-      backgroundColor: colors.background.card,
-      borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
+      marginHorizontal: 16, marginTop: 16,
+      borderRadius: 24, padding: 16,
+      backgroundColor: colors.background.card, shadowColor: "#000", shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.12, shadowRadius: 24, elevation: 8,
     },
-    headerRow: {
-      flexDirection: 'row',
-      gap: 12,
-      alignItems: 'center',
+    topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
+    modeBadge: {
+      flexDirection: 'row', alignItems: 'center', gap: 8,
+      paddingHorizontal: 12, paddingVertical: 8,
+      borderRadius: 9999,
+      backgroundColor: isDark ? 'rgba(74,222,128,0.12)' : colors.primary[50],
     },
-    iconBox: {
-      width: 48,
-      height: 48,
-      borderRadius: 14,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(74,222,128,0.12)' : '#F0FDF4',
+    modeText: { fontFamily: Fonts.bold, fontSize: 12, color: colors.primary.main },
+    statusBadge: { paddingHorizontal: 12, paddingVertical: 8, borderRadius: 9999 },
+    statusText: { fontFamily: Fonts.bold, fontSize: 12 },
+    awb: { fontFamily: Fonts.bold, fontSize: 22, color: colors.text.primary, marginTop: 8 },
+    route: { fontFamily: Fonts.medium, fontSize: 14, color: colors.text.secondary, marginTop: 4 },
+    progressTrack: {
+      height: 6, borderRadius: 9999,
+      backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : colors.neutral[200],
+      marginTop: 16, overflow: 'hidden',
     },
-    titleBlock: {
-      flex: 1,
-    },
-    eyebrow: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.bold,
-      fontSize: 12,
-    },
-    route: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 18,
-      lineHeight: 24,
-      marginTop: 4,
-    },
-    statusRow: {
-      flexDirection: 'row',
-      gap: 10,
-      marginTop: 16,
-    },
-    metric: {
-      flex: 1,
+    progressFill: { height: '100%', borderRadius: 9999 },
+    infoRow: { flexDirection: 'row', gap: 8, marginTop: 16 },
+    infoPill: {
+      flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4,
+      paddingHorizontal: 8, paddingVertical: 8,
       borderRadius: 12,
-      padding: 12,
-      backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : '#F9FAFB',
+      backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : colors.neutral[100],
     },
-    metricValue: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 14,
-      lineHeight: 19,
-    },
-    metricLabel: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.medium,
-      fontSize: 11,
-      marginTop: 4,
-    },
-    eta: {
-      color: colors.status.info,
-      fontFamily: Fonts.bold,
-      fontSize: 13,
-      marginTop: 14,
-    },
-    preview: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.regular,
-      fontSize: 13,
-      lineHeight: 19,
-      marginTop: 8,
-    },
+    infoText: { fontFamily: Fonts.medium, fontSize: 11, color: colors.text.secondary },
+    eta: { fontFamily: Fonts.medium, fontSize: 13, color: colors.text.muted, marginTop: 16 },
   });

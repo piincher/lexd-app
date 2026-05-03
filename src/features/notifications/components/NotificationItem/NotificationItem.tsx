@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { InAppNotification, NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../../types';
 import { formatRelativeTime } from '../../utils/timeUtils';
+import { NotificationTrackingPreview } from './NotificationTrackingPreview';
 
 interface NotificationItemProps {
   notification: InAppNotification;
@@ -19,14 +20,12 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   onDismiss,
   onDelete,
 }) => {
-  // Get config with fallbacks
   const typeConfig = NOTIFICATION_TYPE_CONFIG[notification.type] || NOTIFICATION_TYPE_CONFIG.GENERAL;
   const catConfig = NOTIFICATION_CATEGORY_CONFIG[notification.category] || NOTIFICATION_CATEGORY_CONFIG.INFO;
-  
   const safeIcon = typeConfig?.icon || 'bell';
   const safeLabel = typeConfig?.label || 'Notification';
   const safeDescription = typeConfig?.description || 'Nouvelle notification';
-  
+
   const renderRightActions = () => (
     <View style={styles.actionsContainer}>
       <TouchableOpacity
@@ -53,11 +52,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
         onPress={() => onPress(notification)}
       >
         <View style={[styles.iconContainer, !notification.isRead && styles.unreadIcon, { backgroundColor: catConfig.backgroundColor }]}>
-          <MaterialCommunityIcons
-            name={safeIcon as any}
-            size={24}
-            color={catConfig.color}
-          />
+          <MaterialCommunityIcons name={safeIcon as any} size={24} color={catConfig.color} />
         </View>
         <View style={styles.content}>
           <Text style={[styles.title, !notification.isRead && styles.unreadText]}>
@@ -66,6 +61,7 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
           <Text style={styles.message} numberOfLines={2}>
             {notification.message || safeDescription}
           </Text>
+          <NotificationTrackingPreview data={notification.data} />
           <Text style={styles.time}>{formatRelativeTime(notification.createdAt)}</Text>
         </View>
         {!notification.isRead && <View style={styles.unreadDot} />}

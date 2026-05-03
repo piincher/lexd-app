@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeInRight } from 'react-native-reanimated';
+import { FontAwesome6 } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { DemoClientStep } from '../types';
@@ -14,79 +16,113 @@ export const GuestClientJourney: React.FC<Props> = ({ steps }) => {
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Comment devenir client</Text>
-      <Text style={styles.sectionIntro}>
-        L’application ne crée pas de comptes ouverts à tout le monde. ChinaLink enregistre d’abord
-        le client, puis le suivi devient disponible.
-      </Text>
-      {steps.map((step) => (
-        <View key={step.id} style={styles.row}>
-          <View style={styles.iconBox}>
-            <FontAwesome5 name={step.icon} size={14} color={colors.primary.main} />
-          </View>
-          <View style={styles.textBlock}>
-            <Text style={styles.title}>{step.title}</Text>
-            <Text style={styles.detail}>{step.detail}</Text>
-          </View>
-        </View>
-      ))}
-    </View>
+    <Animated.View entering={FadeInRight.springify()} style={styles.wrapper}>
+      <Text style={styles.sectionTitle}>Votre parcours client</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {steps.map((step, index) => {
+          const isActive = index === 0;
+          const isLast = index === steps.length - 1;
+
+          return (
+            <View key={step.id} style={styles.step}>
+              <View style={styles.topRow}>
+                <View
+                  style={[
+                    styles.circle,
+                    {
+                      backgroundColor: isActive ? colors.primary.main : isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[200],
+                      borderColor: isActive ? colors.primary.light : 'transparent',
+                    },
+                  ]}
+                >
+                  <FontAwesome6
+                    name={step.icon as any}
+                    size={14}
+                    color={isActive ? '#FFFFFF' : colors.text.muted}
+                  />
+                </View>
+
+                {!isLast && (
+                  <View style={styles.lineWrap}>
+                    <LinearGradient
+                      colors={isActive ? [colors.primary.main, colors.primary.light] : [isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[200], isDark ? 'rgba(255,255,255,0.04)' : colors.neutral[100]]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 0 }}
+                      style={styles.line}
+                    />
+                  </View>
+                )}
+              </View>
+
+              <Text style={[styles.title, { color: isActive ? colors.primary.main : colors.text.primary }]}>
+                {step.title}
+              </Text>
+              <Text style={styles.detail}>{step.detail}</Text>
+            </View>
+          );
+        })}
+      </ScrollView>
+    </Animated.View>
   );
 };
 
 const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
   StyleSheet.create({
-    container: {
-      marginHorizontal: 20,
+    wrapper: {
       marginTop: 22,
-      borderRadius: 16,
-      padding: 16,
-      backgroundColor: colors.background.card,
-      borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
     },
     sectionTitle: {
       color: colors.text.primary,
       fontFamily: Fonts.bold,
       fontSize: 18,
-    },
-    sectionIntro: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.regular,
-      fontSize: 13,
-      lineHeight: 19,
-      marginTop: 8,
+      marginHorizontal: 20,
       marginBottom: 12,
     },
-    row: {
-      minHeight: 58,
-      flexDirection: 'row',
-      gap: 12,
-      alignItems: 'flex-start',
-      paddingVertical: 8,
+    scrollContent: {
+      paddingHorizontal: 20,
+      gap: 0,
     },
-    iconBox: {
-      width: 38,
-      height: 38,
-      borderRadius: 12,
+    step: {
+      width: 140,
+      alignItems: 'center',
+    },
+    topRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    circle: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(74,222,128,0.12)' : '#F0FDF4',
+      borderWidth: 2,
+      zIndex: 1,
     },
-    textBlock: {
-      flex: 1,
+    lineWrap: {
+      width: 100,
+      height: 2,
+      marginLeft: -4,
+      marginRight: -4,
+      justifyContent: 'center',
+    },
+    line: {
+      height: 2,
+      borderRadius: 1,
     },
     title: {
-      color: colors.text.primary,
       fontFamily: Fonts.bold,
-      fontSize: 14,
+      fontSize: 13,
+      textAlign: 'center',
     },
     detail: {
       color: colors.text.secondary,
       fontFamily: Fonts.regular,
-      fontSize: 12,
-      lineHeight: 18,
+      fontSize: 11,
+      lineHeight: 16,
+      textAlign: 'center',
       marginTop: 4,
+      paddingHorizontal: 4,
     },
   });

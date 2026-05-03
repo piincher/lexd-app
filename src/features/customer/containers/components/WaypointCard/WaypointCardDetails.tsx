@@ -79,7 +79,7 @@ export const WaypointCardDetails: React.FC<WaypointCardDetailsProps> = ({ waypoi
       )}
       {waypoint.roadDetails?.borderCrossing && (
         <View style={styles.wpDetailRow}>
-          <Text style={styles.wpDetailLabel}>Frontière</Text>
+          <Text style={styles.wpDetailLabel}>Passage frontalier</Text>
           <Text style={styles.wpDetailValue}>{waypoint.roadDetails.borderCrossing}</Text>
         </View>
       )}

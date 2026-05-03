@@ -6,6 +6,8 @@ export interface DemoTimelineStep {
   detail: string;
   status: 'done' | 'active' | 'next';
   icon: string;
+  date?: string;
+  location?: string;
 }
 
 export interface DemoShipment {
@@ -14,10 +16,28 @@ export interface DemoShipment {
   label: string;
   route: string;
   status: string;
+  statusColor: string;
   eta: string;
+  etaDate: string;
+  progress: number;
   goodsCount: number;
+  weight: string;
+  volume: string;
+  containerNumber?: string;
+  airwayBillNumber?: string;
   goodsPreview: string[];
   timeline: DemoTimelineStep[];
+  waypoints: DemoWaypoint[];
+}
+
+export interface DemoWaypoint {
+  id: string;
+  city: string;
+  country: string;
+  code: string;
+  status: 'done' | 'active' | 'next';
+  icon: string;
+  date?: string;
 }
 
 export interface DemoBenefit {
@@ -25,6 +45,7 @@ export interface DemoBenefit {
   title: string;
   detail: string;
   icon: string;
+  color: string;
 }
 
 export interface DemoDocument {
@@ -33,6 +54,8 @@ export interface DemoDocument {
   detail: string;
   availability: string;
   icon: string;
+  pages: number;
+  size: string;
 }
 
 export interface DemoNotification {
@@ -42,6 +65,8 @@ export interface DemoNotification {
   channel: string;
   time: string;
   icon: string;
+  color: string;
+  read: boolean;
 }
 
 export interface DemoClientStep {
@@ -63,7 +88,8 @@ export interface DemoMetric {
   value: string;
   detail: string;
   icon: string;
-  tone: 'success' | 'info' | 'warning' | 'neutral';
+  tone: 'success' | 'info' | 'warning' | 'neutral' | 'primary';
+  change?: string;
 }
 
 export interface DemoGoodsItem {
@@ -71,11 +97,14 @@ export interface DemoGoodsItem {
   name: string;
   trackingCode: string;
   status: string;
+  statusColor: string;
   route: string;
   quantity: number;
   volume: string;
+  weight: string;
   balance: string;
   mode: DemoShipmentMode;
+  imageColor: string;
 }
 
 export interface DemoLockedFeature {
@@ -84,4 +113,13 @@ export interface DemoLockedFeature {
   detail: string;
   reason: string;
   icon: string;
+  previewCount?: number;
+}
+
+export interface DemoQuickAction {
+  id: string;
+  title: string;
+  icon: string;
+  color: string;
+  description: string;
 }

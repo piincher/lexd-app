@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import React, { useEffect, useMemo } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeInRight, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming, interpolate } from 'react-native-reanimated';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 import type { DemoShipment } from '../types';
 
 interface Props {
@@ -12,137 +14,76 @@ interface Props {
 export const DemoRouteBoard: React.FC<Props> = ({ shipment }) => {
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
-
+  const pulse = useSharedValue(1);
+  useEffect(() => {
+    pulse.value = withRepeat(
+      withSequence(withTiming(1.4, { duration: 800 }), withTiming(1, { duration: 800 })),
+      -1, true
+    );
+  }, [pulse]);
+  const pulseStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: pulse.value }],
+    opacity: interpolate(pulse.value, [1, 1.4], [0.5, 0]),
+  }));
   return (
-    <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <Text style={styles.title}>Carte de progression</Text>
-        <Text style={styles.mode}>{shipment.mode === 'air' ? 'Aérien' : 'Maritime'}</Text>
-      </View>
-      <Text style={styles.route}>{shipment.route}</Text>
-
-      <View style={styles.rail}>
-        {shipment.timeline.map((step, index) => {
-          const completed = step.status === 'done';
-          const active = step.status === 'active';
+    <Animated.View entering={FadeInRight.duration(500).delay(300)} style={styles.container}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {shipment.waypoints.map((wp, index) => {
+          const done = wp.status === 'done';
+          const active = wp.status === 'active';
           return (
-            <React.Fragment key={step.id}>
-              <View style={styles.stop}>
-                <View style={[styles.stopDot, completed && styles.stopDone, active && styles.stopActive]}>
-                  <FontAwesome5 name={step.icon} size={12} color={completed || active ? '#FFFFFF' : colors.text.secondary} />
+            <React.Fragment key={wp.id}>
+              <View style={styles.column}>
+                <Text style={styles.city} numberOfLines={1}>{wp.city}</Text>
+                <Text style={styles.code}>{wp.code}</Text>
+                <View style={styles.row}>
+                  <View style={styles.circleWrapper}>
+                    {active && <Animated.View style={[styles.pulseRing, pulseStyle]} />}
+                    <View style={[
+                      styles.circle,
+                      done && { backgroundColor: colors.status.success },
+                      active && { backgroundColor: colors.status.info },
+                      !done && !active && { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : colors.neutral[200] },
+                    ]}>
+                      {done ? (
+                        <FontAwesome6 name="check" size={12} color="#FFFFFF" />
+                      ) : (
+                        <FontAwesome6 name={wp.icon as any} size={12} color={active ? '#FFFFFF' : colors.text.secondary} />
+                      )}
+                    </View>
+                  </View>
+                  {index < shipment.waypoints.length - 1 && (
+                    <View style={styles.connector}>
+                      <View style={[styles.connectorLine, done && { backgroundColor: colors.status.success }]} />
+                    </View>
+                  )}
                 </View>
-                <Text numberOfLines={2} style={[styles.stopLabel, active && styles.stopLabelActive]}>
-                  {step.title}
-                </Text>
+                {wp.date && <Text style={styles.date}>{wp.date}</Text>}
               </View>
-              {index < shipment.timeline.length - 1 && (
-                <View style={[styles.connector, completed && styles.connectorDone]} />
-              )}
             </React.Fragment>
           );
         })}
-      </View>
-
-      <View style={styles.nextAction}>
-        <FontAwesome5 name="calendar-check" size={14} color={colors.primary.main} />
-        <Text style={styles.nextText}>{shipment.eta}</Text>
-      </View>
-    </View>
+      </ScrollView>
+    </Animated.View>
   );
 };
 
 const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
   StyleSheet.create({
     container: {
-      marginHorizontal: 20,
-      marginTop: 18,
-      borderRadius: 16,
-      padding: 16,
-      backgroundColor: colors.background.card,
-      borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
+      marginHorizontal: 16, marginTop: 16,
+      borderRadius: 24, padding: 16,
+      backgroundColor: colors.background.card, shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 4,
     },
-    headerRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      gap: 12,
-    },
-    title: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 18,
-    },
-    mode: {
-      color: colors.primary.main,
-      fontFamily: Fonts.bold,
-      fontSize: 12,
-    },
-    route: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.medium,
-      fontSize: 13,
-      marginTop: 6,
-    },
-    rail: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      marginTop: 18,
-    },
-    stop: {
-      width: 58,
-      alignItems: 'center',
-    },
-    stopDot: {
-      width: 38,
-      height: 38,
-      borderRadius: 19,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : '#EEF2F7',
-    },
-    stopDone: {
-      backgroundColor: colors.primary.main,
-    },
-    stopActive: {
-      backgroundColor: colors.status.info,
-    },
-    stopLabel: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.medium,
-      fontSize: 10,
-      lineHeight: 13,
-      textAlign: 'center',
-      marginTop: 7,
-    },
-    stopLabelActive: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-    },
-    connector: {
-      flex: 1,
-      height: 3,
-      borderRadius: 999,
-      marginTop: 18,
-      backgroundColor: isDark ? 'rgba(255,255,255,0.12)' : '#E5E7EB',
-    },
-    connectorDone: {
-      backgroundColor: colors.primary.main,
-    },
-    nextAction: {
-      minHeight: 42,
-      borderRadius: 12,
-      flexDirection: 'row',
-      alignItems: 'center',
-      gap: 9,
-      paddingHorizontal: 12,
-      marginTop: 18,
-      backgroundColor: isDark ? 'rgba(74,222,128,0.10)' : '#F0FDF4',
-    },
-    nextText: {
-      flex: 1,
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 12,
-    },
+    scrollContent: { alignItems: 'flex-start', paddingRight: 16 },
+    column: { width: 80, alignItems: 'center' },
+    city: { fontFamily: Fonts.bold, fontSize: 12, color: colors.text.primary, textAlign: 'center', width: '100%' },
+    code: { fontFamily: Fonts.medium, fontSize: 10, color: colors.text.muted, marginTop: 2 },
+    row: { flexDirection: 'row', alignItems: 'center', marginVertical: 8 },
+    circleWrapper: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+    pulseRing: { position: 'absolute', width: 44, height: 44, borderRadius: 22, backgroundColor: colors.status.info, top: 0, left: 0 },
+    circle: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', zIndex: 1 },
+    date: { fontFamily: Fonts.medium, fontSize: 10, color: colors.text.secondary, textAlign: 'center' },
+    connector: { width: 36, height: 44, justifyContent: 'center' },
+    connectorLine: { height: 2, borderRadius: 1, backgroundColor: isDark ? 'rgba(255,255,255,0.12)' : colors.neutral[300] },
   });

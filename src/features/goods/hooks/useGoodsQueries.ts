@@ -28,7 +28,7 @@ export const useGetGoodsDetail = (goodsId: string) => {
 	return useQuery({
 		queryKey: QUERY_KEYS.goodsDetail(goodsId),
 		queryFn: () => goodsApi.getGoodsById(goodsId),
-		select: (response) => response.data.data,
+		select: (response) => response.data.data.goods,
 		enabled: !!goodsId,
 		staleTime: 0, // Always fetch fresh data on refetch
 	});

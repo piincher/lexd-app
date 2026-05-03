@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import type { DemoBenefit } from '../types';
 
@@ -15,16 +17,21 @@ export const DemoBenefitGrid: React.FC<Props> = ({ benefits }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Ce que voit un client connecté</Text>
       <View style={styles.grid}>
-        {benefits.map((benefit) => (
-          <View key={benefit.id} style={styles.card}>
-            <View style={styles.iconBox}>
-              <FontAwesome5 name={benefit.icon} size={15} color={colors.primary.main} />
+        {benefits.map((benefit, index) => (
+          <Animated.View
+            key={benefit.id}
+            entering={FadeInDown.delay(index * 100).springify()}
+            style={styles.card}
+          >
+            <View style={[styles.iconCircle, { backgroundColor: `${benefit.color}18` }]}>
+              <FontAwesome6 name={benefit.icon as any} size={16} color={benefit.color} />
             </View>
             <Text style={styles.title}>{benefit.title}</Text>
-            <Text style={styles.detail}>{benefit.detail}</Text>
-          </View>
+            <Text style={styles.detail} numberOfLines={2}>
+              {benefit.detail}
+            </Text>
+          </Animated.View>
         ))}
       </View>
     </View>
@@ -34,36 +41,29 @@ export const DemoBenefitGrid: React.FC<Props> = ({ benefits }) => {
 const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: 20,
+      marginHorizontal: 20,
       marginTop: 22,
-    },
-    sectionTitle: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 18,
-      marginBottom: 12,
     },
     grid: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-      gap: 10,
+      gap: 12,
     },
     card: {
-      width: '48%',
-      minHeight: 150,
-      borderRadius: 14,
-      padding: 14,
+      width: '47%',
+      borderRadius: 16,
+      padding: 16,
       backgroundColor: colors.background.card,
       borderWidth: 1,
       borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
+      shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 2,
     },
-    iconBox: {
-      width: 36,
-      height: 36,
-      borderRadius: 12,
+    iconCircle: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(74,222,128,0.12)' : '#F0FDF4',
       marginBottom: 10,
     },
     title: {
@@ -76,6 +76,6 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       fontFamily: Fonts.regular,
       fontSize: 12,
       lineHeight: 17,
-      marginTop: 6,
+      marginTop: 4,
     },
   });

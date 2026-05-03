@@ -112,7 +112,7 @@ export const WaypointDetails: React.FC<WaypointDetailsProps> = ({
           {waypoint.roadDetails.borderCrossing && (
             <View style={styles.detailRow}>
               <Ionicons name="flag" size={16} color={Theme.neutral[500]} />
-              <Text style={styles.detailLabel}>Frontière:</Text>
+              <Text style={styles.detailLabel}>Passage frontalier:</Text>
               <Text style={styles.detailValue}>{waypoint.roadDetails.borderCrossing}</Text>
             </View>
           )}

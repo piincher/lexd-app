@@ -1,78 +1,69 @@
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native';
+import Animated, { useAnimatedRef, useScrollViewOffset, useAnimatedStyle, interpolate, Extrapolation } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@src/navigations/type';
-import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Screen } from '@src/shared/ui';
+
 import { useGuestPreview } from '../hooks/useGuestPreview';
+import { AnimatedSection } from '../components/AnimatedSection';
 import { GuestHero } from '../components/GuestHero';
+import { GuestCommandCenter } from '../components/GuestCommandCenter';
 import { GuestModeSelector } from '../components/GuestModeSelector';
 import { GuestPrivacyNotice } from '../components/GuestPrivacyNotice';
 import { DemoShipmentCard } from '../components/DemoShipmentCard';
-import { DemoTimeline } from '../components/DemoTimeline';
-import { DemoBenefitGrid } from '../components/DemoBenefitGrid';
-import { GuestConversionCard } from '../components/GuestConversionCard';
-import { GuestClientJourney } from '../components/GuestClientJourney';
-import { DemoNotificationFeed } from '../components/DemoNotificationFeed';
-import { DemoDocumentChecklist } from '../components/DemoDocumentChecklist';
-import { GuestFaqList } from '../components/GuestFaqList';
-import { GuestCommandCenter } from '../components/GuestCommandCenter';
 import { DemoRouteBoard } from '../components/DemoRouteBoard';
 import { DemoGoodsPreview } from '../components/DemoGoodsPreview';
+import { DemoTimeline } from '../components/DemoTimeline';
+import { DemoBenefitGrid } from '../components/DemoBenefitGrid';
+import { DemoNotificationFeed } from '../components/DemoNotificationFeed';
+import { DemoDocumentChecklist } from '../components/DemoDocumentChecklist';
+import { DemoQuickActions } from '../components/DemoQuickActions';
 import { DemoLockedFeatures } from '../components/DemoLockedFeatures';
+import { GuestClientJourney } from '../components/GuestClientJourney';
+import { GuestFaqList } from '../components/GuestFaqList';
+import { GuestConversionCard } from '../components/GuestConversionCard';
 
 export const GuestPreviewScreen: React.FC = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList, 'GuestPreview'>>();
-  const { colors } = useAppTheme();
-  const {
-    benefits,
-    clientSteps,
-    documents,
-    faqs,
-    goods,
-    lockedFeatures,
-    metrics,
-    notifications,
-    shipments,
-    selectedMode,
-    selectedShipment,
-    supportPhone,
-    setSelectedMode,
-    handleLogin,
-    handleContact,
-  } = useGuestPreview(navigation);
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const scrollOffset = useScrollViewOffset(scrollRef);
+  const { benefits, clientSteps, documents, faqs, goods, lockedFeatures, metrics, notifications, quickActions, shipments, selectedMode, selectedShipment, supportPhone, setSelectedMode, handleLogin, handleContact, handleAction } = useGuestPreview(navigation);
+
+  const heroStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollOffset.value, [0, 120], [1, 0.85], Extrapolation.CLAMP),
+    transform: [{ scale: interpolate(scrollOffset.value, [0, 120], [1, 0.97], Extrapolation.CLAMP) }],
+  }));
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
-        <GuestHero />
-        <GuestCommandCenter metrics={metrics} />
-        <GuestModeSelector shipments={shipments} selectedMode={selectedMode} onSelect={setSelectedMode} />
-        <GuestPrivacyNotice />
-        <DemoShipmentCard shipment={selectedShipment} />
-        <DemoRouteBoard shipment={selectedShipment} />
-        <DemoGoodsPreview goods={goods} />
-        <DemoTimeline steps={selectedShipment.timeline} />
-        <DemoBenefitGrid benefits={benefits} />
-        <DemoNotificationFeed notifications={notifications} />
-        <DemoDocumentChecklist documents={documents} />
-        <DemoLockedFeatures features={lockedFeatures} />
-        <GuestClientJourney steps={clientSteps} />
-        <GuestFaqList faqs={faqs} />
-        <GuestConversionCard supportPhone={supportPhone} onLogin={handleLogin} onContact={handleContact} />
-      </ScrollView>
-    </SafeAreaView>
+    <Screen scrollable={false} safeArea variant="plain" style={styles.screen}>
+      <Animated.ScrollView ref={scrollRef} style={styles.scrollView} contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <Animated.View style={heroStyle}><GuestHero /></Animated.View>
+        <AnimatedSection delay={100}><GuestCommandCenter metrics={metrics} /></AnimatedSection>
+        <AnimatedSection delay={200}><GuestModeSelector shipments={shipments} selectedMode={selectedMode} onSelect={setSelectedMode} /></AnimatedSection>
+        <AnimatedSection delay={300}><GuestPrivacyNotice /></AnimatedSection>
+        <AnimatedSection delay={400}><DemoShipmentCard shipment={selectedShipment} /></AnimatedSection>
+        <AnimatedSection delay={500}><DemoRouteBoard shipment={selectedShipment} /></AnimatedSection>
+        <AnimatedSection delay={600}><DemoGoodsPreview goods={goods} /></AnimatedSection>
+        <AnimatedSection delay={700}><DemoTimeline steps={selectedShipment.timeline} /></AnimatedSection>
+        <AnimatedSection delay={800}><DemoBenefitGrid benefits={benefits} /></AnimatedSection>
+        <AnimatedSection delay={900}><DemoNotificationFeed notifications={notifications} /></AnimatedSection>
+        <AnimatedSection delay={1000}><DemoDocumentChecklist documents={documents} /></AnimatedSection>
+        <AnimatedSection delay={1100}><DemoQuickActions actions={quickActions} onAction={handleAction} /></AnimatedSection>
+        <AnimatedSection delay={1200}><DemoLockedFeatures features={lockedFeatures} /></AnimatedSection>
+        <AnimatedSection delay={1300}><GuestClientJourney steps={clientSteps} /></AnimatedSection>
+        <AnimatedSection delay={1400}><GuestFaqList faqs={faqs} /></AnimatedSection>
+        <AnimatedSection delay={1500}><GuestConversionCard supportPhone={supportPhone} onLogin={handleLogin} onContact={handleContact} /></AnimatedSection>
+      </Animated.ScrollView>
+    </Screen>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    paddingBottom: 24,
-  },
+  screen: { flex: 1 },
+  scrollView: { flex: 1 },
+  content: { paddingBottom: 100, flexGrow: 1 },
 });
 
 export default GuestPreviewScreen;

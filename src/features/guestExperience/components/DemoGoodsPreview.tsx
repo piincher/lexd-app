@@ -1,140 +1,87 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeInRight, useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 import type { DemoGoodsItem } from '../types';
 
 interface Props {
   goods: DemoGoodsItem[];
 }
 
+type Styles = ReturnType<typeof createStyles>;
+
+const GoodsCard: React.FC<{
+  item: DemoGoodsItem;
+  index: number;
+  colors: ReturnType<typeof useAppTheme>['colors'];
+  styles: Styles;
+}> = ({ item, index, colors, styles }) => {
+  const scale = useSharedValue(1);
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+  }));
+  return (
+    <Pressable onPressIn={() => { scale.value = withSpring(0.95); }} onPressOut={() => { scale.value = withSpring(1); }}>
+      <Animated.View entering={FadeInRight.delay(index * 100)} style={[styles.card, animatedStyle]}>
+        <View style={[styles.imageBox, { backgroundColor: item.imageColor }]}>
+          <Text style={styles.imageLetter}>{item.name.charAt(0).toUpperCase()}</Text>
+        </View>
+        <Text style={styles.name} numberOfLines={1}>{item.name}</Text>
+        <Text style={styles.code}>{item.trackingCode}</Text>
+        <View style={[styles.statusBadge, { backgroundColor: `${item.statusColor}20` }]}>
+          <Text style={[styles.statusText, { color: item.statusColor }]}>{item.status}</Text>
+        </View>
+        <View style={styles.metaRow}>
+          <Text style={styles.meta}>Qté {item.quantity}</Text>
+          <Text style={styles.meta}>{item.volume}</Text>
+        </View>
+        <Text style={styles.balance}>{item.balance}</Text>
+      </Animated.View>
+    </Pressable>
+  );
+};
+
 export const DemoGoodsPreview: React.FC<Props> = ({ goods }) => {
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
-
   return (
     <View style={styles.container}>
-      <View style={styles.headerRow}>
-        <View>
-          <Text style={styles.title}>Marchandises exemple</Text>
-          <Text style={styles.subtitle}>Ce type de vue est réservé aux clients connectés.</Text>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>Vos marchandises</Text>
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>{goods.length}</Text>
         </View>
-        <FontAwesome5 name="lock" size={14} color={colors.accent.gold} />
       </View>
-
-      {goods.map((item) => (
-        <View key={item.id} style={styles.item}>
-          <View style={styles.itemHeader}>
-            <View style={styles.iconBox}>
-              <FontAwesome5 name={item.mode === 'air' ? 'plane' : 'box'} size={14} color={colors.primary.main} />
-            </View>
-            <View style={styles.itemTitleBlock}>
-              <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.tracking}>{item.trackingCode}</Text>
-            </View>
-          </View>
-          <Text style={styles.status}>{item.status}</Text>
-          <Text style={styles.route}>{item.route}</Text>
-          <View style={styles.metaRow}>
-            <Text style={styles.meta}>Qté {item.quantity}</Text>
-            <Text style={styles.meta}>{item.volume}</Text>
-            <Text style={styles.meta}>{item.balance}</Text>
-          </View>
-        </View>
-      ))}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {goods.map((item, index) => (
+          <GoodsCard key={item.id} item={item} index={index} colors={colors} styles={styles} />
+        ))}
+      </ScrollView>
     </View>
   );
 };
 
 const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
   StyleSheet.create({
-    container: {
-      marginHorizontal: 20,
-      marginTop: 22,
-      borderRadius: 16,
-      padding: 16,
-      backgroundColor: colors.background.card,
-      borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
+    container: { marginHorizontal: 16, marginTop: 16 },
+    header: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
+    headerTitle: { fontFamily: Fonts.bold, fontSize: 18, color: colors.text.primary },
+    badge: { minWidth: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primary.main },
+    badgeText: { fontFamily: Fonts.bold, fontSize: 12, color: '#FFFFFF', paddingHorizontal: 6 },
+    scrollContent: { paddingRight: 16 },
+    card: {
+      width: 160, borderRadius: 20, padding: 12,
+      backgroundColor: colors.background.card, marginRight: 12, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 2,
     },
-    headerRow: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-      gap: 12,
-      marginBottom: 10,
-    },
-    title: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 18,
-    },
-    subtitle: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.regular,
-      fontSize: 12,
-      lineHeight: 18,
-      marginTop: 4,
-    },
-    item: {
-      paddingVertical: 12,
-      borderTopWidth: 1,
-      borderTopColor: isDark ? 'rgba(255,255,255,0.08)' : '#EEF2F7',
-    },
-    itemHeader: {
-      flexDirection: 'row',
-      gap: 10,
-      alignItems: 'center',
-    },
-    iconBox: {
-      width: 38,
-      height: 38,
-      borderRadius: 12,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(74,222,128,0.12)' : '#F0FDF4',
-    },
-    itemTitleBlock: {
-      flex: 1,
-    },
-    itemName: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 14,
-    },
-    tracking: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.medium,
-      fontSize: 11,
-      marginTop: 3,
-    },
-    status: {
-      color: colors.primary.main,
-      fontFamily: Fonts.bold,
-      fontSize: 12,
-      marginTop: 8,
-    },
-    route: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.regular,
-      fontSize: 12,
-      marginTop: 4,
-    },
-    metaRow: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: 8,
-      marginTop: 10,
-    },
-    meta: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 11,
-      borderRadius: 999,
-      overflow: 'hidden',
-      paddingHorizontal: 9,
-      paddingVertical: 5,
-      backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#F3F4F6',
-    },
+    imageBox: { height: 80, borderRadius: 16, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
+    imageLetter: { fontFamily: Fonts.bold, fontSize: 28, color: '#FFFFFF' },
+    name: { fontFamily: Fonts.bold, fontSize: 14, color: colors.text.primary },
+    code: { fontFamily: Fonts.medium, fontSize: 11, color: colors.text.muted, marginTop: 2, fontVariant: ['tabular-nums'] },
+    statusBadge: { alignSelf: 'flex-start', paddingHorizontal: 8, paddingVertical: 4, borderRadius: 9999, marginTop: 8 },
+    statusText: { fontFamily: Fonts.bold, fontSize: 10 },
+    metaRow: { flexDirection: 'row', gap: 8, marginTop: 8 },
+    meta: { fontFamily: Fonts.medium, fontSize: 11, color: colors.text.muted },
+    balance: { fontFamily: Fonts.bold, fontSize: 14, color: colors.text.primary, marginTop: 8 },
   });

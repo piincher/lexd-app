@@ -1,76 +1,61 @@
-import React, { useMemo } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import React from 'react';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeInRight, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { DemoShipment, DemoShipmentMode } from '../types';
 
-interface Props {
-  shipments: DemoShipment[];
-  selectedMode: DemoShipmentMode;
-  onSelect: (mode: DemoShipmentMode) => void;
-}
+interface Props { shipments: DemoShipment[]; selectedMode: DemoShipmentMode; onSelect: (mode: DemoShipmentMode) => void; }
 
-export const GuestModeSelector: React.FC<Props> = ({ shipments, selectedMode, onSelect }) => {
-  const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
-
+const ModeCard: React.FC<{ s: DemoShipment; sel: boolean; i: number; onSelect: () => void; colors: ReturnType<typeof useAppTheme>['colors']; isDark: boolean }> = ({ s, sel, i, onSelect, colors, isDark }) => {
+  const sc = useSharedValue(1);
+  const a = useAnimatedStyle(() => ({ transform: [{ scale: sc.value }] }));
+  const air = s.mode === 'air';
+  const ic = air ? colors.status.info : colors.status.success;
   return (
-    <View style={styles.container}>
-      {shipments.map((shipment) => {
-        const selected = shipment.mode === selectedMode;
-        return (
-          <Pressable
-            key={shipment.id}
-            style={[styles.option, selected && styles.optionSelected]}
-            onPress={() => onSelect(shipment.mode)}
-            accessibilityRole="button"
-            accessibilityState={{ selected }}
-          >
-            <FontAwesome5
-              name={shipment.mode === 'air' ? 'plane' : 'ship'}
-              size={15}
-              color={selected ? colors.text.inverse : colors.primary.main}
-            />
-            <Text style={[styles.optionText, selected && styles.optionTextSelected]}>
-              {shipment.mode === 'air' ? 'Aérien' : 'Maritime'}
-            </Text>
-          </Pressable>
-        );
-      })}
-    </View>
+    <Pressable onPress={onSelect} onPressIn={() => { sc.value = withSpring(0.97); }} onPressOut={() => { sc.value = withSpring(1); }}>
+      <Animated.View
+        entering={FadeInRight.delay(i * 150)}
+        style={[
+          styles.card,
+          { backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : colors.background.card, borderColor: sel ? colors.primary.main : isDark ? 'rgba(255,255,255,0.12)' : colors.border, borderWidth: sel ? 2 : 1, shadowColor: sel ? colors.primary.main : 'transparent', shadowOffset: sel ? { width: 0, height: 4 } : { width: 0, height: 0 }, shadowOpacity: sel ? 0.15 : 0, shadowRadius: sel ? 12 : 0, elevation: sel ? 5 : 0 },
+          a,
+        ]}
+      >
+        <View style={[styles.icon, { backgroundColor: `${ic}18` }]}><FontAwesome6 name={air ? 'plane' : 'ship'} size={22} color={ic} /></View>
+        <View style={styles.info}>
+          <Text style={[styles.title, { color: colors.text.primary }]} numberOfLines={1}>{s.label}</Text>
+          <Text style={[styles.route, { color: colors.text.secondary }]} numberOfLines={1}>{s.route}</Text>
+          <View style={styles.meta}>
+            <Text style={[styles.metaText, { color: colors.text.muted }]}>{s.goodsCount} article{s.goodsCount > 1 ? 's' : ''}</Text>
+            <Text style={[styles.metaText, { color: colors.text.muted }]}>•</Text>
+            <Text style={[styles.metaText, { color: colors.text.muted }]}>{s.etaDate}</Text>
+          </View>
+        </View>
+        {sel && <View style={[styles.dot, { backgroundColor: colors.primary.main }]} />}
+      </Animated.View>
+    </Pressable>
   );
 };
 
-const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
-  StyleSheet.create({
-    container: {
-      flexDirection: 'row',
-      marginHorizontal: 20,
-      marginTop: 8,
-      padding: 4,
-      borderRadius: 14,
-      backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#F3F4F6',
-      gap: 4,
-    },
-    option: {
-      flex: 1,
-      minHeight: 48,
-      borderRadius: 11,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: 8,
-    },
-    optionSelected: {
-      backgroundColor: colors.primary.main,
-    },
-    optionText: {
-      color: colors.text.primary,
-      fontFamily: Fonts.bold,
-      fontSize: 14,
-    },
-    optionTextSelected: {
-      color: colors.text.inverse,
-    },
-  });
+export const GuestModeSelector: React.FC<Props> = ({ shipments, selectedMode, onSelect }) => {
+  const { colors, isDark } = useAppTheme();
+  return (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scroll}>
+      {shipments.map((s, i) => (<ModeCard key={s.id} s={s} sel={s.mode === selectedMode} i={i} onSelect={() => onSelect(s.mode)} colors={colors} isDark={isDark} />))}
+    </ScrollView>
+  );
+};
+
+const styles = StyleSheet.create({
+  scroll: { paddingHorizontal: 20, paddingVertical: 4 },
+  card: { width: 300, flexDirection: 'row', alignItems: 'center', borderRadius: 16, padding: 16, gap: 14, marginRight: 12 },
+  icon: { width: 52, height: 52, borderRadius: 26, alignItems: 'center', justifyContent: 'center' },
+  info: { flex: 1, gap: 3 },
+  title: { fontFamily: Fonts.bold, fontSize: 14 },
+  route: { fontFamily: Fonts.regular, fontSize: 12 },
+  meta: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 },
+  metaText: { fontFamily: Fonts.medium, fontSize: 11 },
+  dot: { position: 'absolute', top: 12, right: 12, width: 8, height: 8, borderRadius: 4 },
+});

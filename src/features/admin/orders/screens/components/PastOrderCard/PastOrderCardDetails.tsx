@@ -56,7 +56,7 @@ export const PastOrderCardDetails: React.FC<PastOrderCardDetailsProps> = ({ item
           </View>
           <View style={styles.detailItem}>
             <Ionicons name="card" size={20} color={LOGISTICS_COLORS.gray[500]} />
-            <Text style={styles.detailText}>Partenaire: {item.partenaire}</Text>
+            <Text style={styles.detailText}>Partenaire: {item.partenaire || 'Non spécifié'}</Text>
           </View>
           <View style={styles.detailItem}>
             <Ionicons name="pricetag" size={20} color={LOGISTICS_COLORS.gray[500]} />

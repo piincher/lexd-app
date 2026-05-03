@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import Animated, { FadeInDown } from 'react-native-reanimated';
+import { FontAwesome6 } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { DemoNotification } from '../types';
@@ -12,27 +13,43 @@ interface Props {
 export const DemoNotificationFeed: React.FC<Props> = ({ notifications }) => {
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Exemples d’alertes client</Text>
-      <Text style={styles.sectionIntro}>
-        Les vraies alertes sont envoyées uniquement aux clients concernés.
-      </Text>
-      {notifications.map((item) => (
-        <View key={item.id} style={styles.item}>
-          <View style={styles.iconBox}>
-            <FontAwesome5 name={item.icon} size={14} color={colors.status.info} />
+      <View style={styles.headerRow}>
+        <Text style={styles.sectionTitle}>Notifications récentes</Text>
+        {unreadCount > 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{unreadCount}</Text>
           </View>
+        )}
+      </View>
+
+      {notifications.map((item, index) => (
+        <Animated.View
+          key={item.id}
+          entering={FadeInDown.delay(index * 80).springify()}
+          style={styles.card}
+        >
+          <View style={[styles.iconCircle, { backgroundColor: `${item.color}18` }]}>
+            <FontAwesome6 name={item.icon as any} size={14} color={item.color} />
+          </View>
+
           <View style={styles.textBlock}>
-            <View style={styles.titleRow}>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.time}>{item.time}</Text>
-            </View>
-            <Text style={styles.detail}>{item.detail}</Text>
-            <Text style={styles.channel}>{item.channel}</Text>
+            <Text style={styles.title} numberOfLines={1}>
+              {item.title}
+            </Text>
+            <Text style={styles.detail} numberOfLines={2}>
+              {item.detail}
+            </Text>
+            <Text style={styles.meta}>
+              {item.channel} · {item.time}
+            </Text>
           </View>
-        </View>
+
+          {!item.read && <View style={styles.unreadDot} />}
+        </Animated.View>
       ))}
     </View>
   );
@@ -49,65 +66,71 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       borderWidth: 1,
       borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
     },
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 10,
+      marginBottom: 12,
+    },
     sectionTitle: {
       color: colors.text.primary,
       fontFamily: Fonts.bold,
       fontSize: 18,
     },
-    sectionIntro: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.regular,
-      fontSize: 13,
-      lineHeight: 19,
-      marginTop: 8,
-      marginBottom: 10,
+    badge: {
+      backgroundColor: colors.status.error,
+      borderRadius: 10,
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      minWidth: 20,
+      alignItems: 'center',
     },
-    item: {
+    badgeText: {
+      color: '#FFFFFF',
+      fontFamily: Fonts.bold,
+      fontSize: 11,
+    },
+    card: {
       flexDirection: 'row',
+      alignItems: 'center',
       gap: 12,
-      paddingVertical: 11,
+      paddingVertical: 12,
       borderTopWidth: 1,
-      borderTopColor: isDark ? 'rgba(255,255,255,0.08)' : '#EEF2F7',
+      borderTopColor: isDark ? 'rgba(255,255,255,0.06)' : '#F1F5F9',
     },
-    iconBox: {
+    iconCircle: {
       width: 38,
       height: 38,
-      borderRadius: 12,
+      borderRadius: 19,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(96,165,250,0.12)' : '#EFF6FF',
     },
     textBlock: {
       flex: 1,
     },
-    titleRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: 8,
-    },
     title: {
-      flex: 1,
       color: colors.text.primary,
       fontFamily: Fonts.bold,
       fontSize: 14,
-    },
-    time: {
-      color: colors.text.secondary,
-      fontFamily: Fonts.medium,
-      fontSize: 11,
     },
     detail: {
       color: colors.text.secondary,
       fontFamily: Fonts.regular,
       fontSize: 12,
       lineHeight: 18,
+      marginTop: 2,
+    },
+    meta: {
+      color: colors.text.muted,
+      fontFamily: Fonts.medium,
+      fontSize: 11,
       marginTop: 4,
     },
-    channel: {
-      color: colors.primary.main,
-      fontFamily: Fonts.bold,
-      fontSize: 11,
-      marginTop: 6,
+    unreadDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: colors.status.error,
+      marginLeft: 4,
     },
   });

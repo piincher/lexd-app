@@ -1,6 +1,8 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import Animated, { FadeInRight } from 'react-native-reanimated';
+import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { DemoDocument } from '../types';
@@ -15,19 +17,47 @@ export const DemoDocumentChecklist: React.FC<Props> = ({ documents }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>Documents visibles après connexion</Text>
-      {documents.map((document) => (
-        <View key={document.id} style={styles.row}>
-          <View style={styles.iconBox}>
-            <FontAwesome5 name={document.icon} size={14} color={colors.primary.main} />
-          </View>
-          <View style={styles.textBlock}>
-            <Text style={styles.title}>{document.title}</Text>
-            <Text style={styles.detail}>{document.detail}</Text>
-            <Text style={styles.availability}>{document.availability}</Text>
-          </View>
-        </View>
-      ))}
+      <Text style={styles.sectionTitle}>
+        Documents{' '}
+        <Text style={styles.count}>({documents.length})</Text>
+      </Text>
+
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {documents.map((doc, index) => (
+          <Animated.View
+            key={doc.id}
+            entering={FadeInRight.delay(index * 100).springify()}
+            style={styles.card}
+          >
+            <LinearGradient
+              colors={isDark ? ['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.02)'] : ['#FFFFFF', '#F8FAFC']}
+              style={styles.gradient}
+            >
+              <View style={styles.iconWrap}>
+                <FontAwesome6 name={doc.icon as any} size={28} color={colors.primary.main} />
+                <View style={styles.pageBadge}>
+                  <Text style={styles.pageBadgeText}>{doc.pages} pages</Text>
+                </View>
+              </View>
+
+              <Text style={styles.title} numberOfLines={1}>
+                {doc.title}
+              </Text>
+              <Text style={styles.detail} numberOfLines={2}>
+                {doc.detail}
+              </Text>
+
+              <View style={styles.footer}>
+                <Text style={styles.size}>{doc.size}</Text>
+                <View style={styles.lockRow}>
+                  <MaterialCommunityIcons name="lock" size={12} color={colors.status.warning} />
+                  <Text style={styles.lockText}>Connexion requise</Text>
+                </View>
+              </View>
+            </LinearGradient>
+          </Animated.View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -35,54 +65,81 @@ export const DemoDocumentChecklist: React.FC<Props> = ({ documents }) => {
 const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
   StyleSheet.create({
     container: {
-      marginHorizontal: 20,
       marginTop: 22,
-      borderRadius: 16,
-      padding: 16,
-      backgroundColor: colors.background.card,
-      borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
     },
     sectionTitle: {
       color: colors.text.primary,
       fontFamily: Fonts.bold,
       fontSize: 18,
-      marginBottom: 10,
+      marginHorizontal: 20,
+      marginBottom: 12,
     },
-    row: {
-      flexDirection: 'row',
+    count: {
+      color: colors.text.muted,
+      fontFamily: Fonts.medium,
+      fontSize: 14,
+    },
+    scrollContent: {
+      paddingHorizontal: 20,
       gap: 12,
-      paddingVertical: 11,
-      borderTopWidth: 1,
-      borderTopColor: isDark ? 'rgba(255,255,255,0.08)' : '#EEF2F7',
     },
-    iconBox: {
-      width: 38,
-      height: 38,
-      borderRadius: 12,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(74,222,128,0.12)' : '#F0FDF4',
+    card: {
+      width: 180,
+      borderRadius: 16,
+      overflow: 'hidden',
+      borderWidth: 1,
+      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
     },
-    textBlock: {
+    gradient: {
+      padding: 14,
       flex: 1,
+    },
+    iconWrap: {
+      alignItems: 'center',
+      marginBottom: 12,
+    },
+    pageBadge: {
+      marginTop: 6,
+      backgroundColor: isDark ? 'rgba(74,222,128,0.15)' : '#F0FDF4',
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderRadius: 6,
+    },
+    pageBadgeText: {
+      color: colors.primary.main,
+      fontFamily: Fonts.bold,
+      fontSize: 10,
     },
     title: {
       color: colors.text.primary,
       fontFamily: Fonts.bold,
       fontSize: 14,
+      marginBottom: 4,
     },
     detail: {
       color: colors.text.secondary,
       fontFamily: Fonts.regular,
       fontSize: 12,
-      lineHeight: 18,
+      lineHeight: 17,
+      flex: 1,
+    },
+    footer: {
+      marginTop: 10,
+    },
+    size: {
+      color: colors.text.muted,
+      fontFamily: Fonts.medium,
+      fontSize: 11,
+    },
+    lockRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
       marginTop: 4,
     },
-    availability: {
-      color: colors.accent.gold,
+    lockText: {
+      color: colors.status.warning,
       fontFamily: Fonts.bold,
-      fontSize: 11,
-      marginTop: 6,
+      fontSize: 10,
     },
   });

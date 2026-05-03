@@ -17,6 +17,33 @@ export type NotificationType =
 
 export type NotificationCategory = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR';
 
+export interface NotificationTrackingData {
+  currentStatus?: string;
+  currentLocation?: string;
+  destination?: string;
+  progressPercentage?: number;
+  completedWaypoints?: number;
+  totalWaypoints?: number;
+  isFinalWaypoint?: boolean;
+  nextWaypoint?: {
+    location: string;
+    status: string;
+    estimatedArrival?: string;
+    estimatedDeparture?: string;
+    segmentType: string;
+    transportInfo?: string;
+  };
+  completedWaypoint?: {
+    location: string;
+    status: string;
+    actualArrival?: string;
+    actualDeparture?: string;
+    segmentType: string;
+    vesselName?: string;
+    transportInfo?: string;
+  };
+}
+
 export interface InAppNotification {
   _id: string;
   notificationId: string;
@@ -37,6 +64,16 @@ export interface InAppNotification {
     issuedAt?: string;
     certificateUrl?: string | null;
     certificateMongoId?: string;
+    // Tracking-specific fields for container waypoint notifications
+    currentStatus?: string;
+    currentLocation?: string;
+    destination?: string;
+    progressPercentage?: number;
+    completedWaypoints?: number;
+    totalWaypoints?: number;
+    isFinalWaypoint?: boolean;
+    nextWaypoint?: NotificationTrackingData['nextWaypoint'];
+    completedWaypoint?: NotificationTrackingData['completedWaypoint'];
     [key: string]: unknown;
   };
   actionUrl?: string;
