@@ -1,15 +1,16 @@
 import React from "react";
 import { Screen } from "@src/shared/ui/Screen";
-import { AntDesign } from "@expo/vector-icons";
 import { Calendar } from "@src/components/Calendar/Calendar";
 import { LoadingSpinner } from "@src/components/LoadingSpinner";
 import type { RootStackScreenProps } from "@src/navigations/type";
-import { useAppTheme } from "@src/providers/ThemeProvider";
-import { useBatchUpdate } from "../hooks/useBatchUpdate";
-import { BatchUpdateContent } from "../components/BatchUpdateContent";
+import { useBatchUpdate, Status } from "../hooks/useBatchUpdate";
+import { BatchUpdateDateCard } from "../components/BatchUpdateDateCard";
+import { BatchUpdateStatusFilter } from "../components/BatchUpdateStatusFilter";
+import { BatchUpdateSelectionBar } from "../components/BatchUpdateSelectionBar";
+import { BatchUpdateOrderList } from "../components/BatchUpdateOrderList";
+import { BatchUpdateFooter } from "../components/BatchUpdateFooter";
 
 const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
-   const { colors } = useAppTheme();
    const {
       open,
       date,
@@ -35,16 +36,23 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
       return <LoadingSpinner />;
    }
 
+   const hasData = (extractedData ?? []).length > 0;
+
    return (
       <Screen
          header={{
-            title: "Batch Update Orders",
+            title: "Mise à jour en lot",
             showBack: true,
             onBackPress: () => navigation.goBack(),
-            rightAction: (
-               <AntDesign name="calendar" size={24} color={colors.text.primary} onPress={() => setOpen(true)} />
-            ),
          }}
+         footer={
+            <BatchUpdateFooter
+               hasData={hasData}
+               selectedCount={selectedItems.length}
+               onCheckOrders={checkfororders}
+               onNavigateNext={navigateToNextScreen}
+            />
+         }
       >
          <Calendar
             open={open}
@@ -52,17 +60,23 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
             date={date}
             onConfirmSingle={onConfirmSingle}
          />
-         <BatchUpdateContent
-            pickerValue={pickerValue}
-            onValueChange={handleChange}
+         <BatchUpdateDateCard date={date} onPress={() => setOpen(true)} />
+         <BatchUpdateStatusFilter
+            options={Status}
+            selected={pickerValue}
+            onSelect={handleChange}
+         />
+         <BatchUpdateSelectionBar
+            totalCount={extractedData?.length ?? 0}
+            selectedCount={selectedItems.length}
             onSelectAll={selectAllItems}
             onClear={clearSelection}
-            extractedData={extractedData}
+         />
+         <BatchUpdateOrderList
+            orders={extractedData ?? []}
             selectedItems={selectedItems}
-            onSelectedItemsChange={setSelectedItems}
-            hasData={(extractedData ?? []).length > 0}
-            onCheckOrders={checkfororders}
-            onNavigateNext={navigateToNextScreen}
+            setSelectedItems={setSelectedItems}
+            hasData={hasData}
          />
       </Screen>
    );

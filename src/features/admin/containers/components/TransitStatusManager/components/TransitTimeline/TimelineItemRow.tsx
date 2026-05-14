@@ -3,15 +3,10 @@ import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint } from '../../../../types/waypoints';
 import { styles } from './TransitTimeline.styles';
 import { TimelineDot, WaypointItemStatus } from './TimelineDot';
-
-const STATUS_COLORS = {
-  completed: Theme.status.success,
-  current: Theme.primary[500],
-  pending: Theme.neutral[300],
-};
 
 const STATUS_LABELS: Record<WaypointItemStatus, string> = {
   completed: 'Terminé',
@@ -58,10 +53,21 @@ export const TimelineItemRow: React.FC<TimelineItemRowProps> = ({
   totalItems,
   currentWaypointIndex,
 }) => {
+  const { colors } = useAppTheme();
   const status = getWaypointStatus(index, currentWaypointIndex);
   const entering = FadeInUp.delay(index * 100);
   const icon = getSegmentIcon(waypoint.segmentType);
   const timestamp = waypoint.actualArrival || waypoint.estimatedArrival;
+
+  const getStatusColor = (s: WaypointItemStatus) => {
+    switch (s) {
+      case 'completed': return colors.status.success;
+      case 'current': return colors.primary[500];
+      case 'pending': return colors.neutral[300];
+    }
+  };
+
+  const statusColor = getStatusColor(status);
 
   return (
     <Animated.View entering={entering} style={styles.timelineItemRow}>
@@ -69,8 +75,8 @@ export const TimelineItemRow: React.FC<TimelineItemRowProps> = ({
 
       <View style={styles.statusContentContainer}>
         <View style={styles.statusHeader}>
-          <View style={[styles.statusIconContainer, { backgroundColor: `${STATUS_COLORS[status]}20` }]}>
-            <Ionicons name={icon} size={16} color={STATUS_COLORS[status]} />
+          <View style={[styles.statusIconContainer, { backgroundColor: `${statusColor}20` }]}>
+            <Ionicons name={icon} size={16} color={statusColor} />
           </View>
           <View style={styles.statusTextContainer}>
             <Text style={[styles.statusLabel, status === 'completed' && styles.statusLabelCompleted, status === 'current' && styles.statusLabelCurrent, status === 'pending' && styles.statusLabelPending]}>

@@ -118,7 +118,7 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Theme.Theme.colors.background.card,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: 12,
     marginHorizontal: 16,
     marginVertical: 12,
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.Theme.colors.text.secondary,
+    color: Theme.colors.text.secondary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 8,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: Theme.Theme.colors.neutral[50],
+    backgroundColor: Theme.colors.neutral[50],
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 14,
@@ -153,12 +153,12 @@ const styles = StyleSheet.create({
   selectorText: {
     fontSize: 15,
     fontWeight: '500',
-    color: Theme.Theme.colors.text.secondary,
+    color: Theme.colors.text.secondary,
     flex: 1,
   },
   chevron: {
     fontSize: 12,
-    color: Theme.Theme.colors.text.secondary,
+    color: Theme.colors.text.secondary,
     marginLeft: 8,
   },
   modalOverlay: {
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: Theme.Theme.colors.background.card,
+    backgroundColor: Theme.colors.background.card,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: '70%',
@@ -184,11 +184,11 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.Theme.colors.text.primary,
+    color: Theme.colors.text.primary,
   },
   closeButton: {
     fontSize: 20,
-    color: Theme.Theme.colors.text.secondary,
+    color: Theme.colors.text.secondary,
     padding: 4,
   },
   clientList: {
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.Theme.colors.neutral[100],
+    borderBottomColor: Theme.colors.neutral[100],
   },
   clientItemSelected: {
     backgroundColor: Theme.colors.status.success + '10',
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
   },
   clientItemText: {
     fontSize: 16,
-    color: Theme.Theme.colors.text.secondary,
+    color: Theme.colors.text.secondary,
     fontWeight: '500',
   },
   clientItemTextSelected: {
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
   },
   clientMeta: {
     fontSize: 13,
-    color: Theme.Theme.colors.text.secondary,
+    color: Theme.colors.text.secondary,
     marginTop: 4,
   },
   checkmark: {

@@ -2,32 +2,42 @@ import React from "react";
 import { Screen } from "@src/shared/ui/Screen";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useBatchUpdateDetail } from "../hooks/useBatchUpdateDetail";
-import { BatchUpdateDetailForm } from "../components/BatchUpdateDetailForm";
+import { BatchUpdateSummaryCard } from "../components/BatchUpdateSummaryCard";
+import { BatchUpdateStatusStepper } from "../components/BatchUpdateStatusStepper";
+import { BatchUpdateConfirmBar } from "../components/BatchUpdateConfirmBar";
 
 const BatchUpdateDetail = ({ route }: RootStackScreenProps<"BatchUpdateDetail">) => {
 	const { data: ids } = route.params;
 	const {
 		pickerValue,
 		setPickerValue,
-		setCategory,
-		data,
+		data: backendSteps,
 		isPending,
 		onSubmit,
-		initialValues,
-		batchUpdateSchema,
 	} = useBatchUpdateDetail({ ids });
 
+	const steps = backendSteps?.map((s) => ({ id: s.id, title: s.title })) || [];
+
 	return (
-		<Screen scrollable={false}>
-			<BatchUpdateDetailForm
-				pickerValue={pickerValue}
-				setPickerValue={setPickerValue}
-				setCategory={setCategory}
-				data={data}
-				isPending={isPending}
-				onSubmit={onSubmit}
-				initialValues={initialValues}
-				batchUpdateSchema={batchUpdateSchema}
+		<Screen
+			header={{
+				title: "Confirmer la mise à jour",
+				showBack: true,
+			}}
+			footer={
+				<BatchUpdateConfirmBar
+					disabled={!pickerValue}
+					loading={isPending}
+					orderCount={ids.length}
+					onConfirm={() => onSubmit({ contenairNumber: "" })}
+				/>
+			}
+		>
+			<BatchUpdateSummaryCard orderCount={ids.length} />
+			<BatchUpdateStatusStepper
+				steps={steps}
+				selected={pickerValue}
+				onSelect={setPickerValue}
 			/>
 		</Screen>
 	);

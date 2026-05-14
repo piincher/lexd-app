@@ -1,8 +1,15 @@
 import { useCallback } from "react";
 import { Text } from "react-native-paper";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 export const useSearchHighlight = (query: string) => {
+  const { colors } = useAppTheme();
+  const highlightStyle = {
+    backgroundColor: colors.primary[200],
+    color: colors.primary[800],
+    fontWeight: "700" as const,
+  };
+
   const highlightText = useCallback(
     (text: string) => {
       if (!query || !text) return text;
@@ -22,10 +29,4 @@ export const useSearchHighlight = (query: string) => {
   );
 
   return highlightText;
-};
-
-const highlightStyle = {
-  backgroundColor: Theme.primary[200],
-  color: Theme.primary[800],
-  fontWeight: "700" as const,
 };

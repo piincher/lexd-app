@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, TouchableOpacity, FlatList } from 'react-native';
 import { Avatar, Text, ActivityIndicator } from 'react-native-paper';
+import { Ionicons } from '@expo/vector-icons';
 import { userData } from '@src/shared/types/user';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useClientSearchStyles } from './ClientSearchSection.styles';
@@ -21,6 +22,37 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
   const { colors } = useAppTheme();
   const styles = useClientSearchStyles();
 
+  const renderItem = useCallback(({ item, index }: { item: userData; index: number }) => (
+    <TouchableOpacity
+      key={item._id}
+      style={[
+        styles.resultItem,
+        index === users.length - 1 && styles.resultItemLast,
+      ]}
+      onPress={() => onSelect(item)}
+      activeOpacity={0.7}
+    >
+      <Avatar.Text
+        size={40}
+        label={`${item.firstName?.[0] || ''}${item.lastName?.[0] || ''}`}
+        style={styles.avatar}
+        color={colors.status.success}
+      />
+      <View style={styles.resultInfo}>
+        <Text style={styles.resultName}>
+          {item.firstName || ''} {item.lastName || ''}
+        </Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 }}>
+          <Ionicons name="call-outline" size={12} color={colors.text.secondary} />
+          <Text style={styles.resultPhone}>
+            {item.phoneNumber || 'Numéro non disponible'}
+          </Text>
+        </View>
+      </View>
+      <Ionicons name="chevron-forward" size={18} color={colors.text.disabled} />
+    </TouchableOpacity>
+  ), [users.length, onSelect, colors, styles]);
+
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -38,27 +70,15 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
             {users.length} résultat{users.length > 1 ? 's' : ''} trouvé{users.length > 1 ? 's' : ''}
           </Text>
         </View>
-        <View style={styles.resultsList}>
-          {users.map((item, index) => (
-            <TouchableOpacity
-              key={item._id}
-              style={[styles.resultItem, index === users.length - 1 && styles.resultItemLast]}
-              onPress={() => onSelect(item)}
-              activeOpacity={0.7}
-            >
-              <Avatar.Text
-                size={40}
-                label={`${item.firstName?.[0] || ''}${item.lastName?.[0] || ''}`}
-                style={styles.avatar}
-                color={colors.status.success}
-              />
-              <View style={styles.resultInfo}>
-                <Text style={styles.resultName}>{item.firstName} {item.lastName}</Text>
-                <Text style={styles.resultPhone}>{item.phoneNumber}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
+        <FlatList
+          data={users}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+          nestedScrollEnabled
+          keyboardShouldPersistTaps="handled"
+          style={{ maxHeight: 280 }}
+          showsVerticalScrollIndicator
+        />
       </View>
     );
   }

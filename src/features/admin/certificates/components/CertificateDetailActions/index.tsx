@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { styles } from "./CertificateDetailActions.styles";
+import { createStyles } from "./CertificateDetailActions.styles";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface CertificateDetailActionsProps {
   certificateUrl: string | null;
@@ -22,6 +23,9 @@ export const CertificateDetailActions: React.FC<
   onDownload,
   onRevoke,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <>
       {certificateUrl ? (

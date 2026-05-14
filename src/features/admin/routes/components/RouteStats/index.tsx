@@ -2,13 +2,14 @@
  * RouteStats - Statistics dashboard component
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './RouteStats.styles';
+import { createStyles } from './RouteStats.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface StatCardProps {
   label: string;
@@ -44,6 +45,9 @@ interface RouteStatsProps {
 }
 
 export const RouteStats: React.FC<RouteStatsProps> = ({ stats }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <ScrollView
       horizontal

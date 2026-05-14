@@ -27,7 +27,6 @@ const AddOrder = ({ navigation, route }: RootStackScreenProps<"AddOrder">) => {
             <AddOrderImageSection
               selectedImages={images.selectedImages}
               isLoading={images.isLoading}
-              colors={form.colors}
               onTakePhoto={images.takePhoto}
               onPickImage={images.pickImage}
               onDeleteImage={images.deleteImage}

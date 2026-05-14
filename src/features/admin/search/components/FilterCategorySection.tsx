@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 /**
  * FilterCategorySection - Filter section container
  * Wraps filter content with consistent styling
@@ -25,14 +27,14 @@ export const FilterCategorySection: React.FC<FilterCategorySectionProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     marginBottom: Theme.spacing.xl,
   },
   title: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.sm,
   },
 });

@@ -1,6 +1,5 @@
-﻿import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { CbmProfit } from '../../types/containerProfit';
 import {
   ContainerProfitCardHeader,
@@ -10,6 +9,7 @@ import {
   ContainerProfitCardLegacyDetails,
   ContainerProfitCardReconcileButton,
 } from '../../components/ContainerProfitCard';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type { DualLedger, CbmProfit } from '../../types/containerProfit';
 
@@ -19,6 +19,9 @@ interface ContainerProfitCardProps {
 }
 
 export const ContainerProfitCard: React.FC<ContainerProfitCardProps> = ({ cbmProfit, onReconcile }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const { revenue, collected, cost, profit, profitMargin, totalCBM, cbmCostPerUnit, dualLedger } = cbmProfit;
   const isProfit = profit >= 0;
   const profitColor = isProfit ? '#10B981' : '#EF4444';
@@ -58,9 +61,9 @@ export const ContainerProfitCard: React.FC<ContainerProfitCardProps> = ({ cbmPro
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginHorizontal: 16,

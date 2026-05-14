@@ -129,7 +129,7 @@ export const useContainerCardStyles = () => {
           marginLeft: 6,
         },
         arrivedBanner: {
-          backgroundColor: isDark ? 'rgba(16, 185, 129, 0.15)' : Theme.colors.status.success + '18',
+          backgroundColor: isDark ? 'rgba(16, 185, 129, 0.15)' : colors.status.success + '18',
         },
         arrivedBannerText: {
           color: colors.status.success,

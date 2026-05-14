@@ -28,7 +28,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: 'Theme.colors.text.inverse',
+    color: colors.text.inverse,
   },
   saveIconButton: {
     width: 44,

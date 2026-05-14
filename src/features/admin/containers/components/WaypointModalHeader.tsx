@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
@@ -25,7 +25,8 @@ export const WaypointModalHeader: React.FC<WaypointModalHeaderProps> = ({
   waypoint,
   onDismiss,
 }) => {
-  const { isDark } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const getLocationTitle = (): string => {
     switch (locationCategory) {
@@ -66,30 +67,30 @@ export const WaypointModalHeader: React.FC<WaypointModalHeaderProps> = ({
           </View>
         )}
         {locationCategory === 'BORDER' && (
-          <View style={[styles.portBadge, { backgroundColor: Theme.colors.status.warning + '15' }]}>
+          <View style={[styles.portBadge, { backgroundColor: colors.status.warning + '15' }]}>
             <Text style={[styles.portBadgeText, { color: '#D97706' }]}>🛂 FRONTIÈRE</Text>
           </View>
         )}
         {locationCategory === 'WAREHOUSE' && (
-          <View style={[styles.portBadge, { backgroundColor: Theme.colors.status.info + '12' }]}>
+          <View style={[styles.portBadge, { backgroundColor: colors.status.info + '12' }]}>
             <Text style={[styles.portBadgeText, { color: '#4338CA' }]}>📦 ENTREPÔT</Text>
           </View>
         )}
       </View>
       <TouchableOpacity onPress={onDismiss} style={styles.closeButton}>
-        <Ionicons name="close" size={24} color={Theme.neutral[500]} />
+        <Ionicons name="close" size={24} color={colors.neutral[500]} />
       </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: Theme.spacing.lg,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[200],
+    borderBottomColor: colors.neutral[200],
   },
   headerIcon: {
     width: 48,
@@ -105,15 +106,15 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   headerSubtitle: {
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   portBadge: {
-    backgroundColor: Theme.colors.status.success + '18',
+    backgroundColor: colors.status.success + '18',
     paddingHorizontal: Theme.spacing.sm,
     paddingVertical: 2,
     borderRadius: Theme.radius.full,

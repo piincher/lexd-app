@@ -184,6 +184,7 @@ export const RecentPaymentsList: React.FC<RecentPaymentsListProps> = ({ payments
             payment={payment}
             index={index}
             isLast={index === payments.length - 1}
+            colors={colors}
           />
         ))
       ) : (

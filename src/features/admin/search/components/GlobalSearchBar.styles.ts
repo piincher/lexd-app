@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     zIndex: 100,
   },
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontWeight: "500",
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     height: "100%",
   },
   clearButton: {
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: Theme.radius.md,
-    backgroundColor: Theme.primary[100],
+    backgroundColor: colors.primary[100],
     justifyContent: "center",
     alignItems: "center",
   },
@@ -66,14 +66,14 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 12,
     fontWeight: "700",
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   clearAllText: {
     fontSize: 12,
     fontWeight: "600",
-    color: Theme.primary[500],
+    color: colors.primary[500],
   },
   categorySection: {
     marginBottom: Theme.spacing.sm,
@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
   categoryLabel: {
     fontSize: 11,
     fontWeight: "600",
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     paddingHorizontal: Theme.spacing.lg,
     marginBottom: 4,
   },
@@ -95,7 +95,7 @@ export const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: Theme.radius.md,
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     justifyContent: "center",
     alignItems: "center",
     marginRight: Theme.spacing.sm,
@@ -106,11 +106,11 @@ export const styles = StyleSheet.create({
   suggestionTitle: {
     fontSize: 14,
     fontWeight: "600",
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   suggestionSubtitle: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   recentItem: {
@@ -125,7 +125,7 @@ export const styles = StyleSheet.create({
   recentText: {
     flex: 1,
     fontSize: 14,
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   removeRecentButton: {
     padding: 4,

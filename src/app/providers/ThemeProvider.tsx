@@ -108,12 +108,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     statusBarTheme,
   };
 
-  if (isLoading) {
-    // Return null while loading to prevent rendering without theme context
-    // This prevents flash of wrong theme and hook errors
-    return null;
-  }
-
   return (
     <ThemeContext.Provider value={contextValue}>
       {children}

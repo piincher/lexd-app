@@ -73,7 +73,6 @@ export const useClientSearchStyles = () => {
           marginTop: 8,
         },
         resultsContainer: {
-          maxHeight: 250,
           borderWidth: 1,
           borderColor: colors.border,
           borderRadius: 12,
@@ -105,6 +104,7 @@ export const useClientSearchStyles = () => {
           alignItems: 'center',
           paddingHorizontal: 16,
           paddingVertical: 12,
+          minHeight: 56,
           borderBottomWidth: 1,
           borderBottomColor: colors.border,
           backgroundColor: colors.background.card,

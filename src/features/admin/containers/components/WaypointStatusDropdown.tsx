@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import {
   ExtendedWaypointStatus,
@@ -18,6 +19,9 @@ export const WaypointStatusDropdown: React.FC<WaypointStatusDropdownProps> = ({
   currentStatus,
   onSelectStatus,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.dropdownMenu}>
       {allStatuses.map((option) => (
@@ -44,7 +48,7 @@ export const WaypointStatusDropdown: React.FC<WaypointStatusDropdownProps> = ({
             )}
           </View>
           {currentStatus === option.status && (
-            <Ionicons name="checkmark" size={18} color={Theme.primary[600]} />
+            <Ionicons name="checkmark" size={18} color={colors.primary[600]} />
           )}
         </TouchableOpacity>
       ))}
@@ -52,11 +56,11 @@ export const WaypointStatusDropdown: React.FC<WaypointStatusDropdownProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   dropdownMenu: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderRadius: Theme.radius.lg,
     marginTop: Theme.spacing.sm,
     overflow: 'hidden',
@@ -68,10 +72,10 @@ const styles = StyleSheet.create({
     paddingVertical: Theme.spacing.md,
     gap: Theme.spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
+    borderBottomColor: colors.neutral[100],
   },
   dropdownItemActive: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
   },
   statusIndicator: {
     width: 12,
@@ -83,15 +87,15 @@ const styles = StyleSheet.create({
   },
   dropdownItemText: {
     fontSize: 14,
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   dropdownItemTextActive: {
     fontWeight: '600',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   dropdownItemDescription: {
     fontSize: 11,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
 });

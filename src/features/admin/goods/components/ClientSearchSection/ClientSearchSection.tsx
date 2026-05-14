@@ -1,16 +1,18 @@
 /**
  * ClientSearchSection - Component for client search and selection
+ * Loads users upfront (limit 200) and filters client-side to avoid
+ * repeated API calls on every keystroke.
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Card, Text, TextInput } from 'react-native-paper';
-import { useGetUsers } from '@src/features/admin/hooks/useGetUsers';
 import { userData } from '@src/shared/types/user';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useClientSearchStyles } from './ClientSearchSection.styles';
 import { SelectedClientView } from './SelectedClientView';
 import { SearchResultsList } from './SearchResultsList';
+import { useSearchUsers } from './hooks/useSearchUsers';
 
 interface ClientSearchSectionProps {
   selectedClient: userData | null;
@@ -23,27 +25,18 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
   onSelectClient,
   error,
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [showResults, setShowResults] = useState(false);
-
-  const { data: users, isLoading, error: fetchError } = useGetUsers();
   const { colors } = useAppTheme();
   const styles = useClientSearchStyles();
 
-  console.log('ClientSearchSection - Users:', users?.length || 0, 'Error:', fetchError?.message || 'none');
-
-  const filteredUsers = useMemo(() => {
-    if (!users || !Array.isArray(users) || !searchQuery.trim()) return [];
-    const query = searchQuery.toLowerCase();
-    const queryDigits = query.replace(/\D/g, '');
-
-    return users.filter((user: userData) => {
-      const nameMatch = user.firstName?.toLowerCase().includes(query) || user.lastName?.toLowerCase().includes(query);
-      const phoneDigits = user.phoneNumber?.replace(/\D/g, '') || '';
-      const phoneMatch = phoneDigits.includes(queryDigits);
-      return nameMatch || phoneMatch;
-    });
-  }, [users, searchQuery]);
+  const {
+    searchQuery,
+    setSearchQuery,
+    debouncedQuery,
+    users,
+    isLoading,
+    fetchError,
+  } = useSearchUsers();
 
   const handleSelect = (client: userData) => {
     onSelectClient(client);
@@ -59,8 +52,12 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
 
   const handleSearchChange = (text: string) => {
     setSearchQuery(text);
-    setShowResults(text.length > 0);
+    setShowResults(text.trim().length > 0);
   };
+
+  const isSearching = searchQuery.trim().length >= 2;
+  const displayLoading = isLoading && isSearching;
+  const displayResults = showResults && isSearching;
 
   return (
     <Card style={[styles.card, error && styles.cardError]} elevation={2}>
@@ -89,16 +86,27 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
               }
             />
 
-            {__DEV__ && users && Array.isArray(users) && (
+            {__DEV__ && (
               <Text style={styles.debugText}>
-                Total users: {users.length} | Query: "{searchQuery}" | Digits: "{searchQuery.replace(/\D/g, '')}"
+                Query: "{searchQuery}" | Debounced: "{debouncedQuery}" | Results: {users.length}
               </Text>
             )}
 
-            {showResults && (
+            {displayResults && (
               <View style={styles.resultsWrapper}>
-                <SearchResultsList users={filteredUsers} isLoading={isLoading} searchQuery={searchQuery} onSelect={handleSelect} />
+                <SearchResultsList
+                  users={users}
+                  isLoading={displayLoading}
+                  searchQuery={debouncedQuery}
+                  onSelect={handleSelect}
+                />
               </View>
+            )}
+
+            {fetchError && (
+              <Text style={styles.errorText}>
+                Erreur de recherche. Veuillez réessayer.
+              </Text>
             )}
 
             {error && <Text style={styles.errorText}>{error}</Text>}

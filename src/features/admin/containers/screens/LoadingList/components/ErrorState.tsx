@@ -27,7 +27,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({ onBack }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.Theme.colors.background.default,
+    backgroundColor: Theme.colors.background.default,
   },
   errorContainer: {
     flex: 1,

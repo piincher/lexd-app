@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Menu } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import {
   CONTAINER_STATUS_COLORS,
   ContainerStatus,
@@ -39,6 +38,8 @@ export const ContainerStatusMenu: React.FC<ContainerStatusMenuProps> = ({
   onUpdateStatus,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const handleUpdateStatus = (newStatus: ContainerStatus) => {
     if (isUpdatingStatus) return;
     onSetVisible(false);
@@ -60,9 +61,9 @@ export const ContainerStatusMenu: React.FC<ContainerStatusMenuProps> = ({
         >
           <Text style={styles.statusText}>{statusLabel}</Text>
           {isUpdatingStatus ? (
-            <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
+            <ActivityIndicator size="small" color={colors.text.inverse} />
           ) : (
-            <Ionicons name="chevron-down" size={16} color={Theme.colors.text.inverse} />
+            <Ionicons name="chevron-down" size={16} color={colors.text.inverse} />
           )}
         </TouchableOpacity>
       }
@@ -87,7 +88,7 @@ export const ContainerStatusMenu: React.FC<ContainerStatusMenuProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   statusBadge: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     minHeight: 40,
   },
   statusText: {
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     fontWeight: '700',
     fontSize: 12,
   },

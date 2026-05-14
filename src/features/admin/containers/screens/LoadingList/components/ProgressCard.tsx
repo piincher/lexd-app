@@ -60,7 +60,7 @@ export const ProgressCard: React.FC<ProgressCardProps> = ({
 
 const styles = StyleSheet.create({
   progressCard: {
-    backgroundColor: Theme.Theme.colors.background.card,
+    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius['2xl'],
     padding: Theme.spacing.lg,
     marginBottom: Theme.spacing.lg,
