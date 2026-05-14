@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { LOGISTICS_COLORS } from './pastOrderConstants';
 
-export const createStyles = () =>
+export const createStyles = (colors: any) =>
   StyleSheet.create({
     headerContainer: {
       paddingHorizontal: 20,
@@ -11,7 +10,7 @@ export const createStyles = () =>
     },
     title: {
       fontFamily: Fonts.bold,
-      color: LOGISTICS_COLORS.dark,
+      color: colors.text.primary,
       marginBottom: 10,
     },
     searchContainer: {
@@ -23,7 +22,7 @@ export const createStyles = () =>
       flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: LOGISTICS_COLORS.gray[100],
+      backgroundColor: colors.background.paper,
       borderRadius: 12,
       paddingHorizontal: 15,
       paddingVertical: 10,
@@ -34,6 +33,6 @@ export const createStyles = () =>
     searchInput: {
       flex: 1,
       fontFamily: Fonts.regular,
-      color: LOGISTICS_COLORS.dark,
+      color: colors.text.primary,
     },
   });

@@ -2,7 +2,7 @@
  * CargoBagCard - Card component for cargo bag list
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
@@ -14,18 +14,6 @@ interface CargoBagCardProps {
   item: CargoBag;
   onPress: (id: string) => void;
 }
-
-const STATUS_CONFIG: Record<
-  CargoBagStatus,
-  { label: string; variant: 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info' | 'custom'; color: string }
-> = {
-  PACKED: { label: 'Emballé', variant: 'custom', color: Theme.colors.text.secondary },
-  CHECKED_IN: { label: 'Enregistré', variant: 'info', color: '#3B82F6' },
-  LOADED: { label: 'Chargé', variant: 'warning', color: '#D4AF37' },
-  IN_TRANSIT: { label: 'En transit', variant: 'info', color: '#3B82F6' },
-  ARRIVED: { label: 'Arrivé', variant: 'success', color: '#16A34A' },
-  CLEARED: { label: 'Dédouané', variant: 'custom', color: '#4ECDC4' },
-};
 
 const formatDate = (dateString?: string | null) => {
   if (!dateString) return null;
@@ -41,6 +29,17 @@ const formatDate = (dateString?: string | null) => {
 
 export const CargoBagCard: React.FC<CargoBagCardProps> = ({ item, onPress }) => {
   const { colors } = useAppTheme();
+  const STATUS_CONFIG = useMemo<Record<
+    CargoBagStatus,
+    { label: string; variant: 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info' | 'custom'; color: string }
+  >>(() => ({
+    PACKED: { label: 'Emballé', variant: 'custom', color: colors.text.secondary },
+    CHECKED_IN: { label: 'Enregistré', variant: 'info', color: colors.status.info },
+    LOADED: { label: 'Chargé', variant: 'warning', color: colors.status.warning },
+    IN_TRANSIT: { label: 'En transit', variant: 'info', color: colors.status.info },
+    ARRIVED: { label: 'Arrivé', variant: 'success', color: colors.status.success },
+    CLEARED: { label: 'Dédouané', variant: 'custom', color: colors.accent.mint },
+  }), [colors]);
   const statusConfig = STATUS_CONFIG[item.status];
   const arrivedDate = formatDate(item.arrivedAt);
 
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
   statsRow: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
   statPill: { flexDirection: 'row', alignItems: 'center', gap: 4, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 8 },
   statPillText: { fontSize: 12, fontWeight: '600' },
-  footerRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 12, borderTopWidth: 1, borderTopColor: 'rgba(150,150,150,0.1)', paddingTop: 10 },
+  footerRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 12, borderTopWidth: 1, borderTopColor: Theme.colors.divider, paddingTop: 10 },
   footerText: { fontSize: 12, fontWeight: '500' },
 });
 

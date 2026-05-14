@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 const MAX_CONTAINER_CBM = 67;
@@ -19,6 +20,7 @@ export const CapacityIndicator: React.FC<CapacityIndicatorProps> = ({
   maxCBM = MAX_CONTAINER_CBM,
   isAir = false,
 }) => {
+  const { colors } = useAppTheme();
   const unit = isAir ? 'kg' : 'm³';
   const totalCBM = (currentCBM || 0) + (selectedCBM || 0);
   const fillPercentage = Math.min((totalCBM / maxCBM) * 100, 100);
@@ -141,12 +143,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12,
     padding: 10,
-    backgroundColor: '#fee2e2',
+    backgroundColor: Theme.colors.status.error + '15',
     borderRadius: 8,
     gap: 8,
   },
   warningBannerOrange: {
-    backgroundColor: '#fef3c7',
+    backgroundColor: Theme.colors.status.warning + '15',
   },
   warningText: {
     fontSize: 13,

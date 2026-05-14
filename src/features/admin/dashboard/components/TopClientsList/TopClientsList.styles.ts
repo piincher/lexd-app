@@ -28,7 +28,7 @@ export const useTopClientsListStyles = () => {
           width: 34,
           height: 34,
           borderRadius: 11,
-          backgroundColor: isDark ? "rgba(245,158,11,0.18)" : "#FEF3C7",
+          backgroundColor: isDark ? "rgba(245,158,11,0.18)" : colors.feedback.warningBg,
           justifyContent: "center",
           alignItems: "center",
         },
@@ -112,7 +112,7 @@ export const useTopClientsListStyles = () => {
         amount: {
           fontSize: 13,
           fontFamily: Fonts.bold,
-          color: "#EF4444",
+          color: colors.status.error,
         },
         empty: {
           alignItems: "center",
@@ -122,7 +122,7 @@ export const useTopClientsListStyles = () => {
           width: 48,
           height: 48,
           borderRadius: 16,
-          backgroundColor: isDark ? "rgba(16,185,129,0.15)" : "#D1FAE5",
+          backgroundColor: isDark ? "rgba(16,185,129,0.15)" : colors.feedback.successBg,
           justifyContent: "center",
           alignItems: "center",
           marginBottom: 10,

@@ -2,7 +2,7 @@
  * OnboardingCTA - Modern call-to-action buttons
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import {
   View,
   Text,
@@ -10,7 +10,8 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { styles } from "./OnboardingCTA.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "./OnboardingCTA.styles";
 
 interface OnboardingCTAProps {
   isLastSlide: boolean;
@@ -27,6 +28,8 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
   currentIndex,
 }) => {
   const { width } = useWindowDimensions();
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const isNarrow = width < 360;
   // Show skip button on all slides except the last one
   const showSkip = !isLastSlide;
@@ -48,7 +51,7 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
           >
             Commencer
           </Text>
-          <AntDesign name="arrow-right" size={20} color="#8B5CF6" style={styles.icon} />
+          <AntDesign name="arrow-right" size={20} color={colors.primary.main} style={styles.icon} />
         </TouchableOpacity>
       </View>
     );
@@ -92,7 +95,7 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
             >
               Suivant
             </Text>
-            <AntDesign name="right" size={16} color="#FFFFFF" style={styles.iconSmall} />
+            <AntDesign name="right" size={16} color={colors.text.inverse} style={styles.iconSmall} />
           </TouchableOpacity>
         </View>
       </View>

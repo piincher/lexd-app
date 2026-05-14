@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface EmptyStateProps {
@@ -10,10 +11,11 @@ interface EmptyStateProps {
 }
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ searchQuery, shippingMode }) => {
+  const { colors } = useAppTheme();
   const modeLabel = shippingMode === 'AIR' ? 'aériennes' : shippingMode === 'SEA' ? 'maritimes' : '';
   return (
     <View style={styles.container}>
-      <LinearGradient colors={['#F3F0FF', '#EDE9FE']} style={styles.iconContainer}>
+      <LinearGradient colors={[colors.background.paper, colors.background.default]} style={styles.iconContainer}>
         <Ionicons name="cube-outline" size={64} color={Theme.primary[400]} />
       </LinearGradient>
       <Text style={styles.title}>

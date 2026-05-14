@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationFilterType } from '../../hooks/useNotificationFilters';
 
 interface NotificationFiltersProps {
@@ -20,6 +20,9 @@ export const NotificationFilters: React.FC<NotificationFiltersProps> = ({
   onFilterChange,
   unreadCount,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.container}>
       {FILTERS.map((filter) => (
@@ -48,31 +51,32 @@ export const NotificationFilters: React.FC<NotificationFiltersProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingHorizontal: Theme.spacing.md,
-    paddingVertical: Theme.spacing.sm,
-    gap: Theme.spacing.sm,
-  },
-  filterButton: {
-    paddingHorizontal: Theme.spacing.md,
-    paddingVertical: Theme.spacing.sm,
-    borderRadius: 20,
-    backgroundColor: Theme.neutral[100],
-  },
-  activeFilter: {
-    backgroundColor: Theme.colors.primary.main,
-  },
-  filterText: {
-    fontSize: 14,
-    color: Theme.neutral[600],
-  },
-  activeFilterText: {
-    color: Theme.neutral.white,
-    fontWeight: '600',
-  },
-  badge: {
-    fontWeight: '700',
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      gap: 8,
+    },
+    filterButton: {
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: 20,
+      backgroundColor: colors.background.paper,
+    },
+    activeFilter: {
+      backgroundColor: colors.primary.main,
+    },
+    filterText: {
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    activeFilterText: {
+      color: colors.text.inverse,
+      fontWeight: '600',
+    },
+    badge: {
+      fontWeight: '700',
+    },
+  });

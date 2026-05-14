@@ -44,9 +44,9 @@ export const ContainerUtilizationChart: React.FC<ContainerUtilizationChartProps>
   const lowUtilization = containers.filter((c) => c.utilization.cbmPercentage < 50).length;
 
   const donutData = [
-    { label: 'Élevée (≥80%)', value: highUtilization, color: '#10B981' },
-    { label: 'Moyenne (50-79%)', value: mediumUtilization, color: '#F59E0B' },
-    { label: 'Faible (<50%)', value: lowUtilization, color: '#EF4444' },
+    { label: 'Élevée (≥80%)', value: highUtilization, color: colors.status.success },
+    { label: 'Moyenne (50-79%)', value: mediumUtilization, color: colors.status.warning },
+    { label: 'Faible (<50%)', value: lowUtilization, color: colors.status.error },
   ].filter((d) => d.value > 0);
 
   return (
@@ -55,19 +55,19 @@ export const ContainerUtilizationChart: React.FC<ContainerUtilizationChartProps>
         <Card.Content>
           <View style={staticStyles.summaryRow}>
             <View style={staticStyles.summaryItem}>
-              <MaterialCommunityIcons name="package-variant" size={24} color="#3B82F6" />
+              <MaterialCommunityIcons name="package-variant" size={24} color={colors.status.info} />
               <Text style={[staticStyles.summaryValue, { color: textPrimary }]}>{containers.length}</Text>
               <Text style={[staticStyles.summaryLabel, { color: textSecondary }]}>Total</Text>
             </View>
             <View style={[staticStyles.summaryDivider, { backgroundColor: trackColor }]} />
             <View style={staticStyles.summaryItem}>
-              <MaterialCommunityIcons name="gauge" size={24} color="#10B981" />
+              <MaterialCommunityIcons name="gauge" size={24} color={colors.status.success} />
               <Text style={[staticStyles.summaryValue, { color: textPrimary }]}>{avgFillRate.toFixed(1)}%</Text>
               <Text style={[staticStyles.summaryLabel, { color: textSecondary }]}>Remplissage</Text>
             </View>
             <View style={[staticStyles.summaryDivider, { backgroundColor: trackColor }]} />
             <View style={staticStyles.summaryItem}>
-              <MaterialCommunityIcons name="truck-check" size={24} color="#F59E0B" />
+              <MaterialCommunityIcons name="truck-check" size={24} color={colors.status.warning} />
               <Text style={[staticStyles.summaryValue, { color: textPrimary }]}>{containers.filter((c) => c.status === 'IN_TRANSIT').length}</Text>
               <Text style={[staticStyles.summaryLabel, { color: textSecondary }]}>En Transit</Text>
             </View>
@@ -98,7 +98,7 @@ export const ContainerUtilizationChart: React.FC<ContainerUtilizationChartProps>
               {Object.entries(byShippingLine).map(([line, stats]) => (
                 <UtilizationBar
                   key={line} label={line} percentage={stats.avgFillRate}
-                  color={shippingLineColors[line] || '#6B7280'} count={stats.containers}
+                  color={shippingLineColors[line] || colors.text.muted} count={stats.containers}
                   labelColor={textPrimary} countColor={textSecondary} trackColor={trackColor}
                 />
               ))}

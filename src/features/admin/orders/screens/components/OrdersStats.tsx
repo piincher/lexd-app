@@ -68,20 +68,20 @@ export const OrdersStats: React.FC<OrdersStatsProps> = ({ orders }) => {
         <StatCard
           value={stats.inTransit}
           label="In Transit"
-          icon={<FontAwesome5 name="shipping-fast" size={14} color="#FF9800" />}
-          color="#FF9800"
+          icon={<FontAwesome5 name="shipping-fast" size={14} color={colors.status.warning} />}
+          color={colors.status.warning}
         />
         <StatCard
           value={stats.pending}
           label="Pending"
-          icon={<MaterialIcons name="access-time" size={18} color="#9C27B0" />}
-          color="#9C27B0"
+          icon={<MaterialIcons name="access-time" size={18} color={colors.status.info} />}
+          color={colors.status.info}
         />
         <StatCard
           value={stats.delivered}
           label="Delivered"
-          icon={<MaterialIcons name="check-circle" size={18} color="#4CAF50" />}
-          color="#4CAF50"
+          icon={<MaterialIcons name="check-circle" size={18} color={colors.status.success} />}
+          color={colors.status.success}
         />
       </View>
       
@@ -89,7 +89,7 @@ export const OrdersStats: React.FC<OrdersStatsProps> = ({ orders }) => {
         <Surface style={styles.revenueCard}>
           <View style={styles.revenueRow}>
             <View style={styles.revenueIconBg}>
-              <MaterialIcons name="trending-up" size={20} color="#4CAF50" />
+              <MaterialIcons name="trending-up" size={20} color={colors.status.success} />
             </View>
             <View style={styles.revenueContent}>
               <Text style={styles.revenueLabel}>Total Revenue</Text>

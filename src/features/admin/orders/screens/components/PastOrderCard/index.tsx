@@ -3,14 +3,14 @@ import { View, ScrollView, Image, Text, TouchableOpacity, Dimensions } from 'rea
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
 import { productType } from '@src/api/order';
-import { LOGISTICS_COLORS } from '../pastOrderConstants';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from './PastOrderCard.styles';
 import { PastOrderCardDetails } from './PastOrderCardDetails';
 
 const windowWidth = Dimensions.get('window').width;
 
-const getStatusColor = (status: string) =>
-  ({ Pending: LOGISTICS_COLORS.warning, 'In Transit': LOGISTICS_COLORS.accent, Completed: LOGISTICS_COLORS.success, Cancelled: LOGISTICS_COLORS.error } as Record<string, string>)[status] || LOGISTICS_COLORS.gray[600];
+const getStatusColor = (colors: any, status: string) =>
+  ({ Pending: colors.status.warning, 'In Transit': colors.status.info, Completed: colors.status.success, Cancelled: colors.status.error } as Record<string, string>)[status] || colors.text.secondary;
 
 const getStatusText = (status: string) =>
   ({ Pending: 'En attente', 'In Transit': 'En transit', Inactive: 'Livré' } as Record<string, string>)[status];
@@ -24,7 +24,8 @@ export const PastOrderCard: React.FC<PastOrderCardProps> = ({ item }) => {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [status] = useState(item.status);
-  const styles = createStyles();
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
 
   const copyToClipboard = async (text: string) => {
     await Clipboard.setStringAsync(text);
@@ -32,14 +33,14 @@ export const PastOrderCard: React.FC<PastOrderCardProps> = ({ item }) => {
     setTimeout(() => setSnackbarVisible(false), 3000);
   };
 
-  const statusColor = getStatusColor(status);
+  const statusColor = getStatusColor(colors, status);
   const statusText = getStatusText(status);
 
   return (
     <View style={styles.card}>
       {snackbarVisible && (
         <View style={styles.snackbar}>
-          <Ionicons name="checkmark-circle" size={20} color={LOGISTICS_COLORS.success} />
+          <Ionicons name="checkmark-circle" size={20} color={colors.status.success} />
           <Text style={styles.snackbarText}>Code copié dans le presse-papiers</Text>
         </View>
       )}
@@ -81,7 +82,7 @@ export const PastOrderCard: React.FC<PastOrderCardProps> = ({ item }) => {
 
         <View style={styles.actionsContainer}>
           <TouchableOpacity onPress={() => copyToClipboard(item.code!)} style={styles.copyButton}>
-            <Ionicons name="copy-outline" size={20} color="#FFFFFF" />
+            <Ionicons name="copy-outline" size={20} color={colors.text.inverse} />
             <Text style={styles.copyButtonText}>Copier le code</Text>
           </TouchableOpacity>
 
@@ -92,7 +93,7 @@ export const PastOrderCard: React.FC<PastOrderCardProps> = ({ item }) => {
             <Ionicons
               name={isExpanded ? 'chevron-up' : 'chevron-down'}
               size={20}
-              color={LOGISTICS_COLORS.primary}
+              color={colors.primary.main}
             />
           </TouchableOpacity>
         </View>

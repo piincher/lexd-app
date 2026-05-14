@@ -6,6 +6,7 @@
 import { CommonActions } from "@react-navigation/native";
 import type { NavigationContainerRef } from "@react-navigation/native";
 import { NotificationData, NotificationType } from "../services/notificationService";
+import { parseDeepLink } from "../lib/parseDeepLink";
 import type { RootStackParamList } from "@src/navigations/type";
 
 // ============================================================================
@@ -107,7 +108,7 @@ const handleContainerStatus: NotificationHandler = (data) => {
   console.log("[NotificationHandlers] Handling CONTAINER_STATUS:", data);
 
   if (data.containerId) {
-    navigate("ContainerDetail", { containerId: data.containerId });
+    navigate("ContainerTracking", { containerId: data.containerId });
   } else if (data.orderId) {
     navigate("OrderDetail", { orderId: data.orderId });
   } else {
@@ -250,19 +251,33 @@ export const processNotification = (
  * @returns true if handled, false otherwise
  */
 export const processNotificationData = (data: NotificationData): boolean => {
-  // If type is present, use the registered type-based handler
-  if (data.type) {
+  // If deepLink is present, parse and navigate directly
+  if (data.deepLink && typeof data.deepLink === "string") {
+    const parsed = parseDeepLink(data.deepLink);
+    if (parsed) {
+      console.log("[NotificationHandlers] Navigating via deepLink:", data.deepLink);
+      navigate(parsed.screen, parsed.params);
+      return true;
+    }
+  }
+
+  // If type is present AND recognized, use the registered type-based handler
+  if (data.type && data.type in notificationHandlers) {
     return processNotification(data.type, data);
   }
 
-  // Fallback: if no type but screen is specified, navigate directly
+  // Fallback: if screen is specified, navigate directly
   if (data.screen && typeof data.screen === "string") {
     console.log("[NotificationHandlers] Navigating via screen field:", data.screen);
     navigate(data.screen, isRecord(data.params) ? data.params : {});
     return true;
   }
 
-  console.warn("[NotificationHandlers] Notification data missing type and screen");
+  if (data.type) {
+    console.warn(`[NotificationHandlers] No handler for notification type: ${data.type}, falling back to general`);
+  } else {
+    console.warn("[NotificationHandlers] Notification data missing type and screen");
+  }
   handleGeneral(data);
   return false;
 };

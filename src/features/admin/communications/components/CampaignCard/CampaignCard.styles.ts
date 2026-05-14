@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from '@src/constants/Theme';
 
 export const createCardStyles = (colors: any, isDark: boolean) =>
   StyleSheet.create({
@@ -60,7 +61,7 @@ export const createCardStyles = (colors: any, isDark: boolean) =>
       borderRadius: 8,
       paddingVertical: 10,
     },
-    sendBtnText: { fontFamily: Fonts.medium, fontSize: 13, color: "#fff" },
+    sendBtnText: { fontFamily: Fonts.medium, fontSize: 13, color: "Theme.colors.text.inverse" },
     cancelBtn: {
       paddingHorizontal: 16,
       paddingVertical: 10,

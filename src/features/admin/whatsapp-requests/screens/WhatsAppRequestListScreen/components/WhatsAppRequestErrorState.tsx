@@ -7,26 +7,30 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface WhatsAppRequestErrorStateProps {
   onRetry: () => void;
 }
 
-export const WhatsAppRequestErrorState: React.FC<WhatsAppRequestErrorStateProps> = ({ onRetry }) => (
-  <View style={styles.errorContainer}>
-    <LinearGradient colors={['#FEF2F2', '#FEE2E2']} style={styles.errorIconContainer}>
-      <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
-    </LinearGradient>
-    <Text style={styles.errorTitle}>Erreur de chargement</Text>
-    <Text style={styles.errorSubtitle}>Impossible de récupérer les demandes</Text>
-    <TouchableOpacity style={styles.retryButton} onPress={onRetry}>
-      <LinearGradient colors={Theme.gradients.primary} style={styles.retryButtonGradient}>
-        <Ionicons name="refresh" size={20} color="#FFF" />
-        <Text style={styles.retryButtonText}>Réessayer</Text>
+export const WhatsAppRequestErrorState: React.FC<WhatsAppRequestErrorStateProps> = ({ onRetry }) => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={styles.errorContainer}>
+      <LinearGradient colors={[colors.feedback.errorBg, colors.feedback.errorBg]} style={styles.errorIconContainer}>
+        <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
       </LinearGradient>
-    </TouchableOpacity>
-  </View>
-);
+      <Text style={styles.errorTitle}>Erreur de chargement</Text>
+      <Text style={styles.errorSubtitle}>Impossible de récupérer les demandes</Text>
+      <TouchableOpacity style={styles.retryButton} onPress={onRetry}>
+        <LinearGradient colors={Theme.gradients.primary} style={styles.retryButtonGradient}>
+          <Ionicons name="refresh" size={20} color={colors.text.inverse} />
+          <Text style={[styles.retryButtonText, { color: colors.text.inverse }]}>Réessayer</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   errorContainer: {
@@ -69,7 +73,6 @@ const styles = StyleSheet.create({
   retryButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#FFF',
     marginLeft: Theme.spacing.sm,
   },
 });

@@ -11,12 +11,9 @@ import { Linking } from "react-native";
 import { useAuth } from "@src/store/Auth";
 import { useAppLaunchStore } from "@src/store/AppLaunch";
 import { isAuthRequiredScreen } from "@src/shared/lib/deepLinking";
-import {
-  parseDeepLink,
-  storePendingDeepLink,
-  getPendingDeepLink,
-  navigateToDeepLink,
-} from "@src/shared/hooks/useDeepLinks";
+import { parseDeepLink } from "@src/shared/lib/parseDeepLink";
+import { storePendingDeepLink, getPendingDeepLink } from "@src/shared/hooks/deepLinks/useDeepLinkState";
+import { navigateToDeepLink } from "@src/shared/hooks/deepLinks/useDeepLinkRouting";
 import { navigationRef } from "@src/navigations/navigationRef";
 
 const DeepLinkHandler: React.FC = () => {

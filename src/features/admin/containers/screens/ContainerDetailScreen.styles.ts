@@ -44,7 +44,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     borderRadius: Theme.radius.lg,
   },
   backButtonText: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -78,7 +78,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     gap: Theme.spacing.sm,
   },
   statusText: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontSize: 14,
     fontWeight: '700',
   },
@@ -93,7 +93,7 @@ const createStyles = (colors: any) => StyleSheet.create({
   containerNumber: {
     fontSize: 28,
     fontWeight: '800',
-    color: '#FFF',
+    color: colors.text.inverse,
     letterSpacing: -0.5,
   },
   shippingLineContainer: {
@@ -120,7 +120,7 @@ const createStyles = (colors: any) => StyleSheet.create({
   },
   consigneeText: {
     fontSize: 12,
-    color: '#FFF',
+    color: colors.text.inverse,
     fontWeight: '500',
   },
   actualNumber: {
@@ -410,7 +410,7 @@ const createStyles = (colors: any) => StyleSheet.create({
   },
   deliverButton: {
     padding: Theme.spacing.sm,
-    backgroundColor: '#ECFDF5',
+    backgroundColor: colors.status.success + '10',
     borderRadius: Theme.radius.md,
   },
   actionsCard: {
@@ -431,7 +431,7 @@ const createStyles = (colors: any) => StyleSheet.create({
   actionButtonText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFF',
+    color: colors.text.inverse,
   },
   actionButtonSecondary: {
     flexDirection: 'row',
@@ -502,7 +502,7 @@ const createStyles = (colors: any) => StyleSheet.create({
   },
   loadingListButton: {
     borderWidth: 1,
-    borderColor: '#FCD34D',
+    borderColor: colors.status.warning + '40',
   },
   listButtonGradient: {
     flexDirection: 'row',
@@ -558,7 +558,7 @@ const createStyles = (colors: any) => StyleSheet.create({
   routeModeText: {
     fontSize: 12,
     fontWeight: '600',
-    color: '#FFF',
+    color: colors.text.inverse,
   },
   routeName: {
     fontSize: 16,

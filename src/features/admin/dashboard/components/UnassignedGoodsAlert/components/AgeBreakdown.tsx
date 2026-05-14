@@ -24,7 +24,7 @@ export const AgeBreakdown: React.FC<AgeBreakdownProps> = ({ byAge }) => {
       backgroundColor: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)",
     },
     agePillCritical: {
-      backgroundColor: isDark ? "rgba(239,68,68,0.18)" : "#FEE2E2",
+      backgroundColor: isDark ? "rgba(239,68,68,0.18)" : colors.feedback.errorBg,
     },
     ageValue: {
       fontSize: 15,
@@ -32,7 +32,7 @@ export const AgeBreakdown: React.FC<AgeBreakdownProps> = ({ byAge }) => {
       color: colors.text.primary,
     },
     ageValueCritical: {
-      color: "#EF4444",
+      color: colors.status.error,
     },
     ageLabel: {
       fontSize: 10,
@@ -43,7 +43,7 @@ export const AgeBreakdown: React.FC<AgeBreakdownProps> = ({ byAge }) => {
       letterSpacing: 0.4,
     },
     ageLabelCritical: {
-      color: "#EF4444",
+      color: colors.status.error,
     },
   });
 

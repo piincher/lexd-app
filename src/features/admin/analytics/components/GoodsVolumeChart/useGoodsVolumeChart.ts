@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { VolumeByStatus } from '../../types';
 import { statusConfig, ViewMode } from './goodsVolumeConstants';
 
 export const useGoodsVolumeChart = (byStatus: VolumeByStatus[]) => {
+  const { colors } = useAppTheme();
   const [viewMode, setViewMode] = useState<ViewMode>('status');
 
   const formatNumber = (num: number) => {
@@ -29,10 +31,10 @@ export const useGoodsVolumeChart = (byStatus: VolumeByStatus[]) => {
         .map((s) => ({
           label: statusConfig[s.status]?.label || s.status,
           value: s.count,
-          color: statusConfig[s.status]?.color || '#6B7280',
+          color: statusConfig[s.status]?.color || colors.text.muted,
         }))
         .sort((a, b) => b.value - a.value),
-    [byStatus]
+    [byStatus, colors.text.muted]
   );
 
   return {

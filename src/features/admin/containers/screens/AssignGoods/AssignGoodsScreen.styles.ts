@@ -34,12 +34,12 @@ export const createStyles = (colors: any) => StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#FFF',
+    color: colors.text.inverse,
   },
   loadingTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#FFF',
+    color: colors.text.inverse,
     marginLeft: Theme.spacing.md,
   },
   headerSubtitle: {
@@ -373,7 +373,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   assignButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#FFF',
+    color: colors.text.inverse,
   },
   assignButtonTextDisabled: {
     color: colors.neutral[400],
@@ -414,6 +414,6 @@ export const createStyles = (colors: any) => StyleSheet.create({
   retryButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#FFF',
+    color: colors.text.inverse,
   },
 });

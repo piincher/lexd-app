@@ -42,7 +42,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
 
   if (!safePhotoUrls.length) {
     return (
-      <TouchableOpacity activeOpacity={0.8} onPress={editable ? onAddPhoto : undefined} style={[s.empty, { backgroundColor: colors.background.card }]}>
+      <TouchableOpacity activeOpacity={0.8} onPress={editable ? onAddPhoto : undefined} style={[s.empty, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
         <Ionicons name="images-outline" size={40} color={colors.text.disabled} />
         <Text style={[s.emptyText, { color: colors.text.secondary }]}>{emptyLabel}</Text>
         {editable && onAddPhoto && <Ionicons name="add-circle" size={28} color={colors.primary.main} />}
@@ -57,7 +57,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
           <TouchableOpacity key={`${url}_${i}`} activeOpacity={0.9} onPress={() => open(i)} style={s.wrap}>
             <Image source={{ uri: url }} style={[s.photo, { height: imageHeight }]} resizeMode="cover" />
             {showCounter && safePhotoUrls.length > 1 && (
-              <View style={s.badge}><Text style={s.badgeText}>{i + 1} / {safePhotoUrls.length}</Text></View>
+              <View style={s.badge}><Text style={[s.badgeText, { color: colors.text.inverse }]}>{i + 1} / {safePhotoUrls.length}</Text></View>
             )}
           </TouchableOpacity>
         ))}
@@ -67,13 +67,13 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         <Animated.View style={[s.backdrop, animatedStyle]}>
           <TouchableOpacity activeOpacity={1} style={StyleSheet.absoluteFillObject} onPress={close} />
           <View style={s.header} pointerEvents="box-none">
-            <Text style={s.headerText}>{idx + 1} / {safePhotoUrls.length}</Text>
-            <TouchableOpacity onPress={close} style={s.closeBtn}><Ionicons name="close" size={28} color="#fff" /></TouchableOpacity>
+            <Text style={[s.headerText, { color: colors.text.inverse }]}>{idx + 1} / {safePhotoUrls.length}</Text>
+            <TouchableOpacity onPress={close} style={s.closeBtn}><Ionicons name="close" size={28} color={colors.text.inverse} /></TouchableOpacity>
           </View>
           <View style={s.navRow} pointerEvents="box-none">
-            {idx > 0 && <TouchableOpacity onPress={() => go(-1)} style={s.chevron}><Ionicons name="chevron-back" size={36} color="#fff" /></TouchableOpacity>}
+            {idx > 0 && <TouchableOpacity onPress={() => go(-1)} style={s.chevron}><Ionicons name="chevron-back" size={36} color={colors.text.inverse} /></TouchableOpacity>}
             <View style={{ flex: 1 }} />
-            {idx < safePhotoUrls.length - 1 && <TouchableOpacity onPress={() => go(1)} style={s.chevron}><Ionicons name="chevron-forward" size={36} color="#fff" /></TouchableOpacity>}
+            {idx < safePhotoUrls.length - 1 && <TouchableOpacity onPress={() => go(1)} style={s.chevron}><Ionicons name="chevron-forward" size={36} color={colors.text.inverse} /></TouchableOpacity>}
           </View>
           <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} contentOffset={{ x: idx * W, y: 0 }}
             onMomentumScrollEnd={(e) => setIdx(Math.round(e.nativeEvent.contentOffset.x / W))} style={{ zIndex: 103 }} contentContainerStyle={{ alignItems: 'center' }}>
@@ -94,12 +94,12 @@ const s = StyleSheet.create({
   wrap: { borderRadius: 12, overflow: 'hidden', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 4, elevation: 4 },
   photo: { width: 160, borderRadius: 12 },
   badge: { position: 'absolute', bottom: 8, right: 8, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 2, backgroundColor: 'rgba(0,0,0,0.6)' },
-  badgeText: { color: '#fff', fontSize: 12, fontWeight: '600' },
-  empty: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, paddingVertical: 24, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0,0,0,0.06)', marginVertical: 4 },
+  badgeText: { fontSize: 12, fontWeight: '600' },
+  empty: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, paddingVertical: 24, borderRadius: 12, borderWidth: 1, marginVertical: 4 },
   emptyText: { fontSize: 14, fontWeight: '500' },
   backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.95)', zIndex: 100 },
   header: { position: 'absolute', top: 48, left: 20, right: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', zIndex: 102 },
-  headerText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  headerText: { fontSize: 16, fontWeight: '600' },
   closeBtn: { padding: 4 },
   navRow: { position: 'absolute', top: 0, bottom: 0, left: 8, right: 8, flexDirection: 'row', alignItems: 'center', zIndex: 101 },
   chevron: { padding: 12 },

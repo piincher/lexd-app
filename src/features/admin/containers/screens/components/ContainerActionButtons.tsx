@@ -40,12 +40,12 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
           activeOpacity={0.9}
         >
           <LinearGradient
-            colors={[Theme.status.warning, '#EA580C']}
+            colors={[Theme.status.warning, Theme.status.warning]}
             style={styles.actionGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >
-            <Ionicons name="checkmark-done-circle" size={20} color="#FFF" />
+            <Ionicons name="checkmark-done-circle" size={20} color={colors.text.inverse} />
             <Text style={styles.actionButtonText}>
               Marquer Prêt pour Retrait
             </Text>
@@ -66,7 +66,7 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >
-            <Ionicons name="checkmark-done-circle" size={20} color="#FFF" />
+            <Ionicons name="checkmark-done-circle" size={20} color={colors.text.inverse} />
             <Text style={styles.actionButtonText}>
               Marquer comme Livré
             </Text>
@@ -86,7 +86,7 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
-          <Ionicons name="add-circle" size={20} color="#FFF" />
+          <Ionicons name="add-circle" size={20} color={colors.text.inverse} />
           <Text style={styles.actionButtonText}>Assigner des Marchandises</Text>
         </LinearGradient>
       </TouchableOpacity>
@@ -101,7 +101,7 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
             activeOpacity={0.9}
           >
             <LinearGradient
-              colors={[Theme.primary[50], '#FFFFFF']}
+              colors={[colors.background.paper, colors.background.default]}
               style={styles.listButtonGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
@@ -128,13 +128,13 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
             activeOpacity={0.9}
           >
             <LinearGradient
-              colors={['#FFFBEB', '#FFFFFF']}
+              colors={[colors.status.warning + '10', colors.background.default]}
               style={styles.listButtonGradient}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
             >
-              <View style={[styles.listButtonIcon, { backgroundColor: '#FEF3C7' }]}>
-                <Ionicons name="list" size={20} color="#D97706" />
+              <View style={[styles.listButtonIcon, { backgroundColor: colors.status.warning + '15' }]}>
+                <Ionicons name="list" size={20} color={colors.status.warning} />
               </View>
               <View style={styles.listButtonTextContainer}>
                 <Text style={[styles.listButtonTitle, { color: '#92400E' }]}>
@@ -144,7 +144,7 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
                   Plan de chargement
                 </Text>
               </View>
-              <Ionicons name="chevron-forward" size={18} color="#D97706" />
+              <Ionicons name="chevron-forward" size={18} color={colors.status.warning} />
             </LinearGradient>
           </TouchableOpacity>
         </View>

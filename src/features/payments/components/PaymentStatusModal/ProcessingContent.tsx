@@ -6,19 +6,22 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { usePaymentStatusModalStyles } from './PaymentStatusModal.styles';
 import type { PaymentProvider } from '../../types';
 
-const PROVIDER_COLORS: Record<PaymentProvider, string> = {
-  ORANGE_MONEY: '#FF6600',
-  WAVE: '#1E40AF',
-  STRIPE: '#635BFF',
-  CARD: '#635BFF',
-};
-
 interface ProcessingContentProps {
   provider?: PaymentProvider;
   qrCode?: string;
   instructions?: string[];
   spinnerStyle: any;
 }
+
+const getProviderColor = (provider: PaymentProvider, colors: any) => {
+  switch (provider) {
+    case 'ORANGE_MONEY': return colors.status.warning;
+    case 'WAVE': return colors.status.info;
+    case 'STRIPE': return colors.primary.main;
+    case 'CARD': return colors.primary.main;
+    default: return colors.primary.main;
+  }
+};
 
 export const ProcessingContent: React.FC<ProcessingContentProps> = ({
   provider,
@@ -28,7 +31,7 @@ export const ProcessingContent: React.FC<ProcessingContentProps> = ({
 }) => {
   const { colors } = useAppTheme();
   const styles = usePaymentStatusModalStyles();
-  const providerColor = provider ? PROVIDER_COLORS[provider] : colors.primary.main;
+  const providerColor = provider ? getProviderColor(provider, colors) : colors.primary.main;
 
   return (
     <View style={styles.content}>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
-import { styles } from './ExportDialog.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './ExportDialog.styles';
 
 interface ExportDialogProps {
   visible: boolean;
@@ -16,6 +17,8 @@ const EXPORT_OPTIONS = [
 ] as const;
 
 export const ExportDialog: React.FC<ExportDialogProps> = ({ visible, onDismiss, onExport }) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onDismiss}>

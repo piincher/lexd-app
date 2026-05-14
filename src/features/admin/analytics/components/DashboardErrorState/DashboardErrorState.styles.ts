@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
   },
   centerContainer: {
     flex: 1,
@@ -15,12 +15,12 @@ export const styles = StyleSheet.create({
   errorTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginTop: Theme.spacing.lg,
   },
   errorText: {
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textAlign: 'center',
     marginTop: Theme.spacing.sm,
   },

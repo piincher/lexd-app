@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Card, Text, Chip } from "react-native-paper";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { styles } from "./BackupManager.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface SchedulerStatus {
   isScheduled: boolean;
@@ -17,6 +18,7 @@ interface SchedulerStatusCardProps {
 }
 
 export const SchedulerStatusCard: React.FC<SchedulerStatusCardProps> = ({ status }) => {
+  const { colors } = useAppTheme();
   if (!status) return null;
 
   return (
@@ -31,8 +33,8 @@ export const SchedulerStatusCard: React.FC<SchedulerStatusCardProps> = ({ status
           </View>
           <Chip
             icon={status.isRunning ? "sync" : "check-circle"}
-            style={[styles.statusChip, { backgroundColor: status.isRunning ? "#FF9800" : "#4CAF50" }]}
-            textStyle={{ color: "white" }}
+            style={[styles.statusChip, { backgroundColor: status.isRunning ? colors.status.warning : colors.status.success }]}
+            textStyle={{ color: colors.text.inverse }}
           >
             {status.isRunning ? "Running" : "Ready"}
           </Chip>

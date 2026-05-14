@@ -4,6 +4,7 @@ import { ActivityIndicator } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface BottomActionBarProps {
@@ -25,6 +26,7 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
   isAir = false,
   onAssign,
 }) => {
+  const { colors } = useAppTheme();
   if (selectedCount === 0) {
     return null;
   }
@@ -50,13 +52,13 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
               style={styles.assignButtonGradient}
             >
               {isPending ? (
-                <ActivityIndicator size="small" color="#FFF" />
+                <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
               ) : (
                 <>
                   <Text style={[styles.assignButtonText, (isOverCapacity || !isAssignable) && styles.assignButtonTextDisabled]}>
                     {!isAssignable ? 'Verrouillé' : 'Assigner'}
                   </Text>
-                  <Ionicons name={!isAssignable ? "lock-closed" : "arrow-forward"} size={18} color={isOverCapacity || !isAssignable ? Theme.neutral[400] : '#FFF'} />
+                  <Ionicons name={!isAssignable ? "lock-closed" : "arrow-forward"} size={18} color={isOverCapacity || !isAssignable ? Theme.neutral[400] : Theme.colors.text.inverse} />
                 </>
               )}
             </LinearGradient>
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
   assignButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
   assignButtonTextDisabled: {
     color: Theme.neutral[400],

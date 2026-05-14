@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface CollectionGaugeProps {
   rate: number;
@@ -8,6 +9,7 @@ interface CollectionGaugeProps {
 }
 
 export const CollectionGauge: React.FC<CollectionGaugeProps> = ({ rate, size = 120 }) => {
+  const { colors } = useAppTheme();
   const strokeWidth = 12;
   const radius = (size - strokeWidth) / 2;
   const center = size / 2;
@@ -15,8 +17,8 @@ export const CollectionGauge: React.FC<CollectionGaugeProps> = ({ rate, size = 1
   const progress = Math.min(rate / 100, 1);
   const strokeDashoffset = circumference * (1 - progress);
 
-  let color = '#EF4444';
-  if (rate >= 90) color = '#10B981';
+  let color = colors.status.error;
+  if (rate >= 90) color = colors.status.success;
   else if (rate >= 70) color = '#F59E0B';
   else if (rate >= 50) color = '#F97316';
 
@@ -29,7 +31,7 @@ export const CollectionGauge: React.FC<CollectionGaugeProps> = ({ rate, size = 1
           cy={center}
           r={radius}
           fill="none"
-          stroke="#E5E7EB"
+          stroke={colors.border}
           strokeWidth={strokeWidth}
         />
         {/* Progress arc */}
@@ -51,7 +53,7 @@ export const CollectionGauge: React.FC<CollectionGaugeProps> = ({ rate, size = 1
           y={center - 5}
           fontSize={24}
           fontWeight="bold"
-          fill="#1F2937"
+          fill={colors.text.primary}
           textAnchor="middle"
         >
           {rate.toFixed(0)}%
@@ -60,7 +62,7 @@ export const CollectionGauge: React.FC<CollectionGaugeProps> = ({ rate, size = 1
           x={center}
           y={center + 15}
           fontSize={10}
-          fill="#6B7280"
+          fill={colors.text.muted}
           textAnchor="middle"
         >
           Collecté

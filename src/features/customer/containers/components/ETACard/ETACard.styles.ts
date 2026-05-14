@@ -79,7 +79,7 @@ export const useETACardStyles = () => {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 8,
-      backgroundColor: '#FEF3C7',
+      backgroundColor: Theme.colors.status.warning + '15',
     },
     delayText: {
       flex: 1,

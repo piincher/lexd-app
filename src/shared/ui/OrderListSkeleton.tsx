@@ -24,7 +24,7 @@ const ShimmerBlock: React.FC<{
 }> = ({ width, height, borderRadius = 4, bg }) => {
   const { colors, isDark } = useAppTheme();
   const shimmer = useSharedValue(0);
-  const blockBg = bg ?? (isDark ? 'rgba(255,255,255,0.08)' : '#E8EFF5');
+  const blockBg = bg ?? (isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[100]);
 
   React.useEffect(() => {
     shimmer.value = withRepeat(

@@ -337,13 +337,15 @@ export interface WebhookEvent {
 }
 
 // Constants
+import { Theme } from '@src/constants/Theme';
+
 export const PAYMENT_STATUS_COLORS: Record<PaymentStatus, string> = {
-  PENDING: '#F59E0B',    // Amber
-  PROCESSING: '#3B82F6', // Blue
-  COMPLETED: '#10B981',  // Green
-  FAILED: '#EF4444',     // Red
-  CANCELLED: '#6B7280',  // Gray
-  REFUNDED: '#8B5CF6',   // Purple
+  PENDING: Theme.colors.status.warning,
+  PROCESSING: Theme.colors.status.info,
+  COMPLETED: Theme.colors.status.success,
+  FAILED: Theme.colors.status.error,
+  CANCELLED: Theme.colors.text.disabled,
+  REFUNDED: Theme.colors.primary.main,
 };
 
 export const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {

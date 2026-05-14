@@ -69,7 +69,7 @@ export const AirwayBillListScreen: React.FC = () => {
         renderItem={renderItem}
       />
       <View style={[styles.fab, { backgroundColor: colors.primary.main }]}>
-        <Ionicons name="add" size={28} color="#FFF" onPress={handlers.handleCreatePress} />
+        <Ionicons name="add" size={28} color={colors.text.inverse} onPress={handlers.handleCreatePress} />
       </View>
     </SafeAreaView>
   );

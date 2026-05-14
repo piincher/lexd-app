@@ -7,6 +7,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { FontAwesome6 } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface WhyUsCardProps {
   icon: string;
@@ -15,7 +16,13 @@ interface WhyUsCardProps {
   index: number;
 }
 
-const cardColors = ['#4A90E2', '#1ED7B5', '#8B5CF6', '#F59E0B'];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getCardColors = (colors: any) => [
+  colors.status.info,
+  colors.accent.mint,
+  colors.status.info,
+  colors.status.warning,
+];
 
 export const WhyUsCard: React.FC<WhyUsCardProps> = ({
   icon,
@@ -23,13 +30,16 @@ export const WhyUsCard: React.FC<WhyUsCardProps> = ({
   description,
   index,
 }) => {
-  const backgroundColor = cardColors[index % cardColors.length];
+  const { colors } = useAppTheme();
+  const backgroundColor = getCardColors(colors)[index % 4];
 
   return (
     <View style={[styles.card, { backgroundColor }]}>
-      <FontAwesome6 name={icon as any} size={32} color="white" />
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.description}>{description}</Text>
+      <FontAwesome6 name={icon as any} size={32} color={colors.text.inverse} />
+      <Text style={[styles.title, { color: colors.text.inverse }]}>{title}</Text>
+      <Text style={[styles.description, { color: colors.text.inverse, opacity: 0.9 }]}>
+        {description}
+      </Text>
     </View>
   );
 };
@@ -44,13 +54,11 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Bold',
     fontSize: 18,
-    color: 'white',
     marginVertical: 8,
   },
   description: {
     fontFamily: 'Medium',
     fontSize: 14,
-    color: 'rgba(255,255,255,0.9)',
   },
 });
 

@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { Theme } from '@src/constants/Theme';
 
 interface VerificationConfirmButtonProps {
   isComplete: boolean;
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
   confirmText: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: "#FFF",
+    color: "Theme.colors.text.inverse",
     letterSpacing: 0.3,
   },
 });

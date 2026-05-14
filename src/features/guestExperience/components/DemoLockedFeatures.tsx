@@ -56,7 +56,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       padding: 16,
       backgroundColor: colors.background.card,
       borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
+      borderColor: colors.border,
     },
     headerRow: {
       flexDirection: 'row',
@@ -76,7 +76,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       paddingVertical: 14,
       paddingHorizontal: 12,
       borderTopWidth: 1,
-      borderTopColor: isDark ? 'rgba(255,255,255,0.06)' : '#F1F5F9',
+      borderTopColor: colors.border,
       overflow: 'hidden',
       borderRadius: 12,
     },
@@ -86,7 +86,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       borderRadius: 12,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : colors.neutral[100],
+      backgroundColor: colors.neutral[100],
     },
     lockOverlay: {
       position: 'absolute',
@@ -99,7 +99,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       alignItems: 'center',
       justifyContent: 'center',
       borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[200],
+      borderColor: colors.border,
     },
     textBlock: {
       flex: 1,
@@ -117,7 +117,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       marginTop: 2,
     },
     badge: {
-      backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[100],
+      backgroundColor: colors.neutral[100],
       paddingHorizontal: 8,
       paddingVertical: 4,
       borderRadius: 8,

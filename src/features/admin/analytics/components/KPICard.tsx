@@ -3,7 +3,8 @@ import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { styles } from './KPICard.styles';
+import { createStyles } from './KPICard.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export interface KPICardProps {
   title: string;
@@ -24,7 +25,10 @@ export const KPICard: React.FC<KPICardProps> = ({
   icon,
   gradientColors,
   trend,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
+  return (
   <LinearGradient
     colors={gradientColors}
     start={{ x: 0, y: 0 }}
@@ -33,7 +37,7 @@ export const KPICard: React.FC<KPICardProps> = ({
   >
     <View style={styles.cardContent}>
       <View style={styles.iconContainer}>
-        <MaterialCommunityIcons name={icon} size={24} color="#FFFFFF" />
+        <MaterialCommunityIcons name={icon} size={24} color={colors.text.inverse} />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.title} numberOfLines={1}>{title}</Text>
@@ -41,11 +45,12 @@ export const KPICard: React.FC<KPICardProps> = ({
         {subtitle && <Text style={styles.subtitle} numberOfLines={1}>{subtitle}</Text>}
         {trend && (
           <View style={styles.trendContainer}>
-            <MaterialCommunityIcons name={trend.value >= 0 ? 'trending-up' : 'trending-down'} size={14} color="#FFFFFF" />
+            <MaterialCommunityIcons name={trend.value >= 0 ? 'trending-up' : 'trending-down'} size={14} color={colors.text.inverse} />
             <Text style={styles.trendText}>{trend.value >= 0 ? '+' : ''}{trend.value.toFixed(1)}% {trend.label}</Text>
           </View>
         )}
       </View>
     </View>
   </LinearGradient>
-);
+  );
+};

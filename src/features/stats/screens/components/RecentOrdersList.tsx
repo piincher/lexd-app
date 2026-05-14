@@ -10,18 +10,14 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { RecentOrder } from '../../types';
 
 interface RecentOrdersListProps {
   orders: RecentOrder[];
 }
 
-const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> = {
-  Active: { label: 'Charge', color: '#F59E0B', bg: '#FFFBEB' },
-  'In Transit': { label: 'En Transit', color: '#3B82F6', bg: '#EFF6FF' },
-  Delivered: { label: 'Livre', color: '#10B981', bg: '#F0FDF4' },
-  Inactive: { label: 'Inactif', color: Theme.colors.text.secondary, bg: Theme.colors.background.paper },
-};
+
 
 const SHIPPING_ICON: Record<string, string> = {
   air: 'airplane-outline',
@@ -40,49 +36,57 @@ const formatAmount = (amount: number): string => {
   return `${new Intl.NumberFormat('fr-FR').format(Math.round(num))} F`;
 };
 
-const OrderRow: React.FC<{ order: RecentOrder; index: number; isLast: boolean }> = ({
+const OrderRow: React.FC<{ order: RecentOrder; index: number; isLast: boolean; colors: any }> = ({
   order,
   index,
   isLast,
+  colors,
 }) => {
+  const STATUS_MAP: Record<string, { label: string; color: string; bg: string }> = {
+    Active: { label: 'Charge', color: colors.status.warning, bg: colors.feedback.warningBg },
+    'In Transit': { label: 'En Transit', color: colors.status.info, bg: colors.feedback.infoBg },
+    Delivered: { label: 'Livre', color: colors.status.success, bg: colors.feedback.successBg },
+    Inactive: { label: 'Inactif', color: colors.text.secondary, bg: colors.background.paper },
+  };
   const status = STATUS_MAP[order.status] || STATUS_MAP.Inactive;
   const shippingIcon = SHIPPING_ICON[order.shippingMode?.toLowerCase()] || 'cube-outline';
 
   return (
     <Animated.View
       entering={FadeInDown.delay(index * 50).springify().damping(15)}
-      style={[styles.orderRow, !isLast && styles.orderRowBorder]}
+      style={[styles.orderRow, !isLast && { borderBottomWidth: 1, borderBottomColor: colors.border }]}
     >
       <View style={[styles.shippingIconContainer, { backgroundColor: status.bg }]}>
         <Ionicons name={shippingIcon as any} size={16} color={status.color} />
       </View>
       <View style={styles.orderInfo}>
         <View style={styles.orderTopRow}>
-          <Text style={styles.orderCode} numberOfLines={1}>#{order.code}</Text>
-          <Text style={styles.orderAmount}>{formatAmount(order.priceTotal)}</Text>
+          <Text style={[styles.orderCode, { color: colors.text.primary }]} numberOfLines={1}>#{order.code}</Text>
+          <Text style={[styles.orderAmount, { color: colors.text.primary }]}>{formatAmount(order.priceTotal)}</Text>
         </View>
         <View style={styles.orderBottomRow}>
-          <Text style={styles.orderClient} numberOfLines={1}>{order.clientName}</Text>
+          <Text style={[styles.orderClient, { color: colors.text.secondary }]} numberOfLines={1}>{order.clientName}</Text>
           <View style={[styles.statusBadge, { backgroundColor: status.bg }]}>
             <Text style={[styles.statusText, { color: status.color }]}>{status.label}</Text>
           </View>
         </View>
-        <Text style={styles.orderDate}>{formatDate(order.createdAt)}</Text>
+        <Text style={[styles.orderDate, { color: colors.text.secondary }]}>{formatDate(order.createdAt)}</Text>
       </View>
     </Animated.View>
   );
 };
 
 export const RecentOrdersList: React.FC<RecentOrdersListProps> = ({ orders }) => {
+  const { colors } = useAppTheme();
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background.card }]}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Commandes recentes</Text>
-          <Text style={styles.headerSubtitle}>Dernieres activites</Text>
+          <Text style={[styles.title, { color: colors.text.primary }]}>Commandes recentes</Text>
+          <Text style={[styles.headerSubtitle, { color: colors.text.secondary }]}>Dernieres activites</Text>
         </View>
-        <View style={styles.countBadge}>
-          <Text style={styles.countText}>{orders.length}</Text>
+        <View style={[styles.countBadge, { backgroundColor: colors.primary[50] }]}>
+          <Text style={[styles.countText, { color: colors.primary[600] }]}>{orders.length}</Text>
         </View>
       </View>
 
@@ -93,12 +97,13 @@ export const RecentOrdersList: React.FC<RecentOrdersListProps> = ({ orders }) =>
             order={order}
             index={index}
             isLast={index === orders.length - 1}
+            colors={colors}
           />
         ))
       ) : (
         <View style={styles.emptyContainer}>
-          <Ionicons name="receipt-outline" size={28} color={Theme.neutral[300]} />
-          <Text style={styles.emptyText}>Aucune commande recente</Text>
+          <Ionicons name="receipt-outline" size={28} color={colors.border} />
+          <Text style={[styles.emptyText, { color: colors.text.secondary }]}>Aucune commande recente</Text>
         </View>
       )}
     </View>
@@ -108,7 +113,6 @@ export const RecentOrdersList: React.FC<RecentOrdersListProps> = ({ orders }) =>
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    backgroundColor: Theme.colors.background.card,
     borderRadius: 16,
     padding: 18,
     ...Theme.shadows.sm,
@@ -123,16 +127,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.neutral[800],
   },
   headerSubtitle: {
     fontSize: 11,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
     marginTop: 2,
   },
   countBadge: {
-    backgroundColor: Theme.primary[50],
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
@@ -141,17 +142,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.primary[600],
   },
   orderRow: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
     gap: 12,
-  },
-  orderRowBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[50],
   },
   shippingIconContainer: {
     width: 36,
@@ -172,13 +168,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.neutral[800],
   },
   orderAmount: {
     fontSize: 12,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.neutral[700],
   },
   orderBottomRow: {
     flexDirection: 'row',
@@ -189,7 +183,6 @@ const styles = StyleSheet.create({
   orderClient: {
     fontSize: 11,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[500],
     flex: 1,
   },
   statusBadge: {
@@ -206,7 +199,6 @@ const styles = StyleSheet.create({
   orderDate: {
     fontSize: 10,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
     marginTop: 2,
   },
   emptyContainer: {
@@ -217,6 +209,5 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
   },
 });

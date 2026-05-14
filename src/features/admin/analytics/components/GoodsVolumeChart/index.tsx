@@ -7,7 +7,8 @@ import { ViewModeTabs } from './ViewModeTabs';
 import { StatusView } from './StatusView';
 import { ShippingView } from './ShippingView';
 import { TrendView } from './TrendView';
-import { styles } from './GoodsVolumeChart.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './GoodsVolumeChart.styles';
 
 interface GoodsVolumeChartProps {
   byStatus: VolumeByStatus[];
@@ -27,6 +28,8 @@ export const GoodsVolumeChart: React.FC<GoodsVolumeChartProps> = ({
   dailyTrend,
   summary,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   const { viewMode, setViewMode, formatNumber, formatCurrency, statusChartData } =
     useGoodsVolumeChart(byStatus);
 

@@ -17,13 +17,7 @@ export interface GoodsOverviewProps {
   isLoading?: boolean;
 }
 
-const STATUS_COLORS: Record<string, string> = {
-  in_warehouse: '#F59E0B',
-  in_transit: '#3B82F6',
-  delivered: '#10B981',
-  pending: '#8B5CF6',
-  ready_for_pickup: '#06B6D4',
-};
+
 
 const STATUS_LABELS: Record<string, string> = {
   in_warehouse: 'En entrepot',
@@ -41,6 +35,13 @@ export const formatNumber = (num: number | undefined | null): string => {
 export const GoodsOverview: React.FC<GoodsOverviewProps> = ({ goodsVolume, isLoading }) => {
   const { colors } = useAppTheme();
   const styles = createGoodsOverviewStyles(colors);
+  const STATUS_COLORS: Record<string, string> = {
+    in_warehouse: colors.status.warning,
+    in_transit: colors.status.info,
+    delivered: colors.status.success,
+    pending: colors.status.info,
+    ready_for_pickup: colors.status.info,
+  };
   const summary = goodsVolume?.summary;
   const byStatus = goodsVolume?.byStatus || [];
   const totalGoods = Number(summary?.totalGoods) || 0;
@@ -64,13 +65,13 @@ export const GoodsOverview: React.FC<GoodsOverviewProps> = ({ goodsVolume, isLoa
         <>
           <View style={styles.quickStats}>
             <View style={styles.quickStat}>
-              <Ionicons name="cube-outline" size={16} color="#3B82F6" />
+              <Ionicons name="cube-outline" size={16} color={colors.status.info} />
               <Text style={styles.quickStatValue}>{Number(summary?.totalCBM || 0).toFixed(1)}</Text>
               <Text style={styles.quickStatLabel}>CBM</Text>
             </View>
             <View style={styles.quickStatDivider} />
             <View style={styles.quickStat}>
-              <Ionicons name="cash-outline" size={16} color="#10B981" />
+              <Ionicons name="cash-outline" size={16} color={colors.status.success} />
               <Text style={styles.quickStatValue}>{formatNumber(summary?.totalValueFCFA)}</Text>
               <Text style={styles.quickStatLabel}>FCFA</Text>
             </View>

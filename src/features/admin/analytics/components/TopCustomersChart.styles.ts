@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
+import { AppTheme } from '@src/shared/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   container: {
     borderRadius: 16,
     elevation: 2,
@@ -69,7 +70,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 2,
-    backgroundColor: '#DCFCE7',
+    backgroundColor: colors.status.success + '18',
     paddingHorizontal: 6,
     paddingVertical: 2,
     borderRadius: 8,
@@ -77,17 +78,29 @@ export const styles = StyleSheet.create({
   returningText: {
     fontSize: 9,
     fontWeight: '600',
-    color: '#059669',
+    color: colors.status.success,
   },
   customerPhone: {
     fontSize: 11,
     color: Theme.colors.text.secondary,
-    marginTop: 2,
+  },
+  spendText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: Theme.colors.text.primary,
+  },
+  orderCount: {
+    fontSize: 10,
+    color: Theme.colors.text.muted,
+  },
+  spendContainer: {
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   statsRow: {
     flexDirection: 'row',
     gap: 12,
-    marginTop: 6,
+    marginTop: 4,
   },
   stat: {
     flexDirection: 'row',
@@ -99,11 +112,15 @@ export const styles = StyleSheet.create({
     color: Theme.colors.text.secondary,
   },
   barContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
     marginTop: 8,
   },
   barBackground: {
+    flex: 1,
     height: 6,
-    backgroundColor: Theme.colors.neutral[200],
+    backgroundColor: Theme.colors.border,
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -112,10 +129,10 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
   },
   revenueText: {
-    fontSize: 12,
-    fontWeight: '600',
+    fontSize: 11,
+    fontWeight: '700',
     color: Theme.colors.text.primary,
-    marginTop: 4,
+    minWidth: 80,
     textAlign: 'right',
   },
 });

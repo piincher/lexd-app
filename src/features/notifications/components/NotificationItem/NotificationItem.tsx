@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { InAppNotification, NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../../types';
 import { formatRelativeTime } from '../../utils/timeUtils';
 import { NotificationTrackingPreview } from './NotificationTrackingPreview';
@@ -20,6 +20,9 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   onDismiss,
   onDelete,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const typeConfig = NOTIFICATION_TYPE_CONFIG[notification.type] || NOTIFICATION_TYPE_CONFIG.GENERAL;
   const catConfig = NOTIFICATION_CATEGORY_CONFIG[notification.category] || NOTIFICATION_CATEGORY_CONFIG.INFO;
   const safeIcon = typeConfig?.icon || 'bell';
@@ -32,14 +35,14 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
         style={[styles.actionButton, styles.dismissButton]}
         onPress={() => onDismiss(notification._id)}
       >
-        <MaterialCommunityIcons name="archive-outline" size={24} color={Theme.neutral.white} />
+        <MaterialCommunityIcons name="archive-outline" size={24} color={colors.text.inverse} />
         <Text style={styles.actionText}>Archiver</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.actionButton, styles.deleteButton]}
         onPress={() => onDelete(notification._id)}
       >
-        <MaterialCommunityIcons name="trash-outline" size={24} color={Theme.neutral.white} />
+        <MaterialCommunityIcons name="trash-outline" size={24} color={colors.text.inverse} />
         <Text style={styles.actionText}>Supprimer</Text>
       </TouchableOpacity>
     </View>
@@ -70,76 +73,77 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    padding: Theme.spacing.md,
-    backgroundColor: Theme.colors.background.card,
-    borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[200],
-  },
-  unread: {
-    backgroundColor: Theme.colors.primary.light + '20',
-  },
-  iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: Theme.neutral[100],
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: Theme.spacing.md,
-  },
-  unreadIcon: {
-    backgroundColor: Theme.colors.primary.light + '30',
-  },
-  content: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: '500',
-    color: Theme.neutral[800],
-    marginBottom: Theme.spacing.xs,
-  },
-  unreadText: {
-    fontWeight: '700',
-    color: Theme.neutral[900],
-  },
-  message: {
-    fontSize: 14,
-    color: Theme.neutral[600],
-    marginBottom: Theme.spacing.xs,
-  },
-  time: {
-    fontSize: 12,
-    color: Theme.neutral[400],
-  },
-  unreadDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: Theme.colors.primary.main,
-    alignSelf: 'center',
-    marginLeft: Theme.spacing.sm,
-  },
-  actionsContainer: {
-    flexDirection: 'row',
-  },
-  actionButton: {
-    width: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dismissButton: {
-    backgroundColor: Theme.colors.info.main,
-  },
-  deleteButton: {
-    backgroundColor: Theme.colors.error.main,
-  },
-  actionText: {
-    color: Theme.neutral.white,
-    fontSize: 12,
-    marginTop: Theme.spacing.xs,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      padding: 12,
+      backgroundColor: colors.background.card,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
+    },
+    unread: {
+      backgroundColor: colors.primary.light + '20',
+    },
+    iconContainer: {
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: colors.background.paper,
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 12,
+    },
+    unreadIcon: {
+      backgroundColor: colors.primary.light + '30',
+    },
+    content: {
+      flex: 1,
+    },
+    title: {
+      fontSize: 16,
+      fontWeight: '500',
+      color: colors.text.primary,
+      marginBottom: 4,
+    },
+    unreadText: {
+      fontWeight: '700',
+      color: colors.text.primary,
+    },
+    message: {
+      fontSize: 14,
+      color: colors.text.secondary,
+      marginBottom: 4,
+    },
+    time: {
+      fontSize: 12,
+      color: colors.text.disabled,
+    },
+    unreadDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      backgroundColor: colors.primary.main,
+      alignSelf: 'center',
+      marginLeft: 8,
+    },
+    actionsContainer: {
+      flexDirection: 'row',
+    },
+    actionButton: {
+      width: 80,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    dismissButton: {
+      backgroundColor: colors.status.info,
+    },
+    deleteButton: {
+      backgroundColor: colors.status.error,
+    },
+    actionText: {
+      color: colors.text.inverse,
+      fontSize: 12,
+      marginTop: 4,
+    },
+  });

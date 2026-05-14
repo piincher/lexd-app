@@ -21,7 +21,8 @@ const ShimmerBlock: React.FC<{
   height: number;
   borderRadius?: number;
   color?: string;
-}> = ({ width, height, borderRadius = 6, color }) => {
+  isDark?: boolean;
+}> = ({ width, height, borderRadius = 6, color, isDark }) => {
   const shimmer = useSharedValue(0);
 
   React.useEffect(() => {
@@ -32,11 +33,13 @@ const ShimmerBlock: React.FC<{
     transform: [{ translateX: interpolate(shimmer.value, [0, 1], [-200, 400]) }],
   }));
 
+  const shimmerColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.45)';
+
   return (
     <View style={[styles.block, { width, height, borderRadius, backgroundColor: color }]}>
       <Animated.View style={[StyleSheet.absoluteFill, shimmerStyle]}>
         <LinearGradient
-          colors={['transparent', 'rgba(255,255,255,0.45)', 'transparent']}
+          colors={['transparent', shimmerColor, 'transparent']}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={StyleSheet.absoluteFill}
@@ -46,34 +49,35 @@ const ShimmerBlock: React.FC<{
   );
 };
 
-const SkeletonCard: React.FC<{ skeletonBg: string; cardBg: string; borderColor: string }> = ({
+const SkeletonCard: React.FC<{ skeletonBg: string; cardBg: string; borderColor: string; isDark: boolean }> = ({
   skeletonBg,
   cardBg,
   borderColor,
+  isDark,
 }) => (
   <View style={[styles.card, { backgroundColor: cardBg, borderColor }]}>
     {/* Header: order number + status badge */}
     <View style={styles.header}>
-      <ShimmerBlock width={130} height={16} color={skeletonBg} />
-      <ShimmerBlock width={80} height={24} borderRadius={12} color={skeletonBg} />
+      <ShimmerBlock width={130} height={16} color={skeletonBg} isDark={isDark} />
+      <ShimmerBlock width={80} height={24} borderRadius={12} color={skeletonBg} isDark={isDark} />
     </View>
 
     {/* Details: 2 icon rows */}
     <View style={styles.details}>
       <View style={styles.row}>
-        <ShimmerBlock width={16} height={16} borderRadius={8} color={skeletonBg} />
-        <ShimmerBlock width={160} height={12} color={skeletonBg} />
+        <ShimmerBlock width={16} height={16} borderRadius={8} color={skeletonBg} isDark={isDark} />
+        <ShimmerBlock width={160} height={12} color={skeletonBg} isDark={isDark} />
       </View>
       <View style={styles.row}>
-        <ShimmerBlock width={16} height={16} borderRadius={8} color={skeletonBg} />
-        <ShimmerBlock width={100} height={12} color={skeletonBg} />
+        <ShimmerBlock width={16} height={16} borderRadius={8} color={skeletonBg} isDark={isDark} />
+        <ShimmerBlock width={100} height={12} color={skeletonBg} isDark={isDark} />
       </View>
     </View>
 
     {/* Footer: date + amount */}
     <View style={[styles.footer, { borderTopColor: borderColor }]}>
-      <ShimmerBlock width={80} height={10} color={skeletonBg} />
-      <ShimmerBlock width={90} height={16} color={skeletonBg} />
+      <ShimmerBlock width={80} height={10} color={skeletonBg} isDark={isDark} />
+      <ShimmerBlock width={90} height={16} color={skeletonBg} isDark={isDark} />
     </View>
   </View>
 );
@@ -83,7 +87,7 @@ interface PastOrderCardSkeletonProps {
 }
 
 export const PastOrderCardSkeleton: React.FC<PastOrderCardSkeletonProps> = ({ count = 5 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const skeletonBg = colors.background.paper;
   const cardBg = colors.background.card;
   const borderColor = colors.border ?? '#E5E7EB';
@@ -91,7 +95,7 @@ export const PastOrderCardSkeleton: React.FC<PastOrderCardSkeletonProps> = ({ co
   return (
     <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
       {Array.from({ length: count }).map((_, i) => (
-        <SkeletonCard key={i} skeletonBg={skeletonBg} cardBg={cardBg} borderColor={borderColor} />
+        <SkeletonCard key={i} skeletonBg={skeletonBg} cardBg={cardBg} borderColor={borderColor} isDark={isDark} />
       ))}
     </Animated.View>
   );

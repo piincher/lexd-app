@@ -51,25 +51,25 @@ export const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   badgeAuto: {
-    backgroundColor: "#DBEAFE",
+    backgroundColor: "Theme.colors.status.info + '15'",
   },
   badgeAutoText: {
     color: "#1D4ED8",
   },
   badgeManual: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: "Theme.colors.status.warning + '15'",
   },
   badgeManualText: {
     color: "#92400E",
   },
   badgeActive: {
-    backgroundColor: "#DCFCE7",
+    backgroundColor: "Theme.colors.status.success + '18'",
   },
   badgeActiveText: {
     color: "#15803D",
   },
   badgeRevoked: {
-    backgroundColor: "#FEE2E2",
+    backgroundColor: "Theme.colors.status.error + '15'",
   },
   badgeRevokedText: {
     color: "#DC2626",
@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
   noteContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
-    backgroundColor: "#FFFBEB",
+    backgroundColor: "Theme.colors.status.warning + '12'",
     borderRadius: 8,
     padding: 10,
     marginTop: 4,
@@ -120,6 +120,6 @@ export const styles = StyleSheet.create({
   downloadButtonText: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: "#FFFFFF",
+    color: "Theme.colors.text.inverse",
   },
 });

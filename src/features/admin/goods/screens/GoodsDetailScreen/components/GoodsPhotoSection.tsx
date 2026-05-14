@@ -20,20 +20,20 @@ export const GoodsPhotoSection: React.FC<GoodsPhotoSectionProps> = ({ photoUrls 
       : [];
 
   return (
-    <Card style={[styles.card, { backgroundColor: colors.background.card }]}>
+    <Card style={[styles.card, { backgroundColor: Theme.colors.background.card }]}>
       <Card.Content>
         <View style={styles.header}>
           <Ionicons name="images-outline" size={20} color={Theme.primary[600]} />
-          <Text style={[styles.title, { color: colors.text.primary }]}>
+          <Text style={[styles.title, { color: Theme.colors.text.primary }]}>
             Photos de la marchandise
           </Text>
         </View>
         {urls.length > 0 ? (
           <PhotoGallery photoUrls={urls} imageHeight={140} showCounter />
         ) : (
-          <View style={[styles.empty, { backgroundColor: colors.neutral[50] }]}>
-            <Ionicons name="images-outline" size={40} color={colors.text.disabled} />
-            <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
+          <View style={[styles.empty, { backgroundColor: Theme.colors.neutral[50] }]}>
+            <Ionicons name="images-outline" size={40} color={Theme.colors.text.disabled} />
+            <Text style={[styles.emptyText, { color: Theme.colors.text.secondary }]}>
               Aucune photo disponible
             </Text>
             <View style={styles.ctaRow}>
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     paddingVertical: 32,
     borderRadius: Theme.radius.md,
     borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0.06)',
+    borderColor: Theme.colors.border,
   },
   emptyText: { fontSize: 14, fontWeight: '500', marginTop: 8 },
   ctaRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 6 },

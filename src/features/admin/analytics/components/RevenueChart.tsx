@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, Dimensions, TouchableOpacity } from "react-native";
-import { styles } from "./RevenueChart.styles";
+import { createStyles } from "./RevenueChart.styles";
 import { Text, useTheme } from "react-native-paper";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { RevenueTrendPoint, GrowthComparison } from "../types";
 import { RevenueChartSvg } from "./RevenueChartSvg";
 
@@ -30,6 +30,8 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({
   onPeriodChange,
 }) => {
   const theme = useTheme();
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodType>("day");
   const [tooltipIndex, setTooltipIndex] = useState<number | null>(null);
 
@@ -68,8 +70,8 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({
       <View style={styles.header}>
         <Text style={styles.title}>Tendance des Revenus</Text>
         {growth && (
-          <View style={[styles.growthBadge, { backgroundColor: growth.revenueGrowth >= 0 ? "#DCFCE7" : "#FEE2E2" }]}>
-            <Text style={[styles.growthText, { color: growth.revenueGrowth >= 0 ? "#166534" : "#991B1B" }]}>
+          <View style={[styles.growthBadge, { backgroundColor: growth.revenueGrowth >= 0 ? colors.feedback.successBg : colors.feedback.errorBg }]}>
+            <Text style={[styles.growthText, { color: growth.revenueGrowth >= 0 ? colors.feedback.successDark : colors.feedback.errorDark }]}>
               {growth.revenueGrowth >= 0 ? "+" : ""}
               {growth.revenueGrowth.toFixed(1)}%
             </Text>
@@ -90,7 +92,7 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({
             <Text
               style={[
                 styles.periodButtonText,
-                selectedPeriod === period.key && { color: "#FFFFFF" },
+                selectedPeriod === period.key && { color: colors.text.inverse },
               ]}
             >
               {period.label}
@@ -101,12 +103,12 @@ export const RevenueChart: React.FC<RevenueChartProps> = ({
 
       <View style={styles.legend}>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: "#10B981" }]} />
+          <View style={[styles.legendDot, { backgroundColor: colors.status.success }]} />
           <Text style={styles.legendText}>Période actuelle</Text>
         </View>
         {showComparison && comparisonData && (
           <View style={styles.legendItem}>
-            <View style={[styles.legendDot, { backgroundColor: Theme.colors.text.muted }]} />
+            <View style={[styles.legendDot, { backgroundColor: colors.text.muted }]} />
             <Text style={styles.legendText}>Période précédente</Text>
           </View>
         )}

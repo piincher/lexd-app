@@ -29,18 +29,18 @@ const formatAmount = (amount: number | undefined | null): string => {
   const num = Number(amount) || 0;
   return new Intl.NumberFormat('fr-FR').format(Math.round(num));
 };
-const PAYMENT_METHOD_CONFIG: Record<string, { icon: React.ComponentProps<typeof Ionicons>['name']; color: string; label: string }> = {
-  orange_money: { icon: 'phone-portrait-outline', color: '#FF6B00', label: 'Orange Money' },
-  wave: { icon: 'water-outline', color: '#1DC3E1', label: 'Wave' },
-  cash: { icon: 'cash-outline', color: '#10B981', label: 'Especes' },
-  card: { icon: 'card-outline', color: '#6366F1', label: 'Carte' },
-};
 export const PaymentOverview: React.FC<PaymentOverviewProps> = ({
   paymentMetrics,
   paymentSummary,
   isLoading,
 }) => {
   const { colors } = useAppTheme();
+  const PAYMENT_METHOD_CONFIG: Record<string, { icon: React.ComponentProps<typeof Ionicons>['name']; color: string; label: string }> = {
+    orange_money: { icon: 'phone-portrait-outline', color: colors.status.warning, label: 'Orange Money' },
+    wave: { icon: 'water-outline', color: colors.status.info, label: 'Wave' },
+    cash: { icon: 'cash-outline', color: colors.status.success, label: 'Especes' },
+    card: { icon: 'card-outline', color: colors.status.info, label: 'Carte' },
+  };
   const styles = createPaymentOverviewStyles(colors);
   const { collectionRate, totalCollected, totalOutstanding, completedTransactions, totalTransactions } = paymentSummary;
   const methods = paymentMetrics?.paymentMethods || [];

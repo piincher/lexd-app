@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -22,15 +22,6 @@ interface PaymentHistoryCardProps {
   onPress?: () => void;
   onViewReceipt?: () => void;
 }
-
-const STATUS_COLORS: Record<PaymentStatus, string> = {
-  PENDING: '#F59E0B',
-  PROCESSING: '#3B82F6',
-  COMPLETED: '#10B981',
-  FAILED: '#EF4444',
-  CANCELLED: '#6B7280',
-  REFUNDED: '#8B5CF6',
-};
 
 const STATUS_LABELS: Record<PaymentStatus, string> = {
   PENDING: 'Pending',
@@ -56,7 +47,20 @@ const PROVIDER_LABELS: Record<string, string> = {
 };
 
 const StatusBadge: React.FC<{ status: PaymentStatus }> = ({ status }) => {
-  const color = STATUS_COLORS[status];
+  const { colors } = useAppTheme();
+
+  const color = useMemo(() => {
+    const map: Record<PaymentStatus, string> = {
+      PENDING: colors.status.warning,
+      PROCESSING: colors.status.info,
+      COMPLETED: colors.status.success,
+      FAILED: colors.status.error,
+      CANCELLED: colors.text.disabled,
+      REFUNDED: colors.status.info,
+    };
+    return map[status];
+  }, [colors, status]);
+
   const label = STATUS_LABELS[status];
 
   return (
@@ -78,7 +82,7 @@ export const PaymentHistoryCard: React.FC<PaymentHistoryCardProps> = ({
 
   return (
     <TouchableOpacity
-      style={[styles.paymentCard, { backgroundColor: colors.background.card, shadowColor: '#000' }]}
+      style={[styles.paymentCard, { backgroundColor: colors.background.card }]}
       onPress={onPress}
       activeOpacity={0.7}
     >

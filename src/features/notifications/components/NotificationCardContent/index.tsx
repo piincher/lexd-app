@@ -8,7 +8,7 @@ import { View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { formatRelativeTime } from '../../utils/timeUtils';
 import type { InAppNotification } from '../../types';
 import {
@@ -28,14 +28,15 @@ export const NotificationCardContent: React.FC<NotificationCardContentProps> = (
   notification,
   onPress,
 }) => {
+  const { colors } = useAppTheme();
   const typeConfig = NOTIFICATION_TYPE_CONFIG[notification.type] || NOTIFICATION_TYPE_CONFIG.GENERAL;
   const catConfig = NOTIFICATION_CATEGORY_CONFIG[notification.category] || NOTIFICATION_CATEGORY_CONFIG.INFO;
 
   const safeIcon = typeConfig?.icon || 'bell';
   const safeLabel = typeConfig?.label || 'Notification';
   const safeDescription = typeConfig?.description || 'Nouvelle notification';
-  const safeCatColor = catConfig?.color || '#3B82F6';
-  const safeCatBgColor = catConfig?.backgroundColor || 'rgba(59, 130, 246, 0.1)';
+  const safeCatColor = catConfig?.color || colors.status.info;
+  const safeCatBgColor = catConfig?.backgroundColor || colors.status.info + '1A';
   const relativeTime = formatRelativeTime(notification.createdAt);
   const isUnread = !notification.isRead;
 
@@ -81,7 +82,7 @@ export const NotificationCardContent: React.FC<NotificationCardContentProps> = (
             <Text style={styles.time}>{relativeTime}</Text>
           </View>
         </View>
-        <MaterialCommunityIcons name="chevron-right" size={18} color={Theme.neutral[300]} />
+        <MaterialCommunityIcons name="chevron-right" size={18} color={colors.border} />
       </View>
     </Pressable>
   );

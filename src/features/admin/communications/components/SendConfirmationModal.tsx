@@ -209,6 +209,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
   },
 });

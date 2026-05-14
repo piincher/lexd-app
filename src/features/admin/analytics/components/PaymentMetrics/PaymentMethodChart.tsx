@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import Svg, { Circle, Text as SvgText } from 'react-native-svg';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { PaymentMethodMetric } from '../../types';
 
 interface PaymentMethodChartProps {
@@ -16,6 +17,7 @@ const COLORS: Record<string, string> = {
 };
 
 export const PaymentMethodChart: React.FC<PaymentMethodChartProps> = ({ methods, size = 140 }) => {
+  const { colors } = useAppTheme();
   const radius = size / 2 - 20;
   const center = size / 2;
   const circumference = 2 * Math.PI * radius;
@@ -39,7 +41,7 @@ export const PaymentMethodChart: React.FC<PaymentMethodChartProps> = ({ methods,
               cy={center}
               r={radius}
               fill="none"
-              stroke={COLORS[method.method] || '#6B7280'}
+              stroke={COLORS[method.method] || colors.text.muted}
               strokeWidth={20}
               strokeDasharray={strokeDasharray}
               transform={`rotate(${rotation - 90} ${center} ${center})`}
@@ -51,7 +53,7 @@ export const PaymentMethodChart: React.FC<PaymentMethodChartProps> = ({ methods,
           y={center - 5}
           fontSize={14}
           fontWeight="bold"
-          fill="#1F2937"
+          fill={colors.text.primary}
           textAnchor="middle"
         >
           {methods.length}
@@ -60,7 +62,7 @@ export const PaymentMethodChart: React.FC<PaymentMethodChartProps> = ({ methods,
           x={center}
           y={center + 10}
           fontSize={9}
-          fill="#6B7280"
+          fill={colors.text.muted}
           textAnchor="middle"
         >
           Méthodes

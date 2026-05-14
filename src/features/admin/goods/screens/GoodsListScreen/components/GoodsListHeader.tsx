@@ -8,9 +8,10 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
+import { Theme } from '@src/constants/Theme';
 
 interface GoodsListHeaderProps {
   total: number;
@@ -30,7 +31,7 @@ interface StatCardProps {
 const StatCard: React.FC<StatCardProps> = ({ value, label, icon, gradient }) => (
   <View style={styles.statCard}>
     <LinearGradient colors={gradient} style={styles.iconContainer}>
-      <Ionicons name={icon as any} size={20} color="#FFF" />
+      <Ionicons name={icon as any} size={20} color={Theme.colors.text.inverse} />
     </LinearGradient>
     <View>
       <Text style={styles.statValue}>{value}</Text>
@@ -46,6 +47,7 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
   isSelectionMode,
   onToggleSelectionMode,
 }) => {
+  const { colors } = useAppTheme();
   const navigation = useNavigation();
   return (
     <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: Theme.Theme.colors.background.card,
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.md,
     ...Theme.shadows.sm,
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: Theme.Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.sm,

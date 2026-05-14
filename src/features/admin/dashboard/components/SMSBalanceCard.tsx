@@ -18,33 +18,33 @@ interface SMSBalanceCardProps {
   };
 }
 
-const STATUS_META: Record<
+const STATUS_META = (colors: any): Record<
   SMSBalanceCardProps["balance"]["status"],
   { label: string; color: string; icon: string; gradient: readonly [string, string, string] }
-> = {
+> => ({
   success: {
     label: "Bon niveau",
-    color: "#10B981",
+    color: colors.status.success,
     icon: "check-circle",
     gradient: ["#10B981", "#059669", "#047857"] as const,
   },
   warning: {
     label: "Bientôt bas",
-    color: "#F59E0B",
+    color: colors.status.warning,
     icon: "alert",
     gradient: ["#F59E0B", "#D97706", "#B45309"] as const,
   },
   danger: {
     label: "Critique",
-    color: "#EF4444",
+    color: colors.status.error,
     icon: "alert-octagon",
     gradient: ["#EF4444", "#DC2626", "#B91C1C"] as const,
   },
-};
+});
 
 export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
   const { colors, isDark } = useAppTheme();
-  const meta = STATUS_META[balance.status] || STATUS_META.success;
+  const meta = STATUS_META(colors)[balance.status] || STATUS_META(colors).success;
   const showExpiry = balance.hasExpired || balance.hasExpiringSoon || (balance.daysRemaining !== undefined && balance.daysRemaining <= 30);
   const progressWidth = balance.hasExpired ? 5 : balance.hasExpiringSoon ? 25 : Math.min(100, Math.max(10, balance.totalUnits / 3));
 
@@ -93,7 +93,7 @@ export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
         title: {
           fontSize: 14,
           fontFamily: Fonts.bold,
-          color: "#FFF",
+          color: colors.text.inverse,
           letterSpacing: -0.2,
         },
         subtitle: {
@@ -114,7 +114,7 @@ export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
           borderColor: "rgba(255,255,255,0.25)",
         },
         statusText: {
-          color: "#FFF",
+          color: colors.text.inverse,
           fontSize: 11,
           fontFamily: Fonts.bold,
         },
@@ -127,7 +127,7 @@ export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
         value: {
           fontSize: 32,
           fontFamily: Fonts.bold,
-          color: "#FFF",
+          color: colors.text.inverse,
           letterSpacing: -1,
         },
         valueLabel: {
@@ -159,7 +159,7 @@ export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
         },
         footerStrong: {
           fontFamily: Fonts.bold,
-          color: "#FFF",
+          color: colors.text.inverse,
         },
       }),
     [colors, isDark]
@@ -178,7 +178,7 @@ export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <View style={styles.iconWrap}>
-              <MaterialCommunityIcons name="message-badge" size={20} color="#FFF" />
+              <MaterialCommunityIcons name="message-badge" size={20} color={colors.text.inverse} />
             </View>
             <View>
               <Text style={styles.title}>Crédits SMS</Text>
@@ -189,7 +189,7 @@ export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
             <MaterialCommunityIcons
               name={meta.icon as any}
               size={12}
-              color="#FFF"
+              color={colors.text.inverse}
             />
             <Text style={styles.statusText}>{meta.label}</Text>
           </View>

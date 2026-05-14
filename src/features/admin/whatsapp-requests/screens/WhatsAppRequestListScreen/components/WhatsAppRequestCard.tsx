@@ -6,6 +6,7 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { WhatsAppRequest } from '../../../api/whatsappRequestApi';
 import { WhatsAppRequestCardHeader } from '../../../components/WhatsAppRequestCardHeader';
 import { WhatsAppRequestCardCustomer } from '../../../components/WhatsAppRequestCardCustomer';
@@ -36,9 +37,10 @@ export const WhatsAppRequestCard: React.FC<WhatsAppRequestCardProps> = ({
   onCall,
   onWhatsApp,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <TouchableOpacity style={styles.card} onPress={() => onProcess(request)} activeOpacity={0.8}>
-      <LinearGradient colors={['#FFFFFF', '#FAFAFA']} style={styles.cardGradient}>
+      <LinearGradient colors={[colors.background.card, colors.background.paper]} style={styles.cardGradient}>
         <WhatsAppRequestCardHeader
           requestId={request.requestId}
           status={request.status}

@@ -44,7 +44,7 @@ const CampaignListScreen = ({
           style={styles.addBtn}
           onPress={() => navigation.navigate("CreateCampaign")}
         >
-          <Ionicons name="add" size={22} color="#fff" />
+          <Ionicons name="add" size={22} color={colors.text.inverse} />
         </TouchableOpacity>
       </View>
 

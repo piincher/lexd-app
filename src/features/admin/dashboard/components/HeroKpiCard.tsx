@@ -3,7 +3,7 @@ import { View, Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { lightTheme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createKPICardsStyles } from "./KPICards.styles";
 
 interface HeroKpiCardProps {
@@ -21,7 +21,8 @@ export const HeroKpiCard: React.FC<HeroKpiCardProps> = ({
   trendLabel,
   onPress,
 }) => {
-  const styles = createKPICardsStyles(lightTheme.colors, false);
+  const { colors } = useAppTheme();
+  const styles = createKPICardsStyles(colors, false);
 
   return (
     <Pressable
@@ -40,10 +41,10 @@ export const HeroKpiCard: React.FC<HeroKpiCardProps> = ({
         <View style={styles.heroDecor} />
         <View style={styles.heroTop}>
           <View style={styles.heroIconWrap}>
-            <MaterialCommunityIcons name={icon} size={22} color="#FFF" />
+            <MaterialCommunityIcons name={icon} size={22} color={colors.text.inverse} />
           </View>
           <View style={styles.heroTrend}>
-            <MaterialCommunityIcons name="arrow-up" size={11} color="#FFF" />
+            <MaterialCommunityIcons name="arrow-up" size={11} color={colors.text.inverse} />
             <Text style={styles.heroTrendText}>{trendLabel}</Text>
           </View>
         </View>

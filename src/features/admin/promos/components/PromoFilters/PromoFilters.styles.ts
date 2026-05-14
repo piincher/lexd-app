@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
     color: Theme.colors.text.secondary,
   },
   filterChipTextActive: {
-    color: "#FFFFFF",
+    color: "Theme.colors.text.inverse",
     fontFamily: Fonts.bold,
   },
 });

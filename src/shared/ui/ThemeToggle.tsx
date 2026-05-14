@@ -13,7 +13,7 @@ import { getCurrentIcon } from './ThemeToggle.utils';
 import { ThemeToggleIcon } from './ThemeToggleIcon';
 import { ThemeToggleButton } from './ThemeToggleButton';
 import { ThemeToggleModal } from './ThemeToggleModal';
-import { styles } from './ThemeToggle.styles';
+import { createStyles } from './ThemeToggle.styles';
 
 export { type ThemeToggleProps } from './ThemeToggle.types';
 
@@ -23,6 +23,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   style,
 }) => {
   const { theme, setTheme, isDark, colors } = useAppTheme();
+  const styles = createStyles(colors);
   const [modalVisible, setModalVisible] = useState(false);
   const [scaleAnim] = useState(() => new Animated.Value(1));
 

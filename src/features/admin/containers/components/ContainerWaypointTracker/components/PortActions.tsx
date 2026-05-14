@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     gap: Theme.spacing.xs,
   },
   portActionText: {
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     fontSize: 12,
     fontWeight: '500',
   },

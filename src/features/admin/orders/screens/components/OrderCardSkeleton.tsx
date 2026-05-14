@@ -15,15 +15,15 @@ import Animated, {
   interpolate,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
-
-const SKELETON_BG = '#E8EFF5';
 
 const ShimmerBlock: React.FC<{
   width: number | `${number}%`;
   height: number;
   borderRadius?: number;
 }> = ({ width, height, borderRadius = 4 }) => {
+  const { colors, isDark } = useAppTheme();
   const shimmer = useSharedValue(0);
 
   React.useEffect(() => {
@@ -39,10 +39,10 @@ const ShimmerBlock: React.FC<{
   }));
 
   return (
-    <View style={[styles.block, { width, height, borderRadius }]}>
+    <View style={[styles.block, { width, height, borderRadius, backgroundColor: isDark ? colors.neutral[800] : colors.neutral[200] }]}>
       <Animated.View style={[StyleSheet.absoluteFill, shimmerStyle]}>
         <LinearGradient
-          colors={['transparent', 'rgba(255,255,255,0.5)', 'transparent']}
+          colors={['transparent', isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.5)', 'transparent']}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={StyleSheet.absoluteFill}
@@ -176,7 +176,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   block: {
-    backgroundColor: SKELETON_BG,
     overflow: 'hidden',
   },
 });

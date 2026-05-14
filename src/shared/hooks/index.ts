@@ -19,7 +19,6 @@ export {
   type UsePushNotificationsOptions,
 } from './usePushNotifications';
 
-export * from './deepLinks';
 export * from './useOfflineMutation';
 export * from './useAdminContainers';
 export * from './useAdminGoods';

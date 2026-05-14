@@ -55,7 +55,7 @@ export const useAuth = create<authType>()(
 					const expiresAt = payload.expiresIn
 						? Date.now() + payload.expiresIn * 1000
 						: state.expiresAt;
-					console.log('[Auth Store] setAuth called. token snippet:', accessToken ? accessToken.slice(0, 20) : 'none', 'refreshToken:', refreshToken ? 'yes' : 'no', 'expiresIn:', payload.expiresIn);
+	
 					return {
 						...state,
 						user: { ...state.user, ...payload.user },

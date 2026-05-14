@@ -2,14 +2,16 @@ import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { RoadSegment } from '../../../types';
+import { Theme } from '@src/constants/Theme';
 
 interface RoadSegmentsSectionProps {
   roadSegments: RoadSegment[];
 }
 
 export const RoadSegmentsSection: React.FC<RoadSegmentsSectionProps> = ({ roadSegments }) => {
+  const { colors } = useAppTheme();
   return (
     <ScrollView style={styles.segmentsContainer}>
       <Animated.View entering={FadeInUp.delay(100)} style={styles.segmentsHeader}>
@@ -29,7 +31,7 @@ export const RoadSegmentsSection: React.FC<RoadSegmentsSectionProps> = ({ roadSe
         >
           <View style={styles.segmentHeader}>
             <View style={[styles.segmentIconContainer, { backgroundColor: Theme.status.warning }]}>
-              <Ionicons name="car" size={20} color={Theme.neutral.white} />
+              <Ionicons name="car" size={20} color={colors.text.inverse} />
             </View>
             <View style={styles.segmentInfo}>
               <Text style={styles.segmentTitle}>

@@ -22,7 +22,7 @@ const ShippingRow: React.FC<ShippingRowProps> = ({
   icon,
   label,
   value,
-  iconColor = '#6B7280',
+  iconColor,
   styles,
 }) => (
   <View style={styles.row}>
@@ -87,13 +87,13 @@ export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ orde
       {/* Route visualization */}
       <View style={styles.routeCard}>
         <View style={styles.routePoint}>
-          <View style={[styles.routeDot, { backgroundColor: '#4CAF50' }]} />
+          <View style={[styles.routeDot, { backgroundColor: colors.status.success }]} />
           <Text style={styles.routeLabel}>Origine</Text>
           <Text style={styles.routeValue}>Chine</Text>
         </View>
         <View style={styles.routeLine} />
         <View style={styles.routePoint}>
-          <View style={[styles.routeDot, { backgroundColor: '#F44336' }]} />
+          <View style={[styles.routeDot, { backgroundColor: colors.status.error }]} />
           <Text style={styles.routeLabel}>Destination</Text>
           <Text style={styles.routeValue}>
             {order?.destinationCountry || 'Bamako, Mali'}
@@ -103,12 +103,12 @@ export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ orde
 
       <Divider style={styles.divider} />
 
-      <ShippingRow styles={styles} icon="identifier" label="N° Conteneur" value={order?.contenairNumber} iconColor="#1976D2" />
-      <ShippingRow styles={styles} icon="handshake" label="Transporteur" value={order?.partenaire || 'Non spécifié'} iconColor="#7B1FA2" />
-      <ShippingRow styles={styles} icon="map-marker-radius" label="Position actuelle" value={position} iconColor="#E65100" />
-      <ShippingRow styles={styles} icon="calendar-arrow-right" label="Date de départ" value={departureDate} iconColor="#9C27B0" />
-      <ShippingRow styles={styles} icon="calendar-check" label="Date de réception" value={receiptDate} iconColor="#4CAF50" />
-      <ShippingRow styles={styles} icon="package-variant" label="Type de colis" value={order?.category?.name || order?.typeOfPackage || 'Général'} iconColor="#00796B" />
+      <ShippingRow styles={styles} icon="identifier" label="N° Conteneur" value={order?.contenairNumber} iconColor={colors.status.info} />
+      <ShippingRow styles={styles} icon="handshake" label="Transporteur" value={order?.partenaire || 'Non spécifié'} iconColor={colors.primary.main} />
+      <ShippingRow styles={styles} icon="map-marker-radius" label="Position actuelle" value={position} iconColor={colors.status.warning} />
+      <ShippingRow styles={styles} icon="calendar-arrow-right" label="Date de départ" value={departureDate} iconColor={colors.status.warning} />
+      <ShippingRow styles={styles} icon="calendar-check" label="Date de réception" value={receiptDate} iconColor={colors.status.success} />
+      <ShippingRow styles={styles} icon="package-variant" label="Type de colis" value={order?.category?.name || order?.typeOfPackage || 'Général'} iconColor={colors.status.success} />
     </Surface>
   );
 };

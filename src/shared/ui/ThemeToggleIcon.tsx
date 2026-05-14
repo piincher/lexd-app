@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated, TouchableOpacity } from 'react-native';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { styles } from './ThemeToggle.styles';
+import { createStyles } from './ThemeToggle.styles';
 
 interface ThemeToggleIconProps {
   iconName: string;
@@ -19,7 +19,9 @@ export const ThemeToggleIcon: React.FC<ThemeToggleIconProps> = ({
   onPress,
   colors,
   style,
-}) => (
+}) => {
+  const styles = createStyles(colors);
+  return (
   <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
     <TouchableOpacity
       onPress={onPress}
@@ -29,4 +31,4 @@ export const ThemeToggleIcon: React.FC<ThemeToggleIconProps> = ({
       <FontAwesome6 name={iconName as any} size={size} color={colors.primary.main} />
     </TouchableOpacity>
   </Animated.View>
-);
+);}

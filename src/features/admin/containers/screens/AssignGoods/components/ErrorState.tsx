@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface ErrorStateProps {
@@ -11,11 +12,12 @@ interface ErrorStateProps {
 }
 
 export const ErrorState: React.FC<ErrorStateProps> = ({ onBack, onRetry }) => {
+  const { colors } = useAppTheme();
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient colors={Theme.gradients.primary} style={styles.header}>
         <TouchableOpacity onPress={onBack} style={styles.backButton}>
-          <Ionicons name="arrow-back" size={24} color="#FFF" />
+          <Ionicons name="arrow-back" size={24} color={Theme.colors.text.inverse} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Erreur</Text>
       </LinearGradient>
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
     marginLeft: Theme.spacing.md,
   },
   errorContainer: {
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     marginTop: Theme.spacing.xl,
   },
   retryButtonText: {
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
     fontSize: 16,
     fontWeight: '600',
   },

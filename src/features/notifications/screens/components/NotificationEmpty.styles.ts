@@ -60,6 +60,6 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.semiBold,
     fontWeight: '600',
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
   },
 });

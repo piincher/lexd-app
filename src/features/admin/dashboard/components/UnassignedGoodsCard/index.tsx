@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { ClientInfo } from "@src/shared/types/goods";
 import { UnassignedGoodsItem } from "../../hooks/useUnassignedGoods";
-import { styles } from "./UnassignedGoodsCard.styles";
+import { createStyles } from "./UnassignedGoodsCard.styles";
 
 const formatDate = (dateStr: string) => {
   return new Date(dateStr).toLocaleDateString("fr-FR", {
@@ -13,10 +13,10 @@ const formatDate = (dateStr: string) => {
   });
 };
 
-const getBadgeColor = (days: number) => {
-  if (days >= 8) return "#EF4444";
-  if (days >= 4) return "#F59E0B";
-  return "#10B981";
+const getBadgeColor = (days: number, colors: any) => {
+  if (days >= 8) return colors.status.error;
+  if (days >= 4) return colors.status.warning;
+  return colors.status.success;
 };
 
 const getClientInfo = (clientId: string | ClientInfo | undefined) => {
@@ -33,14 +33,16 @@ interface UnassignedGoodsCardProps {
 }
 
 export const UnassignedGoodsCard: React.FC<UnassignedGoodsCardProps> = ({ item, onPress }) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   const { name, phone } = getClientInfo(item.clientId);
-  const badgeColor = getBadgeColor(item.daysWaiting);
+  const badgeColor = getBadgeColor(item.daysWaiting, colors);
 
   return (
     <TouchableOpacity style={styles.card} activeOpacity={0.75} onPress={onPress}>
       <View style={styles.row}>
         <View style={styles.iconContainer}>
-          <Ionicons name="cube" size={22} color="#1a5f2a" />
+          <Ionicons name="cube" size={22} color={colors.primary.dark} />
         </View>
         <View style={styles.info}>
           <Text style={styles.goodsId}>{item.goodsId}</Text>
@@ -59,13 +61,13 @@ export const UnassignedGoodsCard: React.FC<UnassignedGoodsCardProps> = ({ item, 
           <Ionicons
             name="chevron-forward"
             size={18}
-            color={Theme.colors.text.muted}
+            color={colors.text.muted}
             style={styles.chevron}
           />
         </View>
       </View>
       <View style={styles.footer}>
-        <Ionicons name="time-outline" size={13} color={Theme.colors.text.muted} />
+        <Ionicons name="time-outline" size={13} color={colors.text.muted} />
         <Text style={styles.date}>
           {"  "}Reçu: {formatDate(item.receivedAt)}
         </Text>

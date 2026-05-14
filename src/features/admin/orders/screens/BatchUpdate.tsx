@@ -4,10 +4,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { Calendar } from "@src/components/Calendar/Calendar";
 import { LoadingSpinner } from "@src/components/LoadingSpinner";
 import type { RootStackScreenProps } from "@src/navigations/type";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useBatchUpdate } from "../hooks/useBatchUpdate";
 import { BatchUpdateContent } from "../components/BatchUpdateContent";
 
 const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
+   const { colors } = useAppTheme();
    const {
       open,
       date,
@@ -40,7 +42,7 @@ const BatchUpdate = ({ navigation }: RootStackScreenProps<"BatchUpdate">) => {
             showBack: true,
             onBackPress: () => navigation.goBack(),
             rightAction: (
-               <AntDesign name="calendar" size={24} color="black" onPress={() => setOpen(true)} />
+               <AntDesign name="calendar" size={24} color={colors.text.primary} onPress={() => setOpen(true)} />
             ),
          }}
       >

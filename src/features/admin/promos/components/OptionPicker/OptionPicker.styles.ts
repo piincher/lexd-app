@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     color: Theme.colors.text.secondary,
   },
   optionChipTextSelected: {
-    color: "#FFFFFF",
+    color: "Theme.colors.text.inverse",
     fontFamily: Fonts.bold,
   },
 });

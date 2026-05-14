@@ -19,8 +19,6 @@ interface TopCustomersProps {
   isLoading?: boolean;
 }
 
-const RANK_COLORS = [Theme.colors.status.warning, Theme.colors.text.muted, '#CD7F32', Theme.colors.text.secondary, Theme.colors.text.secondary];
-
 const formatAmount = (amount: number | undefined | null): string => {
   const num = Number(amount) || 0;
   if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M`;
@@ -28,9 +26,9 @@ const formatAmount = (amount: number | undefined | null): string => {
   return num.toFixed(0);
 };
 
-const CustomerRow: React.FC<{ customer: TopCustomer; rank: number }> = ({ customer, rank }) => {
-  const { colors } = useAppTheme();
-  const rankColor = RANK_COLORS[rank] || Theme.colors.text.secondary;
+const CustomerRow: React.FC<{ customer: TopCustomer; rank: number; colors: any }> = ({ customer, rank, colors }) => {
+  const RANK_COLORS = [colors.status.warning, colors.text.muted, colors.accent.gold, colors.text.secondary, colors.text.secondary];
+  const rankColor = RANK_COLORS[rank] || colors.text.secondary;
   const isTopThree = rank < 3;
 
   const styles = useMemo(
@@ -181,7 +179,7 @@ export const TopCustomers: React.FC<TopCustomersProps> = ({ customers, isLoading
           <Text style={styles.subtitle}>Par revenu</Text>
         </View>
         <View style={styles.iconContainer}>
-          <Ionicons name="trophy-outline" size={18} color="#F59E0B" />
+          <Ionicons name="trophy-outline" size={18} color={colors.status.warning} />
         </View>
       </View>
 
@@ -200,7 +198,7 @@ export const TopCustomers: React.FC<TopCustomersProps> = ({ customers, isLoading
         </View>
       ) : customers.length > 0 ? (
         customers.map((customer, index) => (
-          <CustomerRow key={customer.userId} customer={customer} rank={index} />
+          <CustomerRow key={customer.userId} customer={customer} rank={index} colors={colors} />
         ))
       ) : (
         <View style={styles.emptyContainer}>

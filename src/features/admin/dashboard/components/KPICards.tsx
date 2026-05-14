@@ -30,7 +30,7 @@ export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
     Math.max(0, stats.smsBalance > 0 ? Math.min(100, stats.smsBalance / 10) : 0)
   );
   const smsColor =
-    smsPct >= 50 ? "#22C55E" : smsPct >= 20 ? "#F59E0B" : "#EF4444";
+    smsPct >= 50 ? colors.status.success : smsPct >= 20 ? colors.status.warning : colors.status.error;
 
   return (
     <View style={styles.container}>
@@ -47,10 +47,10 @@ export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
           value={formatNumber(stats.pendingContainers)}
           label="Conteneurs actifs"
           icon="ferry"
-          iconColor="#F97316"
+          iconColor={colors.status.warning}
           progressWidth={Math.min(100, stats.pendingContainers * 10)}
-          progressColor="#F97316"
-          iconBgColor={isDark ? "rgba(249,115,22,0.15)" : "#FFF7ED"}
+          progressColor={colors.status.warning}
+          iconBgColor={isDark ? "rgba(245,158,11,0.15)" : colors.feedback.warningBg}
           onPress={() => navigation.navigate("ContainerList")}
         />
         <SmallKpiCard

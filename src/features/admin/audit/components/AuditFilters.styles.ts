@@ -46,6 +46,6 @@ export const createAuditFiltersStyles = (colors: AppColors) =>
       fontWeight: '700',
     },
     chipTextActive: {
-      color: '#fff',
+      color: 'Theme.colors.text.inverse',
     },
   });

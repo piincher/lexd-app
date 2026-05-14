@@ -30,8 +30,8 @@ export const AgingChartHeader: React.FC<Props> = ({ hasCritical }) => {
               ? "rgba(239,68,68,0.18)"
               : "rgba(14,165,233,0.18)"
             : hasCritical
-            ? "#FEE2E2"
-            : "#DBEAFE",
+            ? colors.feedback.errorBg
+            : colors.feedback.infoBg,
           justifyContent: "center",
           alignItems: "center",
         },
@@ -60,7 +60,7 @@ export const AgingChartHeader: React.FC<Props> = ({ hasCritical }) => {
         <MaterialCommunityIcons
           name={hasCritical ? "clock-alert" : "chart-timeline-variant"}
           size={18}
-          color={hasCritical ? "#EF4444" : "#0EA5E9"}
+          color={hasCritical ? colors.status.error : colors.status.info}
         />
       </View>
       <View style={styles.titleWrap}>

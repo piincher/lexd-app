@@ -57,14 +57,14 @@ export const ShippingModeCard: React.FC<ShippingModeCardProps> = ({ shippingMode
           marginBottom: 18,
         },
         splitAir: {
-          backgroundColor: '#3B82F6',
+          backgroundColor: colors.status.info,
           borderRadius: 3,
         },
         splitGap: {
           width: 3,
         },
         splitSea: {
-          backgroundColor: '#10B981',
+          backgroundColor: colors.status.success,
           borderRadius: 3,
         },
         modesRow: {
@@ -132,26 +132,26 @@ export const ShippingModeCard: React.FC<ShippingModeCardProps> = ({ shippingMode
       {/* Mode details */}
       <View style={styles.modesRow}>
         <View style={styles.modeCard}>
-          <View style={[styles.modeIcon, { backgroundColor: '#EFF6FF' }]}>
-            <Ionicons name="airplane" size={18} color="#3B82F6" />
+          <View style={[styles.modeIcon, { backgroundColor: colors.feedback.infoBg }]}>
+            <Ionicons name="airplane" size={18} color={colors.status.info} />
           </View>
           <Text style={styles.modeValue}>{shippingModeCounts.air}</Text>
           <Text style={styles.modeLabel}>Aerien</Text>
-          <View style={[styles.percentBadge, { backgroundColor: '#EFF6FF' }]}>
-            <Text style={[styles.percentText, { color: '#3B82F6' }]}>{airPercent.toFixed(0)}%</Text>
+          <View style={[styles.percentBadge, { backgroundColor: colors.feedback.infoBg }]}>
+            <Text style={[styles.percentText, { color: colors.status.info }]}>{airPercent.toFixed(0)}%</Text>
           </View>
         </View>
 
         <View style={styles.divider} />
 
         <View style={styles.modeCard}>
-          <View style={[styles.modeIcon, { backgroundColor: '#F0FDF4' }]}>
-            <Ionicons name="boat" size={18} color="#10B981" />
+          <View style={[styles.modeIcon, { backgroundColor: colors.feedback.successBg }]}>
+            <Ionicons name="boat" size={18} color={colors.status.success} />
           </View>
           <Text style={styles.modeValue}>{shippingModeCounts.sea}</Text>
           <Text style={styles.modeLabel}>Maritime</Text>
-          <View style={[styles.percentBadge, { backgroundColor: '#F0FDF4' }]}>
-            <Text style={[styles.percentText, { color: '#10B981' }]}>{seaPercent.toFixed(0)}%</Text>
+          <View style={[styles.percentBadge, { backgroundColor: colors.feedback.successBg }]}>
+            <Text style={[styles.percentText, { color: colors.status.success }]}>{seaPercent.toFixed(0)}%</Text>
           </View>
         </View>
       </View>

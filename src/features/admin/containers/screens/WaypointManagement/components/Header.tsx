@@ -27,17 +27,17 @@ export const Header: React.FC<HeaderProps> = ({
     >
       <View style={styles.headerTop}>
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <Ionicons name="arrow-back" size={24} color="#FFF" />
+          <Ionicons name="arrow-back" size={24} color={Theme.colors.text.inverse} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Gestion Waypoints</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <TouchableOpacity style={styles.saveIconButton} onPress={onSave}>
-            <Ionicons name="save" size={22} color="#FFF" />
+            <Ionicons name="save" size={22} color={Theme.colors.text.inverse} />
           </TouchableOpacity>
           <NotificationBell
             onPress={() => navigation.navigate('Notifications' as never)}
             size={22}
-            color="#FFF"
+            color={Theme.colors.text.inverse}
           />
         </View>
       </View>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
   saveIconButton: {
     padding: 8,
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: Theme.colors.text.inverse,
     marginTop: 4,
     textAlign: 'center',
   },

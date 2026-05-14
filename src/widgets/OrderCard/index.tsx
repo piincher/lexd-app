@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Pressable, View, Text } from 'react-native';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -18,23 +18,7 @@ interface OrderCardProps {
 
 type StepIndex = 0 | 1 | 2 | 3 | 4;
 
-const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  Active: { label: 'En cours', color: '#1B365D', bg: '#E8EEF4' },
-  'In Transit': { label: 'En transit', color: '#2D8FDB', bg: '#E8F4FD' },
-  Delivered: { label: 'Livré', color: '#1AAE7E', bg: '#E6F7F1' },
-  Inactive: { label: 'En attente', color: '#8E99A4', bg: '#F0F2F4' },
-  Arrived: { label: 'Arrivé', color: '#F59E0B', bg: '#FEF3C7' },
-};
-
 const STEP_PROGRESS: Record<StepIndex, number> = { 0: 5, 1: 25, 2: 50, 3: 75, 4: 100 };
-
-const STEP_STATUS_CONFIG: Record<StepIndex, typeof STATUS_CONFIG['Active']> = {
-  0: STATUS_CONFIG.Inactive,
-  1: STATUS_CONFIG.Active,
-  2: STATUS_CONFIG['In Transit'],
-  3: STATUS_CONFIG.Arrived,
-  4: STATUS_CONFIG.Delivered,
-};
 
 const CURRENT_STATUS_MAP: Record<string, StepIndex> = {
   'Order arrived at warehouse': 1,
@@ -65,8 +49,25 @@ const formatShortDate = (dateStr?: string): string => {
 
 const OrderCardInner: React.FC<OrderCardProps> = ({ order, onPress }) => {
   const { colors } = useAppTheme();
+
+  const statusConfig = useMemo(() => ({
+    Active: { label: 'En cours', color: colors.status.info, bg: colors.feedback.infoBg },
+    'In Transit': { label: 'En transit', color: colors.status.info, bg: colors.feedback.infoBg },
+    Delivered: { label: 'Livré', color: colors.status.success, bg: colors.feedback.successBg },
+    Inactive: { label: 'En attente', color: colors.text.disabled, bg: colors.background.paper },
+    Arrived: { label: 'Arrivé', color: colors.status.warning, bg: colors.feedback.warningBg },
+  }), [colors]);
+
+  const stepStatusConfig: Record<StepIndex, typeof statusConfig['Active']> = {
+    0: statusConfig.Inactive,
+    1: statusConfig.Active,
+    2: statusConfig['In Transit'],
+    3: statusConfig.Arrived,
+    4: statusConfig.Delivered,
+  };
+
   const step = getStep(order.status, order.currentStatus);
-  const statusCfg = STEP_STATUS_CONFIG[step];
+  const statusCfg = stepStatusConfig[step];
   const progress = STEP_PROGRESS[step];
   const isSea = order.shippingMode === 'sea';
 

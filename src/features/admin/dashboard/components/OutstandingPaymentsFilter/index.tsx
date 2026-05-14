@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { styles } from './OutstandingPaymentsFilter.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './OutstandingPaymentsFilter.styles';
 
 interface OutstandingPaymentsFilterProps {
   status?: string;
@@ -17,6 +18,8 @@ export const OutstandingPaymentsFilter: React.FC<OutstandingPaymentsFilterProps>
   status,
   onChange,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   return (
     <View style={styles.filterRow}>
       {FILTERS.map((filter) => {

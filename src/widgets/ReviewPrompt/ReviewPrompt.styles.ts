@@ -66,13 +66,13 @@ export const styles = StyleSheet.create({
    },
    successIcon: {
       fontSize: 32,
-      color: "#22C55E",
+      color: Theme.colors.status.success,
       marginBottom: 8,
    },
    successText: {
       fontFamily: Fonts.meduim,
       fontSize: 16,
-      color: "#22C55E",
+      color: Theme.colors.status.success,
       textAlign: "center",
       marginBottom: 4,
    },
@@ -87,7 +87,7 @@ export const styles = StyleSheet.create({
    thanksText: {
       fontFamily: Fonts.meduim,
       fontSize: 14,
-      color: "#22C55E",
+      color: Theme.colors.status.success,
       textAlign: "center",
       marginTop: 8,
    },

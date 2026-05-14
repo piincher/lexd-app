@@ -37,7 +37,7 @@ export const UserPaymentDetailInfoCard: React.FC<UserPaymentDetailInfoCardProps>
         icon="cash"
         label="Montant"
         value={`${payment.amountFCFA.toLocaleString('fr-FR')} FCFA`}
-        color="#10B981"
+        color={colors.status.success}
       />
       <UserPaymentDetailInfoRow icon={methodConfig.icon} label="Méthode" value={methodConfig.label} />
       <UserPaymentDetailInfoRow icon="calendar" label="Date" value={formattedDate} />

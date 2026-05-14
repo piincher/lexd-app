@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.primary[600],
   },
   saveButtonLabel: {
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     fontWeight: '700',
   },
 });

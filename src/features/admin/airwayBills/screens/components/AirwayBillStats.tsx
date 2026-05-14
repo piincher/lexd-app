@@ -41,28 +41,29 @@ export const AirwayBillStats: React.FC<AirwayBillStatsProps> = ({
   totalPackages,
   totalWeight,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.container}>
       <StatItem
         icon="file-document-multiple-outline"
         label="AWBs"
         value={String(totalAWBs)}
-        color="#22C55E"
-        bgColor="#F0FDF4"
+        color={colors.status.success}
+        bgColor={colors.feedback.successBg}
       />
       <StatItem
         icon="package-variant"
         label="Colis"
         value={String(totalPackages)}
-        color="#3B82F6"
-        bgColor="#EFF6FF"
+        color={colors.status.info}
+        bgColor={colors.feedback.infoBg}
       />
       <StatItem
         icon="weight-kilogram"
         label="Poids"
         value={`${totalWeight.toFixed(0)} kg`}
-        color="#D4AF37"
-        bgColor="#FEF9C3"
+        color={colors.accent.gold}
+        bgColor={colors.feedback.warningBg}
       />
     </View>
   );

@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View } from "react-native";
 import { Card, Text } from "react-native-paper";
 
 import { ExportStats } from "../../types";
-import { styles } from "./ExportStatsCard.styles";
+import { createStyles } from "./ExportStatsCard.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface ExportStatsCardProps {
   stats?: ExportStats;
 }
 
 export const ExportStatsCard: React.FC<ExportStatsCardProps> = ({ stats }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   if (!stats) return null;
 
   return (

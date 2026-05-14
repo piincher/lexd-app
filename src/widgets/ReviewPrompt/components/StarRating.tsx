@@ -25,7 +25,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
                key={star}
                icon={star <= rating ? "star" : "star-outline"}
                size={size}
-               iconColor={star <= rating ? "#FFB800" : colors.text.disabled}
+               iconColor={star <= rating ? colors.accent.gold : colors.text.disabled}
                onPress={() => !disabled && onRatingChange(star)}
                disabled={disabled}
                style={styles.starButton}

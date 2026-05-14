@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
     color: Theme.neutral[600],
   },
   filterTextActive: {
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
   },
 });

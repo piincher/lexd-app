@@ -1,5 +1,6 @@
 import React from "react";
 import Svg, { Path, Text as SvgText, Defs, LinearGradient, Stop } from "react-native-svg";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { RevenueTrendPoint } from "../types";
 import { ChartGridLines } from "./ChartGridLines";
 import { ChartDataPoints } from "./ChartDataPoints";
@@ -21,6 +22,7 @@ const CHART_PADDING = { top: 40, right: 20, bottom: 40, left: 60 };
 export const RevenueChartSvg: React.FC<RevenueChartSvgProps> = ({
   data, comparisonData, showComparison, width, height, tooltipIndex, setTooltipIndex, formatCurrency, formatDate,
 }) => {
+  const { colors } = useAppTheme();
   const chartWidth = width - CHART_PADDING.left - CHART_PADDING.right;
   const chartHeight = height - CHART_PADDING.top - CHART_PADDING.bottom;
   const allValues = showComparison && comparisonData
@@ -44,24 +46,24 @@ export const RevenueChartSvg: React.FC<RevenueChartSvgProps> = ({
     <Svg width={width} height={height}>
       <Defs>
         <LinearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-          <Stop offset="0" stopColor="#10B981" stopOpacity="0.3" />
-          <Stop offset="1" stopColor="#10B981" stopOpacity="0" />
+          <Stop offset="0" stopColor={colors.status.success} stopOpacity="0.3" />
+          <Stop offset="1" stopColor={colors.status.success} stopOpacity="0" />
         </LinearGradient>
       </Defs>
 
       <ChartGridLines yLabels={yLabels} getX={getX} getY={getY} width={width} chartPaddingLeft={CHART_PADDING.left} chartPaddingRight={CHART_PADDING.right} formatCurrency={formatCurrency} />
 
       {showComparison && comparisonData && (
-        <Path d={comparisonPath} fill="none" stroke="#9CA3AF" strokeWidth={2} strokeDasharray="5,5" />
+        <Path d={comparisonPath} fill="none" stroke={colors.text.muted} strokeWidth={2} strokeDasharray="5,5" />
       )}
 
       <Path d={areaPath} fill="url(#areaGradient)" />
-      <Path d={currentPath} fill="none" stroke="#10B981" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+      <Path d={currentPath} fill="none" stroke={colors.status.success} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
 
       <ChartDataPoints data={data} getX={getX} getY={getY} tooltipIndex={tooltipIndex} setTooltipIndex={setTooltipIndex} chartPaddingTop={CHART_PADDING.top} chartHeight={chartHeight} height={height} formatCurrency={formatCurrency} formatDate={formatDate} />
 
       {xLabelIndices.map((index) => (
-        <SvgText key={`xlabel-${index}`} x={getX(index)} y={height - 10} fontSize={10} fill="#6B7280" textAnchor="middle">
+        <SvgText key={`xlabel-${index}`} x={getX(index)} y={height - 10} fontSize={10} fill={colors.text.muted} textAnchor="middle">
           {formatDate(data[index].period)}
         </SvgText>
       ))}

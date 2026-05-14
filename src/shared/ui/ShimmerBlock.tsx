@@ -29,9 +29,9 @@ export const ShimmerBlock: React.FC<ShimmerBlockProps> = ({
   borderRadius = 4,
   style,
 }) => {
-  const { isDark } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const shimmer = useSharedValue(0);
-  const blockBg = isDark ? 'rgba(255,255,255,0.08)' : '#E8EFF5';
+  const blockBg = isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[100];
   const shimmerOpacity = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.5)';
 
   React.useEffect(() => {

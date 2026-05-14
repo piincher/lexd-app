@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { Theme, AppTheme } from '@src/shared/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     gap: 8,
@@ -10,17 +10,17 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 6,
     borderRadius: 16,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: Theme.colors.neutral[100],
   },
   buttonActive: {
-    backgroundColor: '#3B82F6',
+    backgroundColor: colors.primary.main,
   },
   buttonText: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[600],
+    color: Theme.colors.text.secondary,
   },
   buttonTextActive: {
-    color: '#FFFFFF',
+    color: colors.text.inverse,
   },
 });

@@ -38,7 +38,7 @@ const AnnouncementListScreen: React.FC<RootStackScreenProps<"AnnouncementList">>
           onPress={() => navigation.navigate("CreateAnnouncement")}
           style={styles.addButton}
         >
-          <Ionicons name="add" size={22} color="#fff" />
+          <Ionicons name="add" size={22} color={colors.text.inverse} />
         </TouchableOpacity>
       </View>
       <View style={styles.filters}>

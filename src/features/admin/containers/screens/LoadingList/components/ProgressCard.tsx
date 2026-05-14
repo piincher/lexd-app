@@ -2,8 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { LoadingSummary } from '../types';
+import { Theme } from '@src/constants/Theme';
 
 interface ProgressCardProps {
   summary: LoadingSummary;
@@ -14,11 +15,12 @@ export const ProgressCard: React.FC<ProgressCardProps> = ({
   summary,
   progressPercentage,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.progressCard}>
       <View style={styles.progressHeader}>
         <View style={styles.progressTitleContainer}>
-          <Ionicons name="timer" size={20} color="#D97706" />
+          <Ionicons name="timer" size={20} color={Theme.colors.status.warning} />
           <Text style={styles.progressTitle}>Progression</Text>
         </View>
         <Text style={styles.progressValue}>
@@ -29,7 +31,7 @@ export const ProgressCard: React.FC<ProgressCardProps> = ({
       <View style={styles.progressBarContainer}>
         <View style={styles.progressBarBackground}>
           <LinearGradient
-            colors={['#D97706', '#F59E0B']}
+            colors={[Theme.colors.status.warning, Theme.colors.status.warning]}
             style={[styles.progressBarFill, { width: `${progressPercentage}%` }]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
@@ -58,7 +60,7 @@ export const ProgressCard: React.FC<ProgressCardProps> = ({
 
 const styles = StyleSheet.create({
   progressCard: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: Theme.Theme.colors.background.card,
     borderRadius: Theme.radius['2xl'],
     padding: Theme.spacing.lg,
     marginBottom: Theme.spacing.lg,
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
   },
   progressBarBackground: {
     height: 28,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: Theme.colors.status.warning + '15',
     borderRadius: Theme.radius.full,
     overflow: 'hidden',
   },

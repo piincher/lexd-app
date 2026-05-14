@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Badge } from '@src/shared/ui/Badge';
 import { Card } from '@src/shared/ui/Card';
@@ -30,7 +31,7 @@ export const CargoBagDetailGoodsItem: React.FC<Props> = ({ item, isSelected, rem
         <View style={styles.goodsRow}>
           {removeMode && (
             <View style={[styles.checkbox, isSelected && { backgroundColor: colors.status.error }]}>
-              {isSelected && <Ionicons name="checkmark" size={14} color="#fff" />}
+              {isSelected && <Ionicons name="checkmark" size={14} color={colors.text.inverse} />}
             </View>
           )}
           <MaterialCommunityIcons name="cube-outline" size={20} color={colors.primary.main} />
@@ -60,7 +61,7 @@ export const CargoBagDetailGoodsItem: React.FC<Props> = ({ item, isSelected, rem
 const styles = StyleSheet.create({
   goodsCard: { marginBottom: 8 },
   goodsRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  checkbox: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: '#ccc', justifyContent: 'center', alignItems: 'center' },
+  checkbox: { width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: Theme.colors.border, justifyContent: 'center', alignItems: 'center' },
   goodsInfo: { flex: 1 },
   goodsId: { fontSize: 14, fontWeight: '700' },
   goodsDesc: { fontSize: 13, marginTop: 2 },

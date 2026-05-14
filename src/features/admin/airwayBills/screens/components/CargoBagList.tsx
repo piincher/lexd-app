@@ -6,6 +6,7 @@ import React from 'react';
 import { View, Text, RefreshControl, StyleSheet, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Ionicons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { EmptyState } from '@src/shared/ui/EmptyState';
 import { CargoBag } from '../../types';
@@ -66,7 +67,7 @@ export const CargoBagList: React.FC<CargoBagListProps> = ({
               onPress={onCreatePress}
               style={[styles.createButton, { backgroundColor: colors.primary.main }]}
             >
-              <Ionicons name="add" size={16} color="#fff" />
+              <Ionicons name="add" size={16} color={colors.text.inverse} />
               <Text style={styles.createButtonText}>Sac</Text>
             </TouchableOpacity>
           </View>
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderRadius: 10,
   },
-  createButtonText: { color: '#fff', fontSize: 13, fontWeight: '700' },
+  createButtonText: { color: Theme.colors.text.inverse, fontSize: 13, fontWeight: '700' },
 });
 
 export default CargoBagList;

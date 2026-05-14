@@ -3,8 +3,9 @@ import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { VolumeByShippingMode } from '../../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { shippingModeColors } from './goodsVolumeConstants';
-import { styles } from './GoodsVolumeChart.styles';
+import { createStyles } from './GoodsVolumeChart.styles';
 
 interface ShippingViewProps {
   byShippingMode: VolumeByShippingMode[];
@@ -16,12 +17,16 @@ export const ShippingView: React.FC<ShippingViewProps> = ({
   byShippingMode,
   totalGoods,
   formatCurrency,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
+
+  return (
   <View style={styles.content}>
     <Text style={styles.sectionTitle}>Par Mode de Transport</Text>
 
     {byShippingMode.map((mode) => {
-      const color = shippingModeColors[mode.shippingMode] || '#6B7280';
+      const color = shippingModeColors[mode.shippingMode] || colors.text.muted;
       const icon =
         mode.shippingMode === 'AIR'
           ? 'airplane'
@@ -33,7 +38,7 @@ export const ShippingView: React.FC<ShippingViewProps> = ({
         <View key={mode.shippingMode} style={styles.shippingItem}>
           <View style={styles.shippingHeader}>
             <View style={[styles.shippingIcon, { backgroundColor: color }]}>
-              <MaterialCommunityIcons name={icon as any} size={16} color="#FFFFFF" />
+              <MaterialCommunityIcons name={icon as any} size={16} color={colors.text.inverse} />
             </View>
             <View style={styles.shippingInfo}>
               <Text style={styles.shippingLabel}>
@@ -63,4 +68,5 @@ export const ShippingView: React.FC<ShippingViewProps> = ({
       );
     })}
   </View>
-);
+  );
+};

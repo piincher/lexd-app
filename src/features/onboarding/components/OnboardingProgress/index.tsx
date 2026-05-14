@@ -2,8 +2,9 @@
  * OnboardingProgress - Top progress bar showing onboarding progress
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet, Animated } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface OnboardingProgressProps {
   currentIndex: number;
@@ -17,6 +18,8 @@ export const OnboardingProgress: React.FC<OnboardingProgressProps> = ({
   scrollX,
   width = 0,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const progressWidth = scrollX.interpolate({
     inputRange: [0, (totalSlides - 1) * width],
     outputRange: ["0%", "100%"],
@@ -37,23 +40,24 @@ export const OnboardingProgress: React.FC<OnboardingProgressProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 8,
-  },
-  track: {
-    height: 4,
-    backgroundColor: "rgba(255, 255, 255, 0.3)",
-    borderRadius: 2,
-    overflow: "hidden",
-  },
-  progress: {
-    height: "100%",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 2,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      paddingHorizontal: 24,
+      paddingTop: 16,
+      paddingBottom: 8,
+    },
+    track: {
+      height: 4,
+      backgroundColor: colors.text.inverse + "4D",
+      borderRadius: 2,
+      overflow: "hidden",
+    },
+    progress: {
+      height: "100%",
+      backgroundColor: colors.text.inverse,
+      borderRadius: 2,
+    },
+  });
 
 export default OnboardingProgress;

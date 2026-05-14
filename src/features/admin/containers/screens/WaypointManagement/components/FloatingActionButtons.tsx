@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface FloatingActionButtonsProps {
@@ -12,13 +13,14 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   onAddWaypoint,
   onImportTemplate,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.fabContainer}>
       <TouchableOpacity style={styles.fabSecondary} onPress={onImportTemplate}>
-        <Ionicons name="download" size={20} color={Theme.primary[600]} />
+        <Ionicons name="download" size={20} color={colors.primary.main} />
       </TouchableOpacity>
       <TouchableOpacity style={styles.fab} onPress={onAddWaypoint}>
-        <Ionicons name="add" size={24} color={Theme.colors.background.card} />
+        <Ionicons name="add" size={24} color={colors.text.inverse} />
       </TouchableOpacity>
     </View>
   );

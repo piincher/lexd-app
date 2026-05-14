@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { styles } from './ThemeToggle.styles';
+import { createStyles } from './ThemeToggle.styles';
 
 interface ThemeOptionProps {
   icon: string;
@@ -11,7 +11,9 @@ interface ThemeOptionProps {
   colors: any;
 }
 
-export const ThemeOption: React.FC<ThemeOptionProps> = ({ icon, label, selected, onPress, colors }) => (
+export const ThemeOption: React.FC<ThemeOptionProps> = ({ icon, label, selected, onPress, colors }) => {
+  const styles = createStyles(colors);
+  return (
   <TouchableOpacity
     style={[
       styles.option,
@@ -38,4 +40,4 @@ export const ThemeOption: React.FC<ThemeOptionProps> = ({ icon, label, selected,
     </Text>
     {selected && <Ionicons name="checkmark-circle" size={24} color={colors.primary.main} />}
   </TouchableOpacity>
-);
+);}

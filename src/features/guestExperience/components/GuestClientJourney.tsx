@@ -30,7 +30,7 @@ export const GuestClientJourney: React.FC<Props> = ({ steps }) => {
                   style={[
                     styles.circle,
                     {
-                      backgroundColor: isActive ? colors.primary.main : isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[200],
+                      backgroundColor: isActive ? colors.primary.main : colors.neutral[200],
                       borderColor: isActive ? colors.primary.light : 'transparent',
                     },
                   ]}
@@ -38,14 +38,14 @@ export const GuestClientJourney: React.FC<Props> = ({ steps }) => {
                   <FontAwesome6
                     name={step.icon as any}
                     size={14}
-                    color={isActive ? '#FFFFFF' : colors.text.muted}
+                    color={isActive ? colors.text.inverse : colors.text.muted}
                   />
                 </View>
 
                 {!isLast && (
                   <View style={styles.lineWrap}>
                     <LinearGradient
-                      colors={isActive ? [colors.primary.main, colors.primary.light] : [isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[200], isDark ? 'rgba(255,255,255,0.04)' : colors.neutral[100]]}
+                      colors={isActive ? [colors.primary.main, colors.primary.light] : [colors.neutral[200], colors.neutral[100]]}
                       start={{ x: 0, y: 0 }}
                       end={{ x: 1, y: 0 }}
                       style={styles.line}

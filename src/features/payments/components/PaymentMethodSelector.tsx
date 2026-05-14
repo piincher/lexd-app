@@ -7,18 +7,27 @@ import {
 import { usePaymentMethodSelectorStyles } from './PaymentMethodSelector/usePaymentMethodSelectorStyles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { usePaymentProviders } from '../hooks/usePayments';
-import type { PaymentMethodSelectorProps } from '../types';
+import type { PaymentMethodSelectorProps, PaymentProvider } from '../types';
 import { usePaymentMethodSelectorStyles } from './PaymentMethodSelector/usePaymentMethodSelectorStyles';
 import { PaymentMethodSkeleton } from './PaymentMethodSelector/PaymentMethodSkeleton';
 import { PaymentMethodError } from './PaymentMethodSelector/PaymentMethodError';
 import { FeeBreakdown } from './PaymentMethodSelector/FeeBreakdown';
 
-// Use icons instead of images since assets don't exist
-const PROVIDER_ICONS: Record<PaymentProvider, { name: string; color: string; bgColor: string }> = {
-  ORANGE_MONEY: { name: 'cellphone', color: '#FF6600', bgColor: '#FFF3E0' },
-  WAVE: { name: 'wave', color: '#1E88E5', bgColor: '#E3F2FD' },
-  STRIPE: { name: 'credit-card', color: '#635BFF', bgColor: '#EDE7F6' },
-  CARD: { name: 'credit-card', color: '#4CAF50', bgColor: '#E8F5E9' },
+const PROVIDER_ICON_NAMES: Record<PaymentProvider, string> = {
+  ORANGE_MONEY: 'cellphone',
+  WAVE: 'wave',
+  STRIPE: 'credit-card',
+  CARD: 'credit-card',
+};
+
+const getProviderColor = (provider: PaymentProvider, colors: any) => {
+  switch (provider) {
+    case 'ORANGE_MONEY': return colors.status.warning;
+    case 'WAVE': return colors.status.info;
+    case 'STRIPE': return colors.primary.main;
+    case 'CARD': return colors.status.success;
+    default: return colors.primary.main;
+  }
 };
 
 const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
@@ -54,7 +63,9 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         {providers.map((provider) => {
           const isSelected = selectedMethod === provider.code;
           const hasError = false;
-          const iconConfig = PROVIDER_ICONS[provider.code as PaymentProvider] || PROVIDER_ICONS.CARD;
+          const providerCode = provider.code as PaymentProvider;
+          const iconName = PROVIDER_ICON_NAMES[providerCode] || PROVIDER_ICON_NAMES.CARD;
+          const providerColor = getProviderColor(providerCode, colors);
 
           return (
             <TouchableOpacity
@@ -68,11 +79,11 @@ const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
               onPress={() => !disabled && onSelect(provider.code as PaymentProvider)}
               activeOpacity={disabled ? 1 : 0.7}
             >
-              <View style={[styles.methodIconContainer, { backgroundColor: iconConfig.bgColor }]}>
+              <View style={[styles.methodIconContainer, { backgroundColor: providerColor + '15' }]}>
                 <MaterialCommunityIcons
-                  name={iconConfig.name as any}
+                  name={iconName as any}
                   size={28}
-                  color={iconConfig.color}
+                  color={providerColor}
                 />
               </View>
 

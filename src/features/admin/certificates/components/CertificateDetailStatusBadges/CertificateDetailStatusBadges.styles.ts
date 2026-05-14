@@ -19,25 +19,25 @@ export const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   badgeActive: {
-    backgroundColor: "#DCFCE7",
+    backgroundColor: "Theme.colors.status.success + '18'",
   },
   badgeActiveText: {
     color: "#15803D",
   },
   badgeRevoked: {
-    backgroundColor: "#FEE2E2",
+    backgroundColor: "Theme.colors.status.error + '15'",
   },
   badgeRevokedText: {
     color: "#DC2626",
   },
   badgeAuto: {
-    backgroundColor: "#DBEAFE",
+    backgroundColor: "Theme.colors.status.info + '15'",
   },
   badgeAutoText: {
     color: "#1D4ED8",
   },
   badgeManual: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: "Theme.colors.status.warning + '15'",
   },
   badgeManualText: {
     color: "#92400E",

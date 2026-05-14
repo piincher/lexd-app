@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useManagePromos } from "../hooks/useManagePromos";
 import { usePromoForm } from "../hooks/usePromoForm";
@@ -10,8 +10,10 @@ import { PromoFilters } from "../components/PromoFilters";
 import { PromoList } from "../components/PromoList";
 import { PromoForm } from "../components/PromoForm";
 import { styles } from "./ManagePromosScreen.styles";
+import { Theme } from '@src/constants/Theme';
 
 export default function ManagePromosScreen({ navigation }: RootStackScreenProps<"ManagePromos">) {
+  const { colors } = useAppTheme();
   const {
     activeFilter, page, promos, pagination, isLoading, isRefetching, refetch,
     handleFilterChange, handleNextPage, handlePrevPage, handleDeactivate,
@@ -46,7 +48,7 @@ export default function ManagePromosScreen({ navigation }: RootStackScreenProps<
         onNextPage={handleNextPage} onPrevPage={handlePrevPage} onResetFilter={() => handleFilterChange("all")}
       />
       <TouchableOpacity style={styles.fab} onPress={openCreateForm} activeOpacity={0.8}>
-        <Ionicons name="add" size={28} color="#FFFFFF" />
+        <Ionicons name="add" size={28} color={colors.text.inverse} />
       </TouchableOpacity>
       <Modal visible={showForm} animationType="slide" presentationStyle="pageSheet">
         <SafeAreaView style={styles.modalContainer}>

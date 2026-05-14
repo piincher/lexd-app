@@ -3,12 +3,15 @@
 import React from 'react';
 import { View, Image } from 'react-native';
 import { Text, Card } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 
 interface GoodsDetailPhotoProps {
   photoUrl?: string;
 }
 
 export const GoodsDetailPhoto: React.FC<GoodsDetailPhotoProps> = ({ photoUrl }) => {
+  const { colors } = useAppTheme();
   if (!photoUrl) return null;
 
   return (
@@ -41,7 +44,7 @@ const styles = {
     padding: 12,
   },
   photoLabel: {
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
     fontSize: 13,
     fontWeight: '600' as const,
   },

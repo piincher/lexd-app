@@ -3,15 +3,20 @@ import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { DailyVolumePoint } from '../../types';
 import { TrendChart } from './TrendChart';
-import { styles } from './GoodsVolumeChart.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './GoodsVolumeChart.styles';
 
 interface TrendViewProps {
   dailyTrend: DailyVolumePoint[];
   totalGoods: number;
 }
 
-export const TrendView: React.FC<TrendViewProps> = ({ dailyTrend, totalGoods }) => (
-  <View style={styles.content}>
+export const TrendView: React.FC<TrendViewProps> = ({ dailyTrend, totalGoods }) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
+
+  return (
+    <View style={styles.content}>
     <Text style={styles.sectionTitle}>Tendance Journalière</Text>
 
     {dailyTrend.length > 0 ? (
@@ -36,4 +41,5 @@ export const TrendView: React.FC<TrendViewProps> = ({ dailyTrend, totalGoods }) 
       <Text style={styles.noData}>Pas assez de données</Text>
     )}
   </View>
-);
+  );
+};

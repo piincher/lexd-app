@@ -70,7 +70,7 @@ const makeStyles = () =>
          fontSize: 24,
          fontFamily: Fonts.bold,
          fontWeight: '700',
-         color: '#FFF',
+         color: 'Theme.colors.text.inverse',
          marginBottom: 4,
       },
       heroSubtitle: {

@@ -68,7 +68,7 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
         heroTitle: {
           fontSize: 14,
           fontFamily: Fonts.bold,
-          color: "#FFF",
+          color: colors.text.inverse,
           letterSpacing: -0.2,
         },
         heroSubtitle: {
@@ -89,7 +89,7 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
           borderColor: "rgba(255,255,255,0.3)",
         },
         criticalText: {
-          color: "#FFF",
+          color: colors.text.inverse,
           fontSize: 10,
           fontFamily: Fonts.bold,
           textTransform: "uppercase",
@@ -98,7 +98,7 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
         amount: {
           fontSize: 32,
           fontFamily: Fonts.bold,
-          color: "#FFF",
+          color: colors.text.inverse,
           letterSpacing: -1,
         },
         amountLabel: {
@@ -123,7 +123,7 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
       <View style={styles.heroHeader}>
         <View style={styles.heroHeaderLeft}>
           <View style={styles.iconWrap}>
-            <MaterialCommunityIcons name="cash-multiple" size={22} color="#FFF" />
+            <MaterialCommunityIcons name="cash-multiple" size={22} color={colors.text.inverse} />
           </View>
           <View>
             <Text style={styles.heroTitle}>Paiements en attente</Text>
@@ -132,7 +132,7 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
         </View>
         {isCritical && (
           <View style={styles.criticalBadge}>
-            <MaterialCommunityIcons name="alert-octagon" size={11} color="#FFF" />
+            <MaterialCommunityIcons name="alert-octagon" size={11} color={colors.text.inverse} />
             <Text style={styles.criticalText}>Critique</Text>
           </View>
         )}

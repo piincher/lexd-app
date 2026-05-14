@@ -12,6 +12,7 @@ import {
 } from '@src/shared/types/waypointStatus';
 import { ContainerWaypoint } from '@src/shared/types/containerWaypoints';
 import { useWaypointCardStyles } from './WaypointCard.styles';
+import { Theme } from '@src/constants/Theme';
 
 interface WaypointCardHeaderProps {
   waypoint: ContainerWaypoint;
@@ -45,7 +46,7 @@ export const WaypointCardHeader: React.FC<WaypointCardHeaderProps> = ({ waypoint
           isDakar && { backgroundColor: '#0EA5E9', width: 40, height: 40, borderRadius: 20 },
         ]}
       >
-        <Text style={[styles.wpNumberText, isDakar && { color: '#FFF', fontSize: 18 }]}>
+        <Text style={[styles.wpNumberText, isDakar && { color: 'Theme.colors.text.inverse', fontSize: 18 }]}>
           {index + 1}
         </Text>
       </View>

@@ -32,7 +32,7 @@ export const ContainerGoodsList: React.FC<ContainerGoodsListProps> = ({
         </View>
         <View style={styles.emptyGoods}>
           <LinearGradient
-            colors={['#F3F0FF', '#EDE9FE']}
+            colors={[colors.background.paper, colors.background.default]}
             style={styles.emptyIconBg}
           >
             <Ionicons name="cube-outline" size={48} color={Theme.primary[400]} />
@@ -72,16 +72,16 @@ export const ContainerGoodsList: React.FC<ContainerGoodsListProps> = ({
               <View style={styles.goodsIdRow}>
                 <Text style={styles.goodsId}>{goods.goodsId}</Text>
                 {goods.status === 'READY_FOR_PICKUP' && (
-                  <View style={[styles.statusBadge, { backgroundColor: '#FEF3C7' }]}>
-                    <Text style={[styles.statusBadgeText, { color: '#D97706' }]}>
+                  <View style={[styles.statusBadge, { backgroundColor: colors.status.warning + '15' }]}>
+                    <Text style={[styles.statusBadgeText, { color: colors.status.warning }]}>
                       Prêt
                     </Text>
                   </View>
                 )}
                 {goods.status === 'DELIVERED' && (
-                  <View style={[styles.statusBadge, { backgroundColor: '#D1FAE5' }]}>
-                    <Ionicons name="checkmark" size={10} color="#059669" />
-                    <Text style={[styles.statusBadgeText, { color: '#059669' }]}>
+                  <View style={[styles.statusBadge, { backgroundColor: colors.status.success + '15' }]}>
+                    <Ionicons name="checkmark" size={10} color={colors.status.success} />
+                    <Text style={[styles.statusBadgeText, { color: colors.status.success }]}>
                       Livré
                     </Text>
                   </View>

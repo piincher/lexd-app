@@ -28,7 +28,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       width: 30,
       height: 30,
       borderRadius: 10,
-      backgroundColor: isDark ? "rgba(34,197,94,0.18)" : "#F0FDF4",
+      backgroundColor: isDark ? "rgba(34,197,94,0.18)" : colors.feedback.successBg,
       justifyContent: "center",
       alignItems: "center",
     },
@@ -45,7 +45,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       paddingHorizontal: 10,
       paddingVertical: 5,
       borderRadius: 999,
-      backgroundColor: isDark ? "rgba(34,197,94,0.15)" : "#F0FDF4",
+      backgroundColor: isDark ? "rgba(34,197,94,0.15)" : colors.feedback.successBg,
     },
     viewAllText: {
       fontSize: 11,

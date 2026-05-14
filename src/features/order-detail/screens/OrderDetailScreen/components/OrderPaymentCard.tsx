@@ -13,9 +13,9 @@ interface OrderPaymentCardProps {
 const formatCurrency = (amount?: number | null): string =>
    `${(amount ?? 0).toLocaleString("fr-FR")} FCFA`;
 
-const PAYMENT_COLORS: Record<string, { text: string; label: string }> = {
-   Paid: { text: "#2E7D32", label: "Payé" },
-   Unpaid: { text: "#C62828", label: "Non payé" },
+const PAYMENT_LABELS: Record<string, string> = {
+   Paid: "Payé",
+   Unpaid: "Non payé",
 };
 
 const InfoRow = ({
@@ -130,7 +130,8 @@ export const OrderPaymentCard: React.FC<OrderPaymentCardProps> = ({ order }) => 
       [colors]
    );
 
-   const paymentCfg = PAYMENT_COLORS[order.paymentStatus || ""] || PAYMENT_COLORS.Unpaid;
+   const paymentLabel = PAYMENT_LABELS[order.paymentStatus || ""] || PAYMENT_LABELS.Unpaid;
+   const paymentColor = order.paymentStatus === "Paid" ? colors.status.success : colors.status.error;
    const isAir = order.shippingMode === "air";
 
    // Compute total from populated goodsIds as fallback
@@ -156,15 +157,15 @@ export const OrderPaymentCard: React.FC<OrderPaymentCardProps> = ({ order }) => 
                   <Text style={styles.label}>Statut</Text>
                </View>
                <Chip
-                  style={{ backgroundColor: paymentCfg.text + '20' }}
+                  style={{ backgroundColor: paymentColor + '20' }}
                   textStyle={{
-                     color: paymentCfg.text,
+                     color: paymentColor,
                      fontFamily: Fonts.bold || undefined,
                      fontSize: 12,
                   }}
                   compact
                >
-                  {paymentCfg.label}
+                  {paymentLabel}
                </Chip>
             </View>
             <Divider style={styles.divider} />

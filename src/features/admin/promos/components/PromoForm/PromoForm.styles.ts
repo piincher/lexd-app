@@ -87,6 +87,6 @@ export const styles = StyleSheet.create({
   submitButtonText: {
     fontSize: 15,
     fontFamily: Fonts.bold,
-    color: "#FFFFFF",
+    color: "Theme.colors.text.inverse",
   },
 });

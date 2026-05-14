@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { AirCargoRouteOption } from '../../types';
 
 interface Props {
@@ -10,33 +11,36 @@ interface Props {
   onSelect: (routeKey: string) => void;
 }
 
-export const AirCargoRoutePicker: React.FC<Props> = ({ routes, selectedRouteKey, onSelect }) => (
-  <View style={styles.container}>
-    <Text style={styles.label}>Route aérienne</Text>
-    {routes.map((route) => {
-      const selected = route.key === selectedRouteKey;
-      return (
-        <TouchableOpacity
-          key={route.key}
-          activeOpacity={0.85}
-          onPress={() => onSelect(route.key)}
-          style={[styles.option, selected && styles.optionSelected]}
-        >
-          <View style={[styles.iconWrap, selected && styles.iconWrapSelected]}>
-            <Ionicons name={selected ? 'checkmark' : 'airplane'} size={18} color={selected ? '#fff' : Theme.colors.primary.main} />
-          </View>
-          <View style={styles.routeBody}>
-            <Text style={styles.routeName} numberOfLines={2}>{route.name}</Text>
-            <Text style={styles.routePath} numberOfLines={2}>
-              {route.origin} → {route.destination}
-            </Text>
-            <Text style={styles.routeDescription} numberOfLines={3}>{route.description}</Text>
-          </View>
-        </TouchableOpacity>
-      );
-    })}
-  </View>
-);
+export const AirCargoRoutePicker: React.FC<Props> = ({ routes, selectedRouteKey, onSelect }) => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={styles.container}>
+      <Text style={styles.label}>Route aérienne</Text>
+      {routes.map((route) => {
+        const selected = route.key === selectedRouteKey;
+        return (
+          <TouchableOpacity
+            key={route.key}
+            activeOpacity={0.85}
+            onPress={() => onSelect(route.key)}
+            style={[styles.option, selected && { borderColor: colors.primary.main, backgroundColor: colors.feedback.successBg }]}
+          >
+            <View style={[styles.iconWrap, selected && { backgroundColor: colors.primary.main }]}>
+              <Ionicons name={selected ? 'checkmark' : 'airplane'} size={18} color={selected ? colors.text.inverse : colors.primary.main} />
+            </View>
+            <View style={styles.routeBody}>
+              <Text style={styles.routeName} numberOfLines={2}>{route.name}</Text>
+              <Text style={styles.routePath} numberOfLines={2}>
+                {route.origin} → {route.destination}
+              </Text>
+              <Text style={styles.routeDescription} numberOfLines={3}>{route.description}</Text>
+            </View>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: { marginBottom: Theme.spacing.md },
@@ -51,16 +55,14 @@ const styles = StyleSheet.create({
     borderColor: Theme.colors.border,
     backgroundColor: Theme.colors.background.card,
   },
-  optionSelected: { borderColor: Theme.colors.primary.main, backgroundColor: '#EAF7F0' },
   iconWrap: {
     width: 40,
     height: 40,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#EEF2F7',
+    backgroundColor: Theme.colors.background.paper,
   },
-  iconWrapSelected: { backgroundColor: Theme.colors.primary.main },
   routeBody: { flex: 1 },
   routeName: { fontSize: 14, fontWeight: '800', color: Theme.neutral[900] },
   routePath: { fontSize: 12, fontWeight: '700', color: Theme.neutral[600], marginTop: 4 },

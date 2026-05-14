@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
   },
   contentLoaded: {
     borderLeftColor: Theme.status.success,
-    backgroundColor: '#F0FDF4',
+    backgroundColor: Theme.colors.status.success + '15',
   },
   header: {
     flexDirection: 'row',
@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusButtonLoaded: {
-    backgroundColor: '#D1FAE5',
+    backgroundColor: Theme.colors.status.success + '18',
   },
   statusButtonDisabled: {
     opacity: 0.6,

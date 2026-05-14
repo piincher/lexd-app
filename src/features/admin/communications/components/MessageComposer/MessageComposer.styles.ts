@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     color: Theme.neutral[500],
   },
   categoryTextActive: {
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     fontFamily: Fonts.semiBold,
     fontWeight: '600',
   },
@@ -114,6 +114,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
   },
 });

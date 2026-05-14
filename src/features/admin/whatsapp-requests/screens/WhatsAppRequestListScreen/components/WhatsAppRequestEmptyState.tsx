@@ -7,27 +7,31 @@ import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { STATUS_LABELS } from '../constants';
 
 interface WhatsAppRequestEmptyStateProps {
   selectedStatus: string;
 }
 
-export const WhatsAppRequestEmptyState: React.FC<WhatsAppRequestEmptyStateProps> = ({ selectedStatus }) => (
-  <View style={styles.emptyContainer}>
-    <LinearGradient colors={['#F3F0FF', '#EDE9FE']} style={styles.emptyIconContainer}>
-      <Ionicons name="logo-whatsapp" size={64} color={Theme.primary[400]} />
-    </LinearGradient>
-    <Text style={styles.emptyTitle}>Aucune demande</Text>
-    <Text style={styles.emptySubtitle}>
-      {selectedStatus === 'PENDING'
-        ? 'Aucune demande WhatsApp en attente'
-        : selectedStatus !== 'all'
-        ? `Aucune demande avec le statut "${STATUS_LABELS[selectedStatus as keyof typeof STATUS_LABELS]}"`
-        : 'Les demandes WhatsApp apparaîtront ici'}
-    </Text>
-  </View>
-);
+export const WhatsAppRequestEmptyState: React.FC<WhatsAppRequestEmptyStateProps> = ({ selectedStatus }) => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={styles.emptyContainer}>
+      <LinearGradient colors={[colors.feedback.infoBg, colors.background.paper]} style={styles.emptyIconContainer}>
+        <Ionicons name="logo-whatsapp" size={64} color={Theme.primary[400]} />
+      </LinearGradient>
+      <Text style={styles.emptyTitle}>Aucune demande</Text>
+      <Text style={styles.emptySubtitle}>
+        {selectedStatus === 'PENDING'
+          ? 'Aucune demande WhatsApp en attente'
+          : selectedStatus !== 'all'
+          ? `Aucune demande avec le statut "${STATUS_LABELS[selectedStatus as keyof typeof STATUS_LABELS]}"`
+          : 'Les demandes WhatsApp apparaîtront ici'}
+      </Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   emptyContainer: {

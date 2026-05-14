@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from '@src/constants/Theme';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -19,5 +20,5 @@ export const createStyles = (colors: any) =>
       paddingVertical: 14,
     },
     submitBtnDisabled: { backgroundColor: "#C4B5FD" },
-    submitBtnText: { fontFamily: Fonts.bold, fontSize: 15, color: "#fff" },
+    submitBtnText: { fontFamily: Fonts.bold, fontSize: 15, color: "Theme.colors.text.inverse" },
   });

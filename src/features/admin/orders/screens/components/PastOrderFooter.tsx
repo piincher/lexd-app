@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, ActivityIndicator, Pressable } from 'react-native';
-import { LOGISTICS_COLORS } from './pastOrderConstants';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from './PastOrderFooter.styles';
 
 interface PastOrderFooterProps {
@@ -14,12 +14,13 @@ export const PastOrderFooter: React.FC<PastOrderFooterProps> = ({
   hasNextPage,
   onLoadMore,
 }) => {
-  const styles = createStyles();
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
 
   if (isFetchingNextPage) {
     return (
       <View style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color={LOGISTICS_COLORS.primary} style={styles.loader} />
+        <ActivityIndicator size="large" color={colors.primary.main} style={styles.loader} />
       </View>
     );
   }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Badge } from '@src/shared/ui/Badge';
 import { Card } from '@src/shared/ui/Card';
@@ -79,8 +80,8 @@ const styles = StyleSheet.create({
   statItem: { flex: 1, alignItems: 'center', paddingVertical: 10, borderRadius: 10 },
   statValue: { fontSize: 16, fontWeight: '800' },
   statLabel: { fontSize: 12, fontWeight: '500', marginTop: 2 },
-  routeRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: 'rgba(150,150,150,0.1)' },
+  routeRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: Theme.colors.divider },
   routeText: { fontSize: 13, fontWeight: '700', flex: 1, lineHeight: 18 },
-  notesRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: 'rgba(150,150,150,0.1)' },
+  notesRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: Theme.colors.divider },
   notesText: { fontSize: 13, fontWeight: '500', flex: 1, lineHeight: 18 },
 });

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Input } from '@src/shared/ui/Input';
 import { Button } from '@src/shared/ui/Button';
 import { SearchFilters } from '../../types';
@@ -26,6 +26,9 @@ export const SearchFilterPanel: React.FC<SearchFilterPanelProps> = ({
   onClose,
   onClear,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const toggleCategory = (category: string) => {
     onFilterChange({
       ...filters,
@@ -38,7 +41,7 @@ export const SearchFilterPanel: React.FC<SearchFilterPanelProps> = ({
       <View style={styles.header}>
         <Text style={styles.title}>Filtres</Text>
         <TouchableOpacity onPress={onClose}>
-          <Ionicons name="close" size={24} color={Theme.neutral[600]} />
+          <Ionicons name="close" size={24} color={colors.text.secondary} />
         </TouchableOpacity>
       </View>
 
@@ -104,69 +107,70 @@ export const SearchFilterPanel: React.FC<SearchFilterPanelProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Theme.colors.background.card,
-    padding: Theme.spacing.lg,
-    borderRadius: 16,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: Theme.spacing.lg,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: Theme.neutral[900],
-  },
-  section: {
-    marginBottom: Theme.spacing.lg,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: Theme.neutral[800],
-    marginBottom: Theme.spacing.md,
-  },
-  categories: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: Theme.spacing.sm,
-  },
-  categoryButton: {
-    paddingHorizontal: Theme.spacing.md,
-    paddingVertical: Theme.spacing.sm,
-    borderRadius: 20,
-    backgroundColor: Theme.neutral[100],
-  },
-  activeCategory: {
-    backgroundColor: Theme.colors.primary.main,
-  },
-  categoryText: {
-    fontSize: 14,
-    color: Theme.neutral[600],
-  },
-  activeCategoryText: {
-    color: Theme.neutral.white,
-    fontWeight: '600',
-  },
-  priceInputs: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Theme.spacing.sm,
-  },
-  priceInput: {
-    flex: 1,
-  },
-  priceSeparator: {
-    fontSize: 16,
-    color: Theme.neutral[600],
-  },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    gap: Theme.spacing.md,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: colors.background.card,
+      padding: 20,
+      borderRadius: 16,
+    },
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: 20,
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: '700',
+      color: colors.text.primary,
+    },
+    section: {
+      marginBottom: 20,
+    },
+    sectionTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: colors.text.primary,
+      marginBottom: 12,
+    },
+    categories: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 8,
+    },
+    categoryButton: {
+      paddingHorizontal: 12,
+      paddingVertical: 8,
+      borderRadius: 20,
+      backgroundColor: colors.background.paper,
+    },
+    activeCategory: {
+      backgroundColor: colors.primary.main,
+    },
+    categoryText: {
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    activeCategoryText: {
+      color: colors.text.inverse,
+      fontWeight: '600',
+    },
+    priceInputs: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    priceInput: {
+      flex: 1,
+    },
+    priceSeparator: {
+      fontSize: 16,
+      color: colors.text.secondary,
+    },
+    actions: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      gap: 12,
+    },
+  });

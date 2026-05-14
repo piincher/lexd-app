@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface GoodsBulkActionBarProps {
@@ -25,6 +26,7 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
   onVoid,
   onCancel,
 }) => {
+  const { colors } = useAppTheme();
   if (totalCount === 0) return null;
 
   const isAllSelected = selectedCount === totalCount && totalCount > 0;
@@ -34,7 +36,7 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
       <View style={styles.topRow}>
         <TouchableOpacity style={styles.selectAllButton} onPress={onToggleSelectAll}>
           <View style={[styles.checkbox, isAllSelected && styles.checkboxSelected]}>
-            {isAllSelected && <Ionicons name="checkmark" size={16} color="#FFF" />}
+            {isAllSelected && <Ionicons name="checkmark" size={16} color={Theme.colors.text.inverse} />}
           </View>
           <Text style={styles.selectAllText}>
             {isAllSelected ? 'Tout désélectionner' : 'Tout sélectionner'}
@@ -52,10 +54,10 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
           disabled={selectedCount === 0 || isPending}
         >
           {isPending ? (
-            <ActivityIndicator size="small" color="#FFF" />
+            <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
           ) : (
             <>
-              <Ionicons name="cube-outline" size={16} color="#FFF" />
+              <Ionicons name="cube-outline" size={16} color={Theme.colors.text.inverse} />
               <Text style={styles.actionButtonText}>Assigner</Text>
             </>
           )}
@@ -66,10 +68,10 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
           disabled={selectedCount === 0 || isPending}
         >
           {isPending ? (
-            <ActivityIndicator size="small" color="#FFF" />
+            <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
           ) : (
             <>
-              <Ionicons name="swap-vertical-outline" size={16} color="#FFF" />
+              <Ionicons name="swap-vertical-outline" size={16} color={Theme.colors.text.inverse} />
               <Text style={styles.actionButtonText}>Statut</Text>
             </>
           )}
@@ -80,10 +82,10 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
           disabled={selectedCount === 0 || isPending}
         >
           {isPending ? (
-            <ActivityIndicator size="small" color="#FFF" />
+            <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
           ) : (
             <>
-              <Ionicons name="trash-outline" size={16} color="#FFF" />
+              <Ionicons name="trash-outline" size={16} color={Theme.colors.text.inverse} />
               <Text style={styles.actionButtonText}>Annuler</Text>
             </>
           )}
@@ -99,7 +101,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: Theme.Theme.colors.background.card,
     borderTopWidth: 1,
     borderTopColor: Theme.neutral[200],
     padding: 12,
@@ -175,7 +177,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.neutral[300],
   },
   actionButtonText: {
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
     fontWeight: '600',
     fontSize: 13,
   },

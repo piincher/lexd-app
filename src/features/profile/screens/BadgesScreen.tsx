@@ -8,6 +8,8 @@ import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { useBadgesScreen } from "../hooks/useBadgesScreen";
 import { styles } from "./BadgesScreen.styles";
 import {
@@ -17,6 +19,7 @@ import {
 import { BadgesScreenSkeleton } from "./BadgesScreenSkeleton";
 
 const BadgesScreen: React.FC = () => {
+  const { colors } = useAppTheme();
   const {
     data,
     groupedBadges,
@@ -26,7 +29,7 @@ const BadgesScreen: React.FC = () => {
   } = useBadgesScreen();
 
   return (
-    <LinearGradient colors={["#1a237e", "#4a148c", "#880e4f"]} style={styles.container}>
+    <LinearGradient colors={Theme.gradients.dark} style={styles.container}>
       <SafeAreaView style={styles.safeArea} edges={["top"]}>
         <BadgesScreenHeader
           title="Mes Badges"
@@ -35,7 +38,7 @@ const BadgesScreen: React.FC = () => {
             <NotificationBell
               onPress={handlers.navigateToNotifications}
               size={24}
-              color="#FFFFFF"
+              color={colors.text.inverse}
             />
           }
         />

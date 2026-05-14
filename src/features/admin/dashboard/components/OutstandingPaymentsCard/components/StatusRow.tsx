@@ -33,13 +33,13 @@ export const StatusRow: React.FC<StatusRowProps> = ({ counts }) => {
           marginBottom: 6,
         },
         statusIconWrapUnpaid: {
-          backgroundColor: "#EF444420",
+          backgroundColor: colors.status.error + "20",
         },
         statusIconWrapPartial: {
-          backgroundColor: "#F59E0B20",
+          backgroundColor: colors.status.warning + "20",
         },
         statusIconWrapPaid: {
-          backgroundColor: "#10B98120",
+          backgroundColor: colors.status.success + "20",
         },
         statusCount: {
           fontSize: 16,
@@ -54,13 +54,13 @@ export const StatusRow: React.FC<StatusRowProps> = ({ counts }) => {
           letterSpacing: 0.4,
         },
         statusLabelUnpaid: {
-          color: "#EF4444",
+          color: colors.status.error,
         },
         statusLabelPartial: {
-          color: "#F59E0B",
+          color: colors.status.warning,
         },
         statusLabelPaid: {
-          color: "#10B981",
+          color: colors.status.success,
         },
         statusDivider: {
           width: 1,
@@ -75,7 +75,7 @@ export const StatusRow: React.FC<StatusRowProps> = ({ counts }) => {
     <View style={styles.statusRow}>
       <View style={styles.statusItem}>
         <View style={[styles.statusIconWrap, styles.statusIconWrapUnpaid]}>
-          <MaterialCommunityIcons name="alert-circle" size={18} color="#EF4444" />
+          <MaterialCommunityIcons name="alert-circle" size={18} color={colors.status.error} />
         </View>
         <Text style={styles.statusCount}>{counts.UNPAID}</Text>
         <Text style={[styles.statusLabel, styles.statusLabelUnpaid]}>Impayés</Text>
@@ -83,7 +83,7 @@ export const StatusRow: React.FC<StatusRowProps> = ({ counts }) => {
       <View style={styles.statusDivider} />
       <View style={styles.statusItem}>
         <View style={[styles.statusIconWrap, styles.statusIconWrapPartial]}>
-          <MaterialCommunityIcons name="progress-clock" size={18} color="#F59E0B" />
+          <MaterialCommunityIcons name="progress-clock" size={18} color={colors.status.warning} />
         </View>
         <Text style={styles.statusCount}>{counts.PARTIAL}</Text>
         <Text style={[styles.statusLabel, styles.statusLabelPartial]}>Partiels</Text>
@@ -91,7 +91,7 @@ export const StatusRow: React.FC<StatusRowProps> = ({ counts }) => {
       <View style={styles.statusDivider} />
       <View style={styles.statusItem}>
         <View style={[styles.statusIconWrap, styles.statusIconWrapPaid]}>
-          <MaterialCommunityIcons name="check-circle" size={18} color="#10B981" />
+          <MaterialCommunityIcons name="check-circle" size={18} color={colors.status.success} />
         </View>
         <Text style={styles.statusCount}>{counts.PAID}</Text>
         <Text style={[styles.statusLabel, styles.statusLabelPaid]}>Payés</Text>

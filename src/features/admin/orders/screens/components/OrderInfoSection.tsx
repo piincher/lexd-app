@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Surface, Divider } from 'react-native-paper';
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { createStyles } from './OrderInfoSection.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { formatDate } from '@src/utils/formatDate';
@@ -83,13 +83,13 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
           icon="account"
           label="Client"
           value={order?.clientName || 'N/A'}
-          iconColor="#1976D2"
+          iconColor={colors.primary.main}
         />
         <InfoItem
           icon="phone"
           label="Téléphone"
           value={order?.clientPhone || 'N/A'}
-          iconColor="#4CAF50"
+          iconColor={colors.status.success}
         />
       </View>
 
@@ -102,25 +102,25 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
           icon="package-variant-closed"
           label="Quantité"
           value={`${quantity} colis`}
-          iconColor="#7B1FA2"
+          iconColor={colors.status.info}
         />
         <InfoItem
           icon="weight"
           label="Poids"
           value={packageWeight ? `${packageWeight} kg` : 'N/A'}
-          iconColor="#E65100"
+          iconColor={colors.status.warning}
         />
         <InfoItem
           icon="cube-outline"
           label="CBM"
           value={`${packageCBM || '0'} m³`}
-          iconColor="#2196F3"
+          iconColor={colors.status.info}
         />
         <InfoItem
           icon="package-variant"
           label="Catégorie"
           value={order?.category?.name || order?.typeOfPackage || 'Général'}
-          iconColor="#FF9800"
+          iconColor={colors.status.warning}
         />
       </View>
 
@@ -134,7 +134,7 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
             icon="tag"
             label="Prix unitaire"
             value={`${unitPrice.toLocaleString()} FCFA/${order?.shippingMode === 'air' ? 'kg' : 'm³'}`}
-            iconColor="#00796B"
+            iconColor={colors.status.success}
           />
         )}
         {order?.shippingMode === 'air' ? (
@@ -142,21 +142,21 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
             icon="weight"
             label="Poids"
             value={packageWeight ? `${packageWeight} kg` : 'N/A'}
-            iconColor="#E65100"
+            iconColor={colors.status.warning}
           />
         ) : (
           <InfoItem
             icon="cube-outline"
             label="CBM"
             value={`${packageCBM || '0'} m³`}
-            iconColor="#2196F3"
+            iconColor={colors.status.info}
           />
         )}
         <InfoItem
           icon="cash"
           label="Prix total"
           value={totalPrice > 0 ? `${totalPrice.toLocaleString()} FCFA` : 'Non défini'}
-          iconColor="#4CAF50"
+          iconColor={colors.status.success}
         />
       </View>
 
@@ -169,25 +169,25 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
           icon="calendar-plus"
           label="Date de création"
           value={createdDate}
-          iconColor="#1976D2"
+          iconColor={colors.primary.main}
         />
         <InfoItem
           icon="calendar-arrow-right"
           label="Date de départ"
           value={departureDate}
-          iconColor="#9C27B0"
+          iconColor={colors.status.warning}
         />
         <InfoItem
           icon="calendar-check"
           label="Date de réception"
           value={receiptDate}
-          iconColor="#4CAF50"
+          iconColor={colors.status.success}
         />
         <InfoItem
           icon="update"
           label="Dernière mise à jour"
           value={lastUpdate}
-          iconColor="#607D8B"
+          iconColor={colors.text.secondary}
         />
       </View>
 

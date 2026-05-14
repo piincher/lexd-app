@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { styles } from './OutstandingPaymentsPagination.styles';
 
 interface OutstandingPaymentsPaginationProps {
@@ -14,6 +15,7 @@ export const OutstandingPaymentsPagination: React.FC<OutstandingPaymentsPaginati
   onPrev,
   onNext,
 }) => {
+  const { colors } = useAppTheme();
   const { page, pages } = pagination;
   const isPrevDisabled = page <= 1;
   const isNextDisabled = page >= pages;
@@ -28,7 +30,7 @@ export const OutstandingPaymentsPagination: React.FC<OutstandingPaymentsPaginati
         <Ionicons
           name="chevron-back"
           size={18}
-          color={isPrevDisabled ? '#9CA3AF' : '#1F2937'}
+          color={isPrevDisabled ? colors.text.muted : colors.text.primary}
         />
       </TouchableOpacity>
       <Text style={styles.pageText}>
@@ -42,7 +44,7 @@ export const OutstandingPaymentsPagination: React.FC<OutstandingPaymentsPaginati
         <Ionicons
           name="chevron-forward"
           size={18}
-          color={isNextDisabled ? '#9CA3AF' : '#1F2937'}
+          color={isNextDisabled ? colors.text.muted : colors.text.primary}
         />
       </TouchableOpacity>
     </View>

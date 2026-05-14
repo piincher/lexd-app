@@ -112,7 +112,7 @@ const AuthInputField: FC<Props> = (props) => {
       <Animated.View style={[containerStyle, inputStyle]}>
          <View style={styles.headerContainer}>
             <Text style={styles.label}>{label}</Text>
-            <Text style={[styles.label, { color: "red" }]}>{errorMsg}</Text>
+            <Text style={[styles.label, { color: colors.status.error }]}>{errorMsg}</Text>
          </View>
          <View
             style={{

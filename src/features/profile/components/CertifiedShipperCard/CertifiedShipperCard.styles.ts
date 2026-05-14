@@ -4,6 +4,7 @@
 
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from '@src/constants/Theme';
 
 export const createStyles = (colors: any, isDark: boolean) => {
   const styles = StyleSheet.create({
@@ -94,7 +95,7 @@ export const createStyles = (colors: any, isDark: boolean) => {
       borderRadius: 10, marginLeft: 8,
     },
     newBadgeText: {
-      color: "#FFF", fontFamily: Fonts.bold, fontSize: 10,
+      color: "Theme.colors.text.inverse", fontFamily: Fonts.bold, fontSize: 10,
     },
     chevronHint: {
       position: "absolute", top: 16, right: 16,

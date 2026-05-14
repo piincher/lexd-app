@@ -11,7 +11,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from 'axios';
 import { useAuth } from '@src/store/Auth';
-import { ApiError, ApiException, ApiRequestConfig, ApiResponse } from './types';
+import { ApiRequestConfig, ApiResponse } from './types';
 import type { userData } from '@src/constants/types';
 
 // ============================================
@@ -20,7 +20,19 @@ import type { userData } from '@src/constants/types';
 
 type Environment = 'local' | 'staging' | 'production';
 
-const ENV: Environment = (process.env.EXPO_PUBLIC_ENV as Environment) || 'local';
+const getEnvironment = (value?: string): Environment => {
+  if (value === 'production' || value === 'staging' || value === 'local') {
+    return value;
+  }
+
+  if (value === 'development') {
+    return 'local';
+  }
+
+  return 'production';
+};
+
+const ENV = getEnvironment(process.env.EXPO_PUBLIC_ENV);
 
 const API_CONFIG = {
   local: {
@@ -40,7 +52,22 @@ const API_CONFIG = {
   },
 } as const;
 
-const selectedConfig = API_CONFIG[ENV] || API_CONFIG.local;
+// ============================================
+// CERTIFICATE PINNING CONFIG (Preparatory)
+// ============================================
+/**
+ * Basic certificate pinning flag.
+ * To enable, set EXPO_PUBLIC_CERT_PINNING=true in your environment.
+ *
+ * NOTE: React Native axios delegates TLS to the native networking stack.
+ * Actual SSL certificate pinning requires a native module (e.g.
+ * react-native-ssl-pinning) and cannot be enforced purely in JavaScript.
+ * When this flag is enabled, requests are tagged so that a future native
+ * integration can validate the server certificate fingerprint.
+ */
+const pinningEnabled = process.env.EXPO_PUBLIC_CERT_PINNING === 'true';
+
+const selectedConfig = API_CONFIG[ENV];
 
 const currentConfig = {
   ...selectedConfig,
@@ -53,14 +80,25 @@ const currentConfig = {
 // ============================================
 
 let isRefreshing = false;
-let refreshSubscribers: Array<(token: string) => void> = [];
+let refreshSubscribers: {
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}[] = [];
 
-const subscribeTokenRefresh = (cb: (token: string) => void) => {
-  refreshSubscribers.push(cb);
+const subscribeTokenRefresh = (
+  resolve: (token: string) => void,
+  reject: (error: unknown) => void
+) => {
+  refreshSubscribers.push({ resolve, reject });
 };
 
 const onTokenRefreshed = (token: string) => {
-  refreshSubscribers.forEach((cb) => cb(token));
+  refreshSubscribers.forEach((subscriber) => subscriber.resolve(token));
+  refreshSubscribers = [];
+};
+
+const onTokenRefreshFailed = (error: unknown) => {
+  refreshSubscribers.forEach((subscriber) => subscriber.reject(error));
   refreshSubscribers = [];
 };
 
@@ -73,7 +111,7 @@ const refreshClient = axios.create({
   },
 });
 
-const doRefresh = async (): Promise<string> => {
+export const doRefresh = async (): Promise<string> => {
   const { refreshToken } = useAuth.getState();
   if (!refreshToken) {
     throw new Error('No refresh token available');
@@ -92,6 +130,29 @@ const doRefresh = async (): Promise<string> => {
     expiresIn,
   });
   return newAccessToken;
+};
+
+const getErrorCode = (responseData?: ApiResponse<unknown> | Record<string, unknown>): string | undefined => {
+  if (!responseData) return undefined;
+
+  const data = responseData as Record<string, unknown>;
+  const code = data.code;
+  if (typeof code === 'string') return code;
+
+  const error = data.error;
+  if (typeof error === 'object' && error !== null && 'code' in error) {
+    const errorCode = (error as { code?: unknown }).code;
+    return typeof errorCode === 'string' ? errorCode : undefined;
+  }
+
+  if (typeof error === 'string') return error;
+
+  const message = data.message;
+  return typeof message === 'string' ? message : undefined;
+};
+
+const isTokenExpiredResponse = (responseData?: ApiResponse<unknown> | Record<string, unknown>): boolean => {
+  return getErrorCode(responseData) === 'TOKEN_EXPIRED';
 };
 
 // ============================================
@@ -238,7 +299,6 @@ const trackInflight = (config: InternalAxiosRequestConfig, promise: Promise<unkn
  */
 const requestInterceptor = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
   const token = useAuth.getState().token;
-  const url = config.url || '';
   
   // Only add auth header if token exists and is not empty
   if (token && token.trim() !== '' && !config.headers.get('skipAuth')) {
@@ -287,7 +347,7 @@ const createApiClient = (baseURL: string): AxiosInstance => {
   /**
    * Response error interceptor with retry logic
    */
-  const responseErrorInterceptor = async (error: AxiosError<ApiResponse<unknown>>): Promise<never> => {
+  const responseErrorInterceptor = async (error: AxiosError<ApiResponse<unknown>>): Promise<AxiosResponse> => {
     const config = error.config as ApiRequestConfig | undefined;
 
     if (!config) {
@@ -311,12 +371,13 @@ const createApiClient = (baseURL: string): AxiosInstance => {
     if (error.response?.status === 401) {
       const responseData = error.response?.data;
       console.log('[API Client] 401 response for', config.url, 'data:', JSON.stringify(responseData));
-      const isTokenExpired =
-        responseData?.error?.code === 'TOKEN_EXPIRED' ||
-        responseData?.message === 'TOKEN_EXPIRED';
       const cfg = config as ApiRequestConfig & { _skipRefresh?: boolean };
 
-      if (isTokenExpired && !cfg._skipRefresh) {
+      // Attempt token refresh on any 401. Mobile apps should stay logged in
+      // unless the user explicitly chooses to log out.
+      if (!cfg._skipRefresh) {
+        cfg._skipRefresh = true;
+
         if (!isRefreshing) {
           isRefreshing = true;
           doRefresh()
@@ -326,25 +387,18 @@ const createApiClient = (baseURL: string): AxiosInstance => {
             })
             .catch(async (refreshErr) => {
               isRefreshing = false;
-              refreshSubscribers = [];
-              await useAuth.getState().logOut();
-              return Promise.reject(refreshErr);
+              onTokenRefreshFailed(refreshErr);
+              // Do NOT auto-logout — let the user stay logged in locally
             });
         }
 
-        return new Promise((resolve, reject) => {
+        return new Promise<AxiosResponse>((resolve, reject) => {
           subscribeTokenRefresh((newToken) => {
             cfg.headers = cfg.headers || {};
             cfg.headers.Authorization = `Bearer ${newToken}`;
-            resolve(client.request(cfg));
-          });
+            client.request(cfg).then(resolve).catch(reject);
+          }, reject);
         });
-      }
-
-      // Not a refreshable expiry — force logout
-      const token = useAuth.getState().token;
-      if (token && token.trim() !== '') {
-        await useAuth.getState().logOut();
       }
     }
 
@@ -357,15 +411,15 @@ const createApiClient = (baseURL: string): AxiosInstance => {
 
   // Wrap the request method with deduplication
   const originalRequest = client.request.bind(client);
-  client.request = function<T = unknown>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+  client.request = function<T = unknown, R = AxiosResponse<T>, D = unknown>(config: AxiosRequestConfig<D>): Promise<R> {
     const dup = isDuplicateRequest(config as InternalAxiosRequestConfig);
     if (dup.isDup && dup.existing) {
-      return dup.existing as Promise<AxiosResponse<T>>;
+      return dup.existing as Promise<R>;
     }
     
     const promise = originalRequest(config);
     trackInflight(config as InternalAxiosRequestConfig, promise);
-    return promise;
+    return promise as Promise<R>;
   };
 
   return client;
@@ -377,6 +431,18 @@ const createApiClient = (baseURL: string): AxiosInstance => {
 
 export const apiClient = createApiClient(currentConfig.baseURL);
 export const apiClientV2 = createApiClient(currentConfig.baseURLV2);
+
+if (pinningEnabled) {
+  // Preparatory: attach a request interceptor that marks requests as
+  // certificate-pinned. A future native integration can read this header
+  // or intercept these requests to enforce actual fingerprint validation.
+  const pinningInterceptor = (config: InternalAxiosRequestConfig) => {
+    config.headers.set('X-Cert-Pinning-Enabled', 'true');
+    return config;
+  };
+  apiClient.interceptors.request.use(pinningInterceptor);
+  apiClientV2.interceptors.request.use(pinningInterceptor);
+}
 
 // ============================================
 // TYPED API METHODS

@@ -6,7 +6,6 @@ import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { Fonts } from '@src/constants/Fonts';
 import type { PaymentHistoryItem } from '../types';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface PaymentHistoryCardProps {
@@ -17,30 +16,56 @@ interface PaymentHistoryCardProps {
   onShareReceipt?: () => void;
 }
 
-const METHOD_CONFIG: Record<string, { icon: string; color: string }> = {
-  CASH: { icon: 'cash', color: '#10B981' },
-  BANK_TRANSFER: { icon: 'bank', color: '#3B82F6' },
-  MOBILE_MONEY: { icon: 'cellphone', color: '#8B5CF6' },
-  ORANGE_MONEY: { icon: 'cellphone', color: '#F97316' },
-  WAVE: { icon: 'wave', color: '#06B6D4' },
-  CARD: { icon: 'credit-card', color: '#6366F1' },
+const METHOD_ICONS: Record<string, string> = {
+  CASH: 'cash',
+  BANK_TRANSFER: 'bank',
+  MOBILE_MONEY: 'cellphone',
+  ORANGE_MONEY: 'cellphone',
+  WAVE: 'wave',
+  CARD: 'credit-card',
 };
 
-const STATUS_CONFIG: Record<string, { color: string; label: string }> = {
-  COMPLETED: { color: '#10B981', label: 'Complété' },
-  PENDING: { color: '#F59E0B', label: 'En attente' },
-  PROCESSING: { color: '#3B82F6', label: 'En cours' },
-  FAILED: { color: '#EF4444', label: 'Échoué' },
-  CANCELLED: { color: Theme.colors.text.muted, label: 'Annulé' },
-  REFUNDED: { color: '#8B5CF6', label: 'Remboursé' },
+const STATUS_LABELS: Record<string, string> = {
+  COMPLETED: 'Complété',
+  PENDING: 'En attente',
+  PROCESSING: 'En cours',
+  FAILED: 'Échoué',
+  CANCELLED: 'Annulé',
+  REFUNDED: 'Remboursé',
+};
+
+const getMethodColor = (method: string, colors: any) => {
+  switch (method) {
+    case 'CASH': return colors.status.success;
+    case 'BANK_TRANSFER': return colors.status.info;
+    case 'MOBILE_MONEY': return colors.primary.main;
+    case 'ORANGE_MONEY': return colors.status.warning;
+    case 'WAVE': return colors.status.info;
+    case 'CARD': return colors.status.info;
+    default: return colors.primary.main;
+  }
+};
+
+const getStatusColor = (status: string, colors: any) => {
+  switch (status) {
+    case 'COMPLETED': return colors.status.success;
+    case 'PENDING': return colors.status.warning;
+    case 'PROCESSING': return colors.status.info;
+    case 'FAILED': return colors.status.error;
+    case 'CANCELLED': return colors.text.disabled;
+    case 'REFUNDED': return colors.primary.main;
+    default: return colors.status.warning;
+  }
 };
 
 export const PaymentHistoryCard: React.FC<PaymentHistoryCardProps> = ({
   payment, onPress, onViewReceipt, onDownloadReceipt, onShareReceipt,
 }) => {
   const { colors } = useAppTheme();
-  const methodConfig = METHOD_CONFIG[payment.paymentMethod] || METHOD_CONFIG.CASH;
-  const statusConfig = STATUS_CONFIG[payment.status] || STATUS_CONFIG.PENDING;
+  const methodIcon = METHOD_ICONS[payment.paymentMethod] || METHOD_ICONS.CASH;
+  const methodColor = getMethodColor(payment.paymentMethod, colors);
+  const statusColor = getStatusColor(payment.status, colors);
+  const statusLabel = STATUS_LABELS[payment.status] || STATUS_LABELS.PENDING;
   const hasReceipt = !!(payment.receiptUrl || payment.metadata?.receiptUrl);
 
   const styles = useMemo(
@@ -68,14 +93,14 @@ export const PaymentHistoryCard: React.FC<PaymentHistoryCardProps> = ({
     <Card style={styles.card} mode="elevated">
       <View style={styles.content}>
         <View style={styles.header}>
-          <View style={[styles.iconContainer, { backgroundColor: methodConfig.color + '20' }]}>
-            <MaterialCommunityIcons name={methodConfig.icon as any} size={20} color={methodConfig.color} />
+          <View style={[styles.iconContainer, { backgroundColor: methodColor + '20' }]}>
+            <MaterialCommunityIcons name={methodIcon as any} size={20} color={methodColor} />
           </View>
           <Chip
-            style={[styles.chip, { backgroundColor: statusConfig.color + '20' }]}
-            textStyle={{ color: statusConfig.color, fontFamily: Fonts.bold, fontSize: 11 }}
+            style={[styles.chip, { backgroundColor: statusColor + '20' }]}
+            textStyle={{ color: statusColor, fontFamily: Fonts.bold, fontSize: 11 }}
           >
-            {statusConfig.label}
+            {statusLabel}
           </Chip>
         </View>
         <Text style={styles.amount}>{payment.amountFCFA.toLocaleString('fr-FR')} FCFA</Text>

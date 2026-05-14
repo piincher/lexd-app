@@ -1,5 +1,6 @@
 import React from 'react';
 import Svg, { Rect, G, Text as SvgText } from 'react-native-svg';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { SCREEN_WIDTH } from './goodsVolumeConstants';
 
 interface StackedBarChartProps {
@@ -15,6 +16,7 @@ export const StackedBarChart: React.FC<StackedBarChartProps> = ({
   width = SCREEN_WIDTH - 80,
   height = 30,
 }) => {
+  const { colors } = useAppTheme();
   let currentX = 0;
 
   return (
@@ -40,7 +42,7 @@ export const StackedBarChart: React.FC<StackedBarChartProps> = ({
                 x={x + barWidth / 2}
                 y={height / 2 + 4}
                 fontSize={10}
-                fill="#FFFFFF"
+                fill={colors.text.inverse}
                 textAnchor="middle"
                 fontWeight="600"
               >

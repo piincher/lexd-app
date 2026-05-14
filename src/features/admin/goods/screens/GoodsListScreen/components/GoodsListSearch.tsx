@@ -7,7 +7,8 @@ import React from 'react';
 import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/shared/constants/Theme';
 
 interface GoodsListSearchProps {
   value: string;
@@ -23,9 +24,11 @@ export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
   onClear,
   onFilterPress,
   hasActiveFilters = false,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <View style={styles.wrapper}>
-    <LinearGradient colors={['#FFFFFF', '#FAFAFA']} style={styles.container}>
+    <LinearGradient colors={[colors.background.card, colors.background.paper]} style={styles.container}>
       <Ionicons name="search" size={20} color={Theme.primary[400]} style={styles.icon} />
       <TextInput
         style={styles.input}
@@ -46,7 +49,8 @@ export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
       )}
     </LinearGradient>
   </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   wrapper: {

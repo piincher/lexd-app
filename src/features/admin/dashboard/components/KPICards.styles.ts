@@ -58,14 +58,14 @@ export const createKPICardsStyles = (colors: KPICardColors, isDark: boolean) =>
       backgroundColor: "rgba(255,255,255,0.2)",
     },
     heroTrendText: {
-      color: "#FFF",
+      color: colors.text.inverse,
       fontSize: 11,
       fontFamily: Fonts.bold,
     },
     heroValue: {
       fontSize: 34,
       fontFamily: Fonts.bold,
-      color: "#FFF",
+      color: colors.text.inverse,
       letterSpacing: -1,
     },
     heroLabel: {

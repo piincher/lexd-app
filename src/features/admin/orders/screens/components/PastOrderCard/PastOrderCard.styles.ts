@@ -1,13 +1,12 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { LOGISTICS_COLORS } from '../pastOrderConstants';
 
 const windowWidth = Dimensions.get('window').width;
 
-export const createStyles = () =>
+export const createStyles = (colors: any) =>
   StyleSheet.create({
     card: {
-      backgroundColor: LOGISTICS_COLORS.white,
+      backgroundColor: colors.background.card,
       borderRadius: 16,
       marginBottom: 20,
       overflow: 'hidden',
@@ -17,7 +16,7 @@ export const createStyles = () =>
       top: 80,
       left: 20,
       right: 20,
-      backgroundColor: LOGISTICS_COLORS.success,
+      backgroundColor: colors.status.success,
       padding: 15,
       borderRadius: 12,
       flexDirection: 'row',
@@ -26,7 +25,7 @@ export const createStyles = () =>
       zIndex: 10,
     },
     snackbarText: {
-      color: LOGISTICS_COLORS.white,
+      color: colors.text.inverse,
       marginLeft: 10,
       fontFamily: Fonts.medium,
     },
@@ -52,13 +51,13 @@ export const createStyles = () =>
     },
     clientName: {
       fontFamily: Fonts.bold,
-      color: LOGISTICS_COLORS.dark,
+      color: colors.text.primary,
       marginRight: 10,
     },
     statusBadge: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: LOGISTICS_COLORS.gray[100],
+      backgroundColor: colors.background.paper,
       borderRadius: 12,
       paddingHorizontal: 10,
       paddingVertical: 4,
@@ -71,11 +70,11 @@ export const createStyles = () =>
     },
     statusText: {
       fontFamily: Fonts.meduim,
-      color: LOGISTICS_COLORS.gray[700],
+      color: colors.text.secondary,
     },
     trackingCode: {
-      backgroundColor: '#1E90FF',
-      color: '#FFFFFF',
+      backgroundColor: colors.status.info,
+      color: colors.text.inverse,
       paddingVertical: 4,
       paddingHorizontal: 12,
       borderRadius: 8,
@@ -92,16 +91,16 @@ export const createStyles = () =>
     detailText: {
       marginLeft: 10,
       fontFamily: Fonts.regular,
-      color: LOGISTICS_COLORS.gray[700],
+      color: colors.text.secondary,
     },
     priceText: {
-      color: LOGISTICS_COLORS.success,
+      color: colors.status.success,
       fontFamily: Fonts.bold,
     },
     expandedContent: {
       marginTop: 15,
       borderTopWidth: 1,
-      borderTopColor: LOGISTICS_COLORS.gray[200],
+      borderTopColor: colors.border,
       paddingTop: 15,
     },
     actionsContainer: {
@@ -112,24 +111,24 @@ export const createStyles = () =>
     copyButton: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: LOGISTICS_COLORS.primary,
+      backgroundColor: colors.primary.main,
       padding: 14,
       borderRadius: 12,
     },
     copyButtonText: {
-      color: '#FFFFFF',
+      color: colors.text.inverse,
       marginLeft: 8,
       fontFamily: Fonts.bold,
     },
     expandButton: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: LOGISTICS_COLORS.gray[100],
+      backgroundColor: colors.background.paper,
       padding: 14,
       borderRadius: 12,
     },
     expandButtonText: {
-      color: LOGISTICS_COLORS.primary,
+      color: colors.primary.main,
       marginRight: 8,
       fontFamily: Fonts.meduim,
     },

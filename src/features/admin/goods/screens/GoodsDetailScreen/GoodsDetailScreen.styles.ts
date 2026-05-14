@@ -46,7 +46,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     marginRight: 8,
   },
   goodsIdText: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontSize: 18,
     fontWeight: '700',
     letterSpacing: 0.5,
@@ -146,7 +146,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     padding: 12,
   },
   photoLabel: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontSize: 13,
     fontWeight: '600',
   },
@@ -160,7 +160,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     borderRadius: 12,
   },
   photoBadgeText: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontSize: 12,
     fontWeight: '700',
   },

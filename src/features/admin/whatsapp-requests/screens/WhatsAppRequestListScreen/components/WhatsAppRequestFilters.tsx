@@ -5,6 +5,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { WhatsAppRequestStatus } from '../../../api/whatsappRequestApi';
 import { STATUS_FILTERS } from '../constants';
 
@@ -18,29 +19,32 @@ export const WhatsAppRequestFilters: React.FC<WhatsAppRequestFiltersProps> = ({
   selectedStatus,
   pendingCount,
   onSelectStatus,
-}) => (
-  <View style={styles.filterWrapper}>
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterList}>
-      {STATUS_FILTERS.map((filter) => {
-        const isSelected = selectedStatus === filter.key;
-        return (
-          <TouchableOpacity
-            key={filter.key}
-            style={[styles.filterPill, isSelected && { backgroundColor: filter.color }]}
-            onPress={() => onSelectStatus(filter.key)}
-          >
-            <Text style={[styles.filterText, isSelected && styles.filterTextActive]}>{filter.label}</Text>
-            {filter.key === 'PENDING' && pendingCount > 0 && (
-              <View style={[styles.badge, { backgroundColor: isSelected ? '#FFF' : filter.color }]}>
-                <Text style={[styles.badgeText, { color: isSelected ? filter.color : '#FFF' }]}>{pendingCount}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        );
-      })}
-    </ScrollView>
-  </View>
-);
+}) => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={styles.filterWrapper}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterList}>
+        {STATUS_FILTERS.map((filter) => {
+          const isSelected = selectedStatus === filter.key;
+          return (
+            <TouchableOpacity
+              key={filter.key}
+              style={[styles.filterPill, isSelected && { backgroundColor: filter.color }]}
+              onPress={() => onSelectStatus(filter.key)}
+            >
+              <Text style={[styles.filterText, isSelected && { color: colors.text.inverse }]}>{filter.label}</Text>
+              {filter.key === 'PENDING' && pendingCount > 0 && (
+                <View style={[styles.badge, { backgroundColor: isSelected ? colors.background.card : filter.color }]}>
+                  <Text style={[styles.badgeText, { color: isSelected ? filter.color : colors.text.inverse }]}>{pendingCount}</Text>
+                </View>
+              )}
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   filterWrapper: {
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
     color: Theme.neutral[600],
   },
   filterTextActive: {
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
   badge: {
     marginLeft: 8,

@@ -19,7 +19,7 @@ export const AgingChartEmpty: React.FC = () => {
           width: 48,
           height: 48,
           borderRadius: 16,
-          backgroundColor: isDark ? "rgba(16,185,129,0.15)" : "#D1FAE5",
+          backgroundColor: isDark ? "rgba(16,185,129,0.15)" : colors.feedback.successBg,
           justifyContent: "center",
           alignItems: "center",
           marginBottom: 10,
@@ -42,7 +42,7 @@ export const AgingChartEmpty: React.FC = () => {
   return (
     <View style={styles.empty}>
       <View style={styles.emptyIconWrap}>
-        <MaterialCommunityIcons name="check-decagram" size={24} color="#10B981" />
+        <MaterialCommunityIcons name="check-decagram" size={24} color={colors.status.success} />
       </View>
       <Text style={styles.emptyText}>Aucun impayé</Text>
       <Text style={styles.emptySubtext}>Situation saine</Text>

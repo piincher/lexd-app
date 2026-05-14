@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
   currentText: {
     fontSize: 10,
     fontWeight: '800',
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
   },
 });

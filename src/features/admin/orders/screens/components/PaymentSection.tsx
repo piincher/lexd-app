@@ -52,22 +52,22 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
     switch (paymentStatus) {
       case 'PAID':
         return {
-          color: '#4CAF50',
-          bgColor: '#E8F5E9',
+          color: colors.status.success,
+          bgColor: colors.background.paper,
           icon: 'check-circle',
           label: 'Paid',
         };
       case 'PARTIAL':
         return {
-          color: '#FF9800',
-          bgColor: '#FFF3E0',
+          color: colors.status.warning,
+          bgColor: colors.background.paper,
           icon: 'clock-outline',
           label: 'Partial Payment',
         };
       default:
         return {
-          color: '#F44336',
-          bgColor: '#FFEBEE',
+          color: colors.status.error,
+          bgColor: colors.background.paper,
           icon: 'alert-circle',
           label: 'Unpaid',
         };
@@ -177,14 +177,14 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
         </View>
         <View style={styles.breakdownRow}>
           <Text style={styles.breakdownLabel}>Amount Paid</Text>
-          <Text style={[styles.breakdownValue, { color: '#4CAF50' }]}>
+          <Text style={[styles.breakdownValue, { color: colors.status.success }]}>
             {paidAmount.toLocaleString()} FCFA
           </Text>
         </View>
         {paymentStatus !== 'PAID' && (
           <View style={styles.breakdownRow}>
             <Text style={styles.breakdownLabel}>Balance Due</Text>
-            <Text style={[styles.breakdownValue, { color: '#F44336' }]}>
+            <Text style={[styles.breakdownValue, { color: colors.status.error }]}>
               {balanceDue.toLocaleString()} FCFA
             </Text>
           </View>

@@ -64,7 +64,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       letterSpacing: 0.5,
     },
     priorityBadge: {
-      backgroundColor: '#FF5722',
+      backgroundColor: colors.status.error,
       borderRadius: 8,
       padding: 2,
       marginLeft: 6,

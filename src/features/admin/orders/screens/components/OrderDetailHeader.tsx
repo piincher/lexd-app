@@ -15,49 +15,47 @@ const parsePrice = (value: any): number => {
   return isNaN(num) ? 0 : num;
 };
 
-const STATUS_CONFIG: Record<string, { 
-  color: string; 
-  bgColor: string;
-  icon: string;
-  label: string;
-}> = {
-  PENDING: { 
-    color: '#9C27B0', 
-    bgColor: '#F3E5F5',
-    icon: 'clock-outline',
-    label: 'Pending'
-  },
-  Active: { 
-    color: '#4CAF50', 
-    bgColor: '#E8F5E9',
-    icon: 'check-circle',
-    label: 'Active'
-  },
-  'In Transit': { 
-    color: '#FF9800', 
-    bgColor: '#FFF3E0',
-    icon: 'truck-delivery',
-    label: 'In Transit'
-  },
-  Delivered: { 
-    color: '#2196F3', 
-    bgColor: '#E3F2FD',
-    icon: 'package-check',
-    label: 'Delivered'
-  },
-  Inactive: { 
-    color: '#757575', 
-    bgColor: '#F5F5F5',
-    icon: 'archive',
-    label: 'Inactive'
-  },
+const getStatusConfig = (colors: any, status: string) => {
+  const configs: Record<string, { color: string; bgColor: string; icon: string; label: string }> = {
+    PENDING: {
+      color: colors.status.warning,
+      bgColor: colors.background.paper,
+      icon: 'clock-outline',
+      label: 'Pending'
+    },
+    Active: {
+      color: colors.status.success,
+      bgColor: colors.background.paper,
+      icon: 'check-circle',
+      label: 'Active'
+    },
+    'In Transit': {
+      color: colors.status.warning,
+      bgColor: colors.background.paper,
+      icon: 'truck-delivery',
+      label: 'In Transit'
+    },
+    Delivered: {
+      color: colors.status.info,
+      bgColor: colors.background.paper,
+      icon: 'package-check',
+      label: 'Delivered'
+    },
+    Inactive: {
+      color: colors.text.disabled,
+      bgColor: colors.background.paper,
+      icon: 'archive',
+      label: 'Inactive'
+    },
+  };
+  return configs[status] || configs.Inactive;
 };
 
 export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) => {
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
-  const statusConfig = STATUS_CONFIG[order?.status] || STATUS_CONFIG.Inactive;
+  const statusConfig = getStatusConfig(colors, order?.status);
   const initials = order?.clientName?.split(' ').map((n: string) => n[0]).join('') || '?';
   const orderPrice = parsePrice(order?.calculatedTotal) || 
                      parsePrice(order?.priceTotal) || 
@@ -93,13 +91,13 @@ export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) =
 
       {/* Middle Row: Shipping Mode + Price */}
       <View style={styles.middleRow}>
-        <View style={[styles.shippingBadge, { backgroundColor: isAir ? '#E3F2FD' : '#E0F2F1' }]}>
+        <View style={[styles.shippingBadge, { backgroundColor: isAir ? colors.status.info + '15' : colors.status.success + '15' }]}>
           <MaterialCommunityIcons 
             name={isAir ? 'airplane' : 'ferry'} 
             size={14} 
-            color={isAir ? '#1976D2' : '#00796B'} 
+            color={isAir ? colors.status.info : colors.status.success} 
           />
-          <Text style={[styles.shippingText, { color: isAir ? '#1976D2' : '#00796B' }]}>
+          <Text style={[styles.shippingText, { color: isAir ? colors.status.info : colors.status.success }]}>
             {isAir ? 'Air Freight' : 'Sea Shipping'}
           </Text>
         </View>
@@ -123,11 +121,11 @@ export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) =
           <MaterialCommunityIcons 
             name={order?.paymentStatus === 'Paid' ? 'check-circle' : 'clock-outline'} 
             size={16} 
-            color={order?.paymentStatus === 'Paid' ? '#4CAF50' : '#FF9800'} 
+            color={order?.paymentStatus === 'Paid' ? colors.status.success : colors.status.warning} 
           />
           <Text style={[
             styles.paymentStatusText,
-            { color: order?.paymentStatus === 'Paid' ? '#4CAF50' : '#FF9800' }
+            { color: order?.paymentStatus === 'Paid' ? colors.status.success : colors.status.warning }
           ]}>
             {order?.paymentStatus === 'Paid' ? 'Paid' : 'Payment Pending'}
           </Text>

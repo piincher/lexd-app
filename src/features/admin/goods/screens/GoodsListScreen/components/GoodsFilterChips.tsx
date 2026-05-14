@@ -8,8 +8,9 @@ import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsStatus } from '../../../types';
+import { Theme } from '@src/shared/constants/Theme';
 
 const STATUS_FILTERS: { key: GoodsStatus | 'all'; label: string; icon: string }[] = [
   { key: 'all', label: 'Tous', icon: 'apps' },
@@ -31,7 +32,9 @@ interface GoodsFilterChipsProps {
 export const GoodsFilterChips: React.FC<GoodsFilterChipsProps> = ({
   selectedStatus,
   onSelect,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <View style={styles.wrapper}>
     <ScrollView
       horizontal
@@ -57,7 +60,7 @@ export const GoodsFilterChips: React.FC<GoodsFilterChipsProps> = ({
             <Ionicons
               name={filter.icon as any}
               size={16}
-              color={isSelected ? '#FFF' : Theme.neutral[500]}
+              color={isSelected ? colors.text.inverse : colors.text.secondary}
               style={styles.icon}
             />
             <Text style={[styles.text, isSelected && styles.textActive]}>
@@ -68,7 +71,8 @@ export const GoodsFilterChips: React.FC<GoodsFilterChipsProps> = ({
       })}
     </ScrollView>
   </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   wrapper: {

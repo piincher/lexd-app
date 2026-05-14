@@ -4,7 +4,7 @@ export const createStyles = (colors: any) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: colors.background.overlay,
       justifyContent: 'flex-end',
     },
     container: {

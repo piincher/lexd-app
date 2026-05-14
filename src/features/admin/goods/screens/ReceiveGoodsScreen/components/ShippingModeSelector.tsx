@@ -9,21 +9,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Icon } from 'react-native-paper';
-// Theme constant not available, using inline colors
-const themeColors = {
-  neutral: {
-    white: '#FFFFFF',
-    200: '#E5E7EB',
-    700: '#374151',
-    900: '#111827',
-  },
-  primary: {
-    main: '#22C55E',
-  },
-  status: {
-    error: '#DC2626',
-  },
-};
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export interface ShippingModeSelectorProps {
   value: 'AIR' | 'SEA';
@@ -47,6 +33,8 @@ export const ShippingModeSelector: React.FC<ShippingModeSelectorProps> = ({
   onChange,
   error,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <View style={styles.container}>
       <View style={styles.optionsContainer}>
@@ -58,8 +46,8 @@ export const ShippingModeSelector: React.FC<ShippingModeSelectorProps> = ({
               key={option.value}
               style={[
                 styles.option,
-                isSelected && styles.optionSelected,
-                error && !isSelected && styles.optionError,
+                isSelected && [styles.optionSelected, { backgroundColor: colors.primary.main, borderColor: colors.primary.main }],
+                error && !isSelected && [styles.optionError, { borderColor: colors.status.error }],
               ]}
               onPress={() => onChange(option.value)}
               activeOpacity={0.8}
@@ -72,14 +60,14 @@ export const ShippingModeSelector: React.FC<ShippingModeSelectorProps> = ({
                 size={24}
                 color={
                   isSelected
-                    ? themeColors.neutral.white
-                    : themeColors.primary.main
+                    ? colors.text.inverse
+                    : colors.primary.main
                 }
               />
               <Text
                 style={[
                   styles.optionLabel,
-                  isSelected && styles.optionLabelSelected,
+                  isSelected && [styles.optionLabelSelected, { color: colors.text.inverse }],
                 ]}
               >
                 {option.label}
@@ -90,7 +78,7 @@ export const ShippingModeSelector: React.FC<ShippingModeSelectorProps> = ({
       </View>
 
       {error && (
-        <Text style={styles.errorText}>{error}</Text>
+        <Text style={[styles.errorText, { color: colors.status.error }]}>{error}</Text>
       )}
     </View>
   );
@@ -102,20 +90,20 @@ const styles = StyleSheet.create({
   },
   optionsContainer: {
     flexDirection: 'row',
-    gap: 12, // Theme.spacing.md
+    gap: 12,
   },
   option: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8, // Theme.spacing.sm
-    paddingVertical: 12, // Theme.spacing.md
-    paddingHorizontal: 16, // Theme.spacing.lg
-    backgroundColor: themeColors.neutral.white,
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: 'transparent',
     borderWidth: 2,
-    borderColor: themeColors.neutral[200],
-    borderRadius: 12, // Theme.radius.lg
+    borderColor: 'transparent',
+    borderRadius: 12,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
@@ -123,30 +111,25 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   optionSelected: {
-    backgroundColor: themeColors.primary.main,
-    borderColor: themeColors.primary.main,
     elevation: 4,
-    shadowColor: '#22C55E',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
   optionError: {
-    borderColor: themeColors.status.error,
+    borderWidth: 2,
   },
   optionLabel: {
     fontSize: 15,
     fontWeight: '600',
-    color: themeColors.neutral[700],
+    color: '#666',
   },
   optionLabelSelected: {
-    color: themeColors.neutral.white,
     fontWeight: '700',
   },
   errorText: {
-    marginTop: 8, // Theme.spacing.sm
+    marginTop: 8,
     fontSize: 13,
-    color: themeColors.status.error,
   },
 });
 

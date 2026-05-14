@@ -7,7 +7,13 @@ interface AirwayBillRouteProps {
   departureAirport: string;
   arrivalAirport: string;
   flightLabel: string;
-  colors: { primary: { main: string }; text: { secondary: string; primary: string }; neutral: Record<string, string> };
+  colors: {
+    primary: { main: string };
+    text: { secondary: string; primary: string };
+    neutral: Record<string, string>;
+    border: string;
+    background: { default: string; card: string; paper: string };
+  };
 }
 
 export const AirwayBillRoute: React.FC<AirwayBillRouteProps> = ({

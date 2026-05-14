@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -50,30 +50,37 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
     ? String(cbm)
     : null;
 
+  const statColors = useMemo(() => ({
+    quantity: { color: isDark ? colors.status.info : colors.status.info, bgColor: isDark ? colors.status.info + '20' : colors.status.info + '15' },
+    weight: { color: isDark ? colors.status.warning : colors.status.warning, bgColor: isDark ? colors.status.warning + '20' : colors.status.warning + '15' },
+    cbm: { color: isDark ? colors.status.success : colors.status.success, bgColor: isDark ? colors.status.success + '20' : colors.status.success + '15' },
+    mode: { color: isDark ? colors.primary.main : colors.primary.main, bgColor: isDark ? colors.primary.main + '20' : colors.primary.main + '15' },
+  }), [colors, isDark]);
+
   return (
     <Surface style={styles.container}>
       <StatItem
         icon="package-variant-closed"
         value={String(parsedQuantity)}
         label="Colis"
-        color={isDark ? '#93C5FD' : '#1976D2'}
-        bgColor={isDark ? '#1E3A8A' : '#E3F2FD'}
+        color={statColors.quantity.color}
+        bgColor={statColors.quantity.bgColor}
       />
       <View style={styles.divider} />
       <StatItem
         icon="weight"
         value={parsedWeight ? `${parsedWeight} kg` : '--'}
         label="Poids"
-        color={isDark ? '#FDBA74' : '#E65100'}
-        bgColor={isDark ? '#7C2D12' : '#FFF3E0'}
+        color={statColors.weight.color}
+        bgColor={statColors.weight.bgColor}
       />
       <View style={styles.divider} />
       <StatItem
         icon="cube-outline"
         value={parsedCBM ? `${parsedCBM} m³` : '--'}
         label="CBM (m³)"
-        color={isDark ? '#86EFAC' : '#2E7D32'}
-        bgColor={isDark ? '#14532D' : '#E8F5E9'}
+        color={statColors.cbm.color}
+        bgColor={statColors.cbm.bgColor}
       />
       {shippingMode === 'sea' && (
         <>
@@ -82,8 +89,8 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
             icon="ferry"
             value={shippingMode}
             label="Mode"
-            color={isDark ? '#6FE7DE' : '#00796B'}
-            bgColor={isDark ? '#134E4A' : '#E0F2F1'}
+            color={statColors.mode.color}
+            bgColor={statColors.mode.bgColor}
           />
         </>
       )}

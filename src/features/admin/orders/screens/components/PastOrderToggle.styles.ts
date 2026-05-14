@@ -1,35 +1,68 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { LOGISTICS_COLORS } from './pastOrderConstants';
 
-export const createStyles = () =>
+export const createStyles = (colors: any) =>
   StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      padding: 4,
+      borderRadius: 12,
+      backgroundColor: colors.background.paper,
+      marginHorizontal: 16,
+      marginBottom: 16,
+    },
+    tab: {
+      flex: 1,
+      paddingVertical: 10,
+      alignItems: 'center',
+      borderRadius: 8,
+    },
+    activeTab: {
+      backgroundColor: colors.primary.main,
+    },
+    tabText: {
+      fontFamily: Fonts.semiBold,
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    activeTabText: {
+      color: colors.text.inverse,
+    },
+    indicator: {
+      width: 4,
+      height: 4,
+      borderRadius: 2,
+      backgroundColor: colors.primary.main,
+      marginTop: 4,
+    },
     toggleContainer: {
       flexDirection: 'row',
-      justifyContent: 'center',
-      marginVertical: 15,
-      backgroundColor: LOGISTICS_COLORS.gray[100],
-      borderRadius: 20,
-      padding: 5,
+      padding: 4,
+      borderRadius: 12,
+      backgroundColor: colors.background.paper,
+      marginHorizontal: 16,
+      marginBottom: 16,
     },
     toggleButton: {
-      paddingHorizontal: 25,
+      flex: 1,
       paddingVertical: 10,
-      borderRadius: 15,
+      alignItems: 'center',
+      borderRadius: 8,
     },
     activeToggle: {
-      backgroundColor: LOGISTICS_COLORS.primary,
+      backgroundColor: colors.primary.main,
     },
     toggleText: {
-      fontFamily: Fonts.meduim,
-      color: LOGISTICS_COLORS.gray[600],
+      fontFamily: Fonts.semiBold,
+      fontSize: 14,
+      color: colors.text.secondary,
     },
     activeToggleText: {
-      color: '#FFFFFF',
+      color: colors.text.inverse,
     },
     toggleSeparator: {
       width: 1,
-      height: 20,
-      backgroundColor: LOGISTICS_COLORS.gray[300],
+      backgroundColor: colors.border,
+      marginVertical: 8,
     },
   });

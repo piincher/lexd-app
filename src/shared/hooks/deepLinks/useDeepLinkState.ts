@@ -4,7 +4,6 @@
  * Manages pending deep link storage in AsyncStorage.
  */
 
-import { useCallback } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const PENDING_DEEP_LINK_KEY = "CHINALINK_PENDING_DEEP_LINK";
@@ -31,12 +30,4 @@ export async function getPendingDeepLink(): Promise<string | null> {
   }
 }
 
-export function useDeepLinkState() {
-  const storePending = useCallback(
-    async (url: string) => storePendingDeepLink(url),
-    []
-  );
-  const getPending = useCallback(async () => getPendingDeepLink(), []);
 
-  return { storePending, getPending };
-}

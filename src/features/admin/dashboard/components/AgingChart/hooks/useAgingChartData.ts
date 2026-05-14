@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface ChartDataItem {
   value: number;
@@ -13,6 +14,7 @@ export const useAgingChartData = (aging: {
   "31-60": number;
   "60+": number;
 }) => {
+  const { colors } = useAppTheme();
   const total = aging["0-30"] + aging["31-60"] + aging["60+"];
 
   const data: ChartDataItem[] = useMemo(
@@ -20,22 +22,22 @@ export const useAgingChartData = (aging: {
       {
         value: aging["0-30"],
         label: "0-30j",
-        frontColor: "#10B981",
-        gradientColor: "#34D399",
+        frontColor: colors.status.success,
+        gradientColor: colors.primary.light,
         percentage: total > 0 ? Math.round((aging["0-30"] / total) * 100) : 0,
       },
       {
         value: aging["31-60"],
         label: "31-60j",
-        frontColor: "#F59E0B",
-        gradientColor: "#FBBF24",
+        frontColor: colors.status.warning,
+        gradientColor: colors.accent.goldLight,
         percentage: total > 0 ? Math.round((aging["31-60"] / total) * 100) : 0,
       },
       {
         value: aging["60+"],
         label: "60+j",
-        frontColor: "#EF4444",
-        gradientColor: "#F87171",
+        frontColor: colors.status.error,
+        gradientColor: colors.accent.redLight,
         percentage: total > 0 ? Math.round((aging["60+"] / total) * 100) : 0,
       },
     ],

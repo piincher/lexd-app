@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { styles } from "./ContainerReconciliationModal.styles";
+import { createStyles } from "./ContainerReconciliationModal.styles";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ReconciliationPreviewProps {
   estimatedCost: number;
@@ -11,7 +12,10 @@ interface ReconciliationPreviewProps {
 
 export const ReconciliationPreview: React.FC<ReconciliationPreviewProps> = ({
   estimatedCost, actualCost, reconciledProfit, profitGap,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
+  return (
   <View style={styles.previewBox}>
     <Text style={styles.previewTitle}>Prévisualisation</Text>
     <View style={styles.previewRow}>
@@ -25,17 +29,18 @@ export const ReconciliationPreview: React.FC<ReconciliationPreviewProps> = ({
     <View style={styles.divider} />
     <View style={styles.previewRow}>
       <Text style={styles.previewLabel}>Bénéfice réconcilié</Text>
-      <Text style={[styles.previewValueBold, { color: reconciledProfit >= 0 ? "#10B981" : "#EF4444" }]}>
+      <Text style={[styles.previewValueBold, { color: reconciledProfit >= 0 ? colors.status.success : colors.status.error }]}>
         {Math.round(reconciledProfit).toLocaleString("fr-FR")} FCFA
       </Text>
     </View>
     {profitGap !== 0 && (
       <View style={styles.previewRow}>
         <Text style={styles.previewLabel}>Écart</Text>
-        <Text style={[styles.previewValue, { color: profitGap >= 0 ? "#10B981" : "#EF4444" }]}>
+        <Text style={[styles.previewValue, { color: profitGap >= 0 ? colors.status.success : colors.status.error }]}>
           {profitGap >= 0 ? "+" : ""}{Math.round(profitGap).toLocaleString("fr-FR")} FCFA
         </Text>
       </View>
     )}
   </View>
-);
+  );
+};

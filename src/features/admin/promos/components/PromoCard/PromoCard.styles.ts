@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1.5,
     borderColor: "#d4a843",
-    backgroundColor: "#FFFBF0",
+    backgroundColor: "Theme.colors.status.warning + '10'",
   },
   editButtonText: {
     fontSize: 14,
@@ -92,8 +92,8 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 10,
     borderWidth: 1.5,
-    borderColor: "#FCA5A5",
-    backgroundColor: "#FEF2F2",
+    borderColor: "Theme.colors.status.error + '40'",
+    backgroundColor: "Theme.colors.status.error + '12'",
   },
   deactivateButtonText: {
     fontSize: 14,

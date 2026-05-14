@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   },
   cardSelected: {
     borderColor: "#d4a843",
-    backgroundColor: "#FFFBF0",
+    backgroundColor: "Theme.colors.status.warning + '10'",
   },
   info: {
     flex: 1,
@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     color: Theme.colors.text.primary,
   },
   badge: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: "Theme.colors.status.warning + '15'",
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 12,

@@ -36,7 +36,7 @@ export const useRecipientSelectorStyles = () =>
           color: Theme.neutral[500],
         },
         modeTextActive: {
-          color: '#FFF',
+          color: 'Theme.colors.text.inverse',
         },
         dateRow: {
           flexDirection: 'row',
@@ -76,7 +76,7 @@ export const useRecipientSelectorStyles = () =>
           fontSize: 13,
           fontFamily: Fonts.semiBold,
           fontWeight: '600',
-          color: '#FFF',
+          color: 'Theme.colors.text.inverse',
         },
         searchRow: {
           flexDirection: 'row',
@@ -179,7 +179,7 @@ export const useRecipientSelectorStyles = () =>
           color: Theme.neutral[600],
         },
         avatarTextSelected: {
-          color: '#FFF',
+          color: 'Theme.colors.text.inverse',
         },
         recipientInfo: {
           flex: 1,

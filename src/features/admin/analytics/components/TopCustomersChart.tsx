@@ -10,7 +10,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { CustomerAnalyticsItem } from '../types';
 import { CustomerChartRow } from './CustomerChartRow';
-import { styles } from './TopCustomersChart.styles';
+import { createStyles } from './TopCustomersChart.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface TopCustomersChartProps {
   customers: CustomerAnalyticsItem[];
@@ -45,6 +46,8 @@ export const TopCustomersChart: React.FC<TopCustomersChartProps> = ({
   customers,
   maxItems = 10,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   const displayCustomers = customers.slice(0, maxItems);
   const maxRevenue = Math.max(...displayCustomers.map((c) => c.totalRevenueFCFA), 1);
 

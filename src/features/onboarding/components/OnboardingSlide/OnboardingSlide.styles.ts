@@ -6,7 +6,7 @@ interface SlideStyleOptions {
   viewportHeight: number;
 }
 
-export const createStyles = ({ width, viewportHeight }: SlideStyleOptions) => {
+export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOptions & { colors: any }) => {
   const isNarrow = width < 360;
   const isShort = viewportHeight < 700;
   const horizontalPadding = isNarrow ? 18 : 24;
@@ -68,7 +68,7 @@ export const createStyles = ({ width, viewportHeight }: SlideStyleOptions) => {
       fontSize: isNarrow ? 24 : 28,
       fontFamily: Fonts.black,
       fontWeight: "800",
-      color: "#FFFFFF",
+      color: colors.text.inverse,
       textAlign: "center",
       marginBottom: isShort ? 10 : 14,
       lineHeight: isNarrow ? 31 : 36,
@@ -80,7 +80,7 @@ export const createStyles = ({ width, viewportHeight }: SlideStyleOptions) => {
       maxWidth: 520,
       fontSize: isNarrow ? 14 : 16,
       fontFamily: Fonts.regular,
-      color: "rgba(255, 255, 255, 0.92)",
+      color: colors.text.inverse + "EB",
       textAlign: "center",
       lineHeight: isNarrow ? 21 : 24,
       paddingHorizontal: isNarrow ? 0 : 8,
@@ -97,11 +97,11 @@ export const createStyles = ({ width, viewportHeight }: SlideStyleOptions) => {
       fontFamily: Fonts.medium,
     },
     counterCurrent: {
-      color: "#FFFFFF",
+      color: colors.text.inverse,
       fontWeight: "700",
     },
     counterTotal: {
-      color: "rgba(255, 255, 255, 0.72)",
+      color: colors.text.inverse + "B8",
     },
   });
 };

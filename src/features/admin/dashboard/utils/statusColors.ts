@@ -1,12 +1,13 @@
 /**
  * Status color utilities
  */
+import { Theme } from "@src/constants/Theme";
 
 export const STATUS_COLORS: Record<string, string> = {
-  Active: "#4CAF50",
-  "In Transit": "#FF9800",
-  Delivered: "#2196F3",
-  default: "#757575",
+  Active: Theme.status.success,
+  "In Transit": Theme.status.warning,
+  Delivered: Theme.status.info,
+  default: Theme.neutral[500],
 };
 
 export const getStatusColor = (status: string): string =>

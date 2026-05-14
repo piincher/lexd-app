@@ -55,7 +55,7 @@ const makeStyles = () =>
          fontSize: 18,
          fontFamily: Fonts.bold,
          fontWeight: '700',
-         color: '#FFF',
+         color: 'Theme.colors.text.inverse',
          marginTop: 4,
       },
       contactSubtitle: {

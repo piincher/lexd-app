@@ -45,7 +45,7 @@ const ActiveOrderDetails = ({
           <NotificationBell
             onPress={() => navigation.navigate('Notifications' as never)}
             size={22}
-            color="#1A1A2E"
+            color={colors.text.primary}
           />
         }
       />

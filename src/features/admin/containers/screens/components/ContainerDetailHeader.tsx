@@ -87,7 +87,7 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
     >
       <View style={styles.headerTop}>
         <TouchableOpacity style={styles.backIconButton} onPress={onBack}>
-          <Ionicons name="arrow-back" size={24} color="#FFF" />
+          <Ionicons name="arrow-back" size={24} color={colors.text.inverse} />
         </TouchableOpacity>
 
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
@@ -104,14 +104,14 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
           <NotificationBell
             onPress={() => navigation.navigate('Notifications' as never)}
             size={22}
-            color="#FFF"
+            color={colors.text.inverse}
           />
         </View>
       </View>
 
       <Animated.View entering={FadeInUp.delay(100)} style={styles.headerContent}>
         <View style={styles.containerNumberContainer}>
-          <Ionicons name="cube" size={32} color="#FFF" />
+          <Ionicons name="cube" size={32} color={colors.text.inverse} />
           <Text style={styles.containerNumber}>{containerNumber || ''}</Text>
         </View>
 

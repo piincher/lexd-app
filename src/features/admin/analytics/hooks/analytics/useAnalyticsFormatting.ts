@@ -3,6 +3,8 @@
  * Utility hooks for formatting analytics values
  */
 
+import { useAppTheme } from '@src/providers/ThemeProvider';
+
 export const useFormatCurrency = () => {
   return (amount: number, currency = 'XOF') => {
     if (amount === undefined || amount === null) return '-';
@@ -48,9 +50,10 @@ export const useCompactNumberFormat = () => {
 };
 
 export const useTrendIndicator = () => {
+  const { colors } = useAppTheme();
   return (value: number) => {
-    if (value > 0) return { icon: 'trending-up', color: '#10B981', text: `+${value.toFixed(1)}%` };
-    if (value < 0) return { icon: 'trending-down', color: '#EF4444', text: `${value.toFixed(1)}%` };
-    return { icon: 'trending-neutral', color: '#6B7280', text: '0%' };
+    if (value > 0) return { icon: 'trending-up', color: colors.status.success, text: `+${value.toFixed(1)}%` };
+    if (value < 0) return { icon: 'trending-down', color: colors.status.error, text: `${value.toFixed(1)}%` };
+    return { icon: 'trending-neutral', color: colors.text.muted, text: '0%' };
   };
 };

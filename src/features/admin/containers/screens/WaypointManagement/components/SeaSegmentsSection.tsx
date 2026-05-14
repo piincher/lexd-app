@@ -2,14 +2,16 @@ import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { SeaSegment } from '../../../types';
+import { Theme } from '@src/constants/Theme';
 
 interface SeaSegmentsSectionProps {
   seaSegments: SeaSegment[];
 }
 
 export const SeaSegmentsSection: React.FC<SeaSegmentsSectionProps> = ({ seaSegments }) => {
+  const { colors } = useAppTheme();
   return (
     <ScrollView style={styles.segmentsContainer}>
       <Animated.View entering={FadeInUp.delay(100)} style={styles.segmentsHeader}>
@@ -21,7 +23,7 @@ export const SeaSegmentsSection: React.FC<SeaSegmentsSectionProps> = ({ seaSegme
         <Animated.View key={`sea-${index}`} entering={FadeInUp.delay(200 + index * 100)} style={styles.segmentCard}>
           <View style={styles.segmentHeader}>
             <View style={styles.segmentIconContainer}>
-              <Ionicons name="boat-outline" size={24} color={Theme.neutral.white} />
+              <Ionicons name="boat-outline" size={24} color={colors.text.inverse} />
             </View>
             <View style={styles.segmentInfo}>
               <Text style={styles.segmentTitle}>{segment.fromPort} → {segment.toPort}</Text>

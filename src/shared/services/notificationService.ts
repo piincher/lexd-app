@@ -44,6 +44,7 @@ export interface NotificationData {
   certificateUrl?: string | null;
   certificateMongoId?: string;
   goodsId?: string;
+  deepLink?: string;
   message?: string;
   badge?: number;
   unreadCount?: number;

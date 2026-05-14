@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+﻿import React, { useMemo } from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
@@ -17,7 +17,7 @@ interface DashboardHeaderProps {
 const getGreeting = () => {
   const h = new Date().getHours();
   if (h >= 5 && h < 12) return "Bonjour";
-  if (h >= 12 && h < 18) return "Bon après-midi";
+  if (h >= 12 && h < 18) return "Bon apr├¿s-midi";
   return "Bonsoir";
 };
 
@@ -30,7 +30,8 @@ const getFormattedDate = () =>
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
   const navigation = useNavigation<any>();
-  const { isDark } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors);
 
   const initials = useMemo(
     () =>
@@ -54,7 +55,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
 
       <View style={styles.topRow}>
         <View style={styles.dateBadge}>
-          <MaterialCommunityIcons name="calendar-today" size={12} color="#FFF" />
+          <MaterialCommunityIcons name="calendar-today" size={12} color={colors.text.inverse} />
           <Text style={styles.dateText}>{getFormattedDate()}</Text>
         </View>
 
@@ -68,13 +69,13 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
             hitSlop={8}
             accessibilityLabel="Recherche"
           >
-            <MaterialCommunityIcons name="magnify" size={20} color="#FFF" />
+            <MaterialCommunityIcons name="magnify" size={20} color={colors.text.inverse} />
           </Pressable>
           <View style={styles.iconBtn}>
             <NotificationBell
               onPress={() => navigation.navigate("Notifications")}
               size={20}
-              color="#FFF"
+              color={colors.text.inverse}
             />
           </View>
         </View>
@@ -84,9 +85,9 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
         <View style={styles.greetingBlock}>
           <Text style={styles.greeting}>{getGreeting()},</Text>
           <Text style={styles.name} numberOfLines={1}>
-            {user?.firstName || "Admin"} 👋
+            {user?.firstName || "Admin"} ≡ƒæï
           </Text>
-          <Text style={styles.subtitle}>Voici votre aperçu du jour</Text>
+          <Text style={styles.subtitle}>Voici votre aper├ºu du jour</Text>
         </View>
 
         <View style={styles.avatarWrap}>
@@ -102,7 +103,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     borderRadius: 24,
     padding: 20,
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     borderColor: "rgba(255,255,255,0.2)",
   },
   dateText: {
-    color: "#FFF",
+    color: colors.text.inverse,
     fontSize: 11,
     fontFamily: Fonts.bold,
     textTransform: "capitalize",
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 26,
     fontFamily: Fonts.bold,
-    color: "#FFF",
+    color: colors.text.inverse,
     marginTop: 2,
     letterSpacing: -0.5,
   },
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
   avatarText: {
     fontSize: 20,
     fontFamily: Fonts.bold,
-    color: "#FFF",
+    color: colors.text.inverse,
     letterSpacing: -0.5,
   },
 });

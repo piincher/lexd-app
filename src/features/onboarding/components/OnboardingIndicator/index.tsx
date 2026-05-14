@@ -2,8 +2,9 @@
  * OnboardingIndicator - Modern animated dot indicators
  */
 
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet, Animated } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface OnboardingIndicatorProps {
   scrollX: Animated.Value;
@@ -20,6 +21,8 @@ export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
   count,
   width = 0,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.container}>
       {Array.from({ length: count }).map((_, i) => {
@@ -64,18 +67,19 @@ export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  dot: {
-    height: DOT_SIZE,
-    borderRadius: DOT_SIZE / 2,
-    backgroundColor: "#FFFFFF",
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 8,
+    },
+    dot: {
+      height: DOT_SIZE,
+      borderRadius: DOT_SIZE / 2,
+      backgroundColor: colors.text.inverse,
+    },
+  });
 
 export default OnboardingIndicator;

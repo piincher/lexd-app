@@ -32,7 +32,7 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
   return (
     <Animated.View entering={FadeInUp.delay(300)} style={styles.card}>
       <View style={styles.cardHeader}>
-        <Ionicons name="time" size={20} color="#7C3AED" />
+        <Ionicons name="time" size={20} color={colors.primary.main} />
         <Text style={styles.cardTitle}>Chronologie</Text>
       </View>
 
@@ -53,7 +53,7 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
                 ]}
               >
                 {isCompleted && (
-                  <Ionicons name="checkmark" size={12} color="#FFF" />
+                  <Ionicons name="checkmark" size={12} color={colors.text.inverse} />
                 )}
               </View>
 

@@ -4,8 +4,9 @@ import { Card, Text, Chip, IconButton, Divider } from "react-native-paper";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 
 import { ExportLog } from "../../types";
-import { ENTITY_CONFIG, FORMAT_ICONS, STATUS_COLORS } from "../../constants";
+import { ENTITY_CONFIG, FORMAT_ICONS } from "../../constants";
 import { styles } from "./ExportListItem.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface ExportListItemProps {
   item: ExportLog;
@@ -13,11 +14,25 @@ interface ExportListItemProps {
   isDownloading: boolean;
 }
 
+const getStatusColor = (status: string, colors: any) => {
+  switch (status) {
+    case "COMPLETED": return colors.status.success;
+    case "PENDING": return colors.status.warning;
+    case "PROCESSING": return colors.status.info;
+    case "FAILED": return colors.status.error;
+    case "CANCELLED": return colors.text.disabled;
+    default: return colors.text.disabled;
+  }
+};
+
 export const ExportListItem: React.FC<ExportListItemProps> = ({
   item,
   onDownload,
   isDownloading,
 }) => {
+  const { colors } = useAppTheme();
+  const statusColor = getStatusColor(item.metadata.status, colors);
+
   return (
     <Card style={styles.exportCard}>
       <Card.Content>
@@ -45,8 +60,7 @@ export const ExportListItem: React.FC<ExportListItemProps> = ({
                 style={[
                   styles.statusChip,
                   {
-                    backgroundColor:
-                      STATUS_COLORS[item.metadata.status] || "#757575",
+                    backgroundColor: statusColor,
                   },
                 ]}
                 textStyle={styles.statusChipText}

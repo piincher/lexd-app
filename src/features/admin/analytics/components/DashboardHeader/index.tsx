@@ -1,5 +1,6 @@
 import React from 'react';
 import { Appbar } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { styles } from './DashboardHeader.styles';
 
 interface DashboardHeaderProps {
@@ -15,6 +16,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   onRefresh,
   onExport,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <Appbar.Header style={styles.header}>
       <Appbar.Content
@@ -24,7 +26,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       <Appbar.Action
         icon={autoRefresh ? 'autorenew' : 'autorenew-off'}
         onPress={onToggleAutoRefresh}
-        color={autoRefresh ? '#10B981' : undefined}
+        color={autoRefresh ? colors.status.success : undefined}
       />
       <Appbar.Action icon="refresh" onPress={onRefresh} />
       <Appbar.Action icon="export" onPress={onExport} />

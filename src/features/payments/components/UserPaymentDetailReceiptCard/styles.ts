@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 
 export const styles = StyleSheet.create({
   card: {
@@ -45,7 +46,7 @@ export const styles = StyleSheet.create({
   viewReceiptText: {
     fontSize: 14,
     fontFamily: Fonts.semiBold,
-    color: '#FFFFFF',
+    color: 'Theme.colors.text.inverse',
   },
   noReceiptContainer: {
     alignItems: 'center',

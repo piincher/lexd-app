@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, Button } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useTheme } from "react-native-paper";
-import { styles, SCANNER_SIZE } from "./QRScanner.styles";
+import { useQRScannerStyles, SCANNER_SIZE } from "./QRScanner.styles";
 import { ScannerOverlay } from "./ScannerOverlay";
 
 let BarCodeScanner: any;
@@ -25,6 +25,7 @@ interface QRScannerProps {
 export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onCancel }) => {
   const { colors } = useAppTheme();
   const theme = useTheme();
+  const styles = useQRScannerStyles();
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [torchEnabled, setTorchEnabled] = useState(false);
@@ -74,7 +75,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onCancel }) => {
   if (hasPermission === false) {
     return (
       <View style={styles.container}>
-        <MaterialCommunityIcons name="camera-off" size={64} color="#666" />
+        <MaterialCommunityIcons name="camera-off" size={64} color={colors.text.disabled} />
         <Text style={[styles.permissionTitle, { color: colors.text.primary }]}>
           Accès caméra refusé
         </Text>

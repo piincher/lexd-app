@@ -2,7 +2,7 @@
  * CargoBagDetailCard - Expanded detail view of a cargo bag
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -28,15 +28,6 @@ interface CargoBagDetailCardProps {
   onDelete: () => void;
 }
 
-const STATUS_CONFIG: Record<CargoBagStatus, { label: string; variant: 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info' | 'custom'; color: string }> = {
-  PACKED: { label: 'Emballé', variant: 'custom', color: Theme.colors.text.secondary },
-  CHECKED_IN: { label: 'Enregistré', variant: 'info', color: '#3B82F6' },
-  LOADED: { label: 'Chargé', variant: 'warning', color: '#D4AF37' },
-  IN_TRANSIT: { label: 'En transit', variant: 'info', color: '#3B82F6' },
-  ARRIVED: { label: 'Arrivé', variant: 'success', color: '#16A34A' },
-  CLEARED: { label: 'Dédouané', variant: 'custom', color: '#4ECDC4' },
-};
-
 export const CargoBagDetailCard: React.FC<CargoBagDetailCardProps> = ({
   cargoBag,
   goods,
@@ -46,6 +37,14 @@ export const CargoBagDetailCard: React.FC<CargoBagDetailCardProps> = ({
   onDelete,
 }) => {
   const { colors } = useAppTheme();
+  const STATUS_CONFIG = useMemo<Record<CargoBagStatus, { label: string; variant: 'default' | 'primary' | 'success' | 'warning' | 'error' | 'info' | 'custom'; color: string }>>(() => ({
+    PACKED: { label: 'Emballé', variant: 'custom', color: colors.text.secondary },
+    CHECKED_IN: { label: 'Enregistré', variant: 'info', color: colors.status.info },
+    LOADED: { label: 'Chargé', variant: 'warning', color: colors.status.warning },
+    IN_TRANSIT: { label: 'En transit', variant: 'info', color: colors.status.info },
+    ARRIVED: { label: 'Arrivé', variant: 'success', color: colors.status.success },
+    CLEARED: { label: 'Dédouané', variant: 'custom', color: colors.accent.mint },
+  }), [colors]);
   const statusConfig = STATUS_CONFIG[cargoBag.status];
   const isEmpty = goods.length === 0;
 
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
   statItem: { flex: 1, alignItems: 'center', paddingVertical: 10, borderRadius: 10 },
   statValue: { fontSize: 16, fontWeight: '800' },
   statLabel: { fontSize: 12, fontWeight: '500', marginTop: 2 },
-  notesRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: 'rgba(150,150,150,0.1)' },
+  notesRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 6, marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: Theme.colors.divider },
   notesText: { fontSize: 13, fontWeight: '500', flex: 1, lineHeight: 18 },
   sectionTitle: { fontSize: 16, fontWeight: '700', marginBottom: 12 },
   goodsCard: { marginBottom: 8 },

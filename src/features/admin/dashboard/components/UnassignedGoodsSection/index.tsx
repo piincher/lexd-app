@@ -31,7 +31,7 @@ export const UnassignedGoodsSection: React.FC = () => {
           backgroundColor: colors.background.card,
           borderRadius: 18,
           borderWidth: 1,
-          borderColor: isDark ? "rgba(239,68,68,0.3)" : "#FECACA",
+          borderColor: isDark ? "rgba(239,68,68,0.3)" : colors.feedback.errorBg,
           padding: 20,
           alignItems: "center",
           ...Theme.shadows.sm,
@@ -40,7 +40,7 @@ export const UnassignedGoodsSection: React.FC = () => {
           width: 52,
           height: 52,
           borderRadius: 16,
-          backgroundColor: isDark ? "rgba(239,68,68,0.18)" : "#FEE2E2",
+          backgroundColor: isDark ? "rgba(239,68,68,0.18)" : colors.feedback.errorBg,
           justifyContent: "center",
           alignItems: "center",
           marginBottom: 12,
@@ -65,12 +65,12 @@ export const UnassignedGoodsSection: React.FC = () => {
           paddingHorizontal: 16,
           paddingVertical: 10,
           borderRadius: 10,
-          backgroundColor: isDark ? "rgba(239,68,68,0.18)" : "#FEE2E2",
+          backgroundColor: isDark ? "rgba(239,68,68,0.18)" : colors.feedback.errorBg,
         },
         retryText: {
           fontSize: 12,
           fontFamily: Fonts.bold,
-          color: "#EF4444",
+          color: colors.status.error,
         },
       }),
     [colors, isDark]
@@ -89,7 +89,7 @@ export const UnassignedGoodsSection: React.FC = () => {
       <View style={styles.container}>
         <View style={styles.errorCard}>
           <View style={styles.errorIconWrap}>
-            <MaterialCommunityIcons name="cloud-alert" size={26} color="#EF4444" />
+            <MaterialCommunityIcons name="cloud-alert" size={26} color={colors.status.error} />
           </View>
           <Text style={styles.errorTitle}>Erreur de chargement</Text>
           <Text style={styles.errorSubtitle}>
@@ -102,7 +102,7 @@ export const UnassignedGoodsSection: React.FC = () => {
               pressed && { opacity: 0.7 },
             ]}
           >
-            <MaterialCommunityIcons name="refresh" size={14} color="#EF4444" />
+            <MaterialCommunityIcons name="refresh" size={14} color={colors.status.error} />
             <Text style={styles.retryText}>Réessayer</Text>
           </Pressable>
         </View>

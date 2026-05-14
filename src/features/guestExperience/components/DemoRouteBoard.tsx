@@ -43,12 +43,12 @@ export const DemoRouteBoard: React.FC<Props> = ({ shipment }) => {
                       styles.circle,
                       done && { backgroundColor: colors.status.success },
                       active && { backgroundColor: colors.status.info },
-                      !done && !active && { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : colors.neutral[200] },
+                      !done && !active && { backgroundColor: colors.neutral[200] },
                     ]}>
                       {done ? (
-                        <FontAwesome6 name="check" size={12} color="#FFFFFF" />
+                        <FontAwesome6 name="check" size={12} color={colors.text.inverse} />
                       ) : (
-                        <FontAwesome6 name={wp.icon as any} size={12} color={active ? '#FFFFFF' : colors.text.secondary} />
+                        <FontAwesome6 name={wp.icon as any} size={12} color={active ? colors.text.inverse : colors.text.secondary} />
                       )}
                     </View>
                   </View>
@@ -85,5 +85,5 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
     circle: { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center', zIndex: 1 },
     date: { fontFamily: Fonts.medium, fontSize: 10, color: colors.text.secondary, textAlign: 'center' },
     connector: { width: 36, height: 44, justifyContent: 'center' },
-    connectorLine: { height: 2, borderRadius: 1, backgroundColor: isDark ? 'rgba(255,255,255,0.12)' : colors.neutral[300] },
+    connectorLine: { height: 2, borderRadius: 1, backgroundColor: colors.neutral[300] },
   });

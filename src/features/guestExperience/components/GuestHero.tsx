@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -38,13 +38,18 @@ const Circle: React.FC<{ s: number; style?: Record<string, unknown> }> = ({ s, s
 
 export const GuestHero: React.FC = () => {
   const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  const gradientColors = isDark
+    ? ['#15803D', '#166534', '#14532D']
+    : ['#22C55E', '#10B981', '#059669'];
+
   return (
     <Animated.View entering={FadeInDown.duration(800)} style={[styles.wrap, { marginBottom: -12 }]}>
       <View style={[styles.gradWrap, { borderBottomLeftRadius: 16, borderBottomRightRadius: 16, overflow: 'hidden' }]}>
-        <LinearGradient colors={['#22C55E', '#10B981', '#059669']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.grad}>
+        <LinearGradient colors={gradientColors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.grad}>
           <View style={styles.content}>
             <View style={styles.badge}>
-              <FontAwesome6 name="eye" size={12} color="#FFFFFF" />
+              <FontAwesome6 name="eye" size={12} color={colors.text.inverse} />
               <Text style={styles.badgeText}>Mode démo</Text>
             </View>
             <Text style={styles.title}>Découvrez ChinaLink Express</Text>
@@ -55,19 +60,20 @@ export const GuestHero: React.FC = () => {
           <Circle s={100} style={{ bottom: -20, left: -20 }} />
         </LinearGradient>
       </View>
-      <View style={[styles.overlap, { backgroundColor: isDark ? colors.background.paper : '#FFFFFF', shadowColor: isDark ? '#000' : 'rgba(0,0,0,0.08)' }]} />
+      <View style={[styles.overlap, { backgroundColor: colors.background.paper, shadowColor: isDark ? '#000' : 'rgba(0,0,0,0.08)' }]} />
     </Animated.View>
   );
 };
 
-const styles = StyleSheet.create({
-  wrap: { width: '100%', position: 'relative' },
-  gradWrap: { overflow: 'hidden' },
-  grad: { minHeight: 220, paddingTop: 24, paddingBottom: 28 },
-  content: { paddingHorizontal: 20 },
-  badge: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 6, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6, backgroundColor: 'rgba(0,0,0,0.35)' },
-  badgeText: { color: '#FFFFFF', fontFamily: Fonts.bold, fontSize: 12, letterSpacing: 0.3 },
-  title: { color: '#FFFFFF', fontFamily: Fonts.bold, fontSize: 28, lineHeight: 34, marginTop: 16 },
-  subtitle: { color: 'rgba(255,255,255,0.8)', fontFamily: Fonts.regular, fontSize: 15, lineHeight: 22, marginTop: 8, maxWidth: '92%' },
-  overlap: { position: 'absolute', bottom: -12, left: 24, right: 24, height: 28, borderRadius: 12, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 4 },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    wrap: { width: '100%', position: 'relative' },
+    gradWrap: { overflow: 'hidden' },
+    grad: { minHeight: 220, paddingTop: 24, paddingBottom: 28 },
+    content: { paddingHorizontal: 20 },
+    badge: { alignSelf: 'flex-start', flexDirection: 'row', alignItems: 'center', gap: 6, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6, backgroundColor: colors.text.primary + '59' },
+    badgeText: { color: colors.text.inverse, fontFamily: Fonts.bold, fontSize: 12, letterSpacing: 0.3 },
+    title: { color: colors.text.inverse, fontFamily: Fonts.bold, fontSize: 28, lineHeight: 34, marginTop: 16 },
+    subtitle: { color: colors.text.inverse + 'CC', fontFamily: Fonts.regular, fontSize: 15, lineHeight: 22, marginTop: 8, maxWidth: '92%' },
+    overlap: { position: 'absolute', bottom: -12, left: 24, right: 24, height: 28, borderRadius: 12, shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 4 },
+  });

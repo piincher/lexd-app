@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 import { CbmProfit } from '../../types/containerProfit';

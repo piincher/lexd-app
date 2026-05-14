@@ -34,7 +34,7 @@ export const CustomDateSection: React.FC<CustomDateSectionProps> = ({
     </TouchableOpacity>
 
     <TouchableOpacity style={styles.dateField} onPress={onEndPress}>
-      <MaterialCommunityIcons name="calendar-end" size={20} color="#6B7280" />
+      <MaterialCommunityIcons name="calendar-end" size={20} color={colors.text.muted} />
       <View style={styles.dateFieldContent}>
         <Text style={styles.dateFieldLabel}>Date de fin</Text>
         <Text style={styles.dateFieldValue}>{formatDate(endDate)}</Text>

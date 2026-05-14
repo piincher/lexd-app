@@ -116,7 +116,8 @@ export const OfflineProvider: React.FC<OfflineProviderProps> = ({
     const { token, refreshToken, expiresAt } = useAuth.getState();
     const isExpired = expiresAt && Date.now() >= expiresAt;
     if (token && isExpired && !refreshToken) {
-      useAuth.getState().logOut();
+      console.warn('[OfflineProvider] Token expired and no refresh token available');
+      // Do NOT auto-logout — users should only be logged out manually
     }
   }, [isHydrated]);
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Theme } from "@src/constants/Theme";
@@ -14,19 +14,6 @@ interface AirwayBillCardProps {
   onPress: (id: string) => void;
 }
 
-const STATUS_CONFIG: Record<
-  AirwayBillStatus,
-  { label: string; variant: "default" | "primary" | "success" | "warning" | "error" | "info" | "custom"; color: string }
-> = {
-  CREATED: { label: "Créé", variant: "custom", color: Theme.colors.text.secondary },
-  PACKING: { label: "Préparation", variant: "custom", color: "#3B82F6" },
-  READY_FOR_DEPARTURE: { label: "Prêt au départ", variant: "custom", color: "#D4AF37" },
-  IN_TRANSIT: { label: "En transit", variant: "info", color: "#3B82F6" },
-  ARRIVED: { label: "Arrivé", variant: "success", color: "#16A34A" },
-  READY_FOR_PICKUP: { label: "Prêt", variant: "custom", color: "#4ECDC4" },
-  DELIVERED: { label: "Livré", variant: "custom", color: Theme.colors.text.disabled },
-};
-
 const formatDate = (dateString?: string) => {
   if (!dateString) return null;
   const date = new Date(dateString);
@@ -35,6 +22,18 @@ const formatDate = (dateString?: string) => {
 
 export const AirwayBillCard: React.FC<AirwayBillCardProps> = ({ item, onPress }) => {
   const { colors } = useAppTheme();
+  const STATUS_CONFIG = useMemo<Record<
+    AirwayBillStatus,
+    { label: string; variant: "default" | "primary" | "success" | "warning" | "error" | "info" | "custom"; color: string }
+  >>(() => ({
+    CREATED: { label: "Créé", variant: "custom", color: colors.text.secondary },
+    PACKING: { label: "Préparation", variant: "custom", color: colors.status.info },
+    READY_FOR_DEPARTURE: { label: "Prêt au départ", variant: "custom", color: colors.status.warning },
+    IN_TRANSIT: { label: "En transit", variant: "info", color: colors.status.info },
+    ARRIVED: { label: "Arrivé", variant: "success", color: colors.status.success },
+    READY_FOR_PICKUP: { label: "Prêt", variant: "custom", color: colors.accent.mint },
+    DELIVERED: { label: "Livré", variant: "custom", color: colors.text.disabled },
+  }), [colors]);
   const statusConfig = STATUS_CONFIG[item.status];
   const departureDate = formatDate(item.departureDate);
   const flightLabel = [item.airline, item.flightNumber].filter(Boolean).join(" · ") || "Vol à confirmer";

@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 
 interface Props {
   firstName?: string;
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   avatarInitials: {
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     fontFamily: Fonts.bold,
     fontSize: 22,
   },
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 20,
     fontFamily: Fonts.bold,
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     letterSpacing: -0.3,
   },
   phoneRow: {
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
   balanceValue: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     letterSpacing: -0.3,
   },
 });

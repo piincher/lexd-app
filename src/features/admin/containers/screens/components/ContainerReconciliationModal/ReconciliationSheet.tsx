@@ -4,7 +4,8 @@ import { Text, Button } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@src/constants/Theme";
 import Animated, { FadeIn, SlideInUp } from "react-native-reanimated";
-import { styles } from "./ContainerReconciliationModal.styles";
+import { createStyles } from "./ContainerReconciliationModal.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { ReconciliationPreview } from "./ReconciliationPreview";
 
 interface ReconciliationSheetProps {
@@ -34,7 +35,10 @@ export const ReconciliationSheet: React.FC<ReconciliationSheetProps> = ({
   estimatedCost, actualCost, reconciledProfit, profitGap,
   currentAgentUnitCost, onAgentCBMChange, onAgentUnitCostChange,
   onConfirm, onDismiss,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
+  return (
   <Animated.View entering={FadeIn} style={styles.overlay}>
     <Animated.View entering={SlideInUp} style={styles.sheet}>
       <View style={styles.header}>
@@ -100,4 +104,5 @@ export const ReconciliationSheet: React.FC<ReconciliationSheetProps> = ({
       </View>
     </Animated.View>
   </Animated.View>
-);
+  );
+};

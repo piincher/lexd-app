@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Route } from '../../../types';
+import { Theme } from '@src/shared/constants/Theme';
 
 interface RouteSelectorSelectedRouteProps {
   selectedRoute: Route;
@@ -12,11 +13,13 @@ interface RouteSelectorSelectedRouteProps {
 export const RouteSelectorSelectedRoute: React.FC<RouteSelectorSelectedRouteProps> = ({
   selectedRoute,
   onClearRoute,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <View style={styles.selectedRouteContainer}>
     <View style={styles.selectedRouteContent}>
       <View style={styles.selectedRouteIcon}>
-        <Ionicons name="git-branch" size={24} color="#FFF" />
+        <Ionicons name="git-branch" size={24} color={colors.text.inverse} />
       </View>
       <View style={styles.selectedRouteInfo}>
         <Text style={styles.selectedRouteName}>
@@ -48,7 +51,8 @@ export const RouteSelectorSelectedRoute: React.FC<RouteSelectorSelectedRouteProp
       <Ionicons name="close-circle" size={24} color={Theme.status.error} />
     </TouchableOpacity>
   </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   selectedRouteContainer: {

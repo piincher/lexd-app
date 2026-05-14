@@ -22,7 +22,7 @@ const Card: React.FC<{ m: DemoMetric; i: number; colors: ReturnType<typeof useAp
         entering={FadeInDown.delay(i * 100)}
         style={[
           styles.card,
-          { backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : colors.background.card, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)', shadowColor: isDark ? '#000' : 'rgba(0,0,0,0.06)' },
+          { backgroundColor: colors.background.card, borderColor: colors.border, shadowColor: isDark ? '#000' : 'rgba(0,0,0,0.06)' },
           a,
         ]}
       >
@@ -43,7 +43,7 @@ const Card: React.FC<{ m: DemoMetric; i: number; colors: ReturnType<typeof useAp
 export const GuestCommandCenter: React.FC<Props> = ({ metrics }) => {
   const { colors, isDark } = useAppTheme();
   return (
-    <View style={[styles.container, { backgroundColor: isDark ? colors.background.paper : colors.background.card, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)' }]}>
+    <View style={[styles.container, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
       <View style={styles.grid}>
         {metrics.map((m, i) => (<Card key={m.id} m={m} i={i} colors={colors} isDark={isDark} />))}
       </View>

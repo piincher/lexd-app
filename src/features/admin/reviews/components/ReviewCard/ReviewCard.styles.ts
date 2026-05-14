@@ -55,13 +55,13 @@ export const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   badgeMaritime: {
-    backgroundColor: "#DBEAFE",
+    backgroundColor: "Theme.colors.status.info + '15'",
   },
   badgeMaritimeText: {
     color: "#1D4ED8",
   },
   badgeAerien: {
-    backgroundColor: "#FEF3C7",
+    backgroundColor: "Theme.colors.status.warning + '15'",
   },
   badgeAerienText: {
     color: "#92400E",
@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
     color: Theme.colors.text.secondary,
   },
   responseContainer: {
-    backgroundColor: "#EFF6FF",
+    backgroundColor: "Theme.colors.status.info + '12'",
     borderRadius: 10,
     padding: 12,
     marginTop: 12,
@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1.5,
     borderColor: "#d4a843",
-    backgroundColor: "#FFFBF0",
+    backgroundColor: "Theme.colors.status.warning + '10'",
   },
   respondButtonText: {
     fontSize: 14,
@@ -168,6 +168,6 @@ export const styles = StyleSheet.create({
   submitButtonText: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: "#FFFFFF",
+    color: "Theme.colors.text.inverse",
   },
 });

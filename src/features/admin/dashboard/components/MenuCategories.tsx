@@ -116,22 +116,22 @@ export const MenuCategories: React.FC = () => {
           height: 20,
           paddingHorizontal: 6,
           borderRadius: 999,
-          backgroundColor: "#EF4444",
+          backgroundColor: colors.status.error,
           justifyContent: "center",
           alignItems: "center",
         },
         badgeText: {
           fontSize: 10,
           fontFamily: Fonts.bold,
-          color: "#FFF",
+          color: colors.text.inverse,
         },
       }),
     [colors, isDark]
   );
 
   const CATEGORY_COLORS: Record<number, string> = {
-    0: "#3B82F6",
-    1: "#10B981",
+    0: colors.status.info,
+    1: colors.status.success,
     2: "#F97316",
     3: "#A855F7",
     4: "#EC4899",

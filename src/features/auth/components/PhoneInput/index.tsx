@@ -26,8 +26,8 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   showCountryPicker, onClear, onSubmit,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const inputBg = isDark ? 'rgba(255,255,255,0.06)' : '#F9FAFB';
-  const inputBorderColor = error ? '#EF4444' : isDark ? 'rgba(255,255,255,0.1)' : '#E5E7EB';
+  const inputBg = colors.background.paper;
+  const inputBorderColor = error ? colors.status.error : colors.border;
 
   return (
     <View style={styles.container}>
@@ -53,8 +53,8 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
       </View>
       {error && (
         <View style={styles.errorRow}>
-          <MaterialCommunityIcons name="alert-circle-outline" size={14} color="#EF4444" />
-          <Text style={styles.errorText}>{error}</Text>
+          <MaterialCommunityIcons name="alert-circle-outline" size={14} color={colors.status.error} />
+          <Text style={[styles.errorText, { color: colors.status.error }]}>{error}</Text>
         </View>
       )}
     </View>
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   inputWrap: { flex: 1, flexDirection: 'row', alignItems: 'center', height: 52, borderRadius: 14, borderWidth: 1.5, paddingHorizontal: 14 },
   input: { flex: 1, fontSize: 18, fontFamily: Fonts.bold, letterSpacing: 2, paddingVertical: 0 },
   errorRow: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 10 },
-  errorText: { fontSize: 12, fontFamily: Fonts.medium, color: '#EF4444' },
+  errorText: { fontSize: 12, fontFamily: Fonts.medium },
 });
 
 export default PhoneInput;

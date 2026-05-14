@@ -30,7 +30,7 @@ export const DemoDocumentChecklist: React.FC<Props> = ({ documents }) => {
             style={styles.card}
           >
             <LinearGradient
-              colors={isDark ? ['rgba(255,255,255,0.06)', 'rgba(255,255,255,0.02)'] : ['#FFFFFF', '#F8FAFC']}
+              colors={[colors.background.default, colors.background.paper]}
               style={styles.gradient}
             >
               <View style={styles.iconWrap}>
@@ -88,7 +88,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       borderRadius: 16,
       overflow: 'hidden',
       borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
+      borderColor: colors.border,
     },
     gradient: {
       padding: 14,
@@ -100,7 +100,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
     },
     pageBadge: {
       marginTop: 6,
-      backgroundColor: isDark ? 'rgba(74,222,128,0.15)' : '#F0FDF4',
+      backgroundColor: colors.primary[50],
       paddingHorizontal: 8,
       paddingVertical: 2,
       borderRadius: 6,

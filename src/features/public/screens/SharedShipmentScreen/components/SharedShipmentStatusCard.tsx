@@ -18,33 +18,85 @@ const TYPE_LABELS: Record<string, string> = {
   order: 'Commande',
 };
 
-const STATUS_CONFIG: Record<string, { color: string; icon: string; label: string }> = {
-  RECEIVED_AT_WAREHOUSE: { color: '#6366F1', icon: 'package-variant', label: 'Reçu à l\'entrepôt' },
-  PACKED: { color: '#3B82F6', icon: 'package-variant-closed', label: 'Emballé' },
-  ASSIGNED_TO_CONTAINER: { color: '#3B82F6', icon: 'ferry', label: 'Assigné au container' },
-  LOADED_IN_CONTAINER: { color: '#0EA5E9', icon: 'ferry', label: 'Chargé' },
-  IN_TRANSIT: { color: '#F59E0B', icon: 'truck-fast', label: 'En Transit' },
-  ARRIVED_DESTINATION: { color: '#10B981', icon: 'map-marker-check', label: 'Arrivé' },
-  READY_FOR_PICKUP: { color: '#059669', icon: 'store-check', label: 'Prêt pour retrait' },
-  DELIVERED: { color: '#059669', icon: 'check-circle', label: 'Livré' },
-  BOOKED: { color: '#6366F1', icon: 'book-check', label: 'Réservé' },
-  LOADING: { color: '#3B82F6', icon: 'loading', label: 'Chargement' },
-  LOADED: { color: '#0EA5E9', icon: 'ferry', label: 'Chargé' },
-  ARRIVED: { color: '#10B981', icon: 'map-marker-check', label: 'Arrivé' },
-  DISCHARGED: { color: '#10B981', icon: 'download', label: 'Déchargé' },
-  Pending: { color: Theme.colors.text.secondary, icon: 'clock-outline', label: 'En Attente' },
-  Active: { color: '#F59E0B', icon: 'progress-check', label: 'Actif' },
-  Delivered: { color: '#059669', icon: 'check-circle', label: 'Livré' },
-  Cancelled: { color: '#EF4444', icon: 'close-circle', label: 'Annulé' },
+const STATUS_ICONS: Record<string, string> = {
+  RECEIVED_AT_WAREHOUSE: 'package-variant',
+  PACKED: 'package-variant-closed',
+  ASSIGNED_TO_CONTAINER: 'ferry',
+  LOADED_IN_CONTAINER: 'ferry',
+  IN_TRANSIT: 'truck-fast',
+  ARRIVED_DESTINATION: 'map-marker-check',
+  READY_FOR_PICKUP: 'store-check',
+  DELIVERED: 'check-circle',
+  BOOKED: 'book-check',
+  LOADING: 'loading',
+  LOADED: 'ferry',
+  ARRIVED: 'map-marker-check',
+  DISCHARGED: 'download',
+  Pending: 'clock-outline',
+  Active: 'progress-check',
+  Cancelled: 'close-circle',
 };
 
-const getStatusConfig = (status: string) => {
-  return STATUS_CONFIG[status] || { color: Theme.colors.text.secondary, icon: 'help-circle', label: status };
+const STATUS_LABELS: Record<string, string> = {
+  RECEIVED_AT_WAREHOUSE: 'Reçu à l\'entrepôt',
+  PACKED: 'Emballé',
+  ASSIGNED_TO_CONTAINER: 'Assigné au container',
+  LOADED_IN_CONTAINER: 'Chargé',
+  IN_TRANSIT: 'En Transit',
+  ARRIVED_DESTINATION: 'Arrivé',
+  READY_FOR_PICKUP: 'Prêt pour retrait',
+  DELIVERED: 'Livré',
+  BOOKED: 'Réservé',
+  LOADING: 'Chargement',
+  LOADED: 'Chargé',
+  ARRIVED: 'Arrivé',
+  DISCHARGED: 'Déchargé',
+  Pending: 'En Attente',
+  Active: 'Actif',
+  Cancelled: 'Annulé',
+};
+
+const getStatusColor = (status: string, colors: any) => {
+  switch (status) {
+    case 'RECEIVED_AT_WAREHOUSE':
+    case 'BOOKED':
+      return colors.status.info;
+    case 'PACKED':
+    case 'ASSIGNED_TO_CONTAINER':
+    case 'LOADING':
+      return colors.status.info;
+    case 'LOADED_IN_CONTAINER':
+    case 'LOADED':
+      return colors.status.info;
+    case 'IN_TRANSIT':
+    case 'Active':
+      return colors.status.warning;
+    case 'ARRIVED_DESTINATION':
+    case 'ARRIVED':
+    case 'DISCHARGED':
+    case 'READY_FOR_PICKUP':
+    case 'DELIVERED':
+      return colors.status.success;
+    case 'Pending':
+      return colors.text.secondary;
+    case 'Cancelled':
+      return colors.status.error;
+    default:
+      return colors.text.secondary;
+  }
+};
+
+const getStatusConfig = (status: string, colors: any) => {
+  return {
+    color: getStatusColor(status, colors),
+    icon: STATUS_ICONS[status] || 'help-circle',
+    label: STATUS_LABELS[status] || status,
+  };
 };
 
 export const SharedShipmentStatusCard: React.FC<Props> = ({ reference, status, type }) => {
   const { colors } = useAppTheme();
-  const config = getStatusConfig(status);
+  const config = getStatusConfig(status, colors);
 
   const styles = useMemo(() => StyleSheet.create({
     card: {

@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     borderRadius: 16,
     elevation: 2,
@@ -15,7 +14,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   summaryContainer: {
     flexDirection: 'row',
@@ -25,7 +24,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 8,
@@ -33,7 +32,7 @@ export const styles = StyleSheet.create({
   summaryValue: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   tabsContainer: {
     flexDirection: 'row',
@@ -47,12 +46,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
   },
   tabText: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   content: {
     marginTop: 8,
@@ -60,7 +59,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginBottom: 12,
   },
   stackedBarContainer: {
@@ -71,7 +70,7 @@ export const styles = StyleSheet.create({
     marginTop: 8,
   },
   legendItem: {
-    backgroundColor: Theme.colors.neutral[50],
+    backgroundColor: colors.neutral[50],
     padding: 10,
     borderRadius: 8,
   },
@@ -88,13 +87,13 @@ export const styles = StyleSheet.create({
   legendLabel: {
     fontSize: 13,
     fontWeight: '500',
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     flex: 1,
   },
   legendValue: {
     fontSize: 13,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   legendDetails: {
     flexDirection: 'row',
@@ -104,13 +103,13 @@ export const styles = StyleSheet.create({
   },
   legendDetail: {
     fontSize: 11,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   shippingItem: {
     marginBottom: 14,
     paddingBottom: 14,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.colors.neutral[100],
+    borderBottomColor: colors.neutral[100],
   },
   shippingHeader: {
     flexDirection: 'row',
@@ -130,16 +129,16 @@ export const styles = StyleSheet.create({
   shippingLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   shippingCount: {
     fontSize: 11,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   shippingValue: {
     fontSize: 13,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   shippingBarContainer: {
     flexDirection: 'row',
@@ -151,7 +150,7 @@ export const styles = StyleSheet.create({
   shippingBarBackground: {
     flex: 1,
     height: 6,
-    backgroundColor: Theme.colors.neutral[200],
+    backgroundColor: colors.neutral[200],
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -161,7 +160,7 @@ export const styles = StyleSheet.create({
   },
   shippingCBM: {
     fontSize: 11,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     minWidth: 60,
     textAlign: 'right',
   },
@@ -171,24 +170,24 @@ export const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: Theme.colors.neutral[100],
+    borderTopColor: colors.neutral[100],
   },
   trendItem: {
     alignItems: 'center',
   },
   trendLabel: {
     fontSize: 11,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   trendValue: {
     fontSize: 14,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     marginTop: 2,
   },
   noData: {
     textAlign: 'center',
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     paddingVertical: 20,
   },
 });

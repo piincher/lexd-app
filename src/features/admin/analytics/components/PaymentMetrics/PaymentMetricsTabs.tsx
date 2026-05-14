@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 export type ViewMode = 'overview' | 'methods' | 'aging';
@@ -17,26 +18,28 @@ const TABS: Array<{ key: ViewMode; label: string; icon: string }> = [
   { key: 'aging', label: 'Ancienneté', icon: 'clock-alert' },
 ];
 
-export const PaymentMetricsTabs: React.FC<PaymentMetricsTabsProps> = ({ viewMode, onChange }) => (
+export const PaymentMetricsTabs: React.FC<PaymentMetricsTabsProps> = ({ viewMode, onChange }) => {
+  const { colors } = useAppTheme();
+  return (
   <View style={styles.tabsContainer}>
     {TABS.map((tab) => (
       <TouchableOpacity
         key={tab.key}
         style={[
           styles.tab,
-          viewMode === tab.key && { backgroundColor: '#3B82F6' },
+          viewMode === tab.key && { backgroundColor: colors.primary.main },
         ]}
         onPress={() => onChange(tab.key)}
       >
         <MaterialCommunityIcons
           name={tab.icon as any}
           size={14}
-          color={viewMode === tab.key ? '#FFFFFF' : '#6B7280'}
+          color={viewMode === tab.key ? colors.text.inverse : colors.text.secondary}
         />
         <Text
           style={[
             styles.tabText,
-            viewMode === tab.key && { color: '#FFFFFF' },
+            viewMode === tab.key && { color: colors.text.inverse },
           ]}
         >
           {tab.label}
@@ -44,7 +47,8 @@ export const PaymentMetricsTabs: React.FC<PaymentMetricsTabsProps> = ({ viewMode
       </TouchableOpacity>
     ))}
   </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   tabsContainer: {

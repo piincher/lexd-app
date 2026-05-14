@@ -33,7 +33,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     letterSpacing: -0.3,
   },
   headerSubtitle: {
@@ -149,7 +149,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   noRoutesContainer: {
     marginTop: Theme.spacing.sm,
     padding: Theme.spacing.md,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: Theme.colors.status.warning + '15',
     borderRadius: Theme.radius.md,
     gap: Theme.spacing.sm,
   },
@@ -175,7 +175,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   createRouteButtonText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
   },
   selectedRouteContainer: {
     flexDirection: 'row',
@@ -397,7 +397,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   submitButtonText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     letterSpacing: 0.3,
   },
   errorContainer: {
@@ -406,7 +406,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     justifyContent: 'center',
     marginTop: Theme.spacing.lg,
     padding: Theme.spacing.md,
-    backgroundColor: '#FEF2F2',
+    backgroundColor: Theme.colors.status.error + '12',
     borderRadius: Theme.radius.lg,
     gap: Theme.spacing.sm,
   },

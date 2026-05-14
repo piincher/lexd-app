@@ -1,5 +1,6 @@
 import React from 'react';
 import Svg, { Rect, G, Text as SvgText } from 'react-native-svg';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { DailyVolumePoint } from '../../types';
 import { SCREEN_WIDTH } from './goodsVolumeConstants';
 
@@ -14,6 +15,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
   width = SCREEN_WIDTH - 80,
   height = 150,
 }) => {
+  const { colors } = useAppTheme();
   const padding = { top: 10, right: 10, bottom: 30, left: 40 };
   const chartWidth = width - padding.left - padding.right;
   const chartHeight = height - padding.top - padding.bottom;
@@ -39,13 +41,13 @@ export const TrendChart: React.FC<TrendChartProps> = ({
               y={y}
               width={chartWidth}
               height={1}
-              fill="#E5E7EB"
+              fill={colors.border}
             />
             <SvgText
               x={padding.left - 5}
               y={y + 4}
               fontSize={9}
-              fill="#6B7280"
+              fill={colors.text.muted}
               textAnchor="end"
             >
               {Math.round(value)}
@@ -67,7 +69,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
               y={y}
               width={barWidth}
               height={barHeight}
-              fill="#3B82F6"
+              fill={colors.primary.main}
               rx={2}
             />
             {(index % labelStep === 0 || index === data.length - 1) && (
@@ -75,7 +77,7 @@ export const TrendChart: React.FC<TrendChartProps> = ({
                 x={getX(index)}
                 y={height - 5}
                 fontSize={9}
-                fill="#6B7280"
+                fill={colors.text.muted}
                 textAnchor="middle"
               >
                 {new Date(point.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}

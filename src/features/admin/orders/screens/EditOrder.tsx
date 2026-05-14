@@ -41,7 +41,7 @@ const EditOrder = ({ navigation, route }: RootStackScreenProps<"EditOrder">) => 
             <Snackbar visible={hook.visible} onDismiss={hook.onDismissSnackBar} style={[styles.snackbar, { backgroundColor: colors.background.card }]} duration={3000}>
               <View style={styles.snackbarContent}>
                 <Text style={styles.snackbarText}>Woah Product is Added !</Text>
-                <AntDesign name={"checkcircle" as any} size={24} color="green" />
+                <AntDesign name={"checkcircle" as any} size={24} color={colors.status.success} />
               </View>
             </Snackbar>
             <EditOrderImages selectedImages={hook.images.selectedImages} isLoading={hook.images.isLoading} onPickImage={hook.images.pickImage} onTakePhoto={hook.images.takePhoto} onDeleteImage={hook.handleDeleteImage} />

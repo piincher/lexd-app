@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from './PastOrderToggle.styles';
 
 interface PastOrderToggleProps {
@@ -8,7 +9,8 @@ interface PastOrderToggleProps {
 }
 
 export const PastOrderToggle: React.FC<PastOrderToggleProps> = ({ shippingType, onChange }) => {
-  const styles = createStyles();
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
 
   return (
     <View style={styles.toggleContainer}>

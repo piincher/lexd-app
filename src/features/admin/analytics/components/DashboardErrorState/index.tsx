@@ -3,7 +3,8 @@ import { View } from 'react-native';
 import { Appbar, Text, Button, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { styles } from './DashboardErrorState.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './DashboardErrorState.styles';
 
 interface DashboardErrorStateProps {
   error: Error | null;
@@ -12,6 +13,8 @@ interface DashboardErrorStateProps {
 
 export const DashboardErrorState: React.FC<DashboardErrorStateProps> = ({ error, onRetry }) => {
   const theme = useTheme();
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
 
   return (
     <SafeAreaView style={styles.container}>

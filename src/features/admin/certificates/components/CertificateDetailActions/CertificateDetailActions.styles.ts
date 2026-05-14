@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from '@src/constants/Theme';
 
 export const styles = StyleSheet.create({
   downloadButton: {
@@ -15,7 +16,7 @@ export const styles = StyleSheet.create({
   downloadButtonText: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: "#FFFFFF",
+    color: "Theme.colors.text.inverse",
   },
   revokeButton: {
     flexDirection: "row",
@@ -30,7 +31,7 @@ export const styles = StyleSheet.create({
   revokeButtonText: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: "#FFFFFF",
+    color: "Theme.colors.text.inverse",
   },
   buttonDisabled: {
     opacity: 0.6,
@@ -39,7 +40,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#FEE2E2",
+    backgroundColor: "Theme.colors.status.error + '15'",
     borderRadius: 12,
     paddingVertical: 14,
     gap: 8,

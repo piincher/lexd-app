@@ -5,7 +5,7 @@
  */
 
 import * as TaskManager from 'expo-task-manager';
-import * as BackgroundFetch from 'expo-background-fetch';
+import * as BackgroundTask from 'expo-background-task';
 import type { AppStateStatus } from 'react-native';
 import { QueryClient } from '@tanstack/react-query';
 import { 
@@ -240,10 +240,8 @@ export const retryFailedActions = async (): Promise<SyncResult> => {
  */
 export const registerBackgroundSync = async (): Promise<void> => {
   try {
-    await BackgroundFetch.registerTaskAsync(BACKGROUND_SYNC_TASK, {
-      minimumInterval: 15 * 60, // 15 minutes
-      stopOnTerminate: false,
-      startOnBoot: true,
+    await BackgroundTask.registerTaskAsync(BACKGROUND_SYNC_TASK, {
+      minimumInterval: 15, // 15 minutes (expo-background-task uses minutes)
     });
     console.log('[BackgroundSync] Background task registered');
   } catch (error) {
@@ -256,7 +254,7 @@ export const registerBackgroundSync = async (): Promise<void> => {
  */
 export const unregisterBackgroundSync = async (): Promise<void> => {
   try {
-    await BackgroundFetch.unregisterTaskAsync(BACKGROUND_SYNC_TASK);
+    await BackgroundTask.unregisterTaskAsync(BACKGROUND_SYNC_TASK);
     console.log('[BackgroundSync] Background task unregistered');
   } catch (error) {
     console.error('[BackgroundSync] Error unregistering background task:', error);
@@ -279,12 +277,12 @@ TaskManager.defineTask(BACKGROUND_SYNC_TASK, async () => {
       });
     }
 
-    return result.failed === 0 
-      ? BackgroundFetch.BackgroundFetchResult.NewData 
-      : BackgroundFetch.BackgroundFetchResult.Failed;
+    return result.failed === 0
+      ? BackgroundTask.BackgroundTaskResult.Success
+      : BackgroundTask.BackgroundTaskResult.Failed;
   } catch (error) {
     console.error('[BackgroundSync] Background task error:', error);
-    return BackgroundFetch.BackgroundFetchResult.Failed;
+    return BackgroundTask.BackgroundTaskResult.Failed;
   }
 });
 

@@ -5,6 +5,7 @@ import { View, Image } from 'react-native';
 import { Text, Card, Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface GoodsDetailQRCodeProps {
@@ -16,11 +17,12 @@ export const GoodsDetailQRCode: React.FC<GoodsDetailQRCodeProps> = ({
   qrCodeImageUrl,
   onShare,
 }) => {
+  const { colors } = useAppTheme();
   const hasQRCode = !!qrCodeImageUrl;
 
   return (
     <Card style={styles.qrCard}>
-      <LinearGradient colors={['#FFFFFF', '#F8F7FC']} style={styles.qrGradient}>
+      <LinearGradient colors={[colors.background.card, colors.background.paper]} style={styles.qrGradient}>
         <View style={styles.qrHeader}>
           <MaterialCommunityIcons name="qrcode-scan" size={24} color={Theme.primary[600]} />
           <Text style={styles.qrTitle}>QR Code d'identification</Text>

@@ -58,8 +58,8 @@ export const ShippingModeBreakdown: React.FC<ShippingModeBreakdownProps> = ({
   });
 
   const shippingModes = [
-    { key: "AIR" as const, label: "Air", icon: "airplane", color: "#3B82F6", value: byShippingMode.AIR },
-    { key: "SEA" as const, label: "Maritime", icon: "ferry", color: "#0EA5E9", value: byShippingMode.SEA },
+    { key: "AIR" as const, label: "Air", icon: "airplane", color: colors.status.info, value: byShippingMode.AIR },
+    { key: "SEA" as const, label: "Maritime", icon: "ferry", color: colors.status.info, value: byShippingMode.SEA },
   ];
 
   return (

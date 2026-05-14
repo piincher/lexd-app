@@ -1,26 +1,38 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { LOGISTICS_COLORS } from './pastOrderConstants';
 
-export const createStyles = () =>
+export const createStyles = (colors: any) =>
   StyleSheet.create({
+    container: {
+      padding: 16,
+      alignItems: 'center',
+    },
     loaderContainer: {
-      padding: 20,
+      padding: 24,
       alignItems: 'center',
     },
     loader: {
-      width: 30,
-      height: 30,
-      borderRadius: 15,
-      backgroundColor: LOGISTICS_COLORS.primary,
-      marginVertical: 10,
+      marginTop: 8,
     },
     loadMoreContainer: {
-      padding: 15,
+      padding: 16,
+      alignItems: 'center',
+    },
+    loadMoreButton: {
+      backgroundColor: colors.primary.main,
+      paddingHorizontal: 24,
+      paddingVertical: 12,
+      borderRadius: 12,
+      flexDirection: 'row',
       alignItems: 'center',
     },
     loadMoreText: {
-      color: LOGISTICS_COLORS.primary,
-      fontFamily: Fonts.meduim,
+      color: colors.text.inverse,
+      fontFamily: Fonts.bold,
+      marginRight: 8,
+    },
+    endText: {
+      color: colors.text.secondary,
+      fontFamily: Fonts.medium,
     },
   });

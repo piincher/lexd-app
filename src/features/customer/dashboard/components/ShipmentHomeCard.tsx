@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { useShipmentHome } from '../hooks/useShipmentHome';
 import type { DashboardContainer } from '../api/types';
+import { Theme } from '@src/constants/Theme';
 
 interface Props {
   shipmentHome: ReturnType<typeof useShipmentHome>;
@@ -70,7 +71,7 @@ export const ShipmentHomeCard: React.FC<Props> = ({
       justifyContent: 'center',
       backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#EEF2FF',
     },
-    primaryText: { color: '#FFFFFF', fontWeight: '800', fontSize: 13 },
+    primaryText: { color: 'Theme.colors.text.inverse', fontWeight: '800', fontSize: 13 },
     secondaryText: { color: colors.primary.main, fontWeight: '800', fontSize: 13 },
   }), [colors, isDark]);
 

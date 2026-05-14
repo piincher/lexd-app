@@ -46,6 +46,6 @@ export const createNotificationEventFiltersStyles = (colors: AppColors) =>
       fontWeight: '700',
     },
     chipTextActive: {
-      color: '#fff',
+      color: 'Theme.colors.text.inverse',
     },
   });

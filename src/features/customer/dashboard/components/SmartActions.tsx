@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { QuickAction } from '../types';
 import * as Haptics from 'expo-haptics';
+import { Theme } from '@src/constants/Theme';
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
@@ -69,7 +70,7 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
           justifyContent: 'center',
           alignItems: 'center',
         },
-        label: { fontSize: 14, fontWeight: '700', color: '#FFFFFF' },
+        label: { fontSize: 14, fontWeight: '700', color: 'Theme.colors.text.inverse' },
         sublabel: { fontSize: 12, fontWeight: '500', color: 'rgba(255,255,255,0.8)', marginTop: 2 },
       }),
     [colors]

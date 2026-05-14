@@ -1,6 +1,7 @@
 import React from "react";
 import { SafeAreaView, View, Text, ActivityIndicator } from "react-native";
 import type { RootStackScreenProps } from "@src/navigations/type";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useCertificateHistory } from "../hooks/useCertificateHistory";
 import { CertificateHistoryHeader } from "../components/CertificateHistoryHeader";
 import { CertificateFilterChips } from "../components/CertificateFilterChips";
@@ -10,6 +11,7 @@ import { styles } from "./CertificateHistoryScreen.styles";
 export default function CertificateHistoryScreen({
   navigation,
 }: RootStackScreenProps<"CertificateHistory">) {
+  const { colors } = useAppTheme();
   const {
     activeFilter,
     certificates,
@@ -31,7 +33,7 @@ export default function CertificateHistoryScreen({
       <CertificateFilterChips activeFilter={activeFilter} onChange={handleFilterChange} />
       {isLoading ? (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#d4a843" />
+          <ActivityIndicator size="large" color={colors.accent.gold} />
           <Text style={styles.loadingText}>Chargement des certificats...</Text>
         </View>
       ) : (

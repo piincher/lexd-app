@@ -1,18 +1,25 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 
-export const GOLD = "#F4D03F";
-export const GOLD_DARK = "#d4a843";
-export const CARD_BG = "rgba(255,255,255,0.12)";
-export const CARD_BORDER = "rgba(212,168,67,0.3)";
-export const WHITE_60 = "rgba(255,255,255,0.6)";
-export const WHITE_80 = "rgba(255,255,255,0.8)";
+const hexToRgba = (hex: string, alpha: number) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+};
 
-export const createStyles = (inverseTextColor: string) =>
-  StyleSheet.create({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const createStyles = (colors: any) => {
+  const gold = colors.accent.goldLight;
+  const cardBg = hexToRgba(colors.text.inverse, 0.12);
+  const cardBorder = hexToRgba(colors.accent.gold, 0.3);
+  const white60 = hexToRgba(colors.text.inverse, 0.6);
+  const white80 = hexToRgba(colors.text.inverse, 0.8);
+
+  return StyleSheet.create({
     safeArea: {
       flex: 1,
-      backgroundColor: "#1a237e",
+      backgroundColor: colors.background.default,
     },
     backButton: {
       position: "absolute",
@@ -22,7 +29,7 @@ export const createStyles = (inverseTextColor: string) =>
       width: 44,
       height: 44,
       borderRadius: 22,
-      backgroundColor: "rgba(255,255,255,0.15)",
+      backgroundColor: hexToRgba(colors.text.inverse, 0.15),
       alignItems: "center",
       justifyContent: "center",
     },
@@ -45,30 +52,30 @@ export const createStyles = (inverseTextColor: string) =>
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 2,
-      borderColor: CARD_BORDER,
+      borderColor: cardBorder,
     },
     title: {
       fontSize: 28,
       fontFamily: Fonts.bold,
-      color: GOLD,
+      color: gold,
       textAlign: "center",
       marginBottom: 4,
     },
     subtitle: {
       fontSize: 16,
       fontFamily: Fonts.meduim,
-      color: inverseTextColor,
+      color: colors.text.inverse,
       textAlign: "center",
       marginBottom: 28,
       letterSpacing: 1,
     },
     infoCard: {
-      backgroundColor: CARD_BG,
+      backgroundColor: cardBg,
       borderRadius: 20,
       padding: 20,
       marginBottom: 16,
       borderWidth: 1,
-      borderColor: CARD_BORDER,
+      borderColor: cardBorder,
     },
     infoRow: {
       flexDirection: "row",
@@ -79,7 +86,7 @@ export const createStyles = (inverseTextColor: string) =>
       width: 40,
       height: 40,
       borderRadius: 12,
-      backgroundColor: "rgba(212,168,67,0.12)",
+      backgroundColor: hexToRgba(colors.accent.gold, 0.12),
       alignItems: "center",
       justifyContent: "center",
       marginRight: 14,
@@ -90,13 +97,13 @@ export const createStyles = (inverseTextColor: string) =>
     infoLabel: {
       fontSize: 12,
       fontFamily: Fonts.regular,
-      color: WHITE_60,
+      color: white60,
       marginBottom: 4,
     },
     infoValue: {
       fontSize: 15,
       fontFamily: Fonts.meduim,
-      color: inverseTextColor,
+      color: colors.text.inverse,
     },
     codeRow: {
       flexDirection: "row",
@@ -106,22 +113,22 @@ export const createStyles = (inverseTextColor: string) =>
     verificationCode: {
       fontSize: 20,
       fontFamily: Fonts.bold,
-      color: GOLD,
+      color: gold,
       letterSpacing: 3,
     },
     copyButton: {
       width: 36,
       height: 36,
       borderRadius: 10,
-      backgroundColor: "rgba(212,168,67,0.15)",
+      backgroundColor: hexToRgba(colors.accent.gold, 0.15),
       alignItems: "center",
       justifyContent: "center",
       borderWidth: 1,
-      borderColor: CARD_BORDER,
+      borderColor: cardBorder,
     },
     cardDivider: {
       height: 1,
-      backgroundColor: "rgba(255,255,255,0.08)",
+      backgroundColor: hexToRgba(colors.text.inverse, 0.08),
     },
     badgeContainer: {
       flexDirection: "row",
@@ -139,16 +146,16 @@ export const createStyles = (inverseTextColor: string) =>
     statusText: {
       fontSize: 12,
       fontFamily: Fonts.bold,
-      color: inverseTextColor,
+      color: colors.text.inverse,
       letterSpacing: 1,
     },
     verificationCard: {
-      backgroundColor: CARD_BG,
+      backgroundColor: cardBg,
       borderRadius: 20,
       padding: 20,
       marginBottom: 24,
       borderWidth: 1,
-      borderColor: "rgba(255,255,255,0.1)",
+      borderColor: hexToRgba(colors.text.inverse, 0.1),
     },
     verificationHeader: {
       flexDirection: "row",
@@ -159,31 +166,31 @@ export const createStyles = (inverseTextColor: string) =>
     verificationTitle: {
       fontSize: 14,
       fontFamily: Fonts.meduim,
-      color: inverseTextColor,
+      color: colors.text.inverse,
       flex: 1,
     },
     urlContainer: {
       flexDirection: "row",
       alignItems: "center",
       gap: 10,
-      backgroundColor: "rgba(255,255,255,0.08)",
+      backgroundColor: hexToRgba(colors.text.inverse, 0.08),
       borderRadius: 12,
       paddingHorizontal: 14,
       paddingVertical: 12,
       borderWidth: 1,
-      borderColor: "rgba(255,255,255,0.1)",
+      borderColor: hexToRgba(colors.text.inverse, 0.1),
     },
     urlText: {
       flex: 1,
       fontSize: 13,
       fontFamily: Fonts.meduim,
-      color: WHITE_80,
+      color: white80,
       letterSpacing: 0.3,
     },
     urlHint: {
       fontSize: 11,
       fontFamily: Fonts.regular,
-      color: WHITE_60,
+      color: white60,
       textAlign: "center",
       marginTop: 10,
     },
@@ -209,10 +216,10 @@ export const createStyles = (inverseTextColor: string) =>
     downloadText: {
       fontSize: 16,
       fontFamily: Fonts.bold,
-      color: "#1a237e",
+      color: colors.text.inverse,
     },
     downloadTextDisabled: {
-      color: WHITE_60,
+      color: white60,
     },
     shareButton: {
       flexDirection: "row",
@@ -222,13 +229,13 @@ export const createStyles = (inverseTextColor: string) =>
       paddingVertical: 16,
       borderRadius: 16,
       borderWidth: 1.5,
-      borderColor: CARD_BORDER,
-      backgroundColor: "rgba(212,168,67,0.08)",
+      borderColor: cardBorder,
+      backgroundColor: hexToRgba(colors.accent.gold, 0.08),
     },
     shareText: {
       fontSize: 16,
       fontFamily: Fonts.bold,
-      color: GOLD,
+      color: gold,
     },
     footer: {
       flexDirection: "row",
@@ -241,9 +248,10 @@ export const createStyles = (inverseTextColor: string) =>
     footerText: {
       fontSize: 12,
       fontFamily: Fonts.regular,
-      color: WHITE_60,
+      color: white60,
       textAlign: "center",
       lineHeight: 18,
       flex: 1,
     },
   });
+};

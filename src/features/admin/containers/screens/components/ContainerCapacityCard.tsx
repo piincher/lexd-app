@@ -23,9 +23,9 @@ export const ContainerCapacityCard: React.FC<ContainerCapacityCardProps> = ({
   const styles = useMemo(() => createStyles(colors), [colors]);
   const unit = isAir ? 'kg' : 'CBM';
   const getStatusColor = (percentage: number): string => {
-    if (percentage > 90) return '#EF4444'; // red
-    if (percentage >= 70) return '#F59E0B'; // yellow
-    return '#10B981'; // green
+    if (percentage > 90) return colors.status.error;
+    if (percentage >= 70) return colors.status.warning;
+    return colors.status.success;
   };
 
   const percentageColor = getStatusColor(fillPercentage);

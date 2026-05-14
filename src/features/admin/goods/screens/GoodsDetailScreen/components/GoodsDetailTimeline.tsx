@@ -57,7 +57,7 @@ export const GoodsDetailTimeline: React.FC<GoodsDetailTimelineProps> = ({ status
                     <Ionicons
                       name={(isCompleted && !isCurrent ? 'checkmark' : step.icon) as any}
                       size={14}
-                      color="#FFF"
+                      color={colors.text.inverse}
                     />
                   </View>
                   {index < steps.length - 1 && (

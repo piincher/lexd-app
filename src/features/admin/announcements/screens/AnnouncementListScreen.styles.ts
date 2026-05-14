@@ -62,7 +62,7 @@ export const createStyles = (colors: AppColors) =>
       fontWeight: "700",
     },
     filterTextActive: {
-      color: "#fff",
+      color: "Theme.colors.text.inverse",
     },
     loader: {
       marginTop: 40,

@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/shared/constants/Theme';
 
 interface RouteSelectorNoRoutesProps {
   onCreateRoute: () => void;
@@ -9,7 +10,9 @@ interface RouteSelectorNoRoutesProps {
 
 export const RouteSelectorNoRoutes: React.FC<RouteSelectorNoRoutesProps> = ({
   onCreateRoute,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <View style={styles.noRoutesContainer}>
     <Ionicons name="alert-circle" size={16} color={Theme.status.warning} />
     <Text style={styles.noRoutesText}>
@@ -21,17 +24,18 @@ export const RouteSelectorNoRoutes: React.FC<RouteSelectorNoRoutesProps> = ({
       onPress={onCreateRoute}
       activeOpacity={0.8}
     >
-      <Ionicons name="add-circle" size={16} color="#FFF" />
+      <Ionicons name="add-circle" size={16} color={colors.text.inverse} />
       <Text style={styles.createRouteButtonText}>Créer une route</Text>
     </TouchableOpacity>
   </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   noRoutesContainer: {
     marginTop: Theme.spacing.sm,
     padding: Theme.spacing.md,
-    backgroundColor: '#FEF3C7',
+    backgroundColor: Theme.status.warning + '15',
     borderRadius: Theme.radius.md,
     gap: Theme.spacing.sm,
   },

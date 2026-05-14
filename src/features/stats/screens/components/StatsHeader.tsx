@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
 
@@ -36,6 +37,7 @@ const formatDate = (): string => {
 
 export const StatsHeader: React.FC<StatsHeaderProps> = ({ firstName, totalOrders }) => {
   const navigation = useNavigation();
+  const { colors } = useAppTheme();
   return (
     <LinearGradient
       colors={Theme.gradients.primary}
@@ -45,26 +47,26 @@ export const StatsHeader: React.FC<StatsHeaderProps> = ({ firstName, totalOrders
     >
       <View style={styles.topRow}>
         <View style={styles.textContainer}>
-          <Text style={styles.greeting}>
+          <Text style={[styles.greeting, { color: colors.text.inverse }]}>
             {getGreeting()}, {firstName || 'Admin'}
           </Text>
-          <Text style={styles.subtitle}>Tableau de bord</Text>
+          <Text style={[styles.subtitle, { color: colors.text.inverse, opacity: 0.8 }]}>Tableau de bord</Text>
         </View>
         <View style={styles.actions}>
-          <View style={styles.summaryPill}>
+          <View style={[styles.summaryPill, { backgroundColor: colors.background.card }]}>
             <Ionicons name="cube" size={14} color={Theme.primary[600]} />
             <Text style={styles.summaryText}>{totalOrders} commandes</Text>
           </View>
           <NotificationBell
             onPress={() => (navigation as any).navigate('Notifications')}
             size={22}
-            color="#FFF"
+            color={colors.text.inverse}
           />
         </View>
       </View>
       <View style={styles.dateRow}>
-        <Ionicons name="calendar-outline" size={13} color="rgba(255,255,255,0.6)" />
-        <Text style={styles.dateText}>{formatDate()}</Text>
+        <Ionicons name="calendar-outline" size={13} color={colors.text.inverse} style={{ opacity: 0.6 }} />
+        <Text style={[styles.dateText, { color: colors.text.inverse, opacity: 0.6 }]}>{formatDate()}</Text>
       </View>
     </LinearGradient>
   );
@@ -91,12 +93,10 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: '#FFF',
   },
   subtitle: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: 'rgba(255,255,255,0.8)',
   },
   actions: {
     flexDirection: 'row',
@@ -107,7 +107,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: 'rgba(255,255,255,0.9)',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 20,
@@ -127,7 +126,6 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 12,
     fontFamily: Fonts.medium,
-    color: 'rgba(255,255,255,0.6)',
     textTransform: 'capitalize',
   },
 });

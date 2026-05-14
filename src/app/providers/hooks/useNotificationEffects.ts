@@ -39,7 +39,7 @@ export const useNotificationEffects = (
       finally { state.setIsLoading(false); }
     };
     initialize();
-    return () => { state.notificationListener.current?.remove(); state.responseListener.current?.remove(); };
+    // Note: listener cleanup is handled by the dedicated listener useEffect below
   }, [autoRequestPermission, actions.handleNotificationResponse, actions.requestPermission]);
 
   useEffect(() => {

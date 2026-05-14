@@ -50,7 +50,7 @@ const ShimmerBlock: React.FC<{
     >
       <Animated.View style={[StyleSheet.absoluteFill, animatedStyle]}>
         <LinearGradient
-          colors={['transparent', 'rgba(255,255,255,0.25)', 'transparent']}
+          colors={['transparent', colors.neutral[100], 'transparent']}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={StyleSheet.absoluteFill}

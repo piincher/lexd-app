@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   overlayText: {
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     fontSize: 20,
     fontWeight: '700',
   },

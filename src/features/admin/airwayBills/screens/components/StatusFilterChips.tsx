@@ -65,7 +65,7 @@ export const StatusFilterChips: React.FC<StatusFilterChipsProps> = ({
               <View
                 style={[
                   styles.countBadge,
-                  { backgroundColor: isActive ? 'rgba(255,255,255,0.25)' : colors.background.paper },
+                  { backgroundColor: isActive ? colors.primary.dark : colors.background.paper },
                 ]}
               >
                 <Text

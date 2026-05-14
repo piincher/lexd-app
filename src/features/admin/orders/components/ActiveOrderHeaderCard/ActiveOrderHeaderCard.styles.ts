@@ -76,7 +76,7 @@ export const styles = StyleSheet.create({
     borderTopColor: Theme.colors.border,
   },
   chipStatus: {
-    backgroundColor: '#FFF3E0',
+    backgroundColor: Theme.colors.status.warning + '12',
   },
   chipStatusDelivered: {
     backgroundColor: '#E8F5E9',

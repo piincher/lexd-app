@@ -97,7 +97,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       padding: 16,
       backgroundColor: colors.background.card,
       borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
+      borderColor: colors.border,
     },
     sectionTitle: {
       color: colors.text.primary,
@@ -107,7 +107,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
     },
     item: {
       borderTopWidth: 1,
-      borderTopColor: isDark ? 'rgba(255,255,255,0.06)' : '#F1F5F9',
+      borderTopColor: colors.border,
       overflow: 'hidden',
     },
     questionRow: {

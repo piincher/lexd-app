@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, ProgressBar } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { PaymentMetricsData } from '../../types';
 import { PaymentMethodChart } from './PaymentMethodChart';
 import { useCompactNumberFormat } from '../../hooks';
@@ -26,7 +26,9 @@ const METHOD_ICONS: Record<string, string> = {
 };
 
 export const PaymentMethodsView: React.FC<PaymentMethodsViewProps> = ({ data }) => {
+  const { colors } = useAppTheme();
   const formatCompact = useCompactNumberFormat();
+  const styles = createStyles(colors);
 
   return (
     <View style={styles.methodsContent}>
@@ -36,18 +38,18 @@ export const PaymentMethodsView: React.FC<PaymentMethodsViewProps> = ({ data }) 
         <View style={styles.methodsList}>
           {data.paymentMethods.map((method) => (
             <View key={method.method} style={styles.methodItem}>
-              <View style={[styles.methodIcon, { backgroundColor: METHOD_COLORS[method.method] || '#6B7280' }]}>
+              <View style={[styles.methodIcon, { backgroundColor: METHOD_COLORS[method.method] || colors.text.muted }]}>
                 <MaterialCommunityIcons
                   name={(METHOD_ICONS[method.method] || 'cash') as any}
                   size={14}
-                  color="#FFFFFF"
+                  color={colors.text.inverse}
                 />
               </View>
               <View style={styles.methodInfo}>
                 <Text style={styles.methodName}>{method.method.replace('_', ' ')}</Text>
                 <ProgressBar
                   progress={method.percentage / 100}
-                  color={METHOD_COLORS[method.method] || '#6B7280'}
+                  color={METHOD_COLORS[method.method] || colors.text.muted}
                   style={styles.methodProgress}
                 />
               </View>
@@ -65,7 +67,7 @@ export const PaymentMethodsView: React.FC<PaymentMethodsViewProps> = ({ data }) 
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   methodsContent: {
     marginTop: 8,
   },
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
   methodName: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginBottom: 4,
   },
   methodProgress: {
@@ -108,10 +110,10 @@ const styles = StyleSheet.create({
   methodPercentage: {
     fontSize: 13,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   methodTotal: {
     fontSize: 10,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
 });

@@ -17,12 +17,7 @@ interface RecentPaymentsListProps {
   payments: RecentPayment[];
 }
 
-const METHOD_CONFIG: Record<string, { icon: string; color: string; bg: string }> = {
-  orange_money: { icon: 'phone-portrait-outline', color: '#FF6B00', bg: '#FFF7ED' },
-  wave: { icon: 'water-outline', color: '#1DC3E1', bg: '#ECFEFF' },
-  cash: { icon: 'cash-outline', color: '#10B981', bg: '#F0FDF4' },
-  card: { icon: 'card-outline', color: '#6366F1', bg: '#EEF2FF' },
-};
+
 
 const formatDate = (dateStr: string): string => {
   if (!dateStr) return '';
@@ -35,12 +30,18 @@ const formatAmount = (amount: number | undefined | null): string => {
   return new Intl.NumberFormat('fr-FR').format(Math.round(num));
 };
 
-const PaymentRow: React.FC<{ payment: RecentPayment; index: number; isLast: boolean }> = ({
+const PaymentRow: React.FC<{ payment: RecentPayment; index: number; isLast: boolean; colors: any }> = ({
   payment,
   index,
   isLast,
+  colors,
 }) => {
-  const { colors } = useAppTheme();
+  const METHOD_CONFIG: Record<string, { icon: string; color: string; bg: string }> = {
+    orange_money: { icon: 'phone-portrait-outline', color: colors.status.warning, bg: colors.feedback.warningBg },
+    wave: { icon: 'water-outline', color: colors.status.info, bg: colors.feedback.infoBg },
+    cash: { icon: 'cash-outline', color: colors.status.success, bg: colors.feedback.successBg },
+    card: { icon: 'card-outline', color: colors.status.info, bg: colors.feedback.infoBg },
+  };
   const method = METHOD_CONFIG[payment.paymentMethod?.toLowerCase()] || METHOD_CONFIG.cash;
 
   const styles = useMemo(

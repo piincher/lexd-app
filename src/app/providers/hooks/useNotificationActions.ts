@@ -7,6 +7,8 @@ import {
   scheduleLocalNotification, NotificationData, NotificationType,
 } from "../../../shared/services/notificationService";
 import { processNotificationData } from "../../../shared/notifications/notificationHandlers";
+import { handleDeepLink } from "../../../features/notifications/utils/notificationDeepLink";
+import { navigationRef } from "@src/navigations/navigationRef";
 import apiClient from "../../../api/client";
 import type { useNotificationState } from "./useNotificationState";
 
@@ -16,7 +18,20 @@ export const useNotificationActions = (state: State) => {
   const handleNotificationResponse = useCallback((response: Notifications.NotificationResponse) => {
     state.setLastNotificationResponse(response);
     const data = response.notification.request.content.data as NotificationData;
-    if (data) processNotificationData(data);
+    if (!data) return;
+    // Prefer handleDeepLink (respects data.screen / data.deepLink) for rich navigation
+    if (navigationRef?.isReady()) {
+      // Types differ between notificationService and pushNotificationService;
+      // structurally compatible at runtime (both have [key: string]: unknown)
+      const handled = handleDeepLink(data as unknown as Parameters<typeof handleDeepLink>[0], navigationRef);
+      if (!handled) {
+        // Fallback to legacy type-based handlers when deepLink/screen are absent
+        processNotificationData(data);
+      }
+    } else {
+      // Fallback to legacy type-based handlers when nav not ready
+      processNotificationData(data);
+    }
   }, [state.setLastNotificationResponse]);
 
   const requestPermission = useCallback(async (): Promise<boolean> => {

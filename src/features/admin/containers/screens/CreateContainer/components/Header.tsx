@@ -2,15 +2,17 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
+import { Theme } from '@src/constants/Theme';
 
 interface HeaderProps {
   onBack: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ onBack }) => {
+  const { colors } = useAppTheme();
   const navigation = useNavigation();
   return (
     <LinearGradient 
@@ -24,7 +26,7 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
         onPress={onBack} 
         activeOpacity={0.8}
       >
-        <Ionicons name="arrow-back" size={24} color="#FFF" />
+        <Ionicons name="arrow-back" size={24} color={Theme.colors.text.inverse} />
       </TouchableOpacity>
       <View style={styles.headerContent}>
         <Text style={styles.headerTitle}>Nouveau Container</Text>
@@ -35,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
       <NotificationBell
         onPress={() => navigation.navigate('Notifications' as never)}
         size={24}
-        color="#FFF"
+        color={Theme.colors.text.inverse}
       />
     </LinearGradient>
   );
@@ -64,12 +66,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: Theme.colors.text.inverse,
     marginBottom: 8,
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
+    color: Theme.colors.text.inverse,
     lineHeight: 20,
   },
   headerIcon: {

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { View, Text, Image, Animated } from "react-native";
 import type { ViewStyle } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { OnboardingSlide as OnboardingSlideType } from "../../types/onboarding.types";
 import { createStyles } from "./OnboardingSlide.styles";
 
@@ -19,9 +20,10 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
   width,
   viewportHeight,
 }) => {
+  const { colors } = useAppTheme();
   const styles = useMemo(
-    () => createStyles({ width, viewportHeight }),
-    [viewportHeight, width]
+    () => createStyles({ width, viewportHeight, colors }),
+    [viewportHeight, width, colors]
   );
   const showCounter = viewportHeight >= 680;
 

@@ -4,10 +4,11 @@ import { ActivityIndicator, Avatar } from "react-native-paper";
 import { SCREEN_WIDTH } from "@src/constants/Dimensions";
 import { useStyles } from "./AddOrder.styles";
 
+import { useAppTheme } from "@src/providers/ThemeProvider";
+
 interface Props {
   selectedImages: { url: string; public_id: string }[];
   isLoading: boolean;
-  colors: { primary: { main: string }; text: { secondary: string } };
   onTakePhoto: () => void;
   onPickImage: () => void;
   onDeleteImage: (id: string) => void;
@@ -16,12 +17,12 @@ interface Props {
 export const AddOrderImageSection: React.FC<Props> = ({
   selectedImages,
   isLoading,
-  colors,
   onTakePhoto,
   onPickImage,
   onDeleteImage,
 }) => {
   const styles = useStyles();
+  const { colors } = useAppTheme();
   return (
     <>
       <View style={styles.imageContainer}>
@@ -37,10 +38,10 @@ export const AddOrderImageSection: React.FC<Props> = ({
       </View>
       <View style={styles.imageActionsRow}>
         <Pressable onPress={onTakePhoto} style={styles.imagePicker}>
-          <AntDesign name="camera" size={24} color="black" />
+          <AntDesign name="camera" size={24} color={colors.text.primary} />
         </Pressable>
         <Pressable onPress={onPickImage} style={styles.imagePicker}>
-          <MaterialIcons name="perm-media" size={24} color="black" />
+          <MaterialIcons name="perm-media" size={24} color={colors.text.primary} />
         </Pressable>
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>

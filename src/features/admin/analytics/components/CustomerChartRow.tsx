@@ -4,7 +4,8 @@ import { Text, Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { CustomerAnalyticsItem } from '../types';
-import { styles } from './TopCustomersChart.styles';
+import { createStyles } from './TopCustomersChart.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface CustomerChartRowProps {
   customer: CustomerAnalyticsItem;
@@ -23,6 +24,8 @@ export const CustomerChartRow: React.FC<CustomerChartRowProps> = ({
   getInitials,
   getAvatarColor,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   const barWidth = (customer.totalRevenueFCFA / maxRevenue) * 100;
   const isReturning = customer.retention.isReturning;
 
@@ -45,7 +48,7 @@ export const CustomerChartRow: React.FC<CustomerChartRowProps> = ({
           </Text>
           {isReturning && (
             <View style={styles.returningBadge}>
-              <MaterialCommunityIcons name="refresh" size={10} color="#059669" />
+              <MaterialCommunityIcons name="refresh" size={10} color={colors.status.success} />
               <Text style={styles.returningText}>Fidèle</Text>
             </View>
           )}

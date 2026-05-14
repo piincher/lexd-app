@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from '@src/constants/Theme';
 
 interface CampaignEmptyStateProps {
   onCreate: () => void;
@@ -36,5 +37,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
-  buttonText: { fontFamily: Fonts.medium, fontSize: 14, color: "#fff" },
+  buttonText: { fontFamily: Fonts.medium, fontSize: 14, color: "Theme.colors.text.inverse" },
 });

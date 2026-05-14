@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     marginLeft: Theme.spacing.sm,
   },
 });

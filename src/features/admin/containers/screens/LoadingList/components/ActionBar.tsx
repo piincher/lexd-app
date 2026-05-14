@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'rea
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface ActionBarProps {
@@ -22,11 +23,12 @@ export const ActionBar: React.FC<ActionBarProps> = ({
   onMarkAll,
   onPrint,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <Animated.View entering={FadeInUp.delay(300)} style={styles.actionBar}>
       <TouchableOpacity style={styles.actionButton} onPress={onReset} activeOpacity={0.9}>
         <LinearGradient
-          colors={['#FEE2E2', '#FECACA']}
+          colors={[Theme.colors.status.error + '20', Theme.colors.status.error + '10']}
           style={styles.actionGradientSecondary}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
@@ -43,7 +45,7 @@ export const ActionBar: React.FC<ActionBarProps> = ({
         activeOpacity={0.9}
       >
         <LinearGradient
-          colors={['#D1FAE5', '#A7F3D0']}
+          colors={[Theme.colors.status.success + '20', Theme.colors.status.success + '10']}
           style={[styles.actionGradientSecondary, allLoaded && styles.actionGradientDisabled]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
@@ -60,16 +62,16 @@ export const ActionBar: React.FC<ActionBarProps> = ({
         activeOpacity={0.9}
       >
         <LinearGradient
-          colors={['#D97706', '#B45309']}
+          colors={[Theme.colors.status.warning, Theme.colors.status.error]}
           style={styles.actionGradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
           {isGeneratingPDF ? (
-            <ActivityIndicator size="small" color="#FFF" />
+            <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
           ) : (
             <>
-              <Ionicons name="print" size={20} color="#FFF" />
+              <Ionicons name="print" size={20} color={Theme.colors.text.inverse} />
               <Text style={styles.actionButtonText}>PDF</Text>
             </>
           )}
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: Theme.spacing.lg,
     gap: Theme.spacing.sm,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: Theme.Theme.colors.background.card,
     borderTopWidth: 1,
     borderTopColor: Theme.neutral[100],
   },
@@ -116,7 +118,7 @@ const styles = StyleSheet.create({
   actionButtonText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
   actionButtonTextSecondary: {
     fontSize: 13,

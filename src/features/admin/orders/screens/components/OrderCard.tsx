@@ -6,45 +6,41 @@ import { MaterialCommunityIcons, MaterialIcons, FontAwesome5 } from '@expo/vecto
 import { createStyles } from './OrderCard.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
-const STATUS_CONFIG: Record<string, { 
-  color: string; 
-  bgColor: string;
-  icon: string;
-  label: string;
-}> = {
-  PENDING: { 
-    color: '#9C27B0', 
-    bgColor: '#F3E5F5',
-    icon: 'clock-outline',
-    label: 'Pending'
-  },
-  Active: { 
-    color: '#4CAF50', 
-    bgColor: '#E8F5E9',
-    icon: 'check-circle',
-    label: 'Active'
-  },
-  'In Transit': { 
-    color: '#FF9800', 
-    bgColor: '#FFF3E0',
-    icon: 'truck-delivery',
-    label: 'In Transit'
-  },
-  Delivered: { 
-    color: '#2196F3', 
-    bgColor: '#E3F2FD',
-    icon: 'package-check',
-    label: 'Delivered'
-  },
-  Inactive: { 
-    color: '#757575', 
-    bgColor: '#F5F5F5',
-    icon: 'archive',
-    label: 'Inactive'
-  },
+const getStatusConfig = (colors: any, status: string) => {
+  const configs: Record<string, { color: string; bgColor: string; icon: string; label: string }> = {
+    PENDING: {
+      color: colors.status.warning,
+      bgColor: colors.background.paper,
+      icon: 'clock-outline',
+      label: 'Pending'
+    },
+    Active: {
+      color: colors.status.success,
+      bgColor: colors.background.paper,
+      icon: 'check-circle',
+      label: 'Active'
+    },
+    'In Transit': {
+      color: colors.status.warning,
+      bgColor: colors.background.paper,
+      icon: 'truck-delivery',
+      label: 'In Transit'
+    },
+    Delivered: {
+      color: colors.status.info,
+      bgColor: colors.background.paper,
+      icon: 'package-check',
+      label: 'Delivered'
+    },
+    Inactive: {
+      color: colors.text.disabled,
+      bgColor: colors.background.paper,
+      icon: 'archive',
+      label: 'Inactive'
+    },
+  };
+  return configs[status] || configs.Inactive;
 };
-
-const getStatusConfig = (status: string) => STATUS_CONFIG[status] || STATUS_CONFIG.Inactive;
 
 interface OrderCardProps {
   order: any;
@@ -64,7 +60,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, isSelected, isSelec
     return null;
   }
   
-  const statusConfig = getStatusConfig(order.status);
+  const statusConfig = getStatusConfig(colors, order.status);
   const initials = order.clientName?.split(' ').map((n: string) => n[0]).join('') || '?';
   
   const isAir = order.shippingMode === 'air';
@@ -81,7 +77,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, isSelected, isSelec
       {isSelectionMode && (
         <View style={styles.checkboxColumn}>
           <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-            {isSelected && <MaterialIcons name="check" size={18} color="#FFF" />}
+            {isSelected && <MaterialIcons name="check" size={18} color={colors.text.inverse} />}
           </View>
         </View>
       )}
@@ -106,7 +102,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, isSelected, isSelec
                 <Text style={styles.orderCode}>{order.code || 'No code'}</Text>
                 {hasHighValue && (
                   <View style={styles.priorityBadge}>
-                    <MaterialIcons name="star" size={10} color="#FFF" />
+                    <MaterialIcons name="star" size={10} color={colors.text.inverse} />
                   </View>
                 )}
               </View>
@@ -123,13 +119,13 @@ export const OrderCard: React.FC<OrderCardProps> = ({ order, isSelected, isSelec
 
         {/* Shipping Mode & Route */}
         <View style={styles.shippingRow}>
-          <View style={[styles.shippingMode, { backgroundColor: isAir ? '#1976D220' : '#00796B20' }]}>
+          <View style={[styles.shippingMode, { backgroundColor: isAir ? colors.status.info + '15' : colors.status.success + '15' }]}>
             <FontAwesome5
               name={isAir ? 'plane' : 'ship'}
               size={12}
-              color={isAir ? '#1976D2' : '#00796B'}
+              color={isAir ? colors.status.info : colors.status.success}
             />
-            <Text style={[styles.shippingText, { color: isAir ? '#1976D2' : '#00796B' }]}>
+            <Text style={[styles.shippingText, { color: isAir ? colors.status.info : colors.status.success }]}>
               {isAir ? 'Air Freight' : 'Sea Shipping'}
             </Text>
           </View>

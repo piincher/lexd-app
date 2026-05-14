@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ActivityIndicator } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface SubmitButtonProps {
   isEditMode: boolean;
@@ -16,6 +17,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
   isSubmitting,
   onPress,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <TouchableOpacity
       style={styles.submitButtonContainer}
@@ -30,15 +32,15 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
         style={styles.submitButton}
       >
         {isSubmitting ? (
-          <ActivityIndicator size="small" color="#FFF" />
+          <ActivityIndicator size="small" color={colors.text.inverse} />
         ) : (
           <>
             <Ionicons 
               name={isEditMode ? 'save' : 'add-circle'} 
               size={22} 
-              color="#FFF" 
+              color={colors.text.inverse} 
             />
-            <Text style={styles.submitButtonText}>
+            <Text style={[styles.submitButtonText, { color: colors.text.inverse }]}>
               {isEditMode ? 'Enregistrer les modifications' : 'Créer la Route'}
             </Text>
           </>
@@ -65,7 +67,6 @@ const styles = StyleSheet.create({
   submitButtonText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFF',
     letterSpacing: 0.3,
   },
 });

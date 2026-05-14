@@ -11,6 +11,7 @@ export { useSignupStore } from "./hooks/useSignInData";
 export { useVerification } from "./hooks/useVerification";
 export { useLoginForm } from "./hooks/useLoginForm";
 export { useAuthCheck } from "./hooks/useAuthCheck";
+export { useProactiveRefresh } from "./hooks/useProactiveRefresh";
 
 // Components
 export { ContactField } from "./components/ContactField";

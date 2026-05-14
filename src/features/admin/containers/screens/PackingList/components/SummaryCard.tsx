@@ -3,8 +3,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerSummary } from '../../../types/packingList';
+import { Theme } from '@src/constants/Theme';
 
 interface SummaryCardProps {
   summary: ContainerSummary;
@@ -12,10 +13,11 @@ interface SummaryCardProps {
 }
 
 export const SummaryCard: React.FC<SummaryCardProps> = ({ summary, formatDate }) => {
+  const { colors } = useAppTheme();
   return (
     <Animated.View entering={FadeInUp.delay(300)} style={styles.summaryCard}>
       <LinearGradient
-        colors={[Theme.primary[50], '#FFFFFF']}
+        colors={[colors.background.paper, colors.background.default]}
         style={styles.summaryGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}

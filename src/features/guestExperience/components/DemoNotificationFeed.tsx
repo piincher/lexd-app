@@ -64,7 +64,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       padding: 16,
       backgroundColor: colors.background.card,
       borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
+      borderColor: colors.border,
     },
     headerRow: {
       flexDirection: 'row',
@@ -86,7 +86,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       alignItems: 'center',
     },
     badgeText: {
-      color: '#FFFFFF',
+      color: colors.text.inverse,
       fontFamily: Fonts.bold,
       fontSize: 11,
     },
@@ -96,7 +96,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       gap: 12,
       paddingVertical: 12,
       borderTopWidth: 1,
-      borderTopColor: isDark ? 'rgba(255,255,255,0.06)' : '#F1F5F9',
+      borderTopColor: colors.border,
     },
     iconCircle: {
       width: 38,

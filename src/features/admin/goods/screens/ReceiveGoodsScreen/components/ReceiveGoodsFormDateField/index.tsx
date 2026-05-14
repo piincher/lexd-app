@@ -8,7 +8,7 @@ import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { Controller } from 'react-hook-form';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ReceiveGoodsFormDateFieldProps {
   control: any;
@@ -21,6 +21,8 @@ export const ReceiveGoodsFormDateField: React.FC<ReceiveGoodsFormDateFieldProps>
   setValue,
   error,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <Controller
       control={control}
@@ -34,10 +36,10 @@ export const ReceiveGoodsFormDateField: React.FC<ReceiveGoodsFormDateFieldProps>
           <View>
             <Pressable
               onPress={() => setShow(true)}
-              style={styles.dateButton}
+              style={[styles.dateButton, { backgroundColor: colors.background.paper, borderColor: colors.border }]}
             >
-              <MaterialCommunityIcons name="calendar" size={20} color="#22C55E" />
-              <Text style={styles.dateButtonText}>
+              <MaterialCommunityIcons name="calendar" size={20} color={colors.status.success} />
+              <Text style={[styles.dateButtonText, { color: colors.text.secondary }]}>
                 {displayDate || 'Date de réception (optionnel)'}
               </Text>
               {value && (
@@ -45,12 +47,12 @@ export const ReceiveGoodsFormDateField: React.FC<ReceiveGoodsFormDateFieldProps>
                   onPress={() => setValue('receivedDate', '')}
                   hitSlop={8}
                 >
-                  <MaterialCommunityIcons name="close-circle" size={18} color={Theme.colors.text.muted} />
+                  <MaterialCommunityIcons name="close-circle" size={18} color={colors.text.disabled} />
                 </Pressable>
               )}
             </Pressable>
             {error && (
-              <Text style={styles.dateError}>{error}</Text>
+              <Text style={[styles.dateError, { color: colors.status.error }]}>{error}</Text>
             )}
             <DatePickerModal
               locale="fr"
@@ -85,17 +87,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     marginTop: 4,
     gap: 10,
-    backgroundColor: 'rgba(255,255,255,0.06)',
-    borderColor: 'rgba(0,0,0,0.06)',
   },
   dateButtonText: {
     flex: 1,
     fontSize: 15,
-    color: Theme.colors.text.secondary,
   },
   dateError: {
     fontSize: 12,
-    color: '#EF4444',
     marginTop: 4,
     marginLeft: 4,
   },

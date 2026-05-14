@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialIcons } from "@expo/vector-icons";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { Theme } from "@src/constants/Theme";
 import { useCertificateDetail } from "../hooks/useCertificateDetail";
 import { CertificateDetailHeader } from "../components/CertificateDetailHeader";
 import { CertificateInfoCard } from "../components/CertificateInfoCard";
@@ -20,7 +21,7 @@ export default function CertificateDetailScreen({
   const { certificateId, verificationCode, issuedAt, certificateUrl, certificateMongoId } =
     route.params;
   const { colors } = useAppTheme();
-  const styles = createStyles(colors.text.inverse);
+  const styles = createStyles(colors);
 
   const {
     formattedDate,
@@ -42,7 +43,7 @@ export default function CertificateDetailScreen({
   return (
     <SafeAreaView style={styles.safeArea} edges={["top", "bottom"]}>
       <LinearGradient
-        colors={["#1a237e", "#4a148c", "#880e4f"]}
+        colors={Theme.gradients.dark}
         style={StyleSheet.absoluteFill}
       />
 

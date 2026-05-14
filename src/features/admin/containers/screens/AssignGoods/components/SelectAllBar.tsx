@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Ionicons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 
 interface SelectAllBarProps {
   selectedCount: number;
@@ -14,6 +15,7 @@ export const SelectAllBar: React.FC<SelectAllBarProps> = ({
   totalCount,
   onToggleSelectAll,
 }) => {
+  const { colors } = useAppTheme();
   if (totalCount === 0) {
     return null;
   }
@@ -24,7 +26,7 @@ export const SelectAllBar: React.FC<SelectAllBarProps> = ({
     <View style={styles.selectAllBar}>
       <TouchableOpacity style={styles.selectAllButton} onPress={onToggleSelectAll}>
         <View style={[styles.checkbox, isAllSelected && styles.checkboxSelected]}>
-          {isAllSelected && <Ionicons name="checkmark" size={18} color={Theme.colors.background.card} />}
+          {isAllSelected && <Ionicons name="checkmark" size={18} color={Theme.colors.text.inverse} />}
         </View>
         <Text style={styles.selectAllText}>
           {isAllSelected ? 'Tout désélectionner' : 'Tout sélectionner'}
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: Theme.colors.background.paper,
+    backgroundColor: Theme.Theme.colors.background.paper,
     borderBottomWidth: 1,
     borderBottomColor: '#E9ECEF',
   },
@@ -55,23 +57,23 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: '#CED4DA',
-    backgroundColor: Theme.colors.background.card,
+    borderColor: Theme.colors.border,
+    backgroundColor: Theme.Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
   },
   checkboxSelected: {
-    backgroundColor: '#007BFF',
-    borderColor: '#007BFF',
+    backgroundColor: Theme.colors.primary.main,
+    borderColor: Theme.colors.primary.main,
   },
   selectAllText: {
     fontSize: 14,
-    color: '#495057',
+    color: Theme.colors.text.secondary,
     fontWeight: '500',
   },
   resultsText: {
     fontSize: 14,
-    color: '#6C757D',
+    color: Theme.colors.text.secondary,
   },
 });

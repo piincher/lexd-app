@@ -108,7 +108,7 @@ export const QuickActions: React.FC = () => {
         title: {
           fontSize: 13,
           fontFamily: Fonts.bold,
-          color: "#FFF",
+          color: colors.text.inverse,
           letterSpacing: -0.2,
         },
         subtitle: {
@@ -147,7 +147,7 @@ export const QuickActions: React.FC = () => {
                 <MaterialCommunityIcons
                   name={action.icon as any}
                   size={20}
-                  color="#FFF"
+                  color={colors.text.inverse}
                 />
               </View>
               <View>

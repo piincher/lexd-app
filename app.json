@@ -2,8 +2,7 @@
   "expo": {
     "name": "ChinaLinkExpress",
     "slug": "ChinaLinkExpress",
-    "version": "2.6.0",
-    "jsEngine": "hermes",
+    "version": "2.8.1",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
     "userInterfaceStyle": "automatic",
@@ -23,9 +22,12 @@
         {
           "android": {
             "enableMinifyInReleaseBuilds": true,
-            "enableBundleCompression": false,
             "extraProguardRules": "-keep public class com.horcrux.svg.** {*;}",
-            "allowBackup": false
+            "allowBackup": false,
+            "usesCleartextTraffic": false
+          },
+          "ios": {
+            "flipper": false
           }
         }
       ],
@@ -106,11 +108,6 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ],
-      "notification": {
-        "color": "#8B5CF6",
-        "androidMode": "default",
-        "androidCollapsedTitle": "#{unread_notifications} nouvelles notifications"
-      },
       "permissions": [
         "RECEIVE_BOOT_COMPLETED",
         "VIBRATE",

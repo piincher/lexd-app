@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 12,
-    backgroundColor: '#FEE2E2',
+    backgroundColor: Theme.colors.status.error + '15',
     borderRadius: 8,
     borderWidth: 1,
     borderColor: '#FECACA',

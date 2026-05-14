@@ -4,6 +4,7 @@ import { Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface AlertHeroProps {
   hasUnassigned: boolean;
@@ -11,6 +12,7 @@ interface AlertHeroProps {
 }
 
 export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) => {
+  const { colors } = useAppTheme();
   const gradient = hasUnassigned
     ? (["#F97316", "#EA580C", "#C2410C"] as const)
     : (["#10B981", "#059669", "#047857"] as const);
@@ -48,7 +50,7 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
     title: {
       fontSize: 14,
       fontFamily: Fonts.bold,
-      color: "#FFF",
+      color: colors.text.inverse,
       letterSpacing: -0.2,
     },
     subtitle: {
@@ -60,7 +62,7 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
     count: {
       fontSize: 42,
       fontFamily: Fonts.bold,
-      color: "#FFF",
+      color: colors.text.inverse,
       letterSpacing: -1.5,
     },
     countLabel: {
@@ -72,7 +74,7 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
     successText: {
       fontSize: 14,
       fontFamily: Fonts.bold,
-      color: "#FFF",
+      color: colors.text.inverse,
     },
     successSubtext: {
       fontSize: 11,
@@ -96,7 +98,7 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
           <MaterialCommunityIcons
             name={hasUnassigned ? "package-variant-closed-remove" : "check-decagram"}
             size={22}
-            color="#FFF"
+            color={colors.text.inverse}
           />
         </View>
         <View>

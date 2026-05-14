@@ -67,7 +67,7 @@ export const OperationsHealthCard: React.FC<OperationsHealthCardProps> = ({ oper
       <View style={styles.grid}>
         <Metric label="A recouvrer" value={`${formatAmount(summary?.unpaidAmount)} F`} color={colors.status.warning} />
         <Metric label="En retard" value={`${summary?.overdueInvoices || 0}`} color={colors.status.error} />
-        <Metric label="Colis bloques" value={`${summary?.stuckGoods || 0}`} color="#8B5CF6" />
+        <Metric label="Colis bloques" value={`${summary?.stuckGoods || 0}`} color={colors.status.info} />
         <Metric label="Remplissage" value={`${summary?.avgContainerFillRate || 0}%`} color={colors.status.success} />
       </View>
       {topStuckGoods.length > 0 && (

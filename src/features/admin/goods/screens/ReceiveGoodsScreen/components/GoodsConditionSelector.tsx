@@ -19,35 +19,35 @@ type ConditionOption = {
   color: string;
 };
 
-const CONDITION_OPTIONS: ConditionOption[] = [
-  {
-    value: 'new',
-    label: 'Neuf',
-    icon: 'package-variant-closed',
-    description: 'Marchandise en parfait état',
-    color: '#28a745',
-  },
-  {
-    value: 'used',
-    label: 'Occasion',
-    icon: 'package-variant',
-    description: 'Marchandise déjà utilisée',
-    color: '#ffc107',
-  },
-  {
-    value: 'damaged',
-    label: 'Endommagé',
-    icon: 'package-variant-closed-remove',
-    description: 'Marchandise avec dommages',
-    color: '#dc3545',
-  },
-];
-
 export const GoodsConditionSelector: React.FC<GoodsConditionSelectorProps> = ({
   control,
   errors,
 }) => {
   const { colors, isDark } = useAppTheme();
+
+  const CONDITION_OPTIONS: ConditionOption[] = [
+    {
+      value: 'new',
+      label: 'Neuf',
+      icon: 'package-variant-closed',
+      description: 'Marchandise en parfait état',
+      color: colors.status.success,
+    },
+    {
+      value: 'used',
+      label: 'Occasion',
+      icon: 'package-variant',
+      description: 'Marchandise déjà utilisée',
+      color: colors.status.warning,
+    },
+    {
+      value: 'damaged',
+      label: 'Endommagé',
+      icon: 'package-variant-closed-remove',
+      description: 'Marchandise avec dommages',
+      color: colors.status.error,
+    },
+  ];
 
   const styles = useMemo(() => StyleSheet.create({
     card: {
@@ -148,7 +148,7 @@ export const GoodsConditionSelector: React.FC<GoodsConditionSelectorProps> = ({
                   onPress={() => onChange(option.value)}
                   activeOpacity={0.7}
                 >
-                  <View style={[styles.iconContainer, { backgroundColor: `${option.color}15` }]}>
+                  <View style={[styles.iconContainer, { backgroundColor: option.color + '15' }]}>
                     <MaterialCommunityIcons
                       name={option.icon}
                       size={24}

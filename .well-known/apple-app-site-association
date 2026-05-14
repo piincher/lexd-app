@@ -28,7 +28,7 @@
           },
           {
             "/": "/goods/*",
-            "comment": "Goods detail"
+            "comment": "Goods detail & edit"
           },
           {
             "/": "/orders",
@@ -67,6 +67,10 @@
             "comment": "Payments"
           },
           {
+            "/": "/payments/*",
+            "comment": "Payment detail"
+          },
+          {
             "/": "/faq",
             "comment": "FAQ"
           },
@@ -83,6 +87,10 @@
             "comment": "Scan QR"
           },
           {
+            "/": "/scan-qr",
+            "comment": "Scan QR (alt)"
+          },
+          {
             "/": "/login",
             "comment": "Login"
           },
@@ -91,8 +99,163 @@
             "comment": "Verification"
           },
           {
+            "/": "/s/*",
+            "comment": "Shared shipment tokens"
+          },
+          {
+            "/": "/batch/*",
+            "comment": "Batch updates"
+          },
+          {
+            "/": "/active-order/*",
+            "comment": "Active order details"
+          },
+          {
+            "/": "/user-orders/*",
+            "comment": "User orders by type"
+          },
+          {
+            "/": "/outstanding",
+            "comment": "Outstanding payments"
+          },
+          {
+            "/": "/shipping",
+            "comment": "Shipping method"
+          },
+          {
+            "/": "/shipping/method",
+            "comment": "Shipping method detail"
+          },
+          {
+            "/": "/clients",
+            "comment": "Client management"
+          },
+          {
+            "/": "/clients/*",
+            "comment": "Client details"
+          },
+          {
+            "/": "/receive",
+            "comment": "Receive goods"
+          },
+          {
+            "/": "/consignees",
+            "comment": "Consignee list"
+          },
+          {
+            "/": "/consignees/new",
+            "comment": "Create consignee"
+          },
+          {
+            "/": "/consignees/*",
+            "comment": "Consignee detail"
+          },
+          {
+            "/": "/routes",
+            "comment": "Route list"
+          },
+          {
+            "/": "/routes/form",
+            "comment": "Route form"
+          },
+          {
+            "/": "/unassigned",
+            "comment": "Unassigned goods"
+          },
+          {
+            "/": "/whatsapp",
+            "comment": "WhatsApp requests"
+          },
+          {
+            "/": "/campaigns",
+            "comment": "Campaign list"
+          },
+          {
+            "/": "/campaigns/new",
+            "comment": "Create campaign"
+          },
+          {
+            "/": "/announcements/new",
+            "comment": "Create announcement"
+          },
+          {
+            "/": "/search",
+            "comment": "Global search"
+          },
+          {
+            "/": "/badges",
+            "comment": "Badges"
+          },
+          {
+            "/": "/reviews",
+            "comment": "My reviews"
+          },
+          {
+            "/": "/promos",
+            "comment": "Promos"
+          },
+          {
+            "/": "/activity",
+            "comment": "Activity list"
+          },
+          {
+            "/": "/packing/*",
+            "comment": "Packing list"
+          },
+          {
+            "/": "/loading/*",
+            "comment": "Loading list"
+          },
+          {
+            "/": "/certificate",
+            "comment": "Certificate detail"
+          },
+          {
+            "/": "/past-orders",
+            "comment": "Past orders"
+          },
+          {
+            "/": "/stats",
+            "comment": "Stats"
+          },
+          {
+            "/": "/demo",
+            "comment": "Guest demo"
+          },
+          {
+            "/": "/demo-preview",
+            "comment": "Demo preview"
+          },
+          {
+            "/": "/onboarding",
+            "comment": "Onboarding"
+          },
+          {
             "/": "/admin/*",
             "comment": "Admin screens"
+          },
+          {
+            "/": "/admin-goods/*",
+            "comment": "Admin goods"
+          },
+          {
+            "/": "/admin-containers/*",
+            "comment": "Admin containers"
+          },
+          {
+            "/": "/api/*",
+            "exclude": true,
+            "comment": "Exclude API paths"
+          },
+          {
+            "/": "/.well-known/*",
+            "exclude": true,
+            "comment": "Exclude well-known paths"
+          },
+          {
+            "/": "/health",
+            "exclude": true,
+            "comment": "Exclude health check"
           }
         ]
       }

@@ -43,9 +43,9 @@ export const DemoTimeline: React.FC<Props> = ({ steps }) => {
                   styles.dot,
                   done && { backgroundColor: colors.status.success },
                   active && { backgroundColor: colors.status.info },
-                  !done && !active && { backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : colors.neutral[200] },
+                  !done && !active && { backgroundColor: colors.neutral[200] },
                 ]}>
-                  <FontAwesome6 name={step.icon as any} size={13} color={done || active ? '#FFFFFF' : colors.text.secondary} />
+                  <FontAwesome6 name={step.icon as any} size={13} color={done || active ? colors.text.inverse : colors.text.secondary} />
                 </View>
               </View>
               {index < steps.length - 1 && (
@@ -82,11 +82,11 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
     circleWrapper: { width: 36, height: 36, alignItems: 'center', justifyContent: 'center' },
     pulseRing: { position: 'absolute', width: 36, height: 36, borderRadius: 18, backgroundColor: colors.status.info, top: 0, left: 0 },
     dot: { width: 28, height: 28, borderRadius: 14, alignItems: 'center', justifyContent: 'center', zIndex: 1 },
-    line: { flex: 1, width: 2, marginTop: 4, backgroundColor: isDark ? 'rgba(255,255,255,0.12)' : colors.neutral[300] },
+    line: { flex: 1, width: 2, marginTop: 4, backgroundColor: colors.neutral[300] },
     textBlock: { flex: 1, paddingBottom: 16 },
     textBlockActive: {
       borderLeftWidth: 3, borderLeftColor: colors.status.info, paddingLeft: 12,
-      backgroundColor: isDark ? 'rgba(59,130,246,0.08)' : 'rgba(59,130,246,0.04)',
+      backgroundColor: colors.status.info + '0A',
       borderRadius: 8, marginBottom: 12, paddingVertical: 8,
     },
     title: { fontFamily: Fonts.bold, fontSize: 15, color: colors.text.primary },

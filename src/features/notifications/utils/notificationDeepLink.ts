@@ -8,6 +8,7 @@ import * as Notifications from "expo-notifications";
 import type { NavigationContainerRef } from "@react-navigation/native";
 import type { RootStackParamList } from "@src/navigations/type";
 import { NotificationData, handleNotificationResponse } from "@src/services/pushNotificationService";
+import { parseDeepLink } from "@src/shared/lib/parseDeepLink";
 
 export const getNotificationUnreadCount = (
   notification: Notifications.Notification
@@ -32,8 +33,21 @@ const normalizeNotificationCount = (value: unknown): number | null => {
 export const handleDeepLink = (
   data: NotificationData,
   navigationRef: NavigationContainerRef<RootStackParamList>
-): void => {
-  if (!data?.screen) return;
+): boolean => {
+  // If deepLink URL is present, parse and navigate directly
+  if (data?.deepLink && typeof data.deepLink === "string") {
+    const parsed = parseDeepLink(data.deepLink);
+    if (parsed) {
+      console.log("[NotificationDeepLink] Navigating via deepLink:", data.deepLink);
+      navigationRef.dispatch(CommonActions.navigate({
+        name: parsed.screen,
+        params: parsed.params,
+      }));
+      return true;
+    }
+  }
+
+  if (!data?.screen) return false;
 
   const { screen, containerId, goodsId, ticketId, orderId } = data;
 
@@ -45,44 +59,66 @@ export const handleDeepLink = (
           name: "ContainerTracking",
           params: { containerId },
         }));
+        return true;
       }
-      break;
+      return false;
     case "GoodsDetail":
       if (goodsId) {
         navigationRef.dispatch(CommonActions.navigate({ name: "GoodsDetail", params: { goodsId } }));
+        return true;
       }
-      break;
+      return false;
     case "TicketDetail":
       if (ticketId) {
         navigationRef.dispatch(CommonActions.navigate({ name: "TicketDetail", params: { ticketId } }));
+        return true;
       }
-      break;
+      return false;
     case "AdminTicketDetail":
       if (ticketId) {
         navigationRef.dispatch(CommonActions.navigate({
           name: "AdminTicketDetail",
           params: { ticketId },
         }));
+        return true;
       }
-      break;
+      return false;
     case "AdminTicketList":
       navigationRef.dispatch(CommonActions.navigate({ name: "AdminTicketList" }));
-      break;
+      return true;
     case "OrderDetail":
       if (orderId) {
         navigationRef.dispatch(CommonActions.navigate({ name: "OrderDetail", params: { id: orderId } }));
+        return true;
       }
-      break;
+      return false;
     case "Payments":
       navigationRef.dispatch(CommonActions.navigate({ name: "MyPaymentHistory" }));
-      break;
+      return true;
+    case "AirwayBillTracking":
+      navigationRef.dispatch(CommonActions.navigate({
+        name: "AirwayBillTracking",
+        params: data.airwayBillId ? { airwayBillId: String(data.airwayBillId) } : undefined,
+      }));
+      return true;
+    case "CargoBagDetail":
+      navigationRef.dispatch(CommonActions.navigate({
+        name: "CargoBagDetail",
+        params: data.cargoBagId && data.airwayBillId
+          ? { cargoBagId: String(data.cargoBagId), airwayBillId: String(data.airwayBillId) }
+          : undefined,
+      }));
+      return true;
+    case "MyReviews":
+      navigationRef.dispatch(CommonActions.navigate({ name: "MyReviews" }));
+      return true;
     case "Home":
     default:
       navigationRef.dispatch(CommonActions.navigate({
         name: "HomeTab",
         params: { screen: "Home" },
       }));
-      break;
+      return true;
   }
 };
 

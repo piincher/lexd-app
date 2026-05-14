@@ -4,9 +4,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp, Layout } from 'react-native-reanimated';
 import { Badge } from '@src/components/ui/Badge/Badge';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Goods } from '../../../../goods/types';
 import { normalizePhotos } from '@src/shared/lib';
+import { Theme } from '@src/constants/Theme';
 
 interface GoodsListItemProps {
   goods: Goods;
@@ -21,6 +22,7 @@ export const GoodsListItem: React.FC<GoodsListItemProps> = ({
   onToggle,
   index,
 }) => {
+  const { colors } = useAppTheme();
   const clientName = (() => {
     if (typeof goods.clientId === 'object' && goods.clientId) {
       return `${goods.clientId.firstName} ${goods.clientId.lastName}`;
@@ -45,7 +47,7 @@ export const GoodsListItem: React.FC<GoodsListItemProps> = ({
           {hasPhoto ? (
             <Image source={{ uri: photoUrls[0] }} style={styles.image} />
           ) : (
-            <LinearGradient colors={['#F3F0FF', '#E8E4F3']} style={styles.placeholderImage}>
+            <LinearGradient colors={[colors.background.paper, colors.background.default]} style={styles.placeholderImage}>
               <Ionicons name="cube" size={24} color={Theme.primary[400]} />
             </LinearGradient>
           )}

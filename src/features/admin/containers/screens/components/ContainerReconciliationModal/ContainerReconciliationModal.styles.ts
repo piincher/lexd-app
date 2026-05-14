@@ -1,14 +1,14 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
+import { Theme, AppTheme } from "@src/shared/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.45)",
     justifyContent: "flex-end",
   },
   sheet: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingHorizontal: 20,
@@ -25,23 +25,23 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "700",
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   subtitle: {
     fontSize: 13,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 2,
   },
   closeBtn: {
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     justifyContent: "center",
     alignItems: "center",
   },
   contextBox: {
-    backgroundColor: Theme.colors.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: 12,
     padding: 14,
     marginBottom: 16,
@@ -49,11 +49,11 @@ export const styles = StyleSheet.create({
   },
   contextText: {
     fontSize: 13,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   contextBold: {
     fontWeight: "700",
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   inputGroup: {
     marginBottom: 14,
@@ -61,30 +61,30 @@ export const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 13,
     fontWeight: "600",
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginBottom: 6,
   },
   input: {
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderRadius: 10,
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
-    color: Theme.colors.text.primary,
-    backgroundColor: Theme.colors.background.elevated,
+    color: colors.text.primary,
+    backgroundColor: colors.background.elevated,
   },
   inputError: {
-    borderColor: "#EF4444",
-    backgroundColor: "#FEF2F2",
+    borderColor: colors.status.error,
+    backgroundColor: colors.status.error + '12',
   },
   errorText: {
     fontSize: 12,
-    color: "#EF4444",
+    color: colors.status.error,
     marginTop: 4,
   },
   previewBox: {
-    backgroundColor: "#EFF6FF",
+    backgroundColor: colors.status.info + '12',
     borderRadius: 12,
     padding: 14,
     marginBottom: 16,
@@ -92,7 +92,7 @@ export const styles = StyleSheet.create({
   previewTitle: {
     fontSize: 12,
     fontWeight: "700",
-    color: "#1E40AF",
+    color: colors.status.info,
     textTransform: "uppercase",
     letterSpacing: 0.5,
     marginBottom: 10,
@@ -105,12 +105,12 @@ export const styles = StyleSheet.create({
   },
   previewLabel: {
     fontSize: 13,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   previewValue: {
     fontSize: 13,
     fontWeight: "600",
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   previewValueBold: {
     fontSize: 14,
@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: "#BFDBFE",
+    backgroundColor: colors.status.info + '30',
     marginVertical: 8,
   },
   actions: {
@@ -132,6 +132,6 @@ export const styles = StyleSheet.create({
   confirmBtn: {
     flex: 2,
     borderRadius: 10,
-    backgroundColor: "#3B82F6",
+    backgroundColor: colors.primary.main,
   },
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { TextInput } from 'react-native-paper';
-import { LOGISTICS_COLORS } from './pastOrderConstants';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from './PastOrderHeader.styles';
 
 interface PastOrderHeaderProps {
@@ -11,7 +11,8 @@ interface PastOrderHeaderProps {
 }
 
 export const PastOrderHeader: React.FC<PastOrderHeaderProps> = ({ searchQuery, onSearchChange }) => {
-  const styles = createStyles();
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
 
   return (
     <View style={styles.headerContainer}>
@@ -21,13 +22,13 @@ export const PastOrderHeader: React.FC<PastOrderHeaderProps> = ({ searchQuery, o
           <Ionicons
             name="search"
             size={20}
-            color={LOGISTICS_COLORS.gray[500]}
+            color={colors.text.secondary}
             style={styles.searchIcon}
           />
           <TextInput
             style={styles.searchInput}
             placeholder="Rechercher par nom, code ou téléphone"
-            placeholderTextColor={LOGISTICS_COLORS.gray[400]}
+            placeholderTextColor={colors.text.disabled}
             value={searchQuery}
             onChangeText={onSearchChange}
             autoCapitalize="none"

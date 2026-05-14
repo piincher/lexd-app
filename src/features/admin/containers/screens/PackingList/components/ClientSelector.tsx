@@ -6,8 +6,9 @@
 
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, ScrollView } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ClientGoodsGroup } from '../../../types/packingList';
+import { Theme } from '@src/constants/Theme';
 
 interface ClientSelectorProps {
   clients: ClientGoodsGroup[];
@@ -20,6 +21,7 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
   selectedClientId,
   onSelectClient,
 }) => {
+  const { colors } = useAppTheme();
   const [modalVisible, setModalVisible] = useState(false);
 
   // Normalize IDs for comparison
@@ -116,7 +118,7 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: Theme.Theme.colors.background.card,
     borderRadius: 12,
     marginHorizontal: 16,
     marginVertical: 12,
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.colors.text.secondary,
+    color: Theme.Theme.colors.text.secondary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 8,
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: Theme.colors.neutral[50],
+    backgroundColor: Theme.Theme.colors.neutral[50],
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 14,
@@ -151,12 +153,12 @@ const styles = StyleSheet.create({
   selectorText: {
     fontSize: 15,
     fontWeight: '500',
-    color: Theme.colors.text.secondary,
+    color: Theme.Theme.colors.text.secondary,
     flex: 1,
   },
   chevron: {
     fontSize: 12,
-    color: Theme.colors.text.secondary,
+    color: Theme.Theme.colors.text.secondary,
     marginLeft: 8,
   },
   modalOverlay: {
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: Theme.Theme.colors.background.card,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     maxHeight: '70%',
@@ -182,11 +184,11 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: Theme.Theme.colors.text.primary,
   },
   closeButton: {
     fontSize: 20,
-    color: Theme.colors.text.secondary,
+    color: Theme.Theme.colors.text.secondary,
     padding: 4,
   },
   clientList: {
@@ -198,31 +200,31 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.colors.neutral[100],
+    borderBottomColor: Theme.Theme.colors.neutral[100],
   },
   clientItemSelected: {
-    backgroundColor: '#f0fdf4',
+    backgroundColor: Theme.colors.status.success + '10',
   },
   clientInfo: {
     flex: 1,
   },
   clientItemText: {
     fontSize: 16,
-    color: Theme.colors.text.secondary,
+    color: Theme.Theme.colors.text.secondary,
     fontWeight: '500',
   },
   clientItemTextSelected: {
-    color: '#166534',
+    color: Theme.colors.status.success,
     fontWeight: '600',
   },
   clientMeta: {
     fontSize: 13,
-    color: Theme.colors.text.secondary,
+    color: Theme.Theme.colors.text.secondary,
     marginTop: 4,
   },
   checkmark: {
     fontSize: 18,
-    color: '#16a34a',
+    color: Theme.colors.status.success,
     fontWeight: '700',
     marginLeft: 8,
   },

@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#FFF',
+    color: 'Theme.colors.text.inverse',
     marginTop: 12,
   },
   headerSubtitle: {

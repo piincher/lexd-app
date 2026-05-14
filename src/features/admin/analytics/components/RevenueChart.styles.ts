@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
   },
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   growthBadge: {
     paddingHorizontal: 10,
@@ -36,12 +36,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
   },
   periodButtonText: {
     fontSize: 13,
     fontWeight: '500',
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   legend: {
     flexDirection: 'row',
@@ -61,11 +61,11 @@ export const styles = StyleSheet.create({
   },
   legendText: {
     fontSize: 12,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   noData: {
     textAlign: 'center',
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 100,
   },
 });

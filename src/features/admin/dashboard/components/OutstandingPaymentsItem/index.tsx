@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { OutstandingPaymentItem } from '../../types';
-import { styles } from './OutstandingPaymentsItem.styles';
+import { createStyles } from './OutstandingPaymentsItem.styles';
 
 interface OutstandingPaymentsItemProps {
   item: OutstandingPaymentItem;
@@ -13,18 +13,20 @@ interface OutstandingPaymentsItemProps {
 const formatCurrency = (amount: number) =>
   `${Math.round(amount).toLocaleString('fr-FR')} FCFA`;
 
-const getStatusConfig = (status: string) => {
+const getStatusConfig = (status: string, colors: any, isDark: boolean) => {
   if (status === 'PARTIAL') {
-    return { label: 'Partiel', color: '#F59E0B', bg: '#FFF7ED' };
+    return { label: 'Partiel', color: colors.status.warning, bg: isDark ? 'rgba(245,158,11,0.15)' : colors.feedback.warningBg };
   }
-  return { label: 'Impayé', color: '#EF4444', bg: '#FEF2F2' };
+  return { label: 'Impayé', color: colors.status.error, bg: isDark ? 'rgba(239,68,68,0.15)' : colors.feedback.errorBg };
 };
 
 export const OutstandingPaymentsItem: React.FC<OutstandingPaymentsItemProps> = ({
   item,
   onPress,
 }) => {
-  const statusConfig = getStatusConfig(item.paymentStatus);
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors);
+  const statusConfig = getStatusConfig(item.paymentStatus, colors, isDark);
 
   return (
     <TouchableOpacity
@@ -34,7 +36,7 @@ export const OutstandingPaymentsItem: React.FC<OutstandingPaymentsItemProps> = (
     >
       <View style={styles.row}>
         <View style={styles.iconContainer}>
-          <Ionicons name="cash-outline" size={22} color="#EF4444" />
+          <Ionicons name="cash-outline" size={22} color={colors.status.error} />
         </View>
         <View style={styles.info}>
           <Text style={styles.goodsId}>{item.goodsId}</Text>
@@ -60,7 +62,7 @@ export const OutstandingPaymentsItem: React.FC<OutstandingPaymentsItemProps> = (
           <Ionicons
             name="chevron-forward"
             size={18}
-            color={Theme.colors.text.muted}
+            color={colors.text.muted}
             style={styles.chevron}
           />
         </View>

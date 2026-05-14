@@ -3,10 +3,10 @@
  * Decomposed version under 150 lines
  */
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Input } from '@src/shared/ui/Input';
 import { Button } from '@src/shared/ui/Button';
 import { useSearchResults } from '../hooks/useSearchResults';
@@ -25,6 +25,9 @@ export const SearchResultsV2: React.FC<SearchResultsV2Props> = ({
   initialQuery = '',
   onResultPress,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   const {
     query,
     filters,
@@ -105,49 +108,50 @@ export const SearchResultsV2: React.FC<SearchResultsV2Props> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  searchBar: {
-    flexDirection: 'row',
-    padding: Theme.spacing.md,
-    gap: Theme.spacing.sm,
-  },
-  searchInput: {
-    flex: 1,
-  },
-  toolbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: Theme.spacing.md,
-    paddingBottom: Theme.spacing.sm,
-  },
-  resultCount: {
-    fontSize: 14,
-    color: Theme.neutral[600],
-  },
-  list: {
-    padding: Theme.spacing.md,
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: 16,
-    color: Theme.neutral[500],
-  },
-  modalOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    padding: Theme.spacing.lg,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+    },
+    searchBar: {
+      flexDirection: 'row',
+      padding: 12,
+      gap: 8,
+    },
+    searchInput: {
+      flex: 1,
+    },
+    toolbar: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 12,
+      paddingBottom: 8,
+    },
+    resultCount: {
+      fontSize: 14,
+      color: colors.text.secondary,
+    },
+    list: {
+      padding: 12,
+    },
+    emptyState: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    emptyText: {
+      fontSize: 16,
+      color: colors.text.disabled,
+    },
+    modalOverlay: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: colors.background.overlay,
+      justifyContent: 'center',
+      padding: 20,
+    },
+  });

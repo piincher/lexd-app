@@ -4,16 +4,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { productType } from '@src/shared/types/order';
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
-const STATUS_MAP: Record<string, { label: string; color: string }> = {
-   Active: { label: "En cours", color: "#1B365D" },
-   "In Transit": { label: "En transit", color: "#2D8FDB" },
-   Delivered: { label: "Livré", color: "#1AAE7E" },
-   Inactive: { label: "En attente", color: "#8E99A4" },
+const STATUS_MAP: Record<string, { label: string; colorKey: string }> = {
+   Active: { label: "En cours", colorKey: "info" },
+   "In Transit": { label: "En transit", colorKey: "info" },
+   Delivered: { label: "Livré", colorKey: "success" },
+   Inactive: { label: "En attente", colorKey: "disabled" },
 };
 
-const SHIPPING_MAP: Record<string, { label: string; icon: "airplane" | "ferry"; color: string }> = {
-   air: { label: "Aérien", icon: "airplane", color: "#3F51B5" },
-   sea: { label: "Maritime", icon: "ferry", color: "#0277BD" },
+const SHIPPING_MAP: Record<string, { label: string; icon: "airplane" | "ferry"; colorKey: string }> = {
+   air: { label: "Aérien", icon: "airplane", colorKey: "info" },
+   sea: { label: "Maritime", icon: "ferry", colorKey: "info" },
 };
 
 interface OrderHeaderProps {
@@ -51,21 +51,33 @@ export const OrderHeader: React.FC<OrderHeaderProps> = ({ order }) => {
    const status = STATUS_MAP[order.status || ""] || STATUS_MAP.Inactive;
    const shipping = SHIPPING_MAP[order.shippingMode || "sea"] || SHIPPING_MAP.sea;
 
+   const getStatusColor = (key: string) => {
+      switch (key) {
+         case "success": return colors.status.success;
+         case "info": return colors.status.info;
+         case "disabled": return colors.text.disabled;
+         default: return colors.text.disabled;
+      }
+   };
+
+   const statusColor = getStatusColor(status.colorKey);
+   const shippingColor = getStatusColor(shipping.colorKey);
+
    return (
       <View style={styles.container}>
          <View style={styles.row}>
-            <View style={[styles.badge, { backgroundColor: status.color + '20' }]}>
-               <Text style={[styles.badgeText, { color: status.color }]}>
+            <View style={[styles.badge, { backgroundColor: statusColor + '20' }]}>
+               <Text style={[styles.badgeText, { color: statusColor }]}>
                   {status.label}
                </Text>
             </View>
-            <View style={[styles.badge, { backgroundColor: shipping.color + '20' }]}>
+            <View style={[styles.badge, { backgroundColor: shippingColor + '20' }]}>
                <MaterialCommunityIcons
                   name={shipping.icon}
                   size={14}
-                  color={shipping.color}
+                  color={shippingColor}
                />
-               <Text style={[styles.badgeText, { color: shipping.color }]}>
+               <Text style={[styles.badgeText, { color: shippingColor }]}>
                   {shipping.label}
                </Text>
             </View>

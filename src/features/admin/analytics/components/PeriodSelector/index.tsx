@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
-import { styles } from './PeriodSelector.styles';
+import { createStyles } from './PeriodSelector.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 type Period = '7d' | '30d' | '90d' | '1y';
 
@@ -18,6 +19,8 @@ const PERIODS: Array<{ key: Period; label: string }> = [
 ];
 
 export const PeriodSelector: React.FC<PeriodSelectorProps> = ({ selected, onSelect }) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       {PERIODS.map((period) => (

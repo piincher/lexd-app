@@ -4,7 +4,6 @@
  * Handles navigation to parsed deep link targets.
  */
 
-import { useCallback } from "react";
 import { CommonActions } from "@react-navigation/native";
 import { navigationRef } from "@src/navigations/navigationRef";
 import type { ParsedLink } from "@src/shared/lib/parseDeepLink";
@@ -34,11 +33,4 @@ export function navigateToDeepLink(parsed: ParsedLink): void {
   }
 }
 
-export function useDeepLinkRouting() {
-  const navigate = useCallback(
-    (parsed: ParsedLink) => navigateToDeepLink(parsed),
-    []
-  );
 
-  return { navigate };
-}

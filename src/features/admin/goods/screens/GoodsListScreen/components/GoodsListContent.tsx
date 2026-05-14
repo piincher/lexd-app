@@ -10,10 +10,11 @@ import { ActivityIndicator, Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsCard } from '../../../components/GoodsCard';
 import { GoodsEmptyState } from './GoodsEmptyState';
 import { Goods } from '../../../types';
+import { Theme } from '@src/constants/Theme';
 
 interface GoodsListContentProps {
   goods: Goods[];
@@ -34,6 +35,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   goods, isLoading, refreshing, error, hasFilters, onRefresh, onEndReached,
   onPressGoods, onAddPress, isSelectionMode, selectedIds, onToggleSelect,
 }) => {
+  const { colors } = useAppTheme();
   const renderItem: ListRenderItem<Goods> = useCallback(({ item }) => (
     <GoodsCard goods={item} onPress={() => onPressGoods(item._id)}
       isSelectionMode={isSelectionMode} isSelected={selectedIds?.includes(item._id)}
@@ -54,14 +56,14 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   if (error) {
     return (
       <View style={styles.centerContainer}>
-        <LinearGradient colors={['#FEF2F2', '#FEE2E2']} style={styles.errorIcon}>
+        <LinearGradient colors={[Theme.colors.status.error + '10', Theme.colors.status.error + '05']} style={styles.errorIcon}>
           <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
         </LinearGradient>
         <Text style={styles.errorTitle}>Erreur de chargement</Text>
         <Text style={styles.errorSubtitle}>Impossible de récupérer les marchandises</Text>
         <TouchableOpacity style={styles.retryButton} onPress={onRefresh}>
           <LinearGradient colors={Theme.gradients.primary} style={styles.retryGradient}>
-            <Ionicons name="refresh" size={20} color="#FFF" />
+            <Ionicons name="refresh" size={20} color={Theme.colors.text.inverse} />
             <Text style={styles.retryText}>Réessayer</Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -92,6 +94,6 @@ const styles = StyleSheet.create({
   retryButton: { borderRadius: Theme.radius.full, overflow: 'hidden' },
   retryGradient: { flexDirection: 'row', alignItems: 'center',
     paddingVertical: Theme.spacing.md, paddingHorizontal: Theme.spacing.xl },
-  retryText: { fontSize: 15, fontWeight: '700', color: '#FFF', marginLeft: Theme.spacing.sm },
+  retryText: { fontSize: 15, fontWeight: '700', color: Theme.colors.text.inverse, marginLeft: Theme.spacing.sm },
   listContent: { paddingTop: Theme.spacing.sm, paddingBottom: 120 },
 });

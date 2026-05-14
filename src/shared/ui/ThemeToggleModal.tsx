@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, Pressable, View, Text, TouchableOpacity } from 'react-native';
 import { ThemeMode } from '@src/constants/Theme';
 import { ThemeOption } from './ThemeOption';
-import { styles } from './ThemeToggle.styles';
+import { createStyles } from './ThemeToggle.styles';
 
 interface ThemeToggleModalProps {
   visible: boolean;
@@ -18,7 +18,9 @@ export const ThemeToggleModal: React.FC<ThemeToggleModalProps> = ({
   currentTheme,
   onSelect,
   colors,
-}) => (
+}) => {
+  const styles = createStyles(colors);
+  return (
   <Modal
     animationType="slide"
     transparent
@@ -63,4 +65,4 @@ export const ThemeToggleModal: React.FC<ThemeToggleModalProps> = ({
       </View>
     </Pressable>
   </Modal>
-);
+);}

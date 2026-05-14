@@ -2,9 +2,10 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
+import { Theme } from '@src/constants/Theme';
 
 interface HeaderProps {
   containerNumber: string;
@@ -21,6 +22,7 @@ export const Header: React.FC<HeaderProps> = ({
   onBack,
   onGoToLoadingList,
 }) => {
+  const { colors } = useAppTheme();
   const navigation = useNavigation();
   return (
     <LinearGradient
@@ -31,17 +33,17 @@ export const Header: React.FC<HeaderProps> = ({
     >
       <View style={styles.headerTop}>
         <TouchableOpacity style={styles.backIconButton} onPress={onBack}>
-          <Ionicons name="arrow-back" size={24} color="#FFF" />
+          <Ionicons name="arrow-back" size={24} color={Theme.colors.text.inverse} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Liste de Colisage</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <TouchableOpacity style={styles.loadingListButton} onPress={onGoToLoadingList}>
-            <Ionicons name="list" size={20} color="#FFF" />
+            <Ionicons name="list" size={20} color={Theme.colors.text.inverse} />
           </TouchableOpacity>
           <NotificationBell
             onPress={() => navigation.navigate('Notifications' as never)}
             size={22}
-            color="#FFF"
+            color={Theme.colors.text.inverse}
           />
         </View>
       </View>
@@ -83,12 +85,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
   headerSubtitle: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
     textAlign: 'center',
     marginTop: Theme.spacing.md,
   },

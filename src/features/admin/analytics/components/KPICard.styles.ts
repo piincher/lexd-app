@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   cardContainer: {
     width: (SCREEN_WIDTH - 56) / 2,
     borderRadius: 16,
@@ -32,18 +32,18 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 12,
     fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: colors.text.inverse,
     marginBottom: 4,
   },
   value: {
     fontSize: 22,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: colors.text.inverse,
     marginBottom: 2,
   },
   subtitle: {
     fontSize: 11,
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: colors.text.inverse,
   },
   trendContainer: {
     flexDirection: 'row',
@@ -58,7 +58,7 @@ export const styles = StyleSheet.create({
   trendText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: colors.text.inverse,
     marginLeft: 4,
   },
 });

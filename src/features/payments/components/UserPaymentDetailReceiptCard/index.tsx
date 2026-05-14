@@ -27,7 +27,7 @@ export const UserPaymentDetailReceiptCard: React.FC<UserPaymentDetailReceiptCard
       {receiptUrl ? (
         <>
           <View style={[styles.receiptPreview, { backgroundColor: colors.background.paper }]}>
-            <MaterialCommunityIcons name="file-pdf-box" size={56} color="#F44336" />
+            <MaterialCommunityIcons name="file-pdf-box" size={56} color={colors.status.error} />
             {receiptNumber && (
               <Text style={[styles.receiptNumber, { color: colors.text.primary }]}>
                 N° {receiptNumber}
@@ -41,7 +41,7 @@ export const UserPaymentDetailReceiptCard: React.FC<UserPaymentDetailReceiptCard
             style={[styles.viewReceiptBtn, { backgroundColor: colors.primary.main }]}
             onPress={onOpenReceipt}
           >
-            <MaterialCommunityIcons name="eye" size={18} color="#fff" />
+            <MaterialCommunityIcons name="eye" size={18} color={colors.text.inverse} />
             <Text style={styles.viewReceiptText}>Voir / Télécharger le Reçu</Text>
           </TouchableOpacity>
         </>

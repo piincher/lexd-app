@@ -7,7 +7,8 @@ import { ContainerUtilizationChart } from '../ContainerUtilizationChart';
 import { TopCustomersChart } from '../TopCustomersChart';
 import { GoodsVolumeChart } from '../GoodsVolumeChart';
 import { PaymentMetrics } from '../PaymentMetrics';
-import { styles } from './DashboardContent.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './DashboardContent.styles';
 import type {
   DashboardData,
   RevenueTrendsData,
@@ -41,6 +42,8 @@ export const DashboardContent: React.FC<DashboardContentProps> = ({
   onViewContainerDetails,
 }) => {
   const theme = useTheme();
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
 
   return (
     <ScrollView

@@ -250,16 +250,27 @@ export const linking: LinkingOptions<RootStackParamList> = {
 };
 
 /**
- * Clean a universal link URL by removing query parameters and fragments
- * that might interfere with React Navigation path matching.
- * Preserves the path structure needed for deep linking.
+ * Clean a universal link URL by removing tracking query parameters
+ * (UTM, Facebook, Google ads) that might interfere with React Navigation
+ * path matching, while preserving navigation-relevant params like
+ * waypoint, location, segment, etc.
  */
 function cleanUniversalLink(url: string): string {
   try {
     const parsed = new URL(url);
-    // Reconstruct URL with just scheme, host, and pathname
-    // This removes ?query=params and #fragments
-    return `${parsed.protocol}//${parsed.host}${parsed.pathname}`;
+    const trackingParams = [
+      "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+      "utm_id", "fbclid", "gclid", "wbraid", "gbraid", "msclkid",
+      "ref", "source", "medium", "campaign",
+    ];
+    const preservedParams: string[] = [];
+    parsed.searchParams.forEach((value, key) => {
+      if (!trackingParams.includes(key.toLowerCase())) {
+        preservedParams.push(`${key}=${encodeURIComponent(value)}`);
+      }
+    });
+    const queryString = preservedParams.length > 0 ? `?${preservedParams.join("&")}` : "";
+    return `${parsed.protocol}//${parsed.host}${parsed.pathname}${queryString}`;
   } catch {
     return url;
   }

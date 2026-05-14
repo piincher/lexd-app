@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { OutstandingAgingBucket } from '../../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface AgingChartProps {
   data: OutstandingAgingBucket[];
@@ -9,6 +10,7 @@ interface AgingChartProps {
 const COLORS = ['#10B981', '#F59E0B', '#F97316', '#EF4444', '#991B1B'];
 
 export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
+  const { colors } = useAppTheme();
   const maxValue = Math.max(...data.map((d) => d.totalValueFCFA), 1);
 
   return (
@@ -20,11 +22,11 @@ export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
         return (
           <View key={bucket.range} style={styles.item}>
             <View style={styles.header}>
-              <Text style={styles.range}>{bucket.range}</Text>
-              <Text style={styles.count}>{bucket.count} factures</Text>
+              <Text style={[styles.range, { color: colors.text.secondary }]}>{bucket.range}</Text>
+              <Text style={[styles.count, { color: colors.text.muted }]}>{bucket.count} factures</Text>
             </View>
             <View style={styles.barContainer}>
-              <View style={[styles.barBackground, { flex: 1 }]}>
+              <View style={[styles.barBackground, { flex: 1, backgroundColor: colors.border }]}>
                 <View
                   style={[
                     styles.barFill,
@@ -61,11 +63,9 @@ const styles = StyleSheet.create({
   range: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#6B7280',
   },
   count: {
     fontSize: 11,
-    color: '#6B7280',
   },
   barContainer: {
     flexDirection: 'row',
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
   },
   barBackground: {
     height: 8,
-    backgroundColor: '#E5E7EB',
     borderRadius: 4,
     overflow: 'hidden',
   },

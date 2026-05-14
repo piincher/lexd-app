@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { LOGISTICS_COLORS } from './pastOrderConstants';
 
-export const createStyles = () =>
+export const createStyles = (colors: any) =>
   StyleSheet.create({
     emptyContainer: {
       flex: 1,
@@ -12,12 +11,12 @@ export const createStyles = () =>
     },
     emptyTitle: {
       fontFamily: Fonts.bold,
-      color: LOGISTICS_COLORS.dark,
+      color: colors.text.primary,
       marginTop: 20,
     },
     emptyDescription: {
       fontFamily: Fonts.regular,
-      color: LOGISTICS_COLORS.gray[600],
+      color: colors.text.secondary,
       textAlign: 'center',
       marginTop: 10,
       maxWidth: 300,

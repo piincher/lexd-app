@@ -16,7 +16,7 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
   onToggle,
   onEditPress,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
 
   const styles = useMemo(
     () =>
@@ -88,8 +88,8 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
         <Card.Content>
           <View style={styles.quietHoursHeader}>
             <View style={styles.quietHoursLeft}>
-              <View style={[styles.iconContainer, { backgroundColor: '#E0E7FF' }]}>
-                <Ionicons name="moon" size={24} color="#6366F1" />
+              <View style={[styles.iconContainer, { backgroundColor: isDark ? hexToRgba(colors.status.info, 0.15) : hexToRgba(colors.status.info, 0.1) }]}>
+                <Ionicons name="moon" size={24} color={colors.status.info} />
               </View>
               <View>
                 <Text style={styles.quietHoursTitle}>Heures silencieuses</Text>
@@ -127,4 +127,11 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
       </Card>
     </>
   );
+};
+
+const hexToRgba = (hex: string, alpha: number) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
 };

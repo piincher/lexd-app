@@ -66,12 +66,12 @@ export const WaypointModalHeader: React.FC<WaypointModalHeaderProps> = ({
           </View>
         )}
         {locationCategory === 'BORDER' && (
-          <View style={[styles.portBadge, { backgroundColor: '#FEF3C7' }]}>
+          <View style={[styles.portBadge, { backgroundColor: Theme.colors.status.warning + '15' }]}>
             <Text style={[styles.portBadgeText, { color: '#D97706' }]}>🛂 FRONTIÈRE</Text>
           </View>
         )}
         {locationCategory === 'WAREHOUSE' && (
-          <View style={[styles.portBadge, { backgroundColor: '#E0E7FF' }]}>
+          <View style={[styles.portBadge, { backgroundColor: Theme.colors.status.info + '12' }]}>
             <Text style={[styles.portBadgeText, { color: '#4338CA' }]}>📦 ENTREPÔT</Text>
           </View>
         )}
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   portBadge: {
-    backgroundColor: '#D1FAE5',
+    backgroundColor: Theme.colors.status.success + '18',
     paddingHorizontal: Theme.spacing.sm,
     paddingVertical: 2,
     borderRadius: Theme.radius.full,

@@ -9,17 +9,20 @@ interface Props {
   totalGoods: number;
 }
 
-const STAGES = [
-  { key: 'received', label: 'Reçu', icon: 'archive-outline', color: '#8B5CF6' },
-  { key: 'inContainer', label: 'Chargé', icon: 'cube-outline', color: '#0EA5E9' },
-  { key: 'inTransit', label: 'Transit', icon: 'airplane-outline', color: '#F59E0B' },
-  { key: 'arrived', label: 'Arrivé', icon: 'flag-outline', color: '#10B981' },
-  { key: 'ready', label: 'Prêt', icon: 'checkmark-circle-outline', color: '#22C55E' },
-  { key: 'delivered', label: 'Livré', icon: 'home-outline', color: '#059669' },
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getStages = (colors: any) => [
+  { key: 'received', label: 'Reçu', icon: 'archive-outline', color: colors.status.info },
+  { key: 'inContainer', label: 'Chargé', icon: 'cube-outline', color: colors.accent.mint },
+  { key: 'inTransit', label: 'Transit', icon: 'airplane-outline', color: colors.status.warning },
+  { key: 'arrived', label: 'Arrivé', icon: 'flag-outline', color: colors.status.success },
+  { key: 'ready', label: 'Prêt', icon: 'checkmark-circle-outline', color: colors.primary.main },
+  { key: 'delivered', label: 'Livré', icon: 'home-outline', color: colors.primary.dark },
 ];
 
 export const JourneyMap: React.FC<Props> = ({ goodsByStatus, totalGoods }) => {
   const { colors } = useAppTheme();
+  const STAGES = getStages(colors);
+
   const styles = useMemo(
     () =>
       StyleSheet.create({

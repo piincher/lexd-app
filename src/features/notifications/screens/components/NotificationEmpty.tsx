@@ -3,16 +3,17 @@
  * SRP: Empty state display for notifications
  */
 
-import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
+import { Fonts } from '@src/constants/Fonts';
 import type { FilterTab } from '../../types';
-import { styles } from './NotificationEmpty.styles';
 
 interface NotificationEmptyProps {
   filter: FilterTab;
@@ -60,11 +61,79 @@ export const NotificationEmpty: React.FC<NotificationEmptyProps> = ({
   isError,
   onRetry,
 }) => {
+  const { colors } = useAppTheme();
+
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          paddingHorizontal: 40,
+          minHeight: 400,
+        },
+        iconContainer: {
+          marginBottom: 24,
+        },
+        iconGradient: {
+          width: 120,
+          height: 120,
+          borderRadius: 36,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        errorCircle: {
+          width: 100,
+          height: 100,
+          borderRadius: 50,
+          backgroundColor: hexToRgba(colors.status.error, 0.08),
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 24,
+        },
+        title: {
+          fontSize: 20,
+          fontFamily: Fonts.bold,
+          fontWeight: '700',
+          color: colors.neutral[800],
+          textAlign: 'center',
+          marginBottom: 8,
+        },
+        subtitle: {
+          fontSize: 14,
+          fontFamily: Fonts.regular,
+          color: colors.neutral[400],
+          textAlign: 'center',
+          lineHeight: 20,
+        },
+        retryButton: {
+          marginTop: 24,
+          borderRadius: 24,
+          overflow: 'hidden',
+        },
+        retryGradient: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+          paddingHorizontal: 24,
+          paddingVertical: 12,
+        },
+        retryText: {
+          fontSize: 15,
+          fontFamily: Fonts.semiBold,
+          fontWeight: '600',
+          color: colors.text.inverse,
+        },
+      }),
+    [colors]
+  );
+
   if (isError) {
     return (
       <Animated.View entering={FadeInUp.springify()} style={styles.container}>
         <View style={styles.errorCircle}>
-          <MaterialCommunityIcons name="cloud-off-outline" size={48} color="#EF4444" />
+          <MaterialCommunityIcons name="cloud-off-outline" size={48} color={colors.status.error} />
         </View>
         <Text style={styles.title}>Erreur de chargement</Text>
         <Text style={styles.subtitle}>
@@ -77,7 +146,7 @@ export const NotificationEmpty: React.FC<NotificationEmptyProps> = ({
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <MaterialCommunityIcons name="refresh" size={18} color="#FFF" />
+            <MaterialCommunityIcons name="refresh" size={18} color={colors.text.inverse} />
             <Text style={styles.retryText}>Reessayer</Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -91,14 +160,21 @@ export const NotificationEmpty: React.FC<NotificationEmptyProps> = ({
     <Animated.View entering={FadeInUp.springify()} style={styles.container}>
       <View style={styles.iconContainer}>
         <LinearGradient
-          colors={[Theme.primary[50], Theme.primary[100]]}
+          colors={[colors.primary[50], colors.primary[100]]}
           style={styles.iconGradient}
         >
-          <MaterialCommunityIcons name={config.icon} size={56} color={Theme.primary[400]} />
+          <MaterialCommunityIcons name={config.icon} size={56} color={colors.primary[400]} />
         </LinearGradient>
       </View>
       <Text style={styles.title}>{config.title}</Text>
       <Text style={styles.subtitle}>{config.subtitle}</Text>
     </Animated.View>
   );
+};
+
+const hexToRgba = (hex: string, alpha: number) => {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
 };

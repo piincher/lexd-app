@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'rea
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface ActionBarProps {
@@ -18,6 +19,7 @@ export const ActionBar: React.FC<ActionBarProps> = ({
   onShare,
   onPrint,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <Animated.View entering={FadeInUp.delay(400)} style={styles.actionBar}>
       <TouchableOpacity
@@ -32,7 +34,7 @@ export const ActionBar: React.FC<ActionBarProps> = ({
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
-          <Ionicons name="share-social" size={20} color="#FFF" />
+          <Ionicons name="share-social" size={20} color={Theme.colors.text.inverse} />
           <Text style={styles.actionButtonText}>Partager</Text>
         </LinearGradient>
       </TouchableOpacity>
@@ -50,10 +52,10 @@ export const ActionBar: React.FC<ActionBarProps> = ({
           end={{ x: 1, y: 0 }}
         >
           {isGeneratingPDF ? (
-            <ActivityIndicator size="small" color="#FFF" />
+            <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
           ) : (
             <>
-              <Ionicons name="print" size={20} color="#FFF" />
+              <Ionicons name="print" size={20} color={Theme.colors.text.inverse} />
               <Text style={styles.actionButtonText}>PDF / Imprimer</Text>
             </>
           )}
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: Theme.spacing.lg,
     gap: Theme.spacing.md,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: Theme.Theme.colors.background.card,
     borderTopWidth: 1,
     borderTopColor: Theme.neutral[100],
   },
@@ -90,6 +92,6 @@ const styles = StyleSheet.create({
   actionButtonText: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
 });

@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     opacity: 0.6,
   },
   issueButtonText: {
-    color: "#FFF",
+    color: "Theme.colors.text.inverse",
     fontSize: 16,
     fontWeight: "700",
   },

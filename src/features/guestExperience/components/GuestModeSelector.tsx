@@ -19,7 +19,7 @@ const ModeCard: React.FC<{ s: DemoShipment; sel: boolean; i: number; onSelect: (
         entering={FadeInRight.delay(i * 150)}
         style={[
           styles.card,
-          { backgroundColor: isDark ? 'rgba(255,255,255,0.05)' : colors.background.card, borderColor: sel ? colors.primary.main : isDark ? 'rgba(255,255,255,0.12)' : colors.border, borderWidth: sel ? 2 : 1, shadowColor: sel ? colors.primary.main : 'transparent', shadowOffset: sel ? { width: 0, height: 4 } : { width: 0, height: 0 }, shadowOpacity: sel ? 0.15 : 0, shadowRadius: sel ? 12 : 0, elevation: sel ? 5 : 0 },
+          { backgroundColor: colors.background.card, borderColor: sel ? colors.primary.main : colors.border, borderWidth: sel ? 2 : 1, shadowColor: sel ? colors.primary.main : 'transparent', shadowOffset: sel ? { width: 0, height: 4 } : { width: 0, height: 0 }, shadowOpacity: sel ? 0.15 : 0, shadowRadius: sel ? 12 : 0, elevation: sel ? 5 : 0 },
           a,
         ]}
       >
