@@ -29,8 +29,8 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
     >
       <Ionicons name="cube-outline" size={64} color={Theme.primary[500]} />
     </LinearGradient>
-    <Text style={styles.title}>Aucune marchandise</Text>
-    <Text style={styles.subtitle}>
+    <Text style={[styles.title, { color: colors.text.primary }]}>Aucune marchandise</Text>
+    <Text style={[styles.subtitle, { color: colors.text.secondary }]}>
       {hasFilters
         ? 'Essayez de modifier vos filtres'
         : 'Commencez par recevoir une marchandise'}
@@ -63,13 +63,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[700],
     marginBottom: Theme.spacing.sm,
   },
   subtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[400],
     textAlign: 'center',
     paddingHorizontal: Theme.spacing['2xl'],
   },

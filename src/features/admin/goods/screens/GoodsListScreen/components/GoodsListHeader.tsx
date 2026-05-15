@@ -26,16 +26,17 @@ interface StatCardProps {
   label: string;
   icon: string;
   gradient: readonly [string, string, ...string[]];
+  colors: ReturnType<typeof useAppTheme>['colors'];
 }
 
-const StatCard: React.FC<StatCardProps> = ({ value, label, icon, gradient }) => (
-  <View style={styles.statCard}>
+const StatCard: React.FC<StatCardProps> = ({ value, label, icon, gradient, colors }) => (
+  <View style={[styles.statCard, { backgroundColor: colors.background.card }]}>
     <LinearGradient colors={gradient} style={styles.iconContainer}>
       <Ionicons name={icon as any} size={20} color={Theme.colors.text.inverse} />
     </LinearGradient>
     <View>
-      <Text style={styles.statValue}>{value}</Text>
-      <Text style={styles.statLabel}>{label}</Text>
+      <Text style={[styles.statValue, { color: colors.text.primary }]}>{value}</Text>
+      <Text style={[styles.statLabel, { color: colors.text.secondary }]}>{label}</Text>
     </View>
   </View>
 );
@@ -53,12 +54,16 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
     <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
       <View style={styles.headerTop}>
         <View>
-          <Text style={styles.greeting}>Bonjour! 👋</Text>
-          <Text style={styles.title}>Marchandises</Text>
+          <Text style={[styles.greeting, { color: colors.text.secondary }]}>Bonjour! 👋</Text>
+          <Text style={[styles.title, { color: colors.text.primary }]}>Marchandises</Text>
         </View>
         <View style={{ flexDirection: 'row', gap: 8 }}>
         {onToggleSelectionMode && (
-          <TouchableOpacity onPress={onToggleSelectionMode} style={styles.exportButton} activeOpacity={0.8}>
+          <TouchableOpacity
+            onPress={onToggleSelectionMode}
+            style={[styles.exportButton, { backgroundColor: colors.background.card }]}
+            activeOpacity={0.8}
+          >
             <Ionicons
               name={isSelectionMode ? 'close' : 'checkbox-outline'}
               size={22}
@@ -67,7 +72,11 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
           </TouchableOpacity>
         )}
         {onExportPress && (
-          <TouchableOpacity onPress={onExportPress} style={styles.exportButton} activeOpacity={0.8}>
+          <TouchableOpacity
+            onPress={onExportPress}
+            style={[styles.exportButton, { backgroundColor: colors.background.card }]}
+            activeOpacity={0.8}
+          >
             <Ionicons name="document-text" size={22} color={Theme.primary[500]} />
           </TouchableOpacity>
         )}
@@ -75,13 +84,13 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
       </View>
 
       <View style={styles.statsRow}>
-      <StatCard value={total} label="Total" icon="cube" gradient={Theme.gradients.primary} />
-      <StatCard value={pendingCount} label="En attente" icon="time" gradient={Theme.gradients.ocean} />
+      <StatCard value={total} label="Total" icon="cube" gradient={Theme.gradients.primary} colors={colors} />
+      <StatCard value={pendingCount} label="En attente" icon="time" gradient={Theme.gradients.ocean} colors={colors} />
       </View>
       <NotificationBell
         onPress={() => navigation.navigate('Notifications' as never)}
         size={24}
-        color={Theme.neutral[800]}
+        color={colors.text.primary}
       />
     </LinearGradient>
   );
@@ -107,8 +116,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: '800',
-    color: Theme.neutral[800],
-    letterSpacing: -0.5,
+    letterSpacing: 0,
   },
   statsRow: {
     flexDirection: 'row',
@@ -118,7 +126,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.md,
     ...Theme.shadows.sm,
@@ -135,7 +142,6 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.sm,
@@ -143,12 +149,10 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 20,
     fontWeight: '800',
-    color: Theme.neutral[800],
   },
   statLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.neutral[400],
     marginTop: 2,
   },
 });

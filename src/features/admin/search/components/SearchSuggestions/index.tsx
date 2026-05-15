@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@src/constants/Theme";
-import { styles } from "../GlobalSearchBar.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "../GlobalSearchBar.styles";
 
 interface SuggestionItem {
   id: string;
@@ -19,7 +20,11 @@ interface SearchSuggestionsProps {
   onSelect: (item: SuggestionItem) => void;
 }
 
-const SuggestionItemRow: React.FC<{ item: SuggestionItem; onPress: () => void }> = ({ item, onPress }) => (
+const SuggestionItemRow: React.FC<{ item: SuggestionItem; onPress: () => void }> = ({ item, onPress }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
+  return (
   <TouchableOpacity style={styles.suggestionItem} onPress={onPress}>
     <View style={styles.suggestionIconContainer}>
       <Ionicons
@@ -36,11 +41,15 @@ const SuggestionItemRow: React.FC<{ item: SuggestionItem; onPress: () => void }>
     </View>
     <Ionicons name="arrow-forward" size={16} color={Theme.neutral[400]} />
   </TouchableOpacity>
-);
+  );
+};
 
 export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
   suggestions, hasSuggestions, isLoading, onSelect,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   if (!hasSuggestions) return null;
 
   const renderCategory = (label: string, data: SuggestionItem[], prefix: string) =>
@@ -52,7 +61,6 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
           renderItem={({ item }) => <SuggestionItemRow item={item} onPress={() => onSelect(item)} />}
           keyExtractor={(item) => `${prefix}-${item.id}`}
           scrollEnabled={false}
-          estimatedItemSize={56}
         />
       </View>
     ) : null;

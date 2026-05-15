@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { GoodsImage } from '@src/shared/ui/GoodsImage';
 import { Badge } from '@src/components/ui/Badge/Badge';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { getStatusConfig } from './GoodsCardStatus';
 
 interface GoodsCardImageProps {
@@ -17,11 +18,12 @@ interface GoodsCardImageProps {
 }
 
 export const GoodsCardImage: React.FC<GoodsCardImageProps> = ({ photoUrls, status }) => {
+  const { colors } = useAppTheme();
   const hasPhoto = photoUrls.length > 0;
   const statusConfig = getStatusConfig(status);
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { borderColor: colors.border }]}>
       {hasPhoto ? (
         <GoodsImage
           uri={photoUrls[0]}
@@ -34,10 +36,10 @@ export const GoodsCardImage: React.FC<GoodsCardImageProps> = ({ photoUrls, statu
         />
       ) : (
         <LinearGradient
-          colors={['#F3F0FF', '#E8E4F3']}
+          colors={[colors.background.paper, colors.background.elevated]}
           style={styles.placeholder}
         >
-          <View style={styles.iconCircle}>
+          <View style={[styles.iconCircle, { backgroundColor: colors.background.card }]}>
             <Ionicons name="cube" size={28} color={Theme.primary[500]} />
           </View>
         </LinearGradient>
@@ -62,7 +64,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     position: 'relative',
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
   },
   placeholder: {
     width: 140,
@@ -74,7 +75,6 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.sm,

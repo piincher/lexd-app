@@ -31,19 +31,22 @@ export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
     <LinearGradient colors={[colors.background.card, colors.background.paper]} style={styles.container}>
       <Ionicons name="search" size={20} color={Theme.primary[400]} style={styles.icon} />
       <TextInput
-        style={styles.input}
+        style={[styles.input, { color: colors.text.primary }]}
         placeholder="Rechercher une marchandise..."
-        placeholderTextColor={Theme.neutral[400]}
+        placeholderTextColor={colors.text.secondary}
         value={value}
         onChangeText={onChangeText}
       />
       {value.length > 0 ? (
         <TouchableOpacity onPress={onClear} style={styles.clearButton}>
-          <Ionicons name="close-circle" size={22} color={Theme.neutral[400]} />
+          <Ionicons name="close-circle" size={22} color={colors.text.secondary} />
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={onFilterPress} style={styles.filterButton}>
-          <Ionicons name="options-outline" size={22} color={hasActiveFilters ? Theme.primary[500] : Theme.neutral[400]} />
+        <TouchableOpacity
+          onPress={onFilterPress}
+          style={[styles.filterButton, { backgroundColor: colors.primary[100] }]}
+        >
+          <Ionicons name="options-outline" size={22} color={hasActiveFilters ? Theme.primary[500] : colors.text.secondary} />
           {hasActiveFilters && <View style={styles.filterBadge} />}
         </TouchableOpacity>
       )}
@@ -73,7 +76,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontWeight: '500',
-    color: Theme.neutral[800],
     height: '100%',
   },
   clearButton: {
@@ -83,7 +85,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: Theme.radius.md,
-    backgroundColor: Theme.primary[100],
     justifyContent: 'center',
     alignItems: 'center',
     position: 'relative',

@@ -15,7 +15,7 @@ import { Theme } from '@src/shared/constants/Theme';
 const STATUS_FILTERS: { key: GoodsStatus | 'all'; label: string; icon: string }[] = [
   { key: 'all', label: 'Tous', icon: 'apps' },
   { key: 'RECEIVED_AT_WAREHOUSE', label: 'Entrepôt', icon: 'home' },
-  { key: 'PACKED', label: 'Préparé', icon: 'cube-send' },
+  { key: 'PACKED', label: 'Préparé', icon: 'cube-outline' },
   { key: 'ASSIGNED_TO_CONTAINER', label: 'Container', icon: 'cube' },
   { key: 'LOADED_IN_CONTAINER', label: 'Chargé', icon: 'archive' },
   { key: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },
@@ -46,7 +46,11 @@ export const GoodsFilterChips: React.FC<GoodsFilterChipsProps> = ({
         return (
           <TouchableOpacity
             key={filter.key}
-            style={[styles.pill, isSelected && styles.pillActive]}
+            style={[
+              styles.pill,
+              { backgroundColor: colors.background.card },
+              isSelected && styles.pillActive,
+            ]}
             onPress={() => onSelect(filter.key)}
           >
             {isSelected && (
@@ -63,7 +67,12 @@ export const GoodsFilterChips: React.FC<GoodsFilterChipsProps> = ({
               color={isSelected ? colors.text.inverse : colors.text.secondary}
               style={styles.icon}
             />
-            <Text style={[styles.text, isSelected && styles.textActive]}>
+            <Text
+              style={[
+                styles.text,
+                { color: isSelected ? colors.text.inverse : colors.text.secondary },
+              ]}
+            >
               {filter.label}
             </Text>
           </TouchableOpacity>
@@ -89,7 +98,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.colors.background.card,
     ...Theme.shadows.sm,
     overflow: 'hidden',
   },
@@ -102,10 +110,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[600],
-  },
-  textActive: {
-    color: '#FFF',
   },
 });
 

@@ -52,7 +52,7 @@ export const GoodsDetailScreen: React.FC = () => {
       />
       <ScrollView
         style={styles.scrollView}
-        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={Theme.primary[500]} />}
+        refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={colors.primary.main} />}
       >
         <QRCard
           hasQRCode={hasQRCode}

@@ -56,7 +56,7 @@ export const SEA_STATUS_STEPS: { key: GoodsStatus; label: string; icon: string }
 
 export const AIR_STATUS_STEPS: { key: GoodsStatus; label: string; icon: string }[] = [
 	{ key: 'RECEIVED_AT_WAREHOUSE', label: 'Reçu', icon: 'package-variant' },
-	{ key: 'PACKED', label: 'Colis préparé', icon: 'cube-send' },
+	{ key: 'PACKED', label: 'Colis préparé', icon: 'cube-outline' },
 	{ key: 'IN_TRANSIT', label: 'En Transit', icon: 'airplane' },
 	{ key: 'ARRIVED_DESTINATION', label: 'Arrivé', icon: 'flag-checkered' },
 	{ key: 'READY_FOR_PICKUP', label: 'Prêt', icon: 'hand-wave' },

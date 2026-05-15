@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+
 import {  createStyles  } from '../GoodsDetailScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -20,14 +20,14 @@ export const LocationCard: React.FC<LocationCardProps> = ({ warehouseLocation, c
   <Card style={styles.sectionCard}>
     <Card.Content>
       <View style={styles.sectionHeader}>
-        <MaterialCommunityIcons name="map-marker" size={20} color={Theme.primary[600]} />
+        <MaterialCommunityIcons name="map-marker" size={20} color={colors.primary.main} />
         <Text style={styles.sectionTitle}>Localisation</Text>
       </View>
 
       <View style={styles.locationGrid}>
         <View style={styles.locationItem}>
-          <View style={[styles.locationIcon, { backgroundColor: Theme.primary[100] }]}>
-            <MaterialCommunityIcons name="warehouse" size={24} color={Theme.primary[600]} />
+          <View style={[styles.locationIcon, { backgroundColor: colors.primary[100] }]}>
+            <MaterialCommunityIcons name="warehouse" size={24} color={colors.primary.main} />
           </View>
           <View>
             <Text style={styles.locationLabel}>Emplacement</Text>
@@ -37,8 +37,8 @@ export const LocationCard: React.FC<LocationCardProps> = ({ warehouseLocation, c
 
         {airwayBill && (
           <View style={styles.locationItem}>
-            <View style={[styles.locationIcon, { backgroundColor: Theme.accent.mint + '20' }]}>
-              <MaterialCommunityIcons name="airplane" size={24} color={Theme.accent.mint} />
+            <View style={[styles.locationIcon, { backgroundColor: colors.status.success + '20' }]}>
+              <MaterialCommunityIcons name="airplane" size={24} color={colors.status.success} />
             </View>
             <View style={styles.locationTextContainer}>
               <Text style={styles.locationLabel}>Lettre de transport</Text>
@@ -52,8 +52,8 @@ export const LocationCard: React.FC<LocationCardProps> = ({ warehouseLocation, c
 
         {container && (
           <View style={styles.locationItem}>
-            <View style={[styles.locationIcon, { backgroundColor: Theme.accent.mint + '20' }]}>
-              <MaterialCommunityIcons name="truck-container" size={24} color={Theme.accent.mint} />
+            <View style={[styles.locationIcon, { backgroundColor: colors.status.success + '20' }]}>
+              <MaterialCommunityIcons name="truck-cargo-container" size={24} color={colors.status.success} />
             </View>
             <View style={styles.locationTextContainer}>
               <Text style={styles.locationLabel}>Conteneur</Text>

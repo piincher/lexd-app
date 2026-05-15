@@ -131,6 +131,8 @@ export const useRecordPayment = () => {
          // Invalidate order queries to refresh the data
          queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
          queryClient.invalidateQueries({ queryKey: ['order', data.order._id] });
+         // Invalidate goods queries so linked goods reflect updated payment status
+         queryClient.invalidateQueries({ queryKey: ['goods'] });
       },
       onError: (error) => {
          console.error('[useRecordPayment] Error:', error);

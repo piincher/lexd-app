@@ -46,7 +46,7 @@ export const GoodsLocationInfo: React.FC<GoodsLocationInfoProps> = ({
           {container && (
             <View style={styles.item}>
               <View style={[styles.icon, { backgroundColor: Theme.accent.mint + '20' }]}>
-                <MaterialCommunityIcons name="truck-container" size={24} color={Theme.accent.mint} />
+                <MaterialCommunityIcons name="truck-cargo-container" size={24} color={Theme.accent.mint} />
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.label}>Conteneur</Text>

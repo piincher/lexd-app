@@ -32,7 +32,7 @@ export const GoodsDetailTimeline: React.FC<GoodsDetailTimelineProps> = ({ status
     <Card style={[styles.card, { backgroundColor: colors.background.card }]}>
       <Card.Content>
         <View style={styles.header}>
-          <Ionicons name="time-outline" size={20} color={Theme.primary[600]} />
+          <Ionicons name="time-outline" size={20} color={colors.primary.main} />
           <Text style={[styles.title, { color: colors.text.primary }]}>Suivi du statut</Text>
         </View>
         <View style={styles.timeline}>
@@ -40,7 +40,7 @@ export const GoodsDetailTimeline: React.FC<GoodsDetailTimelineProps> = ({ status
             const stepIndex = ALL_STEPS.findIndex(s => s.key === step.key);
             const isCompleted = currentIndex >= stepIndex;
             const isCurrent = currentIndex === stepIndex;
-            const circleColor = isCompleted ? Theme.status.success : colors.neutral[300];
+            const circleColor = isCompleted ? colors.status.success : colors.neutral[300];
 
             return (
               <View key={step.key} style={styles.step}>
@@ -49,8 +49,8 @@ export const GoodsDetailTimeline: React.FC<GoodsDetailTimelineProps> = ({ status
                     style={[
                       styles.circle,
                       {
-                        backgroundColor: isCurrent ? Theme.primary[600] : circleColor,
-                        borderColor: isCurrent ? Theme.primary[600] : circleColor,
+                        backgroundColor: isCurrent ? colors.primary.main : circleColor,
+                        borderColor: isCurrent ? colors.primary.main : circleColor,
                       },
                     ]}
                   >
@@ -64,7 +64,7 @@ export const GoodsDetailTimeline: React.FC<GoodsDetailTimelineProps> = ({ status
                     <View
                       style={[
                         styles.line,
-                        { backgroundColor: currentIndex > stepIndex ? Theme.status.success : colors.neutral[200] },
+                        { backgroundColor: currentIndex > stepIndex ? colors.status.success : colors.neutral[200] },
                       ]}
                     />
                   )}
@@ -73,7 +73,7 @@ export const GoodsDetailTimeline: React.FC<GoodsDetailTimelineProps> = ({ status
                   style={[
                     styles.stepLabel,
                     {
-                      color: isCurrent ? Theme.primary[600] : isCompleted ? colors.text.primary : colors.text.disabled,
+                      color: isCurrent ? colors.primary.main : isCompleted ? colors.text.primary : colors.text.disabled,
                       fontWeight: isCurrent ? '700' : '500',
                     },
                   ]}

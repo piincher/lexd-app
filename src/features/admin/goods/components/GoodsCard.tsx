@@ -6,6 +6,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Goods } from '../types';
 import { normalizePhotos } from '@src/shared/lib';
 import { GoodsCardStatus } from './GoodsCardStatus';
@@ -25,11 +26,16 @@ interface GoodsCardProps {
 export const GoodsCard: React.FC<GoodsCardProps> = ({
   goods, onPress, onMenuPress, isSelected, isSelectionMode, onToggleSelect,
 }) => {
+  const { colors } = useAppTheme();
   const photoUrls = normalizePhotos(goods);
 
   return (
     <TouchableOpacity
-      style={[styles.container, isSelected && styles.selectedContainer]}
+      style={[
+        styles.container,
+        { backgroundColor: colors.background.card },
+        isSelected && { backgroundColor: colors.primary[100] },
+      ]}
       onPress={isSelectionMode ? onToggleSelect : onPress}
       activeOpacity={0.95}
     >
@@ -38,29 +44,29 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({
         <GoodsCardImage photoUrls={photoUrls} status={goods.status} />
         <View style={styles.info}>
           <View style={styles.headerRow}>
-            <Text style={styles.goodsId}>{goods.goodsId}</Text>
+            <Text style={[styles.goodsId, { color: colors.text.primary }]}>{goods.goodsId}</Text>
             {isSelectionMode ? (
               <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
                 {isSelected && <Ionicons name="checkmark" size={16} color="#FFF" />}
               </View>
             ) : (
               <TouchableOpacity style={styles.moreButton} onPress={onMenuPress}>
-                <Ionicons name="ellipsis-horizontal" size={20} color={Theme.neutral[400]} />
+                <Ionicons name="ellipsis-horizontal" size={20} color={colors.text.secondary} />
               </TouchableOpacity>
             )}
           </View>
-          <Text style={styles.description} numberOfLines={1}>
+          <Text style={[styles.description, { color: colors.text.secondary }]} numberOfLines={1}>
             {goods.description || 'Sans description'}
           </Text>
           <GoodsCardClient clientId={goods.clientId} />
           <View style={styles.metaRow}>
             <View style={styles.metaItem}>
-              <Ionicons name="layers-outline" size={14} color={Theme.neutral[500]} />
-              <Text style={styles.metaText}>Qté: {goods.quantity || 1}</Text>
+              <Ionicons name="layers-outline" size={14} color={colors.text.secondary} />
+              <Text style={[styles.metaText, { color: colors.text.secondary }]}>Qté: {goods.quantity || 1}</Text>
             </View>
             <View style={styles.metaItem}>
-              <Ionicons name="location-outline" size={14} color={Theme.neutral[500]} />
-              <Text style={styles.metaText}>Loc: {goods.warehouseLocation || 'N/A'}</Text>
+              <Ionicons name="location-outline" size={14} color={colors.text.secondary} />
+              <Text style={[styles.metaText, { color: colors.text.secondary }]}>Loc: {goods.warehouseLocation || 'N/A'}</Text>
             </View>
           </View>
           <GoodsCardMetrics cbm={goods.actualCBM} weight={goods.weight} price={goods.totalCost} />
@@ -72,14 +78,10 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.xl,
     margin: Theme.spacing.lg,
     ...Theme.shadows.md,
     overflow: 'hidden',
-  },
-  selectedContainer: {
-    backgroundColor: '#E8E4F3',
   },
   content: {
     flexDirection: 'row',
@@ -99,8 +101,7 @@ const styles = StyleSheet.create({
     fontSize: Theme.typography.h3.fontSize,
     fontWeight: Theme.typography.h3.fontWeight as '800',
     lineHeight: Theme.typography.h3.lineHeight,
-    color: Theme.neutral[800],
-    letterSpacing: -0.5,
+    letterSpacing: 0,
   },
   moreButton: {
     padding: 4,
@@ -108,7 +109,6 @@ const styles = StyleSheet.create({
   description: {
     fontSize: Theme.typography.bodySmall.fontSize,
     lineHeight: Theme.typography.bodySmall.lineHeight,
-    color: Theme.neutral[500],
     marginTop: 4,
     fontWeight: '500',
   },
@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
     fontSize: Theme.typography.caption.fontSize,
     lineHeight: Theme.typography.caption.lineHeight,
     letterSpacing: Theme.typography.caption.letterSpacing,
-    color: Theme.neutral[600],
   },
   checkbox: {
     width: 24,

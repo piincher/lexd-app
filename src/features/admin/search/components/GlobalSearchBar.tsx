@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import {
   View, TextInput, TouchableOpacity, Animated, Keyboard,
 } from "react-native";
@@ -6,7 +6,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useSearchSuggestions, useRecentSearches } from "../hooks/useSearch";
 import { Theme } from "@src/constants/Theme";
-import { styles } from "./GlobalSearchBar.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "./GlobalSearchBar.styles";
 import { SearchSuggestions } from "./SearchSuggestions";
 import { SearchRecents } from "./SearchRecents";
 
@@ -24,6 +25,8 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
   onSearch, onFocus, onBlur, onFilterPress,
   placeholder = "Rechercher...", showSuggestions = true, autoFocus = false,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<TextInput>(null);

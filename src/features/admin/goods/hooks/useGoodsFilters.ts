@@ -15,7 +15,7 @@ interface FilterOption {
 const STATUS_FILTERS: FilterOption[] = [
   { key: 'all', label: 'Tous', icon: 'apps' },
   { key: 'RECEIVED_AT_WAREHOUSE', label: 'Entrepôt', icon: 'home' },
-  { key: 'PACKED', label: 'Préparé', icon: 'cube-send' },
+  { key: 'PACKED', label: 'Préparé', icon: 'cube-outline' },
   { key: 'ASSIGNED_TO_CONTAINER', label: 'Container', icon: 'cube' },
   { key: 'LOADED_IN_CONTAINER', label: 'Chargé', icon: 'archive' },
   { key: 'IN_TRANSIT', label: 'Transit', icon: 'airplane' },

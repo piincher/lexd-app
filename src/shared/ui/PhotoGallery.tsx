@@ -36,7 +36,13 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
       : [];
 
   const open = useCallback((i: number) => { setIdx(i); setVisible(true); fade.value = withTiming(1, { duration: 250 }); }, [fade]);
-  const close = useCallback(() => { fade.value = withTiming(0, { duration: 200 }, (f) => { if (f) runOnJS(setVisible)(false); }); }, [fade]);
+  const close = useCallback(() => {
+    fade.value = withTiming(0, { duration: 200 }, (finished) => {
+      if (finished) runOnJS(setVisible)(false);
+    });
+    // Fallback: ensure modal closes even if animation callback fails
+    setTimeout(() => setVisible(false), 300);
+  }, [fade]);
   const animatedStyle = useAnimatedStyle(() => ({ opacity: fade.value }));
   const go = (d: number) => { const n = idx + d; if (n >= 0 && n < safePhotoUrls.length) setIdx(n); };
 
@@ -68,15 +74,31 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
           <TouchableOpacity activeOpacity={1} style={StyleSheet.absoluteFillObject} onPress={close} />
           <View style={s.header} pointerEvents="box-none">
             <Text style={[s.headerText, { color: colors.text.inverse }]}>{idx + 1} / {safePhotoUrls.length}</Text>
-            <TouchableOpacity onPress={close} style={s.closeBtn}><Ionicons name="close" size={28} color={colors.text.inverse} /></TouchableOpacity>
+            <View pointerEvents="auto">
+              <TouchableOpacity onPress={close} style={s.closeBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+                <Ionicons name="close" size={28} color={colors.text.inverse} />
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={s.navRow} pointerEvents="box-none">
-            {idx > 0 && <TouchableOpacity onPress={() => go(-1)} style={s.chevron}><Ionicons name="chevron-back" size={36} color={colors.text.inverse} /></TouchableOpacity>}
+            {idx > 0 && (
+              <View pointerEvents="auto">
+                <TouchableOpacity onPress={() => go(-1)} style={s.chevron} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+                  <Ionicons name="chevron-back" size={36} color={colors.text.inverse} />
+                </TouchableOpacity>
+              </View>
+            )}
             <View style={{ flex: 1 }} />
-            {idx < safePhotoUrls.length - 1 && <TouchableOpacity onPress={() => go(1)} style={s.chevron}><Ionicons name="chevron-forward" size={36} color={colors.text.inverse} /></TouchableOpacity>}
+            {idx < safePhotoUrls.length - 1 && (
+              <View pointerEvents="auto">
+                <TouchableOpacity onPress={() => go(1)} style={s.chevron} hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+                  <Ionicons name="chevron-forward" size={36} color={colors.text.inverse} />
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
           <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} contentOffset={{ x: idx * W, y: 0 }}
-            onMomentumScrollEnd={(e) => setIdx(Math.round(e.nativeEvent.contentOffset.x / W))} style={{ zIndex: 103 }} contentContainerStyle={{ alignItems: 'center' }}>
+            onMomentumScrollEnd={(e) => setIdx(Math.round(e.nativeEvent.contentOffset.x / W))} style={s.viewerPager} contentContainerStyle={{ alignItems: 'center' }}>
             {safePhotoUrls.map((url, i) => (
               <View key={`v_${url}_${i}`} style={s.page}>
                 <Image source={{ uri: url }} style={s.viewerImg} resizeMode="contain" />
@@ -98,11 +120,12 @@ const s = StyleSheet.create({
   empty: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, paddingVertical: 24, borderRadius: 12, borderWidth: 1, marginVertical: 4 },
   emptyText: { fontSize: 14, fontWeight: '500' },
   backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.95)', zIndex: 100 },
-  header: { position: 'absolute', top: 48, left: 20, right: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', zIndex: 102 },
+  header: { position: 'absolute', top: 48, left: 20, right: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', zIndex: 104, elevation: 104 },
   headerText: { fontSize: 16, fontWeight: '600' },
-  closeBtn: { padding: 4 },
+  closeBtn: { width: 48, height: 48, borderRadius: 24, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.35)', zIndex: 200, elevation: 200 },
   navRow: { position: 'absolute', top: 0, bottom: 0, left: 8, right: 8, flexDirection: 'row', alignItems: 'center', zIndex: 101 },
   chevron: { padding: 12 },
+  viewerPager: { zIndex: 103, elevation: 103 },
   page: { width: W, height: H, justifyContent: 'center', alignItems: 'center' },
   viewerImg: { width: W, height: H * 0.7 },
 });

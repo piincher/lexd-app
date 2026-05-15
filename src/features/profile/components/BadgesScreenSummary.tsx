@@ -82,7 +82,7 @@ export const BadgesScreenSummary: React.FC<BadgesScreenSummaryProps> = ({ summar
         </View>
         <View style={styles.summaryDivider} />
         <View style={styles.summaryItem}>
-          <MaterialCommunityIcons name="cube-send" size={24} color={colors.status.info} />
+          <MaterialCommunityIcons name="cube-outline" size={24} color={colors.status.info} />
           <Text style={styles.summaryValue}>{summary.totalCBM.toFixed(1)}</Text>
           <Text style={styles.summaryLabel}>CBM total</Text>
         </View>

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@src/constants/Theme";
-import { styles } from "../GlobalSearchBar.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "../GlobalSearchBar.styles";
 
 interface SearchRecentsProps {
   recents: string[];
@@ -16,6 +17,9 @@ interface SearchRecentsProps {
 export const SearchRecents: React.FC<SearchRecentsProps> = ({
   recents, hasRecents, onSelect, onRemove, onClear,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   if (!hasRecents) return null;
 
   const renderItem = ({ item }: { item: string }) => (
@@ -41,7 +45,6 @@ export const SearchRecents: React.FC<SearchRecentsProps> = ({
         renderItem={renderItem}
         keyExtractor={(item, index) => `recent-${index}`}
         scrollEnabled={false}
-        estimatedItemSize={44}
       />
     </>
   );

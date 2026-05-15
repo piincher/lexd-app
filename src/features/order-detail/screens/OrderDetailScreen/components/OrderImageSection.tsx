@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, ScrollView } from "react-native";
 import { Text, Card } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { imagesType } from '@src/shared/types/order';
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { normalizePhotos } from "@src/shared/lib";
 
 interface OrderImageSectionProps {
@@ -12,6 +12,7 @@ interface OrderImageSectionProps {
 }
 
 export const OrderImageSection: React.FC<OrderImageSectionProps> = ({ images, goodsIds }) => {
+   const { colors } = useAppTheme();
    // Collect all photos: order-level images + goods photos
    const allPhotos: string[] = [];
 
@@ -32,8 +33,8 @@ export const OrderImageSection: React.FC<OrderImageSectionProps> = ({ images, go
       return (
          <Card style={styles.card}>
             <View style={[styles.image, styles.placeholder]}>
-               <MaterialCommunityIcons name="package-variant" size={56} color={Theme.colors.text.disabled} />
-               <Text style={styles.placeholderText}>Aucune photo</Text>
+               <MaterialCommunityIcons name="package-variant" size={56} color={colors.text.disabled} />
+               <Text style={[styles.placeholderText, { color: colors.text.disabled }]}>Aucune photo</Text>
             </View>
          </Card>
       );
@@ -81,13 +82,11 @@ const styles = StyleSheet.create({
       marginRight: 4,
    },
    placeholder: {
-      backgroundColor: Theme.colors.background.paper,
       justifyContent: "center",
       alignItems: "center",
    },
    placeholderText: {
       marginTop: 8,
       fontSize: 13,
-      color: Theme.colors.text.disabled,
    },
 });

@@ -7,7 +7,7 @@ import { styles } from './AirwayBillTrackingTimeline.styles';
 
 const AWB_STATUS_STEPS = [
   { key: 'CREATED', label: 'Créé', icon: 'file-document' },
-  { key: 'PACKING', label: 'Préparation', icon: 'cube-send' },
+  { key: 'PACKING', label: 'Préparation', icon: 'cube-outline' },
   { key: 'READY_FOR_DEPARTURE', label: 'Prêt au départ', icon: 'clock-check' },
   { key: 'IN_TRANSIT', label: 'En transit', icon: 'airplane' },
   { key: 'ARRIVED', label: 'Arrivé', icon: 'map-marker-check' },

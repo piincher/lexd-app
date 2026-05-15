@@ -92,8 +92,20 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({ order }) => {
          <View style={styles.divider} />
          <StatBox
             icon="cube-outline"
-            value={order.packageCBM ? `${order.packageCBM}` : "--"}
+            value={
+               order.packageCBM
+                  ? `${order.packageCBM}`
+                  : order.calculatedCBM
+                     ? `${order.calculatedCBM}`
+                     : "--"
+            }
             label="CBM (m³)"
+         />
+         <View style={styles.divider} />
+         <StatBox
+            icon={order.shippingMode?.toLowerCase() === 'air' ? 'airplane' : 'ferry'}
+            value={order.shippingMode?.toLowerCase() === 'air' ? 'Aérien' : 'Maritime'}
+            label="Mode"
          />
       </View>
    );

@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+
 import {  createStyles  } from '../GoodsDetailScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -26,7 +26,7 @@ export const ReceptionCard: React.FC<ReceptionCardProps> = ({ receivedAt, receiv
   <Card style={styles.sectionCard}>
     <Card.Content>
       <View style={styles.sectionHeader}>
-        <MaterialCommunityIcons name="calendar-check" size={20} color={Theme.primary[600]} />
+        <MaterialCommunityIcons name="calendar-check" size={20} color={colors.primary.main} />
         <Text style={styles.sectionTitle}>Réception</Text>
       </View>
       <View style={styles.receptionGrid}>

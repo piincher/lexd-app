@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGoodsListScreen } from './hooks/useGoodsListScreen';
 import {
   GoodsListHeader, GoodsListSearch, GoodsFilterChips, ActiveFilterChips,
@@ -11,9 +12,10 @@ import {
 
 export const GoodsListScreen: React.FC = () => {
   const s = useGoodsListScreen();
+  const { colors } = useAppTheme();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
       <GoodsListHeader total={s.total} pendingCount={s.pendingCount} onExportPress={s.handleExportPress}
         isSelectionMode={s.isSelectionMode} onToggleSelectionMode={s.handleToggleSelectionMode} />
       <GoodsListSearch value={s.searchQuery} onChangeText={s.setSearchQuery}
@@ -51,7 +53,7 @@ export const GoodsListScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Theme.colors.background.default },
+  container: { flex: 1 },
   snackbar: { backgroundColor: Theme.neutral[800], borderRadius: Theme.radius.lg, marginBottom: Theme.spacing.lg },
 });
 

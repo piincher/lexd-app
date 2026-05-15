@@ -49,7 +49,7 @@ export const OrderHeader: React.FC<OrderHeaderProps> = ({ order }) => {
    );
 
    const status = STATUS_MAP[order.status || ""] || STATUS_MAP.Inactive;
-   const shipping = SHIPPING_MAP[order.shippingMode || "sea"] || SHIPPING_MAP.sea;
+   const shipping = SHIPPING_MAP[(order.shippingMode || "sea").toLowerCase()] || SHIPPING_MAP.sea;
 
    const getStatusColor = (key: string) => {
       switch (key) {

@@ -32,7 +32,7 @@ const getEnvironment = (value?: string): Environment => {
   return 'production';
 };
 
-const ENV = getEnvironment('local'); // Change this value to switch environments (or set via environment variable)
+const ENV = getEnvironment(process.env.EXPO_PUBLIC_ENV);
 
 const API_CONFIG = {
   local: {
@@ -388,12 +388,7 @@ const createApiClient = (baseURL: string): AxiosInstance => {
             .catch(async (refreshErr) => {
               isRefreshing = false;
               onTokenRefreshFailed(refreshErr);
-              // Force logout when refresh fails — the session is dead
-              try {
-                await useAuth.getState().logOut();
-              } catch {
-                // ignore logout errors
-              }
+              // Do NOT auto-logout — let the user stay logged in locally
             });
         }
 

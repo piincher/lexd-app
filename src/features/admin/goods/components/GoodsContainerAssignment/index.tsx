@@ -31,7 +31,7 @@ export const GoodsContainerAssignment: React.FC<GoodsContainerAssignmentProps> =
     <Card style={styles.container}>
       <Card.Content>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="truck-container" size={20} color={Theme.primary[600]} />
+          <MaterialCommunityIcons name="truck-cargo-container" size={20} color={Theme.primary[600]} />
           <Text style={styles.title}>Assignation Conteneur</Text>
         </View>
 

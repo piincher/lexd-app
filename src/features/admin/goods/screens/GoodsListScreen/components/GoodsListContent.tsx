@@ -48,7 +48,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
     return (
       <View style={styles.centerContainer}>
         <ActivityIndicator size="large" color={Theme.primary[600]} />
-        <Text style={styles.loadingText}>Chargement des marchandises...</Text>
+        <Text style={[styles.loadingText, { color: colors.text.secondary }]}>Chargement des marchandises...</Text>
       </View>
     );
   }
@@ -59,8 +59,8 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
         <LinearGradient colors={[Theme.colors.status.error + '10', Theme.colors.status.error + '05']} style={styles.errorIcon}>
           <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
         </LinearGradient>
-        <Text style={styles.errorTitle}>Erreur de chargement</Text>
-        <Text style={styles.errorSubtitle}>Impossible de récupérer les marchandises</Text>
+        <Text style={[styles.errorTitle, { color: colors.text.primary }]}>Erreur de chargement</Text>
+        <Text style={[styles.errorSubtitle, { color: colors.text.secondary }]}>Impossible de récupérer les marchandises</Text>
         <TouchableOpacity style={styles.retryButton} onPress={onRefresh}>
           <LinearGradient colors={Theme.gradients.primary} style={styles.retryGradient}>
             <Ionicons name="refresh" size={20} color={Theme.colors.text.inverse} />
@@ -85,11 +85,11 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
 const styles = StyleSheet.create({
   centerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center',
     paddingVertical: Theme.spacing['4xl'], paddingHorizontal: Theme.spacing.xl },
-  loadingText: { marginTop: Theme.spacing.lg, fontSize: 16, color: Theme.neutral[500], fontWeight: '500' },
+  loadingText: { marginTop: Theme.spacing.lg, fontSize: 16, fontWeight: '500' },
   errorIcon: { width: 120, height: 120, borderRadius: Theme.radius['3xl'],
     justifyContent: 'center', alignItems: 'center', marginBottom: Theme.spacing.xl },
-  errorTitle: { fontSize: 20, fontWeight: '700', color: Theme.neutral[800], marginBottom: Theme.spacing.sm },
-  errorSubtitle: { fontSize: 14, fontWeight: '500', color: Theme.neutral[500],
+  errorTitle: { fontSize: 20, fontWeight: '700', marginBottom: Theme.spacing.sm },
+  errorSubtitle: { fontSize: 14, fontWeight: '500',
     textAlign: 'center', marginBottom: Theme.spacing.xl },
   retryButton: { borderRadius: Theme.radius.full, overflow: 'hidden' },
   retryGradient: { flexDirection: 'row', alignItems: 'center',

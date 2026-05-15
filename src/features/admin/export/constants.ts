@@ -5,7 +5,7 @@ export const getEntityConfig = (colors: any): Record<
   { label: string; icon: string; color: string }
 > => ({
   GOODS: { label: "Goods", icon: "package-variant", color: colors.status.info },
-  CONTAINERS: { label: "Containers", icon: "truck-container", color: colors.status.success },
+  CONTAINERS: { label: "Containers", icon: "truck-cargo-container", color: colors.status.success },
   PAYMENTS: { label: "Payments", icon: "cash-multiple", color: colors.status.warning },
   CLIENTS: { label: "Clients", icon: "account-group", color: colors.primary.main },
   USERS: { label: "Users", icon: "account", color: colors.primary.main },

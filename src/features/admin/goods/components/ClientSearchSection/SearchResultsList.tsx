@@ -13,22 +13,13 @@ interface SearchResultsListProps {
   onSelect: (client: userData) => void;
 }
 
-export const SearchResultsList: React.FC<SearchResultsListProps> = ({
-  users,
-  isLoading,
-  searchQuery,
-  onSelect,
-}) => {
+const ResultItem = React.memo(({ item, onSelect }: { item: userData; onSelect: (client: userData) => void }) => {
   const { colors } = useAppTheme();
   const styles = useClientSearchStyles();
 
-  const renderItem = useCallback(({ item, index }: { item: userData; index: number }) => (
+  return (
     <TouchableOpacity
-      key={item._id}
-      style={[
-        styles.resultItem,
-        index === users.length - 1 && styles.resultItemLast,
-      ]}
+      style={styles.resultItem}
       onPress={() => onSelect(item)}
       activeOpacity={0.7}
     >
@@ -51,7 +42,23 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
       </View>
       <Ionicons name="chevron-forward" size={18} color={colors.text.disabled} />
     </TouchableOpacity>
-  ), [users.length, onSelect, colors, styles]);
+  );
+});
+
+export const SearchResultsList: React.FC<SearchResultsListProps> = ({
+  users,
+  isLoading,
+  searchQuery,
+  onSelect,
+}) => {
+  const { colors } = useAppTheme();
+  const styles = useClientSearchStyles();
+
+  const renderItem = useCallback(({ item }: { item: userData }) => (
+    <ResultItem item={item} onSelect={onSelect} />
+  ), [onSelect]);
+
+  const keyExtractor = useCallback((item: userData) => item._id, []);
 
   if (isLoading) {
     return (
@@ -70,15 +77,17 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
             {users.length} résultat{users.length > 1 ? 's' : ''} trouvé{users.length > 1 ? 's' : ''}
           </Text>
         </View>
-        <FlatList
-          data={users}
-          renderItem={renderItem}
-          keyExtractor={(item) => item._id}
-          nestedScrollEnabled
-          keyboardShouldPersistTaps="handled"
-          style={{ maxHeight: 280 }}
-          showsVerticalScrollIndicator
-        />
+        <View style={{ height: 280 }}>
+          <FlatList
+            data={users}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            nestedScrollEnabled
+            keyboardShouldPersistTaps="handled"
+            style={{ flex: 1 }}
+            showsVerticalScrollIndicator
+          />
+        </View>
       </View>
     );
   }

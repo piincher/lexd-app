@@ -16,9 +16,10 @@ interface StatCardProps {
   value: number;
   icon: string;
   gradient: readonly [string, string, ...string[]];
+  styles: ReturnType<typeof createStyles>;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ label, value, icon, gradient }) => (
+const StatCard: React.FC<StatCardProps> = ({ label, value, icon, gradient, styles }) => (
   <View style={styles.statCard}>
     <LinearGradient
       colors={gradient}
@@ -59,24 +60,28 @@ export const RouteStats: React.FC<RouteStatsProps> = ({ stats }) => {
         value={stats.total}
         icon="map"
         gradient={Theme.gradients.primary}
+        styles={styles}
       />
       <StatCard
         label="Maritime"
         value={stats.sea}
         icon="boat"
         gradient={['#3B82F6', '#60A5FA']}
+        styles={styles}
       />
       <StatCard
         label="Aérien"
         value={stats.air}
         icon="airplane"
         gradient={['#8B5CF6', '#A78BFA']}
+        styles={styles}
       />
       <StatCard
         label="Actives"
         value={stats.active}
         icon="checkmark-circle"
         gradient={['#10B981', '#34D399']}
+        styles={styles}
       />
     </ScrollView>
   );

@@ -14,16 +14,16 @@ export const GoodsDetailProperties: React.FC<GoodsDetailPropertiesProps> = ({ go
   const { colors } = useAppTheme();
 
   const items = [
-    { icon: 'cube-outline' as const, label: 'CBM', value: goods.actualCBM?.toFixed(3) || '0', color: Theme.primary[600], highlight: true },
-    { icon: 'weight-outline' as const, label: 'Poids', value: `${goods.weight || 0} kg`, color: Theme.accent.mint, highlight: false },
-    { icon: 'layers-outline' as const, label: 'Quantité', value: `${goods.quantity || 1} unité(s)`, color: Theme.accent.coral, highlight: false },
+    { icon: 'cube-outline' as const, label: 'CBM', value: goods.actualCBM?.toFixed(3) || '0', color: colors.primary.main, highlight: true },
+    { icon: 'scale-outline' as const, label: 'Poids', value: `${goods.weight || 0} kg`, color: colors.status.info, highlight: false },
+    { icon: 'layers-outline' as const, label: 'Quantité', value: `${goods.quantity || 1} unité(s)`, color: colors.status.warning, highlight: false },
   ];
 
   return (
     <Card style={[styles.card, { backgroundColor: colors.background.card }]}>
       <Card.Content>
         <View style={styles.header}>
-          <Ionicons name="cube-outline" size={20} color={Theme.primary[600]} />
+          <Ionicons name="cube-outline" size={20} color={colors.primary.main} />
           <Text style={[styles.title, { color: colors.text.primary }]}>
             Caractéristiques physiques
           </Text>
@@ -34,7 +34,7 @@ export const GoodsDetailProperties: React.FC<GoodsDetailPropertiesProps> = ({ go
               key={i}
               style={[
                 styles.item,
-                item.highlight && styles.itemHighlight,
+                item.highlight && [styles.itemHighlight, { borderColor: colors.primary[200] }],
                 { backgroundColor: item.highlight ? colors.primary[50] : colors.neutral[50] },
               ]}
             >

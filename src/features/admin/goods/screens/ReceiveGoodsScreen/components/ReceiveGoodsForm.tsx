@@ -4,7 +4,7 @@
  */
 import React from 'react';
 import { StyleSheet, ScrollView } from 'react-native';
-import { Controller } from 'react-hook-form';
+import { Controller, useWatch } from 'react-hook-form';
 import { GoodsDimensionsInput } from './GoodsDimensionsInput';
 import { GoodsPhotosUpload } from './GoodsPhotosUpload';
 import { GoodsConditionSelector } from './GoodsConditionSelector';
@@ -13,7 +13,7 @@ import { FormInput } from '../../../components/FormInput';
 import { ReceiveGoodsFormSectionProps, ClientSelectionProps } from '../types';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
 import { CostSummary } from '../../../components/CostSummary';
-import { useReceiveGoodsFormValues } from '../hooks/useReceiveGoodsFormValues';
+
 import { ReceiveGoodsFormDateField } from './ReceiveGoodsFormDateField';
 import { ReceiveGoodsFormInputRows } from './ReceiveGoodsFormInputRows';
 
@@ -46,13 +46,18 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
   onPhotoRemoved,
   totalCost,
 }) => {
-  const { unitPriceValue, weightValue, shippingMode } = useReceiveGoodsFormValues(watch);
+  const shippingMode = useWatch({ control, name: 'shippingMode' }) || 'SEA';
+  const unitPrice = useWatch({ control, name: 'unitPrice' });
+  const weight = useWatch({ control, name: 'weight' });
+  const unitPriceValue = parseFloat(unitPrice?.replace(',', '.') || '0') || 0;
+  const weightValue = parseFloat(weight?.replace(',', '.') || '0') || 0;
   return (
     <ScrollView
       style={styles.scrollView}
       contentContainerStyle={styles.content}
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
+      nestedScrollEnabled
     >
       <ClientSearchSection
         selectedClient={selectedClient}

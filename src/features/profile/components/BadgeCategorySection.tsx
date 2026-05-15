@@ -12,7 +12,7 @@ import { BadgeCard } from "./BadgeCard";
 import { Theme } from '@src/constants/Theme';
 
 const categoryLabels: Record<string, { title: string; icon: keyof typeof MaterialCommunityIcons.glyphMap }> = {
-  VOLUME: { title: "Volume", icon: "cube-send" },
+  VOLUME: { title: "Volume", icon: "cube-outline" },
   LOYALTY: { title: "Fidélité", icon: "heart-multiple" },
   ACHIEVEMENT: { title: "Accomplissement", icon: "trophy-variant" },
 };

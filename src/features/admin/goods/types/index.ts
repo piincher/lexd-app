@@ -24,6 +24,7 @@ export interface Dimensions {
  */
 export type GoodsStatus =
   | 'RECEIVED_AT_WAREHOUSE'
+  | 'PACKED'
   | 'ASSIGNED_TO_CONTAINER'
   | 'LOADED_IN_CONTAINER'
   | 'IN_TRANSIT'
