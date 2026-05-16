@@ -12,6 +12,7 @@ import { ContainerDetailContent } from '../components/ContainerDetailContent';
 import { ContainerDetailFooter } from '../components/ContainerDetailFooter';
 import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
+import { withErrorBoundary } from '@src/shared/lib/sentry';
 
 /**
  * Container Delivery Flow (Option A):
@@ -27,7 +28,7 @@ import { ErrorState } from './components/ErrorState';
  * since delivery is now managed at the container level.
  */
 
-export const ContainerDetailScreen: React.FC = () => {
+const ContainerDetailScreenInner: React.FC = () => {
   const { colors } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const screen = useContainerDetailScreen();
@@ -44,5 +45,12 @@ export const ContainerDetailScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
+
+export const ContainerDetailScreen = withErrorBoundary(ContainerDetailScreenInner, {
+  fallback: <ErrorState onBack={() => {}} />,
+  onError: (error, info) => {
+    console.error('ContainerDetailScreen crashed:', error, info);
+  },
+});
 
 export default ContainerDetailScreen;

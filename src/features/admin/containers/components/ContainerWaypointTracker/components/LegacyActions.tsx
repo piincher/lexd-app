@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     borderColor: Theme.primary[200],
   },
   actionButtonTextPrimary: {
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
     fontSize: 13,
     fontWeight: '600',
   },

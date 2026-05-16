@@ -53,10 +53,10 @@ export const ReconciliationSheet: React.FC<ReconciliationSheetProps> = ({
 
       <View style={styles.contextBox}>
         <Text style={styles.contextText}>
-          CBM client facturé: <Text style={styles.contextBold}>{clientTotalCBM.toFixed(2)} m³</Text>
+          CBM client facturé: <Text style={styles.contextBold}>{(clientTotalCBM ?? 0).toFixed(2)} m³</Text>
         </Text>
         <Text style={styles.contextText}>
-          Revenu client total: <Text style={styles.contextBold}>{clientTotalRevenue.toLocaleString("fr-FR")} FCFA</Text>
+          Revenu client total: <Text style={styles.contextBold}>{(clientTotalRevenue ?? 0).toLocaleString("fr-FR")} FCFA</Text>
         </Text>
       </View>
 

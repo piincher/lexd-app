@@ -4,13 +4,14 @@
  */
 
 import React, { useState, useCallback } from 'react';
-import { View, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Text, Button, Chip, Modal, Portal, Card } from 'react-native-paper';
+import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Text, Button, Chip, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { userData } from '@src/shared/types/user';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
-import { DateRangePicker, DateRange } from '@src/components/DateRangePicker';
+import { DateRangePicker, DateRange, DateRangePreset } from '@src/components/DateRangePicker';
+import { styles } from './GoodsFilterModal.styles';
 
 interface GoodsFilterModalProps {
   visible: boolean;
@@ -33,7 +34,7 @@ export const GoodsFilterModal: React.FC<GoodsFilterModalProps> = ({
 }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const handleDateConfirm = useCallback((range: DateRange, _preset: any) => {
+  const handleDateConfirm = useCallback((range: DateRange, _preset: DateRangePreset) => {
     onDateRangeChange({
       startDate: range.startDate.toISOString(),
       endDate: range.endDate.toISOString(),
@@ -50,8 +51,13 @@ export const GoodsFilterModal: React.FC<GoodsFilterModalProps> = ({
   const hasFilters = !!selectedClient || !!dateRange;
 
   return (
-    <Portal>
-      <Modal visible={visible} onDismiss={onDismiss} contentContainerStyle={styles.modal}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      onRequestClose={onDismiss}
+    >
+      <View style={styles.overlay}>
         <Card style={styles.card}>
           <View style={styles.header}>
             <Text style={styles.title}>Filtres avancés</Text>
@@ -102,99 +108,19 @@ export const GoodsFilterModal: React.FC<GoodsFilterModalProps> = ({
             </Button>
           </View>
         </Card>
+      </View>
 
-        <DateRangePicker
-          visible={showDatePicker}
-          onDismiss={() => setShowDatePicker(false)}
-          onConfirm={handleDateConfirm}
-          initialRange={dateRange ? {
-            startDate: new Date(dateRange.startDate),
-            endDate: new Date(dateRange.endDate),
-          } : undefined}
-        />
-      </Modal>
-    </Portal>
+      <DateRangePicker
+        visible={showDatePicker}
+        onDismiss={() => setShowDatePicker(false)}
+        onConfirm={handleDateConfirm}
+        initialRange={dateRange ? {
+          startDate: new Date(dateRange.startDate),
+          endDate: new Date(dateRange.endDate),
+        } : undefined}
+      />
+    </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  modal: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    margin: 0,
-  },
-  card: {
-    backgroundColor: Theme.colors.background.card,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: 20,
-    maxHeight: '85%',
-    minHeight: '50%',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  closeButton: {
-    padding: 4,
-  },
-  body: {
-    paddingBottom: 16,
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Theme.neutral[600],
-    marginBottom: 10,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
-  },
-  dateButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-    borderRadius: Theme.radius.lg,
-    borderWidth: 1,
-    borderColor: Theme.neutral[200],
-    backgroundColor: Theme.neutral[50],
-  },
-  dateButtonText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: Theme.neutral[700],
-  },
-  dateChipRow: {
-    flexDirection: 'row',
-  },
-  dateChip: {
-    backgroundColor: Theme.primary[50],
-  },
-  footer: {
-    flexDirection: 'row',
-    gap: 12,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
-  },
-  clearButton: {
-    flex: 1,
-    borderColor: Theme.neutral[300],
-  },
-  applyButton: {
-    flex: 1,
-  },
-});
 
 export default GoodsFilterModal;

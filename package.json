@@ -1,6 +1,6 @@
 {
   "name": "homely",
-  "version": "2.8.1",
+  "version": "2.9.1",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -10,6 +10,8 @@
     "test": "jest --watch",
     "eas-build-pre-install": "npm config set legacy-peer-deps true",
     "lint": "expo lint",
+    "typecheck": "tsc --noEmit",
+    "sentry:upload-sourcemaps": "sentry-expo-upload-sourcemaps dist",
     "analyze:bundle": "npx react-native-bundle-visualizer",
     "analyze:expo": "node scripts/analyze-bundle-expo.js",
     "check:bundle": "node scripts/check-bundle-size.js"

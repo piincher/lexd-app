@@ -80,6 +80,7 @@ const currentConfig = {
 // ============================================
 
 let isRefreshing = false;
+let refreshPromise: Promise<string> | null = null;
 let refreshSubscribers: {
   resolve: (token: string) => void;
   reject: (error: unknown) => void;
@@ -111,7 +112,7 @@ const refreshClient = axios.create({
   },
 });
 
-export const doRefresh = async (): Promise<string> => {
+const performRefresh = async (): Promise<string> => {
   const { refreshToken } = useAuth.getState();
   if (!refreshToken) {
     throw new Error('No refresh token available');
@@ -130,6 +131,16 @@ export const doRefresh = async (): Promise<string> => {
     expiresIn,
   });
   return newAccessToken;
+};
+
+export const doRefresh = (): Promise<string> => {
+  if (!refreshPromise) {
+    refreshPromise = performRefresh().finally(() => {
+      refreshPromise = null;
+    });
+  }
+
+  return refreshPromise;
 };
 
 const getErrorCode = (responseData?: ApiResponse<unknown> | Record<string, unknown>): string | undefined => {
@@ -373,9 +384,13 @@ const createApiClient = (baseURL: string): AxiosInstance => {
       console.log('[API Client] 401 response for', config.url, 'data:', JSON.stringify(responseData));
       const cfg = config as ApiRequestConfig & { _skipRefresh?: boolean };
 
-      // Attempt token refresh on any 401. Mobile apps should stay logged in
-      // unless the user explicitly chooses to log out.
-      if (!cfg._skipRefresh) {
+      if (cfg.url?.includes('/auth/refresh')) {
+        return Promise.reject(new ApiClientError(error));
+      }
+
+      // Only refresh expired access tokens. Other 401s (blocked account,
+      // invalid refresh token, compromised session) should surface normally.
+      if (!cfg._skipRefresh && isTokenExpiredResponse(responseData)) {
         cfg._skipRefresh = true;
 
         if (!isRefreshing) {

@@ -22,7 +22,7 @@ export const ContainerProfitCardHeader: React.FC<ContainerProfitCardHeaderProps>
     <Text style={styles.title}>Rentabilité CBM</Text>
     <View style={[styles.marginBadge, { backgroundColor: isProfit ? '#ECFDF5' : '#FEF2F2' }]}>
       <Text style={[styles.marginText, { color: profitColor }]}>
-        {isProfit ? '+' : ''}{profitMargin.toFixed(1)}%
+        {isProfit ? '+' : ''}{(profitMargin ?? 0).toFixed(1)}%
       </Text>
     </View>
   </View>

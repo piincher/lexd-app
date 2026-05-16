@@ -97,7 +97,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
 
         <View style={styles.typeRow}>
           <View style={styles.typeBadge}>
-            <Ionicons name={segmentIcon as any} size={12} color={Theme.neutral[500]} />
+            <Ionicons name={(segmentIcon || 'help-circle') as any} size={12} color={Theme.neutral[500]} />
             <Text style={styles.typeBadgeText}>{SEGMENT_TYPE_LABELS[waypoint.segmentType]}</Text>
           </View>
           {locationCategory && (

@@ -2,7 +2,7 @@
   "expo": {
     "name": "ChinaLinkExpress",
     "slug": "ChinaLinkExpress",
-    "version": "2.8.1",
+    "version": "2.9.1",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
     "userInterfaceStyle": "automatic",
@@ -47,7 +47,6 @@
           "organization": "nuvotech"
         }
       ],
-      "@sentry/react-native",
       [
         "expo-notifications",
         {

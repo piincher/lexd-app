@@ -125,33 +125,47 @@ export const useContainerDetailScreen = () => {
   // Compute fallback CBM profit from goods if backend returns zero client CBM
   const rawCbmProfit: CbmProfit | null = containerResponse?.data?.cbmProfit ?? null;
   const cbmProfit: CbmProfit | null = (() => {
-    if (!rawCbmProfit || !goodsList.length) return rawCbmProfit;
+    if (!rawCbmProfit) return null;
+
+    // Normalize raw data to ensure all numeric fields are defined
+    const normalized: CbmProfit = {
+      ...rawCbmProfit,
+      revenue: rawCbmProfit.revenue ?? 0,
+      collected: rawCbmProfit.collected ?? 0,
+      cost: rawCbmProfit.cost ?? 0,
+      profit: rawCbmProfit.profit ?? 0,
+      profitMargin: rawCbmProfit.profitMargin ?? 0,
+      totalCBM: rawCbmProfit.totalCBM ?? 0,
+      cbmCostPerUnit: rawCbmProfit.cbmCostPerUnit ?? 0,
+    };
+
+    if (!goodsList.length) return normalized;
 
     // If backend already provides valid dualLedger with non-zero clientTotalCBM, use it
-    if (rawCbmProfit.dualLedger && rawCbmProfit.dualLedger.clientTotalCBM > 0) {
-      return rawCbmProfit;
+    if (normalized.dualLedger && normalized.dualLedger.clientTotalCBM > 0) {
+      return normalized;
     }
 
     // Calculate client total CBM from goods actualCBM
     const clientTotalCBM = goodsList.reduce((sum, g: any) => sum + (parseFloat(g?.actualCBM) || 0), 0);
-    if (clientTotalCBM <= 0) return rawCbmProfit;
+    if (clientTotalCBM <= 0) return normalized;
 
     const clientUnitPrice = 300000;
-    const agentUnitCost = rawCbmProfit.dualLedger?.agentUnitCost || rawCbmProfit.cbmCostPerUnit || 278000;
+    const agentUnitCost = normalized.dualLedger?.agentUnitCost || normalized.cbmCostPerUnit || 278000;
     const clientTotalRevenue = clientTotalCBM * clientUnitPrice;
     const realTimeProfit = clientTotalRevenue - (clientTotalCBM * agentUnitCost);
 
     const dualLedger: DualLedger = {
-      ...(rawCbmProfit.dualLedger || {}),
+      ...(normalized.dualLedger || {}),
       clientTotalCBM,
       clientTotalRevenue,
       realTimeProfit,
       agentUnitCost,
-      reconciliationStatus: rawCbmProfit.dualLedger?.reconciliationStatus || 'PENDING',
+      reconciliationStatus: normalized.dualLedger?.reconciliationStatus || 'PENDING',
     } as DualLedger;
 
     return {
-      ...rawCbmProfit,
+      ...normalized,
       totalCBM: clientTotalCBM,
       dualLedger,
     };

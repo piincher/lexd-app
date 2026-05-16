@@ -27,9 +27,9 @@ export const ContainerProfitCardProfitBox: React.FC<ContainerProfitCardProfitBox
     </Text>
     {dualLedger && (
       <Text style={styles.profitSub}>
-        Client: {dualLedger.clientTotalCBM.toFixed(2)} CBM × {fmt(300000)}
+        Client: {(dualLedger.clientTotalCBM ?? 0).toFixed(2)} CBM × {fmt(300000)}
         {'  ·  '}
-        Agent: {(dualLedger.agentTotalCBM ?? totalCBM).toFixed(2)} CBM × {fmt(dualLedger.agentUnitCost || 278000)}
+        Agent: {((dualLedger.agentTotalCBM ?? totalCBM) ?? 0).toFixed(2)} CBM × {fmt((dualLedger.agentUnitCost ?? 0) || 278000)}
       </Text>
     )}
   </View>

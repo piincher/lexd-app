@@ -7,7 +7,6 @@ import { useState, useEffect, useCallback } from 'react';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { registerTranslation, enGB, fr } from 'react-native-paper-dates';
-import { initSentry } from '@src/services/sentry';
 import { initMixpanel } from '@src/config/Analytic';
 
 // Register translations for react-native-paper-dates
@@ -22,7 +21,6 @@ let initialized = false;
 const runOneTimeInit = () => {
   if (initialized) return;
   initialized = true;
-  initSentry();
   initMixpanel();
 };
 

@@ -1,6 +1,7 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import * as Sentry from '@sentry/react-native';
 import React from 'react';
+import { initSentry } from '@src/services/sentry';
 import { OfflineProvider } from '@src/shared/providers';
 import { getQueryClient } from '@src/shared/lib/queryClient';
 import { ThemeProvider } from '@src/providers';
@@ -13,6 +14,8 @@ import { useAuth } from '@src/store/Auth';
 import { runSecurityChecks } from '@src/shared/utils/securityCheck';
 
 const queryClient = getQueryClient();
+
+initSentry();
 
 const App = () => {
   const [stableQueryClient] = React.useState(() => queryClient);

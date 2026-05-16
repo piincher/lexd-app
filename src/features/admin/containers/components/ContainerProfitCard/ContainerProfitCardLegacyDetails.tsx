@@ -24,7 +24,7 @@ export const ContainerProfitCardLegacyDetails: React.FC<ContainerProfitCardLegac
     <ContainerProfitCardRow label="Montant encaissé" value={fmt(collected)} valueColor="#10B981" />
     <View style={styles.divider} />
     <ContainerProfitCardRow
-      label={`Coût agent (${totalCBM.toFixed(2)} CBM × ${fmt(cbmCostPerUnit)}/CBM)`}
+      label={`Coût agent (${(totalCBM ?? 0).toFixed(2)} CBM × ${fmt(cbmCostPerUnit ?? 0)}/CBM)`}
       value={fmt(cost)}
       valueColor="#EF4444"
     />

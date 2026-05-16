@@ -17,7 +17,7 @@ export const ContainerReconciliationModal: React.FC<ContainerReconciliationModal
   visible, onDismiss, onConfirm, isLoading = false, containerNumber, clientTotalCBM, clientTotalRevenue, currentAgentUnitCost,
 }) => {
   const [agentCBM, setAgentCBM] = useState("");
-  const [agentUnitCost, setAgentUnitCost] = useState(currentAgentUnitCost.toString());
+  const [agentUnitCost, setAgentUnitCost] = useState((currentAgentUnitCost ?? 0).toString());
   const [error, setError] = useState("");
 
   const parsedCBM = parseFloat(agentCBM.replace(",", "."));
@@ -40,7 +40,7 @@ export const ContainerReconciliationModal: React.FC<ContainerReconciliationModal
 
   const handleDismiss = useCallback(() => {
     setAgentCBM("");
-    setAgentUnitCost(currentAgentUnitCost.toString());
+    setAgentUnitCost((currentAgentUnitCost ?? 0).toString());
     setError("");
     onDismiss();
   }, [onDismiss, currentAgentUnitCost]);
@@ -48,6 +48,7 @@ export const ContainerReconciliationModal: React.FC<ContainerReconciliationModal
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={handleDismiss}>
       <ReconciliationSheet
+        visible={visible}
         containerNumber={containerNumber}
         clientTotalCBM={clientTotalCBM}
         clientTotalRevenue={clientTotalRevenue}

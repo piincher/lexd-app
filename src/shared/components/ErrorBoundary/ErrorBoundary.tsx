@@ -5,7 +5,7 @@
  */
 
 import React, { Component, ErrorInfo, ReactNode, useMemo } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { Alert, View, Text, StyleSheet, ScrollView } from 'react-native';
 import * as Sentry from '@sentry/react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -38,7 +38,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
   onReset,
   onReportError,
 }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
 
   const styles = useMemo(
     () =>
@@ -121,7 +121,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
           marginTop: 8,
         },
       }),
-    [colors, isDark]
+    [colors]
   );
 
   return (
@@ -137,11 +137,11 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
 
         <Text style={styles.title}>Une erreur est survenue</Text>
         <Text style={styles.subtitle}>
-          Nous sommes désolés, mais quelque chose s'est mal passé.
+          Nous sommes désolés, mais quelque chose s&apos;est mal passé.
         </Text>
 
         <View style={styles.errorCard}>
-          <Text style={styles.errorLabel}>Détails de l'erreur :</Text>
+          <Text style={styles.errorLabel}>Détails de l&apos;erreur :</Text>
           <Text style={styles.errorMessage}>
             {error?.message || "Une erreur inattendue s'est produite"}
           </Text>
@@ -214,15 +214,21 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   };
 
   handleReportError = () => {
-    // Trigger Sentry user feedback
-    Sentry.showFeedbackDialog({
-      onSubmitSuccess: () => {
-        console.log('Feedback submitted successfully');
-      },
-      onSubmitError: (error) => {
-        console.error('Error submitting feedback:', error);
+    const eventId = Sentry.captureMessage('User reported an error boundary issue', {
+      level: 'info',
+      extra: {
+        componentName: this.props.componentName || 'Unknown',
+        errorMessage: this.state.error?.message,
+        componentStack: this.state.errorInfo?.componentStack,
       },
     });
+
+    Alert.alert(
+      'Merci',
+      eventId
+        ? `Votre rapport a ete envoye. Reference: ${eventId}`
+        : 'Votre rapport a ete envoye.'
+    );
   };
 
   render() {

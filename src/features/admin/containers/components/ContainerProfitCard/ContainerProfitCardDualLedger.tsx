@@ -23,8 +23,8 @@ export const ContainerProfitCardDualLedger: React.FC<ContainerProfitCardDualLedg
     <View style={styles.ledgerSection}>
       <Text style={styles.ledgerTitle}>Grand livre client</Text>
       <ContainerProfitCardRow
-        label={`CBM facturé aux clients (${dualLedger.clientTotalCBM.toFixed(2)} CBM)`}
-        value={fmt(dualLedger.clientTotalRevenue)}
+        label={`CBM facturé aux clients (${(dualLedger.clientTotalCBM ?? 0).toFixed(2)} CBM)`}
+        value={fmt(dualLedger.clientTotalRevenue ?? 0)}
         valueColor={Theme.colors.text.primary}
       />
       <ContainerProfitCardRow

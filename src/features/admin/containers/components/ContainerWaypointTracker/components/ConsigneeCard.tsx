@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   consigneeTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
     marginLeft: 8,
   },
   consigneeDetails: {
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   consigneeName: {
     fontSize: 20,
     fontWeight: '700',
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
     marginBottom: 8,
   },
   consigneeRow: {

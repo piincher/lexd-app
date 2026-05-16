@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import { Portal, Modal, Card } from 'react-native-paper';
+import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { styles } from './OptionPickerModal.styles';
 
 interface Option {
   label: string;
@@ -25,8 +26,13 @@ export const OptionPickerModal: React.FC<OptionPickerModalProps> = ({
   onDismiss,
 }) => {
   return (
-    <Portal>
-      <Modal visible={visible} onDismiss={onDismiss} contentContainerStyle={styles.modal}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      onRequestClose={onDismiss}
+    >
+      <View style={styles.overlay}>
         <Card style={styles.card}>
           <View style={styles.header}>
             <Text style={styles.title}>{title}</Text>
@@ -50,54 +56,7 @@ export const OptionPickerModal: React.FC<OptionPickerModalProps> = ({
             ))}
           </ScrollView>
         </Card>
-      </Modal>
-    </Portal>
+      </View>
+    </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  modal: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    margin: 0,
-  },
-  card: {
-    backgroundColor: Theme.colors.background.card,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: 20,
-    maxHeight: '70%',
-    minHeight: '30%',
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  closeButton: {
-    padding: 4,
-  },
-  body: {
-    paddingBottom: 16,
-  },
-  optionButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
-  },
-  optionText: {
-    fontSize: 15,
-    fontWeight: '500',
-    color: Theme.neutral[700],
-  },
-});
