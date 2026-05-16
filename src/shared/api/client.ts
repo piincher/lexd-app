@@ -32,7 +32,7 @@ const getEnvironment = (value?: string): Environment => {
   return 'production';
 };
 
-const ENV = getEnvironment('production');
+const ENV = getEnvironment('development');
 
 const API_CONFIG = {
   local: {

@@ -36,7 +36,11 @@ export const useReceiveGoodsScreen = () => {
     setShowSuccessDialog(false);
     formHook.resetForm();
     setIsSubmitted(false);
-    navigation.navigate('AdminGoodsList');
+    // Delay navigation so the dialog dismiss animation completes
+    // before the screen unmounts — prevents Android Fabric crash
+    setTimeout(() => {
+      navigation.navigate('AdminGoodsList');
+    }, 300);
   }, [formHook, navigation]);
 
   const shippingMode = formHook.watch('shippingMode') || 'SEA';

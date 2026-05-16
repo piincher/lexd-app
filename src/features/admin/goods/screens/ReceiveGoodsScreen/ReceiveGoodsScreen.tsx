@@ -78,20 +78,21 @@ export const ReceiveGoodsScreen: React.FC = () => {
           {ui.errorMessage}
         </Snackbar>
 
-        <Portal>
-          {/* Success Dialog */}
-          <Dialog visible={ui.showSuccessDialog} onDismiss={actions.dismissSuccess} style={styles.dialog}>
-            <Dialog.Icon icon="check-circle" size={48} color={colors.status.success} />
-            <Dialog.Title style={styles.dialogTitle}>Succès</Dialog.Title>
-            <Dialog.Content>
-              <Text style={styles.dialogText}>{ui.successMessage}</Text>
-            </Dialog.Content>
-            <Dialog.Actions style={styles.dialogActions}>
-              <Button onPress={actions.dismissSuccess} mode="contained" style={styles.dialogButton}>OK</Button>
-            </Dialog.Actions>
-          </Dialog>
-        </Portal>
       </KeyboardAvoidingView>
+
+      <Portal>
+        {/* Success Dialog */}
+        <Dialog visible={ui.showSuccessDialog} onDismiss={actions.dismissSuccess} style={styles.dialog}>
+          <Dialog.Icon icon="check-circle" size={48} color={colors.status.success} />
+          <Dialog.Title style={styles.dialogTitle}>Succès</Dialog.Title>
+          <Dialog.Content>
+            <Text style={styles.dialogText}>{ui.successMessage}</Text>
+          </Dialog.Content>
+          <Dialog.Actions style={styles.dialogActions}>
+            <Button onPress={actions.dismissSuccess} mode="contained" style={styles.dialogButton}>OK</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
     </SafeAreaView>
   );
 };
