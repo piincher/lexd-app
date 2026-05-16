@@ -1,10 +1,11 @@
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { PaperProvider } from 'react-native-paper';
 import * as Sentry from '@sentry/react-native';
 import React from 'react';
 import { initSentry } from '@src/services/sentry';
 import { OfflineProvider } from '@src/shared/providers';
 import { getQueryClient } from '@src/shared/lib/queryClient';
-import { ThemeProvider } from '@src/providers';
+import { ThemeProvider, useAppTheme } from '@src/providers';
 import { NotificationProvider } from '@src/app/providers';
 import { ScrollDirectionProvider } from '@src/providers/ScrollDirectionProvider';
 import { AppShell } from '@src/app/navigation';
@@ -16,6 +17,25 @@ import { runSecurityChecks } from '@src/shared/utils/securityCheck';
 const queryClient = getQueryClient();
 
 initSentry();
+
+const AppContent: React.FC<{ isAuthenticated: boolean; onLayout: () => void }> = ({
+  isAuthenticated,
+  onLayout,
+}) => {
+  const { paperTheme } = useAppTheme();
+
+  return (
+    <NotificationProvider autoRegister={isAuthenticated} autoRequestPermission={isAuthenticated}>
+      <ScrollDirectionProvider>
+        <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayout}>
+          <PaperProvider theme={paperTheme}>
+            <AppShell />
+          </PaperProvider>
+        </GestureHandlerRootView>
+      </ScrollDirectionProvider>
+    </NotificationProvider>
+  );
+};
 
 const App = () => {
   const [stableQueryClient] = React.useState(() => queryClient);
@@ -36,13 +56,7 @@ const App = () => {
   return (
     <OfflineProvider queryClient={stableQueryClient}>
       <ThemeProvider>
-        <NotificationProvider autoRegister={isAuthenticated} autoRequestPermission={isAuthenticated}>
-          <ScrollDirectionProvider>
-            <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayout}>
-              <AppShell />
-            </GestureHandlerRootView>
-          </ScrollDirectionProvider>
-        </NotificationProvider>
+        <AppContent isAuthenticated={isAuthenticated} onLayout={onLayout} />
       </ThemeProvider>
     </OfflineProvider>
   );

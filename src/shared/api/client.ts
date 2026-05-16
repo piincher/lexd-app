@@ -32,7 +32,7 @@ const getEnvironment = (value?: string): Environment => {
   return 'production';
 };
 
-const ENV = getEnvironment(process.env.EXPO_PUBLIC_ENV);
+const ENV = getEnvironment('production');
 
 const API_CONFIG = {
   local: {

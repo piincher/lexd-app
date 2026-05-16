@@ -35,15 +35,19 @@ export const GoodsListScreen: React.FC = () => {
           onChangeStatus={() => s.setStatusPickerVisible(true)}
           onVoid={s.handleVoidGoods} onCancel={s.exitSelectionMode} />
       )}
-      <OptionPickerModal visible={s.containerPickerVisible} title="Assigner au container"
-        options={s.containerOptions} onSelect={s.handleAssignContainer}
-        onDismiss={() => s.setContainerPickerVisible(false)} />
-      <OptionPickerModal visible={s.statusPickerVisible} title="Changer statut"
-        options={s.statusOptions} onSelect={s.handleChangeStatus}
-        onDismiss={() => s.setStatusPickerVisible(false)} />
-      <GoodsFilterModal visible={s.filterModalVisible} onDismiss={() => s.setFilterModalVisible(false)}
-        selectedClient={s.selectedClient} onSelectClient={s.setSelectedClient}
-        dateRange={s.dateRange} onDateRangeChange={s.setDateRange} onClear={s.clearAllFilters} />
+      {s.containerPickerVisible && (
+        <OptionPickerModal visible title="Assigner au container" options={s.containerOptions}
+          onSelect={s.handleAssignContainer} onDismiss={() => s.setContainerPickerVisible(false)} />
+      )}
+      {s.statusPickerVisible && (
+        <OptionPickerModal visible title="Changer statut" options={s.statusOptions}
+          onSelect={s.handleChangeStatus} onDismiss={() => s.setStatusPickerVisible(false)} />
+      )}
+      {s.filterModalVisible && (
+        <GoodsFilterModal visible onDismiss={() => s.setFilterModalVisible(false)}
+          selectedClient={s.selectedClient} onSelectClient={s.setSelectedClient}
+          dateRange={s.dateRange} onDateRangeChange={s.setDateRange} onClear={s.clearAllFilters} />
+      )}
       <Snackbar visible={!!s.errorMessage} onDismiss={() => s.setErrorMessage(null)}
         action={{ label: 'Réessayer', onPress: s.handleRefresh }} style={styles.snackbar}>
         {s.errorMessage}
