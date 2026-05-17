@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     backgroundColor: Theme.colors.background.paper,
     borderBottomWidth: 1,
-    borderBottomColor: '#E9ECEF',
+    borderBottomColor: Theme.colors.border,
   },
   selectAllButton: {
     flexDirection: 'row',

@@ -1,14 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   card: {
     marginHorizontal: 12,
     marginBottom: 12,
     padding: 16,
     borderRadius: 16,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -36,10 +35,10 @@ export const styles = StyleSheet.create({
     marginRight: 10,
   },
   avatarDelivered: {
-    backgroundColor: '#E8F5E9',
+    backgroundColor: colors.status.success + '15',
   },
   avatarDefault: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: colors.status.info + '15',
   },
   avatarText: {
     fontSize: 16,
@@ -47,10 +46,10 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.bold,
   },
   avatarTextDelivered: {
-    color: '#4CAF50',
+    color: colors.status.success,
   },
   avatarTextDefault: {
-    color: '#1976D2',
+    color: colors.status.info,
   },
   clientNameWrapper: {
     flex: 1,
@@ -58,12 +57,12 @@ export const styles = StyleSheet.create({
   clientName: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     fontFamily: Fonts.semiBold,
   },
   clientPhone: {
     fontSize: 12,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontFamily: Fonts.regular,
     marginTop: 1,
   },
@@ -73,52 +72,52 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: Theme.colors.border,
+    borderTopColor: colors.border,
   },
   chipStatus: {
-    backgroundColor: Theme.colors.status.warning + '12',
+    backgroundColor: colors.status.warning + '12',
   },
   chipStatusDelivered: {
-    backgroundColor: '#E8F5E9',
+    backgroundColor: colors.status.success + '15',
   },
   chipStatusText: {
     fontSize: 11,
     fontWeight: '600',
   },
   chipStatusTextDelivered: {
-    color: '#2E7D32',
+    color: colors.status.success,
   },
   chipStatusTextDefault: {
-    color: '#E65100',
+    color: colors.status.warning,
   },
   shippingModeChip: {
-    backgroundColor: '#E0F2F1',
+    backgroundColor: colors.status.success + '15',
   },
   shippingModeChipAir: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: colors.status.info + '15',
   },
   shippingModeChipText: {
     fontSize: 11,
     fontWeight: '600',
   },
   shippingModeChipTextSea: {
-    color: '#00796B',
+    color: colors.status.success,
   },
   shippingModeChipTextAir: {
-    color: '#1976D2',
+    color: colors.status.info,
   },
   priceColumn: {
     alignItems: 'flex-end',
   },
   priceLabel: {
     fontSize: 10,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontFamily: Fonts.medium,
   },
   priceValue: {
     fontSize: 17,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     fontFamily: Fonts.bold,
   },
 });

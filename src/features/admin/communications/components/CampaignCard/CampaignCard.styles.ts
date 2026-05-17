@@ -57,11 +57,11 @@ export const createCardStyles = (colors: any, isDark: boolean) =>
       alignItems: "center",
       justifyContent: "center",
       gap: 6,
-      backgroundColor: "#8B5CF6",
+      backgroundColor: colors.primary.main,
       borderRadius: 8,
       paddingVertical: 10,
     },
-    sendBtnText: { fontFamily: Fonts.medium, fontSize: 13, color: "Theme.colors.text.inverse" },
+    sendBtnText: { fontFamily: Fonts.medium, fontSize: 13, color: colors.text.inverse },
     cancelBtn: {
       paddingHorizontal: 16,
       paddingVertical: 10,

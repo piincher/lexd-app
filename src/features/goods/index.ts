@@ -35,5 +35,4 @@ export type {
 	GoodsFilters,
 	GoodsLocation,
 	ScanQRResponse,
-	ApiResponse,
 } from './api/types';

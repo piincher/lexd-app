@@ -11,3 +11,5 @@ export * from './CampaignSchedule';
 export * from './CampaignSubmitFooter';
 export * from './SendSmsSuccessOverlay';
 export * from './SmsSubscriptionCard';
+export { SendConfirmationModal } from './SendConfirmationModal';
+export { MultiSelect } from './MultiSelect';

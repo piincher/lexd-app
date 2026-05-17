@@ -1,5 +1,10 @@
 export { PackingListHeader } from './PackingListHeader';
 export { PackingListSummary } from './PackingListSummary';
+export { SummaryHeader } from './SummaryHeader';
+export { SummaryModeRow } from './SummaryModeRow';
+export { SummaryTotals } from './SummaryTotals';
+export { SummarySchedule } from './SummarySchedule';
+export { SummarySignature } from './SummarySignature';
 export { PackingListConsignee } from './PackingListConsignee';
 export { PackingListGoods } from './PackingListGoods';
 export { PackingListFooter } from './PackingListFooter';

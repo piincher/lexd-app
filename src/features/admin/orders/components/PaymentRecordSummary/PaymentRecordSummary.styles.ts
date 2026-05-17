@@ -35,7 +35,7 @@ export const createPaymentRecordSummaryStyles = (colors: any) => StyleSheet.crea
     fontSize: 14,
     fontWeight: '600',
     fontFamily: Fonts.semiBold,
-    color: '#F44336',
+    color: colors.status.error,
   },
   divider: {
     marginVertical: 12,

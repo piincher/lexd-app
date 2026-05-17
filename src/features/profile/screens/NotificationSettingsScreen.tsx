@@ -1,9 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useNotificationSettings } from './NotificationSettings/hooks/useNotificationSettings';
 import {
   Header,
   MasterToggle,
@@ -13,10 +11,10 @@ import {
   QuietHoursDialog,
   InfoSection,
 } from './NotificationSettings/components';
+import { useNotificationSettingsScreen } from './hooks/useNotificationSettingsScreen';
 import { styles } from './NotificationSettings/NotificationSettings.styles';
 
 const NotificationSettingsScreen: React.FC = () => {
-  const navigation = useNavigation();
   const { colors } = useAppTheme();
   const {
     isLoading,
@@ -25,19 +23,19 @@ const NotificationSettingsScreen: React.FC = () => {
     permissionStatus,
     quietHours,
     showQuietHoursDialog,
-    setShowQuietHoursDialog,
     handleMasterToggle,
     handlePreferenceToggle,
     handleQuietHoursToggle,
     handleQuietHoursSave,
     getIconForType,
     getColorForType,
-  } = useNotificationSettings();
+    handlers,
+  } = useNotificationSettingsScreen();
 
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container}>
-        <Header navigation={navigation} />
+        <Header onBack={handlers.handleBack} />
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={colors.primary.main} />
           <Text style={[styles.loadingText, { color: colors.text.secondary }]}>
@@ -50,7 +48,7 @@ const NotificationSettingsScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation} />
+      <Header onBack={handlers.handleBack} />
 
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         <MasterToggle enabled={masterEnabled} onToggle={handleMasterToggle} />
@@ -71,7 +69,7 @@ const NotificationSettingsScreen: React.FC = () => {
             <QuietHoursCard
               quietHours={quietHours}
               onToggle={handleQuietHoursToggle}
-              onEditPress={() => setShowQuietHoursDialog(true)}
+              onEditPress={handlers.handleEditQuietHours}
             />
           </>
         )}
@@ -83,7 +81,7 @@ const NotificationSettingsScreen: React.FC = () => {
         visible={showQuietHoursDialog}
         startTime={quietHours.startTime}
         endTime={quietHours.endTime}
-        onDismiss={() => setShowQuietHoursDialog(false)}
+        onDismiss={handlers.handleDismissQuietHours}
         onSave={handleQuietHoursSave}
       />
     </SafeAreaView>

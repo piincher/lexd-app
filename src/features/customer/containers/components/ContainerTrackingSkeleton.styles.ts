@@ -102,7 +102,7 @@ export const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   pickupCard: {
-    backgroundColor: "Theme.colors.status.warning + '15'",
+    backgroundColor: 'transparent',
   },
   pickupHeader: {
     flexDirection: "row",

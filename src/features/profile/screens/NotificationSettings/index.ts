@@ -3,7 +3,7 @@ export { default } from '../NotificationSettingsScreen';
 
 // Hook
 export { useNotificationSettings } from './hooks/useNotificationSettings';
-export type { QuietHours } from './hooks/useNotificationSettings';
+export type { QuietHours } from './hooks/useQuietHours';
 
 // Components
 export {

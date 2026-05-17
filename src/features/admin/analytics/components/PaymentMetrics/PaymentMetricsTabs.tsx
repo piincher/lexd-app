@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 
 export type ViewMode = 'overview' | 'methods' | 'aging';
 
@@ -21,7 +20,7 @@ const TABS: Array<{ key: ViewMode; label: string; icon: string }> = [
 export const PaymentMetricsTabs: React.FC<PaymentMetricsTabsProps> = ({ viewMode, onChange }) => {
   const { colors } = useAppTheme();
   return (
-  <View style={styles.tabsContainer}>
+  <View style={[styles.tabsContainer, { backgroundColor: colors.neutral[100] }]}>
     {TABS.map((tab) => (
       <TouchableOpacity
         key={tab.key}
@@ -39,7 +38,7 @@ export const PaymentMetricsTabs: React.FC<PaymentMetricsTabsProps> = ({ viewMode
         <Text
           style={[
             styles.tabText,
-            viewMode === tab.key && { color: colors.text.inverse },
+            { color: viewMode === tab.key ? colors.text.inverse : colors.text.secondary },
           ]}
         >
           {tab.label}
@@ -55,6 +54,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
     marginBottom: 16,
+    padding: 4,
+    borderRadius: 12,
   },
   tab: {
     flexDirection: 'row',
@@ -63,11 +64,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-    backgroundColor: Theme.colors.neutral[100],
   },
   tabText: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.colors.text.secondary,
   },
 });

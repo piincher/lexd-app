@@ -1,18 +1,20 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { styles } from "./AirwayBillCard.styles";
+import { getStyles } from "./AirwayBillCard.styles";
 
 interface AirwayBillCapacityBarProps {
   totalWeight: number;
   capacityWeight: number;
   capacityPercentage: number;
   capacityColor: string;
-  colors: { status: { success: string; warning: string; error: string }; text: { muted: string }; neutral: Record<string, string> };
+  colors: { status: { success: string; warning: string; error: string }; text: { muted: string }; neutral: Record<string, string>; border: string };
 }
 
 export const AirwayBillCapacityBar: React.FC<AirwayBillCapacityBarProps> = ({
   totalWeight, capacityWeight, capacityPercentage, capacityColor, colors,
-}) => (
+}) => {
+  const styles = getStyles(colors);
+  return (
   <View style={styles.capacityContainer}>
     <View style={[styles.capacityTrack, { backgroundColor: colors.neutral[200] }]}>
       <View
@@ -29,4 +31,5 @@ export const AirwayBillCapacityBar: React.FC<AirwayBillCapacityBarProps> = ({
       {totalWeight.toFixed(1)} / {capacityWeight} kg
     </Text>
   </View>
-);
+  );
+};

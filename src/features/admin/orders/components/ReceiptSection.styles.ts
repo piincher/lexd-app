@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { AppTheme } from '@src/shared/constants/Theme';
+import { AppTheme } from '@src/constants/Theme';
 
 export const createReceiptSectionStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   card: {

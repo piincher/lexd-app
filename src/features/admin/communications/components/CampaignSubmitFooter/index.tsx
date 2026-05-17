@@ -38,13 +38,13 @@ export const CampaignSubmitFooter: React.FC<CampaignSubmitFooterProps> = ({
           disabled={!isValid || isPending}
         >
           {isPending ? (
-            <ActivityIndicator color="#fff" />
+            <ActivityIndicator color={colors.text.inverse} />
           ) : (
             <>
               <Ionicons
                 name={saveAsDraft ? "save-outline" : "send-outline"}
                 size={18}
-                color="#fff"
+                color={colors.text.inverse}
               />
               <Text style={styles.submitBtnText}>
                 {saveAsDraft ? "Enregistrer le brouillon" : "Planifier l'envoi"}

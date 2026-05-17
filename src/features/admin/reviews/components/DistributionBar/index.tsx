@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { styles } from "./DistributionBar.styles";
 
 interface DistributionBarProps {
@@ -14,12 +15,13 @@ export const DistributionBar: React.FC<DistributionBarProps> = ({
   count,
   total,
 }) => {
+  const { colors } = useAppTheme();
   const percentage = total > 0 ? (count / total) * 100 : 0;
 
   return (
     <View style={styles.distributionRow}>
       <Text style={styles.distributionStar}>{star}</Text>
-      <Ionicons name="star" size={12} color="#d4a843" />
+      <Ionicons name="star" size={12} color={colors.primary.main} />
       <View style={styles.distributionTrack}>
         <View style={[styles.distributionFill, { width: `${percentage}%` }]} />
       </View>

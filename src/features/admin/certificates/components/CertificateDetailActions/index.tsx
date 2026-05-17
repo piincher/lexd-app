@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { createStyles } from "./CertificateDetailActions.styles";
-import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface CertificateDetailActionsProps {
   certificateUrl: string | null;
@@ -36,9 +36,9 @@ export const CertificateDetailActions: React.FC<
           disabled={isDownloading}
         >
           {isDownloading ? (
-            <ActivityIndicator size="small" color="#FFFFFF" />
+            <ActivityIndicator size="small" color={colors.text.inverse} />
           ) : (
-            <Ionicons name="download-outline" size={20} color="#FFFFFF" />
+            <Ionicons name="download-outline" size={20} color={colors.text.inverse} />
           )}
           <Text style={styles.downloadButtonText}>Télécharger le certificat</Text>
         </TouchableOpacity>
@@ -52,9 +52,9 @@ export const CertificateDetailActions: React.FC<
           disabled={isRevoking}
         >
           {isRevoking ? (
-            <ActivityIndicator size="small" color="#FFFFFF" />
+            <ActivityIndicator size="small" color={colors.text.inverse} />
           ) : (
-            <MaterialIcons name="block" size={20} color="#FFFFFF" />
+            <MaterialIcons name="block" size={20} color={colors.text.inverse} />
           )}
           <Text style={styles.revokeButtonText}>Révoquer le certificat</Text>
         </TouchableOpacity>
@@ -62,7 +62,7 @@ export const CertificateDetailActions: React.FC<
 
       {!isActive && (
         <View style={styles.revokedNotice}>
-          <MaterialIcons name="cancel" size={20} color="#DC2626" />
+          <MaterialIcons name="cancel" size={20} color={colors.status.error} />
           <Text style={styles.revokedNoticeText}>
             Ce certificat a été révoqué
           </Text>

@@ -1,14 +1,17 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-const createStyles = (colors: any) =>
-   StyleSheet.create({
-      container: {
-         flex: 1,
-         backgroundColor: colors.background?.default ?? "#F9FAFB",
-      },
-      scrollContent: {
-         paddingBottom: 100,
-      },
-   });
+export const getStyles = (colors: any) => StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.background.default,
+  },
+  scrollContent: {
+    paddingBottom: 120,
+  },
+  bottomSpacing: {
+    height: 40,
+  },
+});
 
-export default createStyles;
+// Backward compatibility export
+export const styles = getStyles({ background: { default: '#FFFFFF' } });

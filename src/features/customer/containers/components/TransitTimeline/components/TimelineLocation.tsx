@@ -5,6 +5,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface TimelineLocationProps {
   location: string;
@@ -18,13 +19,71 @@ export const TimelineLocation: React.FC<TimelineLocationProps> = ({
   code,
   country,
   isMainPort = false,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      backgroundColor: colors.background.paper,
+      padding: Theme.spacing.md,
+      borderRadius: Theme.radius.lg,
+    },
+    mainPortContainer: {
+      backgroundColor: colors.feedback.successBg,
+      borderWidth: 2,
+      borderColor: colors.status.success,
+    },
+    header: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    textContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: Theme.spacing.sm,
+      flex: 1,
+    },
+    location: {
+      fontSize: 16,
+      fontWeight: '700',
+      color: colors.text.primary,
+    },
+    mainPortLocation: {
+      fontSize: 18,
+      color: colors.status.success,
+    },
+    code: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      marginLeft: 4,
+    },
+    country: {
+      fontSize: 13,
+      color: colors.text.secondary,
+      marginTop: 2,
+      marginLeft: 30,
+    },
+    badge: {
+      backgroundColor: colors.status.success,
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      borderRadius: Theme.radius.full,
+      alignSelf: 'flex-start',
+      marginTop: Theme.spacing.sm,
+    },
+    badgeText: {
+      fontSize: 10,
+      fontWeight: '800',
+      color: colors.text.inverse,
+    },
+  }), [colors]);
+
+  return (
   <View style={[styles.container, isMainPort && styles.mainPortContainer]}>
     <View style={styles.header}>
       <Ionicons 
         name={isMainPort ? 'boat' : 'location'} 
         size={isMainPort ? 24 : 18} 
-        color={isMainPort ? '#059669' : Theme.primary[500]} 
+        color={isMainPort ? colors.status.success : colors.primary.main} 
       />
       <View style={styles.textContainer}>
         <Text style={[styles.location, isMainPort && styles.mainPortLocation]}>
@@ -44,60 +103,5 @@ export const TimelineLocation: React.FC<TimelineLocationProps> = ({
       </View>
     )}
   </View>
-);
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Theme.neutral[50],
-    padding: Theme.spacing.md,
-    borderRadius: Theme.radius.lg,
-  },
-  mainPortContainer: {
-    backgroundColor: '#D1FAE5',
-    borderWidth: 2,
-    borderColor: '#10B981',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  textContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: Theme.spacing.sm,
-    flex: 1,
-  },
-  location: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: Theme.neutral[800],
-  },
-  mainPortLocation: {
-    fontSize: 18,
-    color: '#059669',
-  },
-  code: {
-    fontSize: 12,
-    color: Theme.neutral[500],
-    marginLeft: 4,
-  },
-  country: {
-    fontSize: 13,
-    color: Theme.neutral[600],
-    marginTop: 2,
-    marginLeft: 30,
-  },
-  badge: {
-    backgroundColor: '#10B981',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: Theme.radius.full,
-    alignSelf: 'flex-start',
-    marginTop: Theme.spacing.sm,
-  },
-  badgeText: {
-    fontSize: 10,
-    fontWeight: '800',
-    color: 'Theme.colors.text.inverse',
-  },
-});
+  );
+};

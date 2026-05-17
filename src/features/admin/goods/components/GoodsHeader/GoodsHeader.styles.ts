@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     marginRight: 8,
   },
   idText: {
-    color: 'Theme.colors.text.inverse',
+    color: '#FFF',
     fontSize: 18,
     fontWeight: '700',
     letterSpacing: 0.5,

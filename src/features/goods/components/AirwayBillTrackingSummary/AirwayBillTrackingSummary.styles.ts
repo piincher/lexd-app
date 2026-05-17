@@ -1,13 +1,17 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useMemo } from 'react';
 
-export const styles = StyleSheet.create({
-  card: {
-    borderRadius: Theme.radius.xl,
-    marginBottom: Theme.spacing.md,
-    backgroundColor: '#FFFFFF',
-  },
+export const useAirwayBillTrackingSummaryStyles = () => {
+  const { colors } = useAppTheme();
+  return useMemo(() => StyleSheet.create({
+    card: {
+      borderRadius: Theme.radius.xl,
+      marginBottom: Theme.spacing.md,
+      backgroundColor: colors.background.card,
+    },
   topRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -19,7 +23,7 @@ export const styles = StyleSheet.create({
     borderRadius: 16,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#16A34A',
+    backgroundColor: colors.status.success,
   },
   statusCopy: {
     flex: 1,
@@ -33,25 +37,25 @@ export const styles = StyleSheet.create({
   statusLabel: {
     fontFamily: Fonts.bold,
     fontSize: 18,
-    color: Theme.neutral[900],
+    color: colors.text.primary,
     marginTop: 2,
   },
   progressText: {
     fontFamily: Fonts.bold,
     fontSize: 16,
-    color: '#16A34A',
+    color: colors.status.success,
   },
   progressTrack: {
     height: 8,
     borderRadius: 999,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     overflow: 'hidden',
     marginTop: 16,
   },
   progressFill: {
     height: '100%',
     borderRadius: 999,
-    backgroundColor: '#16A34A',
+    backgroundColor: colors.status.success,
   },
   metricsRow: {
     flexDirection: 'row',
@@ -62,17 +66,17 @@ export const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 12,
     padding: 12,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
   },
   metricValue: {
     fontFamily: Fonts.bold,
     fontSize: 13,
-    color: Theme.neutral[900],
+    color: colors.text.primary,
   },
   metricLabel: {
     fontFamily: Fonts.medium,
     fontSize: 11,
-    color: Theme.neutral[500],
+    color: colors.text.secondary,
     marginTop: 4,
   },
   footerRow: {
@@ -82,12 +86,13 @@ export const styles = StyleSheet.create({
     marginTop: 14,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
   },
   footerText: {
     flex: 1,
     fontFamily: Fonts.medium,
     fontSize: 12,
-    color: Theme.neutral[600],
+    color: colors.text.secondary,
   },
-});
+  }), [colors]);
+};

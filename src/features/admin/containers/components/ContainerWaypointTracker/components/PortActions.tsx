@@ -52,7 +52,7 @@ export const PortActions: React.FC<PortActionsProps> = ({
             style={[styles.portActionButton, { backgroundColor: action.color }]}
             onPress={() => handleActionPress(action.status)}
           >
-            <Ionicons name={action.icon as any} size={16} color="#FFF" />
+            <Ionicons name={action.icon as any} size={16} color={Theme.colors.text.inverse} />
             <Text style={styles.portActionText}>{action.label}</Text>
           </TouchableOpacity>
         ))}

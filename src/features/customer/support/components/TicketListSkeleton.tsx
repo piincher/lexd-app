@@ -10,7 +10,7 @@ import { ShimmerBlock } from '@src/shared/ui';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const TicketSkeletonItem: React.FC = () => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
 
   return (
     <View
@@ -18,7 +18,7 @@ const TicketSkeletonItem: React.FC = () => {
         styles.card,
         {
           backgroundColor: colors.background.card,
-          borderColor: isDark ? 'rgba(255,255,255,0.06)' : colors.border,
+          borderColor: colors.border,
         },
       ]}
     >

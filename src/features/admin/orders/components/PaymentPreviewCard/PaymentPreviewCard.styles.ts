@@ -35,14 +35,14 @@ export const createPaymentPreviewCardStyles = (colors: any) => StyleSheet.create
   },
   overpaymentLabel: {
     fontSize: 14,
-    color: '#E65100',
+    color: colors.status.warning,
     fontFamily: Fonts.regular,
   },
   overpaymentValue: {
     fontSize: 14,
     fontWeight: '600',
     fontFamily: Fonts.semiBold,
-    color: '#E65100',
+    color: colors.status.warning,
   },
   statusBadge: {
     paddingHorizontal: 10,

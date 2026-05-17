@@ -9,6 +9,7 @@ import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsStatus } from '../types';
 
 interface FilterOption {
@@ -27,7 +28,9 @@ export const GoodsListFilterPills: React.FC<GoodsListFilterPillsProps> = ({
   filters,
   selectedStatus,
   onSelect,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <View style={styles.wrapper}>
     <ScrollView
       horizontal
@@ -53,7 +56,7 @@ export const GoodsListFilterPills: React.FC<GoodsListFilterPillsProps> = ({
             <Ionicons
               name={filter.icon as any}
               size={16}
-              color={isSelected ? '#FFF' : Theme.neutral[500]}
+              color={isSelected ? colors.text.inverse : colors.text.secondary}
               style={styles.icon}
             />
             <Text style={[styles.text, isSelected && styles.textActive]}>
@@ -64,7 +67,7 @@ export const GoodsListFilterPills: React.FC<GoodsListFilterPillsProps> = ({
       })}
     </ScrollView>
   </View>
-);
+);}
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -94,9 +97,9 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: Theme.colors.text.secondary,
   },
   textActive: {
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
 });

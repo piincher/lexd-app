@@ -15,7 +15,7 @@ export const LoadingState: React.FC<LoadingStateProps> = ({ visible }) => {
   const styles = useMemo(() => StyleSheet.create({
     overlay: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: isDark ? 'rgba(0, 0, 0, 0.6)' : 'rgba(255, 255, 255, 0.8)',
+      backgroundColor: colors.background.overlay,
       justifyContent: 'center',
       alignItems: 'center',
       zIndex: 1000,

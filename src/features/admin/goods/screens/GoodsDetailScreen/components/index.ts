@@ -15,3 +15,5 @@ export { GoodsPhotoSection } from './GoodsPhotoSection';
 export { GoodsDetailProperties } from './GoodsDetailProperties';
 export { GoodsDetailTimeline } from './GoodsDetailTimeline';
 export { GoodsDetailFinancial } from './GoodsDetailFinancial';
+export { GoodsDetailPricing } from './GoodsDetailPricing';
+export { PricingRow } from './PricingRow';

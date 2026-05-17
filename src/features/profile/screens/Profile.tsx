@@ -8,7 +8,7 @@ import { ScrollView, Alert, RefreshControl } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, { FadeInDown } from "react-native-reanimated";
 
-import { withProtectedRoute } from "@src/shared/hoc/withProtectedRoute";
+import { withProtectedRoute } from "@src/hoc/withProtectedRoute";
 import type { HomeTabScreenProps } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -22,10 +22,11 @@ import { ProfileSettingsSection } from "../components/ProfileSettingsSection";
 import { ProfileFooter } from "../components/ProfileFooter";
 import { ProfileChartsSection } from "../components/ProfileChartsSection";
 import { LogoutButton } from "../components/LogoutButton";
-import { styles } from "./Profile.styles";
+import { getStyles } from "./Profile.styles";
 
 const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   const logout = useAuth((state) => state.logOut);
   const { data, refetch: refetchUser } = useGetCurrentUser();
   const { data: balanceData, refetch: refetchBalance } = useBalance();
@@ -77,7 +78,7 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(400).duration(400).springify()}>
-          <LogoutButton onPress={handleLogout} isDark={isDark} />
+          <LogoutButton onPress={handleLogout} />
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(500).duration(400).springify()}>

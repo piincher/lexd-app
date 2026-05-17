@@ -63,7 +63,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
           <TouchableOpacity key={`${url}_${i}`} activeOpacity={0.9} onPress={() => open(i)} style={s.wrap}>
             <Image source={{ uri: url }} style={[s.photo, { height: imageHeight }]} resizeMode="cover" />
             {showCounter && safePhotoUrls.length > 1 && (
-              <View style={s.badge}><Text style={[s.badgeText, { color: colors.text.inverse }]}>{i + 1} / {safePhotoUrls.length}</Text></View>
+              <View style={[s.badge, { backgroundColor: colors.background.overlay }]}><Text style={[s.badgeText, { color: colors.text.inverse }]}>{i + 1} / {safePhotoUrls.length}</Text></View>
             )}
           </TouchableOpacity>
         ))}
@@ -115,7 +115,7 @@ const s = StyleSheet.create({
   strip: { paddingVertical: 4, gap: 10 },
   wrap: { borderRadius: 12, overflow: 'hidden', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 4, elevation: 4 },
   photo: { width: 160, borderRadius: 12 },
-  badge: { position: 'absolute', bottom: 8, right: 8, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 2, backgroundColor: 'rgba(0,0,0,0.6)' },
+  badge: { position: 'absolute', bottom: 8, right: 8, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 2 },
   badgeText: { fontSize: 12, fontWeight: '600' },
   empty: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, paddingVertical: 24, borderRadius: 12, borderWidth: 1, marginVertical: 4 },
   emptyText: { fontSize: 14, fontWeight: '500' },

@@ -7,6 +7,7 @@ import { waypointService } from '../../services/WaypointService';
 import { ContainerWaypoint, WaypointStatus } from '../../types/waypoints';
 import { ExtendedWaypointStatus } from '@src/shared/types/waypointStatus';
 import { waypointQueryKeys } from '@src/shared/hooks/useWaypoints';
+import { containerQueryKeys } from '../containers/containerQueryKeys';
 
 /**
  * Update waypoint status with port-specific validation
@@ -45,6 +46,9 @@ export const useUpdateWaypointStatus = () => {
       });
       queryClient.invalidateQueries({
         queryKey: waypointQueryKeys.status(variables.containerId),
+      });
+      queryClient.invalidateQueries({
+        queryKey: containerQueryKeys.detail(variables.containerId),
       });
     },
   });

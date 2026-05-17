@@ -20,17 +20,17 @@ export const LoginPromptCard: React.FC = () => {
 
   return (
     <Animated.View entering={FadeInDown.delay(200).duration(500).springify()} style={[styles.card, { backgroundColor: colors.background.card }]}>
-      <LinearGradient colors={['#22C55E', '#15803D']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.iconCircle}>
-        <FontAwesome6 name="user-lock" size={18} color="#FFF" />
+      <LinearGradient colors={[colors.primary.main, colors.primary.dark]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.iconCircle}>
+        <FontAwesome6 name="user-lock" size={18} color={colors.neutral.white} />
       </LinearGradient>
       <View style={styles.textBlock}>
         <Text style={[styles.title, { color: colors.text.primary }]}>Connectez-vous</Text>
         <Text style={[styles.subtitle, { color: colors.text.secondary }]}>Accedez a vos envois, suivi et tableau de bord</Text>
       </View>
       <Pressable style={({ pressed }) => [styles.button, pressed && styles.pressed]} onPress={() => navigation.navigate('Login')}>
-        <LinearGradient colors={['#22C55E', '#16A34A']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.buttonGradient}>
+        <LinearGradient colors={[colors.primary.main, colors.status.success]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.buttonGradient}>
           <Text style={styles.buttonText}>Se connecter</Text>
-          <FontAwesome6 name="arrow-right" size={12} color="#FFF" />
+          <FontAwesome6 name="arrow-right" size={12} color={colors.neutral.white} />
         </LinearGradient>
       </Pressable>
     </Animated.View>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: Fonts.bold,
     fontSize: 15,
-    color: '#FFF',
+    color: Theme.neutral.white,
     letterSpacing: 0.3,
   },
   pressed: {

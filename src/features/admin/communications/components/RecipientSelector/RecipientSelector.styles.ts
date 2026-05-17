@@ -36,7 +36,7 @@ export const useRecipientSelectorStyles = () =>
           color: Theme.neutral[500],
         },
         modeTextActive: {
-          color: 'Theme.colors.text.inverse',
+          color: Theme.colors.text.inverse,
         },
         dateRow: {
           flexDirection: 'row',
@@ -76,7 +76,7 @@ export const useRecipientSelectorStyles = () =>
           fontSize: 13,
           fontFamily: Fonts.semiBold,
           fontWeight: '600',
-          color: 'Theme.colors.text.inverse',
+          color: Theme.colors.text.inverse,
         },
         searchRow: {
           flexDirection: 'row',
@@ -135,7 +135,7 @@ export const useRecipientSelectorStyles = () =>
           fontSize: 12,
           fontFamily: Fonts.semiBold,
           fontWeight: '600',
-          color: '#EF4444',
+          color: Theme.status.error,
         },
         list: {
           flex: 1,
@@ -179,7 +179,7 @@ export const useRecipientSelectorStyles = () =>
           color: Theme.neutral[600],
         },
         avatarTextSelected: {
-          color: 'Theme.colors.text.inverse',
+          color: Theme.colors.text.inverse,
         },
         recipientInfo: {
           flex: 1,

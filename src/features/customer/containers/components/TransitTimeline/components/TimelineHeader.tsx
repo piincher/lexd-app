@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { formatTimestamp } from './TimelineDateMarker';
 
 interface TimelineHeaderProps {
@@ -25,7 +26,9 @@ export const TimelineHeader: React.FC<TimelineHeaderProps> = ({
   totalWaypoints,
   lastUpdateTimestamp,
   styles,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <Animated.View entering={FadeInUp.delay(100)} style={styles.headerCard}>
     <LinearGradient colors={[Theme.primary[600], Theme.primary[800]]} style={styles.headerGradient}>
       <View style={styles.headerTop}>
@@ -48,16 +51,16 @@ export const TimelineHeader: React.FC<TimelineHeaderProps> = ({
 
       <View style={styles.journeyStats}>
         <View style={styles.statItem}>
-          <Ionicons name="location" size={16} color="rgba(255,255,255,0.8)" />
+          <Ionicons name="location" size={16} color={colors.text.inverse} />
           <Text style={styles.statText}>{completedCount} / {totalWaypoints} étapes</Text>
         </View>
         {lastUpdateTimestamp && (
           <View style={styles.statItem}>
-            <Ionicons name="time-outline" size={16} color="rgba(255,255,255,0.8)" />
+            <Ionicons name="time-outline" size={16} color={colors.text.inverse} />
             <Text style={styles.statText}>Mis à jour: {formatTimestamp(lastUpdateTimestamp)}</Text>
           </View>
         )}
       </View>
     </LinearGradient>
   </Animated.View>
-);
+);}

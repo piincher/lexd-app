@@ -21,9 +21,9 @@ const ShimmerBlock: React.FC<{
   height: number;
   borderRadius?: number;
 }> = ({ width, height, borderRadius = 4 }) => {
-  const { isDark } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const shimmer = useSharedValue(0);
-  const blockBg = isDark ? 'rgba(255,255,255,0.08)' : '#E8EFF5';
+  const blockBg = isDark ? colors.neutral[700] : colors.neutral[100];
 
   React.useEffect(() => {
     shimmer.value = withRepeat(
@@ -41,7 +41,7 @@ const ShimmerBlock: React.FC<{
     <View style={[styles.block, { width, height, borderRadius, backgroundColor: blockBg }]}>
       <Animated.View style={[StyleSheet.absoluteFill, shimmerStyle]}>
         <LinearGradient
-          colors={['transparent', isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.5)', 'transparent']}
+          colors={['transparent', isDark ? colors.neutral[600] : colors.neutral[50], 'transparent']}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={StyleSheet.absoluteFill}

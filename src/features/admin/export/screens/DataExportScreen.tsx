@@ -1,28 +1,25 @@
 // DataExportScreen - Main screen for data export and backup management
 
 import React from "react";
-import { View, StyleSheet, ScrollView, RefreshControl } from "react-native";
+import { View, ScrollView, RefreshControl } from "react-native";
 import { SegmentedButtons } from "react-native-paper";
 
-import { useDataExportScreen } from "../hooks/useDataExportScreen";
-import { DataExportHeader } from "../components/DataExportHeader";
+import { Screen } from "@src/shared/ui/Screen";
+import { useDataExportScreenUI } from "./hooks/useDataExportScreenUI";
 import { ExportStatsCard } from "../components/ExportStatsCard";
 import { QuickExportButtons } from "../components/QuickExportButtons";
 import { RecentExportsSection } from "../components/RecentExportsSection";
 import { ExportDataModal } from "../components/ExportDataModal";
 import { BackupManager } from "../components/BackupManager";
 import { ENTITY_CONFIG } from "../constants";
-import { Theme } from "@src/constants/Theme";
+import { styles } from "./DataExportScreen.styles";
 
 export const DataExportScreen: React.FC = () => {
   const {
     activeTab,
-    setActiveTab,
     filterMenuVisible,
-    setFilterMenuVisible,
     entityFilter,
     exportModalVisible,
-    setExportModalVisible,
     selectedEntity,
     exportsQuery,
     exportStats,
@@ -30,15 +27,19 @@ export const DataExportScreen: React.FC = () => {
     handleQuickExport,
     handleDownload,
     handleEntityFilterChange,
-  } = useDataExportScreen();
+    exports,
+    handlers,
+  } = useDataExportScreenUI();
 
   return (
-    <View style={styles.container}>
-      <DataExportHeader />
-
+    <Screen
+      header={{ title: "Data Export & Backup", showBack: true }}
+      scrollable={false}
+      contentStyle={{ flex: 1, padding: 0 }}
+    >
       <SegmentedButtons
         value={activeTab}
-        onValueChange={(value) => setActiveTab(value as "exports" | "backups")}
+        onValueChange={handlers.handleTabChange}
         buttons={[
           { value: "exports", label: "Exports" },
           { value: "backups", label: "Backups" },
@@ -47,53 +48,45 @@ export const DataExportScreen: React.FC = () => {
       />
 
       {activeTab === "exports" ? (
-        <>
-          <ScrollView
-            refreshControl={
-              <RefreshControl
-                refreshing={exportsQuery.isRefetching}
-                onRefresh={exportsQuery.refetch}
-              />
-            }
-          >
-            <ExportStatsCard stats={exportStats.data} />
-            <QuickExportButtons onQuickExport={handleQuickExport} />
-            <RecentExportsSection
-              exports={(exportsQuery.data?.data || []) as import("../types").ExportLog[]}
-              isLoading={exportsQuery.isLoading}
-              entityFilter={entityFilter}
-              filterMenuVisible={filterMenuVisible}
-              onFilterMenuDismiss={() => setFilterMenuVisible(false)}
-              onFilterMenuOpen={() => setFilterMenuVisible(true)}
-              onEntityFilterChange={handleEntityFilterChange}
-              onDownload={handleDownload}
-              isDownloading={downloadExport.isPending}
+        <ScrollView
+          style={styles.tabContent}
+          contentContainerStyle={styles.scrollContent}
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl
+              refreshing={exportsQuery.isRefetching}
+              onRefresh={handlers.handleRefresh}
             />
-          </ScrollView>
-
-          <ExportDataModal
-            visible={exportModalVisible}
-            onDismiss={() => setExportModalVisible(false)}
-            entity={selectedEntity}
-            entityLabel={ENTITY_CONFIG[selectedEntity]?.label || selectedEntity}
+          }
+        >
+          <ExportStatsCard stats={exportStats} />
+          <QuickExportButtons onQuickExport={handleQuickExport} />
+          <RecentExportsSection
+            exports={exports}
+            isLoading={exportsQuery.isLoading}
+            entityFilter={entityFilter}
+            filterMenuVisible={filterMenuVisible}
+            onFilterMenuDismiss={handlers.handleFilterMenuDismiss}
+            onFilterMenuOpen={handlers.handleFilterMenuOpen}
+            onEntityFilterChange={handleEntityFilterChange}
+            onDownload={handleDownload}
+            isDownloading={downloadExport.isPending}
           />
-        </>
+        </ScrollView>
       ) : (
-        <BackupManager isSuperAdmin={true} />
+        <View style={styles.tabContent}>
+          <BackupManager isSuperAdmin={true} />
+        </View>
       )}
-    </View>
+
+      <ExportDataModal
+        visible={exportModalVisible}
+        onDismiss={handlers.handleExportModalDismiss}
+        entity={selectedEntity}
+        entityLabel={ENTITY_CONFIG[selectedEntity]?.label || selectedEntity}
+      />
+    </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.colors.background.paper,
-  },
-  tabSwitcher: {
-    margin: 16,
-    marginTop: 8,
-  },
-});
 
 export default DataExportScreen;

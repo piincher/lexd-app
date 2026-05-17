@@ -57,10 +57,10 @@ export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
           value={formatNumber(stats.smsBalance)}
           label="Crédits SMS"
           icon="message-badge"
-          iconColor="#A855F7"
+          iconColor={colors.primary.main}
           progressWidth={smsPct}
           progressColor={smsColor}
-          iconBgColor={isDark ? "rgba(168,85,247,0.15)" : "#FAF5FF"}
+          iconBgColor={isDark ? colors.primary.main + '26' : colors.primary[50]}
           onPress={() => navigation.navigate("SendSms")}
         />
       </View>

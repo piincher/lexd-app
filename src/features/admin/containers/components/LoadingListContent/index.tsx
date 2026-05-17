@@ -13,7 +13,8 @@ import {
 import { AdminLoadingListData, WeightDistribution, ClientGoodsGroup } from '../../types/packingList';
 import { LoadingSummary } from '../../screens/LoadingList/types';
 import { MAX_CBM } from '../../screens/LoadingList/hooks';
-import { styles } from '../../screens/LoadingList/LoadingListScreen.styles';
+import { getStyles } from '../../screens/LoadingList/LoadingListScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface LoadingListContentProps {
   allClients: ClientGoodsGroup[];
@@ -38,6 +39,8 @@ export const LoadingListContent: React.FC<LoadingListContentProps> = ({
   progressPercentage,
   handleToggleLoaded,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   return (
     <ScrollView
       style={styles.scrollView}

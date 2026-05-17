@@ -8,6 +8,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { MotiView } from "moti";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { UserBadge } from "../api/badgeApi";
 
 const iconMap: Record<string, keyof typeof MaterialCommunityIcons.glyphMap> = {
@@ -36,17 +37,18 @@ interface BadgeCardProps {
 }
 
 export const BadgeCard: React.FC<BadgeCardProps> = ({ badge, index }) => {
+  const { colors, isDark } = useAppTheme();
   const iconName = iconMap[badge.icon] || "help-circle";
   const tier = tierConfig[badge.tier] || tierConfig.BRONZE;
-  const color = badge.earned ? tier.color : "rgba(255,255,255,0.2)";
+  const color = badge.earned ? tier.color : colors.text.disabled;
 
   const cardDynamicStyle = badge.earned
     ? { borderColor: `${tier.color}40`, backgroundColor: `${tier.color}10` }
-    : undefined;
+    : { borderColor: colors.border, backgroundColor: colors.background.card };
 
   const iconCircleDynamicStyle = {
-    backgroundColor: badge.earned ? `${color}20` : "rgba(255,255,255,0.05)",
-    borderColor: badge.earned ? color : "rgba(255,255,255,0.12)",
+    backgroundColor: badge.earned ? `${color}20` : colors.background.overlay,
+    borderColor: badge.earned ? color : colors.border,
     ...(badge.earned ? {
       shadowColor: color,
       shadowOffset: { width: 0, height: 0 },
@@ -73,19 +75,19 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({ badge, index }) => {
         {badge.earned ? (
           <MaterialCommunityIcons name={iconName} size={28} color={color} />
         ) : (
-          <MaterialCommunityIcons name="lock" size={22} color="rgba(255,255,255,0.2)" />
+          <MaterialCommunityIcons name="lock" size={22} color={colors.text.disabled} />
         )}
       </View>
 
       <Text
-        style={[styles.badgeName, { color: badge.earned ? "#FFFFFF" : "rgba(255,255,255,0.4)" }]}
+        style={[styles.badgeName, { color: badge.earned ? colors.text.primary : colors.text.disabled }]}
         numberOfLines={1}
       >
         {badge.name}
       </Text>
 
       <Text
-        style={[styles.badgeDescription, { color: badge.earned ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.25)" }]}
+        style={[styles.badgeDescription, { color: badge.earned ? colors.text.secondary : colors.text.disabled }]}
         numberOfLines={2}
       >
         {badge.description}
@@ -93,17 +95,17 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({ badge, index }) => {
 
       {!badge.earned && (
         <View style={styles.progressSection}>
-          <View style={styles.progressTrack}>
-            <View style={[styles.progressFill, { width: `${Math.min(badge.progressPercentage, 100)}%` }]} />
+          <View style={[styles.progressTrack, { backgroundColor: colors.background.overlay }]}>
+            <View style={[styles.progressFill, { width: `${Math.min(badge.progressPercentage, 100)}%`, backgroundColor: colors.accent.gold }]} />
           </View>
-          <Text style={styles.progressLabel}>
+          <Text style={[styles.progressLabel, { color: colors.text.disabled }]}>
             {badge.currentProgress}{badge.thresholdType === "CBM" ? " CBM" : ""} / {badge.threshold}{badge.thresholdType === "CBM" ? " CBM" : ""}
           </Text>
         </View>
       )}
 
       {badge.earned && badge.earnedAt && (
-        <Text style={styles.earnedDate}>
+        <Text style={[styles.earnedDate, { color: colors.text.disabled }]}>
           Obtenu le {new Date(badge.earnedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}
         </Text>
       )}
@@ -112,15 +114,15 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({ badge, index }) => {
 };
 
 const styles = StyleSheet.create({
-  badgeCard: { width: "47%", backgroundColor: "rgba(255,255,255,0.07)", borderRadius: 14, padding: 14, alignItems: "center", borderWidth: 1, borderColor: "rgba(255,255,255,0.08)", minHeight: 170 },
+  badgeCard: { width: "47%", borderRadius: 14, padding: 14, alignItems: "center", borderWidth: 1, minHeight: 170 },
   tierLabel: { position: "absolute", top: 8, right: 8, borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2 },
   tierLabelText: { fontFamily: Fonts.bold, fontSize: 9 },
   badgeIconCircle: { width: 56, height: 56, borderRadius: 28, borderWidth: 2, alignItems: "center", justifyContent: "center", marginBottom: 10, marginTop: 4 },
   badgeName: { fontFamily: Fonts.bold, fontSize: 14, textAlign: "center", marginBottom: 4 },
   badgeDescription: { fontFamily: Fonts.regular, fontSize: 11, textAlign: "center", lineHeight: 15, marginBottom: 8 },
   progressSection: { width: "100%", marginTop: "auto" },
-  progressTrack: { height: 5, backgroundColor: "rgba(255,255,255,0.1)", borderRadius: 2.5, overflow: "hidden", marginBottom: 4 },
-  progressFill: { height: "100%", backgroundColor: "#d4a843", borderRadius: 2.5 },
-  progressLabel: { color: "rgba(255,255,255,0.4)", fontFamily: Fonts.meduim, fontSize: 10, textAlign: "center" },
-  earnedDate: { color: "rgba(255,255,255,0.4)", fontFamily: Fonts.regular, fontSize: 10, marginTop: "auto" },
+  progressTrack: { height: 5, borderRadius: 2.5, overflow: "hidden", marginBottom: 4 },
+  progressFill: { height: "100%", borderRadius: 2.5 },
+  progressLabel: { fontFamily: Fonts.meduim, fontSize: 10, textAlign: "center" },
+  earnedDate: { fontFamily: Fonts.regular, fontSize: 10, marginTop: "auto" },
 });

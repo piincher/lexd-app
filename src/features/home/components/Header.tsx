@@ -19,7 +19,7 @@ export const Header = () => {
             styles.container,
             {
                backgroundColor: colors.background.default,
-               borderBottomColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)',
+               borderBottomColor: colors.border,
             },
          ]}
       >
@@ -36,8 +36,8 @@ export const Header = () => {
                   styles.iconButton,
                   {
                      backgroundColor: isDark
-                        ? 'rgba(74,222,128,0.12)'
-                        : 'rgba(34,197,94,0.08)',
+                        ? `${colors.primary.light}1E`
+                        : `${colors.primary.main}14`,
                   },
                   pressed && styles.iconButtonPressed,
                ]}
@@ -56,8 +56,8 @@ export const Header = () => {
                   styles.iconButton,
                   {
                      backgroundColor: isDark
-                        ? 'rgba(74,222,128,0.12)'
-                        : 'rgba(34,197,94,0.08)',
+                        ? `${colors.primary.light}1E`
+                        : `${colors.primary.main}14`,
                   },
                ]}
             >

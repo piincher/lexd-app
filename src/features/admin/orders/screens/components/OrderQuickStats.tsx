@@ -51,11 +51,11 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
     : null;
 
   const statColors = useMemo(() => ({
-    quantity: { color: isDark ? colors.status.info : colors.status.info, bgColor: isDark ? colors.status.info + '20' : colors.status.info + '15' },
-    weight: { color: isDark ? colors.status.warning : colors.status.warning, bgColor: isDark ? colors.status.warning + '20' : colors.status.warning + '15' },
-    cbm: { color: isDark ? colors.status.success : colors.status.success, bgColor: isDark ? colors.status.success + '20' : colors.status.success + '15' },
-    mode: { color: isDark ? colors.primary.main : colors.primary.main, bgColor: isDark ? colors.primary.main + '20' : colors.primary.main + '15' },
-  }), [colors, isDark]);
+    quantity: { color: colors.status.info, bgColor: colors.status.info + '15' },
+    weight: { color: colors.status.warning, bgColor: colors.status.warning + '15' },
+    cbm: { color: colors.status.success, bgColor: colors.status.success + '15' },
+    mode: { color: colors.primary.main, bgColor: colors.primary.main + '15' },
+  }), [colors]);
 
   return (
     <Surface style={styles.container}>

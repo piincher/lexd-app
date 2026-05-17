@@ -1,19 +1,13 @@
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
-import type { RootStackScreenProps } from '@src/navigations/type';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useEditGoods } from '../hooks/useEditGoods';
+import { useEditGoodsScreen } from './hooks/useEditGoodsScreen';
+import { useEditGoodsScreenStyles } from './EditGoodsScreen.styles';
 import { GoodsForm, EditGoodsHeader, EditGoodsLoading, EditGoodsError } from '../components';
 import { GoodsPhotosUpload } from '@src/shared/ui';
 
-const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
-  route,
-  navigation,
-}) => {
-  const { colors } = useAppTheme();
-  const { goodsId } = route.params;
+const EditGoodsScreen: React.FC = () => {
   const {
     status,
     isSaving,
@@ -27,26 +21,25 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
     photoUris,
     onPhotoSelected,
     onPhotoRemoved,
-  } = useEditGoods(goodsId);
+    handlers,
+  } = useEditGoodsScreen();
 
-  const goBack = () => navigation.goBack();
-  const goNotifications = () => navigation.navigate('Notifications' as never);
+  const styles = useEditGoodsScreenStyles();
 
   if (status === 'loading') {
-    return <EditGoodsLoading onBack={goBack} onNotification={goNotifications} />;
+    return <EditGoodsLoading onBack={handlers.handleBack} onNotification={handlers.handleNotifications} />;
   }
 
   if (status === 'error') {
-    return <EditGoodsError isAdmin={isAdmin} error={error} onBack={goBack} onNotification={goNotifications} />;
+    return <EditGoodsError isAdmin={isAdmin} error={error} onBack={handlers.handleBack} onNotification={handlers.handleNotifications} />;
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.paper }]}>
+    <SafeAreaView style={styles.container}>
       <EditGoodsHeader
         title="Modifier la marchandise"
-        onBack={goBack}
-        onNotification={goNotifications}
-        color={colors.text.secondary}
+        onBack={handlers.handleBack}
+        onNotification={handlers.handleNotifications}
       />
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <GoodsForm
@@ -74,19 +67,5 @@ const EditGoodsScreen: React.FC<RootStackScreenProps<'EditGoods'>> = ({
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    padding: 16,
-    paddingBottom: 32,
-  },
-  saveButton: {
-    marginTop: 24,
-    borderRadius: 8,
-  },
-});
 
 export default EditGoodsScreen;

@@ -3,15 +3,15 @@
  * Provides gradient-styled button with loading and error handling
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, ActivityIndicator, Snackbar } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useInitializeWaypoints } from '../../../hooks/useWaypoints';
 import { lightTheme } from '@src/constants/Theme';
+import { useInitializeWaypointsHandler } from '../../../hooks/useInitializeWaypointsHandler';
 
-interface InitializeWaypointsButtonProps {
+export interface InitializeWaypointsButtonProps {
   containerId: string;
   onInitialized?: () => void;
 }
@@ -20,27 +20,8 @@ export const InitializeWaypointsButton: React.FC<InitializeWaypointsButtonProps>
   containerId,
   onInitialized,
 }) => {
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const initializeMutation = useInitializeWaypoints();
-
-  const handleInitialize = async () => {
-    try {
-      await initializeMutation.mutateAsync(containerId);
-      onInitialized?.();
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error 
-          ? error.message 
-          : 'Erreur lors de l\'initialisation du suivi'
-      );
-    }
-  };
-
-  const handleDismissError = () => {
-    setErrorMessage(null);
-  };
-
-  const isLoading = initializeMutation.isPending;
+  const { handleInitialize, errorMessage, dismissError, isLoading } =
+    useInitializeWaypointsHandler(containerId, onInitialized);
 
   return (
     <View style={styles.container}>
@@ -77,10 +58,10 @@ export const InitializeWaypointsButton: React.FC<InitializeWaypointsButtonProps>
 
       <Snackbar
         visible={!!errorMessage}
-        onDismiss={handleDismissError}
+        onDismiss={dismissError}
         action={{
           label: 'Fermer',
-          onPress: handleDismissError,
+          onPress: dismissError,
         }}
         duration={5000}
         style={styles.snackbar}

@@ -24,7 +24,7 @@ export const ContainerProfitCard: React.FC<ContainerProfitCardProps> = ({ cbmPro
 
   const { revenue, collected, cost, profit, profitMargin, totalCBM, cbmCostPerUnit, dualLedger } = cbmProfit;
   const isProfit = profit >= 0;
-  const profitColor = isProfit ? '#10B981' : '#EF4444';
+  const profitColor = isProfit ? colors.status.success : colors.status.error;
 
   const isReconciled = dualLedger?.reconciliationStatus === 'RECONCILED';
 

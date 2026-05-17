@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { Theme } from '@src/constants/Theme';
 
 export const useGoodsDetailFormatters = (goods: any) => {
   const formatCurrency = (amount: number): string => amount?.toLocaleString('fr-FR') || '0';
@@ -13,10 +14,10 @@ export const useGoodsDetailFormatters = (goods: any) => {
   };
 
   const getPaymentStatusColor = useCallback(() => {
-    if (!goods) return '#757575';
-    if (goods.paymentStatus === 'PAID') return '#4CAF50';
-    if (goods.paymentStatus === 'PARTIAL') return '#FF9800';
-    return '#F44336';
+    if (!goods) return Theme.colors.text.disabled;
+    if (goods.paymentStatus === 'PAID') return Theme.colors.status.success;
+    if (goods.paymentStatus === 'PARTIAL') return Theme.colors.status.warning;
+    return Theme.colors.status.error;
   }, [goods]);
 
   return { formatCurrency, formatDate, getPaymentStatusColor };

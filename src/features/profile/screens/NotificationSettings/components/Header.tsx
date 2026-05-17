@@ -3,13 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
-import type { NavigationProp } from "@react-navigation/native";
 
 interface HeaderProps {
-   navigation: NavigationProp<any>;
+   onBack: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ navigation }) => {
+export const Header: React.FC<HeaderProps> = ({ onBack }) => {
    const { colors } = useAppTheme();
 
    const styles = useMemo(
@@ -42,15 +41,11 @@ export const Header: React.FC<HeaderProps> = ({ navigation }) => {
 
    return (
       <View style={styles.header}>
-         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+         <TouchableOpacity onPress={onBack} style={styles.backButton}>
             <AntDesign name="arrowleft" size={24} color={colors.text.primary} />
          </TouchableOpacity>
          <Text style={styles.headerTitle}>Parametres de notification</Text>
-         <NotificationBell
-            onPress={() => navigation.navigate("Notifications" as never)}
-            size={24}
-            color={colors.text.primary}
-         />
+         <View style={styles.placeholder} />
       </View>
    );
 };

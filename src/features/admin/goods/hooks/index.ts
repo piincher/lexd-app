@@ -37,6 +37,8 @@ export { useCBMCalculation } from './goods/useCBMCalculation';
 // SCREEN-SPECIFIC HOOKS
 // ============================================
 export { useGoodsList } from './useGoodsList';
+export { useGoodsListFilters } from './useGoodsListFilters';
+export { useGoodsListData } from './useGoodsListData';
 // Note: useReceiveGoods mutation hook is exported from goods/ above
 export { useReceiveGoodsForm } from './useReceiveGoodsForm';
 

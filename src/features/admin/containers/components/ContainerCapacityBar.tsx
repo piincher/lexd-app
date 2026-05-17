@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Container } from './types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { styles } from './ContainerCard.styles';
 
 interface Props {
@@ -10,13 +11,14 @@ interface Props {
 }
 
 export const ContainerCapacityBar: React.FC<Props> = ({ container, maxCBM }) => {
+  const { colors } = useAppTheme();
   const fillPercentage = Math.min(((container.totalCBM || 0) / maxCBM) * 100, 100);
   const isFull = fillPercentage >= 90;
   const isNearFull = fillPercentage >= 70 && fillPercentage < 90;
   const getFillColor = () => {
-    if (isFull) return '#EF4444';
-    if (isNearFull) return '#F59E0B';
-    return '#10B981';
+    if (isFull) return colors.status.error;
+    if (isNearFull) return colors.status.warning;
+    return colors.status.success;
   };
   const goodsCount = container.goodsCount || (container.goodsIds?.length ?? 0);
 

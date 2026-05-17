@@ -12,7 +12,7 @@ import { MyGoodsHeader, MyGoodsError } from '../components';
 import { GoodsFilter } from '../components/GoodsFilter';
 import { GoodsList } from '../components/GoodsList';
 import { GoodsListSkeleton } from '../components/GoodsListSkeleton';
-import { withProtectedRoute } from '@src/shared/hoc/withProtectedRoute';
+import { withProtectedRoute } from '@src/hoc/withProtectedRoute';
 
 const MyGoodsScreen = ({ navigation }: RootStackScreenProps<'MyGoods'>) => {
   const { colors } = useAppTheme();

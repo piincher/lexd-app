@@ -21,13 +21,13 @@ export const PaymentPreviewCard: React.FC<PaymentPreviewCardProps> = ({
   const styles = createPaymentPreviewCardStyles(colors);
 
   const statusColors: Record<string, { bg: string; text: string }> = {
-    PAID: { bg: '#E8F5E9', text: colors.status.success },
-    PARTIAL: { bg: '#FFF3E0', text: colors.accent.goldDark },
-    UNPAID: { bg: '#FFEBEE', text: colors.status.error },
+    PAID: { bg: colors.status.success + '15', text: colors.status.success },
+    PARTIAL: { bg: colors.status.warning + '15', text: colors.accent.goldDark },
+    UNPAID: { bg: colors.status.error + '15', text: colors.status.error },
   };
 
   const statusStyle = statusColors[paymentStatus] || statusColors.UNPAID;
-  const newBalanceColor = newBalance === 0 ? '#4CAF50' : '#FF9800';
+  const newBalanceColor = newBalance === 0 ? colors.status.success : colors.status.warning;
   const overpayment = amount - currentBalance;
 
   return (

@@ -16,13 +16,13 @@ export const RouteFlow: React.FC = () => {
   return (
     <Animated.View entering={FadeInUp.delay(150)} style={styles.routeFlowCard}>
       <LinearGradient
-        colors={['#E0F2FE', '#F0F9FF']}
+        colors={[colors.feedback.infoBg, colors.background.paper]}
         style={styles.routeFlowGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
         <View style={styles.routeFlowHeader}>
-          <Ionicons name="trail-sign" size={20} color="#0284C7" />
+          <Ionicons name="trail-sign" size={20} color={colors.status.info} />
           <Text style={styles.routeFlowTitle}>Parcours de votre conteneur</Text>
         </View>
 
@@ -30,29 +30,29 @@ export const RouteFlow: React.FC = () => {
         <View style={styles.routeFlowVisual}>
           {/* Nansha */}
           <View style={styles.routeFlowItem}>
-            <View style={[styles.routeFlowDot, { backgroundColor: '#0EA5E9' }]} />
+            <View style={[styles.routeFlowDot, { backgroundColor: colors.status.info }]} />
             <Text style={styles.routeFlowText}>Nansha</Text>
             <Text style={styles.routeFlowSubtext}>Chine</Text>
           </View>
 
           <View style={styles.routeFlowArrow}>
-            <Ionicons name="arrow-forward" size={14} color="#94A3B8" />
+            <Ionicons name="arrow-forward" size={14} color={colors.text.disabled} />
           </View>
 
           {/* Transit Icon */}
           <View style={styles.routeFlowTransit}>
-            <Ionicons name="boat" size={18} color="#64748B" />
+            <Ionicons name="boat" size={18} color={colors.text.secondary} />
             <Text style={styles.routeFlowTransitText}>[Transit]</Text>
           </View>
 
           <View style={styles.routeFlowArrow}>
-            <Ionicons name="arrow-forward" size={14} color="#94A3B8" />
+            <Ionicons name="arrow-forward" size={14} color={colors.text.disabled} />
           </View>
 
           {/* Dakar - Highlighted */}
           <View style={[styles.routeFlowItem, styles.routeFlowHighlight]}>
             <View style={[styles.routeFlowDot, styles.routeFlowDotDakar]}>
-              <Ionicons name="boat" size={12} color="#FFF" />
+              <Ionicons name="boat" size={12} color={colors.text.inverse} />
             </View>
             <Text style={[styles.routeFlowText, styles.routeFlowTextHighlight]}>DAKAR</Text>
             <Text style={styles.routeFlowSubtext}>Port d'arrivée</Text>
@@ -62,24 +62,24 @@ export const RouteFlow: React.FC = () => {
           </View>
 
           <View style={styles.routeFlowArrow}>
-            <Ionicons name="arrow-forward" size={14} color="#94A3B8" />
+            <Ionicons name="arrow-forward" size={14} color={colors.text.disabled} />
           </View>
 
           {/* Diboli */}
           <View style={styles.routeFlowItem}>
-            <View style={[styles.routeFlowDot, { backgroundColor: '#F59E0B' }]} />
+            <View style={[styles.routeFlowDot, { backgroundColor: colors.status.warning }]} />
             <Text style={styles.routeFlowText}>Diboli</Text>
             <Text style={styles.routeFlowSubtext}>Frontière</Text>
           </View>
 
           <View style={styles.routeFlowArrow}>
-            <Ionicons name="arrow-forward" size={14} color="#94A3B8" />
+            <Ionicons name="arrow-forward" size={14} color={colors.text.disabled} />
           </View>
 
           {/* Bamako */}
           <View style={[styles.routeFlowItem, styles.routeFlowFinal]}>
-            <View style={[styles.routeFlowDot, { backgroundColor: '#8B5CF6' }]}>
-              <Ionicons name="home" size={10} color="#FFF" />
+            <View style={[styles.routeFlowDot, { backgroundColor: colors.primary.main }]}>
+              <Ionicons name="home" size={10} color={colors.text.inverse} />
             </View>
             <Text style={styles.routeFlowText}>Bamako</Text>
             <Text style={styles.routeFlowSubtext}>Retrait</Text>

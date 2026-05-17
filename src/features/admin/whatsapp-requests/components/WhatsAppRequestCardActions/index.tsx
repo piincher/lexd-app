@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { WhatsAppRequestStatus } from '../../api/whatsappRequestApi';
 
@@ -28,6 +29,7 @@ export const WhatsAppRequestCardActions: React.FC<WhatsAppRequestCardActionsProp
   onComplete,
   onWhatsApp,
 }) => {
+  const { colors } = useAppTheme();
   const isMutating = isProcessing || isCompleting;
 
   if (status === 'PENDING') {
@@ -47,7 +49,7 @@ export const WhatsAppRequestCardActions: React.FC<WhatsAppRequestCardActionsProp
           mode="outlined"
           onPress={onWhatsApp}
           style={styles.whatsappButton}
-          textColor="#25D366"
+          textColor={colors.status.success}
         >
           WhatsApp
         </Button>
@@ -63,7 +65,7 @@ export const WhatsAppRequestCardActions: React.FC<WhatsAppRequestCardActionsProp
           onPress={onGeneratePdf}
           loading={isGeneratingPdf}
           style={styles.pdfButton}
-          buttonColor="#6366F1"
+          buttonColor={colors.primary.main}
           icon="file-pdf-box"
         >
           Générer PDF
@@ -73,7 +75,7 @@ export const WhatsAppRequestCardActions: React.FC<WhatsAppRequestCardActionsProp
           onPress={onComplete}
           loading={isCompleting}
           style={styles.completeButton}
-          buttonColor="#10B981"
+          buttonColor={colors.status.success}
         >
           Terminer
         </Button>
@@ -84,7 +86,7 @@ export const WhatsAppRequestCardActions: React.FC<WhatsAppRequestCardActionsProp
   if (status === 'COMPLETED' && pdfUrl) {
     return (
       <View style={styles.completedBadge}>
-        <Ionicons name="checkmark-circle" size={16} color="#10B981" />
+        <Ionicons name="checkmark-circle" size={16} color={colors.status.success} />
         <Text style={styles.completedText}>PDF envoyé</Text>
       </View>
     );
@@ -105,7 +107,7 @@ const styles = StyleSheet.create({
   whatsappButton: {
     flex: 1,
     borderRadius: Theme.radius.lg,
-    borderColor: '#25D366',
+    borderColor: Theme.colors.status.success,
   },
   pdfButton: {
     flex: 1,
@@ -121,12 +123,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 4,
     padding: Theme.spacing.md,
-    backgroundColor: '#D1FAE5',
+    backgroundColor: Theme.colors.feedback.successBg,
     borderRadius: Theme.radius.lg,
   },
   completedText: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#059669',
+    color: Theme.colors.status.success,
   },
 });

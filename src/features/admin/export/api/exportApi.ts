@@ -5,6 +5,7 @@
  */
 
 import { apiClientV2 } from "@src/api/client";
+import type { ExportEntity, ExportFormat, ScheduleFrequency } from "../types";
 
 export interface ExportFilters {
   dateRange?: {
@@ -81,8 +82,8 @@ export interface Backup {
 export interface ExportLog {
   _id: string;
   exportId: string;
-  entity: string;
-  format: string;
+  entity: ExportEntity;
+  format: ExportFormat;
   exportedBy: {
     _id: string;
     firstName: string;
@@ -95,7 +96,7 @@ export interface ExportLog {
     fileSize: number;
     status: string;
     startedAt: string;
-    completedAt: string;
+    completedAt?: string;
     durationMs: number;
   };
   file: {
@@ -106,10 +107,18 @@ export interface ExportLog {
   formattedFileSize: string;
   scheduled?: {
     isScheduled: boolean;
-    frequency: string;
-    nextRunAt: string;
+    frequency: ScheduleFrequency;
+    nextRunAt?: string;
+  };
+  emailDelivery?: {
+    requested: boolean;
+    recipientEmail?: string;
+    sentAt?: string;
+    status?: string;
+    deliveryMethod?: "ATTACHMENT" | "LINK";
   };
   createdAt: string;
+  updatedAt?: string;
 }
 
 // Export goods data

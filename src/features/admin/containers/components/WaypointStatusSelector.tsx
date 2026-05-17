@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   ExtendedWaypointStatus,
   PortStatusOption,
@@ -28,6 +29,7 @@ export const WaypointStatusSelector: React.FC<WaypointStatusSelectorProps> = ({
   onSelectStatus,
   delay = 0,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <Animated.View entering={FadeIn.delay(delay)} style={styles.section}>
       <Text style={styles.sectionTitle}>Statut</Text>
@@ -57,7 +59,7 @@ export const WaypointStatusSelector: React.FC<WaypointStatusSelectorProps> = ({
       <View style={styles.statusFlowContainer}>
         <Text style={styles.statusFlowLabel}>Progression:</Text>
         <View style={styles.statusFlow}>
-          <View style={[styles.statusFlowDot, { backgroundColor: '#10B981' }]} />
+          <View style={[styles.statusFlowDot, { backgroundColor: Theme.status.success }]} />
           <View style={styles.statusFlowLine} />
           <View style={[styles.statusFlowDot, { backgroundColor: getExtendedStatusColor(status) }]} />
           <View style={styles.statusFlowLine} />

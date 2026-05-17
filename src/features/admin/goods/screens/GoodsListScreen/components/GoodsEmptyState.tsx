@@ -9,7 +9,7 @@ import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/shared/constants/Theme';
+import { Theme } from '@src/constants/Theme';
 
 interface GoodsEmptyStateProps {
   hasFilters: boolean;
@@ -27,7 +27,7 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
       colors={[colors.background.paper, colors.background.default]}
       style={styles.iconContainer}
     >
-      <Ionicons name="cube-outline" size={64} color={Theme.primary[500]} />
+      <Ionicons name="cube-outline" size={64} color={colors.primary.main} />
     </LinearGradient>
     <Text style={[styles.title, { color: colors.text.primary }]}>Aucune marchandise</Text>
     <Text style={[styles.subtitle, { color: colors.text.secondary }]}>
@@ -38,7 +38,7 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
     {!hasFilters && onAddPress && (
       <TouchableOpacity style={styles.button} onPress={onAddPress}>
         <LinearGradient colors={Theme.gradients.primary} style={styles.buttonGradient}>
-          <Ionicons name="add" size={20} color={colors.text.inverse} />
+          <Ionicons name="add" size={20} color={Theme.colors.text.inverse} />
           <Text style={styles.buttonText}>Nouvelle marchandise</Text>
         </LinearGradient>
       </TouchableOpacity>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
 });

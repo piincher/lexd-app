@@ -8,6 +8,9 @@ export type {
   currentPositionType,
   routes,
   productType,
+} from "@src/api/order";
+
+export type {
   PaymentRecord,
   PaymentHistory,
-} from "@src/api/order";
+} from "@src/api/payment";

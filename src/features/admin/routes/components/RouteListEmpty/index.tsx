@@ -7,6 +7,7 @@ import { View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { ShippingMode } from '../../types';
 import { styles } from './RouteListEmpty.styles';
@@ -17,10 +18,11 @@ interface RouteListEmptyProps {
 }
 
 export const RouteListEmpty: React.FC<RouteListEmptyProps> = ({ selectedMode, onCreateRoute }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.emptyContainer}>
       <LinearGradient
-        colors={['#F3F0FF', '#EDE9FE']}
+        colors={[colors.primary[50], colors.primary[100]]}
         style={styles.emptyIconContainer}
       >
         <Ionicons name="map-outline" size={64} color={Theme.primary[400]} />
@@ -40,7 +42,7 @@ export const RouteListEmpty: React.FC<RouteListEmptyProps> = ({ selectedMode, on
             colors={Theme.gradients.primary}
             style={styles.emptyButtonGradient}
           >
-            <Ionicons name="add" size={20} color="#FFF" />
+            <Ionicons name="add" size={20} color={colors.text.inverse} />
             <Text style={styles.emptyButtonText}>Nouvelle Route</Text>
           </LinearGradient>
         </TouchableOpacity>

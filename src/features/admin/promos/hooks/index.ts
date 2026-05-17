@@ -1,7 +1,8 @@
-﻿/**
+/**
  * hooks index
  */
 
 export * from './useManagePromos';
-export * from './usePromoAdmin';
+export * from './usePromoQueries';
+export * from './usePromoMutations';
 export * from './usePromoForm';

@@ -25,13 +25,13 @@ export const NuvotechSection: React.FC = () => {
             style={[
                styles.servicePanel,
                {
-                  backgroundColor: isDark ? "rgba(34,197,94,0.12)" : "#F0FDF4",
-                  borderColor: isDark ? "rgba(134,239,172,0.18)" : "#BBF7D0",
+                  backgroundColor: isDark ? `${colors.primary.main}1E` : colors.primary[50],
+                  borderColor: isDark ? `${colors.primary.light}2E` : colors.primary[200],
                },
             ]}
          >
             <View style={[styles.iconCircle, { backgroundColor: colors.primary.main }]}>
-               <FontAwesome6 name="mobile-screen-button" size={20} color="#FFFFFF" />
+               <FontAwesome6 name="mobile-screen-button" size={20} color={colors.neutral.white} />
             </View>
 
             <View style={styles.copy}>
@@ -59,7 +59,7 @@ export const NuvotechSection: React.FC = () => {
                >
                   Contacter Nuvotech
                </Text>
-               <FontAwesome6 name="arrow-up-right-from-square" size={13} color="#FFFFFF" />
+               <FontAwesome6 name="arrow-up-right-from-square" size={13} color={colors.neutral.white} />
             </TouchableOpacity>
          </View>
 
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
       gap: 8,
    },
    ctaText: {
-      color: "#FFFFFF",
+      color: Theme.neutral.white,
       fontFamily: Fonts.bold,
       fontSize: 14,
    },

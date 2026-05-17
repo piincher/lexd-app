@@ -7,6 +7,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { SmsService } from '@src/shared/types/user';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { CardHeader, StatsRow, ProgressSection, ActionButton } from './components';
 
@@ -15,17 +16,17 @@ interface SmsSubscriptionCardProps {
   index: number;
 }
 
-const STATUS_META: Record<string, { label: string; color: string; bg: string; icon: string }> = {
-  ACTIVE: { label: 'Actif', color: '#10B981', bg: '#10B98115', icon: 'checkmark-circle' },
-  EXPIRED: { label: 'Expiré', color: '#EF4444', bg: '#EF444415', icon: 'close-circle' },
-  PENDING: { label: 'En attente', color: '#F59E0B', bg: '#F59E0B15', icon: 'time' },
-};
+const STATUS_META = (colors: any): Record<string, { label: string; color: string; bg: string; icon: string }> => ({
+  ACTIVE: { label: 'Actif', color: colors.status.success, bg: colors.status.success + '15', icon: 'checkmark-circle' },
+  EXPIRED: { label: 'Expiré', color: colors.status.error, bg: colors.status.error + '15', icon: 'close-circle' },
+  PENDING: { label: 'En attente', color: colors.status.warning, bg: colors.status.warning + '15', icon: 'time' },
+});
 
-const getProgressColor = (pct: number, isExpiringSoon: boolean) => {
-  if (isExpiringSoon) return '#F59E0B';
-  if (pct > 50) return '#10B981';
-  if (pct > 20) return '#F59E0B';
-  return '#EF4444';
+const getProgressColor = (pct: number, isExpiringSoon: boolean, colors: any) => {
+  if (isExpiringSoon) return colors.status.warning;
+  if (pct > 50) return colors.status.success;
+  if (pct > 20) return colors.status.warning;
+  return colors.status.error;
 };
 
 const getProgressSubtext = (subscription: SmsService) => {
@@ -55,8 +56,9 @@ export const SmsSubscriptionCard: React.FC<SmsSubscriptionCardProps> = ({
   subscription,
   index,
 }) => {
-  const meta = STATUS_META[subscription.status] || STATUS_META.ACTIVE;
-  const progressColor = getProgressColor(subscription.progressPercentage, subscription.isExpiringSoon);
+  const { colors } = useAppTheme();
+  const meta = STATUS_META(colors)[subscription.status] || STATUS_META(colors).ACTIVE;
+  const progressColor = getProgressColor(subscription.progressPercentage, subscription.isExpiringSoon, colors);
   const progressSubtext = getProgressSubtext(subscription);
   const actionProps = getActionProps(subscription);
 

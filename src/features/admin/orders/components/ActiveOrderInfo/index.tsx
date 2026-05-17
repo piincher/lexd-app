@@ -22,46 +22,46 @@ export const ActiveOrderInfo: React.FC<ActiveOrderInfoProps> = ({ item, note }) 
         <Text style={styles.sectionTitle}>Informations</Text>
       </View>
 
-      <InfoRow icon="earth" label="Origine" value="Chine, Foshan" iconColor="#4CAF50" />
-      <InfoRow icon="map-marker-check" label="Destination" value="Bamako, Mali" iconColor="#F44336" />
+      <InfoRow icon="earth" label="Origine" value="Chine, Foshan" iconColor={colors.status.success} />
+      <InfoRow icon="map-marker-check" label="Destination" value="Bamako, Mali" iconColor={colors.status.error} />
       <Divider style={styles.divider} />
       <InfoRow
         icon="package-variant"
         label="Catégorie"
         value={item?.category?.name || item?.typeOfPackage || 'Général'}
-        iconColor="#FF9800"
+        iconColor={colors.status.warning}
       />
       <InfoRow
         icon="identifier"
         label="Conteneur"
         value={item?.contenairNumber || 'N/A'}
-        iconColor="#7B1FA2"
+        iconColor={colors.primary.main}
       />
       <InfoRow
         icon="progress-check"
         label="Statut actuel"
         value={item?.currentStatus || 'Commande passée'}
-        iconColor="#1976D2"
+        iconColor={colors.status.info}
       />
       <Divider style={styles.divider} />
       <InfoRow
         icon="calendar-arrow-right"
         label="Date de chargement"
         value={formatDate(item?.departureDate!)}
-        iconColor="#9C27B0"
+        iconColor={colors.primary.main}
       />
       <InfoRow
         icon="update"
         label="Dernière mise à jour"
         value={formatDate(item?.updatedAt!)}
-        iconColor="#607D8B"
+        iconColor={colors.text.secondary}
       />
 
       {(note || item?.note) && (
         <>
           <Divider style={styles.divider} />
           <View style={styles.noteBox}>
-            <MaterialCommunityIcons name="note-text" size={16} color="#F57C00" />
+            <MaterialCommunityIcons name="note-text" size={16} color={colors.status.warning} />
             <Text style={styles.noteText}>
               {note || item?.note || 'Aucune note'}
             </Text>

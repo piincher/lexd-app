@@ -9,6 +9,7 @@ import { Card, Text, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { styles } from './GoodsQRCode.styles';
 
 interface GoodsQRCodeProps {
@@ -17,6 +18,7 @@ interface GoodsQRCodeProps {
 }
 
 export const GoodsQRCode: React.FC<GoodsQRCodeProps> = ({ goodsId, qrCodeImageUrl }) => {
+  const { colors } = useAppTheme();
   const hasQRCode = !!qrCodeImageUrl;
 
   const handleShareQR = async () => {
@@ -34,9 +36,9 @@ export const GoodsQRCode: React.FC<GoodsQRCodeProps> = ({ goodsId, qrCodeImageUr
 
   return (
     <Card style={styles.container}>
-      <LinearGradient colors={['#FFFFFF', '#F8F7FC']} style={styles.gradient}>
+      <LinearGradient colors={[colors.background.card, colors.background.paper]} style={styles.gradient}>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="qrcode-scan" size={24} color={Theme.primary[600]} />
+          <MaterialCommunityIcons name="qrcode-scan" size={24} color={colors.primary.main} />
           <Text style={styles.title}>QR Code d'identification</Text>
         </View>
 
@@ -51,14 +53,14 @@ export const GoodsQRCode: React.FC<GoodsQRCodeProps> = ({ goodsId, qrCodeImageUr
               onPress={handleShareQR}
               style={styles.shareButton}
               icon="share-variant"
-              textColor={Theme.primary[600]}
+              textColor={colors.primary.main}
             >
               Partager
             </Button>
           </View>
         ) : (
           <View style={styles.empty}>
-            <MaterialCommunityIcons name="qrcode-off" size={64} color={Theme.neutral[300]} />
+            <MaterialCommunityIcons name="qrcode-off" size={64} color={colors.text.disabled} />
             <Text style={styles.emptyText}>QR Code non disponible</Text>
           </View>
         )}

@@ -10,5 +10,7 @@ export * from "./useFilterPresets";
 export * from "./useRecentSearches";
 export * from "./useAdvancedSearch";
 export * from "./useSearchHighlight";
+export * from "./useGlobalSearchEntity";
+export * from "./useGlobalSearchNavigation";
 export { useGlobalSearch } from "./useSearch";
 export { useSearchFilterHandlers } from "./useSearchFilterHandlers";

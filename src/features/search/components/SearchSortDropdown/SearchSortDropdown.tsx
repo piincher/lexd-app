@@ -8,7 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { SearchSortOption } from '../../types';
 
 interface SearchSortDropdownProps {
@@ -28,6 +28,7 @@ export const SearchSortDropdown: React.FC<SearchSortDropdownProps> = ({
   value,
   onChange,
 }) => {
+  const { colors } = useAppTheme();
   const [visible, setVisible] = useState(false);
 
   const selectedOption = SORT_OPTIONS.find((opt) => opt.value === value);
@@ -37,11 +38,63 @@ export const SearchSortDropdown: React.FC<SearchSortDropdownProps> = ({
     setVisible(false);
   };
 
+  const styles = React.useMemo(
+    () =>
+      StyleSheet.create({
+        button: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          paddingHorizontal: 12,
+          paddingVertical: 8,
+          backgroundColor: colors.neutral[100],
+          borderRadius: 8,
+        },
+        buttonText: {
+          fontSize: 14,
+          color: colors.neutral[700],
+          marginRight: 8,
+        },
+        overlay: {
+          flex: 1,
+          backgroundColor: colors.background.overlay,
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: 16,
+        },
+        dropdown: {
+          backgroundColor: colors.background.card,
+          borderRadius: 12,
+          width: '80%',
+          maxWidth: 300,
+          paddingVertical: 8,
+        },
+        option: {
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 12,
+          paddingVertical: 12,
+        },
+        activeOption: {
+          backgroundColor: colors.primary.light + '20',
+        },
+        optionText: {
+          fontSize: 16,
+          color: colors.neutral[800],
+        },
+        activeOptionText: {
+          fontWeight: '600',
+          color: colors.primary.main,
+        },
+      }),
+    [colors]
+  );
+
   return (
     <>
       <TouchableOpacity style={styles.button} onPress={() => setVisible(true)}>
         <Text style={styles.buttonText}>{selectedOption?.label}</Text>
-        <Ionicons name="chevron-down" size={16} color={Theme.neutral[600]} />
+        <Ionicons name="chevron-down" size={16} color={colors.neutral[600]} />
       </TouchableOpacity>
 
       <Modal
@@ -75,7 +128,7 @@ export const SearchSortDropdown: React.FC<SearchSortDropdownProps> = ({
                       <Ionicons
                         name="checkmark"
                         size={20}
-                        color={Theme.colors.primary.main}
+                        color={colors.primary.main}
                       />
                     )}
                   </TouchableOpacity>
@@ -88,51 +141,3 @@ export const SearchSortDropdown: React.FC<SearchSortDropdownProps> = ({
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: Theme.spacing.md,
-    paddingVertical: Theme.spacing.sm,
-    backgroundColor: Theme.neutral[100],
-    borderRadius: 8,
-  },
-  buttonText: {
-    fontSize: 14,
-    color: Theme.neutral[700],
-    marginRight: Theme.spacing.sm,
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: Theme.spacing.lg,
-  },
-  dropdown: {
-    backgroundColor: Theme.colors.background.card,
-    borderRadius: 12,
-    width: '80%',
-    maxWidth: 300,
-    paddingVertical: Theme.spacing.sm,
-  },
-  option: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: Theme.spacing.md,
-    paddingVertical: Theme.spacing.md,
-  },
-  activeOption: {
-    backgroundColor: Theme.colors.primary.light + '20',
-  },
-  optionText: {
-    fontSize: 16,
-    color: Theme.neutral[800],
-  },
-  activeOptionText: {
-    fontWeight: '600',
-    color: Theme.colors.primary.main,
-  },
-});

@@ -5,28 +5,26 @@
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Screen } from '@src/shared/ui/Screen';
-import { useFAQ } from '../hooks/useFAQ';
+import { useFAQScreen } from './hooks/useFAQScreen';
 import { FAQSearchBar } from '../components/FAQSearchBar';
 import { FAQCategoryFilter } from '../components/FAQCategoryFilter';
 import { FAQItem } from '../components/FAQItem';
 import { FAQEmptyState } from '../components/FAQEmptyState';
 import { FAQContactButton } from '../components/FAQContactButton';
 import { FAQSkeleton } from './FAQScreenSkeleton';
+import { styles } from './FAQScreen.styles';
 
 export const FAQScreen: React.FC = () => {
-  const { colors } = useAppTheme();
   const {
     filteredData,
     isLoading,
     filter,
-    setSearchQuery,
-    setCategory,
     categories,
-  } = useFAQ();
+    handlers,
+  } = useFAQScreen();
 
   if (isLoading) {
     return (
@@ -55,42 +53,26 @@ export const FAQScreen: React.FC = () => {
             <View style={styles.searchContainer}>
               <FAQSearchBar
                 value={filter.searchQuery}
-                onChangeText={setSearchQuery}
+                onChangeText={handlers.setSearchQuery}
                 placeholder="Rechercher une question..."
               />
             </View>
             <FAQCategoryFilter
               categories={categories}
               selectedCategory={filter.category}
-              onSelectCategory={setCategory}
+              onSelectCategory={handlers.setCategory}
             />
           </View>
         }
         ListEmptyComponent={
           <FAQEmptyState
             searchQuery={filter.searchQuery}
-            onClearSearch={() => setSearchQuery('')}
+            onClearSearch={handlers.handleClearSearch}
           />
         }
       />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    paddingBottom: 8,
-  },
-  searchContainer: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 8,
-  },
-  listContent: {
-    paddingHorizontal: 16,
-    paddingBottom: 100,
-    flexGrow: 1,
-  },
-});
 
 export default FAQScreen;

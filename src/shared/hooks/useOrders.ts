@@ -1,7 +1,8 @@
 // Shared Orders Hooks
 // Used across multiple features (stats, profile, admin, etc.)
 
-import { fetchSmsBalance, getActiveOrders, getAllOrders, getOrdersBasedOnUserId } from "@src/api/order";
+import { getActiveOrders, getAllOrders, getOrdersBasedOnUserId } from "@src/api/order";
+import { fetchSmsBalance } from "@src/api/sms";
 import { LIMIT } from "@src/constants/Dimensions";
 import { SMSKEY } from "@src/constants/queryKey";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";

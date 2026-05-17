@@ -9,4 +9,3 @@ export { routeQueryKeys } from './routes/routeQueryKeys';
 export { useGetRoutes, useGetActiveRoutes, useGetRoute } from './routes/useRouteQueries';
 export { useCreateRoute, useUpdateRoute, useDeleteRoute, useToggleRouteStatus } from './routes/useRouteMutations';
 export { useRouteStats } from './routes/useRouteStats';
-export type { ApiResponse } from './routes/types';

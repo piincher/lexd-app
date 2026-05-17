@@ -70,13 +70,13 @@ export const NotificationChannelToggles: React.FC<NotificationChannelTogglesProp
           borderRadius: 8,
           marginBottom: 16,
           borderWidth: 1,
-          borderColor: "#FCD34D",
+          borderColor: colors.status.warning,
         },
         warningText: {
           flex: 1,
           marginLeft: 8,
           fontSize: 14,
-          color: "#92400E",
+          color: colors.feedback.warningDark,
         },
       }),
     [colors]
@@ -117,7 +117,7 @@ export const NotificationChannelToggles: React.FC<NotificationChannelTogglesProp
 
       {!enabled && permissionStatus !== "granted" && (
         <View style={styles.warningCard}>
-          <MaterialIcons name="info" size={20} color="#F59E0B" />
+          <MaterialIcons name="info" size={20} color={colors.status.warning} />
           <Text style={styles.warningText}>
             Notifications are disabled. Enable them to receive important updates.
           </Text>

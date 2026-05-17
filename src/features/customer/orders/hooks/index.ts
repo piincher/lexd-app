@@ -1,2 +1,2 @@
-export * from './usePastOrders';
-export * from './useOrderFilters';
+export { usePastOrders, usePastOrdersInfinite, useRefreshPastOrders } from './usePastOrders';
+export { useOrderFilters } from './useOrderFilters';

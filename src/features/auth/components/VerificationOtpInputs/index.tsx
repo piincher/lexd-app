@@ -22,7 +22,7 @@ export const VerificationOtpInputs: React.FC<VerificationOtpInputsProps> = ({
   onKeyPress,
   hasError,
 }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const activeColor = hasError ? colors.status.error : colors.primary.main;
 
   return (
@@ -40,19 +40,11 @@ export const VerificationOtpInputs: React.FC<VerificationOtpInputsProps> = ({
                 borderColor: isActive
                   ? activeColor
                   : isFilled
-                    ? isDark
-                      ? "rgba(34,197,94,0.45)"
-                      : "rgba(34,197,94,0.35)"
-                    : isDark
-                      ? "rgba(255,255,255,0.1)"
-                      : "#E5E7EB",
+                    ? colors.primary.main
+                    : colors.border,
                 backgroundColor: isActive
-                  ? isDark
-                    ? "rgba(34,197,94,0.08)"
-                    : "rgba(34,197,94,0.04)"
-                  : isDark
-                    ? "rgba(255,255,255,0.04)"
-                    : "#F9FAFB",
+                  ? colors.primary[50]
+                  : colors.background.paper,
               },
             ]}
           >
@@ -66,7 +58,7 @@ export const VerificationOtpInputs: React.FC<VerificationOtpInputsProps> = ({
               textContentType="oneTimeCode"
               autoComplete="sms-otp"
               importantForAutofill="yes"
-              maxLength={index === 0 ? OTP_LENGTH : 1}
+              maxLength={OTP_LENGTH}
               selectTextOnFocus
               accessibilityLabel={`Chiffre ${index + 1} du code de vérification`}
             />

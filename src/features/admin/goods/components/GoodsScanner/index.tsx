@@ -3,6 +3,8 @@ import { View, StyleSheet, Alert } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { CameraView } from 'expo-camera';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsScannerProps {
   isScanning: boolean;
@@ -19,6 +21,8 @@ export const GoodsScanner: React.FC<GoodsScannerProps> = ({
   onStopScan,
   onBarCodeScanned,
 }) => {
+  const { colors } = useAppTheme();
+
   if (showScanner) {
     return (
       <View style={styles.scannerContainer}>
@@ -27,8 +31,8 @@ export const GoodsScanner: React.FC<GoodsScannerProps> = ({
           barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
           style={StyleSheet.absoluteFillObject}
         />
-        <View style={styles.scannerOverlay}>
-          <View style={styles.scannerTarget} />
+        <View style={[styles.scannerOverlay, { backgroundColor: colors.background.overlay }]}>
+          <View style={[styles.scannerTarget, { borderColor: colors.text.inverse }]} />
           <Button mode="contained" onPress={onStopScan} style={styles.cancelButton}>
             Annuler
           </Button>
@@ -68,13 +72,11 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.3)',
   },
   scannerTarget: {
     width: 200,
     height: 200,
     borderWidth: 2,
-    borderColor: '#fff',
     borderRadius: 12,
   },
   cancelButton: {

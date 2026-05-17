@@ -22,7 +22,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     shadowOpacity: 0.04,
   },
   blockedCard: {
-    backgroundColor: isDark ? "#7F1D1D" : "#FEF2F2",
+    backgroundColor: isDark ? colors.feedback.errorBg : colors.feedback.errorBg,
   },
   accentBorder: {
     position: "absolute",
@@ -47,7 +47,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   avatarText: {
     fontSize: 18,
     fontWeight: "700",
-    color: "white",
+    color: colors.text.inverse,
   },
   info: {
     flex: 1,
@@ -69,7 +69,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   blockedBadge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: isDark ? "#7F1D1D" : "#FEE2E2",
+    backgroundColor: isDark ? colors.feedback.errorBg : colors.feedback.errorBg,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 20,
@@ -78,7 +78,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   blockedText: {
     fontSize: 11,
     fontWeight: "700",
-    color: isDark ? "#FCA5A5" : "#EF4444",
+    color: isDark ? colors.status.error : colors.status.error,
   },
   detailRow: {
     flexDirection: "row",
@@ -110,12 +110,12 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     gap: 8,
   },
   blockButton: {
-    backgroundColor: isDark ? "#7F1D1D" : "#FEE2E2",
+    backgroundColor: isDark ? colors.feedback.errorBg : colors.feedback.errorBg,
   },
   unblockButton: {
-    backgroundColor: isDark ? "#14532D" : "#DCFCE7",
+    backgroundColor: isDark ? colors.feedback.successBg : colors.feedback.successBg,
   },
   deleteButton: {
-    backgroundColor: isDark ? "#7F1D1D" : "#FEE2E2",
+    backgroundColor: isDark ? colors.feedback.errorBg : colors.feedback.errorBg,
   },
 });

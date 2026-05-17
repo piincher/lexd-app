@@ -2,7 +2,8 @@ import React from "react";
 import { TouchableOpacity, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CertificateUser } from "../../api";
-import { styles } from "./UserCard.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { getStyles } from "./UserCard.styles";
 
 interface UserCardProps {
   user: CertificateUser;
@@ -10,7 +11,10 @@ interface UserCardProps {
   onSelect: (user: CertificateUser) => void;
 }
 
-export const UserCard: React.FC<UserCardProps> = ({ user, isSelected, onSelect }) => (
+export const UserCard: React.FC<UserCardProps> = ({ user, isSelected, onSelect }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
+  return (
   <TouchableOpacity
     style={[styles.card, isSelected && styles.cardSelected]}
     onPress={() => onSelect(user)}
@@ -36,8 +40,9 @@ export const UserCard: React.FC<UserCardProps> = ({ user, isSelected, onSelect }
       <Ionicons
         name={isSelected ? "checkmark-circle" : "ellipse-outline"}
         size={24}
-        color={isSelected ? "#d4a843" : "#D1D5DB"}
+        color={isSelected ? colors.primary.main : colors.text.disabled}
       />
     </View>
   </TouchableOpacity>
-);
+  );
+};

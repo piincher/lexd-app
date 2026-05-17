@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 
-export const createPaymentImageModalStyles = () => StyleSheet.create({
+export const createPaymentImageModalStyles = (colors: any) => StyleSheet.create({
   modalContent: {
-    backgroundColor: '#000',
+    backgroundColor: colors.background.overlay,
     margin: 20,
     borderRadius: 12,
     overflow: 'hidden',
@@ -13,7 +13,7 @@ export const createPaymentImageModalStyles = () => StyleSheet.create({
     top: 8,
     right: 8,
     zIndex: 1,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: colors.background.overlay,
   },
   fullImage: {
     width: '100%',

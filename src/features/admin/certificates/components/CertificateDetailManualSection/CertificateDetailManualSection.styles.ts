@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
   noteText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: "#92400E",
+    color: Theme.colors.status.warning,
     lineHeight: 20,
   },
 });

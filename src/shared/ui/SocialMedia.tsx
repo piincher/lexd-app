@@ -23,7 +23,7 @@ interface Props {
 }
 
 const SocialMedia: FC<Props> = ({ color }: Props) => {
-   const { isDark } = useAppTheme();
+   const { colors, isDark } = useAppTheme();
    const _handlePressButtonAsync = async (url: string) => {
       await WebBrowser.openBrowserAsync(url);
    };
@@ -82,7 +82,7 @@ const SocialMedia: FC<Props> = ({ color }: Props) => {
             from={{ opacity: 0, translateY: 50 }}
             animate={{ opacity: 1, translateY: 0 }}
             transition={{ type: "spring", delay: 200 }}
-            style={[styles.iconContainer, { backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)' }]}
+            style={[styles.iconContainer, { backgroundColor: isDark ? colors.neutral[700] : colors.neutral[200] }]}
          >
             <SocialIcon
                IconComponent={AnimatedIcon}

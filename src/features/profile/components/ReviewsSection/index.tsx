@@ -13,16 +13,16 @@ import { useMyReviews, useReviewStats } from "@src/shared/hooks/useReviews";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { StarRating } from "./StarRating";
 import { ReviewsSectionSkeleton } from "./ReviewsSectionSkeleton";
-import { styles } from "./ReviewsSection.styles";
+import { getStyles } from "./ReviewsSection.styles";
 
 export const ReviewsSection: React.FC = () => {
   const navigation = useNavigation<navigationProps>();
+  const { colors, isDark } = useAppTheme();
+  const styles = getStyles(colors);
   const { data: stats, isLoading: isStatsLoading, error: statsError, refetch: refetchStats } = useReviewStats();
   const { data: reviews, isLoading: isReviewsLoading, error: reviewsError, refetch: refetchReviews } = useMyReviews(1);
-  const { colors, isDark } = useAppTheme();
-
-  const cardBg = isDark ? "rgba(255,255,255,0.1)" : colors.background.paper;
-  const emptyStarColor = isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)";
+  const cardBg = colors.background.card;
+  const emptyStarColor = colors.text.disabled;
 
   const isLoading = isStatsLoading || isReviewsLoading;
   const error = statsError || reviewsError;
@@ -45,7 +45,7 @@ export const ReviewsSection: React.FC = () => {
       <MotiView from={{ opacity: 0, translateY: 10 }} animate={{ opacity: 1, translateY: 0 }} style={[styles.card, { backgroundColor: cardBg }]}>
         <View style={styles.headerRow}>
           <View style={styles.headerLeft}>
-            <Ionicons name="star" size={20} color="#d4a843" />
+            <Ionicons name="star" size={20} color={colors.accent.gold} />
             <Text style={[styles.headerTitle, { color: colors.text.primary }]}>Mes Avis</Text>
           </View>
         </View>
@@ -53,7 +53,7 @@ export const ReviewsSection: React.FC = () => {
           <MaterialCommunityIcons name="alert-circle-outline" size={40} color={colors.status.warning} />
           <Text style={[styles.emptyTitle, { color: colors.text.secondary }]}>Impossible de charger les avis</Text>
           <TouchableOpacity onPress={handleRetry} style={styles.retryButton}>
-            <Text style={[styles.retryText, { color: "#d4a843" }]}>Réessayer</Text>
+            <Text style={[styles.retryText, { color: colors.accent.gold }]}>Réessayer</Text>
           </TouchableOpacity>
         </View>
       </MotiView>
@@ -68,7 +68,7 @@ export const ReviewsSection: React.FC = () => {
     <MotiView from={{ opacity: 0, translateY: 20 }} animate={{ opacity: 1, translateY: 0 }} transition={{ type: "spring", damping: 15, stiffness: 120 }} style={[styles.card, { backgroundColor: cardBg }]}>
       <TouchableOpacity style={styles.headerRow} onPress={() => navigation.navigate("MyReviews")} activeOpacity={0.7}>
         <View style={styles.headerLeft}>
-          <Ionicons name="star" size={20} color="#d4a843" />
+          <Ionicons name="star" size={20} color={colors.accent.gold} />
           <Text style={[styles.headerTitle, { color: colors.text.primary }]}>Mes Avis</Text>
         </View>
         <View style={styles.headerRight}>
@@ -98,7 +98,7 @@ export const ReviewsSection: React.FC = () => {
       {hasReviews && (
         <TouchableOpacity style={styles.viewAllButton} onPress={() => navigation.navigate("MyReviews")} activeOpacity={0.7}>
           <Text style={styles.viewAllText}>Voir tous mes avis</Text>
-          <MaterialCommunityIcons name="arrow-right" size={14} color="#d4a843" />
+          <MaterialCommunityIcons name="arrow-right" size={14} color={colors.accent.gold} />
         </TouchableOpacity>
       )}
     </MotiView>

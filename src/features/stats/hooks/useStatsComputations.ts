@@ -4,6 +4,7 @@
  */
 
 import { useMemo } from 'react';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   DashboardResponse,
   GoodsVolumeResponse,
@@ -25,6 +26,8 @@ export const useStatsComputations = (
   paymentMetrics: PaymentMetricsResponse | undefined,
   operations: OperationsAnalyticsResponse | undefined,
 ) => {
+  const { colors } = useAppTheme();
+
   const kpiItems: KPIItem[] = useMemo(() => {
     const kpis = dashboard?.kpis;
     return [
@@ -33,35 +36,35 @@ export const useStatsComputations = (
         value: `${formatCurrency(kpis?.thisMonthRevenueFCFA)} F`,
         subtitle: `${formatCurrency(kpis?.thisWeekRevenueFCFA)} F cette semaine`,
         icon: 'wallet-outline',
-        color: '#10B981',
-        bgColor: '#ECFDF5',
+        color: colors.status.success,
+        bgColor: colors.feedback.successBg,
       },
       {
         label: 'En Transit',
         value: `${Number(kpis?.goodsInTransit) || 0}`,
         subtitle: `${Number(kpis?.activeContainers) || 0} conteneurs actifs`,
         icon: 'airplane-outline',
-        color: '#3B82F6',
-        bgColor: '#EFF6FF',
+        color: colors.status.info,
+        bgColor: colors.feedback.infoBg,
       },
       {
         label: 'Nouveaux Clients',
         value: `${Number(kpis?.newCustomersThisMonth) || 0}`,
         subtitle: 'Ce mois-ci',
         icon: 'people-outline',
-        color: '#8B5CF6',
-        bgColor: '#F5F3FF',
+        color: colors.primary.main,
+        bgColor: colors.feedback.infoBg,
       },
       {
         label: 'A Recouvrer',
         value: `${formatCurrency(operations?.summary.unpaidAmount)} F`,
         subtitle: `${Number(operations?.summary.overdueInvoices) || 0} factures en retard`,
         icon: 'receipt-outline',
-        color: '#F59E0B',
-        bgColor: '#FFFBEB',
+        color: colors.status.warning,
+        bgColor: colors.feedback.warningBg,
       },
     ];
-  }, [dashboard, operations]);
+  }, [dashboard, operations, colors]);
 
   const shippingModeCounts = useMemo(() => {
     const byMode = goodsVolume?.byShippingMode || [];

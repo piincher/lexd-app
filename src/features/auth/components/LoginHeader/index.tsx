@@ -18,7 +18,7 @@ interface LoginHeaderProps {
 }
 
 export const LoginHeader: React.FC<LoginHeaderProps> = ({ title, subtitle }) => {
-  const { isDark } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const gradientColors = isDark
     ? ['#15803D', '#166534', '#14532D']
     : ['#22C55E', '#16A34A', '#15803D'];
@@ -29,9 +29,9 @@ export const LoginHeader: React.FC<LoginHeaderProps> = ({ title, subtitle }) => 
         <View style={styles.decorCircle1} />
         <View style={styles.decorCircle2} />
         <View style={styles.decorCircle3} />
-        <Image source={IMAGES.flat_logo} style={[styles.logo, { tintColor: Theme.colors.text.inverse }]} resizeMode="contain" />
-        <Text style={[styles.title, { color: Theme.colors.text.inverse }]}>{title}</Text>
-        <Text style={[styles.subtitle, { color: Theme.colors.text.inverse, opacity: 0.8 }]}>{subtitle}</Text>
+        <Image source={IMAGES.flat_logo} style={[styles.logo, { tintColor: colors.text.inverse }]} resizeMode="contain" />
+        <Text style={[styles.title, { color: colors.text.inverse }]}>{title}</Text>
+        <Text style={[styles.subtitle, { color: colors.text.inverse, opacity: 0.8 }]}>{subtitle}</Text>
       </LinearGradient>
     </Animated.View>
   );

@@ -34,7 +34,7 @@ export const createNotificationEventCardStyles = (colors: AppColors) =>
       justifyContent: 'center',
     },
     badgeText: {
-      color: 'Theme.colors.text.inverse',
+      color: colors.text.inverse,
       fontSize: 11,
       fontWeight: '800',
     },

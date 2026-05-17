@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { fmt } from '../../lib/formatCurrency';
 import { DualLedger } from '../../types/containerProfit';
 
@@ -19,14 +19,16 @@ export const ContainerProfitCardProfitBox: React.FC<ContainerProfitCardProfitBox
   profit,
   totalCBM,
   dualLedger,
-}) => (
-  <View style={[styles.profitBox, { backgroundColor: isProfit ? '#ECFDF5' : '#FEF2F2', borderColor: profitColor + '40' }]}>
-    <Text style={styles.profitLabel}>{isProfit ? 'Bénéfice' : 'Perte'}</Text>
+}) => {
+  const { colors } = useAppTheme();
+  return (
+  <View style={[styles.profitBox, { backgroundColor: isProfit ? colors.feedback.successBg : colors.feedback.errorBg, borderColor: profitColor + '40' }]}>
+    <Text style={[styles.profitLabel, { color: colors.text.secondary }]}>{isProfit ? 'Bénéfice' : 'Perte'}</Text>
     <Text style={[styles.profitValue, { color: profitColor }]}>
       {isProfit ? '+' : ''}{fmt(profit)}
     </Text>
     {dualLedger && (
-      <Text style={styles.profitSub}>
+      <Text style={[styles.profitSub, { color: colors.text.secondary }]}>
         Client: {(dualLedger.clientTotalCBM ?? 0).toFixed(2)} CBM × {fmt(300000)}
         {'  ·  '}
         Agent: {((dualLedger.agentTotalCBM ?? totalCBM) ?? 0).toFixed(2)} CBM × {fmt((dualLedger.agentUnitCost ?? 0) || 278000)}
@@ -34,6 +36,7 @@ export const ContainerProfitCardProfitBox: React.FC<ContainerProfitCardProfitBox
     )}
   </View>
 );
+}
 
 const styles = StyleSheet.create({
   profitBox: {
@@ -45,7 +48,6 @@ const styles = StyleSheet.create({
   },
   profitLabel: {
     fontSize: 12,
-    color: Theme.colors.text.secondary,
     marginBottom: 4,
     fontWeight: '600',
     textTransform: 'uppercase',
@@ -57,7 +59,6 @@ const styles = StyleSheet.create({
   },
   profitSub: {
     fontSize: 11,
-    color: Theme.colors.text.secondary,
     marginTop: 6,
     textAlign: 'center',
   },

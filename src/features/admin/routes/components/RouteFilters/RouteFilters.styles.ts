@@ -36,6 +36,6 @@ export const styles = StyleSheet.create({
     color: Theme.neutral[600],
   },
   filterTextActive: {
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
   },
 });

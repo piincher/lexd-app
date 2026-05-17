@@ -3,10 +3,10 @@ import { View, StyleSheet } from 'react-native';
 import { Button, ActivityIndicator, Portal, Dialog } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { ContainerWaypoint, WaypointStatus } from '../../../types/waypoints';
-import { lightTheme } from '@src/constants/Theme';
+import { Theme } from '@src/constants/Theme';
 import { WAYPOINT_STATUS_COLORS } from '@src/shared/types/containerWaypoints';
 
-interface TransitActionButtonsProps {
+export interface TransitActionButtonsProps {
   currentWaypoint?: ContainerWaypoint;
   onStatusUpdate: (status: WaypointStatus) => void;
   isLoading?: boolean;
@@ -88,12 +88,12 @@ export const TransitActionButtons: React.FC<TransitActionButtonsProps> = ({
         disabled={isLoading}
         style={styles.primaryButton}
         buttonColor={WAYPOINT_STATUS_COLORS[primaryAction.status]}
-        textColor="#FFFFFF"
+        textColor={Theme.colors.text.inverse}
         icon={() => (
           isLoading ? (
-            <ActivityIndicator size={18} color="#FFFFFF" />
+            <ActivityIndicator size={18} color={Theme.colors.text.inverse} />
           ) : (
-            <Ionicons name={primaryAction.icon as any} size={18} color="#FFFFFF" />
+            <Ionicons name={primaryAction.icon as any} size={18} color={Theme.colors.text.inverse} />
           )
         )}
       >
@@ -125,24 +125,24 @@ export const TransitActionButtons: React.FC<TransitActionButtonsProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingHorizontal: lightTheme.spacing.md,
-    paddingVertical: lightTheme.spacing.sm,
+    paddingHorizontal: Theme.spacing.md,
+    paddingVertical: Theme.spacing.sm,
   },
   primaryButton: {
     height: 48,
-    borderRadius: lightTheme.borderRadius.md,
-    marginBottom: lightTheme.spacing.sm,
+    borderRadius: Theme.radius.md,
+    marginBottom: Theme.spacing.sm,
   },
   secondaryContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: lightTheme.spacing.sm,
+    gap: Theme.spacing.sm,
   },
   secondaryButton: {
     flex: 1,
     minWidth: 140,
     height: 40,
-    borderRadius: lightTheme.borderRadius.md,
+    borderRadius: Theme.radius.md,
   },
 });
 

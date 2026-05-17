@@ -42,7 +42,7 @@ export const PaymentProofImages: React.FC<PaymentProofImagesProps> = ({
                 style={styles.removeButton}
                 onPress={() => onRemoveImage(index)}
               >
-                <MaterialCommunityIcons name="close-circle" size={24} color="#F44336" />
+                <MaterialCommunityIcons name="close-circle" size={24} color={colors.status.error} />
               </TouchableOpacity>
             </View>
           ))}

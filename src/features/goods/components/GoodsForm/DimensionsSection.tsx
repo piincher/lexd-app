@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Text, TextInput, Switch, HelperText } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useGoodsFormStyles } from './GoodsForm.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface DimensionsSectionProps {
   length: string;
@@ -14,8 +15,6 @@ interface DimensionsSectionProps {
   onChange: (field: string, value: string | boolean) => void;
 }
 
-const ACCENT = '#16A34A';
-
 export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
   length,
   width,
@@ -25,16 +24,17 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
   calculatedCBM,
   onChange,
 }) => {
+  const { colors } = useAppTheme();
   const styles = useGoodsFormStyles();
 
   return (
     <>
       <View style={styles.sectionHeader}>
-        <MaterialCommunityIcons name="ruler" size={20} color={ACCENT} />
+        <MaterialCommunityIcons name="ruler" size={20} color={colors.primary.main} />
         <Text style={styles.sectionTitle}>Volume (CBM)</Text>
         <View style={styles.switchRow}>
           <Text style={styles.switchLabel}>Dimensions</Text>
-          <Switch value={useDimensions} onValueChange={(val) => onChange('useDimensions', val)} color={ACCENT} />
+          <Switch value={useDimensions} onValueChange={(val) => onChange('useDimensions', val)} color={colors.primary.main} />
         </View>
       </View>
 
@@ -45,7 +45,7 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
               mode="outlined" label="Longueur" value={length}
               onChangeText={(v) => onChange('length', v.replace(/[^0-9.]/g, ''))}
               keyboardType="decimal-pad" style={[styles.input, styles.thirdInput]}
-              outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+              outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
               right={<TextInput.Affix text="cm" />}
             />
             <TextInput
@@ -65,7 +65,7 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
           </View>
           {calculatedCBM != null && calculatedCBM > 0 && (
             <View style={styles.cbmBadge}>
-              <MaterialCommunityIcons name="cube-outline" size={16} color={ACCENT} />
+              <MaterialCommunityIcons name="cube-outline" size={16} color={colors.primary.main} />
               <Text style={styles.cbmText}>CBM calculé: {calculatedCBM.toFixed(4)} m³</Text>
             </View>
           )}

@@ -61,10 +61,10 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
             </View>
             
             <View style={styles.routePoint}>
-              <View style={[styles.routeDot, { backgroundColor: '#10B981' }]} />
+              <View style={[styles.routeDot, { backgroundColor: colors.status.success }]} />
               <View style={styles.routeContent}>
                 <Text style={styles.routeLabel}>Port d'Arrivée</Text>
-                <Text style={[styles.routeValue, { color: '#059669' }]}>Dakar, Sénégal</Text>
+                <Text style={[styles.routeValue, { color: colors.status.success }]}>Dakar, Sénégal</Text>
               </View>
             </View>
             
@@ -92,7 +92,7 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
   return (
     <Card style={styles.routeBannerCard}>
       <LinearGradient
-        colors={['#E0F2FE', '#F0F9FF']}
+        colors={[colors.feedback.infoBg, colors.background.paper]}
         style={styles.routeBannerGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
@@ -114,7 +114,7 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
             </View>
             
             <View style={[styles.routeBannerItem, styles.routeBannerHighlight]}>
-              <MaterialCommunityIcons name="ferry" size={24} color="#10B981" />
+              <MaterialCommunityIcons name="ferry" size={24} color={colors.status.success} />
               <Text style={styles.routeBannerValue}>DAKAR</Text>
               <Text style={styles.routeBannerSubtext}>Sénégal</Text>
             </View>
@@ -124,7 +124,7 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
             </View>
             
             <View style={styles.routeBannerItem}>
-              <MaterialCommunityIcons name="map-marker" size={20} color="#8B5CF6" />
+              <MaterialCommunityIcons name="map-marker" size={20} color={colors.primary.main} />
               <Text style={styles.routeBannerLabel}>Bamako</Text>
             </View>
           </View>

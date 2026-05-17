@@ -10,8 +10,6 @@ interface StatusBannerProps {
   container: CustomerContainer;
 }
 
-const PRIMARY_COLOR = '#16A34A';
-
 export const StatusBanner: React.FC<StatusBannerProps> = ({ container }) => {
   const { colors } = useAppTheme();
   const styles = useContainerCardStyles();
@@ -29,7 +27,7 @@ export const StatusBanner: React.FC<StatusBannerProps> = ({ container }) => {
   if (isAirShipment && container.status === 'LOADED') {
     return (
       <View style={styles.infoBanner}>
-        <MaterialCommunityIcons name="airplane-takeoff" size={14} color={PRIMARY_COLOR} />
+        <MaterialCommunityIcons name="airplane-takeoff" size={14} color={colors.primary.main} />
         <Text style={styles.infoBannerText}>Prêt pour embarquement aérien</Text>
       </View>
     );
@@ -38,7 +36,7 @@ export const StatusBanner: React.FC<StatusBannerProps> = ({ container }) => {
   if (isAirShipment && container.status === 'IN_TRANSIT') {
     return (
       <View style={styles.infoBanner}>
-        <MaterialCommunityIcons name="airplane" size={14} color={PRIMARY_COLOR} />
+        <MaterialCommunityIcons name="airplane" size={14} color={colors.primary.main} />
         <Text style={styles.infoBannerText}>Expédition aérienne en cours</Text>
       </View>
     );
@@ -56,7 +54,7 @@ export const StatusBanner: React.FC<StatusBannerProps> = ({ container }) => {
   if (container.status === 'GATE_IN_FULL' && container.timeline?.gateInFullAt) {
     return (
       <View style={styles.infoBanner}>
-        <MaterialCommunityIcons name="gate" size={14} color={PRIMARY_COLOR} />
+        <MaterialCommunityIcons name="gate" size={14} color={colors.primary.main} />
         <Text style={styles.infoBannerText}>Gate-in plein le {formatDate(container.timeline.gateInFullAt)}</Text>
       </View>
     );
@@ -65,7 +63,7 @@ export const StatusBanner: React.FC<StatusBannerProps> = ({ container }) => {
   if (container.status === 'LOADED_ON_VESSEL' && container.timeline?.loadedOnVesselAt) {
     return (
       <View style={styles.infoBanner}>
-        <MaterialCommunityIcons name="ferry" size={14} color={PRIMARY_COLOR} />
+        <MaterialCommunityIcons name="ferry" size={14} color={colors.primary.main} />
         <Text style={styles.infoBannerText}>Chargé sur navire le {formatDate(container.timeline.loadedOnVesselAt)}</Text>
       </View>
     );
@@ -74,7 +72,7 @@ export const StatusBanner: React.FC<StatusBannerProps> = ({ container }) => {
   if (container.status === 'IN_TRANSIT' && container.timeline?.departedAt) {
     return (
       <View style={styles.infoBanner}>
-        <MaterialCommunityIcons name="information-outline" size={14} color={PRIMARY_COLOR} />
+        <MaterialCommunityIcons name="information-outline" size={14} color={colors.primary.main} />
         <Text style={styles.infoBannerText}>En transit depuis le {formatDate(container.timeline.departedAt)}</Text>
       </View>
     );

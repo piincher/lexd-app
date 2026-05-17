@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   emptyButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
   loadingContainer: {
@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
   retryButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
 });

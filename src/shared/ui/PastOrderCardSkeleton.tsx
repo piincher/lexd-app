@@ -23,6 +23,7 @@ const ShimmerBlock: React.FC<{
   color?: string;
   isDark?: boolean;
 }> = ({ width, height, borderRadius = 6, color, isDark }) => {
+  const { colors } = useAppTheme();
   const shimmer = useSharedValue(0);
 
   React.useEffect(() => {
@@ -33,7 +34,7 @@ const ShimmerBlock: React.FC<{
     transform: [{ translateX: interpolate(shimmer.value, [0, 1], [-200, 400]) }],
   }));
 
-  const shimmerColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.45)';
+  const shimmerColor = isDark ? colors.neutral[700] : colors.neutral[50];
 
   return (
     <View style={[styles.block, { width, height, borderRadius, backgroundColor: color }]}>
@@ -90,7 +91,7 @@ export const PastOrderCardSkeleton: React.FC<PastOrderCardSkeletonProps> = ({ co
   const { colors, isDark } = useAppTheme();
   const skeletonBg = colors.background.paper;
   const cardBg = colors.background.card;
-  const borderColor = colors.border ?? '#E5E7EB';
+  const borderColor = colors.border;
 
   return (
     <Animated.View entering={FadeIn.duration(300)} style={styles.list}>

@@ -8,10 +8,10 @@ interface CheckRouteCardProps {
 }
 
 export const CheckRouteCard: React.FC<CheckRouteCardProps> = ({ children, style }) => {
-  const { isDark } = useAppTheme();
+  const { colors } = useAppTheme();
 
-  const backgroundColor = isDark ? 'rgba(255,255,255,0.04)' : '#FFFFFF';
-  const borderColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)';
+  const backgroundColor = colors.background.paper;
+  const borderColor = colors.border;
 
   return (
     <View style={[styles.card, { backgroundColor, borderColor }, style]}>

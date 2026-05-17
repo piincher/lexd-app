@@ -14,8 +14,8 @@ export const AboutUsServicesCard: React.FC = () => {
    return (
       <Animated.View entering={FadeInDown.delay(700).duration(600)} style={styles.card}>
          <View style={styles.cardIconRow}>
-            <View style={[styles.cardIconContainer, { backgroundColor: '#F59E0B20' }]}>
-               <Ionicons name="cube-outline" size={22} color="#F59E0B" />
+            <View style={[styles.cardIconContainer, { backgroundColor: colors.status.warning + '20' }]}>
+               <Ionicons name="cube-outline" size={22} color={colors.status.warning} />
             </View>
             <Text style={styles.cardTitle}>Nos Services</Text>
          </View>

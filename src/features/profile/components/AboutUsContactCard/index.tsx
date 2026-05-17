@@ -5,13 +5,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface Props {
    onCall: () => void;
 }
 
 export const AboutUsContactCard: React.FC<Props> = ({ onCall }) => {
-   const styles = useMemo(() => makeStyles(), []);
+   const { colors } = useAppTheme();
+   const styles = useMemo(() => makeStyles(colors), [colors]);
 
    return (
       <Animated.View entering={FadeInDown.delay(800).duration(600)} style={styles.contactCard}>
@@ -19,7 +21,7 @@ export const AboutUsContactCard: React.FC<Props> = ({ onCall }) => {
             colors={[Theme.primary[500], Theme.primary[600]]}
             style={styles.contactGradient}
          >
-            <Ionicons name="call-outline" size={28} color="#FFF" />
+            <Ionicons name="call-outline" size={28} color={colors.text.inverse} />
             <Text style={styles.contactTitle}>Besoin d'aide ?</Text>
             <Text style={styles.contactSubtitle}>
                Notre equipe est disponible pour vous accompagner
@@ -37,7 +39,7 @@ export const AboutUsContactCard: React.FC<Props> = ({ onCall }) => {
    );
 };
 
-const makeStyles = () =>
+const makeStyles = (colors: any) =>
    StyleSheet.create({
       contactCard: {
          marginHorizontal: 20,
@@ -55,13 +57,13 @@ const makeStyles = () =>
          fontSize: 18,
          fontFamily: Fonts.bold,
          fontWeight: '700',
-         color: 'Theme.colors.text.inverse',
+         color: colors.text.inverse,
          marginTop: 4,
       },
       contactSubtitle: {
          fontSize: 12,
          fontFamily: Fonts.regular,
-         color: 'rgba(255,255,255,0.8)',
+         color: colors.text.inverse,
          textAlign: 'center',
          marginBottom: 8,
       },

@@ -32,7 +32,7 @@ export const StatusTransitionDisplay: React.FC<StatusTransitionDisplayProps> = (
     <View style={styles.statusTransition}>
       <View style={[styles.statusBox, { borderColor: currentStatusColor }]}>
         <View style={[styles.statusIndicator, { backgroundColor: currentStatusColor }]}>
-          <Ionicons name="ellipse" size={12} color="#FFF" />
+          <Ionicons name="ellipse" size={12} color={Theme.colors.text.inverse} />
         </View>
         <View>
           <HelperText type="info" style={styles.statusLabel}>Actuel</HelperText>
@@ -44,7 +44,7 @@ export const StatusTransitionDisplay: React.FC<StatusTransitionDisplayProps> = (
 
       <View style={[styles.statusBox, { borderColor: newStatusColor }]}>
         <View style={[styles.statusIndicator, { backgroundColor: newStatusColor }]}>
-          <Ionicons name="ellipse" size={12} color="#FFF" />
+          <Ionicons name="ellipse" size={12} color={Theme.colors.text.inverse} />
         </View>
         <View>
           <HelperText type="info" style={styles.statusLabel}>Nouveau</HelperText>

@@ -15,25 +15,26 @@ const ModeCard: React.FC<{ s: DemoShipment; sel: boolean; i: number; onSelect: (
   const ic = air ? colors.status.info : colors.status.success;
   return (
     <Pressable onPress={onSelect} onPressIn={() => { sc.value = withSpring(0.97); }} onPressOut={() => { sc.value = withSpring(1); }}>
-      <Animated.View
-        entering={FadeInRight.delay(i * 150)}
-        style={[
-          styles.card,
-          { backgroundColor: colors.background.card, borderColor: sel ? colors.primary.main : colors.border, borderWidth: sel ? 2 : 1, shadowColor: sel ? colors.primary.main : 'transparent', shadowOffset: sel ? { width: 0, height: 4 } : { width: 0, height: 0 }, shadowOpacity: sel ? 0.15 : 0, shadowRadius: sel ? 12 : 0, elevation: sel ? 5 : 0 },
-          a,
-        ]}
-      >
-        <View style={[styles.icon, { backgroundColor: `${ic}18` }]}><FontAwesome6 name={air ? 'plane' : 'ship'} size={22} color={ic} /></View>
-        <View style={styles.info}>
-          <Text style={[styles.title, { color: colors.text.primary }]} numberOfLines={1}>{s.label}</Text>
-          <Text style={[styles.route, { color: colors.text.secondary }]} numberOfLines={1}>{s.route}</Text>
-          <View style={styles.meta}>
-            <Text style={[styles.metaText, { color: colors.text.muted }]}>{s.goodsCount} article{s.goodsCount > 1 ? 's' : ''}</Text>
-            <Text style={[styles.metaText, { color: colors.text.muted }]}>•</Text>
-            <Text style={[styles.metaText, { color: colors.text.muted }]}>{s.etaDate}</Text>
+      <Animated.View entering={FadeInRight.delay(i * 150)}>
+        <Animated.View
+          style={[
+            styles.card,
+            { backgroundColor: colors.background.card, borderColor: sel ? colors.primary.main : colors.border, borderWidth: sel ? 2 : 1, shadowColor: sel ? colors.primary.main : 'transparent', shadowOffset: sel ? { width: 0, height: 4 } : { width: 0, height: 0 }, shadowOpacity: sel ? 0.15 : 0, shadowRadius: sel ? 12 : 0, elevation: sel ? 5 : 0 },
+            a,
+          ]}
+        >
+          <View style={[styles.icon, { backgroundColor: `${ic}18` }]}><FontAwesome6 name={air ? 'plane' : 'ship'} size={22} color={ic} /></View>
+          <View style={styles.info}>
+            <Text style={[styles.title, { color: colors.text.primary }]} numberOfLines={1}>{s.label}</Text>
+            <Text style={[styles.route, { color: colors.text.secondary }]} numberOfLines={1}>{s.route}</Text>
+            <View style={styles.meta}>
+              <Text style={[styles.metaText, { color: colors.text.muted }]}>{s.goodsCount} article{s.goodsCount > 1 ? 's' : ''}</Text>
+              <Text style={[styles.metaText, { color: colors.text.muted }]}>•</Text>
+              <Text style={[styles.metaText, { color: colors.text.muted }]}>{s.etaDate}</Text>
+            </View>
           </View>
-        </View>
-        {sel && <View style={[styles.dot, { backgroundColor: colors.primary.main }]} />}
+          {sel && <View style={[styles.dot, { backgroundColor: colors.primary.main }]} />}
+        </Animated.View>
       </Animated.View>
     </Pressable>
   );

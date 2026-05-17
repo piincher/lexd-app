@@ -11,13 +11,14 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMilestoneProgress } from "../../hooks/useMilestones";
 import { BadgeCircle } from "./BadgeCircle";
 import { MilestoneBadgesSkeleton } from "./MilestoneBadgesSkeleton";
-import { styles, iconMap } from "./MilestoneBadges.styles";
+import { getStyles, iconMap } from "./MilestoneBadges.styles";
 
 export const MilestoneBadges: React.FC = () => {
   const { colors, isDark } = useAppTheme();
   const { data, isLoading, error, refetch } = useMilestoneProgress();
-  const cardBg = isDark ? "rgba(255,255,255,0.1)" : colors.background.paper;
-  const trackBg = isDark ? "rgba(255,255,255,0.15)" : colors.background.elevated;
+  const styles = getStyles(colors);
+  const cardBg = colors.background.card;
+  const trackBg = colors.background.overlay;
 
   if (isLoading) {
     return (

@@ -19,14 +19,14 @@ const ICON_MAP: Record<string, string> = {
   headset: 'headset',
 };
 
-const COLOR_MAP: Record<string, string> = {
-  airplane: '#0EA5E9',
-  ship: '#8B5CF6',
-  headset: '#22C55E',
-};
-
 export const StatsStrip: React.FC = () => {
   const { colors } = useAppTheme();
+
+  const COLOR_MAP: Record<string, string> = {
+    airplane: colors.status.info,
+    ship: colors.primary.main,
+    headset: colors.status.success,
+  };
 
   return (
     <View style={styles.container}>

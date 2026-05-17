@@ -3,20 +3,19 @@
  * Displays certification progress or certified status in the Profile screen
  */
 
-import React, { useMemo, useState } from "react";
-import {
-  View, Text, TouchableOpacity, Linking, Share, Alert,
-} from "react-native";
+import React, { useMemo } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { MotiView } from "moti";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import type { navigationProps } from "@src/navigations/type";
-import { getCertificateDownloadUrl, CertificateProgress } from "../../api/certificateApi";
+import { CertificateProgress } from "../../api/certificateApi";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from "./CertifiedShipperCard.styles";
 import { CertifiedView } from "./CertifiedView";
 import { ProgressView } from "./ProgressView";
 import { CertifiedShipperSkeleton } from "./CertifiedShipperSkeleton";
+import { useCertifiedShipperActions } from "../../hooks/useCertifiedShipperActions";
 
 interface CertifiedShipperCardProps {
   progress: CertificateProgress | undefined;
@@ -29,37 +28,9 @@ export const CertifiedShipperCard: React.FC<CertifiedShipperCardProps> = ({
   progress, isLoading, error, onRetry,
 }) => {
   const navigation = useNavigation<navigationProps>();
-  const [isDownloading, setIsDownloading] = useState(false);
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
-
-  const handleDownload = async () => {
-    if (!progress?.certificate?._id) return;
-    try {
-      setIsDownloading(true);
-      const url = await getCertificateDownloadUrl(progress.certificate._id);
-      await Linking.openURL(url);
-    } catch (error) {
-      if (progress?.certificate?.certificateUrl) {
-        Linking.openURL(progress.certificate.certificateUrl);
-      } else {
-        Alert.alert("Erreur", "Impossible de télécharger le certificat.");
-      }
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
-  const handleShare = async () => {
-    if (progress?.certificate?.certificateUrl) {
-      try {
-        await Share.share({
-          message: `Je suis un expéditeur certifié ChinaLink Express ! Vérifiez mon certificat : ${progress.certificate.certificateUrl}`,
-          url: progress.certificate.certificateUrl,
-        });
-      } catch (_error) { /* User cancelled or share failed silently */ }
-    }
-  };
+  const { handleDownload, handleShare, isDownloading } = useCertifiedShipperActions(progress);
 
   if (isLoading) {
     return (
@@ -78,11 +49,11 @@ export const CertifiedShipperCard: React.FC<CertifiedShipperCardProps> = ({
         style={styles.card}
       >
         <View style={styles.titleRow}>
-          <MaterialIcons name="emoji-events" size={22} color="#d4a843" />
+          <MaterialIcons name="emoji-events" size={22} color={colors.accent.gold} />
           <Text style={styles.title}>Certified Shipper</Text>
         </View>
         <View style={styles.errorContainer}>
-          <MaterialIcons name="error-outline" size={24} color="#EF4444" />
+          <MaterialIcons name="error-outline" size={24} color={colors.status.error} />
           <Text style={styles.errorText}>Impossible de charger les données</Text>
           {onRetry && (
             <TouchableOpacity style={styles.retryButton} onPress={onRetry}>
@@ -103,7 +74,7 @@ export const CertifiedShipperCard: React.FC<CertifiedShipperCardProps> = ({
         style={styles.card}
       >
         <View style={styles.titleRow}>
-          <MaterialIcons name="emoji-events" size={22} color="#d4a843" />
+          <MaterialIcons name="emoji-events" size={22} color={colors.accent.gold} />
           <Text style={styles.title}>Certified Shipper</Text>
         </View>
         <View style={styles.progressBarTrack}>
@@ -120,12 +91,12 @@ export const CertifiedShipperCard: React.FC<CertifiedShipperCardProps> = ({
 
   if (progress.isCertified && progress.certificate) {
     return (
-      <CertifiedView 
-        progress={progress} 
-        styles={styles} 
-        isDownloading={isDownloading} 
-        onDownload={handleDownload} 
-        onShare={handleShare} 
+      <CertifiedView
+        progress={progress}
+        styles={styles}
+        isDownloading={isDownloading}
+        onDownload={handleDownload}
+        onShare={handleShare}
       />
     );
   }

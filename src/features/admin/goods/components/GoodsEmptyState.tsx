@@ -9,6 +9,7 @@ import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsEmptyStateProps {
   hasFilters: boolean;
@@ -18,13 +19,15 @@ interface GoodsEmptyStateProps {
 export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({ 
   hasFilters, 
   onAddPress 
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <View style={styles.container}>
     <LinearGradient
-      colors={['#F0FDF4', '#DCFCE7']}
+      colors={[colors.background.paper, colors.background.default]}
       style={styles.iconContainer}
     >
-      <Ionicons name="cube-outline" size={64} color={Theme.primary[500]} />
+      <Ionicons name="cube-outline" size={64} color={colors.primary.main} />
     </LinearGradient>
     <Text style={styles.title}>Aucune marchandise</Text>
     <Text style={styles.subtitle}>
@@ -35,13 +38,13 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
     {!hasFilters && onAddPress && (
       <TouchableOpacity style={styles.button} onPress={onAddPress}>
         <LinearGradient colors={Theme.gradients.primary} style={styles.buttonGradient}>
-          <Ionicons name="add" size={20} color="#FFF" />
+          <Ionicons name="add" size={20} color={colors.text.inverse} />
           <Text style={styles.buttonText}>Nouvelle marchandise</Text>
         </LinearGradient>
       </TouchableOpacity>
     )}
   </View>
-);
+);}
 
 const styles = StyleSheet.create({
   container: {
@@ -59,13 +62,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[700],
+    color: Theme.colors.text.primary,
     marginBottom: Theme.spacing.sm,
   },
   subtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: Theme.colors.text.secondary,
     textAlign: 'center',
     paddingHorizontal: Theme.spacing['2xl'],
   },
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
 });

@@ -7,6 +7,7 @@ import React from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './CustomerDashboardScreen.styles';
 import type { RootStackScreenProps } from '@src/navigations/type';
 import { useCustomerDashboard } from '../hooks/useCustomerDashboard';
 import { useHideTabBarOnScroll } from '@src/shared/lib';
@@ -23,6 +24,7 @@ export const CustomerDashboardScreen: React.FC<
   RootStackScreenProps<'CustomerDashboard'>
 > = () => {
   const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   const { onScroll } = useHideTabBarOnScroll();
   const {
     user, welcomeMessage, stats, containers, shipmentHome, quickActions, activities,
@@ -33,14 +35,14 @@ export const CustomerDashboardScreen: React.FC<
 
   if (isError) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
+      <SafeAreaView style={styles.container}>
         <DashboardErrorState message={errorMessage} onRetry={refresh} />
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background.default }}>
+    <SafeAreaView style={styles.container}>
       {isLoading ? (
         <DashboardSkeleton />
       ) : (

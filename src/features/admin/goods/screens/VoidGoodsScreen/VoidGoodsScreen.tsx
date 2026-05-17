@@ -3,7 +3,7 @@
  * Responsibility: Layout composition only (<100 lines)
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Screen } from '@src/shared/ui/Screen';
 import { useVoidGoodsScreen } from '../../hooks';
@@ -18,7 +18,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const VoidGoodsScreen: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const {
     goodsTrackingCode,
     cbm,

@@ -25,13 +25,13 @@ export const LegacyActions: React.FC<LegacyActionsProps> = ({
     <View style={styles.actionButtons}>
       {(waypoint.status === 'PENDING' || waypoint.status === 'IN_PROGRESS') && onMarkArrived && (
         <TouchableOpacity style={[styles.actionButton, styles.actionButtonPrimary]} onPress={() => onMarkArrived(index)}>
-          <Ionicons name="checkmark-circle" size={18} color="#FFF" />
+          <Ionicons name="checkmark-circle" size={18} color={Theme.colors.text.inverse} />
           <Text style={styles.actionButtonTextPrimary}>Marquer comme Arrivé</Text>
         </TouchableOpacity>
       )}
       {(waypoint.status === 'ARRIVED' || waypoint.status === 'ARRIVED_AT_PORT') && onMarkDeparted && (
         <TouchableOpacity style={[styles.actionButton, styles.actionButtonPrimary]} onPress={() => onMarkDeparted(index)}>
-          <Ionicons name="rocket" size={18} color="#FFF" />
+          <Ionicons name="rocket" size={18} color={Theme.colors.text.inverse} />
           <Text style={styles.actionButtonTextPrimary}>Marquer comme Départ</Text>
         </TouchableOpacity>
       )}

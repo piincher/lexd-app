@@ -20,12 +20,12 @@ export const createStyles = (colors: any) => StyleSheet.create({
   headerTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: '#FFF',
+    color: colors.text.inverse,
     marginTop: Theme.spacing.sm,
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse + 'CC',
     marginTop: Theme.spacing.xs,
   },
   progressSummary: {
@@ -96,17 +96,17 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   waypointCardDakar: {
     borderWidth: 2,
-    borderColor: '#0EA5E9',
+    borderColor: colors.status.info,
     ...Theme.shadows.md,
   },
   waypointCardBorder: {
     borderWidth: 2,
-    borderColor: '#F59E0B',
+    borderColor: colors.status.warning,
     ...Theme.shadows.md,
   },
   waypointCardWarehouse: {
     borderWidth: 2,
-    borderColor: '#8B5CF6',
+    borderColor: colors.primary.main,
     ...Theme.shadows.md,
   },
   statusBar: {
@@ -115,11 +115,11 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   statusBarDakar: {
     height: 6,
-    backgroundColor: '#0EA5E9',
+    backgroundColor: colors.status.info,
   },
   statusBarBorder: {
     height: 6,
-    backgroundColor: '#F59E0B',
+    backgroundColor: colors.status.warning,
   },
   waypointContent: {
     padding: Theme.spacing.lg,
@@ -139,7 +139,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     marginRight: Theme.spacing.md,
   },
   waypointNumberDakar: {
-    backgroundColor: '#0EA5E9',
+    backgroundColor: colors.status.info,
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -150,7 +150,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     color: colors.primary[600],
   },
   waypointNumberTextDakar: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontSize: 18,
   },
   waypointTitleContainer: {
@@ -163,7 +163,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   waypointLocationDakar: {
     fontSize: 18,
-    color: '#0284C7',
+    color: colors.status.info,
   },
   waypointCode: {
     fontSize: 12,
@@ -200,7 +200,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   routeDisplayText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#FFF',
+    color: colors.text.inverse,
   },
   typeRow: {
     flexDirection: 'row',
@@ -244,7 +244,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   currentIndicatorText: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#FFF',
+    color: colors.text.inverse,
   },
   quickInfo: {
     flexDirection: 'row',
@@ -359,7 +359,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     gap: Theme.spacing.xs,
   },
   portActionText: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontSize: 12,
     fontWeight: '600',
   },
@@ -383,7 +383,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     borderColor: colors.primary[200],
   },
   actionButtonTextPrimary: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontSize: 14,
     fontWeight: '600',
   },
@@ -409,7 +409,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   consigneeTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFF',
+    color: colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
   consigneeDetails: {
@@ -418,7 +418,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   consigneeName: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#FFF',
+    color: colors.text.inverse,
     marginBottom: Theme.spacing.sm,
   },
   consigneeRow: {
@@ -428,21 +428,21 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   consigneePhone: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.9)',
+    color: colors.text.inverse + 'E6',
     marginLeft: Theme.spacing.sm,
   },
   consigneeAddress: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse + 'CC',
     marginLeft: Theme.spacing.sm,
     flex: 1,
   },
   callButton: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: colors.text.inverse + '33',
+    borderColor: colors.text.inverse + '4D',
   },
   callButtonLabel: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontWeight: '600',
   },
   footerSpacer: {

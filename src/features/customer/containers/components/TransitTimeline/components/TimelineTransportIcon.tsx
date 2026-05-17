@@ -16,10 +16,10 @@ interface TimelineTransportIconProps {
 }
 
 const MODE_CONFIG: Record<TransportMode, { icon: keyof typeof Ionicons.glyphMap; label: string; color: string }> = {
-  sea: { icon: 'boat', label: 'Maritime', color: '#0284C7' },
-  truck: { icon: 'car', label: 'Route', color: '#F59E0B' },
-  air: { icon: 'airplane', label: 'Air', color: '#8B5CF6' },
-  train: { icon: 'train', label: 'Train', color: '#10B981' },
+  sea: { icon: 'boat', label: 'Maritime', color: Theme.colors.status.info },
+  truck: { icon: 'car', label: 'Route', color: Theme.colors.status.warning },
+  air: { icon: 'airplane', label: 'Air', color: Theme.colors.primary.main },
+  train: { icon: 'train', label: 'Train', color: Theme.colors.status.success },
   warehouse: { icon: 'home', label: 'Entrepôt', color: Theme.colors.text.secondary },
 };
 
@@ -54,7 +54,7 @@ export const TimelineTransportIcon: React.FC<TimelineTransportIconProps> = ({
         <Ionicons
           name={config.icon}
           size={sizeConfig.icon}
-          color={isActive ? '#FFF' : config.color}
+          color={isActive ? Theme.colors.text.inverse : config.color}
         />
       </View>
       {showLabel && (

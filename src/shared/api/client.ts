@@ -10,7 +10,7 @@ import axios, {
   AxiosError,
   InternalAxiosRequestConfig,
 } from 'axios';
-import { useAuth } from '@src/store/Auth';
+import { getAuthStoreRef } from './authStoreRef';
 import { ApiRequestConfig, ApiResponse } from './types';
 import type { userData } from '@src/constants/types';
 
@@ -32,7 +32,7 @@ const getEnvironment = (value?: string): Environment => {
   return 'production';
 };
 
-const ENV = getEnvironment(process.env.EXPO_PUBLIC_ENV);
+const ENV = getEnvironment('production'); // Change this value to switch environments (or set via env variable in the future)
 
 const API_CONFIG = {
   local: {
@@ -113,7 +113,8 @@ const refreshClient = axios.create({
 });
 
 const performRefresh = async (): Promise<string> => {
-  const { refreshToken } = useAuth.getState();
+  const authState = getAuthStoreRef()?.getState();
+  const refreshToken = authState?.refreshToken;
   if (!refreshToken) {
     throw new Error('No refresh token available');
   }
@@ -123,8 +124,8 @@ const performRefresh = async (): Promise<string> => {
   const newRefreshToken = data.refreshToken;
   const expiresIn = data.expiresIn;
 
-  useAuth.getState().setAuth({
-    user: useAuth.getState().user as unknown as userData,
+  authState?.setAuth({
+    user: authState?.user as unknown as userData,
     token: newAccessToken,
     accessToken: newAccessToken,
     refreshToken: newRefreshToken,
@@ -309,7 +310,7 @@ const trackInflight = (config: InternalAxiosRequestConfig, promise: Promise<unkn
  * Request interceptor - adds auth token
  */
 const requestInterceptor = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-  const token = useAuth.getState().token;
+  const token = getAuthStoreRef()?.getState().token;
   
   // Only add auth header if token exists and is not empty
   if (token && token.trim() !== '' && !config.headers.get('skipAuth')) {

@@ -4,6 +4,7 @@ import { Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface CardHeroProps {
@@ -25,8 +26,8 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
   const isCritical = totalOutstanding > CRITICAL_THRESHOLD;
 
   const gradient = isCritical
-    ? (["#EF4444", "#DC2626", "#B91C1C"] as const)
-    : (["#0EA5E9", "#0284C7", "#0369A1"] as const);
+    ? Theme.gradients.sunset
+    : Theme.gradients.ocean;
 
   const styles = useMemo(
     () =>
@@ -74,7 +75,7 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
         heroSubtitle: {
           fontSize: 11,
           fontFamily: Fonts.regular,
-          color: "rgba(255,255,255,0.8)",
+          color: colors.text.inverse,
           marginTop: 1,
         },
         criticalBadge: {
@@ -104,7 +105,7 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
         amountLabel: {
           fontSize: 12,
           fontFamily: Fonts.regular,
-          color: "rgba(255,255,255,0.82)",
+          color: colors.text.inverse,
           marginTop: 2,
         },
       }),

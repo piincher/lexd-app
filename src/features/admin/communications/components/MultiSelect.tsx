@@ -1,199 +1,83 @@
-import { Fonts } from "@src/constants/Fonts";
 import React, { useMemo } from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { getStyles } from "./MultiSelect.styles";
+import { MultiSelectItem } from "./MultiSelectItem";
+import { MultiSelectEmpty } from "./MultiSelectEmpty";
 
-interface Item {
-   id: string;
-   name: string;
-   info?: string;
-   currentStatus?: string;
-   lastUpdate?: string;
-   packageWeight?: string;
-   images?: string;
+export interface Item {
+  id: string;
+  name: string;
+  info?: string;
+  currentStatus?: string;
+  lastUpdate?: string;
+  packageWeight?: string;
+  images?: string;
 }
 
 interface MultiSelectProps {
-   items: Item[];
-   valueKey?: keyof Item;
-   displayKey?: keyof Item;
-   imageKey?: keyof Item;
-   statusKey?: keyof Item;
-   dateKey?: keyof Item;
-   weightKey?: keyof Item;
-   selectedItems: string[];
-   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
+  items: Item[];
+  valueKey?: keyof Item;
+  displayKey?: keyof Item;
+  imageKey?: keyof Item;
+  statusKey?: keyof Item;
+  dateKey?: keyof Item;
+  weightKey?: keyof Item;
+  selectedItems: string[];
+  setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export function MultiSelect(props: MultiSelectProps): React.ReactElement {
-   const {
-      items,
-      valueKey = "id",
-      displayKey = "name",
-      imageKey = "images",
-      statusKey = "currentStatus",
-      dateKey = "lastUpdate",
-      weightKey = "packageWeight",
-      selectedItems,
-      setSelectedItems,
-      ...otherprops
-   } = props;
+  const {
+    items,
+    valueKey = "id",
+    displayKey = "name",
+    imageKey = "images",
+    statusKey = "currentStatus",
+    dateKey = "lastUpdate",
+    weightKey = "packageWeight",
+    selectedItems,
+    setSelectedItems,
+    ...otherprops
+  } = props;
 
-   const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
 
-   const styles = useMemo(() => StyleSheet.create({
-      card: {
-         flexDirection: "row",
-         alignItems: "center",
-         backgroundColor: colors.background.card,
-         borderRadius: 10,
-         marginVertical: 8,
-         marginHorizontal: 16,
-         padding: 10,
-         shadowColor: "#000",
-         shadowOffset: { width: 0, height: 2 },
-         shadowOpacity: 0.2,
-         shadowRadius: 4,
-         elevation: 3,
-      },
-      selectedCard: {
-         borderColor: colors.primary.main,
-         borderWidth: 2,
-      },
-      notSelectedCard: {
-         borderColor: colors.text.secondary,
-         borderWidth: 1,
-      },
-      image: {
-         width: 50,
-         height: 50,
-         borderRadius: 25,
-         marginRight: 10,
-      },
-      placeholderImage: {
-         width: 50,
-         height: 50,
-         borderRadius: 25,
-         backgroundColor: colors.text.secondary,
-         justifyContent: "center",
-         alignItems: "center",
-         marginRight: 10,
-      },
-      placeholderText: {
-         color: colors.text.inverse,
-         fontFamily: Fonts.bold,
-         fontSize: 12,
-      },
-      cardDetails: {
-         flex: 1,
-         justifyContent: "center",
-         marginRight: 10,
-      },
-      cardTitle: {
-         fontFamily: Fonts.bold,
-         fontSize: 16,
-         color: colors.text.primary,
-         marginBottom: 4,
-      },
-      cardSubtitle: {
-         fontFamily: Fonts.regular,
-         fontSize: 14,
-         color: colors.text.secondary,
-         marginBottom: 10,
-      },
-      indicator: {
-         width: 16,
-         height: 16,
-         borderRadius: 8,
-         borderWidth: 1,
-         borderColor: colors.text.primary,
-      },
-      selectedIndicator: {
-         backgroundColor: colors.primary.main,
-      },
-      notSelectedIndicator: {
-         backgroundColor: colors.background.card,
-      },
-      emptyContainer: {
-         flex: 1,
-         justifyContent: "center",
-         alignItems: "center",
-      },
-      emptyText: {
-         fontFamily: Fonts.bold,
-         fontSize: 18,
-         textAlign: "center",
-         color: colors.text.secondary,
-      },
-   }), [colors, isDark]);
+  const handleSelect = (item: Item) => {
+    setSelectedItems((prev) => {
+      const itemId = item[valueKey] as string;
+      if (prev.includes(itemId)) {
+        return prev.filter((i) => i !== itemId);
+      }
+      return [...prev, itemId];
+    });
+  };
 
-   const handleSelect = (item: Item) => {
-      setSelectedItems((prev) => {
-         const itemId = item[valueKey] as string;
-         if (prev.includes(itemId)) {
-            return prev.filter((i) => i !== itemId);
-         }
-         return [...prev, itemId];
-      });
-   };
-
-   return (
-      <FlashList
-         data={items}
-         ListEmptyComponent={() => (
-            <View style={styles.emptyContainer}>
-               <Text style={styles.emptyText}>No items available</Text>
-            </View>
-         )}
-         keyExtractor={(item) => item[valueKey] as string}
-         renderItem={({ item }) => {
-            const isSelected = selectedItems.includes(item[valueKey] as string);
-            const lastUpdate = item[dateKey] ? new Date(item[dateKey] as string) : null;
-
-            return (
-               <Pressable
-                  onPress={() => handleSelect(item)}
-                  {...otherprops}
-                  style={[styles.card, isSelected ? styles.selectedCard : styles.notSelectedCard]}
-               >
-                  {/* Image */}
-                  {item[imageKey] ? (
-                     <Image source={{ uri: item[imageKey] as string }} style={styles.image} />
-                  ) : (
-                     <View style={styles.placeholderImage}>
-                        <Text style={styles.placeholderText}>No Image</Text>
-                     </View>
-                  )}
-
-                  {/* Details */}
-                  <View style={styles.cardDetails}>
-                     {/* Name */}
-                     <Text style={styles.cardTitle}>
-                        {String(item[displayKey])}
-                     </Text>
-
-                     {/* Additional Info */}
-                     <Text style={styles.cardSubtitle}>Numero de telephone: {item.info}</Text>
-                     <Text style={styles.cardSubtitle}>Current Status : {item[statusKey]}</Text>
-                     <Text style={styles.cardSubtitle}>
-                        Date : {lastUpdate ? lastUpdate.toLocaleDateString() : "N/A"}
-                     </Text>
-                     <Text style={styles.cardSubtitle}>CBM : {item[weightKey]}</Text>
-                  </View>
-
-                  {/* Selection Indicator */}
-                  <View
-                     style={[
-                        styles.indicator,
-                        isSelected ? styles.selectedIndicator : styles.notSelectedIndicator,
-                     ]}
-                  />
-               </Pressable>
-            );
-         }}
-      />
-   );
+  return (
+    <FlashList
+      data={items}
+      ListEmptyComponent={<MultiSelectEmpty styles={styles} />}
+      keyExtractor={(item) => item[valueKey] as string}
+      renderItem={({ item }) => {
+        const isSelected = selectedItems.includes(item[valueKey] as string);
+        return (
+          <MultiSelectItem
+            item={item}
+            isSelected={isSelected}
+            displayKey={displayKey}
+            imageKey={imageKey}
+            statusKey={statusKey}
+            dateKey={dateKey}
+            weightKey={weightKey}
+            styles={styles}
+            onPress={() => handleSelect(item)}
+            otherProps={otherprops}
+          />
+        );
+      }}
+    />
+  );
 }
 
 export default MultiSelect;

@@ -3,6 +3,7 @@ import { Pressable, StyleSheet } from "react-native";
 import Animated from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
+import { Theme } from "@src/constants/Theme";
 
 interface BackToTopButtonProps {
   animatedStyle: any;
@@ -20,7 +21,7 @@ export const BackToTopButton: React.FC<BackToTopButtonProps> = ({
         style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1 })}
       >
         <LinearGradient
-          colors={["#4A90E2", "#1ED7B5"]}
+          colors={[Theme.gradients.ocean[2], Theme.gradients.ocean[0]]}
           style={styles.button}
         >
           <AntDesign name="arrow-up" size={24} color="white" />

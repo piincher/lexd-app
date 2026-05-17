@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
-import { AppTheme } from '@src/shared/constants/Theme';
+import { AppTheme } from '@src/constants/Theme';
 
 export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   container: {
@@ -17,20 +16,20 @@ export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   summaryBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,
   },
   summaryText: {
     fontSize: 12,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   list: {
     maxHeight: 320,
@@ -39,7 +38,7 @@ export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.colors.neutral[100],
+    borderBottomColor: colors.neutral[100],
   },
   rankContainer: {
     alignItems: 'center',
@@ -49,7 +48,7 @@ export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   rankText: {
     fontSize: 10,
     fontWeight: '600',
-    color: Theme.colors.text.disabled,
+    color: colors.text.disabled,
     marginBottom: 4,
   },
   infoContainer: {
@@ -63,7 +62,7 @@ export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   customerName: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     flex: 1,
   },
   returningBadge: {
@@ -82,16 +81,16 @@ export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   },
   customerPhone: {
     fontSize: 11,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   spendText: {
     fontSize: 12,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   orderCount: {
     fontSize: 10,
-    color: Theme.colors.text.muted,
+    color: colors.text.muted,
   },
   spendContainer: {
     alignItems: 'flex-end',
@@ -109,7 +108,7 @@ export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   },
   statText: {
     fontSize: 11,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   barContainer: {
     flexDirection: 'row',
@@ -120,7 +119,7 @@ export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   barBackground: {
     flex: 1,
     height: 6,
-    backgroundColor: Theme.colors.border,
+    backgroundColor: colors.border,
     borderRadius: 3,
     overflow: 'hidden',
   },
@@ -131,7 +130,7 @@ export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   revenueText: {
     fontSize: 11,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     minWidth: 80,
     textAlign: 'right',
   },

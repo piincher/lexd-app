@@ -1,16 +1,19 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
-import { Text, Surface, Button, Divider } from 'react-native-paper';
+import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { createStyles } from './PaymentSection.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { PaymentStatusCard } from './PaymentStatusCard';
+import { PaymentBreakdown } from './PaymentBreakdown';
+import { PaymentActions } from './PaymentActions';
+import { PaymentAdminNote } from './PaymentAdminNote';
 
 interface PaymentSectionProps {
   order: any;
 }
 
-// Parsing helpers for price and CBM values
 const parsePrice = (value: any): number => {
   if (value === null || value === undefined || value === '') return 0;
   const num = parseFloat(String(value));
@@ -27,20 +30,17 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
-  // Parse prices safely
   const isAir = order?.shippingMode === 'air';
   const unitPrice = parsePrice(order?.unitPrice);
-  const totalPrice = parsePrice(order?.calculatedTotal) ||
-                     parsePrice(order?.priceTotal) ||
-                     parsePrice(order?.totalCost);
+  const totalPrice =
+    parsePrice(order?.calculatedTotal) ||
+    parsePrice(order?.priceTotal) ||
+    parsePrice(order?.totalCost);
   const cbm = parseCBM(order?.packageCBM) || parseCBM(order?.calculatedCBM);
 
-  // Get payment info
   const paidAmount = parsePrice(order?.paidAmount);
   const balanceDue = parsePrice(order?.balanceDue) || Math.max(0, totalPrice - paidAmount);
 
-  // Determine payment status
-  // When totalPrice is 0 (no price set), treat as UNPAID
   let paymentStatus: 'UNPAID' | 'PARTIAL' | 'PAID' = 'UNPAID';
   if (totalPrice > 0 && (balanceDue <= 0 || paidAmount >= totalPrice)) {
     paymentStatus = 'PAID';
@@ -48,33 +48,12 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
     paymentStatus = 'PARTIAL';
   }
 
-  const getStatusConfig = () => {
-    switch (paymentStatus) {
-      case 'PAID':
-        return {
-          color: colors.status.success,
-          bgColor: colors.background.paper,
-          icon: 'check-circle',
-          label: 'Paid',
-        };
-      case 'PARTIAL':
-        return {
-          color: colors.status.warning,
-          bgColor: colors.background.paper,
-          icon: 'clock-outline',
-          label: 'Partial Payment',
-        };
-      default:
-        return {
-          color: colors.status.error,
-          bgColor: colors.background.paper,
-          icon: 'alert-circle',
-          label: 'Unpaid',
-        };
-    }
-  };
-
-  const statusConfig = getStatusConfig();
+  const statusConfig =
+    paymentStatus === 'PAID'
+      ? { color: colors.status.success, bgColor: colors.background.paper, icon: 'check-circle', label: 'Paid' }
+      : paymentStatus === 'PARTIAL'
+      ? { color: colors.status.warning, bgColor: colors.background.paper, icon: 'clock-outline', label: 'Partial Payment' }
+      : { color: colors.status.error, bgColor: colors.background.paper, icon: 'alert-circle', label: 'Unpaid' };
 
   const handleRecordPayment = () => {
     console.log('[PaymentSection] Navigating to RecordPaymentScreen', {
@@ -109,123 +88,35 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
         <Text style={styles.title}>Payment Details</Text>
       </View>
 
-      {/* Payment Status Card */}
-      <View style={[styles.statusCard, { backgroundColor: statusConfig.bgColor }]}>
-        <View style={styles.statusIconContainer}>
-          <MaterialCommunityIcons
-            name={statusConfig.icon as any}
-            size={32}
-            color={statusConfig.color}
-          />
-        </View>
-        <View style={styles.statusContent}>
-          <Text style={[styles.statusLabel, { color: statusConfig.color }]}>
-            {statusConfig.label}
-          </Text>
-          {paymentStatus === 'PAID' ? (
-            <Text style={styles.statusAmount}>
-              Fully Paid
-            </Text>
-          ) : (
-            <Text style={styles.statusAmount}>
-              {balanceDue.toLocaleString()} FCFA due
-            </Text>
-          )}
-        </View>
-      </View>
+      <PaymentStatusCard
+        statusConfig={statusConfig}
+        paymentStatus={paymentStatus}
+        balanceDue={balanceDue}
+        styles={styles}
+      />
 
-      {/* Payment Breakdown */}
-      <View style={styles.breakdown}>
-        {/* Pricing Details */}
-        {isAir ? (
-          order?.packageWeight ? (
-            <View style={styles.breakdownRow}>
-              <Text style={styles.breakdownLabel}>Poids</Text>
-              <Text style={styles.breakdownValue}>{order.packageWeight} kg</Text>
-            </View>
-          ) : null
-        ) : (
-          cbm ? (
-            <View style={styles.breakdownRow}>
-              <Text style={styles.breakdownLabel}>Volume (CBM)</Text>
-              <Text style={styles.breakdownValue}>{cbm} m³</Text>
-            </View>
-          ) : null
-        )}
-        {unitPrice > 0 && (
-          <View style={styles.breakdownRow}>
-            <Text style={styles.breakdownLabel}>Prix unitaire</Text>
-            <Text style={styles.breakdownValue}>
-              {unitPrice.toLocaleString()} FCFA/{isAir ? 'kg' : 'm³'}
-            </Text>
-          </View>
-        )}
-        <View style={styles.breakdownRow}>
-          <Text style={styles.breakdownLabel}>Prix total</Text>
-          <Text style={styles.breakdownValue}>
-            {totalPrice > 0 ? `${totalPrice.toLocaleString()} FCFA` : 'Non défini'}
-          </Text>
-        </View>
+      <PaymentBreakdown
+        isAir={isAir}
+        packageWeight={order?.packageWeight}
+        cbm={cbm}
+        unitPrice={unitPrice}
+        totalPrice={totalPrice}
+        paidAmount={paidAmount}
+        balanceDue={balanceDue}
+        paymentStatus={paymentStatus}
+        colors={colors}
+        styles={styles}
+      />
 
-        <Divider style={{ marginVertical: 8 }} />
+      <PaymentActions
+        paymentStatus={paymentStatus}
+        primaryColor={colors.primary.main}
+        onRecordPayment={handleRecordPayment}
+        onViewHistory={handleViewHistory}
+        styles={styles}
+      />
 
-        <View style={styles.breakdownRow}>
-          <Text style={styles.breakdownLabel}>Total Order Amount</Text>
-          <Text style={styles.breakdownValue}>
-            {totalPrice > 0 ? `${totalPrice.toLocaleString()} FCFA` : 'Non défini'}
-          </Text>
-        </View>
-        <View style={styles.breakdownRow}>
-          <Text style={styles.breakdownLabel}>Amount Paid</Text>
-          <Text style={[styles.breakdownValue, { color: colors.status.success }]}>
-            {paidAmount.toLocaleString()} FCFA
-          </Text>
-        </View>
-        {paymentStatus !== 'PAID' && (
-          <View style={styles.breakdownRow}>
-            <Text style={styles.breakdownLabel}>Balance Due</Text>
-            <Text style={[styles.breakdownValue, { color: colors.status.error }]}>
-              {balanceDue.toLocaleString()} FCFA
-            </Text>
-          </View>
-        )}
-      </View>
-
-      {/* Action Buttons */}
-      <View style={styles.actions}>
-        {paymentStatus !== 'PAID' && (
-          <Button
-            mode="contained"
-            onPress={handleRecordPayment}
-            style={styles.payButton}
-            buttonColor={colors.primary.main}
-            icon="cash-plus"
-            labelStyle={styles.buttonLabel}
-          >
-            Record Payment
-          </Button>
-        )}
-
-        <Button
-          mode="outlined"
-          onPress={handleViewHistory}
-          style={styles.historyButton}
-          textColor={colors.primary.main}
-          icon="history"
-          labelStyle={styles.buttonLabel}
-        >
-          View Payment History
-        </Button>
-      </View>
-
-      {/* Admin Note */}
-      <View style={styles.adminNote}>
-        <MaterialCommunityIcons name="information" size={16} color={colors.text.secondary} />
-        <Text style={styles.adminNoteText}>
-          Record payments made by clients via cash, bank transfer, or mobile money.
-          The client will receive a notification of the recorded payment.
-        </Text>
-      </View>
+      <PaymentAdminNote noteColor={colors.text.secondary} styles={styles} />
     </Surface>
   );
 };

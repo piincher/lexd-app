@@ -68,7 +68,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
           <View style={styles.badgeContainer}>
             {isAssignable && (
               <View style={styles.assignableBadge}>
-                <Ionicons name="add-circle" size={10} color="#10B981" />
+                <Ionicons name="add-circle" size={10} color={Theme.status.success} />
                 <Text style={styles.assignableBadgeText}>Peut recevoir</Text>
               </View>
             )}

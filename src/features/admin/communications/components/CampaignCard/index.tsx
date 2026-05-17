@@ -26,7 +26,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
 }) => {
   const { colors, isDark } = useAppTheme();
   const styles = createCardStyles(colors, isDark);
-  const statusStyle = getStatusStyle(campaign.status, isDark);
+  const statusStyle = getStatusStyle(campaign.status, colors, isDark);
   const canAct = campaign.status === "draft" || campaign.status === "scheduled";
 
   return (
@@ -72,11 +72,11 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
       {campaign.status === "sent" && (
         <View style={styles.statsRow}>
           <Text style={styles.statText}>
-            <Text style={{ color: isDark ? "#86EFAC" : "#15803D" }}>
+            <Text style={{ color: colors.status.success }}>
               {campaign.sentCount} envoyés
             </Text>
             {campaign.failedCount > 0 && (
-              <Text style={{ color: isDark ? "#FCA5A5" : "#DC2626" }}>
+              <Text style={{ color: colors.status.error }}>
                 {" · "}
                 {campaign.failedCount} échoués
               </Text>
@@ -93,10 +93,10 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
             disabled={isSending}
           >
             {isSending ? (
-              <ActivityIndicator size="small" color="#fff" />
+              <ActivityIndicator size="small" color={colors.text.inverse} />
             ) : (
               <>
-                <Ionicons name="send-outline" size={14} color="#fff" />
+                <Ionicons name="send-outline" size={14} color={colors.text.inverse} />
                 <Text style={styles.sendBtnText}>Envoyer maintenant</Text>
               </>
             )}

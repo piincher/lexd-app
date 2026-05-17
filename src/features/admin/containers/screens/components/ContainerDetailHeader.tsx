@@ -120,7 +120,7 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
             <Ionicons
               name={shippingModeIcon}
               size={16}
-              color="rgba(255,255,255,0.8)"
+              color={colors.text.inverse}
             />
             <Text style={styles.shippingLineText}>
               {SHIPPING_MODE_LABELS[mappedShippingMode]}
@@ -129,7 +129,7 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
         )}
         {consignee?.phone && mappedShippingMode === 'AIR' && (
           <View style={styles.consigneeContainer}>
-            <Ionicons name="call-outline" size={14} color="rgba(255,255,255,0.8)" />
+            <Ionicons name="call-outline" size={14} color={colors.text.inverse} />
             <Text style={styles.consigneeText}>
               {consignee.name} — {consignee.phone}
             </Text>

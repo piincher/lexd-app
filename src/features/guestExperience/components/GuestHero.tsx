@@ -11,6 +11,7 @@ import Animated, {
   interpolate,
 } from 'react-native-reanimated';
 import { FontAwesome6 } from '@expo/vector-icons';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
@@ -39,9 +40,7 @@ const Circle: React.FC<{ s: number; style?: Record<string, unknown> }> = ({ s, s
 export const GuestHero: React.FC = () => {
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const gradientColors = isDark
-    ? ['#15803D', '#166534', '#14532D']
-    : ['#22C55E', '#10B981', '#059669'];
+  const gradientColors = Theme.gradients.primary;
 
   return (
     <Animated.View entering={FadeInDown.duration(800)} style={[styles.wrap, { marginBottom: -12 }]}>

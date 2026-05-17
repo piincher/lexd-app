@@ -16,3 +16,7 @@ export { ActivityListItem } from './ActivityListItem';
 export { ActivityListLoading } from './ActivityListLoading';
 export { ActivityListError } from './ActivityListError';
 export { ActivityListEmpty } from './ActivityListEmpty';
+
+export { JourneyStep } from './JourneyStep';
+export { JourneyConnector } from './JourneyConnector';
+export { JourneyEmptyState } from './JourneyEmptyState';

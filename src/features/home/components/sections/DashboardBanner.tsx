@@ -49,7 +49,7 @@ export const DashboardBanner: React.FC<DashboardBannerProps> = ({ firstName, onP
           width: 44,
           height: 44,
           borderRadius: 22,
-          backgroundColor: isDark ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.9)',
+          backgroundColor: isDark ? `${colors.background.default}33` : `${colors.neutral.white}E6`,
           justifyContent: 'center',
           alignItems: 'center',
         },

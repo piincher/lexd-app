@@ -5,7 +5,7 @@ import { Theme } from "@src/constants/Theme";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Badge } from "@src/shared/ui/Badge";
 import { AirwayBill, AirwayBillStatus } from "../../types";
-import { styles } from "./AirwayBillCard.styles";
+import { getStyles } from "./AirwayBillCard.styles";
 import { AirwayBillRoute } from "./AirwayBillRoute";
 import { AirwayBillCapacityBar } from "./AirwayBillCapacityBar";
 
@@ -22,6 +22,7 @@ const formatDate = (dateString?: string) => {
 
 export const AirwayBillCard: React.FC<AirwayBillCardProps> = ({ item, onPress }) => {
   const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   const STATUS_CONFIG = useMemo<Record<
     AirwayBillStatus,
     { label: string; variant: "default" | "primary" | "success" | "warning" | "error" | "info" | "custom"; color: string }

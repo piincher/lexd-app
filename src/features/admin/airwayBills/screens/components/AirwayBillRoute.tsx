@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { styles } from "./AirwayBillCard.styles";
+import { getStyles } from "./AirwayBillCard.styles";
 
 interface AirwayBillRouteProps {
   departureAirport: string;
@@ -18,7 +18,9 @@ interface AirwayBillRouteProps {
 
 export const AirwayBillRoute: React.FC<AirwayBillRouteProps> = ({
   departureAirport, arrivalAirport, flightLabel, colors,
-}) => (
+}) => {
+  const styles = getStyles(colors);
+  return (
   <>
     <View style={styles.flightRow}>
       <Ionicons name="airplane" size={14} color={colors.text.secondary} />
@@ -44,4 +46,5 @@ export const AirwayBillRoute: React.FC<AirwayBillRouteProps> = ({
       </View>
     </View>
   </>
-);
+  );
+};

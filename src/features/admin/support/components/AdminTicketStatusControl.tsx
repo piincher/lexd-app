@@ -3,6 +3,7 @@ import { ScrollView, StyleSheet, View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import {
   ADMIN_TICKET_STATUSES,
   ADMIN_TICKET_STATUS_COLORS,
@@ -56,7 +57,7 @@ export const AdminTicketStatusControl: React.FC<AdminTicketStatusControlProps> =
 const styles = StyleSheet.create({
   container: {
     borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.06)',
+    borderTopColor: Theme.colors.border,
     paddingVertical: 8,
   },
   content: {

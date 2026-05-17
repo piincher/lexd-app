@@ -23,6 +23,11 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   headerTitle: {
     fontSize: 20,
     fontWeight: '700',

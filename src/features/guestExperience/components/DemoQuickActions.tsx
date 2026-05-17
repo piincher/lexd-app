@@ -49,17 +49,18 @@ const ActionButton: React.FC<{
   };
 
   return (
-    <AnimatedPressable
-      entering={FadeInDown.delay(index * 100).springify()}
-      onPress={onPress}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      style={[styles.card, { borderTopColor: action.color }, animatedStyle]}
-    >
-      <FontAwesome6 name={action.icon as any} size={28} color={action.color} />
-      <Text style={styles.title}>{action.title}</Text>
-      <Text style={styles.description}>{action.description}</Text>
-    </AnimatedPressable>
+    <Animated.View entering={FadeInDown.delay(index * 100).springify()}>
+      <AnimatedPressable
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={[styles.card, { borderTopColor: action.color }, animatedStyle]}
+      >
+        <FontAwesome6 name={action.icon as any} size={28} color={action.color} />
+        <Text style={styles.title}>{action.title}</Text>
+        <Text style={styles.description}>{action.description}</Text>
+      </AnimatedPressable>
+    </Animated.View>
   );
 };
 

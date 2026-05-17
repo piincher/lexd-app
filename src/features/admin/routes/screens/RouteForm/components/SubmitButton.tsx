@@ -52,10 +52,9 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
 
 const styles = StyleSheet.create({
   submitButtonContainer: {
-    marginTop: Theme.spacing.xl,
-    borderRadius: Theme.radius.full,
+    marginTop: 24,
+    borderRadius: 999,
     overflow: 'hidden',
-    ...Theme.shadows.lg,
   },
   submitButton: {
     flexDirection: 'row',

@@ -44,7 +44,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse + 'CC',
     marginTop: 2,
   },
   placeholder: {
@@ -53,7 +53,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
 
   // Capacity Indicator Styles
   capacityContainer: {
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: colors.text.inverse + '26',
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.lg,
   },
@@ -66,7 +66,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   capacityLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: 'rgba(255,255,255,0.9)',
+    color: colors.text.inverse + 'E6',
   },
   capacityValue: {
     fontSize: 14,
@@ -74,7 +74,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   progressBarBackground: {
     height: 10,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: colors.text.inverse + '33',
     borderRadius: Theme.radius.full,
     overflow: 'hidden',
     flexDirection: 'row',
@@ -103,20 +103,20 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   legendText: {
     fontSize: 11,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse + 'CC',
     fontWeight: '500',
   },
   warningBanner: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(239,68,68,0.15)',
+    backgroundColor: colors.status.error + '26',
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.sm,
     borderRadius: Theme.radius.md,
     marginTop: Theme.spacing.md,
   },
   warningBannerOrange: {
-    backgroundColor: 'rgba(245,158,11,0.15)',
+    backgroundColor: colors.status.warning + '26',
   },
   warningText: {
     fontSize: 12,
@@ -129,12 +129,12 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   nonAssignableBanner: {
     flexDirection: 'row',
-    backgroundColor: 'rgba(239, 68, 68, 0.15)',
+    backgroundColor: colors.status.error + '26',
     borderRadius: Theme.radius.lg,
     padding: Theme.spacing.md,
     marginTop: Theme.spacing.md,
     borderWidth: 1,
-    borderColor: 'rgba(239, 68, 68, 0.3)',
+    borderColor: colors.status.error + '4D',
   },
   nonAssignableContent: {
     flex: 1,
@@ -143,12 +143,12 @@ export const createStyles = (colors: any) => StyleSheet.create({
   nonAssignableTitle: {
     fontSize: 14,
     fontWeight: '700',
-    color: '#EF4444',
+    color: colors.status.error,
     marginBottom: 2,
   },
   nonAssignableText: {
     fontSize: 12,
-    color: 'rgba(255,255,255,0.9)',
+    color: colors.text.inverse + 'E6',
     lineHeight: 18,
   },
 

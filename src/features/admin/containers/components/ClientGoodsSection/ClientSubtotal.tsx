@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { ClientGoodsGroup } from '../../types/packingList';
 import { styles } from './ClientGoodsSection.styles';
@@ -9,6 +10,7 @@ interface ClientSubtotalProps {
 }
 
 export const ClientSubtotal: React.FC<ClientSubtotalProps> = ({ clientGroup }) => {
+  const { colors } = useAppTheme();
   const { summary } = clientGroup;
   const balance = summary.balanceDue || 0;
   const isPaid = balance <= 0;
@@ -36,13 +38,13 @@ export const ClientSubtotal: React.FC<ClientSubtotalProps> = ({ clientGroup }) =
       {(summary.totalPaid || 0) > 0 && (
         <View style={styles.subtotalRow}>
           <Text style={styles.subtotalLabel}>Déjà Payé:</Text>
-          <Text style={[styles.subtotalValue, { color: '#10B981' }]}>{(summary.totalPaid || 0).toLocaleString()} FCFA</Text>
+          <Text style={[styles.subtotalValue, { color: colors.status.success }]}>{(summary.totalPaid || 0).toLocaleString()} FCFA</Text>
         </View>
       )}
       {!isPaid && (
         <View style={styles.subtotalRow}>
-          <Text style={[styles.subtotalLabel, { color: '#DC2626', fontWeight: '700' }]}>SOLDE À PAYER:</Text>
-          <Text style={[styles.subtotalValue, { color: '#DC2626', fontWeight: '800' }]}>{(summary.balanceDue || 0).toLocaleString()} FCFA</Text>
+          <Text style={[styles.subtotalLabel, { color: colors.status.error, fontWeight: '700' }]}>SOLDE À PAYER:</Text>
+          <Text style={[styles.subtotalValue, { color: colors.status.error, fontWeight: '800' }]}>{(summary.balanceDue || 0).toLocaleString()} FCFA</Text>
         </View>
       )}
     </View>

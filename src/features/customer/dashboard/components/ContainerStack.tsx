@@ -3,6 +3,7 @@ import { View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { createContainerStackStyles } from './ContainerStack.styles';
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
@@ -28,15 +29,15 @@ interface Props {
 }
 
 const STATUS_MAP: Record<string, { label: string; color: string; icon: IoniconName }> = {
-  LOADING: { label: 'Chargement', color: '#F59E0B', icon: 'cube-outline' },
-  LOADED: { label: 'Container chargé', color: '#0EA5E9', icon: 'cube' },
-  GATE_IN_FULL: { label: 'Au port', color: '#06B6D4', icon: 'business' },
-  LOADED_ON_VESSEL: { label: 'Sur bateau', color: '#2563EB', icon: 'boat' },
-  IN_TRANSIT: { label: 'Vers Bamako', color: '#8B5CF6', icon: 'airplane' },
-  ARRIVED: { label: 'Arrivé', color: '#10B981', icon: 'flag' },
-  DISCHARGED: { label: 'Déchargé', color: '#14B8A6', icon: 'archive' },
-  READY_FOR_PICKUP: { label: 'Prêt', color: '#22C55E', icon: 'checkmark-circle' },
-  DELIVERED: { label: 'Livré', color: '#059669', icon: 'home' },
+  LOADING: { label: 'Chargement', color: Theme.colors.status.warning, icon: 'cube-outline' },
+  LOADED: { label: 'Container chargé', color: Theme.colors.status.info, icon: 'cube' },
+  GATE_IN_FULL: { label: 'Au port', color: Theme.colors.status.info, icon: 'business' },
+  LOADED_ON_VESSEL: { label: 'Sur bateau', color: Theme.colors.status.info, icon: 'boat' },
+  IN_TRANSIT: { label: 'Vers Bamako', color: Theme.colors.primary.main, icon: 'airplane' },
+  ARRIVED: { label: 'Arrivé', color: Theme.colors.status.success, icon: 'flag' },
+  DISCHARGED: { label: 'Déchargé', color: Theme.colors.status.success, icon: 'archive' },
+  READY_FOR_PICKUP: { label: 'Prêt', color: Theme.colors.status.success, icon: 'checkmark-circle' },
+  DELIVERED: { label: 'Livré', color: Theme.colors.status.success, icon: 'home' },
 };
 
 const fmtDate = (s?: string) => (s ? new Date(s).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : '');

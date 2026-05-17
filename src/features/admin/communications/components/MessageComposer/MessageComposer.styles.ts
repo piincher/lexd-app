@@ -33,7 +33,7 @@ export const styles = StyleSheet.create({
     color: Theme.neutral[500],
   },
   categoryTextActive: {
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
     fontFamily: Fonts.semiBold,
     fontWeight: '600',
   },
@@ -88,7 +88,7 @@ export const styles = StyleSheet.create({
     color: Theme.neutral[400],
   },
   charCountOver: {
-    color: '#EF4444',
+    color: Theme.status.error,
     fontFamily: Fonts.bold,
     fontWeight: '700',
   },
@@ -114,6 +114,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
   },
 });

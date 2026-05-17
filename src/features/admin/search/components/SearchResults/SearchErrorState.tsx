@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 
 interface SearchErrorStateProps {
@@ -14,13 +15,14 @@ export const SearchErrorState: React.FC<SearchErrorStateProps> = ({
   error,
   onRefresh,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.centerContainer}>
       <LinearGradient
-        colors={["#FEF2F2", "#FEE2E2"]}
+        colors={[colors.feedback.errorBg, colors.feedback.errorBg]}
         style={styles.errorIconContainer}
       >
-        <Ionicons name="alert-circle" size={48} color="#EF4444" />
+        <Ionicons name="alert-circle" size={48} color={colors.status.error} />
       </LinearGradient>
       <Text style={styles.errorTitle}>Erreur de recherche</Text>
       <Text style={styles.errorSubtitle}>
@@ -71,6 +73,6 @@ const styles = StyleSheet.create({
   retryText: {
     fontSize: 14,
     fontWeight: "600",
-    color: "Theme.colors.text.inverse",
+    color: Theme.colors.text.inverse,
   },
 });

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Theme } from '@src/constants/Theme';
 import { useGetContainerById, useGetPackingList } from '../../../hooks';
 import { Container } from '../../../types';
 import { Goods } from '../../../../goods/types';
@@ -55,7 +56,7 @@ export const useLoadingListData = (containerId: string, loadedItems: Set<string>
 
     const items: LoadingListItem[] = [...goodsList].sort((a, b) => (b.weight || 0) - (a.weight || 0)).map((goods, i) => {
       const clientId = goods.clientId || 'unknown';
-      return { sequenceNumber: i + 1, goods, clientId, clientName: goods.clientName || 'Client Inconnu', clientColor: clientColorMap.get(clientId) || '#8B5CF6', isLoaded: loadedItems.has(goods._id) };
+      return { sequenceNumber: i + 1, goods, clientId, clientName: goods.clientName || 'Client Inconnu', clientColor: clientColorMap.get(clientId) || Theme.primary.main, isLoaded: loadedItems.has(goods._id) };
     });
 
     const totalCBM = container.totalCBM || 0;

@@ -4,6 +4,7 @@ import { Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { Theme } from "@src/constants/Theme";
 import { createKPICardsStyles } from "./KPICards.styles";
 
 interface HeroKpiCardProps {
@@ -33,7 +34,7 @@ export const HeroKpiCard: React.FC<HeroKpiCardProps> = ({
       ]}
     >
       <LinearGradient
-        colors={["#3B82F6", "#2563EB", "#1D4ED8"]}
+        colors={Theme.gradients.ocean}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.heroGradient}

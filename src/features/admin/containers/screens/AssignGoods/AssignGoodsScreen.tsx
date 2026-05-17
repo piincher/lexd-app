@@ -2,7 +2,7 @@
  * AssignGoodsScreen - Screen to assign unassigned goods to a container
  * Phase 2 Container System
  */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,7 +22,7 @@ import { Theme } from '@src/constants/Theme';
 
 export const AssignGoodsScreen: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const {
     container, filteredGoods, selectedGoods, searchQuery,
     isLoading, isRefetching, error, isAssignable,

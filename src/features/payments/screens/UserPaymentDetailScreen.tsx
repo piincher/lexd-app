@@ -5,10 +5,10 @@
  */
 
 import React from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { Screen } from '@src/shared/ui/Screen';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useUserPaymentDetail } from '../hooks/useUserPaymentDetail';
+import { useUserPaymentDetailScreen } from './hooks/useUserPaymentDetailScreen';
+import { useUserPaymentDetailScreenStyles } from './UserPaymentDetailScreen.styles';
 import { UserPaymentDetailAmountCard } from '../components/UserPaymentDetailAmountCard';
 import { UserPaymentDetailReceiptCard } from '../components/UserPaymentDetailReceiptCard';
 import { UserPaymentDetailInfoCard } from '../components/UserPaymentDetailInfoCard';
@@ -16,30 +16,27 @@ import { UserPaymentDetailNotesCard } from '../components/UserPaymentDetailNotes
 import { UserPaymentDetailRecordedByCard } from '../components/UserPaymentDetailRecordedByCard';
 
 const UserPaymentDetailScreen: React.FC = () => {
-  const { colors } = useAppTheme();
   const {
     payment,
-    navigation,
     methodConfig,
     statusConfig,
     receiptUrl,
     formattedDate,
-    handleOpenReceipt,
-  } = useUserPaymentDetail();
+    handlers,
+  } = useUserPaymentDetailScreen();
+
+  const styles = useUserPaymentDetailScreenStyles();
 
   return (
     <Screen
       header={{
         title: 'Détail du paiement',
         showBack: true,
-        onBackPress: () => navigation.goBack(),
+        onBackPress: handlers.handleBack,
         showNotificationBell: true,
       }}
     >
-      <ScrollView
-        style={[styles.container, { backgroundColor: colors.background.paper }]}
-        showsVerticalScrollIndicator={false}
-      >
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <UserPaymentDetailAmountCard
           amount={payment.amountFCFA}
           methodConfig={methodConfig}
@@ -49,7 +46,7 @@ const UserPaymentDetailScreen: React.FC = () => {
         <UserPaymentDetailReceiptCard
           receiptUrl={receiptUrl}
           receiptNumber={payment.receiptNumber}
-          onOpenReceipt={handleOpenReceipt}
+          onOpenReceipt={handlers.handleOpenReceipt}
         />
         <UserPaymentDetailInfoCard
           payment={payment}
@@ -63,15 +60,5 @@ const UserPaymentDetailScreen: React.FC = () => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  bottomSpacer: {
-    height: 32,
-  },
-});
 
 export default UserPaymentDetailScreen;

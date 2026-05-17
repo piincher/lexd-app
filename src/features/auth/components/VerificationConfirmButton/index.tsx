@@ -37,11 +37,11 @@ export const VerificationConfirmButton: React.FC<VerificationConfirmButtonProps>
         style={styles.confirmGradient}
       >
         {isPending ? (
-          <ActivityIndicator size="small" color="#FFF" />
+          <ActivityIndicator size="small" color={colors.text.inverse} />
         ) : (
           <>
-            <Text style={styles.confirmText}>Vérifier et continuer</Text>
-            <MaterialCommunityIcons name="arrow-right" size={20} color="#FFF" />
+            <Text style={[styles.confirmText, { color: colors.text.inverse }]}>Vérifier et continuer</Text>
+            <MaterialCommunityIcons name="arrow-right" size={20} color={colors.text.inverse} />
           </>
         )}
       </LinearGradient>
@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
   confirmText: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: "Theme.colors.text.inverse",
     letterSpacing: 0.3,
   },
 });

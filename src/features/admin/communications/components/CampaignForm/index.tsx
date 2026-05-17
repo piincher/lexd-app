@@ -55,7 +55,7 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({
           <Text style={styles.previewLabel}>Aperçu</Text>
           <View style={styles.notificationPreview}>
             <View style={styles.previewIcon}>
-              <Ionicons name="notifications" size={16} color="#8B5CF6" />
+              <Ionicons name="notifications" size={16} color={colors.primary.main} />
             </View>
             <View style={styles.previewContent}>
               <Text style={styles.previewTitle} numberOfLines={1}>

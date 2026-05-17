@@ -72,7 +72,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
   return (
     <View style={styles.container}>
       <View style={[styles.searchContainer, isFocused && styles.searchContainerFocused]}>
-        <LinearGradient colors={["#FFFFFF", "#FAFAFA"]} style={styles.searchGradient}>
+        <LinearGradient colors={[colors.background.card, colors.background.default]} style={styles.searchGradient}>
           <Ionicons name="search" size={20} color={isFocused ? Theme.primary[500] : Theme.neutral[400]} style={styles.searchIcon} />
           <TextInput
             ref={inputRef}
@@ -102,7 +102,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
 
       {isFocused && showSuggestions && (hasSuggestions || hasRecents) && (
         <Animated.View style={[styles.dropdown, { opacity: fadeAnim, transform: [{ translateY: fadeAnim.interpolate({ inputRange: [0, 1], outputRange: [-10, 0] }) }] }]}>
-          <LinearGradient colors={["#FFFFFF", "#F8F8F8"]} style={styles.dropdownGradient}>
+          <LinearGradient colors={[colors.background.card, colors.background.paper]} style={styles.dropdownGradient}>
             <SearchSuggestions
               suggestions={suggestions}
               hasSuggestions={hasSuggestions}

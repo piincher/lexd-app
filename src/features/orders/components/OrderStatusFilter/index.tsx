@@ -59,7 +59,7 @@ const OrderStatusFilterInner: React.FC<OrderStatusFilterProps> = ({
                   <Text
                      style={[
                         styles.pillText,
-                        { color: isActive ? "#FFFFFF" : colors.text.secondary },
+                        { color: isActive ? colors.text.inverse : colors.text.secondary }
                      ]}
                   >
                      {filter.label}
@@ -69,7 +69,7 @@ const OrderStatusFilterInner: React.FC<OrderStatusFilterProps> = ({
                         styles.countBadge,
                         {
                            backgroundColor: isActive
-                              ? "rgba(255,255,255,0.25)"
+                              ? colors.text.inverse + '40'
                               : colors.border,
                         },
                      ]}
@@ -79,7 +79,7 @@ const OrderStatusFilterInner: React.FC<OrderStatusFilterProps> = ({
                            styles.countText,
                            {
                               color: isActive
-                                 ? "#FFFFFF"
+                                 ? colors.text.inverse
                                  : colors.text.secondary,
                            },
                         ]}

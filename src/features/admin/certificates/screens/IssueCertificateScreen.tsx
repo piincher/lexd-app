@@ -2,18 +2,15 @@ import React from "react";
 import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import type { RootStackScreenProps } from "@src/navigations/type";
 import { Theme } from "@src/constants/Theme";
-import { useCertificateForm } from "../hooks/useCertificateForm";
+import { useIssueCertificateScreen } from "../hooks/useIssueCertificateScreen";
 import { useCertificateSuccessActions } from "../hooks/useCertificateSuccessActions";
 import { CertificateSuccessView } from "../components/CertificateSuccessView";
 import { UserSearchList } from "../components/UserSearchList";
 import { IssueFormPanel } from "../components/IssueFormPanel";
 import { styles } from "./IssueCertificateScreen.styles";
 
-export default function IssueCertificateScreen({
-  navigation,
-}: RootStackScreenProps<"IssueCertificate">) {
+export default function IssueCertificateScreen() {
   const {
     searchQuery, setSearchQuery,
     selectedUser,
@@ -21,7 +18,8 @@ export default function IssueCertificateScreen({
     issuedCertificate,
     users, isLoading, isIssuing,
     handleSelectUser, handleIssue, handleIssueAnother,
-  } = useCertificateForm();
+    handleGoBack,
+  } = useIssueCertificateScreen();
 
   const {
     handleSendWhatsApp, handleDownload, handleCopyCode, isSending, isDownloading,
@@ -37,7 +35,7 @@ export default function IssueCertificateScreen({
         onSendWhatsApp={handleSendWhatsApp}
         isSending={isSending}
         onIssueAnother={handleIssueAnother}
-        onBack={() => navigation.goBack()}
+        onBack={handleGoBack}
         onCopyCode={handleCopyCode}
       />
     );
@@ -46,11 +44,11 @@ export default function IssueCertificateScreen({
   return (
     <SafeAreaView style={styles.container} edges={["bottom"]}>
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
+        style={styles.keyboardView}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
       >
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
             <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
           </TouchableOpacity>
           <View>

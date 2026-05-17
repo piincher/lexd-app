@@ -5,6 +5,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface StarRatingProps {
   rating: number;
@@ -15,8 +16,10 @@ interface StarRatingProps {
 export const StarRating: React.FC<StarRatingProps> = ({
   rating,
   size = 16,
-  emptyStarColor = "rgba(128,128,128,0.3)",
+  emptyStarColor,
 }) => {
+  const { colors } = useAppTheme();
+  const emptyColor = emptyStarColor ?? colors.text.disabled;
   return (
     <View style={styles.starRow}>
       {[1, 2, 3, 4, 5].map((star) => (
@@ -24,7 +27,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
           key={star}
           name={star <= rating ? "star" : "star-outline"}
           size={size}
-          color={star <= rating ? "#d4a843" : emptyStarColor}
+          color={star <= rating ? colors.accent.gold : emptyColor}
         />
       ))}
     </View>

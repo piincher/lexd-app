@@ -34,7 +34,7 @@ export const createAuditLogCardStyles = (colors: AppColors) =>
       justifyContent: 'center',
     },
     statusText: {
-      color: 'Theme.colors.text.inverse',
+      color: colors.text.inverse,
       fontSize: 11,
       fontWeight: '800',
     },

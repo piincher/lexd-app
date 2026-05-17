@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, Alert } fro
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { StarRating } from "../StarRating";
 import { formatDateLong } from "@src/shared/lib/formatters";
-import { Theme } from "@src/constants/Theme";
-import { styles } from "./ReviewCard.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { getStyles } from "./ReviewCard.styles";
 import type { AdminReview } from "../../api/reviewAdminApi";
 
 interface ReviewCardProps {
@@ -18,6 +18,8 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
   onRespond,
   isResponding,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   const [showResponseInput, setShowResponseInput] = useState(false);
   const [responseText, setResponseText] = useState("");
 
@@ -39,7 +41,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
     <View style={styles.card}>
       {user && (
         <View style={styles.clientRow}>
-          <Ionicons name="person-outline" size={16} color={Theme.colors.text.secondary} />
+          <Ionicons name="person-outline" size={16} color={colors.text.secondary} />
           <Text style={styles.clientName}>
             {user.firstName} {user.lastName}
           </Text>
@@ -65,7 +67,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
       ) : null}
 
       <View style={styles.dateRow}>
-        <Ionicons name="calendar-outline" size={14} color={Theme.colors.text.secondary} />
+        <Ionicons name="calendar-outline" size={14} color={colors.text.secondary} />
         <Text style={styles.dateText}>{formatDateLong(review.createdAt)}</Text>
       </View>
 
@@ -87,7 +89,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
               onPress={() => setShowResponseInput(true)}
               activeOpacity={0.7}
             >
-              <MaterialIcons name="reply" size={18} color="#d4a843" />
+              <MaterialIcons name="reply" size={18} color={styles.respondButtonText.color} />
               <Text style={styles.respondButtonText}>Répondre</Text>
             </TouchableOpacity>
           ) : (
@@ -95,7 +97,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
               <TextInput
                 style={styles.responseInput}
                 placeholder="Votre réponse..."
-                placeholderTextColor={Theme.colors.text.muted}
+                placeholderTextColor={colors.text.muted}
                 value={responseText}
                 onChangeText={setResponseText}
                 multiline
@@ -120,7 +122,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
                   activeOpacity={0.7}
                 >
                   {isResponding ? (
-                    <ActivityIndicator size="small" color="#FFFFFF" />
+                    <ActivityIndicator size="small" color={styles.submitButtonText.color} />
                   ) : (
                     <Text style={styles.submitButtonText}>Envoyer</Text>
                   )}

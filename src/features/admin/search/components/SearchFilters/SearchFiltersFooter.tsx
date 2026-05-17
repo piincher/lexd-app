@@ -10,7 +10,7 @@ import { Theme } from '@src/constants/Theme';
 
 export const SearchFiltersFooter: React.FC = () => {
   return (
-    <LinearGradient colors={['transparent', '#FFFFFF']} style={styles.footer}>
+    <LinearGradient colors={['transparent', Theme.colors.background.card]} style={styles.footer}>
       <Button
         mode="contained"
         onPress={() => {}}

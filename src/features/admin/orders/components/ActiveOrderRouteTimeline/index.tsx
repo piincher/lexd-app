@@ -4,7 +4,7 @@ import { Surface, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './ActiveOrderRouteTimeline.styles';
+import { getStyles } from './ActiveOrderRouteTimeline.styles';
 
 const STEP_ICONS: Record<string, string> = {
   'Le client a passé une commande': 'cart-check',
@@ -40,6 +40,7 @@ export const ActiveOrderRouteTimeline: React.FC<ActiveOrderRouteTimelineProps> =
   onCheckboxPress,
 }) => {
   const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   const details = routeData?.orderDetail || [];
 
   return (
@@ -61,7 +62,7 @@ export const ActiveOrderRouteTimeline: React.FC<ActiveOrderRouteTimelineProps> =
               <MaterialCommunityIcons
                 name={(STEP_ICONS[routeItem.status] || 'circle') as any}
                 size={16}
-                color={routeItem.status === 'Order in Transit' ? '#1976D2' : '#6B7280'}
+                color={routeItem.status === 'Order in Transit' ? colors.status.info : colors.text.secondary}
               />
             </View>
             <Text style={styles.routeTitle}>{routeItem.status}</Text>
@@ -110,7 +111,7 @@ export const ActiveOrderRouteTimeline: React.FC<ActiveOrderRouteTimelineProps> =
                       ]}
                     >
                       {isChecked && (
-                        <MaterialCommunityIcons name="check" size={12} color="#FFF" />
+                        <MaterialCommunityIcons name="check" size={12} color={colors.text.inverse} />
                       )}
                     </View>
                     <Text

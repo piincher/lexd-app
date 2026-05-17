@@ -14,7 +14,7 @@ export const CheckRouteEmpty: React.FC = () => {
       <View
         style={[
           styles.emptyIcon,
-          { backgroundColor: isDark ? 'rgba(34,197,94,0.12)' : 'rgba(34,197,94,0.08)' },
+          { backgroundColor: colors.feedback.successBg },
         ]}
       >
         <MaterialCommunityIcons name="cube-scan" size={36} color={colors.primary.main} />

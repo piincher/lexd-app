@@ -83,7 +83,7 @@ export const FAQCategoryFilter: React.FC<FAQCategoryFilterProps> = ({
             <MaterialCommunityIcons
               name={category.icon as any}
               size={16}
-              color={isSelected ? '#FFFFFF' : colors.text.secondary}
+              color={isSelected ? colors.text.inverse : colors.text.secondary}
               style={styles.icon}
             />
             <Text
@@ -91,7 +91,7 @@ export const FAQCategoryFilter: React.FC<FAQCategoryFilterProps> = ({
                 styles.chipText,
                 {
                   color: isSelected
-                    ? '#FFFFFF'
+                    ? colors.text.inverse
                     : colors.text.secondary,
                   fontFamily: isSelected ? Fonts.bold : Fonts.medium,
                 },

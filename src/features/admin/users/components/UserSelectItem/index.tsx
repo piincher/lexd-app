@@ -1,5 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
 import { userData } from "@src/shared/types/user";
 
@@ -27,7 +29,7 @@ const styles = StyleSheet.create({
   },
   userRole: {
     fontSize: 14,
-    color: "#888",
+    color: Theme.colors.text.secondary,
     fontFamily: Fonts.black,
   },
 });

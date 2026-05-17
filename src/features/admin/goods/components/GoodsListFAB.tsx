@@ -8,12 +8,15 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsListFABProps {
   onPress: () => void;
 }
 
-export const GoodsListFAB: React.FC<GoodsListFABProps> = ({ onPress }) => (
+export const GoodsListFAB: React.FC<GoodsListFABProps> = ({ onPress }) => {
+  const { colors } = useAppTheme();
+  return (
   <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.9}>
     <LinearGradient
       colors={Theme.gradients.primary}
@@ -21,10 +24,10 @@ export const GoodsListFAB: React.FC<GoodsListFABProps> = ({ onPress }) => (
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <Ionicons name="add" size={28} color="#FFF" />
+      <Ionicons name="add" size={28} color={colors.text.inverse} />
     </LinearGradient>
   </TouchableOpacity>
-);
+);}
 
 const styles = StyleSheet.create({
   container: {

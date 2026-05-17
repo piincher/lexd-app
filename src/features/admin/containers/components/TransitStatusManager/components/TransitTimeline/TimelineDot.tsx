@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming } from 'react-native-reanimated';
+import { Theme } from '@src/constants/Theme';
 import { styles } from './TransitTimeline.styles';
 
 export type WaypointItemStatus = 'completed' | 'current' | 'pending';
@@ -38,7 +39,7 @@ export const TimelineDot: React.FC<TimelineDotProps> = ({ status, isLast }) => {
     <View style={styles.timelineDotContainer}>
       {status === 'current' && <Animated.View style={[styles.timelineDotPulse, pulseStyle]} />}
       <View style={dotStyles}>
-        {status === 'completed' && <Ionicons name="checkmark" size={14} color="#FFF" />}
+        {status === 'completed' && <Ionicons name="checkmark" size={14} color={Theme.colors.text.inverse} />}
         {status === 'current' && <View style={styles.currentDotInner} />}
       </View>
       {!isLast && (

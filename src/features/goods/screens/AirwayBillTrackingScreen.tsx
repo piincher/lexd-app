@@ -3,16 +3,13 @@
  */
 
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Appbar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { Theme } from '@src/constants/Theme';
-import { useAirwayBillTracking } from '../hooks/useAirwayBillTracking';
+import { Appbar } from 'react-native-paper';
+import { useAirwayBillTrackingScreen } from './hooks/useAirwayBillTrackingScreen';
+import { useAirwayBillTrackingScreenStyles } from './AirwayBillTrackingScreen.styles';
 import { AirwayBillTrackingContent, AirwayBillTrackingState } from '../components';
 
 export const AirwayBillTrackingScreen: React.FC = () => {
-  const navigation = useNavigation();
   const {
     awb,
     isLoading,
@@ -27,9 +24,11 @@ export const AirwayBillTrackingScreen: React.FC = () => {
     estimatedArrivalLabel,
     isError,
     error,
-    refetch,
     isFetching,
-  } = useAirwayBillTracking();
+    handlers,
+  } = useAirwayBillTrackingScreen();
+
+  const styles = useAirwayBillTrackingScreenStyles();
 
   if (isLoading) {
     return (
@@ -37,7 +36,7 @@ export const AirwayBillTrackingScreen: React.FC = () => {
         loading
         title="Chargement"
         message="Chargement du suivi..."
-        onBack={() => navigation.goBack()}
+        onBack={handlers.handleBack}
       />
     );
   }
@@ -47,8 +46,8 @@ export const AirwayBillTrackingScreen: React.FC = () => {
       <AirwayBillTrackingState
         title="Suivi indisponible"
         message={error instanceof Error ? error.message : "Impossible de charger cette expédition pour le moment."}
-        onBack={() => navigation.goBack()}
-        onRetry={() => refetch?.()}
+        onBack={handlers.handleBack}
+        onRetry={handlers.handleRetry}
       />
     );
   }
@@ -56,7 +55,7 @@ export const AirwayBillTrackingScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <Appbar.Header>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
+        <Appbar.BackAction onPress={handlers.handleBack} />
         <Appbar.Content title="Suivi aérien" subtitle={awb.awbNumber} />
       </Appbar.Header>
       <AirwayBillTrackingContent
@@ -71,14 +70,10 @@ export const AirwayBillTrackingScreen: React.FC = () => {
         currentStepIndex={currentStepIndex}
         estimatedArrivalLabel={estimatedArrivalLabel}
         isFetching={Boolean(isFetching)}
-        onRefresh={() => refetch?.()}
+        onRefresh={handlers.handleRefresh}
       />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Theme.neutral[50] },
-});
 
 export default AirwayBillTrackingScreen;

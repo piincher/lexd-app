@@ -1,5 +1,22 @@
 import { ExportEntity, ExportFormat } from "./types";
 
+export const ENTITY_CONFIG: Record<
+  ExportEntity,
+  { label: string; icon: string; color: string }
+> = {
+  GOODS: { label: "Goods", icon: "package-variant", color: "#3B82F6" },
+  CONTAINERS: { label: "Containers", icon: "truck-cargo-container", color: "#16A34A" },
+  PAYMENTS: { label: "Payments", icon: "cash-multiple", color: "#D4AF37" },
+  CLIENTS: { label: "Clients", icon: "account-group", color: "#22C55E" },
+  USERS: { label: "Users", icon: "account", color: "#22C55E" },
+  INVOICES: { label: "Invoices", icon: "file-document", color: "#3B82F6" },
+  EXPENSES: { label: "Expenses", icon: "cash-minus", color: "#DC2626" },
+  ROUTES: { label: "Routes", icon: "routes", color: "#6B7280" },
+  CONSIGNEES: { label: "Consignees", icon: "warehouse", color: "#6B7280" },
+  TICKETS: { label: "Tickets", icon: "ticket", color: "#DC2626" },
+  NOTIFICATIONS: { label: "Notifications", icon: "bell", color: "#3B82F6" },
+};
+
 export const getEntityConfig = (colors: any): Record<
   ExportEntity,
   { label: string; icon: string; color: string }

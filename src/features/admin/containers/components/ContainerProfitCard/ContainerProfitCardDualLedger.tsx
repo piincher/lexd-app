@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { ContainerProfitCardRow } from './ContainerProfitCardRow';
 import { fmt } from '../../lib/formatCurrency';
@@ -15,9 +16,10 @@ export const ContainerProfitCardDualLedger: React.FC<ContainerProfitCardDualLedg
   dualLedger,
   totalCBM,
 }) => {
+  const { colors } = useAppTheme();
   const isReconciled = dualLedger.reconciliationStatus === 'RECONCILED';
   const hasGap = dualLedger.profitGap != null && dualLedger.profitGap !== 0;
-  const gapColor = (dualLedger.profitGap || 0) >= 0 ? '#10B981' : '#EF4444';
+  const gapColor = (dualLedger.profitGap || 0) >= 0 ? colors.status.success : colors.status.error;
 
   return (
     <View style={styles.ledgerSection}>
@@ -30,12 +32,12 @@ export const ContainerProfitCardDualLedger: React.FC<ContainerProfitCardDualLedg
       <ContainerProfitCardRow
         label="Coût estimé (temps réel)"
         value={fmt(dualLedger.clientTotalCBM * (dualLedger.agentUnitCost || 278000))}
-        valueColor="#EF4444"
+        valueColor={colors.status.error}
       />
       <ContainerProfitCardRow
         label="Bénéfice temps réel"
         value={`${dualLedger.realTimeProfit >= 0 ? '+' : ''}${fmt(dualLedger.realTimeProfit)}`}
-        valueColor={dualLedger.realTimeProfit >= 0 ? '#10B981' : '#EF4444'}
+        valueColor={dualLedger.realTimeProfit >= 0 ? colors.status.success : colors.status.error}
         highlight
       />
 
@@ -46,12 +48,12 @@ export const ContainerProfitCardDualLedger: React.FC<ContainerProfitCardDualLedg
           <ContainerProfitCardRow
             label={`CBM agent final (${dualLedger.agentTotalCBM?.toFixed(2)} CBM)`}
             value={fmt(dualLedger.agentTotalCost)}
-            valueColor="#EF4444"
+            valueColor={colors.status.error}
           />
           <ContainerProfitCardRow
             label="Bénéfice réconcilié"
             value={`${(dualLedger.reconciledProfit || 0) >= 0 ? '+' : ''}${fmt(dualLedger.reconciledProfit || 0)}`}
-            valueColor={(dualLedger.reconciledProfit || 0) >= 0 ? '#10B981' : '#EF4444'}
+            valueColor={(dualLedger.reconciledProfit || 0) >= 0 ? colors.status.success : colors.status.error}
             highlight
           />
           {hasGap && (
@@ -65,7 +67,7 @@ export const ContainerProfitCardDualLedger: React.FC<ContainerProfitCardDualLedg
             <ContainerProfitCardRow
               label="Capacité non facturée"
               value={fmt(dualLedger.unbilledCapacityCost)}
-              valueColor="#F59E0B"
+              valueColor={colors.status.warning}
             />
           )}
         </>

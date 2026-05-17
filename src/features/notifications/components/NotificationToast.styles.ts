@@ -1,7 +1,11 @@
 import { StyleSheet, StatusBar } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useMemo } from 'react';
 
-export const styles = StyleSheet.create({
+export const useNotificationToastStyles = () => {
+  const { colors } = useAppTheme();
+  return useMemo(() => StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,
@@ -19,7 +23,7 @@ export const styles = StyleSheet.create({
     borderRadius: 16,
     overflow: 'hidden',
     borderLeftWidth: 4,
-    backgroundColor: 'rgba(30, 30, 30, 0.95)',
+    backgroundColor: colors.background.overlay,
   },
   content: {
     flexDirection: 'row',
@@ -46,7 +50,7 @@ export const styles = StyleSheet.create({
   message: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: colors.text.inverse,
     marginTop: 2,
     lineHeight: 18,
   },
@@ -55,10 +59,11 @@ export const styles = StyleSheet.create({
   },
   progressContainer: {
     height: 3,
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: colors.text.inverse + '1A',
   },
   progressBar: {
     height: '100%',
     width: '100%',
   },
-});
+  }), [colors]);
+};

@@ -3,6 +3,7 @@ import { View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useRecipientSelectorStyles } from './RecipientSelector.styles';
 import type { Recipient } from '../RecipientSelector';
 
@@ -14,6 +15,7 @@ interface RecipientItemProps {
 }
 
 export const RecipientItem: React.FC<RecipientItemProps> = ({ item, index, isSelected, onToggle }) => {
+  const { colors } = useAppTheme();
   const styles = useRecipientSelectorStyles();
 
   return (
@@ -34,7 +36,7 @@ export const RecipientItem: React.FC<RecipientItemProps> = ({ item, index, isSel
           <Text style={styles.recipientPhone}>{item.phone}</Text>
         </View>
         <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-          {isSelected && <Ionicons name="checkmark" size={14} color="#FFF" />}
+          {isSelected && <Ionicons name="checkmark" size={14} color={colors.text.inverse} />}
         </View>
       </Pressable>
     </Animated.View>

@@ -6,6 +6,7 @@ import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint } from '../../../types';
 import { formatTimestamp } from './TimelineDateMarker';
 
@@ -14,11 +15,13 @@ interface DakarInfoProps {
   styles: Record<string, any>;
 }
 
-export const DakarInfo: React.FC<DakarInfoProps> = ({ dakarWaypoint, styles }) => (
+export const DakarInfo: React.FC<DakarInfoProps> = ({ dakarWaypoint, styles }) => {
+  const { colors } = useAppTheme();
+  return (
   <Animated.View entering={FadeInUp.delay(750)} style={styles.dakarInfoCard}>
-    <LinearGradient colors={['#D1FAE5', '#ECFDF5']} style={styles.dakarInfoGradient}>
+    <LinearGradient colors={[colors.feedback.successBg, colors.background.paper]} style={styles.dakarInfoGradient}>
       <View style={styles.dakarInfoHeader}>
-        <Ionicons name="boat" size={24} color="#059669" />
+        <Ionicons name="boat" size={24} color={colors.status.success} />
         <Text style={styles.dakarInfoTitle}>Port d'Arrivée Principal</Text>
       </View>
       <Text style={styles.dakarInfoText}>
@@ -32,4 +35,5 @@ export const DakarInfo: React.FC<DakarInfoProps> = ({ dakarWaypoint, styles }) =
       )}
     </LinearGradient>
   </Animated.View>
-);
+  );
+};

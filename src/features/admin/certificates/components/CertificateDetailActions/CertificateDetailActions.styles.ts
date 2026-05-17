@@ -1,13 +1,12 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from '@src/constants/Theme';
 
 export const createStyles = (colors: any) => StyleSheet.create({
   downloadButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#d4a843",
+    backgroundColor: colors.primary.main,
     borderRadius: 12,
     paddingVertical: 14,
     marginBottom: 12,
@@ -22,7 +21,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#DC2626",
+    backgroundColor: colors.status.error,
     borderRadius: 12,
     paddingVertical: 14,
     marginBottom: 12,
@@ -48,6 +47,6 @@ export const createStyles = (colors: any) => StyleSheet.create({
   revokedNoticeText: {
     fontSize: 15,
     fontFamily: Fonts.meduim,
-    color: "#DC2626",
+    color: colors.status.error,
   },
 });

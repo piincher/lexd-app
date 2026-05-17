@@ -3,7 +3,7 @@
  * Uses react-native-share for reliable Android sharing
  */
 import { File, Paths } from 'expo-file-system';
-import { Alert } from 'react-native';
+
 import RNShare from 'react-native-share';
 
 export interface PDFShareOptions {
@@ -70,8 +70,7 @@ export async function sharePDFFromUri(options: PDFShareOptions): Promise<void> {
     }
   } catch (error) {
     console.error('PDF share error:', error);
-    Alert.alert('Erreur', 'Impossible de partager le PDF');
-    throw error;
+    throw new Error('Impossible de partager le PDF: ' + (error instanceof Error ? error.message : String(error)));
   }
 }
 

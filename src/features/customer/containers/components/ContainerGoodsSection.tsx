@@ -19,6 +19,21 @@ interface ContainerGoodsSectionProps {
 
 const GoodsItem: React.FC<{ goods: CustomerGoodsInContainer }> = ({ goods }) => {
   const theme = useTheme();
+  const { colors } = useAppTheme();
+
+  const chipBg =
+    goods.status === 'DELIVERED'
+      ? colors.feedback.successBg
+      : goods.status === 'READY_FOR_PICKUP'
+      ? colors.feedback.warningBg
+      : colors.feedback.infoBg;
+
+  const chipText =
+    goods.status === 'DELIVERED'
+      ? colors.status.success
+      : goods.status === 'READY_FOR_PICKUP'
+      ? colors.status.warning
+      : colors.status.info;
 
   return (
     <List.Item
@@ -36,23 +51,8 @@ const GoodsItem: React.FC<{ goods: CustomerGoodsInContainer }> = ({ goods }) => 
         <View style={styles.goodsRightContent}>
           <Text style={styles.goodsCbm}>{(goods.actualCBM || 0).toFixed(3)} CBM</Text>
           <Chip
-            style={{
-              backgroundColor:
-                goods.status === 'DELIVERED'
-                  ? '#DCFCE7'
-                  : goods.status === 'READY_FOR_PICKUP'
-                  ? '#FEF3C7'
-                  : '#E0F2FE',
-            }}
-            textStyle={{
-              color:
-                goods.status === 'DELIVERED'
-                  ? '#22C55E'
-                  : goods.status === 'READY_FOR_PICKUP'
-                  ? '#F59E0B'
-                  : '#0EA5E9',
-              fontSize: 10,
-            }}
+            style={{ backgroundColor: chipBg }}
+            textStyle={{ color: chipText, fontSize: 10 }}
           >
             {goods.status?.replace(/_/g, ' ') || 'N/A'}
           </Chip>

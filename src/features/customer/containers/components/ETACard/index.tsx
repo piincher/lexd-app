@@ -66,7 +66,7 @@ export const ETACard: React.FC<ETACardProps> = ({
         </View>
         {isDelayed && (
           <View style={styles.delayBanner}>
-            <MaterialCommunityIcons name="alert-circle-outline" size={18} color="#B45309" />
+            <MaterialCommunityIcons name="alert-circle-outline" size={18} color={colors.status.warning} />
             <Text style={styles.delayText}>
               Retard estimé{eta?.delayDays ? `: ${eta.delayDays} jour(s)` : ''}
             </Text>

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { Linking } from 'react-native';
+import { Theme } from '@src/constants/Theme';
 
 export const APP_VERSION = '2.0.0';
 
@@ -8,25 +9,25 @@ export const VALUES = [
       icon: 'shield-checkmark-outline' as const,
       title: 'Fiabilite',
       desc: 'Livraison securisee et ponctuelle de vos marchandises',
-      color: '#3B82F6',
+      get color() { return Theme.status.info; },
    },
    {
       icon: 'heart-outline' as const,
       title: 'Integrite',
       desc: 'Transparence totale dans chaque etape du processus',
-      color: '#EF4444',
+      get color() { return Theme.status.error; },
    },
    {
       icon: 'flash-outline' as const,
       title: 'Efficacite',
       desc: 'Solutions logistiques optimisees pour votre business',
-      color: '#F59E0B',
+      get color() { return Theme.status.warning; },
    },
    {
       icon: 'people-outline' as const,
       title: 'Satisfaction',
       desc: 'Votre reussite est notre priorite absolue',
-      color: '#10B981',
+      get color() { return Theme.status.success; },
    },
 ];
 

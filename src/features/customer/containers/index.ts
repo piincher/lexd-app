@@ -6,7 +6,6 @@
 // API
 export { customerContainerApi } from './api/customerContainerApi';
 export type {
-  ApiResponse,
   GetMyContainersResponse,
   GetContainerDetailsResponse,
   GetContainerForGoodsResponse,

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { ReviewCard } from "../ReviewCard";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { styles } from "./ReviewList.styles";
 import type { AdminReview } from "../../api/reviewAdminApi";
 
@@ -36,6 +36,7 @@ export const ReviewList: React.FC<ReviewListProps> = ({
   onRespond,
   isResponding,
 }) => {
+  const { colors } = useAppTheme();
   const renderReview = ({ item }: { item: AdminReview }) => (
     <ReviewCard
       review={item}
@@ -47,7 +48,7 @@ export const ReviewList: React.FC<ReviewListProps> = ({
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#d4a843" />
+        <ActivityIndicator size="large" color={colors.primary.main} />
         <Text style={styles.loadingText}>Chargement des avis...</Text>
       </View>
     );
@@ -64,7 +65,7 @@ export const ReviewList: React.FC<ReviewListProps> = ({
       onRefresh={refetch}
       ListEmptyComponent={
         <View style={styles.emptyContainer}>
-          <MaterialIcons name="rate-review" size={64} color={Theme.neutral[300]} />
+          <MaterialIcons name="rate-review" size={64} color={colors.neutral[300]} />
           <Text style={styles.emptyTitle}>Aucun avis trouvé</Text>
           <Text style={styles.emptySubtitle}>
             {activeFilter !== "all"
@@ -94,7 +95,7 @@ export const ReviewList: React.FC<ReviewListProps> = ({
               <Ionicons
                 name="chevron-back"
                 size={20}
-                color={page <= 1 ? "#D1D5DB" : "#1F2937"}
+                color={page <= 1 ? colors.neutral[300] : colors.text.primary}
               />
             </TouchableOpacity>
             <Text style={styles.paginationText}>
@@ -112,7 +113,7 @@ export const ReviewList: React.FC<ReviewListProps> = ({
               <Ionicons
                 name="chevron-forward"
                 size={20}
-                color={page >= totalPages ? "#D1D5DB" : "#1F2937"}
+                color={page >= totalPages ? colors.neutral[300] : colors.text.primary}
               />
             </TouchableOpacity>
           </View>

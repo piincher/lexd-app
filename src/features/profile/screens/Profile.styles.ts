@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   container: { flex: 1 },
   scrollContent: { paddingBottom: 40 },
   sectionHeader: {
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: "rgba(239,68,68,0.15)",
+    borderColor: colors.status.error + '25',
   },
   logoutPressed: {
     opacity: 0.7,
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   },
   logoutText: {
     fontSize: 15,
-    color: "#EF4444",
+    color: colors.status.error,
   },
   footer: {
     alignItems: "center",

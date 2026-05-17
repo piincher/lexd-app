@@ -3,12 +3,11 @@
  * Combines data fetching with list-specific state
  */
 
-import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import { useGetAllGoods, goodsQueryKeys } from './useGoods';
-import { GoodsFilters, GoodsStatus } from '../types';
+import { GoodsStatus } from '../types';
 import { ApiClientError } from '@src/api/client';
 import { userData } from '@src/shared/types/user';
+import { useGoodsListFilters } from './useGoodsListFilters';
+import { useGoodsListData } from './useGoodsListData';
 
 interface DateRange {
   startDate: string;
@@ -42,51 +41,23 @@ interface UseGoodsListReturn {
 
 export const useGoodsList = (options: UseGoodsListOptions = {}): UseGoodsListReturn => {
   const { initialStatus = 'all', onError } = options;
-  const queryClient = useQueryClient();
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedStatus, setSelectedStatus] = useState<GoodsStatus | 'all'>(initialStatus);
-  const [selectedClient, setSelectedClient] = useState<userData | null>(null);
-  const [dateRange, setDateRange] = useState<DateRange | null>(null);
+  const {
+    searchQuery, setSearchQuery, selectedStatus, setSelectedStatus,
+    selectedClient, setSelectedClient, dateRange, setDateRange,
+    filters, hasFilters, clearAllFilters,
+  } = useGoodsListFilters(initialStatus);
 
-  const filters = useMemo<GoodsFilters>(() => ({
-    ...(selectedStatus !== 'all' && { status: selectedStatus }),
-    ...(searchQuery && { search: searchQuery }),
-    ...(selectedClient && { clientId: selectedClient._id }),
-    ...(dateRange && { startDate: dateRange.startDate, endDate: dateRange.endDate }),
-  }), [selectedStatus, searchQuery, selectedClient, dateRange]);
-
-  const hasFilters = !!searchQuery || selectedStatus !== 'all' || !!selectedClient || !!dateRange;
-
-  const { data, isLoading, isRefetching, error, refetch } = useGetAllGoods(filters);
-
-  useEffect(() => {
-    if (error && onError) {
-      onError(error);
-    }
-  }, [error, onError]);
-
-  const goods = useMemo(() => data?.data?.goods || [], [data]);
-  const total = useMemo(() => data?.data?.pagination?.total || 0, [data]);
-
-  const handleRefresh = useCallback(async () => {
-    await queryClient.invalidateQueries({ queryKey: goodsQueryKeys.lists() });
-    await refetch();
-  }, [queryClient, refetch]);
-
-  const clearAllFilters = useCallback(() => {
-    setSearchQuery('');
-    setSelectedStatus('all');
-    setSelectedClient(null);
-    setDateRange(null);
-  }, []);
+  const {
+    goods, total, isLoading, isRefetching, error, refetch, handleRefresh,
+  } = useGoodsListData(filters, onError);
 
   return {
     goods,
     total,
     isLoading,
     isRefetching,
-    error: error || null,
+    error,
     searchQuery,
     setSearchQuery,
     selectedStatus,

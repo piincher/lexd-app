@@ -3,6 +3,7 @@ import { View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface StatCardProps {
@@ -15,7 +16,7 @@ interface StatCardProps {
 const StatCard: React.FC<StatCardProps> = ({ label, value, icon, gradient }) => (
   <View style={styles.statCard}>
     <LinearGradient colors={gradient} style={styles.statIconBg} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-      <Ionicons name={icon as any} size={20} color="#FFF" />
+      <Ionicons name={icon as any} size={20} color={Theme.colors.text.inverse} />
     </LinearGradient>
     <View>
       <Text style={styles.statValue}>{value}</Text>
@@ -34,27 +35,30 @@ interface ContainerListHeaderProps {
   };
 }
 
-export const ContainerListHeader: React.FC<ContainerListHeaderProps> = ({ stats }) => (
-  <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
-    <View style={styles.headerTop}>
-      <View>
-        <Text style={styles.headerGreeting}>Gestion</Text>
-        <Text style={styles.headerTitle}>Containers</Text>
+export const ContainerListHeader: React.FC<ContainerListHeaderProps> = ({ stats }) => {
+  const { colors } = useAppTheme();
+  return (
+    <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
+      <View style={styles.headerTop}>
+        <View>
+          <Text style={styles.headerGreeting}>Gestion</Text>
+          <Text style={styles.headerTitle}>Containers</Text>
+        </View>
+        <TouchableOpacity style={styles.iconButton}>
+          <Ionicons name="filter" size={24} color={Theme.neutral[700]} />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.iconButton}>
-        <Ionicons name="filter" size={24} color={Theme.neutral[700]} />
-      </TouchableOpacity>
-    </View>
 
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.statsContainer}>
-      <StatCard label="Total" value={stats.total} icon="cube" gradient={Theme.gradients.primary} />
-      <StatCard label="En chargement" value={stats.loading} icon="hammer" gradient={['#F59E0B', '#FBBF24']} />
-      <StatCard label="En transit" value={stats.inTransit} icon="airplane" gradient={['#EC4899', '#F472B6']} />
-      <StatCard label="Arrivés" value={stats.arrived} icon="flag" gradient={['#10B981', '#34D399']} />
-      <StatCard label="Peut recevoir" value={stats.assignable} icon="add-circle" gradient={['#6366F1', '#818CF8']} />
-    </ScrollView>
-  </LinearGradient>
-);
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.statsContainer}>
+        <StatCard label="Total" value={stats.total} icon="cube" gradient={Theme.gradients.primary} />
+        <StatCard label="En chargement" value={stats.loading} icon="hammer" gradient={[colors.status.warning, colors.status.warning]} />
+        <StatCard label="En transit" value={stats.inTransit} icon="airplane" gradient={[colors.primary.main, colors.primary.light]} />
+        <StatCard label="Arrivés" value={stats.arrived} icon="flag" gradient={[colors.status.success, colors.status.success]} />
+        <StatCard label="Peut recevoir" value={stats.assignable} icon="add-circle" gradient={[colors.status.info, colors.status.info]} />
+      </ScrollView>
+    </LinearGradient>
+  );
+};
 
 const styles = StyleSheet.create({
   header: {

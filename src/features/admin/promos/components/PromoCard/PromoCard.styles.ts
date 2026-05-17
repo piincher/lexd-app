@@ -1,10 +1,9 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -23,13 +22,13 @@ export const styles = StyleSheet.create({
   promoCode: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     letterSpacing: 1,
   },
   promoName: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 2,
   },
   badgeRow: {
@@ -57,7 +56,7 @@ export const styles = StyleSheet.create({
   cardRowText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     flex: 1,
   },
   actionRow: {
@@ -65,7 +64,7 @@ export const styles = StyleSheet.create({
     gap: 10,
     marginTop: 12,
     borderTopWidth: 1,
-    borderTopColor: Theme.colors.neutral[100],
+    borderTopColor: colors.neutral[100],
     paddingTop: 12,
   },
   editButton: {
@@ -76,13 +75,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 10,
     borderWidth: 1.5,
-    borderColor: "#d4a843",
-    backgroundColor: "Theme.colors.status.warning + '10'",
+    borderColor: colors.primary.main,
+    backgroundColor: colors.primary.main + "15",
   },
   editButtonText: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: "#d4a843",
+    color: colors.primary.main,
   },
   deactivateButton: {
     flexDirection: "row",
@@ -92,12 +91,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 10,
     borderWidth: 1.5,
-    borderColor: "Theme.colors.status.error + '40'",
-    backgroundColor: "Theme.colors.status.error + '12'",
+    borderColor: colors.status.error + "40",
+    backgroundColor: colors.status.error + "12",
   },
   deactivateButtonText: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: "#DC2626",
+    color: colors.status.error,
   },
 });

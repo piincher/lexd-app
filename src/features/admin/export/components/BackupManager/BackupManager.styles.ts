@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Theme } from "@src/constants/Theme";
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,40 +10,34 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  statusCard: {
-    margin: 16,
-    marginBottom: 8,
-  },
-  statusRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  statusChip: {
-    height: 32,
-  },
-  statsRow: {
-    marginTop: 8,
-  },
-  lastRunText: {
-    marginTop: 4,
-    color: "#757575",
+  scrollContent: {
+    paddingBottom: 32,
+    flexGrow: 1,
   },
   actions: {
     flexDirection: "row",
     paddingHorizontal: 16,
     gap: 12,
-    marginBottom: 8,
+    marginBottom: 16,
   },
   actionButton: {
     flex: 1,
+    borderRadius: 10,
   },
   list: {
-    padding: 16,
-    paddingTop: 8,
+    paddingHorizontal: 16,
+    gap: 12,
   },
+  // Card styles
   card: {
-    marginBottom: 12,
+    borderRadius: 14,
+    padding: 14,
+    backgroundColor: Theme.colors.background.card,
+    shadowColor: Theme.colors.neutral[900],
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 2,
   },
   headerRow: {
     flexDirection: "row",
@@ -53,45 +48,90 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   backupId: {
-    fontWeight: "600",
-    marginBottom: 4,
+    fontWeight: "700",
+    marginBottom: 6,
+    letterSpacing: -0.2,
   },
   chipRow: {
     flexDirection: "row",
-    gap: 8,
+    gap: 6,
+    flexWrap: "wrap",
   },
-  chip: {
+  // Status card
+  statusCard: {
+    marginHorizontal: 16,
+    marginBottom: 16,
+    borderRadius: 14,
+    padding: 14,
+    backgroundColor: Theme.colors.background.card,
+    shadowColor: Theme.colors.neutral[900],
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  statusRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  statusLabel: {
+    fontWeight: "600",
+    marginBottom: 2,
+  },
+  statusMeta: {
+    color: Theme.colors.text.secondary,
+  },
+  statusChip: {
     height: 28,
   },
+  statsRow: {
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: Theme.colors.border,
+  },
+  statsText: {
+    color: Theme.colors.text.secondary,
+  },
+  lastRunText: {
+    marginTop: 4,
+    color: Theme.colors.text.secondary,
+  },
+  // Details
   detailsRow: {
     flexDirection: "row",
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "#e0e0e0",
+    borderTopColor: Theme.colors.border,
   },
   detail: {
     flex: 1,
   },
   detailLabel: {
-    color: "#757575",
+    color: Theme.colors.text.secondary,
+    marginBottom: 2,
+  },
+  detailValue: {
+    fontWeight: "600",
   },
   dateRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 8,
+    marginTop: 10,
   },
   dateText: {
-    color: "#757575",
+    color: Theme.colors.text.secondary,
   },
   restoreInfo: {
-    marginTop: 8,
-    paddingTop: 8,
+    marginTop: 10,
+    paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: "#e0e0e0",
+    borderTopColor: Theme.colors.border,
   },
   restoreText: {
-    color: "#9C27B0",
+    color: Theme.colors.primary.main,
     fontStyle: "italic",
   },
   empty: {
@@ -99,7 +139,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 40,
   },
   emptySubtext: {
-    color: "#757575",
+    color: Theme.colors.text.secondary,
     marginTop: 8,
   },
   dialogTitle: {
@@ -110,6 +150,6 @@ export const styles = StyleSheet.create({
   },
   warningText: {
     marginTop: 12,
-    color: "#F44336",
+    color: Theme.colors.status.error,
   },
 });

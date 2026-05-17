@@ -52,14 +52,14 @@ export const WaypointCardMeta: React.FC<WaypointCardMetaProps> = ({ waypoint, is
       <View style={styles.wpQuickInfo}>
         {waypoint.actualArrival ? (
           <View style={styles.wpInfoItem}>
-            <Ionicons name="calendar" size={12} color="#10B981" />
+            <Ionicons name="calendar" size={12} color={colors.status.success} />
             <Text style={styles.wpInfoText}>
               Arrivé: {formatDateShort(waypoint.actualArrival)}
             </Text>
           </View>
         ) : waypoint.estimatedArrival ? (
           <View style={styles.wpInfoItem}>
-            <Ionicons name="time-outline" size={12} color="#F59E0B" />
+            <Ionicons name="time-outline" size={12} color={colors.status.warning} />
             <Text style={styles.wpInfoText}>
               Est. arrivée: {formatDateShort(waypoint.estimatedArrival)}
             </Text>

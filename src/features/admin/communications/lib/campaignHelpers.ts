@@ -14,18 +14,18 @@ export const formatDate = (dateString: string): string => {
   }
 };
 
-export const getStatusStyle = (status: CampaignStatus, isDark: boolean) => {
+export const getStatusStyle = (status: CampaignStatus, colors: any, isDark: boolean) => {
   switch (status) {
     case "scheduled":
-      return { bg: isDark ? "#1E3A8A" : "#DBEAFE", text: isDark ? "#93C5FD" : "#1D4ED8" };
+      return { bg: isDark ? colors.feedback.infoDark : colors.feedback.infoBg, text: isDark ? colors.feedback.infoBg : colors.status.info };
     case "sending":
-      return { bg: isDark ? "#78350F" : "#FEF3C7", text: isDark ? "#FCD34D" : "#D97706" };
+      return { bg: isDark ? colors.feedback.warningDark : colors.feedback.warningBg, text: isDark ? colors.feedback.warningBg : colors.status.warning };
     case "sent":
-      return { bg: isDark ? "#14532D" : "#DCFCE7", text: isDark ? "#86EFAC" : "#15803D" };
+      return { bg: isDark ? colors.feedback.successDark : colors.feedback.successBg, text: isDark ? colors.feedback.successBg : colors.status.success };
     case "cancelled":
-      return { bg: isDark ? "#7F1D1D" : "#FEE2E2", text: isDark ? "#FCA5A5" : "#DC2626" };
+      return { bg: isDark ? colors.feedback.errorDark : colors.feedback.errorBg, text: isDark ? colors.feedback.errorBg : colors.status.error };
     default:
-      return { bg: isDark ? "#374151" : "#F3F4F6", text: isDark ? "#D1D5DB" : "#6B7280" };
+      return { bg: isDark ? colors.neutral[700] : colors.neutral[100], text: isDark ? colors.neutral[300] : colors.neutral[500] };
   }
 };
 

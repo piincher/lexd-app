@@ -45,3 +45,6 @@ export { EditGoodsError } from './EditGoodsError';
 // MyGoodsScreen components
 export { MyGoodsHeader } from './MyGoodsHeader';
 export { MyGoodsError } from './MyGoodsError';
+
+export { GoodsDetailInfoRow } from './GoodsDetailInfoRow';
+export { GoodsDetailInfoBadge } from './GoodsDetailInfoBadge';

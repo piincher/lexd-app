@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Chip, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { styles } from './ActiveOrderHeaderCard.styles';
+import { getStyles } from './ActiveOrderHeaderCard.styles';
 
 interface ActiveOrderHeaderCardProps {
   clientName?: string;
@@ -21,6 +21,8 @@ export const ActiveOrderHeaderCard: React.FC<ActiveOrderHeaderCardProps> = ({
   isAir,
   orderPrice,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   const initials = clientName?.split(' ').map((n: string) => n[0]).join('') || '?';
 
   return (
@@ -48,7 +50,7 @@ export const ActiveOrderHeaderCard: React.FC<ActiveOrderHeaderCardProps> = ({
             <MaterialCommunityIcons
               name={isDelivered ? 'check-circle' : 'clock-outline'}
               size={14}
-              color={isDelivered ? '#2E7D32' : '#E65100'}
+              color={isDelivered ? colors.status.success : colors.status.warning}
             />
           )}
         >
@@ -65,7 +67,7 @@ export const ActiveOrderHeaderCard: React.FC<ActiveOrderHeaderCardProps> = ({
             <MaterialCommunityIcons
               name={isAir ? 'airplane' : 'ferry'}
               size={14}
-              color={isAir ? '#1976D2' : '#00796B'}
+              color={isAir ? colors.status.info : colors.status.success}
             />
           )}
         >

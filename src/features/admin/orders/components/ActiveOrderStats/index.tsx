@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { styles } from './ActiveOrderStats.styles';
 
 interface ActiveOrderStatsProps {
@@ -15,16 +16,17 @@ export const ActiveOrderStats: React.FC<ActiveOrderStatsProps> = ({
   packageWeight,
   packageCBM,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <Surface style={styles.card}>
       <View style={styles.statItem}>
-        <MaterialCommunityIcons name="package-variant-closed" size={20} color="#1976D2" />
+        <MaterialCommunityIcons name="package-variant-closed" size={20} color={colors.status.info} />
         <Text style={styles.statValue}>{quantity ?? 1}</Text>
         <Text style={styles.statLabel}>Colis</Text>
       </View>
       <View style={styles.statDivider} />
       <View style={styles.statItem}>
-        <MaterialCommunityIcons name="weight" size={20} color="#E65100" />
+        <MaterialCommunityIcons name="weight" size={20} color={colors.status.warning} />
         <Text style={styles.statValue}>
           {packageWeight ? `${packageWeight}` : '--'}
         </Text>
@@ -32,7 +34,7 @@ export const ActiveOrderStats: React.FC<ActiveOrderStatsProps> = ({
       </View>
       <View style={styles.statDivider} />
       <View style={styles.statItem}>
-        <MaterialCommunityIcons name="cube-outline" size={20} color="#2E7D32" />
+        <MaterialCommunityIcons name="cube-outline" size={20} color={colors.status.success} />
         <Text style={styles.statValue}>{packageCBM || '0'}</Text>
         <Text style={styles.statLabel}>CBM (m³)</Text>
       </View>

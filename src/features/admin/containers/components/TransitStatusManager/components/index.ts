@@ -10,6 +10,8 @@ export { default as NonTransitViewDefault } from './NonTransitView';
 export type { NonTransitViewProps } from './NonTransitView';
 
 export { StatusUpdateModal } from './StatusUpdateModal';
+export { ModalHeader } from './ModalHeader';
+export { ModalActions } from './ModalActions';
 export { TransitActionButtons } from './TransitActionButtons';
 export { TransitStatusCard } from './TransitStatusCard';
 export { TransitTimeline } from './TransitTimeline';

@@ -4,6 +4,7 @@
 
 import React from "react";
 import { View, StyleSheet, Animated, useWindowDimensions } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface OnboardingBackgroundProps {
   backgroundColor: Animated.AnimatedInterpolation<string>;
@@ -13,9 +14,10 @@ export const OnboardingBackground: React.FC<OnboardingBackgroundProps> = ({
   backgroundColor,
 }) => {
   const { width, height } = useWindowDimensions();
+  const { colors } = useAppTheme();
   const styles = React.useMemo(
-    () => createStyles(width, height),
-    [height, width]
+    () => createStyles(width, height, colors),
+    [height, width, colors]
   );
 
   return (
@@ -37,7 +39,7 @@ export const OnboardingBackground: React.FC<OnboardingBackgroundProps> = ({
   );
 };
 
-const createStyles = (width: number, height: number) => {
+const createStyles = (width: number, height: number, colors: any) => {
   const largeBlob = Math.min(Math.max(width * 0.72, 240), 360);
   const midBlob = Math.min(Math.max(width * 0.48, 160), 240);
   const smallBlob = Math.min(Math.max(width * 0.34, 120), 180);
@@ -48,12 +50,12 @@ const createStyles = (width: number, height: number) => {
     },
     gradientOverlay: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: "rgba(0, 0, 0, 0.08)",
+      backgroundColor: colors.background.overlay,
     },
     blob: {
       position: "absolute",
       borderRadius: 999,
-      backgroundColor: "rgba(255, 255, 255, 0.07)",
+      backgroundColor: colors.text.inverse + '12',
     },
     blob1: {
       width: largeBlob,

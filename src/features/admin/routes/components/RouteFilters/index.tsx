@@ -7,6 +7,7 @@ import { View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { ShippingMode } from '../../types';
 import { styles } from './RouteFilters.styles';
@@ -23,6 +24,7 @@ interface RouteFiltersProps {
 }
 
 export const RouteFilters: React.FC<RouteFiltersProps> = ({ selectedMode, onSelectMode }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.filterWrapper}>
       <ScrollView
@@ -52,7 +54,7 @@ export const RouteFilters: React.FC<RouteFiltersProps> = ({ selectedMode, onSele
               <Ionicons
                 name={filter.icon as any}
                 size={16}
-                color={isSelected ? '#FFF' : Theme.neutral[500]}
+                color={isSelected ? colors.text.inverse : colors.neutral[500]}
                 style={styles.filterIcon}
               />
               <Text

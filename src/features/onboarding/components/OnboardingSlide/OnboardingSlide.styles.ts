@@ -44,7 +44,7 @@ export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOption
     decorationCircle: {
       position: "absolute",
       borderRadius: 999,
-      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      backgroundColor: colors.text.inverse + "1A",
     },
     circle1: {
       width: Math.min(width * 0.42, 180),
@@ -89,7 +89,7 @@ export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOption
       marginTop: isShort ? 14 : 20,
       paddingHorizontal: 14,
       paddingVertical: 7,
-      backgroundColor: "rgba(255, 255, 255, 0.18)",
+      backgroundColor: colors.text.inverse + "2E",
       borderRadius: 999,
     },
     counterText: {

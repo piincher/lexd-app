@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   panel: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderTopWidth: 1,
-    borderTopColor: Theme.colors.neutral[200],
+    borderTopColor: colors.neutral[200],
     padding: 16,
     gap: 12,
   },
@@ -17,20 +17,20 @@ export const styles = StyleSheet.create({
   selectedName: {
     fontSize: 15,
     fontWeight: "600",
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   noteInput: {
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 14,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     minHeight: 48,
     textAlignVertical: "top",
   },
   issueButton: {
-    backgroundColor: "#d4a843",
+    backgroundColor: colors.primary.main,
     borderRadius: 12,
     paddingVertical: 14,
     flexDirection: "row",
@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
     opacity: 0.6,
   },
   issueButtonText: {
-    color: "Theme.colors.text.inverse",
+    color: colors.text.inverse,
     fontSize: 16,
     fontWeight: "700",
   },

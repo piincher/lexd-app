@@ -7,6 +7,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 
 interface SectionHeaderProps {
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 22,
     borderRadius: 2,
-    backgroundColor: '#22C55E',
+    backgroundColor: Theme.colors.primary.main,
   },
   title: {
     fontFamily: Fonts.bold,

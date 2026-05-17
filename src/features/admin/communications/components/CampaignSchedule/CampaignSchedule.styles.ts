@@ -42,7 +42,7 @@ export const createStyles = (colors: any) =>
       alignItems: "center",
       justifyContent: "center",
     },
-    checkboxActive: { backgroundColor: "#8B5CF6", borderColor: "#8B5CF6" },
+    checkboxActive: { backgroundColor: colors.primary.main, borderColor: colors.primary.main },
     draftLabel: {
       fontFamily: Fonts.medium,
       fontSize: 14,

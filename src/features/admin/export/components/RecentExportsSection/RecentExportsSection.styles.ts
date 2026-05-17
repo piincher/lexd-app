@@ -3,28 +3,32 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   section: {
     paddingHorizontal: 16,
+    flex: 1,
   },
-  sectionHeader: {
+  header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 12,
   },
-  sectionTitle: {
+  title: {
+    fontWeight: "700",
+  },
+  filterButton: {
+    borderRadius: 8,
+  },
+  filterLabel: {
+    fontSize: 12,
     fontWeight: "600",
   },
-  loader: {
-    marginVertical: 40,
+  list: {
+    gap: 12,
+    paddingBottom: 16,
   },
-  empty: {
-    alignItems: "center",
-    paddingVertical: 40,
+  skeletonTitle: {
+    marginBottom: 16,
   },
-  emptySubtext: {
-    color: "#757575",
-    marginTop: 8,
-  },
-  exportsList: {
-    paddingBottom: 100,
+  skeletonCard: {
+    marginBottom: 12,
   },
 });

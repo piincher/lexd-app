@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface TimelineProgressProps {
@@ -18,6 +17,33 @@ export const TimelineProgress: React.FC<TimelineProgressProps> = ({
   totalCount,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      marginTop: 24,
+    },
+    background: {
+      height: 8,
+      backgroundColor: `${colors.text.inverse}30`,
+      borderRadius: 999,
+      overflow: 'hidden',
+    },
+    fill: {
+      height: '100%',
+      borderRadius: 999,
+    },
+    text: {
+      fontSize: 12,
+      color: colors.text.inverse,
+      marginTop: 8,
+      fontWeight: '600',
+    },
+    steps: {
+      fontSize: 11,
+      color: colors.text.inverse,
+      marginTop: 2,
+    },
+  }), [colors]);
+
   return (
     <View style={styles.container}>
       <View style={styles.background}>
@@ -30,30 +56,3 @@ export const TimelineProgress: React.FC<TimelineProgressProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: Theme.spacing.lg,
-  },
-  background: {
-    height: 8,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    borderRadius: Theme.radius.full,
-    overflow: 'hidden',
-  },
-  fill: {
-    height: '100%',
-    borderRadius: Theme.radius.full,
-  },
-  text: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.9)',
-    marginTop: Theme.spacing.sm,
-    fontWeight: '600',
-  },
-  steps: {
-    fontSize: 11,
-    color: 'rgba(255,255,255,0.7)',
-    marginTop: 2,
-  },
-});

@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
   avatarText: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
   clientDetails: {
     flex: 1,

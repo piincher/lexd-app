@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Route } from '../../../types';
-import { Theme } from '@src/shared/constants/Theme';
+import { Theme } from '@src/constants/Theme';
 
 interface RouteSelectorSelectedRouteProps {
   selectedRoute: Route;

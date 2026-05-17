@@ -74,14 +74,14 @@ export const HeroSection: React.FC<Props> = ({
   );
 
   const statItems = [
-    { icon: 'cube', value: fmtN(stats.totalGoods), label: 'Marchandises', tint: '#8B5CF6', onPress: onViewGoods },
-    { icon: 'boat', value: fmtN(stats.activeContainers), label: 'En Transit', tint: '#0EA5E9', onPress: onViewContainers },
-    // { icon: 'cash', value: `${fmtC(stats.totalSpent)}F`, label: 'Dépensé', tint: '#10B981', onPress: onViewSpent },
+    { icon: 'cube', value: fmtN(stats.totalGoods), label: 'Marchandises', tint: colors.primary.main, onPress: onViewGoods },
+    { icon: 'boat', value: fmtN(stats.activeContainers), label: 'En Transit', tint: colors.status.info, onPress: onViewContainers },
+    // { icon: 'cash', value: `${fmtC(stats.totalSpent)}F`, label: 'Dépensé', tint: colors.status.success, onPress: onViewSpent },
   ];
 
   const gradColors = isDark
-    ? (['rgba(139,92,246,0.15)', 'rgba(14,165,233,0.08)'] as const)
-    : (['rgba(139,92,246,0.08)', 'rgba(14,165,233,0.04)'] as const);
+    ? ([`${colors.primary.main}15`, `${colors.status.info}08`] as const)
+    : ([`${colors.primary.main}08`, `${colors.status.info}04`] as const);
 
   return (
     <View style={styles.wrapper}>

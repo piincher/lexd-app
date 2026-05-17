@@ -29,8 +29,8 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ searchQuery, onClear }) 
           : "La liste des clients est vide"}
       </Text>
       {searchQuery && (
-        <TouchableOpacity onPress={onClear} style={styles.button}>
-          <Text style={styles.buttonText}>Effacer la recherche</Text>
+        <TouchableOpacity onPress={onClear} style={[styles.button, { backgroundColor: colors.primary.main }]}>
+          <Text style={[styles.buttonText, { color: colors.text.inverse }]}>Effacer la recherche</Text>
         </TouchableOpacity>
       )}
     </Animated.View>
@@ -65,13 +65,11 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    backgroundColor: "#1a5f2a",
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 12,
   },
   buttonText: {
-    color: "white",
     fontWeight: "700",
     fontSize: 15,
   },

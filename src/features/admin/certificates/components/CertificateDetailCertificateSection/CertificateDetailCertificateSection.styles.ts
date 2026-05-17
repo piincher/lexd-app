@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
   verificationCode: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: "#d4a843",
+    color: Theme.colors.primary.main,
     letterSpacing: 1,
   },
   divider: {

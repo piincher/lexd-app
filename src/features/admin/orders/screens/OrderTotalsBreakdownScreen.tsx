@@ -3,27 +3,21 @@
  * Shows detailed cost breakdown for an order including active and voided goods
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
-import type { RootStackScreenProps } from '@src/navigations/type';
-import { useOrderTotals } from '../hooks/useOrderTotals';
 import { createStyles } from './OrderTotalsBreakdownScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { UnitPriceCard } from './components/UnitPriceCard';
 import { ActiveGoodsBreakdown } from './components/ActiveGoodsBreakdown';
 import { VoidedGoodsBreakdown } from './components/VoidedGoodsBreakdown';
 import { SummaryCard } from './components/SummaryCard';
+import { useOrderTotalsBreakdownScreen } from './hooks/useOrderTotalsBreakdownScreen';
 
-export const OrderTotalsBreakdownScreen: React.FC<
-  RootStackScreenProps<'OrderTotalsBreakdown'>
-> = () => {
+export const OrderTotalsBreakdownScreen: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
-  const route = useRoute<RootStackScreenProps<'OrderTotalsBreakdown'>['route']>();
-  const { orderId } = route.params;
-  const { data, isLoading } = useOrderTotals(orderId);
+  const styles = createStyles(colors);
+  const { data, isLoading, hasVoidedGoods } = useOrderTotalsBreakdownScreen();
 
   if (isLoading || !data) {
     return (
@@ -32,8 +26,6 @@ export const OrderTotalsBreakdownScreen: React.FC<
       </Screen>
     );
   }
-
-  const hasVoidedGoods = data.voidedGoods.length > 0;
 
   return (
     <Screen

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   container: {
     borderRadius: 16,
     padding: 16,
@@ -86,7 +86,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderTopWidth: 1,
-    borderTopColor: "rgba(150,150,150,0.1)",
+    borderTopColor: colors.border,
     paddingTop: 12,
     marginTop: 2,
   },

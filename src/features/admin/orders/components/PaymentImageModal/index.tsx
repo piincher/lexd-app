@@ -9,7 +9,8 @@ interface PaymentImageModalProps {
 }
 
 export const PaymentImageModal: React.FC<PaymentImageModalProps> = ({ imageUrl, onClose }) => {
-  const styles = createPaymentImageModalStyles();
+  const { colors } = useAppTheme();
+  const styles = createPaymentImageModalStyles(colors);
 
   return (
     <Portal>

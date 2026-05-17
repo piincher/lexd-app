@@ -9,6 +9,7 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { SearchFilters } from "../api/searchApi";
 
@@ -18,6 +19,7 @@ interface FilterFABProps {
 }
 
 export const FilterFAB: React.FC<FilterFABProps> = ({ filters, onPress }) => {
+  const { colors } = useAppTheme();
   const filterCount = Object.keys(filters).length;
 
   return (
@@ -32,7 +34,7 @@ export const FilterFAB: React.FC<FilterFABProps> = ({ filters, onPress }) => {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <Ionicons name="options" size={24} color="#FFF" />
+        <Ionicons name="options" size={24} color={colors.text.inverse} />
         {filterCount > 0 && (
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{filterCount}</Text>
@@ -72,6 +74,6 @@ const styles = StyleSheet.create({
   badgeText: {
     fontSize: 11,
     fontWeight: "700",
-    color: "#FFF",
+    color: Theme.colors.text.inverse,
   },
 });

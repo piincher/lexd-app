@@ -19,17 +19,17 @@ export const styles = StyleSheet.create({
   },
   waypointCardDakar: {
     borderWidth: 2,
-    borderColor: '#0EA5E9',
+    borderColor: Theme.status.info,
     ...Theme.shadows.md,
   },
   waypointCardBorder: {
     borderWidth: 2,
-    borderColor: '#F59E0B',
+    borderColor: Theme.status.warning,
     ...Theme.shadows.md,
   },
   waypointCardWarehouse: {
     borderWidth: 2,
-    borderColor: '#8B5CF6',
+    borderColor: Theme.primary.main,
     ...Theme.shadows.md,
   },
   statusBar: {
@@ -38,11 +38,11 @@ export const styles = StyleSheet.create({
   },
   statusBarDakar: {
     height: 6,
-    backgroundColor: '#0EA5E9',
+    backgroundColor: Theme.status.info,
   },
   statusBarBorder: {
     height: 6,
-    backgroundColor: '#F59E0B',
+    backgroundColor: Theme.status.warning,
   },
   waypointContent: {
     padding: Theme.spacing.lg,
@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     marginRight: Theme.spacing.md,
   },
   waypointNumberDakar: {
-    backgroundColor: '#0EA5E9',
+    backgroundColor: Theme.status.info,
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -73,7 +73,7 @@ export const styles = StyleSheet.create({
     color: Theme.primary[600],
   },
   waypointNumberTextDakar: {
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
     fontSize: 18,
   },
   waypointTitleContainer: {
@@ -86,7 +86,7 @@ export const styles = StyleSheet.create({
   },
   waypointLocationDakar: {
     fontSize: 18,
-    color: '#0284C7',
+    color: Theme.status.info,
   },
   waypointCode: {
     fontSize: 12,
@@ -123,7 +123,7 @@ export const styles = StyleSheet.create({
   routeDisplayText: {
     fontSize: 10,
     fontWeight: '600',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
   typeRow: {
     flexDirection: 'row',
@@ -167,7 +167,7 @@ export const styles = StyleSheet.create({
   currentIndicatorText: {
     fontSize: 9,
     fontWeight: '700',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
   quickInfo: {
     flexDirection: 'row',

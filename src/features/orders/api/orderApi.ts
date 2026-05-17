@@ -6,7 +6,6 @@ export {
 	editOrder,
 	getOrderBasedOnDate,
 	getActiveOrders,
-	fetchSmsBalance,
 	getActiveOrdersAdmin,
 	getOrderDetails,
 	updateOrderToDelivered,
@@ -15,9 +14,4 @@ export {
 	deleteOrder,
 	getOrdersBasedOnUserId,
 	getAllOrders,
-	sendNotificationSms,
-	recordPayment,
-	getPaymentHistory,
-	backfillPayments,
-	syncOrderStatuses,
 } from "@src/api/order";

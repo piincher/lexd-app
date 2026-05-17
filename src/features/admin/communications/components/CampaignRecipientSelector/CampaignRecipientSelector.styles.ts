@@ -16,8 +16,8 @@ export const createStyles = (colors: any, isDark: boolean) =>
       padding: 14,
     },
     segmentOptionActive: {
-      borderColor: "#8B5CF6",
-      backgroundColor: isDark ? "#2E1065" : "#FAFAFE",
+      borderColor: colors.primary.main,
+      backgroundColor: isDark ? colors.primary.dark : colors.primary.light,
     },
     segmentRadio: {
       width: 20,
@@ -32,14 +32,14 @@ export const createStyles = (colors: any, isDark: boolean) =>
       width: 10,
       height: 10,
       borderRadius: 5,
-      backgroundColor: "#8B5CF6",
+      backgroundColor: colors.primary.main,
     },
     segmentLabel: {
       fontFamily: Fonts.medium,
       fontSize: 14,
       color: colors.text.secondary,
     },
-    segmentLabelActive: { color: isDark ? "#C4B5FD" : "#7C3AED" },
+    segmentLabelActive: { color: isDark ? colors.primary.light : colors.primary.main },
     segmentSublabel: {
       fontFamily: Fonts.regular,
       fontSize: 12,
@@ -59,8 +59,8 @@ export const createStyles = (colors: any, isDark: boolean) =>
       paddingVertical: 12,
     },
     containerItemActive: {
-      borderColor: "#8B5CF6",
-      backgroundColor: isDark ? "#2E1065" : "#FAFAFE",
+      borderColor: colors.primary.main,
+      backgroundColor: isDark ? colors.primary.dark : colors.primary.light,
     },
     containerItemText: {
       fontFamily: Fonts.medium,
@@ -68,7 +68,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       color: colors.text.secondary,
     },
     containerItemTextActive: {
-      color: isDark ? "#C4B5FD" : "#7C3AED",
+      color: isDark ? colors.primary.light : colors.primary.main,
     },
     containerItemSubtext: {
       fontFamily: Fonts.regular,

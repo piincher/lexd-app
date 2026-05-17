@@ -33,14 +33,15 @@ interface BadgeItemProps {
   colors: {
     text: { primary: string; disabled: string };
     neutral: { [key: string]: string };
+    accent?: { gold?: string };
   };
 }
 
 export const BadgeItem: React.FC<BadgeItemProps> = ({ badge, isDark, colors }) => {
   const iconName = iconMap[badge.icon] || "help-circle";
   const color = badge.earned ? tierColors[badge.tier] || "#d4a843" : colors.text.disabled;
-  const unearnedBg = isDark ? "rgba(255,255,255,0.05)" : colors.neutral[100];
-  const unearnedBorder = isDark ? "rgba(255,255,255,0.12)" : colors.neutral[300];
+  const unearnedBg = colors.background.card;
+  const unearnedBorder = colors.border;
 
   return (
     <View style={styles.badgeWrapper}>
@@ -55,8 +56,8 @@ export const BadgeItem: React.FC<BadgeItemProps> = ({ badge, isDark, colors }) =
         )}
       </View>
       {!badge.earned && badge.progressPercentage > 0 && (
-        <View style={[styles.miniProgressTrack, { backgroundColor: isDark ? "rgba(255,255,255,0.1)" : colors.neutral[200] }]}>
-          <View style={[styles.miniProgressFill, { width: `${Math.min(badge.progressPercentage, 100)}%` }]} />
+        <View style={[styles.miniProgressTrack, { backgroundColor: colors.background.overlay }]}>
+          <View style={[styles.miniProgressFill, { width: `${Math.min(badge.progressPercentage, 100)}%`, backgroundColor: colors.accent.gold || "#d4a843" }]} />
         </View>
       )}
       <Text style={[styles.badgeLabel, { color: badge.earned ? colors.text.primary : colors.text.disabled }]} numberOfLines={1}>
@@ -71,5 +72,5 @@ const styles = StyleSheet.create({
   badgeCircle: { width: BADGE_SIZE, height: BADGE_SIZE, borderRadius: BADGE_SIZE / 2, borderWidth: 1.5, alignItems: "center", justifyContent: "center" },
   badgeLabel: { fontFamily: Fonts.meduim, fontSize: 9, marginTop: 4, textAlign: "center" },
   miniProgressTrack: { width: BADGE_SIZE - 8, height: 3, borderRadius: 1.5, overflow: "hidden", marginTop: 3 },
-  miniProgressFill: { height: "100%", backgroundColor: "#d4a843", borderRadius: 1.5 },
+  miniProgressFill: { height: "100%", borderRadius: 1.5 },
 });

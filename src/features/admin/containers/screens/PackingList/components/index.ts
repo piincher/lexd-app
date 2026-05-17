@@ -6,3 +6,5 @@ export { SectionHeader } from './SectionHeader';
 export { EmptyState } from './EmptyState';
 export { SummaryCard } from './SummaryCard';
 export { ActionBar } from './ActionBar';
+export { ClientSelector } from './ClientSelector';
+export { ClientSelectorModal } from './ClientSelectorModal';

@@ -18,7 +18,7 @@ export const TrackerHeader: React.FC<TrackerHeaderProps> = ({ containerNumber })
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <Ionicons name="map" size={28} color="#FFF" />
+        <Ionicons name="map" size={28} color={Theme.colors.text.inverse} />
         <Text style={styles.headerTitle}>Suivi du Parcours</Text>
         <Text style={styles.headerSubtitle}>{containerNumber}</Text>
       </LinearGradient>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: Theme.colors.text.inverse + 'CC',
     marginTop: 4,
   },
 });

@@ -1,10 +1,9 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -28,12 +27,12 @@ export const styles = StyleSheet.create({
   certificateId: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     marginRight: 8,
   },
   copyButton: {
     padding: 4,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: 6,
   },
   badgeRow: {
@@ -51,28 +50,28 @@ export const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   badgeAuto: {
-    backgroundColor: "Theme.colors.status.info + '15'",
+    backgroundColor: colors.status.info + '15',
   },
   badgeAutoText: {
-    color: "#1D4ED8",
+    color: colors.status.info,
   },
   badgeManual: {
-    backgroundColor: "Theme.colors.status.warning + '15'",
+    backgroundColor: colors.status.warning + '15',
   },
   badgeManualText: {
-    color: "#92400E",
+    color: colors.status.warning,
   },
   badgeActive: {
-    backgroundColor: "Theme.colors.status.success + '18'",
+    backgroundColor: colors.status.success + '18',
   },
   badgeActiveText: {
-    color: "#15803D",
+    color: colors.status.success,
   },
   badgeRevoked: {
-    backgroundColor: "Theme.colors.status.error + '15'",
+    backgroundColor: colors.status.error + '15',
   },
   badgeRevokedText: {
-    color: "#DC2626",
+    color: colors.status.error,
   },
   cardRow: {
     flexDirection: "row",
@@ -83,13 +82,13 @@ export const styles = StyleSheet.create({
   cardRowText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     flex: 1,
   },
   noteContainer: {
     flexDirection: "row",
     alignItems: "flex-start",
-    backgroundColor: "Theme.colors.status.warning + '12'",
+    backgroundColor: colors.status.warning + '12',
     borderRadius: 8,
     padding: 10,
     marginTop: 4,
@@ -99,7 +98,7 @@ export const styles = StyleSheet.create({
   noteText: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: "#92400E",
+    color: colors.status.warning,
     flex: 1,
     lineHeight: 18,
   },
@@ -107,7 +106,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#d4a843",
+    backgroundColor: colors.primary.main,
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 16,
@@ -120,6 +119,6 @@ export const styles = StyleSheet.create({
   downloadButtonText: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: "Theme.colors.text.inverse",
+    color: colors.text.inverse,
   },
 });

@@ -1,3 +1,4 @@
+import { Theme } from '@src/constants/Theme';
 import type { DemoShipment } from '../types';
 
 export const DEMO_SHIPMENTS: DemoShipment[] = [
@@ -7,7 +8,7 @@ export const DEMO_SHIPMENTS: DemoShipment[] = [
     label: 'Conteneur maritime CLX-2408',
     route: 'Guangzhou → Dakar → Bamako',
     status: 'En transit maritime',
-    statusColor: '#3B82F6',
+    statusColor: Theme.status.info,
     eta: '35 à 45 jours',
     etaDate: '15 juin 2026',
     progress: 0.55,
@@ -83,7 +84,7 @@ export const DEMO_SHIPMENTS: DemoShipment[] = [
     label: 'Expédition aérienne AWB-1288',
     route: 'Guangzhou → Hong Kong → Addis Abeba → Bamako',
     status: 'En vol',
-    statusColor: '#8B5CF6',
+    statusColor: Theme.primary.main,
     eta: '2 à 3 semaines',
     etaDate: '18 mai 2026',
     progress: 0.72,

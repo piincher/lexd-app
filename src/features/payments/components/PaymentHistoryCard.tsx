@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Card, Text, Button, Chip } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { format } from 'date-fns/format';
-import { fr } from 'date-fns/locale';
-import { Fonts } from '@src/constants/Fonts';
-import type { PaymentHistoryItem } from '../types';
+import { View, TouchableOpacity } from 'react-native';
+import { Card, Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import type { PaymentHistoryItem } from '../types';
+import { getPaymentHistoryCardStyles } from './PaymentHistoryCard.styles';
+import { PaymentHistoryCardHeader } from './PaymentHistoryCardHeader';
+import { PaymentHistoryCardDetails } from './PaymentHistoryCardDetails';
+import { PaymentHistoryCardReceiptActions } from './PaymentHistoryCardReceiptActions';
 
 interface PaymentHistoryCardProps {
   payment: PaymentHistoryItem;
@@ -68,100 +68,27 @@ export const PaymentHistoryCard: React.FC<PaymentHistoryCardProps> = ({
   const statusLabel = STATUS_LABELS[payment.status] || STATUS_LABELS.PENDING;
   const hasReceipt = !!(payment.receiptUrl || payment.metadata?.receiptUrl);
 
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        card: { borderRadius: 12, elevation: 2, backgroundColor: colors.background.card, marginBottom: 12 },
-        content: { padding: 16 },
-        header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
-        iconContainer: { width: 40, height: 40, borderRadius: 8, justifyContent: 'center', alignItems: 'center' },
-        chip: { height: 28, borderRadius: 6 },
-        amount: { fontFamily: Fonts.bold, fontSize: 18, fontWeight: '700', color: colors.text.primary, marginBottom: 12 },
-        details: { gap: 8, marginBottom: 16 },
-        row: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-        label: { fontFamily: Fonts.medium, fontSize: 13, color: colors.text.secondary, minWidth: 90 },
-        value: { fontFamily: Fonts.medium, fontSize: 13, color: colors.text.primary, flex: 1 },
-        actions: { gap: 8, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 12 },
-        actionBtn: { alignSelf: 'flex-start' },
-        secondaryActions: { flexDirection: 'row', gap: 8 },
-        outlinedBtn: { flex: 1, borderColor: colors.status.success },
-      }),
-    [colors]
-  );
+  const styles = useMemo(() => getPaymentHistoryCardStyles(colors), [colors]);
 
   const CardContent = (
     <Card style={styles.card} mode="elevated">
       <View style={styles.content}>
-        <View style={styles.header}>
-          <View style={[styles.iconContainer, { backgroundColor: methodColor + '20' }]}>
-            <MaterialCommunityIcons name={methodIcon as any} size={20} color={methodColor} />
-          </View>
-          <Chip
-            style={[styles.chip, { backgroundColor: statusColor + '20' }]}
-            textStyle={{ color: statusColor, fontFamily: Fonts.bold, fontSize: 11 }}
-          >
-            {statusLabel}
-          </Chip>
-        </View>
+        <PaymentHistoryCardHeader
+          methodIcon={methodIcon}
+          methodColor={methodColor}
+          statusColor={statusColor}
+          statusLabel={statusLabel}
+          colors={colors}
+        />
         <Text style={styles.amount}>{payment.amountFCFA.toLocaleString('fr-FR')} FCFA</Text>
-        <View style={styles.details}>
-          {payment.goodsIds?.[0] && (
-            <View style={styles.row}>
-              <MaterialCommunityIcons name="package-variant" size={14} color={colors.text.secondary} />
-              <Text style={styles.label}>Commande:</Text>
-              <Text style={styles.value}>{payment.goodsIds[0]}</Text>
-            </View>
-          )}
-          {payment.orderCode && (
-            <View style={styles.row}>
-              <MaterialCommunityIcons name="file-document" size={14} color={colors.text.secondary} />
-              <Text style={styles.label}>Commande:</Text>
-              <Text style={styles.value}>{payment.orderCode}</Text>
-            </View>
-          )}
-          <View style={styles.row}>
-            <MaterialCommunityIcons name="calendar" size={14} color={colors.text.secondary} />
-            <Text style={styles.label}>Date:</Text>
-            <Text style={styles.value}>{format(new Date(payment.paidAt || payment.createdAt), 'dd MMMM yyyy', { locale: fr })}</Text>
-          </View>
-          {payment.referenceNumber && (
-            <View style={styles.row}>
-              <MaterialCommunityIcons name="identifier" size={14} color={colors.text.secondary} />
-              <Text style={styles.label}>Référence:</Text>
-              <Text style={styles.value}>{payment.referenceNumber}</Text>
-            </View>
-          )}
-          {payment.receiptNumber && (
-            <View style={styles.row}>
-              <MaterialCommunityIcons name="receipt" size={14} color={colors.text.secondary} />
-              <Text style={styles.label}>N° Reçu:</Text>
-              <Text style={styles.value}>{payment.receiptNumber}</Text>
-            </View>
-          )}
-          {payment.transactionReference && (
-            <View style={styles.row}>
-              <MaterialCommunityIcons name="identifier" size={14} color={colors.text.secondary} />
-              <Text style={styles.label}>Référence:</Text>
-              <Text style={styles.value}>{payment.transactionReference}</Text>
-            </View>
-          )}
-        </View>
+        <PaymentHistoryCardDetails payment={payment} colors={colors} />
         {hasReceipt && (
-          <View style={styles.actions}>
-            {onViewReceipt && (
-              <Button mode="text" onPress={onViewReceipt} textColor={colors.status.success} icon="file-document-outline" style={styles.actionBtn}>
-                Voir le reçu
-              </Button>
-            )}
-            <View style={styles.secondaryActions}>
-              {onDownloadReceipt && (
-                <Button mode="outlined" onPress={onDownloadReceipt} style={styles.outlinedBtn} textColor={colors.status.success}>Télécharger</Button>
-              )}
-              {onShareReceipt && (
-                <Button mode="outlined" onPress={onShareReceipt} style={styles.outlinedBtn} textColor={colors.status.success}>Partager</Button>
-              )}
-            </View>
-          </View>
+          <PaymentHistoryCardReceiptActions
+            colors={colors}
+            onViewReceipt={onViewReceipt}
+            onDownloadReceipt={onDownloadReceipt}
+            onShareReceipt={onShareReceipt}
+          />
         )}
       </View>
     </Card>

@@ -1,10 +1,9 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
@@ -23,13 +22,13 @@ export const styles = StyleSheet.create({
   clientName: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     flex: 1,
   },
   clientPhone: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   cardHeader: {
     flexDirection: "row",
@@ -40,7 +39,7 @@ export const styles = StyleSheet.create({
   goodsId: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     flexShrink: 1,
     marginRight: 8,
   },
@@ -55,21 +54,21 @@ export const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   badgeMaritime: {
-    backgroundColor: "Theme.colors.status.info + '15'",
+    backgroundColor: colors.status.info + "15",
   },
   badgeMaritimeText: {
-    color: "#1D4ED8",
+    color: colors.status.info,
   },
   badgeAerien: {
-    backgroundColor: "Theme.colors.status.warning + '15'",
+    backgroundColor: colors.status.warning + "15",
   },
   badgeAerienText: {
-    color: "#92400E",
+    color: colors.status.warning,
   },
   commentText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 8,
     lineHeight: 20,
   },
@@ -82,10 +81,10 @@ export const styles = StyleSheet.create({
   dateText: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   responseContainer: {
-    backgroundColor: "Theme.colors.status.info + '12'",
+    backgroundColor: colors.status.info + "12",
     borderRadius: 10,
     padding: 12,
     marginTop: 12,
@@ -93,19 +92,19 @@ export const styles = StyleSheet.create({
   responseLabel: {
     fontSize: 12,
     fontFamily: Fonts.bold,
-    color: "#1D4ED8",
+    color: colors.status.info,
     marginBottom: 4,
   },
   responseText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     lineHeight: 20,
   },
   responseDate: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 6,
   },
   respondButton: {
@@ -117,25 +116,25 @@ export const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
     borderWidth: 1.5,
-    borderColor: "#d4a843",
-    backgroundColor: "Theme.colors.status.warning + '10'",
+    borderColor: colors.primary.main,
+    backgroundColor: colors.primary.main + "10",
   },
   respondButtonText: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: "#d4a843",
+    color: colors.primary.main,
   },
   responseInputContainer: {
     marginTop: 12,
   },
   responseInput: {
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     minHeight: 80,
     textAlignVertical: "top",
   },
@@ -149,18 +148,18 @@ export const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 10,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
   },
   cancelButtonText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   submitButton: {
     paddingVertical: 8,
     paddingHorizontal: 20,
     borderRadius: 10,
-    backgroundColor: "#d4a843",
+    backgroundColor: colors.primary.main,
   },
   submitButtonDisabled: {
     opacity: 0.6,
@@ -168,6 +167,6 @@ export const styles = StyleSheet.create({
   submitButtonText: {
     fontSize: 14,
     fontFamily: Fonts.bold,
-    color: "Theme.colors.text.inverse",
+    color: colors.text.inverse,
   },
 });

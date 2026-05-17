@@ -6,6 +6,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Text, TextInput, HelperText } from 'react-native-paper';
 import { useGoodsFormStyles } from './GoodsForm.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { FormSection } from './FormSection';
 import { ShippingModeSelector } from './ShippingModeSelector';
 import { DimensionsSection } from './DimensionsSection';
@@ -32,9 +33,8 @@ interface GoodsFormProps {
   calculatedTotalCost?: number;
 }
 
-const ACCENT = '#16A34A';
-
 export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculatedCBM, calculatedTotalCost }) => {
+  const { colors } = useAppTheme();
   const styles = useGoodsFormStyles();
   const isSea = data.shippingMode === 'SEA';
 
@@ -49,7 +49,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
           mode="outlined" label="Description de la marchandise" value={data.description}
           onChangeText={(v) => onChange('description', v)} multiline numberOfLines={3}
           style={styles.textArea} outlineStyle={styles.inputOutline}
-          outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+          outlineColor={colors.border} activeOutlineColor={colors.primary.main}
         />
       </FormSection>
 
@@ -59,14 +59,14 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             mode="outlined" label="Quantité" value={data.quantity}
             onChangeText={(v) => onChange('quantity', v.replace(/[^0-9]/g, ''))}
             keyboardType="numeric" style={[styles.input, styles.halfInput]}
-            outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+            outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
             right={<TextInput.Affix text="pcs" />}
           />
           <TextInput
             mode="outlined" label="Poids" value={data.weight}
             onChangeText={(v) => onChange('weight', v.replace(/[^0-9.]/g, ''))}
             keyboardType="decimal-pad" style={[styles.input, styles.halfInput]}
-            outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+            outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
             right={<TextInput.Affix text="kg" />}
           />
         </View>
@@ -88,7 +88,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
           mode="outlined" label="Prix unitaire" value={data.unitPrice}
           onChangeText={(v) => onChange('unitPrice', v.replace(/[^0-9.]/g, ''))}
           keyboardType="decimal-pad" style={styles.input}
-          outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+          outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
           right={<TextInput.Affix text={isSea ? 'FCFA/m³' : 'FCFA/kg'} />}
         />
         {calculatedTotalCost != null && calculatedTotalCost > 0 && (
@@ -104,7 +104,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
           mode="outlined" label="Emplacement entrepôt" value={data.location}
           onChangeText={(v) => onChange('location', v.toUpperCase())}
           autoCapitalize="characters" style={styles.input}
-          outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+          outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
           placeholder="Ex: C3"
         />
         <HelperText type="info">Format: lettre + chiffre (ex: A1, C3, D5)</HelperText>
@@ -115,7 +115,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
           mode="outlined" label="Nom du réceptionnaire" value={data.receivedByName}
           onChangeText={(v) => onChange('receivedByName', v)}
           style={styles.input} outlineStyle={styles.inputOutline}
-          outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+          outlineColor={colors.border} activeOutlineColor={colors.primary.main}
         />
       </FormSection>
     </View>

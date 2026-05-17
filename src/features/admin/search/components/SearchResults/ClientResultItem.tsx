@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { SearchResultItem } from "../../types/searchResults";
 import { useSearchHighlight } from "../../hooks/useSearchHighlight";
@@ -18,6 +19,7 @@ export const ClientResultItem: React.FC<ClientResultItemProps> = ({
   onPress,
   highlightQuery,
 }) => {
+  const { colors } = useAppTheme();
   const highlightText = useSearchHighlight(highlightQuery);
   const fullName =
     `${item.firstName || ""} ${item.lastName || ""}`.trim() || "Nom inconnu";
@@ -42,17 +44,17 @@ export const ClientResultItem: React.FC<ClientResultItemProps> = ({
           </Text>
           {item.isActive ? (
             <View
-              style={[styles.statusBadge, { backgroundColor: "#22C55E20" }]}
+              style={[styles.statusBadge, { backgroundColor: colors.status.success + "20" }]}
             >
-              <Text style={[styles.statusText, { color: "#22C55E" }]}>
+              <Text style={[styles.statusText, { color: colors.status.success }]}>
                 Actif
               </Text>
             </View>
           ) : (
             <View
-              style={[styles.statusBadge, { backgroundColor: "#EF444420" }]}
+              style={[styles.statusBadge, { backgroundColor: colors.status.error + "20" }]}
             >
-              <Text style={[styles.statusText, { color: "#EF4444" }]}>
+              <Text style={[styles.statusText, { color: colors.status.error }]}>
                 Inactif
               </Text>
             </View>

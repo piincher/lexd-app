@@ -1,28 +1,23 @@
 import React from 'react';
 import { View, Button } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
-import { useOrderWithGoods } from '../hooks/useOrderWithGoods';
-import { useRecalculateOrder } from '../hooks/useRecalculateOrder';
 import { OrderSummaryCard } from '../components/OrderSummaryCard';
 import { ActiveGoodsSection } from '../components/ActiveGoodsSection';
 import { VoidedGoodsSection } from '../components/VoidedGoodsSection';
 import { VoidHistorySection } from '../components/VoidHistorySection';
 import { RecalculateButton } from '../components/RecalculateButton';
 import { OrderDetailSkeleton } from '../components/OrderDetailSkeleton';
+import { useOrderDetailWithGoodsScreen } from './hooks/useOrderDetailWithGoodsScreen';
 import { styles } from './OrderDetailWithGoodsScreen.styles';
 
-interface RouteParams {
-  orderId: string;
-}
-
 export const OrderDetailWithGoodsScreen: React.FC = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
-  const { orderId } = route.params as RouteParams;
-  
-  const { data, isLoading } = useOrderWithGoods(orderId);
-  const { mutate: recalculate, isPending: isRecalculating } = useRecalculateOrder();
+  const {
+    orderId,
+    data,
+    isLoading,
+    isRecalculating,
+    handlers,
+  } = useOrderDetailWithGoodsScreen();
 
   if (isLoading || !data) {
     return (
@@ -35,11 +30,11 @@ export const OrderDetailWithGoodsScreen: React.FC = () => {
   const { order, activeGoods, voidedGoods, voidHistory } = data;
 
   return (
-    <Screen 
+    <Screen
       header={{ title: `Order ${order.code}`, showNotificationBell: true }}
       footer={
-        <RecalculateButton 
-          onPress={() => recalculate(orderId)}
+        <RecalculateButton
+          onPress={handlers.handleRecalculate}
           isLoading={isRecalculating}
         />
       }
@@ -65,10 +60,10 @@ export const OrderDetailWithGoodsScreen: React.FC = () => {
         )}
 
         {/* Navigate to Classic View */}
-        <View style={{ marginTop: 20, marginBottom: 40 }}>
+        <View style={styles.backButtonContainer}>
           <Button
             title="← Retour à la vue classique"
-            onPress={() => navigation.navigate('ActiveOrderDetails', { id: orderId })}
+            onPress={handlers.handleBack}
           />
         </View>
       </View>

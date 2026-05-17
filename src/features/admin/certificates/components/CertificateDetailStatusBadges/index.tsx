@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { styles } from "./CertificateDetailStatusBadges.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { getStyles } from "./CertificateDetailStatusBadges.styles";
 
 interface CertificateDetailStatusBadgesProps {
   isActive: boolean;
@@ -10,6 +11,8 @@ interface CertificateDetailStatusBadgesProps {
 export const CertificateDetailStatusBadges: React.FC<
   CertificateDetailStatusBadgesProps
 > = ({ isActive, type }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   const isAuto = type === "AUTO";
 
   return (

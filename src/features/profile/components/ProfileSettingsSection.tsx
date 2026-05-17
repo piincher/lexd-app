@@ -12,7 +12,7 @@ interface Props {
 
 export const ProfileSettingsSection: React.FC<Props> = ({ onNavigate }) => {
   const { colors, isDark } = useAppTheme();
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)';
+  const cardBorder = colors.border;
 
   return (
     <>
@@ -20,7 +20,7 @@ export const ProfileSettingsSection: React.FC<Props> = ({ onNavigate }) => {
         <MaterialCommunityIcons name="cog-outline" size={18} color={colors.primary.main} />
         <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>Paramètres</Text>
       </View>
-      <View style={[styles.menuCard, { backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#FFFFFF', borderColor: cardBorder }]}>
+      <View style={[styles.menuCard, { backgroundColor: colors.background.card, borderColor: cardBorder }]}>
         <ThemeToggle variant="menu" />
       </View>
       <SettingsMenu onNavigate={onNavigate} />

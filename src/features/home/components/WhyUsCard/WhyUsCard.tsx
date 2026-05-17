@@ -16,14 +16,6 @@ interface WhyUsCardProps {
   index: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getCardColors = (colors: any) => [
-  colors.status.info,
-  colors.accent.mint,
-  colors.status.info,
-  colors.status.warning,
-];
-
 export const WhyUsCard: React.FC<WhyUsCardProps> = ({
   icon,
   title,
@@ -31,6 +23,14 @@ export const WhyUsCard: React.FC<WhyUsCardProps> = ({
   index,
 }) => {
   const { colors } = useAppTheme();
+
+  const getCardColors = (c: any) => [
+    c.status.info,
+    c.accent.mint,
+    c.primary.main,
+    c.status.warning,
+  ];
+
   const backgroundColor = getCardColors(colors)[index % 4];
 
   return (

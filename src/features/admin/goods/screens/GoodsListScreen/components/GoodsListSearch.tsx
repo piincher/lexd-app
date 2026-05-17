@@ -8,7 +8,7 @@ import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/shared/constants/Theme';
+import { Theme } from '@src/constants/Theme';
 
 interface GoodsListSearchProps {
   value: string;
@@ -29,7 +29,7 @@ export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
   return (
   <View style={styles.wrapper}>
     <LinearGradient colors={[colors.background.card, colors.background.paper]} style={styles.container}>
-      <Ionicons name="search" size={20} color={Theme.primary[400]} style={styles.icon} />
+      <Ionicons name="search" size={20} color={colors.primary.light} style={styles.icon} />
       <TextInput
         style={[styles.input, { color: colors.text.primary }]}
         placeholder="Rechercher une marchandise..."
@@ -46,7 +46,7 @@ export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
           onPress={onFilterPress}
           style={[styles.filterButton, { backgroundColor: colors.primary[100] }]}
         >
-          <Ionicons name="options-outline" size={22} color={hasActiveFilters ? Theme.primary[500] : colors.text.secondary} />
+          <Ionicons name="options-outline" size={22} color={hasActiveFilters ? colors.primary.main : colors.text.secondary} />
           {hasActiveFilters && <View style={styles.filterBadge} />}
         </TouchableOpacity>
       )}
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: Theme.primary[500],
+    backgroundColor: Theme.colors.primary.main,
   },
 });
 

@@ -47,7 +47,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   if (isLoading) {
     return (
       <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color={Theme.primary[600]} />
+        <ActivityIndicator size="large" color={colors.primary.main} />
         <Text style={[styles.loadingText, { color: colors.text.secondary }]}>Chargement des marchandises...</Text>
       </View>
     );
@@ -56,14 +56,14 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   if (error) {
     return (
       <View style={styles.centerContainer}>
-        <LinearGradient colors={[Theme.colors.status.error + '10', Theme.colors.status.error + '05']} style={styles.errorIcon}>
-          <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
+        <LinearGradient colors={[colors.feedback.errorBg, colors.background.paper]} style={styles.errorIcon}>
+          <Ionicons name="alert-circle" size={64} color={colors.status.error} />
         </LinearGradient>
         <Text style={[styles.errorTitle, { color: colors.text.primary }]}>Erreur de chargement</Text>
         <Text style={[styles.errorSubtitle, { color: colors.text.secondary }]}>Impossible de récupérer les marchandises</Text>
         <TouchableOpacity style={styles.retryButton} onPress={onRefresh}>
           <LinearGradient colors={Theme.gradients.primary} style={styles.retryGradient}>
-            <Ionicons name="refresh" size={20} color={Theme.colors.text.inverse} />
+            <Ionicons name="refresh" size={20} color={colors.text.inverse} />
             <Text style={styles.retryText}>Réessayer</Text>
           </LinearGradient>
         </TouchableOpacity>

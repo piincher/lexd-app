@@ -2,33 +2,44 @@ import { StyleSheet } from "react-native";
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
-    statsCard: {
-      margin: 16,
-      marginTop: 0,
-      backgroundColor: colors.background.card,
+    container: {
+      marginHorizontal: 16,
+      marginBottom: 20,
     },
-    statsTitle: {
-      marginBottom: 12,
-      fontWeight: "500",
-    },
-    statsRow: {
+    grid: {
       flexDirection: "row",
-      justifyContent: "space-around",
+      justifyContent: "space-between",
     },
-    statItem: {
+    statCell: {
+      flex: 1,
       alignItems: "center",
+      position: "relative",
     },
-    statValue: {
-      fontWeight: "700",
+    iconWrap: {
+      width: 40,
+      height: 40,
+      borderRadius: 10,
+      justifyContent: "center",
+      alignItems: "center",
+      marginBottom: 8,
     },
-    statLabel: {
+    value: {
+      fontSize: 22,
+      fontWeight: "800",
+      letterSpacing: -0.5,
+    },
+    label: {
+      fontSize: 12,
+      fontWeight: "500",
       color: colors.text.secondary,
       marginTop: 4,
     },
-    successValue: {
-      color: colors.status.success,
-    },
-    failedValue: {
-      color: colors.status.error,
+    divider: {
+      position: "absolute",
+      right: 0,
+      top: 8,
+      bottom: 8,
+      width: 1,
+      backgroundColor: colors.border,
     },
   });

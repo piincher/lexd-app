@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, View, RefreshControl } from 'react-native';
 import type { HomeTabScreenProps } from '@src/navigations/type';
 import { Theme } from '@src/constants/Theme';
-import { withProtectedRoute } from '@src/shared/hoc/withProtectedRoute';
+import { withProtectedRoute } from '@src/hoc/withProtectedRoute';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useAdminStats } from './hooks/useAdminStats';
 import { createStatsStyles } from './StatsScreen.styles';

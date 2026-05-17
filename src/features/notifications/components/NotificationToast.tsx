@@ -10,7 +10,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { InAppNotification } from '../types';
 import { NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../types';
 import { useToastAnimation } from '../hooks/useToastAnimation';
-import { styles } from './NotificationToast.styles';
+import { useNotificationToastStyles } from './NotificationToast.styles';
 
 export interface NotificationToastProps {
   notification: InAppNotification | null;
@@ -28,6 +28,7 @@ const NotificationToast: React.FC<NotificationToastProps> = ({
   autoDismissDelay = 5000,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useNotificationToastStyles();
   const { animatedStyle, handleDismiss, handlePress, panGesture } = useToastAnimation({
     visible,
     notification,
@@ -54,7 +55,7 @@ const NotificationToast: React.FC<NotificationToastProps> = ({
             <Pressable
               onPress={handlePress}
               style={styles.content}
-              android_ripple={{ color: 'rgba(255,255,255,0.1)' }}
+              android_ripple={{ color: colors.text.inverse + '1A' }}
             >
               <View style={[styles.iconContainer, { backgroundColor: categoryConfig.color }]}>
                 <MaterialCommunityIcons name={iconName} size={24} color={colors.text.inverse} />

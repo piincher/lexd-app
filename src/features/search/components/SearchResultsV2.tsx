@@ -3,155 +3,93 @@
  * Decomposed version under 150 lines
  */
 
-import React, { useCallback, useState, useMemo } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Input } from '@src/shared/ui/Input';
-import { Button } from '@src/shared/ui/Button';
 import { useSearchResults } from '../hooks/useSearchResults';
 import { SearchResultCard } from './SearchResultCard';
 import { SearchFilterPanel } from './SearchFilterPanel';
-import { SearchSortDropdown } from './SearchSortDropdown';
 import { SearchPagination } from './SearchPagination';
 import { SearchResult } from '../types';
+import { SearchResultsHeader } from './SearchResultsHeader';
+import { SearchResultsEmptyState } from './SearchResultsEmptyState';
+import { useSearchResultsV2Styles } from './SearchResultsV2.styles';
 
 interface SearchResultsV2Props {
-  initialQuery?: string;
-  onResultPress?: (result: SearchResult) => void;
+	initialQuery?: string;
+	onResultPress?: (result: SearchResult) => void;
 }
 
 export const SearchResultsV2: React.FC<SearchResultsV2Props> = ({
-  initialQuery = '',
-  onResultPress,
+	initialQuery = '',
+	onResultPress,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+	const styles = useSearchResultsV2Styles();
 
-  const {
-    query,
-    filters,
-    sort,
-    results,
-    isLoading,
-    updateQuery,
-    updateFilters,
-    updateSort,
-    clearFilters,
-  } = useSearchResults(initialQuery);
+	const {
+		query,
+		filters,
+		sort,
+		results,
+		isLoading,
+		updateQuery,
+		updateFilters,
+		updateSort,
+		clearFilters,
+	} = useSearchResults(initialQuery);
 
-  const [showFilters, setShowFilters] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+	const [showFilters, setShowFilters] = useState(false);
+	const [currentPage, setCurrentPage] = useState(1);
 
-  const handleResultPress = useCallback(
-    (result: SearchResult) => {
-      onResultPress?.(result);
-    },
-    [onResultPress]
-  );
+	const handleResultPress = useCallback(
+		(result: SearchResult) => {
+			onResultPress?.(result);
+		},
+		[onResultPress]
+	);
 
-  const totalPages = Math.ceil(results.length / 10) || 1;
+	const totalPages = Math.ceil(results.length / 10) || 1;
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.searchBar}>
-        <Input
-          placeholder="Rechercher..."
-          value={query}
-          onChangeText={updateQuery}
-          containerStyle={styles.searchInput}
-        />
-        <Button variant="secondary" onPress={() => setShowFilters(true)}>
-          Filtres
-        </Button>
-      </View>
+	return (
+		<View style={styles.container}>
+			<SearchResultsHeader
+				query={query}
+				onQueryChange={updateQuery}
+				onShowFilters={() => setShowFilters(true)}
+				resultsCount={results.length}
+				sort={sort}
+				onSortChange={updateSort}
+			/>
 
-      <View style={styles.toolbar}>
-        <Text style={styles.resultCount}>
-          {results.length} résultat{results.length !== 1 ? 's' : ''}
-        </Text>
-        <SearchSortDropdown value={sort} onChange={updateSort} />
-      </View>
+			{results.length === 0 && !isLoading ? (
+				<SearchResultsEmptyState />
+			) : (
+				<FlashList
+					data={results}
+					keyExtractor={(item) => item._id}
+					renderItem={({ item }) => (
+						<SearchResultCard result={item} onPress={handleResultPress} />
+					)}
+					contentContainerStyle={styles.list}
+				/>
+			)}
 
-      {results.length === 0 && !isLoading ? (
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyText}>Aucun résultat trouvé</Text>
-        </View>
-      ) : (
-        <FlashList
-          data={results}
-          keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <SearchResultCard result={item} onPress={handleResultPress} />
-          )}
-          contentContainerStyle={styles.list}
-        />
-      )}
+			<SearchPagination
+				currentPage={currentPage}
+				totalPages={totalPages}
+				onPageChange={setCurrentPage}
+			/>
 
-      <SearchPagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
-
-      {showFilters && (
-        <View style={styles.modalOverlay}>
-          <SearchFilterPanel
-            filters={filters}
-            onFilterChange={updateFilters}
-            onClose={() => setShowFilters(false)}
-            onClear={clearFilters}
-          />
-        </View>
-      )}
-    </View>
-  );
+			{showFilters && (
+				<View style={styles.modalOverlay}>
+					<SearchFilterPanel
+						filters={filters}
+						onFilterChange={updateFilters}
+						onClose={() => setShowFilters(false)}
+						onClear={clearFilters}
+					/>
+				</View>
+			)}
+		</View>
+	);
 };
-
-const createStyles = (colors: any) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-    },
-    searchBar: {
-      flexDirection: 'row',
-      padding: 12,
-      gap: 8,
-    },
-    searchInput: {
-      flex: 1,
-    },
-    toolbar: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingHorizontal: 12,
-      paddingBottom: 8,
-    },
-    resultCount: {
-      fontSize: 14,
-      color: colors.text.secondary,
-    },
-    list: {
-      padding: 12,
-    },
-    emptyState: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    emptyText: {
-      fontSize: 16,
-      color: colors.text.disabled,
-    },
-    modalOverlay: {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: colors.background.overlay,
-      justifyContent: 'center',
-      padding: 20,
-    },
-  });

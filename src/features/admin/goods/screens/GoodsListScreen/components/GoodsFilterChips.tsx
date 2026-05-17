@@ -10,7 +10,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsStatus } from '../../../types';
-import { Theme } from '@src/shared/constants/Theme';
+import { Theme } from '@src/constants/Theme';
 
 const STATUS_FILTERS: { key: GoodsStatus | 'all'; label: string; icon: string }[] = [
   { key: 'all', label: 'Tous', icon: 'apps' },

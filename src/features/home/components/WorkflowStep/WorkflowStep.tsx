@@ -25,7 +25,7 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
   return (
     <View style={[styles.container, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
       <View style={[styles.iconContainer, { backgroundColor: colors.primary.main }]}>
-        <FontAwesome6 name={icon as any} size={24} color="white" />
+        <FontAwesome6 name={icon as any} size={24} color={colors.text.inverse} />
       </View>
       <View style={styles.textContainer}>
         <Text style={[styles.title, { color: colors.text.primary }]}>{title}</Text>

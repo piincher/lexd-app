@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { getPaymentHistory } from '@src/api/order';
+import { getPaymentHistory } from '@src/api/payment';
 
 export const usePaymentReceiptPolling = (
   orderId: string | undefined,

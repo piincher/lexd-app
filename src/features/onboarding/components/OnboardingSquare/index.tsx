@@ -4,6 +4,7 @@
 
 import React from "react";
 import { StyleSheet, Animated, Dimensions } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 const { height } = Dimensions.get("screen");
 
@@ -16,6 +17,8 @@ export const OnboardingSquare: React.FC<OnboardingSquareProps> = ({
   scrollX,
   width = 0,
 }) => {
+  const { colors } = useAppTheme();
+
   // Create rotation and translation based on scroll position
   const rotate = scrollX.interpolate({
     inputRange: [0, width, 2 * width, 3 * width],
@@ -32,6 +35,7 @@ export const OnboardingSquare: React.FC<OnboardingSquareProps> = ({
       style={[
         styles.square,
         {
+          backgroundColor: colors.text.inverse,
           transform: [{ rotate }, { translateX }],
         },
       ]}
@@ -43,7 +47,6 @@ const styles = StyleSheet.create({
   square: {
     width: height,
     height: height,
-    backgroundColor: "#fff",
     borderRadius: 86,
     position: "absolute",
     top: -height * 0.6,

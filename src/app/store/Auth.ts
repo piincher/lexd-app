@@ -5,6 +5,7 @@ import { PersistStorage, persist } from 'zustand/middleware';
 import { resetQueryClient } from '@src/shared/lib/queryClient';
 import * as EncryptedStorage from '@src/shared/lib/encryptedStorage';
 import { apiClientV2 } from '@src/api/client';
+import { setAuthStoreRef } from '@src/shared/api/authStoreRef';
 
 interface authType {
 	user: {
@@ -96,3 +97,7 @@ export const useAuth = create<authType>()(
 		}
 	)
 );
+
+setAuthStoreRef({
+	getState: () => useAuth.getState(),
+});

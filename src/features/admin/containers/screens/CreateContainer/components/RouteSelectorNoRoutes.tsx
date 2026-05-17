@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/shared/constants/Theme';
+import { Theme } from '@src/constants/Theme';
 
 interface RouteSelectorNoRoutesProps {
   onCreateRoute: () => void;
@@ -61,6 +61,6 @@ const styles = StyleSheet.create({
   createRouteButtonText: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
 });

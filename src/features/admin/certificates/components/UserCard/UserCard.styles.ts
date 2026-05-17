@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
@@ -18,8 +18,8 @@ export const styles = StyleSheet.create({
     borderColor: "transparent",
   },
   cardSelected: {
-    borderColor: "#d4a843",
-    backgroundColor: "Theme.colors.status.warning + '10'",
+    borderColor: colors.primary.main,
+    backgroundColor: colors.primary.main + '10',
   },
   info: {
     flex: 1,
@@ -32,10 +32,10 @@ export const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "600",
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   badge: {
-    backgroundColor: "Theme.colors.status.warning + '15'",
+    backgroundColor: colors.status.warning + '15',
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 12,
@@ -44,16 +44,16 @@ export const styles = StyleSheet.create({
   badgeText: {
     fontSize: 11,
     fontWeight: "700",
-    color: "#D97706",
+    color: colors.status.warning,
   },
   phone: {
     fontSize: 14,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginBottom: 2,
   },
   cbm: {
     fontSize: 13,
-    color: "#d4a843",
+    color: colors.primary.main,
     fontWeight: "600",
   },
   indicator: {

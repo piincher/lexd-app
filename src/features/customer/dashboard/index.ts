@@ -6,7 +6,6 @@
 // API
 export { dashboardApi } from './api/dashboardApi';
 export type {
-  ApiResponse,
   GetDashboardResponse,
   GetActivityResponse,
   GetActivityParams,

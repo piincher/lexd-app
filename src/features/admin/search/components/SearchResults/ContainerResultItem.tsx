@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { SearchResultItem } from "../../types/searchResults";
 import { useSearchHighlight } from "../../hooks/useSearchHighlight";
@@ -19,6 +20,7 @@ export const ContainerResultItem: React.FC<ContainerResultItemProps> = ({
   onPress,
   highlightQuery,
 }) => {
+  const { colors } = useAppTheme();
   const highlightText = useSearchHighlight(highlightQuery);
   const statusColors: Record<string, string> = {
     BOOKED: "#6366F1",
@@ -87,7 +89,7 @@ export const ContainerResultItem: React.FC<ContainerResultItemProps> = ({
                 {
                   width: `${Math.min(utilizationPercent, 100)}%`,
                   backgroundColor:
-                    utilizationPercent > 90 ? "#EF4444" : "#10B981",
+                    utilizationPercent > 90 ? colors.status.error : colors.status.success,
                 },
               ]}
             />

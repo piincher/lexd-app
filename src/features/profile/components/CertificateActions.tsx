@@ -42,20 +42,20 @@ export const CertificateActions: React.FC<Props> = ({
         <LinearGradient
           colors={
             canDownload
-              ? ["#d4a843", "#F4D03F"]
-              : ["rgba(212,168,67,0.3)", "rgba(244,208,63,0.3)"]
+              ? [colors.accent.gold, colors.accent.goldLight]
+              : [colors.accent.gold + '4D', colors.accent.goldLight + '4D']
           }
           style={styles.downloadGradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
           {isDownloading ? (
-            <ActivityIndicator size="small" color="#1a237e" />
+            <ActivityIndicator size="small" color={colors.primary.dark} />
           ) : (
             <MaterialIcons
               name="file-download"
               size={22}
-              color={canDownload ? "#1a237e" : WHITE_60}
+              color={canDownload ? colors.primary.dark : WHITE_60}
             />
           )}
           <Text

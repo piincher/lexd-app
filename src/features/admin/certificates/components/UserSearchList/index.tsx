@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from "reac
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
 import { CertificateUser } from "../../api";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { UserCard } from "../UserCard";
 import { styles } from "./UserSearchList.styles";
@@ -24,6 +25,7 @@ export const UserSearchList: React.FC<UserSearchListProps> = ({
   selectedUserId,
   onSelectUser,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={{ flex: 1 }}>
       <View style={styles.searchContainer}>
@@ -49,7 +51,7 @@ export const UserSearchList: React.FC<UserSearchListProps> = ({
       <View style={{ flex: 1 }}>
         {isLoading ? (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#d4a843" />
+            <ActivityIndicator size="large" color={colors.primary.main} />
             <Text style={styles.loadingText}>Recherche...</Text>
           </View>
         ) : (

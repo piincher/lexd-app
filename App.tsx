@@ -3,7 +3,7 @@ import { PaperProvider } from 'react-native-paper';
 import * as Sentry from '@sentry/react-native';
 import React from 'react';
 import { initSentry } from '@src/services/sentry';
-import { OfflineProvider } from '@src/shared/providers';
+import { OfflineProvider } from '@src/app/providers/OfflineProvider';
 import { getQueryClient } from '@src/shared/lib/queryClient';
 import { ThemeProvider, useAppTheme } from '@src/providers';
 import { NotificationProvider } from '@src/app/providers';

@@ -1,1 +1,1 @@
-export * from "@src/shared/hooks/useAuthCheck";
+export * from "@src/app/hooks/useAuthCheck";

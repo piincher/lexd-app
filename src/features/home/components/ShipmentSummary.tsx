@@ -1,166 +1,58 @@
-import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import React from 'react';
+import { View, Text, Pressable } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { StatCard } from './StatCard';
+import { styles } from './ShipmentSummary.styles';
 
 interface SummaryStats {
-   total: number;
-   warehouse: number;
-   transit: number;
-   delivered: number;
+  total: number;
+  warehouse: number;
+  transit: number;
+  delivered: number;
 }
 
 interface ShipmentSummaryProps {
-   stats: SummaryStats;
-   onViewAll?: () => void;
+  stats: SummaryStats;
+  onViewAll?: () => void;
 }
 
-const STAT_CARDS = [
-   {
-      key: "total" as const,
-      label: "Total",
-      icon: "package-variant" as const,
-      lib: "mci" as const,
-      color: "#1B365D",
-   },
-   {
-      key: "warehouse" as const,
-      label: "Entrepôt",
-      icon: "home" as const,
-      lib: "feather" as const,
-      color: "#E88D2A",
-   },
-   {
-      key: "transit" as const,
-      label: "Transit",
-      icon: "airplane" as const,
-      lib: "mci" as const,
-      color: "#2D8FDB",
-   },
-   {
-      key: "delivered" as const,
-      label: "Livrés",
-      icon: "check-circle" as const,
-      lib: "feather" as const,
-      color: "#1AAE7E",
-   },
-];
+export const ShipmentSummary: React.FC<ShipmentSummaryProps> = ({ stats, onViewAll }) => {
+  const { colors } = useAppTheme();
 
-export const ShipmentSummary: React.FC<ShipmentSummaryProps> = ({
-   stats,
-   onViewAll,
-}) => {
-   const { colors } = useAppTheme();
+  const STAT_CARDS = [
+    { key: 'total' as const, label: 'Total', icon: 'package-variant', lib: 'mci' as const, color: colors.primary.dark },
+    { key: 'warehouse' as const, label: 'Entrepôt', icon: 'home', lib: 'feather' as const, color: colors.status.warning },
+    { key: 'transit' as const, label: 'Transit', icon: 'airplane', lib: 'mci' as const, color: colors.status.info },
+    { key: 'delivered' as const, label: 'Livrés', icon: 'check-circle', lib: 'feather' as const, color: colors.status.success },
+  ];
 
-   return (
-      <View style={styles.container}>
-         {/* Section header */}
-         <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
-               Résumé
-            </Text>
-            {onViewAll && (
-               <Pressable onPress={onViewAll} style={styles.viewAllBtn}>
-                  <Text
-                     style={[
-                        styles.viewAllText,
-                        { color: colors.text.secondary },
-                     ]}
-                  >
-                     Voir tout
-                  </Text>
-                  <Feather
-                     name="chevron-right"
-                     size={16}
-                     color={colors.text.secondary}
-                  />
-               </Pressable>
-            )}
-         </View>
-
-         {/* Stats cards row */}
-         <View style={styles.cardsRow}>
-            {STAT_CARDS.map((card) => (
-               <View
-                  key={card.key}
-                  style={[styles.statCard, { backgroundColor: card.color }]}
-               >
-                  <View style={styles.iconCircle}>
-                     {card.lib === "mci" ? (
-                        <MaterialCommunityIcons
-                           name={card.icon}
-                           size={22}
-                           color="#FFFFFF"
-                        />
-                     ) : (
-                        <Feather
-                           name={card.icon}
-                           size={22}
-                           color="#FFFFFF"
-                        />
-                     )}
-                  </View>
-                  <Text style={styles.statNumber}>{stats[card.key]}</Text>
-                  <Text style={styles.statLabel}>{card.label}</Text>
-               </View>
-            ))}
-         </View>
+  return (
+    <View style={styles.container}>
+      <View style={styles.sectionHeader}>
+        <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>Résumé</Text>
+        {onViewAll && (
+          <Pressable onPress={onViewAll} style={styles.viewAllBtn}>
+            <Text style={[styles.viewAllText, { color: colors.text.secondary }]}>Voir tout</Text>
+            <Feather name="chevron-right" size={16} color={colors.text.secondary} />
+          </Pressable>
+        )}
       </View>
-   );
+
+      <View style={styles.cardsRow}>
+        {STAT_CARDS.map((card) => (
+          <StatCard
+            key={card.key}
+            label={card.label}
+            value={stats[card.key]}
+            icon={card.icon}
+            lib={card.lib}
+            color={card.color}
+          />
+        ))}
+      </View>
+    </View>
+  );
 };
 
-const styles = StyleSheet.create({
-   container: {
-      marginTop: 24,
-      paddingHorizontal: 20,
-   },
-   sectionHeader: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 14,
-   },
-   sectionTitle: {
-      fontSize: 20,
-      fontWeight: "700",
-   },
-   viewAllBtn: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 2,
-   },
-   viewAllText: {
-      fontSize: 14,
-      fontWeight: "500",
-   },
-   cardsRow: {
-      flexDirection: "row",
-      gap: 10,
-   },
-   statCard: {
-      flex: 1,
-      borderRadius: 14,
-      paddingVertical: 14,
-      paddingHorizontal: 8,
-      alignItems: "center",
-      gap: 6,
-   },
-   iconCircle: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-      backgroundColor: "rgba(255, 255, 255, 0.2)",
-      justifyContent: "center",
-      alignItems: "center",
-   },
-   statNumber: {
-      fontSize: 22,
-      fontWeight: "800",
-      color: "#FFFFFF",
-   },
-   statLabel: {
-      fontSize: 11,
-      fontWeight: "600",
-      color: "rgba(255, 255, 255, 0.85)",
-   },
-});
+export default ShipmentSummary;

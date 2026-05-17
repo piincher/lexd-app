@@ -3,3 +3,6 @@ export { SearchResultCard } from './SearchResultCard';
 export { SearchFilterPanel } from './SearchFilterPanel';
 export { SearchSortDropdown } from './SearchSortDropdown';
 export { SearchPagination } from './SearchPagination';
+
+export { SearchResultsHeader } from './SearchResultsHeader';
+export { SearchResultsEmptyState } from './SearchResultsEmptyState';

@@ -20,7 +20,7 @@ export const FooterSection: React.FC = () => {
 
    return (
       <Animated.View entering={FadeIn.duration(800).delay(1000)} style={styles.nuvotechFooter}>
-         <View style={styles.footerDivider} />
+         <View style={[styles.footerDivider, { backgroundColor: colors.border }]} />
          <View style={styles.footerContent}>
             <Text style={[styles.madeWith, { color: colors.text.disabled }]}>
                Made with <Text style={styles.heart}>❤️</Text> by{" "}
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
    },
    footerDivider: {
       height: 1,
-      backgroundColor: "rgba(128, 128, 128, 0.2)",
       marginBottom: 16,
    },
    footerContent: {

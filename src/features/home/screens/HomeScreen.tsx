@@ -3,19 +3,14 @@
  * Thin orchestrator composing home page sections
  */
 
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
-import { useNavigation } from '@react-navigation/native';
-import type { navigationProps } from '@src/navigations/type';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useAuth } from '@src/store/Auth';
 import { Header } from '../components/Header';
 import { CreateOrderCTA } from '../components/CreateOrderCTA';
 import Banner from '../components/Banner';
 import { WhatsAppButton } from '../components/WhatsAppButton';
-import { useHomeScreen } from '../hooks/useHomeScreen';
 import {
   HeroSection,
   DashboardBanner,
@@ -26,30 +21,14 @@ import {
   CertificateVerifier,
   PartnersStrip,
 } from '../components/sections';
+import { useHomeScreen } from './hooks/useHomeScreen';
+import { styles } from './HomeScreen.styles';
 
 const HomeScreen: React.FC = () => {
-  const navigation = useNavigation<navigationProps>();
-  const { colors } = useAppTheme();
-  const token = useAuth((state) => state.token);
-  const firstName = useAuth((state) => state.user?.firstName);
-  const { whatsappStyle, scrollHandler } = useHomeScreen();
-
-  // Redirect authenticated users to dashboard — Home is for guests only
-  useEffect(() => {
-    if (token) {
-      navigation.navigate('CustomerDashboard' as never);
-    }
-  }, [token, navigation]);
-
-  const handleServicePress = (route: string) => {
-    if (route === 'ChooseShippingMethod') {
-      navigation.navigate('ChooseShippingMethod');
-    }
-  };
-  const handleDashboardPress = () => navigation.navigate('CustomerDashboard');
+  const { token, firstName, whatsappStyle, scrollHandler, handlers } = useHomeScreen();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]} edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <Header />
 
       <Animated.ScrollView
@@ -60,10 +39,10 @@ const HomeScreen: React.FC = () => {
       >
         <HeroSection />
         <Banner />
-        {token && <CreateOrderCTA onPress={() => navigation.navigate('ChooseShippingMethod')} />}
-        {token && <DashboardBanner firstName={firstName} onPress={handleDashboardPress} />}
+        {token && <CreateOrderCTA onPress={handlers.handleCreateOrderPress} />}
+        {token && <DashboardBanner firstName={firstName} onPress={handlers.handleDashboardPress} />}
         <StatsStrip />
-        <ServiceShowcase onServicePress={handleServicePress} />
+        <ServiceShowcase onServicePress={handlers.handleServicePress} />
         <ProcessTimeline />
         <BenefitsGrid />
         <CertificateVerifier />
@@ -75,17 +54,5 @@ const HomeScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    paddingBottom: 120,
-  },
-  bottomSpacing: {
-    height: 40,
-  },
-});
 
 export default HomeScreen;

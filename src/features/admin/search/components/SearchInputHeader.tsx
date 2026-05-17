@@ -8,6 +8,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { GlobalSearchBar } from "./GlobalSearchBar";
 import { EntityType, ENTITY_TABS } from "../hooks/useGlobalSearch";
@@ -25,6 +26,7 @@ export const SearchInputHeader: React.FC<SearchInputHeaderProps> = ({
   onSearch,
   onExport,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <>
       {/* Header */}
@@ -57,7 +59,7 @@ export const SearchInputHeader: React.FC<SearchInputHeaderProps> = ({
                 <Ionicons
                   name={tab.icon as any}
                   size={16}
-                  color={isActive ? "#FFF" : Theme.neutral[500]}
+                  color={isActive ? colors.text.inverse : colors.neutral[500]}
                   style={styles.tabIcon}
                 />
                 <Text
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
     color: Theme.neutral[600],
   },
   tabTextActive: {
-    color: "#FFF",
+    color: Theme.colors.text.inverse,
   },
   searchContainer: {
     marginTop: -Theme.spacing.lg,

@@ -1,25 +1,13 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { useConsigneeList } from "../hooks/useConsigneeList";
+import { useConsigneeListScreen } from "./hooks/useConsigneeListScreen";
 import { ConsigneeListLoading } from "../components/ConsigneeListLoading";
 import { ConsigneeListError } from "../components/ConsigneeListError";
 import { ConsigneeListContent } from "../components/ConsigneeListContent";
-
-type ConsigneeStackParamList = {
-   ConsigneeList: undefined;
-   ConsigneeDetail: { id: string };
-   CreateConsignee: undefined;
-};
-
-type NavigationProp = NativeStackNavigationProp<ConsigneeStackParamList>;
+import { createStyles } from "./ConsigneeListScreen.styles";
 
 const ConsigneeListScreen: React.FC = () => {
-   const navigation = useNavigation<NavigationProp>();
-   const { colors } = useAppTheme();
    const {
       searchQuery,
       setSearchQuery,
@@ -28,11 +16,15 @@ const ConsigneeListScreen: React.FC = () => {
       error,
       refetch,
       handleToggleStatus,
-   } = useConsigneeList();
+      handlers,
+   } = useConsigneeListScreen();
+
+   const { colors } = useAppTheme();
+   const styles = createStyles(colors);
 
    if (isLoading) {
       return (
-         <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
+         <SafeAreaView style={styles.container}>
             <ConsigneeListLoading />
          </SafeAreaView>
       );
@@ -40,30 +32,24 @@ const ConsigneeListScreen: React.FC = () => {
 
    if (error) {
       return (
-         <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
+         <SafeAreaView style={styles.container}>
             <ConsigneeListError onRetry={refetch} />
          </SafeAreaView>
       );
    }
 
    return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
+      <SafeAreaView style={styles.container}>
          <ConsigneeListContent
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             consignees={filteredConsignees}
-            onConsigneePress={(id) => navigation.navigate("ConsigneeDetail", { id })}
+            onConsigneePress={handlers.handleConsigneePress}
             onToggleStatus={handleToggleStatus}
-            onCreatePress={() => navigation.navigate("CreateConsignee")}
+            onCreatePress={handlers.handleCreatePress}
          />
       </SafeAreaView>
    );
 };
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-   },
-});
 
 export default ConsigneeListScreen;

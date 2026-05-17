@@ -6,7 +6,6 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { Button } from 'react-native-paper';
-import { useRoute } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { PaymentRecordSummary } from '../components/PaymentRecordSummary';
@@ -14,20 +13,10 @@ import { PaymentForm } from '../components/PaymentForm';
 import { PaymentProofImages } from '../components/PaymentProofImages';
 import { PaymentPreviewCard } from '../components/PaymentPreviewCard';
 import { PaymentErrorCard } from '../components/PaymentErrorCard';
-import { useRecordPaymentScreen } from './hooks/useRecordPaymentScreen';
+import { useRecordPaymentScreenUI } from './hooks/useRecordPaymentScreenUI';
 import { createRecordPaymentScreenStyles } from './RecordPaymentScreen.styles';
 
 const RecordPaymentScreen: React.FC = () => {
-  const route = useRoute();
-  const { orderId, orderCode, clientName, clientPhone, currentBalance, totalAmount } = route.params as {
-    orderId: string;
-    orderCode: string;
-    clientName: string;
-    clientPhone?: string;
-    currentBalance: number;
-    totalAmount: number;
-  };
-
   const {
     amount, setAmount, paymentMethod, setPaymentMethod,
     referenceNumber, setReferenceNumber, notes, setNotes,
@@ -35,7 +24,8 @@ const RecordPaymentScreen: React.FC = () => {
     isSubmitting, isPending, isError, error,
     handleSubmit, pickImage, removeImage,
     newBalance, paymentStatus,
-  } = useRecordPaymentScreen({ orderId, orderCode, clientName, clientPhone, currentBalance, totalAmount });
+    orderCode, clientName, totalAmount, currentBalance,
+  } = useRecordPaymentScreenUI();
 
   const { colors } = useAppTheme();
   const styles = createRecordPaymentScreenStyles(colors);

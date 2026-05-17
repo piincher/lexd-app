@@ -1,21 +1,20 @@
 import React from 'react';
 import {
   View,
-  Text,
-  StyleSheet,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   TouchableWithoutFeedback,
   BackHandler,
 } from 'react-native';
-import { Portal, Button } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { Portal } from 'react-native-paper';
 import { ContainerWaypoint, WaypointStatus } from '../../../types/waypoints';
 import { WAYPOINT_STATUS_COLORS } from '@src/shared/types/containerWaypoints';
 import { StatusTransitionDisplay } from './StatusTransitionDisplay';
 import { DelayNotesInput } from './DelayNotesInput';
+import { ModalHeader } from './ModalHeader';
+import { ModalActions } from './ModalActions';
+import { styles } from './StatusUpdateModal.styles';
 
 interface StatusUpdateModalProps {
   visible: boolean;
@@ -83,10 +82,7 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
         >
           <TouchableWithoutFeedback>
             <View style={styles.modalContent} pointerEvents="auto">
-              <View style={styles.header}>
-                <Ionicons name="swap-horizontal" size={28} color={Theme.status.info} />
-                <Text style={styles.title}>Mettre à jour le statut</Text>
-              </View>
+              <ModalHeader />
 
               <ScrollView
                 ref={scrollViewRef}
@@ -112,26 +108,14 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
                 <View style={styles.footerSpacer} />
               </ScrollView>
 
-              <View style={styles.actions}>
-                <Button
-                  onPress={handleDismiss}
-                  disabled={isLoading}
-                  textColor={Theme.neutral[500]}
-                  style={styles.actionButton}
-                >
-                  Annuler
-                </Button>
-                <Button
-                  mode="contained"
-                  onPress={handleConfirm}
-                  disabled={!isValid || isLoading}
-                  loading={isLoading}
-                  buttonColor={newStatusColor}
-                  style={styles.actionButton}
-                >
-                  {isLoading ? 'Mise à jour...' : 'Confirmer'}
-                </Button>
-              </View>
+              <ModalActions
+                onDismiss={handleDismiss}
+                onConfirm={handleConfirm}
+                isLoading={isLoading}
+                isValid={isValid}
+                buttonColor={newStatusColor}
+                confirmLabel={isLoading ? 'Mise à jour...' : 'Confirmer'}
+              />
             </View>
           </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
@@ -139,64 +123,3 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
     </Portal>
   );
 };
-
-const styles = StyleSheet.create({
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 1000,
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  keyboardView: {
-    flex: 1,
-    justifyContent: 'flex-end',
-  },
-  modalContent: {
-    backgroundColor: Theme.colors.background.card,
-    borderTopLeftRadius: Theme.radius['3xl'],
-    borderTopRightRadius: Theme.radius['3xl'],
-    maxHeight: '90%',
-    ...Theme.shadows.xl,
-  },
-  scrollContent: {
-    flexGrow: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: Theme.spacing.lg,
-    paddingBottom: Theme.spacing.md,
-    gap: Theme.spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
-  },
-  title: {
-    textAlign: 'center',
-    fontWeight: '700',
-    fontSize: 18,
-    color: Theme.neutral[800],
-  },
-  scrollView: {
-    paddingHorizontal: Theme.spacing.lg,
-    paddingTop: Theme.spacing.lg,
-  },
-  footerSpacer: {
-    height: Theme.spacing.xl,
-  },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    paddingHorizontal: Theme.spacing.lg,
-    paddingVertical: Theme.spacing.md,
-    gap: Theme.spacing.sm,
-    borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
-  },
-  actionButton: {
-    minHeight: 44,
-  },
-});

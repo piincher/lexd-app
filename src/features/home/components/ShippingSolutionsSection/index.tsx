@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 
 interface ShippingSolutionsSectionProps {
    onPressAir: () => void;
@@ -26,13 +27,13 @@ export const ShippingSolutionsSection: React.FC<ShippingSolutionsSectionProps> =
                style={({ pressed }) => [styles.card, { opacity: pressed ? 0.9 : 1 }]}
             >
                <LinearGradient
-                  colors={["#4A90E2", "#1ED7B5"]}
+                  colors={[Theme.gradients.ocean[2], Theme.gradients.ocean[0]]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={styles.cardGradient}
                >
                   <View style={styles.iconCircle}>
-                     <FontAwesome6 name="plane" size={24} color="#4A90E2" />
+                     <FontAwesome6 name="plane" size={24} color={Theme.colors.status.info} />
                   </View>
                   <Text style={styles.cardTitle}>Fret Aérien</Text>
                   <Text style={styles.cardText}>2 à 3 semaines</Text>
@@ -45,13 +46,13 @@ export const ShippingSolutionsSection: React.FC<ShippingSolutionsSectionProps> =
                style={({ pressed }) => [styles.card, { opacity: pressed ? 0.9 : 1 }]}
             >
                <LinearGradient
-                  colors={["#1ED7B5", "#4A90E2"]}
+                  colors={[Theme.gradients.ocean[0], Theme.gradients.ocean[2]]}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 1 }}
                   style={styles.cardGradient}
                >
                   <View style={styles.iconCircle}>
-                     <FontAwesome6 name="ship" size={24} color="#1ED7B5" />
+                     <FontAwesome6 name="ship" size={24} color={Theme.colors.accent.mint} />
                   </View>
                   <Text style={styles.cardTitle}>Fret Maritime</Text>
                   <Text style={styles.cardText}>6 à 8 semaines</Text>
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
       width: 48,
       height: 48,
       borderRadius: 24,
-      backgroundColor: "rgba(255,255,255,0.9)",
+      backgroundColor: Theme.colors.background.card,
       justifyContent: "center",
       alignItems: "center",
       marginBottom: 12,
@@ -105,18 +106,18 @@ const styles = StyleSheet.create({
    cardTitle: {
       fontSize: 18,
       fontFamily: Fonts.bold,
-      color: "white",
+      color: Theme.neutral.white,
    },
    cardText: {
       fontSize: 15,
       fontFamily: Fonts.meduim,
-      color: "rgba(255,255,255,0.95)",
+      color: `${Theme.neutral.white}F2`,
       marginTop: 4,
    },
    cardSubtext: {
       fontSize: 13,
       fontFamily: Fonts.regular,
-      color: "rgba(255,255,255,0.8)",
+      color: `${Theme.neutral.white}CC`,
       marginTop: 2,
    },
 });

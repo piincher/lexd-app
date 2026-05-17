@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   badgeContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -19,27 +19,27 @@ export const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   badgeActive: {
-    backgroundColor: "Theme.colors.status.success + '18'",
+    backgroundColor: colors.status.success + '18',
   },
   badgeActiveText: {
-    color: "#15803D",
+    color: colors.status.success,
   },
   badgeRevoked: {
-    backgroundColor: "Theme.colors.status.error + '15'",
+    backgroundColor: colors.status.error + '15',
   },
   badgeRevokedText: {
-    color: "#DC2626",
+    color: colors.status.error,
   },
   badgeAuto: {
-    backgroundColor: "Theme.colors.status.info + '15'",
+    backgroundColor: colors.status.info + '15',
   },
   badgeAutoText: {
-    color: "#1D4ED8",
+    color: colors.status.info,
   },
   badgeManual: {
-    backgroundColor: "Theme.colors.status.warning + '15'",
+    backgroundColor: colors.status.warning + '15',
   },
   badgeManualText: {
-    color: "#92400E",
+    color: colors.status.warning,
   },
 });

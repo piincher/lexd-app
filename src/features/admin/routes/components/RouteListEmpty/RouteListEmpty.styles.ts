@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   emptyButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
 });

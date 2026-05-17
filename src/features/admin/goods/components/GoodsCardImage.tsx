@@ -40,7 +40,7 @@ export const GoodsCardImage: React.FC<GoodsCardImageProps> = ({ photoUrls, statu
           style={styles.placeholder}
         >
           <View style={[styles.iconCircle, { backgroundColor: colors.background.card }]}>
-            <Ionicons name="cube" size={28} color={Theme.primary[500]} />
+            <Ionicons name="cube" size={28} color={colors.primary.main} />
           </View>
         </LinearGradient>
       )}

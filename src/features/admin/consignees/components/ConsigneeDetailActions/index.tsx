@@ -32,7 +32,7 @@ export const ConsigneeDetailActions: React.FC<ConsigneeDetailActionsProps> = ({
             <Button
                mode="contained"
                onPress={onWhatsApp}
-               style={[styles.actionButton, { backgroundColor: "#25D366" }]}
+               style={[styles.actionButton, { backgroundColor: colors.status.success }]}
                icon="whatsapp"
             >
                WhatsApp

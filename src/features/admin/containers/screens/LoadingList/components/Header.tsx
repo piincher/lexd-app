@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   headerMeta: {
     fontSize: 13,
-    color: 'rgba(255,255,255,0.8)',
+    color: Theme.colors.text.inverse,
     textAlign: 'center',
     marginTop: Theme.spacing.xs,
   },

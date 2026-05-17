@@ -22,10 +22,10 @@ export const CampaignFilterChips: React.FC<CampaignFilterChipsProps> = ({
           key={f.key}
           style={[
             styles.chip,
-            { backgroundColor: isDark ? colors.background.paper : "#F3F4F6" },
+            { backgroundColor: isDark ? colors.background.paper : colors.neutral[100] },
             activeFilter === f.key && [
               styles.chipActive,
-              { backgroundColor: isDark ? "#4C1D95" : "#EDE9FE" },
+              { backgroundColor: isDark ? colors.primary.dark : colors.primary.light },
             ],
           ]}
           onPress={() => onChange(f.key)}
@@ -36,7 +36,7 @@ export const CampaignFilterChips: React.FC<CampaignFilterChipsProps> = ({
               { color: colors.text.secondary },
               activeFilter === f.key && [
                 styles.chipTextActive,
-                { color: isDark ? "#C4B5FD" : "#7C3AED" },
+                { color: isDark ? colors.primary.light : colors.primary.main },
               ],
             ]}
           >

@@ -5,6 +5,7 @@
 
 import React from "react";
 import { View, ScrollView, RefreshControl, StyleSheet } from "react-native";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { UserBadge, BadgeSummary } from "../api/badgeApi";
 import { BadgesScreenSummary } from "./BadgesScreenSummary";
 import { BadgeCategorySection } from "./BadgeCategorySection";
@@ -25,7 +26,9 @@ export const BadgesScreenContent: React.FC<BadgesScreenContentProps> = ({
   achievementBadges,
   isRefetching,
   onRefresh,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <ScrollView
     style={styles.scrollView}
     contentContainerStyle={styles.scrollContent}
@@ -34,8 +37,8 @@ export const BadgesScreenContent: React.FC<BadgesScreenContentProps> = ({
       <RefreshControl
         refreshing={isRefetching}
         onRefresh={onRefresh}
-        tintColor="#d4a843"
-        colors={["#d4a843"]}
+        tintColor={colors.accent.gold}
+        colors={[colors.accent.gold]}
       />
     }
   >
@@ -47,7 +50,8 @@ export const BadgesScreenContent: React.FC<BadgesScreenContentProps> = ({
 
     <View style={styles.bottomSpacer} />
   </ScrollView>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   scrollView: { flex: 1 },

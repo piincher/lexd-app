@@ -1,17 +1,17 @@
 import { StyleSheet } from "react-native";
-import { lightTheme } from "@src/constants/Theme";
+import { lightTheme, Theme } from "@src/constants/Theme";
 import type { AnnouncementType } from "../../types";
 
 type AppColors = typeof lightTheme.colors;
 
 export const getTone = (type: AnnouncementType) => {
   const tones = {
-    INFO: { color: "#2563EB", bg: "#EFF6FF", icon: "information-circle" as const },
-    WARNING: { color: "#D97706", bg: "#FFFBEB", icon: "warning" as const },
-    SUCCESS: { color: "#059669", bg: "#ECFDF5", icon: "checkmark-circle" as const },
-    URGENT: { color: "#DC2626", bg: "#FEF2F2", icon: "alert-circle" as const },
-    PROMOTION: { color: "#7C3AED", bg: "#F5F3FF", icon: "gift" as const },
-    MAINTENANCE: { color: "#475569", bg: "#F8FAFC", icon: "construct" as const },
+    INFO: { color: Theme.status.info, bg: Theme.feedback.infoBg, icon: "information-circle" as const },
+    WARNING: { color: Theme.status.warning, bg: Theme.feedback.warningBg, icon: "warning" as const },
+    SUCCESS: { color: Theme.status.success, bg: Theme.feedback.successBg, icon: "checkmark-circle" as const },
+    URGENT: { color: Theme.status.error, bg: Theme.feedback.errorBg, icon: "alert-circle" as const },
+    PROMOTION: { color: Theme.primary.main, bg: Theme.primary[50], icon: "gift" as const },
+    MAINTENANCE: { color: Theme.neutral[500], bg: Theme.neutral[100], icon: "construct" as const },
   };
 
   return tones[type] || tones.INFO;

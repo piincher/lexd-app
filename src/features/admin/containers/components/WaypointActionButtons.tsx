@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface WaypointActionButtonsProps {
@@ -12,6 +13,7 @@ export const WaypointActionButtons: React.FC<WaypointActionButtonsProps> = ({
   onCancel,
   onSave,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.footer}>
       <Button
@@ -26,7 +28,7 @@ export const WaypointActionButtons: React.FC<WaypointActionButtonsProps> = ({
         mode="contained"
         onPress={onSave}
         style={styles.saveButton}
-        labelStyle={styles.saveButtonLabel}
+        labelStyle={[styles.saveButtonLabel, { color: colors.text.inverse }]}
       >
         Enregistrer
       </Button>
@@ -54,7 +56,6 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.primary[600],
   },
   saveButtonLabel: {
-    color: 'Theme.colors.text.inverse',
     fontWeight: '700',
   },
 });

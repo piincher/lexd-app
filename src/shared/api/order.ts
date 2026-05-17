@@ -1,7 +1,6 @@
 import api from './client';
 import { apiClient } from "@src/api/client";
 import { LIMIT } from '@src/constants/Dimensions';
-import { SmsService } from '@src/constants/types';
 
 export type imagesType = { url: string; public_id: string }[];
 
@@ -76,7 +75,6 @@ const API_URL = {
 	getActiveOrders: '/order',
 	getActiveOrdersAdmin: '/order/all',
 	single: '/order',
-	viewSmsBalance: '/order/viewSmsBalance',
 	GET_ORDER_BASED_ON_DATE: '/order/getOrderDepartureDate',
 };
 
@@ -161,11 +159,6 @@ export const getActiveOrders = async (page: number, status: string, shippingMeth
 	return response.data;
 };
 
-export const fetchSmsBalance = async () => {
-	const response = await api.get<SmsService[]>(API_URL.viewSmsBalance);
-	return response.data;
-};
-
 export const getActiveOrdersAdmin = async (
 	page: number,
 	Status: string,
@@ -223,105 +216,7 @@ export const getAllOrders = async (page: number = 1, status?: string) => {
 	return response.data;
 }
 
-interface sendNotificationSms {
-	phoneNumbers: string[];
-	message: string;
-}
-export const sendNotificationSms = async (data: sendNotificationSms) => {
-	const response = await api.post<{
-		message: string;
-	}>(`${API_URL.single}/sendNotification`, data);
-
-	console.log('response', response.data);
-	return response.data;
-};
-
-// Payment Types
-export interface PaymentRecord {
-	orderId: string;
-	amount: number;
-	paymentMethod: string;
-	referenceNumber?: string;
-	notes?: string;
-	proofImages?: string[];
-	recordedAt: string;
-}
-
-export interface PaymentHistory {
-	_id: string;
-	orderId: string;
-	amount: number;
-	paymentMethod: string;
-	referenceNumber?: string;
-	notes?: string;
-	recordedBy: string;
-	recordedAt: string;
-}
-
-/**
- * Record a payment for an order (admin only)
- */
-export const recordPayment = async (data: PaymentRecord) => {
-	console.log('[API recordPayment] Submitting:', data);
-
-	// Generate idempotency key rounded to the nearest minute
-	const minuteTimestamp = Math.floor(Date.now() / 60000) * 60000;
-	const idempotencyKey = `${data.orderId}-${data.amount}-${data.paymentMethod}-${minuteTimestamp}`;
-
-	try {
-		const response = await api.post<{
-			message: string;
-			payment: PaymentHistory;
-			order: productType;
-		}>(`${API_URL.single}/payment`, data, {
-			headers: { 'X-Idempotency-Key': idempotencyKey },
-		});
-		console.log('[API recordPayment] Success:', response.data);
-		return response.data;
-	} catch (error) {
-		console.error('[API recordPayment] Error:', error);
-		throw error;
-	}
-};
-
-/**
- * Get payment history for an order
- */
-export const getPaymentHistory = async (orderId: string) => {
-	const response = await api.get<PaymentHistory[]>(`${API_URL.single}/${orderId}/payments`);
-	return response.data;
-};
-
-/**
- * Backfill missing PaymentV2 records and receipts for an order (admin only)
- */
-export const backfillPayments = async (orderId: string) => {
-	const response = await api.post(`${API_URL.single}/${orderId}/backfill-payments`);
-	return response.data;
-};
-
-/**
- * Sync all order statuses from their linked goods (admin maintenance)
- * POST /order/sync-statuses
- */
-export const syncOrderStatuses = async () => {
-	const response = await api.post<{
-		success: boolean;
-		message: string;
-		affectedOrders: number;
-		updatedCount: number;
-		details?: Array<{
-			orderId: string;
-			orderCode: string;
-			oldStatus: string;
-			newStatus: string;
-			statusChanged: boolean;
-		}>;
-	}>(`${API_URL.single}/sync-statuses`);
-	return response.data;
-};
-
-// ── Assign Goods to Order (moved from features/orders/api/assignGoodsToOrder) ──
+// ── Assign Goods to Order ──
 
 export interface AssignGoodsToOrderRequest {
   orderId: string;

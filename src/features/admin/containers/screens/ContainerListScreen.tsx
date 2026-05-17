@@ -4,16 +4,19 @@
  */
 
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { Snackbar } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useContainerListScreen } from '../hooks/useContainerListScreen';
 import { ContainerListHeader } from '../components/ContainerListHeader';
 import { ContainerStatusFilter } from '../components/ContainerStatusFilter';
 import { ContainerListContent } from '../components/ContainerListContent';
 import { ContainerListFAB } from '../components/ContainerListFAB';
-import { Theme } from '@src/constants/Theme';
+import { createStyles } from './ContainerListScreen.styles';
 
 export const ContainerListScreen: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   const {
     selectedStatus,
     setSelectedStatus,
@@ -58,17 +61,5 @@ export const ContainerListScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.colors.background.default,
-  },
-  snackbar: {
-    backgroundColor: Theme.neutral[800],
-    borderRadius: Theme.radius.lg,
-    marginBottom: Theme.spacing.lg,
-  },
-});
 
 export default ContainerListScreen;

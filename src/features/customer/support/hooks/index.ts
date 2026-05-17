@@ -13,4 +13,10 @@ export {
   ticketQueryKeys,
 } from './useTickets';
 
+export {
+  isTicketOpen,
+  isTicketResolved,
+  isTicketActive,
+} from './useTickets';
+
 export { useTicketFilters } from './useTicketFilters';

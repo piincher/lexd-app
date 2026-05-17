@@ -21,7 +21,7 @@ export const PaymentOverview: React.FC<PaymentOverviewProps> = ({ data }) => {
     PENDING: colors.status.warning,
     PROCESSING: colors.status.info,
     FAILED: colors.status.error,
-    REFUNDED: '#8B5CF6',
+    REFUNDED: colors.status.info,
     CANCELLED: colors.text.muted,
   };
 

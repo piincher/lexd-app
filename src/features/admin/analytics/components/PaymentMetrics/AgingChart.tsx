@@ -7,7 +7,13 @@ interface AgingChartProps {
   data: OutstandingAgingBucket[];
 }
 
-const COLORS = ['#10B981', '#F59E0B', '#F97316', '#EF4444', '#991B1B'];
+const getAgingColors = (colors: any) => [
+  colors.status.success,
+  colors.status.warning,
+  colors.status.warning,
+  colors.status.error,
+  colors.status.error,
+];
 
 export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
   const { colors } = useAppTheme();
@@ -17,7 +23,7 @@ export const AgingChart: React.FC<AgingChartProps> = ({ data }) => {
     <View style={styles.container}>
       {data.map((bucket, index) => {
         const percentage = (bucket.totalValueFCFA / maxValue) * 100;
-        const color = COLORS[Math.min(index, COLORS.length - 1)];
+        const color = getAgingColors(colors)[Math.min(index, getAgingColors(colors).length - 1)];
 
         return (
           <View key={bucket.range} style={styles.item}>

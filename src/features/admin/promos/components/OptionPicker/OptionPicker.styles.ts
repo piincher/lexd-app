@@ -1,15 +1,14 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   fieldContainer: {
     marginBottom: 16,
   },
   fieldLabel: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginBottom: 6,
   },
   optionRow: {
@@ -21,21 +20,21 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderWidth: 1,
-    borderColor: Theme.colors.neutral[200],
+    borderColor: colors.neutral[200],
   },
   optionChipSelected: {
-    backgroundColor: "#d4a843",
-    borderColor: "#d4a843",
+    backgroundColor: colors.primary.main,
+    borderColor: colors.primary.main,
   },
   optionChipText: {
     fontSize: 13,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   optionChipTextSelected: {
-    color: "Theme.colors.text.inverse",
+    color: colors.text.inverse,
     fontFamily: Fonts.bold,
   },
 });

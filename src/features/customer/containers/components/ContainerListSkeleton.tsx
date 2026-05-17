@@ -51,7 +51,7 @@ const ContainerSkeletonItem: React.FC = () => {
       </View>
 
       {/* Footer Row */}
-      <View style={styles.footerRow}>
+      <View style={[styles.footerRow, { borderTopColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)' }]}>
         <View style={styles.footerItem}>
           <ShimmerBlock width={16} height={16} borderRadius={4} />
           <ShimmerBlock width={100} height={12} borderRadius={3} style={{ marginLeft: 6 }} />
@@ -123,7 +123,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.06)',
   },
   footerItem: {
     flexDirection: 'row',

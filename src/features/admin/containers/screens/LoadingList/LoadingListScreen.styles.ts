@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Theme.colors.background.default,
@@ -13,15 +13,15 @@ export const styles = StyleSheet.create({
     padding: Theme.spacing.lg,
   },
   singleClientBanner: {
-    backgroundColor: '#dcfce7', // green-100
+    backgroundColor: colors.feedback.successBg, // green-100
     borderRadius: 8,
     padding: 12,
     marginBottom: 16,
     borderLeftWidth: 4,
-    borderLeftColor: '#16a34a', // green-600
+    borderLeftColor: colors.status.success, // green-600
   },
   singleClientText: {
-    color: '#166534', // green-800
+    color: colors.feedback.successDark, // green-800
     fontSize: 14,
     fontWeight: '600',
   },

@@ -27,7 +27,7 @@ export const useQRScannerStyles = () => {
     overlayTop: {
       flex: 1,
       width: "100%",
-      backgroundColor: "rgba(0,0,0,0.6)",
+      backgroundColor: colors.background.overlay,
     },
     middleSection: {
       flexDirection: "row",
@@ -35,7 +35,7 @@ export const useQRScannerStyles = () => {
     },
     overlaySide: {
       flex: 1,
-      backgroundColor: "rgba(0,0,0,0.6)",
+      backgroundColor: colors.background.overlay,
     },
     scanArea: {
       position: "relative",
@@ -80,7 +80,7 @@ export const useQRScannerStyles = () => {
     overlayBottom: {
       flex: 1,
       width: "100%",
-      backgroundColor: "rgba(0,0,0,0.6)",
+      backgroundColor: colors.background.overlay,
       justifyContent: "center",
       alignItems: "center",
       paddingHorizontal: 32,
@@ -105,7 +105,7 @@ export const useQRScannerStyles = () => {
     },
     scannedOverlay: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: "rgba(76, 175, 80, 0.3)",
+      backgroundColor: colors.status.success + "4D",
       justifyContent: "center",
       alignItems: "center",
       borderRadius: 12,
@@ -114,7 +114,7 @@ export const useQRScannerStyles = () => {
       color: colors.text.inverse,
       fontSize: 18,
       fontFamily: Fonts.bold,
-      backgroundColor: "rgba(0,0,0,0.7)",
+      backgroundColor: colors.background.overlay,
       paddingHorizontal: 16,
       paddingVertical: 8,
       borderRadius: 8,

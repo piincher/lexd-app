@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Theme } from "@src/constants/Theme";
 
 export const styles = StyleSheet.create({
   container: {
@@ -26,7 +27,7 @@ export const styles = StyleSheet.create({
   },
   lastRunText: {
     marginTop: 4,
-    color: "#757575",
+    color: Theme.colors.text.secondary,
   },
   actions: {
     flexDirection: "row",
@@ -68,13 +69,13 @@ export const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: "#e0e0e0",
+    borderTopColor: Theme.colors.border,
   },
   detail: {
     flex: 1,
   },
   detailLabel: {
-    color: "#757575",
+    color: Theme.colors.text.secondary,
   },
   dateRow: {
     flexDirection: "row",
@@ -82,16 +83,16 @@ export const styles = StyleSheet.create({
     marginTop: 8,
   },
   dateText: {
-    color: "#757575",
+    color: Theme.colors.text.secondary,
   },
   restoreInfo: {
     marginTop: 8,
     paddingTop: 8,
     borderTopWidth: 1,
-    borderTopColor: "#e0e0e0",
+    borderTopColor: Theme.colors.border,
   },
   restoreText: {
-    color: "#9C27B0",
+    color: Theme.colors.primary.main,
     fontStyle: "italic",
   },
   empty: {
@@ -99,7 +100,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 40,
   },
   emptySubtext: {
-    color: "#757575",
+    color: Theme.colors.text.secondary,
     marginTop: 8,
   },
   dialogTitle: {
@@ -110,6 +111,6 @@ export const styles = StyleSheet.create({
   },
   warningText: {
     marginTop: 12,
-    color: "#F44336",
+    color: Theme.colors.status.error,
   },
 });

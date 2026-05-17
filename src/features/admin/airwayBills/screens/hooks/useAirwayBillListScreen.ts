@@ -1,24 +1,18 @@
 /**
  * AirwayBillListScreen Hook
- * All business logic for the airway bill list screen
+ * Composes smaller hooks for the airway bill list screen
  */
 
-import { useState, useCallback, useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@src/navigations/type';
 import { useGetAllAirwayBills } from '../../hooks/useAirwayBills';
 import { AirwayBill, AirwayBillStatus } from '../../types';
+import { useAirwayBillFilters } from './useAirwayBillFilters';
+import { useAirwayBillListData } from './useAirwayBillListData';
+import { useAirwayBillNavigation } from './useAirwayBillNavigation';
 
 export type StatusFilter = AirwayBillStatus | 'ALL';
-
-const STATUS_OPTIONS: { label: string; value: StatusFilter }[] = [
-  { label: 'Tous', value: 'ALL' },
-  { label: 'Créé', value: 'CREATED' },
-  { label: 'Préparation', value: 'PACKING' },
-  { label: 'Prêt', value: 'READY_FOR_DEPARTURE' },
-  { label: 'En transit', value: 'IN_TRANSIT' },
-  { label: 'Arrivé', value: 'ARRIVED' },
-];
 
 interface UseAirwayBillListScreenReturn {
   statusFilter: StatusFilter;
@@ -46,8 +40,8 @@ interface UseAirwayBillListScreenReturn {
 export const useAirwayBillListScreen = (
   navigation: NativeStackNavigationProp<RootStackParamList>
 ): UseAirwayBillListScreenReturn => {
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>('ALL');
-  const [searchQuery, setSearchQuery] = useState('');
+  const { statusFilter, searchQuery, statusOptions, handleStatusFilterChange, handleSearchChange } =
+    useAirwayBillFilters();
 
   const filters = useMemo(
     () => ({
@@ -57,63 +51,15 @@ export const useAirwayBillListScreen = (
     [statusFilter]
   );
 
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-    refetch,
-    isFetching,
-  } = useGetAllAirwayBills(filters);
-
+  const { data, isLoading, isError, error, refetch, isFetching } = useGetAllAirwayBills(filters);
   const allBills = data?.data?.airwayBills || [];
 
-  const airwayBills = useMemo(() => {
-    if (!searchQuery.trim()) return allBills;
-    const query = searchQuery.toLowerCase().trim();
-    return allBills.filter(
-      (bill: AirwayBill) =>
-        bill.awbNumber.toLowerCase().includes(query) ||
-        (bill.airline || '').toLowerCase().includes(query) ||
-        (bill.flightNumber || '').toLowerCase().includes(query) ||
-        (bill.departureAirport || '').toLowerCase().includes(query) ||
-        (bill.arrivalAirport || '').toLowerCase().includes(query)
-    );
-  }, [allBills, searchQuery]);
-
-  const stats = useMemo(() => {
-    return airwayBills.reduce(
-      (acc: { totalAWBs: number; totalPackages: number; totalWeight: number }, bill: AirwayBill) => ({
-        totalAWBs: acc.totalAWBs + 1,
-        totalPackages: acc.totalPackages + (bill.totalPackages || 0),
-        totalWeight: acc.totalWeight + (bill.totalWeight || 0),
-      }),
-      { totalAWBs: 0, totalPackages: 0, totalWeight: 0 }
-    );
-  }, [airwayBills]);
+  const { airwayBills, stats } = useAirwayBillListData(allBills, searchQuery);
+  const { handleCardPress, handleCreatePress } = useAirwayBillNavigation(navigation);
 
   const handleRefresh = useCallback(() => {
     refetch();
   }, [refetch]);
-
-  const handleStatusFilterChange = useCallback((filter: StatusFilter) => {
-    setStatusFilter(filter);
-  }, []);
-
-  const handleSearchChange = useCallback((query: string) => {
-    setSearchQuery(query);
-  }, []);
-
-  const handleCardPress = useCallback(
-    (id: string) => {
-      navigation.navigate('AirwayBillDetail', { airwayBillId: id });
-    },
-    [navigation]
-  );
-
-  const handleCreatePress = useCallback(() => {
-    navigation.navigate('CreateAirwayBill');
-  }, [navigation]);
 
   return {
     statusFilter,
@@ -124,7 +70,7 @@ export const useAirwayBillListScreen = (
     isError,
     error,
     isFetching,
-    statusOptions: STATUS_OPTIONS,
+    statusOptions,
     handlers: {
       handleRefresh,
       handleStatusFilterChange,

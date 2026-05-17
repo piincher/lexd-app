@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   card: {
     marginHorizontal: 12,
     marginBottom: 12,
@@ -45,25 +45,25 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   routeIconCircleActive: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: colors.status.info + '15',
   },
   routeTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     fontFamily: Fonts.semiBold,
     flex: 1,
   },
   routeDivider: {
     marginVertical: 10,
-    backgroundColor: Theme.colors.border,
+    backgroundColor: colors.border,
   },
   pickerWrapper: {
     marginLeft: 42,
-    backgroundColor: Theme.colors.background.paper,
+    backgroundColor: colors.background.paper,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: Theme.colors.border,
+    borderColor: colors.border,
     overflow: 'hidden',
   },
   picker: {
@@ -86,36 +86,36 @@ export const styles = StyleSheet.create({
     top: -6,
     width: 2,
     height: 16,
-    backgroundColor: Theme.colors.border,
+    backgroundColor: colors.border,
   },
   connectorActive: {
-    backgroundColor: Theme.colors.status.success,
+    backgroundColor: colors.status.success,
   },
   timelineCircle: {
     width: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: Theme.colors.background.paper,
+    backgroundColor: colors.background.paper,
     borderWidth: 2,
-    borderColor: Theme.colors.border,
+    borderColor: colors.border,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
     zIndex: 1,
   },
   timelineCircleActive: {
-    backgroundColor: Theme.colors.status.success,
-    borderColor: Theme.colors.status.success,
+    backgroundColor: colors.status.success,
+    borderColor: colors.status.success,
   },
   timelineLabel: {
     flex: 1,
     fontSize: 13,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontFamily: Fonts.regular,
     lineHeight: 18,
   },
   timelineLabelActive: {
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     fontWeight: '600',
     fontFamily: Fonts.semiBold,
   },

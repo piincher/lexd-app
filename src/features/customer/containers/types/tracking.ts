@@ -3,6 +3,8 @@
  * Type definitions for customer-facing container tracking
  */
 
+import { Theme } from '@src/constants/Theme';
+
 // ============================================
 // TRACKING STATUS
 // ============================================
@@ -205,21 +207,21 @@ export const TRACKING_STATUS_LABELS: Record<TrackingStatus, string> = {
 };
 
 export const TRACKING_STATUS_COLORS: Record<TrackingStatus, string> = {
-  BOOKED: '#8B5CF6',
-  EMPTY_TO_WAREHOUSE: '#6366F1',
-  IN_WAREHOUSE: '#6366F1',
-  LOADING: '#F59E0B',
-  LOADED: '#3B82F6',
-  GATE_IN_FULL: '#06B6D4',
-  LOADED_ON_VESSEL: '#2563EB',
-  IN_TRANSIT: '#3B82F6',
-  ARRIVED_PORT: '#10B981',
-  DISCHARGED: '#14B8A6',
-  CUSTOMS_CLEARANCE: '#F97316',
-  INLAND_TRANSPORT: '#06B6D4',
-  READY_FOR_PICKUP: '#22C55E',
-  DELIVERED: '#16A34A',
-  DELAYED: '#EF4444',
+  BOOKED: Theme.colors.primary.main,
+  EMPTY_TO_WAREHOUSE: Theme.colors.primary.main,
+  IN_WAREHOUSE: Theme.colors.primary.main,
+  LOADING: Theme.colors.status.warning,
+  LOADED: Theme.colors.status.info,
+  GATE_IN_FULL: Theme.colors.status.info,
+  LOADED_ON_VESSEL: Theme.colors.status.info,
+  IN_TRANSIT: Theme.colors.status.info,
+  ARRIVED_PORT: Theme.colors.status.success,
+  DISCHARGED: Theme.colors.status.success,
+  CUSTOMS_CLEARANCE: Theme.colors.status.warning,
+  INLAND_TRANSPORT: Theme.colors.status.info,
+  READY_FOR_PICKUP: Theme.colors.status.success,
+  DELIVERED: Theme.colors.status.success,
+  DELAYED: Theme.colors.status.error,
 };
 
 export const TRACKING_STATUS_DESCRIPTIONS: Record<TrackingStatus, string> = {

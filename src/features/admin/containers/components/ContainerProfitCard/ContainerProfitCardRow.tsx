@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface ContainerProfitCardRowProps {
@@ -13,14 +14,17 @@ interface ContainerProfitCardRowProps {
 export const ContainerProfitCardRow: React.FC<ContainerProfitCardRowProps> = ({
   label,
   value,
-  valueColor = '#1F2937',
+  valueColor,
   highlight = false,
-}) => (
-  <View style={[styles.row, highlight && styles.rowHighlight]}>
-    <Text style={[styles.rowLabel, highlight && styles.rowLabelHighlight]}>{label}</Text>
-    <Text style={[styles.rowValue, { color: valueColor }, highlight && styles.rowValueHighlight]}>{value}</Text>
-  </View>
-);
+}) => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={[styles.row, highlight && styles.rowHighlight]}>
+      <Text style={[styles.rowLabel, highlight && styles.rowLabelHighlight]}>{label}</Text>
+      <Text style={[styles.rowValue, { color: valueColor || colors.text.primary }, highlight && styles.rowValueHighlight]}>{value}</Text>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   row: {

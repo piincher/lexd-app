@@ -7,3 +7,4 @@ export { FAQCategoryFilter } from './FAQCategoryFilter';
 export { FAQItem } from './FAQItem';
 export { FAQEmptyState } from './FAQEmptyState';
 export { FAQContactButton } from './FAQContactButton';
+export { FAQSkeletonItem } from './FAQSkeletonItem';

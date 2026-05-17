@@ -41,12 +41,12 @@ export const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: Theme.colors.background.overlay,
     justifyContent: 'center',
     alignItems: 'center',
   },
   overlayText: {
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
     fontSize: 20,
     fontWeight: '700',
   },

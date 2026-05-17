@@ -4,30 +4,29 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '@src/components/Header/Header';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import type { RootStackScreenProps } from '@src/navigations/type';
-import { useNotificationDetail } from '../hooks/useNotificationDetail';
+import { useNotificationDetailScreen } from './hooks/useNotificationDetailScreen';
+import { useNotificationDetailScreenStyles } from './NotificationDetailScreen.styles';
 import { NotificationDetailIconCard } from '../components/NotificationDetailIconCard';
 import { NotificationDetailContentCard } from '../components/NotificationDetailContentCard';
 import { NotificationDetailDataCard } from '../components/NotificationDetailDataCard';
 import { NotificationDetailActions } from '../components/NotificationDetailActions';
 
-type NotificationDetailScreenProps = RootStackScreenProps<'NotificationDetail'>;
-
-const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({ navigation, route }) => {
-  const { colors } = useAppTheme();
-  const { notification } = route.params;
-  const { createdAt, showActionButton, handleActionPress, handleDelete } = useNotificationDetail(
+const NotificationDetailScreen: React.FC = () => {
+  const {
     notification,
-    navigation
-  );
+    createdAt,
+    showActionButton,
+    handlers,
+  } = useNotificationDetailScreen();
+
+  const styles = useNotificationDetailScreenStyles();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.paper }]} edges={['top']}>
-      <Header title="Détail" navigation={navigation} showNotificationBell />
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <Header title="Détail" showNotificationBell />
 
       <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
         <NotificationDetailIconCard type={notification.type} category={notification.category} />
@@ -36,25 +35,13 @@ const NotificationDetailScreen: React.FC<NotificationDetailScreenProps> = ({ nav
         <NotificationDetailActions
           actionLabel={notification.actionLabel}
           showActionButton={showActionButton}
-          onActionPress={handleActionPress}
-          onDelete={handleDelete}
+          onActionPress={handlers.handleActionPress}
+          onDelete={handlers.handleDelete}
         />
         <View style={styles.bottomSpacer} />
       </ScrollView>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
-  bottomSpacer: {
-    height: 32,
-  },
-});
 
 export default NotificationDetailScreen;

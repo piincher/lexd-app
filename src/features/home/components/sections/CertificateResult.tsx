@@ -10,6 +10,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import type { VerifiedCertificate } from '@src/shared/api/certificates';
 
@@ -17,10 +18,10 @@ import type { VerifiedCertificate } from '@src/shared/api/certificates';
 export const CertificateSuccessResult: React.FC<{ data: VerifiedCertificate }> = ({ data }) => {
   const { colors } = useAppTheme();
   const isActive = data.status === 'ACTIVE';
-  const accentColor = isActive ? '#22C55E' : '#EF4444';
+  const accentColor = isActive ? colors.status.success : colors.status.error;
   const bgGradient = isActive
-    ? (['rgba(34,197,94,0.08)', 'rgba(34,197,94,0.02)'] as [string, string])
-    : (['rgba(239,68,68,0.08)', 'rgba(239,68,68,0.02)'] as [string, string]);
+    ? ([`${colors.status.success}14`, `${colors.status.success}05`] as [string, string])
+    : ([`${colors.status.error}14`, `${colors.status.error}05`] as [string, string]);
 
   const formatDate = (iso: string) => {
     try {
@@ -38,7 +39,7 @@ export const CertificateSuccessResult: React.FC<{ data: VerifiedCertificate }> =
             <FontAwesome6 name={isActive ? 'circle-check' : 'circle-xmark'} size={22} color={accentColor} />
           </View>
           <View style={styles.headerText}>
-            <Text style={[styles.status, { color: isActive ? '#15803D' : '#DC2626' }]}>
+            <Text style={[styles.status, { color: isActive ? colors.feedback.successDark : colors.feedback.errorDark }]}>
               {isActive ? 'Certificat Valide' : 'Certificat Revoque'}
             </Text>
             <Text style={[styles.id, { color: colors.text.secondary }]}>{data.certificateId}</Text>
@@ -59,7 +60,7 @@ export const CertificateSuccessResult: React.FC<{ data: VerifiedCertificate }> =
 export const CertificateErrorResult: React.FC<{ message: string }> = ({ message }) => (
   <Animated.View entering={FadeIn.duration(300)} style={styles.container}>
     <View style={styles.errorBanner}>
-      <FontAwesome6 name="triangle-exclamation" size={14} color="#DC2626" />
+      <FontAwesome6 name="triangle-exclamation" size={14} color={Theme.colors.status.error} />
       <Text style={styles.errorText}>{message}</Text>
     </View>
   </Animated.View>
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    backgroundColor: 'rgba(239,68,68,0.08)',
+    backgroundColor: `${Theme.colors.status.error}14`,
     borderRadius: 12,
     paddingVertical: 12,
     paddingHorizontal: 14,
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
   errorText: {
     fontFamily: Fonts.meduim,
     fontSize: 13,
-    color: '#DC2626',
+    color: Theme.colors.status.error,
     flex: 1,
   },
 });

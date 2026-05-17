@@ -69,10 +69,22 @@ export const getPaymentMethodIcon = (method: PaymentMethod): string => {
 };
 
 /**
- * Get status color
+ * Get status color.
+ * Pass theme `colors` object for theme-aware colors; otherwise falls back to static hex values.
  */
-export const getPaymentStatusColor = (status: PaymentStatus): string => {
-  const colors: Record<PaymentStatus, string> = {
+export const getPaymentStatusColor = (status: PaymentStatus, themeColors?: any): string => {
+  if (themeColors) {
+    const mapping: Record<PaymentStatus, string> = {
+      PENDING: themeColors.status.warning,
+      PROCESSING: themeColors.status.info,
+      COMPLETED: themeColors.status.success,
+      FAILED: themeColors.status.error,
+      CANCELLED: themeColors.text.disabled,
+      REFUNDED: themeColors.primary.main,
+    };
+    return mapping[status] || themeColors.text.disabled;
+  }
+  const fallback: Record<PaymentStatus, string> = {
     PENDING: '#F59E0B',
     PROCESSING: '#3B82F6',
     COMPLETED: '#10B981',
@@ -80,7 +92,7 @@ export const getPaymentStatusColor = (status: PaymentStatus): string => {
     CANCELLED: '#6B7280',
     REFUNDED: '#8B5CF6',
   };
-  return colors[status] || '#6B7280';
+  return fallback[status] || '#6B7280';
 };
 
 /**

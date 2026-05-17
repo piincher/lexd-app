@@ -22,7 +22,7 @@ export const AboutUsFooter: React.FC<Props> = ({ onCall, onWebsite }) => {
          </Text>
          <View style={styles.footerMadeBy}>
             <Text style={styles.madeWithText}>Made with </Text>
-            <Ionicons name="heart" size={12} color="#EF4444" />
+            <Ionicons name="heart" size={12} color={colors.status.error} />
             <Text style={styles.madeWithText}> by </Text>
             <TouchableOpacity onPress={onWebsite} activeOpacity={0.7}>
                <Text style={styles.nuvoLink}>nuvotech.tech</Text>

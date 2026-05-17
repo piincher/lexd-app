@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Linking, Alert, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { Theme } from '@src/constants/Theme';
 import { ContainerWaypoint, ExtendedWaypointStatus } from '../../../types';
 import { getLocationCategory, getExtendedStatusLabel, getQuickActions, isValidStatusTransition } from '../../../types/waypointStatus';
 
@@ -39,11 +40,11 @@ const fmt = (d?: string, t = false): string => {
 };
 
 const CAT_DISP: Record<string, { label: string; color: string; icon: string }> = {
-  DISCHARGE_PORT: { label: 'PORT', color: '#0EA5E9', icon: 'boat' },
-  BORDER: { label: 'FRONTIÈRE', color: '#F59E0B', icon: 'flag' },
-  WAREHOUSE: { label: 'ENTREPÔT', color: '#8B5CF6', icon: 'warehouse' },
-  LOADING_PORT: { label: 'CHARGEMENT', color: '#10B981', icon: 'cube' },
-  TRANSIT_PORT: { label: 'TRANSIT', color: '#6366F1', icon: 'git-branch' },
+  DISCHARGE_PORT: { label: 'PORT', color: Theme.status.info, icon: 'boat' },
+  BORDER: { label: 'FRONTIÈRE', color: Theme.status.warning, icon: 'flag' },
+  WAREHOUSE: { label: 'ENTREPÔT', color: Theme.primary.main, icon: 'warehouse' },
+  LOADING_PORT: { label: 'CHARGEMENT', color: Theme.status.success, icon: 'cube' },
+  TRANSIT_PORT: { label: 'TRANSIT', color: Theme.status.info, icon: 'git-branch' },
 };
 
 export const useContainerWaypointTracker = ({ waypoints, onMarkArrived, onMarkDeparted, onUpdateStatus }: Props): Return => {

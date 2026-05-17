@@ -5,20 +5,17 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
 import { EmptyState } from '@src/shared/ui/EmptyState';
-import { useClientOrder } from '../hooks/useClientOrder';
 import { OrderHeader } from '../components/OrderHeader';
 import { OrderSummary } from '../components/OrderSummary';
 import { PackageList } from '../components/PackageList';
 import { OrderDetailSkeleton } from '../components/OrderDetailSkeleton';
+import { useClientOrderDetailScreen } from './hooks/useClientOrderDetailScreen';
 import { styles } from './ClientOrderDetailScreen.styles';
 
 export const ClientOrderDetailScreen: React.FC = () => {
-  const route = useRoute();
-  const { orderId } = route.params as { orderId: string };
-  const { data, isLoading, isError } = useClientOrder(orderId);
+  const { data, isLoading, isError } = useClientOrderDetailScreen();
 
   if (isLoading) {
     return (

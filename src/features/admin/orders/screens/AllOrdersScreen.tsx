@@ -3,11 +3,11 @@
  * SRP: Layout composition ONLY
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Screen } from '@src/shared/ui/Screen';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useAllOrdersScreen } from '../hooks/useAllOrdersScreen';
+import { useAllOrdersScreenUI } from './hooks/useAllOrdersScreenUI';
 import { OrdersStats } from './components/OrdersStats';
 import { AddOrderButton } from './components/AddOrderButton';
 import { OrderBulkActionBar } from './components/OrderBulkActionBar';
@@ -20,16 +20,17 @@ import { createStyles } from './AllOrdersScreen.styles';
 
 const AllOrdersScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     searchQuery, setSearchQuery, statusFilter, setStatusFilter,
     data, isLoading, isFetching, error, refetch,
     orders, filteredOrders, isFetchingNextPage, loadMore, handleMomentumScrollBegin,
-    isSelectionMode, setIsSelectionMode, exitSelectionMode,
+    isSelectionMode, exitSelectionMode,
     selectedOrderIds, toggleSelectOrder, toggleSelectAllOrders,
     isBatchUpdating, handleChangeOrderStatus,
     handleSyncOrderStatuses, isSyncing,
-  } = useAllOrdersScreen();
+    handlers,
+  } = useAllOrdersScreenUI();
 
   if (error) {
     return (
@@ -47,10 +48,7 @@ const AllOrdersScreen: React.FC = () => {
           <AllOrdersHeaderActions
             isSelectionMode={isSelectionMode}
             isSyncing={isSyncing}
-            onToggleSelectionMode={() => {
-              if (isSelectionMode) exitSelectionMode();
-              else setIsSelectionMode(true);
-            }}
+            onToggleSelectionMode={handlers.handleToggleSelectionMode}
             onSync={handleSyncOrderStatuses}
           />
         ),

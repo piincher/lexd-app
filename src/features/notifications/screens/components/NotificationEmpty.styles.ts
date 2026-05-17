@@ -1,8 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useMemo } from 'react';
 
-export const styles = StyleSheet.create({
+export const useNotificationEmptyStyles = () => {
+  const { colors } = useAppTheme();
+  return useMemo(() => StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -24,7 +27,7 @@ export const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: 'rgba(239,68,68,0.08)',
+    backgroundColor: colors.status.error + '14',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 24,
@@ -33,14 +36,14 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     textAlign: 'center',
     marginBottom: 8,
   },
   subtitle: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textAlign: 'center',
     lineHeight: 20,
   },
@@ -60,6 +63,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.semiBold,
     fontWeight: '600',
-    color: 'Theme.colors.text.inverse',
+    color: colors.text.inverse,
   },
-});
+  }), [colors]);
+};

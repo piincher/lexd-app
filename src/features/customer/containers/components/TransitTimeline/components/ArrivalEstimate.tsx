@@ -6,6 +6,7 @@ import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ArrivalEstimateProps {
   eta: string;
@@ -21,9 +22,11 @@ export const ArrivalEstimate: React.FC<ArrivalEstimateProps> = ({
   destinationCode,
   iconColor,
   styles,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <Animated.View entering={FadeInUp.delay(600)} style={styles.arrivalCard}>
-    <LinearGradient colors={['#FEF3C7', '#FFFBEB']} style={styles.arrivalGradient}>
+    <LinearGradient colors={[colors.feedback.warningBg, colors.background.paper]} style={styles.arrivalGradient}>
       <View style={styles.arrivalIconContainer}>
         <Ionicons name="flag" size={28} color={iconColor} />
       </View>
@@ -38,4 +41,5 @@ export const ArrivalEstimate: React.FC<ArrivalEstimateProps> = ({
       </View>
     </LinearGradient>
   </Animated.View>
-);
+  );
+};

@@ -4,10 +4,12 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { APP_VERSION } from '@src/features/profile/hooks/useAboutUs';
 
 export const AboutUsHero: React.FC = () => {
-   const styles = useMemo(() => makeStyles(), []);
+   const { colors } = useAppTheme();
+   const styles = useMemo(() => makeStyles(colors), [colors]);
 
    return (
       <Animated.View entering={FadeInUp.duration(600)} style={styles.heroSection}>
@@ -35,7 +37,7 @@ export const AboutUsHero: React.FC = () => {
    );
 };
 
-const makeStyles = () =>
+const makeStyles = (colors: any) =>
    StyleSheet.create({
       heroSection: {
          marginBottom: 0,
@@ -51,7 +53,7 @@ const makeStyles = () =>
          width: 90,
          height: 90,
          borderRadius: 22,
-         backgroundColor: 'rgba(255,255,255,0.95)',
+         backgroundColor: colors.background.paper,
          justifyContent: 'center',
          alignItems: 'center',
          marginBottom: 16,
@@ -70,17 +72,17 @@ const makeStyles = () =>
          fontSize: 24,
          fontFamily: Fonts.bold,
          fontWeight: '700',
-         color: 'Theme.colors.text.inverse',
+         color: colors.text.inverse,
          marginBottom: 4,
       },
       heroSubtitle: {
          fontSize: 13,
          fontFamily: Fonts.regular,
-         color: 'rgba(255,255,255,0.8)',
+         color: colors.text.inverse,
          marginBottom: 12,
       },
       versionBadge: {
-         backgroundColor: 'rgba(255,255,255,0.2)',
+         backgroundColor: colors.background.overlay,
          paddingHorizontal: 12,
          paddingVertical: 4,
          borderRadius: 12,
@@ -88,6 +90,6 @@ const makeStyles = () =>
       versionText: {
          fontSize: 11,
          fontFamily: Fonts.medium,
-         color: 'rgba(255,255,255,0.9)',
+         color: colors.text.inverse,
       },
    });

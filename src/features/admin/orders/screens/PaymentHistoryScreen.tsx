@@ -3,11 +3,11 @@
  * Includes receipt viewing and WhatsApp sharing capabilities
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { ScrollView } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Screen } from '@src/shared/ui/Screen';
-import { usePaymentHistory } from '../hooks/usePaymentHistory';
+import { usePaymentHistoryScreen } from './hooks/usePaymentHistoryScreen';
 import { PaymentStats } from '../components/PaymentStats';
 import { PaymentCard } from '../components/PaymentCard';
 import { PaymentImageModal } from '../components/PaymentImageModal';
@@ -18,7 +18,7 @@ import { createPaymentHistoryScreenStyles } from './PaymentHistoryScreen.styles'
 
 const PaymentHistoryScreen: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createPaymentHistoryScreenStyles(colors), [colors]);
+  const styles = createPaymentHistoryScreenStyles(colors);
   const {
     orderCode,
     clientPhone,
@@ -35,7 +35,8 @@ const PaymentHistoryScreen: React.FC = () => {
     sharingPaymentId,
     handleViewReceipt,
     handleShareOnWhatsApp,
-  } = usePaymentHistory();
+    handlers,
+  } = usePaymentHistoryScreen();
 
   if (isLoading) {
     return (
@@ -81,7 +82,7 @@ const PaymentHistoryScreen: React.FC = () => {
           <PaymentHistoryEmpty />
         )}
       </ScrollView>
-      <PaymentImageModal imageUrl={selectedImage} onClose={() => setSelectedImage(null)} />
+      <PaymentImageModal imageUrl={selectedImage} onClose={handlers.handleCloseImageModal} />
     </Screen>
   );
 };

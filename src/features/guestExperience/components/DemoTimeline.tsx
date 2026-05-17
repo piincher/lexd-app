@@ -31,37 +31,35 @@ export const DemoTimeline: React.FC<Props> = ({ steps }) => {
         const done = step.status === 'done';
         const active = step.status === 'active';
         return (
-          <Animated.View
-            key={step.id}
-            entering={FadeInDown.delay(index * 80)}
-            style={[styles.stepRow, done && styles.stepRowDone]}
-          >
-            <View style={styles.leftColumn}>
-              <View style={styles.circleWrapper}>
-                {active && <Animated.View style={[styles.pulseRing, pulseStyle]} />}
-                <View style={[
-                  styles.dot,
-                  done && { backgroundColor: colors.status.success },
-                  active && { backgroundColor: colors.status.info },
-                  !done && !active && { backgroundColor: colors.neutral[200] },
-                ]}>
-                  <FontAwesome6 name={step.icon as any} size={13} color={done || active ? colors.text.inverse : colors.text.secondary} />
+          <Animated.View entering={FadeInDown.delay(index * 80)} key={step.id}>
+            <Animated.View style={[styles.stepRow, done && styles.stepRowDone]}>
+              <View style={styles.leftColumn}>
+                <View style={styles.circleWrapper}>
+                  {active && <Animated.View style={[styles.pulseRing, pulseStyle]} />}
+                  <View style={[
+                    styles.dot,
+                    done && { backgroundColor: colors.status.success },
+                    active && { backgroundColor: colors.status.info },
+                    !done && !active && { backgroundColor: colors.neutral[200] },
+                  ]}>
+                    <FontAwesome6 name={step.icon as any} size={13} color={done || active ? colors.text.inverse : colors.text.secondary} />
+                  </View>
                 </View>
+                {index < steps.length - 1 && (
+                  <Animated.View
+                    entering={FadeInDown.delay((index + 0.5) * 80)}
+                    style={[styles.line, done && { backgroundColor: colors.status.success }]}
+                  />
+                )}
               </View>
-              {index < steps.length - 1 && (
-                <Animated.View
-                  entering={FadeInDown.delay((index + 0.5) * 80)}
-                  style={[styles.line, done && { backgroundColor: colors.status.success }]}
-                />
-              )}
-            </View>
-            <View style={[styles.textBlock, active && styles.textBlockActive]}>
-              <Text style={styles.title}>{step.title}</Text>
-              <Text style={styles.detail}>{step.detail}</Text>
-              {(step.date || step.location) && (
-                <Text style={styles.meta}>{[step.date, step.location].filter(Boolean).join(' · ')}</Text>
-              )}
-            </View>
+              <View style={[styles.textBlock, active && styles.textBlockActive]}>
+                <Text style={styles.title}>{step.title}</Text>
+                <Text style={styles.detail}>{step.detail}</Text>
+                {(step.date || step.location) && (
+                  <Text style={styles.meta}>{[step.date, step.location].filter(Boolean).join(' · ')}</Text>
+                )}
+              </View>
+            </Animated.View>
           </Animated.View>
         );
       })}

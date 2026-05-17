@@ -4,7 +4,7 @@ import { linking } from "@src/shared/lib/deepLinking";
 import { registerSentryNavigationContainer } from "@src/shared/lib/sentry";
 import { navigationRef } from "@src/navigations/navigationRef";
 import { useAppTheme } from "@src/providers";
-import DeepLinkHandler from "@src/shared/components/DeepLinkHandler";
+import DeepLinkHandler from "@src/app/components/DeepLinkHandler";
 import { AppNavigator } from "./AppNavigator";
 
 export const ThemedApp: React.FC = () => {

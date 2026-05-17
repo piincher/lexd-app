@@ -25,7 +25,7 @@ export const StatsErrorState: React.FC<StatsErrorStateProps> = ({ onRetry }) => 
       <Text style={styles.errorTitle}>Impossible de charger les donnees</Text>
       <Text style={styles.errorSubtitle}>Verifiez votre connexion et reessayez</Text>
       <TouchableOpacity style={styles.retryButton} onPress={onRetry} activeOpacity={0.7}>
-        <Ionicons name="refresh" size={18} color="#FFF" />
+        <Ionicons name="refresh" size={18} color={colors.text.inverse} />
         <Text style={styles.retryText}>Reessayer</Text>
       </TouchableOpacity>
     </View>

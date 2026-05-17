@@ -3,12 +3,13 @@
  * SRP: Show client name, phone, and provide communication actions
  */
 
-import React, { useMemo } from 'react';
-import { View, TouchableOpacity, StyleSheet, Alert, Linking } from 'react-native';
-import { Text, Surface, Button } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Fonts } from '@src/constants/Fonts';
+import React from 'react';
+import { Surface } from 'react-native-paper';
+import { Alert, Linking } from 'react-native';
+import { useClientInfoCardStyles } from './ClientInfoCard.styles';
+import { ClientInfoHeader } from './ClientInfoHeader';
+import { ClientContactRow } from './ClientContactRow';
+import { ClientActionButtons } from './ClientActionButtons';
 
 interface ClientInfoCardProps {
   clientName: string;
@@ -32,61 +33,7 @@ export const ClientInfoCard: React.FC<ClientInfoCardProps> = ({
   amount,
   receiptUrl,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
-    card: {
-      padding: 16,
-      borderRadius: 12,
-      marginBottom: 16,
-      elevation: 2,
-      backgroundColor: colors.background.card,
-    },
-    cardHeader: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    cardTitle: {
-      fontSize: 16,
-      fontWeight: '600',
-      fontFamily: Fonts.semiBold,
-      marginLeft: 8,
-      color: colors.text.primary,
-    },
-    clientRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 16,
-    },
-    clientInfo: {
-      marginLeft: 12,
-      flex: 1,
-    },
-    clientName: {
-      fontSize: 16,
-      fontWeight: '600',
-      fontFamily: Fonts.semiBold,
-      color: colors.text.primary,
-    },
-    clientPhone: {
-      fontSize: 14,
-      color: colors.primary.main,
-      fontFamily: Fonts.regular,
-      marginTop: 2,
-      textDecorationLine: 'underline',
-    },
-    clientActions: {
-      flexDirection: 'row',
-      gap: 12,
-    },
-    actionButton: {
-      flex: 1,
-      borderRadius: 8,
-    },
-    whatsappButton: {
-      flex: 1,
-    },
-  }), [colors]);
+  const styles = useClientInfoCardStyles();
 
   const handleCallClient = () => {
     if (!clientPhone) {
@@ -127,45 +74,17 @@ export const ClientInfoCard: React.FC<ClientInfoCardProps> = ({
 
   return (
     <Surface style={styles.card}>
-      <View style={styles.cardHeader}>
-        <MaterialCommunityIcons name="account" size={24} color={colors.primary.main} />
-        <Text style={styles.cardTitle}>Client Information</Text>
-      </View>
-
-      <View style={styles.clientRow}>
-        <MaterialCommunityIcons name="account-circle" size={40} color={colors.text.secondary} />
-        <View style={styles.clientInfo}>
-          <Text style={styles.clientName}>{clientName || 'Unknown'}</Text>
-          {clientPhone && (
-            <TouchableOpacity onPress={handleCallClient}>
-              <Text style={styles.clientPhone}>{clientPhone}</Text>
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
-
-      {clientPhone && (
-        <View style={styles.clientActions}>
-          <Button
-            mode="outlined"
-            onPress={handleCallClient}
-            style={styles.actionButton}
-            icon="phone"
-            textColor={colors.primary.main}
-          >
-            Call
-          </Button>
-          <Button
-            mode="contained"
-            onPress={shareReceiptOnWhatsApp}
-            style={[styles.actionButton, styles.whatsappButton]}
-            buttonColor="#25D366"
-            icon="whatsapp"
-          >
-            WhatsApp
-          </Button>
-        </View>
-      )}
+      <ClientInfoHeader />
+      <ClientContactRow
+        clientName={clientName}
+        clientPhone={clientPhone}
+        onPressPhone={handleCallClient}
+      />
+      <ClientActionButtons
+        clientPhone={clientPhone}
+        onCall={handleCallClient}
+        onWhatsApp={shareReceiptOnWhatsApp}
+      />
     </Surface>
   );
 };

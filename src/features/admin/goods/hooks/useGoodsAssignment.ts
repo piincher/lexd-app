@@ -6,7 +6,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { goodsService } from '../services/GoodsService';
 import { goodsQueryKeys } from './useGoods';
-import { showSuccessToast, showErrorToast } from '@src/shared/lib';
+import { showSuccessToast, showErrorToast } from '@src/app/lib/toast';
 
 interface AssignmentData {
   containerId: string;

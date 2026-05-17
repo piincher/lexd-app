@@ -6,6 +6,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { Route, SHIPPING_MODE_COLORS } from '../../types';
 import { styles } from './RouteCard.styles';
@@ -16,6 +17,7 @@ interface RouteCardProps {
 }
 
 export const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
+  const { colors } = useAppTheme();
   const modeColor = SHIPPING_MODE_COLORS[route.shippingMode];
 
   return (
@@ -29,7 +31,7 @@ export const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
                 <Ionicons
                   name={route.shippingMode === 'SEA' ? 'boat' : 'airplane'}
                   size={12}
-                  color="#FFF"
+                  color={colors.text.inverse}
                 />
               </View>
               <Text style={styles.routeName} numberOfLines={1}>

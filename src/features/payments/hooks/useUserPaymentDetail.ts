@@ -2,26 +2,33 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Alert, Linking } from 'react-native';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { PaymentHistoryItem } from '../types';
 
-const METHOD_CONFIG: Record<string, { icon: string; color: string; label: string }> = {
-  CASH: { icon: 'cash', color: '#10B981', label: 'Espèces' },
-  BANK_TRANSFER: { icon: 'bank', color: '#3B82F6', label: 'Virement Bancaire' },
-  MOBILE_MONEY: { icon: 'cellphone', color: '#8B5CF6', label: 'Mobile Money' },
-  ORANGE_MONEY: { icon: 'cellphone', color: '#F97316', label: 'Orange Money' },
-  WAVE: { icon: 'wave', color: '#06B6D4', label: 'Wave' },
-  CARD: { icon: 'credit-card', color: '#6366F1', label: 'Carte Bancaire' },
+const getMethodConfig = (paymentMethod: string, colors: any) => {
+  const configs: Record<string, { icon: string; color: string; label: string }> = {
+    CASH: { icon: 'cash', color: colors.status.success, label: 'Espèces' },
+    BANK_TRANSFER: { icon: 'bank', color: colors.status.info, label: 'Virement Bancaire' },
+    MOBILE_MONEY: { icon: 'cellphone', color: colors.primary.main, label: 'Mobile Money' },
+    ORANGE_MONEY: { icon: 'cellphone', color: colors.status.warning, label: 'Orange Money' },
+    WAVE: { icon: 'wave', color: colors.status.info, label: 'Wave' },
+    CARD: { icon: 'credit-card', color: colors.status.info, label: 'Carte Bancaire' },
+  };
+  return configs[paymentMethod] || {
+    icon: 'cash',
+    color: colors.status.success,
+    label: paymentMethod,
+  };
 };
 
-const getStatusConfig = (status: string, isDark: boolean) => {
+const getStatusConfig = (status: string, colors: any, isDark: boolean) => {
   const configs: Record<string, { color: string; lightBg: string; darkBg: string; label: string }> = {
-    COMPLETED: { color: '#10B981', lightBg: '#F0FDF4', darkBg: '#14532D', label: 'Complété' },
-    PENDING: { color: '#F59E0B', lightBg: '#FEF3C7', darkBg: '#78350F', label: 'En attente' },
-    PROCESSING: { color: '#3B82F6', lightBg: '#DBEAFE', darkBg: '#1E3A8A', label: 'En cours' },
-    FAILED: { color: '#EF4444', lightBg: '#FEE2E2', darkBg: '#7F1D1D', label: 'Échoué' },
-    CANCELLED: { color: Theme.colors.text.secondary, lightBg: '#F3F4F6', darkBg: '#374151', label: 'Annulé' },
-    REFUNDED: { color: '#8B5CF6', lightBg: '#F5F3FF', darkBg: '#4C1D95', label: 'Remboursé' },
+    COMPLETED: { color: colors.status.success, lightBg: colors.feedback.successBg, darkBg: colors.feedback.successBg, label: 'Complété' },
+    PENDING: { color: colors.status.warning, lightBg: colors.feedback.warningBg, darkBg: colors.feedback.warningBg, label: 'En attente' },
+    PROCESSING: { color: colors.status.info, lightBg: colors.feedback.infoBg, darkBg: colors.feedback.infoBg, label: 'En cours' },
+    FAILED: { color: colors.status.error, lightBg: colors.feedback.errorBg, darkBg: colors.feedback.errorBg, label: 'Échoué' },
+    CANCELLED: { color: colors.text.secondary, lightBg: colors.background.paper, darkBg: colors.background.paper, label: 'Annulé' },
+    REFUNDED: { color: colors.primary.main, lightBg: colors.feedback.infoBg, darkBg: colors.feedback.infoBg, label: 'Remboursé' },
   };
   const config = configs[status] || configs.PENDING;
   return { ...config, bgColor: isDark ? config.darkBg : config.lightBg };
@@ -34,14 +41,11 @@ interface RouteParams {
 export const useUserPaymentDetail = () => {
   const navigation = useNavigation<any>();
   const route = useRoute();
+  const { colors, isDark } = useAppTheme();
   const { payment } = route.params as RouteParams;
 
-  const methodConfig = METHOD_CONFIG[payment.paymentMethod] || {
-    icon: 'cash',
-    color: '#10B981',
-    label: payment.paymentMethod,
-  };
-  const statusConfig = getStatusConfig(payment.status, false);
+  const methodConfig = getMethodConfig(payment.paymentMethod, colors);
+  const statusConfig = getStatusConfig(payment.status, colors, isDark);
   const receiptUrl = payment.receiptUrl || payment.metadata?.receiptUrl;
 
   const formatDate = (dateStr?: string | null) => {

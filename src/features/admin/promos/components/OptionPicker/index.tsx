@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import { styles } from "./OptionPicker.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { getStyles } from "./OptionPicker.styles";
 
 type OptionPickerProps<T extends string> = {
   label: string;
@@ -10,6 +11,8 @@ type OptionPickerProps<T extends string> = {
 };
 
 export function OptionPicker<T extends string>({ label, options, selected, onSelect }: OptionPickerProps<T>) {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.fieldLabel}>{label}</Text>

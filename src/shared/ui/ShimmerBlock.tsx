@@ -31,8 +31,8 @@ export const ShimmerBlock: React.FC<ShimmerBlockProps> = ({
 }) => {
   const { colors, isDark } = useAppTheme();
   const shimmer = useSharedValue(0);
-  const blockBg = isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[100];
-  const shimmerOpacity = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.5)';
+  const blockBg = isDark ? colors.neutral[800] : colors.neutral[100];
+  const shimmerOpacity = isDark ? colors.neutral[700] : colors.neutral[50];
 
   React.useEffect(() => {
     shimmer.value = withRepeat(

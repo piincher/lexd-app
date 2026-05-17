@@ -94,8 +94,8 @@ export const QuietHoursSettings: React.FC<QuietHoursSettingsProps> = ({
             <Card.Content>
                <View style={styles.quietHoursHeader}>
                   <View style={styles.quietHoursLeft}>
-                     <View style={[styles.iconContainer, { backgroundColor: "#E0E7FF" }]}>
-                        <Ionicons name="moon" size={24} color="#6366F1" />
+                     <View style={[styles.iconContainer, { backgroundColor: colors.status.info + '15' }]}>
+                        <Ionicons name="moon" size={24} color={colors.status.info} />
                      </View>
                      <View>
                         <Text style={styles.quietHoursTitle}>Quiet Hours</Text>

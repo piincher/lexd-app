@@ -91,13 +91,13 @@ export const CertificateInfoCard: React.FC<Props> = ({
 
       <View style={styles.infoRow}>
         <View style={styles.infoIconWrapper}>
-          <MaterialIcons name="check-circle" size={20} color="#4CAF50" />
+          <MaterialIcons name="check-circle" size={20} color={colors.status.success} />
         </View>
         <View style={styles.infoTextWrapper}>
           <Text style={styles.infoLabel}>Statut</Text>
           <View style={styles.badgeContainer}>
             <LinearGradient
-              colors={["#2E7D32", "#4CAF50"]}
+              colors={[colors.status.successDark || colors.status.success, colors.status.success]}
               style={styles.statusBadge}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 0 }}

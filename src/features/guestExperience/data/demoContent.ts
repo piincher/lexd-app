@@ -1,3 +1,4 @@
+import { Theme } from '@src/constants/Theme';
 import type {
   DemoBenefit,
   DemoClientStep,
@@ -13,28 +14,28 @@ export const DEMO_BENEFITS: DemoBenefit[] = [
     title: 'Suivi précis',
     detail: 'Chaque étape de votre expédition est enregistrée et visible en temps réel.',
     icon: 'map-location-dot',
-    color: '#3B82F6',
+    color: Theme.status.info,
   },
   {
     id: 'notifications',
     title: 'Alertes intelligentes',
     detail: 'Recevez une notification à chaque changement important de statut.',
     icon: 'bell',
-    color: '#8B5CF6',
+    color: Theme.primary.main,
   },
   {
     id: 'documents',
     title: 'Documents sécurisés',
     detail: 'Packing lists, loading lists et factures accessibles 24h/24.',
     icon: 'folder-open',
-    color: '#10B981',
+    color: Theme.status.success,
   },
   {
     id: 'support',
     title: 'Support humain',
     detail: 'Une équipe réactive à Guangzhou, Dakar et Bamako pour vous accompagner.',
     icon: 'headset',
-    color: '#F59E0B',
+    color: Theme.status.warning,
   },
 ];
 
@@ -76,7 +77,7 @@ export const DEMO_NOTIFICATIONS: DemoNotification[] = [
     channel: 'App + WhatsApp + Push',
     time: '12 avr., 09:30',
     icon: 'box-open',
-    color: '#10B981',
+    color: Theme.status.success,
     read: false,
   },
   {
@@ -86,7 +87,7 @@ export const DEMO_NOTIFICATIONS: DemoNotification[] = [
     channel: 'Notification groupée',
     time: '22 avr., 16:45',
     icon: 'ship',
-    color: '#3B82F6',
+    color: Theme.status.info,
     read: false,
   },
   {
@@ -96,7 +97,7 @@ export const DEMO_NOTIFICATIONS: DemoNotification[] = [
     channel: 'App + Push',
     time: '30 avr., 14:30',
     icon: 'plane-departure',
-    color: '#8B5CF6',
+    color: Theme.primary.main,
     read: true,
   },
   {
@@ -106,7 +107,7 @@ export const DEMO_NOTIFICATIONS: DemoNotification[] = [
     channel: 'App + WhatsApp + Push',
     time: 'Exemple futur',
     icon: 'warehouse',
-    color: '#F59E0B',
+    color: Theme.status.warning,
     read: true,
   },
 ];
@@ -166,28 +167,28 @@ export const DEMO_QUICK_ACTIONS: DemoQuickAction[] = [
     id: 'track',
     title: 'Suivre',
     icon: 'location-arrow',
-    color: '#3B82F6',
+    color: Theme.status.info,
     description: 'Vos expéditions',
   },
   {
     id: 'documents',
     title: 'Documents',
     icon: 'folder-open',
-    color: '#10B981',
+    color: Theme.status.success,
     description: 'Listes et factures',
   },
   {
     id: 'support',
     title: 'Support',
     icon: 'headset',
-    color: '#F59E0B',
+    color: Theme.status.warning,
     description: 'Contactez-nous',
   },
   {
     id: 'whatsapp',
     title: 'WhatsApp',
     icon: 'whatsapp',
-    color: '#22C55E',
+    color: Theme.primary.main,
     description: 'Devenir client',
   },
 ];

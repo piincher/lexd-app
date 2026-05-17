@@ -56,7 +56,7 @@ export const createNotificationEventListStyles = (colors: AppColors) =>
       backgroundColor: colors.primary.main,
     },
     retryText: {
-      color: 'Theme.colors.text.inverse',
+      color: colors.text.inverse,
       fontWeight: '800',
     },
   });

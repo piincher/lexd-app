@@ -9,6 +9,7 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { SmsService } from '@src/shared/types/user';
 import { Fonts } from '@src/constants/Fonts';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { SmsSubscriptionCard } from './SmsSubscriptionCard';
 
@@ -19,6 +20,7 @@ interface SmsSubscriptionListProps {
 export const SmsSubscriptionList: React.FC<SmsSubscriptionListProps> = ({
   subscriptions,
 }) => {
+  const { colors } = useAppTheme();
   const activeCount = subscriptions.filter((s) => s.isActive).length;
   const expiredCount = subscriptions.filter((s) => s.isExpired).length;
   const expiringSoonCount = subscriptions.filter((s) => s.isExpiringSoon).length;
@@ -27,24 +29,24 @@ export const SmsSubscriptionList: React.FC<SmsSubscriptionListProps> = ({
     <View style={styles.container}>
       <View style={styles.summaryRow}>
         <View style={styles.summaryItem}>
-          <Ionicons name="checkmark-circle" size={16} color="#10B981" />
+          <Ionicons name="checkmark-circle" size={16} color={colors.status.success} />
           <Text style={styles.summaryText}>
             <Text style={styles.summaryValue}>{activeCount}</Text> actif{activeCount > 1 ? 's' : ''}
           </Text>
         </View>
         {expiringSoonCount > 0 && (
           <View style={styles.summaryItem}>
-            <Ionicons name="warning" size={16} color="#F59E0B" />
+            <Ionicons name="warning" size={16} color={colors.status.warning} />
             <Text style={styles.summaryText}>
-              <Text style={[styles.summaryValue, { color: '#F59E0B' }]}>{expiringSoonCount}</Text> bientôt expiré
+              <Text style={[styles.summaryValue, { color: colors.status.warning }]}>{expiringSoonCount}</Text> bientôt expiré
             </Text>
           </View>
         )}
         {expiredCount > 0 && (
           <View style={styles.summaryItem}>
-            <Ionicons name="close-circle" size={16} color="#EF4444" />
+            <Ionicons name="close-circle" size={16} color={colors.status.error} />
             <Text style={styles.summaryText}>
-              <Text style={[styles.summaryValue, { color: '#EF4444' }]}>{expiredCount}</Text> expiré
+              <Text style={[styles.summaryValue, { color: colors.status.error }]}>{expiredCount}</Text> expiré
             </Text>
           </View>
         )}

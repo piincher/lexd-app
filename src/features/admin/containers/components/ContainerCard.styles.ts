@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   assignableBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#D1FAE5',
+    backgroundColor: Theme.colors.status.success + '18',
     paddingHorizontal: Theme.spacing.sm,
     paddingVertical: 2,
     borderRadius: Theme.radius.full,
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
   assignableBadgeText: {
     fontSize: 10,
     fontWeight: '700',
-    color: '#059669',
+    color: Theme.status.success,
   },
   content: {
     padding: Theme.spacing.lg,

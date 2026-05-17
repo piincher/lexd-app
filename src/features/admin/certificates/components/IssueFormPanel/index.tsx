@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { CertificateUser } from "../../api";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
-import { styles } from "./IssueFormPanel.styles";
+import { getStyles } from "./IssueFormPanel.styles";
 
 interface IssueFormPanelProps {
   selectedUser: CertificateUser;
@@ -20,10 +21,12 @@ export const IssueFormPanel: React.FC<IssueFormPanelProps> = ({
   onIssue,
   isIssuing,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   return (
     <View style={styles.panel}>
       <View style={styles.selectedInfo}>
-        <MaterialIcons name="verified" size={20} color="#d4a843" />
+        <MaterialIcons name="verified" size={20} color={colors.primary.main} />
         <Text style={styles.selectedName}>
           {selectedUser.firstName} {selectedUser.lastName}
         </Text>
@@ -47,10 +50,10 @@ export const IssueFormPanel: React.FC<IssueFormPanelProps> = ({
         activeOpacity={0.7}
       >
         {isIssuing ? (
-          <ActivityIndicator size="small" color="#FFF" />
+          <ActivityIndicator size="small" color={colors.text.inverse} />
         ) : (
           <>
-            <MaterialIcons name="card-membership" size={20} color="#FFF" />
+            <MaterialIcons name="card-membership" size={20} color={colors.text.inverse} />
             <Text style={styles.issueButtonText}>Émettre le certificat</Text>
           </>
         )}

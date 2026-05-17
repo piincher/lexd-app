@@ -1,190 +1,70 @@
 import { useState } from 'react';
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
-import { Alert } from 'react-native';
-import { useGetContainerById, useUpdateContainerStatus, useRemoveGoodsFromContainer, useDeleteContainer, useMarkReadyForPickup, useMarkGoodsDelivered, useMarkContainerDelivered, useReconcileContainer, containerQueryKeys } from '../../hooks';
+import { useGetContainerById, containerQueryKeys } from '../../hooks';
 import { waypointQueryKeys } from '../../hooks/useWaypoints';
-import { Container, ContainerStatus, CONTAINER_STATUS_COLORS, CONTAINER_STATUS_LABELS } from '../../types';
-import { Goods } from '../../../goods/types';
-import { CbmProfit, DualLedger } from '../../types/containerProfit';
-import { Theme } from '@src/constants/Theme';
-
-const MAX_CBM = 67;
-const MAX_WEIGHT = 28000; // kg
-const TIMELINE_STEPS: ContainerStatus[] = [
-  'BOOKED',
-  'EMPTY_TO_WAREHOUSE',
-  'LOADING',
-  'LOADED',
-  'GATE_IN_FULL',
-  'LOADED_ON_VESSEL',
-  'IN_TRANSIT',
-  'ARRIVED',
-  'DISCHARGED',
-  'READY_FOR_PICKUP',
-];
+import { Container } from '../../types';
+import { useContainerDialogs } from './useContainerDialogs';
+import { useContainerStatusMutations } from './useContainerStatusMutations';
+import { useContainerGoodsMutations } from './useContainerGoodsMutations';
+import { useContainerNavigation } from './useContainerNavigation';
+import { getGoodsList, getCapacityInfo, getContainerStatusInfo, normalizeCbmProfit, extractConsignee } from './utils';
 
 export type ContainerDetailScreenState = ReturnType<typeof useContainerDetailScreen>;
 
 export const useContainerDetailScreen = () => {
-  const route = useRoute(), navigation = useNavigation(), queryClient = useQueryClient();
+  const route = useRoute();
+  const queryClient = useQueryClient();
   const { containerId } = route.params as { containerId: string };
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [statusMenuVisible, setStatusMenuVisible] = useState(false);
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [showRemoveGoodsDialog, setShowRemoveGoodsDialog] = useState(false);
-  const [showReadyForPickupDialog, setShowReadyForPickupDialog] = useState(false);
-  const [showDeliveredDialog, setShowDeliveredDialog] = useState(false);
-  const [showReconcileModal, setShowReconcileModal] = useState(false);
-  const [selectedGoodsId, setSelectedGoodsId] = useState<string | null>(null);
+  const dialogs = useContainerDialogs();
+
   const { data: containerResponse, isLoading, isRefetching, refetch } = useGetContainerById(containerId);
-  const updateStatusMutation = useUpdateContainerStatus(), removeGoodsMutation = useRemoveGoodsFromContainer();
-  const deleteContainerMutation = useDeleteContainer(), markReadyForPickupMutation = useMarkReadyForPickup();
-  const markGoodsDeliveredMutation = useMarkGoodsDelivered();
-  const markContainerDeliveredMutation = useMarkContainerDelivered();
-  const reconcileMutation = useReconcileContainer();
   const container: Container | undefined = containerResponse?.data?.container || containerResponse?.data;
-  const goodsList: Goods[] = (() => { if (!container) return []; const g = (container as any).goodsIds; return (Array.isArray(g) && g.length > 0 && typeof g[0] === 'object') ? g as Goods[] : container?.goods || []; })();
-  const isAirContainer = container?.shippingMode === 'AIR';
-  const totalWeight = goodsList.reduce((sum, g: any) => sum + (parseFloat(g?.weight) || 0), 0);
-  const capacityValue = isAirContainer ? totalWeight : (container?.totalCBM || 0);
-  const maxCapacity = isAirContainer ? MAX_WEIGHT : MAX_CBM;
-  const fillPercentage = container ? Math.min((capacityValue / maxCapacity) * 100, 100) : 0;
-  const getFillColor = (p: number) => p >= 90 ? Theme.status.error : p >= 70 ? Theme.status.warning : Theme.status.success;
-  const fillColor = getFillColor(fillPercentage), statusColor = container ? CONTAINER_STATUS_COLORS[container.status] : '#8B5CF6';
-  const statusLabel = container ? CONTAINER_STATUS_LABELS[container.status] : '', currentStatusIndex = container ? TIMELINE_STEPS.indexOf(container.status) : -1;
-  const handleRefresh = async () => { 
-    setIsRefreshing(true); 
+  const goodsList = getGoodsList(container);
+  const { isAirContainer, totalWeight, capacityValue, maxCapacity, fillPercentage, fillColor } = getCapacityInfo(container, goodsList);
+  const { statusColor, statusLabel, currentStatusIndex } = getContainerStatusInfo(container);
+  const cbmProfit = normalizeCbmProfit(containerResponse, goodsList);
+  const consignee = extractConsignee(container);
+
+  const status = useContainerStatusMutations(containerId, container, goodsList, capacityValue, maxCapacity, isAirContainer, totalWeight, dialogs);
+  const goods = useContainerGoodsMutations(containerId, goodsList, dialogs);
+  const nav = useContainerNavigation(containerId, goodsList);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
     await queryClient.invalidateQueries({ queryKey: containerQueryKeys.detail(containerId) });
     await queryClient.invalidateQueries({ queryKey: waypointQueryKeys.list(containerId) });
-    await refetch(); 
-    setIsRefreshing(false); 
+    await refetch();
+    setIsRefreshing(false);
   };
-  const handleUpdateStatus = async (newStatus: ContainerStatus) => {
-    setStatusMenuVisible(false);
-    if (newStatus === container?.status) return;
 
-    const doUpdate = async () => {
-      try {
-        await updateStatusMutation.mutateAsync({ id: containerId, data: { status: newStatus } });
-        Alert.alert('Succès', `Statut mis à jour: ${CONTAINER_STATUS_LABELS[newStatus]}`);
-      } catch {
-        Alert.alert('Erreur', 'Impossible de mettre à jour le statut');
-      }
-    };
-
-    const checkCapacityAndUpdate = () => {
-      const requiresCapacityCheck: ContainerStatus[] = [
-        'LOADED',
-        'GATE_IN_FULL',
-        'LOADED_ON_VESSEL',
-        'IN_TRANSIT',
-        'ARRIVED',
-        'DISCHARGED',
-        'READY_FOR_PICKUP',
-      ];
-      if (requiresCapacityCheck.includes(newStatus)) {
-        if (goodsList.length === 0) {
-          Alert.alert('Attention', 'Ce container est vide. Impossible de passer au statut ' + CONTAINER_STATUS_LABELS[newStatus] + '.');
-          return;
-        }
-        if (capacityValue > maxCapacity) {
-          Alert.alert('Alerte Capacité', `${isAirContainer ? 'Poids' : 'CBM'} du container (${capacityValue.toFixed(1)}) dépasse le maximum (${maxCapacity}). Voulez-vous continuer ?`, [
-            { text: 'Annuler', style: 'cancel' },
-            { text: 'Continuer', style: 'destructive', onPress: doUpdate }
-          ]);
-          return;
-        }
-      }
-      doUpdate();
-    };
-
-    Alert.alert(
-      'Confirmer le changement de statut',
-      `Passer le container de "${CONTAINER_STATUS_LABELS[container!.status]}" à "${CONTAINER_STATUS_LABELS[newStatus]}" ?`,
-      [
-        { text: 'Annuler', style: 'cancel' },
-        { text: 'Confirmer', onPress: checkCapacityAndUpdate }
-      ]
-    );
-  };
-  const handleRemoveGoods = (goodsId: string) => { setSelectedGoodsId(goodsId); setShowRemoveGoodsDialog(true); };
-  const confirmRemoveGoods = async () => { if (!selectedGoodsId) return; try { await removeGoodsMutation.mutateAsync({ containerId, goodsId: selectedGoodsId }); setShowRemoveGoodsDialog(false); setSelectedGoodsId(null); Alert.alert('Succès', 'Marchandise retirée'); } catch { Alert.alert('Erreur', 'Impossible de retirer la marchandise'); } };
-  const handleDeleteContainer = () => { if (goodsList.length > 0) { Alert.alert('Impossible', 'Veuillez d\'abord retirer toutes les marchandises.'); return; } setShowDeleteDialog(true); };
-  const confirmDeleteContainer = async () => { try { await deleteContainerMutation.mutateAsync(containerId); setShowDeleteDialog(false); navigation.navigate('ContainerList' as never); } catch (error: any) { Alert.alert('Impossible de supprimer', error?.response?.data?.message || error?.message || 'Une erreur est survenue'); } };
-  const handleAssignGoods = () => navigation.navigate('AssignGoods' as never, { containerId } as never);
-  const handleGeneratePackingList = () => { if (goodsList.length === 0) { Alert.alert('Info', 'Aucune marchandise'); return; } navigation.navigate('PackingList' as never, { containerId } as never); };
-  const handleGoToLoadingList = () => { if (goodsList.length === 0) { Alert.alert('Info', 'Aucune marchandise'); return; } navigation.navigate('LoadingList' as never, { containerId } as never); };
   const canMarkReadyForPickup = container?.status === 'ARRIVED' || container?.status === 'DISCHARGED';
   const canMarkDelivered = container?.status === 'READY_FOR_PICKUP';
-  const handleMarkReadyForPickup = () => setShowReadyForPickupDialog(true);
-  const confirmMarkReadyForPickup = async () => { if (capacityValue > maxCapacity) { Alert.alert('Alerte Capacité', isAirContainer ? `Poids du container (${totalWeight.toFixed(1)}kg) dépasse le maximum (${MAX_WEIGHT}kg). Continuer quand même ?` : `CBM du container (${capacityValue.toFixed(1)}m³) dépasse le maximum (${MAX_CBM}m³). Continuer quand même ?`, [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: async () => { try { await markReadyForPickupMutation.mutateAsync(containerId); setShowReadyForPickupDialog(false); Alert.alert('Succès', 'Container marqué comme prêt pour le retrait'); } catch { Alert.alert('Erreur', 'Impossible de marquer le container'); } } }]); return; } try { await markReadyForPickupMutation.mutateAsync(containerId); setShowReadyForPickupDialog(false); Alert.alert('Succès', 'Container marqué comme prêt pour le retrait'); } catch { Alert.alert('Erreur', 'Impossible de marquer le container'); } };
-  const handleMarkDelivered = () => setShowDeliveredDialog(true);
-  const confirmMarkDelivered = async () => { if (goodsList.length === 0) { Alert.alert('Attention', 'Ce container est vide. Marquer un container vide comme livré est inhabituel. Continuer ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: async () => { try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } } }]); return; } try { await markContainerDeliveredMutation.mutateAsync(containerId); setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } };
-  const handleMarkGoodsDelivered = (goodsId: string) => Alert.alert('Confirmer la livraison', 'Marquer cette marchandise comme livrée ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Marquer Livré', onPress: async () => { try { await markGoodsDeliveredMutation.mutateAsync(goodsId); Alert.alert('Succès', 'Marchandise marquée comme livrée'); } catch { Alert.alert('Erreur', 'Impossible de marquer la marchandise'); } } }]);
-  // Compute fallback CBM profit from goods if backend returns zero client CBM
-  const rawCbmProfit: CbmProfit | null = containerResponse?.data?.cbmProfit ?? null;
-  const cbmProfit: CbmProfit | null = (() => {
-    if (!rawCbmProfit) return null;
 
-    // Normalize raw data to ensure all numeric fields are defined
-    const normalized: CbmProfit = {
-      ...rawCbmProfit,
-      revenue: rawCbmProfit.revenue ?? 0,
-      collected: rawCbmProfit.collected ?? 0,
-      cost: rawCbmProfit.cost ?? 0,
-      profit: rawCbmProfit.profit ?? 0,
-      profitMargin: rawCbmProfit.profitMargin ?? 0,
-      totalCBM: rawCbmProfit.totalCBM ?? 0,
-      cbmCostPerUnit: rawCbmProfit.cbmCostPerUnit ?? 0,
-    };
-
-    if (!goodsList.length) return normalized;
-
-    // If backend already provides valid dualLedger with non-zero clientTotalCBM, use it
-    if (normalized.dualLedger && normalized.dualLedger.clientTotalCBM > 0) {
-      return normalized;
-    }
-
-    // Calculate client total CBM from goods actualCBM
-    const clientTotalCBM = goodsList.reduce((sum, g: any) => sum + (parseFloat(g?.actualCBM) || 0), 0);
-    if (clientTotalCBM <= 0) return normalized;
-
-    const clientUnitPrice = 300000;
-    const agentUnitCost = normalized.dualLedger?.agentUnitCost || normalized.cbmCostPerUnit || 278000;
-    const clientTotalRevenue = clientTotalCBM * clientUnitPrice;
-    const realTimeProfit = clientTotalRevenue - (clientTotalCBM * agentUnitCost);
-
-    const dualLedger: DualLedger = {
-      ...(normalized.dualLedger || {}),
-      clientTotalCBM,
-      clientTotalRevenue,
-      realTimeProfit,
-      agentUnitCost,
-      reconciliationStatus: normalized.dualLedger?.reconciliationStatus || 'PENDING',
-    } as DualLedger;
-
-    return {
-      ...normalized,
-      totalCBM: clientTotalCBM,
-      dualLedger,
-    };
-  })();
-  const consignee = (container as any)?.consigneeId && typeof (container as any).consigneeId === 'object'
-    ? {
-        name: (container as any).consigneeId.name,
-        phone: (container as any).consigneeId.phone,
-        warehouseAddress: (container as any).consigneeId.warehouseAddress,
-      }
-    : undefined;
-  const handleReconcile = async (agentCBM: number, agentUnitCost?: number) => {
-    try {
-      await reconcileMutation.mutateAsync({ containerId, agentCBM, agentUnitCost });
-      setShowReconcileModal(false);
-      Alert.alert('Succès', 'Container réconcilié avec succès');
-    } catch (error: any) {
-      Alert.alert('Erreur', error?.response?.data?.message || 'Impossible de réconcilier le container');
-    }
+  return {
+    containerId,
+    container,
+    goodsList,
+    cbmProfit,
+    isLoading,
+    isRefetching,
+    isRefreshing,
+    ...status,
+    ...goods,
+    ...nav,
+    ...dialogs,
+    fillPercentage,
+    fillColor,
+    statusColor,
+    statusLabel,
+    currentStatusIndex,
+    isAirContainer,
+    capacityValue,
+    maxCapacity,
+    canMarkReadyForPickup,
+    canMarkDelivered,
+    handleRefresh,
+    consignee,
   };
-  return { containerId, navigation, container, goodsList, cbmProfit, isLoading, isRefetching, isRefreshing, updateStatusMutation, removeGoodsMutation, deleteContainerMutation, markReadyForPickupMutation, markGoodsDeliveredMutation, markContainerDeliveredMutation, reconcileMutation, statusMenuVisible, setStatusMenuVisible, showDeleteDialog, setShowDeleteDialog, showRemoveGoodsDialog, setShowRemoveGoodsDialog, showReadyForPickupDialog, setShowReadyForPickupDialog, showDeliveredDialog, setShowDeliveredDialog, showReconcileModal, setShowReconcileModal, selectedGoodsId, setSelectedGoodsId, fillPercentage, fillColor, statusColor, statusLabel, currentStatusIndex, isAirContainer, capacityValue, maxCapacity, canMarkReadyForPickup, canMarkDelivered, handleRefresh, handleUpdateStatus, handleRemoveGoods, confirmRemoveGoods, handleDeleteContainer, confirmDeleteContainer, handleAssignGoods, handleGeneratePackingList, handleGoToLoadingList, handleMarkReadyForPickup, confirmMarkReadyForPickup, handleMarkDelivered, confirmMarkDelivered, handleMarkGoodsDelivered, handleReconcile, consignee };
 };

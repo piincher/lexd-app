@@ -1,23 +1,12 @@
 import React from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import { styles } from "./ReviewFilters.styles";
+import { View, ScrollView, TouchableOpacity, Text } from "react-native";
+import { getStyles } from "./ReviewFilters.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
-export type FilterChip = {
-  label: string;
-  key: string;
-  filterType: "all" | "rating" | "response";
-  value?: number | boolean;
-};
-
-export const FILTER_CHIPS: FilterChip[] = [
-  { label: "Tous", key: "all", filterType: "all" },
-  { label: "5\u2605", key: "5star", filterType: "rating", value: 5 },
-  { label: "4\u2605", key: "4star", filterType: "rating", value: 4 },
-  { label: "3\u2605", key: "3star", filterType: "rating", value: 3 },
-  { label: "2\u2605", key: "2star", filterType: "rating", value: 2 },
-  { label: "1\u2605", key: "1star", filterType: "rating", value: 1 },
-  { label: "Sans réponse", key: "no_response", filterType: "response", value: false as any },
-  { label: "Avec réponse", key: "has_response", filterType: "response", value: true as any },
+const FILTERS = [
+  { key: "all", label: "Tous" },
+  { key: "pending", label: "En attente" },
+  { key: "responded", label: "Répondus" },
 ];
 
 interface ReviewFiltersProps {
@@ -29,6 +18,9 @@ export const ReviewFilters: React.FC<ReviewFiltersProps> = ({
   activeFilter,
   onFilterChange,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
+
   return (
     <View style={styles.filterContainer}>
       <ScrollView
@@ -36,22 +28,17 @@ export const ReviewFilters: React.FC<ReviewFiltersProps> = ({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.filterScrollContent}
       >
-        {FILTER_CHIPS.map((chip) => {
-          const isActive = activeFilter === chip.key;
+        {FILTERS.map((filter) => {
+          const isActive = activeFilter === filter.key;
           return (
             <TouchableOpacity
-              key={chip.key}
+              key={filter.key}
               style={[styles.filterChip, isActive && styles.filterChipActive]}
-              onPress={() => onFilterChange(chip.key)}
-              activeOpacity={0.7}
+              onPress={() => onFilterChange(filter.key)}
+              activeOpacity={0.8}
             >
-              <Text
-                style={[
-                  styles.filterChipText,
-                  isActive && styles.filterChipTextActive,
-                ]}
-              >
-                {chip.label}
+              <Text style={[styles.filterChipText, isActive && styles.filterChipTextActive]}>
+                {filter.label}
               </Text>
             </TouchableOpacity>
           );

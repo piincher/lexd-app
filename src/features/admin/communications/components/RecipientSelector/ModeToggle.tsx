@@ -2,6 +2,7 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { useRecipientSelectorStyles } from './RecipientSelector.styles';
 
@@ -13,6 +14,7 @@ interface ModeToggleProps {
 }
 
 export const ModeToggle: React.FC<ModeToggleProps> = ({ mode, onModeChange }) => {
+  const { colors } = useAppTheme();
   const styles = useRecipientSelectorStyles();
 
   return (
@@ -22,7 +24,7 @@ export const ModeToggle: React.FC<ModeToggleProps> = ({ mode, onModeChange }) =>
         style={[styles.modeTab, mode === 'all' && styles.modeTabActive]}
         activeOpacity={0.7}
       >
-        <Ionicons name="people" size={16} color={mode === 'all' ? '#FFF' : Theme.neutral[500]} />
+        <Ionicons name="people" size={16} color={mode === 'all' ? colors.text.inverse : Theme.neutral[500]} />
         <Text style={[styles.modeText, mode === 'all' && styles.modeTextActive]}>
           Tous les clients
         </Text>
@@ -32,7 +34,7 @@ export const ModeToggle: React.FC<ModeToggleProps> = ({ mode, onModeChange }) =>
         style={[styles.modeTab, mode === 'date' && styles.modeTabActive]}
         activeOpacity={0.7}
       >
-        <Ionicons name="calendar" size={16} color={mode === 'date' ? '#FFF' : Theme.neutral[500]} />
+        <Ionicons name="calendar" size={16} color={mode === 'date' ? colors.text.inverse : Theme.neutral[500]} />
         <Text style={[styles.modeText, mode === 'date' && styles.modeTextActive]}>
           Par date depart
         </Text>

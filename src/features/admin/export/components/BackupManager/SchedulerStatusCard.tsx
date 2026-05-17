@@ -1,9 +1,12 @@
 import React from "react";
 import { View } from "react-native";
-import { Card, Text, Chip } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
-import { styles } from "./BackupManager.styles";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+import { Badge } from "@src/shared/ui/Badge";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { styles } from "./BackupManager.styles";
 
 interface SchedulerStatus {
   isScheduled: boolean;
@@ -21,38 +24,45 @@ export const SchedulerStatusCard: React.FC<SchedulerStatusCardProps> = ({ status
   const { colors } = useAppTheme();
   if (!status) return null;
 
+  const isActive = status.isScheduled && !status.isRunning;
+
   return (
-    <Card style={styles.statusCard}>
-      <Card.Content>
-        <View style={styles.statusRow}>
-          <View>
-            <Text variant="titleSmall">Automated Backups</Text>
-            <Text variant="bodySmall">
-              {status.isScheduled ? "Scheduled" : "Not Scheduled"} • {status.config.schedule}
-            </Text>
-          </View>
-          <Chip
-            icon={status.isRunning ? "sync" : "check-circle"}
-            style={[styles.statusChip, { backgroundColor: status.isRunning ? colors.status.warning : colors.status.success }]}
-            textStyle={{ color: colors.text.inverse }}
-          >
-            {status.isRunning ? "Running" : "Ready"}
-          </Chip>
-        </View>
-        {status.stats && (
-          <View style={styles.statsRow}>
-            <Text variant="bodySmall">
-              Total: {status.stats.totalRuns} • Success: {status.stats.successfulRuns} • Failed:{" "}
-              {status.stats.failedRuns}
-            </Text>
-          </View>
-        )}
-        {status.lastRun && (
-          <Text variant="bodySmall" style={styles.lastRunText}>
-            Last run: {formatDistanceToNow(new Date(status.lastRun))} ago
+    <View style={[styles.statusCard, { backgroundColor: colors.background.card }]}>
+      <View style={styles.statusRow}>
+        <View>
+          <Text variant="titleSmall" style={styles.statusLabel}>
+            Automated Backups
           </Text>
-        )}
-      </Card.Content>
-    </Card>
+          <Text variant="bodySmall" style={[styles.statusMeta, { color: colors.text.secondary }]}>
+            {status.isScheduled ? status.config.schedule : "Not configured"}
+          </Text>
+        </View>
+        <Badge
+          label={status.isRunning ? "Running" : isActive ? "Active" : "Paused"}
+          variant={status.isRunning ? "warning" : isActive ? "success" : "neutral"}
+          size="small"
+        />
+      </View>
+
+      {status.stats && (
+        <View style={styles.statsRow}>
+          <Text variant="bodySmall" style={[styles.statsText, { color: colors.text.secondary }]}>
+            {status.stats.totalRuns} runs ·{" "}
+            <Text style={{ color: colors.status.success }}>{status.stats.successfulRuns} success</Text>
+            {" · "}
+            <Text style={{ color: colors.status.error }}>{status.stats.failedRuns} failed</Text>
+          </Text>
+        </View>
+      )}
+
+      {status.lastRun && (
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 4, marginTop: 6 }}>
+          <MaterialCommunityIcons name="history" size={14} color={colors.text.secondary} />
+          <Text variant="bodySmall" style={[styles.lastRunText, { color: colors.text.secondary }]}>
+            Last run {formatDistanceToNow(new Date(status.lastRun))} ago
+          </Text>
+        </View>
+      )}
+    </View>
   );
 };

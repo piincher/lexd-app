@@ -1,6 +1,7 @@
 import React from "react";
 import { ScrollView, TouchableOpacity, Text } from "react-native";
-import { styles } from "./PromoFilters.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { getStyles } from "./PromoFilters.styles";
 
 export type FilterChip = { label: string; key: string; value?: string };
 
@@ -17,6 +18,8 @@ type PromoFiltersProps = {
 };
 
 export function PromoFilters({ activeFilter, onFilterChange }: PromoFiltersProps) {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScrollContent}>
       {FILTER_CHIPS.map((chip) => {

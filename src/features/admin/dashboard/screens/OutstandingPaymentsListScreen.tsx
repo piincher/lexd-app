@@ -2,11 +2,10 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { RefreshControl } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useOutstandingPaymentsList } from '../hooks';
+import { useOutstandingPaymentsListScreen } from './hooks';
 import { styles } from './OutstandingPaymentsListScreen.styles';
 import {
   OutstandingPaymentsListHeader,
@@ -19,7 +18,6 @@ import {
 } from '../components';
 
 export const OutstandingPaymentsListScreen: React.FC = () => {
-  const navigation = useNavigation<any>();
   const { isDark } = useAppTheme();
   const {
     items,
@@ -28,23 +26,16 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
     isRefetching,
     status,
     localSearch,
-    handleRefresh,
-    handleSearchChange,
-    handleSearchSubmit,
-    handleClearSearch,
-    handleStatusChange,
-    handleNextPage,
-    handlePrevPage,
-    handleItemPress,
-  } = useOutstandingPaymentsList();
+    handlers,
+  } = useOutstandingPaymentsListScreen();
 
   return (
     <SafeAreaView style={styles.container}>
       <OutstandingPaymentsListHeader
-        onBack={() => navigation.goBack()}
+        onBack={handlers.handleBack}
         rightElement={
           <NotificationBell
-            onPress={() => navigation.navigate('Notifications' as never)}
+            onPress={handlers.handleNotificationPress}
             size={24}
             color={Theme.colors.text.primary}
           />
@@ -52,28 +43,28 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
       />
       <OutstandingPaymentsSearch
         localSearch={localSearch}
-        onChangeText={handleSearchChange}
-        onSubmit={handleSearchSubmit}
-        onClear={handleClearSearch}
+        onChangeText={handlers.handleSearchChange}
+        onSubmit={handlers.handleSearchSubmit}
+        onClear={handlers.handleClearSearch}
       />
-      <OutstandingPaymentsFilter status={status} onChange={handleStatusChange} />
+      <OutstandingPaymentsFilter status={status} onChange={handlers.handleStatusChange} />
       <FlashList
         data={items}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}
         refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={handleRefresh} />
+          <RefreshControl refreshing={isRefetching} onRefresh={handlers.handleRefresh} />
         }
         renderItem={({ item }) => (
-          <OutstandingPaymentsItem item={item} onPress={handleItemPress} />
+          <OutstandingPaymentsItem item={item} onPress={handlers.handleItemPress} />
         )}
         ListEmptyComponent={<OutstandingPaymentsEmpty />}
         ListFooterComponent={
           pagination && pagination.pages > 1 ? (
             <OutstandingPaymentsPagination
               pagination={pagination}
-              onPrev={handlePrevPage}
-              onNext={handleNextPage}
+              onPrev={handlers.handlePrevPage}
+              onNext={handlers.handleNextPage}
             />
           ) : null
         }

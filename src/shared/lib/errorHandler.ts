@@ -1,10 +1,9 @@
 /**
  * Error Handler - Global async error handling utilities
- * Provides standardized error handling, logging, and user feedback
+ * Provides standardized error handling and logging (no UI feedback)
  */
 
 import * as Sentry from '@sentry/react-native';
-import { showMessage } from 'react-native-flash-message';
 
 export interface ErrorContext {
   component?: string;
@@ -22,19 +21,13 @@ export interface HandledError {
   timestamp: string;
 }
 
-export interface ToastColors {
-  backgroundColor: string;
-  textColor: string;
-}
-
 /**
- * Handles async errors with proper logging and user feedback
+ * Handles async errors with proper logging
+ * UI feedback should be handled by the caller
  */
 export function handleAsyncError(
   error: unknown,
   context: string | ErrorContext,
-  showUserFeedback: boolean = true,
-  colors?: ToastColors
 ): HandledError {
   const errorContext: ErrorContext = typeof context === 'string' 
     ? { component: context } 
@@ -73,11 +66,6 @@ export function handleAsyncError(
     user: errorContext.userId ? { id: errorContext.userId } : undefined,
   });
 
-  // Show user feedback
-  if (showUserFeedback) {
-    showErrorToast(message, 3000, colors);
-  }
-
   return handledError;
 }
 
@@ -88,7 +76,6 @@ export function handleApiError(
   error: unknown,
   endpoint: string,
   context?: Omit<ErrorContext, 'action'>,
-  colors?: ToastColors
 ): HandledError {
   const errorContext: ErrorContext = {
     ...context,
@@ -130,7 +117,7 @@ export function handleApiError(
       }
   }
 
-  return handleAsyncError(error, errorContext, true, colors);
+  return handleAsyncError(error, errorContext);
 }
 
 /**
@@ -140,76 +127,13 @@ export function handleFormError(
   error: unknown,
   formName: string,
   context?: Omit<ErrorContext, 'action'>,
-  colors?: ToastColors
 ): HandledError {
   const errorContext: ErrorContext = {
     ...context,
     action: `FORM_SUBMIT:${formName}`,
   };
 
-  const message = extractErrorMessage(error) || 'Erreur de validation du formulaire';
-
-  return handleAsyncError(error, errorContext, true, colors);
-}
-
-/**
- * Shows error toast message
- */
-export function showErrorToast(message: string, duration: number = 3000, colors?: ToastColors): void {
-  showMessage({
-    message: 'Erreur',
-    description: message,
-    type: 'danger',
-    backgroundColor: colors?.backgroundColor || '#dc3545',
-    color: colors?.textColor || '#FFFFFF',
-    duration,
-    icon: 'danger',
-  });
-}
-
-/**
- * Shows success toast message
- */
-export function showSuccessToast(message: string, duration: number = 3000, colors?: ToastColors): void {
-  showMessage({
-    message: 'Succès',
-    description: message,
-    type: 'success',
-    backgroundColor: colors?.backgroundColor || '#28a745',
-    color: colors?.textColor || '#FFFFFF',
-    duration,
-    icon: 'success',
-  });
-}
-
-/**
- * Shows warning toast message
- */
-export function showWarningToast(message: string, duration: number = 3000, colors?: ToastColors): void {
-  showMessage({
-    message: 'Attention',
-    description: message,
-    type: 'warning',
-    backgroundColor: colors?.backgroundColor || '#ff9800',
-    color: colors?.textColor || '#FFFFFF',
-    duration,
-    icon: 'warning',
-  });
-}
-
-/**
- * Shows info toast message
- */
-export function showInfoToast(message: string, duration: number = 3000, colors?: ToastColors): void {
-  showMessage({
-    message: 'Information',
-    description: message,
-    type: 'info',
-    backgroundColor: colors?.backgroundColor || '#17a2b8',
-    color: colors?.textColor || '#FFFFFF',
-    duration,
-    icon: 'info',
-  });
+  return handleAsyncError(error, errorContext);
 }
 
 /**
@@ -305,10 +229,6 @@ export default {
   handleAsyncError,
   handleApiError,
   handleFormError,
-  showErrorToast,
-  showSuccessToast,
-  showWarningToast,
-  showInfoToast,
   withErrorHandling,
   withRetry,
 };

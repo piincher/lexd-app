@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './ActiveOrderActions.styles';
+import { getStyles } from './ActiveOrderActions.styles';
 
 interface ActiveOrderActionsProps {
   isDelivered: boolean;
@@ -21,12 +21,13 @@ export const ActiveOrderActions: React.FC<ActiveOrderActionsProps> = ({
   onViewGoods,
 }) => {
   const { colors } = useAppTheme();
+  const styles = getStyles(colors);
 
   return (
     <View style={styles.actionsSection}>
       {isDelivered ? (
         <View style={styles.deliveredBanner}>
-          <MaterialCommunityIcons name="check-circle" size={24} color="#4CAF50" />
+          <MaterialCommunityIcons name="check-circle" size={24} color={colors.status.success} />
           <Text style={styles.deliveredText}>Le client a récupéré son colis</Text>
         </View>
       ) : (
@@ -48,7 +49,7 @@ export const ActiveOrderActions: React.FC<ActiveOrderActionsProps> = ({
           onPress={onUpdateDeliver}
           icon="package-check"
           style={styles.deliverBtn}
-          buttonColor="#4CAF50"
+          buttonColor={colors.status.success}
           labelStyle={styles.btnLabel}
           loading={isPending}
           disabled={isPending}

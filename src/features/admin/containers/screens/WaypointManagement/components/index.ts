@@ -2,6 +2,7 @@ export { Header } from './Header';
 export { TabNavigation } from './TabNavigation';
 export { SeaSegmentsSection } from './SeaSegmentsSection';
 export { RoadSegmentsSection } from './RoadSegmentsSection';
+export { RoadSegmentCard } from './RoadSegmentCard';
 export { WaypointTracker } from './WaypointTracker';
 export { FloatingActionButtons } from './FloatingActionButtons';
 export { AddWaypointDialog } from './AddWaypointDialog';

@@ -5,60 +5,16 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
-import Animated, {
-  FadeIn,
-  useAnimatedStyle,
-  withRepeat,
-  withTiming,
-  useSharedValue,
-  interpolate,
-} from 'react-native-reanimated';
-import { LinearGradient } from 'expo-linear-gradient';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
-
-const ShimmerBlock: React.FC<{
-  width: number | `${number}%`;
-  height: number;
-  borderRadius?: number;
-}> = ({ width, height, borderRadius = 4 }) => {
-  const { colors, isDark } = useAppTheme();
-  const shimmer = useSharedValue(0);
-
-  React.useEffect(() => {
-    shimmer.value = withRepeat(
-      withTiming(1, { duration: 1200 }),
-      -1,
-      false
-    );
-  }, []);
-
-  const shimmerStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: interpolate(shimmer.value, [0, 1], [-200, 400]) }],
-  }));
-
-  return (
-    <View style={[styles.block, { width, height, borderRadius, backgroundColor: isDark ? colors.neutral[800] : colors.neutral[200] }]}>
-      <Animated.View style={[StyleSheet.absoluteFill, shimmerStyle]}>
-        <LinearGradient
-          colors={['transparent', isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.5)', 'transparent']}
-          start={{ x: 0, y: 0.5 }}
-          end={{ x: 1, y: 0.5 }}
-          style={StyleSheet.absoluteFill}
-        />
-      </Animated.View>
-    </View>
-  );
-};
+import { View, ScrollView } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
+import { ShimmerBlock } from '@src/shared/ui';
+import { styles } from './OrderCardSkeleton.styles';
 
 const OrderCardSkeletonItem: React.FC = () => (
   <View style={styles.card}>
-    {/* Status bar */}
     <View style={styles.statusBar} />
 
     <View style={styles.content}>
-      {/* Header: Avatar + Name + Status badge */}
       <View style={styles.header}>
         <View style={styles.clientSection}>
           <ShimmerBlock width={44} height={44} borderRadius={22} />
@@ -71,20 +27,17 @@ const OrderCardSkeletonItem: React.FC = () => (
         <ShimmerBlock width={76} height={26} borderRadius={16} />
       </View>
 
-      {/* Shipping mode row */}
       <View style={styles.shippingRow}>
         <ShimmerBlock width={100} height={24} borderRadius={6} />
         <ShimmerBlock width={70} height={12} />
       </View>
 
-      {/* Details grid */}
       <View style={styles.detailsGrid}>
         <ShimmerBlock width={80} height={12} />
         <ShimmerBlock width={70} height={12} />
         <ShimmerBlock width={90} height={12} />
       </View>
 
-      {/* Progress bar */}
       <View style={styles.progressSection}>
         <ShimmerBlock width={'100%'} height={4} borderRadius={2} />
         <View style={{ height: 6 }} />
@@ -114,70 +67,5 @@ export const OrderCardFooterSkeleton: React.FC = () => (
     <OrderCardSkeletonItem />
   </Animated.View>
 );
-
-const styles = StyleSheet.create({
-  list: {
-    flex: 1,
-  },
-  footer: {
-    paddingBottom: 16,
-  },
-  card: {
-    backgroundColor: Theme.colors.background.card,
-    borderRadius: 12,
-    marginHorizontal: 12,
-    marginVertical: 6,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 3,
-    overflow: 'hidden',
-    flexDirection: 'row',
-  },
-  statusBar: {
-    width: 4,
-    backgroundColor: SKELETON_BG,
-  },
-  content: {
-    flex: 1,
-    padding: 14,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 10,
-  },
-  clientSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    marginRight: 8,
-  },
-  clientInfo: {
-    flex: 1,
-    marginLeft: 10,
-  },
-  shippingRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-    gap: 10,
-  },
-  detailsGrid: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: Theme.colors.background.paper,
-    borderRadius: 8,
-    padding: 10,
-  },
-  progressSection: {
-    marginTop: 10,
-  },
-  block: {
-    overflow: 'hidden',
-  },
-});
 
 export default OrderCardSkeleton;

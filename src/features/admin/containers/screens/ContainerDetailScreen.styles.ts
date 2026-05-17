@@ -65,7 +65,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.full,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: colors.text.inverse + '33',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -104,7 +104,7 @@ const createStyles = (colors: any) => StyleSheet.create({
   },
   shippingLineText: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse + 'CC',
     fontWeight: '500',
   },
   consigneeContainer: {
@@ -112,7 +112,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     alignItems: 'center',
     marginTop: Theme.spacing.sm,
     gap: Theme.spacing.sm,
-    backgroundColor: 'rgba(255,255,255,0.15)',
+    backgroundColor: colors.text.inverse + '26',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
@@ -126,7 +126,7 @@ const createStyles = (colors: any) => StyleSheet.create({
   actualNumber: {
     marginTop: Theme.spacing.sm,
     fontSize: 13,
-    color: 'rgba(255,255,255,0.6)',
+    color: colors.text.inverse + '99',
   },
   scrollView: {
     flex: 1,

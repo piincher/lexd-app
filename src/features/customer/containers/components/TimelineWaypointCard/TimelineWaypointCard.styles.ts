@@ -169,7 +169,7 @@ export const useTimelineWaypointCardStyles = () => {
         currentText: {
           fontSize: 12,
           fontWeight: '700',
-          color: 'Theme.colors.text.inverse',
+          color: colors.text.inverse,
         },
         rightSection: {
           justifyContent: 'center',

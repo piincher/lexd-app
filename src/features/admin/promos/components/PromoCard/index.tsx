@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { PromoRecord, PromoStatus } from "../../api/promoAdminApi";
-import { styles } from "./PromoCard.styles";
+import { getStyles } from "./PromoCard.styles";
 
 const formatDate = (dateString: string): string => {
   try {
@@ -14,16 +14,16 @@ const formatDate = (dateString: string): string => {
   }
 };
 
-const getStatusColor = (status: PromoStatus) => {
+const getStatusColor = (colors: any, status: PromoStatus) => {
   switch (status) {
     case "ACTIVE":
-      return { bg: "#DCFCE7", text: "#15803D" };
+      return { bg: colors.status.success + "15", text: colors.status.success };
     case "INACTIVE":
-      return { bg: "#FEE2E2", text: "#DC2626" };
+      return { bg: colors.status.error + "15", text: colors.status.error };
     case "EXPIRED":
-      return { bg: "#F3F4F6", text: "#6B7280" };
+      return { bg: colors.neutral[100], text: colors.text.disabled };
     default:
-      return { bg: "#F3F4F6", text: "#6B7280" };
+      return { bg: colors.neutral[100], text: colors.text.disabled };
   }
 };
 
@@ -47,7 +47,9 @@ type PromoCardProps = {
 };
 
 export function PromoCard({ promo, onEdit, onDeactivate }: PromoCardProps) {
-  const statusColors = getStatusColor(promo.status);
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
+  const statusColors = getStatusColor(colors, promo.status);
   const isPercentage = promo.type === "PERCENTAGE";
 
   return (
@@ -58,8 +60,8 @@ export function PromoCard({ promo, onEdit, onDeactivate }: PromoCardProps) {
           <Text style={styles.promoName}>{promo.name}</Text>
         </View>
         <View style={styles.badgeRow}>
-          <View style={[styles.badge, { backgroundColor: isPercentage ? "#DBEAFE" : "#FEF3C7" }]}>
-            <Text style={[styles.badgeText, { color: isPercentage ? "#1D4ED8" : "#92400E" }]}>
+          <View style={[styles.badge, { backgroundColor: isPercentage ? colors.status.info + "15" : colors.status.warning + "15" }]}>
+            <Text style={[styles.badgeText, { color: isPercentage ? colors.status.info : colors.status.warning }]}>
               {isPercentage ? "Pourcentage" : "Fixe"}
             </Text>
           </View>
@@ -72,7 +74,7 @@ export function PromoCard({ promo, onEdit, onDeactivate }: PromoCardProps) {
       </View>
 
       <View style={styles.cardRow}>
-        <MaterialCommunityIcons name="tag-outline" size={16} color={Theme.colors.text.secondary} />
+        <MaterialCommunityIcons name="tag-outline" size={16} color={colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {isPercentage ? `${promo.value}%` : `${promo.value} FCFA`}
           {promo.maxDiscount != null ? ` (max ${promo.maxDiscount} FCFA)` : ""}
@@ -80,14 +82,14 @@ export function PromoCard({ promo, onEdit, onDeactivate }: PromoCardProps) {
       </View>
 
       <View style={styles.cardRow}>
-        <Ionicons name="calendar-outline" size={16} color={Theme.colors.text.secondary} />
+        <Ionicons name="calendar-outline" size={16} color={colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {formatDate(promo.validFrom)} — {formatDate(promo.validUntil)}
         </Text>
       </View>
 
       <View style={styles.cardRow}>
-        <MaterialIcons name="people-outline" size={16} color={Theme.colors.text.secondary} />
+        <MaterialIcons name="people-outline" size={16} color={colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {promo.currentUsages}/{promo.maxUsages ?? "∞"} utilisations
         </Text>
@@ -95,19 +97,19 @@ export function PromoCard({ promo, onEdit, onDeactivate }: PromoCardProps) {
 
       {promo.minOrderAmount != null && (
         <View style={styles.cardRow}>
-          <MaterialIcons name="attach-money" size={16} color={Theme.colors.text.secondary} />
+          <MaterialIcons name="attach-money" size={16} color={colors.text.secondary} />
           <Text style={styles.cardRowText}>Min. commande : {promo.minOrderAmount} FCFA</Text>
         </View>
       )}
 
       <View style={styles.actionRow}>
         <TouchableOpacity style={styles.editButton} onPress={() => onEdit(promo)} activeOpacity={0.7}>
-          <MaterialIcons name="edit" size={18} color="#d4a843" />
+          <MaterialIcons name="edit" size={18} color={colors.primary.main} />
           <Text style={styles.editButtonText}>Modifier</Text>
         </TouchableOpacity>
         {promo.status === "ACTIVE" && (
           <TouchableOpacity style={styles.deactivateButton} onPress={() => onDeactivate(promo)} activeOpacity={0.7}>
-            <MaterialIcons name="block" size={18} color="#DC2626" />
+            <MaterialIcons name="block" size={18} color={colors.status.error} />
             <Text style={styles.deactivateButtonText}>Désactiver</Text>
           </TouchableOpacity>
         )}

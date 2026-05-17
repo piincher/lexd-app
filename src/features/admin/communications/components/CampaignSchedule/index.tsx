@@ -47,7 +47,7 @@ export const CampaignSchedule: React.FC<CampaignScheduleProps> = ({
 
       <TouchableOpacity style={styles.draftToggle} onPress={onToggleDraft}>
         <View style={[styles.checkbox, saveAsDraft && styles.checkboxActive]}>
-          {saveAsDraft && <Ionicons name="checkmark" size={14} color="#fff" />}
+          {saveAsDraft && <Ionicons name="checkmark" size={14} color={colors.text.inverse} />}
         </View>
         <Text style={styles.draftLabel}>Enregistrer comme brouillon</Text>
       </TouchableOpacity>

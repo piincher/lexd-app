@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   },
   distributionFill: {
     height: "100%",
-    backgroundColor: "#d4a843",
+    backgroundColor: Theme.colors.primary.main,
     borderRadius: 3,
   },
   distributionCount: {

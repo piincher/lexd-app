@@ -29,11 +29,11 @@ export const VerificationHeader: React.FC<VerificationHeaderProps> = ({ maskedPh
       </Text>
       <Pressable
         onPress={onEditPhone}
-        style={[styles.phoneHighlight, { backgroundColor: isDark ? "rgba(255,255,255,0.07)" : "#F9FAFB", borderColor: colors.border }]}
+        style={[styles.phoneHighlight, { backgroundColor: colors.background.paper, borderColor: colors.border }]}
         accessibilityRole="button"
         accessibilityLabel="Modifier le numéro de téléphone"
       >
-        <View style={[styles.phoneIcon, { backgroundColor: isDark ? "rgba(34,197,94,0.16)" : "#DCFCE7" }]}>
+        <View style={[styles.phoneIcon, { backgroundColor: colors.primary[50] }]}>
           <MaterialCommunityIcons name="cellphone-check" size={16} color={colors.primary.main} />
         </View>
         <View style={styles.phoneCopy}>

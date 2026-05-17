@@ -110,7 +110,7 @@ export const PaymentCard: React.FC<PaymentCardProps> = ({
                 mode="contained"
                 onPress={() => onShareWhatsApp(payment)}
                 style={styles.whatsappButton}
-                buttonColor="#25D366"
+                buttonColor={colors.status.success}
                 icon={isSharing ? undefined : 'whatsapp'}
                 compact
                 disabled={isSharing}

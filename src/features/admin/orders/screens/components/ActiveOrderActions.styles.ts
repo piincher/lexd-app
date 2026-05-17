@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   actionsSection: {
     paddingHorizontal: 12,
     paddingTop: 4,
@@ -30,14 +29,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#E8F5E9',
+    backgroundColor: colors.status.success + '15',
     borderRadius: 12,
     paddingVertical: 14,
   },
   deliveredText: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#2E7D32',
+    color: colors.status.success,
     fontFamily: Fonts.semiBold,
   },
 });

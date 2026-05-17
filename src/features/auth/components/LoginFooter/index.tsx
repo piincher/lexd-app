@@ -39,7 +39,7 @@ export const LoginFooter: React.FC<LoginFooterProps> = ({ onTermsPress, onPrivac
             <Text style={[styles.madeWithLoveText, { color: colors.text.secondary }]}>
                Made with{" "}
             </Text>
-            <MaterialCommunityIcons name="heart" size={12} color="#EF4444" />
+            <MaterialCommunityIcons name="heart" size={12} color={colors.status.error} />
             <Text style={[styles.madeWithLoveText, { color: colors.text.secondary }]}>
                {" "}
                by nuvotech.tech team Paris-Nanjing

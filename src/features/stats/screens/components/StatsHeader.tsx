@@ -38,6 +38,7 @@ const formatDate = (): string => {
 export const StatsHeader: React.FC<StatsHeaderProps> = ({ firstName, totalOrders }) => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => getStyles(colors), [colors]);
   return (
     <LinearGradient
       colors={Theme.gradients.primary}
@@ -54,7 +55,7 @@ export const StatsHeader: React.FC<StatsHeaderProps> = ({ firstName, totalOrders
         </View>
         <View style={styles.actions}>
           <View style={[styles.summaryPill, { backgroundColor: colors.background.card }]}>
-            <Ionicons name="cube" size={14} color={Theme.primary[600]} />
+            <Ionicons name="cube" size={14} color={colors.primary.main} />
             <Text style={styles.summaryText}>{totalOrders} commandes</Text>
           </View>
           <NotificationBell
@@ -72,7 +73,7 @@ export const StatsHeader: React.FC<StatsHeaderProps> = ({ firstName, totalOrders
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingTop: 12,
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.primary[700],
+    color: colors.primary.main,
   },
   dateRow: {
     flexDirection: 'row',

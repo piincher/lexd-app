@@ -16,8 +16,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
-
-const SKELETON_BG = '#E8EFF5';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const ShimmerBlock: React.FC<{
   width: number | `${number}%`;
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 4,
-    backgroundColor: SKELETON_BG,
+    backgroundColor: Theme.colors.neutral[200],
   },
   info: {
     flex: 1,
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   block: {
-    backgroundColor: SKELETON_BG,
+    backgroundColor: Theme.colors.neutral[200],
     overflow: 'hidden',
   },
 });

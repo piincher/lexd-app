@@ -5,7 +5,8 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 
-export const styles = StyleSheet.create({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const getStyles = (colors: any) => StyleSheet.create({
   card: {
     borderRadius: 16,
     padding: 16,
@@ -43,13 +44,13 @@ export const styles = StyleSheet.create({
     gap: 6,
   },
   countBadge: {
-    backgroundColor: "rgba(212,168,67,0.2)",
+    backgroundColor: colors.accent.gold + '33',
     borderRadius: 10,
     paddingHorizontal: 8,
     paddingVertical: 2,
   },
   countText: {
-    color: "#d4a843",
+    color: colors.accent.gold,
     fontFamily: Fonts.bold,
     fontSize: 12,
   },
@@ -101,7 +102,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 6,
   },
   viewAllText: {
-    color: "#d4a843",
+    color: colors.accent.gold,
     fontFamily: Fonts.meduim,
     fontSize: 13,
   },

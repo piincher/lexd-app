@@ -2,6 +2,8 @@ export { useOrderWithGoods } from './useOrderWithGoods';
 export { useOrderTotals } from './useOrderTotals';
 export { useRecalculateOrder } from './useRecalculateOrder';
 export { usePaymentHistory } from './usePaymentHistory';
+export { usePaymentHistoryQuery } from './usePaymentHistoryQuery';
+export { usePaymentHistoryActions } from './usePaymentHistoryActions';
 export { usePaymentReceiptPolling } from './usePaymentReceiptPolling';
 export { useEditOrderScreen } from './useEditOrderScreen';
 export { useEditOrderImages } from './useEditOrderImages';

@@ -1,12 +1,14 @@
 import React from "react";
-import { View } from "react-native";
-import { Card, Text, Chip, IconButton, Divider } from "react-native-paper";
+import { View, Pressable } from "react-native";
+import { Text, IconButton } from "react-native-paper";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
+import { Badge } from "@src/shared/ui/Badge";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { ExportLog } from "../../types";
 import { ENTITY_CONFIG, FORMAT_ICONS } from "../../constants";
 import { styles } from "./ExportListItem.styles";
-import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface ExportListItemProps {
   item: ExportLog;
@@ -14,14 +16,13 @@ interface ExportListItemProps {
   isDownloading: boolean;
 }
 
-const getStatusColor = (status: string, colors: any) => {
+const getStatusVariant = (status: string): any => {
   switch (status) {
-    case "COMPLETED": return colors.status.success;
-    case "PENDING": return colors.status.warning;
-    case "PROCESSING": return colors.status.info;
-    case "FAILED": return colors.status.error;
-    case "CANCELLED": return colors.text.disabled;
-    default: return colors.text.disabled;
+    case "COMPLETED": return "success";
+    case "PENDING": return "warning";
+    case "PROCESSING": return "info";
+    case "FAILED": return "error";
+    default: return "neutral";
   }
 };
 
@@ -31,99 +32,108 @@ export const ExportListItem: React.FC<ExportListItemProps> = ({
   isDownloading,
 }) => {
   const { colors } = useAppTheme();
-  const statusColor = getStatusColor(item.metadata.status, colors);
+  const entityConfig = ENTITY_CONFIG[item.entity];
+  const statusVariant = getStatusVariant(item.metadata.status);
 
   return (
-    <Card style={styles.exportCard}>
-      <Card.Content>
-        <View style={styles.exportHeader}>
-          <View style={styles.exportInfo}>
-            <Text variant="titleMedium" style={styles.exportId}>
-              {item.exportId}
-            </Text>
-            <View style={styles.chipRow}>
-              <Chip
-                icon={ENTITY_CONFIG[item.entity]?.icon || "file-export"}
-                style={styles.chip}
-                compact
-              >
-                {ENTITY_CONFIG[item.entity]?.label || item.entity}
-              </Chip>
-              <Chip
-                icon={FORMAT_ICONS[item.format] || "file"}
-                style={styles.chip}
-                compact
-              >
-                {item.format}
-              </Chip>
-              <Chip
-                style={[
-                  styles.statusChip,
-                  {
-                    backgroundColor: statusColor,
-                  },
-                ]}
-                textStyle={styles.statusChipText}
-                compact
-              >
-                {item.metadata.status}
-              </Chip>
-            </View>
-          </View>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: colors.background.card,
+          shadowColor: colors.neutral[900],
+        },
+      ]}
+    >
+      <View style={styles.topRow}>
+        <View style={styles.entityBadge}>
+          <MaterialCommunityIcons
+            name={(entityConfig?.icon || "file-export") as any}
+            size={16}
+            color={entityConfig?.color || colors.text.secondary}
+          />
+        </View>
 
-          {item.metadata.status === "COMPLETED" && (
-            <IconButton
-              icon="download"
-              onPress={() => onDownload(item)}
-              loading={isDownloading}
+        <View style={styles.info}>
+          <Text variant="titleSmall" style={styles.exportId}>
+            {item.exportId}
+          </Text>
+          <View style={styles.metaRow}>
+            <Badge
+              label={entityConfig?.label || item.entity}
+              variant="neutral"
+              size="small"
             />
-          )}
-        </View>
-
-        <Divider style={styles.divider} />
-
-        <View style={styles.exportDetails}>
-          <View style={styles.detail}>
-            <Text variant="bodySmall" style={styles.detailLabel}>
-              Records
-            </Text>
-            <Text variant="bodyMedium">
-              {item.metadata.recordCount.toLocaleString()}
-            </Text>
-          </View>
-          <View style={styles.detail}>
-            <Text variant="bodySmall" style={styles.detailLabel}>
-              File Size
-            </Text>
-            <Text variant="bodyMedium">{item.formattedFileSize}</Text>
-          </View>
-          <View style={styles.detail}>
-            <Text variant="bodySmall" style={styles.detailLabel}>
-              Duration
-            </Text>
-            <Text variant="bodyMedium">
-              {Math.round(item.metadata.durationMs / 1000)}s
-            </Text>
+            <Badge
+              label={item.format}
+              variant="info"
+              size="small"
+            />
+            <Badge
+              label={item.metadata.status}
+              variant={statusVariant}
+              size="small"
+            />
           </View>
         </View>
 
-        <View style={styles.exportFooter}>
-          <Text variant="bodySmall" style={styles.dateText}>
-            {formatDistanceToNow(new Date(item.createdAt))} ago
-          </Text>
-          <Text variant="bodySmall" style={styles.userText}>
-            by {item.exportedBy.firstName} {item.exportedBy.lastName}
-          </Text>
-        </View>
-
-        {item.scheduled?.isScheduled && (
-          <View style={styles.scheduledBadge}>
-            <Chip icon="calendar-clock" compact>
-              {item.scheduled.frequency}
-            </Chip>
-          </View>
+        {item.metadata.status === "COMPLETED" && (
+          <IconButton
+            icon="download"
+            size={20}
+            onPress={() => onDownload(item)}
+            loading={isDownloading}
+            style={styles.downloadBtn}
+          />
         )}
-      </Card.Content>
-    </Card>
+      </View>
+
+      <View style={[styles.divider, { backgroundColor: colors.border }]} />
+
+      <View style={styles.detailsRow}>
+        <View style={styles.detail}>
+          <Text variant="bodySmall" style={[styles.detailLabel, { color: colors.text.secondary }]}>
+            Records
+          </Text>
+          <Text variant="bodyMedium" style={styles.detailValue}>
+            {item.metadata.recordCount.toLocaleString()}
+          </Text>
+        </View>
+        <View style={styles.detail}>
+          <Text variant="bodySmall" style={[styles.detailLabel, { color: colors.text.secondary }]}>
+            Size
+          </Text>
+          <Text variant="bodyMedium" style={styles.detailValue}>
+            {item.formattedFileSize}
+          </Text>
+        </View>
+        <View style={styles.detail}>
+          <Text variant="bodySmall" style={[styles.detailLabel, { color: colors.text.secondary }]}>
+            Duration
+          </Text>
+          <Text variant="bodyMedium" style={styles.detailValue}>
+            {Math.round(item.metadata.durationMs / 1000)}s
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.footer}>
+        <Text variant="bodySmall" style={{ color: colors.text.secondary }}>
+          {formatDistanceToNow(new Date(item.createdAt))} ago
+        </Text>
+        <Text variant="bodySmall" style={{ color: colors.text.secondary }}>
+          by {item.exportedBy.firstName} {item.exportedBy.lastName}
+        </Text>
+      </View>
+
+      {item.scheduled?.isScheduled && (
+        <View style={styles.scheduledBadge}>
+          <MaterialCommunityIcons name="calendar-clock" size={12} color={colors.primary.main} />
+          <Text variant="bodySmall" style={[styles.scheduledText, { color: colors.primary.main }]}>
+            {item.scheduled.frequency}
+          </Text>
+        </View>
+      )}
+    </View>
   );
 };

@@ -9,6 +9,7 @@ import { MotiView } from "moti";
 import { MaterialIcons } from "@expo/vector-icons";
 import { CertificateProgress } from "../../api/certificateApi";
 import { createStyles } from "./CertifiedShipperCard.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface ProgressViewProps {
   progress: CertificateProgress;
@@ -16,6 +17,7 @@ interface ProgressViewProps {
 }
 
 export const ProgressView: React.FC<ProgressViewProps> = ({ progress, styles }) => {
+  const { colors } = useAppTheme();
   const clampedPercentage = Math.min(progress.percentage, 100);
   return (
     <MotiView
@@ -25,7 +27,7 @@ export const ProgressView: React.FC<ProgressViewProps> = ({ progress, styles }) 
       style={styles.card}
     >
       <View style={styles.titleRow}>
-        <MaterialIcons name="emoji-events" size={22} color="#d4a843" />
+        <MaterialIcons name="emoji-events" size={22} color={colors.accent.gold} />
         <Text style={styles.title}>Certified Shipper</Text>
       </View>
       <View style={styles.progressBarTrack}>

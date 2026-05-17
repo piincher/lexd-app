@@ -1,26 +1,29 @@
 import React from "react";
 import { View } from "react-native";
-import { Card, Text, Chip, IconButton, Menu } from "react-native-paper";
+import { Text, IconButton, Menu } from "react-native-paper";
 import { format } from "date-fns/format";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
-import { styles } from "./BackupManager.styles";
-import { Backup } from "../../types";
-import { useAppTheme } from "@src/providers/ThemeProvider";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const TYPE_ICONS: Record<string, string> = {
-  AUTOMATED: "clock-outline",
-  MANUAL: "hand-back-right-outline",
-  SCHEDULED: "calendar-clock",
+import { Badge } from "@src/shared/ui/Badge";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { Backup } from "../../types";
+import { styles } from "./BackupManager.styles";
+
+const TYPE_LABELS: Record<string, string> = {
+  AUTOMATED: "Auto",
+  MANUAL: "Manual",
+  SCHEDULED: "Scheduled",
 };
 
-const getStatusColor = (status: string, colors: any) => {
+const getStatusVariant = (status: string): any => {
   switch (status) {
-    case "COMPLETED": return colors.status.success;
-    case "IN_PROGRESS": return colors.status.info;
-    case "FAILED": return colors.status.error;
-    case "RESTORING": return colors.status.warning;
-    case "RESTORED": return colors.primary.main;
-    default: return colors.text.disabled;
+    case "COMPLETED": return "success";
+    case "IN_PROGRESS": return "info";
+    case "FAILED": return "error";
+    case "RESTORING": return "warning";
+    case "RESTORED": return "primary";
+    default: return "neutral";
   }
 };
 
@@ -36,95 +39,67 @@ interface BackupItemProps {
 }
 
 export const BackupItem: React.FC<BackupItemProps> = ({
-  item,
-  isSuperAdmin,
-  menuVisible,
-  onMenuOpen,
-  onMenuClose,
-  onDownload,
-  onRestore,
-  onDelete,
+  item, isSuperAdmin, menuVisible, onMenuOpen, onMenuClose, onDownload, onRestore, onDelete,
 }) => {
   const { colors } = useAppTheme();
-  const statusColor = getStatusColor(item.status, colors);
 
   return (
-    <Card style={styles.card}>
-      <Card.Content>
-        <View style={styles.headerRow}>
-          <View style={styles.backupInfo}>
-            <Text variant="titleMedium" style={styles.backupId}>
-              {item.backupId}
-            </Text>
-            <View style={styles.chipRow}>
-              <Chip icon={TYPE_ICONS[item.type] || "backup-restore"} style={styles.chip} compact>
-                {item.type}
-              </Chip>
-              <Chip
-                style={[styles.chip, { backgroundColor: statusColor }]}
-                textStyle={{ color: colors.text.inverse }}
-                compact
-              >
-                {item.status}
-              </Chip>
-            </View>
-          </View>
-
-          {isSuperAdmin && (
-            <Menu
-              visible={menuVisible === item._id}
-              onDismiss={onMenuClose}
-              anchor={<IconButton icon="dots-vertical" onPress={() => onMenuOpen(item._id)} />}
-            >
-              <Menu.Item onPress={() => onDownload(item)} title="Download" leadingIcon="download" />
-              {item.status === "COMPLETED" && (
-                <Menu.Item onPress={() => onRestore(item)} title="Restore" leadingIcon="restore" />
-              )}
-              <Menu.Item
-                onPress={() => onDelete(item)}
-                title="Delete"
-                leadingIcon="delete"
-                titleStyle={{ color: colors.status.error }}
-              />
-            </Menu>
-          )}
-        </View>
-
-        <View style={styles.detailsRow}>
-          <View style={styles.detail}>
-            <Text variant="bodySmall" style={styles.detailLabel}>Size</Text>
-            <Text variant="bodyMedium">{item.formattedCompressedSize}</Text>
-          </View>
-          <View style={styles.detail}>
-            <Text variant="bodySmall" style={styles.detailLabel}>Compression</Text>
-            <Text variant="bodyMedium">{item.storage.compressionRatio}%</Text>
-          </View>
-          <View style={styles.detail}>
-            <Text variant="bodySmall" style={styles.detailLabel}>Collections</Text>
-            <Text variant="bodyMedium">{item.collections.length}</Text>
+    <View style={[styles.card, { backgroundColor: colors.background.card }]}>
+      <View style={styles.headerRow}>
+        <View style={styles.backupInfo}>
+          <Text variant="titleSmall" style={styles.backupId}>{item.backupId}</Text>
+          <View style={styles.chipRow}>
+            <Badge label={TYPE_LABELS[item.type] || item.type} variant="neutral" size="small" />
+            <Badge label={item.status} variant={getStatusVariant(item.status)} size="small" />
           </View>
         </View>
+        {isSuperAdmin && (
+          <Menu visible={menuVisible === item._id} onDismiss={onMenuClose}
+            anchor={<IconButton icon="dots-vertical" size={20} onPress={() => onMenuOpen(item._id)} />}>
+            <Menu.Item onPress={() => onDownload(item)} title="Download" leadingIcon="download" />
+            {item.status === "COMPLETED" && (
+              <Menu.Item onPress={() => onRestore(item)} title="Restore" leadingIcon="restore" />
+            )}
+            <Menu.Item onPress={() => onDelete(item)} title="Delete" leadingIcon="delete" titleStyle={{ color: colors.status.error }} />
+          </Menu>
+        )}
+      </View>
 
-        <View style={styles.dateRow}>
-          <Text variant="bodySmall" style={styles.dateText}>
-            Created: {format(new Date(item.createdAt), "MMM dd, yyyy HH:mm")}
+      <View style={styles.detailsRow}>
+        {[
+          { label: "Size", value: item.formattedCompressedSize },
+          { label: "Compression", value: `${item.storage.compressionRatio}%` },
+          { label: "Collections", value: String(item.collections.length) },
+        ].map((d) => (
+          <View key={d.label} style={styles.detail}>
+            <Text variant="bodySmall" style={[styles.detailLabel, { color: colors.text.secondary }]}>{d.label}</Text>
+            <Text variant="bodyMedium" style={styles.detailValue}>{d.value}</Text>
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.dateRow}>
+        <Text variant="bodySmall" style={[styles.dateText, { color: colors.text.secondary }]}>
+          {format(new Date(item.createdAt), "MMM dd, yyyy HH:mm")}
+        </Text>
+        {item.metadata.completedAt && (
+          <Text variant="bodySmall" style={[styles.dateText, { color: colors.text.secondary }]}>
+            {Math.round(item.metadata.durationMs / 1000)}s
           </Text>
-          {item.metadata.completedAt && (
-            <Text variant="bodySmall" style={styles.dateText}>
-              Duration: {Math.round(item.metadata.durationMs / 1000)}s
-            </Text>
-          )}
-        </View>
+        )}
+      </View>
 
-        {item.restore.restoredAt && (
-          <View style={styles.restoreInfo}>
+      {item.restore.restoredAt && (
+        <View style={styles.restoreInfo}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            <MaterialCommunityIcons name="restore" size={14} color={colors.primary.main} />
             <Text variant="bodySmall" style={styles.restoreText}>
-              Restored: {formatDistanceToNow(new Date(item.restore.restoredAt))} ago
+              Restored {formatDistanceToNow(new Date(item.restore.restoredAt))} ago
               {item.restore.restoredBy && ` by ${item.restore.restoredBy.firstName}`}
             </Text>
           </View>
-        )}
-      </Card.Content>
-    </Card>
+        </View>
+      )}
+    </View>
   );
 };

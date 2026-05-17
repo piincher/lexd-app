@@ -10,11 +10,11 @@ interface AuditLogCardProps {
   onPress: (item: AuditLog) => void;
 }
 
-const STATUS_COLORS: Record<AuditStatus, string> = {
-  SUCCESS: '#16A34A',
-  FAILED: '#DC2626',
-  DENIED: '#D97706',
-};
+const getStatusColors = (colors: any): Record<AuditStatus, string> => ({
+  SUCCESS: colors.status.success,
+  FAILED: colors.status.error,
+  DENIED: colors.status.warning,
+});
 
 export const AuditLogCard = memo(({ item, onPress }: AuditLogCardProps) => {
   const { colors } = useAppTheme();
@@ -31,7 +31,7 @@ export const AuditLogCard = memo(({ item, onPress }: AuditLogCardProps) => {
     >
       <View style={styles.topRow}>
         <Text style={styles.action} numberOfLines={1}>{item.action}</Text>
-        <View style={[styles.status, { backgroundColor: STATUS_COLORS[item.status] || '#64748B' }]}>
+        <View style={[styles.status, { backgroundColor: getStatusColors(colors)[item.status] || colors.text.muted }]}>
           <Text style={styles.statusText}>{item.status}</Text>
         </View>
       </View>

@@ -3,6 +3,7 @@ import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import type { EntityType } from "../hooks/useGlobalSearchScreen";
 
@@ -56,7 +57,7 @@ export const GlobalSearchHeader: React.FC<GlobalSearchHeaderProps> = ({
               <Ionicons
                 name={tab.icon as any}
                 size={16}
-                color={isActive ? "#FFF" : Theme.neutral[500]}
+                color={isActive ? Theme.colors.text.inverse : Theme.neutral[500]}
                 style={styles.tabIcon}
               />
               <Text
@@ -124,6 +125,6 @@ const styles = StyleSheet.create({
     color: Theme.neutral[600],
   },
   tabTextActive: {
-    color: "Theme.colors.text.inverse",
+    color: Theme.colors.text.inverse,
   },
 });

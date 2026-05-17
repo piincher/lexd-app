@@ -8,7 +8,7 @@ interface WorkflowSectionProps {
    colors: any;
 }
 
-const STEP_COLORS = ["#4A90E2", "#1ED7B5", "#F59E0B", "#8B5CF6", "#22C55E"];
+const STEP_COLORS = (c: any) => [c.status.info, c.accent.mint, c.status.warning, c.primary.main, c.status.success];
 
 const WORKFLOW_STEPS = [
    {
@@ -51,8 +51,8 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ colors }) => {
          <View style={styles.stepsContainer}>
             {WORKFLOW_STEPS.map((step, index) => (
                <View key={index} style={[styles.step, { backgroundColor: cardBg }]}>
-                  <View style={[styles.stepIcon, { backgroundColor: STEP_COLORS[index] + "15" }]}>
-                     <FontAwesome6 name={step.icon} size={20} color={STEP_COLORS[index]} />
+                  <View style={[styles.stepIcon, { backgroundColor: STEP_COLORS(colors)[index] + "15" }]}>
+                     <FontAwesome6 name={step.icon} size={20} color={STEP_COLORS(colors)[index]} />
                   </View>
                   <View style={styles.stepContent}>
                      <Text style={[styles.stepTitle, { color: textColor }]}>

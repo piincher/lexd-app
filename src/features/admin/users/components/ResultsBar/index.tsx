@@ -12,9 +12,9 @@ export const ResultsBar: React.FC<ResultsBarProps> = ({ count }) => {
   return (
     <Animated.View entering={FadeInUp} style={[
       styles.container,
-      { backgroundColor: isDark ? '#14532D' : '#F0FDF4', borderBottomColor: isDark ? '#166534' : '#BBF7D0' }
+      { backgroundColor: isDark ? colors.feedback.successBg : colors.feedback.successBg, borderBottomColor: isDark ? colors.status.success : colors.status.success }
     ]}>
-      <Text style={[styles.text, { color: isDark ? '#86EFAC' : '#166534' }]}>
+      <Text style={[styles.text, { color: colors.status.success }]}>
         {count} résultat{count !== 1 ? 's' : ''}
       </Text>
     </Animated.View>

@@ -20,6 +20,7 @@ export const FAQContactButton: React.FC<FAQContactButtonProps> = ({
   style,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => getStyles(colors), [colors]);
 
   return (
     <TouchableOpacity
@@ -36,7 +37,7 @@ export const FAQContactButton: React.FC<FAQContactButtonProps> = ({
       <MaterialCommunityIcons
         name="whatsapp"
         size={22}
-        color="#FFFFFF"
+        color={colors.text.inverse}
       />
       <Text style={styles.text}>
         Contacter le support
@@ -44,13 +45,13 @@ export const FAQContactButton: React.FC<FAQContactButtonProps> = ({
       <MaterialCommunityIcons
         name="arrow-right"
         size={18}
-        color="#FFFFFF"
+        color={colors.text.inverse}
       />
     </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (colors: any) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: Fonts.bold,
     fontSize: 15,
-    color: '#FFFFFF',
+    color: colors.text.inverse,
   },
 });
 

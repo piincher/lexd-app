@@ -40,7 +40,7 @@ export const ReceiptSection: React.FC<ReceiptSectionProps> = (props) => {
       {receiptUrl ? (
         <>
           <View style={styles.receiptPreview}>
-            <MaterialCommunityIcons name="file-pdf-box" size={64} color="#F44336" />
+            <MaterialCommunityIcons name="file-pdf-box" size={64} color={colors.status.error} />
             <Text style={styles.receiptText}>Reçu PDF</Text>
             {receiptNumber && <Text style={styles.receiptNumber}>N° {receiptNumber}</Text>}
           </View>
@@ -55,12 +55,12 @@ export const ReceiptSection: React.FC<ReceiptSectionProps> = (props) => {
           </View>
 
           {clientPhone && (
-            <Button mode="contained" onPress={handleShareWhatsApp} style={styles.shareButton} buttonColor="#25D366" icon={isSharing ? undefined : 'whatsapp'} disabled={isSharing}>
+            <Button mode="contained" onPress={handleShareWhatsApp} style={styles.shareButton} buttonColor={colors.status.success} icon={isSharing ? undefined : 'whatsapp'} disabled={isSharing}>
               {isSharing ? 'Envoi en cours...' : 'Envoyer sur WhatsApp'}
             </Button>
           )}
 
-          {isSharing && <ActivityIndicator style={styles.loader} size="small" color="#25D366" />}
+          {isSharing && <ActivityIndicator style={styles.loader} size="small" color={colors.status.success} />}
         </>
       ) : loading ? (
         <View style={styles.noReceiptContainer}>

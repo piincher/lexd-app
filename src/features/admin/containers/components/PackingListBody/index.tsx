@@ -11,7 +11,8 @@ import {
 } from '../../screens/PackingList/components';
 import { ClientSelector } from '../../screens/PackingList/components/ClientSelector';
 import { ClientGoodsSection } from '../ClientGoodsSection';
-import { styles } from '../../screens/PackingList/PackingListScreen.styles';
+import { getStyles } from '../../screens/PackingList/PackingListScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ClientGoodsGroup, ContainerSummary } from '../../types/packingList';
 
 interface PackingListBodyProps {
@@ -35,6 +36,8 @@ export const PackingListBody: React.FC<PackingListBodyProps> = ({
   onToggleAll,
   formatDate,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   return (
     <ScrollView
       style={styles.scrollView}

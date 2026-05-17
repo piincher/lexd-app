@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   avatarText: {
     fontSize: 24,
     fontWeight: "700",
-    color: "white",
+    color: Theme.colors.text.inverse,
   },
   info: {
     flex: 1,

@@ -6,6 +6,8 @@ import { Text, Card, Divider, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { PaymentStatus } from '../../../types';
+import { PricingRow } from './PricingRow';
+import { styles } from './GoodsDetailPricing.styles';
 
 interface GoodsDetailPricingProps {
   unitPrice?: number;
@@ -51,35 +53,27 @@ export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({
           <Text style={[styles.sectionTitle, { color: Theme.status.success }]}>Informations financières</Text>
         </View>
         
-        <View style={styles.financialRow}>
-          <Text style={styles.financialLabel}>Prix unitaire</Text>
-          <Text style={styles.financialValue}>{formatCurrency(unitPrice || 0)} FCFA</Text>
-        </View>
+        <PricingRow label="Prix unitaire" value={`${formatCurrency(unitPrice || 0)} FCFA`} />
         
         <Divider style={styles.divider} />
         
-        <View style={styles.financialRowHighlight}>
-          <Text style={styles.financialLabelHighlight}>Coût total</Text>
-          <Text style={styles.financialValueTotal}>
-            {formatCurrency(totalCost || 0)} FCFA
-          </Text>
-        </View>
+        <PricingRow
+          label="Coût total"
+          value={`${formatCurrency(totalCost || 0)} FCFA`}
+          highlight
+        />
         
-        <View style={styles.financialRow}>
-          <Text style={styles.financialLabel}>Montant payé</Text>
-          <Text style={[styles.financialValue, { color: Theme.status.success }]}>
-            {formatCurrency(amountPaid || 0)} FCFA
-          </Text>
-        </View>
+        <PricingRow
+          label="Montant payé"
+          value={`${formatCurrency(amountPaid || 0)} FCFA`}
+          valueColor={Theme.status.success}
+        />
         
-        <View style={styles.financialRow}>
-          <Text style={styles.financialLabel}>Reste à payer</Text>
-          <Text style={[styles.financialValue, { 
-            color: balanceDue > 0 ? Theme.status.error : Theme.status.success 
-          }]}>
-            {formatCurrency(balanceDue)} FCFA
-          </Text>
-        </View>
+        <PricingRow
+          label="Reste à payer"
+          value={`${formatCurrency(balanceDue)} FCFA`}
+          valueColor={balanceDue > 0 ? Theme.status.error : Theme.status.success}
+        />
 
         <View style={styles.paymentStatusContainer}>
           <Chip
@@ -93,74 +87,4 @@ export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({
       </Card.Content>
     </Card>
   );
-};
-
-const styles = {
-  sectionCard: {
-    marginBottom: 12,
-    borderRadius: 16,
-    elevation: 2,
-    backgroundColor: Theme.colors.background.card,
-  },
-  financialCard: {
-    borderLeftWidth: 4,
-    borderLeftColor: Theme.status.success,
-  },
-  sectionHeader: {
-    flexDirection: 'row' as const,
-    alignItems: 'center' as const,
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: '700' as const,
-    color: Theme.neutral[800],
-    marginLeft: 10,
-  },
-  financialRow: {
-    flexDirection: 'row' as const,
-    justifyContent: 'space-between' as const,
-    alignItems: 'center' as const,
-    paddingVertical: 10,
-  },
-  financialRowHighlight: {
-    flexDirection: 'row' as const,
-    justifyContent: 'space-between' as const,
-    alignItems: 'center' as const,
-    backgroundColor: Theme.primary[50],
-    padding: 14,
-    borderRadius: 10,
-    marginVertical: 8,
-  },
-  financialLabel: {
-    fontSize: 14,
-    color: Theme.neutral[600],
-  },
-  financialLabelHighlight: {
-    fontSize: 14,
-    fontWeight: '600' as const,
-    color: Theme.neutral[700],
-  },
-  financialValue: {
-    fontSize: 15,
-    fontWeight: '600' as const,
-    color: Theme.neutral[800],
-  },
-  financialValueTotal: {
-    fontSize: 20,
-    fontWeight: '800' as const,
-    color: Theme.primary[600],
-  },
-  divider: {
-    marginVertical: 8,
-    backgroundColor: Theme.neutral[200],
-  },
-  paymentStatusContainer: {
-    marginTop: 16,
-    alignItems: 'flex-start' as const,
-  },
-  paymentChip: {
-    height: 36,
-    paddingHorizontal: 8,
-  },
 };

@@ -17,20 +17,20 @@ interface Props {
 const ACTION_META: Record<string, { icon: IoniconName; tint: string; gradient: readonly [string, string]; sublabel: string }> = {
   'view-goods': {
     icon: 'cube',
-    tint: '#8B5CF6',
-    gradient: ['#8B5CF6', '#A78BFA'] as const,
+    tint: Theme.colors.primary.main,
+    gradient: [Theme.colors.primary.main, Theme.colors.primary.light] as const,
     sublabel: 'Voir vos colis',
   },
   'view-containers': {
     icon: 'airplane',
-    tint: '#0EA5E9',
-    gradient: ['#0EA5E9', '#38BDF8'] as const,
+    tint: Theme.colors.status.info,
+    gradient: [Theme.colors.status.info, `${Theme.colors.status.info}80`] as const,
     sublabel: 'Maritime et aérien',
   },
   'support': {
     icon: 'chatbubble-ellipses',
-    tint: '#F59E0B',
-    gradient: ['#F59E0B', '#FBBF24'] as const,
+    tint: Theme.colors.status.warning,
+    gradient: [Theme.colors.status.warning, `${Theme.colors.status.warning}80`] as const,
     sublabel: 'Contactez-nous',
   },
 };
@@ -70,8 +70,8 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
           justifyContent: 'center',
           alignItems: 'center',
         },
-        label: { fontSize: 14, fontWeight: '700', color: 'Theme.colors.text.inverse' },
-        sublabel: { fontSize: 12, fontWeight: '500', color: 'rgba(255,255,255,0.8)', marginTop: 2 },
+        label: { fontSize: 14, fontWeight: '700', color: colors.text.inverse },
+        sublabel: { fontSize: 12, fontWeight: '500', color: colors.text.inverse, marginTop: 2 },
       }),
     [colors]
   );
@@ -81,7 +81,7 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
       <Text style={styles.header}>Actions Rapides</Text>
       <View style={styles.grid}>
         {actions.map((action) => {
-          const meta = ACTION_META[action.id] || { icon: 'apps' as IoniconName, tint: colors.primary.main, gradient: ['#64748B', '#94A3B8'] as const, sublabel: 'Appuyez pour voir' };
+          const meta = ACTION_META[action.id] || { icon: 'apps' as IoniconName, tint: colors.primary.main, gradient: [colors.text.secondary, `${colors.text.secondary}80`] as const, sublabel: 'Appuyez pour voir' };
           return (
             <Pressable
               key={action.id}
@@ -97,10 +97,10 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
             >
               <View style={styles.iconRow}>
                 <View style={[styles.iconCircle, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
-                  <Ionicons name={meta.icon} size={22} color="#FFFFFF" />
+                  <Ionicons name={meta.icon} size={22} color={colors.text.inverse} />
                 </View>
                 <View style={styles.arrow}>
-                  <Ionicons name="arrow-forward" size={14} color="#FFFFFF" />
+                  <Ionicons name="arrow-forward" size={14} color={colors.text.inverse} />
                 </View>
               </View>
               <View>

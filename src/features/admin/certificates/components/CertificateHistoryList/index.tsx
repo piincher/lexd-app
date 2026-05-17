@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
 import { CertificateRecord } from "../../api";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { CertificateCard } from "../CertificateCard";
 import { styles } from "./CertificateHistoryList.styles";
@@ -43,6 +44,7 @@ export const CertificateHistoryList: React.FC<CertificateHistoryListProps> = ({
   isDownloading,
   onPressCertificate,
 }) => {
+  const { colors } = useAppTheme();
   const renderItem = ({ item }: { item: CertificateRecord }) => (
     <CertificateCard
       certificate={item}
@@ -93,7 +95,7 @@ export const CertificateHistoryList: React.FC<CertificateHistoryListProps> = ({
               <Ionicons
                 name="chevron-back"
                 size={20}
-                color={currentPage <= 1 ? "#D1D5DB" : "#1F2937"}
+                color={currentPage <= 1 ? colors.text.disabled : colors.text.primary}
               />
             </TouchableOpacity>
             <Text style={styles.paginationText}>
@@ -111,7 +113,7 @@ export const CertificateHistoryList: React.FC<CertificateHistoryListProps> = ({
               <Ionicons
                 name="chevron-forward"
                 size={20}
-                color={currentPage >= pagination.totalPages ? "#D1D5DB" : "#1F2937"}
+                color={currentPage >= pagination.totalPages ? colors.text.disabled : colors.text.primary}
               />
             </TouchableOpacity>
           </View>

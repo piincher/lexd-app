@@ -40,7 +40,7 @@ export const CertificateDetailManualSection: React.FC<
               <Ionicons
                 name="document-text-outline"
                 size={16}
-                color="#92400E"
+                color={Theme.colors.status.warning}
               />
               <View style={styles.noteContent}>
                 <Text style={styles.noteLabel}>Note personnalisée</Text>

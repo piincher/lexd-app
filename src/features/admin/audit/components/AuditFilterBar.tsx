@@ -1,8 +1,5 @@
 import React from 'react';
-import { Pressable, ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Text } from 'react-native-paper';
-import { Fonts } from '@src/constants/Fonts';
+import { ScrollView, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { AuditDatePreset, AuditStatus } from '../types';
 import {
@@ -11,6 +8,9 @@ import {
   AUDIT_STATUS_COLORS,
   AUDIT_STATUS_LABELS,
 } from '../types';
+import { styles } from './AuditFilterBar.styles';
+import { AuditSearchInput } from './AuditSearchInput';
+import { AuditChip } from './AuditChip';
 
 interface AuditFilterBarProps {
   search: string;
@@ -39,29 +39,21 @@ export const AuditFilterBar: React.FC<AuditFilterBarProps> = ({
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background.default }]}>
-      <View style={[styles.search, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
-        <MaterialCommunityIcons name="magnify" size={18} color={colors.text.secondary} />
-        <TextInput
-          style={[styles.input, { color: colors.text.primary }]}
-          placeholder="Search actor, action, resource"
-          placeholderTextColor={colors.text.secondary}
-          value={search}
-          onChangeText={onSearchChange}
-          returnKeyType="search"
-        />
-      </View>
-      <View style={[styles.search, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
-        <MaterialCommunityIcons name="gesture-tap" size={18} color={colors.text.secondary} />
-        <TextInput
-          style={[styles.input, { color: colors.text.primary }]}
-          placeholder="Filter by exact action"
-          placeholderTextColor={colors.text.secondary}
-          value={action}
-          onChangeText={onActionChange}
-          autoCapitalize="characters"
-          returnKeyType="done"
-        />
-      </View>
+      <AuditSearchInput
+        icon="magnify"
+        placeholder="Search actor, action, resource"
+        value={search}
+        onChangeText={onSearchChange}
+        returnKeyType="search"
+      />
+      <AuditSearchInput
+        icon="gesture-tap"
+        placeholder="Filter by exact action"
+        value={action}
+        onChangeText={onActionChange}
+        autoCapitalize="characters"
+        returnKeyType="done"
+      />
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>
         <AuditChip label="All" active={!status} onPress={() => onStatusChange(undefined)} />
         {AUDIT_STATUSES.map((item) => (
@@ -85,68 +77,3 @@ export const AuditFilterBar: React.FC<AuditFilterBarProps> = ({
     </View>
   );
 };
-
-interface AuditChipProps {
-  label: string;
-  active: boolean;
-  color?: string;
-  onPress: () => void;
-}
-
-const AuditChip: React.FC<AuditChipProps> = ({ label, active, color, onPress }) => {
-  const { colors } = useAppTheme();
-  const activeColor = color ?? colors.primary.main;
-
-  return (
-    <Pressable
-      accessibilityRole="button"
-      style={[
-        styles.chip,
-        { borderColor: active ? activeColor : colors.border },
-        { backgroundColor: active ? `${activeColor}18` : colors.background.card },
-      ]}
-      onPress={onPress}
-    >
-      <Text style={[styles.chipText, { color: active ? activeColor : colors.text.primary }]}>{label}</Text>
-    </Pressable>
-  );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 8,
-    paddingHorizontal: 16,
-    paddingTop: 12,
-  },
-  search: {
-    alignItems: 'center',
-    borderRadius: 8,
-    borderWidth: 1,
-    flexDirection: 'row',
-    gap: 8,
-    minHeight: 44,
-    paddingHorizontal: 12,
-  },
-  input: {
-    flex: 1,
-    fontFamily: Fonts.regular,
-    fontSize: 14,
-    paddingVertical: 8,
-  },
-  chips: {
-    gap: 8,
-    paddingBottom: 12,
-    paddingTop: 4,
-  },
-  chip: {
-    borderRadius: 999,
-    borderWidth: 1,
-    justifyContent: 'center',
-    minHeight: 36,
-    paddingHorizontal: 12,
-  },
-  chipText: {
-    fontFamily: Fonts.meduim,
-    fontSize: 12,
-  },
-});

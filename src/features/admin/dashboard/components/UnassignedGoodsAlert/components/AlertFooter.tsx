@@ -20,8 +20,8 @@ export const AlertFooter: React.FC<AlertFooterProps> = ({ hasUnassigned }) => {
       gap: 4,
       paddingVertical: 11,
       borderTopWidth: 1,
-      borderTopColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
-      backgroundColor: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.015)",
+      borderTopColor: colors.border,
+      backgroundColor: colors.background.default,
     },
     footerText: {
       fontSize: 12,

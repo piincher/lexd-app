@@ -1,4 +1,5 @@
 import { GoodsStatus } from '../api';
+import { Theme } from '@src/constants/Theme';
 
 export const formatCurrency = (amount?: number): string => {
 	return `${(amount ?? 0).toLocaleString('fr-FR')} FCFA`;
@@ -28,19 +29,19 @@ export const formatDateTime = (dateString?: string): string => {
 
 export const getShippingModeConfig = (mode?: string) => {
 	if (mode === 'AIR') {
-		return { label: 'Aérien', icon: 'airplane' as const, color: '#3F51B5' };
+		return { label: 'Aérien', icon: 'airplane' as const, color: Theme.status.info };
 	}
-	return { label: 'Maritime', icon: 'ferry' as const, color: '#0277BD' };
+	return { label: 'Maritime', icon: 'ferry' as const, color: Theme.status.info };
 };
 
 export const getPaymentColors = (status: string) => {
 	switch (status) {
 		case 'PAID':
-			return { text: '#2E7D32', label: 'Payé' };
+			return { text: Theme.status.success, label: 'Payé' };
 		case 'PARTIAL':
-			return { text: '#E65100', label: 'Partiel' };
+			return { text: Theme.status.warning, label: 'Partiel' };
 		default:
-			return { text: '#C62828', label: 'Non payé' };
+			return { text: Theme.status.error, label: 'Non payé' };
 	}
 };
 

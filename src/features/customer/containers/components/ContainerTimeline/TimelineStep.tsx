@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { CUSTOMER_STATUS_COLORS } from "../../types";
 import type { ContainerTimeline as ContainerTimelineType, CustomerContainerStatus } from "../../types";
 import type { createTimelineStyles } from "./ContainerTimeline.styles";
@@ -25,10 +26,11 @@ export const TimelineStep: React.FC<TimelineStepProps> = ({
   stepKey, label, timeline, currentStatus, primaryColor, styles,
   isStepCompleted, isCurrentStep, formatDate, getStepIcon, estimatedArrival,
 }) => {
+  const { colors } = useAppTheme();
   const completed = isStepCompleted(stepKey);
   const current = isCurrentStep(stepKey);
   const dateValue = timeline[stepKey];
-  const futureIconColor = styles.stepLabelFuture.color || "#64748B";
+  const futureIconColor = styles.stepLabelFuture.color || colors.text.secondary;
 
   return (
     <View style={styles.stepWrapper}>
@@ -40,7 +42,7 @@ export const TimelineStep: React.FC<TimelineStepProps> = ({
         completed && { backgroundColor: CUSTOMER_STATUS_COLORS[currentStatus] },
       ]}>
         {completed ? (
-          <MaterialCommunityIcons name="check" size={14} color="#FFFFFF" />
+          <MaterialCommunityIcons name="check" size={14} color={colors.text.inverse} />
         ) : (
           <MaterialCommunityIcons name={getStepIcon(stepKey)} size={14} color={futureIconColor} />
         )}

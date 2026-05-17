@@ -5,18 +5,17 @@
  */
 
 import React from 'react';
-import { View, RefreshControl, StyleSheet } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
-import { useNavigation } from '@react-navigation/native';
+import { View, RefreshControl } from 'react-native';
+import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { Screen } from '@src/shared/ui/Screen';
-import { useVoidGoodsList } from '../hooks/useVoidGoodsList';
+import { useVoidGoodsListScreen } from './hooks/useVoidGoodsListScreen';
 import { VoidGoodsListFilters } from '../components/VoidGoodsListFilters';
 import { VoidGoodsListItem } from '../components/VoidGoodsListItem';
 import { VoidGoodsListEmpty } from '../components/VoidGoodsListEmpty';
 import { Goods } from '../types';
+import { createVoidGoodsListScreenStyles } from './VoidGoodsListScreen.styles';
 
 export const VoidGoodsListScreen: React.FC = () => {
-  const navigation = useNavigation();
   const {
     goodsList,
     isLoading,
@@ -27,15 +26,14 @@ export const VoidGoodsListScreen: React.FC = () => {
     setStatusFilter,
     menuVisible,
     setMenuVisible,
-  } = useVoidGoodsList();
+    handlers,
+  } = useVoidGoodsListScreen();
 
-  const handleVoidPress = (goods: Goods) => {
-    navigation.navigate('VoidGoods' as never, {
-      goodsId: goods._id,
-      goodsTrackingCode: goods.goodsId,
-      cbm: goods.actualCBM,
-    } as never);
-  };
+  const styles = createVoidGoodsListScreenStyles();
+
+  const renderItem: ListRenderItem<Goods> = ({ item }) => (
+    <VoidGoodsListItem item={item} onVoidPress={handlers.handleVoidPress} />
+  );
 
   return (
     <Screen
@@ -58,9 +56,7 @@ export const VoidGoodsListScreen: React.FC = () => {
         <FlashList
           data={goodsList}
           keyExtractor={(item) => item._id}
-          renderItem={({ item }) => (
-            <VoidGoodsListItem item={item} onVoidPress={handleVoidPress} />
-          )}
+          renderItem={renderItem}
           contentContainerStyle={styles.listContainer}
           refreshControl={
             <RefreshControl refreshing={isLoading} onRefresh={refetch} />
@@ -71,15 +67,5 @@ export const VoidGoodsListScreen: React.FC = () => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  listContainer: {
-    paddingBottom: 20,
-  },
-});
 
 export default VoidGoodsListScreen;

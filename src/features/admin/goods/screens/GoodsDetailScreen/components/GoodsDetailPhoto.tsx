@@ -40,7 +40,7 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: Theme.colors.background.overlay,
     padding: 12,
   },
   photoLabel: {

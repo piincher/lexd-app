@@ -1,0 +1,126 @@
+import { StyleSheet } from 'react-native';
+import { Theme } from '@src/constants/Theme';
+import { Fonts } from '@src/constants/Fonts';
+
+export const getStyles = (colors: any) => StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: colors.background.overlay,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 30,
+  },
+  card: {
+    width: '100%',
+    backgroundColor: Theme.colors.background.card,
+    borderRadius: 20,
+    padding: 24,
+    alignItems: 'center',
+  },
+  iconCircle: {
+    width: 64,
+    height: 64,
+    borderRadius: 20,
+    backgroundColor: Theme.primary[50],
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  title: {
+    fontSize: 20,
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
+    color: Theme.neutral[800],
+    marginBottom: 16,
+  },
+  summaryBox: {
+    width: '100%',
+    backgroundColor: Theme.neutral[50],
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 14,
+  },
+  summaryRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  summaryLabel: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: Fonts.regular,
+    color: Theme.neutral[600],
+  },
+  summaryValue: {
+    fontSize: 16,
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
+    color: Theme.neutral[800],
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Theme.neutral[200],
+    marginVertical: 10,
+  },
+  previewBox: {
+    width: '100%',
+    backgroundColor: Theme.primary[50],
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 20,
+  },
+  previewLabel: {
+    fontSize: 11,
+    fontFamily: Fonts.semiBold,
+    fontWeight: '600',
+    color: Theme.neutral[500],
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 6,
+  },
+  previewText: {
+    fontSize: 13,
+    fontFamily: Fonts.regular,
+    color: Theme.neutral[700],
+    lineHeight: 19,
+  },
+  actions: {
+    flexDirection: 'row',
+    width: '100%',
+    gap: 12,
+  },
+  cancelButton: {
+    flex: 1,
+    paddingVertical: 14,
+    borderRadius: 14,
+    backgroundColor: Theme.neutral[100],
+    alignItems: 'center',
+  },
+  cancelText: {
+    fontSize: 15,
+    fontFamily: Fonts.semiBold,
+    fontWeight: '600',
+    color: Theme.neutral[600],
+  },
+  confirmWrapper: {
+    flex: 1,
+    borderRadius: 14,
+    overflow: 'hidden',
+  },
+  confirmDisabled: {
+    opacity: 0.7,
+  },
+  confirmButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 14,
+  },
+  confirmText: {
+    fontSize: 15,
+    fontFamily: Fonts.bold,
+    fontWeight: '700',
+    color: Theme.colors.text.inverse,
+  },
+});

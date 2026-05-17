@@ -1,19 +1,16 @@
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import PaymentMethodSelector from '../components/PaymentMethodSelector';
 import PaymentStatusModal from '../components/PaymentStatusModal';
 import { PaymentScreenHeader } from '../components/PaymentScreenHeader';
 import { PaymentFormSwitcher } from '../components/PaymentFormSwitcher';
 import { PaymentScreenFooter } from '../components/PaymentScreenFooter';
-import { usePaymentScreen } from '../hooks/usePaymentScreen';
+import { usePaymentScreenUI } from './hooks/usePaymentScreenUI';
+import { usePaymentScreenStyles } from './PaymentScreen.styles';
 
 const PaymentScreen: React.FC = () => {
-  const navigation = useNavigation();
-  const { colors } = useAppTheme();
   const {
     selectedProvider,
     amount,
@@ -28,17 +25,20 @@ const PaymentScreen: React.FC = () => {
     isInitializing,
     handleModalClose,
     handleModalRetry,
-    handleBack,
-  } = usePaymentScreen();
+    colors,
+    handlers,
+  } = usePaymentScreenUI();
+
+  const styles = usePaymentScreenStyles();
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
+    <SafeAreaView style={styles.container}>
       <PaymentScreenHeader
         title={selectedProvider ? 'Payment Details' : 'Select Payment Method'}
-        onBack={handleBack}
+        onBack={handlers.handleBack}
         rightElement={
           <NotificationBell
-            onPress={() => navigation.navigate('Notifications' as never)}
+            onPress={handlers.handleNotificationPress}
             size={24}
             color={colors.text.primary}
           />
@@ -85,14 +85,5 @@ const PaymentScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-  },
-});
 
 export default PaymentScreen;

@@ -1,48 +1,19 @@
-import React, { useCallback, useMemo } from "react";
-import { StatusBar, View, useWindowDimensions } from "react-native";
+import React from "react";
+import { StatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import type { RootStackScreenProps } from "@src/navigations/type";
-import { useAppTheme } from "@src/providers/ThemeProvider";
-import { useOnboarding } from "../hooks/useOnboarding";
+import { useOnboardingScreen } from "./hooks/useOnboardingScreen";
 import { OnboardingBackground } from "../components/OnboardingBackground";
 import { OnboardingPager } from "../components";
-import { createStyles } from "./OnboardingScreen.styles";
-import { getOnboardingBackgroundColors } from "./onboardingColors";
 
-type Props = RootStackScreenProps<"OnBoarding">;
-
-export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
-   const { width, height } = useWindowDimensions();
-   const { isDark } = useAppTheme();
-   const styles = useMemo(() => createStyles(), []);
-
+export const OnboardingScreen: React.FC = () => {
    const {
-      scrollX,
-      currentIndex,
-      isLastSlide,
-      slides,
-      bgColors,
-      handleScroll,
-      onMomentumScrollEnd,
-      completeOnboarding,
-      goToNext,
-      flatListRef,
-   } = useOnboarding(width);
-
-   const backgroundColors = useMemo(
-      () => getOnboardingBackgroundColors(bgColors, isDark),
-      [bgColors, isDark],
-   );
-
-   const handleComplete = useCallback(() => {
-      completeOnboarding();
-      navigation.replace("HomeTab", undefined);
-   }, [completeOnboarding, navigation]);
-
-   const backgroundColor = scrollX.interpolate({
-      inputRange: backgroundColors.map((_, i) => i * width),
-      outputRange: backgroundColors,
-   });
+      width,
+      height,
+      styles,
+      onboardingData,
+      backgroundColor,
+      handlers,
+   } = useOnboardingScreen();
 
    return (
       <View style={styles.container}>
@@ -51,17 +22,17 @@ export const OnboardingScreen: React.FC<Props> = ({ navigation }) => {
 
          <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
             <OnboardingPager
-               slides={slides}
-               scrollX={scrollX}
-               currentIndex={currentIndex}
-               isLastSlide={isLastSlide}
+               slides={onboardingData.slides}
+               scrollX={onboardingData.scrollX}
+               currentIndex={onboardingData.currentIndex}
+               isLastSlide={onboardingData.isLastSlide}
                width={width}
                height={height}
-               flatListRef={flatListRef}
-               handleScroll={handleScroll}
-               onMomentumScrollEnd={onMomentumScrollEnd}
-               onNext={goToNext}
-               onComplete={handleComplete}
+               flatListRef={onboardingData.flatListRef}
+               handleScroll={onboardingData.handleScroll}
+               onMomentumScrollEnd={onboardingData.onMomentumScrollEnd}
+               onNext={onboardingData.goToNext}
+               onComplete={handlers.handleComplete}
             />
          </SafeAreaView>
       </View>

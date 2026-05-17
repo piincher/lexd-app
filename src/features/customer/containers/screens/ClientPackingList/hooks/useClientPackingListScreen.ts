@@ -4,9 +4,11 @@ import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetMyPackingList, useDownloadPackingListPDF } from '../../../hooks/useCustomerContainers';
 
 export const useClientPackingListScreen = (containerId: string) => {
+  const { colors } = useAppTheme();
   const [contactDialogVisible, setContactDialogVisible] = useState(false);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -27,8 +29,8 @@ export const useClientPackingListScreen = (containerId: string) => {
   const formatDate = useCallback((d?: string) => d ? format(new Date(d), 'dd MMMM yyyy', { locale: fr }) : 'Non disponible', []);
   const formatDateTime = useCallback((d?: string | null) => d ? format(new Date(d), 'dd MMMM yyyy HH:mm', { locale: fr }) : 'Non disponible', []);
   const getShippingModeIcon = useCallback((m: string) => m === 'SEA' ? 'ferry' : 'airplane', []);
-  const getStatusColor = useCallback((s: string) => ({ BOOKED: { bg: '#EDE9FE', text: '#8B5CF6', icon: '#8B5CF6' }, EMPTY_TO_WAREHOUSE: { bg: '#E0E7FF', text: '#6366F1', icon: '#6366F1' }, LOADING: { bg: '#FEF3C7', text: '#F59E0B', icon: '#F59E0B' }, LOADED: { bg: '#DBEAFE', text: '#3B82F6', icon: '#3B82F6' }, GATE_IN_FULL: { bg: '#CFFAFE', text: '#06B6D4', icon: '#06B6D4' }, LOADED_ON_VESSEL: { bg: '#DBEAFE', text: '#2563EB', icon: '#2563EB' }, IN_TRANSIT: { bg: '#E0F2FE', text: '#0EA5E9', icon: '#0EA5E9' }, ARRIVED: { bg: '#D1FAE5', text: '#10B981', icon: '#10B981' }, DISCHARGED: { bg: '#CCFBF1', text: '#14B8A6', icon: '#14B8A6' }, READY_FOR_PICKUP: { bg: '#FEF3C7', text: '#F59E0B', icon: '#F59E0B' }, DELIVERED: { bg: '#DCFCE7', text: '#22C55E', icon: '#22C55E' } }[s] || { bg: '#F3F4F6', text: '#6B7280', icon: '#6B7280' }), []);
-  const statusColors = useMemo(() => packingList?.tracking ? getStatusColor(packingList.tracking.status) : { bg: '#F3F4F6', text: '#6B7280', icon: '#6B7280' }, [packingList, getStatusColor]);
+  const getStatusColor = useCallback((s: string) => ({ BOOKED: { bg: colors.feedback.infoBg, text: colors.primary.main, icon: colors.primary.main }, EMPTY_TO_WAREHOUSE: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, LOADING: { bg: colors.feedback.warningBg, text: colors.status.warning, icon: colors.status.warning }, LOADED: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, GATE_IN_FULL: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, LOADED_ON_VESSEL: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, IN_TRANSIT: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, ARRIVED: { bg: colors.feedback.successBg, text: colors.status.success, icon: colors.status.success }, DISCHARGED: { bg: colors.feedback.successBg, text: colors.status.success, icon: colors.status.success }, READY_FOR_PICKUP: { bg: colors.feedback.warningBg, text: colors.status.warning, icon: colors.status.warning }, DELIVERED: { bg: colors.feedback.successBg, text: colors.status.success, icon: colors.status.success } }[s] || { bg: colors.background.paper, text: colors.text.secondary, icon: colors.text.secondary }), [colors]);
+  const statusColors = useMemo(() => packingList?.tracking ? getStatusColor(packingList.tracking.status) : { bg: colors.background.paper, text: colors.text.secondary, icon: colors.text.secondary }, [packingList, getStatusColor]);
   const generateShareText = useCallback(() => {
     if (!packingList) return '';
     const { containerNumber, shippingLineLabel, route, consignee, items, summary } = packingList;

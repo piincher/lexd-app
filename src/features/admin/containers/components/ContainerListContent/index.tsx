@@ -48,14 +48,14 @@ export const ContainerListContent: React.FC<ContainerListContentProps> = ({
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <LinearGradient colors={['#FEF2F2', '#FEE2E2']} style={styles.errorIconContainer}>
+        <LinearGradient colors={[Theme.colors.status.error + '10', Theme.colors.status.error + '18']} style={styles.errorIconContainer}>
           <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
         </LinearGradient>
         <Text style={styles.errorTitle}>Erreur de chargement</Text>
         <Text style={styles.errorSubtitle}>Impossible de récupérer les containers</Text>
         <TouchableOpacity style={styles.retryButton} onPress={onRefresh}>
           <LinearGradient colors={Theme.gradients.primary} style={styles.retryButtonGradient}>
-            <Ionicons name="refresh" size={20} color="#FFF" />
+            <Ionicons name="refresh" size={20} color={Theme.colors.text.inverse} />
             <Text style={styles.retryButtonText}>Réessayer</Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -75,7 +75,7 @@ export const ContainerListContent: React.FC<ContainerListContentProps> = ({
       }
       ListEmptyComponent={
         <View style={styles.emptyContainer}>
-          <LinearGradient colors={['#F3F0FF', '#EDE9FE']} style={styles.emptyIconContainer}>
+          <LinearGradient colors={[Theme.primary[50], Theme.primary[100]]} style={styles.emptyIconContainer}>
             <Ionicons name="cube-outline" size={64} color={Theme.primary[400]} />
           </LinearGradient>
           <Text style={styles.emptyTitle}>Aucun container</Text>
@@ -89,7 +89,7 @@ export const ContainerListContent: React.FC<ContainerListContentProps> = ({
           {selectedStatus === 'all' && (
             <TouchableOpacity style={styles.emptyButton} onPress={onCreateContainerPress}>
               <LinearGradient colors={Theme.gradients.primary} style={styles.emptyButtonGradient}>
-                <Ionicons name="add" size={20} color="#FFF" />
+                <Ionicons name="add" size={20} color={Theme.colors.text.inverse} />
                 <Text style={styles.emptyButtonText}>Nouveau Container</Text>
               </LinearGradient>
             </TouchableOpacity>

@@ -18,23 +18,24 @@ const Card: React.FC<{ m: DemoMetric; i: number; colors: ReturnType<typeof useAp
   const a = useAnimatedStyle(() => ({ transform: [{ scale: s.value }] }));
   return (
     <TouchableOpacity activeOpacity={0.9} onPressIn={() => { s.value = withSpring(0.97); }} onPressOut={() => { s.value = withSpring(1); }} style={{ width: '48%' }}>
-      <Animated.View
-        entering={FadeInDown.delay(i * 100)}
-        style={[
-          styles.card,
-          { backgroundColor: colors.background.card, borderColor: colors.border, shadowColor: isDark ? '#000' : 'rgba(0,0,0,0.06)' },
-          a,
-        ]}
-      >
-        <View style={[styles.icon, { backgroundColor: `${tone}18` }]}><FontAwesome6 name={m.icon as React.ComponentProps<typeof FontAwesome6>['name']} size={16} color={tone} /></View>
-        <Text style={[styles.val, { color: colors.text.primary }]}>{m.value}</Text>
-        <Text style={[styles.lab, { color: colors.text.primary }]}>{m.label}</Text>
-        <Text style={[styles.det, { color: colors.text.secondary }]}>{m.detail}</Text>
-        {m.change && (
-          <View style={[styles.pill, { backgroundColor: colors.feedback.successBg }]}>
-            <Text style={[styles.pillText, { color: colors.feedback.successDark }]}>{m.change}</Text>
-          </View>
-        )}
+      <Animated.View entering={FadeInDown.delay(i * 100)}>
+        <Animated.View
+          style={[
+            styles.card,
+            { backgroundColor: colors.background.card, borderColor: colors.border, shadowColor: isDark ? '#000' : 'rgba(0,0,0,0.06)' },
+            a,
+          ]}
+        >
+          <View style={[styles.icon, { backgroundColor: `${tone}18` }]}><FontAwesome6 name={m.icon as React.ComponentProps<typeof FontAwesome6>['name']} size={16} color={tone} /></View>
+          <Text style={[styles.val, { color: colors.text.primary }]}>{m.value}</Text>
+          <Text style={[styles.lab, { color: colors.text.primary }]}>{m.label}</Text>
+          <Text style={[styles.det, { color: colors.text.secondary }]}>{m.detail}</Text>
+          {m.change && (
+            <View style={[styles.pill, { backgroundColor: colors.feedback.successBg }]}>
+              <Text style={[styles.pillText, { color: colors.feedback.successDark }]}>{m.change}</Text>
+            </View>
+          )}
+        </Animated.View>
       </Animated.View>
     </TouchableOpacity>
   );

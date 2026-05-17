@@ -3,32 +3,28 @@
  * Decomposed version under 100 lines
  */
 
-import React, { useCallback } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react';
+import { View } from 'react-native';
 import { Screen } from '@src/shared/ui/Screen';
 import { Input } from '@src/shared/ui/Input';
-import { Theme } from '@src/constants/Theme';
-import { usePastOrders } from '../hooks/usePastOrders';
-import { useOrderFilters } from '../hooks/useOrderFilters';
+import { usePastOrdersScreenV2 } from './hooks/usePastOrdersScreenV2';
+import { styles } from './PastOrdersScreenV2.styles';
 import { OrderStatusFilter } from '../components/OrderStatusFilter';
 import { OrderDateFilter } from '../components/OrderDateFilter';
 import { PastOrderList } from '../components/PastOrderList';
-import { Order } from '../types';
 
 export const PastOrdersScreenV2: React.FC = () => {
-  const navigation = useNavigation();
-  const { filters, setStatus, setDateRange, setSearchQuery } = useOrderFilters();
-  const { data, isLoading, refetch, isRefetching } = usePastOrders(filters);
-
-  const handleOrderPress = useCallback(
-    (order: Order) => {
-      navigation.navigate('OrderDetail' as never, { orderId: order._id } as never);
-    },
-    [navigation]
-  );
-
-  const orders = data?.orders ?? [];
+  const {
+    orders,
+    filters,
+    setStatus,
+    setDateRange,
+    setSearchQuery,
+    isLoading,
+    refetch,
+    isRefetching,
+    handlers,
+  } = usePastOrdersScreenV2();
 
   return (
     <Screen variant="plain" scrollable={false} header={{ title: 'Commandes Passées', showNotificationBell: true }}>
@@ -52,14 +48,8 @@ export const PastOrdersScreenV2: React.FC = () => {
         isLoading={isLoading}
         isRefreshing={isRefetching}
         onRefresh={refetch}
-        onOrderPress={handleOrderPress}
+        onOrderPress={handlers.handleOrderPress}
       />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  searchContainer: {
-    padding: Theme.spacing.md,
-  },
-});

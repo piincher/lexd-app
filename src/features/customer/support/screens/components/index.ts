@@ -8,3 +8,4 @@ export { TicketSearchBar } from './TicketSearchBar';
 export { TicketListHeader } from './TicketListHeader';
 export { TicketFilterDrawer } from './TicketFilterDrawer';
 export { TicketEmptyState } from './TicketEmptyState';
+export { TicketList } from './TicketList';

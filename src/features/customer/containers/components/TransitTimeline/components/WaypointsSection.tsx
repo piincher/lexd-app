@@ -33,7 +33,7 @@ export const WaypointsSection: React.FC<WaypointsSectionProps> = ({
         </View>
         <View style={styles.mapPlaceholder}>
           <LinearGradient
-            colors={['#E0F2FE', '#F0F9FF']}
+            colors={[Theme.colors.feedback.infoBg, Theme.colors.background.paper]}
             style={styles.mapGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}

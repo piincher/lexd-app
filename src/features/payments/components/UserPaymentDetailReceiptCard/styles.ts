@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
   viewReceiptText: {
     fontSize: 14,
     fontFamily: Fonts.semiBold,
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
   },
   noReceiptContainer: {
     alignItems: 'center',

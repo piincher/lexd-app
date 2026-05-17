@@ -1,2 +1,2 @@
-export * from '@src/shared/hoc/AuthGuard';
-export { default } from '@src/shared/hoc/AuthGuard';
+export * from '@src/app/hoc/AuthGuard';
+export { default } from '@src/app/hoc/AuthGuard';

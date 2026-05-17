@@ -8,6 +8,7 @@ import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsListSearchProps {
   value: string;
@@ -19,25 +20,27 @@ export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
   value, 
   onChangeText, 
   onClear 
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <View style={styles.wrapper}>
-    <LinearGradient colors={['#FFFFFF', '#FAFAFA']} style={styles.container}>
-      <Ionicons name="search" size={20} color={Theme.primary[400]} style={styles.icon} />
+    <LinearGradient colors={[colors.background.card, colors.background.paper]} style={styles.container}>
+      <Ionicons name="search" size={20} color={colors.primary.light} style={styles.icon} />
       <TextInput
         style={styles.input}
         placeholder="Rechercher une marchandise..."
-        placeholderTextColor={Theme.neutral[400]}
+        placeholderTextColor={colors.text.secondary}
         value={value}
         onChangeText={onChangeText}
       />
       {value.length > 0 ? (
         <TouchableOpacity onPress={onClear} style={styles.clearButton}>
-          <Ionicons name="close-circle" size={22} color={Theme.neutral[400]} />
+          <Ionicons name="close-circle" size={22} color={colors.text.secondary} />
         </TouchableOpacity>
       ) : null}
     </LinearGradient>
   </View>
-);
+);}
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -60,7 +63,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontWeight: '500',
-    color: Theme.neutral[800],
+    color: Theme.colors.text.primary,
     height: '100%',
   },
   clearButton: {

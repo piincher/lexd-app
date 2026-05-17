@@ -31,8 +31,8 @@ export const useWaypointCardStyles = () => {
         },
         waypointCardCurrent: {
           borderWidth: 2,
-          borderColor: '#3B82F6',
-          shadowColor: '#3B82F6',
+          borderColor: colors.status.info,
+          shadowColor: colors.status.info,
           shadowOpacity: 0.15,
           elevation: 4,
         },
@@ -41,17 +41,17 @@ export const useWaypointCardStyles = () => {
         },
         waypointCardDakar: {
           borderWidth: 2,
-          borderColor: '#0EA5E9',
+          borderColor: colors.status.info,
           elevation: 4,
         },
         waypointCardBorder: {
           borderWidth: 2,
-          borderColor: '#F59E0B',
+          borderColor: colors.status.warning,
           elevation: 4,
         },
         waypointCardWarehouse: {
           borderWidth: 2,
-          borderColor: '#8B5CF6',
+          borderColor: colors.primary.main,
           elevation: 4,
         },
         wpStatusBar: {
@@ -70,7 +70,7 @@ export const useWaypointCardStyles = () => {
           width: 36,
           height: 36,
           borderRadius: 18,
-          backgroundColor: isDark ? 'rgba(16, 185, 129, 0.2)' : '#DCFCE7',
+          backgroundColor: isDark ? `${colors.status.success}20` : colors.feedback.successBg,
           justifyContent: 'center',
           alignItems: 'center',
           marginRight: 12,
@@ -78,7 +78,7 @@ export const useWaypointCardStyles = () => {
         wpNumberText: {
           fontSize: 16,
           fontFamily: Fonts.bold,
-          color: '#16A34A',
+          color: colors.status.success,
         },
         wpTitleContainer: {
           flex: 1,
@@ -128,7 +128,7 @@ export const useWaypointCardStyles = () => {
           color: colors.text.secondary,
         },
         currentBadge: {
-          backgroundColor: '#3B82F6',
+          backgroundColor: colors.status.info,
           paddingHorizontal: 10,
           paddingVertical: 2,
           borderRadius: 20,

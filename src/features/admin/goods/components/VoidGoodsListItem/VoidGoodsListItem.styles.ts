@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) =>
+  StyleSheet.create({
   goodsCard: {
     marginBottom: 12,
     borderRadius: 12,
@@ -57,14 +58,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 12,
-    backgroundColor: Theme.colors.status.error + '15',
+    backgroundColor: colors.feedback.errorBg,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#FECACA',
+    borderColor: colors.status.error,
   },
   voidButtonText: {
     marginLeft: 8,
-    color: '#DC2626',
+    color: colors.status.error,
     fontWeight: '600',
   },
-});
+  });

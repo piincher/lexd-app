@@ -38,7 +38,7 @@ const MessageBubble = ({ message }: { message: AdminTicketMessage }) => {
       <View style={[styles.bubble, { backgroundColor: bubbleBg }]}>
         <Text style={[styles.sender, { color: textColor }]}>{isAdmin ? 'Admin' : 'Client'}</Text>
         <Text style={[styles.body, { color: textColor }]}>{message.message}</Text>
-        <Text style={[styles.time, { color: isAdmin ? 'rgba(255,255,255,0.75)' : colors.text.secondary }]}>
+        <Text style={[styles.time, { color: isAdmin ? colors.text.inverse : colors.text.secondary }]}>
           {formatTime(message.createdAt)}
         </Text>
       </View>

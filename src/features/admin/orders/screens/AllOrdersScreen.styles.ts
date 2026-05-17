@@ -67,7 +67,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       padding: 20,
     },
     errorText: {
-      color: 'red',
+      color: colors.status.error,
       textAlign: 'center',
     },
     listContentContainer: {

@@ -23,15 +23,15 @@ export const CountryPicker: React.FC<CountryPickerProps> = ({ visible, countries
   if (!visible) return null;
 
   return (
-    <Animated.View entering={FadeIn.duration(200)} style={[styles.container, { backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#F9FAFB', borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)' }]}>
+    <Animated.View entering={FadeIn.duration(200)} style={[styles.container, { backgroundColor: colors.background.paper, borderColor: colors.border }]}>
       {countries.map((c) => {
         const selected = selectedCountry.code === c.code;
         return (
-          <Pressable key={c.code} style={[styles.option, { backgroundColor: selected ? (isDark ? 'rgba(34,197,94,0.15)' : 'rgba(34,197,94,0.08)') : 'transparent' }]} onPress={() => onSelect(c)}>
+          <Pressable key={c.code} style={[styles.option, { backgroundColor: selected ? colors.primary[50] : 'transparent' }]} onPress={() => onSelect(c)}>
             <Text style={styles.flag}>{c.flag}</Text>
             <Text style={[styles.name, { color: colors.text.primary }]}>{c.country}</Text>
             <Text style={[styles.code, { color: colors.text.secondary }]}>+{c.code}</Text>
-            {selected && <MaterialCommunityIcons name="check" size={18} color="#22C55E" />}
+            {selected && <MaterialCommunityIcons name="check" size={18} color={colors.primary.main} />}
           </Pressable>
         );
       })}

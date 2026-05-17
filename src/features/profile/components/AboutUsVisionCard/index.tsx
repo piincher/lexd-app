@@ -13,8 +13,8 @@ export const AboutUsVisionCard: React.FC = () => {
    return (
       <Animated.View entering={FadeInDown.delay(500).duration(600)} style={styles.card}>
          <View style={styles.cardIconRow}>
-            <View style={[styles.cardIconContainer, { backgroundColor: '#3B82F620' }]}>
-               <Ionicons name="eye-outline" size={22} color="#3B82F6" />
+            <View style={[styles.cardIconContainer, { backgroundColor: colors.status.info + '20' }]}>
+               <Ionicons name="eye-outline" size={22} color={colors.status.info} />
             </View>
             <Text style={styles.cardTitle}>Notre Vision</Text>
          </View>

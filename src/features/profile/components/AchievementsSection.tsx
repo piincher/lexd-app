@@ -22,7 +22,7 @@ export const AchievementsSection: React.FC<Props> = ({
   onRetry,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)';
+  const cardBorder = colors.border;
 
   return (
     <>
@@ -30,7 +30,7 @@ export const AchievementsSection: React.FC<Props> = ({
         <MaterialCommunityIcons name="trophy-outline" size={18} color={colors.primary.main} />
         <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>Réalisations</Text>
       </View>
-      <View style={[styles.card, { backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#FFFFFF', borderColor: cardBorder }]}>
+      <View style={[styles.card, { backgroundColor: colors.background.card, borderColor: cardBorder }]}>
         <CertifiedShipperCard progress={certificateProgress} isLoading={isCertLoading} error={certError} onRetry={onRetry} />
         <MilestoneBadges />
         <BadgesSection />

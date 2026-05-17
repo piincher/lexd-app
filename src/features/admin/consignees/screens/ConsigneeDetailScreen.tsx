@@ -1,15 +1,19 @@
 import React from "react";
-import { StyleSheet, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useConsigneeDetail } from "../hooks/useConsigneeDetail";
 import { ConsigneeDetailHeader } from "../components/ConsigneeDetailHeader";
 import { ConsigneeDetailInfoSection } from "../components/ConsigneeDetailInfoSection";
 import { ConsigneeDetailActions } from "../components/ConsigneeDetailActions";
 import { ConsigneeDetailLoading } from "../components/ConsigneeDetailLoading";
 import { ConsigneeDetailError } from "../components/ConsigneeDetailError";
+import { createStyles } from "./ConsigneeDetailScreen.styles";
 
 const ConsigneeDetailScreen: React.FC = () => {
-   const { consignee, isLoading, error, isDeleting, handlers, colors } = useConsigneeDetail();
+   const { consignee, isLoading, error, isDeleting, handlers } = useConsigneeDetail();
+   const { colors } = useAppTheme();
+   const styles = createStyles(colors);
 
    if (isLoading) {
       return <ConsigneeDetailLoading />;
@@ -20,7 +24,7 @@ const ConsigneeDetailScreen: React.FC = () => {
    }
 
    return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background.paper }]}>
+      <SafeAreaView style={styles.container}>
          <ConsigneeDetailHeader onBack={handlers.goBack} onEdit={handlers.edit} />
          <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
             <ConsigneeDetailInfoSection consignee={consignee} />
@@ -34,14 +38,5 @@ const ConsigneeDetailScreen: React.FC = () => {
       </SafeAreaView>
    );
 };
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-   },
-   scrollView: {
-      flex: 1,
-   },
-});
 
 export default ConsigneeDetailScreen;

@@ -6,6 +6,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
 interface ComparisonScoreBarProps {
@@ -15,17 +16,21 @@ interface ComparisonScoreBarProps {
   label: string;
 }
 
-export const ComparisonScoreBar: React.FC<ComparisonScoreBarProps> = ({ score, total, color, label }) => (
-  <View style={styles.container}>
-    <View style={styles.header}>
-      <Text style={[styles.label, { color }]}>{label}</Text>
-      <Text style={[styles.value, { color }]}>{score}/{total}</Text>
+export const ComparisonScoreBar: React.FC<ComparisonScoreBarProps> = ({ score, total, color, label }) => {
+  const { colors } = useAppTheme();
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={[styles.label, { color }]}>{label}</Text>
+        <Text style={[styles.value, { color }]}>{score}/{total}</Text>
+      </View>
+      <View style={[styles.track, { backgroundColor: colors.border }]}>
+        <View style={[styles.fill, { width: `${(score / total) * 100}%`, backgroundColor: color }]} />
+      </View>
     </View>
-    <View style={styles.track}>
-      <View style={[styles.fill, { width: `${(score / total) * 100}%`, backgroundColor: color }]} />
-    </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -47,7 +52,6 @@ const styles = StyleSheet.create({
   track: {
     height: 8,
     borderRadius: 4,
-    backgroundColor: 'rgba(0,0,0,0.05)',
     overflow: 'hidden',
   },
   fill: {

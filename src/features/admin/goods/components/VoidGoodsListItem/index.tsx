@@ -8,19 +8,20 @@ import { View, TouchableOpacity } from 'react-native';
 import { Card, Badge, Text, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Goods } from '../../types';
-import { styles } from './VoidGoodsListItem.styles';
+import { getStyles } from './VoidGoodsListItem.styles';
 
 const STATUS_COLORS: Record<string, string> = {
-  RECEIVED_AT_WAREHOUSE: '#2196F3',
-  PACKED: '#7C4DFF',
-  ASSIGNED_TO_CONTAINER: '#FF9800',
-  LOADED_IN_CONTAINER: '#9C27B0',
-  IN_TRANSIT: '#3F51B5',
-  ARRIVED_DESTINATION: '#009688',
-  READY_FOR_PICKUP: '#4CAF50',
-  DELIVERED: '#757575',
-  VOID: '#DC2626',
+  RECEIVED_AT_WAREHOUSE: Theme.colors.status.info,
+  PACKED: Theme.colors.primary.main,
+  ASSIGNED_TO_CONTAINER: Theme.colors.status.warning,
+  LOADED_IN_CONTAINER: Theme.colors.status.warning,
+  IN_TRANSIT: Theme.colors.status.info,
+  ARRIVED_DESTINATION: Theme.colors.status.success,
+  READY_FOR_PICKUP: Theme.colors.status.success,
+  DELIVERED: Theme.colors.text.disabled,
+  VOID: Theme.colors.status.error,
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -43,7 +44,10 @@ interface VoidGoodsListItemProps {
 export const VoidGoodsListItem: React.FC<VoidGoodsListItemProps> = ({
   item,
   onVoidPress,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
+  return (
   <Card style={styles.goodsCard}>
     <Card.Content>
       <View style={styles.headerRow}>
@@ -102,10 +106,10 @@ export const VoidGoodsListItem: React.FC<VoidGoodsListItemProps> = ({
           style={styles.voidButton}
           onPress={() => onVoidPress(item)}
         >
-          <MaterialCommunityIcons name="cancel" size={20} color="#DC2626" />
+          <MaterialCommunityIcons name="cancel" size={20} color={colors.status.error} />
           <Text style={styles.voidButtonText}>Void Goods</Text>
         </TouchableOpacity>
       )}
     </Card.Content>
   </Card>
-);
+);}

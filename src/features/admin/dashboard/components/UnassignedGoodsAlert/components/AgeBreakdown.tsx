@@ -21,10 +21,10 @@ export const AgeBreakdown: React.FC<AgeBreakdownProps> = ({ byAge }) => {
       alignItems: "center",
       paddingVertical: 8,
       borderRadius: 10,
-      backgroundColor: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)",
+      backgroundColor: colors.background.paper,
     },
     agePillCritical: {
-      backgroundColor: isDark ? "rgba(239,68,68,0.18)" : colors.feedback.errorBg,
+      backgroundColor: colors.feedback.errorBg,
     },
     ageValue: {
       fontSize: 15,

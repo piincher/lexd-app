@@ -47,7 +47,7 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({
             <Text style={[styles.goodsId, { color: colors.text.primary }]}>{goods.goodsId}</Text>
             {isSelectionMode ? (
               <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-                {isSelected && <Ionicons name="checkmark" size={16} color="#FFF" />}
+                {isSelected && <Ionicons name="checkmark" size={16} color={colors.text.inverse} />}
               </View>
             ) : (
               <TouchableOpacity style={styles.moreButton} onPress={onMenuPress}>

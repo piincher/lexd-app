@@ -22,7 +22,7 @@ export const createStyles = (colors: any) =>
       color: colors.text.primary,
     },
     addBtn: {
-      backgroundColor: "#8B5CF6",
+      backgroundColor: colors.primary.main,
       borderRadius: 8,
       padding: 6,
     },

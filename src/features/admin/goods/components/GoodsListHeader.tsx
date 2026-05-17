@@ -9,6 +9,7 @@ import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
 
@@ -18,18 +19,19 @@ interface GoodsListHeaderProps {
 }
 
 export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({ total, pendingCount }) => {
+  const { colors } = useAppTheme();
   const navigation = useNavigation();
   return (
     <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
       <View style={styles.headerTop}>
         <View>
-          <Text style={styles.greeting}>Bonjour! 👋</Text>
-          <Text style={styles.title}>Marchandises</Text>
+          <Text style={[styles.greeting, { color: colors.text.secondary }]}>Bonjour! 👋</Text>
+          <Text style={[styles.title, { color: colors.text.primary }]}>Marchandises</Text>
         </View>
         <NotificationBell
           onPress={() => navigation.navigate('Notifications' as never)}
           size={24}
-          color={Theme.neutral[800]}
+          color={colors.text.primary}
         />
       </View>
 
@@ -48,17 +50,20 @@ interface StatCardProps {
   gradient: readonly [string, string, ...string[]];
 }
 
-const StatCard: React.FC<StatCardProps> = ({ value, label, icon, gradient }) => (
-  <View style={styles.statCard}>
-    <LinearGradient colors={gradient} style={styles.iconContainer}>
-      <Ionicons name={icon as any} size={20} color="#FFF" />
-    </LinearGradient>
-    <View>
-      <Text style={styles.statValue}>{value}</Text>
-      <Text style={styles.statLabel}>{label}</Text>
+const StatCard: React.FC<StatCardProps> = ({ value, label, icon, gradient }) => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={[styles.statCard, { backgroundColor: colors.background.card }]}>
+      <LinearGradient colors={gradient} style={styles.iconContainer}>
+        <Ionicons name={icon as any} size={20} color={colors.text.inverse} />
+      </LinearGradient>
+      <View>
+        <Text style={[styles.statValue, { color: colors.text.primary }]}>{value}</Text>
+        <Text style={[styles.statLabel, { color: colors.text.secondary }]}>{label}</Text>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 const styles = StyleSheet.create({
   header: {
@@ -74,13 +79,11 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[500],
     marginBottom: 4,
   },
   title: {
     fontSize: 32,
     fontWeight: '800',
-    color: Theme.neutral[800],
     letterSpacing: -0.5,
   },
   statsRow: {
@@ -91,7 +94,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.colors.background.card,
     borderRadius: Theme.radius.xl,
     padding: Theme.spacing.md,
     ...Theme.shadows.sm,
@@ -107,12 +109,12 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 20,
     fontWeight: '800',
-    color: Theme.neutral[800],
   },
   statLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.neutral[400],
     marginTop: 2,
   },
 });
+
+export default GoodsListHeader;

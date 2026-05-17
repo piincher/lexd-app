@@ -40,7 +40,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse,
   },
   tabContainer: {
     flexDirection: 'row',

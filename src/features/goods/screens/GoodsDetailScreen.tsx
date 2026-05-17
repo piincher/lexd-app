@@ -1,55 +1,45 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import type { RootStackScreenProps } from '@src/navigations/type';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useAuth } from '@src/store/Auth';
+import { SafeAreaView } from 'react-native';
 import { useHideTabBarOnScroll } from '@src/shared/lib';
-import { useGetGoodsDetail } from '../hooks';
+import { useGoodsDetailScreen } from './hooks/useGoodsDetailScreen';
+import { useGoodsDetailScreenStyles } from './GoodsDetailScreen.styles';
 import {
-	GoodsDetailLoading,
-	GoodsDetailError,
-	GoodsDetailHeader,
-	GoodsDetailContent,
+  GoodsDetailLoading,
+  GoodsDetailError,
+  GoodsDetailHeader,
+  GoodsDetailContent,
 } from '../components';
 
-const GoodsDetailScreen = ({ navigation, route }: RootStackScreenProps<'GoodsDetail'>) => {
-	const { goodsId } = route.params;
-	const { colors } = useAppTheme();
-	const { onScroll } = useHideTabBarOnScroll();
-	const isAdmin = useAuth((state) => state.user?.role) === 'admin';
-	const { data: goods, isLoading, isError, error, refetch } = useGetGoodsDetail(goodsId);
+const GoodsDetailScreen: React.FC = () => {
+  const { goods, isLoading, isError, error, isAdmin, handlers } = useGoodsDetailScreen();
+  const styles = useGoodsDetailScreenStyles();
+  const { onScroll } = useHideTabBarOnScroll();
 
-	if (isLoading) {
-		return <GoodsDetailLoading onBack={() => navigation.goBack()} />;
-	}
+  if (isLoading) {
+    return <GoodsDetailLoading onBack={handlers.handleBack} />;
+  }
 
-	if (isError || !goods) {
-		return (
-			<GoodsDetailError
-				error={error}
-				onRetry={refetch}
-				onBack={() => navigation.goBack()}
-			/>
-		);
-	}
+  if (isError || !goods) {
+    return (
+      <GoodsDetailError
+        error={error}
+        onRetry={handlers.handleRetry}
+        onBack={handlers.handleBack}
+      />
+    );
+  }
 
-	return (
-		<SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
-			<GoodsDetailHeader
-				goods={goods}
-				isAdmin={isAdmin}
-				onBack={() => navigation.goBack()}
-				onEdit={() => navigation.navigate('EditGoods', { goodsId })}
-			/>
-			<GoodsDetailContent goods={goods} onScroll={onScroll} />
-		</SafeAreaView>
-	);
+  return (
+    <SafeAreaView style={styles.container}>
+      <GoodsDetailHeader
+        goods={goods}
+        isAdmin={isAdmin}
+        onBack={handlers.handleBack}
+        onEdit={handlers.handleEdit}
+      />
+      <GoodsDetailContent goods={goods} onScroll={onScroll} />
+    </SafeAreaView>
+  );
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-});
 
 export default GoodsDetailScreen;

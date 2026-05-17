@@ -4,23 +4,19 @@
  */
 
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { useRoute, useNavigation } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
 import { PaymentDetailContent } from '../components/PaymentDetailContent';
-import { PaymentDetailRouteParams } from '../types';
+import { usePaymentDetailScreen } from './hooks/usePaymentDetailScreen';
 
 const PaymentDetailScreen: React.FC = () => {
-  const route = useRoute();
-  const navigation = useNavigation();
-  const params = (route.params || {}) as PaymentDetailRouteParams;
+  const { params, handlers } = usePaymentDetailScreen();
 
   return (
     <Screen
       header={{
         title: 'Détails du paiement',
         showBack: true,
-        onBackPress: () => navigation.goBack(),
+        onBackPress: handlers.handleBack,
         showNotificationBell: true,
       }}
     >
@@ -28,7 +24,5 @@ const PaymentDetailScreen: React.FC = () => {
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({});
 
 export default PaymentDetailScreen;

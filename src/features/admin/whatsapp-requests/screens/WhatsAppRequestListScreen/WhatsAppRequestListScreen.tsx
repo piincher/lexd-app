@@ -4,10 +4,10 @@
  */
 
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '@src/constants/Theme';
-import { useWhatsAppRequestListScreen } from './hooks/useWhatsAppRequestListScreen';
+import { useWhatsAppRequestListScreenUI } from './hooks/useWhatsAppRequestListScreenUI';
+import { styles } from './WhatsAppRequestListScreen.styles';
 import { WhatsAppRequestHeader } from './components/WhatsAppRequestHeader';
 import { WhatsAppRequestStats } from './components/WhatsAppRequestStats';
 import { WhatsAppRequestFilters } from './components/WhatsAppRequestFilters';
@@ -18,81 +18,52 @@ import { WhatsAppRequestPDFModal } from './components/WhatsAppRequestPDFModal';
 import { WhatsAppRequestErrorSnackbar } from './components/WhatsAppRequestErrorSnackbar';
 
 export const WhatsAppRequestListScreen: React.FC = () => {
-  const {
-    requests,
-    pendingCount,
-    stats,
-    isLoading,
-    isRefetching,
-    error,
-    isProcessing,
-    isCompleting,
-    isGeneratingPdf,
-    selectedStatus,
-    pdfModalVisible,
-    generatedPdf,
-    errorMessage,
-    setSelectedStatus,
-    setPdfModalVisible,
-    handleRefresh,
-    handleProcessRequest,
-    handleGeneratePdf,
-    handleCompleteRequest,
-    handleCallCustomer,
-    handleWhatsAppCustomer,
-    dismissError,
-    handleSendPdfAndComplete,
-  } = useWhatsAppRequestListScreen();
+  const { data, handlers } = useWhatsAppRequestListScreenUI();
 
   return (
     <SafeAreaView style={styles.container}>
-      <WhatsAppRequestHeader onRefresh={handleRefresh} />
+      <WhatsAppRequestHeader onRefresh={handlers.handleRefresh} />
 
       <View style={styles.headerContent}>
-        <WhatsAppRequestStats pending={stats.pending} processing={stats.processing} total={stats.total} />
+        <WhatsAppRequestStats pending={data.stats.pending} processing={data.stats.processing} total={data.stats.total} />
         <WhatsAppRequestFilters
-          selectedStatus={selectedStatus}
-          pendingCount={pendingCount}
-          onSelectStatus={setSelectedStatus}
+          selectedStatus={data.selectedStatus}
+          pendingCount={data.pendingCount}
+          onSelectStatus={handlers.setSelectedStatus}
         />
       </View>
 
-      {isLoading ? (
+      {data.isLoading ? (
         <WhatsAppRequestLoadingState />
-      ) : error ? (
-        <WhatsAppRequestErrorState onRetry={handleRefresh} />
+      ) : data.error ? (
+        <WhatsAppRequestErrorState onRetry={handlers.handleRefresh} />
       ) : (
         <WhatsAppRequestList
-          requests={requests}
-          selectedStatus={selectedStatus}
-          isRefetching={isRefetching}
-          isProcessing={isProcessing}
-          isCompleting={isCompleting}
-          isGeneratingPdf={isGeneratingPdf}
-          onRefresh={handleRefresh}
-          onProcess={handleProcessRequest}
-          onGeneratePdf={handleGeneratePdf}
-          onComplete={handleCompleteRequest}
-          onCall={handleCallCustomer}
-          onWhatsApp={handleWhatsAppCustomer}
+          requests={data.requests}
+          selectedStatus={data.selectedStatus}
+          isRefetching={data.isRefetching}
+          isProcessing={data.isProcessing}
+          isCompleting={data.isCompleting}
+          isGeneratingPdf={data.isGeneratingPdf}
+          onRefresh={handlers.handleRefresh}
+          onProcess={handlers.handleProcessRequest}
+          onGeneratePdf={handlers.handleGeneratePdf}
+          onComplete={handlers.handleCompleteRequest}
+          onCall={handlers.handleCallCustomer}
+          onWhatsApp={handlers.handleWhatsAppCustomer}
         />
       )}
 
       <WhatsAppRequestPDFModal
-        visible={pdfModalVisible}
-        generatedPdf={generatedPdf}
-        onDismiss={() => setPdfModalVisible(false)}
-        onSend={handleSendPdfAndComplete}
+        visible={data.pdfModalVisible}
+        generatedPdf={data.generatedPdf}
+        onDismiss={handlers.handleDismissPdfModal}
+        onSend={handlers.handleSendPdfAndComplete}
       />
 
-      <WhatsAppRequestErrorSnackbar message={errorMessage} onDismiss={dismissError} />
+      <WhatsAppRequestErrorSnackbar message={data.errorMessage} onDismiss={handlers.dismissError} />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Theme.colors.background.default },
-  headerContent: { backgroundColor: 'transparent' },
-});
 
 export default WhatsAppRequestListScreen;

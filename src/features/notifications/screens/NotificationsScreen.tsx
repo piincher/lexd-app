@@ -3,24 +3,17 @@
  * SRP: Layout composition ONLY
  */
 
-import React, { useCallback } from 'react';
-import { StyleSheet } from 'react-native';
+import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Theme } from '@src/constants/Theme';
-import type { navigationProps } from '@src/navigations/type';
-import type { InAppNotification } from '../types';
-import { useNotificationsScreen } from '../hooks/useNotificationsScreen';
+import { useNotificationsScreenUI } from './hooks/useNotificationsScreenUI';
+import { styles } from './NotificationsScreen.styles';
 
 import { NotificationHeader } from './components/NotificationHeader';
 import { NotificationFilterTabs } from './components/NotificationFilterTabs';
 import { NotificationList } from './components/NotificationList';
 
-interface NotificationsScreenProps {
-  navigation: navigationProps;
-}
-
-const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation }) => {
+const NotificationsScreen: React.FC = () => {
   const {
     activeFilter,
     notifications,
@@ -31,17 +24,8 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
     isError,
     isFetchingNextPage,
     isMarkingAll,
-    handleFilterChange,
-    handleMarkAsRead,
-    handleDelete,
-    handleMarkAllAsRead,
-    handleLoadMore,
-    refetch,
-  } = useNotificationsScreen();
-
-  const handleNotificationPress = useCallback((notification: InAppNotification) => {
-    navigation.navigate('NotificationDetail', { notification });
-  }, [navigation]);
+    handlers,
+  } = useNotificationsScreenUI();
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -49,14 +33,14 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
         unreadCount={unreadCount}
         hasUnread={hasUnread}
         isMarkingAll={isMarkingAll}
-        onMarkAllAsRead={handleMarkAllAsRead}
-        onBack={() => navigation.goBack()}
+        onMarkAllAsRead={handlers.handleMarkAllAsRead}
+        onBack={handlers.handleBack}
       />
 
       <NotificationFilterTabs
         activeFilter={activeFilter}
         unreadCount={unreadCount}
-        onFilterChange={handleFilterChange}
+        onFilterChange={handlers.handleFilterChange}
       />
 
       <NotificationList
@@ -66,21 +50,14 @@ const NotificationsScreen: React.FC<NotificationsScreenProps> = ({ navigation })
         isError={isError}
         isFetchingNextPage={isFetchingNextPage}
         activeFilter={activeFilter}
-        onPress={handleNotificationPress}
-        onMarkAsRead={handleMarkAsRead}
-        onDelete={handleDelete}
-        onRefresh={refetch}
-        onLoadMore={handleLoadMore}
+        onPress={handlers.handleNotificationPress}
+        onMarkAsRead={handlers.handleMarkAsRead}
+        onDelete={handlers.handleDelete}
+        onRefresh={handlers.handleRefresh}
+        onLoadMore={handlers.handleLoadMore}
       />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Theme.neutral[50],
-  },
-});
 
 export default NotificationsScreen;

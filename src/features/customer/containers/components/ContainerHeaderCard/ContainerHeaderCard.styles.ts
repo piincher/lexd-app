@@ -18,7 +18,7 @@ export const useContainerHeaderCardStyles = () => {
       width: 56,
       height: 56,
       borderRadius: 28,
-      backgroundColor: '#E0F2FE',
+      backgroundColor: colors.feedback.infoBg,
       justifyContent: 'center',
       alignItems: 'center',
       marginRight: 16,

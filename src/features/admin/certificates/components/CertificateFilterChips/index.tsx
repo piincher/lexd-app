@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { FILTER_CHIPS } from "../../hooks/useCertificateHistory";
-import { styles } from "./CertificateFilterChips.styles";
+import { getStyles } from "./CertificateFilterChips.styles";
 
 interface CertificateFilterChipsProps {
   activeFilter: string;
@@ -12,6 +13,9 @@ export const CertificateFilterChips: React.FC<CertificateFilterChipsProps> = ({
   activeFilter,
   onChange,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
+
   return (
     <View style={styles.filterContainer}>
       <ScrollView

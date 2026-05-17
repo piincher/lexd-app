@@ -1,9 +1,9 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ExportDataModal } from "@src/features/admin/shared/components";
-import { Theme } from "@src/constants/Theme";
-import { useGlobalSearchScreen } from "../hooks/useGlobalSearchScreen";
+import { ExportDataModal } from "../../export/components/ExportDataModal";
+import { useGlobalSearchScreenUI } from "./hooks/useGlobalSearchScreenUI";
+import { styles } from "./GlobalSearchScreen.styles";
 import { GlobalSearchHeader } from "../components/GlobalSearchHeader";
 import { GlobalSearchBar } from "../components/GlobalSearchBar";
 import { GlobalSearchActiveFilters } from "../components/GlobalSearchActiveFilters";
@@ -13,29 +13,24 @@ import { FilterFAB } from "../components/FilterFAB";
 import { FilterPanelModal } from "../components/FilterPanelModal";
 
 export const GlobalSearchScreen: React.FC = () => {
-  const { selectedEntity, setSelectedEntity, showFilters, setShowFilters, showExportModal, setShowExportModal, slideAnim, query, filters, isLoading, isError, error, handleSearch, handleFilterChange, handlePageChange, resetFilters, refetch, handleItemPress, presets, resultsData, resultsPagination, resultsStats, handlePresetSelect, handleRemoveFilter, handleExport, entityToExportEntity, entityLabels } = useGlobalSearchScreen();
+  const { data, handlers } = useGlobalSearchScreenUI();
+
   return (
     <SafeAreaView style={styles.container}>
-      <GlobalSearchHeader selectedEntity={selectedEntity} onEntityChange={setSelectedEntity} onExport={handleExport} />
+      <GlobalSearchHeader selectedEntity={data.selectedEntity} onEntityChange={handlers.setSelectedEntity} onExport={handlers.handleExport} />
       <View style={styles.searchContainer}>
-        <GlobalSearchBar onSearch={handleSearch} onFilterPress={() => setShowFilters(true)} placeholder={`Rechercher ${selectedEntity}...`} showSuggestions={true} />
+        <GlobalSearchBar onSearch={handlers.handleSearch} onFilterPress={handlers.handleFilterPress} placeholder={`Rechercher ${data.selectedEntity}...`} showSuggestions={true} />
       </View>
-      <GlobalSearchActiveFilters filters={filters} onRemoveFilter={handleRemoveFilter} />
-      <SearchStatsPanel stats={resultsStats} />
+      <GlobalSearchActiveFilters filters={data.filters} onRemoveFilter={handlers.handleRemoveFilter} />
+      <SearchStatsPanel stats={data.resultsStats} />
       <View style={styles.resultsContainer}>
-        <SearchResults entity={selectedEntity} results={{ data: resultsData }} isLoading={isLoading} isError={isError} error={error} onItemPress={handleItemPress} onRefresh={refetch} pagination={resultsPagination} onLoadMore={() => { if (resultsPagination?.hasNext) { handlePageChange(resultsPagination.page + 1); } }} emptyMessage={`Aucun ${selectedEntity} ne correspond à votre recherche`} highlightQuery={query} />
+        <SearchResults entity={data.selectedEntity} results={{ data: data.resultsData }} isLoading={data.isLoading} isError={data.isError} error={data.error} onItemPress={handlers.handleItemPress} onRefresh={handlers.refetch} pagination={data.resultsPagination} onLoadMore={handlers.handleLoadMore} emptyMessage={`Aucun ${data.selectedEntity} ne correspond à votre recherche`} highlightQuery={data.query} />
       </View>
-      <FilterFAB filters={filters} onPress={() => setShowFilters(true)} />
-      <FilterPanelModal visible={showFilters} onClose={() => setShowFilters(false)} slideAnim={slideAnim} entity={selectedEntity} filters={filters} onFiltersChange={handleFilterChange} onReset={resetFilters} presets={presets} onPresetSelect={handlePresetSelect} />
-      <ExportDataModal visible={showExportModal} onDismiss={() => setShowExportModal(false)} entity={entityToExportEntity[selectedEntity]} entityLabel={entityLabels[selectedEntity]} />
+      <FilterFAB filters={data.filters} onPress={handlers.handleFilterPress} />
+      <FilterPanelModal visible={data.showFilters} onClose={handlers.handleCloseFilters} slideAnim={data.slideAnim} entity={data.selectedEntity} filters={data.filters} onFiltersChange={handlers.handleFilterChange} onReset={handlers.resetFilters} presets={data.presets} onPresetSelect={handlers.handlePresetSelect} />
+      <ExportDataModal visible={data.showExportModal} onDismiss={handlers.handleDismissExport} entity={data.entityToExportEntity[data.selectedEntity]} entityLabel={data.entityLabels[data.selectedEntity]} />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Theme.colors.background.default },
-  searchContainer: { marginTop: -Theme.spacing.lg, zIndex: 100 },
-  resultsContainer: { flex: 1, marginTop: Theme.spacing.md },
-});
 
 export default GlobalSearchScreen;

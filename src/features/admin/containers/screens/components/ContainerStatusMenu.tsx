@@ -104,7 +104,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     fontSize: 12,
   },
   menuItemActive: {
-    backgroundColor: 'rgba(34,197,94,0.10)',
+    backgroundColor: colors.status.success + '1A',
   },
 });
 

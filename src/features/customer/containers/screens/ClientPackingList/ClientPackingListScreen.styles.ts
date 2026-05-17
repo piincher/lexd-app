@@ -136,7 +136,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     paddingHorizontal: 8,
   },
   routeBannerHighlight: {
-    backgroundColor: '#D1FAE5',
+    backgroundColor: colors.feedback.successBg,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -150,7 +150,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   routeBannerValue: {
     fontFamily: Fonts.bold,
     fontSize: 14,
-    color: '#059669',
+    color: colors.status.success,
     marginTop: 2,
   },
   routeBannerSubtext: {
@@ -176,7 +176,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     width: 60,
     height: 60,
     borderRadius: 12,
-    backgroundColor: '#E0F2FE',
+    backgroundColor: colors.feedback.infoBg,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -268,7 +268,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     flex: 1,
   },
   routeFlowHighlight: {
-    backgroundColor: '#D1FAE5',
+    backgroundColor: colors.feedback.successBg,
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 4,
@@ -287,7 +287,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     textAlign: 'center',
   },
   routeFlowValueHighlight: {
-    color: '#059669',
+    color: colors.status.success,
     fontSize: 14,
   },
   routeFlowSubtext: {
@@ -301,7 +301,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   routeInfoFooter: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.7)',
+    backgroundColor: `${colors.background.card}70`,
     padding: 8,
     borderRadius: 8,
   },
@@ -341,17 +341,17 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   warehouseMainAddress: {
     fontFamily: Fonts.meduim,
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse,
     marginTop: 2,
   },
   pickupDivider: {
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: `${colors.text.inverse}30`,
     marginVertical: 12,
   },
   consigneeSectionLabel: {
     fontFamily: Fonts.meduim,
     fontSize: 13,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse,
     marginBottom: 8,
   },
   consigneeInfoCard: {
@@ -374,7 +374,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   consigneeInfoPhone: {
     fontFamily: Fonts.meduim,
     fontSize: 15,
-    color: '#7C3AED',
+    color: colors.primary.main,
     marginLeft: 12,
   },
   consigneeInfoAddress: {

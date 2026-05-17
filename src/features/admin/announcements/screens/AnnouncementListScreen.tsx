@@ -1,51 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlashList } from "@shopify/flash-list";
 import { Ionicons } from "@expo/vector-icons";
-import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { useAdminAnnouncements, useArchiveAnnouncement } from "../hooks";
-import { AnnouncementListItem } from "../components";
-import type { Announcement } from "../types/announcement.types";
+import { useAnnouncementListScreen } from "./hooks";
 import { createStyles } from "./AnnouncementListScreen.styles";
 
-const FILTERS: { label: string; value?: Announcement["status"] }[] = [
-  { label: "Toutes" },
-  { label: "Publiées", value: "PUBLISHED" },
-  { label: "Brouillons", value: "DRAFT" },
-  { label: "Archivées", value: "ARCHIVED" },
-];
-
-const AnnouncementListScreen: React.FC<RootStackScreenProps<"AnnouncementList">> = ({
-  navigation,
-}) => {
+const AnnouncementListScreen: React.FC = () => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
-  const [status, setStatus] = useState<Announcement["status"] | undefined>();
-  const { data, isLoading, refetch } = useAdminAnnouncements({ status });
-  const archive = useArchiveAnnouncement();
-  const announcements = data?.items || [];
+  const { status, isLoading, announcements, filters, handlers } = useAnnouncementListScreen();
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
+        <TouchableOpacity onPress={handlers.handleBack} style={styles.iconButton}>
           <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Annonces</Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate("CreateAnnouncement")}
+          onPress={handlers.handleCreate}
           style={styles.addButton}
         >
           <Ionicons name="add" size={22} color={colors.text.inverse} />
         </TouchableOpacity>
       </View>
       <View style={styles.filters}>
-        {FILTERS.map((filter) => (
+        {filters.map((filter) => (
           <TouchableOpacity
             key={filter.label}
-            onPress={() => setStatus(filter.value)}
+            onPress={() => handlers.handleFilterChange(filter.value)}
             style={[styles.filterChip, status === filter.value && styles.filterChipActive]}
           >
             <Text style={[styles.filterText, status === filter.value && styles.filterTextActive]}>
@@ -62,17 +47,10 @@ const AnnouncementListScreen: React.FC<RootStackScreenProps<"AnnouncementList">>
           data={announcements}
           keyExtractor={(item) => item._id}
           contentContainerStyle={styles.listContent}
-          onRefresh={refetch}
+          onRefresh={handlers.refetch}
           refreshing={isLoading}
           ListEmptyComponent={<Text style={styles.empty}>Aucune annonce pour le moment.</Text>}
-          renderItem={({ item }) => (
-            <AnnouncementListItem
-              item={item}
-              onEdit={(id) => navigation.navigate("CreateAnnouncement", { announcementId: id })}
-              onArchive={(id) => archive.mutate(id)}
-              isArchiving={archive.isPending}
-            />
-          )}
+          renderItem={handlers.renderItem}
         />
       )}
     </SafeAreaView>

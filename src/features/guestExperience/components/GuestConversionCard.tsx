@@ -16,9 +16,7 @@ interface Props {
 export const GuestConversionCard: React.FC<Props> = ({ onLogin, onContact }) => {
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
-  const gradientColors = isDark
-    ? ['#15803D', '#166534', '#14532D']
-    : ['#22C55E', '#16A34A', '#15803D'];
+  const gradientColors = Theme.gradients.primary;
 
   const translateY = useSharedValue(0);
 
@@ -35,24 +33,26 @@ export const GuestConversionCard: React.FC<Props> = ({ onLogin, onContact }) => 
   }));
 
   return (
-    <Animated.View entering={FadeInUp.duration(800).springify()} style={[styles.wrapper, floatStyle]}>
-      <LinearGradient colors={gradientColors} style={styles.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-        <Text style={styles.headline}>Devenez client ChinaLink</Text>
-        <Text style={styles.subtitle}>
-          Créez votre compte et suivez vos vraies marchandises.
-        </Text>
+    <Animated.View entering={FadeInUp.duration(800).springify()}>
+      <Animated.View style={[styles.wrapper, floatStyle]}>
+        <LinearGradient colors={gradientColors} style={styles.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+          <Text style={styles.headline}>Devenez client ChinaLink</Text>
+          <Text style={styles.subtitle}>
+            Créez votre compte et suivez vos vraies marchandises.
+          </Text>
 
-        <View style={styles.actions}>
-          <Pressable onPress={onLogin} style={styles.primaryButton}>
-            <Text style={styles.primaryText}>Se connecter</Text>
-          </Pressable>
+          <View style={styles.actions}>
+            <Pressable onPress={onLogin} style={styles.primaryButton}>
+              <Text style={styles.primaryText}>Se connecter</Text>
+            </Pressable>
 
-          <Pressable onPress={onContact} style={styles.secondaryButton}>
-            <FontAwesome6 name="whatsapp" size={16} color={colors.text.inverse} />
-            <Text style={styles.secondaryText}>Devenir client</Text>
-          </Pressable>
-        </View>
-      </LinearGradient>
+            <Pressable onPress={onContact} style={styles.secondaryButton}>
+              <FontAwesome6 name="whatsapp" size={16} color={colors.text.inverse} />
+              <Text style={styles.secondaryText}>Devenir client</Text>
+            </Pressable>
+          </View>
+        </LinearGradient>
+      </Animated.View>
     </Animated.View>
   );
 };

@@ -1,2 +1,1 @@
-export * from './AuthGuard';
-export * from './withProtectedRoute';
+// Shared HOCs - pure composition helpers without business logic

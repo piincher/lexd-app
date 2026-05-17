@@ -4,8 +4,8 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import * as Clipboard from "expo-clipboard";
 import { showMessage } from "react-native-flash-message";
 import { CertificateRecord } from "../../api";
-import { Theme } from "@src/constants/Theme";
-import { styles } from "./CertificateCard.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { getStyles } from "./CertificateCard.styles";
 
 interface CertificateCardProps {
   certificate: CertificateRecord;
@@ -33,6 +33,8 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
   isDownloading,
   onPress,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   const isAuto = certificate.type === "AUTO";
   const isActive = certificate.status === "ACTIVE";
 
@@ -52,7 +54,7 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
         <View style={styles.certificateIdContainer}>
           <Text style={styles.certificateId}>{certificate.certificateId}</Text>
           <TouchableOpacity onPress={handleCopyCode} style={styles.copyButton}>
-            <Ionicons name="copy-outline" size={18} color={Theme.colors.text.secondary} />
+            <Ionicons name="copy-outline" size={18} color={colors.text.secondary} />
           </TouchableOpacity>
         </View>
         <View style={styles.badgeRow}>
@@ -70,31 +72,31 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
       </View>
 
       <View style={styles.cardRow}>
-        <Ionicons name="person-outline" size={16} color={Theme.colors.text.secondary} />
+        <Ionicons name="person-outline" size={16} color={colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {certificate.userId.firstName} {certificate.userId.lastName}
         </Text>
       </View>
       <View style={styles.cardRow}>
-        <Ionicons name="call-outline" size={16} color={Theme.colors.text.secondary} />
+        <Ionicons name="call-outline" size={16} color={colors.text.secondary} />
         <Text style={styles.cardRowText}>{certificate.userId.phoneNumber}</Text>
       </View>
 
       <View style={styles.cardRow}>
-        <MaterialIcons name="inventory" size={16} color={Theme.colors.text.secondary} />
+        <MaterialIcons name="inventory" size={16} color={colors.text.secondary} />
         <Text style={styles.cardRowText}>
           {certificate.totalCBMAtIssuance.toFixed(2)} CBM (seuil : {certificate.thresholdCBM} CBM)
         </Text>
       </View>
 
       <View style={styles.cardRow}>
-        <Ionicons name="calendar-outline" size={16} color={Theme.colors.text.secondary} />
+        <Ionicons name="calendar-outline" size={16} color={colors.text.secondary} />
         <Text style={styles.cardRowText}>{formatDate(certificate.issuedAt)}</Text>
       </View>
 
       {certificate.type === "MANUAL" && certificate.issuedBy && (
         <View style={styles.cardRow}>
-          <Ionicons name="shield-checkmark-outline" size={16} color={Theme.colors.text.secondary} />
+          <Ionicons name="shield-checkmark-outline" size={16} color={colors.text.secondary} />
           <Text style={styles.cardRowText}>
             Émis par {certificate.issuedBy.firstName} {certificate.issuedBy.lastName}
           </Text>
@@ -103,7 +105,7 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
 
       {certificate.customNote ? (
         <View style={styles.noteContainer}>
-          <Ionicons name="document-text-outline" size={14} color="#92400E" />
+          <Ionicons name="document-text-outline" size={14} color={colors.status.warning} />
           <Text style={styles.noteText}>{certificate.customNote}</Text>
         </View>
       ) : null}
@@ -116,9 +118,9 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
           disabled={isDownloading}
         >
           {isDownloading ? (
-            <ActivityIndicator size="small" color="#FFFFFF" />
+            <ActivityIndicator size="small" color={colors.text.inverse} />
           ) : (
-            <Ionicons name="download-outline" size={18} color="#FFFFFF" />
+            <Ionicons name="download-outline" size={18} color={colors.text.inverse} />
           )}
           <Text style={styles.downloadButtonText}>Télécharger</Text>
         </TouchableOpacity>

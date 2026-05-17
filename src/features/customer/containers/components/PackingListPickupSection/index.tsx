@@ -32,14 +32,14 @@ export const PackingListPickupSection: React.FC<PackingListPickupSectionProps> =
   return (
     <Card style={styles.pickupSectionCard}>
       <LinearGradient
-        colors={['#8B5CF6', '#7C3AED']}
+        colors={[colors.primary.main, colors.primary.dark]}
         style={styles.pickupGradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
         <Card.Content>
           <View style={styles.pickupSectionHeader}>
-            <MaterialCommunityIcons name="map-marker" size={28} color="#FFF" />
+            <MaterialCommunityIcons name="map-marker" size={28} color={colors.text.inverse} />
             <Text style={styles.pickupSectionTitle}>📍 POINT DE RETRAIT</Text>
           </View>
           
@@ -52,23 +52,23 @@ export const PackingListPickupSection: React.FC<PackingListPickupSectionProps> =
           
           <View style={styles.consigneeInfoCard}>
             <View style={styles.consigneeInfoRow}>
-              <MaterialCommunityIcons name="account" size={20} color="#7C3AED" />
+              <MaterialCommunityIcons name="account" size={20} color={colors.primary.main} />
               <Text style={styles.consigneeInfoName}>{consignee.name}</Text>
             </View>
             
             <View style={styles.consigneeInfoRow}>
-              <MaterialCommunityIcons name="phone" size={20} color="#7C3AED" />
+              <MaterialCommunityIcons name="phone" size={20} color={colors.primary.main} />
               <Text style={styles.consigneeInfoPhone}>{consignee.phone}</Text>
             </View>
             
             <View style={styles.consigneeInfoRow}>
-              <MaterialCommunityIcons name="office-building" size={20} color="#7C3AED" />
+              <MaterialCommunityIcons name="office-building" size={20} color={colors.primary.main} />
               <Text style={styles.consigneeInfoAddress}>{consignee.warehouseAddress}</Text>
             </View>
           </View>
           
           <View style={styles.requiredDocs}>
-            <MaterialCommunityIcons name="file-document" size={16} color="rgba(255,255,255,0.9)" />
+            <MaterialCommunityIcons name="file-document" size={16} color={colors.text.inverse} />
             <Text style={styles.requiredDocsText}>
               Documents requis pour le retrait: Pièce d'identité valide + Reçu de paiement
             </Text>

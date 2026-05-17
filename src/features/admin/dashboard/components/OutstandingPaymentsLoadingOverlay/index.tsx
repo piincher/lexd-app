@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './OutstandingPaymentsLoadingOverlay.styles';
+import { getStyles } from './OutstandingPaymentsLoadingOverlay.styles';
 
 interface OutstandingPaymentsLoadingOverlayProps {
   isDark: boolean;
@@ -11,6 +11,7 @@ export const OutstandingPaymentsLoadingOverlay: React.FC<OutstandingPaymentsLoad
   isDark,
 }) => {
   const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   return (
     <View
       style={[

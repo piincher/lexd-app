@@ -27,16 +27,16 @@ interface RouteListItemProps {
   onDelete?: (id: string) => void;
 }
 
-const MODE_CONFIG = {
-  air: { icon: 'airplane', color: '#8B5CF6' },
-  sea: { icon: 'boat', color: '#3B82F6' },
-};
+const MODE_CONFIG = (colors: any) => ({
+  air: { icon: 'airplane', color: colors.primary.main },
+  sea: { icon: 'boat', color: colors.status.info },
+});
 
 export const RouteListItem: React.FC<RouteListItemProps> = ({ route, onPress, onEdit, onDelete }) => {
   const { colors } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const [menuVisible, setMenuVisible] = React.useState(false);
-  const mode = MODE_CONFIG[route.shippingMode];
+  const mode = MODE_CONFIG(colors)[route.shippingMode];
   const closeMenu = () => setMenuVisible(false);
 
   return (
@@ -45,7 +45,7 @@ export const RouteListItem: React.FC<RouteListItemProps> = ({ route, onPress, on
         <Card.Content style={styles.content}>
           <View style={styles.header}>
             <View style={[styles.modeIcon, { backgroundColor: mode.color }]}>
-              <Ionicons name={mode.icon as any} size={14} color="#FFF" />
+              <Ionicons name={mode.icon as any} size={14} color={colors.text.inverse} />
             </View>
             <View style={styles.pathContainer}>
               <Text style={styles.location} numberOfLines={1}>{route.origin}</Text>

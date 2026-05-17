@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Animated, { FadeInUp } from "react-native-reanimated";
+import { Theme } from "@src/constants/Theme";
 
 interface StatCardProps {
   icon: string;
@@ -35,13 +36,13 @@ export const StatCard: React.FC<StatCardProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "rgba(255,255,255,0.15)",
+    backgroundColor: Theme.colors.text.inverse + "26",
     borderRadius: 16,
     padding: 12,
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.2)",
+    borderColor: Theme.colors.text.inverse + "33",
   },
   iconContainer: {
     width: 40,
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    color: "rgba(255,255,255,0.8)",
+    color: Theme.colors.text.inverse + "CC",
     marginTop: 2,
   },
 });

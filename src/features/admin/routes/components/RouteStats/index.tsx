@@ -27,7 +27,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, gradient, style
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <Ionicons name={icon as any} size={20} color="#FFF" />
+      <Ionicons name={icon as any} size={20} color={Theme.colors.text.inverse} />
     </LinearGradient>
     <View>
       <Text style={styles.statValue}>{value}</Text>

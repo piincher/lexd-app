@@ -67,6 +67,7 @@ export const ShippingModeSelector: React.FC<ShippingModeSelectorProps> = ({
               <Text
                 style={[
                   styles.optionLabel,
+                  !isSelected && { color: colors.text.secondary },
                   isSelected && [styles.optionLabelSelected, { color: colors.text.inverse }],
                 ]}
               >
@@ -122,7 +123,6 @@ const styles = StyleSheet.create({
   optionLabel: {
     fontSize: 15,
     fontWeight: '600',
-    color: '#666',
   },
   optionLabelSelected: {
     fontWeight: '700',

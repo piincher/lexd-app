@@ -20,14 +20,14 @@ export const ConsigneeCard: React.FC<ConsigneeCardProps> = ({
     <Animated.View entering={FadeInUp.delay(800)}>
       <Card style={styles.consigneeCard}>
         <LinearGradient
-          colors={['#8B5CF6', '#7C3AED']}
+          colors={[Theme.primary[500], Theme.primary[600]]}
           style={styles.consigneeGradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
           <Card.Content>
             <View style={styles.consigneeHeader}>
-              <Ionicons name="person-circle" size={32} color="#FFF" />
+              <Ionicons name="person-circle" size={32} color={Theme.colors.text.inverse} />
               <Text style={styles.consigneeTitle}>👤 Consigné pour le retrait</Text>
             </View>
             <View style={styles.consigneeDetails}>
@@ -36,7 +36,7 @@ export const ConsigneeCard: React.FC<ConsigneeCardProps> = ({
                 <Ionicons
                   name="call"
                   size={16}
-                  color="rgba(255,255,255,0.8)"
+                  color={Theme.colors.text.inverse + 'CC'}
                 />
                 <Text style={styles.consigneePhone}>{consignee.phone}</Text>
               </View>
@@ -44,7 +44,7 @@ export const ConsigneeCard: React.FC<ConsigneeCardProps> = ({
                 <Ionicons
                   name="location"
                   size={16}
-                  color="rgba(255,255,255,0.8)"
+                  color={Theme.colors.text.inverse + 'CC'}
                 />
                 <Text style={styles.consigneeAddress}>
                   {consignee.warehouseAddress}
@@ -103,12 +103,12 @@ const styles = StyleSheet.create({
   },
   consigneePhone: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.9)',
+    color: Theme.colors.text.inverse + 'E6',
     marginLeft: 8,
   },
   consigneeAddress: {
     fontSize: 14,
-    color: 'rgba(255,255,255,0.9)',
+    color: Theme.colors.text.inverse + 'E6',
     marginLeft: 8,
     flex: 1,
   },
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   callButtonLabel: {
-    color: '#7C3AED',
+    color: Theme.primary[600],
     fontWeight: '600',
   },
 });

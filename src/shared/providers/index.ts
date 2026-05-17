@@ -1,6 +1,1 @@
-/**
- * Shared Providers
- * Context providers for offline mode
- */
-
-export { OfflineProvider, useOffline, type OfflineContextValue } from './OfflineProvider';
+export { UpdateProvider, useUpdate } from '@src/app/providers/UpdateProvider';

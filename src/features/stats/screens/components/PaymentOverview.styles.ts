@@ -91,7 +91,7 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
       overflow: 'hidden',
     },
     barPaid: {
-      backgroundColor: '#10B981',
+      backgroundColor: colors.status.success,
       borderRadius: 3,
     },
     barUnpaid: {

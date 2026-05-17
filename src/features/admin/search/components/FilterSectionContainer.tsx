@@ -4,14 +4,14 @@
  */
 
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Button } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
+import { ScrollView } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { FilterCategorySection } from './FilterCategorySection';
 import { FilterChipGroup } from './FilterChipGroup';
 import { FilterSummaryChips } from './FilterSummaryChips';
 import { SearchFilters } from '../api/searchApi';
+import { FilterFooter } from './FilterFooter';
+import { createStyles } from './FilterSectionContainer.styles';
 
 // Filter options
 const GOODS_STATUSES = [
@@ -74,8 +74,9 @@ export const FilterSectionContainer: React.FC<FilterSectionContainerProps> = ({
   onSetShippingMode,
   onSetShippingLine,
   onClearFilter,
-  onReset,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   return (
     <>
       <ScrollView
@@ -136,24 +137,7 @@ export const FilterSectionContainer: React.FC<FilterSectionContainerProps> = ({
         )}
       </ScrollView>
 
-      <LinearGradient colors={['transparent', '#FFFFFF']} style={styles.footer}>
-        <Button mode="contained" onPress={() => {}} style={styles.applyButton} buttonColor={Theme.primary[500]}>
-          Appliquer les filtres
-        </Button>
-      </LinearGradient>
+      <FilterFooter />
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContent: {
-    padding: Theme.spacing.lg,
-  },
-  footer: {
-    padding: Theme.spacing.lg,
-    paddingTop: Theme.spacing.xl,
-  },
-  applyButton: {
-    borderRadius: Theme.radius.lg,
-  },
-});

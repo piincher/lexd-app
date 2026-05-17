@@ -36,7 +36,7 @@ export const NotificationEventCard = memo(({ item, onPress }: NotificationEventC
     >
       <View style={styles.topRow}>
         <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
-        <View style={[styles.badge, { backgroundColor: STATUS_COLORS[item.status] || '#64748B' }]}>
+        <View style={[styles.badge, { backgroundColor: STATUS_COLORS[item.status] || colors.text.secondary }]}>
           <Text style={styles.badgeText}>{item.status}</Text>
         </View>
       </View>

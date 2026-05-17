@@ -1,4 +1,6 @@
 export { GoodsListHeader } from './GoodsListHeader';
+export { GoodsListStatCard } from './GoodsListStatCard';
+export { GoodsListHeaderActions } from './GoodsListHeaderActions';
 export { GoodsListSearch } from './GoodsListSearch';
 export { GoodsFilterChips } from './GoodsFilterChips';
 export { ActiveFilterChips } from './ActiveFilterChips';

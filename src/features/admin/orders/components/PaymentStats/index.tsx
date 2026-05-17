@@ -33,7 +33,7 @@ export const PaymentStats: React.FC<PaymentStatsProps> = ({
           <View style={styles.summaryDivider} />
           <View style={styles.summaryItem}>
             <Text style={styles.summaryLabel}>Total encaissé</Text>
-            <Text style={[styles.summaryValue, { color: '#10B981' }]}>
+            <Text style={[styles.summaryValue, { color: colors.status.success }]}>
               {totalPaid.toLocaleString('fr-FR')} FCFA
             </Text>
           </View>

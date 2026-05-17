@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { styles } from "./CertificateDetailIdentity.styles";
 
@@ -12,9 +13,10 @@ interface CertificateDetailIdentityProps {
 export const CertificateDetailIdentity: React.FC<
   CertificateDetailIdentityProps
 > = ({ certificateId, onCopyCode }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.idContainer}>
-      <MaterialIcons name="verified" size={28} color="#d4a843" />
+      <MaterialIcons name="verified" size={28} color={colors.primary.main} />
       <Text style={styles.certificateIdText}>{certificateId}</Text>
       <TouchableOpacity onPress={onCopyCode} style={styles.copyButton}>
         <Ionicons

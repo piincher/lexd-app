@@ -25,7 +25,7 @@ export const getStatusConfig = (status: string): {
     'PACKED': {
       label: 'Préparé',
       variant: 'primary',
-      gradient: ['#7C4DFF', '#9575CD', '#B39DDB'] as const,
+      gradient: Theme.gradients.primary,
     },
     'ASSIGNED_TO_CONTAINER': {
       label: 'En Container',
@@ -45,17 +45,17 @@ export const getStatusConfig = (status: string): {
     'ARRIVED_DESTINATION': {
       label: 'Arrivé',
       variant: 'success',
-      gradient: ['#10B981', '#34D399', '#6EE7B7'] as const,
+      gradient: Theme.gradients.primary,
     },
     'READY_FOR_PICKUP': {
       label: 'Prêt',
       variant: 'success',
-      gradient: ['#10B981', '#34D399', '#6EE7B7'] as const,
+      gradient: Theme.gradients.primary,
     },
     'DELIVERED': {
       label: 'Livré',
       variant: 'neutral',
-      gradient: ['#6B7280', '#9CA3AF', '#D1D5DB'] as const,
+      gradient: Theme.gradients.ocean,
     },
   };
   return configs[status] || {

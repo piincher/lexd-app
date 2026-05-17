@@ -31,17 +31,17 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   warehouseMainAddress: {
     fontFamily: Fonts.meduim,
     fontSize: 14,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse,
     marginTop: 2,
   },
   pickupDivider: {
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: `${colors.text.inverse}30`,
     marginVertical: 12,
   },
   consigneeSectionLabel: {
     fontFamily: Fonts.meduim,
     fontSize: 13,
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse,
     marginBottom: 8,
   },
   consigneeInfoCard: {
@@ -64,7 +64,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   consigneeInfoPhone: {
     fontFamily: Fonts.meduim,
     fontSize: 15,
-    color: '#7C3AED',
+    color: colors.primary.main,
     marginLeft: 12,
   },
   consigneeInfoAddress: {

@@ -17,14 +17,13 @@ import {
   SHIPPING_LINE_LABELS,
 } from '../../types';
 import { useContainerCardStyles } from './ContainerCard.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { StatusBanner } from './StatusBanner';
 
 interface ContainerCardProps {
   container: CustomerContainer;
   onPress?: () => void;
 }
-
-const PRIMARY_COLOR = '#16A34A';
 
 export const formatDate = (dateString?: string): string => {
   if (!dateString) return '';
@@ -39,6 +38,7 @@ const getShippingModeIcon = (mode: CustomerContainer['shippingMode']) => (mode =
 const getShippingModeLabel = (mode: CustomerContainer['shippingMode']) => (mode === 'SEA' ? 'Maritime' : 'Aérien');
 
 export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress }) => {
+  const { colors } = useAppTheme();
   const styles = useContainerCardStyles();
 
   const handlePress = () => {
@@ -66,7 +66,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
           <View style={styles.headerRow}>
             <View style={styles.titleSection}>
               <View style={styles.containerNumberContainer}>
-                <MaterialCommunityIcons name={getShippingModeIcon(container.shippingMode)} size={20} color={PRIMARY_COLOR} style={styles.modeIcon} />
+                <MaterialCommunityIcons name={getShippingModeIcon(container.shippingMode)} size={20} color={colors.primary.main} style={styles.modeIcon} />
                 <Text style={styles.containerNumber}>{container.virtualContainerNumber}</Text>
               </View>
               <Text style={styles.shippingLine}>
@@ -85,7 +85,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
             </View>
             <View style={styles.routeArrow}>
               <View style={styles.arrowLine}>
-                <MaterialCommunityIcons name={isAirShipment ? 'airplane-takeoff' : 'arrow-right'} size={18} color={PRIMARY_COLOR} />
+                <MaterialCommunityIcons name={isAirShipment ? 'airplane-takeoff' : 'arrow-right'} size={18} color={colors.primary.main} />
               </View>
               {transitDays && !isAirShipment ? <Text style={styles.transitDays}>~{transitDays}j</Text> : null}
             </View>
@@ -104,7 +104,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
             </View>
             {container.estimatedArrival && container.status !== 'DELIVERED' && (
               <View style={styles.footerItem}>
-                <MaterialCommunityIcons name="calendar-clock" size={16} color={PRIMARY_COLOR} />
+                <MaterialCommunityIcons name="calendar-clock" size={16} color={colors.primary.main} />
                 <Text style={[styles.footerText, styles.footerTextPrimary]}>Arrivée: {formatDate(container.estimatedArrival)}</Text>
               </View>
             )}

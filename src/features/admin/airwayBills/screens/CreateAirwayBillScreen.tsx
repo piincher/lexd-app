@@ -3,17 +3,17 @@
  */
 
 import React from 'react';
-import { StyleSheet, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Text, Button, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '@src/constants/Theme';
 import { AirwayBillFlightFields } from './components/AirwayBillFlightFields';
 import { ConsigneePicker } from './components/ConsigneePicker';
 import { AirCargoRoutePicker } from './components/AirCargoRoutePicker';
 import { useCreateAirwayBillScreen } from './hooks/useCreateAirwayBillScreen';
+import { styles } from './CreateAirwayBillScreen.styles';
 
 export const CreateAirwayBillScreen: React.FC = () => {
-  const { values, setters, routeOptions, consignee, isSubmitting, handleSubmit } = useCreateAirwayBillScreen();
+  const { values, setters, routeOptions, consignee, isSubmitting, handleCapacityWeightChange, handleSubmit } = useCreateAirwayBillScreen();
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
@@ -53,7 +53,7 @@ export const CreateAirwayBillScreen: React.FC = () => {
         <TextInput
           label="Capacité poids (kg)"
           value={String(values.capacityWeight)}
-          onChangeText={(text) => setters.setCapacityWeight(Number(text.replace(/[^0-9]/g, '')) || 0)}
+          onChangeText={handleCapacityWeightChange}
           style={styles.input}
           mode="outlined"
           keyboardType="numeric"
@@ -72,14 +72,5 @@ export const CreateAirwayBillScreen: React.FC = () => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Theme.colors.background.card },
-  content: { padding: Theme.spacing.lg, paddingBottom: 60 },
-  title: { fontSize: 22, fontWeight: '800', color: Theme.neutral[900], marginBottom: Theme.spacing.lg },
-  helper: { fontSize: 13, color: Theme.neutral[500], marginBottom: Theme.spacing.md, lineHeight: 18 },
-  input: { marginBottom: Theme.spacing.md, backgroundColor: Theme.colors.background.card },
-  submitButton: { marginTop: Theme.spacing.lg, borderRadius: Theme.radius.lg },
-});
 
 export default CreateAirwayBillScreen;

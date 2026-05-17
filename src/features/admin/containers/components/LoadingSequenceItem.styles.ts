@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   sequenceNumber: {
     fontSize: 14,
     fontWeight: '800',
-    color: '#FFF',
+    color: Theme.colors.text.inverse,
   },
   progressLineContainer: {
     position: 'absolute',

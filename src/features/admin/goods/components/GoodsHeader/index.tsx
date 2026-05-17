@@ -15,19 +15,18 @@ import { styles } from './GoodsHeader.styles';
 
 // Local StatusBadge component to avoid any import issues
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
-  const { colors } = useAppTheme();
   const STATUS_CONFIG: Record<string, { label: string; color: string; bgColor: string }> = {
-    RECEIVED_AT_WAREHOUSE: { label: 'En Entrepot', color: '#2196F3', bgColor: '#E3F2FD' },
-    PACKED: { label: 'Colis préparé', color: '#7C4DFF', bgColor: '#EDE7F6' },
-    ASSIGNED_TO_CONTAINER: { label: 'Assigne', color: '#FF9800', bgColor: '#FFF3E0' },
-    LOADED_IN_CONTAINER: { label: 'Charge', color: '#9C27B0', bgColor: '#F3E5F5' },
-    IN_TRANSIT: { label: 'En Transit', color: '#3F51B5', bgColor: '#E8EAF6' },
-    ARRIVED_DESTINATION: { label: 'Arrive', color: '#009688', bgColor: '#E0F2F1' },
-    READY_FOR_PICKUP: { label: 'Pret', color: '#4CAF50', bgColor: '#E8F5E9' },
-    DELIVERED: { label: 'Livre', color: '#757575', bgColor: '#F5F5F5' },
+    RECEIVED_AT_WAREHOUSE: { label: 'En Entrepot', color: Theme.colors.status.info, bgColor: Theme.colors.background.paper },
+    PACKED: { label: 'Colis préparé', color: Theme.colors.primary.main, bgColor: Theme.colors.background.paper },
+    ASSIGNED_TO_CONTAINER: { label: 'Assigne', color: Theme.colors.status.warning, bgColor: Theme.colors.background.paper },
+    LOADED_IN_CONTAINER: { label: 'Charge', color: Theme.colors.status.warning, bgColor: Theme.colors.background.paper },
+    IN_TRANSIT: { label: 'En Transit', color: Theme.colors.status.info, bgColor: Theme.colors.background.paper },
+    ARRIVED_DESTINATION: { label: 'Arrive', color: Theme.colors.status.success, bgColor: Theme.colors.background.paper },
+    READY_FOR_PICKUP: { label: 'Pret', color: Theme.colors.status.success, bgColor: Theme.colors.background.paper },
+    DELIVERED: { label: 'Livre', color: Theme.colors.text.disabled, bgColor: Theme.colors.background.paper },
   };
 
-  const config = STATUS_CONFIG[status] || { label: status, color: colors.text.muted, bgColor: colors.background.paper };
+  const config = STATUS_CONFIG[status] || { label: status, color: Theme.colors.text.muted, bgColor: Theme.colors.background.paper };
 
   return (
     <Chip
@@ -61,12 +60,13 @@ export const GoodsHeader: React.FC<GoodsHeaderProps> = ({
 }) => {
   const navigation = useNavigation();
   const [menuVisible, setMenuVisible] = useState(false);
+  const { colors } = useAppTheme();
 
   return (
     <LinearGradient colors={Theme.gradients.primary} style={styles.container}>
       <View style={styles.topRow}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.iconButton}>
-          <Ionicons name="arrow-back" size={24} color="#FFF" />
+          <Ionicons name="arrow-back" size={24} color={Theme.colors.text.inverse} />
         </TouchableOpacity>
 
         <Menu
@@ -74,7 +74,7 @@ export const GoodsHeader: React.FC<GoodsHeaderProps> = ({
           onDismiss={() => setMenuVisible(false)}
           anchor={
             <TouchableOpacity onPress={() => setMenuVisible(true)} style={styles.iconButton}>
-              <Ionicons name="ellipsis-vertical" size={24} color="#FFF" />
+              <Ionicons name="ellipsis-vertical" size={24} color={Theme.colors.text.inverse} />
             </TouchableOpacity>
           }
         >
@@ -109,7 +109,7 @@ export const GoodsHeader: React.FC<GoodsHeaderProps> = ({
 
       <View style={styles.content}>
         <View style={styles.idBadge}>
-          <MaterialCommunityIcons name="package-variant" size={20} color="#FFF" style={styles.badgeIcon} />
+          <MaterialCommunityIcons name="package-variant" size={20} color={Theme.colors.text.inverse} style={styles.badgeIcon} />
           <Text style={styles.idText}>{goodsId}</Text>
         </View>
         <View style={styles.statusWrapper}>

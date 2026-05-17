@@ -1,44 +1,31 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { Ionicons } from '@expo/vector-icons';
-import type { RootStackScreenProps } from '@src/navigations/type';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { AuditFilters, AuditLogCard } from '../components';
-import { useAuditLogs } from '../hooks';
-import type { AuditLog, AuditLogFilters } from '../types';
+import { AuditFilters } from '../components';
+import { useAuditLogListScreen } from './hooks/useAuditLogListScreen';
 import { createAuditLogListStyles } from './AuditLogListScreen.styles';
 
-const INITIAL_FILTERS: AuditLogFilters = { page: 1, limit: 50, status: 'ALL' };
-
-const AuditLogListScreen: React.FC<RootStackScreenProps<'AuditLogs'>> = ({ navigation }) => {
+const AuditLogListScreen: React.FC = () => {
   const { colors } = useAppTheme();
   const styles = createAuditLogListStyles(colors);
-  const [filters, setFilters] = useState(INITIAL_FILTERS);
-  const { data, isLoading, isFetching, isError, refetch } = useAuditLogs(filters);
-  const items = data?.items || [];
-
-  const handlePress = useCallback((item: AuditLog) => {
-    navigation.navigate('AuditLogDetail', { auditLogId: item._id });
-  }, [navigation]);
-
-  const renderItem = useCallback(
-    ({ item }: { item: AuditLog }) => <AuditLogCard item={item} onPress={handlePress} />,
-    [handlePress]
-  );
-  const keyExtractor = useCallback((item: AuditLog) => item._id, []);
-
-  const empty = useMemo(() => (
-    <View style={styles.centered}>
-      <Text style={styles.stateText}>Aucun journal ne correspond aux filtres.</Text>
-    </View>
-  ), [styles]);
+  const {
+    filters,
+    setFilters,
+    isLoading,
+    isFetching,
+    isError,
+    items,
+    handlers,
+    ListEmptyComponent,
+  } = useAuditLogListScreen();
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Pressable style={styles.iconButton} onPress={() => navigation.goBack()}>
+        <Pressable style={styles.iconButton} onPress={handlers.handleBack}>
           <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
         </Pressable>
         <Text style={styles.title}>Audit trail</Text>
@@ -49,19 +36,19 @@ const AuditLogListScreen: React.FC<RootStackScreenProps<'AuditLogs'>> = ({ navig
       ) : isError ? (
         <View style={styles.centered}>
           <Text style={styles.stateText}>Impossible de charger les journaux d'audit.</Text>
-          <Pressable style={styles.retryButton} onPress={() => refetch()}>
+          <Pressable style={styles.retryButton} onPress={handlers.handleRetry}>
             <Text style={styles.retryText}>Réessayer</Text>
           </Pressable>
         </View>
       ) : (
         <FlashList
           data={items}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
+          renderItem={handlers.renderItem}
+          keyExtractor={handlers.keyExtractor}
           contentContainerStyle={styles.listContent}
-          onRefresh={refetch}
+          onRefresh={handlers.handleRetry}
           refreshing={isFetching}
-          ListEmptyComponent={empty}
+          ListEmptyComponent={ListEmptyComponent}
         />
       )}
     </SafeAreaView>

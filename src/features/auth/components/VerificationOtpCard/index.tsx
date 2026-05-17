@@ -40,8 +40,8 @@ export const VerificationOtpCard: React.FC<VerificationOtpCardProps> = ({
   onResend,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const cardBg = isDark ? "rgba(255,255,255,0.06)" : "#FFFFFF";
-  const cardBorder = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)";
+  const cardBg = colors.background.card;
+  const cardBorder = colors.border;
 
   return (
     <Animated.View
@@ -63,7 +63,7 @@ export const VerificationOtpCard: React.FC<VerificationOtpCardProps> = ({
         hasError={Boolean(errorMessage)}
       />
       {Boolean(errorMessage) && (
-        <View style={[styles.errorBox, { backgroundColor: isDark ? "rgba(220,38,38,0.12)" : "#FEF2F2" }]}>
+        <View style={[styles.errorBox, { backgroundColor: colors.feedback.errorBg }]}>
           <Text style={[styles.errorText, { color: colors.status.error }]}>{errorMessage}</Text>
         </View>
       )}

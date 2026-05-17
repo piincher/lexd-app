@@ -39,7 +39,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   headerSubtitle: {
     fontSize: 13,
     fontWeight: '500',
-    color: 'rgba(255,255,255,0.8)',
+    color: colors.text.inverse,
     marginTop: Theme.spacing.xs,
   },
   headerIcon: {

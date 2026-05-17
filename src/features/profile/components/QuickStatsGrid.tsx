@@ -15,49 +15,49 @@ interface StatItem {
   screen: string;
 }
 
-const STATS: StatItem[] = [
-  {
-    id: 'orders',
-    label: 'Commandes',
-    icon: 'clipboard-list-outline',
-    iconColor: '#3B82F6',
-    iconBg: 'rgba(59,130,246,0.1)',
-    screen: 'PastOrders',
-  },
-  {
-    id: 'goods',
-    label: 'Marchandises',
-    icon: 'cube-outline',
-    iconColor: '#22C55E',
-    iconBg: 'rgba(34,197,94,0.1)',
-    screen: 'MyGoods',
-  },
-  {
-    id: 'containers',
-    label: 'Conteneurs',
-    icon: 'truck-outline',
-    iconColor: '#F59E0B',
-    iconBg: 'rgba(245,158,11,0.1)',
-    screen: 'MyContainers',
-  },
-  {
-    id: 'support',
-    label: 'Support',
-    icon: 'headset',
-    iconColor: '#3B82F6',
-    iconBg: 'rgba(59,130,246,0.1)',
-    screen: 'TicketList',
-  },
-];
-
 interface Props {
   onNavigate: (screen: string) => void;
 }
 
 export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
-  const { colors, isDark } = useAppTheme();
-  const cardBg = isDark ? 'rgba(255,255,255,0.06)' : '#FFFFFF';
-  const cardBorder = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)';
+  const { colors } = useAppTheme();
+  const cardBg = colors.background.card;
+  const cardBorder = colors.border;
+
+  const STATS: StatItem[] = [
+    {
+      id: 'orders',
+      label: 'Commandes',
+      icon: 'clipboard-list-outline',
+      iconColor: colors.status.info,
+      iconBg: colors.status.info + '15',
+      screen: 'PastOrders',
+    },
+    {
+      id: 'goods',
+      label: 'Marchandises',
+      icon: 'cube-outline',
+      iconColor: colors.status.success,
+      iconBg: colors.status.success + '15',
+      screen: 'MyGoods',
+    },
+    {
+      id: 'containers',
+      label: 'Conteneurs',
+      icon: 'truck-outline',
+      iconColor: colors.status.warning,
+      iconBg: colors.status.warning + '15',
+      screen: 'MyContainers',
+    },
+    {
+      id: 'support',
+      label: 'Support',
+      icon: 'headset',
+      iconColor: colors.status.info,
+      iconBg: colors.status.info + '15',
+      screen: 'TicketList',
+    },
+  ];
 
   return (
     <View style={styles.quickStatsRow}>

@@ -1,32 +1,52 @@
-import { useEditGoodsData } from './edit/useEditGoodsData';
-import { useEditGoodsForm } from './edit/useEditGoodsForm';
-import { useEditGoodsPhotos } from './edit/useEditGoodsPhotos';
-import { useEditGoodsCalculations } from './edit/useEditGoodsCalculations';
-import { useEditGoodsSubmit } from './edit/useEditGoodsSubmit';
+import { useCallback } from 'react';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { useEditGoods } from '../../hooks/useEditGoods';
 
-export const useEditGoodsScreen = (goodsId: string, isAdmin: boolean) => {
-  const { goods, isLoading, isError, error, canEdit } = useEditGoodsData(goodsId, isAdmin);
-  const { formData, updateField } = useEditGoodsForm(goods);
-  const { photoUris, existingPhotos, newPhotoUris, onPhotoSelected, onPhotoRemoved } = useEditGoodsPhotos(goods);
-  const { calculatedCBM, calculatedTotalCost } = useEditGoodsCalculations(formData);
-  const { handleSave, isSaving } = useEditGoodsSubmit(goodsId, isAdmin, canEdit, formData, existingPhotos, newPhotoUris);
+export const useEditGoodsScreen = () => {
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { goodsId } = (route.params || {}) as { goodsId: string };
 
-  return {
-    formData,
-    isLoading,
+  const {
+    status,
     isSaving,
-    isError,
     error,
-    canEdit,
-    goods,
+    isAdmin,
+    formData,
     calculatedCBM,
     calculatedTotalCost,
     updateField,
-    handleSave,
+    handleSaveWithHaptic,
     photoUris,
     onPhotoSelected,
     onPhotoRemoved,
+  } = useEditGoods(goodsId);
+
+  const handleBack = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
+  const handleNotifications = useCallback(() => {
+    navigation.navigate('Notifications' as never);
+  }, [navigation]);
+
+  return {
+    goodsId,
+    status,
+    isSaving,
+    error,
+    isAdmin,
+    formData,
+    calculatedCBM,
+    calculatedTotalCost,
+    updateField,
+    handleSaveWithHaptic,
+    photoUris,
+    onPhotoSelected,
+    onPhotoRemoved,
+    handlers: {
+      handleBack,
+      handleNotifications,
+    },
   };
 };
-
-export type { EditGoodsFormData } from './edit/useEditGoodsForm';

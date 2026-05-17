@@ -7,6 +7,10 @@ export const styles = StyleSheet.create({
     padding: Theme.spacing.md,
     gap: Theme.spacing.md,
   },
+  backButtonContainer: {
+    marginTop: 20,
+    marginBottom: 40,
+  },
 });
 
 export default styles;

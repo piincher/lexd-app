@@ -3,9 +3,10 @@
  * Phone input with country selector
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { CountryCode } from '../types';
@@ -25,15 +26,27 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
   value, onChangeText, selectedCountry, onSelectCountry, error,
   showCountryPicker, onClear, onSubmit,
 }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const inputBg = colors.background.paper;
   const inputBorderColor = error ? colors.status.error : colors.border;
+
+  const flagScale = useSharedValue(1);
+
+  useEffect(() => {
+    flagScale.value = withSpring(1.3, { damping: 8, stiffness: 200 }, () => {
+      flagScale.value = withSpring(1, { damping: 12, stiffness: 150 });
+    });
+  }, [selectedCountry.code, flagScale]);
+
+  const flagAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: flagScale.value }],
+  }));
 
   return (
     <View style={styles.container}>
       <View style={styles.inputRow}>
         <Pressable onPress={onSelectCountry} style={[styles.countryBtn, { backgroundColor: inputBg, borderColor: inputBorderColor }]}>
-          <Text style={styles.flag}>{selectedCountry.flag}</Text>
+          <Animated.Text style={[styles.flag, flagAnimatedStyle]}>{selectedCountry.flag}</Animated.Text>
           <Text style={[styles.code, { color: colors.text.primary }]}>+{selectedCountry.code}</Text>
           <MaterialCommunityIcons name={showCountryPicker ? 'chevron-up' : 'chevron-down'} size={16} color={colors.text.secondary} />
         </Pressable>

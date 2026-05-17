@@ -2,27 +2,25 @@
  * BadgesSection Component - Theme-aware badge display for Profile screen
  */
 
-import React, { useEffect } from "react";
+import React from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { MotiView } from "moti";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import type { navigationProps } from "@src/navigations/type";
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useMyBadges, useCheckBadges } from "../../hooks/useBadges";
+import { useProfileBadges } from "../../hooks/useProfileBadges";
+import type { UserBadge } from "../../api/badgeApi";
 import { BadgeItem } from "./BadgeItem";
 import { BadgesSectionSkeleton } from "./BadgesSectionSkeleton";
 import { styles } from "./BadgesSection.styles";
 
 export const BadgesSection: React.FC = () => {
   const navigation = useNavigation<navigationProps>();
-  const { data, isLoading, error, refetch } = useMyBadges();
-  const checkBadges = useCheckBadges();
+  const { data, isLoading, error, refetch } = useProfileBadges();
   const { colors, isDark } = useAppTheme();
 
-  useEffect(() => { checkBadges.mutate(); }, []);
-
-  const cardBg = isDark ? "rgba(255,255,255,0.1)" : colors.background.paper;
+  const cardBg = colors.background.card;
 
   if (isLoading) {
     return (
@@ -88,7 +86,7 @@ export const BadgesSection: React.FC = () => {
       </TouchableOpacity>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.badgesRow}>
-        {badges.map((badge) => <BadgeItem key={badge.badgeId} badge={badge} isDark={isDark} colors={colors} />)}
+        {badges.map((badge: UserBadge) => <BadgeItem key={badge.badgeId} badge={badge} isDark={isDark} colors={colors} />)} 
       </ScrollView>
 
       <TouchableOpacity style={styles.viewAllButton} onPress={() => navigation.navigate("Badges")} activeOpacity={0.7}>

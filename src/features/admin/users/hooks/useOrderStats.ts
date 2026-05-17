@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { productType } from "@src/shared/types/order";
 import { INITIAL_COUNTS, STATUS_LABELS } from "../lib/constants";
 
@@ -37,14 +38,15 @@ export const useOrderStats = (orders: productType[] | undefined): OrderStats => 
 };
 
 export const useChartData = (counts: typeof INITIAL_COUNTS) => {
+  const { colors } = useAppTheme();
   return useMemo(() => {
     const { STATUS_CONFIG } = require("../lib/constants");
     return STATUS_LABELS.map((status) => ({
       value: counts[status as keyof typeof counts],
       label: STATUS_CONFIG[status]?.label || status,
-      frontColor: STATUS_CONFIG[status]?.color || "#6c757d",
+      frontColor: STATUS_CONFIG[status]?.color || colors.text.secondary,
     }));
-  }, [counts]);
+  }, [counts, colors]);
 };
 
 export const useLastShipments = (orders: productType[] | undefined, n = 3) => {

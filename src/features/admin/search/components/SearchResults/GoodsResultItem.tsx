@@ -3,6 +3,7 @@ import { View, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { SearchResultItem } from "../../types/searchResults";
 import { useSearchHighlight } from "../../hooks/useSearchHighlight";
@@ -19,6 +20,7 @@ export const GoodsResultItem: React.FC<GoodsResultItemProps> = ({
   onPress,
   highlightQuery,
 }) => {
+  const { colors } = useAppTheme();
   const highlightText = useSearchHighlight(highlightQuery);
   const isPaid = item.paymentStatus === "PAID";
   const statusColors: Record<string, string> = {
@@ -54,13 +56,13 @@ export const GoodsResultItem: React.FC<GoodsResultItemProps> = ({
           <View
             style={[
               styles.statusBadge,
-              { backgroundColor: isPaid ? "#22C55E20" : "#EF444420" },
+              { backgroundColor: isPaid ? colors.status.success + "20" : colors.status.error + "20" },
             ]}
           >
             <Text
               style={[
                 styles.statusText,
-                { color: isPaid ? "#22C55E" : "#EF4444" },
+                { color: isPaid ? colors.status.success : colors.status.error },
               ]}
             >
               {isPaid ? "Payé" : "Non payé"}

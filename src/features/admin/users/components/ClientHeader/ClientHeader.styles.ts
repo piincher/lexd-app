@@ -1,4 +1,5 @@
 import { StyleSheet, Platform } from "react-native";
+import { Theme } from "@src/constants/Theme";
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,7 +19,7 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "rgba(255,255,255,0.2)",
+    backgroundColor: Theme.colors.text.inverse + "33",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -28,11 +29,11 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "700",
-    color: "white",
+    color: Theme.colors.text.inverse,
   },
   subtitle: {
     fontSize: 14,
-    color: "rgba(255,255,255,0.8)",
+    color: Theme.colors.text.inverse,
     marginTop: 2,
   },
   placeholder: {

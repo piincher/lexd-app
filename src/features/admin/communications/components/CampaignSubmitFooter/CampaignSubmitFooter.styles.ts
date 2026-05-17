@@ -15,10 +15,10 @@ export const createStyles = (colors: any) =>
       alignItems: "center",
       justifyContent: "center",
       gap: 8,
-      backgroundColor: "#8B5CF6",
+      backgroundColor: colors.primary.main,
       borderRadius: 12,
       paddingVertical: 14,
     },
-    submitBtnDisabled: { backgroundColor: "#C4B5FD" },
-    submitBtnText: { fontFamily: Fonts.bold, fontSize: 15, color: "Theme.colors.text.inverse" },
+    submitBtnDisabled: { backgroundColor: colors.primary.light },
+    submitBtnText: { fontFamily: Fonts.bold, fontSize: 15, color: colors.text.inverse },
   });

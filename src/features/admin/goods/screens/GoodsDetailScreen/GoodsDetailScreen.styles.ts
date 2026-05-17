@@ -142,7 +142,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: colors.background.overlay,
     padding: 12,
   },
   photoLabel: {
@@ -154,7 +154,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     position: 'absolute',
     top: 12,
     right: 12,
-    backgroundColor: 'rgba(0,0,0,0.6)',
+    backgroundColor: colors.background.overlay,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 12,

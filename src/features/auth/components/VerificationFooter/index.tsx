@@ -14,7 +14,7 @@ export const VerificationFooter: React.FC<VerificationFooterProps> = ({ onSuppor
 
   return (
     <Animated.View entering={FadeIn.delay(400).duration(400)} style={styles.footer}>
-      <View style={[styles.helpCard, { backgroundColor: isDark ? "rgba(255,255,255,0.06)" : "#F9FAFB", borderColor: colors.border }]}>
+      <View style={[styles.helpCard, { backgroundColor: colors.background.paper, borderColor: colors.border }]}>
         <MaterialCommunityIcons name="lifebuoy" size={20} color={colors.primary.main} />
         <View style={styles.helpCopy}>
           <Text style={[styles.helpTitle, { color: colors.text.primary }]}>{"Besoin d'aide ?"}</Text>

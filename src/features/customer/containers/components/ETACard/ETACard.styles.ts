@@ -32,7 +32,7 @@ export const useETACardStyles = () => {
     progressPercent: {
       fontFamily: Fonts.bold,
       fontSize: 24,
-      color: '#16A34A',
+      color: colors.status.success,
     },
     metaGrid: {
       flexDirection: 'row',
@@ -85,7 +85,7 @@ export const useETACardStyles = () => {
       flex: 1,
       fontFamily: Fonts.bold,
       fontSize: 13,
-      color: '#92400E',
+      color: colors.status.warning,
     },
   });
 };

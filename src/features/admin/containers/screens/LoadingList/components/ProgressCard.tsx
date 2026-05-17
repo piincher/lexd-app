@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   progressValue: {
     fontSize: 24,
     fontWeight: '800',
-    color: '#D97706',
+    color: Theme.colors.status.warning,
   },
   progressTotal: {
     fontSize: 16,

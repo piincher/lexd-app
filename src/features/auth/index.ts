@@ -9,6 +9,10 @@ export { AuthRequiredScreen } from "./screens/AuthRequiredScreen";
 export { useLogin, useLoginApple } from "./hooks/useLogin";
 export { useSignupStore } from "./hooks/useSignInData";
 export { useVerification } from "./hooks/useVerification";
+export { useOtpState } from "./hooks/useOtpState";
+export { useOtpResend } from "./hooks/useOtpResend";
+export { useOtpVerification } from "./hooks/useOtpVerification";
+export { useVerificationScreen } from "./hooks/useVerificationScreen";
 export { useLoginForm } from "./hooks/useLoginForm";
 export { useAuthCheck } from "./hooks/useAuthCheck";
 export { useProactiveRefresh } from "./hooks/useProactiveRefresh";
@@ -19,4 +23,4 @@ export { LoginHeader, PhoneInput, CountryPicker, LoginFooter, SubmitButton, Secu
 export { AuthRequiredContent } from "./components/AuthRequiredContent";
 
 // HOCs
-export { withProtectedRoute } from "@src/shared/hoc/withProtectedRoute";
+export { withProtectedRoute } from "@src/hoc/withProtectedRoute";

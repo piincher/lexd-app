@@ -133,9 +133,9 @@ export interface ExportLogMetadata {
 }
 
 export interface ExportLogFile {
-  provider: string;
-  bucket: string;
-  key: string;
+  provider?: string;
+  bucket?: string;
+  key?: string;
   downloadUrl: string;
   urlExpiresAt: string;
   originalName: string;
@@ -172,7 +172,7 @@ export interface ExportLog {
     deliveryMethod?: "ATTACHMENT" | "LINK";
   };
   createdAt: string;
-  updatedAt: string;
+  updatedAt?: string;
 }
 
 export interface SchedulerStatus {

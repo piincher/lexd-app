@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Text, Card } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useProgressSummaryCardStyles } from './ProgressSummaryCard.styles';
 
 interface ProgressSummaryCardProps {
@@ -14,6 +15,7 @@ export const ProgressSummaryCard: React.FC<ProgressSummaryCardProps> = ({
   waypointsLength,
   progressPercentage,
 }) => {
+  const { colors } = useAppTheme();
   const styles = useProgressSummaryCardStyles();
 
   return (
@@ -31,7 +33,7 @@ export const ProgressSummaryCard: React.FC<ProgressSummaryCardProps> = ({
           </View>
           <View style={styles.progressDivider} />
           <View style={styles.progressItem}>
-            <Text style={[styles.progressValue, { color: '#16A34A' }]}>
+            <Text style={[styles.progressValue, { color: colors.status.success }]}>
               {Math.round(progressPercentage)}%
             </Text>
             <Text style={styles.progressLabel}>Complété</Text>

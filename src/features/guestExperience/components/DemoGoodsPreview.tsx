@@ -24,20 +24,22 @@ const GoodsCard: React.FC<{
   }));
   return (
     <Pressable onPressIn={() => { scale.value = withSpring(0.95); }} onPressOut={() => { scale.value = withSpring(1); }}>
-      <Animated.View entering={FadeInRight.delay(index * 100)} style={[styles.card, animatedStyle]}>
-        <View style={[styles.imageBox, { backgroundColor: item.imageColor }]}>
-          <Text style={styles.imageLetter}>{item.name.charAt(0).toUpperCase()}</Text>
-        </View>
-        <Text style={styles.name} numberOfLines={1}>{item.name}</Text>
-        <Text style={styles.code}>{item.trackingCode}</Text>
-        <View style={[styles.statusBadge, { backgroundColor: `${item.statusColor}20` }]}>
-          <Text style={[styles.statusText, { color: item.statusColor }]}>{item.status}</Text>
-        </View>
-        <View style={styles.metaRow}>
-          <Text style={styles.meta}>Qté {item.quantity}</Text>
-          <Text style={styles.meta}>{item.volume}</Text>
-        </View>
-        <Text style={styles.balance}>{item.balance}</Text>
+      <Animated.View entering={FadeInRight.delay(index * 100)}>
+        <Animated.View style={[styles.card, animatedStyle]}>
+          <View style={[styles.imageBox, { backgroundColor: item.imageColor }]}>
+            <Text style={styles.imageLetter}>{item.name.charAt(0).toUpperCase()}</Text>
+          </View>
+          <Text style={styles.name} numberOfLines={1}>{item.name}</Text>
+          <Text style={styles.code}>{item.trackingCode}</Text>
+          <View style={[styles.statusBadge, { backgroundColor: `${item.statusColor}20` }]}>
+            <Text style={[styles.statusText, { color: item.statusColor }]}>{item.status}</Text>
+          </View>
+          <View style={styles.metaRow}>
+            <Text style={styles.meta}>Qté {item.quantity}</Text>
+            <Text style={styles.meta}>{item.volume}</Text>
+          </View>
+          <Text style={styles.balance}>{item.balance}</Text>
+        </Animated.View>
       </Animated.View>
     </Pressable>
   );

@@ -52,7 +52,7 @@ export const ContainerStatusFilter: React.FC<ContainerStatusFilterProps> = ({
             <Ionicons
               name={filter.icon}
               size={16}
-              color={isSelected ? '#FFF' : Theme.neutral[500]}
+              color={isSelected ? Theme.colors.text.inverse : Theme.neutral[500]}
               style={styles.filterIcon}
             />
             <Text style={[styles.filterText, isSelected && styles.filterTextActive]}>{filter.label}</Text>
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
     color: Theme.neutral[600],
   },
   filterTextActive: {
-    color: 'Theme.colors.text.inverse',
+    color: Theme.colors.text.inverse,
   },
 });

@@ -1,6 +1,11 @@
 export { GoodsListItem } from './GoodsListItem';
 export { CapacityIndicator } from './CapacityIndicator';
+export { CapacityProgressBar } from './CapacityProgressBar';
+export { CapacityLegend } from './CapacityLegend';
+export { CapacityWarningBanner } from './CapacityWarningBanner';
 export { Header } from './Header';
+export { HeaderInfoBlock } from './HeaderInfoBlock';
+export { NonAssignableBanner } from './NonAssignableBanner';
 export { SearchBar } from './SearchBar';
 export { SelectAllBar } from './SelectAllBar';
 export { EmptyState } from './EmptyState';

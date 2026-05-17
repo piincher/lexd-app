@@ -36,7 +36,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       flexDirection: 'row',
       alignItems: 'center',
       gap: 4,
-      backgroundColor: 'rgba(0,0,0,0.55)',
+      backgroundColor: colors.background.overlay,
       paddingHorizontal: 10,
       paddingVertical: 4,
       borderRadius: 12,

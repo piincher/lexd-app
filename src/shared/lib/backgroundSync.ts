@@ -15,7 +15,7 @@ import {
   QueuedAction,
   removeFromQueue,
 } from './offlineQueue';
-import { showMessage } from 'react-native-flash-message';
+
 
 const BACKGROUND_SYNC_TASK = 'CHINALINK_BACKGROUND_SYNC';
 
@@ -268,15 +268,6 @@ TaskManager.defineTask(BACKGROUND_SYNC_TASK, async () => {
   try {
     const result = await checkAndSync();
     
-    if (result.processed > 0) {
-      showMessage({
-        message: 'Synchronisation terminée',
-        description: `${result.processed} éléments synchronisés`,
-        type: 'success',
-        duration: 3000,
-      });
-    }
-
     return result.failed === 0
       ? BackgroundTask.BackgroundTaskResult.Success
       : BackgroundTask.BackgroundTaskResult.Failed;

@@ -4,9 +4,11 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const AboutUsWarehouseImage: React.FC = () => {
-   const styles = useMemo(() => makeStyles(), []);
+   const { colors } = useAppTheme();
+   const styles = useMemo(() => makeStyles(colors), [colors]);
 
    return (
       <Animated.View entering={FadeInDown.delay(300).duration(600)} style={styles.imageCard}>
@@ -18,7 +20,7 @@ export const AboutUsWarehouseImage: React.FC = () => {
             resizeMode="cover"
          />
          <LinearGradient
-            colors={['transparent', 'rgba(0,0,0,0.6)']}
+            colors={['transparent', colors.background.overlay]}
             style={styles.imageOverlay}
          >
             <Text style={styles.imageCaption}>Centre logistique - Foshan, GuangDong</Text>
@@ -27,7 +29,7 @@ export const AboutUsWarehouseImage: React.FC = () => {
    );
 };
 
-const makeStyles = () =>
+const makeStyles = (colors: any) =>
    StyleSheet.create({
       imageCard: {
          marginHorizontal: 20,
@@ -49,6 +51,6 @@ const makeStyles = () =>
       imageCaption: {
          fontSize: 12,
          fontFamily: Fonts.medium,
-         color: 'rgba(255,255,255,0.9)',
+         color: colors.text.inverse,
       },
    });

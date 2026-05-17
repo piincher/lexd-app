@@ -1,35 +1,29 @@
-/**
- * ReceiveGoodsScreen - Thin screen component
- * Responsibility: Layout composition only (<100 lines)
- * Auto-assigns goods to order (< 7 days) or creates new order
- */
-
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Snackbar, Portal, Dialog } from 'react-native-paper';
 import { useReceiveGoodsScreen } from './hooks/useReceiveGoodsScreen';
+import { useReceiveGoodsScreenUI } from './hooks/useReceiveGoodsScreenUI';
 import { ReceiveGoodsForm } from './components/ReceiveGoodsForm';
 import { createStyles } from './ReceiveGoodsScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
-import { useNavigation } from '@react-navigation/native';
 
 export const ReceiveGoodsScreen: React.FC = () => {
-  const navigation = useNavigation();
   const { form, ui, actions } = useReceiveGoodsScreen();
+  const { handlers } = useReceiveGoodsScreenUI();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.keyboardView}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
           <View style={styles.header}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+            <View style={styles.headerRow}>
               <Text style={styles.headerTitle}>Réception Marchandise</Text>
               <NotificationBell
-                onPress={() => navigation.navigate('Notifications' as never)}
+                onPress={handlers.handleNotificationPress}
                 size={24}
                 color={colors.text.secondary}
               />

@@ -1,8 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { ScrollView, RefreshControl, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Theme } from '@src/constants/Theme';
-import { useGoodsDetailScreen } from './hooks/useGoodsDetailScreen';
+import { useGoodsDetailScreenUI } from './hooks/useGoodsDetailScreenUI';
 import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
 import { GoodsDetailHeader } from './components/GoodsDetailHeader';
@@ -24,11 +23,11 @@ import { normalizePhotos } from '@src/shared/lib';
 
 export const GoodsDetailScreen: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
-  const { state, loading, dialogs, containers, airwayBills, mutations, actions } = useGoodsDetailScreen();
+  const styles = createStyles(colors);
+  const { state, loading, dialogs, containers, airwayBills, mutations, actions, handlers } = useGoodsDetailScreenUI();
   const { goods, client, container, hasQRCode, isAirShipping } = state;
   const { isLoading, isRefetching, refetch } = loading;
-  const { menuVisible, assignDialogVisible, selectedContainerId, setMenuVisible, setAssignDialogVisible, setSelectedContainerId } = dialogs;
+  const { menuVisible, assignDialogVisible, selectedContainerId, setMenuVisible, setSelectedContainerId } = dialogs;
   const { isAssigning } = mutations;
 
   if (isLoading) return <LoadingState />;
@@ -84,7 +83,7 @@ export const GoodsDetailScreen: React.FC = () => {
         isAssigning={isAssigning}
         onSelectContainer={setSelectedContainerId}
         onSelectAirwayBill={dialogs.setSelectedAirwayBillId}
-        onDismiss={() => setAssignDialogVisible(false)}
+        onDismiss={handlers.handleDismissAssignDialog}
         onAssignContainer={actions.handleAssignToContainer}
         onAssignAirwayBill={actions.handleAssignToAirwayBill}
       />

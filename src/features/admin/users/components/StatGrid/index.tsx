@@ -3,6 +3,7 @@ import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { STATUS_CONFIG } from "../../lib/constants";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { styles } from "./StatGrid.styles";
 
 interface StatItemProps {
@@ -38,13 +39,16 @@ export const StatGrid: React.FC<StatGridProps> = ({
   delivered,
   totalCBM,
   totalPrice,
-}) => (
-  <View style={styles.container}>
-    <StatItem label="Total" value={total.toString()} color="#4361ee" icon="analytics" />
-    <StatItem label="Chargé" value={active.toString()} color={STATUS_CONFIG.Active.color} icon="cube" />
-    <StatItem label="Transit" value={inTransit.toString()} color={STATUS_CONFIG["In Transit"].color} icon="airplane" />
-    <StatItem label="CBM Total" value={totalCBM.toFixed(2)} color="#3f37c9" icon="key" />
-    <StatItem label="Prix Total" value={`${totalPrice.toFixed(0)} FCFA`} color="#10B981" icon="pricetag" />
-    <StatItem label="Livré" value={delivered.toString()} color="#10B981" icon="checkmark-circle" />
-  </View>
-);
+}) => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={styles.container}>
+      <StatItem label="Total" value={total.toString()} color={colors.primary.main} icon="analytics" />
+      <StatItem label="Chargé" value={active.toString()} color={STATUS_CONFIG.Active.color} icon="cube" />
+      <StatItem label="Transit" value={inTransit.toString()} color={STATUS_CONFIG["In Transit"].color} icon="airplane" />
+      <StatItem label="CBM Total" value={totalCBM.toFixed(2)} color={colors.primary.dark} icon="key" />
+      <StatItem label="Prix Total" value={`${totalPrice.toFixed(0)} FCFA`} color={colors.status.success} icon="pricetag" />
+      <StatItem label="Livré" value={delivered.toString()} color={colors.status.success} icon="checkmark-circle" />
+    </View>
+  );
+}

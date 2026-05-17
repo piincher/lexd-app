@@ -50,7 +50,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
   const isCurrent = index === currentWaypointIndex;
   const isCompleted = waypoint.status === 'COMPLETED';
   const rawStatusColor = getExtendedStatusColor(waypoint.status as ExtendedWaypointStatus);
-  const statusColor = typeof rawStatusColor === 'string' ? rawStatusColor : '#9CA3AF';
+  const statusColor = typeof rawStatusColor === 'string' ? rawStatusColor : colors.text.disabled;
   const locationCode = waypoint.location?.portCode || waypoint.location?.countryCode || '';
   const category = getLocationCategory(locationCode);
   const isDakar = category === 'DISCHARGE_PORT';
@@ -65,9 +65,9 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
             style={[
               styles.connectorLine,
               isCompleted || index <= currentWaypointIndex
-                ? { backgroundColor: '#10B981' }
+                ? { backgroundColor: colors.status.success }
                 : isCurrent
-                ? { backgroundColor: '#3B82F6' }
+                ? { backgroundColor: colors.status.info }
                 : { backgroundColor: Theme.neutral[300] },
             ]}
           />

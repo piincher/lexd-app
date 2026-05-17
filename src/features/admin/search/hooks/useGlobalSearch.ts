@@ -1,22 +1,17 @@
 /**
  * useGlobalSearch - Hook for global search query and results management
- * Extracted from GlobalSearchScreen for SRP compliance
+ * Composes smaller hooks for entity selection, search, and navigation
  */
 
-import { useState, useCallback } from "react";
-import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { useCallback } from "react";
 import { useAdvancedSearch, useFilterPresets } from "./useSearch";
-import { FilterPreset, SearchFilters } from "../api/searchApi";
-
-type EntityType = "goods" | "containers" | "clients";
+import { useGlobalSearchEntity, type EntityType } from "./useGlobalSearchEntity";
+import { useGlobalSearchNavigation } from "./useGlobalSearchNavigation";
+import type { FilterPreset, SearchFilters } from "../api/searchApi";
 
 interface UseGlobalSearchReturn {
-  // Entity state
   selectedEntity: EntityType;
   setSelectedEntity: (entity: EntityType) => void;
-  
-  // Search state from useAdvancedSearch
   query: string;
   filters: SearchFilters;
   pagination: any;
@@ -24,8 +19,6 @@ interface UseGlobalSearchReturn {
   isLoading: boolean;
   isError: boolean;
   error: any;
-  
-  // Actions
   setQuery: (query: string) => void;
   handleSearch: (query: string) => void;
   handleFilterChange: (filters: SearchFilters) => void;
@@ -33,14 +26,8 @@ interface UseGlobalSearchReturn {
   resetFilters: () => void;
   applyPreset: (filters: SearchFilters) => void;
   refetch: () => void;
-  
-  // Navigation
   handleItemPress: (item: any, entity: string) => void;
-  
-  // Presets
   presets: FilterPreset[] | undefined;
-  
-  // Stats
   resultsData: any[];
   resultsPagination: any;
   resultsStats: any;
@@ -53,76 +40,33 @@ const ENTITY_TABS: { key: EntityType; label: string; icon: string }[] = [
 ];
 
 export const useGlobalSearch = (): UseGlobalSearchReturn => {
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
-  const [selectedEntity, setSelectedEntityState] = useState<EntityType>("goods");
+  const { selectedEntity, setSelectedEntityState } = useGlobalSearchEntity();
 
   const {
-    query,
-    filters,
-    pagination,
-    data,
-    isLoading,
-    isError,
-    error,
-    setQuery,
-    handleSearch,
-    handleFilterChange,
-    handlePageChange,
-    resetFilters,
-    applyPreset,
-    refetch,
+    query, filters, pagination, data, isLoading, isError, error,
+    setQuery, handleSearch, handleFilterChange, handlePageChange,
+    resetFilters, applyPreset, refetch,
   } = useAdvancedSearch({ entity: selectedEntity });
 
   const { data: presets } = useFilterPresets();
+  const { handleItemPress } = useGlobalSearchNavigation();
 
-  // Handle entity tab change with reset
   const setSelectedEntity = useCallback((entity: EntityType) => {
     setSelectedEntityState(entity);
     resetFilters();
   }, [resetFilters]);
 
-  // Handle item press navigation
-  const handleItemPress = useCallback((item: any, entity: string) => {
-    switch (entity) {
-      case "goods":
-        navigation.navigate("AdminGoodsDetail", { goodsId: item._id });
-        break;
-      case "container":
-        navigation.navigate("ContainerDetail", { containerId: item._id });
-        break;
-      case "client":
-        navigation.navigate("ClientDetails", { id: item._id });
-        break;
-    }
-  }, [navigation]);
-
-  // Derived data
   const resultsData = data?.data || [];
   const resultsPagination = data?.pagination;
   const resultsStats = data?.stats;
 
   return {
-    selectedEntity,
-    setSelectedEntity,
-    query,
-    filters,
-    pagination,
-    data,
-    isLoading,
-    isError,
-    error,
-    setQuery,
-    handleSearch,
-    handleFilterChange,
-    handlePageChange,
-    resetFilters,
-    applyPreset,
-    refetch,
-    handleItemPress,
-    presets,
-    resultsData,
-    resultsPagination,
-    resultsStats,
+    selectedEntity, setSelectedEntity,
+    query, filters, pagination, data, isLoading, isError, error,
+    setQuery, handleSearch, handleFilterChange, handlePageChange,
+    resetFilters, applyPreset, refetch,
+    handleItemPress, presets,
+    resultsData, resultsPagination, resultsStats,
   };
 };
 

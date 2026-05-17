@@ -36,7 +36,7 @@ const ShimmerBlock: React.FC<{
     <View style={[styles.block, { width, height, borderRadius, backgroundColor: color }]}>
       <Animated.View style={[StyleSheet.absoluteFill, shimmerStyle]}>
         <LinearGradient
-          colors={['transparent', 'rgba(255,255,255,0.45)', 'transparent']}
+          colors={['transparent', isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.45)', 'transparent']}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={StyleSheet.absoluteFill}
@@ -83,10 +83,10 @@ interface ClientOrderCardSkeletonProps {
 }
 
 export const ClientOrderCardSkeleton: React.FC<ClientOrderCardSkeletonProps> = ({ count = 5 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const skeletonBg = colors.background.paper;
   const cardBg = colors.background.card;
-  const borderColor = colors.border ?? '#E5E7EB';
+  const borderColor = colors.border;
 
   return (
     <Animated.View entering={FadeIn.duration(300)} style={styles.list}>

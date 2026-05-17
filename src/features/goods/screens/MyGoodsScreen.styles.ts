@@ -5,7 +5,7 @@ const createStyles = (colors: ThemeContextType['colors']) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colors.background?.default ?? '#F9FAFB',
+      backgroundColor: colors.background.default,
     },
   });
 

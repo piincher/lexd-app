@@ -1,9 +1,11 @@
 import React from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
+import { View, ScrollView, Pressable } from "react-native";
 import { Text } from "react-native-paper";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { ExportEntity } from "../../types";
 import { ENTITY_CONFIG } from "../../constants";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { styles } from "./QuickExportButtons.styles";
 
 interface QuickExportButtonsProps {
@@ -13,35 +15,51 @@ interface QuickExportButtonsProps {
 export const QuickExportButtons: React.FC<QuickExportButtonsProps> = ({
   onQuickExport,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
-    <View style={styles.quickExportSection}>
-      <Text variant="titleMedium" style={styles.sectionTitle}>
+    <View style={styles.section}>
+      <Text variant="titleSmall" style={styles.sectionTitle}>
         Quick Export
       </Text>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.quickExportScroll}
+        contentContainerStyle={styles.scroll}
       >
-        {Object.entries(ENTITY_CONFIG).map(([entity, config]) => (
-          <TouchableOpacity
-            key={entity}
-            style={[styles.quickExportButton, { borderColor: config.color }]}
-            onPress={() => onQuickExport(entity as ExportEntity)}
-          >
-            <View
-              style={[
-                styles.quickExportIcon,
-                { backgroundColor: config.color },
+        {(Object.entries(ENTITY_CONFIG) as [ExportEntity, typeof ENTITY_CONFIG[ExportEntity]][]).map(
+          ([entity, config]) => (
+            <Pressable
+              key={entity}
+              style={({ pressed }) => [
+                styles.button,
+                {
+                  backgroundColor: colors.background.card,
+                  borderColor: config.color + "30",
+                },
+                pressed && { opacity: 0.85, transform: [{ scale: 0.98 }] },
               ]}
+              onPress={() => onQuickExport(entity)}
             >
-              <Text style={styles.quickExportIconText}>{config.icon}</Text>
-            </View>
-            <Text variant="bodySmall" style={styles.quickExportLabel}>
-              {config.label}
-            </Text>
-          </TouchableOpacity>
-        ))}
+              <View
+                style={[
+                  styles.indicator,
+                  { backgroundColor: config.color },
+                ]}
+              />
+              <View style={styles.iconWrap}>
+                <MaterialCommunityIcons
+                  name={config.icon as any}
+                  size={22}
+                  color={config.color}
+                />
+              </View>
+              <Text variant="labelMedium" style={styles.label}>
+                {config.label}
+              </Text>
+            </Pressable>
+          )
+        )}
       </ScrollView>
     </View>
   );

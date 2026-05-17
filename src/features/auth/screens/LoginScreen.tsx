@@ -4,18 +4,19 @@
  * Composition only - delegates to components and hooks
  */
 
-import React, { useEffect, useState } from "react";
-import { KeyboardAvoidingView, Linking, Platform, ScrollView, StyleSheet, Text } from "react-native";
+import React from "react";
+import { KeyboardAvoidingView, Platform, ScrollView, Text } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { Notification } from "@src/components/Notification/Notification";
 import { Screen } from "@src/shared/ui/Screen";
 import { Button } from "@src/shared/ui/Button";
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import type { RootStackScreenProps } from "@src/navigations/type";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import type { RootStackScreenProps } from "@src/app/navigation/type";
 
-import { useLoginForm } from "../hooks/useLoginForm";
+import { useLoginScreen } from "./hooks/useLoginScreen";
+import { styles } from "./LoginScreen.styles";
 import { LoginHeader } from "../components/LoginHeader";
 import { PhoneInput } from "../components/PhoneInput";
 import { CountryPicker } from "../components/CountryPicker";
@@ -23,58 +24,42 @@ import { SubmitButton } from "../components/SubmitButton";
 import { SecurityNote } from "../components/SecurityNote";
 import { LoginFooter } from "../components/LoginFooter";
 
-export const LoginScreen: React.FC<RootStackScreenProps<"Login">> = ({ navigation }) => {
-  const { colors, isDark } = useAppTheme();
-  const [showSuccess, setShowSuccess] = useState(false);
-  const { phone, setPhone, selectedCountry, setSelectedCountry, showCountryPicker, setShowCountryPicker, error, handleSubmit, isLoading, isSuccess, isReviewLogin, fullPhone, countries } = useLoginForm();
-
-  useEffect(() => {
-    if (isSuccess && fullPhone && !isReviewLogin) {
-      setShowSuccess(true);
-      const timer = setTimeout(() => {
-        setShowSuccess(false);
-        navigation.navigate("Verification", { phoneNumber: fullPhone });
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [isSuccess, isReviewLogin, fullPhone, navigation]);
-
-  const cardBg = colors.background.card;
-  const cardBorder = colors.border;
+export const LoginScreen: React.FC<RootStackScreenProps<"Login">> = () => {
+  const { colors } = useAppTheme();
+  const {
+    phone, setPhone, selectedCountry, showCountryPicker, error, handleSubmit,
+    isLoading, countries, showSuccess,
+    cardBg, cardBorder,
+    handleDismissSuccess,
+    handleSelectCountry,
+    handleCountrySelect,
+    handleClearPhone,
+    handleDemoPress,
+    handleTermsPress,
+    handlePrivacyPress,
+  } = useLoginScreen();
 
   return (
     <Screen safeArea scrollable={false} style={[styles.container, { backgroundColor: colors.background.default }]}>
-      <Notification message="Code de verification envoye avec succes" type="success" visible={showSuccess} onDismissSnackBar={() => setShowSuccess(false)} Icon={MaterialCommunityIcons} />
+      <Notification message="Code de verification envoye avec succes" type="success" visible={showSuccess} onDismissSnackBar={handleDismissSuccess} Icon={MaterialCommunityIcons} />
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === "ios" ? "padding" : undefined}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
           <LoginHeader title="Bienvenue" subtitle="Connectez-vous pour suivre vos envois" />
           <Animated.View entering={FadeInDown.delay(150).duration(500).springify()} style={[styles.card, { backgroundColor: cardBg, borderColor: cardBorder }]}>
-            <PhoneInput value={phone} onChangeText={setPhone} selectedCountry={selectedCountry} onSelectCountry={() => setShowCountryPicker(true)} error={error} showCountryPicker={showCountryPicker} onClear={() => setPhone("")} onSubmit={handleSubmit} />
-            <CountryPicker visible={showCountryPicker} countries={countries} selectedCountry={selectedCountry} onSelect={(c) => { setSelectedCountry(c); setShowCountryPicker(false); }} />
+            <PhoneInput value={phone} onChangeText={setPhone} selectedCountry={selectedCountry} onSelectCountry={handleSelectCountry} error={error} showCountryPicker={showCountryPicker} onClear={handleClearPhone} onSubmit={handleSubmit} />
+            <CountryPicker visible={showCountryPicker} countries={countries} selectedCountry={selectedCountry} onSelect={handleCountrySelect} />
             <SubmitButton onPress={handleSubmit} isLoading={isLoading} />
-            <Button title="Explorer en mode démo" onPress={() => navigation.navigate("GuestPreview")} variant="outline" size="large" fullWidth icon="eye-outline" style={styles.demoButton} />
+            <Button title="Explorer en mode démo" onPress={handleDemoPress} variant="outline" size="large" fullWidth icon="eye-outline" style={styles.demoButton} />
             <Text style={[styles.demoNote, { color: colors.text.secondary }]}>
               Pas encore client ? Le mode démo vous montre le suivi sans créer de compte.
             </Text>
           </Animated.View>
           <SecurityNote />
-          <LoginFooter
-            onTermsPress={() => Linking.openURL("https://www.chinalinkexpress.com/fr/terms")}
-            onPrivacyPress={() => Linking.openURL("https://www.chinalinkexpress.com/fr/privacy")}
-          />
+          <LoginFooter onTermsPress={handleTermsPress} onPrivacyPress={handlePrivacyPress} />
         </ScrollView>
       </KeyboardAvoidingView>
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1 },
-  flex: { flex: 1 },
-  scrollContent: { flexGrow: 1 },
-  card: { marginHorizontal: 16, marginTop: -16, borderRadius: 24, borderWidth: 1, padding: 20 },
-  demoButton: { marginTop: 12 },
-  demoNote: { marginTop: 10, fontSize: 12, lineHeight: 18, textAlign: "center" },
-});
 
 export default LoginScreen;

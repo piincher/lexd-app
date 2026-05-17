@@ -15,7 +15,7 @@ export const VerificationBackButton: React.FC<VerificationBackButtonProps> = ({ 
     <Animated.View entering={FadeIn.duration(300)}>
       <Pressable
         onPress={onPress}
-        style={[styles.backBtn, { backgroundColor: isDark ? "rgba(255,255,255,0.06)" : "#F3F4F6" }]}
+        style={[styles.backBtn, { backgroundColor: colors.background.paper }]}
       >
         <MaterialCommunityIcons name="arrow-left" size={22} color={colors.text.primary} />
       </Pressable>

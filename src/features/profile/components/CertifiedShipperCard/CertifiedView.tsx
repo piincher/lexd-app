@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import type { navigationProps } from "@src/navigations/type";
 import { CertificateProgress } from "../../api/certificateApi";
 import { createStyles } from "./CertifiedShipperCard.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface CertifiedViewProps {
   progress: CertificateProgress;
@@ -23,6 +24,7 @@ interface CertifiedViewProps {
 export const CertifiedView: React.FC<CertifiedViewProps> = ({
   progress, styles, isDownloading, onDownload, onShare,
 }) => {
+  const { colors } = useAppTheme();
   const navigation = useNavigation<navigationProps>();
   const issuedDate = new Date(progress.certificate!.issuedAt).toLocaleDateString("fr-FR", {
     day: "numeric", month: "long", year: "numeric",
@@ -52,7 +54,7 @@ export const CertifiedView: React.FC<CertifiedViewProps> = ({
           <MaterialIcons name="chevron-right" size={20} color={styles.chevronHintColor} />
         </View>
         <View style={styles.certifiedHeader}>
-          <MaterialIcons name="star" size={24} color="#F4D03F" />
+          <MaterialIcons name="star" size={24} color={colors.accent.goldLight} />
           <Text style={styles.certifiedTitle}>{"\u2713"} Certified Shipper</Text>
           {isNew && (
             <View style={styles.newBadge}>
@@ -69,14 +71,14 @@ export const CertifiedView: React.FC<CertifiedViewProps> = ({
             disabled={isDownloading}
           >
             {isDownloading ? (
-              <ActivityIndicator size="small" color="#d4a843" />
+              <ActivityIndicator size="small" color={colors.accent.gold} />
             ) : (
-              <MaterialIcons name="file-download" size={18} color="#d4a843" />
+              <MaterialIcons name="file-download" size={18} color={colors.accent.gold} />
             )}
             <Text style={styles.actionButtonText}>Télécharger</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.actionButton} onPress={onShare} activeOpacity={0.7}>
-            <MaterialIcons name="share" size={18} color="#d4a843" />
+            <MaterialIcons name="share" size={18} color={colors.accent.gold} />
             <Text style={styles.actionButtonText}>Partager</Text>
           </TouchableOpacity>
         </View>

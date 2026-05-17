@@ -14,7 +14,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       borderRadius: 20,
       backgroundColor: isDark ? colors.background.paper : "#F3F4F6",
       borderWidth: 1,
-      borderColor: isDark ? colors.neutral[700] : "#E5E7EB",
+      borderColor: isDark ? colors.neutral[700] : colors.neutral[200],
       marginRight: 8,
     },
     chipActive: {
@@ -27,6 +27,6 @@ export const createStyles = (colors: any, isDark: boolean) =>
       color: colors.text.secondary,
     },
     chipTextActive: {
-      color: "Theme.colors.text.inverse",
+      color: colors.text.inverse,
     },
   });

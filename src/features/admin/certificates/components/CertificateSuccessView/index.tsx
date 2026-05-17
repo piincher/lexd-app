@@ -3,8 +3,8 @@ import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from "rea
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CertificateRecord, CertificateUser } from "../../api";
-import { Theme } from "@src/constants/Theme";
-import { styles } from "./CertificateSuccessView.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { getStyles } from "./CertificateSuccessView.styles";
 
 interface CertificateSuccessViewProps {
   issuedCertificate: CertificateRecord;
@@ -29,6 +29,8 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
   onBack,
   onCopyCode,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = getStyles(colors);
   const clientName =
     typeof issuedCertificate.userId === "object" && issuedCertificate.userId?.firstName
       ? `${issuedCertificate.userId.firstName} ${issuedCertificate.userId.lastName}`
@@ -43,7 +45,7 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.iconWrapper}>
-          <MaterialIcons name="check-circle" size={80} color="#22C55E" />
+          <MaterialIcons name="check-circle" size={80} color={colors.status.success} />
         </View>
 
         <Text style={styles.title}>Certificat émis avec succès</Text>
@@ -57,7 +59,7 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
                 onPress={() => onCopyCode(issuedCertificate.certificateId, "Code")}
                 style={styles.copyButton}
               >
-                <Ionicons name="copy-outline" size={18} color={Theme.colors.text.secondary} />
+                <Ionicons name="copy-outline" size={18} color={colors.text.secondary} />
               </TouchableOpacity>
             </View>
           </View>
@@ -77,7 +79,7 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
                 onPress={() => onCopyCode(issuedCertificate.verificationCode, "Code de vérification")}
                 style={styles.copyButton}
               >
-                <Ionicons name="copy-outline" size={18} color={Theme.colors.text.secondary} />
+                <Ionicons name="copy-outline" size={18} color={colors.text.secondary} />
               </TouchableOpacity>
             </View>
           </View>
@@ -91,15 +93,15 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
             disabled={isDownloading}
           >
             {isDownloading ? (
-              <ActivityIndicator size="small" color="#d4a843" />
+              <ActivityIndicator size="small" color={colors.primary.main} />
             ) : (
-              <MaterialIcons name="file-download" size={22} color="#d4a843" />
+              <MaterialIcons name="file-download" size={22} color={colors.primary.main} />
             )}
             <Text style={styles.downloadButtonText}>Télécharger</Text>
           </TouchableOpacity>
         ) : (
           <View style={styles.generatingContainer}>
-            <ActivityIndicator size="small" color={Theme.colors.text.muted} />
+            <ActivityIndicator size="small" color={colors.text.muted} />
             <Text style={styles.generatingText}>PDF en cours de génération...</Text>
           </View>
         )}
@@ -114,7 +116,7 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
             <ActivityIndicator size="small" color="#FFF" />
           ) : (
             <>
-              <MaterialIcons name="send" size={20} color="#FFF" />
+              <MaterialIcons name="send" size={20} color={colors.text.inverse} />
               <Text style={styles.whatsappButtonText}>Envoyer via WhatsApp</Text>
             </>
           )}
@@ -125,7 +127,7 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
           onPress={onIssueAnother}
           activeOpacity={0.7}
         >
-          <MaterialIcons name="add-circle-outline" size={20} color="#d4a843" />
+          <MaterialIcons name="add-circle-outline" size={20} color={colors.primary.main} />
           <Text style={styles.secondaryButtonText}>Émettre un autre</Text>
         </TouchableOpacity>
 

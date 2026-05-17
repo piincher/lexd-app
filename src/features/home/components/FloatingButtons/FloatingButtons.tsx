@@ -8,6 +8,7 @@ import { Pressable, StyleSheet, Linking } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Theme } from '@src/constants/Theme';
 
 interface FloatingButtonsProps {
   scrollRef: React.RefObject<any>;
@@ -38,7 +39,7 @@ export const FloatingButtons: React.FC<FloatingButtonsProps> = ({
           onPress={handleBackToTop}
           style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1 })}
         >
-          <LinearGradient colors={['#4A90E2', '#1ED7B5']} style={styles.backToTopButton}>
+          <LinearGradient colors={[Theme.gradients.ocean[2], Theme.gradients.ocean[0]]} style={styles.backToTopButton}>
             <AntDesign name="arrow-up" size={24} color="white" />
           </LinearGradient>
         </Pressable>

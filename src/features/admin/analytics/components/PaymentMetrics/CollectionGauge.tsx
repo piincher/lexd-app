@@ -19,8 +19,8 @@ export const CollectionGauge: React.FC<CollectionGaugeProps> = ({ rate, size = 1
 
   let color = colors.status.error;
   if (rate >= 90) color = colors.status.success;
-  else if (rate >= 70) color = '#F59E0B';
-  else if (rate >= 50) color = '#F97316';
+  else if (rate >= 70) color = colors.status.warning;
+  else if (rate >= 50) color = colors.status.warning;
 
   return (
     <View style={[styles.gaugeContainer, { width: size, height: size }]}>

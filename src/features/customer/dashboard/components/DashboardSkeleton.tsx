@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const Shimmer = ({ style }: { style: any }) => {
   const theme = useTheme();
+  const { isDark } = useAppTheme();
   const shimmer = useRef(new Animated.Value(-1)).current;
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const Shimmer = ({ style }: { style: any }) => {
         style={{
           width: '40%',
           height: '100%',
-          backgroundColor: 'rgba(255,255,255,0.08)',
+          backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
           transform: [{ translateX }],
         }}
       />

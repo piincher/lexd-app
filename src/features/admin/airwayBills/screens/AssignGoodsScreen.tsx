@@ -11,17 +11,17 @@ import { AssignGoodsSummary } from '../components/AssignGoodsSummary';
 import { AssignGoodsList } from '../components/AssignGoodsList';
 import { AssignGoodsFooter } from '../components/AssignGoodsFooter';
 import { AssignGoodsLoading } from '../components/AssignGoodsLoading';
-import { useAssignGoodsScreen } from './hooks/useAssignGoodsScreen';
+import { useAssignGoodsScreenUI } from './hooks/useAssignGoodsScreenUI';
 import { styles } from './AssignGoodsScreen.styles';
 
 export const AssignGoodsScreen: React.FC = () => {
   const {
-    navigation, airwayBillId, airwayBill, goodsList, cargoBags, isLoading,
+    airwayBillId, airwayBill, goodsList, cargoBags, isLoading,
     selectedIds, selectedBagId, setSelectedBagId, totalSelectedWeight,
     isOverCapacity, capacityWeight, currentTotalWeight, toggleSelection,
-    handleAssign, assignMutation, assignToBagMutation, createBagVisible, setCreateBagVisible,
-    handleCreateBag, createBagMutation,
-  } = useAssignGoodsScreen();
+    handleAssign, assignMutation, assignToBagMutation, createBagVisible,
+    handleCreateBag, createBagMutation, handlers,
+  } = useAssignGoodsScreenUI();
 
   if (isLoading) {
     return <AssignGoodsLoading />;
@@ -31,14 +31,14 @@ export const AssignGoodsScreen: React.FC = () => {
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <AssignGoodsHeader
         title={`Assigner à ${airwayBill?.awbNumber || 'AWB'}`}
-        onBack={() => navigation.goBack()}
+        onBack={handlers.handleBack}
       />
 
       <BagSelector
         cargoBags={cargoBags}
         selectedBagId={selectedBagId}
         onSelectBag={setSelectedBagId}
-        onCreateBag={() => setCreateBagVisible(true)}
+        onCreateBag={handlers.handleCreateBagPress}
       />
 
       <AssignGoodsSummary
@@ -65,8 +65,8 @@ export const AssignGoodsScreen: React.FC = () => {
       <CargoBagCreateDialog
         visible={createBagVisible}
         awbId={airwayBillId}
-        onDismiss={() => setCreateBagVisible(false)}
-        onSubmit={(_, notes) => handleCreateBag(notes)}
+        onDismiss={handlers.handleDismissCreateBag}
+        onSubmit={handlers.handleSubmitCreateBag}
         loading={createBagMutation.isPending}
       />
     </SafeAreaView>

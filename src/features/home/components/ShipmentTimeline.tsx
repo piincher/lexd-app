@@ -23,10 +23,10 @@ export const ShipmentTimeline: React.FC<ShipmentTimelineProps> = ({
     <View style={styles.routeLine}>
       <View style={styles.dashContainer}>
         {Array.from({ length: 35 }).map((_, i) => (
-          <View key={i} style={[styles.dash, { backgroundColor: SHIP_COLORS.grayText }]} />
+          <View key={i} style={[styles.dash, { backgroundColor: colors.border }]} />
         ))}
       </View>
-      <MaterialCommunityIcons name="arrow-right" size={20} color={SHIP_COLORS.navyLight} />
+      <MaterialCommunityIcons name="arrow-right" size={20} color={colors.primary.main} />
     </View>
 
     {/* Progress steps */}
@@ -35,11 +35,11 @@ export const ShipmentTimeline: React.FC<ShipmentTimelineProps> = ({
         const isCompleted = index < currentStep;
         const isActive = index === currentStep;
         const circleStyle = isActive
-          ? [styles.stepCircle, styles.stepCircleActive]
+          ? [styles.stepCircle, styles.stepCircleActive, { backgroundColor: colors.primary.main }]
           : isCompleted
-          ? [styles.stepCircle, styles.stepCircleCompleted]
-          : [styles.stepCircle, styles.stepCircleInactive];
-        const iconColor = isActive || isCompleted ? "#FFFFFF" : SHIP_COLORS.grayText;
+          ? [styles.stepCircle, styles.stepCircleCompleted, { backgroundColor: colors.primary.main }]
+          : [styles.stepCircle, styles.stepCircleInactive, { borderColor: colors.border }];
+        const iconColor = isActive || isCompleted ? colors.neutral.white : colors.text.secondary;
 
         return (
           <React.Fragment key={index}>
@@ -47,7 +47,7 @@ export const ShipmentTimeline: React.FC<ShipmentTimelineProps> = ({
               <View
                 style={[
                   styles.stepLine,
-                  { backgroundColor: index <= currentStep ? SHIP_COLORS.navy : SHIP_COLORS.progressTrack },
+                  { backgroundColor: index <= currentStep ? colors.primary.main : colors.border }
                 ]}
               />
             )}
@@ -63,7 +63,7 @@ export const ShipmentTimeline: React.FC<ShipmentTimelineProps> = ({
                 style={[
                   styles.stepLabel,
                   {
-                    color: isActive ? SHIP_COLORS.navy : colors.text.secondary,
+                    color: isActive ? colors.text.primary : colors.text.secondary,
                     fontWeight: isActive ? "700" : "400",
                   },
                 ]}
@@ -78,8 +78,8 @@ export const ShipmentTimeline: React.FC<ShipmentTimelineProps> = ({
 
     {/* Progress bar */}
     <View style={styles.progressBarContainer}>
-      <View style={[styles.progressTrack, { backgroundColor: SHIP_COLORS.progressTrack }]}>
-        <View style={[styles.progressFill, { backgroundColor: SHIP_COLORS.navy, width: `${progress}%` }]} />
+      <View style={[styles.progressTrack, { backgroundColor: colors.border }]}>
+        <View style={[styles.progressFill, { backgroundColor: colors.primary.main, width: `${progress}%` }]} />
       </View>
       <Text style={[styles.progressText, { color: colors.text.secondary }]}>
         {progress}% complété

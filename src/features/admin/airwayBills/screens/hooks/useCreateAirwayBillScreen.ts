@@ -56,6 +56,10 @@ export const useCreateAirwayBillScreen = () => {
     setSelectedConsignee(null);
   };
 
+  const handleCapacityWeightChange = (text: string) => {
+    setCapacityWeight(Number(text.replace(/[^0-9]/g, '')) || 0);
+  };
+
   const handleSubmit = async () => {
     try {
       await createMutation.mutateAsync({
@@ -90,6 +94,7 @@ export const useCreateAirwayBillScreen = () => {
       handleClear: handleClearConsignee,
     },
     isSubmitting: createMutation.isPending,
+    handleCapacityWeightChange,
     handleSubmit,
   };
 };

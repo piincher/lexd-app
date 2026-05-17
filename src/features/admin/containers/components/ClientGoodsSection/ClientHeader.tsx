@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { ClientGoodsGroup } from '../../types/packingList';
 import { styles } from './ClientGoodsSection.styles';
@@ -13,15 +14,16 @@ interface ClientHeaderProps {
 }
 
 export const ClientHeader: React.FC<ClientHeaderProps> = ({ clientGroup, isExpanded, onToggle }) => {
+  const { colors } = useAppTheme();
   const { clientName, clientPhone, summary } = clientGroup;
   const balance = summary.balanceDue || 0;
   const isPaid = balance <= 0;
   const isPartial = !isPaid && (summary.totalPaid || 0) > 0;
-  const statusColor = isPaid ? '#10B981' : isPartial ? '#F59E0B' : '#EF4444';
+  const statusColor = isPaid ? colors.status.success : isPartial ? colors.status.warning : colors.status.error;
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={onToggle} style={styles.header}>
-      <LinearGradient colors={[Theme.primary[50], '#FFFFFF']} style={styles.headerGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+      <LinearGradient colors={[Theme.primary[50], colors.background.card]} style={styles.headerGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
         <View style={styles.headerContent}>
           <View style={styles.clientInfo}>
             <View style={styles.avatarContainer}>
@@ -36,8 +38,8 @@ export const ClientHeader: React.FC<ClientHeaderProps> = ({ clientGroup, isExpan
               <View style={styles.financialRow}>
                 <Text style={styles.totalCost}>{(summary.totalCost || 0).toLocaleString()} FCFA</Text>
                 {isPaid ? (
-                  <View style={[styles.balanceBadge, { backgroundColor: '#10B98120' }]}>
-                    <Text style={[styles.balanceText, { color: '#10B981' }]}>Payé</Text>
+                  <View style={[styles.balanceBadge, { backgroundColor: colors.status.success + '20' }]}>
+                    <Text style={[styles.balanceText, { color: colors.status.success }]}>Payé</Text>
                   </View>
                 ) : (
                   <View style={[styles.balanceBadge, { backgroundColor: statusColor + '20' }]}>

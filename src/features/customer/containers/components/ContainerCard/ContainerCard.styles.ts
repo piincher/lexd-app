@@ -3,8 +3,6 @@ import { useMemo } from 'react';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
-const PRIMARY_COLOR = '#16A34A';
-
 export const useContainerCardStyles = () => {
   const { colors, isDark } = useAppTheme();
 
@@ -95,13 +93,13 @@ export const useContainerCardStyles = () => {
         transitDays: {
           fontFamily: Fonts.meduim,
           fontSize: 11,
-          color: PRIMARY_COLOR,
+          color: colors.primary.main,
           marginTop: 2,
         },
         readyBanner: {
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: '#F59E0B',
+          backgroundColor: colors.status.warning,
           paddingVertical: 10,
           paddingHorizontal: 12,
           borderRadius: 8,
@@ -116,7 +114,7 @@ export const useContainerCardStyles = () => {
         infoBanner: {
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: isDark ? 'rgba(14, 165, 233, 0.15)' : '#E0F2FE',
+          backgroundColor: isDark ? `${colors.status.info}15` : colors.feedback.infoBg,
           paddingVertical: 8,
           paddingHorizontal: 12,
           borderRadius: 8,
@@ -125,11 +123,11 @@ export const useContainerCardStyles = () => {
         infoBannerText: {
           fontFamily: Fonts.meduim,
           fontSize: 12,
-          color: PRIMARY_COLOR,
+          color: colors.primary.main,
           marginLeft: 6,
         },
         arrivedBanner: {
-          backgroundColor: isDark ? 'rgba(16, 185, 129, 0.15)' : colors.status.success + '18',
+          backgroundColor: isDark ? `${colors.status.success}15` : `${colors.status.success}18`,
         },
         arrivedBannerText: {
           color: colors.status.success,
@@ -153,7 +151,7 @@ export const useContainerCardStyles = () => {
           marginLeft: 6,
         },
         footerTextPrimary: {
-          color: PRIMARY_COLOR,
+          color: colors.primary.main,
         },
       }),
     [colors, isDark],

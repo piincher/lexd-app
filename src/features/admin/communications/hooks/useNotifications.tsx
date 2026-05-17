@@ -1,4 +1,4 @@
-import { sendNotificationSms } from "@src/api/order";
+import { sendNotificationSms } from "@src/api/sms";
 import { SMSKEY } from "@src/constants/queryKey";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { showMessage } from "react-native-flash-message";

@@ -1,16 +1,16 @@
 /**
  * Token Service
- * 
+ *
  * Provides token access for API authentication
  */
 
-import { useAuth } from "@src/store/Auth";
+import { getAuthStoreRef } from "@src/shared/api/authStoreRef";
 
 /**
  * Get the current auth token
  */
 export const getToken = (): string | null => {
-  return useAuth.getState().token;
+  return getAuthStoreRef()?.getState().token || null;
 };
 
 /**

@@ -7,6 +7,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
@@ -25,6 +26,7 @@ export const SmsBalanceHeader: React.FC<SmsBalanceHeaderProps> = ({
   hasExpired = false,
   onBack,
 }) => {
+  const { colors } = useAppTheme();
   const navigation = useNavigation();
 
   const balanceStatus =
@@ -35,10 +37,10 @@ export const SmsBalanceHeader: React.FC<SmsBalanceHeaderProps> = ({
 
   const statusColor =
     balanceStatus === 'good'
-      ? '#10B981'
+      ? colors.status.success
       : balanceStatus === 'low'
-        ? '#F59E0B'
-        : '#EF4444';
+        ? colors.status.warning
+        : colors.status.error;
 
   const alertIcon = hasExpired ? 'alert-circle' : hasExpiringSoon ? 'warning' : undefined;
 

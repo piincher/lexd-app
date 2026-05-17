@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 
 interface SearchEmptyStateProps {
@@ -12,10 +13,11 @@ interface SearchEmptyStateProps {
 export const SearchEmptyState: React.FC<SearchEmptyStateProps> = ({
   message,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.centerContainer}>
       <LinearGradient
-        colors={["#F3F0FF", "#EDE9FE"]}
+        colors={[colors.primary[50], colors.primary[100]]}
         style={styles.emptyIconContainer}
       >
         <Ionicons name="search-outline" size={64} color={Theme.primary[400]} />

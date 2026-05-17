@@ -1,12 +1,9 @@
-import React, { useMemo } from "react";
-import { View, Pressable, StyleSheet } from "react-native";
-import { Text } from "react-native-paper";
-import { LinearGradient } from "expo-linear-gradient";
+import React from "react";
+import { View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { getQuickActionsStyles } from "./QuickActions.styles";
+import { QuickActionCard } from "./QuickActionCard";
 
 interface QuickAction {
   id: string;
@@ -54,72 +51,8 @@ const QUICK_ACTIONS: QuickAction[] = [
 
 export const QuickActions: React.FC = () => {
   const navigation = useNavigation();
-  const { colors, isDark } = useAppTheme();
-
-  const styles = useMemo(
-    () =>
-      StyleSheet.create({
-        container: {
-          marginBottom: 20,
-        },
-        sectionHeader: {
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: 12,
-          paddingHorizontal: 4,
-        },
-        sectionTitle: {
-          fontSize: 16,
-          fontFamily: Fonts.bold,
-          color: colors.text.primary,
-          letterSpacing: -0.3,
-        },
-        sectionBadge: {
-          fontSize: 12,
-          fontFamily: Fonts.regular,
-          color: colors.text.secondary,
-        },
-        grid: {
-          flexDirection: "row",
-          gap: 10,
-        },
-        item: {
-          flex: 1,
-          borderRadius: 18,
-          overflow: "hidden",
-          ...Theme.shadows.sm,
-        },
-        gradient: {
-          padding: 12,
-          minHeight: 110,
-          justifyContent: "space-between",
-        },
-        iconWrap: {
-          width: 38,
-          height: 38,
-          borderRadius: 12,
-          backgroundColor: "rgba(255,255,255,0.25)",
-          justifyContent: "center",
-          alignItems: "center",
-          borderWidth: 1,
-          borderColor: "rgba(255,255,255,0.2)",
-        },
-        title: {
-          fontSize: 13,
-          fontFamily: Fonts.bold,
-          color: colors.text.inverse,
-          letterSpacing: -0.2,
-        },
-        subtitle: {
-          fontSize: 10,
-          fontFamily: Fonts.regular,
-          color: "rgba(255,255,255,0.82)",
-          marginTop: 1,
-        },
-      }),
-    [colors, isDark]
-  );
+  const { colors } = useAppTheme();
+  const styles = getQuickActionsStyles(colors);
 
   return (
     <View style={styles.container}>
@@ -129,37 +62,12 @@ export const QuickActions: React.FC = () => {
       </View>
       <View style={styles.grid}>
         {QUICK_ACTIONS.map((action) => (
-          <Pressable
+          <QuickActionCard
             key={action.id}
+            action={action}
+            colors={colors}
             onPress={() => navigation.navigate(action.route as never)}
-            style={({ pressed }) => [
-              styles.item,
-              pressed && { opacity: 0.9, transform: [{ scale: 0.96 }] },
-            ]}
-          >
-            <LinearGradient
-              colors={action.gradient}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.gradient}
-            >
-              <View style={styles.iconWrap}>
-                <MaterialCommunityIcons
-                  name={action.icon as any}
-                  size={20}
-                  color={colors.text.inverse}
-                />
-              </View>
-              <View>
-                <Text style={styles.title} numberOfLines={1}>
-                  {action.title}
-                </Text>
-                <Text style={styles.subtitle} numberOfLines={1}>
-                  {action.subtitle}
-                </Text>
-              </View>
-            </LinearGradient>
-          </Pressable>
+          />
         ))}
       </View>
     </View>

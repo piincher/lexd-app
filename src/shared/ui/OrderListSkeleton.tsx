@@ -24,7 +24,7 @@ const ShimmerBlock: React.FC<{
 }> = ({ width, height, borderRadius = 4, bg }) => {
   const { colors, isDark } = useAppTheme();
   const shimmer = useSharedValue(0);
-  const blockBg = bg ?? (isDark ? 'rgba(255,255,255,0.08)' : colors.neutral[100]);
+  const blockBg = bg ?? (isDark ? colors.neutral[800] : colors.neutral[100]);
 
   React.useEffect(() => {
     shimmer.value = withRepeat(
@@ -42,7 +42,7 @@ const ShimmerBlock: React.FC<{
     <View style={[styles.block, { width, height, borderRadius, backgroundColor: blockBg }]}>
       <Animated.View style={[StyleSheet.absoluteFill, shimmerStyle]}>
         <LinearGradient
-          colors={['transparent', isDark ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.5)', 'transparent']}
+          colors={['transparent', isDark ? colors.neutral[700] : colors.neutral[50], 'transparent']}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={StyleSheet.absoluteFill}
@@ -61,7 +61,7 @@ const OrderSkeletonItem: React.FC = () => {
         styles.card,
         {
           backgroundColor: colors.background.card,
-          borderColor: isDark ? 'rgba(255,255,255,0.06)' : colors.border,
+          borderColor: colors.border,
         },
       ]}
     >

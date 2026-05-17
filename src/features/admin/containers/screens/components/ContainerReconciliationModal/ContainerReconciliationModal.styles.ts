@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { Theme, AppTheme } from "@src/shared/constants/Theme";
+import { Theme, AppTheme } from "@src/constants/Theme";
 
 export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.45)",
+    backgroundColor: colors.background.overlay,
     justifyContent: "flex-end",
   },
   sheet: {

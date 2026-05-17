@@ -3,6 +3,8 @@
  * Single source of truth for all home page section content
  */
 
+import { Theme } from '@src/constants/Theme';
+
 // ============================================
 // HIGHLIGHTS / STATS
 // ============================================
@@ -47,31 +49,31 @@ export const WORKFLOW_STEPS = [
     icon: 'headset' as const,
     title: 'Contactez-nous',
     description: "Choisissez votre methode d'expedition preferee",
-    color: '#0EA5E9',
+    color: Theme.colors.status.info,
   },
   {
     icon: 'map-location-dot' as const,
     title: "Adresse entrepot",
     description: "Recevez notre adresse d'entrepot chinois",
-    color: '#8B5CF6',
+    color: Theme.colors.primary.main,
   },
   {
     icon: 'box-archive' as const,
     title: 'Arrivee des colis',
     description: "Vos articles arrivent a notre depot",
-    color: '#F59E0B',
+    color: Theme.colors.status.warning,
   },
   {
     icon: 'earth-africa' as const,
     title: 'Expedition',
     description: 'Dedouanement et transport vers le Mali',
-    color: '#22C55E',
+    color: Theme.colors.status.success,
   },
   {
     icon: 'hand-holding-hand' as const,
     title: 'Collecte',
     description: 'Recuperez votre envoi au centre de distribution',
-    color: '#10B981',
+    color: Theme.colors.primary.main,
   },
 ] as const;
 
@@ -80,12 +82,12 @@ export const WORKFLOW_STEPS = [
 // ============================================
 
 export const BENEFITS = [
-  { label: 'Expedition rapide', icon: 'bolt' as const, color: '#0EA5E9' },
-  { label: 'Suivi temps reel', icon: 'location-dot' as const, color: '#22C55E' },
-  { label: 'Assurance complete', icon: 'shield-halved' as const, color: '#F59E0B' },
-  { label: 'Dedouanement inclus', icon: 'file-invoice' as const, color: '#8B5CF6' },
-  { label: 'Service 24/7', icon: 'headset' as const, color: '#EF4444' },
-  { label: 'Prix competitifs', icon: 'tags' as const, color: '#10B981' },
+  { label: 'Expedition rapide', icon: 'bolt' as const, color: Theme.colors.status.info },
+  { label: 'Suivi temps reel', icon: 'location-dot' as const, color: Theme.colors.status.success },
+  { label: 'Assurance complete', icon: 'shield-halved' as const, color: Theme.colors.status.warning },
+  { label: 'Dedouanement inclus', icon: 'file-invoice' as const, color: Theme.colors.primary.main },
+  { label: 'Service 24/7', icon: 'headset' as const, color: Theme.colors.status.error },
+  { label: 'Prix competitifs', icon: 'tags' as const, color: Theme.colors.primary.main },
 ] as const;
 
 // ============================================
@@ -108,7 +110,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   {
     label: 'Suivi en temps reel',
     icon: 'location-dot',
-    color: '#22C55E',
+    color: Theme.colors.status.success,
     chinalink: 'yes',
     chinalinkDetail: 'App mobile + notifications',
     others: 'partial',
@@ -117,7 +119,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   {
     label: 'Dedouanement inclus',
     icon: 'file-invoice',
-    color: '#8B5CF6',
+    color: Theme.colors.primary.main,
     chinalink: 'yes',
     chinalinkDetail: 'Inclus dans le prix',
     others: 'partial',
@@ -126,7 +128,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   {
     label: 'Assurance colis',
     icon: 'shield-halved',
-    color: '#F59E0B',
+    color: Theme.colors.status.warning,
     chinalink: 'yes',
     chinalinkDetail: 'Couverture complete',
     others: 'partial',
@@ -135,7 +137,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   {
     label: 'Support client',
     icon: 'headset',
-    color: '#0EA5E9',
+    color: Theme.colors.status.info,
     chinalink: 'yes',
     chinalinkDetail: '24/7 WhatsApp + App',
     others: 'no',
@@ -144,7 +146,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   {
     label: 'Transparence des prix',
     icon: 'tags',
-    color: '#10B981',
+    color: Theme.colors.primary.main,
     chinalink: 'yes',
     chinalinkDetail: 'Prix fixes, pas de surprises',
     others: 'partial',
@@ -153,7 +155,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   {
     label: 'Delai de livraison',
     icon: 'bolt',
-    color: '#EF4444',
+    color: Theme.colors.status.error,
     chinalink: 'yes',
     chinalinkDetail: '2-3 sem (air) / 6-8 sem (mer)',
     others: 'partial',
@@ -162,7 +164,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   {
     label: 'Entrepot en Chine',
     icon: 'warehouse',
-    color: '#D4AF37',
+    color: Theme.colors.accent.gold,
     chinalink: 'yes',
     chinalinkDetail: 'Entrepot propre',
     others: 'yes',
@@ -171,7 +173,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   {
     label: 'Certificat de fidelite',
     icon: 'award',
-    color: '#6366F1',
+    color: Theme.colors.status.info,
     chinalink: 'yes',
     chinalinkDetail: 'Certificat verifiable',
     others: 'no',
@@ -180,7 +182,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
   {
     label: 'Livraison porte-a-porte',
     icon: 'truck-fast',
-    color: '#EC4899',
+    color: Theme.colors.status.error,
     chinalink: 'yes',
     chinalinkDetail: 'Bamako',
     others: 'yes',

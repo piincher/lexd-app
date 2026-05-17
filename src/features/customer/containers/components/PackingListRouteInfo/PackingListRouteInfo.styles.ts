@@ -33,7 +33,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     paddingHorizontal: 8,
   },
   routeBannerHighlight: {
-    backgroundColor: '#D1FAE5',
+    backgroundColor: colors.feedback.successBg,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -47,7 +47,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   routeBannerValue: {
     fontFamily: Fonts.bold,
     fontSize: 14,
-    color: '#059669',
+    color: colors.status.success,
     marginTop: 2,
   },
   routeBannerSubtext: {

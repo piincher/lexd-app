@@ -7,7 +7,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import type { Milestone } from "../../api/milestoneApi";
-import { styles, iconMap } from "./MilestoneBadges.styles";
+import { getStyles, iconMap } from "./MilestoneBadges.styles";
 
 interface BadgeCircleProps {
   milestone: Milestone;
@@ -17,6 +17,7 @@ interface BadgeCircleProps {
 }
 
 export const BadgeCircle: React.FC<BadgeCircleProps> = ({ milestone, isCurrent, isDark, colors }) => {
+  const styles = getStyles(colors);
   const iconName = iconMap[milestone.icon] || "help-circle";
   const alpha = isDark ? "rgba(255,255," : "rgba(0,0,";
   return (

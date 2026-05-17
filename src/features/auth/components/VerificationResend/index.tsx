@@ -27,7 +27,7 @@ export const VerificationResend: React.FC<VerificationResendProps> = ({
       </Text>
       <View style={styles.resendRow}>
         {countdown > 0 && (
-          <View style={[styles.countdownBadge, { backgroundColor: isDark ? "rgba(255,255,255,0.06)" : "#F3F4F6" }]}>
+          <View style={[styles.countdownBadge, { backgroundColor: colors.background.paper }]}>
             <MaterialCommunityIcons name="timer-outline" size={14} color={colors.text.secondary} />
             <Text style={[styles.countdownText, { color: colors.text.secondary }]}>
               Disponible dans {countdown}s
@@ -39,7 +39,7 @@ export const VerificationResend: React.FC<VerificationResendProps> = ({
           disabled={!resendEnabled}
           style={({ pressed }) => [
             styles.resendBtn,
-            resendEnabled && { backgroundColor: isDark ? "rgba(34,197,94,0.16)" : "#F0FDF4" },
+            resendEnabled && { backgroundColor: colors.primary[50] },
             pressed && resendEnabled && { opacity: 0.7 },
           ]}
         >
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    backgroundColor: "rgba(0,0,0,0.04)",
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 12,

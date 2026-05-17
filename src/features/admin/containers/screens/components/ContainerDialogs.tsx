@@ -3,12 +3,11 @@
  * Extracted to keep ContainerDetailScreen under 100 lines
  */
 
-import React, { useMemo } from 'react';
-import { Text } from 'react-native';
-import { Portal, Dialog, Button } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
-import {  createStyles  } from '../ContainerDetailScreen.styles';
-import { useAppTheme } from '@src/providers/ThemeProvider';
+import React from 'react';
+import { DeleteContainerDialog } from './DeleteContainerDialog';
+import { RemoveGoodsDialog } from './RemoveGoodsDialog';
+import { ReadyForPickupDialog } from './ReadyForPickupDialog';
+import { DeliveredDialog } from './DeliveredDialog';
 
 interface ContainerDialogsProps {
   // Delete dialog
@@ -55,119 +54,32 @@ export const ContainerDialogs: React.FC<ContainerDialogsProps> = ({
   setShowDeliveredDialog,
   onConfirmDelivered,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <>
-      {/* Delete Confirmation Dialog */}
-      <Portal>
-        <Dialog visible={showDeleteDialog} onDismiss={() => setShowDeleteDialog(false)}>
-          <Dialog.Icon icon="alert" color={Theme.status.error} />
-          <Dialog.Title style={styles.dialogTitle}>
-            Supprimer le Container
-          </Dialog.Title>
-          <Dialog.Content>
-            <Text style={styles.dialogText}>
-              {hasGoods
-                ? 'Veuillez d\'abord retirer toutes les marchandises avant de supprimer ce container.'
-                : 'Êtes-vous sûr de vouloir supprimer ce container ? Cette action est irréversible.'}
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setShowDeleteDialog(false)}>Annuler</Button>
-            <Button
-              onPress={onConfirmDelete}
-              textColor={Theme.status.error}
-              disabled={hasGoods}
-            >
-              Supprimer
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <DeleteContainerDialog
+        visible={showDeleteDialog}
+        onDismiss={() => setShowDeleteDialog(false)}
+        onConfirm={onConfirmDelete}
+        hasGoods={hasGoods}
+      />
 
-      {/* Remove Goods Confirmation Dialog */}
-      <Portal>
-        <Dialog
-          visible={showRemoveGoodsDialog}
-          onDismiss={() => setShowRemoveGoodsDialog(false)}
-        >
-          <Dialog.Icon icon="cube-remove" color={Theme.status.warning} />
-          <Dialog.Title style={styles.dialogTitle}>
-            Retirer la Marchandise
-          </Dialog.Title>
-          <Dialog.Content>
-            <Text style={styles.dialogText}>
-              Êtes-vous sûr de vouloir retirer cette marchandise du container ?
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setShowRemoveGoodsDialog(false)}>Annuler</Button>
-            <Button
-              onPress={onConfirmRemoveGoods}
-              textColor={Theme.status.warning}
-            >
-              Retirer
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <RemoveGoodsDialog
+        visible={showRemoveGoodsDialog}
+        onDismiss={() => setShowRemoveGoodsDialog(false)}
+        onConfirm={onConfirmRemoveGoods}
+      />
 
-      {/* Ready for Pickup Confirmation Dialog */}
-      <Portal>
-        <Dialog
-          visible={showReadyForPickupDialog}
-          onDismiss={() => setShowReadyForPickupDialog(false)}
-        >
-          <Dialog.Icon icon="checkmark-done-circle" color={Theme.status.warning} />
-          <Dialog.Title style={styles.dialogTitle}>
-            Marquer comme Prêt
-          </Dialog.Title>
-          <Dialog.Content>
-            <Text style={styles.dialogText}>
-              Êtes-vous sûr de vouloir marquer ce container comme prêt pour le retrait ?
-              {'\n\n'}
-              Cela notifiera tous les clients que leurs marchandises sont disponibles.
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setShowReadyForPickupDialog(false)}>Annuler</Button>
-            <Button
-              onPress={onConfirmReadyForPickup}
-              textColor={Theme.status.warning}
-            >
-              Confirmer
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <ReadyForPickupDialog
+        visible={showReadyForPickupDialog}
+        onDismiss={() => setShowReadyForPickupDialog(false)}
+        onConfirm={onConfirmReadyForPickup}
+      />
 
-      {/* Delivered Confirmation Dialog */}
-      <Portal>
-        <Dialog
-          visible={showDeliveredDialog}
-          onDismiss={() => setShowDeliveredDialog(false)}
-        >
-          <Dialog.Icon icon="checkmark-done-circle" color={Theme.status.success} />
-          <Dialog.Title style={styles.dialogTitle}>
-            Confirmer la livraison
-          </Dialog.Title>
-          <Dialog.Content>
-            <Text style={styles.dialogText}>
-              Marquer ce conteneur comme livré ? Cette action marquera aussi toutes les marchandises comme livrées.
-            </Text>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setShowDeliveredDialog(false)}>Annuler</Button>
-            <Button
-              onPress={onConfirmDelivered}
-              textColor={Theme.status.success}
-            >
-              Confirmer
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <DeliveredDialog
+        visible={showDeliveredDialog}
+        onDismiss={() => setShowDeliveredDialog(false)}
+        onConfirm={onConfirmDelivered}
+      />
     </>
   );
 };

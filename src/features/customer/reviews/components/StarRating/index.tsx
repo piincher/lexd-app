@@ -17,7 +17,7 @@ export const StarRating: React.FC<StarRatingProps> = ({ rating, size = 16 }) => 
           key={star}
           name={star <= rating ? "star" : "star-outline"}
           size={size}
-          color={star <= rating ? "#d4a843" : Theme.colors.text.disabled}
+          color={star <= rating ? Theme.colors.accent.gold : Theme.colors.text.disabled}
         />
       ))}
     </View>

@@ -3,8 +3,6 @@ import { useMemo } from 'react';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
-const ACCENT = '#16A34A';
-
 export const useGoodsFormStyles = () => {
   const { colors } = useAppTheme();
 
@@ -68,8 +66,8 @@ export const useGoodsFormStyles = () => {
           borderColor: colors.border,
         },
         shippingOptionActive: {
-          backgroundColor: ACCENT,
-          borderColor: ACCENT,
+          backgroundColor: colors.primary.main,
+          borderColor: colors.primary.main,
         },
         shippingText: {
           fontFamily: Fonts.bold,
@@ -103,7 +101,7 @@ export const useGoodsFormStyles = () => {
         cbmText: {
           fontFamily: Fonts.bold,
           fontSize: 13,
-          color: ACCENT,
+          color: colors.primary.main,
         },
         totalCostRow: {
           flexDirection: 'row',
@@ -123,7 +121,7 @@ export const useGoodsFormStyles = () => {
         totalCostValue: {
           fontFamily: Fonts.bold,
           fontSize: 14,
-          color: ACCENT,
+          color: colors.primary.main,
         },
       }),
     [colors],

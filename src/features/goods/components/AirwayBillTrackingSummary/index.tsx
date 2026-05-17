@@ -2,7 +2,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { styles } from './AirwayBillTrackingSummary.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useAirwayBillTrackingSummaryStyles } from './AirwayBillTrackingSummary.styles';
 import type { TrackingWaypoint } from '../../api/types';
 
 interface Props {
@@ -56,6 +57,8 @@ export const AirwayBillTrackingSummary: React.FC<Props> = ({
   estimatedArrival,
   goodsCount,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useAirwayBillTrackingSummaryStyles();
   const icon = STATUS_ICONS[status] || 'airplane';
   const label = STATUS_LABELS[status] || status;
 
@@ -64,7 +67,7 @@ export const AirwayBillTrackingSummary: React.FC<Props> = ({
       <Card.Content>
         <View style={styles.topRow}>
           <View style={styles.statusIcon}>
-            <MaterialCommunityIcons name={icon} size={24} color="#FFFFFF" />
+            <MaterialCommunityIcons name={icon} size={24} color={colors.text.inverse} />
           </View>
           <View style={styles.statusCopy}>
             <Text style={styles.eyebrow}>Statut actuel</Text>
@@ -89,7 +92,7 @@ export const AirwayBillTrackingSummary: React.FC<Props> = ({
         </View>
 
         <View style={styles.footerRow}>
-          <MaterialCommunityIcons name="package-variant" size={16} color="#16A34A" />
+          <MaterialCommunityIcons name="package-variant" size={16} color={colors.status.success} />
           <Text style={styles.footerText}>
             {goodsCount} marchandise{goodsCount > 1 ? 's' : ''} dans cette expédition
           </Text>

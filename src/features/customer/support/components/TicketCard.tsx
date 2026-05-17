@@ -46,7 +46,7 @@ const getLastMessagePreview = (ticket: Ticket): string | null => {
 };
 
 const BORDER_COLORS: Record<string, string> = {
-  LOW: '#9CA3AF', MEDIUM: '#3B82F6', HIGH: '#F97316', URGENT: '#EF4444',
+  LOW: Theme.colors.text.disabled, MEDIUM: Theme.colors.status.info, HIGH: Theme.colors.status.warning, URGENT: Theme.colors.status.error,
 };
 
 export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onPress }) => {

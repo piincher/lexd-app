@@ -28,7 +28,7 @@ export const CertificateDetailHeader: React.FC<Props> = ({
         style={styles.trophyContainer}
       >
         <LinearGradient
-          colors={["rgba(244,208,63,0.25)", "rgba(212,168,67,0.1)"]}
+          colors={[colors.accent.goldLight + '40', colors.accent.gold + '1A']}
           style={styles.trophyGlow}
         >
           <MaterialIcons name="emoji-events" size={72} color={GOLD} />

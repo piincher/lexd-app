@@ -79,7 +79,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
             <Text style={styles.waypointCode}>{waypoint.location?.portCode || waypoint.location?.countryCode || ''}</Text>
             {routeDisplay && (
               <View style={styles.routeDisplayBadge}>
-                <Ionicons name={routeDisplay.icon as any} size={12} color="#FFF" />
+                <Ionicons name={routeDisplay.icon as any} size={12} color={Theme.colors.text.inverse} />
                 <Text style={styles.routeDisplayText}>{routeDisplay.label}</Text>
               </View>
             )}

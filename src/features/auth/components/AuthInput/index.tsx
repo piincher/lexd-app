@@ -1,22 +1,25 @@
-import { Fonts } from "@src/constants/Fonts";
-import { useAppTheme } from "@src/providers/ThemeProvider";
-import { useFormikContext } from "formik";
-import React, { Dispatch, FC, useCallback, useEffect, useMemo } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import type { StyleProp, TextInputProps, ViewStyle } from "react-native";
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useFormikContext } from 'formik';
+import React, { Dispatch, FC, useCallback, useEffect, useMemo } from 'react';
+import { Text, View } from 'react-native';
+import type { StyleProp, TextInputProps, ViewStyle } from 'react-native';
 import Animated, {
    useAnimatedStyle,
    useSharedValue,
    withSequence,
    withSpring,
    withTiming,
-} from "react-native-reanimated";
-import AppInput from "../AppInput";
+} from 'react-native-reanimated';
+import AppInput from '../AppInput';
+import { createStyles } from './AuthInput.styles';
+import { AuthInputLabel } from './AuthInputLabel';
+import { AuthInputRightIcon } from './AuthInputRightIcon';
+
 interface Props {
    placeholder?: string;
    label: string;
-   keyboardType?: TextInputProps["keyboardType"];
-   autoCapitalize?: TextInputProps["autoCapitalize"];
+   keyboardType?: TextInputProps['keyboardType'];
+   autoCapitalize?: TextInputProps['autoCapitalize'];
    secureTextEntry?: boolean;
    containerStyle?: StyleProp<ViewStyle>;
    name: string;
@@ -53,7 +56,7 @@ const AuthInputField: FC<Props> = (props) => {
          withSpring(0, { damping: 8, mass: 0.5, stiffness: 1000 })
       );
    }, [inputTransformValue]);
-   const errorMsg = touched[name] && errors[name] ? errors[name] : "";
+   const errorMsg = touched[name] && errors[name] ? errors[name] : '';
    const inputStyle = useAnimatedStyle(() => {
       return {
          transform: [{ translateX: inputTransformValue.value }],
@@ -70,50 +73,11 @@ const AuthInputField: FC<Props> = (props) => {
       handleSubmit();
    };
 
-   const styles = useMemo(
-      () =>
-         StyleSheet.create({
-            defaultInput: {
-               borderWidth: 0.5,
-               width: "70%",
-               minHeight: 48,
-               borderColor: colors.border,
-            },
-            headerContainer: {
-               flexDirection: "row",
-               justifyContent: "space-between",
-               alignItems: "center",
-            },
-            label: {
-               color: colors.text.primary,
-               padding: 5,
-               fontSize: 16,
-               fontFamily: Fonts.meduim,
-            },
-            rightIcon: {
-               width: 40,
-               height: 40,
-               position: "absolute",
-               top: 0,
-               right: 0,
-               justifyContent: "center",
-            },
-            descriptionText: {
-               color: colors.primary.main,
-               fontSize: 12,
-               fontFamily: Fonts.regular,
-               marginVertical: 5,
-            },
-         }),
-      [colors]
-   );
+   const styles = useMemo(() => createStyles(colors), [colors]);
 
    return (
       <Animated.View style={[containerStyle, inputStyle]}>
-         <View style={styles.headerContainer}>
-            <Text style={styles.label}>{label}</Text>
-            <Text style={[styles.label, { color: colors.status.error }]}>{errorMsg}</Text>
-         </View>
+         <AuthInputLabel label={label} errorMsg={errorMsg} />
          <View
             style={{
                borderColor: errorMsg ? colors.status.error : colors.border,
@@ -128,7 +92,7 @@ const AuthInputField: FC<Props> = (props) => {
                secureTextEntry={secureTextEntry}
                onChangeText={handleChange(name)}
                value={
-                  values[name] !== undefined && values[name] !== null ? String(values[name]) : ""
+                  values[name] !== undefined && values[name] !== null ? String(values[name]) : ''
                }
                onBlur={handleBlur(name)}
                maxLength={props.maxLength}
@@ -138,9 +102,7 @@ const AuthInputField: FC<Props> = (props) => {
                phone={props.phone}
             />
             {rightIcon ? (
-               <Pressable onPress={handleRight} style={styles.rightIcon}>
-                  {rightIcon}
-               </Pressable>
+               <AuthInputRightIcon onPress={handleRight} icon={rightIcon} />
             ) : null}
          </View>
          <Text style={styles.descriptionText}>{props.descriptionDown}</Text>

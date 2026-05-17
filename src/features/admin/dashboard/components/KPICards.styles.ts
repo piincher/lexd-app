@@ -71,7 +71,7 @@ export const createKPICardsStyles = (colors: KPICardColors, isDark: boolean) =>
     heroLabel: {
       fontSize: 13,
       fontFamily: Fonts.regular,
-      color: "rgba(255,255,255,0.88)",
+      color: colors.text.inverse,
       marginTop: 2,
     },
     smallCard: {

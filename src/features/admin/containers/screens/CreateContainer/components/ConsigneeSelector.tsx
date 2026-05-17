@@ -68,7 +68,7 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
         <View style={styles.selectedConsigneeContainer}>
           <View style={styles.selectedConsigneeContent}>
             <View style={styles.selectedConsigneeIcon}>
-              <Ionicons name="person" size={24} color="#FFF" />
+              <Ionicons name="person" size={24} color={colors.text.inverse} />
             </View>
             <View style={styles.selectedConsigneeInfo}>
               <Text style={styles.selectedConsigneeName}>{selectedConsigneeName}</Text>

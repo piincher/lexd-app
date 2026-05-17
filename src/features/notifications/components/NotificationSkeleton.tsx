@@ -16,10 +16,10 @@ interface NotificationSkeletonProps {
 
 type SkeletonStyles = ReturnType<typeof StyleSheet.create>;
 
-const SkeletonBlock: React.FC<{ style: object }> = ({ style }) => (
+const SkeletonBlock: React.FC<{ style: object; shimmerColor: string }> = ({ style, shimmerColor }) => (
   <View style={style}>
     <LinearGradient
-      colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.45)', 'rgba(255,255,255,0)']}
+      colors={['transparent', shimmerColor, 'transparent']}
       start={{ x: 0, y: 0.5 }}
       end={{ x: 1, y: 0.5 }}
       style={StyleSheet.absoluteFill}
@@ -27,21 +27,21 @@ const SkeletonBlock: React.FC<{ style: object }> = ({ style }) => (
   </View>
 );
 
-const SkeletonItem: React.FC<{ styles: SkeletonStyles }> = ({ styles }) => (
+const SkeletonItem: React.FC<{ styles: SkeletonStyles; shimmerColor: string }> = ({ styles, shimmerColor }) => (
   <View style={styles.container}>
-    <SkeletonBlock style={styles.iconSkeleton} />
+    <SkeletonBlock style={styles.iconSkeleton} shimmerColor={shimmerColor} />
 
     <View style={styles.content}>
-      <SkeletonBlock style={styles.titleSkeleton} />
-      <SkeletonBlock style={styles.messageSkeleton} />
-      <SkeletonBlock style={[styles.messageSkeleton, styles.shortMessage]} />
-      <SkeletonBlock style={styles.timeSkeleton} />
+      <SkeletonBlock style={styles.titleSkeleton} shimmerColor={shimmerColor} />
+      <SkeletonBlock style={styles.messageSkeleton} shimmerColor={shimmerColor} />
+      <SkeletonBlock style={[styles.messageSkeleton, styles.shortMessage]} shimmerColor={shimmerColor} />
+      <SkeletonBlock style={styles.timeSkeleton} shimmerColor={shimmerColor} />
     </View>
   </View>
 );
 
 const NotificationSkeleton: React.FC<NotificationSkeletonProps> = ({ count = 5 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => StyleSheet.create({
     list: {
       paddingVertical: 8,
@@ -94,10 +94,12 @@ const NotificationSkeleton: React.FC<NotificationSkeletonProps> = ({ count = 5 }
     },
   }), [colors]);
 
+  const shimmerColor = isDark ? colors.neutral[700] : colors.neutral[50];
+
   return (
     <Animated.View entering={FadeIn} style={styles.list}>
       {Array.from({ length: count }).map((_, index) => (
-        <SkeletonItem key={index} styles={styles} />
+        <SkeletonItem key={index} styles={styles} shimmerColor={shimmerColor} />
       ))}
     </Animated.View>
   );

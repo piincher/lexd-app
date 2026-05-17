@@ -29,7 +29,7 @@ export const ShipmentHomeCard: React.FC<Props> = ({
       borderRadius: 16,
       padding: 16,
       borderWidth: 1,
-      borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.06)',
+      borderColor: colors.border,
     },
     eyebrow: { fontSize: 12, fontWeight: '700', color: colors.text.secondary },
     titleRow: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginTop: 8 },
@@ -40,7 +40,7 @@ export const ShipmentHomeCard: React.FC<Props> = ({
       borderRadius: 14,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'rgba(14,165,233,0.12)',
+      backgroundColor: `${colors.status.info}12`,
     },
     detail: { fontSize: 13, lineHeight: 19, color: colors.text.secondary, marginTop: 8 },
     metricRow: { flexDirection: 'row', gap: 8, marginTop: 14 },
@@ -48,7 +48,7 @@ export const ShipmentHomeCard: React.FC<Props> = ({
       flex: 1,
       borderRadius: 12,
       padding: 10,
-      backgroundColor: isDark ? 'rgba(255,255,255,0.04)' : '#F8FAFC',
+      backgroundColor: colors.background.paper,
     },
     metricValue: { fontSize: 16, fontWeight: '800', color: colors.text.primary },
     metricLabel: { fontSize: 11, fontWeight: '600', color: colors.text.secondary, marginTop: 2 },
@@ -69,9 +69,9 @@ export const ShipmentHomeCard: React.FC<Props> = ({
       paddingHorizontal: 14,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#EEF2FF',
+      backgroundColor: colors.background.paper,
     },
-    primaryText: { color: 'Theme.colors.text.inverse', fontWeight: '800', fontSize: 13 },
+    primaryText: { color: colors.text.inverse, fontWeight: '800', fontSize: 13 },
     secondaryText: { color: colors.primary.main, fontWeight: '800', fontSize: 13 },
   }), [colors, isDark]);
 
@@ -94,7 +94,7 @@ export const ShipmentHomeCard: React.FC<Props> = ({
         <View style={styles.titleRow}>
           <Text style={styles.title}>{copy?.label || 'Vos marchandises'}</Text>
           <View style={styles.statusIcon}>
-            <Ionicons name={isAir ? 'airplane' : 'cube-outline'} size={22} color="#0EA5E9" />
+            <Ionicons name={isAir ? 'airplane' : 'cube-outline'} size={22} color={colors.status.info} />
           </View>
         </View>
         <Text style={styles.detail}>{copy?.detail || 'Suivez vos marchandises et les prochaines étapes.'}</Text>

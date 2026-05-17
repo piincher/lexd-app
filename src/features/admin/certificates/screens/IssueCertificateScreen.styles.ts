@@ -30,4 +30,7 @@ export const styles = StyleSheet.create({
     color: Theme.colors.text.secondary,
     marginTop: 2,
   },
+  keyboardView: {
+    flex: 1,
+  },
 });

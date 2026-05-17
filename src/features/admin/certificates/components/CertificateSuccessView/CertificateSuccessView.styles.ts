@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.colors.background.default,
+    backgroundColor: colors.background.default,
   },
   scrollContent: {
     flexGrow: 1,
@@ -18,25 +18,25 @@ export const styles = StyleSheet.create({
     width: 96,
     height: 96,
     borderRadius: 48,
-    backgroundColor: "Theme.colors.status.success + '15'",
+    backgroundColor: colors.status.success + '15',
     alignItems: "center",
     justifyContent: "center",
   },
   title: {
     fontSize: 22,
     fontWeight: "700",
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     marginBottom: 24,
     textAlign: "center",
   },
   card: {
     width: "100%",
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 20,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: "#d4a843",
+    borderColor: colors.primary.main,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
@@ -51,12 +51,12 @@ export const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontWeight: "500",
   },
   value: {
     fontSize: 14,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     fontWeight: "600",
     flexShrink: 1,
     textAlign: "right",
@@ -64,12 +64,12 @@ export const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
   },
   verificationCode: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#d4a843",
+    color: colors.primary.main,
     letterSpacing: 1,
   },
   valueWithCopy: {
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
   },
   copyButton: {
     padding: 4,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: 6,
   },
   downloadButton: {
@@ -88,17 +88,17 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
     width: "100%",
-    backgroundColor: "Theme.colors.status.warning + '10'",
+    backgroundColor: colors.primary.main + '10',
     borderRadius: 12,
     paddingVertical: 14,
     marginBottom: 12,
     borderWidth: 1.5,
-    borderColor: "#d4a843",
+    borderColor: colors.primary.main,
   },
   downloadButtonText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#d4a843",
+    color: colors.primary.main,
   },
   generatingContainer: {
     flexDirection: "row",
@@ -111,7 +111,7 @@ export const styles = StyleSheet.create({
   },
   generatingText: {
     fontSize: 14,
-    color: Theme.colors.text.disabled,
+    color: colors.text.disabled,
     fontStyle: "italic",
   },
   whatsappButton: {
@@ -120,13 +120,13 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
     width: "100%",
-    backgroundColor: "#25D366",
+    backgroundColor: colors.status.success,
     borderRadius: 12,
     paddingVertical: 14,
     marginBottom: 12,
   },
   whatsappButtonText: {
-    color: "Theme.colors.text.inverse",
+    color: colors.text.inverse,
     fontSize: 16,
     fontWeight: "700",
   },
@@ -136,24 +136,24 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
     width: "100%",
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 12,
     paddingVertical: 14,
     marginBottom: 12,
     borderWidth: 1.5,
-    borderColor: "#d4a843",
+    borderColor: colors.primary.main,
   },
   secondaryButtonText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#d4a843",
+    color: colors.primary.main,
   },
   backTextButton: {
     paddingVertical: 12,
   },
   backTextButtonText: {
     fontSize: 15,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontWeight: "500",
   },
   disabled: {

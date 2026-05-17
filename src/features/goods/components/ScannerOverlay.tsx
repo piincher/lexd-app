@@ -48,7 +48,7 @@ export const ScannerOverlay: React.FC<ScannerOverlayProps> = ({
         </Text>
         <View style={styles.controls}>
           <Pressable
-            style={[styles.controlButton, { backgroundColor: "rgba(0,0,0,0.5)" }]}
+            style={[styles.controlButton, { backgroundColor: colors.background.overlay }]}
             onPress={onToggleTorch}
           >
             <MaterialCommunityIcons

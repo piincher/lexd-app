@@ -6,25 +6,19 @@ import React from 'react';
 import { View, RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
-import type { RootStackParamList } from '@src/navigations/type';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { EmptyState } from '@src/shared/ui/EmptyState';
-import { AirwayBill } from '../types';
-import { useAirwayBillListScreen } from './hooks';
+import { useAirwayBillListScreenUI } from './hooks';
 import { styles } from './AirwayBillListScreen.styles';
-import { SearchHeader, AirwayBillStats, StatusFilterChips, AirwayBillCard, AirwayBillSkeleton } from './components';
+import { SearchHeader, AirwayBillStats, StatusFilterChips, AirwayBillSkeleton } from './components';
 
 export const AirwayBillListScreen: React.FC = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { colors } = useAppTheme();
   const { statusFilter, searchQuery, airwayBills, stats, isLoading, isError, error, isFetching, statusOptions, handlers } =
-    useAirwayBillListScreen(navigation);
+    useAirwayBillListScreenUI();
 
   const containerStyle = [styles.container, { backgroundColor: colors.background.default }];
-  const renderItem = ({ item }: { item: AirwayBill }) => <AirwayBillCard item={item} onPress={handlers.handleCardPress} />;
 
   if (isLoading) {
     return (
@@ -66,7 +60,7 @@ export const AirwayBillListScreen: React.FC = () => {
             onAction={!searchQuery ? handlers.handleCreatePress : undefined}
           />
         }
-        renderItem={renderItem}
+        renderItem={handlers.renderItem}
       />
       <View style={[styles.fab, { backgroundColor: colors.primary.main }]}>
         <Ionicons name="add" size={28} color={colors.text.inverse} onPress={handlers.handleCreatePress} />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Chip } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { WhatsAppRequestStatus } from '../../api/whatsappRequestApi';
 import { STATUS_LABELS } from '../../screens/WhatsAppRequestListScreen/constants';
@@ -11,18 +12,18 @@ interface WhatsAppRequestCardHeaderProps {
   requestedAt: string;
 }
 
-const getStatusColor = (status: WhatsAppRequestStatus): string => {
+const getStatusColor = (status: WhatsAppRequestStatus, colors: any): string => {
   switch (status) {
     case 'PENDING':
-      return '#F59E0B';
+      return colors.status.warning;
     case 'PROCESSING':
-      return '#3B82F6';
+      return colors.status.info;
     case 'COMPLETED':
-      return '#10B981';
+      return colors.status.success;
     case 'FAILED':
-      return '#EF4444';
+      return colors.status.error;
     default:
-      return Theme.neutral[400];
+      return colors.neutral[400];
   }
 };
 
@@ -31,7 +32,8 @@ export const WhatsAppRequestCardHeader: React.FC<WhatsAppRequestCardHeaderProps>
   status,
   requestedAt,
 }) => {
-  const statusColor = getStatusColor(status);
+  const { colors } = useAppTheme();
+  const statusColor = getStatusColor(status, colors);
 
   return (
     <View style={styles.cardHeader}>
