@@ -9,6 +9,7 @@ export * from "./orders";
 export * from "./order-detail";
 export * from "./auth";
 export * from "./home";
+export * from "./referrals";
 
 // Phase 1 V2 Features (now consolidated into admin)
 export * from "./goods";

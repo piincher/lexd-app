@@ -29,6 +29,7 @@ export interface userRegistrationType {
    lastName: string;
    phoneNumber?: string;
    role?: string;
+   referralCode?: string;
 }
 export interface UserData {
    _id?: string;
@@ -75,11 +76,12 @@ export const refreshAccessToken = async (refreshToken: string) => {
    return response.data.data;
 };
 
-export const register = async ({ firstName, lastName, phoneNumber }: userRegistrationType) => {
+export const register = async ({ firstName, lastName, phoneNumber, referralCode }: userRegistrationType) => {
    const user = {
       firstName,
       lastName,
       phoneNumber,
+      referralCode,
    };
    const response = await axiosInstance.post<userType>(API_URL.register, user);
    return response.data;
@@ -197,11 +199,12 @@ export const getBalance = async () => {
 };
 
 // Admin: Create user directly without OTP
-export const createUser = async ({ firstName, lastName, phoneNumber }: userRegistrationType) => {
+export const createUser = async ({ firstName, lastName, phoneNumber, referralCode }: userRegistrationType) => {
    const user = {
       firstName,
       lastName,
       phoneNumber,
+      referralCode,
       role: 'user',
    };
    const response = await axiosInstance.post<{ success: boolean; user: userType }>(`${rootUrl}/admin/create`, user);

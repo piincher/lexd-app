@@ -30,12 +30,14 @@ export interface AddUserFormValues {
 	firstName: string;
 	lastName: string;
 	phoneNumber: string;
+	referralCode: string;
 }
 
 export const initialValues: AddUserFormValues = {
 	firstName: '',
 	lastName: '',
 	phoneNumber: '',
+	referralCode: '',
 };
 
 export const buildSignupSchema = (selectedCountry: typeof PHONE_COUNTRIES[0]) =>
@@ -53,4 +55,5 @@ export const buildSignupSchema = (selectedCountry: typeof PHONE_COUNTRIES[0]) =>
 				if (selectedCountry.code !== '86') return true;
 				return normalizeNationalPhone(value || '', selectedCountry.code).startsWith('1');
 			}),
+		referralCode: yup.string().trim().max(20, 'Code trop long'),
 	});

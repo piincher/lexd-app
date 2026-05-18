@@ -22,6 +22,7 @@ export { OrdersScreen as Orders } from "@src/features/orders";
 // Profile
 export { ProfileScreen as Profile, AboutUsScreen as AboutUs, PastOrdersScreen as PastOrders, NotificationSettingsScreen, BadgesScreen, MyReviewsScreen } from "@src/features/profile";
 export { default as CertificateDetailScreen } from "@src/features/profile/screens/CertificateDetail";
+export { ReferralScreen } from "@src/features/referrals";
 
 // Goods
 export { default as MyGoodsScreen } from "@src/features/goods/screens/MyGoodsScreen";

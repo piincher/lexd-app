@@ -30,6 +30,7 @@ export const useAddUserCreation = (
 				firstName: values.firstName,
 				lastName: values.lastName,
 				phoneNumber: countryCode + nationalPhone,
+				referralCode: values.referralCode.trim() || undefined,
 			});
 		} catch (error) {
 			console.log(error);

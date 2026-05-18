@@ -112,6 +112,7 @@ export const AppNavigator: React.FC = () => {
           <Stack.Screen name="TicketDetail" component={Screens.TicketDetailScreen} />
           <Stack.Screen name="CreateTicket" component={Screens.CreateTicketScreen} />
           <Stack.Screen name="NotificationSettings" component={Screens.NotificationSettingsScreen} />
+          <Stack.Screen name="Referral" component={Screens.ReferralScreen} />
           <Stack.Screen name="Badges" component={Screens.BadgesScreen} />
           <Stack.Screen name="MyReviews" component={Screens.MyReviewsScreen} />
           <Stack.Screen name="AdminReviews" component={Screens.AdminReviewsScreen} />

@@ -19,7 +19,7 @@ export const useContainerDetailScreen = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const dialogs = useContainerDialogs();
 
-  const { data: containerResponse, isLoading, isRefetching, refetch } = useGetContainerById(containerId);
+  const { data: containerResponse, isLoading, isRefetching, refetch, error: containerError } = useGetContainerById(containerId);
   const container: Container | undefined = containerResponse?.data?.container || containerResponse?.data;
   const goodsList = getGoodsList(container);
   const { isAirContainer, totalWeight, capacityValue, maxCapacity, fillPercentage, fillColor } = getCapacityInfo(container, goodsList);
@@ -50,6 +50,7 @@ export const useContainerDetailScreen = () => {
     isLoading,
     isRefetching,
     isRefreshing,
+    containerError,
     ...status,
     ...goods,
     ...nav,

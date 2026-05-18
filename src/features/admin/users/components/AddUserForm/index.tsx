@@ -14,6 +14,7 @@ interface AddUserFormValues {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+  referralCode: string;
 }
 
 interface AddUserFormProps {
@@ -81,6 +82,18 @@ export const AddUserForm: React.FC<AddUserFormProps> = ({
 
           <Animated.View
             entering={FadeInUp.delay(400).duration(500).springify()}
+          >
+            <AnimatedInput
+              label="Code de parrainage"
+              name="referralCode"
+              icon="gift-outline"
+              autoCapitalize="characters"
+              placeholder="Optionnel"
+            />
+          </Animated.View>
+
+          <Animated.View
+            entering={FadeInUp.delay(500).duration(500).springify()}
             style={styles.buttonContainer}
           >
             <SubmitGradientButton

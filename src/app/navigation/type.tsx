@@ -111,6 +111,7 @@ export type RootStackParamList = {
    AuditLogDetail: { auditLogId: string };
    NotificationEvents: undefined;
    NotificationEventDetail: { notificationEventId: string };
+   Referral: undefined;
 
    // Admin Certificate Issuance
    IssueCertificate: undefined;

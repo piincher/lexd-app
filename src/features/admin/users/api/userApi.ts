@@ -33,6 +33,7 @@ export interface UserRegistrationRequest {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+  referralCode?: string;
 }
 
 // Fetch all users with filters and pagination

@@ -33,6 +33,14 @@ export const getMenuSections = (colors: any): MenuSection[] => [
         iconColor: colors.status.info,
       },
       {
+        title: 'Parrainage',
+        subtitle: 'Partager votre code et suivre vos points',
+        icon: 'gift-outline',
+        screen: 'Referral',
+        iconBg: hexToRgba(colors.primary.main, 0.1),
+        iconColor: colors.primary.main,
+      },
+      {
         title: 'Notifications',
         subtitle: 'Gerez vos preferences',
         icon: 'bell-outline',
