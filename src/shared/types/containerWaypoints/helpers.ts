@@ -33,7 +33,7 @@ export const SEGMENT_TYPE_ICONS: Record<SegmentType, string> = {
   SEA: 'boat',
   ROAD: 'car',
   AIR: 'airplane',
-  WAREHOUSE: 'warehouse',
+  WAREHOUSE: 'business',
 };
 
 export const PORT_TYPE_LABELS: Record<PortType, string> = {
@@ -55,9 +55,9 @@ export const WAYPOINT_TYPE_LABELS: Record<WaypointType, string> = {
 
 export const WAYPOINT_TYPE_ICONS: Record<WaypointType, string> = {
   PORT: 'boat',
-  WAREHOUSE: 'warehouse',
+  WAREHOUSE: 'business',
   BORDER: 'flag',
-  TERMINAL: 'office-building',
+  TERMINAL: 'business',
   DEPOT: 'cube',
 };
 

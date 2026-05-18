@@ -151,7 +151,7 @@ export const WAREHOUSE_STATUSES: PortStatusOption[] = [
   {
     status: 'ARRIVED_AT_PORT',
     label: 'Arrivé à l\'Entrepôt',
-    icon: 'warehouse',
+    icon: 'business',
     color: '#10B981',
     description: 'Arrivé à l\'entrepôt',
     availableFrom: ['PENDING', 'IN_PROGRESS'],

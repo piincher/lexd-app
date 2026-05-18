@@ -4,6 +4,7 @@ import { fetchAllUsers } from '@src/features/admin/users/api/userApi';
 import { userData } from '@src/shared/types/user';
 
 const ALL_USERS_KEY = 'all-users-client-search';
+const USERS_PER_PAGE = 200;
 
 export const useSearchUsers = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,7 +17,8 @@ export const useSearchUsers = () => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
-  // Load users once upfront (backend max limit is 200)
+  // Fetch ALL users by paginating through all pages.
+  // The backend caps each page at 200, so we loop until all pages are loaded.
   const {
     data: allUsers,
     isLoading,
@@ -24,8 +26,21 @@ export const useSearchUsers = () => {
   } = useQuery({
     queryKey: [ALL_USERS_KEY],
     queryFn: async () => {
-      const response = await fetchAllUsers({ limit: 200 });
-      return response.data;
+      const allUsers: userData[] = [];
+      let page = 1;
+      let hasMore = true;
+
+      while (hasMore) {
+        const response = await fetchAllUsers({ limit: USERS_PER_PAGE, page });
+        allUsers.push(...response.data);
+        hasMore = page < response.meta.totalPages;
+        page++;
+
+        // Safety break to prevent infinite loops
+        if (page > 100) break;
+      }
+
+      return allUsers;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: (failureCount, error: any) => {

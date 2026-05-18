@@ -42,7 +42,7 @@ const fmt = (d?: string, t = false): string => {
 const CAT_DISP: Record<string, { label: string; color: string; icon: string }> = {
   DISCHARGE_PORT: { label: 'PORT', color: Theme.status.info, icon: 'boat' },
   BORDER: { label: 'FRONTIÈRE', color: Theme.status.warning, icon: 'flag' },
-  WAREHOUSE: { label: 'ENTREPÔT', color: Theme.primary.main, icon: 'warehouse' },
+  WAREHOUSE: { label: 'ENTREPÔT', color: Theme.primary.main, icon: 'business' },
   LOADING_PORT: { label: 'CHARGEMENT', color: Theme.status.success, icon: 'cube' },
   TRANSIT_PORT: { label: 'TRANSIT', color: Theme.status.info, icon: 'git-branch' },
 };

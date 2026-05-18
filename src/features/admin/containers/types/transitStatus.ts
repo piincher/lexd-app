@@ -146,7 +146,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     status: 'ARRIVED_WAREHOUSE',
     label: 'Arrivé Entrepôt',
     description: 'Arrivé à l\'entrepôt final',
-    icon: 'warehouse',
+    icon: 'business',
     color: '#8B5CF6',
     waypointIndex: 8,
     allowedPreviousStatuses: ['INLAND_TRANSPORT'],
@@ -358,6 +358,6 @@ export const TRANSIT_STATUS_ICONS: Record<ContainerTransitStatus, string> = {
   CUSTOMS_CLEARANCE: 'document-text',
   CUSTOMS_CLEARED: 'checkmark-circle',
   INLAND_TRANSPORT: 'car',
-  ARRIVED_WAREHOUSE: 'warehouse',
+  ARRIVED_WAREHOUSE: 'business',
   READY_FOR_PICKUP: 'checkmark-done',
 };

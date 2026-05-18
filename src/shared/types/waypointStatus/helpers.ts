@@ -110,7 +110,7 @@ export const QUICK_ACTIONS: QuickAction[] = [
   {
     id: 'arrived_warehouse',
     label: 'Arrivé Entrepôt',
-    icon: 'warehouse',
+    icon: 'business',
     color: '#10B981',
     targetStatus: 'ARRIVED_AT_PORT',
     category: ['WAREHOUSE'],

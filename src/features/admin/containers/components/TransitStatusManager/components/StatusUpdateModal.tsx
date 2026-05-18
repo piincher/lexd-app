@@ -39,7 +39,18 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
 }) => {
   const scrollViewRef = React.useRef<ScrollView>(null);
 
+  // Handle hardware back button on Android
+  React.useEffect(() => {
+    if (!visible) return;
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      if (!isLoading) onDismiss();
+      return true;
+    });
+    return () => backHandler.remove();
+  }, [visible, isLoading, onDismiss]);
+
   if (!selectedStatus) return null;
+  if (!visible) return null;
 
   const currentStatus = currentWaypoint?.status as WaypointStatus | undefined;
   const newStatusColor = WAYPOINT_STATUS_COLORS[selectedStatus];
@@ -53,18 +64,6 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
   const handleConfirm = () => {
     if (isValid) onConfirm();
   };
-
-  // Handle hardware back button on Android
-  React.useEffect(() => {
-    if (!visible) return;
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      handleDismiss();
-      return true;
-    });
-    return () => backHandler.remove();
-  }, [visible, isLoading]);
-
-  if (!visible) return null;
 
   return (
     <Portal>

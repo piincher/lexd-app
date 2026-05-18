@@ -4,7 +4,7 @@ import { ContainerDetailScreenInner } from './components/ContainerDetailScreenIn
 import { ErrorState } from './components/ErrorState';
 
 export const ContainerDetailScreen = withErrorBoundary(ContainerDetailScreenInner, {
-  fallback: <ErrorState onBack={() => {}} />,
+  fallback: <ErrorState title="Erreur d'affichage" />,
   onError: (error, info) => {
     console.error('ContainerDetailScreen crashed:', error, info);
   },
