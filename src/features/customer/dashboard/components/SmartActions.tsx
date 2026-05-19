@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { QuickAction } from '../types';
 import * as Haptics from 'expo-haptics';
-import { Theme } from '@src/constants/Theme';
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
 
@@ -14,32 +13,35 @@ interface Props {
   onActionPress: (action: QuickAction) => void;
 }
 
-const ACTION_META: Record<string, { icon: IoniconName; tint: string; gradient: readonly [string, string]; sublabel: string }> = {
+type ActionMeta = { icon: IoniconName; tint: string; gradient: readonly [string, string]; sublabel: string };
+
+const getActionMeta = (colors: any): Record<string, ActionMeta> => ({
   'view-goods': {
     icon: 'cube',
-    tint: Theme.colors.primary.main,
-    gradient: [Theme.colors.primary.main, Theme.colors.primary.light] as const,
+    tint: colors.primary.main,
+    gradient: [colors.primary.main, colors.primary.light] as const,
     sublabel: 'Voir vos colis',
   },
   'view-containers': {
     icon: 'airplane',
-    tint: Theme.colors.status.info,
-    gradient: [Theme.colors.status.info, `${Theme.colors.status.info}80`] as const,
+    tint: colors.status.info,
+    gradient: [colors.status.info, `${colors.status.info}80`] as const,
     sublabel: 'Maritime et aérien',
   },
   'support': {
     icon: 'chatbubble-ellipses',
-    tint: Theme.colors.status.warning,
-    gradient: [Theme.colors.status.warning, `${Theme.colors.status.warning}80`] as const,
+    tint: colors.status.warning,
+    gradient: [colors.status.warning, `${colors.status.warning}80`] as const,
     sublabel: 'Contactez-nous',
   },
-};
+});
 
 const { width } = Dimensions.get('window');
 const CARD_SIZE = (width - 48) / 2;
 
 export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
   const { colors } = useAppTheme();
+  const actionMeta = useMemo(() => getActionMeta(colors), [colors]);
   const styles = useMemo(
     () =>
       StyleSheet.create({
@@ -66,7 +68,7 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
           width: 28,
           height: 28,
           borderRadius: 10,
-          backgroundColor: 'rgba(255,255,255,0.2)',
+          backgroundColor: colors.neutral.white + '33',
           justifyContent: 'center',
           alignItems: 'center',
         },
@@ -81,7 +83,7 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
       <Text style={styles.header}>Actions Rapides</Text>
       <View style={styles.grid}>
         {actions.map((action) => {
-          const meta = ACTION_META[action.id] || { icon: 'apps' as IoniconName, tint: colors.primary.main, gradient: [colors.text.secondary, `${colors.text.secondary}80`] as const, sublabel: 'Appuyez pour voir' };
+          const meta = actionMeta[action.id] || { icon: 'apps' as IoniconName, tint: colors.primary.main, gradient: [colors.text.secondary, `${colors.text.secondary}80`] as const, sublabel: 'Appuyez pour voir' };
           return (
             <Pressable
               key={action.id}
@@ -96,7 +98,7 @@ export const SmartActions: React.FC<Props> = ({ actions, onActionPress }) => {
               ]}
             >
               <View style={styles.iconRow}>
-                <View style={[styles.iconCircle, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
+                <View style={[styles.iconCircle, { backgroundColor: colors.neutral.white + '33' }]}>
                   <Ionicons name={meta.icon} size={22} color={colors.text.inverse} />
                 </View>
                 <View style={styles.arrow}>

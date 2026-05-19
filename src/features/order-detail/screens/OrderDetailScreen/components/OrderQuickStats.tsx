@@ -62,7 +62,7 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({ order }) => {
                backgroundColor: colors.background.card,
                borderRadius: 14,
                paddingVertical: 16,
-               shadowColor: "#000",
+               shadowColor: colors.neutral[900],
                shadowOffset: { width: 0, height: 1 },
                shadowOpacity: 0.05,
                shadowRadius: 4,

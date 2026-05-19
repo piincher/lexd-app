@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Menu } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
-  CONTAINER_STATUS_COLORS,
+  getContainerStatusColors,
   ContainerStatus,
 } from '../../types';
 
@@ -78,7 +78,7 @@ export const ContainerStatusMenu: React.FC<ContainerStatusMenuProps> = ({
             <Ionicons
               name={step.icon}
               size={20}
-              color={CONTAINER_STATUS_COLORS[step.status]}
+              color={getContainerStatusColors(colors)[step.status]}
             />
           )}
           style={status === step.status ? styles.menuItemActive : undefined}

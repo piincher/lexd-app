@@ -225,19 +225,21 @@ export const CONTAINER_STATUS_LABELS: Record<ContainerStatus, string> = {
 };
 
 /**
- * Status colors for UI
- * Phase 3: Added READY_FOR_PICKUP color (orange)
+ * Status colors for UI (theme-aware)
+ * Phase 3: Added READY_FOR_PICKUP color
+ * @param colors - Theme colors
+ * @returns Record of status colors
  */
-export const CONTAINER_STATUS_COLORS: Record<ContainerStatus, string> = {
-  BOOKED: '#8B5CF6',
-  EMPTY_TO_WAREHOUSE: '#6366F1',
-  LOADING: '#F59E0B',
-  LOADED: '#3B82F6',
-  GATE_IN_FULL: '#06B6D4',
-  LOADED_ON_VESSEL: '#2563EB',
-  IN_TRANSIT: '#EC4899',
-  ARRIVED: '#10B981',
-  DISCHARGED: '#14B8A6',
-  READY_FOR_PICKUP: '#F97316',
-  DELIVERED: '#22C55E',
-};
+export const getContainerStatusColors = (colors: any): Record<ContainerStatus, string> => ({
+  BOOKED: colors.status.info,
+  EMPTY_TO_WAREHOUSE: colors.status.info,
+  LOADING: colors.status.warning,
+  LOADED: colors.status.info,
+  GATE_IN_FULL: colors.status.info,
+  LOADED_ON_VESSEL: colors.status.info,
+  IN_TRANSIT: colors.accent.rose,
+  ARRIVED: colors.status.success,
+  DISCHARGED: colors.accent.mint,
+  READY_FOR_PICKUP: colors.status.warning,
+  DELIVERED: colors.status.success,
+});

@@ -1,17 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginHorizontal: 12,
     marginBottom: 12,
     padding: 16,
     borderRadius: 16,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
@@ -31,19 +30,19 @@ export const styles = StyleSheet.create({
   statValue: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     fontFamily: Fonts.bold,
   },
   statLabel: {
     fontSize: 11,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontFamily: Fonts.medium,
   },
   divider: {
     width: 1,
-    backgroundColor: Theme.colors.neutral[200],
+    backgroundColor: colors.neutral[200],
     marginVertical: 4,
   },
 });
 
-export default styles;
+export default createStyles;

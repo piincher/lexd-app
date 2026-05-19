@@ -7,11 +7,11 @@ import React, { useState, useCallback } from 'react';
 import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
 import { Text, Button, Chip, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
 import { userData } from '@src/shared/types/user';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
 import { DateRangePicker, DateRange, DateRangePreset } from '@src/components/DateRangePicker';
-import { styles } from './GoodsFilterModal.styles';
+import { createStyles } from './GoodsFilterModal.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsFilterModalProps {
   visible: boolean;
@@ -50,6 +50,10 @@ export const GoodsFilterModal: React.FC<GoodsFilterModalProps> = ({
 
   const hasFilters = !!selectedClient || !!dateRange;
 
+  const { colors, isDark } = useAppTheme();
+
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <Modal
       visible={visible}
@@ -62,7 +66,7 @@ export const GoodsFilterModal: React.FC<GoodsFilterModalProps> = ({
           <View style={styles.header}>
             <Text style={styles.title}>Filtres avancés</Text>
             <TouchableOpacity onPress={onDismiss} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color={Theme.neutral[600]} />
+              <Ionicons name="close" size={24} color={colors.neutral[600]} />
             </TouchableOpacity>
           </View>
 
@@ -87,7 +91,7 @@ export const GoodsFilterModal: React.FC<GoodsFilterModalProps> = ({
                 </View>
               ) : (
                 <TouchableOpacity style={styles.dateButton} onPress={() => setShowDatePicker(true)}>
-                  <Ionicons name="calendar-outline" size={20} color={Theme.primary[500]} />
+                  <Ionicons name="calendar-outline" size={20} color={colors.primary[500]} />
                   <Text style={styles.dateButtonText}>Choisir une période</Text>
                 </TouchableOpacity>
               )}

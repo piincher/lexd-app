@@ -2,9 +2,9 @@ import React from 'react';
 import { View } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
 import type { AirwayBillGoodsItem } from '../../api/types';
-import { styles } from './AirwayBillTrackingGoodsList.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './AirwayBillTrackingGoodsList.styles';
 
 interface Props {
   goodsIds?: (string | AirwayBillGoodsItem)[];
@@ -23,6 +23,8 @@ const STATUS_LABELS: Record<string, string> = {
 
 export const AirwayBillTrackingGoodsList: React.FC<Props> = ({ goodsIds }) => {
   const items = goodsIds || [];
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <>
@@ -31,7 +33,7 @@ export const AirwayBillTrackingGoodsList: React.FC<Props> = ({ goodsIds }) => {
         <Card.Content>
           {items.map((goods) => (
             <View key={typeof goods === 'string' ? goods : goods._id} style={styles.goodsItem}>
-              <MaterialCommunityIcons name="package-variant" size={20} color={Theme.primary[500]} />
+              <MaterialCommunityIcons name="package-variant" size={20} color={colors.primary[500]} />
               <Text style={styles.goodsText}>
                 {typeof goods === 'string' ? goods : goods.goodsId}
               </Text>

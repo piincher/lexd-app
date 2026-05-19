@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   centerContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
   loadingText: {
     marginTop: Theme.spacing.lg,
     fontSize: 16,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontWeight: '500',
   },
   errorIcon: {
@@ -26,13 +26,13 @@ export const styles = StyleSheet.create({
   errorTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     marginBottom: Theme.spacing.sm,
   },
   errorSubtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textAlign: 'center',
     marginBottom: Theme.spacing.xl,
   },
@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
   retryText: {
     fontSize: 15,
     fontWeight: '700',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
   listContent: {

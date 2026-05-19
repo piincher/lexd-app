@@ -65,7 +65,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors']) =>
       marginBottom: 28,
       borderRadius: 20,
       overflow: 'hidden',
-      shadowColor: "#000", shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.12, shadowRadius: 24, elevation: 8,
+      shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.12, shadowRadius: 24, elevation: 8,
     },
     gradient: {
       padding: 24,

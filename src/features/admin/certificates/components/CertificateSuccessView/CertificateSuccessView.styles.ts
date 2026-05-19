@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 
-export const getStyles = (colors: any) => StyleSheet.create({
+
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background.default,
@@ -37,7 +37,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
     marginBottom: 24,
     borderWidth: 1,
     borderColor: colors.primary.main,
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 12,

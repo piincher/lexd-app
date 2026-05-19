@@ -11,7 +11,7 @@ export const LoadingState: React.FC = () => {
   return (
   <SafeAreaView style={styles.container}>
     <View style={styles.loadingContainer}>
-      <ActivityIndicator size="large" color={Theme.primary[500]} />
+      <ActivityIndicator size="large" color={colors.primary[500]} />
       <Text style={styles.loadingText}>Chargement...</Text>
     </View>
   </SafeAreaView>

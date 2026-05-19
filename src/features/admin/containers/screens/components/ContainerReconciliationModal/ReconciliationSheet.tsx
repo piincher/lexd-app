@@ -47,7 +47,7 @@ export const ReconciliationSheet: React.FC<ReconciliationSheetProps> = ({
           {containerNumber && <Text style={styles.subtitle}>Container {containerNumber}</Text>}
         </View>
         <TouchableOpacity onPress={onDismiss} style={styles.closeBtn}>
-          <Ionicons name="close" size={22} color={Theme.colors.text.secondary} />
+          <Ionicons name="close" size={22} color={colors.text.secondary} />
         </TouchableOpacity>
       </View>
 

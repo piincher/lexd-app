@@ -7,7 +7,7 @@ import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   ADMIN_TICKET_PRIORITY_LABELS,
-  ADMIN_TICKET_STATUS_COLORS,
+  getAdminTicketStatusColors,
   ADMIN_TICKET_STATUS_LABELS,
   ADMIN_TICKET_TYPE_LABELS,
   AdminTicket,
@@ -33,7 +33,7 @@ const formatDate = (value: string) => {
 
 export const AdminTicketCard: React.FC<AdminTicketCardProps> = ({ ticket, onPress }) => {
   const { colors } = useAppTheme();
-  const statusColor = ADMIN_TICKET_STATUS_COLORS[ticket.status];
+  const statusColor = getAdminTicketStatusColors(colors)[ticket.status];
 
   return (
     <Pressable onPress={onPress} style={({ pressed }) => [styles.pressable, pressed && styles.pressed]}>

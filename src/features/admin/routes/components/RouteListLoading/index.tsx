@@ -5,13 +5,16 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Text, ActivityIndicator } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './RouteListLoading.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './RouteListLoading.styles';
 
 export const RouteListLoading: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <View style={styles.loadingContainer}>
-      <ActivityIndicator size="large" color={Theme.primary[600]} />
+      <ActivityIndicator size="large" color={colors.primary[600]} />
       <Text style={styles.loadingText}>Chargement des routes...</Text>
     </View>
   );

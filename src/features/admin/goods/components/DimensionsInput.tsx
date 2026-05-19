@@ -4,7 +4,7 @@ import { View } from "react-native";
 import { Text, Card, TouchableRipple } from "react-native-paper";
 import { FormInput } from "./FormInput";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { createDimensionsInputStyles } from "./DimensionsInput.styles";
+import { createStyles } from './DimensionsInput.styles';
 
 export interface DimensionsInputProps {
    useDimensions: boolean;
@@ -36,7 +36,7 @@ export const DimensionsInput: React.FC<DimensionsInputProps> = ({
    calculatedCBM,
 }) => {
    const { colors, isDark } = useAppTheme();
-   const styles = useMemo(() => createDimensionsInputStyles(colors, isDark), [colors, isDark]);
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
    return (
       <Card style={styles.card} elevation={2}>

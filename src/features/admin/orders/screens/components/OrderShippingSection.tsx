@@ -72,7 +72,7 @@ const formatDateSafe = (dateValue: any): string => {
 
 export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ order }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = createStyles(colors, isDark);
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const position = getPositionFromRoute(order);
   const departureDate = formatDateSafe(order?.departureDate);
   const receiptDate = formatDateSafe(order?.dateOfReceipt);

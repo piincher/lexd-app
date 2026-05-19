@@ -1,4 +1,5 @@
-import React from 'react';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 import { ShimmerBlock } from '@src/shared/ui';
@@ -43,6 +44,8 @@ const ReviewCardSkeleton: React.FC = () => (
 export const ReviewsListSkeleton: React.FC<ReviewsListSkeletonProps> = ({
   count = 4,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.container}>
       {/* Summary card */}
@@ -60,29 +63,29 @@ export const ReviewsListSkeleton: React.FC<ReviewsListSkeletonProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     padding: 16,
   },
   summaryCard: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
     alignItems: 'center',
     gap: 8,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
     elevation: 2,
   },
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,

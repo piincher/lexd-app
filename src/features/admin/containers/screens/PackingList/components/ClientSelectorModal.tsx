@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, Modal, ScrollView } from 'react-native';
 import { ClientGoodsGroup } from '../../../types/packingList';
-import { styles } from './ClientSelector.styles';
+import { createStyles } from './ClientSelector.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ClientSelectorModalProps {
   visible: boolean;
@@ -18,6 +19,8 @@ export const ClientSelectorModal: React.FC<ClientSelectorModalProps> = ({
   onSelectClient,
   onClose,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const handleSelect = (clientId: string | null) => {
     onSelectClient(clientId);
     onClose();

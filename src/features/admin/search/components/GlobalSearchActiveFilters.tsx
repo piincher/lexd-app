@@ -2,7 +2,7 @@ import React from "react";
 import { View, ScrollView, TouchableOpacity, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SearchFilters } from "../api/searchApi";
 
 interface GlobalSearchActiveFiltersProps {
@@ -14,6 +14,8 @@ export const GlobalSearchActiveFilters: React.FC<GlobalSearchActiveFiltersProps>
   filters,
   onRemoveFilter,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const entries = Object.entries(filters).filter(([, value]) => !!value);
 
   if (entries.length === 0) return null;
@@ -28,7 +30,7 @@ export const GlobalSearchActiveFilters: React.FC<GlobalSearchActiveFiltersProps>
                 {key}: {Array.isArray(value) ? value.join(", ") : value.toString()}
               </Text>
               <TouchableOpacity onPress={() => onRemoveFilter(key as keyof SearchFilters)}>
-                <Ionicons name="close" size={14} color={Theme.neutral[600]} />
+                <Ionicons name="close" size={14} color={colors.neutral[600]} />
               </TouchableOpacity>
             </View>
           ))}
@@ -38,27 +40,27 @@ export const GlobalSearchActiveFilters: React.FC<GlobalSearchActiveFiltersProps>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
-    marginTop: Theme.spacing.md,
-    paddingHorizontal: Theme.spacing.lg,
+    marginTop: 12,
+    paddingHorizontal: 16,
   },
   filtersRow: {
     flexDirection: "row",
-    gap: Theme.spacing.sm,
+    gap: 8,
   },
   filterChip: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    paddingHorizontal: Theme.spacing.sm,
+    paddingHorizontal: 8,
     paddingVertical: 4,
-    backgroundColor: Theme.primary[100],
-    borderRadius: Theme.radius.full,
+    backgroundColor: colors.primary[100],
+    borderRadius: 999,
   },
   filterChipText: {
     fontSize: 12,
     fontWeight: "500",
-    color: Theme.primary[700],
+    color: colors.primary[700],
   },
 });

@@ -8,7 +8,7 @@ import { RefreshControl } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useRouteList } from '../hooks/useRouteList';
 import { Route } from '../types';
 import { RouteListHeader } from '../components/RouteListHeader';
@@ -18,9 +18,11 @@ import { RouteListLoading } from '../components/RouteListLoading';
 import { RouteListError } from '../components/RouteListError';
 import { RouteListEmpty } from '../components/RouteListEmpty';
 import { RouteListFab } from '../components/RouteListFab';
-import { styles } from './RouteListScreen.styles';
+import { createStyles } from './RouteListScreen.styles';
 
 export const RouteListScreen: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     routes,
     stats,
@@ -59,7 +61,7 @@ export const RouteListScreen: React.FC = () => {
             <RefreshControl
               refreshing={isRefetching}
               onRefresh={handleRefresh}
-              tintColor={Theme.primary[500]}
+              tintColor={colors.primary[500]}
             />
           }
           ListEmptyComponent={

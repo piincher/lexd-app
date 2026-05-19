@@ -10,7 +10,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import {
   ContainerStatus,
   TIMELINE_STEPS,
-  CONTAINER_STATUS_COLORS,
+  getContainerStatusColors,
 } from '../../types';
 import {  createStyles  } from '../ContainerDetailScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -40,7 +40,7 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
         {TIMELINE_STEPS.map((step, index) => {
           const isCompleted = index <= activeStatusIndex;
           const isCurrent = index === activeStatusIndex;
-          const stepColor = CONTAINER_STATUS_COLORS[step.status];
+          const stepColor = getContainerStatusColors(colors)[step.status];
 
           return (
             <View key={step.status} style={styles.timelineStep}>

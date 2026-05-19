@@ -73,12 +73,12 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
     <View style={styles.container}>
       <View style={[styles.searchContainer, isFocused && styles.searchContainerFocused]}>
         <LinearGradient colors={[colors.background.card, colors.background.default]} style={styles.searchGradient}>
-          <Ionicons name="search" size={20} color={isFocused ? Theme.primary[500] : Theme.neutral[400]} style={styles.searchIcon} />
+          <Ionicons name="search" size={20} color={isFocused ? colors.primary[500] : colors.neutral[400]} style={styles.searchIcon} />
           <TextInput
             ref={inputRef}
             style={styles.searchInput}
             placeholder={placeholder}
-            placeholderTextColor={Theme.neutral[400]}
+            placeholderTextColor={colors.neutral[400]}
             value={query}
             onChangeText={setQuery}
             onSubmitEditing={handleSubmit}
@@ -90,11 +90,11 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
           />
           {query.length > 0 ? (
             <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
-              <Ionicons name="close-circle" size={22} color={Theme.neutral[400]} />
+              <Ionicons name="close-circle" size={22} color={colors.neutral[400]} />
             </TouchableOpacity>
           ) : (
             <TouchableOpacity style={styles.filterButton} onPress={onFilterPress}>
-              <Ionicons name="options-outline" size={22} color={Theme.primary[500]} />
+              <Ionicons name="options-outline" size={22} color={colors.primary[500]} />
             </TouchableOpacity>
           )}
         </LinearGradient>

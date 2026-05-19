@@ -1,22 +1,13 @@
 import { StyleSheet } from "react-native";
 
-type ShipColors = {
-  navy: string;
-  navyLight: string;
-  navyBorder: string;
-  grayLight: string;
-  grayText: string;
-  progressTrack: string;
-};
-
-export const createStyles = (SHIP_COLORS: ShipColors) =>
+export const createStyles = (colors: any) =>
   StyleSheet.create({
     card: {
       marginHorizontal: 20,
       borderRadius: 16,
       borderWidth: 1,
       padding: 16,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.06,
       shadowRadius: 8,
@@ -93,15 +84,15 @@ export const createStyles = (SHIP_COLORS: ShipColors) =>
       alignItems: "center",
     },
     stepCircleActive: {
-      backgroundColor: SHIP_COLORS.navy,
+      backgroundColor: "#1B365D",
     },
     stepCircleCompleted: {
-      backgroundColor: SHIP_COLORS.navy,
+      backgroundColor: "#1B365D",
     },
     stepCircleInactive: {
       backgroundColor: "transparent",
       borderWidth: 2,
-      borderColor: SHIP_COLORS.progressTrack,
+      borderColor: colors.border,
     },
     stepLine: {
       height: 2,

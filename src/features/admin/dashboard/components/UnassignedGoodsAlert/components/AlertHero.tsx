@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface AlertHeroProps {
@@ -12,12 +13,12 @@ interface AlertHeroProps {
 }
 
 export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const gradient = hasUnassigned
-    ? (["#F97316", "#EA580C", "#C2410C"] as const)
-    : (["#10B981", "#059669", "#047857"] as const);
+    ? Theme.gradients.sunset
+    : Theme.gradients.primary;
 
-  const styles = StyleSheet.create({
+  const styles = useMemo(() => StyleSheet.create({
     heroGradient: {
       padding: 18,
       paddingBottom: hasUnassigned ? 22 : 18,
@@ -29,7 +30,7 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
       width: 140,
       height: 140,
       borderRadius: 70,
-      backgroundColor: "rgba(255,255,255,0.08)",
+      backgroundColor: "rgba(255,255,255,0.08)", // Decorative white overlay on colored gradient
     },
     header: {
       flexDirection: "row",
@@ -41,9 +42,9 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
       width: 40,
       height: 40,
       borderRadius: 13,
-      backgroundColor: "rgba(255,255,255,0.22)",
+      backgroundColor: "rgba(255,255,255,0.22)", // Decorative white overlay on colored gradient
       borderWidth: 1,
-      borderColor: "rgba(255,255,255,0.25)",
+      borderColor: "rgba(255,255,255,0.25)", // Decorative white overlay on colored gradient
       justifyContent: "center",
       alignItems: "center",
     },
@@ -56,7 +57,7 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
     subtitle: {
       fontSize: 11,
       fontFamily: Fonts.regular,
-      color: "rgba(255,255,255,0.8)",
+      color: colors.text.inverse,
       marginTop: 1,
     },
     count: {
@@ -68,7 +69,7 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
     countLabel: {
       fontSize: 12,
       fontFamily: Fonts.regular,
-      color: "rgba(255,255,255,0.82)",
+      color: colors.text.inverse,
       marginTop: 2,
     },
     successText: {
@@ -79,10 +80,10 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
     successSubtext: {
       fontSize: 11,
       fontFamily: Fonts.regular,
-      color: "rgba(255,255,255,0.82)",
+      color: colors.text.inverse,
       marginTop: 2,
     },
-  });
+  }), [colors, isDark]);
 
   return (
     <LinearGradient

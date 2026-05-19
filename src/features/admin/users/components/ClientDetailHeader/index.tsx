@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { styles } from "./ClientDetailHeader.styles";
+import { createStyles } from "./ClientDetailHeader.styles";
 
 interface ClientDetailHeaderProps {
   totalShipments: number;
@@ -12,6 +12,7 @@ interface ClientDetailHeaderProps {
 export const ClientDetailHeader: React.FC<ClientDetailHeaderProps> = ({ totalShipments }) => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>

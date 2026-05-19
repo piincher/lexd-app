@@ -6,11 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { AuditFilters } from '../components';
 import { useAuditLogListScreen } from './hooks/useAuditLogListScreen';
-import { createAuditLogListStyles } from './AuditLogListScreen.styles';
+import { createStyles } from './AuditLogListScreen.styles';
 
 const AuditLogListScreen: React.FC = () => {
-  const { colors } = useAppTheme();
-  const styles = createAuditLogListStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     filters,
     setFilters,

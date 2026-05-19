@@ -8,6 +8,7 @@ import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native
 import { useNetworkStatus } from '../hooks/useNetworkStatus';
 import { useFormattedSyncStatus } from '../hooks/useSyncStatus';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface OfflineBannerProps {
   /** Whether to show sync status when online */
@@ -25,12 +26,14 @@ interface OfflineBannerProps {
 export const OfflineBanner: React.FC<OfflineBannerProps> = ({
   showSyncStatus = true,
   backgroundColor,
-  textColor = '#FFFFFF',
+  textColor,
   onDismiss,
   dismissible = false,
 }) => {
+  const { colors } = useAppTheme();
   const { isOnline, isWifi } = useNetworkStatus();
   const { statusText, statusColor, badgeCount } = useFormattedSyncStatus();
+  const effectiveTextColor = textColor || colors.neutral.white;
   const [dismissed, setDismissed] = useState(false);
   const [slideAnim] = useState(new Animated.Value(0));
 
@@ -70,7 +73,7 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
   const getBannerStyle = () => {
     if (!isOnline) {
       return {
-        backgroundColor: backgroundColor || '#F44336', // Red for offline
+        backgroundColor: backgroundColor || colors.status.error, // Red for offline
         icon: 'wifi-off',
         message: isWifi ? 'Mode hors ligne (WiFi)' : 'Mode hors ligne',
       };
@@ -85,7 +88,7 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
     }
 
     return {
-      backgroundColor: '#4CAF50',
+      backgroundColor: colors.status.success,
       icon: 'check-circle',
       message: 'Synchronisé',
     };
@@ -109,17 +112,17 @@ export const OfflineBanner: React.FC<OfflineBannerProps> = ({
         <MaterialCommunityIcons
           name={bannerStyle.icon as any}
           size={20}
-          color={textColor}
+          color={effectiveTextColor}
           style={styles.icon}
         />
-        <Text style={[styles.text, { color: textColor }]}>
+        <Text style={[styles.text, { color: effectiveTextColor }]}>
           {bannerStyle.message}
         </Text>
       </View>
       
       {dismissible && (
         <TouchableOpacity onPress={handleDismiss} style={styles.dismissButton}>
-          <MaterialCommunityIcons name="close" size={20} color={textColor} />
+          <MaterialCommunityIcons name="close" size={20} color={effectiveTextColor} />
         </TouchableOpacity>
       )}
     </Animated.View>

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   rowHighlight: {
-    backgroundColor: Theme.colors.neutral[50],
+    backgroundColor: Theme.neutral[50],
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 10,

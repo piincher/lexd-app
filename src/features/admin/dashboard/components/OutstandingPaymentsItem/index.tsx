@@ -25,7 +25,7 @@ export const OutstandingPaymentsItem: React.FC<OutstandingPaymentsItemProps> = (
   onPress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = createStyles(colors);
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const statusConfig = getStatusConfig(item.paymentStatus, colors, isDark);
 
   return (

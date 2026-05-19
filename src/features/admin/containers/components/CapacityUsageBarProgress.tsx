@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './CapacityUsageBar.styles';
+import { createStyles } from './CapacityUsageBar.styles';
 
 interface CapacityUsageBarProgressProps {
   percentage: number;
@@ -17,7 +17,8 @@ export const CapacityUsageBarProgress: React.FC<CapacityUsageBarProgressProps> =
   height,
   showPercentage,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={[styles.barContainer, { height }]}>
       <View style={styles.backgroundBar}>

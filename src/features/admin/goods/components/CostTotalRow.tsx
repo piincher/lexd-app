@@ -9,20 +9,7 @@ interface CostTotalRowProps {
   formatCurrency: (amount: number) => string;
 }
 
-export const CostTotalRow: React.FC<CostTotalRowProps> = ({ totalCost, formatCurrency }) => {
-  const { colors } = useAppTheme();
-  return (
-    <View style={styles.row}>
-      <Text style={[styles.label, { color: colors.text.primary }]}>Coût total</Text>
-      <View style={styles.valueContainer}>
-        <Text style={[styles.value, { color: colors.status.success }]}>{formatCurrency(totalCost)}</Text>
-        <Text style={[styles.currency, { color: colors.status.success }]}>FCFA</Text>
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -47,3 +34,17 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
 });
+
+export const CostTotalRow: React.FC<CostTotalRowProps> = ({ totalCost, formatCurrency }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(), []);
+  return (
+    <View style={styles.row}>
+      <Text style={[styles.label, { color: colors.text.primary }]}>Coût total</Text>
+      <View style={styles.valueContainer}>
+        <Text style={[styles.value, { color: colors.status.success }]}>{formatCurrency(totalCost)}</Text>
+        <Text style={[styles.currency, { color: colors.status.success }]}>FCFA</Text>
+      </View>
+    </View>
+  );
+};

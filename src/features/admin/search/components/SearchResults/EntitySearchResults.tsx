@@ -2,7 +2,7 @@ import React from "react";
 import { View, RefreshControl, StyleSheet } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { FlashList } from "@shopify/flash-list";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SearchResultItem, SearchResultsProps } from "../../types/searchResults";
 import { GoodsResultItem } from "./GoodsResultItem";
 import { ContainerResultItem } from "./ContainerResultItem";
@@ -30,6 +30,8 @@ export const EntitySearchResults: React.FC<EntitySearchResultsProps> = ({
   isLoading,
   highlightQuery = "",
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const handlePress = (item: SearchResultItem) => onItemPress(item, entity);
 
   const renderItem = ({ item }: { item: SearchResultItem }) => {
@@ -77,7 +79,7 @@ export const EntitySearchResults: React.FC<EntitySearchResultsProps> = ({
       ListFooterComponent={
         pagination?.hasNext ? (
           <View style={styles.loadMoreContainer}>
-            <ActivityIndicator size="small" color={Theme.primary[500]} />
+            <ActivityIndicator size="small" color={colors.primary[500]} />
           </View>
         ) : null
       }
@@ -85,17 +87,17 @@ export const EntitySearchResults: React.FC<EntitySearchResultsProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   listContent: {
-    paddingBottom: Theme.spacing.xl,
+    paddingBottom: 24,
   },
   separator: {
     height: 1,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     marginLeft: 72,
   },
   loadMoreContainer: {
-    paddingVertical: Theme.spacing.lg,
+    paddingVertical: 16,
     alignItems: "center",
   },
 });

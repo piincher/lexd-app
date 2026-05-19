@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 /**
  * JourneySummary - Departure and arrival summary card
  */
@@ -19,21 +20,24 @@ export const JourneySummary: React.FC<JourneySummaryProps> = ({
   destination,
   styles,
   secondaryTextColor,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <Animated.View entering={FadeInUp.delay(700)} style={styles.summaryCard}>
     <Text style={styles.summaryTitle}>Résumé du Voyage</Text>
     <View style={styles.summaryRow}>
       <View style={styles.summaryItem}>
-        <Ionicons name="navigate-outline" size={20} color={Theme.primary[500]} />
+        <Ionicons name="navigate-outline" size={20} color={colors.primary[500]} />
         <Text style={styles.summaryLabel}>Départ</Text>
         <Text style={styles.summaryValue}>{origin || 'N/A'}</Text>
       </View>
       <Ionicons name="arrow-forward" size={20} color={secondaryTextColor} />
       <View style={styles.summaryItem}>
-        <Ionicons name="flag-outline" size={20} color={Theme.status.success} />
+        <Ionicons name="flag-outline" size={20} color={colors.status.success} />
         <Text style={styles.summaryLabel}>Arrivée</Text>
         <Text style={styles.summaryValue}>{destination || 'N/A'}</Text>
       </View>
     </View>
   </Animated.View>
-);
+  );
+};

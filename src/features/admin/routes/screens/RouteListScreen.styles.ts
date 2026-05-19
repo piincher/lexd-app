@@ -5,10 +5,10 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.colors.background.default,
+    backgroundColor: colors.background.default,
   },
   listContent: {
     paddingTop: Theme.spacing.sm,
@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.xl,
   },
   snackbar: {
-    backgroundColor: Theme.neutral[800],
+    backgroundColor: colors.neutral[800],
     borderRadius: Theme.radius.lg,
     marginBottom: Theme.spacing.lg,
   },

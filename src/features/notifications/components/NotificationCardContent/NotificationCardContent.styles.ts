@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     marginHorizontal: 16,
     marginVertical: 5,
     borderRadius: 16,
@@ -13,9 +13,9 @@ export const styles = StyleSheet.create({
     ...Theme.shadows.sm,
   },
   unreadCard: {
-    backgroundColor: Theme.colors.background.elevated,
+    backgroundColor: colors.background.elevated,
     borderWidth: 1,
-    borderColor: Theme.primary[100],
+    borderColor: colors.primary[100],
   },
   pressed: {
     opacity: 0.85,
@@ -51,12 +51,12 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: Fonts.medium,
     fontWeight: '500',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   unreadTitle: {
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.neutral[900],
+    color: colors.neutral[900],
   },
   unreadDot: {
     width: 8,
@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   message: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     lineHeight: 18,
     marginBottom: 8,
   },
@@ -89,6 +89,6 @@ export const styles = StyleSheet.create({
   time: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
 });

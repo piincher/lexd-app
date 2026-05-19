@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   empty: {
     alignItems: "center",
     justifyContent: "center",
@@ -9,7 +8,7 @@ export const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 16,
   },
 });

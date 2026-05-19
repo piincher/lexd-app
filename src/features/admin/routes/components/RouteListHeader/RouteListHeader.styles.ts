@@ -5,7 +5,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   header: {
     paddingHorizontal: Theme.spacing.xl,
     paddingTop: Theme.spacing.lg,
@@ -22,19 +22,19 @@ export const styles = StyleSheet.create({
   headerGreeting: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   headerTitle: {
     fontSize: 32,
     fontWeight: '800',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     letterSpacing: -0.5,
   },
   iconButton: {
     width: 44,
     height: 44,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     justifyContent: 'center',
     alignItems: 'center',
     ...Theme.shadows.sm,

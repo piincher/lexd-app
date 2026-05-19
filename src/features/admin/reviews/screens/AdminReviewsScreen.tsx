@@ -3,8 +3,9 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { RootStackScreenProps } from "@src/navigations/type";
-import { Theme } from "@src/constants/Theme";
+
 import { ReviewStats } from "../components/ReviewStats";
 import { ReviewFilters, FILTER_CHIPS } from "../components/ReviewFilters";
 import { ReviewList } from "../components/ReviewList";
@@ -12,11 +13,13 @@ import {
   useReviewAdminScreen,
   useReviewAdminData,
 } from "../hooks/useReviewAdminScreen";
-import { styles } from "./AdminReviewsScreen.styles";
+import { createStyles } from "./AdminReviewsScreen.styles";
 
 export default function AdminReviewsScreen({
   navigation,
 }: RootStackScreenProps<"AdminReviews">) {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     activeFilter,
     page,
@@ -50,7 +53,7 @@ export default function AdminReviewsScreen({
             onPress={() => navigation.goBack()}
             activeOpacity={0.7}
           >
-            <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
+            <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
           </TouchableOpacity>
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitle}>Avis Clients</Text>
@@ -59,7 +62,7 @@ export default function AdminReviewsScreen({
           <NotificationBell
             onPress={() => navigation.navigate("Notifications" as never)}
             size={24}
-            color={Theme.colors.text.primary}
+            color={colors.text.primary}
           />
         </View>
       </View>

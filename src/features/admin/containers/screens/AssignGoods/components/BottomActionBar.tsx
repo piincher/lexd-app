@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,6 +27,7 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
   onAssign,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   if (selectedCount === 0) {
     return null;
   }
@@ -52,13 +53,13 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
               style={styles.assignButtonGradient}
             >
               {isPending ? (
-                <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
+                <ActivityIndicator size="small" color={colors.text.inverse} />
               ) : (
                 <>
                   <Text style={[styles.assignButtonText, (isOverCapacity || !isAssignable) && styles.assignButtonTextDisabled]}>
                     {!isAssignable ? 'Verrouillé' : 'Assigner'}
                   </Text>
-                  <Ionicons name={!isAssignable ? "lock-closed" : "arrow-forward"} size={18} color={isOverCapacity || !isAssignable ? Theme.neutral[400] : Theme.colors.text.inverse} />
+                  <Ionicons name={!isAssignable ? "lock-closed" : "arrow-forward"} size={18} color={isOverCapacity || !isAssignable ? colors.neutral[400] : colors.text.inverse} />
                 </>
               )}
             </LinearGradient>
@@ -69,7 +70,7 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   bottomBar: {
     position: 'absolute',
     bottom: 0,
@@ -94,15 +95,15 @@ const styles = StyleSheet.create({
   selectionCount: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.neutral[900],
+    color: colors.neutral[900],
   },
   selectionCBM: {
     fontSize: 14,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     marginTop: 4,
   },
   selectionCBMError: {
-    color: Theme.status.error,
+    color: colors.status.error,
   },
   assignButton: {
     borderRadius: 12,
@@ -122,9 +123,9 @@ const styles = StyleSheet.create({
   assignButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
   assignButtonTextDisabled: {
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
 });

@@ -8,7 +8,7 @@ import { Badge } from "@src/shared/ui/Badge";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { ExportLog } from "../../types";
 import { ENTITY_CONFIG, FORMAT_ICONS } from "../../constants";
-import { styles } from "./ExportListItem.styles";
+import { createStyles } from "./ExportListItem.styles";
 
 interface ExportListItemProps {
   item: ExportLog;
@@ -32,6 +32,7 @@ export const ExportListItem: React.FC<ExportListItemProps> = ({
   isDownloading,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const entityConfig = ENTITY_CONFIG[item.entity];
   const statusVariant = getStatusVariant(item.metadata.status);
 

@@ -13,8 +13,32 @@ interface GoodsCardClientProps {
   clientId: string | ClientInfo;
 }
 
+const createStyles = () => StyleSheet.create({
+  container: {
+    marginTop: Theme.spacing.sm,
+    gap: 4,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  name: {
+    fontSize: Theme.typography.caption.fontSize,
+    lineHeight: Theme.typography.caption.lineHeight,
+    letterSpacing: Theme.typography.caption.letterSpacing,
+    fontWeight: '600',
+  },
+  phone: {
+    fontSize: Theme.typography.caption.fontSize,
+    lineHeight: Theme.typography.caption.lineHeight,
+    letterSpacing: Theme.typography.caption.letterSpacing,
+  },
+});
+
 export const GoodsCardClient: React.FC<GoodsCardClientProps> = ({ clientId }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(), []);
   const clientInfo = typeof clientId === 'string' ? null : clientId;
   const clientName = clientInfo ? `${clientInfo.firstName} ${clientInfo.lastName}` : '';
   const clientPhone = clientInfo ? clientInfo.phoneNumber : '';
@@ -42,26 +66,3 @@ export const GoodsCardClient: React.FC<GoodsCardClientProps> = ({ clientId }) =>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: Theme.spacing.sm,
-    gap: 4,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  name: {
-    fontSize: Theme.typography.caption.fontSize,
-    lineHeight: Theme.typography.caption.lineHeight,
-    letterSpacing: Theme.typography.caption.letterSpacing,
-    fontWeight: '600',
-  },
-  phone: {
-    fontSize: Theme.typography.caption.fontSize,
-    lineHeight: Theme.typography.caption.lineHeight,
-    letterSpacing: Theme.typography.caption.letterSpacing,
-  },
-});

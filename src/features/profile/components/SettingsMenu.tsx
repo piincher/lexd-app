@@ -4,14 +4,15 @@ import { Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { getMenuSections } from './SettingsMenuData';
 import { SettingsMenuItem } from './SettingsMenuItem';
-import { styles } from './SettingsMenu.styles';
+import { createStyles } from './SettingsMenu.styles';
 
 interface Props {
   onNavigate: (screen: string) => void;
 }
 
 export const SettingsMenu: React.FC<Props> = ({ onNavigate }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const cardBg = colors.background.card;
   const cardBorder = colors.border;
   const menuSections = getMenuSections(colors);

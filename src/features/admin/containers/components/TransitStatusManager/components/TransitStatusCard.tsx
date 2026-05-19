@@ -8,7 +8,7 @@ import { ContainerWaypoint, WaypointStatus } from '../../../types/waypoints';
 import { WaypointStatusDisplay } from './WaypointStatusDisplay';
 import { WaypointLocationInfo } from './WaypointLocationInfo';
 import { WAYPOINT_STATUS_ICONS, formatTimestamp } from './transitStatusUtils';
-import { styles } from './TransitStatusCard.styles';
+import { createStyles } from './TransitStatusCard.styles';
 
 export interface TransitStatusCardProps {
   containerNumber: string;
@@ -27,13 +27,14 @@ export const TransitStatusCard: React.FC<TransitStatusCardProps> = ({
   progressPercentage,
   isLoading,
 }) => {
-  const { isDark } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const currentStatus = (currentWaypoint?.status || 'IN_PROGRESS') as WaypointStatus;
   const currentStatusColor = WAYPOINT_STATUS_COLORS[currentStatus];
   const currentStatusLabel = WAYPOINT_STATUS_LABELS[currentStatus];
   const currentStatusIcon = WAYPOINT_STATUS_ICONS[currentStatus];
   const segmentType = currentWaypoint?.segmentType || 'SEA';
   const segmentIcon = (SEGMENT_TYPE_ICONS[segmentType] || 'boat') as React.ComponentProps<typeof Ionicons>['name'];
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   if (isLoading) {
     return (

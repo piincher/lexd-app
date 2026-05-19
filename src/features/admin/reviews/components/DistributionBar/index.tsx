@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { styles } from "./DistributionBar.styles";
+import { createStyles } from "./DistributionBar.styles";
 
 interface DistributionBarProps {
   star: number;
@@ -15,7 +15,8 @@ export const DistributionBar: React.FC<DistributionBarProps> = ({
   count,
   total,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const percentage = total > 0 ? (count / total) * 100 : 0;
 
   return (

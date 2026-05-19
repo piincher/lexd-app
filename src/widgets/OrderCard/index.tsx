@@ -2,7 +2,7 @@ import React, { memo, useMemo } from 'react';
 import { Pressable, View, Text } from 'react-native';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './OrderCard.styles';
+import { createStyles } from './OrderCard.styles';
 
 interface OrderCardProps {
   order: {
@@ -49,6 +49,7 @@ const formatShortDate = (dateStr?: string): string => {
 
 const OrderCardInner: React.FC<OrderCardProps> = ({ order, onPress }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const statusConfig = useMemo(() => ({
     Active: { label: 'En cours', color: colors.status.info, bg: colors.feedback.infoBg },

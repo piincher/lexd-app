@@ -88,7 +88,7 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
         origin={waypoints[0]?.location}
         destination={finalDestination?.location}
         styles={styles}
-        secondaryTextColor={Theme.neutral[400]}
+        secondaryTextColor={colors.neutral[400]}
       />
 
       {dakarWaypoint && <DakarInfo dakarWaypoint={dakarWaypoint} styles={styles} />}

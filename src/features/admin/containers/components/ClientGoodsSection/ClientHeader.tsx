@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { ClientGoodsGroup } from '../../types/packingList';
-import { styles } from './ClientGoodsSection.styles';
+import { createStyles } from './ClientGoodsSection.styles';
 
 interface ClientHeaderProps {
   clientGroup: ClientGoodsGroup;
@@ -14,7 +14,8 @@ interface ClientHeaderProps {
 }
 
 export const ClientHeader: React.FC<ClientHeaderProps> = ({ clientGroup, isExpanded, onToggle }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { clientName, clientPhone, summary } = clientGroup;
   const balance = summary.balanceDue || 0;
   const isPaid = balance <= 0;
@@ -23,7 +24,7 @@ export const ClientHeader: React.FC<ClientHeaderProps> = ({ clientGroup, isExpan
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={onToggle} style={styles.header}>
-      <LinearGradient colors={[Theme.primary[50], colors.background.card]} style={styles.headerGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+      <LinearGradient colors={[colors.primary[50], colors.background.card]} style={styles.headerGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
         <View style={styles.headerContent}>
           <View style={styles.clientInfo}>
             <View style={styles.avatarContainer}>
@@ -32,7 +33,7 @@ export const ClientHeader: React.FC<ClientHeaderProps> = ({ clientGroup, isExpan
             <View style={styles.clientDetails}>
               <Text style={styles.clientName} numberOfLines={2}>{clientName}</Text>
               <View style={styles.phoneRow}>
-                <Ionicons name="call-outline" size={12} color={Theme.neutral[500]} />
+                <Ionicons name="call-outline" size={12} color={colors.neutral[500]} />
                 <Text style={styles.clientPhone}>{clientPhone}</Text>
               </View>
               <View style={styles.financialRow}>
@@ -75,7 +76,7 @@ export const ClientHeader: React.FC<ClientHeaderProps> = ({ clientGroup, isExpan
           </View>
 
           <View style={styles.expandIcon}>
-            <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color={Theme.primary[600]} />
+            <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color={colors.primary[600]} />
           </View>
         </View>
       </LinearGradient>

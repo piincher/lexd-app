@@ -1,18 +1,17 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   searchContainer: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.colors.neutral[200],
+    borderBottomColor: colors.neutral[200],
   },
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: 12,
     paddingHorizontal: 16,
     height: 48,
@@ -23,7 +22,7 @@ export const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 16,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     paddingVertical: 0,
   },
   clearButton: {
@@ -40,7 +39,7 @@ export const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 14,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   emptyContainer: {
     justifyContent: "center",
@@ -50,7 +49,7 @@ export const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 15,
-    color: Theme.colors.text.disabled,
+    color: colors.text.disabled,
     textAlign: "center",
   },
 });

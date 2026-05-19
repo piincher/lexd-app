@@ -202,7 +202,7 @@ export const HomeBottomTab: React.FC = () => {
           paddingBottom: bottomPadding,
           paddingTop: 4,
           elevation: 12,
-          shadowColor: '#000',
+          shadowColor: colors.neutral[900],
           shadowOpacity: 0.08,
           shadowRadius: 8,
           shadowOffset: { width: 0, height: -2 },

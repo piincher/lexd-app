@@ -1,7 +1,7 @@
 import React from "react";
 import { Text } from "react-native-paper";
 import { Button, Dialog, Portal } from "react-native-paper";
-import { styles } from "./BackupManager.styles";
+import { createStyles } from "./BackupManager.styles";
 import { Backup } from "../../types";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
@@ -20,7 +20,8 @@ export const RestoreDialog: React.FC<RestoreDialogProps> = ({
   onDismiss,
   onConfirm,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Portal>

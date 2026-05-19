@@ -84,7 +84,7 @@ const ErrorFallback: React.FC<ErrorFallbackProps> = ({
           marginBottom: 24,
           borderLeftWidth: 4,
           borderLeftColor: colors.status.error,
-          shadowColor: '#000',
+          shadowColor: colors.neutral[900],
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.1,
           shadowRadius: 4,

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface SearchResults {
   goodsFound: unknown[];
@@ -15,30 +15,32 @@ interface WhatsAppRequestCardSearchResultsProps {
 export const WhatsAppRequestCardSearchResults: React.FC<WhatsAppRequestCardSearchResultsProps> = ({
   searchResults,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   if (!searchResults) return null;
 
   return (
     <View style={styles.searchResults}>
       <View style={styles.resultItem}>
-        <Ionicons name="cube" size={16} color={Theme.neutral[500]} />
+        <Ionicons name="cube" size={16} color={colors.neutral[500]} />
         <Text style={styles.resultText}>{searchResults.goodsFound.length} marchandise(s)</Text>
       </View>
       <View style={styles.resultItem}>
-        <Ionicons name="cube" size={16} color={Theme.neutral[500]} />
+        <Ionicons name="cube" size={16} color={colors.neutral[500]} />
         <Text style={styles.resultText}>{searchResults.containersFound.length} container(s)</Text>
       </View>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   searchResults: {
     flexDirection: 'row',
-    gap: Theme.spacing.lg,
-    padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral[50],
-    borderRadius: Theme.radius.lg,
-    marginBottom: Theme.spacing.md,
+    gap: 16,
+    padding: 12,
+    backgroundColor: colors.neutral[50],
+    borderRadius: 8,
+    marginBottom: 12,
   },
   resultItem: {
     flexDirection: 'row',
@@ -47,6 +49,6 @@ const styles = StyleSheet.create({
   },
   resultText: {
     fontSize: 13,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
 });

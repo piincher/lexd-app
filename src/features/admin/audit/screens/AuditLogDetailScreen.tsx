@@ -7,14 +7,14 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { AuditChangeList, AuditDetailBlock } from '../components';
 import { useAuditLogDetail } from '../hooks';
 import { formatAuditDate } from '../utils/formatAudit';
-import { createAuditLogDetailStyles } from './AuditLogDetailScreen.styles';
+import { createStyles } from './AuditLogDetailScreen.styles';
 
 const AuditLogDetailScreen: React.FC<RootStackScreenProps<'AuditLogDetail'>> = ({
   navigation,
   route,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = createAuditLogDetailStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { data, isLoading, isError } = useAuditLogDetail(route.params.auditLogId);
 
   return (

@@ -10,7 +10,7 @@ import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   TicketStatus, TicketType, TicketPriority,
-  TICKET_STATUS_LABELS, TICKET_STATUS_COLORS, TICKET_STATUS_BG_COLORS,
+  TICKET_STATUS_LABELS, TICKET_STATUS_COLORS,
   TICKET_TYPE_LABELS, TICKET_PRIORITY_LABELS, TICKET_PRIORITY_COLORS,
 } from '../../types';
 
@@ -92,7 +92,7 @@ export const TicketFilterDrawer: React.FC<TicketFilterDrawerProps> = ({
             onToggle={onToggleStatus}
             getLabel={(s) => TICKET_STATUS_LABELS[s as TicketStatus]}
             getColor={(s) => TICKET_STATUS_COLORS[s as TicketStatus]}
-            getBgColor={(s) => TICKET_STATUS_BG_COLORS[s as TicketStatus]}
+            getBgColor={(s) => TICKET_STATUS_COLORS[s as TicketStatus] + '15'}
           />
           <Section
             title="Type"

@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius['2xl'],
     marginHorizontal: Theme.spacing.lg,
     marginVertical: Theme.spacing.sm,
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   assignableBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.colors.status.success + '18',
+    backgroundColor: colors.status.success + '18',
     paddingHorizontal: Theme.spacing.sm,
     paddingVertical: 2,
     borderRadius: Theme.radius.full,
@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
   assignableBadgeText: {
     fontSize: 10,
     fontWeight: '700',
-    color: Theme.status.success,
+    color: colors.status.success,
   },
   content: {
     padding: Theme.spacing.lg,
@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   containerNumber: {
     fontSize: 18,
     fontWeight: '800',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     letterSpacing: -0.5,
   },
   modeBadgeContainer: {
@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.xs,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     gap: Theme.spacing.xs,
     flex: 1,
     maxWidth: '60%',
@@ -86,7 +86,7 @@ export const styles = StyleSheet.create({
   routeBadgeText: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   shippingLine: {
     flexDirection: 'row',
@@ -95,7 +95,7 @@ export const styles = StyleSheet.create({
   },
   shippingLineText: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginLeft: Theme.spacing.sm,
     fontWeight: '500',
   },
@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
   },
   consigneeText: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginLeft: Theme.spacing.sm,
     fontWeight: '500',
   },
@@ -122,7 +122,7 @@ export const styles = StyleSheet.create({
   capacityLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
@@ -132,7 +132,7 @@ export const styles = StyleSheet.create({
   },
   progressBarBackground: {
     height: 8,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: Theme.radius.full,
     overflow: 'hidden',
   },
@@ -148,12 +148,12 @@ export const styles = StyleSheet.create({
   capacityStatsText: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   goodsCount: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   timeline: {
     flexDirection: 'row',
@@ -161,7 +161,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: Theme.spacing.md,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
   },
   timelineItem: {
     alignItems: 'center',
@@ -175,12 +175,12 @@ export const styles = StyleSheet.create({
   timelineLabel: {
     fontSize: 11,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   timelineLine: {
     flex: 1,
     height: 2,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     marginHorizontal: 8,
     marginBottom: 16,
   },

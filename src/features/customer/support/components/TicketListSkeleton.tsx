@@ -3,7 +3,7 @@
  * Skeleton loading placeholder matching TicketCard layout
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { ShimmerBlock } from '@src/shared/ui';
@@ -11,6 +11,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const TicketSkeletonItem: React.FC = () => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View
@@ -73,7 +74,7 @@ export const TicketListSkeleton: React.FC<TicketListSkeletonProps> = ({ count = 
   </Animated.View>
 );
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   list: {
     flex: 1,
     paddingTop: 4,
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
     shadowRadius: 4,

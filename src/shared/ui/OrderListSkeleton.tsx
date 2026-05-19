@@ -39,7 +39,7 @@ const ShimmerBlock: React.FC<{
   }));
 
   return (
-    <View style={[styles.block, { width, height, borderRadius, backgroundColor: blockBg }]}>
+    <View style={{ width, height, borderRadius, backgroundColor: blockBg, overflow: 'hidden' }}>
       <Animated.View style={[StyleSheet.absoluteFill, shimmerStyle]}>
         <LinearGradient
           colors={['transparent', isDark ? colors.neutral[700] : colors.neutral[50], 'transparent']}
@@ -54,6 +54,7 @@ const ShimmerBlock: React.FC<{
 
 const OrderSkeletonItem: React.FC = () => {
   const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View
@@ -62,6 +63,7 @@ const OrderSkeletonItem: React.FC = () => {
         {
           backgroundColor: colors.background.card,
           borderColor: colors.border,
+          shadowColor: colors.neutral[900],
         },
       ]}
     >
@@ -92,15 +94,19 @@ interface OrderListSkeletonProps {
   count?: number;
 }
 
-export const OrderListSkeleton: React.FC<OrderListSkeletonProps> = ({ count = 6 }) => (
-  <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
-    {Array.from({ length: count }).map((_, i) => (
-      <OrderSkeletonItem key={i} />
-    ))}
-  </Animated.View>
-);
+export const OrderListSkeleton: React.FC<OrderListSkeletonProps> = ({ count = 6 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  return (
+    <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
+      {Array.from({ length: count }).map((_, i) => (
+        <OrderSkeletonItem key={i} />
+      ))}
+    </Animated.View>
+  );
+};
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   list: {
     flex: 1,
     paddingHorizontal: 16,
@@ -112,7 +118,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     marginBottom: 10,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
     shadowRadius: 4,

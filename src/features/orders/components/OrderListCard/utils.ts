@@ -1,9 +1,9 @@
-export const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-   Active: { label: "En cours", color: "#1B365D", bg: "#E8EEF4" },
-   "In Transit": { label: "En transit", color: "#2D8FDB", bg: "#E8F4FD" },
-   Delivered: { label: "Livré", color: "#1AAE7E", bg: "#E6F7F1" },
-   Inactive: { label: "En attente", color: "#8E99A4", bg: "#F0F2F4" },
-   Arrived: { label: "Arrivé", color: "#F59E0B", bg: "#FEF3C7" },
+export const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
+   Active: { label: "En cours", color: "#1B365D" },
+   "In Transit": { label: "En transit", color: "#2D8FDB" },
+   Delivered: { label: "Livré", color: "#1AAE7E" },
+   Inactive: { label: "En attente", color: "#8E99A4" },
+   Arrived: { label: "Arrivé", color: "#F59E0B" },
 };
 
 export type StepIndex = 0 | 1 | 2 | 3 | 4;
@@ -16,7 +16,7 @@ export const STEP_PROGRESS: Record<StepIndex, number> = {
    4: 100,
 };
 
-export const STEP_STATUS_CONFIG: Record<StepIndex, { label: string; color: string; bg: string }> = {
+export const STEP_STATUS_CONFIG: Record<StepIndex, { label: string; color: string }> = {
    0: STATUS_CONFIG.Inactive,
    1: STATUS_CONFIG.Active,
    2: STATUS_CONFIG["In Transit"],

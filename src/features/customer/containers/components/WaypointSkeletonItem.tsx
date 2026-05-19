@@ -1,7 +1,8 @@
 import React from "react";
 import { View } from "react-native";
 import { ShimmerBlock } from "@src/shared/ui";
-import { styles } from "./ContainerTrackingSkeleton.styles";
+import { createStyles } from "./ContainerTrackingSkeleton.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface WaypointSkeletonItemProps {
   showConnector?: boolean;
@@ -9,7 +10,10 @@ interface WaypointSkeletonItemProps {
 
 export const WaypointSkeletonItem: React.FC<WaypointSkeletonItemProps> = ({
   showConnector = true,
-}) => (
+}) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <View>
     {showConnector && (
       <View style={styles.timelineConnector}>
@@ -39,4 +43,5 @@ export const WaypointSkeletonItem: React.FC<WaypointSkeletonItemProps> = ({
       </View>
     </View>
   </View>
-);
+  );
+};

@@ -21,10 +21,10 @@ const formatCurrency = (amount: number): string =>
     maximumFractionDigits: 0,
   }).format(amount);
 
-const MEDAL_META = [
-  { color: "#F59E0B", bg: "#FEF3C7", icon: "medal" },
-  { color: "#94A3B8", bg: "#E2E8F0", icon: "medal-outline" },
-  { color: "#B45309", bg: "#FED7AA", icon: "medal-outline" },
+const getMedalMeta = (colors: any) => [
+  { color: colors.status.warning, bg: colors.feedback.warningBg, icon: "medal" },
+  { color: colors.neutral[400], bg: colors.neutral[200], icon: "medal-outline" },
+  { color: colors.accent.goldDark, bg: colors.feedback.warningBg, icon: "medal-outline" },
 ] as const;
 
 const getInitials = (name: string): string =>
@@ -42,9 +42,9 @@ export const TopClientsListItem: React.FC<TopClientsListItemProps> = ({
   onPress,
 }) => {
   const styles = useTopClientsListStyles();
-  const { isDark } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
 
-  const medal = index < 3 ? MEDAL_META[index] : null;
+  const medal = index < 3 ? getMedalMeta(colors)[index] : null;
 
   return (
     <Pressable

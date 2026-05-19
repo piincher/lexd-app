@@ -10,7 +10,7 @@ interface OrderCardCheckboxProps {
 
 export const OrderCardCheckbox: React.FC<OrderCardCheckboxProps> = ({ isSelected }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = createStyles(colors, isDark);
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.checkboxColumn}>

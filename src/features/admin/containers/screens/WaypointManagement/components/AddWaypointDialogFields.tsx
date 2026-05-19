@@ -5,14 +5,18 @@ import { Menu } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
 import { SEGMENT_TYPE_OPTIONS, SEGMENT_TYPE_LABELS } from '../../../types';
 import { NewWaypointForm } from '../../hooks/types';
-import { styles } from './AddWaypointDialog.styles';
+import { createStyles } from './AddWaypointDialog.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface FieldsProps {
   newWaypoint: NewWaypointForm;
   onUpdateField: (field: keyof NewWaypointForm, value: any) => void;
 }
 
-export const LocationNameField: React.FC<FieldsProps> = ({ newWaypoint, onUpdateField }) => (
+export const LocationNameField: React.FC<FieldsProps> = ({ newWaypoint, onUpdateField }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <View style={styles.field}>
     <Text style={styles.label}>Location Name *</Text>
     <TextInput
@@ -20,12 +24,16 @@ export const LocationNameField: React.FC<FieldsProps> = ({ newWaypoint, onUpdate
       value={newWaypoint.locationCity || ''}
       onChangeText={(text) => onUpdateField('locationCity', text)}
       placeholder="Enter location name"
-      placeholderTextColor={Theme.neutral[400]}
+      placeholderTextColor={colors.neutral[400]}
     />
   </View>
-);
+  );
+};
 
-export const LocationCodeField: React.FC<FieldsProps> = ({ newWaypoint, onUpdateField }) => (
+export const LocationCodeField: React.FC<FieldsProps> = ({ newWaypoint, onUpdateField }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <View style={styles.field}>
     <Text style={styles.label}>Location Code *</Text>
     <TextInput
@@ -33,13 +41,16 @@ export const LocationCodeField: React.FC<FieldsProps> = ({ newWaypoint, onUpdate
       value={newWaypoint.locationCode || ''}
       onChangeText={(text) => onUpdateField('locationCode', text.toUpperCase())}
       placeholder="Enter location code (e.g., SHA)"
-      placeholderTextColor={Theme.neutral[400]}
+      placeholderTextColor={colors.neutral[400]}
       autoCapitalize="characters"
     />
   </View>
-);
+  );
+};
 
 export const SegmentTypeField: React.FC<FieldsProps> = ({ newWaypoint, onUpdateField }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const [typeMenuVisible, setTypeMenuVisible] = React.useState(false);
 
   return (
@@ -56,7 +67,7 @@ export const SegmentTypeField: React.FC<FieldsProps> = ({ newWaypoint, onUpdateF
             <Text style={newWaypoint.segmentType ? styles.dropdownText : styles.dropdownPlaceholder}>
               {newWaypoint.segmentType ? SEGMENT_TYPE_LABELS[newWaypoint.segmentType] : 'Select segment type'}
             </Text>
-            <Ionicons name="chevron-down" size={20} color={Theme.neutral[400]} />
+            <Ionicons name="chevron-down" size={20} color={colors.neutral[400]} />
           </TouchableOpacity>
         }
       >

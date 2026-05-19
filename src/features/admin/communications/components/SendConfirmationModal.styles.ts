@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 
-export const getStyles = (colors: any) => StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   overlay: {
     flex: 1,
     backgroundColor: colors.background.overlay,
@@ -12,7 +11,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
   },
   card: {
     width: '100%',
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 20,
     padding: 24,
     alignItems: 'center',
@@ -21,7 +20,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 20,
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
@@ -30,12 +29,12 @@ export const getStyles = (colors: any) => StyleSheet.create({
     fontSize: 20,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginBottom: 16,
   },
   summaryBox: {
     width: '100%',
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: 14,
     padding: 14,
     marginBottom: 14,
@@ -49,22 +48,22 @@ export const getStyles = (colors: any) => StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   summaryValue: {
     fontSize: 16,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   divider: {
     height: 1,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     marginVertical: 10,
   },
   previewBox: {
     width: '100%',
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     borderRadius: 14,
     padding: 14,
     marginBottom: 20,
@@ -73,7 +72,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
     fontSize: 11,
     fontFamily: Fonts.semiBold,
     fontWeight: '600',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 6,
@@ -81,7 +80,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
   previewText: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     lineHeight: 19,
   },
   actions: {
@@ -93,14 +92,14 @@ export const getStyles = (colors: any) => StyleSheet.create({
     flex: 1,
     paddingVertical: 14,
     borderRadius: 14,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     alignItems: 'center',
   },
   cancelText: {
     fontSize: 15,
     fontFamily: Fonts.semiBold,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   confirmWrapper: {
     flex: 1,
@@ -121,6 +120,6 @@ export const getStyles = (colors: any) => StyleSheet.create({
     fontSize: 15,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
 });

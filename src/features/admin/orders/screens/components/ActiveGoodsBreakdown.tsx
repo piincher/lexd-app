@@ -21,7 +21,7 @@ export const ActiveGoodsBreakdown: React.FC<ActiveGoodsBreakdownProps> = ({ good
   return (
     <View style={styles.card}>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Theme.spacing.md }}>
-        <Ionicons name="cube" size={20} color={Theme.primary[600]} />
+        <Ionicons name="cube" size={20} color={colors.primary[600]} />
         <Text style={[styles.cardTitle, { marginLeft: Theme.spacing.sm }]}>
           Marchandises Actives ({goods.length})
         </Text>

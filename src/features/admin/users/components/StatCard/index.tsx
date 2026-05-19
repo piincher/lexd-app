@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Animated, { FadeInUp } from "react-native-reanimated";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface StatCardProps {
   icon: string;
@@ -18,31 +18,36 @@ export const StatCard: React.FC<StatCardProps> = ({
   value, 
   color, 
   delay = 0 
-}) => (
-  <Animated.View 
-    entering={FadeInUp.delay(delay).duration(500)}
-    style={styles.container}
-  >
-    <View style={[styles.iconContainer, { backgroundColor: `${color}15` }]}>
-      <MaterialCommunityIcons name={icon as any} size={24} color={color} />
-    </View>
-    <View style={styles.content}>
-      <Text style={[styles.value, { color }]}>{value}</Text>
-      <Text style={styles.label}>{label}</Text>
-    </View>
-  </Animated.View>
-);
+}) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
 
-const styles = StyleSheet.create({
+  return (
+    <Animated.View 
+      entering={FadeInUp.delay(delay).duration(500)}
+      style={styles.container}
+    >
+      <View style={[styles.iconContainer, { backgroundColor: `${color}15` }]}>
+        <MaterialCommunityIcons name={icon as any} size={24} color={color} />
+      </View>
+      <View style={styles.content}>
+        <Text style={[styles.value, { color }]}>{value}</Text>
+        <Text style={styles.label}>{label}</Text>
+      </View>
+    </Animated.View>
+  );
+};
+
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.colors.text.inverse + "26",
+    backgroundColor: colors.text.inverse + "26",
     borderRadius: 16,
     padding: 12,
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: Theme.colors.text.inverse + "33",
+    borderColor: colors.text.inverse + "33",
   },
   iconContainer: {
     width: 40,
@@ -61,7 +66,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 12,
-    color: Theme.colors.text.inverse + "CC",
+    color: colors.text.inverse + "CC",
     marginTop: 2,
   },
 });

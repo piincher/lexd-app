@@ -8,7 +8,7 @@ export const createStyles = (colors: any) =>
       borderRadius: 22,
       justifyContent: 'center',
       alignItems: 'center',
-      shadowColor: '#000',
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,

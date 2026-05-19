@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 /**
  * INTEGRATION_EXAMPLE.tsx
  * 
@@ -80,6 +81,8 @@ export const HeaderWithNotifications: React.FC = () => {
 
 // Option B: Custom Header with NotificationBell
 export const CustomHeaderWithBell: React.FC<{ title: string }> = ({ title }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const navigation = useNavigation<NavigationProp>();
   const [dropdownVisible, setDropdownVisible] = useState(false);
 
@@ -209,11 +212,11 @@ const MyComponent = () => {
 };
 */
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   customHeader: {
     backgroundColor: '#fff',
     elevation: 4,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,

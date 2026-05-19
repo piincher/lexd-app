@@ -27,7 +27,7 @@ export const ContainerProfitCardDualLedger: React.FC<ContainerProfitCardDualLedg
       <ContainerProfitCardRow
         label={`CBM facturé aux clients (${(dualLedger.clientTotalCBM ?? 0).toFixed(2)} CBM)`}
         value={fmt(dualLedger.clientTotalRevenue ?? 0)}
-        valueColor={Theme.colors.text.primary}
+        valueColor={colors.text.primary}
       />
       <ContainerProfitCardRow
         label="Coût estimé (temps réel)"
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   },
   divider: {
     height: 1,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: Theme.neutral[100],
     marginVertical: 2,
   },
 });

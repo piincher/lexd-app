@@ -3,14 +3,15 @@ import { View, Text } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { ClientGoodsGroup } from '../../types/packingList';
-import { styles } from './ClientGoodsSection.styles';
+import { createStyles } from './ClientGoodsSection.styles';
 
 interface ClientSubtotalProps {
   clientGroup: ClientGoodsGroup;
 }
 
 export const ClientSubtotal: React.FC<ClientSubtotalProps> = ({ clientGroup }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { summary } = clientGroup;
   const balance = summary.balanceDue || 0;
   const isPaid = balance <= 0;
@@ -29,9 +30,9 @@ export const ClientSubtotal: React.FC<ClientSubtotalProps> = ({ clientGroup }) =
         <Text style={styles.subtotalLabel}>Poids Total:</Text>
         <Text style={styles.subtotalValue}>{summary.totalWeight.toFixed(0)} kg</Text>
       </View>
-      <View style={[styles.subtotalRow, { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: Theme.primary[200] }]}>
+      <View style={[styles.subtotalRow, { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.primary[200] }]}>
         <Text style={[styles.subtotalLabel, { fontWeight: '700' }]}>Montant Total:</Text>
-        <Text style={[styles.subtotalValue, { color: Theme.primary[600], fontWeight: '700' }]}>
+        <Text style={[styles.subtotalValue, { color: colors.primary[600], fontWeight: '700' }]}>
           {(summary.totalCost || 0).toLocaleString()} FCFA
         </Text>
       </View>

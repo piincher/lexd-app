@@ -3,7 +3,8 @@ import { View } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { createStyles } from '../ContainerDetailScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
+
+
 import { GradientActionButton } from './GradientActionButton';
 import { ListActionButton } from './ListActionButton';
 
@@ -37,7 +38,7 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
         <GradientActionButton
           icon="checkmark-done-circle"
           label="Marquer Prêt pour Retrait"
-          colors={[Theme.status.warning, Theme.status.warning]}
+          colors={[colors.status.warning, colors.status.warning]}
           onPress={onMarkReadyForPickup}
         />
       )}
@@ -46,7 +47,7 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
         <GradientActionButton
           icon="checkmark-done-circle"
           label="Marquer comme Livré"
-          colors={[Theme.status.success, '#22C55E']}
+          colors={[colors.status.success, colors.status.success]}
           onPress={onMarkDelivered}
         />
       )}
@@ -54,7 +55,7 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
       <GradientActionButton
         icon="add-circle"
         label="Assigner des Marchandises"
-        colors={Theme.gradients.primary}
+        colors={[colors.primary[500], colors.primary[700]]}
         onPress={onAssignGoods}
       />
 
@@ -64,10 +65,10 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
             icon="document-text"
             title="📋 Packing List"
             subtitle="Liste de colisage"
-            iconBackgroundColor={Theme.primary[100]}
-            iconColor={Theme.primary[600]}
-            titleColor={Theme.primary[700]}
-            chevronColor={Theme.primary[400]}
+            iconBackgroundColor={colors.primary[100]}
+            iconColor={colors.primary[600]}
+            titleColor={colors.primary[700]}
+            chevronColor={colors.primary[400]}
             gradientColors={[colors.background.paper, colors.background.default]}
             borderColor={colors.primary[200]}
             style={styles.packingListButton}

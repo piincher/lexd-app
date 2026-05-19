@@ -6,14 +6,45 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Card } from '@src/shared/ui/Card';
-import { lightTheme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { OrderGoods } from '../api/types';
 
 interface ActiveGoodsSectionProps {
   goods: OrderGoods[];
 }
 
+const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+  card: {
+    marginBottom: 16,
+    padding: 16,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: colors.text.primary,
+    marginBottom: 12,
+  },
+  goodsItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.neutral[200],
+  },
+  goodsCode: {
+    fontSize: 16,
+    color: colors.text.primary,
+  },
+  goodsCBM: {
+    fontSize: 16,
+    color: colors.text.secondary,
+  },
+});
+
 export const ActiveGoodsSection: React.FC<ActiveGoodsSectionProps> = ({ goods }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   const renderItem = ({ item }: { item: OrderGoods }) => (
     <View style={styles.goodsItem}>
       <Text style={styles.goodsCode}>{item.trackingCode || item.id}</Text>
@@ -33,33 +64,5 @@ export const ActiveGoodsSection: React.FC<ActiveGoodsSectionProps> = ({ goods })
     </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: lightTheme.spacing.lg,
-    padding: lightTheme.spacing.lg,
-  },
-  title: {
-    fontSize: lightTheme.typography.h4.fontSize,
-    fontWeight: '600',
-    color: lightTheme.colors.text.primary,
-    marginBottom: lightTheme.spacing.md,
-  },
-  goodsItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: lightTheme.spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: lightTheme.colors.neutral[200],
-  },
-  goodsCode: {
-    fontSize: lightTheme.typography.body.fontSize,
-    color: lightTheme.colors.text.primary,
-  },
-  goodsCBM: {
-    fontSize: lightTheme.typography.body.fontSize,
-    color: lightTheme.colors.text.secondary,
-  },
-});
 
 export default ActiveGoodsSection;

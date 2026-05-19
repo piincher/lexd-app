@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
 
-export const createStyles = (colors: any) =>
+export const createStyles = (colors: any, isDark?: boolean) =>
   StyleSheet.create({
     card: {
       marginBottom: 20,
@@ -97,7 +97,7 @@ export const createStyles = (colors: any) =>
     },
     progressFill: {
       height: '100%',
-      backgroundColor: Theme.colors.background.card,
+      backgroundColor: colors.background.card,
       borderRadius: 4,
     },
     footer: {

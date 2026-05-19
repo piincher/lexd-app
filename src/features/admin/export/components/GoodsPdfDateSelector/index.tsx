@@ -2,9 +2,9 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Text, Chip } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
 import { format } from "date-fns/format";
-import { styles } from "./GoodsPdfDateSelector.styles";
+import { createStyles } from './GoodsPdfDateSelector.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsPdfDateSelectorProps {
   start: string | null;
@@ -21,6 +21,10 @@ export const GoodsPdfDateSelector: React.FC<GoodsPdfDateSelectorProps> = ({
 }) => {
   const fmt = (d: string) => format(new Date(d), "dd/MM/yyyy");
 
+  const { colors, isDark } = useAppTheme();
+
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <View>
       <Text style={styles.label}>Période d'export</Text>
@@ -33,7 +37,7 @@ export const GoodsPdfDateSelector: React.FC<GoodsPdfDateSelectorProps> = ({
           <Ionicons
             name="calendar-outline"
             size={20}
-            color={Theme.primary[500]}
+            color={colors.primary[500]}
           />
           <Text style={styles.dateBtnText}>Choisir une période</Text>
         </TouchableOpacity>

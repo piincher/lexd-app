@@ -13,32 +13,31 @@ import { SearchFilters } from '../api/searchApi';
 import { FilterFooter } from './FilterFooter';
 import { createStyles } from './FilterSectionContainer.styles';
 
-// Filter options
-const GOODS_STATUSES = [
-  { value: 'RECEIVED_AT_WAREHOUSE', label: 'Entrepôt', color: '#6366F1' },
-  { value: 'PACKED', label: 'Préparé', color: '#7C4DFF' },
-  { value: 'ASSIGNED_TO_CONTAINER', label: 'Assigné', color: '#8B5CF6' },
-  { value: 'LOADED_IN_CONTAINER', label: 'Chargé', color: '#EC4899' },
-  { value: 'IN_TRANSIT', label: 'Transit', color: '#F59E0B' },
-  { value: 'ARRIVED_DESTINATION', label: 'Arrivé', color: '#10B981' },
-  { value: 'READY_FOR_PICKUP', label: 'À récupérer', color: '#14B8A6' },
-  { value: 'DELIVERED', label: 'Livré', color: '#22C55E' },
+const getGoodsStatuses = (colors: any) => [
+  { value: 'RECEIVED_AT_WAREHOUSE', label: 'Entrepôt', color: colors.status.info },
+  { value: 'PACKED', label: 'Préparé', color: colors.primary.main },
+  { value: 'ASSIGNED_TO_CONTAINER', label: 'Assigné', color: colors.accent.mint },
+  { value: 'LOADED_IN_CONTAINER', label: 'Chargé', color: colors.accent.rose },
+  { value: 'IN_TRANSIT', label: 'Transit', color: colors.status.warning },
+  { value: 'ARRIVED_DESTINATION', label: 'Arrivé', color: colors.status.success },
+  { value: 'READY_FOR_PICKUP', label: 'À récupérer', color: colors.primary.dark },
+  { value: 'DELIVERED', label: 'Livré', color: colors.primary.light },
 ];
 
-const GOODS_PAYMENT_STATUSES = [
-  { value: 'UNPAID', label: 'Non payé', color: '#EF4444' },
-  { value: 'PARTIAL', label: 'Partiel', color: '#F59E0B' },
-  { value: 'PAID', label: 'Payé', color: '#10B981' },
+const getGoodsPaymentStatuses = (colors: any) => [
+  { value: 'UNPAID', label: 'Non payé', color: colors.status.error },
+  { value: 'PARTIAL', label: 'Partiel', color: colors.status.warning },
+  { value: 'PAID', label: 'Payé', color: colors.status.success },
 ];
 
-const CONTAINER_STATUSES = [
-  { value: 'BOOKED', label: 'Réservé', color: '#6366F1' },
-  { value: 'EMPTY_TO_WAREHOUSE', label: 'Vide → Entrepôt', color: '#8B5CF6' },
-  { value: 'LOADING', label: 'Chargement', color: '#EC4899' },
-  { value: 'LOADED', label: 'Chargé', color: '#F59E0B' },
-  { value: 'IN_TRANSIT', label: 'Transit', color: '#3B82F6' },
-  { value: 'ARRIVED', label: 'Arrivé', color: '#10B981' },
-  { value: 'READY_FOR_PICKUP', label: 'À récupérer', color: '#14B8A6' },
+const getContainerStatuses = (colors: any) => [
+  { value: 'BOOKED', label: 'Réservé', color: colors.status.info },
+  { value: 'EMPTY_TO_WAREHOUSE', label: 'Vide → Entrepôt', color: colors.primary.main },
+  { value: 'LOADING', label: 'Chargement', color: colors.accent.rose },
+  { value: 'LOADED', label: 'Chargé', color: colors.status.warning },
+  { value: 'IN_TRANSIT', label: 'Transit', color: colors.accent.sky },
+  { value: 'ARRIVED', label: 'Arrivé', color: colors.status.success },
+  { value: 'READY_FOR_PICKUP', label: 'À récupérer', color: colors.accent.mint },
 ];
 
 const SHIPPING_MODES = [
@@ -87,14 +86,14 @@ export const FilterSectionContainer: React.FC<FilterSectionContainerProps> = ({
           <>
             <FilterCategorySection title="Statut">
               <FilterChipGroup
-                options={GOODS_STATUSES}
+                options={getGoodsStatuses(colors)}
                 selectedValues={filters.status || []}
                 onToggle={onToggleStatus}
               />
             </FilterCategorySection>
             <FilterCategorySection title="Statut de paiement">
               <FilterChipGroup
-                options={GOODS_PAYMENT_STATUSES}
+                options={getGoodsPaymentStatuses(colors)}
                 selectedValues={filters.paymentStatus || []}
                 onToggle={onTogglePaymentStatus}
               />
@@ -106,7 +105,7 @@ export const FilterSectionContainer: React.FC<FilterSectionContainerProps> = ({
           <>
             <FilterCategorySection title="Statut">
               <FilterChipGroup
-                options={CONTAINER_STATUSES}
+                options={getContainerStatuses(colors)}
                 selectedValues={filters.status || []}
                 onToggle={onToggleStatus}
               />

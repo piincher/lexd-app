@@ -13,7 +13,7 @@ import {
 import { AdminLoadingListData, WeightDistribution, ClientGoodsGroup } from '../../types/packingList';
 import { LoadingSummary } from '../../screens/LoadingList/types';
 import { MAX_CBM } from '../../screens/LoadingList/hooks';
-import { getStyles } from '../../screens/LoadingList/LoadingListScreen.styles';
+import { createStyles } from '../../screens/LoadingList/LoadingListScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface LoadingListContentProps {
@@ -39,8 +39,8 @@ export const LoadingListContent: React.FC<LoadingListContentProps> = ({
   progressPercentage,
   handleToggleLoaded,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <ScrollView
       style={styles.scrollView}

@@ -5,18 +5,19 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { FilterChipGroup } from '../FilterChipGroup';
 import { SearchFilters as SearchFiltersType } from '../../api/searchApi';
 
-const CLIENT_STATUSES = [
-  { value: 'true', label: 'Actif', color: '#10B981' },
-  { value: 'false', label: 'Inactif', color: '#EF4444' },
+const getClientStatuses = (colors: any) => [
+  { value: 'true', label: 'Actif', color: colors.status.success },
+  { value: 'false', label: 'Inactif', color: colors.status.error },
 ];
 
-const CLIENT_BALANCE_OPTIONS = [
-  { value: 'true', label: 'Avec solde', color: '#6366F1' },
-  { value: 'false', label: 'Sans solde', color: '#94A3B8' },
+const getClientBalanceOptions = (colors: any) => [
+  { value: 'true', label: 'Avec solde', color: colors.status.info },
+  { value: 'false', label: 'Sans solde', color: colors.neutral[400] },
 ];
 
 const CLIENT_ROLES = [
@@ -39,6 +40,7 @@ export const ClientFilters: React.FC<ClientFiltersProps> = ({
   onSetHasBalance,
   onToggleRole,
 }) => {
+  const { colors } = useAppTheme();
   const activeValue = filters.isActive === undefined ? undefined : String(filters.isActive);
   const balanceValue = filters.hasBalance === undefined ? undefined : String(filters.hasBalance);
 
@@ -55,7 +57,7 @@ export const ClientFilters: React.FC<ClientFiltersProps> = ({
       <View style={styles.section}>
         <Text style={styles.label}>Statut du compte</Text>
         <FilterChipGroup
-          options={CLIENT_STATUSES}
+          options={getClientStatuses(colors)}
           selectedValues={activeValue ?? ''}
           onToggle={handleToggleActive}
           multiSelect={false}
@@ -65,7 +67,7 @@ export const ClientFilters: React.FC<ClientFiltersProps> = ({
       <View style={styles.section}>
         <Text style={styles.label}>Solde</Text>
         <FilterChipGroup
-          options={CLIENT_BALANCE_OPTIONS}
+          options={getClientBalanceOptions(colors)}
           selectedValues={balanceValue ?? ''}
           onToggle={handleToggleBalance}
           multiSelect={false}

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './ActiveOrderStats.styles';
+import { createStyles } from './ActiveOrderStats.styles';
 
 interface ActiveOrderStatsProps {
   quantity?: number | string;
@@ -16,7 +16,9 @@ export const ActiveOrderStats: React.FC<ActiveOrderStatsProps> = ({
   packageWeight,
   packageCBM,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <Surface style={styles.card}>
       <View style={styles.statItem}>

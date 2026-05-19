@@ -10,14 +10,14 @@ import {
   formatNotificationEventDate,
   getNotificationEventUserLabel,
 } from '../utils/formatNotificationEvent';
-import { createNotificationEventDetailStyles } from './NotificationEventDetailScreen.styles';
+import { createStyles } from './NotificationEventDetailScreen.styles';
 
 const NotificationEventDetailScreen: React.FC<RootStackScreenProps<'NotificationEventDetail'>> = ({
   navigation,
   route,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = createNotificationEventDetailStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { data, isLoading, isError } = useNotificationEventDetail(route.params.notificationEventId);
 
   return (

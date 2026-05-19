@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import type { RootStackScreenProps } from '@src/navigations/type';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useAdminTicketListScreen } from './hooks';
-import { styles } from './AdminTicketListScreen.styles';
+import { createStyles } from './AdminTicketListScreen.styles';
 import {
   AdminTicketEmptyState,
   AdminTicketHeader,
@@ -17,6 +17,7 @@ export const AdminTicketListScreen: React.FC<RootStackScreenProps<'AdminTicketLi
   navigation,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const {
     search,
     status,

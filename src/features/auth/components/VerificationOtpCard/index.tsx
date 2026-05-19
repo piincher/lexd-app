@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from 'react';
 import { StyleSheet, Platform, Text, View } from "react-native";
 import type { TextInput } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -40,6 +40,7 @@ export const VerificationOtpCard: React.FC<VerificationOtpCardProps> = ({
   onResend,
 }) => {
   const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const cardBg = colors.background.card;
   const cardBorder = colors.border;
 
@@ -73,7 +74,7 @@ export const VerificationOtpCard: React.FC<VerificationOtpCardProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   otpCard: {
     borderRadius: 24,
     borderWidth: 1,
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
     ...Platform.select({
       ios: {
-        shadowColor: "#000",
+        shadowColor: colors.neutral[900],
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.08,
         shadowRadius: 16,

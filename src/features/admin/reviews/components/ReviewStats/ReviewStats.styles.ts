@@ -1,15 +1,14 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   statsCard: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     marginHorizontal: 16,
     marginTop: 12,
     borderRadius: 16,
     padding: 16,
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
@@ -27,12 +26,12 @@ export const styles = StyleSheet.create({
   statsAverage: {
     fontSize: 32,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   statsTotal: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 4,
   },
   statsRight: {

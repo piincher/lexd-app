@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useGetContainerById, containerQueryKeys } from '../../hooks';
 import { waypointQueryKeys } from '../../hooks/useWaypoints';
 import { Container } from '../../types';
@@ -15,6 +16,7 @@ export type ContainerDetailScreenState = ReturnType<typeof useContainerDetailScr
 export const useContainerDetailScreen = () => {
   const route = useRoute();
   const queryClient = useQueryClient();
+  const { colors } = useAppTheme();
   const { containerId } = route.params as { containerId: string };
   const [isRefreshing, setIsRefreshing] = useState(false);
   const dialogs = useContainerDialogs();
@@ -23,7 +25,7 @@ export const useContainerDetailScreen = () => {
   const container: Container | undefined = containerResponse?.data?.container || containerResponse?.data;
   const goodsList = getGoodsList(container);
   const { isAirContainer, totalWeight, capacityValue, maxCapacity, fillPercentage, fillColor } = getCapacityInfo(container, goodsList);
-  const { statusColor, statusLabel, currentStatusIndex } = getContainerStatusInfo(container);
+  const { statusColor, statusLabel, currentStatusIndex } = getContainerStatusInfo(container, colors);
   const cbmProfit = normalizeCbmProfit(containerResponse, goodsList);
   const consignee = extractConsignee(container);
 

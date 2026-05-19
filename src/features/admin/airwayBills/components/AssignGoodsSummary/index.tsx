@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { CapacityIndicator } from '../../screens/components/CapacityIndicator';
 
@@ -17,7 +18,18 @@ export const AssignGoodsSummary: React.FC<Props> = ({
   capacityWeight,
   selectedCount,
   isOverCapacity,
-}) => (
+}) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      paddingHorizontal: Theme.spacing.lg,
+      paddingVertical: Theme.spacing.sm,
+      backgroundColor: colors.primary[50],
+    },
+    summaryText: { fontSize: 13, fontWeight: '600', color: colors.primary[700] },
+    warningText: { fontSize: 12, fontWeight: '600', color: colors.status.error, marginTop: 4 },
+  }), [colors, isDark]);
+  return (
   <View style={styles.container}>
     <CapacityIndicator
       currentWeight={currentWeight}
@@ -33,14 +45,7 @@ export const AssignGoodsSummary: React.FC<Props> = ({
       </Text>
     )}
   </View>
-);
+  );
+};
 
-const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: Theme.spacing.lg,
-    paddingVertical: Theme.spacing.sm,
-    backgroundColor: Theme.primary[50],
-  },
-  summaryText: { fontSize: 13, fontWeight: '600', color: Theme.primary[700] },
-  warningText: { fontSize: 12, fontWeight: '600', color: Theme.status.error, marginTop: 4 },
-});
+

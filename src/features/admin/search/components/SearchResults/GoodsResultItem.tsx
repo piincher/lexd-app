@@ -7,7 +7,7 @@ import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { SearchResultItem } from "../../types/searchResults";
 import { useSearchHighlight } from "../../hooks/useSearchHighlight";
-import { searchResultItemStyles as styles } from "./SearchResultItem.styles";
+import { createStyles } from "./SearchResultItem.styles";
 
 interface GoodsResultItemProps {
   item: SearchResultItem;
@@ -20,20 +20,21 @@ export const GoodsResultItem: React.FC<GoodsResultItemProps> = ({
   onPress,
   highlightQuery,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const highlightText = useSearchHighlight(highlightQuery);
   const isPaid = item.paymentStatus === "PAID";
   const statusColors: Record<string, string> = {
-    RECEIVED_AT_WAREHOUSE: "#6366F1",
-    PACKED: "#7C4DFF",
-    ASSIGNED_TO_CONTAINER: "#8B5CF6",
-    LOADED_IN_CONTAINER: "#EC4899",
-    IN_TRANSIT: "#F59E0B",
-    ARRIVED_DESTINATION: "#10B981",
-    READY_FOR_PICKUP: "#14B8A6",
-    DELIVERED: "#22C55E",
+    RECEIVED_AT_WAREHOUSE: colors.status.info,
+    PACKED: colors.primary.main,
+    ASSIGNED_TO_CONTAINER: colors.accent.mint,
+    LOADED_IN_CONTAINER: colors.accent.rose,
+    IN_TRANSIT: colors.status.warning,
+    ARRIVED_DESTINATION: colors.status.success,
+    READY_FOR_PICKUP: colors.primary.dark,
+    DELIVERED: colors.primary.light,
   };
-  const statusColor = statusColors[item.status] || Theme.neutral[400];
+  const statusColor = statusColors[item.status] || colors.neutral[400];
 
   return (
     <TouchableOpacity
@@ -76,26 +77,26 @@ export const GoodsResultItem: React.FC<GoodsResultItemProps> = ({
         </Text>
         <View style={styles.resultMeta}>
           <View style={styles.metaItem}>
-            <Ionicons name="location" size={12} color={Theme.neutral[400]} />
+            <Ionicons name="location" size={12} color={colors.neutral[400]} />
             <Text style={styles.metaText}>
               {highlightText(item.warehouseLocation || "-")}
             </Text>
           </View>
           <View style={styles.metaItem}>
-            <Ionicons name="cube" size={12} color={Theme.neutral[400]} />
+            <Ionicons name="cube" size={12} color={colors.neutral[400]} />
             <Text style={styles.metaText}>
               {item.actualCBM?.toFixed(2)} CBM
             </Text>
           </View>
           <View style={styles.metaItem}>
-            <Ionicons name="cash" size={12} color={Theme.neutral[400]} />
+            <Ionicons name="cash" size={12} color={colors.neutral[400]} />
             <Text style={styles.metaText}>
               {item.totalCost?.toLocaleString()} FCFA
             </Text>
           </View>
         </View>
       </View>
-      <Ionicons name="chevron-forward" size={20} color={Theme.neutral[400]} />
+      <Ionicons name="chevron-forward" size={20} color={colors.neutral[400]} />
     </TouchableOpacity>
   );
 };

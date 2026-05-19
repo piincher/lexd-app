@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
 import type { Review } from "../../api";
 import { StarRating } from "../StarRating";
-import { styles } from "./ReviewCard.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "./ReviewCard.styles";
 
 const formatDate = (dateString: string): string => {
   try {
@@ -26,6 +26,8 @@ interface ReviewCardProps {
 export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   const goods = typeof review.goodsId === "object" ? review.goodsId : null;
   const isMaritime = goods?.shippingMode === "sea";
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.card}>
@@ -62,7 +64,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
         <Ionicons
           name="calendar-outline"
           size={14}
-          color={Theme.colors.text.secondary}
+          color={colors.text.secondary}
         />
         <Text style={styles.dateText}>{formatDate(review.createdAt)}</Text>
       </View>

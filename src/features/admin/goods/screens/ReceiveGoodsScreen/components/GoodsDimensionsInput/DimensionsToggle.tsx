@@ -11,7 +11,7 @@ interface DimensionsToggleProps {
 export const DimensionsToggle: React.FC<DimensionsToggleProps> = ({ useDimensions, onToggleMode }) => {
    const { colors } = useAppTheme();
 
-   const styles = StyleSheet.create({
+   const styles = React.useMemo(() => StyleSheet.create({
       toggleContainer: {
          borderRadius: 12,
          backgroundColor: colors.background.paper,
@@ -53,7 +53,7 @@ export const DimensionsToggle: React.FC<DimensionsToggleProps> = ({ useDimension
          height: 24,
          borderRadius: 12,
          backgroundColor: colors.background.card,
-         shadowColor: "#000",
+         shadowColor: colors.neutral[900],
          shadowOffset: { width: 0, height: 2 },
          shadowOpacity: 0.2,
          shadowRadius: 2,
@@ -62,7 +62,7 @@ export const DimensionsToggle: React.FC<DimensionsToggleProps> = ({ useDimension
       toggleThumbActive: {
          transform: [{ translateX: 20 }],
       },
-   });
+   }), [colors]);
 
    return (
       <TouchableRipple onPress={() => onToggleMode(!useDimensions)} style={styles.toggleContainer}>

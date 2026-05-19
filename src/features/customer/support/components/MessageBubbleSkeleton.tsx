@@ -2,14 +2,15 @@ import React from 'react';
 import { View } from 'react-native';
 import { ShimmerBlock } from '@src/shared/ui';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './TicketDetailSkeleton.styles';
+import { createStyles } from './TicketDetailSkeleton.styles';
 
 interface MessageBubbleSkeletonProps {
   isCustomer?: boolean;
 }
 
 export const MessageBubbleSkeleton: React.FC<MessageBubbleSkeletonProps> = ({ isCustomer = false }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View

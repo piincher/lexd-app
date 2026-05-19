@@ -9,17 +9,7 @@ interface CostRowProps {
   value: string;
 }
 
-export const CostRow: React.FC<CostRowProps> = ({ label, value }) => {
-  const { colors } = useAppTheme();
-  return (
-    <View style={styles.row}>
-      <Text style={[styles.label, { color: colors.text.secondary }]}>{label}</Text>
-      <Text style={[styles.value, { color: colors.text.primary }]}>{value}</Text>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -34,3 +24,14 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
+
+export const CostRow: React.FC<CostRowProps> = ({ label, value }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(), []);
+  return (
+    <View style={styles.row}>
+      <Text style={[styles.label, { color: colors.text.secondary }]}>{label}</Text>
+      <Text style={[styles.value, { color: colors.text.primary }]}>{value}</Text>
+    </View>
+  );
+};

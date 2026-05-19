@@ -1,6 +1,7 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 // GoodsDetailInfo - Description and client information
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Card, Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
@@ -21,13 +22,15 @@ export const GoodsDetailInfo: React.FC<GoodsDetailInfoProps> = ({
   description,
   client,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <>
       {description && (
         <Card style={styles.sectionCard}>
           <Card.Content>
             <View style={styles.sectionHeader}>
-              <MaterialCommunityIcons name="text-box-outline" size={20} color={Theme.primary[600]} />
+              <MaterialCommunityIcons name="text-box-outline" size={20} color={colors.primary[600]} />
               <Text style={styles.sectionTitle}>Description</Text>
             </View>
             <Text style={styles.description}>{description}</Text>
@@ -38,14 +41,14 @@ export const GoodsDetailInfo: React.FC<GoodsDetailInfoProps> = ({
       <Card style={styles.sectionCard}>
         <Card.Content>
           <View style={styles.sectionHeader}>
-            <MaterialCommunityIcons name="account-circle" size={20} color={Theme.primary[600]} />
+            <MaterialCommunityIcons name="account-circle" size={20} color={colors.primary[600]} />
             <Text style={styles.sectionTitle}>Client</Text>
           </View>
           <View style={styles.clientRow}>
             <Avatar.Text
               size={56}
               label={`${client?.firstName?.[0] || '?'}${client?.lastName?.[0] || '?'}`}
-              style={{ backgroundColor: Theme.primary[500] }}
+              style={{ backgroundColor: colors.primary[500] }}
               labelStyle={{ fontSize: 22, fontWeight: 'bold' }}
             />
             <View style={styles.clientInfo}>
@@ -53,7 +56,7 @@ export const GoodsDetailInfo: React.FC<GoodsDetailInfoProps> = ({
                 {client ? `${client.firstName} ${client.lastName}` : 'Client inconnu'}
               </Text>
               <View style={styles.clientPhoneRow}>
-                <Ionicons name="call-outline" size={14} color={Theme.neutral[500]} />
+                <Ionicons name="call-outline" size={14} color={colors.neutral[500]} />
                 <Text style={styles.clientPhone}>{client?.phoneNumber || 'N/A'}</Text>
               </View>
             </View>
@@ -64,12 +67,12 @@ export const GoodsDetailInfo: React.FC<GoodsDetailInfoProps> = ({
   );
 };
 
-const styles = {
+const createStyles = (colors: any) => ({
   sectionCard: {
     marginBottom: 12,
     borderRadius: 16,
     elevation: 2,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   sectionHeader: {
     flexDirection: 'row' as const,
@@ -79,12 +82,12 @@ const styles = {
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700' as const,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 10,
   },
   description: {
     fontSize: 15,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     lineHeight: 22,
   },
   clientRow: {
@@ -97,7 +100,7 @@ const styles = {
   clientName: {
     fontSize: 17,
     fontWeight: '700' as const,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   clientPhoneRow: {
     flexDirection: 'row' as const,
@@ -106,7 +109,7 @@ const styles = {
   },
   clientPhone: {
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginLeft: 6,
   },
-};
+});

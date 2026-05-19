@@ -4,7 +4,7 @@
 
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   categorySection: {
     marginBottom: 24,
   },

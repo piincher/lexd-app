@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './OutstandingPaymentsPagination.styles';
+import { createStyles } from './OutstandingPaymentsPagination.styles';
 
 interface OutstandingPaymentsPaginationProps {
   pagination: { page: number; pages: number };
@@ -15,7 +15,8 @@ export const OutstandingPaymentsPagination: React.FC<OutstandingPaymentsPaginati
   onPrev,
   onNext,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { page, pages } = pagination;
   const isPrevDisabled = page <= 1;
   const isNextDisabled = page >= pages;

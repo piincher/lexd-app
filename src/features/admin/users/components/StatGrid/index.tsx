@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { STATUS_CONFIG } from "../../lib/constants";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { styles } from "./StatGrid.styles";
+import { createStyles } from './StatGrid.styles';
 
 interface StatItemProps {
   label: string;
@@ -40,7 +40,8 @@ export const StatGrid: React.FC<StatGridProps> = ({
   totalCBM,
   totalPrice,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.container}>
       <StatItem label="Total" value={total.toString()} color={colors.primary.main} icon="analytics" />

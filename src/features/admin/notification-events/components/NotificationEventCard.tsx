@@ -6,26 +6,29 @@ import {
   formatNotificationEventDate,
   getNotificationEventUserLabel,
 } from '../utils/formatNotificationEvent';
-import { createNotificationEventCardStyles } from './NotificationEventCard.styles';
+import { createStyles } from './NotificationEventCard.styles';
 
 interface NotificationEventCardProps {
   item: NotificationEventLog;
   onPress: (item: NotificationEventLog) => void;
 }
 
-const STATUS_COLORS: Record<NotificationEventStatus, string> = {
-  PENDING: '#64748B',
-  SENT: '#16A34A',
-  DELIVERED: '#059669',
-  READ: '#2563EB',
-  FAILED: '#DC2626',
-  SKIPPED: '#6B7280',
-  PARTIAL: '#D97706',
+const getStatusColor = (status: NotificationEventStatus, colors: any): string => {
+  switch (status) {
+    case 'PENDING': return colors.status.info;
+    case 'SENT': return colors.status.success;
+    case 'DELIVERED': return colors.status.success;
+    case 'READ': return colors.status.info;
+    case 'FAILED': return colors.status.error;
+    case 'SKIPPED': return colors.text.disabled;
+    case 'PARTIAL': return colors.status.warning;
+    default: return colors.text.secondary;
+  }
 };
 
 export const NotificationEventCard = memo(({ item, onPress }: NotificationEventCardProps) => {
-  const { colors } = useAppTheme();
-  const styles = createNotificationEventCardStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Pressable
@@ -36,7 +39,7 @@ export const NotificationEventCard = memo(({ item, onPress }: NotificationEventC
     >
       <View style={styles.topRow}>
         <Text style={styles.title} numberOfLines={1}>{item.title}</Text>
-        <View style={[styles.badge, { backgroundColor: STATUS_COLORS[item.status] || colors.text.secondary }]}>
+        <View style={[styles.badge, { backgroundColor: getStatusColor(item.status, colors) }]}>
           <Text style={styles.badgeText}>{item.status}</Text>
         </View>
       </View>

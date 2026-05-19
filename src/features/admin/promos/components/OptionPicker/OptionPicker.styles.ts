@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 
-export const getStyles = (colors: any) => StyleSheet.create({
+export const getStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   fieldContainer: {
     marginBottom: 16,
   },

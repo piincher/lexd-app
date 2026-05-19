@@ -1,6 +1,7 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 // GoodsDetailReception - Reception information (date received, received by)
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -34,6 +35,8 @@ export const GoodsDetailReception: React.FC<GoodsDetailReceptionProps> = ({
   receivedByName,
   receivedBy,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const getReceivedByText = (): string => {
     if (receivedByName) return receivedByName;
     if (typeof receivedBy === 'object' && receivedBy) {
@@ -46,7 +49,7 @@ export const GoodsDetailReception: React.FC<GoodsDetailReceptionProps> = ({
     <Card style={styles.sectionCard}>
       <Card.Content>
         <View style={styles.sectionHeader}>
-          <MaterialCommunityIcons name="calendar-check" size={20} color={Theme.primary[600]} />
+          <MaterialCommunityIcons name="calendar-check" size={20} color={colors.primary[600]} />
           <Text style={styles.sectionTitle}>Réception</Text>
         </View>
         <View style={styles.receptionGrid}>
@@ -64,12 +67,12 @@ export const GoodsDetailReception: React.FC<GoodsDetailReceptionProps> = ({
   );
 };
 
-const styles = {
+const createStyles = (colors: any) => ({
   sectionCard: {
     marginBottom: 12,
     borderRadius: 16,
     elevation: 2,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   sectionHeader: {
     flexDirection: 'row' as const,
@@ -79,7 +82,7 @@ const styles = {
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700' as const,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 10,
   },
   receptionGrid: {
@@ -88,18 +91,18 @@ const styles = {
   },
   receptionItem: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     padding: 14,
     borderRadius: 12,
   },
   receptionLabel: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: 4,
   },
   receptionValue: {
     fontSize: 14,
     fontWeight: '600' as const,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
-};
+});

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from 'react';
 import { View, Image, Pressable, StyleSheet, Platform } from "react-native";
 import { Text } from "react-native-paper";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -12,6 +12,7 @@ import { Theme } from "@src/constants/Theme";
 export const Header = () => {
    const navigation = useNavigation();
    const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
    return (
       <View
@@ -72,7 +73,7 @@ export const Header = () => {
    );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
    container: {
       flexDirection: "row",
       justifyContent: "space-between",
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: StyleSheet.hairlineWidth,
       ...Platform.select({
          ios: {
-            shadowColor: '#000',
+            shadowColor: colors.neutral[900],
             shadowOffset: { width: 0, height: 1 },
             shadowOpacity: 0.06,
             shadowRadius: 4,

@@ -3,11 +3,12 @@ import { View, ScrollView } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { ShimmerBlock } from "@src/shared/ui";
-import { styles } from "./ContainerTrackingSkeleton.styles";
+import { createStyles } from "./ContainerTrackingSkeleton.styles";
 import { WaypointSkeletonItem } from "./WaypointSkeletonItem";
 
 export const ContainerTrackingSkeleton: React.FC = () => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const cardBg = colors.background.card;
 
   return (

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Chip } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { WhatsAppRequestType } from '../../api/whatsappRequestApi';
 import { TYPE_LABELS } from '../../screens/WhatsAppRequestListScreen/constants';
 
@@ -15,11 +15,14 @@ export const WhatsAppRequestCardType: React.FC<WhatsAppRequestCardTypeProps> = (
   requestType,
   goodsId,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.typeSection}>
       <Chip
         style={styles.typeChip}
-        icon={() => <Ionicons name="document-text" size={14} color={Theme.primary[600]} />}
+        icon={() => <Ionicons name="document-text" size={14} color={colors.primary[600]} />}
       >
         {TYPE_LABELS[requestType]}
       </Chip>
@@ -32,16 +35,16 @@ export const WhatsAppRequestCardType: React.FC<WhatsAppRequestCardTypeProps> = (
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   typeSection: {
     flexDirection: 'row',
-    gap: Theme.spacing.sm,
-    marginBottom: Theme.spacing.md,
+    gap: 8,
+    marginBottom: 12,
   },
   typeChip: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
   },
   goodsChip: {
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
   },
 });

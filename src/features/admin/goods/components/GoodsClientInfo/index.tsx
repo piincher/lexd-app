@@ -7,8 +7,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { Card, Text, Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './GoodsClientInfo.styles';
+import { createStyles } from './GoodsClientInfo.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface Client {
   firstName?: string;
@@ -22,6 +22,8 @@ interface GoodsClientInfoProps {
 }
 
 export const GoodsClientInfo: React.FC<GoodsClientInfoProps> = ({ client }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const initials = `${client?.firstName?.[0] || '?'}${client?.lastName?.[0] || '?'}`;
   const fullName = client ? `${client.firstName} ${client.lastName}` : 'Client inconnu';
 
@@ -29,7 +31,7 @@ export const GoodsClientInfo: React.FC<GoodsClientInfoProps> = ({ client }) => {
     <Card style={styles.container}>
       <Card.Content>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="account-circle" size={20} color={Theme.primary[600]} />
+          <MaterialCommunityIcons name="account-circle" size={20} color={colors.primary[600]} />
           <Text style={styles.title}>Client</Text>
         </View>
 
@@ -37,13 +39,13 @@ export const GoodsClientInfo: React.FC<GoodsClientInfoProps> = ({ client }) => {
           <Avatar.Text
             size={56}
             label={initials}
-            style={{ backgroundColor: Theme.primary[500] }}
+            style={{ backgroundColor: colors.primary[500] }}
             labelStyle={{ fontSize: 22, fontWeight: 'bold' }}
           />
           <View style={styles.clientInfo}>
             <Text style={styles.clientName}>{fullName}</Text>
             <View style={styles.clientPhoneRow}>
-              <Ionicons name="call-outline" size={14} color={Theme.neutral[500]} />
+              <Ionicons name="call-outline" size={14} color={colors.neutral[500]} />
               <Text style={styles.clientPhone}>{client?.phoneNumber || 'N/A'}</Text>
             </View>
           </View>

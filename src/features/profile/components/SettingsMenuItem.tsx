@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './SettingsMenu.styles';
+import { createStyles } from './SettingsMenu.styles';
 
 interface SettingsMenuItemProps {
   title: string;
@@ -27,7 +27,8 @@ export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({
   onNavigate,
   showDivider,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <React.Fragment>

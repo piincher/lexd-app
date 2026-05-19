@@ -60,13 +60,13 @@ export const CustomerChartRow: React.FC<CustomerChartRowProps> = ({
 
         <View style={styles.statsRow}>
           <View style={styles.stat}>
-            <MaterialCommunityIcons name="package-variant" size={12} color={Theme.colors.text.secondary} />
+            <MaterialCommunityIcons name="package-variant" size={12} color={colors.text.secondary} />
             <Text style={styles.statText}>
               {customer.goodsStats.totalGoods} march.
             </Text>
           </View>
           <View style={styles.stat}>
-            <MaterialCommunityIcons name="swap-horizontal" size={12} color={Theme.colors.text.secondary} />
+            <MaterialCommunityIcons name="swap-horizontal" size={12} color={colors.text.secondary} />
             <Text style={styles.statText}>
               {customer.transactionCount} trans.
             </Text>

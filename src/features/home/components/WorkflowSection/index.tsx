@@ -1,4 +1,5 @@
-import React from "react";
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
@@ -39,9 +40,10 @@ const WORKFLOW_STEPS = [
 ];
 
 export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ colors }) => {
+  const styles = useMemo(() => createStyles(colors), [colors]);
    const textColor = colors.text?.primary ?? colors.text;
-   const textSecondary = colors.text?.secondary ?? (colors.textSecondary || Theme.colors.text.secondary);
-   const cardBg = colors.background?.card ?? Theme.colors.background.card;
+   const textSecondary = colors.text?.secondary ?? (colors.textSecondary || colors.text.secondary);
+   const cardBg = colors.background?.card ?? colors.background.card;
 
    return (
       <View style={styles.section}>
@@ -69,7 +71,7 @@ export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ colors }) => {
    );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
    section: {
       marginVertical: 20,
       paddingHorizontal: 16,
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
       gap: 14,
       padding: 16,
       borderRadius: 14,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.06,
       shadowRadius: 4,

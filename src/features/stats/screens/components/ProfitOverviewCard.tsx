@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
@@ -20,6 +20,7 @@ export const ProfitOverviewCard: React.FC<ProfitOverviewCardProps> = ({
   isLoading,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const s = profitSummary?.summary;
   const containers = profitSummary?.containers ?? [];
 
@@ -56,12 +57,12 @@ export const ProfitOverviewCard: React.FC<ProfitOverviewCardProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   card: {
     borderRadius: 16,
     padding: 16,
     marginHorizontal: 20,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,

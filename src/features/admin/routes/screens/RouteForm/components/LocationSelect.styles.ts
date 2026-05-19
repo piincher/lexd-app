@@ -1,32 +1,32 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   inputContainer: {
     marginBottom: Theme.spacing.lg,
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.sm,
   },
   required: {
-    color: Theme.status.error,
+    color: colors.status.error,
   },
   dropdownButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderRadius: Theme.radius.md,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.md,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   dropdownButtonError: {
-    borderColor: Theme.status.error,
+    borderColor: colors.status.error,
   },
   dropdownButtonContent: {
     flexDirection: 'row',
@@ -37,22 +37,22 @@ export const styles = StyleSheet.create({
   dropdownButtonText: {
     fontSize: 15,
     fontWeight: '500',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     flex: 1,
   },
   dropdownButtonPlaceholder: {
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   menuContent: {
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     width: '85%',
   },
   menuScroll: {
     maxHeight: 200,
   },
   menuItemActive: {
-    color: Theme.primary[600],
+    color: colors.primary[600],
     fontWeight: '600',
   },
 });

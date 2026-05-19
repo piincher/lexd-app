@@ -1,27 +1,30 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { ActivityIndicator, Text } from "react-native-paper";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 export const SearchLoadingState: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.centerContainer}>
-      <ActivityIndicator size="large" color={Theme.primary[500]} />
+      <ActivityIndicator size="large" color={colors.primary[500]} />
       <Text style={styles.loadingText}>Recherche en cours...</Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   centerContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: Theme.spacing["4xl"],
+    padding: 32,
   },
   loadingText: {
-    marginTop: Theme.spacing.lg,
+    marginTop: 16,
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
 });

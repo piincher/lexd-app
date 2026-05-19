@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
@@ -13,6 +13,7 @@ import {
 export const GoodsListScreen: React.FC = () => {
   const s = useGoodsListScreen();
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
@@ -56,9 +57,9 @@ export const GoodsListScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: { flex: 1 },
-  snackbar: { backgroundColor: Theme.neutral[800], borderRadius: Theme.radius.lg, marginBottom: Theme.spacing.lg },
+  snackbar: { backgroundColor: colors.neutral[800], borderRadius: Theme.radius.lg, marginBottom: Theme.spacing.lg },
 });
 
 export default GoodsListScreen;

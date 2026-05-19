@@ -40,7 +40,7 @@ export const PaymentHistoryListItem: React.FC<PaymentHistoryListItemProps> = ({ 
         styles.paymentCard,
         {
           backgroundColor: colors.background.card,
-          shadowColor: '#000',
+          shadowColor: colors.neutral[900],
         },
       ]}
       onPress={() => {/* Navigate to payment details */}}

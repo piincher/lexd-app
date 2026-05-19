@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { FlashList } from "@shopify/flash-list";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { getStyles } from "./MultiSelect.styles";
+import { createStyles } from './MultiSelect.styles';
 import { MultiSelectItem } from "./MultiSelectItem";
 import { MultiSelectEmpty } from "./MultiSelectEmpty";
 
@@ -41,8 +41,8 @@ export function MultiSelect(props: MultiSelectProps): React.ReactElement {
     ...otherprops
   } = props;
 
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => getStyles(colors), [colors]);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const handleSelect = (item: Item) => {
     setSelectedItems((prev) => {

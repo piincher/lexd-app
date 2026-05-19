@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -29,7 +30,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ colors }) => {
             {FEATURES.map((feature) => (
                <View
                   key={feature.label}
-                  style={[styles.featureCard, { backgroundColor: cardBg }]}
+                  style={[styles.featureCard, { backgroundColor: cardBg, shadowColor: colors.neutral[900] }]}
                >
                   <View style={[styles.iconCircle, { backgroundColor: feature.color + "15" }]}>
                      <FontAwesome6 name={feature.icon} size={18} color={feature.color} />
@@ -67,7 +68,6 @@ const styles = StyleSheet.create({
       paddingVertical: 14,
       paddingHorizontal: 12,
       borderRadius: 14,
-      shadowColor: "#000",
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.06,
       shadowRadius: 4,

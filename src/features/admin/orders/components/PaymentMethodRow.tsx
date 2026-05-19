@@ -5,17 +5,15 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createPaymentInfoCardStyles } from "./PaymentInfoCard.styles";
 
-const PAYMENT_METHODS: Record<
-  string,
-  { label: string; icon: string; color: string }
-> = {
-  CASH: { label: "Cash", icon: "cash", color: "#4CAF50" },
-  BANK_TRANSFER: { label: "Bank Transfer", icon: "bank", color: "#2196F3" },
-  MOBILE_MONEY: { label: "Mobile Money", icon: "cellphone", color: "#FF9800" },
-  ORANGE_MONEY: { label: "Orange Money", icon: "cellphone", color: "#FF6600" },
-  WAVE: { label: "Wave", icon: "wave", color: "#1E88E5" },
-  CARD: { label: "Card", icon: "credit-card", color: "#9C27B0" },
-};
+// Payment method brand colors — themed where possible
+const getPaymentMethods = (colors: any) => ({
+  CASH: { label: "Cash", icon: "cash", color: colors.status.success },
+  BANK_TRANSFER: { label: "Bank Transfer", icon: "bank", color: colors.status.info },
+  MOBILE_MONEY: { label: "Mobile Money", icon: "cellphone", color: colors.status.warning },
+  ORANGE_MONEY: { label: "Orange Money", icon: "cellphone", color: colors.status.warning },
+  WAVE: { label: "Wave", icon: "wave", color: colors.status.info },
+  CARD: { label: "Card", icon: "credit-card", color: (colors.accent as any).purple || "#9C27B0" },
+});
 
 interface PaymentMethodRowProps {
   paymentMethod: string;
@@ -26,7 +24,8 @@ export const PaymentMethodRow: React.FC<PaymentMethodRowProps> = ({
 }) => {
   const { colors } = useAppTheme();
   const styles = createPaymentInfoCardStyles(colors);
-  const config = PAYMENT_METHODS[paymentMethod] || {
+  const paymentMethods = getPaymentMethods(colors);
+  const config = paymentMethods[paymentMethod] || {
     label: paymentMethod,
     icon: "cash",
     color: colors.text.secondary,

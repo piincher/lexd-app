@@ -4,7 +4,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { styles } from './styles';
 
 export interface TrackingEvent {
@@ -18,17 +18,6 @@ interface GoodsTrackingTimelineProps {
 	events: TrackingEvent[];
 	currentStatus: string;
 }
-
-const STATUS_CONFIG: Record<string, { icon: string; color: string; bgColor: string }> = {
-	RECEIVED_AT_WAREHOUSE: { icon: '📦', color: Theme.status.info, bgColor: Theme.colors.feedback.infoBg },
-	PACKED: { icon: '📦', color: Theme.primary.main, bgColor: Theme.primary[50] },
-	ASSIGNED_TO_CONTAINER: { icon: '📋', color: Theme.status.warning, bgColor: Theme.colors.feedback.warningBg },
-	LOADED_IN_CONTAINER: { icon: '🚢', color: Theme.status.error, bgColor: Theme.colors.feedback.errorBg },
-	IN_TRANSIT: { icon: '✈️', color: Theme.status.info, bgColor: Theme.colors.feedback.infoBg },
-	ARRIVED_DESTINATION: { icon: '🏁', color: Theme.status.success, bgColor: Theme.colors.feedback.successBg },
-	READY_FOR_PICKUP: { icon: '📍', color: Theme.primary.main, bgColor: Theme.primary[50] },
-	DELIVERED: { icon: '✅', color: Theme.neutral[600], bgColor: Theme.neutral[100] },
-};
 
 const formatDate = (timestamp: string): string => {
 	const date = new Date(timestamp);
@@ -44,6 +33,19 @@ export const GoodsTrackingTimeline: React.FC<GoodsTrackingTimelineProps> = ({
 	events,
 	currentStatus,
 }) => {
+	const { colors } = useAppTheme();
+
+	const STATUS_CONFIG: Record<string, { icon: string; color: string; bgColor: string }> = {
+		RECEIVED_AT_WAREHOUSE: { icon: '📦', color: colors.status.info, bgColor: colors.feedback.infoBg },
+		PACKED: { icon: '📦', color: colors.primary.main, bgColor: colors.primary[50] },
+		ASSIGNED_TO_CONTAINER: { icon: '📋', color: colors.status.warning, bgColor: colors.feedback.warningBg },
+		LOADED_IN_CONTAINER: { icon: '🚢', color: colors.status.error, bgColor: colors.feedback.errorBg },
+		IN_TRANSIT: { icon: '✈️', color: colors.status.info, bgColor: colors.feedback.infoBg },
+		ARRIVED_DESTINATION: { icon: '🏁', color: colors.status.success, bgColor: colors.feedback.successBg },
+		READY_FOR_PICKUP: { icon: '📍', color: colors.primary.main, bgColor: colors.primary[50] },
+		DELIVERED: { icon: '✅', color: colors.neutral[600], bgColor: colors.neutral[100] },
+	};
+
 	const sortedEvents = [...events].sort(
 		(a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
 	);
@@ -53,8 +55,8 @@ export const GoodsTrackingTimeline: React.FC<GoodsTrackingTimelineProps> = ({
 			{sortedEvents.map((event, index) => {
 				const config = STATUS_CONFIG[event.status] || {
 					icon: '📍',
-					color: Theme.neutral[400],
-					bgColor: Theme.neutral[100],
+					color: colors.neutral[400],
+					bgColor: colors.neutral[100],
 				};
 				const isCurrent = event.status === currentStatus;
 				const isLast = index === sortedEvents.length - 1;

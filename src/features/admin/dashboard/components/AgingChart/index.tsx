@@ -27,9 +27,7 @@ export const AgingChart: React.FC<AgingChartProps> = ({ aging }) => {
           backgroundColor: colors.background.card,
           borderRadius: 18,
           borderWidth: 1,
-          borderColor: isDark
-            ? "rgba(255,255,255,0.06)"
-            : "rgba(0,0,0,0.04)",
+          borderColor: colors.border,
           padding: 14,
           ...Theme.shadows.sm,
         },

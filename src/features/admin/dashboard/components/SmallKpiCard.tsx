@@ -3,7 +3,7 @@ import { View, Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { createKPICardsStyles } from "./KPICards.styles";
+import { createStyles } from "./KPICards.styles";
 
 interface SmallKpiCardProps {
   value: string;
@@ -27,7 +27,7 @@ export const SmallKpiCard: React.FC<SmallKpiCardProps> = ({
   onPress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = createKPICardsStyles(colors, isDark);
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Pressable

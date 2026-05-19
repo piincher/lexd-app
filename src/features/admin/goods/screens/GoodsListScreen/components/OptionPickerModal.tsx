@@ -2,8 +2,8 @@ import React from 'react';
 import { Modal, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './OptionPickerModal.styles';
+import { createStyles } from './OptionPickerModal.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface Option {
   label: string;
@@ -25,6 +25,8 @@ export const OptionPickerModal: React.FC<OptionPickerModalProps> = ({
   onSelect,
   onDismiss,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <Modal
       visible={visible}
@@ -37,7 +39,7 @@ export const OptionPickerModal: React.FC<OptionPickerModalProps> = ({
           <View style={styles.header}>
             <Text style={styles.title}>{title}</Text>
             <TouchableOpacity onPress={onDismiss} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color={Theme.neutral[600]} />
+              <Ionicons name="close" size={24} color={colors.neutral[600]} />
             </TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.body}>
@@ -51,7 +53,7 @@ export const OptionPickerModal: React.FC<OptionPickerModalProps> = ({
                 }}
               >
                 <Text style={styles.optionText}>{option.label}</Text>
-                <Ionicons name="chevron-forward" size={18} color={Theme.neutral[400]} />
+                <Ionicons name="chevron-forward" size={18} color={colors.neutral[400]} />
               </TouchableOpacity>
             ))}
           </ScrollView>

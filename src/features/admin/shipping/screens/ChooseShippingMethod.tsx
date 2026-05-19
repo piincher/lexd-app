@@ -3,7 +3,7 @@ import type { RootStackParamList, RootStackScreenProps } from '@src/navigations/
 import { useShippingMode } from '@src/store/shippingMode';
 import React, { FC, useState } from 'react';
 import { View, StyleSheet, Text, Pressable } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { FlashList } from '@shopify/flash-list';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -19,6 +19,8 @@ const list: DataType = [
 ];
 
 const ChooseShippingMethod = ({ navigation }: RootStackScreenProps<'ChooseShippingMethod'>) => {
+	const { colors } = useAppTheme();
+	const styles = React.useMemo(() => createStyles(colors), [colors]);
 	const [selectedItem, setSelectedItem] = useState<DataType[number] | undefined>(undefined);
 	const setType = useShippingMode((state) => state.setType);
 	const items = list;
@@ -49,7 +51,7 @@ const ChooseShippingMethod = ({ navigation }: RootStackScreenProps<'ChooseShippi
 	);
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
 	container: {
 		flex: 1,
 	},
@@ -59,14 +61,14 @@ const styles = StyleSheet.create({
 	},
 	userRole: {
 		fontSize: 14,
-		color: Theme.neutral[500],
+		color: colors.neutral[500],
 	},
 	buttonContainer: {
 		position: 'absolute',
 		bottom: 0,
 		width: '100%',
 		padding: 20,
-		backgroundColor: Theme.colors.background.card,
+		backgroundColor: colors.background.card,
 	},
 });
 

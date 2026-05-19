@@ -3,7 +3,7 @@
  * Consistent section title with green accent bar and optional subtitle
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -18,6 +18,7 @@ interface SectionHeaderProps {
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({ title, subtitle, align = 'left' }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={[styles.container, align === 'center' && styles.center]}>
@@ -32,7 +33,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({ title, subtitle, a
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     marginBottom: 16,
   },
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 22,
     borderRadius: 2,
-    backgroundColor: Theme.colors.primary.main,
+    backgroundColor: colors.primary.main,
   },
   title: {
     fontFamily: Fonts.bold,

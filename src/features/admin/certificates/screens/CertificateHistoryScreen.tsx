@@ -6,12 +6,13 @@ import { useCertificateHistory } from "../hooks/useCertificateHistory";
 import { CertificateHistoryHeader } from "../components/CertificateHistoryHeader";
 import { CertificateFilterChips } from "../components/CertificateFilterChips";
 import { CertificateHistoryList } from "../components/CertificateHistoryList";
-import { styles } from "./CertificateHistoryScreen.styles";
+import { createStyles } from "./CertificateHistoryScreen.styles";
 
 export default function CertificateHistoryScreen({
   navigation,
 }: RootStackScreenProps<"CertificateHistory">) {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     activeFilter,
     certificates,

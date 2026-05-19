@@ -22,7 +22,7 @@ export const ReadyForPickupDialog: React.FC<ReadyForPickupDialogProps> = ({
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onDismiss}>
-        <Dialog.Icon icon="checkmark-done-circle" color={Theme.status.warning} />
+        <Dialog.Icon icon="checkmark-done-circle" color={colors.status.warning} />
         <Dialog.Title style={styles.dialogTitle}>
           Marquer comme Prêt
         </Dialog.Title>
@@ -37,7 +37,7 @@ export const ReadyForPickupDialog: React.FC<ReadyForPickupDialogProps> = ({
           <Button onPress={onDismiss}>Annuler</Button>
           <Button
             onPress={onConfirm}
-            textColor={Theme.status.warning}
+            textColor={colors.status.warning}
           >
             Confirmer
           </Button>

@@ -7,8 +7,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './GoodsReceptionInfo.styles';
+import { createStyles } from './GoodsReceptionInfo.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface Receiver {
   firstName?: string;
@@ -46,11 +46,15 @@ export const GoodsReceptionInfo: React.FC<GoodsReceptionInfoProps> = ({
     return 'N/A';
   };
 
+  const { colors, isDark } = useAppTheme();
+
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <Card style={styles.container}>
       <Card.Content>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="calendar-check" size={20} color={Theme.primary[600]} />
+          <MaterialCommunityIcons name="calendar-check" size={20} color={colors.primary[600]} />
           <Text style={styles.title}>Réception</Text>
         </View>
 

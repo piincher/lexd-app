@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { View } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { createCategoryStyles } from "./Category.styles";
+import { createStyles } from "./Category.styles";
 import { StatusTab } from "./StatusTab";
 
 interface CategoryProps {
@@ -17,8 +17,8 @@ export const Category = ({
    onStatusChange,
    status,
 }: CategoryProps) => {
-   const { colors } = useAppTheme();
-   const styles = useMemo(() => createCategoryStyles(colors), [colors]);
+   const { colors, isDark } = useAppTheme();
+   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
    const getStatusText = (title: string) => {
       switch (title) {

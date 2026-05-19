@@ -1,14 +1,14 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: 'flex-end',
     backgroundColor: 'rgba(0, 0, 0, 0.32)',
   },
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     padding: 20,
@@ -24,7 +24,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   closeButton: {
     padding: 4,
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     marginBottom: 10,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
@@ -51,30 +51,30 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: Theme.radius.lg,
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
-    backgroundColor: Theme.neutral[50],
+    borderColor: colors.neutral[200],
+    backgroundColor: colors.neutral[50],
   },
   dateButtonText: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   dateChipRow: {
     flexDirection: 'row',
   },
   dateChip: {
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
   },
   footer: {
     flexDirection: 'row',
     gap: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
   },
   clearButton: {
     flex: 1,
-    borderColor: Theme.neutral[300],
+    borderColor: colors.neutral[300],
   },
   applyButton: {
     flex: 1,

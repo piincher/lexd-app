@@ -2,15 +2,15 @@ import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
 
-export const getStyles = (colors: any) => StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
     marginHorizontal: 12,
     marginBottom: 12,
     padding: 16,
     borderRadius: 16,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,
@@ -24,7 +24,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     fontFamily: Fonts.semiBold,
   },
   routeGroup: {
@@ -40,7 +40,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: Theme.colors.background.paper,
+    backgroundColor: colors.background.paper,
     justifyContent: 'center',
     alignItems: 'center',
   },

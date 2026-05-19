@@ -29,7 +29,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({ onEdit, onDelete }
       onPress={onDelete}
       style={styles.deleteButton}
       contentStyle={styles.buttonContent}
-      textColor={Theme.status.error}
+      textColor={colors.status.error}
       icon="delete"
     >
       Supprimer

@@ -1,14 +1,13 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 
-export const createStyles = (colors: any) =>
+export const createStyles = (colors: any, isDark?: boolean) =>
   StyleSheet.create({
     card: {
       backgroundColor: colors.background.card,
       borderRadius: 16,
       padding: 16,
       marginBottom: 12,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.05,
       shadowRadius: 8,

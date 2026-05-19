@@ -5,7 +5,7 @@ import * as Clipboard from "expo-clipboard";
 import { showMessage } from "react-native-flash-message";
 import { CertificateRecord } from "../../api";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { getStyles } from "./CertificateCard.styles";
+import { createStyles } from './CertificateCard.styles';
 
 interface CertificateCardProps {
   certificate: CertificateRecord;
@@ -33,8 +33,8 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
   isDownloading,
   onPress,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const isAuto = certificate.type === "AUTO";
   const isActive = certificate.status === "ACTIVE";
 

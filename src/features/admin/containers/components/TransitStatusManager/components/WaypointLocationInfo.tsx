@@ -3,7 +3,8 @@ import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { ContainerWaypoint } from '../../../types/waypoints';
-import { styles } from './TransitStatusCard.styles';
+import { createStyles } from './TransitStatusCard.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface WaypointLocationInfoProps {
   currentWaypoint?: ContainerWaypoint;
@@ -14,13 +15,15 @@ export const WaypointLocationInfo: React.FC<WaypointLocationInfoProps> = ({
   currentWaypoint,
   segmentIcon,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const locationName = currentWaypoint?.location?.city || currentWaypoint?.shortName || 'Inconnu';
   const locationCountry = currentWaypoint?.location?.country || '';
 
   return (
     <View style={styles.locationContainer}>
       <View style={styles.locationHeader}>
-        <Ionicons name={segmentIcon} size={16} color={Theme.neutral[500]} />
+        <Ionicons name={segmentIcon} size={16} color={colors.neutral[500]} />
         <Text style={styles.locationLabel}>Localisation actuelle</Text>
       </View>
       <Text style={styles.locationName}>{locationName}</Text>

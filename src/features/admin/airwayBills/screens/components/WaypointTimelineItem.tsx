@@ -9,7 +9,7 @@ import {
   getAirwayBillWaypointIcon,
 } from '../../constants';
 import { AirwayBillWaypointActions } from './AirwayBillWaypointActions';
-import { styles } from './AirwayBillWaypointTimeline.styles';
+import { createStyles } from './AirwayBillWaypointTimeline.styles';
 
 type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
@@ -37,7 +37,8 @@ export const WaypointTimelineItem: React.FC<WaypointTimelineItemProps> = ({
   isUpdating,
   onWaypointStatusChange,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const statusColor = (status: AirwayBillWaypointStatus) =>
     ({

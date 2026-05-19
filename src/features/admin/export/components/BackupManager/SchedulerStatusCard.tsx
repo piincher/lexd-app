@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { Badge } from "@src/shared/ui/Badge";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { styles } from "./BackupManager.styles";
+import { createStyles } from "./BackupManager.styles";
 
 interface SchedulerStatus {
   isScheduled: boolean;
@@ -21,7 +21,8 @@ interface SchedulerStatusCardProps {
 }
 
 export const SchedulerStatusCard: React.FC<SchedulerStatusCardProps> = ({ status }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   if (!status) return null;
 
   const isActive = status.isScheduled && !status.isRunning;

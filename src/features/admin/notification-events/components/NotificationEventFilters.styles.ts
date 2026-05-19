@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { lightTheme } from '@src/constants/Theme';
 
-type AppColors = typeof lightTheme.colors;
 
-export const createNotificationEventFiltersStyles = (colors: AppColors) =>
+
+
+export const createStyles = (colors: any, isDark?: boolean) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: 16,

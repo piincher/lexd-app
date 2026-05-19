@@ -1,11 +1,10 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.colors.background.default,
+    backgroundColor: colors.background.default,
   },
   loadingContainer: {
     flex: 1,
@@ -16,6 +15,6 @@ export const styles = StyleSheet.create({
   loadingText: {
     fontSize: 15,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
 });

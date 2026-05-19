@@ -43,7 +43,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   routeFlowTextHighlight: { color: colors.status.success, fontSize: 13, fontWeight: '700' },
   routeFlowSubtext: { fontSize: 9, color: colors.text.secondary },
   routeFlowTransit: { alignItems: 'center' },
-  routeFlowTransitText: { fontSize: 8, color: Theme.neutral[500], marginTop: 2 },
+  routeFlowTransitText: { fontSize: 8, color: colors.neutral[500], marginTop: 2 },
   routeFlowArrow: { paddingHorizontal: 2 },
   mainPortTag: { backgroundColor: colors.status.success, paddingHorizontal: 4, paddingVertical: 1, borderRadius: Theme.radius.full, marginTop: 2 },
   mainPortTagText: { fontSize: 7, fontWeight: '800', color: colors.text.inverse },
@@ -51,25 +51,25 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   // Sections
   section: { marginTop: Theme.spacing.lg, paddingHorizontal: Theme.spacing.lg },
   sectionHeader: { marginBottom: Theme.spacing.md },
-  currentLocationBadge: { ...flexRow, backgroundColor: `${Theme.status.info}15`, paddingHorizontal: Theme.spacing.md, paddingVertical: Theme.spacing.sm, borderRadius: Theme.radius.full, alignSelf: 'flex-start', gap: Theme.spacing.xs },
-  currentLocationText: { fontSize: 12, fontWeight: '700', color: Theme.status.info },
+  currentLocationBadge: { ...flexRow, backgroundColor: `${colors.status.info}15`, paddingHorizontal: Theme.spacing.md, paddingVertical: Theme.spacing.sm, borderRadius: Theme.radius.full, alignSelf: 'flex-start', gap: Theme.spacing.xs },
+  currentLocationText: { fontSize: 12, fontWeight: '700', color: colors.status.info },
   sectionTitleRow: { ...flexRow, gap: Theme.spacing.sm, marginBottom: Theme.spacing.md },
-  sectionTitle: { fontSize: 16, fontWeight: '700', color: Theme.neutral[700], flex: 1 },
-  badge: { backgroundColor: Theme.neutral[200], paddingHorizontal: Theme.spacing.md, paddingVertical: Theme.spacing.xs, borderRadius: Theme.radius.full },
-  badgeSuccess: { backgroundColor: `${Theme.status.success}20` },
-  badgeText: { fontSize: 12, fontWeight: '700', color: Theme.neutral[600] },
-  badgeTextSuccess: { color: Theme.status.success },
+  sectionTitle: { fontSize: 16, fontWeight: '700', color: colors.neutral[700], flex: 1 },
+  badge: { backgroundColor: colors.neutral[200], paddingHorizontal: Theme.spacing.md, paddingVertical: Theme.spacing.xs, borderRadius: Theme.radius.full },
+  badgeSuccess: { backgroundColor: `${colors.status.success}20` },
+  badgeText: { fontSize: 12, fontWeight: '700', color: colors.neutral[600] },
+  badgeTextSuccess: { color: colors.status.success },
 
   // Map
   mapSection: { marginTop: Theme.spacing.lg, paddingHorizontal: Theme.spacing.lg },
   mapPlaceholder: { height: 160, borderRadius: Theme.radius.xl, overflow: 'hidden' },
   mapGradient: { flex: 1, justifyContent: 'center', alignItems: 'center', gap: Theme.spacing.sm },
-  mapPlaceholderText: { fontSize: 16, fontWeight: '700', color: Theme.status.info },
-  mapPlaceholderSubtext: { fontSize: 12, color: Theme.neutral[500] },
+  mapPlaceholderText: { fontSize: 16, fontWeight: '700', color: colors.status.info },
+  mapPlaceholderSubtext: { fontSize: 12, color: colors.neutral[500] },
 
   // More waypoints
-  moreWaypoints: { backgroundColor: Theme.neutral[100], paddingVertical: Theme.spacing.md, paddingHorizontal: Theme.spacing.lg, borderRadius: Theme.radius.lg, alignItems: 'center', marginTop: Theme.spacing.sm },
-  moreWaypointsText: { fontSize: 13, color: Theme.neutral[500], fontWeight: '500' },
+  moreWaypoints: { backgroundColor: colors.neutral[100], paddingVertical: Theme.spacing.md, paddingHorizontal: Theme.spacing.lg, borderRadius: Theme.radius.lg, alignItems: 'center', marginTop: Theme.spacing.sm },
+  moreWaypointsText: { fontSize: 13, color: colors.neutral[500], fontWeight: '500' },
 
   // Summary
   summaryCard: { backgroundColor: colors.background.card, ...cardBase, marginTop: Theme.spacing.lg, padding: Theme.spacing.lg, ...Theme.shadows.sm },

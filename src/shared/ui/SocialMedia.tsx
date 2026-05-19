@@ -24,6 +24,7 @@ interface Props {
 
 const SocialMedia: FC<Props> = ({ color }: Props) => {
    const { colors, isDark } = useAppTheme();
+   const styles = React.useMemo(() => createStyles(colors), [colors]);
    const _handlePressButtonAsync = async (url: string) => {
       await WebBrowser.openBrowserAsync(url);
    };
@@ -66,7 +67,7 @@ const SocialMedia: FC<Props> = ({ color }: Props) => {
                name={icon}
                size={32}
                color={color}
-               style={[styles.iconStyle, animatedStyle]}
+               style={[styles.iconStyle, animatedStyle, { shadowColor: colors.neutral[900] }]}
                onPressIn={() => {
                   animate();
                   _handlePressButtonAsync(url);
@@ -82,7 +83,7 @@ const SocialMedia: FC<Props> = ({ color }: Props) => {
             from={{ opacity: 0, translateY: 50 }}
             animate={{ opacity: 1, translateY: 0 }}
             transition={{ type: "spring", delay: 200 }}
-            style={[styles.iconContainer, { backgroundColor: isDark ? colors.neutral[700] : colors.neutral[200] }]}
+            style={[styles.iconContainer, { backgroundColor: isDark ? colors.neutral[700] : colors.neutral[200], shadowColor: colors.neutral[900] }]}
          >
             <SocialIcon
                IconComponent={AnimatedIcon}
@@ -109,7 +110,7 @@ const SocialMedia: FC<Props> = ({ color }: Props) => {
    );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
    container: {
       zIndex: 2,
       top: -25,
@@ -121,13 +122,13 @@ const styles = StyleSheet.create({
       paddingVertical: 20,
       borderRadius: 30,
       marginHorizontal: 20,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.3,
       shadowRadius: 20,
    },
    iconStyle: {
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.3,
       shadowRadius: 3,

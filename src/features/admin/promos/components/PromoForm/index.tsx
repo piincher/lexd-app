@@ -19,8 +19,8 @@ type PromoFormProps = {
 };
 
 export function PromoForm({ form, onChange, onOptionChange, onSubmit, onCancel, isSubmitting, isEditing }: PromoFormProps) {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
   const [showFromPicker, setShowFromPicker] = useState(false);
   const [showUntilPicker, setShowUntilPicker] = useState(false);
   const validFromDate = form.validFrom ? new Date(form.validFrom) : undefined;

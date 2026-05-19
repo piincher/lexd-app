@@ -8,9 +8,13 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { ShimmerBlock } from '@src/shared/ui';
-import { styles } from './OrderCardSkeleton.styles';
+import { createStyles } from './OrderCardSkeleton.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
-const OrderCardSkeletonItem: React.FC = () => (
+const OrderCardSkeletonItem: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <View style={styles.card}>
     <View style={styles.statusBar} />
 
@@ -45,27 +49,35 @@ const OrderCardSkeletonItem: React.FC = () => (
       </View>
     </View>
   </View>
-);
+);};
 
 interface OrderCardSkeletonProps {
   count?: number;
 }
 
-export const OrderCardSkeleton: React.FC<OrderCardSkeletonProps> = ({ count = 5 }) => (
-  <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
-    <ScrollView showsVerticalScrollIndicator={false}>
-      {Array.from({ length: count }).map((_, i) => (
-        <OrderCardSkeletonItem key={i} />
-      ))}
-    </ScrollView>
-  </Animated.View>
-);
+export const OrderCardSkeleton: React.FC<OrderCardSkeletonProps> = ({ count = 5 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
+    <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {Array.from({ length: count }).map((_, i) => (
+          <OrderCardSkeletonItem key={i} />
+        ))}
+      </ScrollView>
+    </Animated.View>
+  );
+};
 
 /** Compact footer skeleton for loading more pages */
-export const OrderCardFooterSkeleton: React.FC = () => (
-  <Animated.View entering={FadeIn.duration(200)} style={styles.footer}>
-    <OrderCardSkeletonItem />
-  </Animated.View>
-);
+export const OrderCardFooterSkeleton: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
+    <Animated.View entering={FadeIn.duration(200)} style={styles.footer}>
+      <OrderCardSkeletonItem />
+    </Animated.View>
+  );
+};
 
 export default OrderCardSkeleton;

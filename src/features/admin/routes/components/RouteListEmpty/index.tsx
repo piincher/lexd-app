@@ -8,9 +8,8 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { ShippingMode } from '../../types';
-import { styles } from './RouteListEmpty.styles';
+import { createStyles } from './RouteListEmpty.styles';
 
 interface RouteListEmptyProps {
   selectedMode: ShippingMode | 'all';
@@ -18,14 +17,15 @@ interface RouteListEmptyProps {
 }
 
 export const RouteListEmpty: React.FC<RouteListEmptyProps> = ({ selectedMode, onCreateRoute }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.emptyContainer}>
       <LinearGradient
         colors={[colors.primary[50], colors.primary[100]]}
         style={styles.emptyIconContainer}
       >
-        <Ionicons name="map-outline" size={64} color={Theme.primary[400]} />
+        <Ionicons name="map-outline" size={64} color={colors.primary[400]} />
       </LinearGradient>
       <Text style={styles.emptyTitle}>Aucune route</Text>
       <Text style={styles.emptySubtitle}>

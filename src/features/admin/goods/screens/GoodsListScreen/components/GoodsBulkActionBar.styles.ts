@@ -1,15 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderTopWidth: 1,
-    borderTopColor: Theme.colors.border,
+    borderTopColor: colors.border,
     padding: 12,
     paddingBottom: 28,
     ...Theme.shadows.lg,
@@ -29,29 +29,29 @@ export const styles = StyleSheet.create({
     height: 22,
     borderRadius: 4,
     borderWidth: 2,
-    borderColor: Theme.colors.border,
+    borderColor: colors.border,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 8,
   },
   checkboxSelected: {
-    backgroundColor: Theme.colors.primary.main,
-    borderColor: Theme.primary[600],
+    backgroundColor: colors.primary.main,
+    borderColor: colors.primary[600],
   },
   selectAllText: {
     fontSize: 14,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontWeight: '500',
   },
   cancelText: {
     fontSize: 14,
-    color: Theme.colors.status.error,
+    color: colors.status.error,
     fontWeight: '600',
   },
   countText: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     marginBottom: 10,
   },
   actionsRow: {
@@ -64,7 +64,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.colors.primary.main,
+    backgroundColor: colors.primary.main,
     paddingVertical: 10,
     borderRadius: 8,
     gap: 6,
@@ -74,16 +74,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.colors.status.error,
+    backgroundColor: colors.status.error,
     paddingVertical: 10,
     borderRadius: 8,
     gap: 6,
   },
   actionButtonDisabled: {
-    backgroundColor: Theme.colors.border,
+    backgroundColor: colors.border,
   },
   actionButtonText: {
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     fontWeight: '600',
     fontSize: 13,
   },

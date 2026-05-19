@@ -13,7 +13,6 @@ import {
   CustomerContainer,
   CUSTOMER_STATUS_LABELS,
   CUSTOMER_STATUS_COLORS,
-  CUSTOMER_STATUS_BG_COLORS,
   SHIPPING_LINE_LABELS,
 } from '../../types';
 import { useContainerCardStyles } from './ContainerCard.styles';
@@ -47,7 +46,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
   };
 
   const statusColor = CUSTOMER_STATUS_COLORS[container.status];
-  const statusBgColor = CUSTOMER_STATUS_BG_COLORS[container.status];
+  const statusBgColor = statusColor + '15';
   const statusLabel = CUSTOMER_STATUS_LABELS[container.status];
   const goodsCount = container.myGoods?.length || 0;
   const hasMultipleGoods = goodsCount > 1;

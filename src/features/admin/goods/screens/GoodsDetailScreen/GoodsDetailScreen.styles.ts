@@ -26,7 +26,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   iconButton: {
     padding: 8,
     borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: colors.background.overlay,
   },
   headerContent: {
     alignItems: 'center',
@@ -34,13 +34,13 @@ export const createStyles = (colors: any) => StyleSheet.create({
   goodsIdBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.25)',
+    backgroundColor: colors.background.overlay,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 25,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
+    borderColor: colors.background.overlay,
   },
   badgeIcon: {
     marginRight: 8,

@@ -16,11 +16,57 @@ interface GoodsEmptyStateProps {
   onAddPress?: () => void;
 }
 
+const createStyles = (colors: any) => StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    paddingVertical: Theme.spacing['4xl'],
+  },
+  iconContainer: {
+    width: 120,
+    height: 120,
+    borderRadius: Theme.radius['3xl'],
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: Theme.spacing.xl,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: colors.text.primary,
+    marginBottom: Theme.spacing.sm,
+  },
+  subtitle: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: colors.text.secondary,
+    textAlign: 'center',
+    paddingHorizontal: Theme.spacing['2xl'],
+  },
+  button: {
+    marginTop: Theme.spacing.xl,
+    borderRadius: Theme.radius.full,
+    overflow: 'hidden',
+  },
+  buttonGradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: Theme.spacing.md,
+    paddingHorizontal: Theme.spacing.xl,
+  },
+  buttonText: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: colors.text.inverse,
+    marginLeft: Theme.spacing.sm,
+  },
+});
+
 export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({ 
   hasFilters, 
   onAddPress 
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   return (
   <View style={styles.container}>
     <LinearGradient
@@ -45,48 +91,3 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
     )}
   </View>
 );}
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    paddingVertical: Theme.spacing['4xl'],
-  },
-  iconContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: Theme.radius['3xl'],
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: Theme.spacing.xl,
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: Theme.colors.text.primary,
-    marginBottom: Theme.spacing.sm,
-  },
-  subtitle: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: Theme.colors.text.secondary,
-    textAlign: 'center',
-    paddingHorizontal: Theme.spacing['2xl'],
-  },
-  button: {
-    marginTop: Theme.spacing.xl,
-    borderRadius: Theme.radius.full,
-    overflow: 'hidden',
-  },
-  buttonGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: Theme.spacing.md,
-    paddingHorizontal: Theme.spacing.xl,
-  },
-  buttonText: {
-    fontSize: 15,
-    fontWeight: '700',
-    color: Theme.colors.text.inverse,
-    marginLeft: Theme.spacing.sm,
-  },
-});

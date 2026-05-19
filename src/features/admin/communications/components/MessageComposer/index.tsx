@@ -5,12 +5,13 @@
 
 import React from 'react';
 import { View } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { CategoryTabs } from './CategoryTabs';
 import { TemplateChips } from './TemplateChips';
 import { MessageInput } from './MessageInput';
 import { SendButton } from './SendButton';
 import { useMessageComposer } from './useMessageComposer';
-import { styles } from './MessageComposer.styles';
+import { createStyles } from './MessageComposer.styles';
 
 interface MessageComposerProps {
   message: string;
@@ -27,6 +28,8 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
   isSending,
   onSend,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     activeCategory,
     setActiveCategory,

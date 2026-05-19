@@ -10,7 +10,7 @@ export const FilterFooter: React.FC = () => {
   const styles = createStyles(colors);
   return (
     <LinearGradient colors={['transparent', colors.background.card]} style={styles.footer}>
-      <Button mode="contained" onPress={() => {}} style={styles.applyButton} buttonColor={Theme.primary[500]}>
+      <Button mode="contained" onPress={() => {}} style={styles.applyButton} buttonColor={colors.primary[500]}>
         Appliquer les filtres
       </Button>
     </LinearGradient>

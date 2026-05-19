@@ -10,11 +10,12 @@ import {
   Text, 
   TouchableOpacity,
 } from 'react-native';
-import { styles } from './ContainerCard.styles';
+import { createStyles } from './ContainerCard.styles';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Badge } from '@src/components/ui/Badge/Badge';
-import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, CONTAINER_STATUS_COLORS, SHIPPING_LINE_LABELS, SHIPPING_MODE_LABELS, SHIPPING_MODE_ICONS, SHIPPING_MODE_COLORS } from '../types';
+import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, getContainerStatusColors, SHIPPING_LINE_LABELS, SHIPPING_MODE_LABELS, SHIPPING_MODE_ICONS, getShippingModeColors } from '../types';
 import { ContainerCapacityBar } from './ContainerCapacityBar';
 import { ContainerTimeline } from './ContainerTimeline';
 
@@ -35,12 +36,14 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
   onPress,
   maxCBM = 67, // Default 40ft container
 }) => {
-  const statusColor = CONTAINER_STATUS_COLORS[container.status];
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const statusColor = getContainerStatusColors(colors)[container.status];
   const statusLabel = CONTAINER_STATUS_LABELS[container.status];
   // Phase 3: Get shipping mode info
   const shippingMode = container.shippingMode || 'SEA';
   const modeIcon = SHIPPING_MODE_ICONS[shippingMode];
-  const modeColor = SHIPPING_MODE_COLORS[shippingMode];
+  const modeColor = getShippingModeColors(colors)[shippingMode];
   const modeLabel = SHIPPING_MODE_LABELS[shippingMode];
 
   // Phase 3: Get route info
@@ -68,7 +71,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
           <View style={styles.badgeContainer}>
             {isAssignable && (
               <View style={styles.assignableBadge}>
-                <Ionicons name="add-circle" size={10} color={Theme.status.success} />
+                <Ionicons name="add-circle" size={10} color={colors.status.success} />
                 <Text style={styles.assignableBadgeText}>Peut recevoir</Text>
               </View>
             )}
@@ -92,7 +95,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
           {/* Route Name */}
           {routeName && (
             <View style={styles.routeBadge}>
-              <Ionicons name="git-branch" size={12} color={Theme.neutral[500]} />
+              <Ionicons name="git-branch" size={12} color={colors.neutral[500]} />
               <Text style={styles.routeBadgeText} numberOfLines={1}>
                 {routeName}
               </Text>
@@ -102,7 +105,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
 
         {/* Shipping Line */}
         <View style={styles.shippingLine}>
-          <Ionicons name="business" size={14} color={Theme.neutral[400]} />
+          <Ionicons name="business" size={14} color={colors.neutral[400]} />
           <Text style={styles.shippingLineText}>
             {SHIPPING_LINE_LABELS[container.shippingLine] || container.shippingLine}
           </Text>
@@ -110,7 +113,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
 
         {/* Consignee */}
         <View style={styles.consignee}>
-          <Ionicons name="location" size={14} color={Theme.neutral[400]} />
+          <Ionicons name="location" size={14} color={colors.neutral[400]} />
           <Text style={styles.consigneeText}>
             {typeof container.consigneeId === 'object' 
               ? container.consigneeId.name 

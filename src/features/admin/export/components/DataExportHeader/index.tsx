@@ -3,9 +3,12 @@ import { View } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
-import { styles } from "./DataExportHeader.styles";
+import { createStyles } from './DataExportHeader.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const DataExportHeader: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const navigation = useNavigation();
 
   return (

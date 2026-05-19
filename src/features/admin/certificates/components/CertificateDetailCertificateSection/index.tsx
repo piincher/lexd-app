@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
-import { styles } from "./CertificateDetailCertificateSection.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from './CertificateDetailCertificateSection.styles';
 import type { CertificateRecord } from "../../api";
 
 const formatDate = (dateString: string): string => {
@@ -27,6 +27,8 @@ interface CertificateDetailCertificateSectionProps {
 export const CertificateDetailCertificateSection: React.FC<
   CertificateDetailCertificateSectionProps
 > = ({ certificate }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>Informations du certificat</Text>
@@ -35,7 +37,7 @@ export const CertificateDetailCertificateSection: React.FC<
           <Ionicons
             name="calendar-outline"
             size={18}
-            color={Theme.colors.text.secondary}
+            color={colors.text.secondary}
           />
           <View style={styles.infoContent}>
             <Text style={styles.infoLabel}>Date d&apos;émission</Text>
@@ -49,7 +51,7 @@ export const CertificateDetailCertificateSection: React.FC<
           <Ionicons
             name="key-outline"
             size={18}
-            color={Theme.colors.text.secondary}
+            color={colors.text.secondary}
           />
           <View style={styles.infoContent}>
             <Text style={styles.infoLabel}>Code de vérification</Text>
@@ -63,7 +65,7 @@ export const CertificateDetailCertificateSection: React.FC<
           <MaterialIcons
             name="inventory"
             size={18}
-            color={Theme.colors.text.secondary}
+            color={colors.text.secondary}
           />
           <View style={styles.infoContent}>
             <Text style={styles.infoLabel}>CBM à l&apos;émission</Text>
@@ -77,7 +79,7 @@ export const CertificateDetailCertificateSection: React.FC<
           <MaterialIcons
             name="flag"
             size={18}
-            color={Theme.colors.text.secondary}
+            color={colors.text.secondary}
           />
           <View style={styles.infoContent}>
             <Text style={styles.infoLabel}>Seuil requis</Text>

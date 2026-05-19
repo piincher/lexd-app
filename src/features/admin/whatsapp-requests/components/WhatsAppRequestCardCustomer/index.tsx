@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface WhatsAppRequestCardCustomerProps {
   customerId?: { firstName?: string; lastName?: string } | null;
@@ -14,6 +14,8 @@ export const WhatsAppRequestCardCustomer: React.FC<WhatsAppRequestCardCustomerPr
   customerPhone,
   onCall,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const customerName = customerId
     ? `${customerId.firstName || ''} ${customerId.lastName || ''}`.trim()
     : 'Client inconnu';
@@ -21,12 +23,12 @@ export const WhatsAppRequestCardCustomer: React.FC<WhatsAppRequestCardCustomerPr
   return (
     <View style={styles.customerSection}>
       <View style={styles.customerIcon}>
-        <Ionicons name="person-circle" size={40} color={Theme.primary[500]} />
+        <Ionicons name="person-circle" size={40} color={colors.primary[500]} />
       </View>
       <View style={styles.customerInfo}>
         <Text style={styles.customerName}>{customerName}</Text>
         <TouchableOpacity onPress={() => onCall(customerPhone)} style={styles.phoneContainer}>
-          <Ionicons name="call" size={14} color={Theme.primary[600]} />
+          <Ionicons name="call" size={14} color={colors.primary[600]} />
           <Text style={styles.customerPhone}>{customerPhone}</Text>
         </TouchableOpacity>
       </View>
@@ -34,14 +36,14 @@ export const WhatsAppRequestCardCustomer: React.FC<WhatsAppRequestCardCustomerPr
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   customerSection: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: Theme.spacing.md,
+    marginBottom: 12,
   },
   customerIcon: {
-    marginRight: Theme.spacing.md,
+    marginRight: 12,
   },
   customerInfo: {
     flex: 1,
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
   customerName: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   phoneContainer: {
     flexDirection: 'row',
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
   },
   customerPhone: {
     fontSize: 14,
-    color: Theme.primary[600],
+    color: colors.primary[600],
     marginLeft: 4,
   },
 });

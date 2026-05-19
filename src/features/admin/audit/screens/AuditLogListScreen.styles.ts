@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { lightTheme } from '@src/constants/Theme';
 
-type AppColors = typeof lightTheme.colors;
 
-export const createAuditLogListStyles = (colors: AppColors) =>
+
+
+export const createStyles = (colors: any, isDark?: boolean) =>
   StyleSheet.create({
     container: {
       flex: 1,

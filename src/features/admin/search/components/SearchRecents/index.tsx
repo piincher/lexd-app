@@ -24,10 +24,10 @@ export const SearchRecents: React.FC<SearchRecentsProps> = ({
 
   const renderItem = ({ item }: { item: string }) => (
     <TouchableOpacity style={styles.recentItem} onPress={() => onSelect(item)}>
-      <Ionicons name="time-outline" size={18} color={Theme.neutral[400]} style={styles.recentIcon} />
+      <Ionicons name="time-outline" size={18} color={colors.neutral[400]} style={styles.recentIcon} />
       <Text style={styles.recentText} numberOfLines={1}>{item}</Text>
       <TouchableOpacity onPress={() => onRemove(item)} style={styles.removeRecentButton}>
-        <Ionicons name="close" size={16} color={Theme.neutral[400]} />
+        <Ionicons name="close" size={16} color={colors.neutral[400]} />
       </TouchableOpacity>
     </TouchableOpacity>
   );

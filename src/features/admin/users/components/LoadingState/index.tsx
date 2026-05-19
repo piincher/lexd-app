@@ -1,12 +1,15 @@
 import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
-import { COLORS } from "../../lib/constants";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
-export const LoadingState: React.FC = () => (
-  <View style={styles.container}>
-    <ActivityIndicator size="large" color={COLORS.primary} />
-  </View>
-);
+export const LoadingState: React.FC = () => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator size="large" color={colors.primary.main} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

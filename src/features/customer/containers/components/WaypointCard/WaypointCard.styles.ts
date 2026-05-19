@@ -23,7 +23,7 @@ export const useWaypointCardStyles = () => {
           backgroundColor: colors.background.card,
           borderRadius: 16,
           overflow: 'hidden',
-          shadowColor: '#000',
+          shadowColor: colors.neutral[900],
           shadowOffset: { width: 0, height: 1 },
           shadowOpacity: 0.05,
           shadowRadius: 2,

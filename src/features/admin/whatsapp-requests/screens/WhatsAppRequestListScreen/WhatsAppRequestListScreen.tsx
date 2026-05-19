@@ -7,7 +7,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useWhatsAppRequestListScreenUI } from './hooks/useWhatsAppRequestListScreenUI';
-import { styles } from './WhatsAppRequestListScreen.styles';
+import { createStyles } from './WhatsAppRequestListScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { WhatsAppRequestHeader } from './components/WhatsAppRequestHeader';
 import { WhatsAppRequestStats } from './components/WhatsAppRequestStats';
 import { WhatsAppRequestFilters } from './components/WhatsAppRequestFilters';
@@ -18,6 +19,8 @@ import { WhatsAppRequestPDFModal } from './components/WhatsAppRequestPDFModal';
 import { WhatsAppRequestErrorSnackbar } from './components/WhatsAppRequestErrorSnackbar';
 
 export const WhatsAppRequestListScreen: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const { data, handlers } = useWhatsAppRequestListScreenUI();
 
   return (

@@ -1,19 +1,18 @@
 import { StyleSheet, Platform } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.colors.background.default,
+    backgroundColor: colors.background.default,
   },
   header: {
     paddingHorizontal: 24,
     paddingTop: Platform.OS === "android" ? 12 : 20,
     paddingBottom: 16,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.colors.neutral[200],
+    borderBottomColor: colors.neutral[200],
   },
   headerTop: {
     flexDirection: "row",
@@ -23,7 +22,7 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
@@ -34,18 +33,18 @@ export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 22,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     marginBottom: 2,
   },
   headerSubtitle: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   filterContainer: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.colors.neutral[200],
+    borderBottomColor: colors.neutral[200],
     paddingVertical: 12,
   },
   fab: {
@@ -55,10 +54,10 @@ export const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: Theme.colors.primary.main,
+    backgroundColor: colors.primary.main,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 8,
@@ -66,7 +65,7 @@ export const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: Theme.colors.background.default,
+    backgroundColor: colors.background.default,
   },
   modalHeader: {
     flexDirection: "row",
@@ -74,13 +73,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: Platform.OS === "android" ? 12 : 8,
     paddingBottom: 16,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.colors.neutral[200],
+    borderBottomColor: colors.neutral[200],
   },
   modalHeaderTitle: {
     fontSize: 20,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
 });

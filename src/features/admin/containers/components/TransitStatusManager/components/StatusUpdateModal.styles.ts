@@ -1,21 +1,21 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 1000,
   },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: Theme.colors.background.overlay,
+    backgroundColor: colors.background.overlay,
   },
   keyboardView: {
     flex: 1,
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderTopLeftRadius: Theme.radius['3xl'],
     borderTopRightRadius: Theme.radius['3xl'],
     maxHeight: '90%',
@@ -32,13 +32,13 @@ export const styles = StyleSheet.create({
     paddingBottom: Theme.spacing.md,
     gap: Theme.spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
+    borderBottomColor: colors.neutral[100],
   },
   title: {
     textAlign: 'center',
     fontWeight: '700',
     fontSize: 18,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   scrollView: {
     paddingHorizontal: Theme.spacing.lg,
@@ -55,7 +55,7 @@ export const styles = StyleSheet.create({
     paddingVertical: Theme.spacing.md,
     gap: Theme.spacing.sm,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
   },
   actionButton: {
     minHeight: 44,

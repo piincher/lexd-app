@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 
-export const getStyles = (colors: any) => StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
     marginHorizontal: 12,
     marginBottom: 12,
@@ -9,7 +9,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
     borderRadius: 16,
     backgroundColor: colors.background.card,
     elevation: 2,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.08,
     shadowRadius: 8,

@@ -5,7 +5,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { RoadSegment } from '../../../types';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './RoadSegmentsSection.styles';
+import { createStyles } from './RoadSegmentsSection.styles';
 
 interface RoadSegmentCardProps {
   segment: RoadSegment;
@@ -13,7 +13,8 @@ interface RoadSegmentCardProps {
 }
 
 export const RoadSegmentCard: React.FC<RoadSegmentCardProps> = ({ segment, index }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Animated.View
@@ -22,7 +23,7 @@ export const RoadSegmentCard: React.FC<RoadSegmentCardProps> = ({ segment, index
       style={styles.segmentCard}
     >
       <View style={styles.segmentHeader}>
-        <View style={[styles.segmentIconContainer, { backgroundColor: Theme.status.warning }]}>
+        <View style={[styles.segmentIconContainer, { backgroundColor: colors.status.warning }]}>
           <Ionicons name="car" size={20} color={colors.text.inverse} />
         </View>
         <View style={styles.segmentInfo}>
@@ -33,8 +34,8 @@ export const RoadSegmentCard: React.FC<RoadSegmentCardProps> = ({ segment, index
             <Text style={styles.segmentVehicle}>Camion: {segment.truckPlate}</Text>
           )}
         </View>
-        <View style={[styles.segmentBadge, { backgroundColor: `${Theme.status.warning}15` }]}>
-          <Text style={[styles.segmentBadgeText, { color: Theme.status.warning }]}>
+        <View style={[styles.segmentBadge, { backgroundColor: `${colors.status.warning}15` }]}>
+          <Text style={[styles.segmentBadgeText, { color: colors.status.warning }]}>
             Route
           </Text>
         </View>
@@ -43,25 +44,25 @@ export const RoadSegmentCard: React.FC<RoadSegmentCardProps> = ({ segment, index
       <View style={styles.segmentDetails}>
         {segment.driverName && (
           <View style={styles.detailRow}>
-            <Ionicons name="person" size={14} color={Theme.neutral[500]} />
+            <Ionicons name="person" size={14} color={colors.neutral[500]} />
             <Text style={styles.detailText}>Chauffeur: {segment.driverName}</Text>
           </View>
         )}
         {segment.driverPhone && (
           <View style={styles.detailRow}>
-            <Ionicons name="call" size={14} color={Theme.neutral[500]} />
+            <Ionicons name="call" size={14} color={colors.neutral[500]} />
             <Text style={styles.detailText}>Tél: {segment.driverPhone}</Text>
           </View>
         )}
         {segment.carrier && (
           <View style={styles.detailRow}>
-            <Ionicons name="business" size={14} color={Theme.neutral[500]} />
+            <Ionicons name="business" size={14} color={colors.neutral[500]} />
             <Text style={styles.detailText}>Transporteur: {segment.carrier}</Text>
           </View>
         )}
         {segment.estimatedTransitHours && (
           <View style={styles.detailRow}>
-            <Ionicons name="time-outline" size={14} color={Theme.neutral[500]} />
+            <Ionicons name="time-outline" size={14} color={colors.neutral[500]} />
             <Text style={styles.detailText}>
               Transit estimé: {segment.estimatedTransitHours}h
             </Text>

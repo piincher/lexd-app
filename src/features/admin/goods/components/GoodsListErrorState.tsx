@@ -16,7 +16,7 @@ export const GoodsListErrorState: React.FC<GoodsListErrorStateProps> = ({ onRetr
   return (
     <View style={styles.centerContainer}>
       <LinearGradient colors={[colors.feedback.errorBg, colors.background.paper]} style={styles.errorIcon}>
-        <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
+        <Ionicons name="alert-circle" size={64} color={colors.status.error} />
       </LinearGradient>
       <Text style={styles.errorTitle}>Erreur de chargement</Text>
       <Text style={styles.errorSubtitle}>Impossible de récupérer les marchandises</Text>

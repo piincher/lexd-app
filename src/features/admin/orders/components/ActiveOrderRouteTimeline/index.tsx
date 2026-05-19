@@ -4,7 +4,7 @@ import { Surface, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { getStyles } from './ActiveOrderRouteTimeline.styles';
+import { createStyles } from './ActiveOrderRouteTimeline.styles';
 
 const STEP_ICONS: Record<string, string> = {
   'Le client a passé une commande': 'cart-check',
@@ -39,8 +39,8 @@ export const ActiveOrderRouteTimeline: React.FC<ActiveOrderRouteTimelineProps> =
   onStepChange,
   onCheckboxPress,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const details = routeData?.orderDetail || [];
 
   return (

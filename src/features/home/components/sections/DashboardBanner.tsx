@@ -28,7 +28,7 @@ export const DashboardBanner: React.FC<DashboardBannerProps> = ({ firstName, onP
           marginTop: 16,
           borderRadius: 16,
           overflow: 'hidden',
-          shadowColor: '#000',
+          shadowColor: colors.neutral[900],
           shadowOffset: { width: 0, height: 4 },
           shadowOpacity: isDark ? 0.3 : 0.08,
           shadowRadius: 12,

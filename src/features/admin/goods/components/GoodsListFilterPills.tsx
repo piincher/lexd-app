@@ -24,12 +24,48 @@ interface GoodsListFilterPillsProps {
   onSelect: (status: GoodsStatus | 'all') => void;
 }
 
+const createStyles = (colors: any) => StyleSheet.create({
+  wrapper: {
+    marginTop: Theme.spacing.lg,
+    marginBottom: Theme.spacing.sm,
+  },
+  list: {
+    paddingHorizontal: Theme.spacing.xl,
+    gap: Theme.spacing.md,
+  },
+  pill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: Theme.spacing.lg,
+    paddingVertical: Theme.spacing.md,
+    borderRadius: Theme.radius.full,
+    backgroundColor: colors.background.card,
+    ...Theme.shadows.sm,
+    overflow: 'hidden',
+  },
+  pillActive: {
+    ...Theme.shadows.md,
+  },
+  icon: {
+    marginRight: 6,
+  },
+  text: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text.secondary,
+  },
+  textActive: {
+    color: colors.text.inverse,
+  },
+});
+
 export const GoodsListFilterPills: React.FC<GoodsListFilterPillsProps> = ({
   filters,
   selectedStatus,
   onSelect,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   return (
   <View style={styles.wrapper}>
     <ScrollView
@@ -68,38 +104,3 @@ export const GoodsListFilterPills: React.FC<GoodsListFilterPillsProps> = ({
     </ScrollView>
   </View>
 );}
-
-const styles = StyleSheet.create({
-  wrapper: {
-    marginTop: Theme.spacing.lg,
-    marginBottom: Theme.spacing.sm,
-  },
-  list: {
-    paddingHorizontal: Theme.spacing.xl,
-    gap: Theme.spacing.md,
-  },
-  pill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: Theme.spacing.lg,
-    paddingVertical: Theme.spacing.md,
-    borderRadius: Theme.radius.full,
-    backgroundColor: Theme.colors.background.card,
-    ...Theme.shadows.sm,
-    overflow: 'hidden',
-  },
-  pillActive: {
-    ...Theme.shadows.md,
-  },
-  icon: {
-    marginRight: 6,
-  },
-  text: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: Theme.colors.text.secondary,
-  },
-  textActive: {
-    color: Theme.colors.text.inverse,
-  },
-});

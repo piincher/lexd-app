@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
-import { styles } from "./MyReviewsHeader.styles";
+import { createStyles } from "./MyReviewsHeader.styles";
 
 interface MyReviewsHeaderProps {
   totalReviews: number;
@@ -17,6 +17,7 @@ export const MyReviewsHeader: React.FC<MyReviewsHeaderProps> = ({
   onNotificationPress,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View

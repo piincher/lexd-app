@@ -1,13 +1,14 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 // GoodsDetailPricing - Financial information and payment status
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text, Card, Divider, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+
 import { PaymentStatus } from '../../../types';
 import { PricingRow } from './PricingRow';
-import { styles } from './GoodsDetailPricing.styles';
+import { createStyles } from './GoodsDetailPricing.styles';
 
 interface GoodsDetailPricingProps {
   unitPrice?: number;
@@ -20,11 +21,11 @@ const formatCurrency = (amount: number): string => {
   return amount?.toLocaleString('fr-FR') || '0';
 };
 
-const getPaymentStatusColor = (status: PaymentStatus): string => {
+const getPaymentStatusColor = (status: PaymentStatus, colors: any): string => {
   switch (status) {
-    case 'PAID': return Theme.status.success;
-    case 'PARTIAL': return Theme.status.warning;
-    default: return Theme.status.error;
+    case 'PAID': return colors.status.success;
+    case 'PARTIAL': return colors.status.warning;
+    default: return colors.status.error;
   }
 };
 
@@ -42,15 +43,17 @@ export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({
   amountPaid,
   paymentStatus,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const balanceDue = (totalCost || 0) - (amountPaid || 0);
-  const statusColor = getPaymentStatusColor(paymentStatus);
+  const statusColor = getPaymentStatusColor(paymentStatus, colors);
 
   return (
     <Card style={[styles.sectionCard, styles.financialCard]}>
       <Card.Content>
         <View style={styles.sectionHeader}>
-          <MaterialCommunityIcons name="cash-multiple" size={20} color={Theme.status.success} />
-          <Text style={[styles.sectionTitle, { color: Theme.status.success }]}>Informations financières</Text>
+          <MaterialCommunityIcons name="cash-multiple" size={20} color={colors.status.success} />
+          <Text style={[styles.sectionTitle, { color: colors.status.success }]}>Informations financières</Text>
         </View>
         
         <PricingRow label="Prix unitaire" value={`${formatCurrency(unitPrice || 0)} FCFA`} />
@@ -66,13 +69,13 @@ export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({
         <PricingRow
           label="Montant payé"
           value={`${formatCurrency(amountPaid || 0)} FCFA`}
-          valueColor={Theme.status.success}
+          valueColor={colors.status.success}
         />
         
         <PricingRow
           label="Reste à payer"
           value={`${formatCurrency(balanceDue)} FCFA`}
-          valueColor={balanceDue > 0 ? Theme.status.error : Theme.status.success}
+          valueColor={balanceDue > 0 ? colors.status.error : colors.status.success}
         />
 
         <View style={styles.paymentStatusContainer}>

@@ -74,7 +74,7 @@ export const AssignGoodsScreen: React.FC = () => {
         contentContainerStyle={styles.listContent}
         showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={isRefetching} onRefresh={handleRefresh} tintColor={Theme.primary[500]} />
+          <RefreshControl refreshing={isRefetching} onRefresh={handleRefresh} tintColor={colors.primary[500]} />
         }
         ListEmptyComponent={<EmptyState searchQuery={searchQuery} shippingMode={container?.shippingMode} />}
       />

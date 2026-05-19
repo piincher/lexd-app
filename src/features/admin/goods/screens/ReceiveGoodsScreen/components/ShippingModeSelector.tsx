@@ -28,12 +28,61 @@ const MODE_OPTIONS: ModeOption[] = [
   { value: 'SEA', label: 'Maritime', icon: 'ferry' },
 ];
 
+const createStyles = (colors: any) => StyleSheet.create({
+  container: {
+    width: '100%',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  option: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    backgroundColor: 'transparent',
+    borderWidth: 2,
+    borderColor: 'transparent',
+    borderRadius: 12,
+    elevation: 2,
+    shadowColor: colors.neutral[900],
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  optionSelected: {
+    elevation: 4,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  optionError: {
+    borderWidth: 2,
+  },
+  optionLabel: {
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  optionLabelSelected: {
+    fontWeight: '700',
+  },
+  errorText: {
+    marginTop: 8,
+    fontSize: 13,
+  },
+});
+
 export const ShippingModeSelector: React.FC<ShippingModeSelectorProps> = ({
   value,
   onChange,
   error,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.container}>
@@ -84,53 +133,5 @@ export const ShippingModeSelector: React.FC<ShippingModeSelectorProps> = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-  optionsContainer: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  option: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    backgroundColor: 'transparent',
-    borderWidth: 2,
-    borderColor: 'transparent',
-    borderRadius: 12,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  optionSelected: {
-    elevation: 4,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  optionError: {
-    borderWidth: 2,
-  },
-  optionLabel: {
-    fontSize: 15,
-    fontWeight: '600',
-  },
-  optionLabelSelected: {
-    fontWeight: '700',
-  },
-  errorText: {
-    marginTop: 8,
-    fontSize: 13,
-  },
-});
 
 export default ShippingModeSelector;

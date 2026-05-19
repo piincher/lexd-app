@@ -1,8 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   paginationContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -14,7 +13,7 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
@@ -25,6 +24,6 @@ export const styles = StyleSheet.create({
   paginationText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
 });

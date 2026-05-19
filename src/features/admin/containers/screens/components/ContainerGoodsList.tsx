@@ -26,7 +26,7 @@ export const ContainerGoodsList: React.FC<ContainerGoodsListProps> = ({
       <Animated.View entering={FadeInUp} style={styles.card}>
         <View style={styles.cardHeader}>
           <View style={styles.cardHeaderLeft}>
-            <Ionicons name="cube" size={20} color={Theme.primary[600]} />
+            <Ionicons name="cube" size={20} color={colors.primary[600]} />
             <Text style={styles.cardTitle}>Marchandises Assignées</Text>
           </View>
         </View>
@@ -35,7 +35,7 @@ export const ContainerGoodsList: React.FC<ContainerGoodsListProps> = ({
             colors={[colors.background.paper, colors.background.default]}
             style={styles.emptyIconBg}
           >
-            <Ionicons name="cube-outline" size={48} color={Theme.primary[400]} />
+            <Ionicons name="cube-outline" size={48} color={colors.primary[400]} />
           </LinearGradient>
           <Text style={styles.emptyTitle}>Aucune marchandise</Text>
           <Text style={styles.emptySubtitle}>
@@ -50,7 +50,7 @@ export const ContainerGoodsList: React.FC<ContainerGoodsListProps> = ({
     <Animated.View entering={FadeInUp} style={styles.card}>
       <View style={styles.cardHeader}>
         <View style={styles.cardHeaderLeft}>
-          <Ionicons name="cube" size={20} color={Theme.primary[600]} />
+          <Ionicons name="cube" size={20} color={colors.primary[600]} />
           <Text style={styles.cardTitle}>Marchandises Assignées</Text>
         </View>
         <View style={styles.goodsCountBadge}>
@@ -66,7 +66,7 @@ export const ContainerGoodsList: React.FC<ContainerGoodsListProps> = ({
             style={styles.goodsItem}
           >
             <View style={styles.goodsIcon}>
-              <Ionicons name="cube" size={20} color={Theme.primary[500]} />
+              <Ionicons name="cube" size={20} color={colors.primary[500]} />
             </View>
             <View style={styles.goodsInfo}>
               <View style={styles.goodsIdRow}>
@@ -104,14 +104,14 @@ export const ContainerGoodsList: React.FC<ContainerGoodsListProps> = ({
                   style={styles.deliverButton}
                   onPress={() => onMarkDelivered(goods._id)}
                 >
-                  <Ionicons name="checkmark-done" size={20} color={Theme.status.success} />
+                  <Ionicons name="checkmark-done" size={20} color={colors.status.success} />
                 </TouchableOpacity>
               )}
               <TouchableOpacity
                 style={styles.removeButton}
                 onPress={() => onRemoveGoods(goods._id)}
               >
-                <Ionicons name="close-circle" size={24} color={Theme.status.error} />
+                <Ionicons name="close-circle" size={24} color={colors.status.error} />
               </TouchableOpacity>
             </View>
           </Animated.View>

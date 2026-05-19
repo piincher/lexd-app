@@ -4,15 +4,15 @@ import { View, Text } from 'react-native';
 import { useNotificationEvents } from '../../hooks';
 import { NotificationEventCard } from '../../components';
 import type { NotificationEventFilters as Filters, NotificationEventLog } from '../../types';
-import { createNotificationEventListStyles } from '../NotificationEventListScreen.styles';
+import { createStyles } from '../NotificationEventListScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const INITIAL_FILTERS: Filters = { page: 1, limit: 50, status: 'ALL' };
 
 export const useNotificationEventListScreen = () => {
   const navigation = useNavigation();
-  const { colors } = useAppTheme();
-  const styles = createNotificationEventListStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const { data, isLoading, isFetching, isError, refetch } = useNotificationEvents(filters);
   const items = data?.items || [];

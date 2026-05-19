@@ -7,7 +7,7 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SearchFilters as SearchFiltersType } from "../api/searchApi";
 
 interface SearchFiltersPanelProps {
@@ -19,6 +19,8 @@ export const SearchFiltersPanel: React.FC<SearchFiltersPanelProps> = ({
   filters,
   onRemoveFilter,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const hasFilters = Object.keys(filters).length > 0;
   
   if (!hasFilters) return null;
@@ -35,7 +37,7 @@ export const SearchFiltersPanel: React.FC<SearchFiltersPanelProps> = ({
                   {key}: {Array.isArray(value) ? value.join(", ") : value.toString()}
                 </Text>
                 <TouchableOpacity onPress={() => onRemoveFilter(key)}>
-                  <Ionicons name="close" size={14} color={Theme.neutral[600]} />
+                  <Ionicons name="close" size={14} color={colors.neutral[600]} />
                 </TouchableOpacity>
               </View>
             );
@@ -46,27 +48,27 @@ export const SearchFiltersPanel: React.FC<SearchFiltersPanelProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
-    marginTop: Theme.spacing.md,
-    paddingHorizontal: Theme.spacing.lg,
+    marginTop: 12,
+    paddingHorizontal: 16,
   },
   filters: {
     flexDirection: "row",
-    gap: Theme.spacing.sm,
+    gap: 8,
   },
   filterChip: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    paddingHorizontal: Theme.spacing.sm,
+    paddingHorizontal: 8,
     paddingVertical: 4,
-    backgroundColor: Theme.primary[100],
-    borderRadius: Theme.radius.full,
+    backgroundColor: colors.primary[100],
+    borderRadius: 999,
   },
   filterChipText: {
     fontSize: 12,
     fontWeight: "500",
-    color: Theme.primary[700],
+    color: colors.primary[700],
   },
 });

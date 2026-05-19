@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './MessageComposer.styles';
+import { createStyles } from './MessageComposer.styles';
 
 interface SendButtonProps {
   canSend: boolean;
@@ -15,11 +15,12 @@ interface SendButtonProps {
 }
 
 export const SendButton: React.FC<SendButtonProps> = ({ canSend, isSending, recipientCount, onSend }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <TouchableOpacity onPress={onSend} disabled={!canSend} style={styles.sendWrapper} activeOpacity={0.8}>
       <LinearGradient
-        colors={canSend ? Theme.gradients.primary : [Theme.neutral[200], Theme.neutral[300]]}
+        colors={canSend ? Theme.gradients.primary : [colors.neutral[200], colors.neutral[300]]}
         style={styles.sendButton}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}

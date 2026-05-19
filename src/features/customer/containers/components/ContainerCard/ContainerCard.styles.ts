@@ -15,7 +15,7 @@ export const useContainerCardStyles = () => {
           borderRadius: 12,
           elevation: 2,
           backgroundColor: colors.background.card,
-          shadowColor: '#000',
+          shadowColor: colors.neutral[900],
           shadowOffset: { width: 0, height: 2 },
           shadowOpacity: 0.06,
           shadowRadius: 4,

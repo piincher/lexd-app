@@ -13,12 +13,12 @@ import {
   ActionBar,
 } from './PackingList/components';
 import { PackingListBody } from '../components/PackingListBody';
-import { getStyles } from './PackingList/PackingListScreen.styles';
+import { createStyles } from './PackingList/PackingListScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const PackingListScreen: React.FC = () => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     container,
     navigation,

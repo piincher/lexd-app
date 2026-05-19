@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { createStyles } from "./ActiveShipmentCard.styles";
-import { SHIP_COLORS, STEPS, ShipmentStep } from "./ActiveShipmentCard.constants";
-
-const styles = createStyles(SHIP_COLORS);
+import { STEPS, ShipmentStep } from "./ActiveShipmentCard.constants";
 
 interface ShipmentTimelineProps {
   currentStep: ShipmentStep;
@@ -17,7 +15,10 @@ export const ShipmentTimeline: React.FC<ShipmentTimelineProps> = ({
   currentStep,
   progress,
   colors,
-}) => (
+}) => {
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
+  return (
   <>
     {/* Route dashed line */}
     <View style={styles.routeLine}>
@@ -87,3 +88,4 @@ export const ShipmentTimeline: React.FC<ShipmentTimelineProps> = ({
     </View>
   </>
 );
+};

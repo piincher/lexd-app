@@ -12,7 +12,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       paddingHorizontal: 14,
       paddingVertical: 8,
       borderRadius: 20,
-      backgroundColor: isDark ? colors.background.paper : "#F3F4F6",
+      backgroundColor: colors.background.paper,
       borderWidth: 1,
       borderColor: isDark ? colors.neutral[700] : colors.neutral[200],
       marginRight: 8,

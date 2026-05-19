@@ -1,6 +1,6 @@
 // GoodsDetailPhoto - Photo display section
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Image } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -12,6 +12,7 @@ interface GoodsDetailPhotoProps {
 
 export const GoodsDetailPhoto: React.FC<GoodsDetailPhotoProps> = ({ photoUrl }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   if (!photoUrl) return null;
 
   return (
@@ -24,7 +25,7 @@ export const GoodsDetailPhoto: React.FC<GoodsDetailPhotoProps> = ({ photoUrl }) 
   );
 };
 
-const styles = {
+const createStyles = (colors: any) => ({
   photoCard: {
     marginBottom: 16,
     borderRadius: 16,
@@ -40,12 +41,12 @@ const styles = {
     bottom: 0,
     left: 0,
     right: 0,
-    backgroundColor: Theme.colors.background.overlay,
+    backgroundColor: colors.background.overlay,
     padding: 12,
   },
   photoLabel: {
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     fontSize: 13,
     fontWeight: '600' as const,
   },
-};
+});

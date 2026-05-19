@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { BagSelector } from './components/BagSelector';
 import { CargoBagCreateDialog } from './components/CargoBagCreateDialog';
 import { AssignGoodsHeader } from '../components/AssignGoodsHeader';
@@ -12,9 +13,11 @@ import { AssignGoodsList } from '../components/AssignGoodsList';
 import { AssignGoodsFooter } from '../components/AssignGoodsFooter';
 import { AssignGoodsLoading } from '../components/AssignGoodsLoading';
 import { useAssignGoodsScreenUI } from './hooks/useAssignGoodsScreenUI';
-import { styles } from './AssignGoodsScreen.styles';
+import { createStyles } from './AssignGoodsScreen.styles';
 
 export const AssignGoodsScreen: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     airwayBillId, airwayBill, goodsList, cargoBags, isLoading,
     selectedIds, selectedBagId, setSelectedBagId, totalSelectedWeight,

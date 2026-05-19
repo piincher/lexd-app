@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './ShipmentSummary.styles';
+import { createStyles } from './ShipmentSummary.styles';
 
 interface StatCardProps {
   label: string;
@@ -13,7 +13,8 @@ interface StatCardProps {
 }
 
 export const StatCard: React.FC<StatCardProps> = ({ label, value, icon, lib, color }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={[styles.statCard, { backgroundColor: color }]}>

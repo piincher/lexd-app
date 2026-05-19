@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   list: {
     flex: 1,
   },
@@ -9,11 +8,11 @@ export const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 12,
     marginHorizontal: 12,
     marginVertical: 6,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
@@ -23,7 +22,7 @@ export const styles = StyleSheet.create({
   },
   statusBar: {
     width: 4,
-    backgroundColor: Theme.colors.neutral[300],
+    backgroundColor: colors.neutral[300],
   },
   content: {
     flex: 1,
@@ -54,7 +53,7 @@ export const styles = StyleSheet.create({
   detailsGrid: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Theme.colors.background.paper,
+    backgroundColor: colors.background.paper,
     borderRadius: 8,
     padding: 10,
   },

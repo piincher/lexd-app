@@ -1,7 +1,8 @@
 import React from 'react';
 import { Dialog, Button } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './AddWaypointDialog.styles';
+import { createStyles } from './AddWaypointDialog.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ActionsProps {
   onDismiss: () => void;
@@ -9,18 +10,22 @@ interface ActionsProps {
   isValid: boolean;
 }
 
-export const AddWaypointDialogActions: React.FC<ActionsProps> = ({ onDismiss, onAdd, isValid }) => (
+export const AddWaypointDialogActions: React.FC<ActionsProps> = ({ onDismiss, onAdd, isValid }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <Dialog.Actions style={styles.actions}>
-    <Button onPress={onDismiss} textColor={Theme.neutral[500]}>
+    <Button onPress={onDismiss} textColor={colors.neutral[500]}>
       Cancel
     </Button>
     <Button
       onPress={onAdd}
       mode="contained"
       disabled={!isValid}
-      buttonColor={Theme.primary[600]}
+      buttonColor={colors.primary[600]}
     >
       Add
     </Button>
   </Dialog.Actions>
-);
+  );
+};

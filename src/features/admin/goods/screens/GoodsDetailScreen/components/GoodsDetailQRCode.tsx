@@ -1,6 +1,6 @@
 // GoodsDetailQRCode - QR Code card section
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Image } from 'react-native';
 import { Text, Card, Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -18,6 +18,7 @@ export const GoodsDetailQRCode: React.FC<GoodsDetailQRCodeProps> = ({
   onShare,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const hasQRCode = !!qrCodeImageUrl;
 
   return (
@@ -59,13 +60,13 @@ export const GoodsDetailQRCode: React.FC<GoodsDetailQRCodeProps> = ({
   );
 };
 
-const styles = {
+const createStyles = (colors: any) => ({
   qrCard: {
     marginBottom: 16,
     borderRadius: 20,
     overflow: 'hidden' as const,
     elevation: 4,
-    shadowColor: Theme.primary[600],
+    shadowColor: colors.primary[600],
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.15,
     shadowRadius: 12,
@@ -81,18 +82,18 @@ const styles = {
   qrTitle: {
     fontSize: 16,
     fontWeight: '700' as const,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 10,
   },
   qrContent: {
     alignItems: 'center' as const,
   },
   qrImageContainer: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     padding: 16,
     borderRadius: 16,
     borderWidth: 2,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
     elevation: 2,
   },
   qrImage: {
@@ -102,12 +103,12 @@ const styles = {
   qrHint: {
     marginTop: 12,
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     fontStyle: 'italic' as const,
   },
   shareButton: {
     marginTop: 16,
-    borderColor: Theme.primary[600],
+    borderColor: colors.primary[600],
     borderRadius: 10,
   },
   qrEmpty: {
@@ -117,6 +118,6 @@ const styles = {
   qrEmptyText: {
     marginTop: 12,
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
-};
+});

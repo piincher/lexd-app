@@ -5,7 +5,7 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { Button, Portal, Modal } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface WhatsAppRequestPDFModalProps {
   visible: boolean;
@@ -19,7 +19,11 @@ export const WhatsAppRequestPDFModal: React.FC<WhatsAppRequestPDFModalProps> = (
   generatedPdf,
   onDismiss,
   onSend,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+
+  return (
   <Portal>
     <Modal visible={visible} onDismiss={onDismiss} contentContainerStyle={styles.modalContainer}>
       <View style={styles.modalContent}>
@@ -37,14 +41,15 @@ export const WhatsAppRequestPDFModal: React.FC<WhatsAppRequestPDFModalProps> = (
       </View>
     </Modal>
   </Portal>
-);
+  );
+};
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   modalContainer: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     padding: 20,
     margin: 20,
-    borderRadius: Theme.radius.xl,
+    borderRadius: 16,
   },
   modalContent: {
     maxHeight: 500,
@@ -52,26 +57,26 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 20,
     fontWeight: '700',
-    marginBottom: Theme.spacing.lg,
+    marginBottom: 16,
   },
   pdfPreview: {
     maxHeight: 300,
-    marginBottom: Theme.spacing.lg,
+    marginBottom: 16,
   },
   pdfText: {
     fontSize: 16,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   pdfNote: {
     fontSize: 14,
-    color: Theme.neutral[500],
-    marginTop: Theme.spacing.md,
+    color: colors.neutral[500],
+    marginTop: 12,
     fontStyle: 'italic',
   },
   modalButtons: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    gap: Theme.spacing.md,
+    gap: 12,
   },
 });
 

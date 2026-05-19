@@ -5,7 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
-import { createKPICardsStyles } from "./KPICards.styles";
+import { createStyles } from "./KPICards.styles";
 
 interface HeroKpiCardProps {
   value: string;
@@ -22,8 +22,8 @@ export const HeroKpiCard: React.FC<HeroKpiCardProps> = ({
   trendLabel,
   onPress,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = createKPICardsStyles(colors, false);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Pressable

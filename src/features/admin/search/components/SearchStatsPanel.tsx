@@ -6,7 +6,7 @@
 import React from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
 import { Text } from "react-native-paper";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface SearchStats {
   count?: number;
@@ -20,6 +20,8 @@ interface SearchStatsPanelProps {
 }
 
 export const SearchStatsPanel: React.FC<SearchStatsPanelProps> = ({ stats }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   if (!stats) return null;
 
   return (
@@ -58,24 +60,24 @@ export const SearchStatsPanel: React.FC<SearchStatsPanelProps> = ({ stats }) => 
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
-    marginTop: Theme.spacing.md,
-    paddingHorizontal: Theme.spacing.lg,
+    marginTop: 12,
+    paddingHorizontal: 16,
   },
   statItem: {
     alignItems: "center",
-    marginRight: Theme.spacing.xl,
+    marginRight: 24,
   },
   statValue: {
     fontSize: 20,
     fontWeight: "800",
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   statLabel: {
     fontSize: 11,
     fontWeight: "600",
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
 });

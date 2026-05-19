@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerStatus, CONTAINER_STATUS_LABELS } from '../../../types';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './Header.styles';
+import { createStyles } from './Header.styles';
 
 interface NonAssignableBannerProps {
   containerStatus: ContainerStatus;
@@ -12,6 +12,7 @@ interface NonAssignableBannerProps {
 
 export const NonAssignableBanner: React.FC<NonAssignableBannerProps> = ({ containerStatus }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const errorBg = colors.status.error + '26';
   const errorBorder = colors.status.error + '4D';
 

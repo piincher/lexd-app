@@ -4,15 +4,15 @@ import { View, Text } from 'react-native';
 import { useAuditLogs } from '../../hooks';
 import { AuditLogCard } from '../../components';
 import type { AuditLog, AuditLogFilters } from '../../types';
-import { createAuditLogListStyles } from '../AuditLogListScreen.styles';
+import { createStyles } from '../AuditLogListScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const INITIAL_FILTERS: AuditLogFilters = { page: 1, limit: 50, status: 'ALL' };
 
 export const useAuditLogListScreen = () => {
   const navigation = useNavigation();
-  const { colors } = useAppTheme();
-  const styles = createAuditLogListStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const { data, isLoading, isFetching, isError, refetch } = useAuditLogs(filters);
   const items = data?.items || [];

@@ -1,9 +1,10 @@
 import React from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { ExportDataModal } from "../../export/components/ExportDataModal";
 import { useGlobalSearchScreenUI } from "./hooks/useGlobalSearchScreenUI";
-import { styles } from "./GlobalSearchScreen.styles";
+import { createStyles } from "./GlobalSearchScreen.styles";
 import { GlobalSearchHeader } from "../components/GlobalSearchHeader";
 import { GlobalSearchBar } from "../components/GlobalSearchBar";
 import { GlobalSearchActiveFilters } from "../components/GlobalSearchActiveFilters";
@@ -13,6 +14,8 @@ import { FilterFAB } from "../components/FilterFAB";
 import { FilterPanelModal } from "../components/FilterPanelModal";
 
 export const GlobalSearchScreen: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const { data, handlers } = useGlobalSearchScreenUI();
 
   return (

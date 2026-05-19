@@ -20,7 +20,7 @@ export const UnitPriceCard: React.FC<UnitPriceCardProps> = ({ unitPrice }) => {
   return (
     <View style={styles.card}>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Theme.spacing.md }}>
-        <Ionicons name="pricetag" size={20} color={Theme.primary[600]} />
+        <Ionicons name="pricetag" size={20} color={colors.primary[600]} />
         <Text style={[styles.cardTitle, { marginLeft: Theme.spacing.sm }]}>
           Prix Unitaire
         </Text>

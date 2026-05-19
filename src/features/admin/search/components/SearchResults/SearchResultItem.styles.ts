@@ -1,13 +1,13 @@
-import { ViewStyle, TextStyle } from "react-native";
+import { StyleSheet } from "react-native";
 import { Theme } from "@src/constants/Theme";
 
-export const searchResultItemStyles: Record<string, ViewStyle | TextStyle> = {
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   resultItem: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   resultIconContainer: {
     marginRight: Theme.spacing.md,
@@ -31,7 +31,7 @@ export const searchResultItemStyles: Record<string, ViewStyle | TextStyle> = {
   resultTitle: {
     fontSize: 15,
     fontWeight: "700",
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   statusBadge: {
     paddingHorizontal: 8,
@@ -44,7 +44,7 @@ export const searchResultItemStyles: Record<string, ViewStyle | TextStyle> = {
   },
   resultSubtitle: {
     fontSize: 13,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     marginBottom: 6,
   },
   resultMeta: {
@@ -60,6 +60,6 @@ export const searchResultItemStyles: Record<string, ViewStyle | TextStyle> = {
   },
   metaText: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
-};
+});

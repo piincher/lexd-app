@@ -24,7 +24,7 @@ export const DeleteContainerDialog: React.FC<DeleteContainerDialogProps> = ({
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onDismiss}>
-        <Dialog.Icon icon="alert" color={Theme.status.error} />
+        <Dialog.Icon icon="alert" color={colors.status.error} />
         <Dialog.Title style={styles.dialogTitle}>
           Supprimer le Container
         </Dialog.Title>
@@ -39,7 +39,7 @@ export const DeleteContainerDialog: React.FC<DeleteContainerDialogProps> = ({
           <Button onPress={onDismiss}>Annuler</Button>
           <Button
             onPress={onConfirm}
-            textColor={Theme.status.error}
+            textColor={colors.status.error}
             disabled={hasGoods}
           >
             Supprimer

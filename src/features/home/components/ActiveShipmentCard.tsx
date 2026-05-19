@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Pressable } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { productType } from "@src/shared/types/order";
 import { createStyles } from "./ActiveShipmentCard.styles";
-import { SHIP_COLORS, getStepFromStatus, BADGE_LABELS, PROGRESS_MAP } from "./ActiveShipmentCard.constants";
+import { getStepFromStatus, BADGE_LABELS, PROGRESS_MAP } from "./ActiveShipmentCard.constants";
 import { ShipmentHeader } from "./ShipmentHeader";
 import { ShipmentTimeline } from "./ShipmentTimeline";
 import { ShipmentFooter } from "./ShipmentFooter";
-
-const styles = createStyles(SHIP_COLORS);
 
 interface ActiveShipmentCardProps {
   order: productType;
@@ -17,6 +15,7 @@ interface ActiveShipmentCardProps {
 
 export const ActiveShipmentCard: React.FC<ActiveShipmentCardProps> = ({ order, onPress }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const currentStep = getStepFromStatus(order.status, order.currentStatus);
   const progress = PROGRESS_MAP[currentStep];
   const statusText = BADGE_LABELS[currentStep];

@@ -39,7 +39,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({ item }) => {
       marginBottom: 12,
       overflow: 'hidden',
       elevation: 2,
-      shadowColor: '#000',
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,

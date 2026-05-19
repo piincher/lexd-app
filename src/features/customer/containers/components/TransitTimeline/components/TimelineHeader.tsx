@@ -30,10 +30,10 @@ export const TimelineHeader: React.FC<TimelineHeaderProps> = ({
   const { colors } = useAppTheme();
   return (
   <Animated.View entering={FadeInUp.delay(100)} style={styles.headerCard}>
-    <LinearGradient colors={[Theme.primary[600], Theme.primary[800]]} style={styles.headerGradient}>
+    <LinearGradient colors={[colors.primary[600], colors.primary[800]]} style={styles.headerGradient}>
       <View style={styles.headerTop}>
         <View style={styles.headerIcon}>
-          <Ionicons name="navigate" size={24} color={Theme.primary[600]} />
+          <Ionicons name="navigate" size={24} color={colors.primary[600]} />
         </View>
         <View style={styles.headerText}>
           <Text style={styles.headerLabel}>Container</Text>

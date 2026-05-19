@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 /**
  * CurrentWaypointSection - Displays current waypoint with badge
  */
@@ -17,14 +18,17 @@ interface CurrentWaypointSectionProps {
 export const CurrentWaypointSection: React.FC<CurrentWaypointSectionProps> = ({
   currentWaypoint,
   styles,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <Animated.View entering={FadeInUp.delay(200)} style={styles.section}>
     <View style={styles.sectionHeader}>
       <View style={styles.currentLocationBadge}>
-        <Ionicons name="radio-button-on" size={16} color={Theme.status.info} />
+        <Ionicons name="radio-button-on" size={16} color={colors.status.info} />
         <Text style={styles.currentLocationText}>POSITION ACTUELLE</Text>
       </View>
     </View>
     <TimelineWaypointCard waypoint={currentWaypoint} isCurrent={true} isCompleted={false} />
   </Animated.View>
-);
+  );
+};

@@ -1,4 +1,5 @@
-import React from "react";
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import React, { useMemo } from 'react';
 import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
@@ -16,6 +17,7 @@ const PARTNER_LOGOS = [
 ];
 
 export const PartnersSection: React.FC<PartnersSectionProps> = ({ colors }) => {
+  const styles = useMemo(() => createStyles(colors), [colors]);
    const textColor = colors.text?.primary ?? colors.text;
 
    return (
@@ -29,7 +31,7 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ colors }) => {
             contentContainerStyle={styles.scrollContent}
          >
             {PARTNER_LOGOS.map((logo, index) => (
-               <View key={index} style={styles.logoContainer}>
+               <View key={index} style={[styles.logoContainer, { shadowColor: colors.neutral[900] }]}>
                   <Image source={{ uri: logo }} style={styles.logo} />
                </View>
             ))}
@@ -38,7 +40,7 @@ export const PartnersSection: React.FC<PartnersSectionProps> = ({ colors }) => {
    );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
    section: {
       marginVertical: 24,
    },
@@ -53,10 +55,9 @@ const styles = StyleSheet.create({
       gap: 12,
    },
    logoContainer: {
-      backgroundColor: Theme.colors.background.card,
+      backgroundColor: colors.background.card,
       borderRadius: 12,
       padding: 12,
-      shadowColor: "#000",
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.06,
       shadowRadius: 4,

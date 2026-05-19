@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     width: '100%',
   },
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   label: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   valueContainer: {
     flexDirection: 'row',
@@ -34,12 +34,12 @@ export const styles = StyleSheet.create({
   },
   separator: {
     fontSize: 13,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   maxValue: {
     fontSize: 13,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   barContainer: {
     width: '100%',
@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
   percentageText: {
     fontSize: 12,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 2,
   },
@@ -79,7 +79,7 @@ export const styles = StyleSheet.create({
   remainingText: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   statusBadge: {
     flexDirection: 'row',

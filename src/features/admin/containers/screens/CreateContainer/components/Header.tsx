@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -14,6 +14,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onBack }) => {
   const { colors } = useAppTheme();
   const navigation = useNavigation();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <LinearGradient 
       colors={Theme.gradients.primary} 
@@ -26,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
         onPress={onBack} 
         activeOpacity={0.8}
       >
-        <Ionicons name="arrow-back" size={24} color={Theme.colors.text.inverse} />
+        <Ionicons name="arrow-back" size={24} color={colors.text.inverse} />
       </TouchableOpacity>
       <View style={styles.headerContent}>
         <Text style={styles.headerTitle}>Nouveau Container</Text>
@@ -37,13 +38,13 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
       <NotificationBell
         onPress={() => navigation.navigate('Notifications' as never)}
         size={24}
-        color={Theme.colors.text.inverse}
+        color={colors.text.inverse}
       />
     </LinearGradient>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   header: {
     paddingTop: 60,
     paddingBottom: 24,
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: 'rgba(255,255,255,0.2)', // Decorative white overlay on colored gradient
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
@@ -66,12 +67,12 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     marginBottom: 8,
   },
   headerSubtitle: {
     fontSize: 14,
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     lineHeight: 20,
   },
   headerIcon: {

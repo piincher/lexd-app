@@ -1,13 +1,12 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
    card: {
       marginVertical: 12,
       borderRadius: 12,
       elevation: 3,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
@@ -19,20 +18,20 @@ export const styles = StyleSheet.create({
    title: {
       fontFamily: Fonts.meduim,
       fontSize: 16,
-      color: Theme.colors.text.primary,
+      color: colors.text.primary,
       textAlign: "center",
    },
    goodsLabel: {
       fontFamily: Fonts.regular,
       fontSize: 13,
-      color: Theme.colors.text.secondary,
+      color: colors.text.secondary,
       textAlign: "center",
       marginTop: 4,
    },
    subtitle: {
       fontFamily: Fonts.regular,
       fontSize: 13,
-      color: Theme.colors.text.secondary,
+      color: colors.text.secondary,
       textAlign: "center",
       marginTop: 4,
       marginBottom: 4,
@@ -51,7 +50,7 @@ export const styles = StyleSheet.create({
    charCount: {
       fontFamily: Fonts.regular,
       fontSize: 11,
-      color: Theme.colors.text.muted,
+      color: colors.text.muted,
       alignSelf: "flex-end",
       marginTop: 4,
    },
@@ -66,20 +65,20 @@ export const styles = StyleSheet.create({
    },
    successIcon: {
       fontSize: 32,
-      color: Theme.colors.status.success,
+      color: colors.status.success,
       marginBottom: 8,
    },
    successText: {
       fontFamily: Fonts.meduim,
       fontSize: 16,
-      color: Theme.colors.status.success,
+      color: colors.status.success,
       textAlign: "center",
       marginBottom: 4,
    },
    commentPreview: {
       fontFamily: Fonts.regular,
       fontSize: 13,
-      color: Theme.colors.text.secondary,
+      color: colors.text.secondary,
       textAlign: "center",
       marginTop: 4,
       fontStyle: "italic",
@@ -87,7 +86,7 @@ export const styles = StyleSheet.create({
    thanksText: {
       fontFamily: Fonts.meduim,
       fontSize: 14,
-      color: Theme.colors.status.success,
+      color: colors.status.success,
       textAlign: "center",
       marginTop: 8,
    },

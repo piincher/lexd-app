@@ -7,7 +7,6 @@ import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
 import { CustomerAnalyticsItem } from '../types';
 import { CustomerChartRow } from './CustomerChartRow';
 import { createStyles } from './TopCustomersChart.styles';
@@ -37,9 +36,9 @@ const getInitials = (name: string) => {
     .slice(0, 2);
 };
 
-const getAvatarColor = (index: number) => {
-  const colors = ['#10B981', '#3B82F6', '#8B5CF6', '#F59E0B', '#EF4444', '#EC4899', '#06B6D4'];
-  return colors[index % colors.length];
+const getAvatarColor = (index: number, colors: any) => {
+  const palette = [colors.status.success, colors.status.info, colors.primary.main, colors.status.warning, colors.status.error, (colors.accent as any).pink || '#EC4899', (colors.accent as any).cyan || '#06B6D4'];
+  return palette[index % palette.length];
 };
 
 export const TopCustomersChart: React.FC<TopCustomersChartProps> = ({
@@ -57,7 +56,7 @@ export const TopCustomersChart: React.FC<TopCustomersChartProps> = ({
         <View style={styles.header}>
           <Text style={styles.title}>Top Clients</Text>
           <View style={styles.summaryBadge}>
-            <MaterialCommunityIcons name="account-group" size={14} color={Theme.colors.text.secondary} />
+            <MaterialCommunityIcons name="account-group" size={14} color={colors.text.secondary} />
             <Text style={styles.summaryText}>{customers.length} clients</Text>
           </View>
         </View>
@@ -75,7 +74,7 @@ export const TopCustomersChart: React.FC<TopCustomersChartProps> = ({
               maxRevenue={maxRevenue}
               formatCurrency={formatCurrency}
               getInitials={getInitials}
-              getAvatarColor={getAvatarColor}
+              getAvatarColor={(idx) => getAvatarColor(idx, colors)}
             />
           ))}
         </ScrollView>

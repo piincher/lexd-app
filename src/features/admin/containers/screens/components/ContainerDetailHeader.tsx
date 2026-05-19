@@ -80,7 +80,7 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
 
   return (
     <LinearGradient
-      colors={[Theme.primary[600], Theme.primary[800]]}
+      colors={[colors.primary[600], colors.primary[800]]}
       style={styles.header}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}

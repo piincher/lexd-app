@@ -64,7 +64,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
     card: {
       marginHorizontal: 16, marginTop: 16,
       borderRadius: 24, padding: 16,
-      backgroundColor: colors.background.card, shadowColor: "#000", shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.12, shadowRadius: 24, elevation: 8,
+      backgroundColor: colors.background.card, shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.12, shadowRadius: 24, elevation: 8,
     },
     topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
     modeBadge: {

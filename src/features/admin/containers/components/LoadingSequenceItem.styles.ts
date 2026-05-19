@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     marginBottom: Theme.spacing.md,
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   sequenceNumber: {
     fontSize: 14,
     fontWeight: '800',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
   progressLineContainer: {
     position: 'absolute',
@@ -38,26 +38,26 @@ export const styles = StyleSheet.create({
     borderRadius: 1,
   },
   progressLineComplete: {
-    backgroundColor: Theme.status.success,
+    backgroundColor: colors.status.success,
   },
   progressLinePending: {
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     borderStyle: 'dashed',
     borderWidth: 1,
-    borderColor: Theme.neutral[300],
+    borderColor: colors.neutral[300],
   },
   content: {
     flex: 1,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius.lg,
     padding: Theme.spacing.md,
     ...Theme.shadows.sm,
     borderLeftWidth: 4,
-    borderLeftColor: Theme.neutral[200],
+    borderLeftColor: colors.neutral[200],
   },
   contentLoaded: {
-    borderLeftColor: Theme.status.success,
-    backgroundColor: Theme.colors.status.success + '15',
+    borderLeftColor: colors.status.success,
+    backgroundColor: colors.status.success + '15',
   },
   header: {
     flexDirection: 'row',
@@ -72,7 +72,7 @@ export const styles = StyleSheet.create({
   goodsId: {
     fontSize: 13,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     fontFamily: Platform.OS === 'ios' ? 'Courier' : 'monospace',
     marginBottom: 4,
   },
@@ -106,7 +106,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   statusButtonLoaded: {
-    backgroundColor: Theme.colors.status.success + '18',
+    backgroundColor: colors.status.success + '18',
   },
   statusButtonDisabled: {
     opacity: 0.6,
@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
   description: {
     fontSize: 13,
     fontWeight: '500',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     marginBottom: Theme.spacing.md,
     lineHeight: 18,
   },
@@ -134,6 +134,6 @@ export const styles = StyleSheet.create({
   metricText: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
 });

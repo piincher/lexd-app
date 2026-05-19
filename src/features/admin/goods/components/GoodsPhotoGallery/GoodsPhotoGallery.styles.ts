@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     marginBottom: 12,
     borderRadius: 16,
     elevation: 2,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   header: {
     flexDirection: 'row',
@@ -16,12 +16,12 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 10,
   },
   count: {
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginLeft: 6,
   },
   gallery: {
@@ -41,12 +41,12 @@ export const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: Theme.colors.background.overlay,
+    backgroundColor: colors.background.overlay,
     justifyContent: 'center',
     alignItems: 'center',
   },
   overlayText: {
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     fontSize: 20,
     fontWeight: '700',
   },
@@ -57,11 +57,11 @@ export const styles = StyleSheet.create({
   emptyText: {
     marginTop: 8,
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   uploadButton: {
     marginTop: 12,
-    borderColor: Theme.primary[600],
+    borderColor: colors.primary[600],
     borderRadius: 10,
   },
 });

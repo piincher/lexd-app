@@ -7,8 +7,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './GoodsActions.styles';
+import { createStyles } from './GoodsActions.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsActionsProps {
   onDelete: () => void;
@@ -16,6 +16,8 @@ interface GoodsActionsProps {
 }
 
 export const GoodsActions: React.FC<GoodsActionsProps> = ({ onDelete, onEdit }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const navigation = useNavigation();
 
   return (
@@ -34,7 +36,7 @@ export const GoodsActions: React.FC<GoodsActionsProps> = ({ onDelete, onEdit }) 
         onPress={onDelete}
         style={styles.deleteButton}
         contentStyle={styles.buttonContent}
-        textColor={Theme.status.error}
+        textColor={colors.status.error}
         icon="delete"
       >
         Supprimer

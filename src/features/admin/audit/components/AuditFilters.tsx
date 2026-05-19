@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { AuditLogFilters, AuditStatus } from '../types';
-import { createAuditFiltersStyles } from './AuditFilters.styles';
+import { createStyles } from './AuditFilters.styles';
 
 interface AuditFiltersProps {
   filters: AuditLogFilters;
@@ -12,8 +12,8 @@ interface AuditFiltersProps {
 const STATUS_OPTIONS: Array<AuditStatus | 'ALL'> = ['ALL', 'SUCCESS', 'FAILED', 'DENIED'];
 
 export const AuditFilters: React.FC<AuditFiltersProps> = ({ filters, onChange }) => {
-  const { colors } = useAppTheme();
-  const styles = createAuditFiltersStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const setStatus = (status: AuditStatus | 'ALL') => {
     onChange({ ...filters, status, page: 1 });

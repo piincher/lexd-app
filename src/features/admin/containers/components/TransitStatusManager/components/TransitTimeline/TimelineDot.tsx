@@ -3,7 +3,8 @@ import { View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { useSharedValue, useAnimatedStyle, withRepeat, withTiming } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './TransitTimeline.styles';
+import { createStyles } from './TransitTimeline.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export type WaypointItemStatus = 'completed' | 'current' | 'pending';
 
@@ -13,6 +14,8 @@ interface TimelineDotProps {
 }
 
 export const TimelineDot: React.FC<TimelineDotProps> = ({ status, isLast }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const pulseScale = useSharedValue(1);
   const pulseOpacity = useSharedValue(1);
 
@@ -39,7 +42,7 @@ export const TimelineDot: React.FC<TimelineDotProps> = ({ status, isLast }) => {
     <View style={styles.timelineDotContainer}>
       {status === 'current' && <Animated.View style={[styles.timelineDotPulse, pulseStyle]} />}
       <View style={dotStyles}>
-        {status === 'completed' && <Ionicons name="checkmark" size={14} color={Theme.colors.text.inverse} />}
+        {status === 'completed' && <Ionicons name="checkmark" size={14} color={colors.text.inverse} />}
         {status === 'current' && <View style={styles.currentDotInner} />}
       </View>
       {!isLast && (

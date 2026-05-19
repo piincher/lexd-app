@@ -5,11 +5,11 @@ import { FlashList } from "@shopify/flash-list";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useAnnouncementListScreen } from "./hooks";
-import { createStyles } from "./AnnouncementListScreen.styles";
+import { createStyles } from './AnnouncementListScreen.styles';
 
 const AnnouncementListScreen: React.FC = () => {
-  const { colors } = useAppTheme();
-  const styles = createStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { status, isLoading, announcements, filters, handlers } = useAnnouncementListScreen();
 
   return (

@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from 'react';
 import { RefreshControl, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
@@ -31,6 +32,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
   onLoadMore,
   hasMore,
 }) => {
+  const { colors } = useAppTheme();
   if (!isLoading && notifications.length === 0) {
     return <NotificationEmptyState filter={filter} />;
   }
@@ -52,7 +54,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
         <RefreshControl
           refreshing={isRefreshing}
           onRefresh={onRefresh}
-          tintColor={Theme.colors.primary.main}
+          tintColor={colors.primary.main}
         />
       }
       onEndReached={hasMore ? onLoadMore : undefined}

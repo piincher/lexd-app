@@ -52,14 +52,14 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
               mode="outlined" label="Largeur" value={width}
               onChangeText={(v) => onChange('width', v.replace(/[^0-9.]/g, ''))}
               keyboardType="decimal-pad" style={[styles.input, styles.thirdInput]}
-              outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+              outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
               right={<TextInput.Affix text="cm" />}
             />
             <TextInput
               mode="outlined" label="Hauteur" value={height}
               onChangeText={(v) => onChange('height', v.replace(/[^0-9.]/g, ''))}
               keyboardType="decimal-pad" style={[styles.input, styles.thirdInput]}
-              outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+              outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
               right={<TextInput.Affix text="cm" />}
             />
           </View>
@@ -75,7 +75,7 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
           mode="outlined" label="CBM (m³)" value={cbm}
           onChangeText={(v) => onChange('cbm', v.replace(/[^0-9.]/g, ''))}
           keyboardType="decimal-pad" style={styles.input}
-          outlineStyle={styles.inputOutline} outlineColor="#E0E0E0" activeOutlineColor={ACCENT}
+          outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
           right={<TextInput.Affix text="m³" />}
         />
       )}

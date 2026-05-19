@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { styles } from './TransitStatusCard.styles';
+import { createStyles } from './TransitStatusCard.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface WaypointStatusDisplayProps {
   statusColor: string;
@@ -20,6 +21,8 @@ export const WaypointStatusDisplay: React.FC<WaypointStatusDisplayProps> = ({
   estimatedArrival,
   formatTimestamp,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.statusContainer}>
       <View

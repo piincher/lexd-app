@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from 'react';
 import { View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,11 +19,11 @@ export const WaypointCardRightSection: React.FC<WaypointCardRightSectionProps> =
 }) => (
   <View style={styles.rightSection}>
     {isCompleted ? (
-      <View style={[styles.statusIcon, { backgroundColor: Theme.status.success }]}>
+      <View style={[styles.statusIcon, { backgroundColor: colors.status.success }]}>
         <Ionicons name="checkmark" size={16} color={colors.text.inverse} />
       </View>
     ) : isCurrent ? (
-      <View style={[styles.statusIcon, { backgroundColor: Theme.status.info }]}>
+      <View style={[styles.statusIcon, { backgroundColor: colors.status.info }]}>
         <Ionicons name="navigate" size={16} color={colors.text.inverse} />
       </View>
     ) : (

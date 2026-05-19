@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { createAuditDetailBlockStyles } from './AuditDetailBlock.styles';
+import { createStyles } from './AuditDetailBlock.styles';
 
 interface DetailRow {
   label: string;
@@ -14,8 +14,8 @@ interface AuditDetailBlockProps {
 }
 
 export const AuditDetailBlock: React.FC<AuditDetailBlockProps> = ({ title, rows }) => {
-  const { colors } = useAppTheme();
-  const styles = createAuditDetailBlockStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.block}>

@@ -10,7 +10,7 @@ interface MultiSelectItemProps {
   statusKey: keyof Item;
   dateKey: keyof Item;
   weightKey: keyof Item;
-  styles: ReturnType<typeof import("./MultiSelect.styles").getStyles>;
+  styles: ReturnType<typeof import("./MultiSelect.styles").createStyles>;
   onPress: () => void;
   otherProps: any;
 }

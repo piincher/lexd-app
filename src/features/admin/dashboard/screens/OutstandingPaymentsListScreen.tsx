@@ -3,10 +3,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlashList } from '@shopify/flash-list';
 import { RefreshControl } from 'react-native';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useOutstandingPaymentsListScreen } from './hooks';
-import { styles } from './OutstandingPaymentsListScreen.styles';
+import { createStyles } from './OutstandingPaymentsListScreen.styles';
 import {
   OutstandingPaymentsListHeader,
   OutstandingPaymentsSearch,
@@ -18,7 +17,8 @@ import {
 } from '../components';
 
 export const OutstandingPaymentsListScreen: React.FC = () => {
-  const { isDark } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     items,
     pagination,
@@ -37,7 +37,7 @@ export const OutstandingPaymentsListScreen: React.FC = () => {
           <NotificationBell
             onPress={handlers.handleNotificationPress}
             size={24}
-            color={Theme.colors.text.primary}
+            color={colors.text.primary}
           />
         }
       />

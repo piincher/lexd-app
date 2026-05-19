@@ -6,7 +6,6 @@ import React, { useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text, Card, Menu, IconButton } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
 import { createStyles } from './RouteListItem.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -34,7 +33,7 @@ const MODE_CONFIG = (colors: any) => ({
 
 export const RouteListItem: React.FC<RouteListItemProps> = ({ route, onPress, onEdit, onDelete }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const [menuVisible, setMenuVisible] = React.useState(false);
   const mode = MODE_CONFIG(colors)[route.shippingMode];
   const closeMenu = () => setMenuVisible(false);
@@ -49,7 +48,7 @@ export const RouteListItem: React.FC<RouteListItemProps> = ({ route, onPress, on
             </View>
             <View style={styles.pathContainer}>
               <Text style={styles.location} numberOfLines={1}>{route.origin}</Text>
-              <Ionicons name="arrow-forward" size={14} color={Theme.neutral[400]} />
+              <Ionicons name="arrow-forward" size={14} color={colors.neutral[400]} />
               <Text style={styles.location} numberOfLines={1}>{route.destination}</Text>
             </View>
             {(onEdit || onDelete) && (
@@ -62,15 +61,15 @@ export const RouteListItem: React.FC<RouteListItemProps> = ({ route, onPress, on
           </View>
           <View style={styles.details}>
             <View style={styles.detailItem}>
-              <Ionicons name="cash-outline" size={14} color={Theme.neutral[400]} />
+              <Ionicons name="cash-outline" size={14} color={colors.neutral[400]} />
               <Text style={styles.detailText}>{route.price.toLocaleString()} XOF</Text>
             </View>
             <View style={styles.detailItem}>
-              <Ionicons name="calendar-outline" size={14} color={Theme.neutral[400]} />
+              <Ionicons name="calendar-outline" size={14} color={colors.neutral[400]} />
               <Text style={styles.detailText}>{route.schedule}</Text>
             </View>
             <View style={styles.detailItem}>
-              <Ionicons name="flag-outline" size={14} color={Theme.neutral[400]} />
+              <Ionicons name="flag-outline" size={14} color={colors.neutral[400]} />
               <Text style={styles.detailText}>{route.stops} {route.stops > 1 ? 'escales' : 'escale'}</Text>
             </View>
           </View>

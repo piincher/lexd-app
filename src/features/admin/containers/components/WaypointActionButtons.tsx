@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -14,6 +14,7 @@ export const WaypointActionButtons: React.FC<WaypointActionButtonsProps> = ({
   onSave,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.footer}>
       <Button
@@ -36,24 +37,24 @@ export const WaypointActionButtons: React.FC<WaypointActionButtonsProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   footer: {
     flexDirection: 'row',
     gap: Theme.spacing.md,
     padding: Theme.spacing.lg,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[200],
+    borderTopColor: colors.neutral[200],
   },
   cancelButton: {
     flex: 1,
-    borderColor: Theme.neutral[300],
+    borderColor: colors.neutral[300],
   },
   cancelButtonLabel: {
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   saveButton: {
     flex: 2,
-    backgroundColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
   },
   saveButtonLabel: {
     fontWeight: '700',

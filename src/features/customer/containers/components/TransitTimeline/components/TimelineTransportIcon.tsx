@@ -4,7 +4,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 type TransportMode = 'sea' | 'truck' | 'air' | 'train' | 'warehouse';
 
@@ -14,14 +14,6 @@ interface TimelineTransportIconProps {
   showLabel?: boolean;
   isActive?: boolean;
 }
-
-const MODE_CONFIG: Record<TransportMode, { icon: keyof typeof Ionicons.glyphMap; label: string; color: string }> = {
-  sea: { icon: 'boat', label: 'Maritime', color: Theme.colors.status.info },
-  truck: { icon: 'car', label: 'Route', color: Theme.colors.status.warning },
-  air: { icon: 'airplane', label: 'Air', color: Theme.colors.primary.main },
-  train: { icon: 'train', label: 'Train', color: Theme.colors.status.success },
-  warehouse: { icon: 'home', label: 'Entrepôt', color: Theme.colors.text.secondary },
-};
 
 const SIZE_CONFIG = {
   sm: { container: 24, icon: 12 },
@@ -35,9 +27,19 @@ export const TimelineTransportIcon: React.FC<TimelineTransportIconProps> = ({
   showLabel = false,
   isActive = false,
 }) => {
+  const { colors } = useAppTheme();
+
+  const MODE_CONFIG: Record<TransportMode, { icon: keyof typeof Ionicons.glyphMap; label: string; color: string }> = {
+    sea: { icon: 'boat', label: 'Maritime', color: colors.status.info },
+    truck: { icon: 'car', label: 'Route', color: colors.status.warning },
+    air: { icon: 'airplane', label: 'Air', color: colors.primary.main },
+    train: { icon: 'train', label: 'Train', color: colors.status.success },
+    warehouse: { icon: 'home', label: 'Entrepôt', color: colors.text.secondary },
+  };
+
   const config = MODE_CONFIG[mode];
   const sizeConfig = SIZE_CONFIG[size];
-  
+
   return (
     <View style={styles.container}>
       <View
@@ -54,7 +56,7 @@ export const TimelineTransportIcon: React.FC<TimelineTransportIconProps> = ({
         <Ionicons
           name={config.icon}
           size={sizeConfig.icon}
-          color={isActive ? Theme.colors.text.inverse : config.color}
+          color={isActive ? colors.text.inverse : config.color}
         />
       </View>
       {showLabel && (

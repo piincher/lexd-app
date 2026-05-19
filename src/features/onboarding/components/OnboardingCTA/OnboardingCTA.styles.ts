@@ -17,7 +17,7 @@ export const createStyles = (colors: any) =>
       minHeight: 56,
       paddingVertical: 14,
       borderRadius: 14,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.15,
       shadowRadius: 8,

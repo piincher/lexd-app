@@ -8,7 +8,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Badge } from "@src/shared/ui/Badge";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Backup } from "../../types";
-import { styles } from "./BackupManager.styles";
+import { createStyles } from "./BackupManager.styles";
 
 const TYPE_LABELS: Record<string, string> = {
   AUTOMATED: "Auto",
@@ -41,7 +41,8 @@ interface BackupItemProps {
 export const BackupItem: React.FC<BackupItemProps> = ({
   item, isSuperAdmin, menuVisible, onMenuOpen, onMenuClose, onDownload, onRestore, onDelete,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={[styles.card, { backgroundColor: colors.background.card }]}>

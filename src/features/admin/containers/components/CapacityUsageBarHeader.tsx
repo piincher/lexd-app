@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { styles } from './CapacityUsageBar.styles';
+import { createStyles } from './CapacityUsageBar.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface CapacityUsageBarHeaderProps {
   variant: 'cbm' | 'weight' | 'items';
@@ -38,7 +39,10 @@ export const CapacityUsageBarHeader: React.FC<CapacityUsageBarHeaderProps> = ({
   max,
   unit,
   fillColor,
-}) => (
+}) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <View style={styles.header}>
     <View style={styles.labelContainer}>
       <Text style={styles.icon}>{getVariantIcon(variant)}</Text>
@@ -54,4 +58,5 @@ export const CapacityUsageBarHeader: React.FC<CapacityUsageBarHeaderProps> = ({
       </Text>
     </View>
   </View>
-);
+  );
+};

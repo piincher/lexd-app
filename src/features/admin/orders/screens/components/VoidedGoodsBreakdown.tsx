@@ -21,8 +21,8 @@ export const VoidedGoodsBreakdown: React.FC<VoidedGoodsBreakdownProps> = ({ good
   return (
     <View style={styles.card}>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Theme.spacing.md }}>
-        <Ionicons name="close-circle" size={20} color={Theme.status.error} />
-        <Text style={[styles.cardTitle, { marginLeft: Theme.spacing.sm, color: Theme.status.error }]}>
+        <Ionicons name="close-circle" size={20} color={colors.status.error} />
+        <Text style={[styles.cardTitle, { marginLeft: Theme.spacing.sm, color: colors.status.error }]}>
           Marchandises Annulées ({goods.length})
         </Text>
       </View>

@@ -6,7 +6,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import {
   ADMIN_TICKET_STATUSES,
-  ADMIN_TICKET_STATUS_COLORS,
+  getAdminTicketStatusColors,
   ADMIN_TICKET_STATUS_LABELS,
   AdminTicketStatus,
 } from '../types';
@@ -29,7 +29,7 @@ export const AdminTicketStatusControl: React.FC<AdminTicketStatusControlProps> =
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.content}>
         {ADMIN_TICKET_STATUSES.map((item) => {
           const active = item === status;
-          const accent = ADMIN_TICKET_STATUS_COLORS[item];
+          const accent = getAdminTicketStatusColors(colors)[item];
 
           return (
             <Pressable

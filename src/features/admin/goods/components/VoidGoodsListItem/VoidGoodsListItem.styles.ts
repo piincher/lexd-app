@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const getStyles = (colors: any) =>
-  StyleSheet.create({
+
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   goodsCard: {
     marginBottom: 12,
     borderRadius: 12,
@@ -21,7 +20,7 @@ export const getStyles = (colors: any) =>
   goodsId: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 8,
   },
   statusBadge: {
@@ -45,13 +44,13 @@ export const getStyles = (colors: any) =>
   },
   detailLabel: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: 4,
   },
   detailValue: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   voidButton: {
     flexDirection: 'row',

@@ -6,6 +6,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useAnalyticsDashboard } from '../hooks/useAnalyticsDashboard';
 import { DashboardHeader } from '../components/DashboardHeader';
 import { PeriodSelector } from '../components/PeriodSelector';
@@ -14,9 +15,11 @@ import { DashboardContent } from '../components/DashboardContent';
 import { DashboardErrorState } from '../components/DashboardErrorState';
 import { ExportDialog } from '../components/ExportDialog';
 import { DashboardFAB } from '../components/DashboardFAB';
-import { styles } from './AnalyticsDashboardScreen.styles';
+import { createStyles } from './AnalyticsDashboardScreen.styles';
 
 export const AnalyticsDashboardScreen: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     selectedPeriod,
     setSelectedPeriod,

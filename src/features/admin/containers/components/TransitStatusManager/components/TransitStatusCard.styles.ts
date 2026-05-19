@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius['2xl'],
     marginHorizontal: Theme.spacing.lg,
     marginVertical: Theme.spacing.md,
@@ -13,12 +13,12 @@ export const styles = StyleSheet.create({
     marginBottom: Theme.spacing.lg,
     paddingBottom: Theme.spacing.md,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
+    borderBottomColor: colors.neutral[100],
   },
   containerNumber: {
     fontSize: 18,
     fontWeight: '800',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     letterSpacing: 0.5,
   },
   progressContainer: {
@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
   },
   progressBarContainer: {
     height: 8,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     borderRadius: Theme.radius.full,
     overflow: 'hidden',
     marginBottom: Theme.spacing.sm,
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
   progressText: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     textAlign: 'center',
   },
   statusContainer: {
@@ -60,17 +60,17 @@ export const styles = StyleSheet.create({
   statusLabel: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginBottom: Theme.spacing.xs,
   },
   timestamp: {
     fontSize: 13,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   locationContainer: {
     padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: Theme.radius.lg,
   },
   locationHeader: {
@@ -82,24 +82,24 @@ export const styles = StyleSheet.create({
   locationLabel: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textTransform: 'uppercase',
   },
   locationName: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   locationCountry: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     marginTop: 2,
   },
   locationDescription: {
     fontSize: 13,
     fontWeight: '400',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: Theme.spacing.sm,
     fontStyle: 'italic',
   },
@@ -110,6 +110,6 @@ export const styles = StyleSheet.create({
   loadingText: {
     fontSize: 16,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
 });

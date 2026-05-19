@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   ContainerWaypoint,
   SEGMENT_TYPE_ICONS,
@@ -9,7 +10,7 @@ import {
   ExtendedWaypointStatus,
 } from '../../../../types';
 import { getExtendedStatusColor, getExtendedStatusLabel, getExtendedStatusIcon } from '../../../../types/waypointStatus';
-import { styles } from './WaypointCard.styles';
+import { createStyles } from './WaypointCard.styles';
 
 interface WaypointCardProps {
   waypoint: ContainerWaypoint;
@@ -47,6 +48,8 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
   routeDisplay,
   onPress,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const statusColor = getExtendedStatusColor(waypoint.status as ExtendedWaypointStatus);
   const segmentIcon = SEGMENT_TYPE_ICONS[waypoint.segmentType];
 
@@ -79,7 +82,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
             <Text style={styles.waypointCode}>{waypoint.location?.portCode || waypoint.location?.countryCode || ''}</Text>
             {routeDisplay && (
               <View style={styles.routeDisplayBadge}>
-                <Ionicons name={routeDisplay.icon as any} size={12} color={Theme.colors.text.inverse} />
+                <Ionicons name={routeDisplay.icon as any} size={12} color={colors.text.inverse} />
                 <Text style={styles.routeDisplayText}>{routeDisplay.label}</Text>
               </View>
             )}
@@ -97,7 +100,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
 
         <View style={styles.typeRow}>
           <View style={styles.typeBadge}>
-            <Ionicons name={(segmentIcon || 'help-circle') as any} size={12} color={Theme.neutral[500]} />
+            <Ionicons name={(segmentIcon || 'help-circle') as any} size={12} color={colors.neutral[500]} />
             <Text style={styles.typeBadgeText}>{SEGMENT_TYPE_LABELS[waypoint.segmentType]}</Text>
           </View>
           {locationCategory && (
@@ -116,20 +119,20 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
         <View style={styles.quickInfo}>
           {waypoint.actualArrival && (
             <View style={styles.infoItem}>
-              <Ionicons name="calendar" size={12} color={Theme.status.success} />
+              <Ionicons name="calendar" size={12} color={colors.status.success} />
               <Text style={styles.infoText}>Arrivé: {formatDate(waypoint.actualArrival)}</Text>
             </View>
           )}
           {!waypoint.actualArrival && waypoint.estimatedArrival && (
             <View style={styles.infoItem}>
-              <Ionicons name="time-outline" size={12} color={Theme.status.warning} />
+              <Ionicons name="time-outline" size={12} color={colors.status.warning} />
               <Text style={styles.infoText}>Est. arrivée: {formatDate(waypoint.estimatedArrival)}</Text>
             </View>
           )}
         </View>
 
         <View style={styles.expandIndicator}>
-          <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color={Theme.neutral[400]} />
+          <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color={colors.neutral[400]} />
         </View>
       </View>
     </TouchableOpacity>

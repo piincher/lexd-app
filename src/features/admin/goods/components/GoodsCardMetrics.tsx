@@ -18,38 +18,7 @@ const formatCurrency = (amount: number): string => {
   return amount.toLocaleString('fr-FR');
 };
 
-export const GoodsCardMetrics: React.FC<GoodsCardMetricsProps> = ({ cbm, weight, price }) => {
-  const { colors } = useAppTheme();
-
-  return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <View style={styles.metric}>
-          <View style={[styles.icon, { backgroundColor: Theme.primary[100] }]}>
-            <Ionicons name="cube-outline" size={14} color={Theme.primary[600]} />
-          </View>
-          <Text style={[styles.metricText, { color: colors.text.secondary }]}>{(cbm || 0).toFixed(3)} m³</Text>
-        </View>
-
-        <View style={styles.metric}>
-          <View style={[styles.icon, { backgroundColor: `${Theme.accent.mint}20` }]}>
-            <Ionicons name="scale-outline" size={14} color={Theme.accent.mint} />
-          </View>
-          <Text style={[styles.metricText, { color: colors.text.secondary }]}>{weight || 0} kg</Text>
-        </View>
-      </View>
-
-      <View style={[styles.pricePill, { backgroundColor: colors.feedback.successBg, borderColor: colors.primary[200] }]}>
-        <Text style={[styles.priceLabel, { color: colors.text.secondary }]}>Coût total</Text>
-        <Text style={[styles.priceValue, { color: colors.primary[700] }]}>
-          {formatCurrency(price || 0)} FCFA
-        </Text>
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   container: {
     marginTop: Theme.spacing.md,
     gap: Theme.spacing.sm,
@@ -97,3 +66,35 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
   },
 });
+
+export const GoodsCardMetrics: React.FC<GoodsCardMetricsProps> = ({ cbm, weight, price }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(), []);
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.row}>
+        <View style={styles.metric}>
+          <View style={[styles.icon, { backgroundColor: colors.primary[100] }]}>
+            <Ionicons name="cube-outline" size={14} color={colors.primary[600]} />
+          </View>
+          <Text style={[styles.metricText, { color: colors.text.secondary }]}>{(cbm || 0).toFixed(3)} m³</Text>
+        </View>
+
+        <View style={styles.metric}>
+          <View style={[styles.icon, { backgroundColor: `${colors.accent.mint}20` }]}>
+            <Ionicons name="scale-outline" size={14} color={colors.accent.mint} />
+          </View>
+          <Text style={[styles.metricText, { color: colors.text.secondary }]}>{weight || 0} kg</Text>
+        </View>
+      </View>
+
+      <View style={[styles.pricePill, { backgroundColor: colors.feedback.successBg, borderColor: colors.primary[200] }]}>
+        <Text style={[styles.priceLabel, { color: colors.text.secondary }]}>Coût total</Text>
+        <Text style={[styles.priceValue, { color: colors.primary[700] }]}>
+          {formatCurrency(price || 0)} FCFA
+        </Text>
+      </View>
+    </View>
+  );
+};

@@ -5,7 +5,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint } from '../../../../types/waypoints';
-import { styles } from './TransitTimeline.styles';
+import { createStyles } from './TransitTimeline.styles';
 import { TimelineDot, WaypointItemStatus } from './TimelineDot';
 
 const STATUS_LABELS: Record<WaypointItemStatus, string> = {
@@ -53,7 +53,8 @@ export const TimelineItemRow: React.FC<TimelineItemRowProps> = ({
   totalItems,
   currentWaypointIndex,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const status = getWaypointStatus(index, currentWaypointIndex);
   const entering = FadeInUp.delay(index * 100);
   const icon = getSegmentIcon(waypoint.segmentType);
@@ -89,7 +90,7 @@ export const TimelineItemRow: React.FC<TimelineItemRowProps> = ({
 
         {timestamp && (
           <View style={styles.timestampContainer}>
-            <Ionicons name="time-outline" size={12} color={Theme.neutral[400]} />
+            <Ionicons name="time-outline" size={12} color={colors.neutral[400]} />
             <Text style={styles.timestamp}>{waypoint.actualArrival ? '' : 'Est: '}{formatTimestamp(timestamp)}</Text>
           </View>
         )}

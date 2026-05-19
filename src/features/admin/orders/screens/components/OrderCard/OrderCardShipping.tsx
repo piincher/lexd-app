@@ -12,7 +12,7 @@ interface OrderCardShippingProps {
 
 export const OrderCardShipping: React.FC<OrderCardShippingProps> = ({ isAir, destination }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = createStyles(colors, isDark);
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.shippingRow}>

@@ -17,7 +17,8 @@ import { StatusPicker } from "./StatusPicker";
 import { SchedulingSection } from "./SchedulingSection";
 import { EmailSection } from "./EmailSection";
 import { ReasonSection } from "./ReasonSection";
-import { styles } from "./ExportDataModal.styles";
+import { createStyles } from './ExportDataModal.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const ExportDataModal: React.FC<ExportDataModalProps> = ({
   visible,
@@ -52,6 +53,10 @@ export const ExportDataModal: React.FC<ExportDataModalProps> = ({
     handleExport,
     isLoading,
   } = useExportDataModal(entity, onDismiss);
+
+  const { colors, isDark } = useAppTheme();
+
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Modal visible={visible} onRequestClose={onDismiss} animationType="slide" transparent>

@@ -9,7 +9,7 @@ import {
   getStatusLabel,
   getSegmentLabel,
 } from "../../lib/campaignHelpers";
-import { createCardStyles } from "./CampaignCard.styles";
+import { createStyles } from './CampaignCard.styles';
 
 interface CampaignCardProps {
   campaign: CampaignRecord;
@@ -25,7 +25,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
   isSending,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = createCardStyles(colors, isDark);
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const statusStyle = getStatusStyle(campaign.status, colors, isDark);
   const canAct = campaign.status === "draft" || campaign.status === "scheduled";
 

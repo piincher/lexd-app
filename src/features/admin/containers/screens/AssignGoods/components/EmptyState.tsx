@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -12,11 +12,12 @@ interface EmptyStateProps {
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ searchQuery, shippingMode }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const modeLabel = shippingMode === 'AIR' ? 'aériennes' : shippingMode === 'SEA' ? 'maritimes' : '';
   return (
     <View style={styles.container}>
       <LinearGradient colors={[colors.background.paper, colors.background.default]} style={styles.iconContainer}>
-        <Ionicons name="cube-outline" size={64} color={Theme.primary[400]} />
+        <Ionicons name="cube-outline" size={64} color={colors.primary[400]} />
       </LinearGradient>
       <Text style={styles.title}>
         {searchQuery ? 'Aucun résultat' : modeLabel ? `Aucune marchandise ${modeLabel} disponible` : 'Aucune marchandise disponible'}
@@ -32,7 +33,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ searchQuery, shippingMod
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     alignItems: 'center',
     paddingVertical: 40,
@@ -48,13 +49,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginBottom: 8,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textAlign: 'center',
     paddingHorizontal: 32,
   },

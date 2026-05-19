@@ -3,6 +3,7 @@
  * Utility functions for formatting payment data
  */
 
+import { Theme } from '@src/constants/Theme';
 import { PaymentMethod, PaymentStatus } from '../types';
 
 /**
@@ -89,10 +90,10 @@ export const getPaymentStatusColor = (status: PaymentStatus, themeColors?: any):
     PROCESSING: '#3B82F6',
     COMPLETED: '#10B981',
     FAILED: '#EF4444',
-    CANCELLED: '#6B7280',
+    CANCELLED: Theme.colors.text.disabled,
     REFUNDED: '#8B5CF6',
   };
-  return fallback[status] || '#6B7280';
+  return fallback[status] || Theme.colors.text.disabled;
 };
 
 /**

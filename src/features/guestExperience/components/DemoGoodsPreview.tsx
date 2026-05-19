@@ -75,7 +75,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
     scrollContent: { paddingRight: 16 },
     card: {
       width: 160, borderRadius: 20, padding: 12,
-      backgroundColor: colors.background.card, marginRight: 12, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 2,
+      backgroundColor: colors.background.card, marginRight: 12, shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 2,
     },
     imageBox: { height: 80, borderRadius: 16, alignItems: 'center', justifyContent: 'center', marginBottom: 12 },
     imageLetter: { fontFamily: Fonts.bold, fontSize: 28, color: colors.text.inverse },

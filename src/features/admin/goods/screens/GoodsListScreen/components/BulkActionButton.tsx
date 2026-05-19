@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,6 +23,7 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({
   variant = 'primary',
   onPress,
 }) => {
+  const { colors } = useAppTheme();
   const buttonStyle = variant === 'danger' ? styles.actionButtonDanger : styles.actionButton;
 
   return (
@@ -31,10 +33,10 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({
       disabled={disabled}
     >
       {isPending ? (
-        <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
+        <ActivityIndicator size="small" color={colors.text.inverse} />
       ) : (
         <>
-          <Ionicons name={icon as any} size={16} color={Theme.colors.text.inverse} />
+          <Ionicons name={icon as any} size={16} color={colors.text.inverse} />
           <Text style={styles.actionButtonText}>{label}</Text>
         </>
       )}

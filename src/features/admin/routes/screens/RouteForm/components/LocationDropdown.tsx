@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Menu, HelperText } from 'react-native-paper';
@@ -28,6 +29,7 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
   setMenuVisible,
   placeholder,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.label}>
@@ -49,7 +51,7 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
               <Ionicons
                 name={icon}
                 size={20}
-                color={value ? Theme.primary[500] : Theme.neutral[400]}
+                color={value ? colors.primary[500] : colors.neutral[400]}
               />
               <Text
                 style={[
@@ -64,7 +66,7 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
             <Ionicons
               name={menuVisible ? 'chevron-up' : 'chevron-down'}
               size={20}
-              color={Theme.neutral[400]}
+              color={colors.neutral[400]}
             />
           </TouchableOpacity>
         }

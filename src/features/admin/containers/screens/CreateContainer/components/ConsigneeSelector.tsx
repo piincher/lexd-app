@@ -43,7 +43,7 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
       onPress={() => onSelectConsignee(item)}
     >
       <View style={styles.consigneeItemIcon}>
-        <Ionicons name="business" size={20} color={Theme.primary[500]} />
+        <Ionicons name="business" size={20} color={colors.primary[500]} />
       </View>
       <View style={styles.consigneeItemContent}>
         <Text style={styles.consigneeItemName}>{item.name}</Text>
@@ -54,7 +54,7 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
           </Text>
         )}
       </View>
-      <Ionicons name="chevron-forward" size={20} color={Theme.neutral[400]} />
+      <Ionicons name="chevron-forward" size={20} color={colors.neutral[400]} />
     </TouchableOpacity>
   );
 
@@ -79,7 +79,7 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
             style={styles.clearConsigneeButton}
             onPress={onClearConsignee}
           >
-            <Ionicons name="close-circle" size={24} color={Theme.neutral[400]} />
+            <Ionicons name="close-circle" size={24} color={colors.neutral[400]} />
           </TouchableOpacity>
         </View>
       </View>
@@ -109,7 +109,7 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
         <View style={styles.dropdownCard}>
           {isLoading ? (
             <View style={styles.dropdownState}>
-              <ActivityIndicator size="small" color={Theme.primary[500]} />
+              <ActivityIndicator size="small" color={colors.primary[500]} />
               <Text style={styles.dropdownStateText}>Recherche en cours...</Text>
             </View>
           ) : consignees.length > 0 ? (
@@ -123,7 +123,7 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
             />
           ) : (
             <View style={styles.dropdownState}>
-              <Ionicons name="search-outline" size={20} color={Theme.neutral[400]} />
+              <Ionicons name="search-outline" size={20} color={colors.neutral[400]} />
               <Text style={styles.dropdownStateText}>
                 {searchQuery.trim()
                   ? 'Aucun destinataire trouvé pour cette recherche'

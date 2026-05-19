@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useRecipientSelectorStyles } from './RecipientSelector.styles';
+import { createStyles } from './RecipientSelector.styles';
 import type { Recipient } from '../RecipientSelector';
 
 interface RecipientItemProps {
@@ -16,7 +16,7 @@ interface RecipientItemProps {
 
 export const RecipientItem: React.FC<RecipientItemProps> = ({ item, index, isSelected, onToggle }) => {
   const { colors } = useAppTheme();
-  const styles = useRecipientSelectorStyles();
+  const styles = createStyles(colors);
 
   return (
     <Animated.View entering={FadeInDown.delay(Math.min(index * 20, 150)).springify().damping(18)}>

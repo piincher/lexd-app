@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMemo } from 'react';
@@ -31,7 +30,7 @@ export const useAirwayBillTrackingSummaryStyles = () => {
   eyebrow: {
     fontFamily: Fonts.medium,
     fontSize: 11,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textTransform: 'uppercase',
   },
   statusLabel: {

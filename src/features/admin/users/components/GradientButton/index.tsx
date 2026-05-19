@@ -24,7 +24,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export const GradientButton: React.FC<Props> = ({ title, onPress, busy, disabled }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = createStyles;
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const scale = useSharedValue(1);
   const shimmer = useSharedValue(0);
 
@@ -76,7 +76,7 @@ export const GradientButton: React.FC<Props> = ({ title, onPress, busy, disabled
         style={styles.gradient}
       >
         {busy ? (
-          <ActivityIndicator color="#FFFFFF" size="small" />
+          <ActivityIndicator color={colors.text.inverse} size="small" />
         ) : (
           <Text style={styles.title}>{title}</Text>
         )}
@@ -85,7 +85,7 @@ export const GradientButton: React.FC<Props> = ({ title, onPress, busy, disabled
             style={[
               StyleSheet.absoluteFill,
               {
-                backgroundColor: 'rgba(255,255,255,0.3)',
+                backgroundColor: colors.neutral.white + '4D',
                 width: 60,
                 transform: [{ skewX: '-20deg' }],
               },

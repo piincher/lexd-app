@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 /**
  * GoodsListContent - Main content area with list or states
  * SRP: Renders list, loading, error, or empty states
@@ -6,11 +7,11 @@
 import React, { useCallback } from 'react';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import { RefreshControl } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+
 import { GoodsCard } from './GoodsCard';
 import { GoodsEmptyState } from './GoodsEmptyState';
 import { Goods } from '../types';
-import { styles } from './GoodsListContent.styles';
+import { createStyles } from './GoodsListContent.styles';
 import { GoodsListLoadingState } from './GoodsListLoadingState';
 import { GoodsListErrorState } from './GoodsListErrorState';
 
@@ -35,6 +36,8 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   onGoodsPress,
   onAddPress,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const renderItem: ListRenderItem<Goods> = useCallback(({ item }) => (
     <GoodsCard goods={item} onPress={() => onGoodsPress(item._id)} />
   ), [onGoodsPress]);
@@ -60,7 +63,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
         <RefreshControl
           refreshing={isRefetching}
           onRefresh={onRefresh}
-          tintColor={Theme.primary[500]}
+          tintColor={colors.primary[500]}
         />
       }
       ListEmptyComponent={

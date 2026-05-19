@@ -3,7 +3,8 @@ import { View, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 import { getInitials, getAvatarColor } from "../../lib/clientUtils";
-import { styles } from "./ProfileCard.styles";
+import { createStyles } from './ProfileCard.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ProfileCardProps {
   firstName?: string;
@@ -20,6 +21,10 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({
 }) => {
   const avatarColors = getAvatarColor(`${firstName} ${lastName}`);
   const initials = getInitials(firstName, lastName);
+
+  const { colors, isDark } = useAppTheme();
+
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.container}>

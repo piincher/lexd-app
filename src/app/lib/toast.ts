@@ -1,4 +1,5 @@
 import { showMessage } from 'react-native-flash-message';
+import { Theme } from '@src/constants/Theme';
 
 export interface ToastColors {
   backgroundColor: string;
@@ -10,7 +11,7 @@ export function showErrorToast(message: string, duration: number = 3000, colors?
     message: 'Erreur',
     description: message,
     type: 'danger',
-    backgroundColor: colors?.backgroundColor || '#dc3545',
+    backgroundColor: colors?.backgroundColor || Theme.colors.status.error,
     color: colors?.textColor || '#FFFFFF',
     duration,
     icon: 'danger',
@@ -22,7 +23,7 @@ export function showSuccessToast(message: string, duration: number = 3000, color
     message: 'Succès',
     description: message,
     type: 'success',
-    backgroundColor: colors?.backgroundColor || '#28a745',
+    backgroundColor: colors?.backgroundColor || Theme.colors.status.success,
     color: colors?.textColor || '#FFFFFF',
     duration,
     icon: 'success',
@@ -34,7 +35,7 @@ export function showWarningToast(message: string, duration: number = 3000, color
     message: 'Attention',
     description: message,
     type: 'warning',
-    backgroundColor: colors?.backgroundColor || '#ff9800',
+    backgroundColor: colors?.backgroundColor || Theme.colors.status.warning,
     color: colors?.textColor || '#FFFFFF',
     duration,
     icon: 'warning',
@@ -46,7 +47,7 @@ export function showInfoToast(message: string, duration: number = 3000, colors?:
     message: 'Information',
     description: message,
     type: 'info',
-    backgroundColor: colors?.backgroundColor || '#17a2b8',
+    backgroundColor: colors?.backgroundColor || Theme.colors.status.info,
     color: colors?.textColor || '#FFFFFF',
     duration,
     icon: 'info',

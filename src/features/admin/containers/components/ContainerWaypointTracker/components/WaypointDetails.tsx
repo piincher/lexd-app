@@ -2,7 +2,8 @@ import React from 'react';
 import { View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { ContainerWaypoint } from '../../../types';
-import { waypointDetailsStyles as styles } from './WaypointDetails.styles';
+import { createStyles } from './WaypointDetails.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { WaypointTimesSection } from './WaypointTimesSection';
 import { WaypointSeaDetails } from './WaypointSeaDetails';
 import { WaypointRoadDetails } from './WaypointRoadDetails';
@@ -14,6 +15,9 @@ interface WaypointDetailsProps {
 }
 
 export const WaypointDetails: React.FC<WaypointDetailsProps> = ({ waypoint, formatDateTime }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <Animated.View entering={FadeIn} style={styles.expandedContent}>
       <View style={styles.divider} />

@@ -22,7 +22,7 @@ export const DeliveredDialog: React.FC<DeliveredDialogProps> = ({
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onDismiss}>
-        <Dialog.Icon icon="checkmark-done-circle" color={Theme.status.success} />
+        <Dialog.Icon icon="checkmark-done-circle" color={colors.status.success} />
         <Dialog.Title style={styles.dialogTitle}>
           Confirmer la livraison
         </Dialog.Title>
@@ -35,7 +35,7 @@ export const DeliveredDialog: React.FC<DeliveredDialogProps> = ({
           <Button onPress={onDismiss}>Annuler</Button>
           <Button
             onPress={onConfirm}
-            textColor={Theme.status.success}
+            textColor={colors.status.success}
           >
             Confirmer
           </Button>

@@ -17,7 +17,7 @@ export const VerificationHeader: React.FC<VerificationHeaderProps> = ({ maskedPh
   return (
     <Animated.View entering={FadeInDown.delay(100).duration(500).springify()} style={styles.heroSection}>
       <LinearGradient
-        colors={isDark ? ["rgba(34,197,94,0.18)", "rgba(59,130,246,0.10)"] : ["#F0FDF4", "#EFF6FF"]}
+        colors={isDark ? [`${colors.primary.main}2E`, `${colors.status.info}1A`] : [colors.feedback.successBg, colors.feedback.infoBg]}
         style={styles.heroIconCircle}
       >
         <MaterialCommunityIcons name="shield-key-outline" size={34} color={colors.primary.main} />

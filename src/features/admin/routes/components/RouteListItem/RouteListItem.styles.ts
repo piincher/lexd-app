@@ -5,7 +5,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const createStyles = (colors: any) => StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
     marginHorizontal: Theme.spacing.lg,
     marginBottom: Theme.spacing.md,

@@ -23,6 +23,7 @@ interface StatItemProps {
 
 const StatItem: React.FC<StatItemProps> = ({ icon, label, value, color, bgColor }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={[styles.statCard, { backgroundColor: colors.background.card }]}>
       <View style={[styles.iconContainer, { backgroundColor: bgColor }]}>
@@ -42,6 +43,7 @@ export const AirwayBillStats: React.FC<AirwayBillStatsProps> = ({
   totalWeight,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.container}>
       <StatItem
@@ -69,7 +71,7 @@ export const AirwayBillStats: React.FC<AirwayBillStatsProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     gap: 10,
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 14,
     gap: 10,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.04,
     shadowRadius: 4,

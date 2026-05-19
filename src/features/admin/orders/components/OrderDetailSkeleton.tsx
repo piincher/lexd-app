@@ -4,9 +4,39 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { lightTheme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+
+const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+  },
+  card: {
+    backgroundColor: colors.neutral[200],
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+  },
+  titleSkeleton: {
+    height: 24,
+    backgroundColor: colors.neutral[300],
+    borderRadius: 4,
+    marginBottom: 12,
+    width: '60%',
+  },
+  lineSkeleton: {
+    height: 16,
+    backgroundColor: colors.neutral[300],
+    borderRadius: 4,
+    marginBottom: 8,
+    width: '100%',
+  },
+});
 
 export const OrderDetailSkeleton: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -22,32 +52,5 @@ export const OrderDetailSkeleton: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: lightTheme.spacing.lg,
-  },
-  card: {
-    backgroundColor: lightTheme.colors.neutral[200],
-    borderRadius: lightTheme.borderRadius.lg,
-    padding: lightTheme.spacing.lg,
-    marginBottom: lightTheme.spacing.lg,
-  },
-  titleSkeleton: {
-    height: 24,
-    backgroundColor: lightTheme.colors.neutral[300],
-    borderRadius: lightTheme.borderRadius.sm,
-    marginBottom: lightTheme.spacing.md,
-    width: '60%',
-  },
-  lineSkeleton: {
-    height: 16,
-    backgroundColor: lightTheme.colors.neutral[300],
-    borderRadius: lightTheme.borderRadius.sm,
-    marginBottom: lightTheme.spacing.sm,
-    width: '100%',
-  },
-});
 
 export default OrderDetailSkeleton;

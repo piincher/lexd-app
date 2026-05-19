@@ -5,7 +5,7 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { SearchFilters as SearchFiltersType, FilterPreset } from '../api/searchApi';
 import { useSearchFilterHandlers } from '../hooks/useSearchFilterHandlers';
 import { FilterPresetsModal } from './FilterPresetsModal';
@@ -33,6 +33,8 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   presets = [],
   onPresetSelect,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const [showPresets, setShowPresets] = useState(false);
   const {
     toggleStatus,
@@ -104,13 +106,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   scrollContent: {
-    padding: Theme.spacing.lg,
+    padding: 16,
   },
 });
 

@@ -7,9 +7,9 @@ import React, { useState } from 'react';
 import { Alert, View } from 'react-native';
 import { Card, Text, Button, Menu, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './GoodsStatusManager.styles';
+import { createStyles } from './GoodsStatusManager.styles';
 
 // Local StatusBadge component to avoid any import issues
 const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
@@ -61,16 +61,14 @@ export const GoodsStatusManager: React.FC<GoodsStatusManagerProps> = ({
   isUpdating,
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
-
-  const getStatusLabel = (status: string) => {
-    return STATUS_OPTIONS.find((opt) => opt.value === status)?.label || status;
-  };
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Card style={styles.container}>
       <Card.Content>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="tag" size={20} color={Theme.primary[600]} />
+          <MaterialCommunityIcons name="tag" size={20} color={colors.primary[600]} />
           <Text style={styles.title}>Statut</Text>
         </View>
 

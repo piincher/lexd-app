@@ -51,13 +51,13 @@ export interface TransitStatusInfo {
  * Complete transit status configuration
  * Maps each status to its display properties and workflow rules
  */
-export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusInfo> = {
+export const getTransitStatusInfo = (colors: any): Record<ContainerTransitStatus, TransitStatusInfo> => ({
   DEPARTED_ORIGIN: {
     status: 'DEPARTED_ORIGIN',
     label: 'Départ Origine',
     description: 'Conteneur parti du port/entrepôt d\'origine',
     icon: 'flag',
-    color: '#3B82F6',
+    color: colors.status.info,
     waypointIndex: 0,
     allowedPreviousStatuses: [],
     isFinalStatus: false,
@@ -67,7 +67,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'En Transit',
     description: 'En transit vers la destination',
     icon: 'boat',
-    color: '#0EA5E9',
+    color: colors.status.info,
     waypointIndex: 1,
     allowedPreviousStatuses: ['DEPARTED_ORIGIN', 'ARRIVED_TRANSIT_PORT', 'DEPARTED_TRANSIT_PORT'],
     isFinalStatus: false,
@@ -77,7 +77,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'En Transit Aérien',
     description: 'En transit aérien vers la destination',
     icon: 'airplane',
-    color: '#0EA5E9',
+    color: colors.status.info,
     waypointIndex: 1,
     allowedPreviousStatuses: ['DEPARTED_ORIGIN', 'ARRIVED_TRANSIT_PORT', 'DEPARTED_TRANSIT_PORT'],
     isFinalStatus: false,
@@ -87,7 +87,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'Arrivé Port Transit',
     description: 'Arrivé au port de transit',
     icon: 'anchor',
-    color: '#8B5CF6',
+    color: colors.status.info,
     waypointIndex: 2,
     allowedPreviousStatuses: ['AT_SEA', 'IN_AIR'],
     isFinalStatus: false,
@@ -97,7 +97,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'Départ Port Transit',
     description: 'Parti du port de transit',
     icon: 'arrow-forward',
-    color: '#6366F1',
+    color: colors.status.info,
     waypointIndex: 3,
     allowedPreviousStatuses: ['ARRIVED_TRANSIT_PORT'],
     isFinalStatus: false,
@@ -107,7 +107,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'Arrivé Port Destination',
     description: 'Arrivé au port de destination finale',
     icon: 'location',
-    color: '#10B981',
+    color: colors.status.success,
     waypointIndex: 4,
     allowedPreviousStatuses: ['AT_SEA', 'DEPARTED_TRANSIT_PORT'],
     isFinalStatus: false,
@@ -117,7 +117,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'Dédouanement',
     description: 'En cours de dédouanement',
     icon: 'document-text',
-    color: '#F59E0B',
+    color: colors.status.warning,
     waypointIndex: 5,
     allowedPreviousStatuses: ['ARRIVED_DESTINATION_PORT'],
     isFinalStatus: false,
@@ -127,7 +127,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'Dédouané',
     description: 'Dédouanement terminé',
     icon: 'checkmark-circle',
-    color: '#10B981',
+    color: colors.status.success,
     waypointIndex: 6,
     allowedPreviousStatuses: ['CUSTOMS_CLEARANCE'],
     isFinalStatus: false,
@@ -137,7 +137,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'Transport Intérieur',
     description: 'Transport routier vers l\'entrepôt final',
     icon: 'car',
-    color: '#EC4899',
+    color: colors.accent.rose,
     waypointIndex: 7,
     allowedPreviousStatuses: ['CUSTOMS_CLEARED', 'ARRIVED_DESTINATION_PORT'],
     isFinalStatus: false,
@@ -147,7 +147,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'Arrivé Entrepôt',
     description: 'Arrivé à l\'entrepôt final',
     icon: 'business',
-    color: '#8B5CF6',
+    color: colors.status.info,
     waypointIndex: 8,
     allowedPreviousStatuses: ['INLAND_TRANSPORT'],
     isFinalStatus: false,
@@ -157,12 +157,12 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
     label: 'Prêt pour Retrait',
     description: 'Prêt pour le retrait par le client',
     icon: 'checkmark-done',
-    color: '#059669',
+    color: colors.status.success,
     waypointIndex: 9,
     allowedPreviousStatuses: ['ARRIVED_WAREHOUSE', 'CUSTOMS_CLEARED'],
     isFinalStatus: true,
   },
-};
+});
 
 // ============================================
 // HELPER FUNCTIONS
@@ -174,7 +174,7 @@ export const TRANSIT_STATUS_INFO: Record<ContainerTransitStatus, TransitStatusIn
  * @returns French label string
  */
 export const getTransitStatusLabel = (status: ContainerTransitStatus, shippingMode?: 'SEA' | 'AIR'): string => {
-  const info = TRANSIT_STATUS_INFO[status];
+  const info = getTransitStatusInfo({ text: { disabled: '#9CA3AF' }, status: { info: '#3B82F6', success: '#10B981', warning: '#F59E0B' }, accent: { rose: '#EC4899' } })[status];
   if (!info) return status;
   // Shipping-mode-aware labels
   if (status === 'AT_SEA' && shippingMode === 'AIR') {
@@ -187,12 +187,13 @@ export const getTransitStatusLabel = (status: ContainerTransitStatus, shippingMo
 };
 
 /**
- * Get color hex code for a transit status
+ * Get color for a transit status
  * @param status - The transit status
- * @returns Hex color string
+ * @param colors - Theme colors
+ * @returns Theme color string
  */
-export const getTransitStatusColor = (status: ContainerTransitStatus): string => {
-  return TRANSIT_STATUS_INFO[status]?.color || '#9CA3AF';
+export const getTransitStatusColor = (status: ContainerTransitStatus, colors: any): string => {
+  return getTransitStatusInfo(colors)[status]?.color || colors.text.disabled;
 };
 
 /**
@@ -201,7 +202,7 @@ export const getTransitStatusColor = (status: ContainerTransitStatus): string =>
  * @returns Icon name string
  */
 export const getTransitStatusIcon = (status: ContainerTransitStatus): string => {
-  return TRANSIT_STATUS_INFO[status]?.icon || 'ellipse';
+  return getTransitStatusInfo({ text: { disabled: '#9CA3AF' }, status: { info: '#3B82F6', success: '#10B981', warning: '#F59E0B' }, accent: { rose: '#EC4899' } })[status]?.icon || 'ellipse';
 };
 
 /**
@@ -213,9 +214,9 @@ export const getTransitStatusIcon = (status: ContainerTransitStatus): string => 
 export const getAllowedNextStatuses = (
   currentStatus: ContainerTransitStatus
 ): ContainerTransitStatus[] => {
-  const allStatuses = Object.keys(TRANSIT_STATUS_INFO) as ContainerTransitStatus[];
+  const allStatuses = Object.keys(getTransitStatusInfo({ text: { disabled: '#9CA3AF' }, status: { info: '#3B82F6', success: '#10B981', warning: '#F59E0B' }, accent: { rose: '#EC4899' } })) as ContainerTransitStatus[];
   return allStatuses.filter((status) =>
-    TRANSIT_STATUS_INFO[status].allowedPreviousStatuses.includes(currentStatus)
+    getTransitStatusInfo({ text: { disabled: '#9CA3AF' }, status: { info: '#3B82F6', success: '#10B981', warning: '#F59E0B' }, accent: { rose: '#EC4899' } })[status].allowedPreviousStatuses.includes(currentStatus)
   );
 };
 
@@ -229,7 +230,7 @@ export const isValidTransitTransition = (
   from: ContainerTransitStatus,
   to: ContainerTransitStatus
 ): boolean => {
-  return TRANSIT_STATUS_INFO[to].allowedPreviousStatuses.includes(from);
+  return getTransitStatusInfo({ text: { disabled: '#9CA3AF' }, status: { info: '#3B82F6', success: '#10B981', warning: '#F59E0B' }, accent: { rose: '#EC4899' } })[to].allowedPreviousStatuses.includes(from);
 };
 
 /**
@@ -242,7 +243,7 @@ export const getTransitProgressPercentage = (
   status: ContainerTransitStatus,
   totalWaypoints: number = 10
 ): number => {
-  const statusInfo = TRANSIT_STATUS_INFO[status];
+  const statusInfo = getTransitStatusInfo({ text: { disabled: '#9CA3AF' }, status: { info: '#3B82F6', success: '#10B981', warning: '#F59E0B' }, accent: { rose: '#EC4899' } })[status];
   if (!statusInfo) return 0;
 
   const progress = ((statusInfo.waypointIndex + 1) / totalWaypoints) * 100;
@@ -329,21 +330,23 @@ export const TRANSIT_STATUS_LABELS: Record<ContainerTransitStatus, string> = {
 };
 
 /**
- * Status colors record for quick lookup
+ * Status colors for quick lookup (theme-aware)
+ * @param colors - Theme colors
+ * @returns Record of status colors
  */
-export const TRANSIT_STATUS_COLORS: Record<ContainerTransitStatus, string> = {
-  DEPARTED_ORIGIN: '#3B82F6',
-  AT_SEA: '#0EA5E9',
-  IN_AIR: '#0EA5E9',
-  ARRIVED_TRANSIT_PORT: '#8B5CF6',
-  DEPARTED_TRANSIT_PORT: '#6366F1',
-  ARRIVED_DESTINATION_PORT: '#10B981',
-  CUSTOMS_CLEARANCE: '#F59E0B',
-  CUSTOMS_CLEARED: '#10B981',
-  INLAND_TRANSPORT: '#EC4899',
-  ARRIVED_WAREHOUSE: '#8B5CF6',
-  READY_FOR_PICKUP: '#059669',
-};
+export const getTransitStatusColors = (colors: any): Record<ContainerTransitStatus, string> => ({
+  DEPARTED_ORIGIN: colors.status.info,
+  AT_SEA: colors.status.info,
+  IN_AIR: colors.status.info,
+  ARRIVED_TRANSIT_PORT: colors.status.info,
+  DEPARTED_TRANSIT_PORT: colors.status.info,
+  ARRIVED_DESTINATION_PORT: colors.status.success,
+  CUSTOMS_CLEARANCE: colors.status.warning,
+  CUSTOMS_CLEARED: colors.status.success,
+  INLAND_TRANSPORT: colors.accent.rose,
+  ARRIVED_WAREHOUSE: colors.status.info,
+  READY_FOR_PICKUP: colors.status.success,
+});
 
 /**
  * Status icons record for quick lookup

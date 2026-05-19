@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
-import { styles } from "./MyReviewsPagination.styles";
+import { createStyles } from "./MyReviewsPagination.styles";
 
 interface MyReviewsPaginationProps {
   page: number;
@@ -19,6 +19,7 @@ export const MyReviewsPagination: React.FC<MyReviewsPaginationProps> = ({
   onPrev,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.paginationContainer}>
@@ -36,7 +37,7 @@ export const MyReviewsPagination: React.FC<MyReviewsPaginationProps> = ({
           name="chevron-back"
           size={20}
           color={
-            page <= 1 ? Theme.colors.text.disabled : colors.text.primary
+            page <= 1 ? colors.text.disabled : colors.text.primary
           }
         />
       </TouchableOpacity>
@@ -58,7 +59,7 @@ export const MyReviewsPagination: React.FC<MyReviewsPaginationProps> = ({
           size={20}
           color={
             page >= totalPages
-              ? Theme.colors.text.disabled
+              ? colors.text.disabled
               : colors.text.primary
           }
         />

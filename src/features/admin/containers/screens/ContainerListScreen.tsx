@@ -15,8 +15,8 @@ import { ContainerListFAB } from '../components/ContainerListFAB';
 import { createStyles } from './ContainerListScreen.styles';
 
 export const ContainerListScreen: React.FC = () => {
-  const { colors } = useAppTheme();
-  const styles = createStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     selectedStatus,
     setSelectedStatus,

@@ -4,7 +4,6 @@ export const SHIP_COLORS = {
   navyBorder: "#A8C4E0",
   grayLight: "#E8ECF0",
   grayText: "#8E99A4",
-  progressTrack: "#E5E7EB",
 } as const;
 
 export type ShipmentStep = 0 | 1 | 2 | 3 | 4;

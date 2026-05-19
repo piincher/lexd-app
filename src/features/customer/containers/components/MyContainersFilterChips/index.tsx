@@ -53,7 +53,7 @@ export const MyContainersFilterChips: React.FC<MyContainersFilterChipsProps> = (
                   borderWidth: 1,
                   borderColor: theme.colors.primary,
                   elevation: 2,
-                  shadowColor: '#000',
+                  shadowColor: colors.neutral[900],
                   shadowOffset: { width: 0, height: 1 },
                   shadowOpacity: 0.2,
                   shadowRadius: 2,

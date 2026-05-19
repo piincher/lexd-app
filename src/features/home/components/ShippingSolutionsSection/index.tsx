@@ -1,4 +1,5 @@
-import React from "react";
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import React, { useMemo } from 'react';
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -16,6 +17,7 @@ export const ShippingSolutionsSection: React.FC<ShippingSolutionsSectionProps> =
    onPressSea,
    colors,
 }) => {
+  const styles = useMemo(() => createStyles(colors), [colors]);
    return (
       <View style={styles.section}>
          <Text style={[styles.sectionTitle, { color: colors.text?.primary ?? colors.text }]}>
@@ -33,7 +35,7 @@ export const ShippingSolutionsSection: React.FC<ShippingSolutionsSectionProps> =
                   style={styles.cardGradient}
                >
                   <View style={styles.iconCircle}>
-                     <FontAwesome6 name="plane" size={24} color={Theme.colors.status.info} />
+                     <FontAwesome6 name="plane" size={24} color={colors.status.info} />
                   </View>
                   <Text style={styles.cardTitle}>Fret Aérien</Text>
                   <Text style={styles.cardText}>2 à 3 semaines</Text>
@@ -52,7 +54,7 @@ export const ShippingSolutionsSection: React.FC<ShippingSolutionsSectionProps> =
                   style={styles.cardGradient}
                >
                   <View style={styles.iconCircle}>
-                     <FontAwesome6 name="ship" size={24} color={Theme.colors.accent.mint} />
+                     <FontAwesome6 name="ship" size={24} color={colors.accent.mint} />
                   </View>
                   <Text style={styles.cardTitle}>Fret Maritime</Text>
                   <Text style={styles.cardText}>6 à 8 semaines</Text>
@@ -64,7 +66,7 @@ export const ShippingSolutionsSection: React.FC<ShippingSolutionsSectionProps> =
    );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
    section: {
       marginTop: 24,
       paddingHorizontal: 16,
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
       flex: 1,
       borderRadius: 20,
       overflow: "hidden",
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.15,
       shadowRadius: 8,
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
       width: 48,
       height: 48,
       borderRadius: 24,
-      backgroundColor: Theme.colors.background.card,
+      backgroundColor: colors.background.card,
       justifyContent: "center",
       alignItems: "center",
       marginBottom: 12,
@@ -106,18 +108,18 @@ const styles = StyleSheet.create({
    cardTitle: {
       fontSize: 18,
       fontFamily: Fonts.bold,
-      color: Theme.neutral.white,
+      color: colors.neutral.white,
    },
    cardText: {
       fontSize: 15,
       fontFamily: Fonts.meduim,
-      color: `${Theme.neutral.white}F2`,
+      color: `${colors.neutral.white}F2`,
       marginTop: 4,
    },
    cardSubtext: {
       fontSize: 13,
       fontFamily: Fonts.regular,
-      color: `${Theme.neutral.white}CC`,
+      color: `${colors.neutral.white}CC`,
       marginTop: 2,
    },
 });

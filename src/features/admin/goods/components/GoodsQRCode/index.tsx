@@ -8,9 +8,9 @@ import { View, Image, Share } from 'react-native';
 import { Card, Text, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Theme } from '@src/constants/Theme';
+
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './GoodsQRCode.styles';
+import { createStyles } from './GoodsQRCode.styles';
 
 interface GoodsQRCodeProps {
   goodsId: string;
@@ -18,7 +18,8 @@ interface GoodsQRCodeProps {
 }
 
 export const GoodsQRCode: React.FC<GoodsQRCodeProps> = ({ goodsId, qrCodeImageUrl }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const hasQRCode = !!qrCodeImageUrl;
 
   const handleShareQR = async () => {

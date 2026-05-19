@@ -1,6 +1,5 @@
 import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -20,7 +19,7 @@ export const useTimelineWaypointCardStyles = () => {
         },
         containerCurrent: {
           borderWidth: 2,
-          borderColor: Theme.status.info,
+          borderColor: colors.status.info,
           ...Theme.shadows.md,
         },
         containerCompleted: {
@@ -126,7 +125,7 @@ export const useTimelineWaypointCardStyles = () => {
         transportBadge: {
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: `${Theme.status.info}15`,
+          backgroundColor: `${colors.status.info}15`,
           paddingHorizontal: Theme.spacing.sm,
           paddingVertical: 4,
           borderRadius: Theme.radius.full,
@@ -134,7 +133,7 @@ export const useTimelineWaypointCardStyles = () => {
         },
         transportBadgeText: {
           fontSize: 11,
-          color: Theme.status.info,
+          color: colors.status.info,
           fontWeight: '500',
         },
         detailsRow: {

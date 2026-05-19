@@ -29,7 +29,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
     borderRadius: 16,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 2,

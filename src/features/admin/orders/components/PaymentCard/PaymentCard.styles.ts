@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 
-export const createPaymentCardStyles = (colors: any) => StyleSheet.create({
+export const createPaymentCardStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   paymentCard: {
     marginBottom: 12,
     padding: 16,

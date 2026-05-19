@@ -4,7 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { productType } from "@src/shared/types/order";
 import { STATUS_CONFIG } from "../../lib/constants";
-import { styles } from "./RecentOrders.styles";
+import { createStyles } from './RecentOrders.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface OrderItemProps {
   order: productType;
@@ -12,6 +13,8 @@ interface OrderItemProps {
 }
 
 const OrderItem: React.FC<OrderItemProps> = ({ order, isLast }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const statusConfig = STATUS_CONFIG[order.status as keyof typeof STATUS_CONFIG];
   
   return (

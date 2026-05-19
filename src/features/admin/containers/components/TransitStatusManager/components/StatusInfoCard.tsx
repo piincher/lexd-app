@@ -3,7 +3,8 @@ import { View, Text } from 'react-native';
 import { Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './NonTransitView.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './NonTransitView.styles';
 
 export interface StatusInfoCardProps {
   containerNumber: string;
@@ -20,6 +21,8 @@ export const StatusInfoCard: React.FC<StatusInfoCardProps> = ({
   statusIcon,
   waypointCount,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <Card style={styles.card}>
       <Card.Content>
@@ -54,7 +57,7 @@ export const StatusInfoCard: React.FC<StatusInfoCardProps> = ({
             <Ionicons
               name="information-circle-outline"
               size={24}
-              color={Theme.primary[500]}
+              color={colors.primary[500]}
             />
           </View>
           <Text style={styles.infoText}>
@@ -70,7 +73,7 @@ export const StatusInfoCard: React.FC<StatusInfoCardProps> = ({
               <Ionicons
                 name="map-outline"
                 size={18}
-                color={Theme.neutral[600]}
+                color={colors.neutral[600]}
               />
               <Text style={styles.waypointPreviewTitle}>
                 Itinéraire prévu

@@ -5,7 +5,7 @@
 import React from 'react';
 import { RefreshControl, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { WhatsAppRequest } from '../../../api/whatsappRequestApi';
 import { WhatsAppRequestCard } from './WhatsAppRequestCard';
 import { WhatsAppRequestEmptyState } from './WhatsAppRequestEmptyState';
@@ -39,6 +39,8 @@ export const WhatsAppRequestList: React.FC<WhatsAppRequestListProps> = ({
   onCall,
   onWhatsApp,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const keyExtractor = (item: WhatsAppRequest) => item._id;
 
   const renderItem = ({ item }: { item: WhatsAppRequest }) => (
@@ -63,16 +65,16 @@ export const WhatsAppRequestList: React.FC<WhatsAppRequestListProps> = ({
       contentContainerStyle={styles.listContent}
       showsVerticalScrollIndicator={false}
       refreshControl={
-        <RefreshControl refreshing={isRefetching} onRefresh={onRefresh} tintColor={Theme.primary[500]} />
+        <RefreshControl refreshing={isRefetching} onRefresh={onRefresh} tintColor={colors.primary[500]} />
       }
       ListEmptyComponent={<WhatsAppRequestEmptyState selectedStatus={selectedStatus} />}
     />
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   listContent: {
-    padding: Theme.spacing.xl,
+    padding: 24,
     paddingBottom: 100,
   },
 });

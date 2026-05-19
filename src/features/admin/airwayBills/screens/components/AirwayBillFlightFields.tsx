@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface AirwayBillFlightFieldsProps {
@@ -27,7 +28,14 @@ export const AirwayBillFlightFields: React.FC<AirwayBillFlightFieldsProps> = ({
   onDepartureAirportChange,
   onArrivalAirportChange,
   onNotesChange,
-}) => (
+}) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => StyleSheet.create({
+    input: { marginBottom: Theme.spacing.md, backgroundColor: colors.background.card },
+    row: { flexDirection: 'row', gap: Theme.spacing.md },
+    half: { flex: 1 },
+  }), [colors, isDark]);
+  return (
   <>
     <TextInput
       label="Numéro de vol"
@@ -74,12 +82,7 @@ export const AirwayBillFlightFields: React.FC<AirwayBillFlightFieldsProps> = ({
       numberOfLines={3}
     />
   </>
-);
-
-const styles = StyleSheet.create({
-  input: { marginBottom: Theme.spacing.md, backgroundColor: Theme.colors.background.card },
-  row: { flexDirection: 'row', gap: Theme.spacing.md },
-  half: { flex: 1 },
-});
+  );
+};
 
 export default AirwayBillFlightFields;

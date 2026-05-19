@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -11,6 +11,7 @@ const NUVOTECH_URL = "https://nuvotech.tech";
 
 export const NuvotechSection: React.FC = () => {
    const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
    const handlePress = useCallback(() => {
       Linking.openURL(NUVOTECH_URL);
@@ -78,7 +79,7 @@ export const NuvotechSection: React.FC = () => {
    );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
    container: {
       marginTop: 32,
       paddingHorizontal: 16,
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
       gap: 8,
    },
    ctaText: {
-      color: Theme.neutral.white,
+      color: colors.neutral.white,
       fontFamily: Fonts.bold,
       fontSize: 14,
    },

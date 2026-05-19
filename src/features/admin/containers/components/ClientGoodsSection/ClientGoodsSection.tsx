@@ -7,7 +7,8 @@ import { View, LayoutAnimation, Platform, UIManager } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { ClientGoodsGroup } from '../../types/packingList';
 import { PackingListTable } from '../../components/PackingListTable';
-import { styles } from './ClientGoodsSection.styles';
+import { createStyles } from './ClientGoodsSection.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ClientHeader } from './ClientHeader';
 import { ClientSubtotal } from './ClientSubtotal';
 
@@ -32,6 +33,8 @@ export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
   onToggleExpand,
   showPhotos = false,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   const handleToggle = () => {

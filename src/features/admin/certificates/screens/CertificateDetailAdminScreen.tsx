@@ -1,8 +1,9 @@
 import React from "react";
 import { SafeAreaView, ScrollView } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useCertificateDetailAdmin } from "../hooks/useCertificateDetailAdmin";
-import { styles } from "./CertificateDetailAdminScreen.styles";
+import { createStyles } from "./CertificateDetailAdminScreen.styles";
 import {
   CertificateDetailHeader,
   CertificateDetailIdentity,
@@ -17,6 +18,8 @@ export default function CertificateDetailAdminScreen({
   navigation,
   route,
 }: RootStackScreenProps<"CertificateDetailAdmin">) {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { certificate } = route.params;
   const {
     isActive,

@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
     paddingTop: 14,
     paddingBottom: 24,
   },
@@ -22,18 +21,18 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 16,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
   },
   categoryTabActive: {
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
   },
   categoryText: {
     fontSize: 12,
     fontFamily: Fonts.medium,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   categoryTextActive: {
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     fontFamily: Fonts.semiBold,
     fontWeight: '600',
   },
@@ -49,21 +48,21 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     borderWidth: 1,
-    borderColor: Theme.primary[100],
+    borderColor: colors.primary[100],
   },
   templateText: {
     fontSize: 13,
     fontFamily: Fonts.medium,
-    color: Theme.primary[600] || Theme.primary[500],
+    color: colors.primary[600] || colors.primary[500],
   },
   inputWrapper: {
     marginHorizontal: 20,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
-    backgroundColor: Theme.neutral[50],
+    borderColor: colors.neutral[200],
+    backgroundColor: colors.neutral[50],
     overflow: 'hidden',
   },
   input: {
@@ -80,22 +79,22 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
   },
   charCount: {
     fontSize: 12,
     fontFamily: Fonts.medium,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   charCountOver: {
-    color: Theme.status.error,
+    color: colors.status.error,
     fontFamily: Fonts.bold,
     fontWeight: '700',
   },
   smsEstimate: {
     fontSize: 12,
     fontFamily: Fonts.medium,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   sendWrapper: {
     marginHorizontal: 20,
@@ -114,6 +113,6 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
 });

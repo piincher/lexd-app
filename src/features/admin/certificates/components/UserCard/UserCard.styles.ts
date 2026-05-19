@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 
-export const getStyles = (colors: any) => StyleSheet.create({
+
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
     backgroundColor: colors.background.card,
     borderRadius: 16,
@@ -9,7 +9,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
     marginBottom: 12,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,

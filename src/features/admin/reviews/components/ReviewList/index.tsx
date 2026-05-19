@@ -4,7 +4,7 @@ import { FlashList } from "@shopify/flash-list";
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { ReviewCard } from "../ReviewCard";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { styles } from "./ReviewList.styles";
+import { createStyles } from "./ReviewList.styles";
 import type { AdminReview } from "../../api/reviewAdminApi";
 
 interface ReviewListProps {
@@ -36,7 +36,8 @@ export const ReviewList: React.FC<ReviewListProps> = ({
   onRespond,
   isResponding,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const renderReview = ({ item }: { item: AdminReview }) => (
     <ReviewCard
       review={item}

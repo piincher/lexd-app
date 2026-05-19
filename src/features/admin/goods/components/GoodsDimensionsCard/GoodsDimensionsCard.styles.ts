@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     marginVertical: 8,
   },
@@ -13,7 +12,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 8,
   },
   grid: {
@@ -25,19 +24,19 @@ export const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 12,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: 12,
     marginHorizontal: 4,
   },
   value: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginTop: 4,
   },
   label: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
     fontWeight: '500',
   },
@@ -45,7 +44,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderRadius: 10,
@@ -53,7 +52,7 @@ export const styles = StyleSheet.create({
   dimensionsText: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginLeft: 8,
   },
 });

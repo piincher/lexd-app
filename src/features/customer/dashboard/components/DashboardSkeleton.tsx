@@ -1,11 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
-import { useTheme } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const Shimmer = ({ style }: { style: any }) => {
-  const theme = useTheme();
-  const { isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const shimmer = useRef(new Animated.Value(-1)).current;
 
   useEffect(() => {
@@ -26,12 +24,12 @@ const Shimmer = ({ style }: { style: any }) => {
   });
 
   return (
-    <View style={[style, { overflow: 'hidden', backgroundColor: theme.colors.surfaceVariant }]}>
+    <View style={[style, { overflow: 'hidden', backgroundColor: colors.background.paper }]}>
       <Animated.View
         style={{
           width: '40%',
           height: '100%',
-          backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
+          backgroundColor: colors.action.hover,
           transform: [{ translateX }],
         }}
       />
@@ -40,7 +38,8 @@ const Shimmer = ({ style }: { style: any }) => {
 };
 
 export const DashboardSkeleton: React.FC = () => {
-  const theme = useTheme();
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.container}>
@@ -100,8 +99,8 @@ export const DashboardSkeleton: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: { flex: 1, paddingTop: 8 },
+const createStyles = (colors: any) => StyleSheet.create({
+  container: { flex: 1, paddingTop: 8, backgroundColor: colors.background.default },
   row: { flexDirection: 'row', alignItems: 'center' },
 });
 

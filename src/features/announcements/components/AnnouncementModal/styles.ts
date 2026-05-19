@@ -29,7 +29,7 @@ export const createStyles = (colors: AppColors, tone: ReturnType<typeof getTone>
       borderRadius: 8,
       padding: 20,
       gap: 14,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOpacity: 0.18,
       shadowRadius: 18,
       shadowOffset: { width: 0, height: 8 },

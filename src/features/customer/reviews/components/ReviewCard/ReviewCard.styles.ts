@@ -1,14 +1,13 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
@@ -23,7 +22,7 @@ export const styles = StyleSheet.create({
   goodsId: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     flexShrink: 1,
     marginRight: 8,
   },
@@ -38,21 +37,21 @@ export const styles = StyleSheet.create({
     textTransform: "uppercase",
   },
   badgeMaritime: {
-    backgroundColor: Theme.colors.feedback.infoBg,
+    backgroundColor: colors.feedback.infoBg,
   },
   badgeMaritimeText: {
-    color: Theme.colors.feedback.infoDark,
+    color: colors.feedback.infoDark,
   },
   badgeAerien: {
-    backgroundColor: Theme.colors.feedback.warningBg,
+    backgroundColor: colors.feedback.warningBg,
   },
   badgeAerienText: {
-    color: Theme.colors.feedback.warningDark,
+    color: colors.feedback.warningDark,
   },
   commentText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 8,
     lineHeight: 20,
   },
@@ -65,10 +64,10 @@ export const styles = StyleSheet.create({
   dateText: {
     fontSize: 13,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   responseContainer: {
-    backgroundColor: Theme.colors.background.paper,
+    backgroundColor: colors.background.paper,
     borderRadius: 10,
     padding: 12,
     marginTop: 12,
@@ -76,13 +75,13 @@ export const styles = StyleSheet.create({
   responseLabel: {
     fontSize: 12,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginBottom: 4,
   },
   responseText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     lineHeight: 20,
   },
 });

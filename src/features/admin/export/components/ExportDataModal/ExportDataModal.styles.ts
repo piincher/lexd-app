@@ -1,18 +1,18 @@
 import { StyleSheet } from "react-native";
 
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: Theme.colors.background.overlay,
+    backgroundColor: colors.background.overlay,
     justifyContent: "center",
     alignItems: "center",
   },
   container: {
     width: "90%",
     maxHeight: "85%",
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 12,
   },
   header: {
@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.colors.neutral[200],
+    borderBottomColor: colors.neutral[200],
   },
   title: {
     fontWeight: "600",
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   dateButton: {
     flex: 1,
     padding: 12,
-    backgroundColor: Theme.colors.background.paper,
+    backgroundColor: colors.background.paper,
     borderRadius: 8,
     alignItems: "center",
   },
@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     gap: 12,
     padding: 16,
     borderTopWidth: 1,
-    borderTopColor: Theme.colors.neutral[200],
+    borderTopColor: colors.neutral[200],
   },
   button: {
     minWidth: 100,
@@ -77,10 +77,10 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 12,
     paddingVertical: 8,
-    backgroundColor: Theme.colors.background.paper,
+    backgroundColor: colors.background.paper,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: Theme.colors.neutral[300],
+    borderColor: colors.neutral[300],
     marginTop: 8,
   },
   statusPickerValue: {
@@ -88,6 +88,6 @@ export const styles = StyleSheet.create({
   },
   statusPickerPlaceholder: {
     flex: 1,
-    color: Theme.colors.neutral[500],
+    color: colors.neutral[500],
   },
 });

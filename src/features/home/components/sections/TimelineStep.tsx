@@ -4,7 +4,7 @@ import { Text } from 'react-native-paper';
 import { FontAwesome6 } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './ProcessTimeline.styles';
+import { createStyles } from './ProcessTimeline.styles';
 
 interface TimelineStepProps {
   step: {
@@ -24,7 +24,8 @@ export const TimelineStep: React.FC<TimelineStepProps> = ({
   isLast,
   lineStyle,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Animated.View

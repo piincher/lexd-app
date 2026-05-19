@@ -2,7 +2,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './StatusUpdateModal.styles';
+import { createStyles } from './StatusUpdateModal.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ModalActionsProps {
   onDismiss: () => void;
@@ -21,12 +22,14 @@ export const ModalActions: React.FC<ModalActionsProps> = ({
   buttonColor,
   confirmLabel,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.actions}>
       <Button
         onPress={onDismiss}
         disabled={isLoading}
-        textColor={Theme.neutral[500]}
+        textColor={colors.neutral[500]}
         style={styles.actionButton}
       >
         Annuler

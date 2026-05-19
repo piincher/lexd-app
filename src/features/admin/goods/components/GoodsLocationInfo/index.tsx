@@ -7,8 +7,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './GoodsLocationInfo.styles';
+import { createStyles } from './GoodsLocationInfo.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface Container {
   virtualContainerNumber?: string;
@@ -24,18 +24,20 @@ export const GoodsLocationInfo: React.FC<GoodsLocationInfoProps> = ({
   warehouseLocation,
   container,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <Card style={styles.container}>
       <Card.Content>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="map-marker" size={20} color={Theme.primary[600]} />
+          <MaterialCommunityIcons name="map-marker" size={20} color={colors.primary[600]} />
           <Text style={styles.title}>Localisation</Text>
         </View>
 
         <View style={styles.grid}>
           <View style={styles.item}>
-            <View style={[styles.icon, { backgroundColor: Theme.primary[100] }]}>
-              <MaterialCommunityIcons name="warehouse" size={24} color={Theme.primary[600]} />
+            <View style={[styles.icon, { backgroundColor: colors.primary[100] }]}>
+              <MaterialCommunityIcons name="warehouse" size={24} color={colors.primary[600]} />
             </View>
             <View>
               <Text style={styles.label}>Emplacement</Text>
@@ -45,8 +47,8 @@ export const GoodsLocationInfo: React.FC<GoodsLocationInfoProps> = ({
 
           {container && (
             <View style={styles.item}>
-              <View style={[styles.icon, { backgroundColor: Theme.accent.mint + '20' }]}>
-                <MaterialCommunityIcons name="truck-cargo-container" size={24} color={Theme.accent.mint} />
+              <View style={[styles.icon, { backgroundColor: colors.accent.mint + '20' }]}>
+                <MaterialCommunityIcons name="truck-cargo-container" size={24} color={colors.accent.mint} />
               </View>
               <View style={styles.textContainer}>
                 <Text style={styles.label}>Conteneur</Text>

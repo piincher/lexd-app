@@ -36,8 +36,8 @@ export function PromoList({
   onPrevPage,
   onResetFilter,
 }: PromoListProps) {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
 
   if (isLoading) {
     return (

@@ -10,22 +10,24 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { Card } from '@src/shared/ui/Card';
-import { Theme } from '@src/constants/Theme';
 import { Goods } from '@src/shared/types/goods';
-import { styles } from './GoodsInfoCard.styles';
+import { createStyles } from './GoodsInfoCard.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsInfoCardProps {
   goods: Goods;
 }
 
 export const GoodsInfoCard: React.FC<GoodsInfoCardProps> = ({ goods }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const formattedCreatedAt = format(new Date(goods.createdAt), 'dd MMM yyyy', { locale: fr });
   const formattedUpdatedAt = format(new Date(goods.updatedAt), 'dd MMM yyyy', { locale: fr });
 
   return (
     <Card variant="elevated" style={styles.container}>
       <View style={styles.header}>
-        <MaterialCommunityIcons name="package-variant" size={20} color={Theme.primary[600]} />
+        <MaterialCommunityIcons name="package-variant" size={20} color={colors.primary[600]} />
         <Text style={styles.title}>Marchandise</Text>
       </View>
 

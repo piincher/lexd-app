@@ -1,8 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   distributionRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -11,26 +10,26 @@ export const styles = StyleSheet.create({
   distributionStar: {
     fontSize: 12,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     width: 12,
     textAlign: "right",
   },
   distributionTrack: {
     flex: 1,
     height: 6,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: 3,
     overflow: "hidden",
   },
   distributionFill: {
     height: "100%",
-    backgroundColor: Theme.colors.primary.main,
+    backgroundColor: colors.primary.main,
     borderRadius: 3,
   },
   distributionCount: {
     fontSize: 12,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     width: 24,
     textAlign: "right",
   },

@@ -11,6 +11,7 @@ import { ShimmerBlock } from '@src/shared/ui';
 
 const ContainerSkeletonItem: React.FC = () => {
   const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View
@@ -18,7 +19,7 @@ const ContainerSkeletonItem: React.FC = () => {
         styles.card,
         {
           backgroundColor: colors.background.card,
-          borderColor: isDark ? 'rgba(255,255,255,0.06)' : colors.border,
+          borderColor: isDark ? colors.action.hover : colors.border,
         },
       ]}
     >
@@ -51,7 +52,7 @@ const ContainerSkeletonItem: React.FC = () => {
       </View>
 
       {/* Footer Row */}
-      <View style={[styles.footerRow, { borderTopColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)' }]}>
+      <View style={[styles.footerRow, { borderTopColor: colors.border }]}>
         <View style={styles.footerItem}>
           <ShimmerBlock width={16} height={16} borderRadius={4} />
           <ShimmerBlock width={100} height={12} borderRadius={3} style={{ marginLeft: 6 }} />
@@ -65,15 +66,19 @@ const ContainerSkeletonItem: React.FC = () => {
   );
 };
 
-export const ContainerListSkeleton: React.FC<{ count?: number }> = ({ count = 5 }) => (
-  <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
-    {Array.from({ length: count }).map((_, i) => (
-      <ContainerSkeletonItem key={i} />
-    ))}
-  </Animated.View>
-);
+export const ContainerListSkeleton: React.FC<{ count?: number }> = ({ count = 5 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  return (
+    <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
+      {Array.from({ length: count }).map((_, i) => (
+        <ContainerSkeletonItem key={i} />
+      ))}
+    </Animated.View>
+  );
+};
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   list: {
     flex: 1,
     paddingVertical: 8,
@@ -84,7 +89,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     padding: 16,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 4,

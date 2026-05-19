@@ -1,15 +1,15 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 20,
     padding: 20,
     marginBottom: 24,
     flexDirection: "row",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     width: 64,
     height: 64,
     borderRadius: 20,
-    backgroundColor: `${Theme.colors.primary.main}15`,
+    backgroundColor: `${colors.primary.main}15`,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   avatarText: {
     fontSize: 24,
     fontWeight: "700",
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
   info: {
     flex: 1,
@@ -44,16 +44,16 @@ export const styles = StyleSheet.create({
   name: {
     fontSize: 20,
     fontWeight: "700",
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     marginBottom: 4,
   },
   phone: {
     fontSize: 15,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginBottom: 8,
   },
   badge: {
-    backgroundColor: `${Theme.colors.primary.main}15`,
+    backgroundColor: `${colors.primary.main}15`,
     alignSelf: "flex-start",
     paddingHorizontal: 12,
     paddingVertical: 4,
@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
   badgeText: {
     fontSize: 12,
     fontWeight: "600",
-    color: Theme.colors.primary.main,
+    color: colors.primary.main,
     textTransform: "capitalize",
   },
 });

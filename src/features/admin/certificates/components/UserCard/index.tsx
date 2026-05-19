@@ -3,7 +3,7 @@ import { TouchableOpacity, View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { CertificateUser } from "../../api";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { getStyles } from "./UserCard.styles";
+import { createStyles } from './UserCard.styles';
 
 interface UserCardProps {
   user: CertificateUser;
@@ -12,8 +12,8 @@ interface UserCardProps {
 }
 
 export const UserCard: React.FC<UserCardProps> = ({ user, isSelected, onSelect }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
   <TouchableOpacity
     style={[styles.card, isSelected && styles.cardSelected]}

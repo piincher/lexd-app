@@ -4,7 +4,7 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { CertificateRecord, CertificateUser } from "../../api";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { getStyles } from "./CertificateSuccessView.styles";
+import { createStyles } from './CertificateSuccessView.styles';
 
 interface CertificateSuccessViewProps {
   issuedCertificate: CertificateRecord;
@@ -29,8 +29,8 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
   onBack,
   onCopyCode,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const clientName =
     typeof issuedCertificate.userId === "object" && issuedCertificate.userId?.firstName
       ? `${issuedCertificate.userId.firstName} ${issuedCertificate.userId.lastName}`
@@ -113,7 +113,7 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
           activeOpacity={0.7}
         >
           {isSending ? (
-            <ActivityIndicator size="small" color="#FFF" />
+            <ActivityIndicator size="small" color={colors.text.inverse} />
           ) : (
             <>
               <MaterialIcons name="send" size={20} color={colors.text.inverse} />

@@ -2,15 +2,17 @@ import React from "react";
 import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useIssueCertificateScreen } from "../hooks/useIssueCertificateScreen";
 import { useCertificateSuccessActions } from "../hooks/useCertificateSuccessActions";
 import { CertificateSuccessView } from "../components/CertificateSuccessView";
 import { UserSearchList } from "../components/UserSearchList";
 import { IssueFormPanel } from "../components/IssueFormPanel";
-import { styles } from "./IssueCertificateScreen.styles";
+import { createStyles } from "./IssueCertificateScreen.styles";
 
 export default function IssueCertificateScreen() {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     searchQuery, setSearchQuery,
     selectedUser,
@@ -49,7 +51,7 @@ export default function IssueCertificateScreen() {
       >
         <View style={styles.header}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color={Theme.colors.text.primary} />
+            <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
           </TouchableOpacity>
           <View>
             <Text style={styles.headerTitle}>Émettre un certificat</Text>

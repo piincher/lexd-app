@@ -40,8 +40,8 @@ const STATUS_META = (
 });
 
 export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
-  const { colors } = useAppTheme();
-  const styles = createStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const meta = STATUS_META(colors)[balance.status] || STATUS_META(colors).success;
   const progressWidth = balance.hasExpired
     ? 5

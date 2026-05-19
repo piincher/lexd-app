@@ -12,7 +12,7 @@ export const ErrorState: React.FC = () => {
   const styles = useMemo(() => createStyles(colors), [colors]);
   return (
   <SafeAreaView style={[styles.container, styles.centered]}>
-    <MaterialCommunityIcons name="package-variant-remove" size={64} color={Theme.neutral[400]} />
+    <MaterialCommunityIcons name="package-variant-remove" size={64} color={colors.neutral[400]} />
     <Text style={styles.emptyText}>Marchandise non trouvée</Text>
   </SafeAreaView>
 );

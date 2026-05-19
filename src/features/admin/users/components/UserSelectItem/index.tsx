@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
@@ -9,17 +9,21 @@ interface UserSelectItemProps {
   item: userData;
 }
 
-export const UserSelectItem: React.FC<UserSelectItemProps> = ({ item }) => (
-  <View style={styles.container} key={item._id}>
-    <Text style={styles.userName}>
-      {item.firstName}- {item.lastName}
-    </Text>
-    <Text style={styles.userRole}> {item.phoneNumber}</Text>
-    <Text style={styles.userRole}> {item.role}</Text>
-  </View>
-);
+export const UserSelectItem: React.FC<UserSelectItemProps> = ({ item }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  return (
+    <View style={styles.container} key={item._id}>
+      <Text style={styles.userName}>
+        {item.firstName}- {item.lastName}
+      </Text>
+      <Text style={styles.userRole}> {item.phoneNumber}</Text>
+      <Text style={styles.userRole}> {item.role}</Text>
+    </View>
+  );
+};
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     padding: 15,
   },
@@ -29,7 +33,7 @@ const styles = StyleSheet.create({
   },
   userRole: {
     fontSize: 14,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontFamily: Fonts.black,
   },
 });

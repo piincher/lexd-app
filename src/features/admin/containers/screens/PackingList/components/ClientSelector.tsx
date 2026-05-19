@@ -8,7 +8,8 @@ import React, { useState, useMemo } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { ClientGoodsGroup } from '../../../types/packingList';
 import { ClientSelectorModal } from './ClientSelectorModal';
-import { styles } from './ClientSelector.styles';
+import { createStyles } from './ClientSelector.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ClientSelectorProps {
   clients: ClientGoodsGroup[];
@@ -22,6 +23,8 @@ export const ClientSelector: React.FC<ClientSelectorProps> = ({
   onSelectClient,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const normalizedSelectedId = selectedClientId
     ? String(selectedClientId).trim()

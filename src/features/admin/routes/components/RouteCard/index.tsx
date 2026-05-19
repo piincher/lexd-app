@@ -7,9 +7,8 @@ import { View, TouchableOpacity } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
-import { Route, SHIPPING_MODE_COLORS } from '../../types';
-import { styles } from './RouteCard.styles';
+import { Route, getShippingModeColors } from '../../types';
+import { createStyles } from './RouteCard.styles';
 
 interface RouteCardProps {
   route: Route;
@@ -17,8 +16,9 @@ interface RouteCardProps {
 }
 
 export const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
-  const { colors } = useAppTheme();
-  const modeColor = SHIPPING_MODE_COLORS[route.shippingMode];
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const modeColor = getShippingModeColors(colors)[route.shippingMode];
 
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
@@ -40,11 +40,11 @@ export const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
             </View>
             <View style={[
               styles.statusBadge,
-              { backgroundColor: route.isActive ? Theme.colors.feedback.successBg : Theme.colors.background.paper }
+              { backgroundColor: route.isActive ? colors.feedback.successBg : colors.background.paper }
             ]}>
               <Text style={[
                 styles.statusText,
-                { color: route.isActive ? Theme.colors.status.success : Theme.colors.text.secondary }
+                { color: route.isActive ? colors.status.success : colors.text.secondary }
               ]}>
                 {route.isActive ? 'Active' : 'Inactive'}
               </Text>
@@ -60,7 +60,7 @@ export const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
               </Text>
             </View>
             <View style={styles.routeArrow}>
-              <Ionicons name="arrow-forward" size={16} color={Theme.neutral[400]} />
+              <Ionicons name="arrow-forward" size={16} color={colors.neutral[400]} />
             </View>
             <View style={styles.locationContainer}>
               <Text style={styles.locationLabel}>Destination</Text>
@@ -74,12 +74,12 @@ export const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
           <View style={styles.routeFooter}>
             {route.shippingLine && (
               <View style={styles.footerItem}>
-                <Ionicons name="business" size={14} color={Theme.neutral[400]} />
+                <Ionicons name="business" size={14} color={colors.neutral[400]} />
                 <Text style={styles.footerText}>{route.shippingLine}</Text>
               </View>
             )}
             <View style={styles.footerItem}>
-              <Ionicons name="time" size={14} color={Theme.neutral[400]} />
+              <Ionicons name="time" size={14} color={colors.neutral[400]} />
               <Text style={styles.footerText}>
                 {route.estimatedTransitDays} jours
               </Text>

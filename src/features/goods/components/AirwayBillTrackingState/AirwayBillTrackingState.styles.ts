@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
   },
   centerState: {
     flex: 1,
@@ -16,13 +16,13 @@ export const styles = StyleSheet.create({
   stateText: {
     textAlign: 'center',
     marginTop: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     lineHeight: 20,
   },
   errorTitle: {
     fontFamily: Fonts.bold,
     fontSize: 18,
-    color: Theme.neutral[900],
+    color: colors.neutral[900],
   },
   retryButton: {
     marginTop: 18,

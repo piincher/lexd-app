@@ -1,6 +1,7 @@
 import React from "react";
 import { View, RefreshControl, ScrollView } from "react-native";
 import { Button, ActivityIndicator } from "react-native-paper";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 import { EmptyState } from "@src/shared/ui/EmptyState";
 import { Backup } from "../../types";
@@ -8,13 +9,15 @@ import { BackupItem } from "./BackupItem";
 import { RestoreDialog } from "./RestoreDialog";
 import { SchedulerStatusCard } from "./SchedulerStatusCard";
 import { useBackupManager } from "../../hooks/useBackupManager";
-import { styles } from "./BackupManager.styles";
+import { createStyles } from "./BackupManager.styles";
 
 interface BackupManagerProps {
   isSuperAdmin?: boolean;
 }
 
 export const BackupManager: React.FC<BackupManagerProps> = ({ isSuperAdmin = false }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     backups,
     isLoading,

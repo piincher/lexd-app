@@ -6,8 +6,9 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint } from '../../../../types/waypoints';
-import { styles } from './TransitTimeline.styles';
+import { createStyles } from './TransitTimeline.styles';
 import { TimelineItemRow } from './TimelineItemRow';
 
 export interface TransitTimelineProps {
@@ -20,10 +21,12 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
   waypoints,
   currentWaypointIndex,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   if (!waypoints || waypoints.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <Ionicons name="map-outline" size={48} color={Theme.neutral[300]} />
+        <Ionicons name="map-outline" size={48} color={colors.neutral[300]} />
         <Text style={styles.emptyText}>Aucun point de passage disponible</Text>
       </View>
     );

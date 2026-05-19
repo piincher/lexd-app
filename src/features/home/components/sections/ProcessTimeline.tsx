@@ -14,9 +14,12 @@ import Animated, {
 import { WORKFLOW_STEPS } from '../../constants/homeData';
 import { SectionHeader } from '../SectionHeader';
 import { TimelineStep } from './TimelineStep';
-import { styles } from './ProcessTimeline.styles';
+import { createStyles } from './ProcessTimeline.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const ProcessTimeline: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const lineProgress = useSharedValue(0);
 
   useEffect(() => {

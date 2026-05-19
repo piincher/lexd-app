@@ -1,8 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   idContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -13,11 +12,11 @@ export const styles = StyleSheet.create({
   certificateIdText: {
     fontSize: 20,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   copyButton: {
     padding: 6,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderRadius: 8,
   },
 });

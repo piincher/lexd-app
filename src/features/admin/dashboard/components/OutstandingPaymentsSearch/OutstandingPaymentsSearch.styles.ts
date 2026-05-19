@@ -1,16 +1,15 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   searchRow: {
     paddingHorizontal: 16,
     paddingVertical: 10,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   searchBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.colors.background.paper,
+    backgroundColor: colors.background.paper,
     borderRadius: 10,
     paddingHorizontal: 12,
     paddingVertical: 8,
@@ -19,6 +18,6 @@ export const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     fontSize: 14,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
 });

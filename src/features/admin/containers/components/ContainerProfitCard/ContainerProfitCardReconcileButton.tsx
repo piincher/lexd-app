@@ -15,7 +15,7 @@ export const ContainerProfitCardReconcileButton: React.FC<ContainerProfitCardRec
   const { colors } = useAppTheme();
   return (
   <TouchableOpacity onPress={onReconcile} style={[styles.reconcileButton, { backgroundColor: colors.status.info }]} activeOpacity={0.7}>
-    <Ionicons name="sync" size={18} color={Theme.colors.background.card} />
+    <Ionicons name="sync" size={18} color={colors.background.card} />
     <Text style={styles.reconcileText}>Réconcilier avec l'agent</Text>
   </TouchableOpacity>
 );

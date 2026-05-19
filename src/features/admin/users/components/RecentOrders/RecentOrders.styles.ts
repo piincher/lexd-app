@@ -1,12 +1,11 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 20,
     padding: 20,
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
@@ -21,16 +20,16 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "700",
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   viewAll: {
     fontSize: 14,
-    color: Theme.colors.primary.main,
+    color: colors.primary.main,
     fontWeight: "600",
   },
   emptyText: {
     fontSize: 15,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     textAlign: "center",
     paddingVertical: 20,
   },
@@ -40,7 +39,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 14,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.colors.neutral[200],
+    borderBottomColor: colors.neutral[200],
   },
   orderItemLast: {
     borderBottomWidth: 0,
@@ -49,11 +48,11 @@ export const styles = StyleSheet.create({
   orderId: {
     fontSize: 16,
     fontWeight: "700",
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   orderDate: {
     fontSize: 13,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 2,
   },
   statusPill: {

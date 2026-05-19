@@ -3,7 +3,6 @@ import { View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { createContainerStackStyles } from './ContainerStack.styles';
 
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
@@ -28,23 +27,24 @@ interface Props {
   onContainerPress?: (shipment: ContainerInfo) => void;
 }
 
-const STATUS_MAP: Record<string, { label: string; color: string; icon: IoniconName }> = {
-  LOADING: { label: 'Chargement', color: Theme.colors.status.warning, icon: 'cube-outline' },
-  LOADED: { label: 'Container chargé', color: Theme.colors.status.info, icon: 'cube' },
-  GATE_IN_FULL: { label: 'Au port', color: Theme.colors.status.info, icon: 'business' },
-  LOADED_ON_VESSEL: { label: 'Sur bateau', color: Theme.colors.status.info, icon: 'boat' },
-  IN_TRANSIT: { label: 'Vers Bamako', color: Theme.colors.primary.main, icon: 'airplane' },
-  ARRIVED: { label: 'Arrivé', color: Theme.colors.status.success, icon: 'flag' },
-  DISCHARGED: { label: 'Déchargé', color: Theme.colors.status.success, icon: 'archive' },
-  READY_FOR_PICKUP: { label: 'Prêt', color: Theme.colors.status.success, icon: 'checkmark-circle' },
-  DELIVERED: { label: 'Livré', color: Theme.colors.status.success, icon: 'home' },
-};
+const getStatusMap = (colors: any): Record<string, { label: string; color: string; icon: IoniconName }> => ({
+  LOADING: { label: 'Chargement', color: colors.status.warning, icon: 'cube-outline' },
+  LOADED: { label: 'Container chargé', color: colors.status.info, icon: 'cube' },
+  GATE_IN_FULL: { label: 'Au port', color: colors.status.info, icon: 'business' },
+  LOADED_ON_VESSEL: { label: 'Sur bateau', color: colors.status.info, icon: 'boat' },
+  IN_TRANSIT: { label: 'Vers Bamako', color: colors.primary.main, icon: 'airplane' },
+  ARRIVED: { label: 'Arrivé', color: colors.status.success, icon: 'flag' },
+  DISCHARGED: { label: 'Déchargé', color: colors.status.success, icon: 'archive' },
+  READY_FOR_PICKUP: { label: 'Prêt', color: colors.status.success, icon: 'checkmark-circle' },
+  DELIVERED: { label: 'Livré', color: colors.status.success, icon: 'home' },
+});
 
 const fmtDate = (s?: string) => (s ? new Date(s).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : '');
 
 export const ContainerStack: React.FC<Props> = ({ containers, onContainerPress }) => {
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createContainerStackStyles(colors, isDark), [colors, isDark]);
+  const statusMap = useMemo(() => getStatusMap(colors), [colors]);
 
   const active = containers.filter((c) => c.status !== 'DELIVERED' && c.status !== 'COMPLETED');
   if (active.length === 0) return null;
@@ -60,7 +60,7 @@ export const ContainerStack: React.FC<Props> = ({ containers, onContainerPress }
 
       <View style={styles.stack}>
         {active.slice(0, 3).map((c) => {
-          const cfg = STATUS_MAP[c.status] || STATUS_MAP.LOADING;
+          const cfg = statusMap[c.status] || statusMap.LOADING;
           const isAir =
             c.trackingType === 'AIRWAY_BILL' ||
             c.shippingMode?.toLowerCase() === 'air' ||

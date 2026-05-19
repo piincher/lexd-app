@@ -22,7 +22,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.centerContent}>
-        <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
+        <Ionicons name="alert-circle" size={64} color={colors.status.error} />
         <Text style={styles.errorText}>{title}</Text>
         {onBack ? (
           <TouchableOpacity style={styles.backButton} onPress={onBack}>

@@ -26,8 +26,8 @@ export const KPICard: React.FC<KPICardProps> = ({
   gradientColors,
   trend,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = createStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
   <LinearGradient
     colors={gradientColors}

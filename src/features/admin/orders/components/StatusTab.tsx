@@ -2,7 +2,7 @@ import React from "react";
 import { Pressable, Text, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { createCategoryStyles } from "./Category.styles";
+import { createStyles } from "./Category.styles";
 
 interface StatusTabProps {
   title: string;
@@ -21,8 +21,8 @@ export const StatusTab: React.FC<StatusTabProps> = ({
   text,
   onPress,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = createCategoryStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Pressable

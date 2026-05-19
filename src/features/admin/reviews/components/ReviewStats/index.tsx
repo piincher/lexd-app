@@ -2,14 +2,17 @@ import React from "react";
 import { View, Text } from "react-native";
 import { StarRating } from "../StarRating";
 import { DistributionBar } from "../DistributionBar";
-import { styles } from "./ReviewStats.styles";
+import { createStyles } from './ReviewStats.styles';
 import type { AdminReviewStats } from "../../api/reviewAdminApi";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ReviewStatsProps {
   stats: AdminReviewStats;
 }
 
 export const ReviewStats: React.FC<ReviewStatsProps> = ({ stats }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.statsCard}>
       <View style={styles.statsTop}>

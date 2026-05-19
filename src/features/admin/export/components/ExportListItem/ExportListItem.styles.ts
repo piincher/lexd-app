@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   card: {
     borderRadius: 14,
     padding: 14,
     marginBottom: 10,
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.06,
     shadowRadius: 4,
@@ -21,7 +22,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.04)",
+    backgroundColor: colors.neutral[500] + '0A',
   },
   info: {
     flex: 1,
@@ -69,7 +70,7 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: "rgba(0,0,0,0.04)",
+    borderTopColor: colors.neutral[500] + '0A',
   },
   scheduledText: {
     fontWeight: "600",

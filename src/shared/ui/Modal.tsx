@@ -53,7 +53,7 @@ export const CustomModal = ({
                borderRadius: 20,
                padding: 35,
                alignItems: "center",
-               shadowColor: "#000",
+               shadowColor: colors.neutral[900],
                shadowOffset: { width: 0, height: 2 },
                shadowOpacity: 0.25,
                shadowRadius: 4,

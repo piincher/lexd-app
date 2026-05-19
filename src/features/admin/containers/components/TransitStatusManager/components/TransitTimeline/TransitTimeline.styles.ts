@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-const STATUS_COLORS = {
-  completed: Theme.status.success,
-  current: Theme.primary[500],
-  pending: Theme.neutral[300],
-};
+export const createStyles = (colors: any, isDark?: boolean) => {
+  const statusColors = {
+    completed: colors.status.success,
+    current: colors.primary[500],
+    pending: colors.neutral[300],
+  };
 
-export const styles = StyleSheet.create({
+  return StyleSheet.create({
   container: {
     paddingVertical: Theme.spacing.lg,
     paddingHorizontal: Theme.spacing.md,
@@ -27,48 +28,48 @@ export const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 2,
   },
   timelineDotCompleted: {
-    backgroundColor: STATUS_COLORS.completed,
+    backgroundColor: statusColors.completed,
   },
   timelineDotCurrent: {
-    backgroundColor: STATUS_COLORS.current,
+    backgroundColor: statusColors.current,
     borderWidth: 3,
-    borderColor: `${STATUS_COLORS.current}40`,
+    borderColor: `${statusColors.current}40`,
   },
   timelineDotPending: {
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     borderWidth: 2,
-    borderColor: Theme.neutral[300],
+    borderColor: colors.neutral[300],
   },
   timelineDotPulse: {
     position: 'absolute',
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: STATUS_COLORS.current,
+    backgroundColor: statusColors.current,
     zIndex: 1,
   },
   currentDotInner: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   timelineConnector: {
     width: 2,
     flex: 1,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     marginTop: 4,
     marginBottom: -Theme.spacing.lg,
     minHeight: 40,
   },
   timelineConnectorCompleted: {
-    backgroundColor: STATUS_COLORS.completed,
+    backgroundColor: statusColors.completed,
   },
   statusContentContainer: {
     flex: 1,
@@ -92,34 +93,34 @@ export const styles = StyleSheet.create({
   statusLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: 2,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   statusLabelCompleted: {
-    color: STATUS_COLORS.completed,
+    color: statusColors.completed,
   },
   statusLabelCurrent: {
-    color: STATUS_COLORS.current,
+    color: statusColors.current,
     fontWeight: '700',
   },
   statusLabelPending: {
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   waypointName: {
     fontSize: 15,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     fontWeight: '600',
   },
   countryName: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   description: {
     fontSize: 12,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     marginTop: Theme.spacing.xs,
     fontStyle: 'italic',
   },
@@ -131,7 +132,7 @@ export const styles = StyleSheet.create({
   },
   timestamp: {
     fontSize: 12,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
   emptyContainer: {
     padding: Theme.spacing['2xl'],
@@ -141,7 +142,8 @@ export const styles = StyleSheet.create({
   emptyText: {
     marginTop: Theme.spacing.md,
     fontSize: 14,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textAlign: 'center',
   },
-});
+  });
+};

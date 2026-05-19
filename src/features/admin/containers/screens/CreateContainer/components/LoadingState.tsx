@@ -24,7 +24,7 @@ export const LoadingState: React.FC<LoadingStateProps> = ({ visible }) => {
 
   return (
     <View style={styles.overlay}>
-      <ActivityIndicator size="large" color={Theme.primary[500]} />
+      <ActivityIndicator size="large" color={colors.primary[500]} />
     </View>
   );
 };

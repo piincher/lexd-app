@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { formatDate } from '@src/utils/formatDate';
 import { InfoRow } from './InfoRow';
-import { styles } from './ActiveOrderInfo.styles';
+import { createStyles } from './ActiveOrderInfo.styles';
 
 interface ActiveOrderInfoProps {
   item?: any;
@@ -13,7 +13,8 @@ interface ActiveOrderInfoProps {
 }
 
 export const ActiveOrderInfo: React.FC<ActiveOrderInfoProps> = ({ item, note }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Surface style={styles.card}>

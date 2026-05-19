@@ -4,7 +4,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { StarRating } from "../StarRating";
 import { formatDateLong } from "@src/shared/lib/formatters";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { getStyles } from "./ReviewCard.styles";
+import { createStyles } from './ReviewCard.styles';
 import type { AdminReview } from "../../api/reviewAdminApi";
 
 interface ReviewCardProps {
@@ -18,8 +18,8 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
   onRespond,
   isResponding,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const [showResponseInput, setShowResponseInput] = useState(false);
   const [responseText, setResponseText] = useState("");
 

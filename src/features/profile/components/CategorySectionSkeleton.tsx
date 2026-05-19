@@ -7,13 +7,17 @@ import React from "react";
 import { View } from "react-native";
 import { ShimmerBlock } from "@src/shared/ui";
 import { BadgeCardSkeleton } from "./BadgeCardSkeleton";
-import { styles } from "./CategorySectionSkeleton.styles";
+import { createStyles } from "./CategorySectionSkeleton.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface CategorySectionSkeletonProps {
   skeletonBg: string;
 }
 
-export const CategorySectionSkeleton: React.FC<CategorySectionSkeletonProps> = ({ skeletonBg }) => (
+export const CategorySectionSkeleton: React.FC<CategorySectionSkeletonProps> = ({ skeletonBg }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <View style={styles.categorySection}>
     <View style={styles.categoryHeader}>
       <ShimmerBlock
@@ -38,4 +42,5 @@ export const CategorySectionSkeleton: React.FC<CategorySectionSkeletonProps> = (
       <BadgeCardSkeleton skeletonBg={skeletonBg} />
     </View>
   </View>
-);
+  );
+};

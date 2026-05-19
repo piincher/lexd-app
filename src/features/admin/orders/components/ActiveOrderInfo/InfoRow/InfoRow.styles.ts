@@ -1,8 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   infoRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -23,13 +22,13 @@ export const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 13,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     fontFamily: Fonts.medium,
   },
   infoValue: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     fontFamily: Fonts.semiBold,
     maxWidth: '45%',
     textAlign: 'right',

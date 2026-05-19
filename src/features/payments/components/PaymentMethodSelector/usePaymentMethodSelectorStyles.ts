@@ -16,7 +16,7 @@ export const usePaymentMethodSelectorStyles = () => {
     amountLabel: { fontSize: 14, fontFamily: Fonts.regular, color: colors.text.secondary },
     amountValue: { fontSize: 24, fontFamily: Fonts.bold, color: colors.primary.main, marginTop: 4 },
     methodsList: { gap: 12 },
-    methodCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.background.default, borderRadius: 12, padding: 16, borderWidth: 2, borderColor: 'transparent', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+    methodCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.background.default, borderRadius: 12, padding: 16, borderWidth: 2, borderColor: 'transparent', shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
     methodCardSelected: { borderColor: colors.primary.main, backgroundColor: colors.primary.main + '08' },
     methodCardError: { borderColor: colors.status.error },
     methodCardDisabled: { opacity: 0.5 },

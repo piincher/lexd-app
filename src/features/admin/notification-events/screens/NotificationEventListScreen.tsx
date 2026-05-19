@@ -6,11 +6,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationEventFilters } from '../components';
 import { useNotificationEventListScreen } from './hooks/useNotificationEventListScreen';
-import { createNotificationEventListStyles } from './NotificationEventListScreen.styles';
+import { createStyles } from './NotificationEventListScreen.styles';
 
 const NotificationEventListScreen: React.FC = () => {
-  const { colors } = useAppTheme();
-  const styles = createNotificationEventListStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     filters,
     setFilters,

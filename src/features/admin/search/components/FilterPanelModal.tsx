@@ -13,6 +13,7 @@ import {
   Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { SearchFilters } from "./SearchFilters";
 import { SearchFilters as SearchFiltersType, FilterPreset } from "../api/searchApi";
@@ -43,6 +44,9 @@ export const FilterPanelModal: React.FC<FilterPanelModalProps> = ({
   onReset,
   onPresetSelect,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+
   return (
     <Modal
       visible={visible}
@@ -67,7 +71,7 @@ export const FilterPanelModal: React.FC<FilterPanelModalProps> = ({
             onPresetSelect={onPresetSelect}
           />
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Ionicons name="close" size={24} color={Theme.neutral[600]} />
+            <Ionicons name="close" size={24} color={colors.neutral[600]} />
           </TouchableOpacity>
         </Animated.View>
       </View>
@@ -75,7 +79,7 @@ export const FilterPanelModal: React.FC<FilterPanelModalProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   overlay: {
     flex: 1,
     flexDirection: "row",
@@ -91,17 +95,17 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: width * 0.85,
     maxWidth: 360,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     ...Theme.shadows.xl,
   },
   closeButton: {
     position: "absolute",
-    top: Theme.spacing.lg,
-    right: Theme.spacing.lg,
+    top: 16,
+    right: 16,
     width: 40,
     height: 40,
-    borderRadius: Theme.radius.full,
-    backgroundColor: Theme.neutral[100],
+    borderRadius: 999,
+    backgroundColor: colors.neutral[100],
     justifyContent: "center",
     alignItems: "center",
   },

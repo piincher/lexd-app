@@ -8,9 +8,8 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { ShippingMode } from '../../types';
-import { styles } from './RouteFilters.styles';
+import { createStyles } from './RouteFilters.styles';
 
 const MODE_FILTERS: { key: ShippingMode | 'all'; label: string; icon: string }[] = [
   { key: 'all', label: 'Tous', icon: 'apps' },
@@ -24,7 +23,8 @@ interface RouteFiltersProps {
 }
 
 export const RouteFilters: React.FC<RouteFiltersProps> = ({ selectedMode, onSelectMode }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.filterWrapper}>
       <ScrollView

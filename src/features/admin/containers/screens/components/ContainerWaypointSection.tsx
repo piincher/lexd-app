@@ -49,7 +49,7 @@ export const ContainerWaypointSection: React.FC<ContainerWaypointSectionProps> =
   if (isLoading) {
     return (
       <View style={[styles.card, styles.loadingCard]}>
-        <ActivityIndicator size="small" color={Theme.primary[500]} />
+        <ActivityIndicator size="small" color={colors.primary[500]} />
         <Text style={styles.loadingText}>Chargement du suivi...</Text>
       </View>
     );
@@ -59,15 +59,15 @@ export const ContainerWaypointSection: React.FC<ContainerWaypointSectionProps> =
     return (
       <Animated.View entering={FadeIn} style={styles.card}>
         <View style={styles.cardHeader}>
-          <Ionicons name="location" size={20} color={Theme.primary[600]} />
+          <Ionicons name="location" size={20} color={colors.primary[600]} />
           <Text style={styles.cardTitle}>Suivi du Transit</Text>
         </View>
         <View style={{ padding: Theme.spacing.lg, alignItems: 'center' }}>
-          <Ionicons name="map-outline" size={48} color={Theme.neutral[300]} />
-          <Text style={{ marginTop: Theme.spacing.md, color: Theme.neutral[500], textAlign: 'center' }}>
+          <Ionicons name="map-outline" size={48} color={colors.neutral[300]} />
+          <Text style={{ marginTop: Theme.spacing.md, color: colors.neutral[500], textAlign: 'center' }}>
             Aucun point de passage configuré pour ce conteneur.
           </Text>
-          <Text style={{ marginTop: Theme.spacing.sm, color: Theme.neutral[400], fontSize: 12, textAlign: 'center' }}>
+          <Text style={{ marginTop: Theme.spacing.sm, color: colors.neutral[400], fontSize: 12, textAlign: 'center' }}>
             Les waypoints seront initialisés automatiquement lors de la création.
           </Text>
           <InitializeWaypointsButton containerId={containerId} />
@@ -83,7 +83,7 @@ export const ContainerWaypointSection: React.FC<ContainerWaypointSectionProps> =
   return (
     <Animated.View entering={FadeIn} style={styles.card}>
       <View style={styles.cardHeader}>
-        <Ionicons name="location" size={20} color={Theme.primary[600]} />
+        <Ionicons name="location" size={20} color={colors.primary[600]} />
         <Text style={styles.cardTitle}>Suivi du Transit</Text>
       </View>
 

@@ -5,7 +5,7 @@ import { Badge } from '@src/shared/ui/Badge';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { AirwayBillWaypoint, AirwayBillWaypointStatus } from '../../types';
 import { WaypointTimelineItem } from './WaypointTimelineItem';
-import { styles } from './AirwayBillWaypointTimeline.styles';
+import { createStyles } from './AirwayBillWaypointTimeline.styles';
 
 interface Props {
   waypoints: AirwayBillWaypoint[];
@@ -22,7 +22,8 @@ export const AirwayBillWaypointTimeline: React.FC<Props> = ({
   isUpdating = false,
   onWaypointStatusChange,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   if (!waypoints.length) {
     return (

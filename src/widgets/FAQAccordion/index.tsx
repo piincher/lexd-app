@@ -29,6 +29,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({
   onToggle,
 }) => {
   const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const animationProgress = useSharedValue(0);
 
   useEffect(() => {
@@ -71,6 +72,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({
         {
           backgroundColor: isDark ? colors.background.paper : colors.neutral.white,
           borderColor: isDark ? colors.border : colors.neutral[200],
+          shadowColor: colors.neutral[900],
         },
       ]}
       accessibilityRole="button"
@@ -99,7 +101,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     borderRadius: 12,
     borderWidth: 1,
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: colors.neutral[900],
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.04,
         shadowRadius: 8,

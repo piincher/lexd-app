@@ -28,7 +28,7 @@ export const GoodsStatusRow: React.FC<GoodsStatusRowProps> = ({
   const styles = createGoodsOverviewStyles(colors);
 
   const statusKey = item.status?.toLowerCase().replace(/\s+/g, '_');
-  const color = statusColors[statusKey] || Theme.colors.text.secondary;
+  const color = statusColors[statusKey] || colors.text.secondary;
   const label = statusLabels[statusKey] || item.status || 'Autre';
   const percentage = totalGoods > 0 ? (item.count / totalGoods) * 100 : 0;
 

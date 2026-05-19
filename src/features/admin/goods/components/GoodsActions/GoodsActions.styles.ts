@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     gap: 12,
@@ -10,13 +9,13 @@ export const styles = StyleSheet.create({
   },
   editButton: {
     flex: 1,
-    backgroundColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
     borderRadius: 12,
     elevation: 2,
   },
   deleteButton: {
     flex: 1,
-    borderColor: Theme.status.error,
+    borderColor: colors.status.error,
     borderRadius: 12,
     borderWidth: 1.5,
   },

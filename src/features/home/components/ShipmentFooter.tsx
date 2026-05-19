@@ -1,10 +1,8 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { createStyles } from "./ActiveShipmentCard.styles";
-import { SHIP_COLORS, formatDate } from "./ActiveShipmentCard.constants";
-
-const styles = createStyles(SHIP_COLORS);
+import { formatDate } from "./ActiveShipmentCard.constants";
 
 interface ShipmentFooterProps {
   departureDate?: string;
@@ -18,7 +16,10 @@ export const ShipmentFooter: React.FC<ShipmentFooterProps> = ({
   quantity,
   updatedAt,
   colors,
-}) => (
+}) => {
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
+  return (
   <>
     <View style={[styles.bottomDivider, { borderTopColor: colors.border }]} />
     <View style={styles.bottomRow}>
@@ -45,3 +46,4 @@ export const ShipmentFooter: React.FC<ShipmentFooterProps> = ({
     )}
   </>
 );
+};

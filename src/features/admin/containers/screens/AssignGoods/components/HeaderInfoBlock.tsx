@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Container } from '../../../types';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './Header.styles';
+import { createStyles } from './Header.styles';
 
 interface HeaderInfoBlockProps {
   container?: Container;
@@ -12,6 +11,7 @@ interface HeaderInfoBlockProps {
 
 export const HeaderInfoBlock: React.FC<HeaderInfoBlockProps> = ({ container }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.headerInfo}>
@@ -32,7 +32,7 @@ export const HeaderInfoBlock: React.FC<HeaderInfoBlockProps> = ({ container }) =
           <Ionicons
             name={container.shippingMode === 'AIR' ? 'airplane' : 'boat'}
             size={12}
-            color={Theme.colors.text.inverse}
+            color={colors.text.inverse}
           />
           <Text style={styles.modeBadgeText}>
             {container.shippingMode === 'AIR' ? 'Aérien uniquement' : 'Maritime uniquement'}

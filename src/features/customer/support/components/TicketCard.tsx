@@ -45,19 +45,20 @@ const getLastMessagePreview = (ticket: Ticket): string | null => {
   return prefix + preview + (lastMessage.message.length > 60 ? '...' : '');
 };
 
-const BORDER_COLORS: Record<string, string> = {
-  LOW: Theme.colors.text.disabled, MEDIUM: Theme.colors.status.info, HIGH: Theme.colors.status.warning, URGENT: Theme.colors.status.error,
-};
+const getBorderColors = (colors: any): Record<string, string> => ({
+  LOW: colors.text.disabled, MEDIUM: colors.status.info, HIGH: colors.status.warning, URGENT: colors.status.error,
+});
 
 export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onPress }) => {
   const { colors } = useAppTheme();
+  const borderColors = useMemo(() => getBorderColors(colors), [colors]);
   const typeIcon = TICKET_TYPE_ICONS[ticket.type] as MaterialCommunityIconName;
   const typeLabel = TICKET_TYPE_LABELS[ticket.type];
   const lastMessage = getLastMessagePreview(ticket);
   const hasUnread = ticket.messages.some(
     (m) => m.sender === 'ADMIN' && new Date(m.createdAt) > new Date(ticket.updatedAt)
   );
-  const borderColor = BORDER_COLORS[ticket.priority];
+  const borderColor = borderColors[ticket.priority] || colors.text.disabled;
 
   const styles = useMemo(() => StyleSheet.create({
     card: {

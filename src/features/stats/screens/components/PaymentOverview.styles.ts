@@ -95,7 +95,7 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
       borderRadius: 3,
     },
     barUnpaid: {
-      backgroundColor: Theme.colors.status.error + '40',
+      backgroundColor: colors.status.error + '40',
       borderRadius: 3,
     },
     methodsSection: {

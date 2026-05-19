@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +17,8 @@ export const WaypointQuickActions: React.FC<WaypointQuickActionsProps> = ({
   onQuickAction,
   delay = 0,
 }) => {
-  const { isDark } = useAppTheme();
+  const { isDark, colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   if (quickActions.length === 0) return null;
 
@@ -45,14 +46,14 @@ export const WaypointQuickActions: React.FC<WaypointQuickActionsProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   section: {
     marginBottom: Theme.spacing.xl,
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.md,
   },
   quickActionsGrid: {

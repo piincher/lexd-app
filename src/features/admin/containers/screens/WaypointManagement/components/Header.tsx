@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,27 +18,29 @@ export const Header: React.FC<HeaderProps> = ({
   onBack,
   onSave,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const navigation = useNavigation();
   return (
     <LinearGradient
-      colors={[Theme.primary[600], Theme.primary[800]]}
+      colors={[colors.primary[600], colors.primary[800]]}
       style={styles.header}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
       <View style={styles.headerTop}>
         <TouchableOpacity style={styles.backButton} onPress={onBack}>
-          <Ionicons name="arrow-back" size={24} color={Theme.colors.text.inverse} />
+          <Ionicons name="arrow-back" size={24} color={colors.text.inverse} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Gestion Waypoints</Text>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
           <TouchableOpacity style={styles.saveIconButton} onPress={onSave}>
-            <Ionicons name="save" size={22} color={Theme.colors.text.inverse} />
+            <Ionicons name="save" size={22} color={colors.text.inverse} />
           </TouchableOpacity>
           <NotificationBell
             onPress={() => navigation.navigate('Notifications' as never)}
             size={22}
-            color={Theme.colors.text.inverse}
+            color={colors.text.inverse}
           />
         </View>
       </View>
@@ -47,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   header: {
     paddingHorizontal: 16,
     paddingTop: 48,
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
   saveIconButton: {
     padding: 8,
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   },
   headerSubtitle: {
     fontSize: 14,
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     marginTop: 4,
     textAlign: 'center',
   },

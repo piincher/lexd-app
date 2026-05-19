@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -17,9 +18,10 @@ interface SortableHeaderProps {
 export const SortableHeader: React.FC<SortableHeaderProps> = ({
   field, label, flex, align = "left", sortConfig, sortable = true, onSort,
 }) => {
+  const { colors } = useAppTheme();
   const isActive = sortConfig.field === field;
   const iconName = !sortable || !isActive ? "swap-vertical" : sortConfig.direction === "asc" ? "chevron-up" : "chevron-down";
-  const iconColor = !sortable || !isActive ? Theme.neutral[400] : Theme.primary[600];
+  const iconColor = !sortable || !isActive ? colors.neutral[400] : colors.primary[600];
 
   return (
     <TouchableOpacity
@@ -29,7 +31,7 @@ export const SortableHeader: React.FC<SortableHeaderProps> = ({
       activeOpacity={0.7}
     >
       <Text style={[
-        { fontSize: 11, fontWeight: "700", color: Theme.primary[700], textTransform: "uppercase", letterSpacing: 0.5 },
+        { fontSize: 11, fontWeight: "700", color: colors.primary[700], textTransform: "uppercase", letterSpacing: 0.5 },
         align === "center" && { textAlign: "center" },
         align === "right" && { textAlign: "right" },
       ]}>

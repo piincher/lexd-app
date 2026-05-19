@@ -6,13 +6,14 @@ import type { RootStackScreenProps } from '@src/navigations/type';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useActiveOrderDetails } from './hooks/useActiveOrderDetails';
 import { ActiveOrderHeader, ActiveOrderHeaderCard, ActiveOrderStats, ActiveOrderInfo, ActiveOrderRouteTimeline, ActiveOrderActions } from '../components';
-import { styles } from './ActiveOrderDetails.styles';
+import { createStyles } from './ActiveOrderDetails.styles';
 
 const ActiveOrderDetails = ({
   route: navRoute,
   navigation,
 }: RootStackScreenProps<'ActiveOrderDetails'>) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     item,
     isLoading,

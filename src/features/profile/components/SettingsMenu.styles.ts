@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   menuGroup: {
     marginTop: 12,
   },
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     overflow: 'hidden',
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: colors.neutral[900],
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.03,
         shadowRadius: 6,

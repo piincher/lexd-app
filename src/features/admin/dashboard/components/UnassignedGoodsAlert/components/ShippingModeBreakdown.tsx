@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -16,8 +16,9 @@ export const ShippingModeBreakdown: React.FC<ShippingModeBreakdownProps> = ({
   byShippingMode,
 }) => {
   const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
-  const styles = StyleSheet.create({
+  const createStyles = (colors: any) => StyleSheet.create({
     row: {
       flexDirection: "row",
       gap: 8,
@@ -30,7 +31,7 @@ export const ShippingModeBreakdown: React.FC<ShippingModeBreakdownProps> = ({
       gap: 8,
       padding: 10,
       borderRadius: 12,
-      backgroundColor: isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)",
+      backgroundColor: colors.action.hover,
     },
     modeIconWrap: {
       width: 30,

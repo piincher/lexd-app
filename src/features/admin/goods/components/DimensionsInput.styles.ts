@@ -1,10 +1,7 @@
 import { StyleSheet } from "react-native";
-import { lightTheme } from "@src/constants/Theme";
 
-type AppColors = typeof lightTheme.colors;
 
-export const createDimensionsInputStyles = (colors: AppColors, isDark: boolean) =>
-   StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
       card: {
          marginVertical: 8,
          borderRadius: 12,
@@ -54,7 +51,7 @@ export const createDimensionsInputStyles = (colors: AppColors, isDark: boolean) 
          height: 24,
          borderRadius: 12,
          backgroundColor: colors.background.card,
-         shadowColor: "#000",
+         shadowColor: colors.neutral[900],
          shadowOffset: { width: 0, height: 2 },
          shadowOpacity: 0.2,
          shadowRadius: 2,

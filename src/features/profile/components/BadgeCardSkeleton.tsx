@@ -6,13 +6,17 @@
 import React from "react";
 import { View } from "react-native";
 import { ShimmerBlock } from "@src/shared/ui";
-import { styles } from "./BadgeCardSkeleton.styles";
+import { createStyles } from "./BadgeCardSkeleton.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface BadgeCardSkeletonProps {
   skeletonBg: string;
 }
 
-export const BadgeCardSkeleton: React.FC<BadgeCardSkeletonProps> = ({ skeletonBg }) => (
+export const BadgeCardSkeleton: React.FC<BadgeCardSkeletonProps> = ({ skeletonBg }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <View style={styles.badgeCard}>
     <ShimmerBlock
       width={56}
@@ -47,4 +51,5 @@ export const BadgeCardSkeleton: React.FC<BadgeCardSkeletonProps> = ({ skeletonBg
       />
     </View>
   </View>
-);
+  );
+};

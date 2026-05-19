@@ -2,8 +2,9 @@ import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { Goods } from "../../../goods/types";
-import { styles } from "./PackingListTable.styles";
+import { createStyles } from "./PackingListTable.styles";
 import { SortableHeader } from "./SortableHeader";
 import { PackingListRow } from "./PackingListRow";
 import { usePackingListSort } from "./usePackingListSort";
@@ -18,6 +19,8 @@ interface PackingListTableProps {
 export const PackingListTable: React.FC<PackingListTableProps> = ({
   goods, showPhotos = false, startIndex = 1, sortable = true,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { sortConfig, handleSort, sortedGoods } = usePackingListSort(goods, sortable);
 
   return (
@@ -52,7 +55,7 @@ export const PackingListTable: React.FC<PackingListTableProps> = ({
 
       {sortedGoods.length === 0 && (
         <View style={styles.emptyState}>
-          <Ionicons name="cube-outline" size={32} color={Theme.neutral[400]} />
+          <Ionicons name="cube-outline" size={32} color={colors.neutral[400]} />
           <Text style={styles.emptyText}>Aucune marchandise</Text>
         </View>
       )}

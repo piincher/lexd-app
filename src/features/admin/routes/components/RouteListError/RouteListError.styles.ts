@@ -5,7 +5,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -24,13 +24,13 @@ export const styles = StyleSheet.create({
   errorTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginBottom: Theme.spacing.sm,
   },
   errorSubtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textAlign: 'center',
     marginBottom: Theme.spacing.xl,
   },
@@ -47,7 +47,7 @@ export const styles = StyleSheet.create({
   retryButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
 });

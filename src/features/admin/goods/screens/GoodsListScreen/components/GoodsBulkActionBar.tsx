@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './GoodsBulkActionBar.styles';
+import { createStyles } from './GoodsBulkActionBar.styles';
 import { BulkActionButton } from './BulkActionButton';
 
 interface GoodsBulkActionBarProps {
@@ -26,7 +26,8 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
   onVoid,
   onCancel,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   if (totalCount === 0) return null;
 
   const isAllSelected = selectedCount === totalCount && totalCount > 0;

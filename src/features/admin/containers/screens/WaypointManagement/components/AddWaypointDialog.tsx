@@ -3,7 +3,8 @@ import { Portal, Dialog } from 'react-native-paper';
 import { NewWaypointForm } from '../../hooks/types';
 import { LocationNameField, LocationCodeField, SegmentTypeField } from './AddWaypointDialogFields';
 import { AddWaypointDialogActions } from './AddWaypointDialogActions';
-import { styles } from './AddWaypointDialog.styles';
+import { createStyles } from './AddWaypointDialog.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface AddWaypointDialogProps {
   visible: boolean;
@@ -20,6 +21,8 @@ export const AddWaypointDialog: React.FC<AddWaypointDialogProps> = ({
   onAdd,
   onUpdateField,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const isValid = Boolean(newWaypoint.locationCity && newWaypoint.locationCode && newWaypoint.segmentType);
 
   return (

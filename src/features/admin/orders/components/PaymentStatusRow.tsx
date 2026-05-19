@@ -15,11 +15,11 @@ const getStatusConfig = (status: string, colors: any): StatusConfig => {
     case "COMPLETED":
     case "PAID":
     case "SUCCESS":
-      return { color: "#4CAF50", bgColor: "#E8F5E9", label: "Completed" };
+      return { color: colors.status.success, bgColor: colors.feedback.successBg, label: "Completed" };
     case "PENDING":
-      return { color: "#FF9800", bgColor: "#FFF3E0", label: "Pending" };
+      return { color: colors.status.warning, bgColor: colors.feedback.warningBg, label: "Pending" };
     case "FAILED":
-      return { color: "#F44336", bgColor: "#FFEBEE", label: "Failed" };
+      return { color: colors.status.error, bgColor: colors.feedback.errorBg, label: "Failed" };
     default:
       return {
         color: colors.text.secondary,

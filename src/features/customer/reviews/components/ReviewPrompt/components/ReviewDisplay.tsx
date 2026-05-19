@@ -1,7 +1,8 @@
 import React from "react";
 import { Card, Text } from "react-native-paper";
 import { StarRating } from "./StarRating";
-import { styles } from "../ReviewPrompt.styles";
+import { createStyles } from "../ReviewPrompt.styles";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ReviewDisplayProps {
    rating: number;
@@ -10,6 +11,8 @@ interface ReviewDisplayProps {
 }
 
 export const ReviewDisplay: React.FC<ReviewDisplayProps> = ({ rating, comment, goodsLabel }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
    return (
       <Card style={styles.card} mode="elevated">
          <Card.Content style={styles.content}>

@@ -1,7 +1,7 @@
 import { StyleSheet, Platform } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 
-export const createCategoryStyles = (colors: any) =>
+export const createStyles = (colors: any, isDark?: boolean) =>
   StyleSheet.create({
     container: {
       flexDirection: "row",
@@ -10,7 +10,7 @@ export const createCategoryStyles = (colors: any) =>
       padding: 8,
       backgroundColor: colors.background.paper,
       borderRadius: 16,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.08,
       shadowRadius: 8,
@@ -32,7 +32,7 @@ export const createCategoryStyles = (colors: any) =>
     },
     activeTab: {
       backgroundColor: colors.primary.main,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.2,
       shadowRadius: 8,

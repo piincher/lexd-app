@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
@@ -21,6 +21,7 @@ export const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
   onUseSavedCard,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const {
     card,
     errors,
@@ -41,7 +42,7 @@ export const CardPaymentForm: React.FC<CardPaymentFormProps> = ({
     handleSavedCardSelect,
   } = useCardPaymentForm(onCardChange, onUseSavedCard);
 
-  const styles = StyleSheet.create({
+  const createStyles = (colors: any) => StyleSheet.create({
     container: {
       padding: 16,
     },

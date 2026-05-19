@@ -1,15 +1,14 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from '@src/constants/Theme';
 
-export const createCardStyles = (colors: any, isDark: boolean) =>
-  StyleSheet.create({
+
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
     card: {
       backgroundColor: colors.background.card,
       borderRadius: 12,
       padding: 16,
       marginBottom: 12,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOpacity: 0.04,
       shadowOffset: { width: 0, height: 2 },
       shadowRadius: 4,

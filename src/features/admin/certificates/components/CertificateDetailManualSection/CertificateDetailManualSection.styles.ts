@@ -1,23 +1,22 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   section: {
     marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 16,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     marginBottom: 10,
     paddingLeft: 4,
   },
   sectionCard: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
@@ -35,17 +34,17 @@ export const styles = StyleSheet.create({
   infoLabel: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.disabled,
+    color: colors.text.disabled,
     marginBottom: 2,
   },
   infoValue: {
     fontSize: 15,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
   },
   divider: {
     height: 1,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     marginVertical: 4,
   },
   noteContainer: {
@@ -60,13 +59,13 @@ export const styles = StyleSheet.create({
   noteLabel: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.disabled,
+    color: colors.text.disabled,
     marginBottom: 4,
   },
   noteText: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.status.warning,
+    color: colors.status.warning,
     lineHeight: 20,
   },
 });

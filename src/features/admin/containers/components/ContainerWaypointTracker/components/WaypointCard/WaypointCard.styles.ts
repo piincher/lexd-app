@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   waypointCard: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius.xl,
     marginBottom: Theme.spacing.md,
     overflow: 'hidden',
@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
   },
   waypointCardCurrent: {
     borderWidth: 2,
-    borderColor: Theme.status.info,
+    borderColor: colors.status.info,
     ...Theme.shadows.md,
   },
   waypointCardCompleted: {
@@ -19,17 +19,17 @@ export const styles = StyleSheet.create({
   },
   waypointCardDakar: {
     borderWidth: 2,
-    borderColor: Theme.status.info,
+    borderColor: colors.status.info,
     ...Theme.shadows.md,
   },
   waypointCardBorder: {
     borderWidth: 2,
-    borderColor: Theme.status.warning,
+    borderColor: colors.status.warning,
     ...Theme.shadows.md,
   },
   waypointCardWarehouse: {
     borderWidth: 2,
-    borderColor: Theme.primary.main,
+    borderColor: colors.primary.main,
     ...Theme.shadows.md,
   },
   statusBar: {
@@ -38,11 +38,11 @@ export const styles = StyleSheet.create({
   },
   statusBarDakar: {
     height: 6,
-    backgroundColor: Theme.status.info,
+    backgroundColor: colors.status.info,
   },
   statusBarBorder: {
     height: 6,
-    backgroundColor: Theme.status.warning,
+    backgroundColor: colors.status.warning,
   },
   waypointContent: {
     padding: Theme.spacing.lg,
@@ -56,13 +56,13 @@ export const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: Theme.primary[100],
+    backgroundColor: colors.primary[100],
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Theme.spacing.md,
   },
   waypointNumberDakar: {
-    backgroundColor: Theme.status.info,
+    backgroundColor: colors.status.info,
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -70,10 +70,10 @@ export const styles = StyleSheet.create({
   waypointNumberText: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   waypointNumberTextDakar: {
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     fontSize: 18,
   },
   waypointTitleContainer: {
@@ -82,15 +82,15 @@ export const styles = StyleSheet.create({
   waypointLocation: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   waypointLocationDakar: {
     fontSize: 18,
-    color: Theme.status.info,
+    color: colors.status.info,
   },
   waypointCode: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   waypointBadges: {
@@ -112,7 +112,7 @@ export const styles = StyleSheet.create({
   routeDisplayBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
     paddingHorizontal: Theme.spacing.sm,
     paddingVertical: 4,
     borderRadius: Theme.radius.full,
@@ -123,7 +123,7 @@ export const styles = StyleSheet.create({
   routeDisplayText: {
     fontSize: 10,
     fontWeight: '600',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
   typeRow: {
     flexDirection: 'row',
@@ -135,7 +135,7 @@ export const styles = StyleSheet.create({
   typeBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.xs,
     borderRadius: Theme.radius.full,
@@ -143,7 +143,7 @@ export const styles = StyleSheet.create({
   },
   typeBadgeText: {
     fontSize: 11,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     fontWeight: '500',
   },
   categoryBadge: {
@@ -159,7 +159,7 @@ export const styles = StyleSheet.create({
     fontWeight: '700',
   },
   currentIndicator: {
-    backgroundColor: Theme.status.info,
+    backgroundColor: colors.status.info,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: 2,
     borderRadius: Theme.radius.full,
@@ -167,7 +167,7 @@ export const styles = StyleSheet.create({
   currentIndicatorText: {
     fontSize: 9,
     fontWeight: '700',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
   quickInfo: {
     flexDirection: 'row',
@@ -181,7 +181,7 @@ export const styles = StyleSheet.create({
   },
   infoText: {
     fontSize: 12,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   expandIndicator: {
     alignItems: 'center',

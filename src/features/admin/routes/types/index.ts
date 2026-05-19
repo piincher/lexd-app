@@ -115,10 +115,10 @@ export const SHIPPING_MODE_LABELS: Record<ShippingMode, string> = {
 /**
  * Shipping mode colors for UI
  */
-export const SHIPPING_MODE_COLORS: Record<ShippingMode, string> = {
-  SEA: '#3B82F6', // Blue
-  AIR: '#8B5CF6', // Purple
-};
+export const getShippingModeColors = (colors: any): Record<ShippingMode, string> => ({
+  SEA: colors.status.info,
+  AIR: colors.accent.sky,
+});
 
 /**
  * Shipping line display names

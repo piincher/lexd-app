@@ -3,7 +3,7 @@
  * Photo picker with image thumbnail previews and remove buttons
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { Text, IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -29,6 +29,7 @@ export const TicketAttachmentPicker: React.FC<TicketAttachmentPickerProps> = ({
   disabled,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const handleRemove = (index: number) => {
     onChange(attachments.filter((_, i) => i !== index));
@@ -80,7 +81,7 @@ export const TicketAttachmentPicker: React.FC<TicketAttachmentPickerProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: { marginTop: 12 },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
   label: { fontFamily: Fonts.meduim, fontSize: 14 },
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   image: { width: '100%', height: '100%' },
-  remove: { position: 'absolute', top: -8, right: -8, margin: 0, backgroundColor: Theme.colors.background.card, borderRadius: 10 },
+  remove: { position: 'absolute', top: -8, right: -8, margin: 0, backgroundColor: colors.background.card, borderRadius: 10 },
   addBtn: {
     width: 80,
     height: 80,

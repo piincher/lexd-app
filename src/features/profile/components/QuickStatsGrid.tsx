@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Pressable, StyleSheet, Platform } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -21,6 +21,7 @@ interface Props {
 
 export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const cardBg = colors.background.card;
   const cardBorder = colors.border;
 
@@ -83,7 +84,7 @@ export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   quickStatsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     gap: 8,
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: colors.neutral[900],
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.04,
         shadowRadius: 8,

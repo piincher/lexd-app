@@ -8,12 +8,12 @@ import { View, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Text, TextInput } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
-import { useRecipientSelectorStyles } from './RecipientSelector.styles';
+import { createStyles } from './RecipientSelector.styles';
 import { ModeToggle } from './ModeToggle';
 import { DatePickerRow } from './DatePickerRow';
 import { RecipientItem } from './RecipientItem';
 import { RecipientEmptyState } from './RecipientEmptyState';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export interface Recipient {
   id: string;
@@ -56,7 +56,8 @@ export const RecipientSelector: React.FC<RecipientSelectorProps> = ({
   onFetchByDate,
   isFetchingByDate,
 }) => {
-  const styles = useRecipientSelectorStyles();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const filtered = useMemo(
     () =>
@@ -97,10 +98,10 @@ export const RecipientSelector: React.FC<RecipientSelectorProps> = ({
 
       <View style={styles.searchRow}>
         <View style={styles.searchContainer}>
-          <Ionicons name="search" size={18} color={Theme.neutral[400]} />
+          <Ionicons name="search" size={18} color={colors.neutral[400]} />
           <TextInput
             placeholder="Rechercher un client..."
-            placeholderTextColor={Theme.neutral[400]}
+            placeholderTextColor={colors.neutral[400]}
             value={search}
             onChangeText={onSearchChange}
             style={styles.searchInput}
@@ -120,7 +121,7 @@ export const RecipientSelector: React.FC<RecipientSelectorProps> = ({
 
       {selectedIds.size > 0 && (
         <View style={styles.selectedBar}>
-          <Ionicons name="people-circle" size={16} color={Theme.primary[500]} />
+          <Ionicons name="people-circle" size={16} color={colors.primary[500]} />
           <Text style={styles.selectedText}>
             {selectedIds.size} destinataire{selectedIds.size > 1 ? 's' : ''} selectionne
             {selectedIds.size > 1 ? 's' : ''}

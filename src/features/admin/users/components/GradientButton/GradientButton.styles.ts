@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const createStyles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     width: '100%',
     minHeight: 56,
@@ -18,7 +18,7 @@ export const createStyles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#FFFFFF',
+    color: colors.text.inverse,
     letterSpacing: 0.5,
   },
   shimmer: {

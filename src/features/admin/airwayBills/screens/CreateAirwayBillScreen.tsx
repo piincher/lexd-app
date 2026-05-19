@@ -6,13 +6,16 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import { Text, Button, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { AirwayBillFlightFields } from './components/AirwayBillFlightFields';
 import { ConsigneePicker } from './components/ConsigneePicker';
 import { AirCargoRoutePicker } from './components/AirCargoRoutePicker';
 import { useCreateAirwayBillScreen } from './hooks/useCreateAirwayBillScreen';
-import { styles } from './CreateAirwayBillScreen.styles';
+import { createStyles } from './CreateAirwayBillScreen.styles';
 
 export const CreateAirwayBillScreen: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { values, setters, routeOptions, consignee, isSubmitting, handleCapacityWeightChange, handleSubmit } = useCreateAirwayBillScreen();
 
   return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image } from 'react-native';
 import { Portal, Modal, IconButton } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createPaymentImageModalStyles } from './PaymentImageModal.styles';
 
 interface PaymentImageModalProps {

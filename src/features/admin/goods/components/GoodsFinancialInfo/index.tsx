@@ -7,8 +7,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { Card, Text, Chip, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './GoodsFinancialInfo.styles';
+import { createStyles } from './GoodsFinancialInfo.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsFinancialInfoProps {
   unitPrice: number;
@@ -28,11 +28,11 @@ export const GoodsFinancialInfo: React.FC<GoodsFinancialInfoProps> = ({
   const getPaymentStatusColor = () => {
     switch (paymentStatus) {
       case 'PAID':
-        return Theme.status.success;
+        return colors.status.success;
       case 'PARTIAL':
-        return Theme.status.warning;
+        return colors.status.warning;
       default:
-        return Theme.status.error;
+        return colors.status.error;
     }
   };
 
@@ -51,11 +51,15 @@ export const GoodsFinancialInfo: React.FC<GoodsFinancialInfoProps> = ({
     return amount?.toLocaleString('fr-FR') || '0';
   };
 
+  const { colors, isDark } = useAppTheme();
+
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <Card style={styles.container}>
       <Card.Content>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="cash-multiple" size={20} color={Theme.status.success} />
+          <MaterialCommunityIcons name="cash-multiple" size={20} color={colors.status.success} />
           <Text style={styles.title}>Informations financières</Text>
         </View>
 
@@ -73,14 +77,14 @@ export const GoodsFinancialInfo: React.FC<GoodsFinancialInfoProps> = ({
 
         <View style={styles.row}>
           <Text style={styles.label}>Montant payé</Text>
-          <Text style={[styles.value, { color: Theme.status.success }]}>
+          <Text style={[styles.value, { color: colors.status.success }]}>
             {formatCurrency(amountPaid)} FCFA
           </Text>
         </View>
 
         <View style={styles.row}>
           <Text style={styles.label}>Reste à payer</Text>
-          <Text style={[styles.value, { color: balanceDue > 0 ? Theme.status.error : Theme.status.success }]}>
+          <Text style={[styles.value, { color: balanceDue > 0 ? colors.status.error : colors.status.success }]}>
             {formatCurrency(balanceDue)} FCFA
           </Text>
         </View>

@@ -8,9 +8,12 @@ import { VoidHistorySection } from '../components/VoidHistorySection';
 import { RecalculateButton } from '../components/RecalculateButton';
 import { OrderDetailSkeleton } from '../components/OrderDetailSkeleton';
 import { useOrderDetailWithGoodsScreen } from './hooks/useOrderDetailWithGoodsScreen';
-import { styles } from './OrderDetailWithGoodsScreen.styles';
+import { createStyles } from './OrderDetailWithGoodsScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const OrderDetailWithGoodsScreen: React.FC = () => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     orderId,
     data,

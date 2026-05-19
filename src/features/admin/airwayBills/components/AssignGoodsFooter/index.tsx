@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button as PaperButton } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface Props {
@@ -15,7 +16,18 @@ export const AssignGoodsFooter: React.FC<Props> = ({
   isOverCapacity,
   isAssigning,
   onAssign,
-}) => (
+}) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => StyleSheet.create({
+    container: {
+      padding: Theme.spacing.lg,
+      backgroundColor: colors.background.card,
+      borderTopWidth: 1,
+      borderTopColor: colors.neutral[100],
+    },
+    assignButton: { borderRadius: Theme.radius.lg },
+  }), [colors, isDark]);
+  return (
   <View style={styles.container}>
     <PaperButton
       mode="contained"
@@ -27,14 +39,7 @@ export const AssignGoodsFooter: React.FC<Props> = ({
       Assigner {selectedCount > 0 ? `(${selectedCount})` : ''}
     </PaperButton>
   </View>
-);
+  );
+};
 
-const styles = StyleSheet.create({
-  container: {
-    padding: Theme.spacing.lg,
-    backgroundColor: Theme.colors.background.card,
-    borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
-  },
-  assignButton: { borderRadius: Theme.radius.lg },
-});
+

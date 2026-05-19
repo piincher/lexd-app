@@ -1,4 +1,4 @@
-import { Container, ContainerStatus, CONTAINER_STATUS_COLORS, CONTAINER_STATUS_LABELS } from '../../types';
+import { Container, ContainerStatus, getContainerStatusColors, CONTAINER_STATUS_LABELS } from '../../types';
 import { Goods } from '../../../goods/types';
 import { CbmProfit, DualLedger } from '../../types/containerProfit';
 import { Theme } from '@src/constants/Theme';
@@ -28,8 +28,8 @@ export const getCapacityInfo = (container: Container | undefined, goodsList: Goo
   return { isAirContainer, totalWeight, capacityValue, maxCapacity, fillPercentage, fillColor };
 };
 
-export const getContainerStatusInfo = (container: Container | undefined) => ({
-  statusColor: container ? CONTAINER_STATUS_COLORS[container.status] : Theme.primary.main,
+export const getContainerStatusInfo = (container: Container | undefined, colors: any) => ({
+  statusColor: container ? getContainerStatusColors(colors)[container.status] : colors.primary.main,
   statusLabel: container ? CONTAINER_STATUS_LABELS[container.status] : '',
   currentStatusIndex: container ? TIMELINE_STEPS.indexOf(container.status) : -1,
 });

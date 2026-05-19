@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -28,7 +29,7 @@ export const WaypointCardMeta: React.FC<WaypointCardMetaProps> = ({ styles, wayp
           <Text style={styles.infoBadgeText}>{WAYPOINT_TYPE_LABELS[waypoint.type]}</Text>
         </View>
         <View style={styles.transportBadge}>
-          <Ionicons name={transportIcon as any} size={12} color={Theme.status.info} />
+          <Ionicons name={transportIcon as any} size={12} color={colors.status.info} />
           <Text style={styles.transportBadgeText}>{TRANSPORT_MODE_LABELS[waypoint.transportMode]}</Text>
         </View>
       </View>

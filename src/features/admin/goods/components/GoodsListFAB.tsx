@@ -14,22 +14,7 @@ interface GoodsListFABProps {
   onPress: () => void;
 }
 
-export const GoodsListFAB: React.FC<GoodsListFABProps> = ({ onPress }) => {
-  const { colors } = useAppTheme();
-  return (
-  <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.9}>
-    <LinearGradient
-      colors={Theme.gradients.primary}
-      style={styles.button}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
-      <Ionicons name="add" size={28} color={colors.text.inverse} />
-    </LinearGradient>
-  </TouchableOpacity>
-);}
-
-const styles = StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   container: {
     position: 'absolute',
     right: Theme.spacing.xl,
@@ -45,3 +30,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+export const GoodsListFAB: React.FC<GoodsListFABProps> = ({ onPress }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(), []);
+  return (
+  <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.9}>
+    <LinearGradient
+      colors={Theme.gradients.primary}
+      style={styles.button}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+    >
+      <Ionicons name="add" size={28} color={colors.text.inverse} />
+    </LinearGradient>
+  </TouchableOpacity>
+);}

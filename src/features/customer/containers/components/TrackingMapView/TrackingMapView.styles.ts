@@ -71,7 +71,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     right: lightTheme.spacing.md,
     bottom: lightTheme.spacing.md,
     backgroundColor: isDark ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.95)',
-    borderRadius: lightTheme.borderRadius.md,
+    borderRadius: lightcolors.borderRadius.md,
     ...lightTheme.shadows.sm,
   },
   zoomButton: {

@@ -11,7 +11,7 @@ export const LoadingState: React.FC = () => {
   const styles = useMemo(() => createStyles(colors), [colors]);
   return (
   <SafeAreaView style={[styles.container, styles.centered]}>
-    <ActivityIndicator size="large" color={Theme.primary[600]} />
+    <ActivityIndicator size="large" color={colors.primary[600]} />
   </SafeAreaView>
 );
 };

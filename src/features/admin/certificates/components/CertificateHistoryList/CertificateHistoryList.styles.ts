@@ -1,8 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   listContainer: {
     padding: 16,
   },
@@ -16,20 +15,20 @@ export const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 16,
     marginBottom: 6,
   },
   emptySubtitle: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.disabled,
+    color: colors.text.disabled,
     textAlign: "center",
     lineHeight: 20,
   },
   resetFilterButton: {
     marginTop: 16,
-    backgroundColor: Theme.colors.neutral[100],
+    backgroundColor: colors.neutral[100],
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 10,
@@ -37,7 +36,7 @@ export const styles = StyleSheet.create({
   resetFilterText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   paginationContainer: {
     flexDirection: "row",
@@ -50,11 +49,11 @@ export const styles = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: Theme.colors.neutral[200],
+    borderColor: colors.neutral[200],
   },
   paginationButtonDisabled: {
     opacity: 0.4,
@@ -62,6 +61,6 @@ export const styles = StyleSheet.create({
   paginationText: {
     fontSize: 14,
     fontFamily: Fonts.meduim,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
 });

@@ -1,10 +1,10 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
+import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
   },
   scrollView: {
     flex: 1,
@@ -15,11 +15,11 @@ export const styles = StyleSheet.create({
     paddingBottom: Theme.spacing["2xl"],
   },
   snackbar: {
-    backgroundColor: Theme.status.success,
+    backgroundColor: colors.status.success,
     marginHorizontal: Theme.spacing.lg,
     marginBottom: Theme.spacing.lg,
   },
   snackbarError: {
-    backgroundColor: Theme.status.error,
+    backgroundColor: colors.status.error,
   },
 });

@@ -6,15 +6,16 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   ContainerStatus,
   CONTAINER_STATUS_LABELS,
-  CONTAINER_STATUS_COLORS,
+  getContainerStatusColors,
 } from '../../../types';
 import { ContainerWaypoint } from '../../../types/waypoints';
 import { StatusInfoCard } from './StatusInfoCard';
 import { HelperCard } from './HelperCard';
-import { styles } from './NonTransitView.styles';
+import { createStyles } from './NonTransitView.styles';
 
 export interface NonTransitViewProps {
   containerStatus: ContainerStatus;
@@ -47,10 +48,12 @@ export const NonTransitView: React.FC<NonTransitViewProps> = ({
   containerNumber,
   waypoints,
 }) => {
+  const { colors, isDark } = useAppTheme();
   const statusLabel = CONTAINER_STATUS_LABELS[containerStatus];
-  const statusColor = CONTAINER_STATUS_COLORS[containerStatus];
+  const statusColor = getContainerStatusColors(colors)[containerStatus];
   const statusIcon = getStatusIcon(containerStatus);
   const waypointCount = waypoints?.length || 0;
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.container}>

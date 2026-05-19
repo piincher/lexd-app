@@ -6,6 +6,7 @@
 import React from 'react';
 import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { RootStackScreenProps } from '@src/navigations/type';
 import { Calendar } from '@src/components/Calendar/Calendar';
 import { useSendSmsScreen } from '../hooks/useSendSmsScreen';
@@ -15,9 +16,11 @@ import { RecipientSelector } from '../components/RecipientSelector';
 import { MessageComposer } from '../components/MessageComposer';
 import { SendConfirmationModal } from '../components/SendConfirmationModal';
 import { SendSmsSuccessOverlay } from '../components/SendSmsSuccessOverlay';
-import { styles } from './SendSms.styles';
+import { createStyles } from './SendSms.styles';
 
 const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const s = useSendSmsScreen();
 
   return (

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { styles } from './CapacityUsageBar.styles';
+import { createStyles } from './CapacityUsageBar.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface CapacityUsageBarFooterProps {
   remaining: number;
@@ -14,7 +15,10 @@ export const CapacityUsageBarFooter: React.FC<CapacityUsageBarFooterProps> = ({
   unit,
   percentage,
   fillColor,
-}) => (
+}) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <View style={styles.footer}>
     <Text style={styles.remainingText}>
       {remaining.toFixed(2)} {unit} disponible
@@ -26,4 +30,5 @@ export const CapacityUsageBarFooter: React.FC<CapacityUsageBarFooterProps> = ({
       </Text>
     </View>
   </View>
-);
+  );
+};

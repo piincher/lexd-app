@@ -22,9 +22,10 @@ export const GoodsDimensionsInput: React.FC<GoodsDimensionsInputProps> = ({
    shippingMode,
 }) => {
    const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
    const isAirShipping = shippingMode === "AIR";
 
-   const styles = StyleSheet.create({
+   const createStyles = (colors: any) => StyleSheet.create({
       card: {
          marginVertical: 8,
          borderRadius: 12,

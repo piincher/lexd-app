@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { Theme } from '@src/constants/Theme';
 import type { PublicNotification } from '../types';
 import { PUBLIC_NOTIFICATION_TYPE_CONFIG } from '../types';
 
@@ -15,7 +16,7 @@ export const usePublicNotificationDisplay = () => {
       ...notification,
       displayLabel: config?.label || 'Notification',
       displayIcon: config?.icon || 'bell',
-      displayColor: config?.color || '#6B7280',
+      displayColor: config?.color || Theme.colors.text.disabled,
     };
   }, []);
 

@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
   },
   header: {
     paddingHorizontal: Theme.spacing.lg,
@@ -32,11 +32,11 @@ export const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
   headerSubtitle: {
     fontSize: 14,
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     marginTop: 2,
   },
   modeBadge: {
@@ -50,7 +50,7 @@ export const styles = StyleSheet.create({
   },
   modeBadgeText: {
     fontSize: 11,
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     fontWeight: '600',
   },
   nonAssignableBanner: {
@@ -71,7 +71,7 @@ export const styles = StyleSheet.create({
   },
   nonAssignableText: {
     fontSize: 12,
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     lineHeight: 18,
   },
 });

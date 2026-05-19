@@ -5,7 +5,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   filterWrapper: {
     marginTop: Theme.spacing.lg,
     marginBottom: Theme.spacing.sm,
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: Theme.spacing.lg,
     paddingVertical: Theme.spacing.md,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     ...Theme.shadows.sm,
     overflow: 'hidden',
   },
@@ -33,9 +33,9 @@ export const styles = StyleSheet.create({
   filterText: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   filterTextActive: {
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
 });

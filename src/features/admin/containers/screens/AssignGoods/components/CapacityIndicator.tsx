@@ -4,7 +4,8 @@ import { Theme } from '@src/constants/Theme';
 import { CapacityProgressBar } from './CapacityProgressBar';
 import { CapacityLegend } from './CapacityLegend';
 import { CapacityWarningBanner } from './CapacityWarningBanner';
-import { styles } from './CapacityIndicator.styles';
+import { createStyles } from './CapacityIndicator.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const MAX_CONTAINER_CBM = 67;
 
@@ -21,6 +22,8 @@ export const CapacityIndicator: React.FC<CapacityIndicatorProps> = ({
   maxCBM = MAX_CONTAINER_CBM,
   isAir = false,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const unit = isAir ? 'kg' : 'm³';
   const totalCBM = (currentCBM || 0) + (selectedCBM || 0);
   const fillPercentage = Math.min((totalCBM / maxCBM) * 100, 100);
@@ -28,9 +31,9 @@ export const CapacityIndicator: React.FC<CapacityIndicatorProps> = ({
   const isNearFull = fillPercentage >= 70 && fillPercentage < 90;
 
   const getFillColor = () => {
-    if (isFull) return Theme.status.error;
-    if (isNearFull) return Theme.status.warning;
-    return Theme.status.success;
+    if (isFull) return colors.status.error;
+    if (isNearFull) return colors.status.warning;
+    return colors.status.success;
   };
 
   return (

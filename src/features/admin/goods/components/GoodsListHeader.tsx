@@ -18,54 +18,7 @@ interface GoodsListHeaderProps {
   pendingCount: number;
 }
 
-export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({ total, pendingCount }) => {
-  const { colors } = useAppTheme();
-  const navigation = useNavigation();
-  return (
-    <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
-      <View style={styles.headerTop}>
-        <View>
-          <Text style={[styles.greeting, { color: colors.text.secondary }]}>Bonjour! 👋</Text>
-          <Text style={[styles.title, { color: colors.text.primary }]}>Marchandises</Text>
-        </View>
-        <NotificationBell
-          onPress={() => navigation.navigate('Notifications' as never)}
-          size={24}
-          color={colors.text.primary}
-        />
-      </View>
-
-      <View style={styles.statsRow}>
-        <StatCard value={total} label="Total" icon="cube" gradient={Theme.gradients.primary} />
-        <StatCard value={pendingCount} label="En attente" icon="time" gradient={Theme.gradients.ocean} />
-      </View>
-    </LinearGradient>
-  );
-};
-
-interface StatCardProps {
-  value: number;
-  label: string;
-  icon: string;
-  gradient: readonly [string, string, ...string[]];
-}
-
-const StatCard: React.FC<StatCardProps> = ({ value, label, icon, gradient }) => {
-  const { colors } = useAppTheme();
-  return (
-    <View style={[styles.statCard, { backgroundColor: colors.background.card }]}>
-      <LinearGradient colors={gradient} style={styles.iconContainer}>
-        <Ionicons name={icon as any} size={20} color={colors.text.inverse} />
-      </LinearGradient>
-      <View>
-        <Text style={[styles.statValue, { color: colors.text.primary }]}>{value}</Text>
-        <Text style={[styles.statLabel, { color: colors.text.secondary }]}>{label}</Text>
-      </View>
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
+const createStyles = () => StyleSheet.create({
   header: {
     paddingHorizontal: Theme.spacing.xl,
     paddingTop: Theme.spacing.lg,
@@ -116,5 +69,53 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
 });
+
+export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({ total, pendingCount }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(), []);
+  const navigation = useNavigation();
+  return (
+    <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
+      <View style={styles.headerTop}>
+        <View>
+          <Text style={[styles.greeting, { color: colors.text.secondary }]}>Bonjour! 👋</Text>
+          <Text style={[styles.title, { color: colors.text.primary }]}>Marchandises</Text>
+        </View>
+        <NotificationBell
+          onPress={() => navigation.navigate('Notifications' as never)}
+          size={24}
+          color={colors.text.primary}
+        />
+      </View>
+
+      <View style={styles.statsRow}>
+        <StatCard value={total} label="Total" icon="cube" gradient={Theme.gradients.primary} />
+        <StatCard value={pendingCount} label="En attente" icon="time" gradient={Theme.gradients.ocean} />
+      </View>
+    </LinearGradient>
+  );
+};
+
+interface StatCardProps {
+  value: number;
+  label: string;
+  icon: string;
+  gradient: readonly [string, string, ...string[]];
+}
+
+const StatCard: React.FC<StatCardProps> = ({ value, label, icon, gradient }) => {
+  const { colors } = useAppTheme();
+  return (
+    <View style={[styles.statCard, { backgroundColor: colors.background.card }]}>
+      <LinearGradient colors={gradient} style={styles.iconContainer}>
+        <Ionicons name={icon as any} size={20} color={colors.text.inverse} />
+      </LinearGradient>
+      <View>
+        <Text style={[styles.statValue, { color: colors.text.primary }]}>{value}</Text>
+        <Text style={[styles.statLabel, { color: colors.text.secondary }]}>{label}</Text>
+      </View>
+    </View>
+  );
+};
 
 export default GoodsListHeader;

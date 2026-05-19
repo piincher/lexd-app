@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   wrapper: {
     marginBottom: 12,
   },
@@ -10,7 +10,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 14,
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
@@ -18,11 +18,16 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     overflow: "hidden",
   },
   cardPressed: {
+    opacity: 0.9,
     transform: [{ scale: 0.98 }],
-    shadowOpacity: 0.04,
   },
   blockedCard: {
-    backgroundColor: isDark ? colors.feedback.errorBg : colors.feedback.errorBg,
+    backgroundColor: colors.feedback.errorBg,
+  },
+  selectedCard: {
+    borderWidth: 2,
+    borderColor: colors.primary.main,
+    backgroundColor: isDark ? `${colors.primary.main}20` : `${colors.primary.main}10`,
   },
   accentBorder: {
     position: "absolute",
@@ -31,28 +36,31 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     bottom: 0,
     width: 4,
   },
-  avatar: {
-    width: 52,
-    height: 52,
-    borderRadius: 16,
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    borderWidth: 2,
     alignItems: "center",
     justifyContent: "center",
-    marginLeft: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.15,
-    shadowRadius: 8,
-    elevation: 4,
+    marginRight: 10,
+  },
+  avatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
   },
   avatarText: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "700",
     color: colors.text.inverse,
   },
   info: {
     flex: 1,
-    marginLeft: 14,
-    marginRight: 10,
+    marginLeft: 12,
+    marginRight: 8,
   },
   nameRow: {
     flexDirection: "row",
@@ -60,7 +68,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     marginBottom: 4,
   },
   name: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "700",
     color: colors.text.primary,
     flex: 1,
@@ -69,7 +77,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   blockedBadge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: isDark ? colors.feedback.errorBg : colors.feedback.errorBg,
+    backgroundColor: colors.feedback.errorBg,
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 20,
@@ -78,44 +86,60 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   blockedText: {
     fontSize: 11,
     fontWeight: "700",
-    color: isDark ? colors.status.error : colors.status.error,
+    color: colors.status.error,
   },
   detailRow: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 3,
+    marginTop: 2,
     gap: 6,
   },
   phone: {
-    fontSize: 14,
+    fontSize: 13,
     color: colors.text.secondary,
     fontWeight: "500",
   },
   email: {
-    fontSize: 13,
+    fontSize: 12,
     color: colors.text.secondary,
     fontWeight: "400",
     flex: 1,
   },
-  actionButton: {
-    width: 42,
-    height: 42,
-    borderRadius: 12,
+  quickActions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    marginRight: 6,
+  },
+  quickBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    backgroundColor: colors.background.paper,
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 1,
+    borderColor: colors.neutral[200],
   },
   actions: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+    gap: 6,
+  },
+  actionButton: {
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   blockButton: {
-    backgroundColor: isDark ? colors.feedback.errorBg : colors.feedback.errorBg,
+    backgroundColor: colors.feedback.errorBg,
   },
   unblockButton: {
-    backgroundColor: isDark ? colors.feedback.successBg : colors.feedback.successBg,
+    backgroundColor: colors.feedback.successBg,
   },
   deleteButton: {
-    backgroundColor: isDark ? colors.feedback.errorBg : colors.feedback.errorBg,
+    backgroundColor: colors.feedback.errorBg,
   },
 });

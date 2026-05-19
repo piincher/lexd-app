@@ -12,8 +12,9 @@ interface AirShippingViewProps {
 
 export const AirShippingView: React.FC<AirShippingViewProps> = ({ control, errors }) => {
    const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
-   const styles = StyleSheet.create({
+   const createStyles = (colors: any) => StyleSheet.create({
       airMessageContainer: {
          alignItems: "center",
          paddingVertical: 24,

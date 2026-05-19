@@ -53,8 +53,8 @@ const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
           <RefreshControl
             refreshing={stats.refreshing || stats.isFetchingPeriodData}
             onRefresh={stats.onRefresh}
-            tintColor={Theme.primary[500]}
-            colors={[Theme.primary[500]]}
+            tintColor={colors.primary[500]}
+            colors={[colors.primary[500]]}
           />
         }
       >

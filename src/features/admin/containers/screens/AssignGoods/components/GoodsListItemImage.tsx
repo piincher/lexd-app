@@ -4,14 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './GoodsListItem.styles';
+import { createStyles } from './GoodsListItem.styles';
 
 interface GoodsListItemImageProps {
   photoUrls: string[];
 }
 
 export const GoodsListItemImage: React.FC<GoodsListItemImageProps> = ({ photoUrls }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const hasPhoto = photoUrls.length > 0;
   return (
     <View style={styles.imageContainer}>
@@ -19,7 +20,7 @@ export const GoodsListItemImage: React.FC<GoodsListItemImageProps> = ({ photoUrl
         <Image source={{ uri: photoUrls[0] }} style={styles.image} />
       ) : (
         <LinearGradient colors={[colors.background.paper, colors.background.default]} style={styles.placeholderImage}>
-          <Ionicons name="cube" size={24} color={Theme.primary[400]} />
+          <Ionicons name="cube" size={24} color={colors.primary[400]} />
         </LinearGradient>
       )}
     </View>

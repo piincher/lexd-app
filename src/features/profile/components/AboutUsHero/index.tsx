@@ -57,7 +57,7 @@ const makeStyles = (colors: any) =>
          justifyContent: 'center',
          alignItems: 'center',
          marginBottom: 16,
-         shadowColor: '#000',
+         shadowColor: colors.neutral[900],
          shadowOffset: { width: 0, height: 4 },
          shadowOpacity: 0.15,
          shadowRadius: 12,

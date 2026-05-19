@@ -1,15 +1,14 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   summaryCard: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.05,
     shadowRadius: 8,
@@ -18,13 +17,13 @@ export const styles = StyleSheet.create({
   summaryAverage: {
     fontSize: 20,
     fontFamily: Fonts.bold,
-    color: Theme.colors.text.primary,
+    color: colors.text.primary,
     marginTop: 8,
   },
   summaryCount: {
     fontSize: 14,
     fontFamily: Fonts.regular,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 2,
   },
 });

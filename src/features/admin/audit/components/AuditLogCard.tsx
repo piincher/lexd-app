@@ -3,7 +3,7 @@ import { Pressable, Text, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { AuditLog, AuditStatus } from '../types';
 import { formatAuditDate } from '../utils/formatAudit';
-import { createAuditLogCardStyles } from './AuditLogCard.styles';
+import { createStyles } from './AuditLogCard.styles';
 
 interface AuditLogCardProps {
   item: AuditLog;
@@ -17,8 +17,8 @@ const getStatusColors = (colors: any): Record<AuditStatus, string> => ({
 });
 
 export const AuditLogCard = memo(({ item, onPress }: AuditLogCardProps) => {
-  const { colors } = useAppTheme();
-  const styles = createAuditLogCardStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const actorName = item.actor?.name || item.adminName || 'System';
   const resource = item.resource?.display || item.targetDisplay || item.resource?.type || item.targetType || 'Ressource';
 

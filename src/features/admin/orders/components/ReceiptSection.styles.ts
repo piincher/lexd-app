@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { AppTheme } from '@src/constants/Theme';
 
-export const createReceiptSectionStyles = (colors: AppTheme['colors']) => StyleSheet.create({
+export const createReceiptSectionStyles = (colors: AppTheme['colors'], isDark?: boolean) => StyleSheet.create({
   card: {
     padding: 16,
     borderRadius: 12,

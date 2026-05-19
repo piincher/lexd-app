@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, Text, TextInput, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { NotificationEventFilters, NotificationEventStatus } from '../types';
-import { createNotificationEventFiltersStyles } from './NotificationEventFilters.styles';
+import { createStyles } from './NotificationEventFilters.styles';
 
 interface NotificationEventFiltersProps {
   filters: NotificationEventFilters;
@@ -15,8 +15,8 @@ export const NotificationEventFilters: React.FC<NotificationEventFiltersProps> =
   filters,
   onChange,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = createNotificationEventFiltersStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.container}>

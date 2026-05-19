@@ -16,6 +16,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
 const Circle: React.FC<{ s: number; style?: Record<string, unknown> }> = ({ s, style }) => {
+  const { colors } = useAppTheme();
   const p = useSharedValue(0);
   useEffect(() => {
     p.value = withRepeat(withTiming(1, { duration: 2500 }), -1, true);
@@ -27,7 +28,7 @@ const Circle: React.FC<{ s: number; style?: Record<string, unknown> }> = ({ s, s
   return (
     <Animated.View
       style={[
-        { width: s, height: s, borderRadius: s / 2, overflow: 'hidden', backgroundColor: 'rgba(255,255,255,0.06)' },
+        { width: s, height: s, borderRadius: s / 2, overflow: 'hidden', backgroundColor: colors.neutral.white + '0F' },
         a,
         style,
       ]}
@@ -59,7 +60,7 @@ export const GuestHero: React.FC = () => {
           <Circle s={100} style={{ bottom: -20, left: -20 }} />
         </LinearGradient>
       </View>
-      <View style={[styles.overlap, { backgroundColor: colors.background.paper, shadowColor: isDark ? '#000' : 'rgba(0,0,0,0.08)' }]} />
+      <View style={[styles.overlap, { backgroundColor: colors.background.paper, shadowColor: colors.neutral[900] }]} />
     </Animated.View>
   );
 };

@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   appbar: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     elevation: 0,
   },
   appbarTitle: {

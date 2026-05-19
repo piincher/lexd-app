@@ -26,7 +26,7 @@ export const createStyles = (colors: any) =>
       position: 'relative',
       borderRadius: 12,
       overflow: 'hidden',
-      shadowColor: '#000',
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.2,
       shadowRadius: 4,

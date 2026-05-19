@@ -6,7 +6,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Chip } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface FilterOption {
   value: string;
@@ -37,12 +37,15 @@ export const FilterChipGroup: React.FC<FilterChipGroupProps> = ({
     return selectedValues === value;
   };
 
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+
   const getChipStyle = (option: FilterOption, selected: boolean) => {
     if (!selected) return {};
     if (option.color) {
       return { backgroundColor: option.color + '20' };
     }
-    return { backgroundColor: Theme.primary[100] };
+    return { backgroundColor: colors.primary[100] };
   };
 
   const getTextStyle = (option: FilterOption, selected: boolean) => {
@@ -50,7 +53,7 @@ export const FilterChipGroup: React.FC<FilterChipGroupProps> = ({
     if (option.color) {
       return { color: option.color };
     }
-    return { color: Theme.primary[600] };
+    return { color: colors.primary[600] };
   };
 
   return (
@@ -74,17 +77,17 @@ export const FilterChipGroup: React.FC<FilterChipGroupProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: Theme.spacing.sm,
+    gap: 8,
   },
   chip: {
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
   },
   chipText: {
     fontSize: 12,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
 });

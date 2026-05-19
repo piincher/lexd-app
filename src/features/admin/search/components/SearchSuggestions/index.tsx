@@ -30,7 +30,7 @@ const SuggestionItemRow: React.FC<{ item: SuggestionItem; onPress: () => void }>
       <Ionicons
         name={item.type === "goods" ? "cube" : item.type === "container" ? "airplane" : "person"}
         size={18}
-        color={Theme.primary[500]}
+        color={colors.primary[500]}
       />
     </View>
     <View style={styles.suggestionContent}>
@@ -39,7 +39,7 @@ const SuggestionItemRow: React.FC<{ item: SuggestionItem; onPress: () => void }>
         <Text style={styles.suggestionSubtitle} numberOfLines={1}>{item.subtitle}</Text>
       ) : null}
     </View>
-    <Ionicons name="arrow-forward" size={16} color={Theme.neutral[400]} />
+    <Ionicons name="arrow-forward" size={16} color={colors.neutral[400]} />
   </TouchableOpacity>
   );
 };
@@ -69,7 +69,7 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
     <>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Suggestions</Text>
-        {isLoading && <Ionicons name="sync" size={14} color={Theme.primary[500]} />}
+        {isLoading && <Ionicons name="sync" size={14} color={colors.primary[500]} />}
       </View>
       {renderCategory("Marchandises", suggestions.goods, "goods")}
       {renderCategory("Containers", suggestions.containers, "container")}

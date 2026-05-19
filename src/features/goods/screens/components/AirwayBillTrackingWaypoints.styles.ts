@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -11,13 +11,13 @@ export const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginBottom: Theme.spacing.md,
   },
   progress: {
     fontSize: 13,
     fontWeight: '800',
-    color: Theme.primary[500],
+    color: colors.primary[500],
     marginBottom: Theme.spacing.md,
   },
   card: {
@@ -27,14 +27,14 @@ export const styles = StyleSheet.create({
   progressTrack: {
     height: 6,
     borderRadius: 99,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
     overflow: 'hidden',
     marginBottom: Theme.spacing.md,
   },
   progressFill: {
     height: '100%',
     borderRadius: 99,
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
   },
   item: {
     flexDirection: 'row',
@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
   location: {
     fontSize: 14,
     fontWeight: '800',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     flex: 1,
   },
   status: {
@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
   },
   description: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 3,
     lineHeight: 17,
   },
@@ -82,12 +82,12 @@ export const styles = StyleSheet.create({
   },
   meta: {
     fontSize: 11,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     fontWeight: '600',
   },
   etaMeta: {
     fontSize: 11,
-    color: Theme.primary[500],
+    color: colors.primary[500],
     fontWeight: '800',
   },
   current: {
@@ -100,6 +100,6 @@ export const styles = StyleSheet.create({
     top: 40,
     bottom: 0,
     width: 2,
-    backgroundColor: Theme.neutral[200],
+    backgroundColor: colors.neutral[200],
   },
 });

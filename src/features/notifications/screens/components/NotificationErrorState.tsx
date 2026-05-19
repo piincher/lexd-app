@@ -6,6 +6,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { useNotificationEmptyStyles } from './NotificationEmpty.styles';
 
 interface NotificationErrorStateProps {
@@ -27,7 +28,7 @@ export const NotificationErrorState: React.FC<NotificationErrorStateProps> = ({ 
       </Text>
       <TouchableOpacity onPress={onRetry} style={styles.retryButton} activeOpacity={0.8}>
         <LinearGradient
-          colors={['#22C55E', '#16A34A', '#15803D']}
+          colors={Theme.gradients.primary}
           style={styles.retryGradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}

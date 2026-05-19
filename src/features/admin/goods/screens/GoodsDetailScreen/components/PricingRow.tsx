@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { styles } from './GoodsDetailPricing.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './GoodsDetailPricing.styles';
 
 interface PricingRowProps {
   label: string;
@@ -16,6 +17,9 @@ export const PricingRow: React.FC<PricingRowProps> = ({
   highlight = false,
   valueColor,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   if (highlight) {
     return (
       <View style={styles.financialRowHighlight}>

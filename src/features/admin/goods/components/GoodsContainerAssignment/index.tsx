@@ -7,8 +7,8 @@ import React from 'react';
 import { View } from 'react-native';
 import { Card, Text, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './GoodsContainerAssignment.styles';
+import { createStyles } from './GoodsContainerAssignment.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export interface GoodsContainerAssignmentProps {
   containerId?: string;
@@ -27,18 +27,22 @@ export const GoodsContainerAssignment: React.FC<GoodsContainerAssignmentProps> =
 }) => {
   const isAssigned = !!containerId;
 
+  const { colors, isDark } = useAppTheme();
+
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <Card style={styles.container}>
       <Card.Content>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="truck-cargo-container" size={20} color={Theme.primary[600]} />
+          <MaterialCommunityIcons name="truck-cargo-container" size={20} color={colors.primary[600]} />
           <Text style={styles.title}>Assignation Conteneur</Text>
         </View>
 
         {isAssigned ? (
           <View style={styles.assignedContainer}>
             <View style={styles.iconContainer}>
-              <MaterialCommunityIcons name="ferry" size={32} color={Theme.primary[600]} />
+              <MaterialCommunityIcons name="ferry" size={32} color={colors.primary[600]} />
             </View>
             <View style={styles.infoContainer}>
               <Text style={styles.containerNumber}>{containerNumber || containerId}</Text>
@@ -51,14 +55,14 @@ export const GoodsContainerAssignment: React.FC<GoodsContainerAssignmentProps> =
               disabled={isLoading}
               icon="link-off"
               style={styles.actionButton}
-              textColor={Theme.status.error}
+              textColor={colors.status.error}
             >
               Retirer
             </Button>
           </View>
         ) : (
           <View style={styles.unassignedContainer}>
-            <MaterialCommunityIcons name="package-variant-closed" size={48} color={Theme.neutral[300]} />
+            <MaterialCommunityIcons name="package-variant-closed" size={48} color={colors.neutral[300]} />
             <Text style={styles.unassignedText}>Non assigné à un conteneur</Text>
             <Button
               mode="contained"

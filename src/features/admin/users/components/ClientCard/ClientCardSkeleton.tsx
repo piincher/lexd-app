@@ -15,7 +15,6 @@ import Animated, {
   interpolate,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const ShimmerBlock: React.FC<{
@@ -23,6 +22,7 @@ const ShimmerBlock: React.FC<{
   height: number;
   borderRadius?: number;
 }> = ({ width, height, borderRadius = 4 }) => {
+  const { colors, isDark } = useAppTheme();
   const shimmer = useSharedValue(0);
 
   React.useEffect(() => {
@@ -38,10 +38,10 @@ const ShimmerBlock: React.FC<{
   }));
 
   return (
-    <View style={[styles.block, { width, height, borderRadius }]}>
+    <View style={{ width, height, borderRadius, overflow: 'hidden' }}>
       <Animated.View style={[StyleSheet.absoluteFill, shimmerStyle]}>
         <LinearGradient
-          colors={['transparent', 'rgba(255,255,255,0.5)', 'transparent']}
+          colors={['transparent', isDark ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.5)', 'transparent']}
           start={{ x: 0, y: 0.5 }}
           end={{ x: 1, y: 0.5 }}
           style={StyleSheet.absoluteFill}
@@ -51,7 +51,10 @@ const ShimmerBlock: React.FC<{
   );
 };
 
-export const ClientCardSkeleton: React.FC = () => (
+export const ClientCardSkeleton: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  return (
   <Animated.View entering={FadeIn.duration(200)} style={styles.wrapper}>
     <View style={styles.card}>
       {/* Accent border */}
@@ -83,19 +86,20 @@ export const ClientCardSkeleton: React.FC = () => (
       <ShimmerBlock width={42} height={42} borderRadius={12} />
     </View>
   </Animated.View>
-);
+  );
+};
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   wrapper: {
     marginBottom: 12,
   },
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 14,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
@@ -108,7 +112,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 4,
-    backgroundColor: Theme.colors.neutral[200],
+    backgroundColor: colors.neutral[200],
   },
   info: {
     flex: 1,
@@ -128,7 +132,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   block: {
-    backgroundColor: Theme.colors.neutral[200],
+    backgroundColor: colors.neutral[200],
     overflow: 'hidden',
   },
 });

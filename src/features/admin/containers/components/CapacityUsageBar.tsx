@@ -8,7 +8,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { CapacityUsageBarHeader } from './CapacityUsageBarHeader';
 import { CapacityUsageBarProgress } from './CapacityUsageBarProgress';
 import { CapacityUsageBarFooter } from './CapacityUsageBarFooter';
-import { styles } from './CapacityUsageBar.styles';
+import { createStyles } from './CapacityUsageBar.styles';
 
 interface CapacityUsageBarProps {
   used: number;
@@ -37,7 +37,8 @@ export const CapacityUsageBar: React.FC<CapacityUsageBarProps> = ({
   height = 24,
   variant = 'cbm',
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const percentage = Math.min((used / max) * 100, 100);
   const remaining = Math.max(max - used, 0);
   const fillColors = getFillColor(percentage, colors);

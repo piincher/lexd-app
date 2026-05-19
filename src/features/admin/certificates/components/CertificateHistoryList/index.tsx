@@ -4,9 +4,8 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
 import { CertificateRecord } from "../../api";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { Theme } from "@src/constants/Theme";
 import { CertificateCard } from "../CertificateCard";
-import { styles } from "./CertificateHistoryList.styles";
+import { createStyles } from "./CertificateHistoryList.styles";
 
 interface PaginationInfo {
   page: number;
@@ -44,7 +43,8 @@ export const CertificateHistoryList: React.FC<CertificateHistoryListProps> = ({
   isDownloading,
   onPressCertificate,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const renderItem = ({ item }: { item: CertificateRecord }) => (
     <CertificateCard
       certificate={item}
@@ -65,7 +65,7 @@ export const CertificateHistoryList: React.FC<CertificateHistoryListProps> = ({
       onRefresh={onRefresh}
       ListEmptyComponent={
         <View style={styles.emptyContainer}>
-          <MaterialIcons name="verified" size={64} color={Theme.neutral[300]} />
+          <MaterialIcons name="verified" size={64} color={colors.neutral[300]} />
           <Text style={styles.emptyTitle}>Aucun certificat trouvé</Text>
           <Text style={styles.emptySubtitle}>
             {activeFilter !== "all"

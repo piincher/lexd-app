@@ -92,14 +92,8 @@ export const TICKET_STATUS_COLORS: Record<TicketStatus, string> = {
   CLOSED: '#415F8B',
 };
 
-// Ticket status background colors
-export const TICKET_STATUS_BG_COLORS: Record<TicketStatus, string> = {
-  OPEN: '#FEF3C7',
-  IN_PROGRESS: '#E0F2FE',
-  WAITING_CUSTOMER: '#F3E8FF',
-  RESOLVED: '#D1FAE5',
-  CLOSED: '#F3F4F6',
-};
+// Derive status background from foreground color with reduced opacity.
+// Usage: TICKET_STATUS_COLORS[status] + '15'
 
 // Ticket type icons
 export const TICKET_TYPE_ICONS: Record<TicketType, string> = {

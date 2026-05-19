@@ -4,7 +4,8 @@ import { Text, TextInput, Menu, IconButton, Divider } from "react-native-paper";
 
 import { ExportEntity } from "../../types";
 import { STATUS_OPTIONS } from "./exportModalConstants";
-import { styles } from "./ExportDataModal.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "./ExportDataModal.styles";
 
 interface StatusPickerProps {
   entity: ExportEntity;
@@ -14,6 +15,9 @@ interface StatusPickerProps {
 
 export const StatusPicker: React.FC<StatusPickerProps> = ({ entity, value, onSelect }) => {
   const [visible, setVisible] = useState(false);
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+
   const options = STATUS_OPTIONS[entity] || [];
   const selectedLabel = options.find((o) => o.value === value)?.label || (value ? value : "All Statuses");
 

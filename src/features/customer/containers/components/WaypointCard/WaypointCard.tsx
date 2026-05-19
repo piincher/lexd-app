@@ -68,7 +68,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
                 ? { backgroundColor: colors.status.success }
                 : isCurrent
                 ? { backgroundColor: colors.status.info }
-                : { backgroundColor: Theme.neutral[300] },
+                : { backgroundColor: colors.neutral[300] },
             ]}
           />
         </View>

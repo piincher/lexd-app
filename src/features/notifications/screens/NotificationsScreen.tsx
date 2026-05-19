@@ -7,7 +7,8 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useNotificationsScreenUI } from './hooks/useNotificationsScreenUI';
-import { styles } from './NotificationsScreen.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './NotificationsScreen.styles';
 
 import { NotificationHeader } from './components/NotificationHeader';
 import { NotificationFilterTabs } from './components/NotificationFilterTabs';
@@ -26,6 +27,8 @@ const NotificationsScreen: React.FC = () => {
     isMarkingAll,
     handlers,
   } = useNotificationsScreenUI();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>

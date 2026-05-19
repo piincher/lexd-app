@@ -53,18 +53,6 @@ export const CUSTOMER_STATUS_COLORS: Record<CustomerContainerStatus, string> = {
 };
 
 /**
- * Status colors for backgrounds
+ * Derive status background from foreground color with reduced opacity.
+ * Usage: CUSTOMER_STATUS_COLORS[status] + '15'
  */
-export const CUSTOMER_STATUS_BG_COLORS: Record<CustomerContainerStatus, string> = {
-  BOOKED: '#EDE9FE',
-  EMPTY_TO_WAREHOUSE: '#E0E7FF',
-  LOADING: '#FEF3C7',
-  LOADED: '#DBEAFE',
-  GATE_IN_FULL: '#CFFAFE',
-  LOADED_ON_VESSEL: '#DBEAFE',
-  IN_TRANSIT: '#E0F2FE',
-  ARRIVED: '#D1FAE5',
-  DISCHARGED: '#CCFBF1',
-  READY_FOR_PICKUP: '#FEF3C7',
-  DELIVERED: '#DCFCE7',
-};

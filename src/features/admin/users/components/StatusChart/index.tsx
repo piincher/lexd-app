@@ -4,7 +4,8 @@ import { BarChart } from "react-native-gifted-charts";
 import { Ionicons } from "@expo/vector-icons";
 
 import { COLORS } from "../../lib/constants";
-import { styles } from "./StatusChart.styles";
+import { createStyles } from './StatusChart.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
@@ -20,6 +21,8 @@ interface StatusChartProps {
 }
 
 export const StatusChart: React.FC<StatusChartProps> = ({ data, hasData }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   if (!hasData) {
     return (
       <View style={styles.emptyContainer}>

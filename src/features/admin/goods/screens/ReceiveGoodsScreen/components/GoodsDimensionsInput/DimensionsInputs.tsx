@@ -13,8 +13,9 @@ interface DimensionsInputsProps {
 
 export const DimensionsInputs: React.FC<DimensionsInputsProps> = ({ control, errors, calculatedCBM }) => {
    const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
-   const styles = StyleSheet.create({
+   const createStyles = (colors: any) => StyleSheet.create({
       dimensionsContainer: {
          marginTop: 20,
       },

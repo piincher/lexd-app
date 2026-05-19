@@ -12,10 +12,11 @@ import {
   InfoSection,
 } from './NotificationSettings/components';
 import { useNotificationSettingsScreen } from './hooks/useNotificationSettingsScreen';
-import { styles } from './NotificationSettings/NotificationSettings.styles';
+import { createStyles } from './NotificationSettings/NotificationSettings.styles';
 
 const NotificationSettingsScreen: React.FC = () => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     isLoading,
     masterEnabled,

@@ -23,60 +23,7 @@ interface GoodsCardProps {
   onToggleSelect?: () => void;
 }
 
-export const GoodsCard: React.FC<GoodsCardProps> = ({
-  goods, onPress, onMenuPress, isSelected, isSelectionMode, onToggleSelect,
-}) => {
-  const { colors } = useAppTheme();
-  const photoUrls = normalizePhotos(goods);
-
-  return (
-    <TouchableOpacity
-      style={[
-        styles.container,
-        { backgroundColor: colors.background.card },
-        isSelected && { backgroundColor: colors.primary[100] },
-      ]}
-      onPress={isSelectionMode ? onToggleSelect : onPress}
-      activeOpacity={0.95}
-    >
-      <GoodsCardStatus status={goods.status} />
-      <View style={styles.content}>
-        <GoodsCardImage photoUrls={photoUrls} status={goods.status} />
-        <View style={styles.info}>
-          <View style={styles.headerRow}>
-            <Text style={[styles.goodsId, { color: colors.text.primary }]}>{goods.goodsId}</Text>
-            {isSelectionMode ? (
-              <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
-                {isSelected && <Ionicons name="checkmark" size={16} color={colors.text.inverse} />}
-              </View>
-            ) : (
-              <TouchableOpacity style={styles.moreButton} onPress={onMenuPress}>
-                <Ionicons name="ellipsis-horizontal" size={20} color={colors.text.secondary} />
-              </TouchableOpacity>
-            )}
-          </View>
-          <Text style={[styles.description, { color: colors.text.secondary }]} numberOfLines={1}>
-            {goods.description || 'Sans description'}
-          </Text>
-          <GoodsCardClient clientId={goods.clientId} />
-          <View style={styles.metaRow}>
-            <View style={styles.metaItem}>
-              <Ionicons name="layers-outline" size={14} color={colors.text.secondary} />
-              <Text style={[styles.metaText, { color: colors.text.secondary }]}>Qté: {goods.quantity || 1}</Text>
-            </View>
-            <View style={styles.metaItem}>
-              <Ionicons name="location-outline" size={14} color={colors.text.secondary} />
-              <Text style={[styles.metaText, { color: colors.text.secondary }]}>Loc: {goods.warehouseLocation || 'N/A'}</Text>
-            </View>
-          </View>
-          <GoodsCardMetrics cbm={goods.actualCBM} weight={goods.weight} price={goods.totalCost} />
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     borderRadius: Theme.radius.xl,
     margin: Theme.spacing.lg,
@@ -132,14 +79,68 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: Theme.neutral[400],
+    borderColor: colors.neutral[400],
     justifyContent: 'center',
     alignItems: 'center',
   },
   checkboxSelected: {
-    backgroundColor: Theme.primary[600],
-    borderColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
+    borderColor: colors.primary[600],
   },
 });
+
+export const GoodsCard: React.FC<GoodsCardProps> = ({
+  goods, onPress, onMenuPress, isSelected, isSelectionMode, onToggleSelect,
+}) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const photoUrls = normalizePhotos(goods);
+
+  return (
+    <TouchableOpacity
+      style={[
+        styles.container,
+        { backgroundColor: colors.background.card },
+        isSelected && { backgroundColor: colors.primary[100] },
+      ]}
+      onPress={isSelectionMode ? onToggleSelect : onPress}
+      activeOpacity={0.95}
+    >
+      <GoodsCardStatus status={goods.status} />
+      <View style={styles.content}>
+        <GoodsCardImage photoUrls={photoUrls} status={goods.status} />
+        <View style={styles.info}>
+          <View style={styles.headerRow}>
+            <Text style={[styles.goodsId, { color: colors.text.primary }]}>{goods.goodsId}</Text>
+            {isSelectionMode ? (
+              <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
+                {isSelected && <Ionicons name="checkmark" size={16} color={colors.text.inverse} />}
+              </View>
+            ) : (
+              <TouchableOpacity style={styles.moreButton} onPress={onMenuPress}>
+                <Ionicons name="ellipsis-horizontal" size={20} color={colors.text.secondary} />
+              </TouchableOpacity>
+            )}
+          </View>
+          <Text style={[styles.description, { color: colors.text.secondary }]} numberOfLines={1}>
+            {goods.description || 'Sans description'}
+          </Text>
+          <GoodsCardClient clientId={goods.clientId} />
+          <View style={styles.metaRow}>
+            <View style={styles.metaItem}>
+              <Ionicons name="layers-outline" size={14} color={colors.text.secondary} />
+              <Text style={[styles.metaText, { color: colors.text.secondary }]}>Qté: {goods.quantity || 1}</Text>
+            </View>
+            <View style={styles.metaItem}>
+              <Ionicons name="location-outline" size={14} color={colors.text.secondary} />
+              <Text style={[styles.metaText, { color: colors.text.secondary }]}>Loc: {goods.warehouseLocation || 'N/A'}</Text>
+            </View>
+          </View>
+          <GoodsCardMetrics cbm={goods.actualCBM} weight={goods.weight} price={goods.totalCost} />
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
 export default GoodsCard;

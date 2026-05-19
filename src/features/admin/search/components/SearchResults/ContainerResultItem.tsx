@@ -4,10 +4,9 @@ import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { Theme } from "@src/constants/Theme";
 import { SearchResultItem } from "../../types/searchResults";
 import { useSearchHighlight } from "../../hooks/useSearchHighlight";
-import { searchResultItemStyles as baseStyles } from "./SearchResultItem.styles";
+import { createStyles } from "./SearchResultItem.styles";
 
 interface ContainerResultItemProps {
   item: SearchResultItem;
@@ -20,19 +19,46 @@ export const ContainerResultItem: React.FC<ContainerResultItemProps> = ({
   onPress,
   highlightQuery,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const baseStyles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const highlightText = useSearchHighlight(highlightQuery);
   const statusColors: Record<string, string> = {
-    BOOKED: "#6366F1",
-    EMPTY_TO_WAREHOUSE: "#8B5CF6",
-    LOADING: "#EC4899",
-    LOADED: "#F59E0B",
-    IN_TRANSIT: "#3B82F6",
-    ARRIVED: "#10B981",
-    READY_FOR_PICKUP: "#14B8A6",
+    BOOKED: colors.status.info,
+    EMPTY_TO_WAREHOUSE: colors.primary.main,
+    LOADING: colors.accent.rose,
+    LOADED: colors.status.warning,
+    IN_TRANSIT: colors.accent.sky,
+    ARRIVED: colors.status.success,
+    READY_FOR_PICKUP: colors.accent.mint,
   };
-  const statusColor = statusColors[item.status] || Theme.neutral[400];
+  const statusColor = statusColors[item.status] || colors.neutral[400];
   const utilizationPercent = item.utilizationPercent || 0;
+
+  const styles = React.useMemo(() => StyleSheet.create({
+    secondaryText: {
+      fontSize: 12,
+      color: colors.neutral[500],
+    },
+    utilizationBadge: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
+      backgroundColor: colors.neutral[100],
+      borderRadius: 4,
+      paddingHorizontal: 6,
+      paddingVertical: 2,
+    },
+    utilizationBar: {
+      height: 4,
+      borderRadius: 2,
+      minWidth: 4,
+    },
+    utilizationText: {
+      fontSize: 10,
+      fontWeight: "600",
+      color: colors.neutral[600],
+    },
+  }), [colors]);
 
   return (
     <TouchableOpacity
@@ -67,7 +93,7 @@ export const ContainerResultItem: React.FC<ContainerResultItemProps> = ({
         </Text>
         <View style={baseStyles.resultMeta}>
           <View style={baseStyles.metaItem}>
-            <Ionicons name="cube" size={12} color={Theme.neutral[400]} />
+            <Ionicons name="cube" size={12} color={colors.neutral[400]} />
             <Text style={baseStyles.metaText}>
               {item.goodsCount || 0} marchandises
             </Text>
@@ -76,7 +102,7 @@ export const ContainerResultItem: React.FC<ContainerResultItemProps> = ({
             <Ionicons
               name="trending-up"
               size={12}
-              color={Theme.neutral[400]}
+              color={colors.neutral[400]}
             />
             <Text style={baseStyles.metaText}>
               {item.totalCBM?.toFixed(1)} / {item.capacityCBM} CBM
@@ -99,33 +125,7 @@ export const ContainerResultItem: React.FC<ContainerResultItemProps> = ({
           </View>
         </View>
       </View>
-      <Ionicons name="chevron-forward" size={20} color={Theme.neutral[400]} />
+      <Ionicons name="chevron-forward" size={20} color={colors.neutral[400]} />
     </TouchableOpacity>
   );
 };
-
-const styles = StyleSheet.create({
-  secondaryText: {
-    fontSize: 12,
-    color: Theme.neutral[500],
-  },
-  utilizationBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    backgroundColor: Theme.neutral[100],
-    borderRadius: Theme.radius.sm,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  utilizationBar: {
-    height: 4,
-    borderRadius: 2,
-    minWidth: 4,
-  },
-  utilizationText: {
-    fontSize: 10,
-    fontWeight: "600",
-    color: Theme.neutral[600],
-  },
-});

@@ -6,6 +6,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { KPICard } from './KPICard';
 import { styles } from './KPICards.styles';
 
@@ -40,12 +41,12 @@ export const KPICards: React.FC<KPICardsProps> = ({ data, loading = false }) => 
   const { colors } = useAppTheme();
 
   const kpiConfig = [
-    { title: "Revenus Aujourd'hui", value: formatCurrency(data.todayRevenueFCFA), subtitle: 'FCFA', icon: 'cash-plus' as const, gradientColors: ['#10B981', '#059669', '#047857'] as [string, string, string] },
-    { title: 'Ce Mois', value: formatCurrency(data.thisMonthRevenueFCFA), subtitle: 'FCFA', icon: 'calendar-month' as const, gradientColors: ['#8B5CF6', '#7C3AED', '#6D28D9'] as [string, string, string] },
-    { title: 'Conteneurs Actifs', value: formatNumber(data.activeContainers), subtitle: 'en transit', icon: 'truck-delivery' as const, gradientColors: ['#3B82F6', '#2563EB', '#1D4ED8'] as [string, string, string] },
-    { title: 'Paiements en Attente', value: formatNumber(data.pendingPayments), subtitle: 'à traiter', icon: 'clock-outline' as const, gradientColors: ['#F59E0B', '#D97706', '#B45309'] as [string, string, string] },
-    { title: 'Nouveaux Clients', value: formatNumber(data.newCustomersThisMonth), subtitle: 'ce mois', icon: 'account-plus' as const, gradientColors: ['#EC4899', '#DB2777', '#BE185D'] as [string, string, string] },
-    { title: 'Marchandises', value: formatNumber(data.goodsInTransit), subtitle: 'en transit', icon: 'package-variant-closed' as const, gradientColors: ['#06B6D4', '#0891B2', '#0E7490'] as [string, string, string] },
+    { title: "Revenus Aujourd'hui", value: formatCurrency(data.todayRevenueFCFA), subtitle: 'FCFA', icon: 'cash-plus' as const, gradientColors: Theme.gradients.primary as [string, string, string] },
+    { title: 'Ce Mois', value: formatCurrency(data.thisMonthRevenueFCFA), subtitle: 'FCFA', icon: 'calendar-month' as const, gradientColors: Theme.gradients.purple as [string, string, string] },
+    { title: 'Conteneurs Actifs', value: formatNumber(data.activeContainers), subtitle: 'en transit', icon: 'truck-delivery' as const, gradientColors: Theme.gradients.ocean as [string, string, string] },
+    { title: 'Paiements en Attente', value: formatNumber(data.pendingPayments), subtitle: 'à traiter', icon: 'clock-outline' as const, gradientColors: Theme.gradients.gold as [string, string, string] },
+    { title: 'Nouveaux Clients', value: formatNumber(data.newCustomersThisMonth), subtitle: 'ce mois', icon: 'account-plus' as const, gradientColors: Theme.gradients.pink as [string, string, string] },
+    { title: 'Marchandises', value: formatNumber(data.goodsInTransit), subtitle: 'en transit', icon: 'package-variant-closed' as const, gradientColors: Theme.gradients.cyan as [string, string, string] },
   ];
 
   if (loading) {

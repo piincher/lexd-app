@@ -1,6 +1,7 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 // GoodsDetailActions - Bottom action buttons
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -15,6 +16,8 @@ export const GoodsDetailActions: React.FC<GoodsDetailActionsProps> = ({
   onEdit,
   onDelete,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const navigation = useNavigation();
 
   return (
@@ -33,7 +36,7 @@ export const GoodsDetailActions: React.FC<GoodsDetailActionsProps> = ({
         onPress={onDelete}
         style={styles.deleteButton}
         contentStyle={styles.buttonContent}
-        textColor={Theme.status.error}
+        textColor={colors.status.error}
         icon="delete"
       >
         Supprimer
@@ -42,7 +45,7 @@ export const GoodsDetailActions: React.FC<GoodsDetailActionsProps> = ({
   );
 };
 
-const styles = {
+const createStyles = (colors: any) => ({
   actionButtons: {
     flexDirection: 'row' as const,
     gap: 12,
@@ -51,17 +54,17 @@ const styles = {
   },
   editButton: {
     flex: 1,
-    backgroundColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
     borderRadius: 12,
     elevation: 2,
   },
   deleteButton: {
     flex: 1,
-    borderColor: Theme.status.error,
+    borderColor: colors.status.error,
     borderRadius: 12,
     borderWidth: 1.5,
   },
   buttonContent: {
     paddingVertical: 8,
   },
-};
+});

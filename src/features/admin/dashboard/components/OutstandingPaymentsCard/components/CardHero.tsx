@@ -43,7 +43,7 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
           width: 140,
           height: 140,
           borderRadius: 70,
-          backgroundColor: "rgba(255,255,255,0.08)",
+          backgroundColor: "rgba(255,255,255,0.08)", // Decorative white overlay on colored gradient
         },
         heroHeader: {
           flexDirection: "row",
@@ -60,9 +60,9 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
           width: 40,
           height: 40,
           borderRadius: 13,
-          backgroundColor: "rgba(255,255,255,0.22)",
+          backgroundColor: "rgba(255,255,255,0.22)", // Decorative white overlay on colored gradient
           borderWidth: 1,
-          borderColor: "rgba(255,255,255,0.25)",
+          borderColor: "rgba(255,255,255,0.25)", // Decorative white overlay on colored gradient
           justifyContent: "center",
           alignItems: "center",
         },
@@ -85,9 +85,9 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
           paddingHorizontal: 10,
           paddingVertical: 5,
           borderRadius: 999,
-          backgroundColor: "rgba(255,255,255,0.2)",
+          backgroundColor: "rgba(255,255,255,0.2)", // Decorative white overlay on colored gradient
           borderWidth: 1,
-          borderColor: "rgba(255,255,255,0.3)",
+          borderColor: "rgba(255,255,255,0.3)", // Decorative white overlay on colored gradient
         },
         criticalText: {
           color: colors.text.inverse,

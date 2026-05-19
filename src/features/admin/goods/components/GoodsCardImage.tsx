@@ -17,8 +17,39 @@ interface GoodsCardImageProps {
   status: string;
 }
 
+const createStyles = () => StyleSheet.create({
+  container: {
+    width: 140,
+    height: 140,
+    borderRadius: Theme.radius.lg,
+    overflow: 'hidden',
+    position: 'relative',
+    borderWidth: 1,
+  },
+  placeholder: {
+    width: 140,
+    height: 140,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  iconCircle: {
+    width: 48,
+    height: 48,
+    borderRadius: Theme.radius.full,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...Theme.shadows.sm,
+  },
+  badge: {
+    position: 'absolute',
+    bottom: 8,
+    right: 8,
+  },
+});
+
 export const GoodsCardImage: React.FC<GoodsCardImageProps> = ({ photoUrls, status }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(), []);
   const hasPhoto = photoUrls.length > 0;
   const statusConfig = getStatusConfig(status);
 
@@ -55,33 +86,3 @@ export const GoodsCardImage: React.FC<GoodsCardImageProps> = ({ photoUrls, statu
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: 140,
-    height: 140,
-    borderRadius: Theme.radius.lg,
-    overflow: 'hidden',
-    position: 'relative',
-    borderWidth: 1,
-  },
-  placeholder: {
-    width: 140,
-    height: 140,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  iconCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: Theme.radius.full,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...Theme.shadows.sm,
-  },
-  badge: {
-    position: 'absolute',
-    bottom: 8,
-    right: 8,
-  },
-});

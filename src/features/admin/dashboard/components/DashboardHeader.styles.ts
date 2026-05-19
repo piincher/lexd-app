@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
 
-export const createDashboardHeaderStyles = (colors: any) => StyleSheet.create({
+export const createDashboardHeaderStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     borderRadius: 24,
     padding: 20,

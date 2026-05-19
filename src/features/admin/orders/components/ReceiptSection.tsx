@@ -25,8 +25,8 @@ export interface ReceiptSectionProps {
 }
 
 export const ReceiptSection: React.FC<ReceiptSectionProps> = (props) => {
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => createReceiptSectionStyles(colors), [colors]);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createReceiptSectionStyles(colors, isDark), [colors, isDark]);
   const { receiptUrl, clientPhone, receiptNumber, loading } = props;
   const { isSharing, handleViewReceipt, handleShareGeneric, handleShareWhatsApp } = useReceiptActions(props);
 

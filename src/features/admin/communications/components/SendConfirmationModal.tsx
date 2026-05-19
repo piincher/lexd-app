@@ -10,7 +10,7 @@ import { SendConfirmationModalHeader } from './SendConfirmationModalHeader';
 import { SendConfirmationModalSummary } from './SendConfirmationModalSummary';
 import { SendConfirmationModalPreview } from './SendConfirmationModalPreview';
 import { SendConfirmationModalActions } from './SendConfirmationModalActions';
-import { getStyles } from './SendConfirmationModal.styles';
+import { createStyles } from './SendConfirmationModal.styles';
 
 interface SendConfirmationModalProps {
   visible: boolean;
@@ -31,8 +31,8 @@ export const SendConfirmationModal: React.FC<SendConfirmationModalProps> = ({
   onConfirm,
   onCancel,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onCancel}>

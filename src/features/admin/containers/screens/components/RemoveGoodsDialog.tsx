@@ -22,7 +22,7 @@ export const RemoveGoodsDialog: React.FC<RemoveGoodsDialogProps> = ({
   return (
     <Portal>
       <Dialog visible={visible} onDismiss={onDismiss}>
-        <Dialog.Icon icon="cube-remove" color={Theme.status.warning} />
+        <Dialog.Icon icon="cube-remove" color={colors.status.warning} />
         <Dialog.Title style={styles.dialogTitle}>
           Retirer la Marchandise
         </Dialog.Title>
@@ -35,7 +35,7 @@ export const RemoveGoodsDialog: React.FC<RemoveGoodsDialogProps> = ({
           <Button onPress={onDismiss}>Annuler</Button>
           <Button
             onPress={onConfirm}
-            textColor={Theme.status.warning}
+            textColor={colors.status.warning}
           >
             Retirer
           </Button>

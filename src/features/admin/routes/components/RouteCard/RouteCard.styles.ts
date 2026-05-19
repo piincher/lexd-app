@@ -5,11 +5,11 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   routeCard: {
     marginBottom: Theme.spacing.md,
     borderRadius: Theme.radius.xl,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     ...Theme.shadows.sm,
   },
   routeCardContent: {
@@ -37,7 +37,7 @@ export const styles = StyleSheet.create({
   routeName: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     flex: 1,
   },
   statusBadge: {
@@ -61,14 +61,14 @@ export const styles = StyleSheet.create({
   locationLabel: {
     fontSize: 11,
     fontWeight: '600',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textTransform: 'uppercase',
     marginBottom: 2,
   },
   locationValue: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
   routeArrow: {
     paddingHorizontal: Theme.spacing.sm,
@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
     paddingTop: Theme.spacing.md,
   },
   footerItem: {
@@ -88,7 +88,7 @@ export const styles = StyleSheet.create({
   footerText: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginLeft: Theme.spacing.xs,
   },
 });

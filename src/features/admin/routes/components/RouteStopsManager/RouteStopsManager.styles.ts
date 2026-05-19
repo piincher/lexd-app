@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -35,8 +35,8 @@ export const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: Theme.radius.full,
-    backgroundColor: Theme.primary[100],
-    color: Theme.primary.main,
+    backgroundColor: colors.primary[100],
+    color: colors.primary.main,
     textAlign: 'center',
     lineHeight: 28,
     fontSize: 14,
@@ -45,28 +45,28 @@ export const styles = StyleSheet.create({
   stopName: {
     flex: 1,
     fontSize: 16,
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     fontWeight: '500',
   },
   emptyState: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: Theme.spacing['3xl'],
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderRadius: Theme.radius.lg,
     borderWidth: 2,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderStyle: 'dashed',
   },
   emptyText: {
     marginTop: Theme.spacing.md,
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
   },
   emptySubtext: {
     marginTop: Theme.spacing.xs,
     fontSize: 14,
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
   },
 });

@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 /**
  * WaypointsSection - Upcoming, completed, and map placeholder sections
  */
@@ -22,23 +23,25 @@ export const WaypointsSection: React.FC<WaypointsSectionProps> = ({
   upcomingWaypoints,
   completedWaypoints,
   styles,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <>
     {/* Journey Map Visualization */}
     {waypoints.some((w) => w.coordinates) && (
       <Animated.View entering={FadeInUp.delay(300)} style={styles.mapSection}>
         <View style={styles.sectionTitleRow}>
-          <Ionicons name="map-outline" size={18} color={Theme.neutral[600]} />
+          <Ionicons name="map-outline" size={18} color={colors.neutral[600]} />
           <Text style={styles.sectionTitle}>Aperçu du Parcours</Text>
         </View>
         <View style={styles.mapPlaceholder}>
           <LinearGradient
-            colors={[Theme.colors.feedback.infoBg, Theme.colors.background.paper]}
+            colors={[colors.feedback.infoBg, colors.background.paper]}
             style={styles.mapGradient}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
           >
-            <Ionicons name="map" size={48} color={Theme.status.info} />
+            <Ionicons name="map" size={48} color={colors.status.info} />
             <Text style={styles.mapPlaceholderText}>Carte du Trajet</Text>
             <Text style={styles.mapPlaceholderSubtext}>
               {waypoints.filter((w) => w.coordinates).length} points de localisation disponibles
@@ -52,7 +55,7 @@ export const WaypointsSection: React.FC<WaypointsSectionProps> = ({
     {upcomingWaypoints.length > 0 && (
       <Animated.View entering={FadeInUp.delay(400)} style={styles.section}>
         <View style={styles.sectionTitleRow}>
-          <Ionicons name="time-outline" size={18} color={Theme.neutral[600]} />
+          <Ionicons name="time-outline" size={18} color={colors.neutral[600]} />
           <Text style={styles.sectionTitle}>Prochaines Étapes</Text>
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{upcomingWaypoints.length}</Text>
@@ -80,7 +83,7 @@ export const WaypointsSection: React.FC<WaypointsSectionProps> = ({
     {completedWaypoints.length > 0 && (
       <Animated.View entering={FadeInUp.delay(500)} style={styles.section}>
         <View style={styles.sectionTitleRow}>
-          <Ionicons name="checkmark-circle" size={18} color={Theme.status.success} />
+          <Ionicons name="checkmark-circle" size={18} color={colors.status.success} />
           <Text style={styles.sectionTitle}>Étapes Complétées</Text>
           <View style={[styles.badge, styles.badgeSuccess]}>
             <Text style={[styles.badgeText, styles.badgeTextSuccess]}>
@@ -103,4 +106,5 @@ export const WaypointsSection: React.FC<WaypointsSectionProps> = ({
       </Animated.View>
     )}
   </>
-);
+  );
+};

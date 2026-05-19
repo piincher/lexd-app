@@ -15,7 +15,7 @@ import {
   NOTIFICATION_TYPE_CONFIG,
   NOTIFICATION_CATEGORY_CONFIG,
 } from '../../types';
-import { styles } from './NotificationCardContent.styles';
+import { createStyles } from './NotificationCardContent.styles';
 
 interface NotificationCardContentProps {
   notification: InAppNotification;
@@ -29,6 +29,7 @@ export const NotificationCardContent: React.FC<NotificationCardContentProps> = (
   onPress,
 }) => {
   const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const typeConfig = NOTIFICATION_TYPE_CONFIG[notification.type] || NOTIFICATION_TYPE_CONFIG.GENERAL;
   const catConfig = NOTIFICATION_CATEGORY_CONFIG[notification.category] || NOTIFICATION_CATEGORY_CONFIG.INFO;
 

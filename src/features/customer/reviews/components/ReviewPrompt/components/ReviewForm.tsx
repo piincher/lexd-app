@@ -3,7 +3,7 @@ import { View, TextInput } from "react-native";
 import { Card, Text, Button } from "react-native-paper";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { StarRating } from "./StarRating";
-import { styles } from "../ReviewPrompt.styles";
+import { createStyles } from "../ReviewPrompt.styles";
 
 interface ReviewFormProps {
    goodsLabel?: string;
@@ -24,7 +24,8 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
    onCommentChange,
    onSubmit,
 }) => {
-   const { colors } = useAppTheme();
+   const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
    return (
       <Card style={styles.card} mode="elevated">

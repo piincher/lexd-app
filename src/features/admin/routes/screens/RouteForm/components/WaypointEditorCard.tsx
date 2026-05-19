@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import { View, Text } from 'react-native';
 import { IconButton, Menu, SegmentedButtons, Switch, TextInput } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
 import type { RouteWaypointDraft } from '@src/features/admin/routes/types';
 import { KNOWN_PORTS, SEGMENT_TYPES, WAYPOINT_TYPES } from './routeWaypointOptions';
-import { styles } from './WaypointEditorCard.styles';
+import { createStyles } from './WaypointEditorCard.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const PRIMARY_WAYPOINT_TYPES = WAYPOINT_TYPES.slice(0, 3);
 const SECONDARY_WAYPOINT_TYPES = WAYPOINT_TYPES.slice(3);
@@ -56,6 +56,10 @@ export const WaypointEditorCard: React.FC<WaypointEditorCardProps> = ({
     onTogglePortMenu(null);
   }, [index, onChange, onTogglePortMenu, waypoint]);
 
+  const { colors, isDark } = useAppTheme();
+
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -69,7 +73,7 @@ export const WaypointEditorCard: React.FC<WaypointEditorCardProps> = ({
         <View style={styles.actions}>
           <IconButton icon="chevron-up" size={18} disabled={index === 0} onPress={() => onMove(index, -1)} style={styles.actionButton} />
           <IconButton icon="chevron-down" size={18} disabled={index === total - 1} onPress={() => onMove(index, 1)} style={styles.actionButton} />
-          <IconButton icon="trash-can-outline" size={18} iconColor={Theme.status.error} onPress={() => onRemove(index)} style={styles.actionButton} />
+          <IconButton icon="trash-can-outline" size={18} iconColor={colors.status.error} onPress={() => onRemove(index)} style={styles.actionButton} />
         </View>
       </View>
 

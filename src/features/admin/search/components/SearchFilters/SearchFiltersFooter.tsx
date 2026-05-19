@@ -6,16 +6,19 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const SearchFiltersFooter: React.FC = () => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+
   return (
-    <LinearGradient colors={['transparent', Theme.colors.background.card]} style={styles.footer}>
+    <LinearGradient colors={['transparent', colors.background.card]} style={styles.footer}>
       <Button
         mode="contained"
         onPress={() => {}}
         style={styles.applyButton}
-        buttonColor={Theme.primary[500]}
+        buttonColor={colors.primary[500]}
       >
         Appliquer les filtres
       </Button>
@@ -23,12 +26,12 @@ export const SearchFiltersFooter: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   footer: {
-    padding: Theme.spacing.lg,
-    paddingTop: Theme.spacing.xl,
+    padding: 16,
+    paddingTop: 24,
   },
   applyButton: {
-    borderRadius: Theme.radius.lg,
+    borderRadius: 8,
   },
 });

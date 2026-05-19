@@ -3,7 +3,7 @@ import { View, Text, Pressable } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { StatCard } from './StatCard';
-import { styles } from './ShipmentSummary.styles';
+import { createStyles } from './ShipmentSummary.styles';
 
 interface SummaryStats {
   total: number;
@@ -18,7 +18,8 @@ interface ShipmentSummaryProps {
 }
 
 export const ShipmentSummary: React.FC<ShipmentSummaryProps> = ({ stats, onViewAll }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const STAT_CARDS = [
     { key: 'total' as const, label: 'Total', icon: 'package-variant', lib: 'mci' as const, color: colors.primary.dark },

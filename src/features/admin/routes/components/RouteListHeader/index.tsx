@@ -7,9 +7,9 @@ import { View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { RouteStats } from '../RouteStats';
-import { styles } from './RouteListHeader.styles';
+import { createStyles } from './RouteListHeader.styles';
 
 interface RouteListHeaderProps {
   stats: {
@@ -21,6 +21,9 @@ interface RouteListHeaderProps {
 }
 
 export const RouteListHeader: React.FC<RouteListHeaderProps> = ({ stats }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <LinearGradient
       colors={Theme.gradients.glass}
@@ -32,7 +35,7 @@ export const RouteListHeader: React.FC<RouteListHeaderProps> = ({ stats }) => {
           <Text style={styles.headerTitle}>Routes</Text>
         </View>
         <TouchableOpacity style={styles.iconButton}>
-          <Ionicons name="filter" size={24} color={Theme.neutral[700]} />
+          <Ionicons name="filter" size={24} color={colors.neutral[700]} />
         </TouchableOpacity>
       </View>
 

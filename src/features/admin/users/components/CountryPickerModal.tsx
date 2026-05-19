@@ -62,7 +62,7 @@ export const CountryPickerModal: React.FC<Props> = ({
       <Pressable
         style={{
           flex: 1,
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: colors.background.overlay,
           justifyContent: 'flex-end',
         }}
         onPress={onClose}

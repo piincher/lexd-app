@@ -35,7 +35,7 @@ export const IssueFormPanel: React.FC<IssueFormPanelProps> = ({
       <TextInput
         style={styles.noteInput}
         placeholder="Note personnalisée (optionnel)"
-        placeholderTextColor={Theme.colors.text.muted}
+        placeholderTextColor={colors.text.muted}
         value={customNote}
         onChangeText={onCustomNoteChange}
         maxLength={500}

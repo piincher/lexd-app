@@ -2,7 +2,8 @@ import React from "react";
 import { View } from "react-native";
 import { Text, Checkbox, RadioButton, TextInput } from "react-native-paper";
 
-import { styles } from "./ExportDataModal.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "./ExportDataModal.styles";
 
 interface EmailSectionProps {
   sendEmail: boolean;
@@ -20,43 +21,48 @@ export const EmailSection: React.FC<EmailSectionProps> = ({
   onEmailChange,
   emailMethod,
   onMethodChange,
-}) => (
-  <>
-    <View style={styles.checkboxRow}>
-      <Checkbox
-        status={sendEmail ? "checked" : "unchecked"}
-        onPress={onToggle}
-      />
-      <Text variant="bodyMedium">Send export by email</Text>
-    </View>
+}) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
 
-    {sendEmail && (
-      <View style={styles.emailSection}>
-        <TextInput
-          mode="outlined"
-          label="Email Address"
-          value={email}
-          onChangeText={onEmailChange}
-          keyboardType="email-address"
-          autoCapitalize="none"
-          style={styles.input}
+  return (
+    <>
+      <View style={styles.checkboxRow}>
+        <Checkbox
+          status={sendEmail ? "checked" : "unchecked"}
+          onPress={onToggle}
         />
-        <RadioButton.Group
-          onValueChange={(value) => onMethodChange(value as "LINK" | "ATTACHMENT")}
-          value={emailMethod}
-        >
-          <RadioButton.Item
-            label="Send download link"
-            value="LINK"
-            position="leading"
-          />
-          <RadioButton.Item
-            label="Attach file to email"
-            value="ATTACHMENT"
-            position="leading"
-          />
-        </RadioButton.Group>
+        <Text variant="bodyMedium">Send export by email</Text>
       </View>
-    )}
-  </>
-);
+
+      {sendEmail && (
+        <View style={styles.emailSection}>
+          <TextInput
+            mode="outlined"
+            label="Email Address"
+            value={email}
+            onChangeText={onEmailChange}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            style={styles.input}
+          />
+          <RadioButton.Group
+            onValueChange={(value) => onMethodChange(value as "LINK" | "ATTACHMENT")}
+            value={emailMethod}
+          >
+            <RadioButton.Item
+              label="Send download link"
+              value="LINK"
+              position="leading"
+            />
+            <RadioButton.Item
+              label="Attach file to email"
+              value="ATTACHMENT"
+              position="leading"
+            />
+          </RadioButton.Group>
+        </View>
+      )}
+    </>
+  );
+};

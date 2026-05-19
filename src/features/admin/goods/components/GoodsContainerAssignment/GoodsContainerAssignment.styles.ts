@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     marginBottom: 12,
     borderRadius: 16,
     elevation: 2,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   header: {
     flexDirection: 'row',
@@ -16,13 +15,13 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 10,
   },
   assignedContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     padding: 16,
     borderRadius: 12,
   },
@@ -30,7 +29,7 @@ export const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 12,
-    backgroundColor: Theme.primary[100],
+    backgroundColor: colors.primary[100],
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -41,16 +40,16 @@ export const styles = StyleSheet.create({
   containerNumber: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   shippingLine: {
     fontSize: 14,
-    color: Theme.neutral[600],
+    color: colors.neutral[600],
     marginTop: 2,
   },
   status: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 4,
   },
   unassignedContainer: {
@@ -60,15 +59,15 @@ export const styles = StyleSheet.create({
   unassignedText: {
     marginTop: 12,
     fontSize: 14,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: 16,
   },
   assignButton: {
-    backgroundColor: Theme.primary[600],
+    backgroundColor: colors.primary[600],
     borderRadius: 10,
   },
   actionButton: {
     borderRadius: 10,
-    borderColor: Theme.status.error,
+    borderColor: colors.status.error,
   },
 });

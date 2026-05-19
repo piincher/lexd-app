@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { createNotificationEventDetailBlockStyles } from './NotificationEventDetailBlock.styles';
+import { createStyles } from './NotificationEventDetailBlock.styles';
 
 interface Row {
   label: string;
@@ -17,8 +17,8 @@ export const NotificationEventDetailBlock: React.FC<NotificationEventDetailBlock
   title,
   rows,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = createNotificationEventDetailBlockStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.block}>

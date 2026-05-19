@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Text, TextInput } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { SMS_LONG_LIMIT } from './composerConstants';
-import { styles } from './MessageComposer.styles';
+import { createStyles } from './MessageComposer.styles';
 
 interface MessageInputProps {
   message: string;
@@ -21,11 +21,14 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   smsCount,
   recipientCount,
   isOverLimit,
-}) => (
+}) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  return (
   <View style={styles.inputWrapper}>
     <TextInput
       placeholder="Ecrivez votre message ici..."
-      placeholderTextColor={Theme.neutral[400]}
+      placeholderTextColor={colors.neutral[400]}
       value={message}
       onChangeText={onMessageChange}
       multiline
@@ -33,7 +36,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       style={styles.input}
       underlineColor="transparent"
       activeUnderlineColor="transparent"
-      textColor={Theme.neutral[800]}
+      textColor={colors.neutral[800]}
     />
     <View style={styles.inputFooter}>
       <Text style={[styles.charCount, isOverLimit && styles.charCountOver]}>
@@ -44,4 +47,5 @@ export const MessageInput: React.FC<MessageInputProps> = ({
       </Text>
     </View>
   </View>
-);
+  );
+};

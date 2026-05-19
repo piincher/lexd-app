@@ -18,7 +18,7 @@ export const AboutUsContactCard: React.FC<Props> = ({ onCall }) => {
    return (
       <Animated.View entering={FadeInDown.delay(800).duration(600)} style={styles.contactCard}>
          <LinearGradient
-            colors={[Theme.primary[500], Theme.primary[600]]}
+            colors={[colors.primary[500], colors.primary[600]]}
             style={styles.contactGradient}
          >
             <Ionicons name="call-outline" size={28} color={colors.text.inverse} />
@@ -31,7 +31,7 @@ export const AboutUsContactCard: React.FC<Props> = ({ onCall }) => {
                onPress={onCall}
                activeOpacity={0.8}
             >
-               <Ionicons name="call" size={16} color={Theme.primary[600]} />
+               <Ionicons name="call" size={16} color={colors.primary[600]} />
                <Text style={styles.contactButtonText}>+86 188 5172 5957</Text>
             </TouchableOpacity>
          </LinearGradient>
@@ -71,7 +71,7 @@ const makeStyles = (colors: any) =>
          flexDirection: 'row',
          alignItems: 'center',
          gap: 8,
-         backgroundColor: Theme.colors.background.card,
+         backgroundColor: colors.background.card,
          paddingHorizontal: 20,
          paddingVertical: 10,
          borderRadius: 24,
@@ -80,6 +80,6 @@ const makeStyles = (colors: any) =>
          fontSize: 14,
          fontFamily: Fonts.bold,
          fontWeight: '700',
-         color: Theme.primary[600],
+         color: colors.primary[600],
       },
    });

@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Chip, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { getStyles } from './ActiveOrderHeaderCard.styles';
+import { createStyles } from './ActiveOrderHeaderCard.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ActiveOrderHeaderCardProps {
   clientName?: string;
@@ -21,8 +22,8 @@ export const ActiveOrderHeaderCard: React.FC<ActiveOrderHeaderCardProps> = ({
   isAir,
   orderPrice,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const initials = clientName?.split(' ').map((n: string) => n[0]).join('') || '?';
 
   return (

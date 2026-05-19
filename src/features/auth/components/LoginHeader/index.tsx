@@ -18,14 +18,11 @@ interface LoginHeaderProps {
 }
 
 export const LoginHeader: React.FC<LoginHeaderProps> = ({ title, subtitle }) => {
-  const { colors, isDark } = useAppTheme();
-  const gradientColors = isDark
-    ? ['#15803D', '#166534', '#14532D']
-    : ['#22C55E', '#16A34A', '#15803D'];
+  const { colors } = useAppTheme();
 
   return (
     <Animated.View entering={FadeInDown.duration(500).springify()} style={styles.container}>
-      <LinearGradient colors={gradientColors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.gradient}>
+      <LinearGradient colors={Theme.gradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.gradient}>
         <View style={styles.decorCircle1} />
         <View style={styles.decorCircle2} />
         <View style={styles.decorCircle3} />

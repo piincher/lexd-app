@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { Theme } from "@src/constants/Theme";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -20,9 +20,10 @@ export const UnassignedGoodsAlert: React.FC<UnassignedGoodsAlertProps> = ({
   onPress,
 }) => {
   const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   const hasUnassigned = total > 0;
 
-  const styles = StyleSheet.create({
+  const createStyles = (colors: any) => StyleSheet.create({
     card: {
       marginBottom: 16,
       borderRadius: 20,

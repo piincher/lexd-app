@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
@@ -30,6 +30,7 @@ export const WaypointStatusSelector: React.FC<WaypointStatusSelectorProps> = ({
   delay = 0,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <Animated.View entering={FadeIn.delay(delay)} style={styles.section}>
       <Text style={styles.sectionTitle}>Statut</Text>
@@ -44,7 +45,7 @@ export const WaypointStatusSelector: React.FC<WaypointStatusSelectorProps> = ({
         <Ionicons
           name={showStatusDropdown ? 'chevron-up' : 'chevron-down'}
           size={20}
-          color={Theme.neutral[500]}
+          color={colors.neutral[500]}
         />
       </TouchableOpacity>
 
@@ -59,33 +60,33 @@ export const WaypointStatusSelector: React.FC<WaypointStatusSelectorProps> = ({
       <View style={styles.statusFlowContainer}>
         <Text style={styles.statusFlowLabel}>Progression:</Text>
         <View style={styles.statusFlow}>
-          <View style={[styles.statusFlowDot, { backgroundColor: Theme.status.success }]} />
+          <View style={[styles.statusFlowDot, { backgroundColor: colors.status.success }]} />
           <View style={styles.statusFlowLine} />
           <View style={[styles.statusFlowDot, { backgroundColor: getExtendedStatusColor(status) }]} />
           <View style={styles.statusFlowLine} />
-          <View style={[styles.statusFlowDot, { backgroundColor: Theme.neutral[300] }]} />
+          <View style={[styles.statusFlowDot, { backgroundColor: colors.neutral[300] }]} />
         </View>
       </View>
     </Animated.View>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   section: {
     marginBottom: Theme.spacing.xl,
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.md,
   },
   dropdown: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderRadius: Theme.radius.lg,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.md,
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   statusFlowContainer: {
     flexDirection: 'row',
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
   },
   statusFlowLabel: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginRight: Theme.spacing.md,
   },
   statusFlow: {
@@ -126,7 +127,7 @@ const styles = StyleSheet.create({
   statusFlowLine: {
     flex: 1,
     height: 2,
-    backgroundColor: Theme.neutral[300],
+    backgroundColor: colors.neutral[300],
     marginHorizontal: 4,
   },
 });

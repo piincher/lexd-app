@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { FlashList } from "@shopify/flash-list";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SearchResultItem } from "../../types/searchResults";
 
 interface SearchResultSectionProps {
@@ -21,6 +21,8 @@ export const SearchResultSection: React.FC<SearchResultSectionProps> = ({
   renderItem,
   total,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   if (!items || items.length === 0) return null;
 
   return (
@@ -30,7 +32,7 @@ export const SearchResultSection: React.FC<SearchResultSectionProps> = ({
           <Ionicons
             name={icon as any}
             size={18}
-            color={Theme.primary[500]}
+            color={colors.primary[500]}
           />
           <Text style={styles.sectionTitle}>{title}</Text>
         </View>
@@ -49,35 +51,35 @@ export const SearchResultSection: React.FC<SearchResultSectionProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   section: {
-    marginBottom: Theme.spacing.xl,
+    marginBottom: 24,
   },
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: Theme.spacing.lg,
-    paddingVertical: Theme.spacing.md,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
   },
   sectionTitleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: Theme.spacing.sm,
+    gap: 8,
   },
   sectionTitle: {
     fontSize: 16,
     fontWeight: "700",
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   sectionCount: {
     fontSize: 12,
     fontWeight: "600",
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   separator: {
     height: 1,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.neutral[100],
     marginLeft: 72,
   },
 });

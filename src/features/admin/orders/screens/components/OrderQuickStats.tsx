@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { styles } from './OrderQuickStats.styles';
+import { createStyles } from './OrderQuickStats.styles';
 
 interface OrderQuickStatsProps {
   quantity?: number | string;
@@ -37,6 +37,7 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
   shippingMode,
 }) => {
   const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   // Parse values safely to handle v1 API string responses
   const parsedQuantity = quantity !== undefined && quantity !== '' 
     ? parseInt(String(quantity), 10) || 0 

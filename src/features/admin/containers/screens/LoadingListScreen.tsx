@@ -14,12 +14,12 @@ import {
 } from './LoadingList/components';
 import { useLoadingListClients } from '../hooks/useLoadingListClients';
 import { LoadingListContent } from '../components/LoadingListContent';
-import { getStyles } from './LoadingList/LoadingListScreen.styles';
+import { createStyles } from './LoadingList/LoadingListScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const LoadingListScreen: React.FC = () => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     container,
     navigation,

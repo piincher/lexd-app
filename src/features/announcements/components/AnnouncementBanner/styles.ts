@@ -38,7 +38,7 @@ export const createStyles = (colors: AppColors, tone: ReturnType<typeof getTone>
       flexDirection: "row",
       alignItems: "center",
       gap: 10,
-      shadowColor: "#000",
+      shadowColor: colors.neutral[900],
       shadowOpacity: 0.14,
       shadowRadius: 10,
       shadowOffset: { width: 0, height: 4 },

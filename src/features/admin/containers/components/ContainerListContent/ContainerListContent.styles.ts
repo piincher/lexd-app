@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   listContent: {
     paddingTop: Theme.spacing.sm,
     paddingBottom: 120,
@@ -21,13 +21,13 @@ export const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.sm,
   },
   emptySubtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textAlign: 'center',
     paddingHorizontal: Theme.spacing['2xl'],
   },
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   emptyButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
   loadingContainer: {
@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
   loadingText: {
     marginTop: Theme.spacing.lg,
     fontSize: 16,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     fontWeight: '500',
   },
   errorContainer: {
@@ -78,13 +78,13 @@ export const styles = StyleSheet.create({
   errorTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginBottom: Theme.spacing.sm,
   },
   errorSubtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     textAlign: 'center',
     marginBottom: Theme.spacing.xl,
   },
@@ -101,7 +101,7 @@ export const styles = StyleSheet.create({
   retryButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
 });

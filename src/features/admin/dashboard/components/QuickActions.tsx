@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { Theme } from "@src/constants/Theme";
 import { getQuickActionsStyles } from "./QuickActions.styles";
 import { QuickActionCard } from "./QuickActionCard";
 
@@ -11,17 +12,17 @@ interface QuickAction {
   subtitle: string;
   icon: string;
   route: string;
-  gradient: readonly [string, string];
+  gradient: readonly string[];
 }
 
-const QUICK_ACTIONS: QuickAction[] = [
+const getQuickActions = (colors: any): QuickAction[] => [
   {
     id: "qa1",
     title: "Réception",
     subtitle: "Nouvelle marchandise",
     icon: "package-variant-closed",
     route: "ReceiveGoods",
-    gradient: ["#10B981", "#059669"] as const,
+    gradient: Theme.gradients.primary,
   },
   {
     id: "qa2",
@@ -29,7 +30,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     subtitle: "Créer une commande",
     icon: "plus-circle",
     route: "ChooseShippingMethod",
-    gradient: ["#3B82F6", "#2563EB"] as const,
+    gradient: Theme.gradients.ocean,
   },
   {
     id: "qa3",
@@ -37,7 +38,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     subtitle: "Gérer",
     icon: "ferry",
     route: "ContainerList",
-    gradient: ["#F97316", "#EA580C"] as const,
+    gradient: Theme.gradients.sunset,
   },
   {
     id: "qa4",
@@ -45,7 +46,7 @@ const QUICK_ACTIONS: QuickAction[] = [
     subtitle: "QR code",
     icon: "qrcode-scan",
     route: "ScanQRCode",
-    gradient: ["#A855F7", "#9333EA"] as const,
+    gradient: [colors.status.info, colors.accent.mint] as const,
   },
 ];
 
@@ -53,6 +54,7 @@ export const QuickActions: React.FC = () => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
   const styles = getQuickActionsStyles(colors);
+  const quickActions = React.useMemo(() => getQuickActions(colors), [colors]);
 
   return (
     <View style={styles.container}>
@@ -61,7 +63,7 @@ export const QuickActions: React.FC = () => {
         <Text style={styles.sectionBadge}>4 raccourcis</Text>
       </View>
       <View style={styles.grid}>
-        {QUICK_ACTIONS.map((action) => (
+        {quickActions.map((action) => (
           <QuickActionCard
             key={action.id}
             action={action}

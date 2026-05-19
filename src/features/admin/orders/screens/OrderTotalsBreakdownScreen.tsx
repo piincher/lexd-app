@@ -15,8 +15,8 @@ import { SummaryCard } from './components/SummaryCard';
 import { useOrderTotalsBreakdownScreen } from './hooks/useOrderTotalsBreakdownScreen';
 
 export const OrderTotalsBreakdownScreen: React.FC = () => {
-  const { colors } = useAppTheme();
-  const styles = createStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { data, isLoading, hasVoidedGoods } = useOrderTotalsBreakdownScreen();
 
   if (isLoading || !data) {

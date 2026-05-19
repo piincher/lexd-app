@@ -7,8 +7,8 @@ import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { Card, Text, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './GoodsPhotoGallery.styles';
+import { createStyles } from './GoodsPhotoGallery.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface GoodsPhotoGalleryProps {
   photos: string[];
@@ -24,11 +24,15 @@ export const GoodsPhotoGallery: React.FC<GoodsPhotoGalleryProps> = ({
   const safePhotos = Array.isArray(photos) ? photos : [];
   const hasPhotos = safePhotos.length > 0;
 
+  const { colors, isDark } = useAppTheme();
+
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <Card style={styles.container}>
       <Card.Content>
         <View style={styles.header}>
-          <MaterialCommunityIcons name="image-multiple" size={20} color={Theme.primary[600]} />
+          <MaterialCommunityIcons name="image-multiple" size={20} color={colors.primary[600]} />
           <Text style={styles.title}>Photos</Text>
           <Text style={styles.count}>({safePhotos.length})</Text>
         </View>
@@ -52,7 +56,7 @@ export const GoodsPhotoGallery: React.FC<GoodsPhotoGalleryProps> = ({
           </View>
         ) : (
           <View style={styles.empty}>
-            <MaterialCommunityIcons name="image-off" size={48} color={Theme.neutral[300]} />
+            <MaterialCommunityIcons name="image-off" size={48} color={colors.neutral[300]} />
             <Text style={styles.emptyText}>Aucune photo</Text>
           </View>
         )}
@@ -63,7 +67,7 @@ export const GoodsPhotoGallery: React.FC<GoodsPhotoGalleryProps> = ({
             onPress={onUpload}
             style={styles.uploadButton}
             icon="camera"
-            textColor={Theme.primary[600]}
+            textColor={colors.primary[600]}
           >
             Ajouter une photo
           </Button>

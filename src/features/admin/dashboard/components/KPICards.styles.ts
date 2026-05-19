@@ -1,10 +1,8 @@
 import { StyleSheet } from "react-native";
-import { Theme, lightTheme } from "@src/constants/Theme";
+import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
 
-export type KPICardColors = typeof lightTheme.colors;
-
-export const createKPICardsStyles = (colors: KPICardColors, isDark: boolean) =>
+export const createStyles = (colors: any, isDark?: boolean) =>
   StyleSheet.create({
     container: {
       gap: 12,

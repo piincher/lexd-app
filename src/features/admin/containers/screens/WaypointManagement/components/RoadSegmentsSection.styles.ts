@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   segmentsContainer: {
     flex: 1,
     padding: Theme.spacing.lg,
@@ -14,16 +14,16 @@ export const styles = StyleSheet.create({
   segmentsTitle: {
     fontSize: 22,
     fontWeight: '700',
-    color: Theme.neutral[900],
+    color: colors.neutral[900],
     marginTop: Theme.spacing.md,
   },
   segmentsSubtitle: {
     fontSize: 16,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: Theme.spacing.sm,
   },
   segmentCard: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: Theme.radius.lg,
     marginBottom: Theme.spacing.lg,
     padding: Theme.spacing.lg,
@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: `${Theme.status.warning}15`,
+    backgroundColor: `${colors.status.warning}15`,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: Theme.spacing.lg,
@@ -49,11 +49,11 @@ export const styles = StyleSheet.create({
   segmentTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[900],
+    color: colors.neutral[900],
   },
   segmentVehicle: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginTop: 2,
   },
   segmentBadge: {
@@ -67,7 +67,7 @@ export const styles = StyleSheet.create({
   },
   segmentDetails: {
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[200],
+    borderTopColor: colors.neutral[200],
     paddingTop: Theme.spacing.lg,
     gap: Theme.spacing.md,
   },
@@ -78,7 +78,7 @@ export const styles = StyleSheet.create({
   },
   detailText: {
     fontSize: 13,
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginLeft: Theme.spacing.md,
   },
 });

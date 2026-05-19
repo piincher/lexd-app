@@ -39,8 +39,8 @@ export const FinancialCard: React.FC<FinancialCardProps> = ({
     <Card style={[styles.sectionCard, styles.financialCard]}>
       <Card.Content>
         <View style={styles.sectionHeader}>
-          <MaterialCommunityIcons name="cash-multiple" size={20} color={Theme.status.success} />
-          <Text style={[styles.sectionTitle, { color: Theme.status.success }]}>Informations financières</Text>
+          <MaterialCommunityIcons name="cash-multiple" size={20} color={colors.status.success} />
+          <Text style={[styles.sectionTitle, { color: colors.status.success }]}>Informations financières</Text>
         </View>
 
         <View style={styles.financialRow}>
@@ -57,7 +57,7 @@ export const FinancialCard: React.FC<FinancialCardProps> = ({
 
         <View style={styles.financialRow}>
           <Text style={styles.financialLabel}>Montant payé</Text>
-          <Text style={[styles.financialValue, { color: Theme.status.success }]}>
+          <Text style={[styles.financialValue, { color: colors.status.success }]}>
             {formatCurrency(amountPaid)} FCFA
           </Text>
         </View>
@@ -65,7 +65,7 @@ export const FinancialCard: React.FC<FinancialCardProps> = ({
         <View style={styles.financialRow}>
           <Text style={styles.financialLabel}>Reste à payer</Text>
           <Text
-            style={[styles.financialValue, { color: balanceDue > 0 ? Theme.status.error : Theme.status.success }]}
+            style={[styles.financialValue, { color: balanceDue > 0 ? colors.status.error : colors.status.success }]}
           >
             {formatCurrency(balanceDue)} FCFA
           </Text>

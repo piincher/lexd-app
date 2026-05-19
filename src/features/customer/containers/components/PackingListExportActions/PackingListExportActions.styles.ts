@@ -15,7 +15,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     flexDirection: 'row',
     gap: 12,
     elevation: 8,
-    shadowColor: '#000',
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: -2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,

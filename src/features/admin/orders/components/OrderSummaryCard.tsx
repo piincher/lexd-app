@@ -5,7 +5,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Card } from '@src/shared/ui/Card';
-import { lightTheme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface OrderSummaryCardProps {
   code: string;
@@ -16,6 +16,48 @@ interface OrderSummaryCardProps {
   pricingSource?: string;
 }
 
+const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+  card: {
+    marginBottom: 16,
+    padding: 16,
+  },
+  code: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: colors.text.primary,
+    marginBottom: 8,
+  },
+  client: {
+    fontSize: 16,
+    color: colors.text.secondary,
+    marginBottom: 8,
+  },
+  status: {
+    fontSize: 14,
+    color: colors.status.info,
+    marginBottom: 12,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  label: {
+    fontSize: 14,
+    color: colors.text.secondary,
+  },
+  value: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text.primary,
+  },
+  pricingSource: {
+    fontSize: 12,
+    color: colors.text.muted,
+    marginTop: 8,
+  },
+});
+
 export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
   code,
   clientName,
@@ -24,6 +66,9 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
   totalCost,
   pricingSource,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <Card variant="elevated" style={styles.card}>
       <Text style={styles.code}>{code}</Text>
@@ -43,47 +88,5 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
     </Card>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    marginBottom: lightTheme.spacing.lg,
-    padding: lightTheme.spacing.lg,
-  },
-  code: {
-    fontSize: lightTheme.typography.h4.fontSize,
-    fontWeight: '700',
-    color: lightTheme.colors.text.primary,
-    marginBottom: lightTheme.spacing.sm,
-  },
-  client: {
-    fontSize: lightTheme.typography.body.fontSize,
-    color: lightTheme.colors.text.secondary,
-    marginBottom: lightTheme.spacing.sm,
-  },
-  status: {
-    fontSize: lightTheme.typography.bodySmall.fontSize,
-    color: lightTheme.colors.status.info,
-    marginBottom: lightTheme.spacing.md,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: lightTheme.spacing.sm,
-  },
-  label: {
-    fontSize: lightTheme.typography.bodySmall.fontSize,
-    color: lightTheme.colors.text.secondary,
-  },
-  value: {
-    fontSize: lightTheme.typography.bodySmall.fontSize,
-    fontWeight: '600',
-    color: lightTheme.colors.text.primary,
-  },
-  pricingSource: {
-    fontSize: lightTheme.typography.caption.fontSize,
-    color: lightTheme.colors.text.muted,
-    marginTop: lightTheme.spacing.sm,
-  },
-});
 
 export default OrderSummaryCard;

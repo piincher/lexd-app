@@ -98,7 +98,7 @@ export const PaymentOverview: React.FC<PaymentOverviewProps> = ({
           {methods.map((m) => {
             const config = PAYMENT_METHOD_CONFIG[m.method?.toLowerCase()] || {
               icon: 'card-outline',
-              color: Theme.colors.text.secondary,
+              color: colors.text.secondary,
               label: m.method || 'Autre',
             };
             return (

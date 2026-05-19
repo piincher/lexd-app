@@ -18,8 +18,8 @@ type PromoFiltersProps = {
 };
 
 export function PromoFilters({ activeFilter, onFilterChange }: PromoFiltersProps) {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScrollContent}>
       {FILTER_CHIPS.map((chip) => {

@@ -57,6 +57,11 @@ const Orb: React.FC<{
   );
 };
 
+/**
+ * FormBackground uses hardcoded orb gradient colors intentionally.
+ * These are decorative background elements that look good in both
+ * light and dark modes. Kept as-is per design decision.
+ */
 export const FormBackground: React.FC = () => {
   const { colors, isDark } = useAppTheme();
 

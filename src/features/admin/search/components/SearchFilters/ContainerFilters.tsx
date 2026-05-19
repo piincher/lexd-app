@@ -5,18 +5,19 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { FilterChipGroup } from '../FilterChipGroup';
 import { SearchFilters as SearchFiltersType } from '../../api/searchApi';
 
-const CONTAINER_STATUSES = [
-  { value: 'BOOKED', label: 'Réservé', color: '#6366F1' },
-  { value: 'EMPTY_TO_WAREHOUSE', label: 'Vide → Entrepôt', color: '#8B5CF6' },
-  { value: 'LOADING', label: 'Chargement', color: '#EC4899' },
-  { value: 'LOADED', label: 'Chargé', color: '#F59E0B' },
-  { value: 'IN_TRANSIT', label: 'Transit', color: '#3B82F6' },
-  { value: 'ARRIVED', label: 'Arrivé', color: '#10B981' },
-  { value: 'READY_FOR_PICKUP', label: 'À récupérer', color: '#14B8A6' },
+const getContainerStatuses = (colors: any) => [
+  { value: 'BOOKED', label: 'Réservé', color: colors.status.info },
+  { value: 'EMPTY_TO_WAREHOUSE', label: 'Vide → Entrepôt', color: colors.primary.main },
+  { value: 'LOADING', label: 'Chargement', color: colors.accent.rose },
+  { value: 'LOADED', label: 'Chargé', color: colors.status.warning },
+  { value: 'IN_TRANSIT', label: 'Transit', color: colors.accent.sky },
+  { value: 'ARRIVED', label: 'Arrivé', color: colors.status.success },
+  { value: 'READY_FOR_PICKUP', label: 'À récupérer', color: colors.accent.mint },
 ];
 
 const SHIPPING_MODES = [
@@ -44,12 +45,13 @@ export const ContainerFilters: React.FC<ContainerFiltersProps> = ({
   onSetShippingMode,
   onSetShippingLine,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <>
       <View style={styles.section}>
         <Text style={styles.label}>Statut</Text>
         <FilterChipGroup
-          options={CONTAINER_STATUSES}
+          options={getContainerStatuses(colors)}
           selectedValues={filters.status ?? []}
           onToggle={onToggleStatus}
         />

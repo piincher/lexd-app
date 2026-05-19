@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
-import { styles } from "./CertificateDetailHeader.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "./CertificateDetailHeader.styles";
 
 interface CertificateDetailHeaderProps {
   onBack: () => void;
@@ -11,6 +11,8 @@ interface CertificateDetailHeaderProps {
 export const CertificateDetailHeader: React.FC<CertificateDetailHeaderProps> = ({
   onBack,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.header}>
       <TouchableOpacity
@@ -21,7 +23,7 @@ export const CertificateDetailHeader: React.FC<CertificateDetailHeaderProps> = (
         <Ionicons
           name="arrow-back"
           size={24}
-          color={Theme.colors.text.primary}
+          color={colors.text.primary}
         />
       </TouchableOpacity>
       <Text style={styles.headerTitle}>Détails du certificat</Text>

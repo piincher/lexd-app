@@ -13,7 +13,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       backgroundColor: colors.background.card,
       borderRadius: 10,
       elevation: 1,
-      shadowColor: '#000',
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.05,
       shadowRadius: 4,

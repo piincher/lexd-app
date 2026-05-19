@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from 'react';
 import { RefreshControl, ScrollView } from 'react-native';
 import { Theme } from '@src/constants/Theme';
@@ -38,14 +39,16 @@ export const AirwayBillTrackingContent: React.FC<Props> = ({
   estimatedArrivalLabel,
   isFetching,
   onRefresh,
-}) => (
+}) => {
+  const { colors } = useAppTheme();
+  return (
   <ScrollView
     contentContainerStyle={styles.content}
     refreshControl={
       <RefreshControl
         refreshing={isFetching}
         onRefresh={onRefresh}
-        tintColor={Theme.primary[500]}
+        tintColor={colors.primary[500]}
       />
     }
   >
@@ -69,6 +72,7 @@ export const AirwayBillTrackingContent: React.FC<Props> = ({
     )}
     <AirwayBillTrackingGoodsList goodsIds={awb.goodsIds} />
   </ScrollView>
-);
+  );
+};
 
 export default AirwayBillTrackingContent;

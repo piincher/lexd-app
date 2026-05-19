@@ -8,11 +8,14 @@ import { Header } from "@src/components/Header/Header";
 import { useSelectUser } from "../hooks/useSelectUser";
 import { UserSearchInput } from "../components/UserSearchInput";
 import { UserSelectList } from "../components/UserSelectList";
-import { styles } from "./SelectUser.styles";
+import { createStyles } from "./SelectUser.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 const BUTTON_TITLE = "Ajouter";
 
 const SelectUser = ({ navigation }: RootStackScreenProps<"SelectUser">) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
   const { selectedUser, search, filteredUsers, handlers } = useSelectUser(navigation);
 
   return (

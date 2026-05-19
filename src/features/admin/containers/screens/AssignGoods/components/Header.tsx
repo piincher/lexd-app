@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,8 +9,9 @@ import { CapacityIndicator } from './CapacityIndicator';
 import { HeaderInfoBlock } from './HeaderInfoBlock';
 import { NonAssignableBanner } from './NonAssignableBanner';
 import { Container, ContainerStatus } from '../../../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './Header.styles';
+import { createStyles } from './Header.styles';
 
 interface HeaderProps {
   container?: Container;
@@ -36,19 +37,21 @@ export const Header: React.FC<HeaderProps> = ({
   onBack,
 }) => {
   const navigation = useNavigation();
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <LinearGradient colors={Theme.gradients.primary} style={styles.header}>
         <View style={styles.headerTop}>
           <TouchableOpacity onPress={onBack} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color={Theme.colors.text.inverse} />
+            <Ionicons name="arrow-back" size={24} color={colors.text.inverse} />
           </TouchableOpacity>
           <HeaderInfoBlock container={container} />
           <NotificationBell
             onPress={() => navigation.navigate('Notifications' as never)}
             size={22}
-            color={Theme.colors.text.inverse}
+            color={colors.text.inverse}
           />
         </View>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Appbar } from 'react-native-paper';
-import { styles } from './ActiveOrderHeader.styles';
+import { createStyles } from './ActiveOrderHeader.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ActiveOrderHeaderProps {
   title: string;
@@ -13,6 +14,9 @@ export const ActiveOrderHeader: React.FC<ActiveOrderHeaderProps> = ({
   onBack,
   rightAction,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <Appbar.Header style={styles.appbar}>
       <Appbar.BackAction onPress={onBack} />

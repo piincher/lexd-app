@@ -24,8 +24,8 @@ export const PaymentCard: React.FC<PaymentCardProps> = ({
   onShareWhatsApp,
   onImagePress,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => createPaymentCardStyles(colors), [colors]);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createPaymentCardStyles(colors, isDark), [colors, isDark]);
   const hasReceipt = !!payment.receiptUrl;
   const hasPhone = !!(clientPhone || payment.clientPhone);
   const isSharing = sharingPaymentId === payment._id;

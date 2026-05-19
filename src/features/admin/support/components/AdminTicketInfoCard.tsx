@@ -7,7 +7,7 @@ import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   ADMIN_TICKET_PRIORITY_LABELS,
-  ADMIN_TICKET_STATUS_COLORS,
+  getAdminTicketStatusColors,
   ADMIN_TICKET_STATUS_LABELS,
   ADMIN_TICKET_TYPE_LABELS,
   AdminTicket,
@@ -23,7 +23,7 @@ const getCustomer = (ticket: AdminTicket) => (typeof ticket.userId === 'string' 
 export const AdminTicketInfoCard: React.FC<AdminTicketInfoCardProps> = ({ ticket, onCallCustomer }) => {
   const { colors } = useAppTheme();
   const customer = getCustomer(ticket);
-  const statusColor = ADMIN_TICKET_STATUS_COLORS[ticket.status];
+  const statusColor = getAdminTicketStatusColors(colors)[ticket.status];
   const customerName = [customer?.firstName, customer?.lastName].filter(Boolean).join(' ') || 'Client';
 
   return (

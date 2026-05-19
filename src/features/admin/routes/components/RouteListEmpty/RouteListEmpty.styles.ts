@@ -5,7 +5,7 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   emptyContainer: {
     alignItems: 'center',
     paddingVertical: Theme.spacing['4xl'],
@@ -21,13 +21,13 @@ export const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 20,
     fontWeight: '700',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
     marginBottom: Theme.spacing.sm,
   },
   emptySubtitle: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[400],
+    color: colors.neutral[400],
     textAlign: 'center',
     paddingHorizontal: Theme.spacing['2xl'],
   },
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
   emptyButtonText: {
     fontSize: 15,
     fontWeight: '700',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     marginLeft: Theme.spacing.sm,
   },
 });

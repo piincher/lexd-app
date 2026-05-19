@@ -31,6 +31,7 @@ const OrderListCardInner: React.FC<OrderListCardProps> = ({ order, onPress }) =>
             {
                backgroundColor: colors.background.card,
                borderColor: colors.border,
+               shadowColor: colors.neutral[900],
                opacity: pressed ? 0.95 : 1,
             },
          ]}
@@ -42,7 +43,7 @@ const OrderListCardInner: React.FC<OrderListCardProps> = ({ order, onPress }) =>
             shippingMode={order.shippingMode}
             statusLabel={statusCfg.label}
             statusColor={statusCfg.color}
-            statusBg={statusCfg.bg}
+            statusBg={statusCfg.color + '15'}
          />
          <OrderCardProgress
             progress={progress}
@@ -61,7 +62,6 @@ const styles = StyleSheet.create({
       paddingHorizontal: 14,
       paddingVertical: 12,
       marginBottom: 10,
-      shadowColor: "#000",
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.04,
       shadowRadius: 4,

@@ -17,9 +17,10 @@ interface StatCardProps {
   icon: string;
   gradient: readonly [string, string, ...string[]];
   styles: ReturnType<typeof createStyles>;
+  iconColor: string;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ label, value, icon, gradient, styles }) => (
+const StatCard: React.FC<StatCardProps> = ({ label, value, icon, gradient, styles, iconColor }) => (
   <View style={styles.statCard}>
     <LinearGradient
       colors={gradient}
@@ -27,7 +28,7 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, icon, gradient, style
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
     >
-      <Ionicons name={icon as any} size={20} color={Theme.colors.text.inverse} />
+      <Ionicons name={icon as any} size={20} color={iconColor} />
     </LinearGradient>
     <View>
       <Text style={styles.statValue}>{value}</Text>
@@ -46,8 +47,8 @@ interface RouteStatsProps {
 }
 
 export const RouteStats: React.FC<RouteStatsProps> = ({ stats }) => {
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <ScrollView
@@ -61,27 +62,31 @@ export const RouteStats: React.FC<RouteStatsProps> = ({ stats }) => {
         icon="map"
         gradient={Theme.gradients.primary}
         styles={styles}
+        iconColor={colors.text.inverse}
       />
       <StatCard
         label="Maritime"
         value={stats.sea}
         icon="boat"
-        gradient={['#3B82F6', '#60A5FA']}
+        gradient={[colors.status.info, colors.accent.sky]}
         styles={styles}
+        iconColor={colors.text.inverse}
       />
       <StatCard
         label="Aérien"
         value={stats.air}
         icon="airplane"
-        gradient={['#8B5CF6', '#A78BFA']}
+        gradient={[colors.primary.main, colors.primary.light]}
         styles={styles}
+        iconColor={colors.text.inverse}
       />
       <StatCard
         label="Actives"
         value={stats.active}
         icon="checkmark-circle"
-        gradient={['#10B981', '#34D399']}
+        gradient={[colors.status.success, colors.primary.light]}
         styles={styles}
+        iconColor={colors.text.inverse}
       />
     </ScrollView>
   );

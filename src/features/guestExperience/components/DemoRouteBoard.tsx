@@ -73,7 +73,7 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
     container: {
       marginHorizontal: 16, marginTop: 16,
       borderRadius: 24, padding: 16,
-      backgroundColor: colors.background.card, shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 4,
+      backgroundColor: colors.background.card, shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 4,
     },
     scrollContent: { alignItems: 'flex-start', paddingRight: 16 },
     column: { width: 80, alignItems: 'center' },

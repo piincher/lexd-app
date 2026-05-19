@@ -1,14 +1,14 @@
 import { StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
     gap: Theme.spacing.sm,
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.neutral[200],
     borderRadius: Theme.radius.md,
     padding: Theme.spacing.md,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   header: {
     flexDirection: 'row',
@@ -21,12 +21,12 @@ export const styles = StyleSheet.create({
     borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
   },
   indexText: {
     fontSize: 12,
     fontWeight: '700',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
   headerTitle: {
     flex: 1,
@@ -44,15 +44,15 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 15,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   subtitle: {
     fontSize: 12,
     fontWeight: '500',
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
   },
   input: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   twoColumn: {
     flexDirection: 'row',
@@ -62,11 +62,11 @@ export const styles = StyleSheet.create({
   flexInput: {
     flex: 1,
     minWidth: 132,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   dayInput: {
     width: 96,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   segmented: {
     minHeight: 44,
@@ -87,6 +87,6 @@ export const styles = StyleSheet.create({
   switchText: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.neutral[700],
   },
 });

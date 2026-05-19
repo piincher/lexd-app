@@ -3,15 +3,15 @@ import { Text, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { AuditChange } from '../types';
 import { formatAuditValue } from '../utils/formatAudit';
-import { createAuditDetailBlockStyles } from './AuditDetailBlock.styles';
+import { createStyles } from './AuditDetailBlock.styles';
 
 interface AuditChangeListProps {
   changes?: Record<string, AuditChange>;
 }
 
 export const AuditChangeList: React.FC<AuditChangeListProps> = ({ changes }) => {
-  const { colors } = useAppTheme();
-  const styles = createAuditDetailBlockStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const entries = Object.entries(changes || {});
 
   return (

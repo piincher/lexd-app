@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Chip, useTheme } from 'react-native-paper';
-import { TicketStatus, TICKET_STATUS_LABELS, TICKET_STATUS_COLORS, TICKET_STATUS_BG_COLORS } from '../types';
+import { TicketStatus, TICKET_STATUS_LABELS, TICKET_STATUS_COLORS } from '../types';
 
 interface TicketStatusBadgeProps {
   status: TicketStatus;
@@ -19,7 +19,7 @@ export const TicketStatusBadge: React.FC<TicketStatusBadgeProps> = ({
   const theme = useTheme();
   const label = TICKET_STATUS_LABELS[status];
   const textColor = TICKET_STATUS_COLORS[status];
-  const bgColor = TICKET_STATUS_BG_COLORS[status];
+  const bgColor = textColor + '15';
 
   return (
     <Chip

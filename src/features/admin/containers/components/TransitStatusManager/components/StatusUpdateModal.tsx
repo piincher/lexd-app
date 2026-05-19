@@ -14,7 +14,8 @@ import { StatusTransitionDisplay } from './StatusTransitionDisplay';
 import { DelayNotesInput } from './DelayNotesInput';
 import { ModalHeader } from './ModalHeader';
 import { ModalActions } from './ModalActions';
-import { styles } from './StatusUpdateModal.styles';
+import { createStyles } from './StatusUpdateModal.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface StatusUpdateModalProps {
   visible: boolean;
@@ -37,6 +38,8 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
   onNotesChange,
   isLoading = false,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const scrollViewRef = React.useRef<ScrollView>(null);
 
   // Handle hardware back button on Android

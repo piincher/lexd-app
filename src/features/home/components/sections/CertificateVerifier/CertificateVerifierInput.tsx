@@ -38,13 +38,13 @@ export const CertificateVerifierInput: React.FC<CertificateVerifierInputProps> =
         <FontAwesome6
           name="hashtag"
           size={14}
-          color={colors.text.muted ?? Theme.colors.text.muted}
+          color={colors.text.muted ?? colors.text.muted}
           style={styles.inputIcon}
         />
         <TextInput
           style={[styles.input, { color: colors.text.primary }]}
           placeholder="Ex: CLE-XXXX-XXXX"
-          placeholderTextColor={colors.text.muted ?? Theme.colors.text.muted}
+          placeholderTextColor={colors.text.muted ?? colors.text.muted}
           value={code}
           onChangeText={onChangeText}
           autoCapitalize="characters"
@@ -58,7 +58,7 @@ export const CertificateVerifierInput: React.FC<CertificateVerifierInputProps> =
             <FontAwesome6
               name="xmark"
               size={14}
-              color={colors.text.muted ?? Theme.colors.text.muted}
+              color={colors.text.muted ?? colors.text.muted}
             />
           </Pressable>
         )}
@@ -76,17 +76,17 @@ export const CertificateVerifierInput: React.FC<CertificateVerifierInputProps> =
         <LinearGradient
           colors={
             code.trim()
-              ? [Theme.colors.status.success, Theme.colors.status.success]
-              : [Theme.colors.text.muted, Theme.colors.text.muted]
+              ? [colors.status.success, colors.status.success]
+              : [colors.text.muted, colors.text.muted]
           }
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.verifyButtonGradient}
         >
           {state.kind === 'loading' ? (
-            <ActivityIndicator size="small" color={Theme.colors.background.card} />
+            <ActivityIndicator size="small" color={colors.background.card} />
           ) : (
-            <FontAwesome6 name="magnifying-glass" size={16} color={Theme.colors.background.card} />
+            <FontAwesome6 name="magnifying-glass" size={16} color={colors.background.card} />
           )}
         </LinearGradient>
       </Pressable>

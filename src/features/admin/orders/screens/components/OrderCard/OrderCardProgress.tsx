@@ -10,7 +10,7 @@ interface OrderCardProgressProps {
 
 export const OrderCardProgress: React.FC<OrderCardProgressProps> = ({ status, statusColor }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = createStyles(colors, isDark);
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.progressSection}>

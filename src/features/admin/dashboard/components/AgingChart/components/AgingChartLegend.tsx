@@ -28,9 +28,7 @@ export const AgingChartLegend: React.FC<Props> = ({ data }) => {
           marginTop: 10,
           paddingTop: 10,
           borderTopWidth: 1,
-          borderTopColor: isDark
-            ? "rgba(255,255,255,0.05)"
-            : "rgba(0,0,0,0.04)",
+          borderTopColor: colors.divider,
         },
         legendItem: {
           alignItems: "center",

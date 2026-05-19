@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { PromoRecord, PromoStatus } from "../../api/promoAdminApi";
-import { getStyles } from "./PromoCard.styles";
+import { createStyles } from './PromoCard.styles';
 
 const formatDate = (dateString: string): string => {
   try {
@@ -47,8 +47,8 @@ type PromoCardProps = {
 };
 
 export function PromoCard({ promo, onEdit, onDeactivate }: PromoCardProps) {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const statusColors = getStatusColor(colors, promo.status);
   const isPercentage = promo.type === "PERCENTAGE";
 

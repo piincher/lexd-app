@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   ContainerWaypoint,
@@ -18,18 +17,22 @@ import { WaypointCardMeta } from './WaypointCardMeta';
 import { WaypointCurrentIndicator } from './WaypointCurrentIndicator';
 import { WaypointCardRightSection } from './WaypointCardRightSection';
 
-const WAYPOINT_STATUS_COLORS: Record<WaypointStatus, string> = {
-  PENDING: SHARED_WAYPOINT_STATUS_COLORS.PENDING,
-  IN_TRANSIT: SHARED_WAYPOINT_STATUS_COLORS.IN_PROGRESS,
-  ARRIVED: SHARED_WAYPOINT_STATUS_COLORS.COMPLETED,
-  DEPARTED: Theme.colors.primary.main,
-};
-
 interface WaypointCardContentProps {
   waypoint: ContainerWaypoint;
   isCurrent: boolean;
   isCompleted: boolean;
 }
+
+const getWaypointStatusColor = (status: WaypointStatus, colors: any): string => {
+  const statusColors: Record<WaypointStatus, string> = {
+    PENDING: SHARED_WAYPOINT_STATUS_COLORS.PENDING,
+    IN_TRANSIT: SHARED_WAYPOINT_STATUS_COLORS.IN_PROGRESS,
+    ARRIVED: SHARED_WAYPOINT_STATUS_COLORS.COMPLETED,
+    DEPARTED: colors.primary.main,
+  };
+
+  return statusColors[status];
+};
 
 const formatDate = (dateString?: string): string => {
   if (!dateString) return '';
@@ -56,7 +59,7 @@ export const WaypointCardContent: React.FC<WaypointCardContentProps> = ({
 }) => {
   const { colors, isDark } = useAppTheme();
   const styles = useTimelineWaypointCardStyles();
-  const statusColor = WAYPOINT_STATUS_COLORS[waypoint.status];
+  const statusColor = getWaypointStatusColor(waypoint.status, colors);
   const typeIcon = WAYPOINT_TYPE_ICONS[waypoint.type];
 
   const getDisplayDate = (): { label: string; date: string; time: string } | null => {

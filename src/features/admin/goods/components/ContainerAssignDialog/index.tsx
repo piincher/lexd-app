@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 /**
  * ContainerAssignDialog - Dialog for container selection
  * SRP: Allow user to select and assign container
@@ -33,12 +34,13 @@ export const ContainerAssignDialog: React.FC<ContainerAssignDialogProps> = ({
   onAssign,
   isLoading,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <Dialog visible={visible} onDismiss={onDismiss}>
       <Dialog.Title>Sélectionner un container</Dialog.Title>
       <Dialog.Content>
         {isLoading ? (
-          <ActivityIndicator color={Theme.primary[600]} />
+          <ActivityIndicator color={colors.primary[600]} />
         ) : containers.length === 0 ? (
           <Text>Aucun container disponible</Text>
         ) : (

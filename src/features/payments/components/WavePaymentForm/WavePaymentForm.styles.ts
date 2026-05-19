@@ -19,7 +19,7 @@ export const createWavePaymentFormStyles = (
       backgroundColor: colors.background.default,
       borderRadius: 16,
       padding: 16,
-      shadowColor: '#000',
+      shadowColor: colors.neutral[900],
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.05,
       shadowRadius: 8,

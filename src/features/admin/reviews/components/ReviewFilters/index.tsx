@@ -18,8 +18,8 @@ export const ReviewFilters: React.FC<ReviewFiltersProps> = ({
   activeFilter,
   onFilterChange,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.filterContainer}>

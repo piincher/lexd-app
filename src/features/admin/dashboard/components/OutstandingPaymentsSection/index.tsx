@@ -30,12 +30,12 @@ export const OutstandingPaymentsSection: React.FC = () => {
         skeletonHero: {
           height: 200,
           borderRadius: 20,
-          backgroundColor: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)",
+          backgroundColor: isDark ? colors.neutral[800] : colors.neutral[100],
         },
         skeletonBlock: {
           height: 180,
           borderRadius: 18,
-          backgroundColor: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.05)",
+          backgroundColor: isDark ? colors.neutral[800] : colors.neutral[100],
           marginTop: 12,
         },
         errorCard: {

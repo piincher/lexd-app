@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any) => StyleSheet.create({
   container: {
     paddingTop: 20,
     paddingHorizontal: 20,
@@ -15,7 +14,7 @@ export const styles = StyleSheet.create({
   iconButton: {
     padding: 8,
     borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: colors.background.overlay,
   },
   content: {
     alignItems: 'center',
@@ -23,19 +22,19 @@ export const styles = StyleSheet.create({
   idBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.25)',
+    backgroundColor: colors.background.overlay,
     paddingHorizontal: 20,
     paddingVertical: 10,
     borderRadius: 25,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.3)',
+    borderColor: colors.background.overlay,
   },
   badgeIcon: {
     marginRight: 8,
   },
   idText: {
-    color: '#FFF',
+    color: colors.text.inverse,
     fontSize: 18,
     fontWeight: '700',
     letterSpacing: 0.5,

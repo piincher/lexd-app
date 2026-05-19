@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { navigationProps } from "@src/app/navigation/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { createKPICardsStyles } from "./KPICards.styles";
+import { createStyles } from "./KPICards.styles";
 import { HeroKpiCard } from "./HeroKpiCard";
 import { SmallKpiCard } from "./SmallKpiCard";
 
@@ -23,7 +23,7 @@ export const formatNumber = (n: number) => {
 export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
   const navigation = useNavigation<navigationProps>();
   const { colors, isDark } = useAppTheme();
-  const styles = createKPICardsStyles(colors, isDark);
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const smsPct = Math.min(
     100,

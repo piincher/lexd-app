@@ -74,13 +74,13 @@ export const ADMIN_TICKET_STATUS_LABELS: Record<AdminTicketStatus, string> = {
   CLOSED: 'Fermé',
 };
 
-export const ADMIN_TICKET_STATUS_COLORS: Record<AdminTicketStatus, string> = {
-  OPEN: '#D97706',
-  IN_PROGRESS: '#2563EB',
-  WAITING_CUSTOMER: '#7C3AED',
-  RESOLVED: '#059669',
-  CLOSED: '#475569',
-};
+export const getAdminTicketStatusColors = (colors: any): Record<AdminTicketStatus, string> => ({
+  OPEN: colors.status.warning,
+  IN_PROGRESS: colors.status.info,
+  WAITING_CUSTOMER: colors.status.info,
+  RESOLVED: colors.status.success,
+  CLOSED: colors.text.secondary,
+});
 
 export const ADMIN_TICKET_PRIORITY_LABELS: Record<AdminTicketPriority, string> = {
   LOW: 'Basse',

@@ -22,7 +22,7 @@ export type {
 export {
   // Display constants
   SHIPPING_MODE_LABELS,
-  SHIPPING_MODE_COLORS,
+  getShippingModeColors,
   SHIPPING_LINE_LABELS,
   SHIPPING_LINES_BY_MODE,
   COMMON_ORIGINS,

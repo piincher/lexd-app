@@ -7,7 +7,7 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface SearchFiltersHeaderProps {
   presetsCount: number;
@@ -22,13 +22,16 @@ export const SearchFiltersHeader: React.FC<SearchFiltersHeaderProps> = ({
   onPresetsPress,
   onReset,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors), [colors]);
+
   return (
     <View style={styles.header}>
       <Text style={styles.title}>Filtres</Text>
       <View style={styles.headerActions}>
         {presetsCount > 0 && (
           <TouchableOpacity style={styles.presetButton} onPress={onPresetsPress}>
-            <Ionicons name="bookmark" size={16} color={Theme.primary[500]} />
+            <Ionicons name="bookmark" size={16} color={colors.primary[500]} />
             <Text style={styles.presetButtonText}>Préréglages</Text>
           </TouchableOpacity>
         )}
@@ -42,43 +45,43 @@ export const SearchFiltersHeader: React.FC<SearchFiltersHeaderProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: Theme.spacing.lg,
-    paddingVertical: Theme.spacing.md,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[200],
+    borderBottomColor: colors.neutral[200],
   },
   title: {
     fontSize: 18,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
   headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Theme.spacing.md,
+    gap: 12,
   },
   presetButton: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
-    paddingHorizontal: Theme.spacing.sm,
+    paddingHorizontal: 8,
     paddingVertical: 4,
-    backgroundColor: Theme.primary[50],
-    borderRadius: Theme.radius.md,
+    backgroundColor: colors.primary[50],
+    borderRadius: 6,
   },
   presetButtonText: {
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.primary[500],
+    color: colors.primary[500],
   },
   resetText: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.status.error,
+    color: colors.status.error,
   },
 });

@@ -6,7 +6,7 @@ import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import {
   ADMIN_TICKET_STATUSES,
-  ADMIN_TICKET_STATUS_COLORS,
+  getAdminTicketStatusColors,
   ADMIN_TICKET_STATUS_LABELS,
   AdminTicketStatus,
 } from '../types';
@@ -59,15 +59,15 @@ export const AdminTicketSearchFilters: React.FC<AdminTicketSearchFiltersProps> =
               key={item}
               style={[
                 styles.chip,
-                { borderColor: active ? ADMIN_TICKET_STATUS_COLORS[item] : colors.border },
-                { backgroundColor: active ? `${ADMIN_TICKET_STATUS_COLORS[item]}20` : colors.background.card },
+                { borderColor: active ? getAdminTicketStatusColors(colors)[item] : colors.border },
+                { backgroundColor: active ? `${getAdminTicketStatusColors(colors)[item]}20` : colors.background.card },
               ]}
               onPress={() => onStatusChange(active ? undefined : item)}
             >
               <Text
                 style={[
                   styles.chipText,
-                  { color: active ? ADMIN_TICKET_STATUS_COLORS[item] : colors.text.primary },
+                  { color: active ? getAdminTicketStatusColors(colors)[item] : colors.text.primary },
                 ]}
               >
                 {ADMIN_TICKET_STATUS_LABELS[item]}

@@ -27,7 +27,7 @@ export const WhatsAppRequestErrorSnackbar: React.FC<WhatsAppRequestErrorSnackbar
 
 const styles = {
   snackbar: {
-    backgroundColor: Theme.neutral[800],
+    backgroundColor: Theme.colors.neutral[800],
     borderRadius: Theme.radius.lg,
   },
 };

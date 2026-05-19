@@ -10,14 +10,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { EmptyState } from '@src/shared/ui/EmptyState';
 import { useAirwayBillListScreenUI } from './hooks';
-import { styles } from './AirwayBillListScreen.styles';
+import { createStyles } from './AirwayBillListScreen.styles';
 import { SearchHeader, AirwayBillStats, StatusFilterChips, AirwayBillSkeleton } from './components';
 
 export const AirwayBillListScreen: React.FC = () => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const { statusFilter, searchQuery, airwayBills, stats, isLoading, isError, error, isFetching, statusOptions, handlers } =
     useAirwayBillListScreenUI();
 
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const containerStyle = [styles.container, { backgroundColor: colors.background.default }];
 
   if (isLoading) {

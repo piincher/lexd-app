@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -11,8 +11,9 @@ interface AlertFooterProps {
 
 export const AlertFooter: React.FC<AlertFooterProps> = ({ hasUnassigned }) => {
   const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
-  const styles = StyleSheet.create({
+  const createStyles = (colors: any) => StyleSheet.create({
     footer: {
       flexDirection: "row",
       alignItems: "center",

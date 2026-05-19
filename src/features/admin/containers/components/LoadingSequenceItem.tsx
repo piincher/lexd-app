@@ -9,7 +9,8 @@ import Animated, { FadeInRight, Layout } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
 import { LoadingListItem, LoadingGoodsStatus, LOADING_STATUS_COLORS, LOADING_STATUS_LABELS } from '../types/packingList';
-import { styles } from './LoadingSequenceItem.styles';
+import { createStyles } from './LoadingSequenceItem.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface LoadingSequenceItemProps {
   item: LoadingListItem;
@@ -24,6 +25,8 @@ export const LoadingSequenceItem: React.FC<LoadingSequenceItemProps> = ({
   onToggleLoaded,
   disabled = false,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const { sequenceNumber, goods, clientName, clientColor, isLoaded } = item;
 
   const handleToggle = () => {
@@ -43,7 +46,7 @@ export const LoadingSequenceItem: React.FC<LoadingSequenceItemProps> = ({
     >
       <View style={styles.sequenceBadge}>
         <LinearGradient
-          colors={[Theme.primary[500], Theme.primary[700]]}
+          colors={[colors.primary[500], colors.primary[700]]}
           style={styles.sequenceGradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -92,15 +95,15 @@ export const LoadingSequenceItem: React.FC<LoadingSequenceItemProps> = ({
 
         <View style={styles.footer}>
           <View style={styles.metric}>
-            <Ionicons name="cube-outline" size={14} color={Theme.neutral[500]} />
+            <Ionicons name="cube-outline" size={14} color={colors.neutral[500]} />
             <Text style={styles.metricText}>{goods.actualCBM.toFixed(2)} m³</Text>
           </View>
           <View style={styles.metric}>
-            <Ionicons name="scale-outline" size={14} color={Theme.neutral[500]} />
+            <Ionicons name="scale-outline" size={14} color={colors.neutral[500]} />
             <Text style={styles.metricText}>{goods.weight.toFixed(0)} kg</Text>
           </View>
           <View style={styles.metric}>
-            <Ionicons name="layers-outline" size={14} color={Theme.neutral[500]} />
+            <Ionicons name="layers-outline" size={14} color={colors.neutral[500]} />
             <Text style={styles.metricText}>Qté: {goods.quantity || 1}</Text>
           </View>
         </View>

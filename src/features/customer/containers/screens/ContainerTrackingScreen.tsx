@@ -22,7 +22,7 @@ import { ContactDialog } from '../components/ContactDialog';
 import { ContainerGoodsSection } from '../components/ContainerGoodsSection';
 import { PickupInfoCard } from '../components/PickupInfoCard';
 import { ContainerTrackingSkeleton } from '../components/ContainerTrackingSkeleton';
-import { CUSTOMER_STATUS_COLORS, CUSTOMER_STATUS_BG_COLORS } from '../types';
+import { CUSTOMER_STATUS_COLORS } from '../types';
 
 const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'>> = ({
   navigation,
@@ -60,7 +60,7 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
   const currentWaypointIndex = waypointsData?.currentWaypointIndex ?? -1;
   const progressPercentage = waypointsData?.progressPercentage ?? 0;
   const statusColor = CUSTOMER_STATUS_COLORS[container.status] || '';
-  const statusBgColor = CUSTOMER_STATUS_BG_COLORS[container.status] || '';
+  const statusBgColor = statusColor + '15';
   const eta = container.predictiveEta || container.etaPrediction || container.eta;
   const estimatedArrival = eta?.estimatedArrival?.toString() || container.estimatedArrival;
 

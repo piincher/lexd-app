@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
-import { Theme } from "@src/constants/Theme";
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -32,8 +31,8 @@ export const styles = StyleSheet.create({
   card: {
     borderRadius: 14,
     padding: 14,
-    backgroundColor: Theme.colors.background.card,
-    shadowColor: Theme.colors.neutral[900],
+    backgroundColor: colors.background.card,
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.06,
     shadowRadius: 4,
@@ -63,8 +62,8 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
     borderRadius: 14,
     padding: 14,
-    backgroundColor: Theme.colors.background.card,
-    shadowColor: Theme.colors.neutral[900],
+    backgroundColor: colors.background.card,
+    shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.06,
     shadowRadius: 4,
@@ -80,7 +79,7 @@ export const styles = StyleSheet.create({
     marginBottom: 2,
   },
   statusMeta: {
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   statusChip: {
     height: 28,
@@ -89,14 +88,14 @@ export const styles = StyleSheet.create({
     marginTop: 10,
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: Theme.colors.border,
+    borderTopColor: colors.border,
   },
   statsText: {
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   lastRunText: {
     marginTop: 4,
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   // Details
   detailsRow: {
@@ -104,13 +103,13 @@ export const styles = StyleSheet.create({
     marginTop: 12,
     paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: Theme.colors.border,
+    borderTopColor: colors.border,
   },
   detail: {
     flex: 1,
   },
   detailLabel: {
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginBottom: 2,
   },
   detailValue: {
@@ -122,16 +121,16 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   dateText: {
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
   },
   restoreInfo: {
     marginTop: 10,
     paddingTop: 10,
     borderTopWidth: 1,
-    borderTopColor: Theme.colors.border,
+    borderTopColor: colors.border,
   },
   restoreText: {
-    color: Theme.colors.primary.main,
+    color: colors.primary.main,
     fontStyle: "italic",
   },
   empty: {
@@ -139,7 +138,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 40,
   },
   emptySubtext: {
-    color: Theme.colors.text.secondary,
+    color: colors.text.secondary,
     marginTop: 8,
   },
   dialogTitle: {
@@ -150,6 +149,6 @@ export const styles = StyleSheet.create({
   },
   warningText: {
     marginTop: 12,
-    color: Theme.colors.status.error,
+    color: colors.status.error,
   },
 });

@@ -1,3 +1,4 @@
+import { useAppTheme } from '@src/providers/ThemeProvider';
 /**
  * NotificationList
  * SRP: Renders notification list with FlashList, skeleton loading, and empty state
@@ -41,6 +42,7 @@ export const NotificationList: React.FC<NotificationListProps> = ({
   onRefresh,
   onLoadMore,
 }) => {
+  const { colors } = useAppTheme();
   const hasCalledOnEnd = useRef(false);
 
   const handleMomentumScrollBegin = useCallback(() => {
@@ -84,8 +86,8 @@ export const NotificationList: React.FC<NotificationListProps> = ({
           <RefreshControl
             refreshing={false}
             onRefresh={onRefresh}
-            tintColor={Theme.primary[500]}
-            colors={[Theme.primary[500]]}
+            tintColor={colors.primary[500]}
+            colors={[colors.primary[500]]}
           />
         }
         onEndReached={handleEndReached}

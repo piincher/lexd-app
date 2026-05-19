@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 
-export const styles = StyleSheet.create({
+export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   container: {
     marginBottom: 12,
     borderRadius: 16,
     elevation: 2,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   header: {
     flexDirection: 'row',
@@ -16,7 +15,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
     marginLeft: 10,
   },
   grid: {
@@ -25,18 +24,18 @@ export const styles = StyleSheet.create({
   },
   item: {
     flex: 1,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.neutral[50],
     padding: 14,
     borderRadius: 12,
   },
   label: {
     fontSize: 12,
-    color: Theme.neutral[500],
+    color: colors.neutral[500],
     marginBottom: 4,
   },
   value: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.neutral[800],
   },
 });

@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { ContainerWaypoint } from '../../../types';
-import { waypointDetailsStyles as styles } from './WaypointDetails.styles';
+import { createStyles } from './WaypointDetails.styles';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface WaypointTimesSectionProps {
   waypoint: ContainerWaypoint;
@@ -12,6 +13,8 @@ export const WaypointTimesSection: React.FC<WaypointTimesSectionProps> = ({
   waypoint,
   formatDateTime,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>Horaires</Text>

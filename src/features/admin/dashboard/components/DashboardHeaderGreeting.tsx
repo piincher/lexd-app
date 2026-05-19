@@ -29,7 +29,7 @@ export const DashboardHeaderGreeting: React.FC<DashboardHeaderGreetingProps> = (
 
     <View style={styles.avatarWrap}>
       <LinearGradient
-        colors={['rgba(255,255,255,0.35)', 'rgba(255,255,255,0.15)']}
+        colors={['rgba(255,255,255,0.35)', 'rgba(255,255,255,0.15)']} // Decorative white gradient on colored header
         style={styles.avatarGradient}
       >
         <Text style={styles.avatarText}>{initials}</Text>

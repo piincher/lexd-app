@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Fonts } from "@src/constants/Fonts";
@@ -10,8 +10,9 @@ interface AgeBreakdownProps {
 
 export const AgeBreakdown: React.FC<AgeBreakdownProps> = ({ byAge }) => {
   const { colors, isDark } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
-  const styles = StyleSheet.create({
+  const createStyles = (colors: any) => StyleSheet.create({
     ageRow: {
       flexDirection: "row",
       gap: 8,

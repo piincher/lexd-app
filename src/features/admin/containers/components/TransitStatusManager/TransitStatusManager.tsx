@@ -16,7 +16,8 @@ import { TransitTimeline } from "./components/TransitTimeline";
 import { TransitActionButtons } from "./components/TransitActionButtons";
 import { StatusUpdateModal } from "./components/StatusUpdateModal";
 import { NonTransitView } from "./components/NonTransitView";
-import { styles } from "./TransitStatusManager.styles";
+import { createStyles } from "./TransitStatusManager.styles";
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export interface TransitStatusManagerProps {
   containerId: string;
@@ -33,6 +34,8 @@ export const TransitStatusManager: React.FC<TransitStatusManagerProps> = ({
   waypoints: propWaypoints,
   currentWaypointIndex: propCurrentWaypointIndex,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const {
     waypoints,
     currentWaypointIndex,

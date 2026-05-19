@@ -7,22 +7,21 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Card, Badge, Text, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Goods } from '../../types';
-import { getStyles } from './VoidGoodsListItem.styles';
+import { createStyles } from './VoidGoodsListItem.styles';
 
-const STATUS_COLORS: Record<string, string> = {
-  RECEIVED_AT_WAREHOUSE: Theme.colors.status.info,
-  PACKED: Theme.colors.primary.main,
-  ASSIGNED_TO_CONTAINER: Theme.colors.status.warning,
-  LOADED_IN_CONTAINER: Theme.colors.status.warning,
-  IN_TRANSIT: Theme.colors.status.info,
-  ARRIVED_DESTINATION: Theme.colors.status.success,
-  READY_FOR_PICKUP: Theme.colors.status.success,
-  DELIVERED: Theme.colors.text.disabled,
-  VOID: Theme.colors.status.error,
-};
+const getStatusColors = (colors: any): Record<string, string> => ({
+  RECEIVED_AT_WAREHOUSE: colors.status.info,
+  PACKED: colors.primary.main,
+  ASSIGNED_TO_CONTAINER: colors.status.warning,
+  LOADED_IN_CONTAINER: colors.status.warning,
+  IN_TRANSIT: colors.status.info,
+  ARRIVED_DESTINATION: colors.status.success,
+  READY_FOR_PICKUP: colors.status.success,
+  DELIVERED: colors.text.disabled,
+  VOID: colors.status.error,
+});
 
 const STATUS_LABELS: Record<string, string> = {
   RECEIVED_AT_WAREHOUSE: 'In Warehouse',
@@ -45,8 +44,9 @@ export const VoidGoodsListItem: React.FC<VoidGoodsListItemProps> = ({
   item,
   onVoidPress,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = getStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const statusColors = React.useMemo(() => getStatusColors(colors), [colors]);
   return (
   <Card style={styles.goodsCard}>
     <Card.Content>
@@ -55,20 +55,20 @@ export const VoidGoodsListItem: React.FC<VoidGoodsListItemProps> = ({
           <MaterialCommunityIcons
             name="package-variant"
             size={24}
-            color={Theme.primary[600]}
+            color={colors.primary[600]}
           />
           <Text style={styles.goodsId}>{item.goodsId}</Text>
         </View>
         <Badge
           style={[
             styles.statusBadge,
-            { backgroundColor: STATUS_COLORS[item.status] || '#75757520' },
+            { backgroundColor: statusColors[item.status] || colors.text.disabled },
           ]}
         >
           <Text
             style={[
               styles.statusText,
-              { color: STATUS_COLORS[item.status] || '#757575' },
+              { color: statusColors[item.status] || colors.text.secondary },
             ]}
           >
             {STATUS_LABELS[item.status] || item.status}

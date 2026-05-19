@@ -24,6 +24,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   photoUrls = [], imageHeight = 120, showCounter = true, editable = false, onAddPhoto, emptyLabel = 'Aucune photo',
 }) => {
   const { colors } = useAppTheme();
+  const s = React.useMemo(() => createStyles(colors), [colors]);
   const [visible, setVisible] = useState(false);
   const [idx, setIdx] = useState(0);
   const fade = useSharedValue(0);
@@ -60,7 +61,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
     <View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.strip}>
         {safePhotoUrls.map((url, i) => (
-          <TouchableOpacity key={`${url}_${i}`} activeOpacity={0.9} onPress={() => open(i)} style={s.wrap}>
+          <TouchableOpacity key={`${url}_${i}`} activeOpacity={0.9} onPress={() => open(i)} style={[s.wrap, { shadowColor: colors.neutral[900] }]}>
             <Image source={{ uri: url }} style={[s.photo, { height: imageHeight }]} resizeMode="cover" />
             {showCounter && safePhotoUrls.length > 1 && (
               <View style={[s.badge, { backgroundColor: colors.background.overlay }]}><Text style={[s.badgeText, { color: colors.text.inverse }]}>{i + 1} / {safePhotoUrls.length}</Text></View>
@@ -76,6 +77,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
             <Text style={[s.headerText, { color: colors.text.inverse }]}>{idx + 1} / {safePhotoUrls.length}</Text>
             <View pointerEvents="auto">
               <TouchableOpacity onPress={close} style={s.closeBtn} hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}>
+                <View style={[s.closeBtnBg, { backgroundColor: colors.neutral[900], opacity: 0.35 }]} />
                 <Ionicons name="close" size={28} color={colors.text.inverse} />
               </TouchableOpacity>
             </View>
@@ -111,18 +113,20 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   );
 };
 
-const s = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
+  // s alias used in component below
   strip: { paddingVertical: 4, gap: 10 },
-  wrap: { borderRadius: 12, overflow: 'hidden', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 4, elevation: 4 },
+  wrap: { borderRadius: 12, overflow: 'hidden', shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.15, shadowRadius: 4, elevation: 4 },
   photo: { width: 160, borderRadius: 12 },
   badge: { position: 'absolute', bottom: 8, right: 8, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 2 },
   badgeText: { fontSize: 12, fontWeight: '600' },
   empty: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 12, paddingVertical: 24, borderRadius: 12, borderWidth: 1, marginVertical: 4 },
   emptyText: { fontSize: 14, fontWeight: '500' },
-  backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.95)', zIndex: 100 },
+  backdrop: { ...StyleSheet.absoluteFillObject, backgroundColor: colors.background.overlay, zIndex: 100 },
   header: { position: 'absolute', top: 48, left: 20, right: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', zIndex: 104, elevation: 104 },
   headerText: { fontSize: 16, fontWeight: '600' },
-  closeBtn: { width: 48, height: 48, borderRadius: 24, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.35)', zIndex: 200, elevation: 200 },
+  closeBtn: { width: 48, height: 48, borderRadius: 24, justifyContent: 'center', alignItems: 'center', zIndex: 200, elevation: 200 },
+  closeBtnBg: { ...StyleSheet.absoluteFillObject, borderRadius: 24 },
   navRow: { position: 'absolute', top: 0, bottom: 0, left: 8, right: 8, flexDirection: 'row', alignItems: 'center', zIndex: 101 },
   chevron: { padding: 12 },
   viewerPager: { zIndex: 103, elevation: 103 },

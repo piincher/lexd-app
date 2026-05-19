@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
-import { styles } from "./CertificateDetailClientSection.styles";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from './CertificateDetailClientSection.styles';
 
 interface CertificateDetailClientSectionProps {
   clientName: string;
@@ -12,6 +12,8 @@ interface CertificateDetailClientSectionProps {
 export const CertificateDetailClientSection: React.FC<
   CertificateDetailClientSectionProps
 > = ({ clientName, phoneNumber }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.section}>
       <Text style={styles.sectionTitle}>Informations du client</Text>
@@ -20,7 +22,7 @@ export const CertificateDetailClientSection: React.FC<
           <Ionicons
             name="person-outline"
             size={18}
-            color={Theme.colors.text.secondary}
+            color={colors.text.secondary}
           />
           <View style={styles.infoContent}>
             <Text style={styles.infoLabel}>Nom complet</Text>
@@ -32,7 +34,7 @@ export const CertificateDetailClientSection: React.FC<
           <Ionicons
             name="call-outline"
             size={18}
-            color={Theme.colors.text.secondary}
+            color={colors.text.secondary}
           />
           <View style={styles.infoContent}>
             <Text style={styles.infoLabel}>Numéro de téléphone</Text>

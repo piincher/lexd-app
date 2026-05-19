@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View, Text } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createStyles } from "./ActiveShipmentCard.styles";
 import { SHIP_COLORS } from "./ActiveShipmentCard.constants";
-
-const styles = createStyles(SHIP_COLORS);
 
 interface ShipmentHeaderProps {
   code?: string;
@@ -18,7 +17,10 @@ export const ShipmentHeader: React.FC<ShipmentHeaderProps> = ({
   statusText,
   shippingMode,
   colors,
-}) => (
+}) => {
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
+  return (
   <View style={styles.headerRow}>
     <View style={styles.headerLeft}>
       <View style={[styles.shipIcon, { backgroundColor: SHIP_COLORS.grayLight }]}>
@@ -40,3 +42,4 @@ export const ShipmentHeader: React.FC<ShipmentHeaderProps> = ({
     <Feather name="chevron-right" size={20} color={colors.text.secondary} />
   </View>
 );
+};
