@@ -9,16 +9,23 @@ interface ShippingModeBreakdownProps {
   byShippingMode: { AIR: number; SEA: number };
 }
 
+type MaterialCommunityIconName = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+
+type ShippingModeItem = {
+  key: keyof ShippingModeBreakdownProps["byShippingMode"];
+  label: string;
+  icon: MaterialCommunityIconName;
+  color: string;
+  value: number;
+};
+
 const getIconBgStyle = (color: string) =>
   StyleSheet.create({ iconBg: { backgroundColor: `${color}20` } }).iconBg;
 
-export const ShippingModeBreakdown: React.FC<ShippingModeBreakdownProps> = ({
-  byShippingMode,
-}) => {
-  const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+type AppThemeColors = ReturnType<typeof useAppTheme>["colors"];
 
-  const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: AppThemeColors) =>
+  StyleSheet.create({
     row: {
       flexDirection: "row",
       gap: 8,
@@ -58,9 +65,27 @@ export const ShippingModeBreakdown: React.FC<ShippingModeBreakdownProps> = ({
     },
   });
 
-  const shippingModes = [
-    { key: "AIR" as const, label: "Air", icon: "airplane", color: colors.status.info, value: byShippingMode.AIR },
-    { key: "SEA" as const, label: "Maritime", icon: "ferry", color: colors.status.info, value: byShippingMode.SEA },
+export const ShippingModeBreakdown: React.FC<ShippingModeBreakdownProps> = ({
+  byShippingMode,
+}) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
+  const shippingModes: ShippingModeItem[] = [
+    {
+      key: "AIR",
+      label: "Air",
+      icon: "airplane",
+      color: colors.status.info,
+      value: byShippingMode.AIR,
+    },
+    {
+      key: "SEA",
+      label: "Maritime",
+      icon: "ferry",
+      color: colors.status.info,
+      value: byShippingMode.SEA,
+    },
   ];
 
   return (
@@ -68,7 +93,7 @@ export const ShippingModeBreakdown: React.FC<ShippingModeBreakdownProps> = ({
       {shippingModes.map((mode) => (
         <View key={mode.key} style={styles.modePill}>
           <View style={[styles.modeIconWrap, getIconBgStyle(mode.color)]}>
-            <MaterialCommunityIcons name={mode.icon as any} size={16} color={mode.color} />
+            <MaterialCommunityIcons name={mode.icon} size={16} color={mode.color} />
           </View>
           <View style={styles.modeTextContainer}>
             <Text style={styles.modeValue}>{mode.value}</Text>

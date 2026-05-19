@@ -5,13 +5,13 @@ export const createStyles = (colors: any, isDark: boolean) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: 16,
-      paddingVertical: 8,
-      gap: 8,
+      paddingVertical: 4,
+      alignItems: 'center',
     },
     chip: {
-      paddingHorizontal: 14,
-      paddingVertical: 8,
-      borderRadius: 20,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 12,
       backgroundColor: colors.background.paper,
       borderWidth: 1,
       borderColor: isDark ? colors.neutral[700] : colors.neutral[200],
@@ -22,7 +22,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       borderColor: colors.primary.main,
     },
     chipText: {
-      fontSize: 13,
+      fontSize: 12,
       fontWeight: "600",
       color: colors.text.secondary,
     },

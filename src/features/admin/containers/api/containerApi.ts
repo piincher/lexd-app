@@ -10,6 +10,7 @@ import {
   CreateContainerInput,
   UpdateContainerStatusInput,
   AssignGoodsInput,
+  DeleteContainerResult,
   ContainerFilters,
   Route,
   PackingList,
@@ -62,7 +63,7 @@ export const containerApi = {
   updateStatus: (id: string, data: UpdateContainerStatusInput): Promise<AxiosResponse<ApiResponse<Container>>> =>
     axios.patch(`${BASE_URL}/${id}/status`, data),
 
-  delete: (id: string): Promise<AxiosResponse<ApiResponse<void>>> =>
+  delete: (id: string): Promise<AxiosResponse<ApiResponse<DeleteContainerResult>>> =>
     axios.delete(`${BASE_URL}/${id}`),
 
   // ============================================
@@ -95,18 +96,18 @@ export const containerApi = {
   // ============================================
   // UNASSIGNED GOODS
   // ============================================
-  getUnassignedGoods: (shippingMode?: string): Promise<AxiosResponse<ApiResponse<any[]>>> =>
+  getUnassignedGoods: (shippingMode?: string): Promise<AxiosResponse<ApiResponse<unknown[]>>> =>
     axios.get(`/goods/unassigned${shippingMode ? `?shippingMode=${shippingMode}` : ''}`),
 
   // ============================================
   // RECONCILIATION
   // ============================================
-  reconcileContainer: (containerId: string, agentCBM: number, agentUnitCost?: number): Promise<AxiosResponse<ApiResponse<any>>> =>
+  reconcileContainer: (containerId: string, agentCBM: number, agentUnitCost?: number): Promise<AxiosResponse<ApiResponse<unknown>>> =>
     axios.post(`${BASE_URL}/${containerId}/reconcile`, {
       agentCBM,
       ...(agentUnitCost ? { agentUnitCost } : {}),
     }),
 
-  getClientAllocations: (containerId: string): Promise<AxiosResponse<ApiResponse<any>>> =>
+  getClientAllocations: (containerId: string): Promise<AxiosResponse<ApiResponse<unknown>>> =>
     axios.get(`${BASE_URL}/${containerId}/client-allocations`),
 };

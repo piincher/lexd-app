@@ -15,6 +15,7 @@ interface ContainerDialogsProps {
   setShowDeleteDialog: (show: boolean) => void;
   onConfirmDelete: () => void;
   hasGoods: boolean;
+  isDeletingContainer: boolean;
 
   // Remove goods dialog
   showRemoveGoodsDialog: boolean;
@@ -38,6 +39,7 @@ export const ContainerDialogs: React.FC<ContainerDialogsProps> = ({
   setShowDeleteDialog,
   onConfirmDelete,
   hasGoods,
+  isDeletingContainer,
 
   // Remove goods dialog
   showRemoveGoodsDialog,
@@ -61,6 +63,7 @@ export const ContainerDialogs: React.FC<ContainerDialogsProps> = ({
         onDismiss={() => setShowDeleteDialog(false)}
         onConfirm={onConfirmDelete}
         hasGoods={hasGoods}
+        isDeleting={isDeletingContainer}
       />
 
       <RemoveGoodsDialog

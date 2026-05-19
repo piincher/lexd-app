@@ -1,9 +1,10 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useMemo } from "react";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Controller } from "react-hook-form";
 import { FormInput } from "../../../../components/FormInput";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "./DimensionsInputs.styles";
 
 interface DimensionsInputsProps {
    control: any;
@@ -13,47 +14,7 @@ interface DimensionsInputsProps {
 
 export const DimensionsInputs: React.FC<DimensionsInputsProps> = ({ control, errors, calculatedCBM }) => {
    const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
-
-   const createStyles = (colors: any) => StyleSheet.create({
-      dimensionsContainer: {
-         marginTop: 20,
-      },
-      row: {
-         flexDirection: "row",
-         justifyContent: "space-between",
-         marginHorizontal: -6,
-      },
-      dimensionColumn: {
-         flex: 1,
-         marginHorizontal: 6,
-      },
-      calculatedContainer: {
-         marginTop: 16,
-         alignItems: "center",
-      },
-      calculatedBadge: {
-         flexDirection: "row",
-         alignItems: "center",
-         backgroundColor: colors.background.paper,
-         paddingHorizontal: 16,
-         paddingVertical: 8,
-         borderRadius: 20,
-         borderWidth: 1,
-         borderColor: colors.border,
-      },
-      calculatedLabel: {
-         fontSize: 13,
-         color: colors.status.success,
-         fontWeight: "600",
-         marginRight: 8,
-      },
-      calculatedValue: {
-         fontSize: 15,
-         fontWeight: "700",
-         color: colors.status.success,
-      },
-   });
+   const styles = useMemo(() => createStyles(colors), [colors]);
 
    return (
       <View style={styles.dimensionsContainer}>

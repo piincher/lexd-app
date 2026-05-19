@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useRef, useImperativeHandle, forwardRef } from "react";
 import { RefreshControl, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
+import type { FlashListRef } from "@shopify/flash-list";
 import { userData } from "@src/shared/types/user";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useSectionedClients, SectionItem } from "../../hooks/useSectionedClients";
@@ -14,6 +15,10 @@ import { styles } from "./ClientList.styles";
 
 const ESTIMATED_CLIENT_HEIGHT = 100;
 const ESTIMATED_HEADER_HEIGHT = 40;
+
+export interface ClientListRef {
+  scrollToLetter: (letter: string) => void;
+}
 
 interface ClientListProps {
   clients: userData[];
@@ -35,13 +40,25 @@ interface ClientListProps {
   onClearSearch: () => void;
 }
 
-export const ClientList: React.FC<ClientListProps> = React.memo(({
+export const ClientList = React.memo(forwardRef<ClientListRef, ClientListProps>(({
   clients, pendingId, searchQuery, hasMore, isFetching, isRefetching, error,
   selectedIds, selectionMode, onToggleBlock, onDelete, onNavigate, onSelect, onPreview,
   onLoadMore, onRefresh, onClearSearch,
-}) => {
+}, ref) => {
   const { colors } = useAppTheme();
   const sections = useSectionedClients(clients);
+  const flashListRef = useRef<FlashListRef<SectionItem>>(null);
+
+  useImperativeHandle(ref, () => ({
+    scrollToLetter: (letter: string) => {
+      const index = sections.findIndex(
+        (item) => item.type === "header" && item.letter === letter
+      );
+      if (index !== -1) {
+        flashListRef.current?.scrollToIndex({ index, animated: true });
+      }
+    },
+  }), [sections]);
 
   const renderItem = useCallback(({ item }: { item: SectionItem }) => {
     if (item.type === "header") return <SectionHeader letter={item.letter} count={item.count} />;
@@ -68,6 +85,7 @@ export const ClientList: React.FC<ClientListProps> = React.memo(({
   return (
     <View style={styles.flex}>
       <FlashList
+        ref={flashListRef}
         data={sections} renderItem={renderItem} keyExtractor={keyExtractor}
         getItemType={getItemType} estimatedItemSize={ESTIMATED_CLIENT_HEIGHT}
         contentContainerStyle={styles.listContainer} showsVerticalScrollIndicator={false}
@@ -81,6 +99,6 @@ export const ClientList: React.FC<ClientListProps> = React.memo(({
       />
     </View>
   );
-});
+}));
 
 ClientList.displayName = "ClientList";

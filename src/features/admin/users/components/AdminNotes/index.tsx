@@ -4,12 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useHaptics } from "../../hooks/useHaptics";
-
-interface Note {
-  id: string;
-  text: string;
-  timestamp: number;
-}
+import { useAdminNotesQuery, useAddAdminNote, useDeleteAdminNote } from "../../hooks/useAdminNotesApi";
 
 interface AdminNotesProps {
   userId: string;
@@ -18,20 +13,24 @@ interface AdminNotesProps {
 export const AdminNotes: React.FC<AdminNotesProps> = ({ userId }) => {
   const { colors } = useAppTheme();
   const { trigger } = useHaptics();
-  const [notes, setNotes] = useState<Note[]>([]);
   const [input, setInput] = useState("");
+
+  const { data: notes = [], isLoading } = useAdminNotesQuery(userId);
+  const addNoteMutation = useAddAdminNote(userId);
+  const deleteNoteMutation = useDeleteAdminNote(userId);
 
   const addNote = useCallback(() => {
     if (!input.trim()) return;
     trigger("success");
-    setNotes((prev) => [{ id: Math.random().toString(36), text: input.trim(), timestamp: Date.now() }, ...prev]);
-    setInput("");
-  }, [input, trigger]);
+    addNoteMutation.mutate(input.trim(), {
+      onSuccess: () => setInput(""),
+    });
+  }, [input, trigger, addNoteMutation]);
 
-  const deleteNote = useCallback((id: string) => {
+  const deleteNote = useCallback((noteId: string) => {
     trigger("light");
-    setNotes((prev) => prev.filter((n) => n.id !== id));
-  }, [trigger]);
+    deleteNoteMutation.mutate(noteId);
+  }, [trigger, deleteNoteMutation]);
 
   return (
     <Animated.View entering={FadeInUp.delay(700)} style={[styles.card, { backgroundColor: colors.background.card }]}>
@@ -46,29 +45,43 @@ export const AdminNotes: React.FC<AdminNotesProps> = ({ userId }) => {
           onChangeText={setInput}
           multiline
         />
-        <TouchableOpacity onPress={addNote} style={[styles.addBtn, { backgroundColor: colors.primary.main }]} accessibilityRole="button">
+        <TouchableOpacity
+          onPress={addNote}
+          style={[styles.addBtn, { backgroundColor: colors.primary.main, opacity: addNoteMutation.isPending ? 0.6 : 1 }]}
+          accessibilityRole="button"
+          disabled={addNoteMutation.isPending}
+        >
           <Ionicons name="add" size={20} color={colors.text.inverse} />
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
-        {notes.map((note) => (
-          <View key={note.id} style={[styles.note, { backgroundColor: colors.background.paper, borderColor: colors.neutral[200] }]}>
-            <Text style={[styles.noteText, { color: colors.text.primary }]}>{note.text}</Text>
-            <View style={styles.noteFooter}>
-              <Text style={[styles.noteDate, { color: colors.text.disabled }]}>
-                {new Date(note.timestamp).toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
-              </Text>
-              <TouchableOpacity onPress={() => deleteNote(note.id)} accessibilityRole="button" accessibilityLabel="Supprimer la note">
-                <Ionicons name="trash-outline" size={16} color={colors.status.error} />
-              </TouchableOpacity>
+      {isLoading ? (
+        <Text style={{ color: colors.text.secondary, paddingVertical: 12 }}>Chargement...</Text>
+      ) : (
+        <ScrollView style={styles.list} showsVerticalScrollIndicator={false}>
+          {notes.map((note) => (
+            <View key={note._id} style={[styles.note, { backgroundColor: colors.background.paper, borderColor: colors.neutral[200] }]}>
+              <Text style={[styles.noteText, { color: colors.text.primary }]}>{note.text}</Text>
+              <View style={styles.noteFooter}>
+                <Text style={[styles.noteDate, { color: colors.text.disabled }]}>
+                  {note.createdBy?.firstName || "Admin"} · {new Date(note.createdAt).toLocaleString("fr-FR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => deleteNote(note._id)}
+                  accessibilityRole="button"
+                  accessibilityLabel="Supprimer la note"
+                  disabled={deleteNoteMutation.isPending}
+                >
+                  <Ionicons name="trash-outline" size={16} color={colors.status.error} />
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
-        ))}
-        {notes.length === 0 && (
-          <Text style={[styles.empty, { color: colors.text.disabled }]}>Aucune note pour ce client</Text>
-        )}
-      </ScrollView>
+          ))}
+          {notes.length === 0 && (
+            <Text style={[styles.empty, { color: colors.text.disabled }]}>Aucune note pour ce client</Text>
+          )}
+        </ScrollView>
+      )}
     </Animated.View>
   );
 };
@@ -145,3 +158,5 @@ const styles = {
     paddingVertical: 20,
   },
 };
+
+export default AdminNotes;

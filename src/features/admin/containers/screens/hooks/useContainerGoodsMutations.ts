@@ -1,13 +1,26 @@
 import { useCallback } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Goods } from '../../../goods/types';
 import { useRemoveGoodsFromContainer, useDeleteContainer, useReconcileContainer } from '../../hooks';
 import { ContainerDialogsState } from './useContainerDialogs';
 
+type MutationError = {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+  message?: string;
+};
+
+const getMutationErrorMessage = (error: unknown, fallback: string): string => {
+  if (!error || typeof error !== 'object') return fallback;
+  const mutationError = error as MutationError;
+  return mutationError.response?.data?.message || mutationError.message || fallback;
+};
+
 export const useContainerGoodsMutations = (
   containerId: string,
-  goodsList: Goods[],
   dialogs: ContainerDialogsState,
 ) => {
   const navigation = useNavigation();
@@ -28,17 +41,26 @@ export const useContainerGoodsMutations = (
   }, [containerId, dialogs, removeGoods]);
 
   const handleDeleteContainer = useCallback(() => {
-    if (goodsList.length > 0) { Alert.alert('Impossible', 'Veuillez d\'abord retirer toutes les marchandises.'); return; }
     dialogs.setShowDeleteDialog(true);
-  }, [goodsList, dialogs]);
+  }, [dialogs]);
 
   const confirmDeleteContainer = useCallback(async () => {
     try {
-      await deleteContainer.mutateAsync(containerId);
+      const response = await deleteContainer.mutateAsync(containerId);
+      const releasedGoodsCount = response.data?.releasedGoodsCount || 0;
       dialogs.setShowDeleteDialog(false);
       navigation.navigate('ContainerList' as never);
-    } catch (error: any) {
-      Alert.alert('Impossible de supprimer', error?.response?.data?.message || error?.message || 'Une erreur est survenue');
+      Alert.alert(
+        'Succès',
+        releasedGoodsCount > 0
+          ? `${releasedGoodsCount} marchandise(s) renvoyée(s) aux non assignées. Container supprimé.`
+          : 'Container supprimé.'
+      );
+    } catch (error: unknown) {
+      Alert.alert(
+        'Impossible de supprimer',
+        getMutationErrorMessage(error, 'Une erreur est survenue')
+      );
     }
   }, [containerId, dialogs, deleteContainer, navigation]);
 
@@ -47,8 +69,11 @@ export const useContainerGoodsMutations = (
       await reconcile.mutateAsync({ containerId, agentCBM, agentUnitCost });
       dialogs.setShowReconcileModal(false);
       Alert.alert('Succès', 'Container réconcilié avec succès');
-    } catch (error: any) {
-      Alert.alert('Erreur', error?.response?.data?.message || 'Impossible de réconcilier le container');
+    } catch (error: unknown) {
+      Alert.alert(
+        'Erreur',
+        getMutationErrorMessage(error, 'Impossible de réconcilier le container')
+      );
     }
   }, [containerId, dialogs, reconcile]);
 

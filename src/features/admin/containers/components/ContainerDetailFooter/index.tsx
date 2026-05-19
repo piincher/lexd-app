@@ -26,7 +26,9 @@ export const ContainerDetailFooter: React.FC<ContainerDetailFooterProps> = ({
     handleGoToLoadingList,
     handleMarkReadyForPickup,
     handleMarkDelivered,
+    handleDeleteContainer,
     canMarkDelivered,
+    deleteContainerMutation,
     showDeleteDialog,
     setShowDeleteDialog,
     confirmDeleteContainer,
@@ -49,9 +51,11 @@ export const ContainerDetailFooter: React.FC<ContainerDetailFooterProps> = ({
         onGoToLoadingList={handleGoToLoadingList}
         onMarkReadyForPickup={handleMarkReadyForPickup}
         onMarkDelivered={handleMarkDelivered}
+        onDeleteContainer={handleDeleteContainer}
         hasGoods={goodsList.length > 0}
         canMarkReadyForPickup={container.status === 'ARRIVED' || container.status === 'DISCHARGED'}
         canMarkDelivered={canMarkDelivered}
+        isDeletingContainer={deleteContainerMutation.isPending}
       />
 
       <ContainerDialogs
@@ -59,6 +63,7 @@ export const ContainerDetailFooter: React.FC<ContainerDetailFooterProps> = ({
         setShowDeleteDialog={setShowDeleteDialog}
         onConfirmDelete={confirmDeleteContainer}
         hasGoods={goodsList.length > 0}
+        isDeletingContainer={deleteContainerMutation.isPending}
         showRemoveGoodsDialog={showRemoveGoodsDialog}
         setShowRemoveGoodsDialog={setShowRemoveGoodsDialog}
         onConfirmRemoveGoods={confirmRemoveGoods}

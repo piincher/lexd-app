@@ -1,30 +1,21 @@
-import React, { useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { ActivityIndicator } from 'react-native-paper';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
+import React, { useMemo } from "react";
+import { View, ActivityIndicator } from "react-native";
+import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "./LoadingState.styles";
 
 interface LoadingStateProps {
-  visible: boolean;
+   visible: boolean;
 }
 
 export const LoadingState: React.FC<LoadingStateProps> = ({ visible }) => {
-  const { colors, isDark } = useAppTheme();
-  if (!visible) return null;
+   const { colors } = useAppTheme();
+   const styles = useMemo(() => createStyles(colors), [colors]);
 
-  const styles = useMemo(() => StyleSheet.create({
-    overlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: colors.background.overlay,
-      justifyContent: 'center',
-      alignItems: 'center',
-      zIndex: 1000,
-    },
-  }), [isDark]);
+   if (!visible) return null;
 
-  return (
-    <View style={styles.overlay}>
-      <ActivityIndicator size="large" color={colors.primary[500]} />
-    </View>
-  );
+   return (
+      <View style={styles.overlay}>
+         <ActivityIndicator size="large" color={colors.primary[500]} />
+      </View>
+   );
 };

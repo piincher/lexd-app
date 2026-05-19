@@ -3,7 +3,7 @@ import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 import { getStyles } from "./ReviewFilters.styles";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
-const FILTERS = [
+export const FILTER_CHIPS = [
   { key: "all", label: "Tous" },
   { key: "pending", label: "En attente" },
   { key: "responded", label: "Répondus" },
@@ -28,7 +28,7 @@ export const ReviewFilters: React.FC<ReviewFiltersProps> = ({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.filterScrollContent}
       >
-        {FILTERS.map((filter) => {
+        {FILTER_CHIPS.map((filter) => {
           const isActive = activeFilter === filter.key;
           return (
             <TouchableOpacity

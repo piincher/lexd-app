@@ -41,6 +41,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           onBlur={onBlur}
           autoCapitalize="none"
           autoCorrect={false}
+          returnKeyType="search"
           accessibilityRole="search"
           accessibilityLabel="Rechercher des clients"
         />

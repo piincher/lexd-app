@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { View } from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
+import { Ionicons } from '@expo/vector-icons';
 import { createStyles } from '../ContainerDetailScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -14,9 +15,11 @@ interface ContainerActionButtonsProps {
   onGoToLoadingList: () => void;
   onMarkReadyForPickup: () => void;
   onMarkDelivered: () => void;
+  onDeleteContainer: () => void;
   hasGoods: boolean;
   canMarkReadyForPickup: boolean;
   canMarkDelivered: boolean;
+  isDeletingContainer: boolean;
 }
 
 export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
@@ -25,9 +28,11 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
   onGoToLoadingList,
   onMarkReadyForPickup,
   onMarkDelivered,
+  onDeleteContainer,
   hasGoods,
   canMarkReadyForPickup,
   canMarkDelivered,
+  isDeletingContainer,
 }) => {
   const { colors } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
@@ -90,6 +95,30 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
           />
         </View>
       )}
+
+      <TouchableOpacity
+        style={[
+          styles.actionButtonDanger,
+          isDeletingContainer && styles.actionButtonDangerDisabled,
+        ]}
+        onPress={onDeleteContainer}
+        activeOpacity={0.85}
+        disabled={isDeletingContainer}
+      >
+        {isDeletingContainer ? (
+          <ActivityIndicator size="small" color={colors.status.error} />
+        ) : (
+          <Ionicons name="trash-outline" size={20} color={colors.status.error} />
+        )}
+        <Text
+          style={[
+            styles.actionButtonTextDanger,
+            isDeletingContainer && styles.actionButtonTextDisabled,
+          ]}
+        >
+          {isDeletingContainer ? 'Suppression...' : 'Supprimer le container'}
+        </Text>
+      </TouchableOpacity>
     </Animated.View>
   );
 };

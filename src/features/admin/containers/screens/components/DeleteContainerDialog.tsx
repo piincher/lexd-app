@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { Portal, Dialog, Button } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from '../ContainerDetailScreen.styles';
 
@@ -10,6 +9,7 @@ interface DeleteContainerDialogProps {
   onDismiss: () => void;
   onConfirm: () => void;
   hasGoods: boolean;
+  isDeleting: boolean;
 }
 
 export const DeleteContainerDialog: React.FC<DeleteContainerDialogProps> = ({
@@ -17,13 +17,14 @@ export const DeleteContainerDialog: React.FC<DeleteContainerDialogProps> = ({
   onDismiss,
   onConfirm,
   hasGoods,
+  isDeleting,
 }) => {
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors), [colors]);
 
   return (
     <Portal>
-      <Dialog visible={visible} onDismiss={onDismiss}>
+      <Dialog visible={visible} onDismiss={isDeleting ? undefined : onDismiss}>
         <Dialog.Icon icon="alert" color={colors.status.error} />
         <Dialog.Title style={styles.dialogTitle}>
           Supprimer le Container
@@ -31,16 +32,17 @@ export const DeleteContainerDialog: React.FC<DeleteContainerDialogProps> = ({
         <Dialog.Content>
           <Text style={styles.dialogText}>
             {hasGoods
-              ? 'Veuillez d\'abord retirer toutes les marchandises avant de supprimer ce container.'
+              ? 'Les marchandises assignées seront renvoyées aux non assignées avec leur statut entrepôt. Cette action est irréversible.'
               : 'Êtes-vous sûr de vouloir supprimer ce container ? Cette action est irréversible.'}
           </Text>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={onDismiss}>Annuler</Button>
+          <Button onPress={onDismiss} disabled={isDeleting}>Annuler</Button>
           <Button
             onPress={onConfirm}
             textColor={colors.status.error}
-            disabled={hasGoods}
+            disabled={isDeleting}
+            loading={isDeleting}
           >
             Supprimer
           </Button>

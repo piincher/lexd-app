@@ -30,7 +30,7 @@ export const useContainerDetailScreen = () => {
   const consignee = extractConsignee(container);
 
   const status = useContainerStatusMutations(containerId, container, goodsList, capacityValue, maxCapacity, isAirContainer, totalWeight, dialogs);
-  const goods = useContainerGoodsMutations(containerId, goodsList, dialogs);
+  const goods = useContainerGoodsMutations(containerId, dialogs);
   const nav = useContainerNavigation(containerId, goodsList);
 
   const handleRefresh = async () => {

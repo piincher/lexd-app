@@ -50,7 +50,23 @@ export const useBlockandUnblockUser = () => {
   });
 };
 
-// Delete user (soft delete)
+// Update user
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, user }: { id: string; user: userApi.UserUpdateRequest }) => userApi.updateUser(id, user),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({ queryKey: [USERS_KEY] });
+      queryClient.invalidateQueries({ queryKey: ["user", variables.id] });
+      showMessage({ message: "Utilisateur mis à jour", type: "success" });
+    },
+    onError: (error: any) => {
+      showMessage({ message: "Erreur de mise à jour", description: error.message, type: "danger" });
+    },
+  });
+};
+
+// Delete user (hard delete)
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation({

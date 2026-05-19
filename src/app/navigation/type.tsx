@@ -51,6 +51,7 @@ export type RootStackParamList = {
 
    ClientManagement: undefined;
    ClientDetails: { id: string };
+   EditClient: { id: string };
    // Goods Feature (V2 - Client)
    MyGoods: undefined;
    GoodsDetail: { goodsId: string };

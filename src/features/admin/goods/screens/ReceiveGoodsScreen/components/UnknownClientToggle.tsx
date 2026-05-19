@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Switch, Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './UnknownClientToggle.styles';
 
 interface UnknownClientToggleProps {
   value: boolean;
@@ -15,36 +15,7 @@ export const UnknownClientToggle: React.FC<UnknownClientToggleProps> = ({
   onChange,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
-    container: {
-      marginBottom: Theme.spacing.md,
-    },
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      padding: Theme.spacing.md,
-      borderRadius: Theme.radius.lg,
-      backgroundColor: colors.background.card,
-      borderWidth: 1,
-      borderColor: colors.neutral[200],
-    },
-    iconWrap: {
-      marginRight: Theme.spacing.md,
-    },
-    textWrap: {
-      flex: 1,
-    },
-    title: {
-      fontSize: 14,
-      fontWeight: '700',
-      color: colors.neutral[800],
-    },
-    subtitle: {
-      fontSize: 12,
-      color: colors.neutral[500],
-      marginTop: 2,
-    },
-  }), [colors]);
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.container}>

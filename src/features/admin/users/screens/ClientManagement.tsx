@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
@@ -10,7 +10,7 @@ import { SearchBar } from "../components/SearchBar";
 import { RecentSearchesBar } from "../components/RecentSearchesBar";
 import { SortSelector } from "../components/SortSelector";
 import { RoleFilterChips } from "../components/RoleFilterChips";
-import { ClientList } from "../components/ClientList";
+import { ClientList, ClientListRef } from "../components/ClientList";
 import { BulkActionBar } from "../components/BulkActionBar";
 import { ClientFAB } from "../components/ClientFAB";
 import { AlphabetIndex } from "../components/AlphabetIndex";
@@ -24,6 +24,7 @@ export default function ClientManagement({ navigation }: RootStackScreenProps<"C
   const { colors, isDark } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors), [colors]);
   const s = useClientManagement();
+  const clientListRef = useRef<ClientListRef>(null);
   const activeLetter = !s.searchQuery && s.clients.length > 20
     ? (s.clients[0]?.lastName?.[0] || s.clients[0]?.firstName?.[0] || null)?.toUpperCase() || null : null;
 
@@ -40,14 +41,14 @@ export default function ClientManagement({ navigation }: RootStackScreenProps<"C
       <RoleFilterChips options={ROLE_LABELS} active={s.activeRole} onChange={s.handleRoleChange} />
       <SortSelector value={s.sortBy} onChange={s.setSortBy} />
       <View style={styles.flex}>
-        <ClientList clients={s.clients} pendingId={s.pendingId} searchQuery={s.searchQuery} hasMore={s.hasNextPage}
+        <ClientList ref={clientListRef} clients={s.clients} pendingId={s.pendingId} searchQuery={s.searchQuery} hasMore={s.hasNextPage}
           isFetching={s.isFetching} isRefetching={s.isRefetching} error={s.error} selectedIds={s.selectedIds}
           selectionMode={s.selectionMode} onToggleBlock={s.handleToggleBlock} onDelete={s.handleDelete}
           onNavigate={(id) => navigation.navigate("ClientDetails", { id })} onSelect={s.toggleSelect}
           onPreview={(c) => s.setPreviewClient(c)} onLoadMore={s.handleLoadMore} onRefresh={s.handleRefresh}
           onClearSearch={() => s.setSearchQuery("")} />
         {!s.selectionMode && !s.searchQuery && s.clients.length > 20 && (
-          <AlphabetIndex activeLetter={activeLetter} onSelect={() => {}} />
+          <AlphabetIndex activeLetter={activeLetter} onSelect={(letter) => clientListRef.current?.scrollToLetter(letter)} />
         )}
       </View>
       {s.selectionMode && s.selectedIds.size > 0 && (

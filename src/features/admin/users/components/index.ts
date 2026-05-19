@@ -3,10 +3,12 @@
  */
 
 export * from './AddUserForm';
+export * from './AccountHealthCard';
 export * from './ActivityHeatmap';
 export * from './AdminNotes';
 export * from './AlphabetIndex';
 export * from './AnimatedCounter';
+export * from './BalanceRewardsCard';
 export * from './BulkActionBar';
 export * from './ClientBadge';
 export * from './ClientCard';
@@ -15,9 +17,14 @@ export * from './ClientDetailParallaxHeader';
 export * from './ClientFAB';
 export * from './ClientHeader';
 export * from './ClientList';
+export * from './ClientCertificatesSection';
+export * from './ClientContainersSection';
 export * from './ClientListSkeleton';
+export * from './ClientTicketsSection';
+export * from './ClientPaymentsSection';
 export * from './ClientPreviewModal';
 export * from './ContactInfoCard';
+export * from './EditClientForm';
 export * from './EmptyState';
 export * from './ErrorState';
 export * from './ExportButton';
@@ -28,6 +35,7 @@ export * from './LoadMoreButton';
 export * from './MonthlyTrendChart';
 export * from './OrderList';
 export * from './OrderStatusDonut';
+export * from './PaymentBreakdown';
 export * from './OrderTimeline';
 export * from './ProfileCard';
 export * from './QuickActionBar';

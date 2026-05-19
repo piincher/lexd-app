@@ -4,9 +4,18 @@
  */
 
 import { apiClientV2, apiRequest } from '@src/api/client';
-import { ApiResponse, PaginatedResponse } from '@src/shared/types/api';
-import { PackingList } from '../types/PackingList';
-import { Container, CreateContainerInput, UpdateContainerStatusInput, AssignGoodsInput, ContainerFilters, Route, RouteFilters } from '../types';
+import { ApiResponse } from '@src/shared/types/api';
+import {
+  AssignGoodsInput,
+  Container,
+  ContainerFilters,
+  CreateContainerInput,
+  DeleteContainerResult,
+  PackingList,
+  Route,
+  RouteFilters,
+  UpdateContainerStatusInput,
+} from '../types';
 
 const BASE_URL = '/containers';
 const ROUTES_URL = '/routes';
@@ -91,7 +100,7 @@ export class ContainerService {
     return apiRequest.patch(this.client, `${BASE_URL}/${id}/status`, data);
   }
 
-  async delete(id: string): Promise<ApiResponse<void>> {
+  async delete(id: string): Promise<ApiResponse<DeleteContainerResult>> {
     return apiRequest.delete(this.client, `${BASE_URL}/${id}`);
   }
 
@@ -152,7 +161,7 @@ export class ContainerService {
   // UNASSIGNED GOODS (for assignment UI)
   // ============================================
 
-  async getUnassignedGoods(shippingMode?: string): Promise<ApiResponse<any[]>> {
+  async getUnassignedGoods(shippingMode?: string): Promise<ApiResponse<unknown[]>> {
     const params = shippingMode ? `?shippingMode=${shippingMode}` : '';
     return apiRequest.get(this.client, `/goods/unassigned${params}`);
   }
@@ -165,14 +174,14 @@ export class ContainerService {
     containerId: string,
     agentCBM: number,
     agentUnitCost?: number
-  ): Promise<ApiResponse<any>> {
+  ): Promise<ApiResponse<unknown>> {
     return apiRequest.post(this.client, `${BASE_URL}/${containerId}/reconcile`, {
       agentCBM,
       ...(agentUnitCost ? { agentUnitCost } : {}),
     });
   }
 
-  async getClientAllocations(containerId: string): Promise<ApiResponse<any>> {
+  async getClientAllocations(containerId: string): Promise<ApiResponse<unknown>> {
     return apiRequest.get(this.client, `${BASE_URL}/${containerId}/client-allocations`);
   }
 }

@@ -1,7 +1,8 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View } from "react-native";
 import { Controller } from "react-hook-form";
 import { FormInput } from "../../../../components/FormInput";
+import { styles } from "./DirectCBMInput.styles";
 
 interface DirectCBMInputProps {
    control: any;
@@ -9,12 +10,6 @@ interface DirectCBMInputProps {
 }
 
 export const DirectCBMInput: React.FC<DirectCBMInputProps> = ({ control, errors }) => {
-   const styles = StyleSheet.create({
-      directCbmContainer: {
-         marginTop: 16,
-      },
-   });
-
    return (
       <View style={styles.directCbmContainer}>
          <Controller

@@ -9,11 +9,10 @@ interface AlertFooterProps {
   hasUnassigned: boolean;
 }
 
-export const AlertFooter: React.FC<AlertFooterProps> = ({ hasUnassigned }) => {
-  const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+type AppThemeColors = ReturnType<typeof useAppTheme>["colors"];
 
-  const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: AppThemeColors) =>
+  StyleSheet.create({
     footer: {
       flexDirection: "row",
       alignItems: "center",
@@ -30,6 +29,10 @@ export const AlertFooter: React.FC<AlertFooterProps> = ({ hasUnassigned }) => {
       color: colors.text.secondary,
     },
   });
+
+export const AlertFooter: React.FC<AlertFooterProps> = ({ hasUnassigned }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={styles.footer}>

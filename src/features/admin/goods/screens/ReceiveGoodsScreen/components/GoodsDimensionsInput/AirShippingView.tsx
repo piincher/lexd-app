@@ -1,9 +1,10 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useMemo } from "react";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Controller } from "react-hook-form";
 import { FormInput } from "../../../../components/FormInput";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { createStyles } from "./AirShippingView.styles";
 
 interface AirShippingViewProps {
    control: any;
@@ -12,38 +13,7 @@ interface AirShippingViewProps {
 
 export const AirShippingView: React.FC<AirShippingViewProps> = ({ control, errors }) => {
    const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
-
-   const createStyles = (colors: any) => StyleSheet.create({
-      airMessageContainer: {
-         alignItems: "center",
-         paddingVertical: 24,
-         paddingHorizontal: 16,
-         backgroundColor: colors.background.paper,
-         borderRadius: 12,
-         borderWidth: 1,
-         borderColor: colors.border,
-         borderStyle: "dashed",
-      },
-      airMessageIcon: {
-         fontSize: 32,
-         marginBottom: 8,
-      },
-      airMessageTitle: {
-         fontSize: 16,
-         fontWeight: "700",
-         color: colors.text.primary,
-         marginBottom: 4,
-      },
-      airMessageText: {
-         fontSize: 14,
-         color: colors.text.secondary,
-         textAlign: "center",
-      },
-      disabledCbmContainer: {
-         marginTop: 16,
-      },
-   });
+   const styles = useMemo(() => createStyles(colors), [colors]);
 
    return (
       <View>

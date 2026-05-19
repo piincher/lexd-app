@@ -2,6 +2,7 @@
  * Container CRUD Mutation Hooks
  */
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { waypointQueryKeys } from '@src/shared/hooks/useWaypoints';
 import { containerService } from '../../services/ContainerService';
 import { CreateContainerInput, UpdateContainerStatusInput } from '../../types';
 import { containerQueryKeys } from './containerQueryKeys';
@@ -43,9 +44,21 @@ export const useDeleteContainer = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id: string) => containerService.delete(id),
-    onSuccess: () => {
+    onSuccess: (_, id) => {
       queryClient.invalidateQueries({
         queryKey: containerQueryKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: [...containerQueryKeys.all, 'unassigned-goods'],
+      });
+      queryClient.removeQueries({
+        queryKey: containerQueryKeys.detail(id),
+      });
+      queryClient.removeQueries({
+        queryKey: waypointQueryKeys.list(id),
+      });
+      queryClient.removeQueries({
+        queryKey: waypointQueryKeys.status(id),
       });
     },
   });

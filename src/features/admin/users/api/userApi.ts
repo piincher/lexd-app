@@ -36,6 +36,14 @@ export interface UserRegistrationRequest {
   referralCode?: string;
 }
 
+export interface UserUpdateRequest {
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  email?: string;
+  role?: string;
+}
+
 // Fetch all users with filters and pagination
 export const fetchAllUsers = async (filters: UserListFilters = {}): Promise<UserListResponse> => {
   const params = new URLSearchParams();
@@ -56,9 +64,9 @@ export const blockUnblockUser = async (id: string): Promise<{ message: string }>
   return response.data;
 };
 
-// Soft delete a user
-export const deleteUser = async (id: string): Promise<{ success: boolean; message: string; data?: { userId: string; deletedAt: Date } }> => {
-  const response = await axiosInstance.delete(`${rootUrl}/${id}`);
+// Hard delete a user
+export const deleteUser = async (id: string): Promise<{ success: boolean; message: string; data?: { userId: string; hardDeleted: boolean } }> => {
+  const response = await axiosInstance.delete(`${rootUrl}/${id}/hard`);
   return response.data;
 };
 
@@ -71,5 +79,11 @@ export const getUser = async (id: string): Promise<userData> => {
 // Admin create user
 export const createUser = async (user: UserRegistrationRequest): Promise<{ success: boolean; user: any }> => {
   const response = await axiosInstance.post(`${rootUrl}/admin/create`, { ...user, role: "user" });
+  return response.data;
+};
+
+// Admin update user
+export const updateUser = async (id: string, user: UserUpdateRequest): Promise<{ success: boolean; user: userData }> => {
+  const response = await axiosInstance.put(`${rootUrl}/${id}`, user);
   return response.data;
 };

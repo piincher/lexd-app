@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Pressable, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, {
   useSharedValue,
@@ -17,19 +17,22 @@ interface ClientFABProps {
   onPress: () => void;
 }
 
-const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   container: {
     position: "absolute",
     right: 20,
-    bottom: 24,
+    bottom: 32,
     width: 56,
     height: 56,
     borderRadius: 28,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 12,
-    elevation: 6,
+    backgroundColor: isDark ? colors.primary.dark : undefined,
+    borderWidth: isDark ? 1 : 0,
+    borderColor: isDark ? 'rgba(255,255,255,0.12)' : 'transparent',
+    shadowColor: isDark ? colors.primary.main : colors.neutral[900],
+    shadowOffset: { width: 0, height: isDark ? 6 : 4 },
+    shadowOpacity: isDark ? 0.35 : 0.2,
+    shadowRadius: isDark ? 16 : 12,
+    elevation: isDark ? 8 : 6,
   },
   gradient: {
     width: "100%",
@@ -41,8 +44,8 @@ const createStyles = (colors: any) => StyleSheet.create({
 });
 
 export const ClientFAB: React.FC<ClientFABProps> = ({ onPress }) => {
-  const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const scale = useSharedValue(1);
 
   const handlePressIn = useCallback(() => {
@@ -67,14 +70,21 @@ export const ClientFAB: React.FC<ClientFABProps> = ({ onPress }) => {
       accessibilityRole="button"
       accessibilityLabel="Ajouter un client"
     >
-      <LinearGradient
-        colors={Theme.gradients.primary}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.gradient}
-      >
-        <Ionicons name="add" size={28} color={colors.text.inverse} />
-      </LinearGradient>
+      {isDark ? (
+        <View style={styles.gradient}>
+          <Ionicons name="add" size={28} color={colors.text.inverse} />
+        </View>
+      ) : (
+        <LinearGradient
+          colors={Theme.gradients.primary}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={styles.gradient}
+        >
+          <Ionicons name="add" size={28} color={colors.text.inverse} />
+        </LinearGradient>
+      )}
+
     </AnimatedPressable>
   );
 };

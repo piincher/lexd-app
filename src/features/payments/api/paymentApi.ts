@@ -63,6 +63,7 @@ export const getPaymentHistory = async (params?: {
   endDate?: string;
   page?: number;
   limit?: number;
+  userId?: string;
 }): Promise<PaymentHistoryResponse> => {
   const queryParams = new URLSearchParams();
 
@@ -70,6 +71,7 @@ export const getPaymentHistory = async (params?: {
   if (params?.provider) queryParams.append('provider', params.provider);
   if (params?.startDate) queryParams.append('startDate', params.startDate);
   if (params?.endDate) queryParams.append('endDate', params.endDate);
+  if (params?.userId) queryParams.append('userId', params.userId);
   if (params?.page) queryParams.append('page', params.page.toString());
   if (params?.limit) queryParams.append('limit', params.limit.toString());
 

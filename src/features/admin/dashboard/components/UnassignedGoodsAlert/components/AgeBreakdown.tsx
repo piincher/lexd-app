@@ -8,11 +8,10 @@ interface AgeBreakdownProps {
   byAge: { "0-3": number; "4-7": number; "8+": number };
 }
 
-export const AgeBreakdown: React.FC<AgeBreakdownProps> = ({ byAge }) => {
-  const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+type AppThemeColors = ReturnType<typeof useAppTheme>["colors"];
 
-  const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: AppThemeColors) =>
+  StyleSheet.create({
     ageRow: {
       flexDirection: "row",
       gap: 8,
@@ -47,6 +46,10 @@ export const AgeBreakdown: React.FC<AgeBreakdownProps> = ({ byAge }) => {
       color: colors.status.error,
     },
   });
+
+export const AgeBreakdown: React.FC<AgeBreakdownProps> = ({ byAge }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   const ageRanges = [
     { key: "0-3" as const, label: "0-3j", value: byAge["0-3"], critical: false },

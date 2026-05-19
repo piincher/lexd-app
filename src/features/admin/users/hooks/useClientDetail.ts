@@ -68,8 +68,8 @@ export const useClientDetail = (id: string) => {
 
   const handleEdit = useCallback(() => {
     trigger("light");
-    // navigation.navigate("EditClient", { id });
-  }, [trigger]);
+    navigation.navigate("EditClient", { id });
+  }, [trigger, navigation, id]);
 
   return {
     user,

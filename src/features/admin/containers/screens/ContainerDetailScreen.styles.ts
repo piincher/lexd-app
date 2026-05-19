@@ -1,10 +1,11 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { Theme } from '@src/constants/Theme';
+import type { ThemeContextType } from '@src/constants/Theme';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const MAX_CBM = 67; // Standard 40ft container capacity
 
-const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: ThemeContextType['colors']) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background.default,
@@ -453,10 +454,14 @@ const createStyles = (colors: any) => StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: Theme.spacing.lg,
+    borderRadius: Theme.radius.xl,
     backgroundColor: colors.background.card,
     borderWidth: 1,
-    borderColor: colors.neutral[200],
+    borderColor: colors.status.error + '40',
     gap: Theme.spacing.sm,
+  },
+  actionButtonDangerDisabled: {
+    opacity: 0.6,
   },
   actionButtonTextDanger: {
     fontSize: 16,

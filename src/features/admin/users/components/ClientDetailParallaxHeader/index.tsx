@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, { useAnimatedStyle, interpolate, Extrapolation, SharedValue } from "react-native-reanimated";
@@ -59,9 +59,13 @@ export const ClientDetailParallaxHeader: React.FC<ClientDetailParallaxHeaderProp
 
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingTop: 20 }}>
         <Animated.View style={avatarStyle}>
-          <LinearGradient colors={avatarColors} style={styles.avatar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-            <Text style={styles.avatarText}>{initials}</Text>
-          </LinearGradient>
+          {user?.avatar?.url ? (
+            <Image source={{ uri: user.avatar.url }} style={styles.avatarImage} />
+          ) : (
+            <LinearGradient colors={avatarColors} style={styles.avatar} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
+              <Text style={styles.avatarText}>{initials}</Text>
+            </LinearGradient>
+          )}
         </Animated.View>
         <Animated.View style={[{ alignItems: "center", marginTop: 12 }, nameStyle]}>
           <Text style={styles.name}>{user?.firstName} {user?.lastName}</Text>
@@ -95,6 +99,13 @@ const styles = {
     borderRadius: 32,
     alignItems: "center" as const,
     justifyContent: "center" as const,
+    borderWidth: 4,
+    borderColor: "rgba(255,255,255,0.3)",
+  },
+  avatarImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 32,
     borderWidth: 4,
     borderColor: "rgba(255,255,255,0.3)",
   },

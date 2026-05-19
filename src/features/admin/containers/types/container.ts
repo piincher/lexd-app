@@ -1,4 +1,5 @@
 import { Goods } from '../../goods/types';
+import type { ThemeContextType } from '@src/constants/Theme';
 import { ShippingMode } from './route';
 import { ShippingLine } from './shipping';
 import { ConsigneeInfo } from './destination';
@@ -129,7 +130,7 @@ export interface Container {
     unbilledCapacityCost: number;
     agentCBMCostPerUnit: number;
     reconciliationStatus: string;
-    goodsBreakdown: any[];
+    goodsBreakdown: unknown[];
   };
 }
 
@@ -162,6 +163,12 @@ export interface UpdateContainerStatusInput {
  */
 export interface AssignGoodsInput {
   goodsIds: string[];
+}
+
+export interface DeleteContainerResult {
+  containerId: string;
+  releasedGoodsCount: number;
+  deletedWaypointTrackingCount: number;
 }
 
 /**
@@ -230,7 +237,7 @@ export const CONTAINER_STATUS_LABELS: Record<ContainerStatus, string> = {
  * @param colors - Theme colors
  * @returns Record of status colors
  */
-export const getContainerStatusColors = (colors: any): Record<ContainerStatus, string> => ({
+export const getContainerStatusColors = (colors: ThemeContextType['colors']): Record<ContainerStatus, string> => ({
   BOOKED: colors.status.info,
   EMPTY_TO_WAREHOUSE: colors.status.info,
   LOADING: colors.status.warning,

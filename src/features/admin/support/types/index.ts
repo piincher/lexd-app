@@ -43,6 +43,7 @@ export interface AdminTicketFilters {
   search?: string;
   page?: number;
   limit?: number;
+  userId?: string;
 }
 
 export interface AdminTicketPagination {

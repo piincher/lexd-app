@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import { useGetUsers, useBlockandUnblockUser, useDeleteUser } from "./useUserManagement";
 import { useDebouncedValue } from "./useDebouncedValue";
 import { useSortedClients } from "./useSortedClients";
@@ -34,7 +34,20 @@ export const useClientManagement = () => {
   const { mutate: deleteMutate } = useDeleteUser();
 
   const rawClients = useMemo(() => data?.pages.flatMap((p) => p.data) ?? [], [data]);
-  const clients = useSortedClients(rawClients, sortBy);
+
+  // Client-side search filter for instant UX (server also filters for accuracy)
+  const filteredClients = useMemo(() => {
+    if (!debouncedSearch) return rawClients;
+    const query = debouncedSearch.toLowerCase();
+    return rawClients.filter((client) =>
+      client.firstName?.toLowerCase().includes(query) ||
+      client.lastName?.toLowerCase().includes(query) ||
+      client.phoneNumber?.includes(query) ||
+      client.email?.toLowerCase().includes(query)
+    );
+  }, [rawClients, debouncedSearch]);
+
+  const clients = useSortedClients(filteredClients, sortBy);
   const meta = data?.pages[data.pages.length - 1]?.meta;
 
   const handleToggleBlock = useCallback((id: string) => {
@@ -57,10 +70,23 @@ export const useClientManagement = () => {
 
   const handleRefresh = useCallback(() => refetch(), [refetch]);
 
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const handleSearchChange = useCallback((text: string) => {
     setSearchQuery(text);
     setShowRecents(text.length === 0 && recents.length > 0);
-    if (text.trim()) setTimeout(() => addRecent(text.trim()), 500);
+
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+      searchTimeoutRef.current = null;
+    }
+
+    if (text.trim()) {
+      searchTimeoutRef.current = setTimeout(() => {
+        addRecent(text.trim());
+        searchTimeoutRef.current = null;
+      }, 500);
+    }
   }, [recents.length, addRecent]);
 
   const handleSearchFocus = useCallback(() => {

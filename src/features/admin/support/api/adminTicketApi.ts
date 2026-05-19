@@ -20,6 +20,7 @@ const buildListParams = (filters?: AdminTicketFilters) => {
 
   if (filters?.status) params.status = filters.status;
   if (filters?.search?.trim()) params.search = filters.search.trim();
+  if (filters?.userId) params.userId = filters.userId;
   if (filters?.page) params.page = filters.page;
   if (filters?.limit) params.limit = filters.limit;
 

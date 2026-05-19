@@ -13,17 +13,10 @@ interface UnassignedGoodsAlertProps {
   onPress: () => void;
 }
 
-export const UnassignedGoodsAlert: React.FC<UnassignedGoodsAlertProps> = ({
-  total,
-  byShippingMode,
-  byAge,
-  onPress,
-}) => {
-  const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
-  const hasUnassigned = total > 0;
+type AppThemeColors = ReturnType<typeof useAppTheme>["colors"];
 
-  const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: AppThemeColors) =>
+  StyleSheet.create({
     card: {
       marginBottom: 16,
       borderRadius: 20,
@@ -34,6 +27,16 @@ export const UnassignedGoodsAlert: React.FC<UnassignedGoodsAlertProps> = ({
       ...Theme.shadows.md,
     },
   });
+
+export const UnassignedGoodsAlert: React.FC<UnassignedGoodsAlertProps> = ({
+  total,
+  byShippingMode,
+  byAge,
+  onPress,
+}) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+  const hasUnassigned = total > 0;
 
   return (
     <Pressable

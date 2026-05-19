@@ -67,6 +67,7 @@ export const AppNavigator: React.FC = () => {
           <Stack.Screen name="UserActiveOrders" component={Screens.UserActiveOrders} />
           <Stack.Screen name="ClientManagement" component={Screens.ClientManagement} />
           <Stack.Screen name="ClientDetails" component={Screens.ClientDetails} />
+          <Stack.Screen name="EditClient" component={Screens.EditClient} />
           <Stack.Screen name="IssueCertificate" component={Screens.IssueCertificateScreen} />
           <Stack.Screen name="CertificateHistory" component={Screens.CertificateHistoryScreen} />
           <Stack.Screen name="CertificateDetailAdmin" component={Screens.CertificateDetailAdminScreen} />

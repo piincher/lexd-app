@@ -60,6 +60,7 @@ export { default as AddUser } from "@src/features/admin/users/screens/AddUser";
 export { default as SelectUser } from "@src/features/admin/users/screens/SelectUser";
 export { default as ClientManagement } from "@src/features/admin/users/screens/ClientManagement";
 export { default as ClientDetails } from "@src/features/admin/users/screens/ClientDetail";
+export { default as EditClient } from "@src/features/admin/users/screens/EditClient";
 
 // Admin Dashboard
 export { default as AdminDashBoard } from "@src/features/admin/dashboard/screens/AdminDashBoard";

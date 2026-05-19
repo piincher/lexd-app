@@ -17,7 +17,8 @@ export const RoleFilterChips: React.FC<RoleFilterChipsProps> = ({ options, activ
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.container}
+      style={{ maxHeight: 40 }}
+      contentContainerStyle={[styles.container, { alignItems: "center" }]}
     >
       {Object.entries(options).map(([key, label]) => {
         const isActive = active === key;
