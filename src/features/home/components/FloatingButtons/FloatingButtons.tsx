@@ -4,11 +4,12 @@
  */
 
 import React from 'react';
-import { Pressable, StyleSheet, Linking } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import Animated from 'react-native-reanimated';
 import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
+import { openSupportWhatsApp } from '@src/shared/lib/openWhatsApp';
 
 interface FloatingButtonsProps {
   scrollRef: React.RefObject<any>;
@@ -26,9 +27,7 @@ export const FloatingButtons: React.FC<FloatingButtonsProps> = ({
   };
 
   const handleWhatsApp = () => {
-    Linking.openURL(
-      "whatsapp://send?phone=+8618851725957&text=Bonjour%20ChinaLink,%20J%20ai%20une%20demande%20d'expedition%20a%20faire%20:)"
-    );
+    openSupportWhatsApp("Bonjour ChinaLink, J ai une demande d'expedition a faire :)");
   };
 
   return (

@@ -9,6 +9,7 @@ export const OnboardingScreen: React.FC = () => {
    const {
       width,
       height,
+      isDark,
       styles,
       onboardingData,
       backgroundColor,
@@ -17,7 +18,7 @@ export const OnboardingScreen: React.FC = () => {
 
    return (
       <View style={styles.container}>
-         <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+         <StatusBar barStyle={isDark ? "light-content" : "light-content"} translucent backgroundColor="transparent" />
          <OnboardingBackground backgroundColor={backgroundColor} />
 
          <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>

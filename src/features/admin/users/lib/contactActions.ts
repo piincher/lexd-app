@@ -1,4 +1,5 @@
 import { Linking, Alert } from "react-native";
+import { openWhatsApp as openWhatsAppLib } from "@src/shared/lib/openWhatsApp";
 
 /**
  * Open phone dialer with the given number.
@@ -11,16 +12,13 @@ export const callPhone = async (phone?: string) => {
 };
 
 /**
- * Open WhatsApp with the given number.
+ * Open WhatsApp (Business优先) with the given number.
  */
 export const openWhatsApp = async (phone?: string) => {
   if (!phone) return;
-  const cleaned = phone.replace(/\D/g, "");
-  const url = `https://wa.me/${cleaned}`;
-  const supported = await Linking.canOpenURL(url);
-  if (supported) {
-    await Linking.openURL(url);
-  } else {
+  try {
+    await openWhatsAppLib(phone);
+  } catch {
     Alert.alert("WhatsApp non installé", "Veuillez installer WhatsApp pour envoyer un message.");
   }
 };

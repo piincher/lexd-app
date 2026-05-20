@@ -5,7 +5,8 @@
  */
 
 import React from "react";
-import { SafeAreaView, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { DateRangePicker } from "@src/components/DateRangePicker";
 import { useGoodsPdfExportScreen } from "../hooks";

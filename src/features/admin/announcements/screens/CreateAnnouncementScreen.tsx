@@ -1,5 +1,5 @@
-import React from "react";
-import { ActivityIndicator, Alert } from "react-native";
+import React, { useRef } from "react";
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { Screen } from "@src/shared/ui/Screen";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAdminAnnouncement } from "../hooks/useAnnouncements";
@@ -49,6 +49,13 @@ const CreateAnnouncementScreen: React.FC<RootStackScreenProps<"CreateAnnouncemen
     );
   }
 
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
+
   return (
     <Screen
       header={{
@@ -57,14 +64,29 @@ const CreateAnnouncementScreen: React.FC<RootStackScreenProps<"CreateAnnouncemen
         onBackPress: () => navigation.goBack(),
       }}
       variant="card"
+      scrollable={false}
     >
-      <AnnouncementForm
-        key={announcementId || "new"}
-        initialValues={detail.data}
-        onSubmit={handleSubmit}
-        isLoading={isPending}
-        submitLabel={isEditing ? "Enregistrer les changements" : "Publier l'annonce"}
-      />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          ref={scrollViewRef}
+          contentContainerStyle={{ flexGrow: 1, padding: 16 }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <AnnouncementForm
+            key={announcementId || "new"}
+            initialValues={detail.data}
+            onSubmit={handleSubmit}
+            isLoading={isPending}
+            submitLabel={isEditing ? "Enregistrer les changements" : "Publier l'annonce"}
+            onInputFocus={scrollToEnd}
+          />
+          <View style={{ height: 120 }} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Screen>
   );
 };

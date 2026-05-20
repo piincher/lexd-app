@@ -1,16 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import Constants from 'expo-constants';
-import SocialMedia from '@src/components/SocialMedia/SocialMedia';
+import SocialMedia from '@src/shared/ui/SocialMedia';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const ProfileFooter: React.FC = () => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const cardBorder = colors.border;
 
   return (
     <View style={styles.footer}>
-      <SocialMedia color={colors.text.disabled} />
+      <SocialMedia />
       <Text style={[styles.versionText, { color: colors.text.disabled }]}>
         v{Constants.expoConfig?.version}
       </Text>
@@ -28,13 +28,14 @@ export const ProfileFooter: React.FC = () => {
 const styles = StyleSheet.create({
   footer: {
     alignItems: 'center',
-    marginTop: 32,
+    marginTop: 24,
     paddingHorizontal: 32,
-    paddingBottom: 16,
+    paddingBottom: 24,
   },
   versionText: {
     fontSize: 12,
-    marginTop: -20,
+    marginTop: 16,
+    letterSpacing: 0.5,
   },
   footerDivider: {
     width: 40,

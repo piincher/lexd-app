@@ -37,12 +37,12 @@ export const FAQScreen: React.FC = () => {
   return (
     <Screen
       header={{ title: 'Centre d\'aide', showBack: true, showNotificationBell: true }}
-      footer={<FAQContactButton />}
+      footer={<FAQContactButton onPress={() => {}} />}
       scrollable={false}
     >
       <FlashList
         data={filteredData}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id || item._id || String(item.question)}
         renderItem={({ item, index }) => (
           <FAQItem item={item} index={index} />
         )}

@@ -45,6 +45,9 @@ export const useAdminTicketReply = () => {
     onSuccess: (ticket, variables) => {
       queryClient.setQueryData(adminTicketQueryKeys.detail(variables.ticketId), ticket);
       queryClient.invalidateQueries({ queryKey: adminTicketQueryKeys.lists() });
+      // Customer-side invalidation
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['tickets', 'detail', variables.ticketId] });
     },
   });
 };
@@ -68,6 +71,9 @@ export const useAdminTicketStatusUpdate = () => {
     onSuccess: (ticket, variables) => {
       queryClient.setQueryData(adminTicketQueryKeys.detail(variables.ticketId), ticket);
       queryClient.invalidateQueries({ queryKey: adminTicketQueryKeys.lists() });
+      // Customer-side invalidation
+      queryClient.invalidateQueries({ queryKey: ['tickets'] });
+      queryClient.invalidateQueries({ queryKey: ['tickets', 'detail', variables.ticketId] });
     },
   });
 };

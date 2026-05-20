@@ -6,7 +6,7 @@ import type { InAppNotification } from '../../types';
 const DATA_FIELDS: { key: 'orderId' | 'containerId' | 'ticketId' | 'invoiceId' | 'certificateId'; label: string }[] = [
   { key: 'orderId', label: 'Commande' },
   { key: 'containerId', label: 'Conteneur' },
-  { key: 'ticketId', label: 'Ticket' },
+  { key: 'ticketId', label: 'Demande' },
   { key: 'invoiceId', label: 'Facture' },
   { key: 'certificateId', label: 'Certificat' },
 ];

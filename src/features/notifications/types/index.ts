@@ -137,14 +137,14 @@ export const NOTIFICATION_TYPE_CONFIG: Record<NotificationType, {
     description: 'Mise à jour du conteneur'
   },
   TICKET_REPLY: { 
-    label: 'Support', 
+    label: 'Assistance', 
     icon: 'message-reply',
-    description: 'Nouvelle réponse au ticket'
+    description: 'Nouvelle réponse à votre demande'
   },
   TICKET_CREATED: {
-    label: 'Nouveau ticket',
+    label: 'Nouvelle demande',
     icon: 'ticket-confirmation',
-    description: 'Nouvelle demande support client'
+    description: 'Nouvelle demande d’assistance'
   },
   INVOICE: {
     label: 'Facture',
@@ -258,9 +258,9 @@ export const PUBLIC_NOTIFICATION_TYPE_CONFIG: Record<PublicNotificationType, {
     color: '#10B981', // Success green
   },
   GOODS_ASSIGNED: {
-    label: 'Assigné',
+    label: 'Assignée à un envoi',
     icon: 'truck-delivery',
-    description: 'Marchandise assignée à un conteneur',
+    description: 'Marchandise assignée à un envoi',
     color: '#3B82F6', // Info blue
   },
 };

@@ -1,5 +1,6 @@
 import React from "react";
-import { SafeAreaView, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Appbar } from "react-native-paper";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useOrderDetailScreen } from "../../hooks/useOrderDetailScreen";

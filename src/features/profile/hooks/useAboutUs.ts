@@ -1,8 +1,9 @@
 import { useCallback } from 'react';
 import { Linking } from 'react-native';
+import Constants from 'expo-constants';
 import { Theme } from '@src/constants/Theme';
 
-export const APP_VERSION = '2.0.0';
+export const APP_VERSION = Constants.expoConfig?.version ?? 'unknown';
 
 export const VALUES = [
    {

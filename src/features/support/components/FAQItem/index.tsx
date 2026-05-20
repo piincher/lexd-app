@@ -18,8 +18,8 @@ import { FAQItemHeader, FAQItemAnswer } from './components';
 
 interface FAQItemProps {
   item: FAQItemType;
-  isExpanded: boolean;
-  onToggle: () => void;
+  isExpanded?: boolean;
+  onToggle?: () => void;
   index: number;
 }
 
@@ -27,7 +27,7 @@ const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
 export const FAQItem: React.FC<FAQItemProps> = ({
   item,
-  isExpanded,
+  isExpanded = false,
   onToggle,
   index,
 }) => {
@@ -68,7 +68,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({
     ],
   }));
 
-  const categoryColor = FAQ_CATEGORY_COLORS[item.category];
+  const categoryColor = FAQ_CATEGORY_COLORS[item.category as keyof typeof FAQ_CATEGORY_COLORS];
 
   return (
     <AnimatedTouchable
@@ -103,7 +103,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({
   );
 };
 
-const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: { neutral: Record<string, string>; border: string }) => StyleSheet.create({
   container: {
     borderRadius: 12,
     borderWidth: 1,

@@ -1,13 +1,16 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
-import { Text, Avatar } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { DashboardStats } from '../types';
 
+type DashboardUser = { firstName?: string } | null | undefined;
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+
 interface Props {
-  user: any;
+  user: DashboardUser;
   welcomeMessage: string;
   stats: DashboardStats;
   onViewGoods?: () => void;
@@ -16,12 +19,6 @@ interface Props {
 }
 
 const fmtN = (n: number) => (n >= 1000 ? `${(n / 1000).toFixed(1)}K` : `${n}`);
-const fmtC = (n: number) => {
-  const num = Number(n) || 0;
-  if (num >= 1_000_000) return `${(num / 1_000_000).toFixed(1)}M`;
-  if (num >= 1_000) return `${Math.round(num / 1_000)}K`;
-  return `${Math.round(num)}`;
-};
 
 export const HeroSection: React.FC<Props> = ({
   user,
@@ -74,8 +71,8 @@ export const HeroSection: React.FC<Props> = ({
   );
 
   const statItems = [
-    { icon: 'cube', value: fmtN(stats.totalGoods), label: 'Marchandises', tint: colors.primary.main, onPress: onViewGoods },
-    { icon: 'boat', value: fmtN(stats.activeContainers), label: 'En Transit', tint: colors.status.info, onPress: onViewContainers },
+    { icon: 'cube' as IoniconName, value: fmtN(stats.totalGoods), label: 'Marchandises', tint: colors.primary.main, onPress: onViewGoods },
+    { icon: 'boat' as IoniconName, value: fmtN(stats.activeContainers), label: 'En transit', tint: colors.status.info, onPress: onViewContainers },
     // { icon: 'cash', value: `${fmtC(stats.totalSpent)}F`, label: 'Dépensé', tint: colors.status.success, onPress: onViewSpent },
   ];
 
@@ -99,7 +96,7 @@ export const HeroSection: React.FC<Props> = ({
               backgroundColor: colors.background.card,
               justifyContent: 'center',
               alignItems: 'center',
-              ...((colors as any).shadows?.sm || { elevation: 2 }),
+              elevation: 2,
             }}
           >
             <Ionicons name="notifications-outline" size={20} color={colors.text.primary} />
@@ -121,7 +118,7 @@ export const HeroSection: React.FC<Props> = ({
                 ]}
               >
                 <View style={[styles.statIcon, { backgroundColor: `${s.tint}18` }]}>
-                  <Ionicons name={s.icon as any} size={18} color={s.tint} />
+                  <Ionicons name={s.icon} size={18} color={s.tint} />
                 </View>
                 <Text style={[styles.statValue, { color: colors.text.primary }]}>{s.value}</Text>
                 <Text style={[styles.statLabel, { color: colors.text.secondary }]}>{s.label}</Text>

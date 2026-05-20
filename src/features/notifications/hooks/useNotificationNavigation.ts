@@ -4,11 +4,15 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import type { InAppNotification } from '../types';
 import type { RootStackParamList } from '@src/navigations/type';
+import { isAdminRole } from '@src/shared/lib/roles';
+import { useAuth } from '@src/store/Auth';
 
 type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
 
 export const useNotificationNavigation = () => {
   const navigation = useNavigation<NavigationProp>();
+  const role = useAuth((state) => state.user?.role);
+  const adminRole = isAdminRole(role);
 
   const handleToastPress = useCallback((notification: InAppNotification) => {
     const { type, data } = notification;
@@ -31,15 +35,15 @@ export const useNotificationNavigation = () => {
 
       case 'TICKET_REPLY':
         if (data?.ticketId) {
-          navigation.navigate('TicketDetail', { ticketId: data.ticketId });
+          navigation.navigate(adminRole ? 'AdminTicketDetail' : 'TicketDetail', { ticketId: data.ticketId });
         }
         break;
 
       case 'TICKET_CREATED':
         if (data?.ticketId) {
-          navigation.navigate('AdminTicketDetail', { ticketId: data.ticketId });
+          navigation.navigate(adminRole ? 'AdminTicketDetail' : 'TicketDetail', { ticketId: data.ticketId });
         } else {
-          navigation.navigate('AdminTicketList');
+          navigation.navigate(adminRole ? 'AdminTicketList' : 'TicketList');
         }
         break;
 
@@ -67,7 +71,7 @@ export const useNotificationNavigation = () => {
         navigation.navigate('NotificationDetail', { notification });
         break;
     }
-  }, [navigation]);
+  }, [adminRole, navigation]);
 
   return { handleToastPress };
 };

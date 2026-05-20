@@ -14,6 +14,7 @@ interface CvvFieldProps {
   cardBrand: string;
   showCvv: boolean;
   onToggleShowCvv: () => void;
+  onInputFocus?: () => void;
 }
 
 export const CvvField: React.FC<CvvFieldProps> = ({
@@ -26,6 +27,7 @@ export const CvvField: React.FC<CvvFieldProps> = ({
   cardBrand,
   showCvv,
   onToggleShowCvv,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
 
@@ -50,6 +52,7 @@ export const CvvField: React.FC<CvvFieldProps> = ({
           maxLength={cardBrand === 'amex' ? 4 : 3}
           secureTextEntry={!showCvv}
           editable={!disabled}
+          onFocus={onInputFocus}
         />
         <TouchableOpacity onPress={onToggleShowCvv}>
           <MaterialCommunityIcons

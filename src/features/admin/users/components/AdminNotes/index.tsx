@@ -8,9 +8,10 @@ import { useAdminNotesQuery, useAddAdminNote, useDeleteAdminNote } from "../../h
 
 interface AdminNotesProps {
   userId: string;
+  onInputFocus?: () => void;
 }
 
-export const AdminNotes: React.FC<AdminNotesProps> = ({ userId }) => {
+export const AdminNotes: React.FC<AdminNotesProps> = ({ userId, onInputFocus }) => {
   const { colors } = useAppTheme();
   const { trigger } = useHaptics();
   const [input, setInput] = useState("");
@@ -44,6 +45,7 @@ export const AdminNotes: React.FC<AdminNotesProps> = ({ userId }) => {
           value={input}
           onChangeText={setInput}
           multiline
+          onFocus={onInputFocus}
         />
         <TouchableOpacity
           onPress={addNote}

@@ -36,6 +36,10 @@ export const useUpdateContainerStatus = () => {
       queryClient.invalidateQueries({
         queryKey: containerQueryKeys.lists(),
       });
+      // Customer-side invalidation
+      queryClient.invalidateQueries({ queryKey: ['customer-containers'] });
+      queryClient.invalidateQueries({ queryKey: ['customer-containers', 'detail', variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
   });
 };

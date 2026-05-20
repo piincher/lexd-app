@@ -33,9 +33,10 @@ export const TicketMessageList: React.FC<TicketMessageListProps> = ({
 
   useEffect(() => {
     if (messages.length > 0) {
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         flatListRef.current?.scrollToEnd({ animated: true });
       }, 100);
+      return () => clearTimeout(timeoutId);
     }
   }, [messages.length]);
 

@@ -10,7 +10,7 @@ export const getStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   },
   loadingText: {
     fontSize: 15,
-    fontFamily: Fonts.regular,
+    fontFamily: Fonts.REGULAR,
     color: colors.text.secondary,
   },
   listContainer: {
@@ -25,7 +25,7 @@ export const getStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   },
   emptyTitle: {
     fontSize: 18,
-    fontFamily: Fonts.bold,
+    fontFamily: Fonts.BOLD,
     color: colors.text.secondary,
     marginTop: 16,
     marginBottom: 6,
@@ -46,7 +46,7 @@ export const getStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   },
   resetFilterText: {
     fontSize: 14,
-    fontFamily: Fonts.meduim,
+    fontFamily: Fonts.MEDIUM,
     color: colors.text.secondary,
   },
   paginationContainer: {

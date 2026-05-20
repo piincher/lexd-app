@@ -11,6 +11,7 @@ import { CustomerAnalyticsItem } from '../types';
 import { CustomerChartRow } from './CustomerChartRow';
 import { createStyles } from './TopCustomersChart.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import type { AppTheme } from '@src/shared/constants/Theme';
 
 interface TopCustomersChartProps {
   customers: CustomerAnalyticsItem[];
@@ -36,8 +37,18 @@ const getInitials = (name: string) => {
     .slice(0, 2);
 };
 
-const getAvatarColor = (index: number, colors: any) => {
-  const palette = [colors.status.success, colors.status.info, colors.primary.main, colors.status.warning, colors.status.error, (colors.accent as any).pink || '#EC4899', (colors.accent as any).cyan || '#06B6D4'];
+type ThemeColors = AppTheme['colors'];
+
+const getAvatarColor = (index: number, colors: ThemeColors) => {
+  const palette = [
+    colors.status.success,
+    colors.status.info,
+    colors.primary.main,
+    colors.status.warning,
+    colors.status.error,
+    colors.accent.rose,
+    colors.accent.sky,
+  ];
   return palette[index % palette.length];
 };
 
@@ -68,7 +79,7 @@ export const TopCustomersChart: React.FC<TopCustomersChartProps> = ({
         >
           {displayCustomers.map((customer, index) => (
             <CustomerChartRow
-              key={customer.userId}
+              key={`${customer.userId}-${index}`}
               customer={customer}
               index={index}
               maxRevenue={maxRevenue}

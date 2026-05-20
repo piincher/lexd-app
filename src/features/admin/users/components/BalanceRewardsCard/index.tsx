@@ -13,6 +13,10 @@ export const BalanceRewardsCard: React.FC<BalanceRewardsCardProps> = ({ user }) 
   const { colors } = useAppTheme();
 
   if (!user || (user.balance === undefined && user.rewardPoints === undefined)) return null;
+  const pendingPoints = user.pendingRedemptionPoints ?? 0;
+  const pointValue = user.rewardPointValueFCFA ?? 50;
+  const availableValue = user.rewardValueFCFA ?? ((user.rewardPoints ?? 0) * pointValue);
+  const pendingValue = user.pendingRedemptionValueFCFA ?? (pendingPoints * pointValue);
 
   return (
     <Animated.View entering={FadeInUp.delay(375)} style={[styles.card, { backgroundColor: colors.background.card, shadowColor: colors.neutral[900] }]}>
@@ -28,6 +32,14 @@ export const BalanceRewardsCard: React.FC<BalanceRewardsCardProps> = ({ user }) 
           <Text style={[styles.value, { color: colors.status.warning }]}>{user.rewardPoints ?? 0}</Text>
           <Text style={[styles.label, { color: colors.text.secondary }]}>Points</Text>
         </View>
+      </View>
+      <View style={[styles.rewardsDetail, { backgroundColor: colors.status.warning + "10" }]}>
+        <Text style={[styles.detailText, { color: colors.text.primary }]}>
+          Valeur disponible: {availableValue.toLocaleString("fr-FR")} FCFA
+        </Text>
+        <Text style={[styles.detailText, { color: colors.text.secondary }]}>
+          Réservé en attente: {pendingPoints} pts ({pendingValue.toLocaleString("fr-FR")} FCFA)
+        </Text>
       </View>
     </Animated.View>
   );
@@ -67,6 +79,16 @@ const styles = {
   label: {
     fontSize: 12,
     fontWeight: "600" as const,
+  },
+  rewardsDetail: {
+    marginTop: 12,
+    borderRadius: 12,
+    padding: 12,
+    gap: 4,
+  },
+  detailText: {
+    fontSize: 13,
+    fontWeight: "700" as const,
   },
 };
 

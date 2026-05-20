@@ -26,7 +26,7 @@ export const getMenuSections = (colors: any): MenuSection[] => [
     items: [
       {
         title: 'Historique des commandes',
-        subtitle: 'Consultez vos commandes passees',
+        subtitle: 'Consultez vos commandes passées',
         icon: 'history',
         screen: 'PastOrders',
         iconBg: hexToRgba(colors.status.info, 0.1),
@@ -34,7 +34,7 @@ export const getMenuSections = (colors: any): MenuSection[] => [
       },
       {
         title: 'Parrainage',
-        subtitle: 'Partager votre code et suivre vos points',
+        subtitle: 'Partagez votre code et suivez vos points',
         icon: 'gift-outline',
         screen: 'Referral',
         iconBg: hexToRgba(colors.primary.main, 0.1),
@@ -42,7 +42,7 @@ export const getMenuSections = (colors: any): MenuSection[] => [
       },
       {
         title: 'Notifications',
-        subtitle: 'Gerez vos preferences',
+        subtitle: 'Gérez vos préférences',
         icon: 'bell-outline',
         screen: 'NotificationSettings',
         iconBg: hexToRgba(colors.status.warning, 0.1),
@@ -55,7 +55,7 @@ export const getMenuSections = (colors: any): MenuSection[] => [
     items: [
       {
         title: 'FAQ',
-        subtitle: 'Questions frequentes',
+        subtitle: 'Questions fréquentes',
         icon: 'help-circle',
         screen: 'FAQ',
         iconBg: hexToRgba(colors.status.success, 0.1),
@@ -63,15 +63,15 @@ export const getMenuSections = (colors: any): MenuSection[] => [
       },
       {
         title: 'Centre d\'assistance',
-        subtitle: 'Ouvrir un ticket ou suivre une demande',
+        subtitle: 'Ouvrir ou suivre une demande',
         icon: 'lifebuoy',
         screen: 'TicketList',
         iconBg: hexToRgba(colors.status.info, 0.1),
         iconColor: colors.status.info,
       },
       {
-        title: 'A propos de ChinaLink',
-        subtitle: 'En savoir plus sur nous',
+        title: 'À propos de ChinaLink',
+        subtitle: 'En savoir plus sur notre service',
         icon: 'information-outline',
         screen: 'AboutUs',
         iconBg: hexToRgba(colors.accent.gold, 0.1),
@@ -84,7 +84,7 @@ export const getMenuSections = (colors: any): MenuSection[] => [
     items: [
       {
         title: 'Introduction',
-        subtitle: 'Revoir le guide de demarrage',
+        subtitle: 'Revoir le guide de démarrage',
         icon: 'play-circle-outline',
         screen: 'OnBoarding',
         iconBg: hexToRgba(colors.status.error, 0.1),

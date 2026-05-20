@@ -19,6 +19,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '@src/store/Auth';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { isAdminRole } from '@src/shared/lib/roles';
 
 interface AuthGuardProps {
   children: React.ReactNode;
@@ -79,7 +80,7 @@ export const AuthGuard: React.FC<AuthGuardProps> = ({
     return (
       <View style={[styles.container, { backgroundColor: colors.background.default }]}>
         <ActivityIndicator size="large" color={colors.primary.main} />
-        <Text style={[styles.text, { color: colors.text.secondary }]}>Vérification de l'authentification...</Text>
+        <Text style={[styles.text, { color: colors.text.secondary }]}>Vérification de l&apos;authentification...</Text>
         <Button 
           mode="contained" 
           onPress={() => navigation.navigate(redirectTo as never)}
@@ -105,17 +106,17 @@ export function withAuthGuard<P extends object>(
     requireAdmin?: boolean;
   }
 ): React.FC<P> {
-  return (props: P) => {
+  const GuardedComponent: React.FC<P> = (props: P) => {
     const { isAuthenticated, user } = useAuthGuard();
     const navigation = useNavigation();
 
     useEffect(() => {
       if (!isAuthenticated) {
         navigation.navigate('Login' as never);
-      } else if (options?.requireAdmin && user?.role !== 'admin') {
+      } else if (options?.requireAdmin && !isAdminRole(user?.role)) {
         navigation.navigate('Home' as never);
       }
-    }, [isAuthenticated, user]);
+    }, [isAuthenticated, navigation, user]);
 
     const { colors } = useAppTheme();
 
@@ -130,7 +131,7 @@ export function withAuthGuard<P extends object>(
       );
     }
 
-    if (options?.requireAdmin && user?.role !== 'admin') {
+    if (options?.requireAdmin && !isAdminRole(user?.role)) {
       return (
         <View style={[styles.container, { backgroundColor: colors.background.default }]}>
           <Text style={[styles.errorText, { color: colors.status.error }]}>Accès réservé aux administrateurs</Text>
@@ -143,6 +144,9 @@ export function withAuthGuard<P extends object>(
 
     return <WrappedComponent {...props} />;
   };
+
+  GuardedComponent.displayName = `withAuthGuard(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+  return GuardedComponent;
 }
 
 const styles = StyleSheet.create({

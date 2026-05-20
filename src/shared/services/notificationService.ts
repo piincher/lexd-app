@@ -36,7 +36,37 @@ export type NotificationType =
   | "INVOICE"
   | "CERTIFICATE_ISSUED"
   | "GENERAL"
-  | "SYSTEM";
+  | "SYSTEM"
+  | "WIN_BACK_NO_SHIPMENT_30D"
+  | "WIN_BACK_NO_APP_OPEN_14D"
+  | "WIN_BACK_GOODS_UNPAID"
+  | "WIN_BACK_INVOICE_ABANDONED";
+
+export interface NotificationData {
+  type: NotificationType;
+  screen?: string;
+  orderId?: string;
+  paymentId?: string;
+  containerId?: string;
+  ticketId?: string;
+  invoiceId?: string;
+  certificateId?: string;
+  verificationCode?: string;
+  issuedAt?: string;
+  certificateUrl?: string | null;
+  certificateMongoId?: string;
+  goodsId?: string;
+  promoCode?: string;
+  triggerType?: string;
+  deepLink?: string;
+  [key: string]: any;
+}
+
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === "object" && value !== null && !Array.isArray(value);
+
+// ... rest of file
+
 
 export interface NotificationData {
   type: NotificationType;
@@ -163,7 +193,7 @@ export const setupNotificationChannels = async (): Promise<void> => {
 };
 
 export const getChannelIdForType = (type: NotificationType): string => {
-  const channelMap: Record<NotificationType, string> = { ORDER_UPDATE: NOTIFICATION_CHANNELS.ORDERS, PAYMENT: NOTIFICATION_CHANNELS.PAYMENTS, CONTAINER_STATUS: NOTIFICATION_CHANNELS.CONTAINERS, TICKET_REPLY: NOTIFICATION_CHANNELS.TICKETS, TICKET_CREATED: NOTIFICATION_CHANNELS.TICKETS, INVOICE: NOTIFICATION_CHANNELS.INVOICES, CERTIFICATE_ISSUED: NOTIFICATION_CHANNELS.CERTIFICATES, GENERAL: NOTIFICATION_CHANNELS.DEFAULT, SYSTEM: NOTIFICATION_CHANNELS.SYSTEM };
+  const channelMap: Record<NotificationType, string> = { ORDER_UPDATE: NOTIFICATION_CHANNELS.ORDERS, PAYMENT: NOTIFICATION_CHANNELS.PAYMENTS, CONTAINER_STATUS: NOTIFICATION_CHANNELS.CONTAINERS, TICKET_REPLY: NOTIFICATION_CHANNELS.TICKETS, TICKET_CREATED: NOTIFICATION_CHANNELS.TICKETS, INVOICE: NOTIFICATION_CHANNELS.INVOICES, CERTIFICATE_ISSUED: NOTIFICATION_CHANNELS.CERTIFICATES, GENERAL: NOTIFICATION_CHANNELS.DEFAULT, SYSTEM: NOTIFICATION_CHANNELS.SYSTEM, WIN_BACK_NO_SHIPMENT_30D: NOTIFICATION_CHANNELS.DEFAULT, WIN_BACK_NO_APP_OPEN_14D: NOTIFICATION_CHANNELS.DEFAULT, WIN_BACK_GOODS_UNPAID: NOTIFICATION_CHANNELS.PAYMENTS, WIN_BACK_INVOICE_ABANDONED: NOTIFICATION_CHANNELS.INVOICES };
   return channelMap[type] || NOTIFICATION_CHANNELS.DEFAULT;
 };
 

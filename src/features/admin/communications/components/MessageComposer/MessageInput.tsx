@@ -12,6 +12,7 @@ interface MessageInputProps {
   smsCount: number;
   recipientCount: number;
   isOverLimit: boolean;
+  onInputFocus?: () => void;
 }
 
 export const MessageInput: React.FC<MessageInputProps> = ({
@@ -21,6 +22,7 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   smsCount,
   recipientCount,
   isOverLimit,
+  onInputFocus,
 }) => {
   const { colors, isDark } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
@@ -28,15 +30,16 @@ export const MessageInput: React.FC<MessageInputProps> = ({
   <View style={styles.inputWrapper}>
     <TextInput
       placeholder="Ecrivez votre message ici..."
-      placeholderTextColor={colors.neutral[400]}
+      placeholderTextColor={colors.text.disabled}
       value={message}
       onChangeText={onMessageChange}
+      onFocus={onInputFocus}
       multiline
       numberOfLines={4}
       style={styles.input}
       underlineColor="transparent"
       activeUnderlineColor="transparent"
-      textColor={colors.neutral[800]}
+      textColor={colors.text.primary}
     />
     <View style={styles.inputFooter}>
       <Text style={[styles.charCount, isOverLimit && styles.charCountOver]}>

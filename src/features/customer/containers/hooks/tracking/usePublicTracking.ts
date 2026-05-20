@@ -49,7 +49,7 @@ export const useVerifyContainerNumber = (
       return response.data;
     },
     enabled: !!containerNumber && containerNumber.length >= 8,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 30 * 1000,
     ...options,
   });
 };

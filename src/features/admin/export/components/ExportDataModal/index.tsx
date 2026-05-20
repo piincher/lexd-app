@@ -4,7 +4,7 @@
  * Modal for configuring and initiating data exports
  */
 
-import React from "react";
+import React, { useRef } from "react";
 import { View, Modal, ScrollView } from "react-native";
 import { Text, Button, IconButton, Divider } from "react-native-paper";
 import { DatePickerModal } from "react-native-paper-dates";
@@ -58,6 +58,13 @@ export const ExportDataModal: React.FC<ExportDataModalProps> = ({
 
   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
+
   return (
     <Modal visible={visible} onRequestClose={onDismiss} animationType="slide" transparent>
       <View style={styles.overlay}>
@@ -69,7 +76,12 @@ export const ExportDataModal: React.FC<ExportDataModalProps> = ({
             <IconButton icon="close" onPress={onDismiss} />
           </View>
 
-          <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+          <ScrollView
+            ref={scrollViewRef}
+            style={styles.content}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
             <FormatSection format={format} onChange={setFormat} />
             <Divider style={styles.divider} />
 
@@ -108,10 +120,12 @@ export const ExportDataModal: React.FC<ExportDataModalProps> = ({
               onEmailChange={setEmail}
               emailMethod={emailMethod}
               onMethodChange={setEmailMethod}
+              onInputFocus={scrollToEnd}
             />
             <Divider style={styles.divider} />
 
-            <ReasonSection reason={reason} onChange={setReason} />
+            <ReasonSection reason={reason} onChange={setReason} onInputFocus={scrollToEnd} />
+            <View style={{ height: 280 }} />
           </ScrollView>
 
           <View style={styles.footer}>

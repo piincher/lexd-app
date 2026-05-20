@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Snackbar } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useContainerListScreen } from '../hooks/useContainerListScreen';

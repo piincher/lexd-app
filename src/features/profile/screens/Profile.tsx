@@ -9,9 +9,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, { FadeInDown } from "react-native-reanimated";
 
 import { withProtectedRoute } from "@src/hoc/withProtectedRoute";
-import type { HomeTabScreenProps } from "@src/navigations/type";
+import type { RootStackParamList } from "@src/navigations/type";
+import { navigationRef } from "@src/navigations/navigationRef";
 import { useAuth } from "@src/store/Auth";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { isAdminRole } from "@src/shared/lib/roles";
 import { useGetCurrentUser, useBalance } from "../hooks/useProfile";
 import { useCertificateProgress } from "../hooks/useCertificate";
 
@@ -24,10 +26,18 @@ import { ProfileChartsSection } from "../components/ProfileChartsSection";
 import { LogoutButton } from "../components/LogoutButton";
 import { getStyles } from "./Profile.styles";
 
-const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
+const ADMIN_PROFILE_ROUTE_MAP: Record<string, keyof RootStackParamList> = {
+  PastOrders: "AdminPastOrders",
+  MyGoods: "AdminGoodsList",
+  MyContainers: "ContainerList",
+  TicketList: "AdminTicketList",
+};
+
+const Profile = () => {
   const { colors } = useAppTheme();
   const styles = getStyles(colors);
   const logout = useAuth((state) => state.logOut);
+  const role = useAuth((state) => state.user?.role);
   const { data, refetch: refetchUser } = useGetCurrentUser();
   const { data: balanceData, refetch: refetchBalance } = useBalance();
   const { data: certificateProgress, isLoading: isCertLoading, error: certError, refetch: refetchCert } = useCertificateProgress();
@@ -41,13 +51,19 @@ const Profile = ({ navigation }: HomeTabScreenProps<"Profile">) => {
   }, [refetchUser, refetchBalance, refetchCert]);
 
   const handleLogout = () => {
-    Alert.alert("Se deconnecter", "Etes-vous sur de vouloir vous deconnecter ?", [
+    Alert.alert("Se déconnecter", "Êtes-vous sûr de vouloir vous déconnecter ?", [
       { text: "Annuler", style: "cancel" },
-      { text: "Deconnecter", style: "destructive", onPress: logout },
+      { text: "Se déconnecter", style: "destructive", onPress: logout },
     ]);
   };
 
-  const handleNavigate = (screen: string) => navigation.navigate(screen as any);
+  const handleNavigate = useCallback((screen: string) => {
+    const target = isAdminRole(role) ? ADMIN_PROFILE_ROUTE_MAP[screen] ?? screen : screen;
+    if (navigationRef.isReady()) {
+      navigationRef.navigate(target as never);
+    }
+  }, [role]);
+
   const balanceFormatted = balanceData?.balance?.toLocaleString("fr-FR") ?? "0";
 
   return (

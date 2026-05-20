@@ -10,7 +10,7 @@ import { Theme } from '@src/constants/Theme';
 // ============================================
 
 export const HIGHLIGHTS = [
-  { value: '2-3', unit: 'semaines', label: 'Fret Aerien', icon: 'airplane' as const },
+  { value: '2-3', unit: 'semaines', label: 'Fret aérien', icon: 'airplane' as const },
   { value: '6-8', unit: 'semaines', label: 'Fret Maritime', icon: 'ship' as const },
   { value: '24/7', unit: '', label: 'Support Client', icon: 'headset' as const },
 ] as const;
@@ -22,9 +22,9 @@ export const HIGHLIGHTS = [
 export const SERVICES = [
   {
     id: 'air',
-    title: 'Fret Aerien',
-    description: 'Livraison rapide avec suivi en temps reel',
-    deliveryTime: '2 a 3 semaines',
+    title: 'Fret aérien',
+    description: 'Livraison rapide avec suivi en temps réel',
+    deliveryTime: '2 à 3 semaines',
     icon: 'plane' as const,
     gradient: ['#0EA5E9', '#0284C7'] as [string, string],
     navigateTo: 'ChooseShippingMethod' as const,
@@ -32,8 +32,8 @@ export const SERVICES = [
   {
     id: 'sea',
     title: 'Fret Maritime',
-    description: 'Expedition economique en vrac',
-    deliveryTime: '6 a 8 semaines',
+    description: 'Expédition économique en vrac',
+    deliveryTime: '6 à 8 semaines',
     icon: 'ship' as const,
     gradient: ['#8B5CF6', '#7C3AED'] as [string, string],
     navigateTo: 'ChooseShippingMethod' as const,
@@ -48,31 +48,31 @@ export const WORKFLOW_STEPS = [
   {
     icon: 'headset' as const,
     title: 'Contactez-nous',
-    description: "Choisissez votre methode d'expedition preferee",
+    description: "Choisissez votre méthode d'expédition préférée",
     color: Theme.colors.status.info,
   },
   {
     icon: 'map-location-dot' as const,
-    title: "Adresse entrepot",
-    description: "Recevez notre adresse d'entrepot chinois",
+    title: "Adresse entrepôt",
+    description: "Recevez notre adresse d'entrepôt chinois",
     color: Theme.colors.primary.main,
   },
   {
     icon: 'box-archive' as const,
-    title: 'Arrivee des colis',
-    description: "Vos articles arrivent a notre depot",
+    title: 'Arrivée des colis',
+    description: "Vos articles arrivent à notre dépôt",
     color: Theme.colors.status.warning,
   },
   {
     icon: 'earth-africa' as const,
-    title: 'Expedition',
-    description: 'Dedouanement et transport vers le Mali',
+    title: 'Expédition',
+    description: 'Dédouanement et transport vers le Mali',
     color: Theme.colors.status.success,
   },
   {
     icon: 'hand-holding-hand' as const,
     title: 'Collecte',
-    description: 'Recuperez votre envoi au centre de distribution',
+    description: 'Récupérez votre envoi au centre de distribution',
     color: Theme.colors.primary.main,
   },
 ] as const;
@@ -82,12 +82,12 @@ export const WORKFLOW_STEPS = [
 // ============================================
 
 export const BENEFITS = [
-  { label: 'Expedition rapide', icon: 'bolt' as const, color: Theme.colors.status.info },
-  { label: 'Suivi temps reel', icon: 'location-dot' as const, color: Theme.colors.status.success },
-  { label: 'Assurance complete', icon: 'shield-halved' as const, color: Theme.colors.status.warning },
-  { label: 'Dedouanement inclus', icon: 'file-invoice' as const, color: Theme.colors.primary.main },
+  { label: 'Expédition rapide', icon: 'bolt' as const, color: Theme.colors.status.info },
+  { label: 'Suivi temps réel', icon: 'location-dot' as const, color: Theme.colors.status.success },
+  { label: 'Assurance complète', icon: 'shield-halved' as const, color: Theme.colors.status.warning },
+  { label: 'Dédouanement inclus', icon: 'file-invoice' as const, color: Theme.colors.primary.main },
   { label: 'Service 24/7', icon: 'headset' as const, color: Theme.colors.status.error },
-  { label: 'Prix competitifs', icon: 'tags' as const, color: Theme.colors.primary.main },
+  { label: 'Prix compétitifs', icon: 'tags' as const, color: Theme.colors.primary.main },
 ] as const;
 
 // ============================================

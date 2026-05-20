@@ -1,17 +1,41 @@
 import { useCallback } from 'react';
 import { Alert } from 'react-native';
 
-export const useGoodsDetailManagementActions = (data: any, navigation: any) => {
+type GoodsDetailManagementData = {
+  goods?: { _id: string } | null;
+  goodsId: string;
+  deleteMutation: {
+    mutate: (
+      variables: { id: string; permanent?: boolean },
+      options?: { onSuccess?: () => void },
+    ) => void;
+  };
+  updateStatusMutation: {
+    mutate: (variables: { id: string; status: string }) => void;
+  };
+};
+
+type GoodsDetailNavigation = {
+  goBack: () => void;
+  navigate: (screen: never, params: never) => void;
+};
+
+export const useGoodsDetailManagementActions = (data: GoodsDetailManagementData, navigation: GoodsDetailNavigation) => {
   const { goods, deleteMutation, updateStatusMutation, goodsId } = data;
 
   const handleDelete = useCallback(() => {
     if (!goods) return;
-    Alert.alert('Confirmer la suppression', 'Êtes-vous sûr de vouloir supprimer cette marchandise ?', [
+    Alert.alert('Suppression définitive', 'Cette action supprimera définitivement la marchandise et la retirera des conteneurs, lettres de transport, factures et paiements liés. Cette action est irréversible.', [
       { text: 'Annuler', style: 'cancel' },
       {
-        text: 'Supprimer',
+        text: 'Supprimer définitivement',
         style: 'destructive',
-        onPress: () => { deleteMutation.mutate({ id: goods._id }, { onSuccess: () => navigation.goBack() }); },
+        onPress: () => {
+          deleteMutation.mutate(
+            { id: goods._id, permanent: true },
+            { onSuccess: () => navigation.goBack() },
+          );
+        },
       },
     ]);
   }, [goods, deleteMutation, navigation]);

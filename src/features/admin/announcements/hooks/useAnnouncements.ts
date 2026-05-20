@@ -12,7 +12,14 @@ export const useActiveAnnouncement = () => {
   });
 };
 
-export const useAdminAnnouncements = (filters?: { status?: Announcement["status"] }) => {
+export const useAdminAnnouncements = (filters?: {
+  page?: number;
+  limit?: number;
+  status?: Announcement["status"];
+  placement?: Announcement["placement"];
+  type?: Announcement["type"];
+  search?: string;
+}) => {
   return useQuery({
     queryKey: [ANNOUNCEMENT_KEY, "list", filters],
     queryFn: () => announcementAdminApi.list(filters),
@@ -26,5 +33,21 @@ export const useAdminAnnouncement = (id?: string) => {
     queryFn: () => announcementAdminApi.get(id as string),
     enabled: Boolean(id),
     staleTime: 60 * 1000,
+  });
+};
+
+export const useAnnouncementStats = () => {
+  return useQuery({
+    queryKey: [ANNOUNCEMENT_KEY, "stats"],
+    queryFn: () => announcementAdminApi.getStats(),
+    staleTime: 60 * 1000,
+  });
+};
+
+export const useAnnouncementReceiptStats = (id: string, enabled = true) => {
+  return useQuery({
+    queryKey: [ANNOUNCEMENT_KEY, "receipts", id],
+    queryFn: () => announcementAdminApi.getReceiptStats(id),
+    enabled: enabled && !!id,
   });
 };

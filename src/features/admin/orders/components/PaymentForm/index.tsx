@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useRef } from 'react';
+import { View, ScrollView } from 'react-native';
 import { Text, TextInput, RadioButton, Surface, HelperText } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -38,6 +38,12 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
 }) => {
   const { colors } = useAppTheme();
   const styles = createPaymentFormStyles(colors);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
 
   return (
     <Surface style={styles.formCard}>
@@ -52,6 +58,7 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
           keyboardType="numeric"
           placeholder="Enter amount"
           error={!!errors.amount}
+          onFocus={scrollToEnd}
         />
         {errors.amount && (
           <HelperText type="error">{errors.amount}</HelperText>
@@ -86,6 +93,7 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
           value={referenceNumber}
           onChangeText={onReferenceNumberChange}
           placeholder="e.g., Bank transfer reference or MOMO ID"
+          onFocus={scrollToEnd}
         />
         <HelperText type="info">
           Transaction ID for bank transfers or mobile money
@@ -101,6 +109,7 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
           placeholder="Any additional notes..."
           multiline
           numberOfLines={3}
+          onFocus={scrollToEnd}
         />
       </View>
     </Surface>

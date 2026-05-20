@@ -7,12 +7,14 @@ interface CardCVVInputProps {
   value: string;
   onChangeText: (value: string) => void;
   error?: string;
+  onInputFocus?: () => void;
 }
 
 export const CardCVVInput: React.FC<CardCVVInputProps> = ({
   value,
   onChangeText,
   error,
+  onInputFocus,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showCVV, setShowCVV] = useState(false);
@@ -44,7 +46,7 @@ export const CardCVVInput: React.FC<CardCVVInputProps> = ({
           keyboardType="number-pad"
           maxLength={4}
           secureTextEntry={!showCVV}
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => { setIsFocused(true); onInputFocus?.(); }}
           onBlur={() => setIsFocused(false)}
         />
         <TouchableOpacity onPress={() => setShowCVV(!showCVV)}>

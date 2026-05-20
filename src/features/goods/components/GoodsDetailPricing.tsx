@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, Card, Divider, Chip } from 'react-native-paper';
+import { Text, Card, Divider, Chip, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
@@ -9,9 +9,10 @@ import { formatCurrency, formatDateTime, getPaymentColors } from '../lib/goodsHe
 
 interface GoodsDetailPricingProps {
 	goods: Goods;
+	onViewPayments: () => void;
 }
 
-export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({ goods }) => {
+export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({ goods, onViewPayments }) => {
 	const { colors } = useAppTheme();
 	const paymentConfig = getPaymentColors(goods.paymentStatus);
 	const balanceDue = goods.balanceDue ?? Math.max(0, (goods.totalCost ?? 0) - (goods.amountPaid ?? 0));
@@ -54,6 +55,18 @@ export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({ goods })
 							{paymentConfig.label}
 						</Chip>
 					</View>
+					{balanceDue > 0 && (
+						<Button
+							mode="contained"
+							icon="cash-check"
+							onPress={onViewPayments}
+							style={styles.paymentButton}
+							buttonColor={colors.primary.main}
+							textColor={colors.text.inverse}
+						>
+							Voir mes paiements
+						</Button>
+					)}
 				</Card.Content>
 			</Card>
 
@@ -92,6 +105,7 @@ const styles = StyleSheet.create({
 	value: { fontFamily: Fonts.bold, fontSize: 13, flex: 1, textAlign: 'right' },
 	divider: { marginVertical: 0 },
 	chip: { height: 28 },
+	paymentButton: { marginTop: 12, borderRadius: 10 },
 	paymentRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10 },
 	paymentLeft: { flexDirection: 'row', alignItems: 'center', gap: 8 },
 	paymentDate: { fontFamily: Fonts.regular, fontSize: 13 },

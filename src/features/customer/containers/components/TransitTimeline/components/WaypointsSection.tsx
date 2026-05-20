@@ -3,19 +3,20 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
  * WaypointsSection - Upcoming, completed, and map placeholder sections
  */
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, type ImageStyle, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
-import { Theme } from '@src/constants/Theme';
 import { ContainerWaypoint } from '../../../types';
 import { TimelineWaypointCard } from '../../TimelineWaypointCard';
+
+type WaypointsSectionStyles = Record<string, StyleProp<ViewStyle | TextStyle | ImageStyle>>;
 
 interface WaypointsSectionProps {
   waypoints: ContainerWaypoint[];
   upcomingWaypoints: ContainerWaypoint[];
   completedWaypoints: ContainerWaypoint[];
-  styles: Record<string, any>;
+  styles: WaypointsSectionStyles;
 }
 
 export const WaypointsSection: React.FC<WaypointsSectionProps> = ({
@@ -84,7 +85,7 @@ export const WaypointsSection: React.FC<WaypointsSectionProps> = ({
       <Animated.View entering={FadeInUp.delay(500)} style={styles.section}>
         <View style={styles.sectionTitleRow}>
           <Ionicons name="checkmark-circle" size={18} color={colors.status.success} />
-          <Text style={styles.sectionTitle}>Étapes Complétées</Text>
+          <Text style={styles.sectionTitle}>Étapes terminées</Text>
           <View style={[styles.badge, styles.badgeSuccess]}>
             <Text style={[styles.badgeText, styles.badgeTextSuccess]}>
               {completedWaypoints.length}
@@ -99,7 +100,7 @@ export const WaypointsSection: React.FC<WaypointsSectionProps> = ({
         {completedWaypoints.length > 1 && (
           <View style={styles.moreWaypoints}>
             <Text style={styles.moreWaypointsText}>
-              +{completedWaypoints.length - 1} étapes précédentes complétées
+              +{completedWaypoints.length - 1} étapes précédentes terminées
             </Text>
           </View>
         )}

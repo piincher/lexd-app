@@ -17,6 +17,8 @@ type PromoListProps = {
   totalPages: number;
   onEdit: (promo: PromoRecord) => void;
   onDeactivate: (promo: PromoRecord) => void;
+  onStats: (promo: PromoRecord) => void;
+  onClone: (promo: PromoRecord) => void;
   onNextPage: () => void;
   onPrevPage: () => void;
   onResetFilter: () => void;
@@ -32,6 +34,8 @@ export function PromoList({
   totalPages,
   onEdit,
   onDeactivate,
+  onStats,
+  onClone,
   onNextPage,
   onPrevPage,
   onResetFilter,
@@ -51,7 +55,9 @@ export function PromoList({
   return (
     <FlashList
       data={promos}
-      renderItem={({ item }) => <PromoCard promo={item} onEdit={onEdit} onDeactivate={onDeactivate} />}
+      renderItem={({ item }) => (
+        <PromoCard promo={item} onEdit={onEdit} onDeactivate={onDeactivate} onStats={onStats} onClone={onClone} />
+      )}
       keyExtractor={(item) => item._id}
       contentContainerStyle={styles.listContainer}
       showsVerticalScrollIndicator={false}

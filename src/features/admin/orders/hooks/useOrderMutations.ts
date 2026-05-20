@@ -68,10 +68,16 @@ export const useRecordPayment = () => {
   return useMutation({
     mutationFn: recordPayment,
     onSuccess: (data) => {
-      console.log('[useRecordPayment] Success:', data);
+      // Admin-side invalidation
       qc.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
       qc.invalidateQueries({ queryKey: ['order', data.order._id] });
       qc.invalidateQueries({ queryKey: ['goods'] });
+      // Customer-side invalidation: goods, balance, payment history, dashboard
+      qc.invalidateQueries({ queryKey: ['my-goods'] });
+      qc.invalidateQueries({ queryKey: ['goods', data.order._id] });
+      qc.invalidateQueries({ queryKey: ['BALANCE'] });
+      qc.invalidateQueries({ queryKey: ['payments', 'history'] });
+      qc.invalidateQueries({ queryKey: ['dashboard'] });
     },
     onError: (error) => console.error('[useRecordPayment] Error:', error),
   });

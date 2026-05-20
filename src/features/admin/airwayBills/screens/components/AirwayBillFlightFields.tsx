@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useRef } from 'react';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
@@ -35,6 +35,12 @@ export const AirwayBillFlightFields: React.FC<AirwayBillFlightFieldsProps> = ({
     row: { flexDirection: 'row', gap: Theme.spacing.md },
     half: { flex: 1 },
   }), [colors, isDark]);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
   return (
   <>
     <TextInput
@@ -44,6 +50,7 @@ export const AirwayBillFlightFields: React.FC<AirwayBillFlightFieldsProps> = ({
       style={styles.input}
       mode="outlined"
       autoCapitalize="characters"
+      onFocus={scrollToEnd}
     />
     <TextInput
       label="Compagnie aérienne"
@@ -51,6 +58,7 @@ export const AirwayBillFlightFields: React.FC<AirwayBillFlightFieldsProps> = ({
       onChangeText={onAirlineChange}
       style={styles.input}
       mode="outlined"
+      onFocus={scrollToEnd}
     />
     <View style={styles.row}>
       <TextInput
@@ -61,6 +69,7 @@ export const AirwayBillFlightFields: React.FC<AirwayBillFlightFieldsProps> = ({
         mode="outlined"
         autoCapitalize="characters"
         maxLength={3}
+        onFocus={scrollToEnd}
       />
       <TextInput
         label="Arrivée (IATA)"
@@ -70,6 +79,7 @@ export const AirwayBillFlightFields: React.FC<AirwayBillFlightFieldsProps> = ({
         mode="outlined"
         autoCapitalize="characters"
         maxLength={3}
+        onFocus={scrollToEnd}
       />
     </View>
     <TextInput
@@ -80,6 +90,7 @@ export const AirwayBillFlightFields: React.FC<AirwayBillFlightFieldsProps> = ({
       mode="outlined"
       multiline
       numberOfLines={3}
+      onFocus={scrollToEnd}
     />
   </>
   );

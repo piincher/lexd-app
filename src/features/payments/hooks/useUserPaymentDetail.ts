@@ -2,10 +2,15 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { Alert, Linking } from 'react-native';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '@src/navigations/type';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import type { AppTheme } from '@src/constants/Theme';
 import type { PaymentHistoryItem } from '../types';
 
-const getMethodConfig = (paymentMethod: string, colors: any) => {
+type ThemeColors = AppTheme['colors'];
+
+const getMethodConfig = (paymentMethod: string, colors: ThemeColors) => {
   const configs: Record<string, { icon: string; color: string; label: string }> = {
     CASH: { icon: 'cash', color: colors.status.success, label: 'Espèces' },
     BANK_TRANSFER: { icon: 'bank', color: colors.status.info, label: 'Virement Bancaire' },
@@ -21,9 +26,9 @@ const getMethodConfig = (paymentMethod: string, colors: any) => {
   };
 };
 
-const getStatusConfig = (status: string, colors: any, isDark: boolean) => {
+const getStatusConfig = (status: string, colors: ThemeColors, isDark: boolean) => {
   const configs: Record<string, { color: string; lightBg: string; darkBg: string; label: string }> = {
-    COMPLETED: { color: colors.status.success, lightBg: colors.feedback.successBg, darkBg: colors.feedback.successBg, label: 'Complété' },
+    COMPLETED: { color: colors.status.success, lightBg: colors.feedback.successBg, darkBg: colors.feedback.successBg, label: 'Payé' },
     PENDING: { color: colors.status.warning, lightBg: colors.feedback.warningBg, darkBg: colors.feedback.warningBg, label: 'En attente' },
     PROCESSING: { color: colors.status.info, lightBg: colors.feedback.infoBg, darkBg: colors.feedback.infoBg, label: 'En cours' },
     FAILED: { color: colors.status.error, lightBg: colors.feedback.errorBg, darkBg: colors.feedback.errorBg, label: 'Échoué' },
@@ -39,7 +44,7 @@ interface RouteParams {
 }
 
 export const useUserPaymentDetail = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const route = useRoute();
   const { colors, isDark } = useAppTheme();
   const { payment } = route.params as RouteParams;

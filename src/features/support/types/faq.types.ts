@@ -13,12 +13,22 @@ export enum FAQCategory {
 }
 
 export interface FAQItem {
-  id: string;
+  _id?: string;
+  id?: string; // legacy compatibility
   question: string;
   answer: string;
-  category: FAQCategory;
+  category: FAQCategory | string;
   order: number;
   isPopular?: boolean;
+  isActive?: boolean;
+  viewCount?: number;
+  helpfulCount?: number;
+  notHelpfulCount?: number;
+  helpfulnessRatio?: number;
+  relatedFAQIds?: FAQItem[] | string[];
+  tags?: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface FAQFilter {
@@ -30,6 +40,46 @@ export interface FAQData {
   items: FAQItem[];
   categories: FAQCategory[];
   lastUpdated: string;
+}
+
+export interface FAQListResponse {
+  items: FAQItem[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}
+
+export interface FAQCategoryCount {
+  id: string;
+  label: string;
+  count: number;
+}
+
+export interface FAQSearchSuggestion {
+  _id: string;
+  question: string;
+  category: string;
+}
+
+export interface FAQFeedbackResponse {
+  helpfulCount: number;
+  notHelpfulCount: number;
+  helpfulnessRatio: number;
+}
+
+export interface FAQBookmark {
+  faqId: string;
+  question: string;
+  category: string;
+  bookmarkedAt: string;
+}
+
+export interface SearchHistoryItem {
+  query: string;
+  timestamp: string;
 }
 
 // French translations for categories
@@ -51,4 +101,15 @@ export const FAQ_CATEGORY_COLORS: Record<FAQCategory, string> = {
   account: '#8B5CF6',
   tracking: '#F59E0B',
   customs: '#EF4444',
+};
+
+// Category icons for UI
+export const FAQ_CATEGORY_ICONS: Record<FAQCategory | 'all', string> = {
+  all: 'view-grid-outline',
+  general: 'information-outline',
+  shipping: 'ferry',
+  payment: 'credit-card-outline',
+  account: 'account-outline',
+  tracking: 'map-marker-outline',
+  customs: 'shield-check-outline',
 };

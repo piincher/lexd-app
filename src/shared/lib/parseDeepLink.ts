@@ -8,7 +8,14 @@
 export interface ParsedLink {
   screen: string;
   params?: Record<string, unknown>;
+  requiresAdmin?: boolean;
 }
+
+const adminLink = (screen: string, params?: Record<string, unknown>): ParsedLink => ({
+  screen,
+  params,
+  requiresAdmin: true,
+});
 
 /**
  * Parse a deep link URL into screen name and params.
@@ -74,102 +81,102 @@ export function parseDeepLink(url: string): ParsedLink | null {
       return { screen: "Notifications", params };
     }
     case "payments": {
-      if (second === "history") return { screen: "PaymentHistoryScreen", params };
+      if (second === "history") return { screen: "MyPaymentHistory", params };
       if (second === "portal") return { screen: "MyPaymentHistory", params };
       if (second === "confirmation") return { screen: "MyPaymentHistory", params };
-      if (second) return { screen: "UserPaymentDetail", params: { paymentId: second, ...params } };
+      if (second) return { screen: "MyPaymentHistory", params };
       return { screen: "MyPaymentHistory", params };
     }
     case "faq":
-      return { screen: "faq", params };
+      return { screen: "FAQ", params };
     case "about":
       return { screen: "AboutUs", params };
     case "route-check":
       return { screen: "CheckRoute", params };
     case "batch":
-      return { screen: "BatchUpdateDetail", params: { data: second, ...params } };
+      return adminLink("BatchUpdateDetail", { data: second, ...params });
     case "scan":
-      return { screen: "ScanQRCode", params };
+      return adminLink("ScanQRCode", params);
     case "active-order":
-      return { screen: "ActiveOrderDetails", params: { id: second, ...params } };
+      return adminLink("ActiveOrderDetails", { id: second, ...params });
     case "user-orders":
-      return { screen: "UserActiveOrders", params: { type: second as "air" | "sea", ...params } };
+      return adminLink("UserActiveOrders", { type: second as "air" | "sea", ...params });
     case "admin": {
-      if (second === "dashboard") return { screen: "HomeTab", params: { screen: "AdminDashBoard" } };
+      if (second === "dashboard") return adminLink("HomeTab", { screen: "AdminDashBoard" });
       if (second === "orders") {
-        if (third === "active") return { screen: "ActiveOrder", params: { type: "sea", ...params } };
-        return { screen: "AllOrders", params };
+        if (third === "active") return adminLink("ActiveOrder", { type: "sea", ...params });
+        return adminLink("AllOrders", params);
       }
       if (second === "order") {
-        if (third === "new") return { screen: "AddOrder", params };
-        return { screen: "OrderDetailScreen", params: { id: second, ...params } };
+        if (third === "new") return adminLink("AddOrder", params);
+        return adminLink("OrderDetailScreen", { id: second, ...params });
       }
-      if (second === "payments") return { screen: "OutstandingPaymentsList", params };
-      if (second === "goods") return { screen: "HomeTab", params: { screen: "AdminGoodsList" } };
-      if (second === "containers") return { screen: "HomeTab", params: { screen: "ContainerList" } };
-      if (second === "clients") return { screen: "ClientManagement", params };
-      if (second === "sms") return { screen: "SendSms", params };
-      if (second === "batch") return { screen: "BatchUpdate", params };
-      if (second === "search") return { screen: "GlobalSearch", params };
-      if (second === "reviews") return { screen: "AdminReviews", params };
-      if (second === "support" && third) return { screen: "AdminTicketDetail", params: { ticketId: third, ...params } };
-      if (second === "support") return { screen: "AdminTicketList", params };
-      if (second === "promos") return { screen: "ManagePromos", params };
+      if (second === "payments") return adminLink("OutstandingPaymentsList", params);
+      if (second === "goods") return adminLink("HomeTab", { screen: "AdminGoodsList" });
+      if (second === "containers") return adminLink("HomeTab", { screen: "ContainerList" });
+      if (second === "clients") return adminLink("ClientManagement", params);
+      if (second === "sms") return adminLink("SendSms", params);
+      if (second === "batch") return adminLink("BatchUpdate", params);
+      if (second === "search") return adminLink("GlobalSearch", params);
+      if (second === "reviews") return adminLink("AdminReviews", params);
+      if (second === "support" && third) return adminLink("AdminTicketDetail", { ticketId: third, ...params });
+      if (second === "support") return adminLink("AdminTicketList", params);
+      if (second === "promos") return adminLink("ManagePromos", params);
       if (second === "certificates") {
-        if (third === "issue") return { screen: "IssueCertificate", params };
-        return { screen: "CertificateHistory", params };
+        if (third === "issue") return adminLink("IssueCertificate", params);
+        return adminLink("CertificateHistory", params);
       }
-      return { screen: "HomeTab", params: { screen: "AdminDashBoard" } };
+      return adminLink("HomeTab", { screen: "AdminDashBoard" });
     }
     case "outstanding":
-      return { screen: "OutstandingPaymentsList", params };
+      return adminLink("OutstandingPaymentsList", params);
     case "shipping":
-      return { screen: "ShippingMethod", params };
+      return adminLink("ShippingMethod", params);
     case "clients": {
-      if (second === "new") return { screen: "CreateConsignee", params };
-      return { screen: "ClientDetails", params: { id: second, ...params } };
+      if (second === "new") return adminLink("CreateConsignee", params);
+      return adminLink("ClientDetails", { id: second, ...params });
     }
     case "receive":
-      return { screen: "ReceiveGoods", params };
+      return adminLink("ReceiveGoods", params);
     case "admin-goods": {
-      if (second === "export") return { screen: "AdminGoodsPdfExport", params };
-      return { screen: "AdminGoodsDetail", params: { goodsId: second, ...params } };
+      if (second === "export") return adminLink("AdminGoodsPdfExport", params);
+      return adminLink("AdminGoodsDetail", { goodsId: second, ...params });
     }
     case "consignees": {
-      if (second === "new") return { screen: "CreateConsignee", params };
-      return { screen: "ConsigneeDetail", params: { consigneeId: second, ...params } };
+      if (second === "new") return adminLink("CreateConsignee", params);
+      return adminLink("ConsigneeDetail", { consigneeId: second, ...params });
     }
     case "admin-containers": {
-      if (second === "new") return { screen: "CreateContainer", params };
-      return { screen: "ContainerDetail", params: { containerId: second, ...params } };
+      if (second === "new") return adminLink("CreateContainer", params);
+      return adminLink("ContainerDetail", { containerId: second, ...params });
     }
     case "routes": {
-      if (second === "form") return { screen: "RouteForm", params };
-      return { screen: "RouteList", params };
+      if (second === "form") return adminLink("RouteForm", params);
+      return adminLink("RouteList", params);
     }
     case "scan-qr":
       return { screen: "ScanQR", params };
     case "unassigned":
-      return { screen: "UnassignedGoods", params };
+      return adminLink("UnassignedGoods", params);
     case "whatsapp": {
-      return { screen: "WhatsAppRequests", params: { requestId: second, ...params } };
+      return adminLink("WhatsAppRequests", { requestId: second, ...params });
     }
     case "campaigns": {
-      if (second === "new") return { screen: "CreateCampaign", params };
-      return { screen: "CampaignList", params };
+      if (second === "new") return adminLink("CreateCampaign", params);
+      return adminLink("CampaignList", params);
     }
     case "announcements": {
-      if (second === "new") return { screen: "CreateAnnouncement", params };
-      return { screen: "CreateAnnouncement", params };
+      if (second === "new") return adminLink("CreateAnnouncement", params);
+      return adminLink("CreateAnnouncement", params);
     }
     case "search":
-      return { screen: "GlobalSearch", params };
+      return adminLink("GlobalSearch", params);
     case "badges":
       return { screen: "Badges", params };
     case "reviews":
       return { screen: "MyReviews", params };
     case "promos":
-      return { screen: "ManagePromos", params };
+      return adminLink("ManagePromos", params);
     case "activity":
       return { screen: "ActivityList", params };
     case "packing":
@@ -179,7 +186,7 @@ export function parseDeepLink(url: string): ParsedLink | null {
     case "certificate":
       return { screen: "CertificateDetail", params };
     case "stats":
-      return { screen: "HomeTab", params: { screen: "Stats" } };
+      return adminLink("HomeTab", { screen: "Stats" });
     case "login":
       return { screen: "Login", params };
     case "verify":

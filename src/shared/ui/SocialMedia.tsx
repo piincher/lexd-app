@@ -1,138 +1,202 @@
-// SocialMedia.tsx
-import React, { FC } from "react";
-import { View, StyleSheet } from "react-native";
-import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
-import * as WebBrowser from "expo-web-browser";
-import { MotiView } from "moti";
-import { useAppTheme } from "@src/providers/ThemeProvider";
-import Animated, {
-   Easing,
-   useAnimatedStyle,
-   useSharedValue,
-   withRepeat,
-   withSequence,
-   withTiming,
-} from "react-native-reanimated";
+import React, { useCallback } from 'react';
+import {
+  View,
+  StyleSheet,
+  Pressable,
+  Platform,
+  AccessibilityProps,
+} from 'react-native';
+import { AntDesign, FontAwesome5 } from '@expo/vector-icons';
+import * as WebBrowser from 'expo-web-browser';
+import { MotiView } from 'moti';
+import * as Haptics from 'expo-haptics';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
-const AnimatedIcon = Animated.createAnimatedComponent(AntDesign);
-const AnimatedFontAwesome = Animated.createAnimatedComponent(FontAwesome5);
-
-interface Props {
-   _handlePressButtonAsync?: (url: string) => void;
-   color?: string;
+// ============================================
+// Brand Configuration
+// ============================================
+interface SocialBrand {
+  name: string;
+  icon: string;
+  iconFamily: 'antdesign' | 'fontawesome5';
+  url: string;
+  color: string;
+  darkColor: string;
+  bgOpacity: number;
 }
 
-const SocialMedia: FC<Props> = ({ color }: Props) => {
-   const { colors, isDark } = useAppTheme();
-   const styles = React.useMemo(() => createStyles(colors), [colors]);
-   const _handlePressButtonAsync = async (url: string) => {
-      await WebBrowser.openBrowserAsync(url);
-   };
+const BRANDS: SocialBrand[] = [
+  {
+    name: 'Instagram',
+    icon: 'instagram',
+    iconFamily: 'antdesign',
+    url: 'https://www.instagram.com/chinalinkexpress',
+    color: '#E4405F',
+    darkColor: '#F77787',
+    bgOpacity: 0.12,
+  },
+  {
+    name: 'Facebook',
+    icon: 'facebook-f',
+    iconFamily: 'fontawesome5',
+    url: 'https://www.facebook.com/profile.php?id=61556519083512',
+    color: '#1877F2',
+    darkColor: '#4C9AFF',
+    bgOpacity: 0.12,
+  },
+  {
+    name: 'WhatsApp',
+    icon: 'whatsapp',
+    iconFamily: 'fontawesome5',
+    url: 'https://wa.me/8618851725957',
+    color: '#25D366',
+    darkColor: '#4ADE80',
+    bgOpacity: 0.12,
+  },
+  {
+    name: 'TikTok',
+    icon: 'tiktok',
+    iconFamily: 'fontawesome5',
+    url: 'https://www.tiktok.com/@chinalink.express4',
+    color: '#FF0050',
+    darkColor: '#FF4D84',
+    bgOpacity: 0.12,
+  },
+];
 
-   const createBounceAnimation = () => {
-      const scale = useSharedValue(1);
+// ============================================
+// Social Icon Button
+// ============================================
+interface SocialIconButtonProps {
+  brand: SocialBrand;
+  index: number;
+  isDark: boolean;
+}
 
-      const animatedStyle = useAnimatedStyle(() => ({
-         transform: [{ scale: scale.value }],
-      }));
+const SocialIconButton: React.FC<SocialIconButtonProps> = React.memo(
+  ({ brand, index, isDark }) => {
+    const brandColor = isDark ? brand.darkColor : brand.color;
+    const bgColor = `${brand.color}${Math.round(brand.bgOpacity * 255)
+      .toString(16)
+      .padStart(2, '0')}`;
 
-      const animate = () => {
-         scale.value = withSequence(
-            withTiming(1.2, { duration: 150, easing: Easing.ease }),
-            withTiming(1, { duration: 150, easing: Easing.ease })
-         );
-      };
+    const handlePress = useCallback(async () => {
+      if (Platform.OS !== 'web') {
+        await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      }
+      await WebBrowser.openBrowserAsync(brand.url);
+    }, [brand.url]);
 
-      return { animatedStyle, animate };
-   };
+    const accessibilityProps: AccessibilityProps = {
+      accessibilityLabel: `Ouvrir ${brand.name}`,
+      accessibilityRole: 'button',
+      accessibilityHint: `Ouvre la page ${brand.name} dans le navigateur`,
+    };
 
-   const SocialIcon = ({
-      IconComponent,
-      icon,
-      url,
-   }: {
-      IconComponent: typeof AnimatedIcon | typeof AnimatedFontAwesome;
-      icon: string;
-      url: string;
-   }) => {
-      const { animatedStyle, animate } = createBounceAnimation();
+    const IconComponent =
+      brand.iconFamily === 'antdesign' ? AntDesign : FontAwesome5;
 
-      return (
-         <MotiView
-            from={{ scale: 0, rotate: "-180deg" }}
-            animate={{ scale: 1, rotate: "0deg" }}
-            transition={{ type: "spring" }}
-         >
-            <IconComponent
-               name={icon}
-               size={32}
-               color={color}
-               style={[styles.iconStyle, animatedStyle, { shadowColor: colors.neutral[900] }]}
-               onPressIn={() => {
-                  animate();
-                  _handlePressButtonAsync(url);
-               }}
-            />
-         </MotiView>
-      );
-   };
+    return (
+      <MotiView
+        from={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          type: 'spring',
+          damping: 15,
+          stiffness: 200,
+          delay: index * 80 + 100,
+        }}
+      >
+        <Pressable
+          onPress={handlePress}
+          style={({ pressed }) => [
+            styles.button,
+            { backgroundColor: bgColor },
+            pressed && styles.buttonPressed,
+          ]}
+          hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          {...accessibilityProps}
+        >
+          <IconComponent
+            name={brand.icon}
+            size={22}
+            color={brandColor}
+            style={styles.icon}
+          />
+        </Pressable>
+      </MotiView>
+    );
+  }
+);
 
-   return (
-      <View style={styles.container}>
-         <MotiView
-            from={{ opacity: 0, translateY: 50 }}
-            animate={{ opacity: 1, translateY: 0 }}
-            transition={{ type: "spring", delay: 200 }}
-            style={[styles.iconContainer, { backgroundColor: isDark ? colors.neutral[700] : colors.neutral[200], shadowColor: colors.neutral[900] }]}
-         >
-            <SocialIcon
-               IconComponent={AnimatedIcon}
-               icon="instagram"
-               url="https://www.instagram.com/chinalinkexpress"
-            />
-            <SocialIcon
-               IconComponent={AnimatedFontAwesome}
-               icon="facebook-f"
-               url="https://www.facebook.com/profile.php?id=61556519083512"
-            />
-            <SocialIcon
-               IconComponent={AnimatedFontAwesome}
-               icon="whatsapp"
-               url="https://wa.me/8618851725957"
-            />
-            <SocialIcon
-               IconComponent={AnimatedFontAwesome}
-               icon="tiktok"
-               url="https://www.tiktok.com/@chinalink.express4?_t=8mcP9s8uM7y&_r=1"
-            />
-         </MotiView>
+SocialIconButton.displayName = 'SocialIconButton';
+
+// ============================================
+// Main Component
+// ============================================
+interface SocialMediaProps {
+  color?: string; // kept for API compatibility, unused
+}
+
+const SocialMedia: React.FC<SocialMediaProps> = () => {
+  const { isDark } = useAppTheme();
+
+  return (
+    <MotiView
+      from={{ opacity: 0, translateY: 20 }}
+      animate={{ opacity: 1, translateY: 0 }}
+      transition={{ type: 'spring', damping: 18, stiffness: 150 }}
+      style={styles.container}
+    >
+      <View style={styles.row}>
+        {BRANDS.map((brand, index) => (
+          <SocialIconButton
+            key={brand.name}
+            brand={brand}
+            index={index}
+            isDark={isDark}
+          />
+        ))}
       </View>
-   );
+    </MotiView>
+  );
 };
 
-const createStyles = (colors: any) => StyleSheet.create({
-   container: {
-      zIndex: 2,
-      top: -25,
-   },
-   iconContainer: {
-      flexDirection: "row",
-      justifyContent: "center",
-      gap: 30,
-      paddingVertical: 20,
-      borderRadius: 30,
-      marginHorizontal: 20,
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.3,
-      shadowRadius: 20,
-   },
-   iconStyle: {
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.3,
-      shadowRadius: 3,
-   },
+// ============================================
+// Styles
+// ============================================
+const BUTTON_SIZE = 48;
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    marginVertical: 8,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 20,
+  },
+  button: {
+    width: BUTTON_SIZE,
+    height: BUTTON_SIZE,
+    borderRadius: BUTTON_SIZE / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // Subtle border for definition on any background
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'rgba(128, 128, 128, 0.15)',
+  },
+  buttonPressed: {
+    opacity: 0.7,
+    transform: [{ scale: 0.92 }],
+  },
+  icon: {
+    // Ensure icons are perfectly centered
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
 });
 
 export default SocialMedia;

@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Screen } from '@src/shared/ui/Screen';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -32,7 +32,14 @@ const RecordPaymentScreen: React.FC = () => {
 
   return (
     <Screen header={{ title: 'Record Payment', showNotificationBell: true }}>
-      <ScrollView style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          style={styles.container}
+          keyboardShouldPersistTaps="handled"
+        >
         <PaymentRecordSummary
           orderCode={orderCode}
           clientName={clientName}
@@ -81,7 +88,9 @@ const RecordPaymentScreen: React.FC = () => {
         >
           {isPending ? 'Recording Payment...' : 'Record Payment'}
         </Button>
-      </ScrollView>
+        <View style={{ height: 280 }} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Screen>
   );
 };

@@ -4,12 +4,16 @@ import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import type { AppTheme } from '@src/constants/Theme';
 import { hapticLight } from '@src/shared/lib/haptics';
+
+type ThemeColors = AppTheme['colors'];
+type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 interface StatItem {
   id: string;
   label: string;
-  icon: string;
+  icon: MaterialIconName;
   iconColor: string;
   iconBg: string;
   screen: string;
@@ -44,7 +48,7 @@ export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
     },
     {
       id: 'containers',
-      label: 'Conteneurs',
+      label: 'Expéditions',
       icon: 'truck-outline',
       iconColor: colors.status.warning,
       iconBg: colors.status.warning + '15',
@@ -72,7 +76,7 @@ export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
           }}
         >
           <View style={[styles.quickStatIcon, { backgroundColor: stat.iconBg }]}>
-            <MaterialCommunityIcons name={stat.icon as any} size={20} color={stat.iconColor} />
+            <MaterialCommunityIcons name={stat.icon} size={20} color={stat.iconColor} />
           </View>
           <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>
             {stat.label}
@@ -84,7 +88,7 @@ export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
   );
 };
 
-const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: ThemeColors) => StyleSheet.create({
   quickStatsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',

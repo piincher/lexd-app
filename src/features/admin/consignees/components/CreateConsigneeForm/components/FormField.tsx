@@ -16,6 +16,7 @@ interface FormFieldProps {
    numberOfLines?: number;
    icon: string;
    inputStyle?: object;
+   onInputFocus?: () => void;
 }
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -31,6 +32,7 @@ export const FormField: React.FC<FormFieldProps> = ({
    numberOfLines,
    icon,
    inputStyle,
+   onInputFocus,
 }) => {
    const { colors } = useAppTheme();
 
@@ -44,6 +46,7 @@ export const FormField: React.FC<FormFieldProps> = ({
             mode="outlined"
             value={value}
             onChangeText={onChangeText}
+            onFocus={onInputFocus}
             placeholder={placeholder}
             style={[
                styles.input,

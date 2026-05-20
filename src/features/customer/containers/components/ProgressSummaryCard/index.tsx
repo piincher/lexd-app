@@ -24,19 +24,19 @@ export const ProgressSummaryCard: React.FC<ProgressSummaryCardProps> = ({
         <View style={styles.progressRow}>
           <View style={styles.progressItem}>
             <Text style={styles.progressValue}>{currentWaypointIndex + 1}</Text>
-            <Text style={styles.progressLabel}>Étape Actuelle</Text>
+            <Text style={styles.progressLabel}>Étape actuelle</Text>
           </View>
           <View style={styles.progressDivider} />
           <View style={styles.progressItem}>
             <Text style={styles.progressValue}>{waypointsLength}</Text>
-            <Text style={styles.progressLabel}>Total Étapes</Text>
+            <Text style={styles.progressLabel}>Total étapes</Text>
           </View>
           <View style={styles.progressDivider} />
           <View style={styles.progressItem}>
             <Text style={[styles.progressValue, { color: colors.status.success }]}>
               {Math.round(progressPercentage)}%
             </Text>
-            <Text style={styles.progressLabel}>Complété</Text>
+            <Text style={styles.progressLabel}>Parcours réalisé</Text>
           </View>
         </View>
       </Card.Content>

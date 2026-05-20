@@ -10,6 +10,7 @@ import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsImage } from '@src/shared/ui/GoodsImage';
 import { normalizePhotos } from '@src/shared/lib';
+import { CUSTOMER_GOODS_STATUS_LABELS } from '@src/shared/lib/customerStatus';
 
 interface GoodsCardProps {
 	goods: Goods;
@@ -23,6 +24,12 @@ const formatCurrency = (amount?: number): string => {
 const truncateText = (text: string, maxLength: number): string => {
 	if (text.length <= maxLength) return text;
 	return text.substring(0, maxLength) + '...';
+};
+
+const getPaymentLabel = (status?: string) => {
+	if (status === 'PAID') return 'Payé';
+	if (status === 'PARTIAL') return 'Paiement partiel';
+	return 'Solde à vérifier';
 };
 
 export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
@@ -90,6 +97,23 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 					fontSize: 14,
 					color: colors.primary.main,
 				},
+				actionRow: {
+					flexDirection: 'row',
+					flexWrap: 'wrap',
+					gap: 6,
+					marginTop: 8,
+				},
+				infoPill: {
+					borderRadius: 999,
+					paddingHorizontal: 8,
+					paddingVertical: 3,
+					backgroundColor: colors.background.paper,
+				},
+				infoPillText: {
+					fontFamily: Fonts.medium,
+					fontSize: 10,
+					color: colors.text.secondary,
+				},
 			}),
 		[colors]
 	);
@@ -135,6 +159,16 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 									{formatCurrency(goods.totalCost)}
 								</Text>
 							)}
+						</View>
+						<View style={styles.actionRow}>
+							<View style={styles.infoPill}>
+								<Text style={styles.infoPillText}>
+									{CUSTOMER_GOODS_STATUS_LABELS[goods.status] || goods.status}
+								</Text>
+							</View>
+							<View style={styles.infoPill}>
+								<Text style={styles.infoPillText}>{getPaymentLabel(goods.paymentStatus)}</Text>
+							</View>
 						</View>
 					</View>
 				</Card.Content>

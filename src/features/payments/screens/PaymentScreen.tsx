@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import PaymentMethodSelector from '../components/PaymentMethodSelector';
@@ -33,19 +33,27 @@ const PaymentScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <PaymentScreenHeader
-        title={selectedProvider ? 'Payment Details' : 'Select Payment Method'}
-        onBack={handlers.handleBack}
-        rightElement={
-          <NotificationBell
-            onPress={handlers.handleNotificationPress}
-            size={24}
-            color={colors.text.primary}
-          />
-        }
-      />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <PaymentScreenHeader
+          title={selectedProvider ? 'Payment Details' : 'Select Payment Method'}
+          onBack={handlers.handleBack}
+          rightElement={
+            <NotificationBell
+              onPress={handlers.handleNotificationPress}
+              size={24}
+              color={colors.text.primary}
+            />
+          }
+        />
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          style={styles.content}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+        >
         {!selectedProvider ? (
           <PaymentMethodSelector
             selectedMethod={selectedProvider}
@@ -70,7 +78,8 @@ const PaymentScreen: React.FC = () => {
             />
           </>
         )}
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <PaymentStatusModal
         visible={showStatusModal}

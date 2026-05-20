@@ -1,8 +1,6 @@
 import React from 'react';
 import {
   View,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
   TouchableWithoutFeedback,
   BackHandler,
@@ -76,12 +74,8 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
           <View style={styles.backdrop} />
         </TouchableWithoutFeedback>
 
-        {/* Bottom sheet content — rendered in main activity window, NOT in a Dialog */}
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.keyboardView}
-          pointerEvents="box-none"
-        >
+        {/* Bottom sheet content */}
+        <View style={styles.keyboardView} pointerEvents="box-none">
           <TouchableWithoutFeedback>
             <View style={styles.modalContent} pointerEvents="auto">
               <ModalHeader />
@@ -100,14 +94,12 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
                   selectedStatus={selectedStatus}
                   isLoading={isLoading}
                   onFocus={() => {
-                    // Auto-scroll input into view when keyboard appears.
-                    // Delay allows KeyboardAvoidingView to resize first.
                     setTimeout(() => {
                       scrollViewRef.current?.scrollToEnd({ animated: true });
-                    }, 150);
+                    }, 250);
                   }}
                 />
-                <View style={styles.footerSpacer} />
+                <View style={{ height: 280 }} />
               </ScrollView>
 
               <ModalActions
@@ -120,7 +112,7 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
               />
             </View>
           </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+        </View>
       </View>
     </Portal>
   );

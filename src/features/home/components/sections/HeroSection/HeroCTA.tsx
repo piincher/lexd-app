@@ -1,14 +1,12 @@
 import React from 'react';
-import { Pressable, Linking } from 'react-native';
+import { Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from './HeroSection.styles';
-
-const WHATSAPP_URL =
-  'whatsapp://send?phone=+8618851725957&text=Bonjour%20ChinaLink,%20J%20ai%20une%20demande%20d%27expedition%20a%20faire%20:)';
+import { openSupportWhatsApp } from '@src/shared/lib/openWhatsApp';
 
 export const HeroCTA: React.FC = () => {
   const { colors, isDark } = useAppTheme();
@@ -28,7 +26,7 @@ export const HeroCTA: React.FC = () => {
 
   return (
     <Pressable
-      onPress={() => Linking.openURL(WHATSAPP_URL)}
+      onPress={() => openSupportWhatsApp("Bonjour ChinaLink, J ai une demande d'expedition a faire :)")}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       style={styles.ctaWrapper}

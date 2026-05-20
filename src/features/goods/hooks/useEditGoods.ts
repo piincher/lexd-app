@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '@src/store/Auth';
 import { hapticSuccess } from '@src/shared/lib/haptics';
+import { isAdminRole } from '@src/shared/lib/roles';
 import { useGetGoodsDetail } from './useGoodsQueries';
 import { useUpdateGoods } from './useGoodsMutations';
 import { useEditGoodsForm } from './useEditGoodsForm';
@@ -14,7 +15,7 @@ export const useEditGoods = (goodsId: string) => {
   const navigation = useNavigation();
   const user = useAuth((state) => state.user);
   const token = useAuth((state) => state.token);
-  const isAdmin = ['admin', 'superadmin'].includes(user?.role);
+  const isAdmin = isAdminRole(user?.role);
   const isAuthLoading = !token;
 
   const { data: goods, isLoading, isError, error } = useGetGoodsDetail(goodsId);
@@ -59,7 +60,10 @@ export const useEditGoods = (goodsId: string) => {
       { goodsId, data: updateData },
       {
         onSuccess: () => Alert.alert('Succès', 'Marchandise mise à jour avec succès', [{ text: 'OK', onPress: () => navigation.goBack() }]),
-        onError: (err: any) => Alert.alert('Erreur', err?.message || 'Impossible de mettre à jour la marchandise'),
+        onError: (err: unknown) => {
+          const message = err instanceof Error ? err.message : 'Impossible de mettre à jour la marchandise';
+          Alert.alert('Erreur', message);
+        },
       }
     );
   }, [formData, isAdmin, canEdit, goodsId, updateMutation, navigation, existingPhotos, newPhotoUris]);

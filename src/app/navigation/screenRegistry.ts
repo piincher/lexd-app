@@ -7,7 +7,7 @@ export { LoginScreen as Login, VerificationScreen as Verification } from "@src/f
 export { HomeScreen } from "@src/features/home";
 export { GuestPreviewScreen } from "@src/features/guestExperience";
 export { OnboardingScreen as OnBoarding } from "@src/features/onboarding";
-export { FAQScreen as Faq } from "@src/features/support";
+export { HelpCenterScreen as Faq } from "@src/features/support";
 export { CheckRouteScreen as CheckRoute } from "@src/features/routes";
 export { NotificationsScreen as Notifications } from "@src/features/notifications";
 export { default as NotificationDetailScreen } from "@src/features/notifications/screens/NotificationDetailScreen";
@@ -22,7 +22,8 @@ export { OrdersScreen as Orders } from "@src/features/orders";
 // Profile
 export { ProfileScreen as Profile, AboutUsScreen as AboutUs, PastOrdersScreen as PastOrders, NotificationSettingsScreen, BadgesScreen, MyReviewsScreen } from "@src/features/profile";
 export { default as CertificateDetailScreen } from "@src/features/profile/screens/CertificateDetail";
-export { ReferralScreen } from "@src/features/referrals";
+export { default as TrustProfileScreen } from "@src/features/profile/screens/TrustProfileScreen";
+export { AdminRedemptionQueueScreen, AdminRewardSettingsScreen, MyRewardsScreen, RedemptionScreen, ReferralScreen } from "@src/features/referrals";
 
 // Goods
 export { default as MyGoodsScreen } from "@src/features/goods/screens/MyGoodsScreen";
@@ -34,6 +35,10 @@ export { default as AirwayBillTrackingScreen } from "@src/features/goods/screens
 // Customer Containers
 export { MyContainersScreen, ContainerTrackingScreen, ClientPackingListScreen, ClientLoadingListScreen } from "@src/features/customer/containers";
 
+// Customer Payments
+export { MyPaymentHistoryScreen } from "@src/features/payments";
+export { default as UserPaymentDetailScreen } from "@src/features/payments/screens/UserPaymentDetailScreen";
+
 // Stats & Support
 export { StatsScreen as Stats } from "@src/features/stats";
 export { TicketListScreen, TicketDetailScreen, CreateTicketScreen } from "@src/features/customer/support";
@@ -41,7 +46,7 @@ export { TicketListScreen, TicketDetailScreen, CreateTicketScreen } from "@src/f
 // Admin Orders
 export { default as ActiveOrders } from "@src/features/admin/orders/screens/ActiveOrders";
 export { default as UserActiveOrders } from "@src/features/admin/orders/screens/UserActiveOrders";
-export { default as ActiveOrderdetails } from "@src/features/admin/orders/screens/ActiveOrderDetails";
+export { default as ActiveOrderDetails } from "@src/features/admin/orders/screens/ActiveOrderDetails";
 export { default as AddOrder } from "@src/features/admin/orders/screens/AddOrder";
 export { default as BatchUpdate } from "@src/features/admin/orders/screens/BatchUpdate";
 export { default as BatchUpdateDetail } from "@src/features/admin/orders/screens/BatchUpdateDetail";
@@ -66,6 +71,9 @@ export { default as EditClient } from "@src/features/admin/users/screens/EditCli
 export { default as AdminDashBoard } from "@src/features/admin/dashboard/screens/AdminDashBoard";
 export { default as UnassignedGoodsScreen } from "@src/features/admin/dashboard/screens/UnassignedGoodsScreen";
 export { default as OutstandingPaymentsListScreen } from "@src/features/admin/dashboard/screens/OutstandingPaymentsListScreen";
+
+// Admin Analytics
+export { default as AtRiskCustomersScreen } from "@src/features/admin/analytics/screens/AtRiskCustomersScreen";
 
 // Admin Communications
 export { default as SendSms } from "@src/features/admin/communications/screens/SendSms";
@@ -123,9 +131,11 @@ export { default as CertificateDetailAdminScreen } from "@src/features/admin/cer
 // Admin Reviews / Promos / WhatsApp / Support / Search
 export { default as AdminReviewsScreen } from "@src/features/admin/reviews/screens/AdminReviewsScreen";
 export { default as ManagePromosScreen } from "@src/features/admin/promos/screens/ManagePromosScreen";
+export { default as WinBackDashboardScreen } from "@src/features/admin/winback/screens/WinBackDashboardScreen";
 export { default as WhatsAppRequestListScreen } from "@src/features/admin/whatsapp-requests/screens/WhatsAppRequestListScreen";
 export { AdminTicketDetailScreen, AdminTicketListScreen } from "@src/features/admin/support";
 export { default as GlobalSearchScreen } from "@src/features/admin/search/screens/GlobalSearchScreen";
+export { default as AppVersionSettingsScreen } from "@src/features/admin/version/screens/AppVersionSettingsScreen";
 
 // Public / Tools
 export { default as SharedShipmentScreen } from "@src/features/public/screens/SharedShipmentScreen";

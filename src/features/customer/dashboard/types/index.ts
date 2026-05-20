@@ -18,7 +18,19 @@ export interface DashboardStats {
   totalSpent: number;
   totalPaid: number;
   balanceDue: number;
+  accountBalance?: number;
 }
+
+export type {
+  ActiveWorkSummary,
+  MonthlyTrendPoint,
+  NextShipmentAction,
+  RewardSummary,
+  ShipmentHealthItem,
+  ShippingSummary,
+  VipProgress,
+  VipTier,
+} from '@src/shared/types/dashboard';
 
 // ============================================
 // ACTIVITY TYPES
@@ -74,6 +86,13 @@ export interface DashboardData {
   stats: DashboardStats;
   recentActivity: ActivityItem[];
   quickActions: QuickAction[];
+  shippingSummary?: import('@src/shared/types/dashboard').ShippingSummary;
+  monthlyTrend?: import('@src/shared/types/dashboard').MonthlyTrendPoint[];
+  activeWork?: import('@src/shared/types/dashboard').ActiveWorkSummary;
+  shipmentHealth?: import('@src/shared/types/dashboard').ShipmentHealthItem[];
+  vipProgress?: import('@src/shared/types/dashboard').VipProgress;
+  rewardSummary?: import('@src/shared/types/dashboard').RewardSummary;
+  nextShipmentActions?: import('@src/shared/types/dashboard').NextShipmentAction[];
 }
 
 // ============================================
@@ -99,6 +118,13 @@ export interface ApiResponse<T> {
 export interface GetDashboardResponse {
   stats: DashboardStats;
   quickActions: QuickAction[];
+  shippingSummary?: import('@src/shared/types/dashboard').ShippingSummary;
+  monthlyTrend?: import('@src/shared/types/dashboard').MonthlyTrendPoint[];
+  activeWork?: import('@src/shared/types/dashboard').ActiveWorkSummary;
+  shipmentHealth?: import('@src/shared/types/dashboard').ShipmentHealthItem[];
+  vipProgress?: import('@src/shared/types/dashboard').VipProgress;
+  rewardSummary?: import('@src/shared/types/dashboard').RewardSummary;
+  nextShipmentActions?: import('@src/shared/types/dashboard').NextShipmentAction[];
 }
 
 /**

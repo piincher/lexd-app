@@ -20,13 +20,17 @@ export const useVerification = () => {
 			if (!isRegistered) {
 				// Small delay to ensure auth state is propagated
 				setTimeout(() => {
-					registerDevice().then((success) => {
-						if (success) {
-							console.log('[useVerification] Push token registered successfully');
-						} else {
-							console.log('[useVerification] Push token registration failed or skipped');
-						}
-					});
+					registerDevice()
+						.then((success) => {
+							if (success) {
+								console.log('[useVerification] Push token registered successfully');
+							} else {
+								console.log('[useVerification] Push token registration failed or skipped');
+							}
+						})
+						.catch((error) => {
+							console.log('[useVerification] Push token registration failed', error);
+						});
 				}, 500);
 			}
 		},

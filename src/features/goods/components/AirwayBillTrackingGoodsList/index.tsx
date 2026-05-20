@@ -4,22 +4,12 @@ import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import type { AirwayBillGoodsItem } from '../../api/types';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { CUSTOMER_GOODS_STATUS_LABELS } from '@src/shared/lib/customerStatus';
 import { createStyles } from './AirwayBillTrackingGoodsList.styles';
 
 interface Props {
   goodsIds?: (string | AirwayBillGoodsItem)[];
 }
-
-const STATUS_LABELS: Record<string, string> = {
-  RECEIVED_AT_WAREHOUSE: 'Reçu',
-  PACKED: 'Préparé',
-  ASSIGNED_TO_CONTAINER: 'Assigné',
-  LOADED_IN_CONTAINER: 'Chargé',
-  IN_TRANSIT: 'En route',
-  ARRIVED_DESTINATION: 'Arrivé',
-  READY_FOR_PICKUP: 'Prêt',
-  DELIVERED: 'Livré',
-};
 
 export const AirwayBillTrackingGoodsList: React.FC<Props> = ({ goodsIds }) => {
   const items = goodsIds || [];
@@ -38,7 +28,7 @@ export const AirwayBillTrackingGoodsList: React.FC<Props> = ({ goodsIds }) => {
                 {typeof goods === 'string' ? goods : goods.goodsId}
               </Text>
               {typeof goods !== 'string' && goods.status && (
-                <Text style={styles.goodsStatus}>{STATUS_LABELS[goods.status] || goods.status}</Text>
+                <Text style={styles.goodsStatus}>{CUSTOMER_GOODS_STATUS_LABELS[goods.status] || goods.status}</Text>
               )}
             </View>
           ))}

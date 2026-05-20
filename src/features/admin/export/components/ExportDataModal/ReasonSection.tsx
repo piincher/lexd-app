@@ -7,9 +7,10 @@ import { createStyles } from "./ExportDataModal.styles";
 interface ReasonSectionProps {
   reason: string;
   onChange: (reason: string) => void;
+  onInputFocus?: () => void;
 }
 
-export const ReasonSection: React.FC<ReasonSectionProps> = ({ reason, onChange }) => {
+export const ReasonSection: React.FC<ReasonSectionProps> = ({ reason, onChange, onInputFocus }) => {
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors), [colors]);
 
@@ -26,6 +27,7 @@ export const ReasonSection: React.FC<ReasonSectionProps> = ({ reason, onChange }
         style={styles.input}
         multiline
         numberOfLines={2}
+        onFocus={onInputFocus}
       />
     </>
   );

@@ -38,6 +38,12 @@ export {
 // Components
 export {
   HeroSection,
+  DashboardHero,
+  PendingActionsRail,
+  PrepareNextShipmentCard,
+  ShipmentHealthList,
+  ShippingAnalyticsPanel,
+  VipProgressCard,
   SmartActions,
   JourneyMap,
   ContainerStack,

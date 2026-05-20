@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Linking } from 'react-native';
+import { openWhatsApp } from '@src/shared/lib/openWhatsApp';
 import { useMarkRequestProcessing, useMarkRequestCompleted } from '../../../hooks';
 import { WhatsAppRequest } from '../../../api/whatsappRequestApi';
 import { ApiClientError } from '@src/api/client';
@@ -36,8 +36,7 @@ export const useWhatsAppRequestActions = (
   }, []);
 
   const handleWhatsAppCustomer = useCallback((phoneNumber: string) => {
-    const cleanPhone = phoneNumber.replace(/\+/g, '');
-    Linking.openURL(`https://wa.me/${cleanPhone}`);
+    openWhatsApp(phoneNumber);
   }, []);
 
   const dismissError = useCallback(() => setErrorMessage(null), [setErrorMessage]);

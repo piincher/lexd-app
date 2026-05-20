@@ -23,6 +23,10 @@ export const useVoidGoods = () => {
       queryClient.invalidateQueries({ queryKey: goodsQueryKeys.lists() });
       // Invalidate orders queries
       queryClient.invalidateQueries({ queryKey: ['orders'] });
+      // Customer-side invalidation
+      queryClient.invalidateQueries({ queryKey: ['my-goods'] });
+      queryClient.invalidateQueries({ queryKey: ['goods', variables.id] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
   });
 };

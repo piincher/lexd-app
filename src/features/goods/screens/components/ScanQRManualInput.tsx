@@ -28,7 +28,7 @@ export const ScanQRManualInput: React.FC<ScanQRManualInputProps> = ({
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 			style={styles.container}
 		>
-			<ScrollView contentContainerStyle={styles.content}>
+			<ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
 				<MaterialCommunityIcons
 					name="qrcode-scan"
 					size={80}

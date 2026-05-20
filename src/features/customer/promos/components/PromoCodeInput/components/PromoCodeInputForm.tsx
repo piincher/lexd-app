@@ -14,6 +14,7 @@ interface PromoCodeInputFormProps {
   onApply: () => void;
   isPending: boolean;
   errorMessage: string;
+  onInputFocus?: () => void;
 }
 
 export const PromoCodeInputForm: React.FC<PromoCodeInputFormProps> = ({
@@ -22,6 +23,7 @@ export const PromoCodeInputForm: React.FC<PromoCodeInputFormProps> = ({
   onApply,
   isPending,
   errorMessage,
+  onInputFocus,
 }) => {
   const { styles, colors } = usePromoCodeInputStyles();
 
@@ -36,6 +38,7 @@ export const PromoCodeInputForm: React.FC<PromoCodeInputFormProps> = ({
           onChangeText={onChangeCode}
           autoCapitalize="characters"
           editable={!isPending}
+          onFocus={onInputFocus}
         />
         <TouchableOpacity
           style={[

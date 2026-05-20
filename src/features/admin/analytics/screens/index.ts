@@ -4,3 +4,4 @@
  */
 
 export { AnalyticsDashboardScreen } from './AnalyticsDashboardScreen';
+export { AtRiskCustomersScreen } from './AtRiskCustomersScreen';

@@ -62,3 +62,32 @@ export interface AnnouncementListResult {
     pages: number;
   };
 }
+
+export interface AnnouncementStats {
+  total: number;
+  byStatus: {
+    draft: number;
+    published: number;
+    archived: number;
+  };
+  currentlyActive: number;
+  totalPublished: number;
+  engagement: {
+    totalRead: number;
+    totalDismissed: number;
+    totalAcknowledged: number;
+  };
+}
+
+export interface AnnouncementReceiptAnalytics {
+  announcementId: string;
+  title: string;
+  status: string;
+  totalDelivered: number;
+  read: number;
+  dismissed: number;
+  acknowledged: number;
+  readRate: number;
+  dismissRate: number;
+  ackRate: number;
+}

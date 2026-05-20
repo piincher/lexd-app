@@ -12,6 +12,7 @@ import type { HomeTabParamList } from '@src/navigations/type';
 import { useAppTheme } from '@src/providers';
 import { useAuth } from '@src/store/Auth';
 import { useTabBarStore } from '@src/store/tabBarStore';
+import { isAdminRole } from '@src/shared/lib/roles';
 
 // Screens
 import { HomeScreen } from '@src/features/home';
@@ -47,15 +48,14 @@ interface TabConfig {
 }
 
 export const HomeBottomTab: React.FC = () => {
-  const role = useAuth((state) => state.user.role);
+  const role = useAuth((state) => state.user?.role);
   const token = useAuth((state) => state.token);
   const { colors } = useAppTheme();
   const insets = useSafeAreaInsets();
   const setTabBarVisible = useTabBarStore((state) => state.setVisible);
   const isTabBarVisible = useTabBarStore((state) => state.isVisible);
 
-  const normalizedRole = role.trim().toLowerCase().replace(/[\s_-]/g, '');
-  const adminRole = ['admin', 'superadmin'].includes(normalizedRole);
+  const adminRole = isAdminRole(role);
   const showTabBar = adminRole || isTabBarVisible;
   const bottomPadding = Math.max(insets.bottom, 8);
   const tabBarHeight = 58 + bottomPadding;

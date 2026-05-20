@@ -1,6 +1,6 @@
 // Card Payment Components
 export { CardPaymentForm } from './CardPaymentForm/index';
-export { CardPaymentFormV2 } from './CardPaymentFormV2';
+// export { CardPaymentFormV2 } from './CardPaymentFormV2'; // TODO: create when V2 form is ready
 
 // Card Input Components
 export { CardCVVInput } from './CardCVVInput';

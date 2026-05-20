@@ -5,7 +5,7 @@ import { Fonts } from '@src/constants/Fonts';
 
 interface FAQItemAnswerProps {
   answer: string;
-  answerStyle: any;
+  answerStyle: Record<string, unknown>;
   textColor: string;
 }
 

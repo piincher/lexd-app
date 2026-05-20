@@ -4,6 +4,15 @@
  */
 
 import { DashboardStats, ActivityItem, QuickAction } from '../types';
+import type {
+  ActiveWorkSummary,
+  MonthlyTrendPoint,
+  NextShipmentAction,
+  RewardSummary,
+  ShipmentHealthItem,
+  ShippingSummary,
+  VipProgress,
+} from '@src/shared/types/dashboard';
 
 // ============================================
 // API RESPONSE TYPES
@@ -65,6 +74,13 @@ export interface GetDashboardResponse {
   stats: DashboardStats;
   quickActions: QuickAction[];
   containers?: DashboardContainer[];
+  shippingSummary?: ShippingSummary;
+  monthlyTrend?: MonthlyTrendPoint[];
+  activeWork?: ActiveWorkSummary;
+  shipmentHealth?: ShipmentHealthItem[];
+  vipProgress?: VipProgress;
+  rewardSummary?: RewardSummary;
+  nextShipmentActions?: NextShipmentAction[];
 }
 
 /**

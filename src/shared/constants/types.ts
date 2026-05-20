@@ -21,6 +21,10 @@ export type userData = {
 	email?: string;
 	balance?: number;
 	rewardPoints?: number;
+	rewardPointValueFCFA?: number;
+	rewardValueFCFA?: number;
+	pendingRedemptionPoints?: number;
+	pendingRedemptionValueFCFA?: number;
 	staffType?: string | null;
 	pushTokens?: string[];
 };

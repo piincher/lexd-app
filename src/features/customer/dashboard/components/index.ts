@@ -4,6 +4,12 @@
  */
 
 export { HeroSection } from './HeroSection';
+export { DashboardHero } from './DashboardHero';
+export { PendingActionsRail } from './PendingActionsRail';
+export { PrepareNextShipmentCard } from './PrepareNextShipmentCard';
+export { ShipmentHealthList } from './ShipmentHealthList';
+export { ShippingAnalyticsPanel } from './ShippingAnalyticsPanel';
+export { VipProgressCard } from './VipProgressCard';
 export { ShipmentHomeCard } from './ShipmentHomeCard';
 export { SmartActions } from './SmartActions';
 export { JourneyMap } from './JourneyMap';

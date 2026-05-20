@@ -1,0 +1,1 @@
+export { useOnboardingSlideAnimation } from "./useOnboardingSlideAnimation";

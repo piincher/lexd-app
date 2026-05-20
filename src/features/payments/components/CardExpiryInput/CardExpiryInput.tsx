@@ -8,12 +8,14 @@ interface CardExpiryInputProps {
   value: string;
   onChangeText: (value: string) => void;
   error?: string;
+  onInputFocus?: () => void;
 }
 
 export const CardExpiryInput: React.FC<CardExpiryInputProps> = ({
   value,
   onChangeText,
   error,
+  onInputFocus,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -43,7 +45,7 @@ export const CardExpiryInput: React.FC<CardExpiryInputProps> = ({
           placeholder="MM/AA"
           keyboardType="number-pad"
           maxLength={5}
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => { setIsFocused(true); onInputFocus?.(); }}
           onBlur={() => setIsFocused(false)}
         />
       </View>

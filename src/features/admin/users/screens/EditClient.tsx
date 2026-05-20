@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Header } from "@src/components/Header/Header";
 import { Notification } from "@src/components/Notification/Notification";
@@ -32,22 +32,24 @@ const EditClient = ({ route, navigation }: RootStackScreenProps<"EditClient">) =
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
-      <FormBackground />
-      <Header title="Modifier le client" navigation={navigation} showNotificationBell />
-      <View style={styles.content}>
-        <EditClientForm
-          initialValues={initialValues}
-          onSubmit={handleSubmit}
-          validationSchema={validationSchema}
-          selectedCode={selectedCode}
-          setSelectedCode={setSelectedCode}
-          isPending={isPending}
-          isLoadingUser={isLoadingUser}
-          signUpDataCode={signUpDataCode}
-          phoneMaxLength={phoneMaxLength}
-          roleOptions={roleOptions}
-        />
-      </View>
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <FormBackground />
+        <Header title="Modifier le client" navigation={navigation} showNotificationBell />
+        <ScrollView style={styles.content} keyboardShouldPersistTaps="handled">
+          <EditClientForm
+            initialValues={initialValues}
+            onSubmit={handleSubmit}
+            validationSchema={validationSchema}
+            selectedCode={selectedCode}
+            setSelectedCode={setSelectedCode}
+            isPending={isPending}
+            isLoadingUser={isLoadingUser}
+            signUpDataCode={signUpDataCode}
+            phoneMaxLength={phoneMaxLength}
+            roleOptions={roleOptions}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
       <Notification
         message="Utilisateur mis à jour avec succès"
         type="success"

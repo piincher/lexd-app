@@ -7,8 +7,6 @@ import React from 'react';
 import {
   View,
   StyleSheet,
-  KeyboardAvoidingView,
-  Platform,
   ScrollView,
 } from 'react-native';
 import { Portal, Modal } from 'react-native-paper';
@@ -44,6 +42,13 @@ export const WaypointUpdateModal: React.FC<WaypointUpdateModalProps> = ({
   onUploadDocument,
 }) => {
   const form = useWaypointUpdateForm(waypoint, waypointIndex, onSave, onDismiss);
+  const scrollViewRef = React.useRef<ScrollView>(null);
+
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
 
   return (
     <Portal>
@@ -52,70 +57,71 @@ export const WaypointUpdateModal: React.FC<WaypointUpdateModalProps> = ({
         onDismiss={onDismiss}
         contentContainerStyle={styles.modalContainer}
       >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={styles.keyboardView}
-        >
-          <Animated.View entering={SlideInUp} style={styles.modalContent}>
-            <WaypointModalHeader
-              status={form.status}
-              locationCategory={form.locationCategory}
-              locationCode={form.locationCode}
-              waypoint={waypoint}
-              onDismiss={onDismiss}
+        <Animated.View entering={SlideInUp} style={styles.modalContent}>
+          <WaypointModalHeader
+            status={form.status}
+            locationCategory={form.locationCategory}
+            locationCode={form.locationCode}
+            waypoint={waypoint}
+            onDismiss={onDismiss}
+          />
+
+          <ScrollView
+            ref={scrollViewRef}
+            style={styles.scrollView}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
+            <WaypointQuickActions
+              quickActions={form.quickActions}
+              onQuickAction={form.handleQuickAction}
+              delay={50}
             />
 
-            <ScrollView
-              style={styles.scrollView}
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="handled"
-            >
-              <WaypointQuickActions
-                quickActions={form.quickActions}
-                onQuickAction={form.handleQuickAction}
-                delay={50}
-              />
+            <WaypointStatusSelector
+              status={form.status}
+              showStatusDropdown={form.showStatusDropdown}
+              allStatuses={form.allStatuses}
+              onToggleDropdown={() => form.setShowStatusDropdown(!form.showStatusDropdown)}
+              onSelectStatus={(newStatus) => {
+                form.setStatus(newStatus);
+                form.setShowStatusDropdown(false);
+              }}
+              delay={100}
+            />
 
-              <WaypointStatusSelector
-                status={form.status}
-                showStatusDropdown={form.showStatusDropdown}
-                allStatuses={form.allStatuses}
-                onToggleDropdown={() => form.setShowStatusDropdown(!form.showStatusDropdown)}
-                onSelectStatus={(newStatus) => {
-                  form.setStatus(newStatus);
-                  form.setShowStatusDropdown(false);
-                }}
-                delay={100}
-              />
+            <WaypointDateTimeSection
+              actualArrival={form.actualArrival}
+              actualDeparture={form.actualDeparture}
+              showArrivalPicker={form.showArrivalPicker}
+              showDeparturePicker={form.showDeparturePicker}
+              onArrivalChange={form.onArrivalChange}
+              onDepartureChange={form.onDepartureChange}
+              onShowArrivalPicker={() => form.setShowArrivalPicker(true)}
+              onShowDeparturePicker={() => form.setShowDeparturePicker(true)}
+              onClearArrival={() => form.setActualArrival(null)}
+              onClearDeparture={() => form.setActualDeparture(null)}
+              delay={200}
+            />
 
-              <WaypointDateTimeSection
-                actualArrival={form.actualArrival}
-                actualDeparture={form.actualDeparture}
-                showArrivalPicker={form.showArrivalPicker}
-                showDeparturePicker={form.showDeparturePicker}
-                onArrivalChange={form.onArrivalChange}
-                onDepartureChange={form.onDepartureChange}
-                onShowArrivalPicker={() => form.setShowArrivalPicker(true)}
-                onShowDeparturePicker={() => form.setShowDeparturePicker(true)}
-                onClearArrival={() => form.setActualArrival(null)}
-                onClearDeparture={() => form.setActualDeparture(null)}
-                delay={200}
-              />
+            <WaypointLocationDetails locationCategory={form.locationCategory} delay={250} />
 
-              <WaypointLocationDetails locationCategory={form.locationCategory} delay={250} />
+            <WaypointNotesSection
+              notes={form.notes}
+              onChangeNotes={form.setNotes}
+              delay={300}
+              onFocus={scrollToEnd}
+            />
 
-              <WaypointNotesSection notes={form.notes} onChangeNotes={form.setNotes} delay={300} />
+            {onUploadDocument && (
+              <WaypointDocumentUpload onUpload={() => onUploadDocument(waypointIndex)} delay={350} />
+            )}
 
-              {onUploadDocument && (
-                <WaypointDocumentUpload onUpload={() => onUploadDocument(waypointIndex)} delay={350} />
-              )}
+            <View style={{ height: 280 }} />
+          </ScrollView>
 
-              <View style={styles.footerSpacer} />
-            </ScrollView>
-
-            <WaypointActionButtons onCancel={onDismiss} onSave={form.handleSave} />
-          </Animated.View>
-        </KeyboardAvoidingView>
+          <WaypointActionButtons onCancel={onDismiss} onSave={form.handleSave} />
+        </Animated.View>
       </Modal>
     </Portal>
   );

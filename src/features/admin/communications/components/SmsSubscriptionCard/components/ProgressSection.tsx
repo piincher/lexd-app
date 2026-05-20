@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ProgressSectionProps {
   progressPercentage: number;
@@ -15,6 +15,9 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   progressColor,
   progressSubtext,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <View style={styles.progressSection}>
       <View style={styles.progressTrack}>
@@ -35,14 +38,14 @@ export const ProgressSection: React.FC<ProgressSectionProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any, _isDark?: boolean) => StyleSheet.create({
   progressSection: {
     marginBottom: 4,
   },
   progressTrack: {
     height: 8,
     borderRadius: 4,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.divider,
     overflow: 'hidden',
     marginBottom: 8,
   },
@@ -63,6 +66,6 @@ const styles = StyleSheet.create({
   progressSubtext: {
     fontSize: 11,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
+    color: colors.text.secondary,
   },
 });

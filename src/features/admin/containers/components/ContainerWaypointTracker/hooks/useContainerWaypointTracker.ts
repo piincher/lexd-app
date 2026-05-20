@@ -1,16 +1,8 @@
 import { useState, useCallback } from 'react';
-import { Linking, Alert, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { Linking, Alert, LayoutAnimation } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 import { ContainerWaypoint, ExtendedWaypointStatus } from '../../../types';
-import { getLocationCategory, getExtendedStatusLabel, getQuickActions, isValidStatusTransition } from '../../../types/waypointStatus';
-
-const isNewArchitectureEnabled = Boolean(
-  (globalThis as { nativeFabricUIManager?: unknown }).nativeFabricUIManager
-);
-
-if (Platform.OS === 'android' && !isNewArchitectureEnabled && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+import { getLocationCategory, getExtendedStatusLabel, isValidStatusTransition } from '../../../types/waypointStatus';
 
 interface Props {
   waypoints: ContainerWaypoint[];

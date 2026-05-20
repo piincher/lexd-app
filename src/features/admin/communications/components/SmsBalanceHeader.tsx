@@ -4,11 +4,10 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
 import { Fonts } from '@src/constants/Fonts';
@@ -26,8 +25,9 @@ export const SmsBalanceHeader: React.FC<SmsBalanceHeaderProps> = ({
   hasExpired = false,
   onBack,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
   const navigation = useNavigation();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
   const balanceStatus =
     hasExpired ? 'critical' :
@@ -48,7 +48,7 @@ export const SmsBalanceHeader: React.FC<SmsBalanceHeaderProps> = ({
     <View style={styles.container}>
       <View style={styles.leftSection}>
         <TouchableOpacity onPress={onBack} style={styles.backButton} activeOpacity={0.7}>
-          <Ionicons name="arrow-back" size={22} color={Theme.neutral[800]} />
+          <Ionicons name="arrow-back" size={22} color={colors.text.primary} />
         </TouchableOpacity>
         <View>
           <Text style={styles.title}>Envoyer SMS</Text>
@@ -60,7 +60,7 @@ export const SmsBalanceHeader: React.FC<SmsBalanceHeaderProps> = ({
         <NotificationBell
           onPress={() => navigation.navigate('Notifications' as never)}
           size={22}
-          color={Theme.neutral[800]}
+          color={colors.text.primary}
         />
         <View style={[styles.balancePill, { backgroundColor: statusColor + '15' }]}>
           {alertIcon && (
@@ -76,16 +76,16 @@ export const SmsBalanceHeader: React.FC<SmsBalanceHeaderProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any, _isDark?: boolean) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderBottomWidth: 1,
-    borderBottomColor: Theme.neutral[100],
+    borderBottomColor: colors.divider,
   },
   leftSection: {
     flexDirection: 'row',
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
     width: 38,
     height: 38,
     borderRadius: 12,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.background.default,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -104,13 +104,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: Fonts.bold,
     fontWeight: '700',
-    color: Theme.neutral[800],
+    color: colors.text.primary,
     letterSpacing: -0.3,
   },
   subtitle: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
+    color: colors.text.secondary,
     marginTop: 1,
   },
   balancePill: {

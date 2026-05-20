@@ -20,8 +20,8 @@ const STATUS_COPY: Record<string, { label: string; detail: string; action: strin
     action: 'Suivre le chargement',
   },
   LOADED: {
-    label: 'Container chargé',
-    detail: 'Le container est chargé et part vers le port.',
+    label: 'Envoi chargé',
+    detail: 'Votre envoi est chargé et part vers le port.',
     action: 'Voir les marchandises',
   },
   AIR_LOADED: {
@@ -30,13 +30,13 @@ const STATUS_COPY: Record<string, { label: string; detail: string; action: strin
     action: 'Suivre le vol',
   },
   GATE_IN_FULL: {
-    label: 'Container au port',
-    detail: 'Le container est au port et attend le bateau.',
+    label: 'Au port de départ',
+    detail: 'Votre envoi est au port et attend le navire.',
     action: 'Voir le trajet',
   },
   LOADED_ON_VESSEL: {
-    label: 'Container sur le bateau',
-    detail: 'Le container est chargé à bord du navire.',
+    label: 'Chargé sur le navire',
+    detail: 'Votre envoi est chargé à bord du navire.',
     action: 'Voir le trajet',
   },
   IN_TRANSIT: {
@@ -51,7 +51,7 @@ const STATUS_COPY: Record<string, { label: string; detail: string; action: strin
   },
   ARRIVED: {
     label: 'Arrivé à destination',
-    detail: 'Le container est arrivé, le retrait sera bientôt confirmé.',
+    detail: 'Votre envoi est arrivé, le retrait sera bientôt confirmé.',
     action: 'Préparer le retrait',
   },
   DISCHARGED: {

@@ -1,5 +1,6 @@
 import React from "react";
-import { SafeAreaView, View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useCertificateHistory } from "../hooks/useCertificateHistory";
@@ -7,6 +8,7 @@ import { CertificateHistoryHeader } from "../components/CertificateHistoryHeader
 import { CertificateFilterChips } from "../components/CertificateFilterChips";
 import { CertificateHistoryList } from "../components/CertificateHistoryList";
 import { createStyles } from "./CertificateHistoryScreen.styles";
+import type { CertificateRecord } from "../api/certificateAdminApi";
 
 export default function CertificateHistoryScreen({
   navigation,
@@ -50,8 +52,8 @@ export default function CertificateHistoryScreen({
           onResetFilter={() => handleFilterChange("all")}
           onDownload={download}
           isDownloading={isDownloading}
-          onPressCertificate={(certificate) =>
-            navigation.navigate("CertificateDetailAdmin", { certificate: certificate as any })
+          onPressCertificate={(certificate: CertificateRecord) =>
+            navigation.navigate("CertificateDetailAdmin", { certificate })
           }
         />
       )}

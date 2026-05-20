@@ -4,13 +4,12 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, ScrollView, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { SmsService } from '@src/shared/types/user';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { SmsSubscriptionCard } from './SmsSubscriptionCard';
 
 interface SmsSubscriptionListProps {
@@ -20,7 +19,8 @@ interface SmsSubscriptionListProps {
 export const SmsSubscriptionList: React.FC<SmsSubscriptionListProps> = ({
   subscriptions,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const activeCount = subscriptions.filter((s) => s.isActive).length;
   const expiredCount = subscriptions.filter((s) => s.isExpired).length;
   const expiringSoonCount = subscriptions.filter((s) => s.isExpiringSoon).length;
@@ -64,7 +64,7 @@ export const SmsSubscriptionList: React.FC<SmsSubscriptionListProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any, _isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -83,11 +83,11 @@ const styles = StyleSheet.create({
   summaryText: {
     fontSize: 12,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[500],
+    color: colors.text.secondary,
   },
   summaryValue: {
     fontFamily: Fonts.bold,
-    color: Theme.neutral[800],
+    color: colors.text.primary,
   },
   listContent: {
     paddingBottom: 20,

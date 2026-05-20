@@ -3,12 +3,15 @@ import { View, Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
+import type { AppTheme } from '@src/constants/Theme';
 import type { PaymentHistoryItem } from '../types';
 import { getPaymentHistoryCardStyles } from './PaymentHistoryCard.styles';
 
+type ThemeColors = AppTheme['colors'];
+
 interface PaymentHistoryCardDetailsProps {
   payment: PaymentHistoryItem;
-  colors: any;
+  colors: ThemeColors;
 }
 
 export const PaymentHistoryCardDetails: React.FC<PaymentHistoryCardDetailsProps> = ({ payment, colors }) => {
@@ -18,14 +21,14 @@ export const PaymentHistoryCardDetails: React.FC<PaymentHistoryCardDetailsProps>
       {payment.goodsIds?.[0] && (
         <View style={styles.row}>
           <MaterialCommunityIcons name="package-variant" size={14} color={colors.text.secondary} />
-          <Text style={styles.label}>Commande:</Text>
+          <Text style={styles.label}>Marchandise:</Text>
           <Text style={styles.value}>{payment.goodsIds[0]}</Text>
         </View>
       )}
       {payment.orderCode && (
         <View style={styles.row}>
           <MaterialCommunityIcons name="file-document" size={14} color={colors.text.secondary} />
-          <Text style={styles.label}>Commande:</Text>
+          <Text style={styles.label}>Commande n°:</Text>
           <Text style={styles.value}>{payment.orderCode}</Text>
         </View>
       )}

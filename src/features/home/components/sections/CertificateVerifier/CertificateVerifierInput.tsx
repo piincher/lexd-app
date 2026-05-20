@@ -13,6 +13,7 @@ interface CertificateVerifierInputProps {
   onVerify: () => void;
   onReset: () => void;
   state: VerifyState;
+  onInputFocus?: () => void;
 }
 
 export const CertificateVerifierInput: React.FC<CertificateVerifierInputProps> = ({
@@ -21,6 +22,7 @@ export const CertificateVerifierInput: React.FC<CertificateVerifierInputProps> =
   onVerify,
   onReset,
   state,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
@@ -52,6 +54,7 @@ export const CertificateVerifierInput: React.FC<CertificateVerifierInputProps> =
           returnKeyType="search"
           onSubmitEditing={onVerify}
           editable={state.kind !== 'loading'}
+          onFocus={onInputFocus}
         />
         {code.length > 0 && state.kind !== 'loading' && (
           <Pressable onPress={onReset} hitSlop={8}>

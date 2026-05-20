@@ -1,13 +1,16 @@
 import { useCallback } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAuth } from '@src/store/Auth';
+import { isAdminRole } from '@src/shared/lib/roles';
+import type { RootStackParamList } from '@src/navigations/type';
 import { useGetGoodsDetail } from '../../hooks';
 
 export const useGoodsDetailScreen = () => {
   const route = useRoute();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { goodsId } = (route.params || {}) as { goodsId: string };
-  const isAdmin = useAuth((state) => state.user?.role) === 'admin';
+  const isAdmin = useAuth((state) => isAdminRole(state.user?.role));
   const { data: goods, isLoading, isError, error, refetch } = useGetGoodsDetail(goodsId);
 
   const handleBack = useCallback(() => {
@@ -15,12 +18,16 @@ export const useGoodsDetailScreen = () => {
   }, [navigation]);
 
   const handleEdit = useCallback(() => {
-    navigation.navigate('EditGoods' as never, { goodsId } as never);
+    navigation.navigate('EditGoods', { goodsId });
   }, [navigation, goodsId]);
 
   const handleRetry = useCallback(() => {
     refetch();
   }, [refetch]);
+
+  const handleViewPayments = useCallback(() => {
+    navigation.navigate('MyPaymentHistory');
+  }, [navigation]);
 
   return {
     goods,
@@ -32,6 +39,7 @@ export const useGoodsDetailScreen = () => {
       handleBack,
       handleEdit,
       handleRetry,
+      handleViewPayments,
     },
   };
 };

@@ -8,6 +8,7 @@ import { Chip } from 'react-native-paper';
 import { GoodsStatus } from '../api';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { CUSTOMER_GOODS_STATUS_LABELS } from '@src/shared/lib/customerStatus';
 
 type FilterTab = 'ALL' | GoodsStatus;
 
@@ -18,13 +19,13 @@ interface FilterOption {
 
 const filterOptions: FilterOption[] = [
 	{ key: 'ALL', label: 'Tous' },
-	{ key: 'RECEIVED_AT_WAREHOUSE', label: 'En Entrepôt' },
-	{ key: 'ASSIGNED_TO_CONTAINER', label: 'Assigné' },
-	{ key: 'LOADED_IN_CONTAINER', label: 'Chargé' },
-	{ key: 'IN_TRANSIT', label: 'En Transit' },
-	{ key: 'ARRIVED_DESTINATION', label: 'Arrivé' },
-	{ key: 'READY_FOR_PICKUP', label: 'Prêt' },
-	{ key: 'DELIVERED', label: 'Livré' },
+	{ key: 'RECEIVED_AT_WAREHOUSE', label: CUSTOMER_GOODS_STATUS_LABELS.RECEIVED_AT_WAREHOUSE },
+	{ key: 'ASSIGNED_TO_CONTAINER', label: CUSTOMER_GOODS_STATUS_LABELS.ASSIGNED_TO_CONTAINER },
+	{ key: 'LOADED_IN_CONTAINER', label: CUSTOMER_GOODS_STATUS_LABELS.LOADED_IN_CONTAINER },
+	{ key: 'IN_TRANSIT', label: CUSTOMER_GOODS_STATUS_LABELS.IN_TRANSIT },
+	{ key: 'ARRIVED_DESTINATION', label: CUSTOMER_GOODS_STATUS_LABELS.ARRIVED_DESTINATION },
+	{ key: 'READY_FOR_PICKUP', label: CUSTOMER_GOODS_STATUS_LABELS.READY_FOR_PICKUP },
+	{ key: 'DELIVERED', label: CUSTOMER_GOODS_STATUS_LABELS.DELIVERED },
 ];
 
 interface GoodsFilterProps {

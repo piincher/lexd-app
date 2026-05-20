@@ -4,14 +4,14 @@
  */
 
 import React, { useMemo } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { FAQCategory } from '../types/faq.types';
+import { FAQCategory, FAQ_CATEGORY_ICONS, FAQ_CATEGORY_LABELS } from '../types/faq.types';
 
 interface FAQCategoryItemProps {
-  category: FAQCategory;
+  category: FAQCategory | string;
   isSelected: boolean;
   onPress: () => void;
 }
@@ -21,7 +21,7 @@ export const FAQCategoryItem: React.FC<FAQCategoryItemProps> = ({
   isSelected,
   onPress,
 }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const styles = useMemo(() => StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -38,7 +38,7 @@ export const FAQCategoryItem: React.FC<FAQCategoryItemProps> = ({
       color: isSelected ? colors.text.inverse : colors.primary.main,
       marginLeft: 8,
     },
-  }), [colors, isDark, isSelected]);
+  }), [colors, isSelected]);
 
   return (
     <TouchableOpacity
@@ -47,12 +47,12 @@ export const FAQCategoryItem: React.FC<FAQCategoryItemProps> = ({
       activeOpacity={0.7}
     >
       <MaterialCommunityIcons
-        name={category.icon as any}
+        name={FAQ_CATEGORY_ICONS[category as FAQCategory] as React.ComponentProps<typeof MaterialCommunityIcons>['name']}
         size={24}
         color={isSelected ? colors.text.inverse : colors.primary.main}
       />
       <Text style={styles.title}>
-        {category.title}
+        {FAQ_CATEGORY_LABELS[category as FAQCategory] || category}
       </Text>
     </TouchableOpacity>
   );

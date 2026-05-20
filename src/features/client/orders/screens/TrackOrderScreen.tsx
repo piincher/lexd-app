@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { View } from 'react-native';
+import { View, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { Screen } from '@src/shared/ui/Screen';
 import { useTrackOrderScreen } from '../hooks/useTrackOrderScreen';
 import { TrackOrderSearchForm } from '../components/TrackOrderSearchForm';
@@ -16,21 +16,28 @@ export const TrackOrderScreen: React.FC = () => {
     useTrackOrderScreen();
 
   return (
-    <Screen header={{ title: 'Suivi de Commande', showNotificationBell: true }}>
-      <View style={styles.container}>
-        <TrackOrderSearchForm
-          orderCode={orderCode}
-          onOrderCodeChange={setOrderCode}
-          onTrack={handleTrack}
-          isLoading={isLoading}
-        />
-        <TrackOrderResults
-          data={data}
-          isLoading={isLoading}
-          isError={isError}
-          hasSearched={hasSearched}
-        />
-      </View>
+    <Screen header={{ title: 'Suivi de Commande', showNotificationBell: true }} scrollable={false}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+          <View style={styles.container}>
+            <TrackOrderSearchForm
+              orderCode={orderCode}
+              onOrderCodeChange={setOrderCode}
+              onTrack={handleTrack}
+              isLoading={isLoading}
+            />
+            <TrackOrderResults
+              data={data}
+              isLoading={isLoading}
+              isError={isError}
+              hasSearched={hasSearched}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </Screen>
   );
 };

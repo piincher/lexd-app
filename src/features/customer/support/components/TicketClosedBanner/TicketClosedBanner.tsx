@@ -16,7 +16,7 @@ interface TicketClosedBannerProps {
 }
 
 export const TicketClosedBanner: React.FC<TicketClosedBannerProps> = ({ status }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const statusText = status === 'RESOLVED' ? 'résolu' : 'fermé';
 
   const styles = useMemo(() => StyleSheet.create({
@@ -34,13 +34,13 @@ export const TicketClosedBanner: React.FC<TicketClosedBannerProps> = ({ status }
       color: colors.text.secondary,
       marginLeft: 8,
     },
-  }), [colors, isDark]);
+  }), [colors]);
 
   return (
     <View style={styles.container}>
       <MaterialCommunityIcons name="lock-outline" size={20} color={colors.text.secondary} />
       <Text style={styles.text}>
-        Ce ticket est {statusText}. Vous ne pouvez plus envoyer de messages.
+        Cette demande est {statusText}. Vous ne pouvez plus envoyer de messages.
       </Text>
     </View>
   );

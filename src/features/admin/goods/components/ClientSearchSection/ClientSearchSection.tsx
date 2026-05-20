@@ -18,12 +18,14 @@ interface ClientSearchSectionProps {
   selectedClient: userData | null;
   onSelectClient: (client: userData | null) => void;
   error?: string;
+  onInputFocus?: () => void;
 }
 
 export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
   selectedClient,
   onSelectClient,
   error,
+  onInputFocus,
 }) => {
   const [showResults, setShowResults] = useState(false);
   const { colors } = useAppTheme();
@@ -77,6 +79,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
               outlineColor={colors.border}
               activeOutlineColor={colors.status.success}
               style={styles.searchInput}
+              onFocus={onInputFocus}
               right={
                 searchQuery.length > 0 ? (
                   <TextInput.Icon icon="close-circle" onPress={() => { setSearchQuery(''); setShowResults(false); }} color={colors.text.disabled} />

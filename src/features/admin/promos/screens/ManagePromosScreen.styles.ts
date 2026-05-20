@@ -32,20 +32,20 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
   },
   headerTitle: {
     fontSize: 22,
-    fontFamily: Fonts.bold,
+    fontFamily: Fonts.BOLD,
     color: colors.text.primary,
     marginBottom: 2,
   },
   headerSubtitle: {
     fontSize: 14,
-    fontFamily: Fonts.meduim,
+    fontFamily: Fonts.MEDIUM,
     color: colors.text.secondary,
   },
   filterContainer: {
     backgroundColor: colors.background.card,
     borderBottomWidth: 1,
     borderBottomColor: colors.neutral[200],
-    paddingVertical: 12,
+    paddingVertical: 8,
   },
   fab: {
     position: "absolute",
@@ -79,7 +79,7 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
   },
   modalHeaderTitle: {
     fontSize: 20,
-    fontFamily: Fonts.bold,
+    fontFamily: Fonts.BOLD,
     color: colors.text.primary,
   },
 });

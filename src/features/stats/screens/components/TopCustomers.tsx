@@ -42,7 +42,7 @@ export const TopCustomers: React.FC<TopCustomersProps> = ({ customers, isLoading
         </View>
       ) : customers.length > 0 ? (
         customers.map((customer, index) => (
-          <TopCustomerRow key={customer.userId} customer={customer} rank={index} />
+          <TopCustomerRow key={`${customer.userId}-${index}`} customer={customer} rank={index} />
         ))
       ) : (
         <View style={styles.emptyContainer}>

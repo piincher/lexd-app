@@ -3,7 +3,7 @@
  */
 
 import React, { useState } from 'react';
-import { View, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { View, LayoutAnimation } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { ClientGoodsGroup } from '../../types/packingList';
 import { PackingListTable } from '../../components/PackingListTable';
@@ -11,12 +11,6 @@ import { createStyles } from './ClientGoodsSection.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ClientHeader } from './ClientHeader';
 import { ClientSubtotal } from './ClientSubtotal';
-
-const isNewArchitectureEnabled = Boolean((globalThis as { nativeFabricUIManager?: unknown }).nativeFabricUIManager);
-
-if (Platform.OS === 'android' && !isNewArchitectureEnabled && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
 
 interface ClientGoodsSectionProps {
   clientGroup: ClientGoodsGroup;

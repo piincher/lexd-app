@@ -32,6 +32,7 @@ interface Props {
    phone?: boolean;
    descriptionDown?: string;
    editable?: boolean;
+   onInputFocus?: () => void;
 }
 
 const AuthInputField: FC<Props> = (props) => {
@@ -100,6 +101,7 @@ const AuthInputField: FC<Props> = (props) => {
                selectedCode={props.selectedCode}
                setSelectedCode={props.setSelectedCode}
                phone={props.phone}
+               onInputFocus={props.onInputFocus}
             />
             {rightIcon ? (
                <AuthInputRightIcon onPress={handleRight} icon={rightIcon} />

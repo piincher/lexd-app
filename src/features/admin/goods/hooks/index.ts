@@ -24,6 +24,7 @@ export {
   useUpdateGoodsLocation,
   useUpdateGoodsPhoto,
   useDeleteGoods,
+  useHardDeleteGoods,
   useUpdateGoodsStatus,
 } from './goods/useGoodsMutations';
 

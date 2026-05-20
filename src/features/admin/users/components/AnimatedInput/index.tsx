@@ -18,6 +18,7 @@ interface Props extends Omit<TextInputProps, 'style'> {
   name: string;
   icon?: keyof typeof Ionicons.glyphMap;
   containerStyle?: any;
+  onInputFocus?: () => void;
 }
 
 export const AnimatedInput: React.FC<Props> = ({
@@ -25,6 +26,7 @@ export const AnimatedInput: React.FC<Props> = ({
   name,
   icon,
   containerStyle,
+  onInputFocus,
   ...inputProps
 }) => {
   const { colors } = useAppTheme();
@@ -54,6 +56,7 @@ export const AnimatedInput: React.FC<Props> = ({
   const handleFocus = () => {
     setIsFocused(true);
     focusValue.value = withTiming(1, { duration: 200 });
+    onInputFocus?.();
   };
 
   const handleBlurLocal = () => {

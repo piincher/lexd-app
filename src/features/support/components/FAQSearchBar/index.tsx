@@ -16,7 +16,7 @@ interface FAQSearchBarProps {
   placeholder?: string;
 }
 
-const AnimatedIcon = Animated.createAnimatedComponent(MaterialCommunityIcons);
+
 
 export const FAQSearchBar: React.FC<FAQSearchBarProps> = ({
   value,

@@ -1,8 +1,3 @@
-/**
- * CustomerDashboardScreen
- * Billion-dollar logistics dashboard — premium, scalable, production-ready
- */
-
 import React from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,11 +6,12 @@ import { createStyles } from './CustomerDashboardScreen.styles';
 import type { RootStackScreenProps } from '@src/navigations/type';
 import { useCustomerDashboard } from '../hooks/useCustomerDashboard';
 import { useHideTabBarOnScroll } from '@src/shared/lib';
-import { HeroSection } from '../components/HeroSection';
-import { ShipmentHomeCard } from '../components/ShipmentHomeCard';
-import { SmartActions } from '../components/SmartActions';
-import { JourneyMap } from '../components/JourneyMap';
-import { ContainerStack } from '../components/ContainerStack';
+import { DashboardHero } from '../components/DashboardHero';
+import { PendingActionsRail } from '../components/PendingActionsRail';
+import { PrepareNextShipmentCard } from '../components/PrepareNextShipmentCard';
+import { ShipmentHealthList } from '../components/ShipmentHealthList';
+import { ShippingAnalyticsPanel } from '../components/ShippingAnalyticsPanel';
+import { VipProgressCard } from '../components/VipProgressCard';
 import { ActivityTimeline } from '../components/ActivityTimeline';
 import { DashboardSkeleton } from '../components/DashboardSkeleton';
 import { DashboardErrorState } from '../components/DashboardErrorState';
@@ -27,10 +23,12 @@ export const CustomerDashboardScreen: React.FC<
   const styles = createStyles(colors);
   const { onScroll } = useHideTabBarOnScroll();
   const {
-    user, welcomeMessage, stats, containers, shipmentHome, quickActions, activities,
+    welcomeMessage, shippingSummary, monthlyTrend, activeWork, shipmentHealth,
+    vipProgress, rewardSummary, nextShipmentActions, activities,
     isLoading, isError, errorMessage, refresh,
-    handleNotifications, handleViewAllActivity, handleActionPress,
-    handleViewGoods, handleViewContainers, handleContainerPress,
+    handleNotifications, handleViewAllActivity, handleNextShipmentAction,
+    handlePrepareShipment, handleViewGoods, handleViewContainers,
+    handleViewPayments, handleShipmentHealthPress,
   } = useCustomerDashboard();
 
   if (isError) {
@@ -54,26 +52,35 @@ export const CustomerDashboardScreen: React.FC<
             <RefreshControl refreshing={isLoading} onRefresh={refresh} tintColor={colors.primary.main} />
           }
         >
-          <HeroSection
-            user={user}
+          <DashboardHero
             welcomeMessage={welcomeMessage}
-            stats={stats}
-            onViewGoods={handleViewGoods}
-            onViewContainers={handleViewContainers}
+            summary={shippingSummary}
+            activeWork={activeWork}
             onNotifications={handleNotifications}
           />
 
-          <ShipmentHomeCard
-            shipmentHome={shipmentHome}
-            onPrimaryPress={handleContainerPress}
+          <PendingActionsRail
+            activeWork={activeWork}
+            onViewGoods={handleViewGoods}
             onViewContainers={handleViewContainers}
+            onViewPayments={handleViewPayments}
           />
 
-          <SmartActions actions={quickActions} onActionPress={handleActionPress} />
+          <ShipmentHealthList
+            shipments={shipmentHealth}
+            onShipmentPress={handleShipmentHealthPress}
+            onViewAll={handleViewContainers}
+          />
 
-          <JourneyMap goodsByStatus={stats.goodsByStatus} totalGoods={stats.totalGoods} />
+          <PrepareNextShipmentCard
+            actions={nextShipmentActions}
+            onActionPress={handleNextShipmentAction}
+            onPreparePress={handlePrepareShipment}
+          />
 
-          <ContainerStack containers={containers} onContainerPress={handleContainerPress} />
+          <VipProgressCard vip={vipProgress} rewards={rewardSummary} />
+
+          <ShippingAnalyticsPanel summary={shippingSummary} trend={monthlyTrend} />
 
           <ActivityTimeline
             activities={activities}

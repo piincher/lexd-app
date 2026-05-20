@@ -12,6 +12,7 @@ interface EmailSectionProps {
   onEmailChange: (email: string) => void;
   emailMethod: "LINK" | "ATTACHMENT";
   onMethodChange: (method: "LINK" | "ATTACHMENT") => void;
+  onInputFocus?: () => void;
 }
 
 export const EmailSection: React.FC<EmailSectionProps> = ({
@@ -21,6 +22,7 @@ export const EmailSection: React.FC<EmailSectionProps> = ({
   onEmailChange,
   emailMethod,
   onMethodChange,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors), [colors]);
@@ -45,6 +47,7 @@ export const EmailSection: React.FC<EmailSectionProps> = ({
             keyboardType="email-address"
             autoCapitalize="none"
             style={styles.input}
+            onFocus={onInputFocus}
           />
           <RadioButton.Group
             onValueChange={(value) => onMethodChange(value as "LINK" | "ATTACHMENT")}

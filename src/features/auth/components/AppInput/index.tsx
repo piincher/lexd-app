@@ -9,6 +9,7 @@ interface Props extends TextInputProps {
 	setSelectedCode?: (args: string) => void;
 	code?: { label: string; value: string }[];
 	phone?: boolean;
+	onInputFocus?: () => void;
 }
 
 const AppInput: FC<Props> = (props) => {
@@ -47,6 +48,7 @@ const AppInput: FC<Props> = (props) => {
 					spellCheck
 					style={[styles.input, props.style]}
 					placeholderTextColor={colors.text.disabled}
+					onFocus={props.onInputFocus}
 				/>
 			</View>
 		</Pressable>

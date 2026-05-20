@@ -7,12 +7,14 @@ interface CardHolderInputProps {
   value: string;
   onChangeText: (value: string) => void;
   error?: string;
+  onInputFocus?: () => void;
 }
 
 export const CardHolderInput: React.FC<CardHolderInputProps> = ({
   value,
   onChangeText,
   error,
+  onInputFocus,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -36,7 +38,7 @@ export const CardHolderInput: React.FC<CardHolderInputProps> = ({
           onChangeText={onChangeText}
           placeholder="JEAN DUPONT"
           autoCapitalize="characters"
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => { setIsFocused(true); onInputFocus?.(); }}
           onBlur={() => setIsFocused(false)}
         />
       </View>

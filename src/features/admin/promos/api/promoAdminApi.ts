@@ -1,7 +1,5 @@
 import { apiV2 } from "@src/api/client";
 
-const axios = apiV2;
-
 const BASE_URL = "/promos";
 
 // ── Promo Types ──────────────────────────────────────────────────────────
@@ -51,9 +49,14 @@ export interface CreatePromoInput {
 export interface UpdatePromoInput extends Partial<CreatePromoInput> {}
 
 export interface PromoStats {
-  totalUsages: number;
-  totalDiscount: number;
+  totalUses: number;
+  totalDiscountGiven: number;
   uniqueUsers: number;
+  usageOverTime: {
+    _id: string;
+    count: number;
+    discountGiven: number;
+  }[];
 }
 
 export interface PaginatedPromos {
@@ -125,39 +128,44 @@ interface ApiResponse<T> {
 
 export const promoAdminApi = {
   // Promos
-  createPromo: (data: CreatePromoInput): Promise<ApiResponse<PromoRecord>> =>
-    axios.post(`${BASE_URL}/admin`, data),
+  createPromo: (data: CreatePromoInput): Promise<PromoRecord> =>
+    apiV2.post<ApiResponse<PromoRecord>>(`${BASE_URL}/admin`, data).then((res) => res.data.data),
 
   getPromos: (params?: {
     page?: number;
     limit?: number;
     status?: string;
-  }): Promise<ApiResponse<PaginatedPromos>> =>
-    axios.get(`${BASE_URL}/admin`, { params }),
+    type?: string;
+    search?: string;
+  }): Promise<PaginatedPromos> =>
+    apiV2.get<ApiResponse<PaginatedPromos>>(`${BASE_URL}/admin`, { params }).then((res) => res.data.data),
 
-  updatePromo: (id: string, data: UpdatePromoInput): Promise<ApiResponse<PromoRecord>> =>
-    axios.put(`${BASE_URL}/admin/${id}`, data),
+  updatePromo: (id: string, data: UpdatePromoInput): Promise<PromoRecord> =>
+    apiV2.put<ApiResponse<PromoRecord>>(`${BASE_URL}/admin/${id}`, data).then((res) => res.data.data),
 
-  deactivatePromo: (id: string): Promise<ApiResponse<PromoRecord>> =>
-    axios.delete(`${BASE_URL}/admin/${id}`),
+  deactivatePromo: (id: string): Promise<PromoRecord> =>
+    apiV2.delete<ApiResponse<PromoRecord>>(`${BASE_URL}/admin/${id}`).then((res) => res.data.data),
 
-  getPromoStats: (id: string): Promise<ApiResponse<PromoStats>> =>
-    axios.get(`${BASE_URL}/admin/${id}/stats`),
+  getPromoStats: (id: string): Promise<PromoStats> =>
+    apiV2.get<ApiResponse<PromoStats>>(`${BASE_URL}/admin/${id}/stats`).then((res) => res.data.data),
+
+  clonePromo: (id: string): Promise<PromoRecord> =>
+    apiV2.post<ApiResponse<PromoRecord>>(`${BASE_URL}/admin/${id}/clone`).then((res) => res.data.data),
 
   // Banners
-  createBanner: (data: CreateBannerInput): Promise<ApiResponse<BannerRecord>> =>
-    axios.post(`${BASE_URL}/admin/banners`, data),
+  createBanner: (data: CreateBannerInput): Promise<BannerRecord> =>
+    apiV2.post<ApiResponse<BannerRecord>>(`${BASE_URL}/admin/banners`, data).then((res) => res.data.data),
 
   getBanners: (params?: {
     page?: number;
     limit?: number;
     status?: string;
-  }): Promise<ApiResponse<PaginatedBanners>> =>
-    axios.get(`${BASE_URL}/admin/banners`, { params }),
+  }): Promise<PaginatedBanners> =>
+    apiV2.get<ApiResponse<PaginatedBanners>>(`${BASE_URL}/admin/banners`, { params }).then((res) => res.data.data),
 
-  updateBanner: (id: string, data: UpdateBannerInput): Promise<ApiResponse<BannerRecord>> =>
-    axios.put(`${BASE_URL}/admin/banners/${id}`, data),
+  updateBanner: (id: string, data: UpdateBannerInput): Promise<BannerRecord> =>
+    apiV2.put<ApiResponse<BannerRecord>>(`${BASE_URL}/admin/banners/${id}`, data).then((res) => res.data.data),
 
-  deactivateBanner: (id: string): Promise<ApiResponse<BannerRecord>> =>
-    axios.delete(`${BASE_URL}/admin/banners/${id}`),
+  deactivateBanner: (id: string): Promise<BannerRecord> =>
+    apiV2.delete<ApiResponse<BannerRecord>>(`${BASE_URL}/admin/banners/${id}`).then((res) => res.data.data),
 };

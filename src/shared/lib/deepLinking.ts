@@ -14,7 +14,7 @@
  * - chinalinkexpress://demo                  → Guest demo preview
  * - chinalinkexpress://tracking/:id          → ContainerTrackingScreen
  * - chinalinkexpress://goods/:goodsId        → GoodsDetailScreen
- * - chinalinkexpress://order/:id             → OrderDetailScreen
+ * - chinalinkexpress://order/:id             → OrderDetail
  * - chinalinkexpress://ticket/:ticketId      → TicketDetailScreen
  * - chinalinkexpress://notifications         → NotificationsScreen
  * - chinalinkexpress://payments              → MyPaymentHistoryScreen
@@ -41,7 +41,6 @@ const AUTH_REQUIRED_SCREENS = new Set<string>([
   "NotificationDetail",
   "NotificationSettings",
   "MyPaymentHistory",
-  "UserPaymentDetail",
   "MyReviews",
   "Badges",
   "CertificateDetail",
@@ -58,7 +57,7 @@ const AUTH_REQUIRED_SCREENS = new Set<string>([
   "SelectUser",
   "PastOrders",
   "UserAdd",
-  "AdmninPastOrders",
+  "AdminPastOrders",
   "SendSms",
   "ActiveOrderDetails",
   "BatchUpdate",
@@ -116,6 +115,83 @@ export const isAuthRequiredScreen = (screenName: string): boolean => {
   return AUTH_REQUIRED_SCREENS.has(screenName);
 };
 
+const ADMIN_REQUIRED_SCREENS = new Set<string>([
+  "AddOrder",
+  "ActiveOrder",
+  "AdminDashBoard",
+  "AdminGoodsList",
+  "AdminGoodsDetail",
+  "AdminGoodsPdfExport",
+  "AdminPastOrders",
+  "AdminRedemptions",
+  "AdminReviews",
+  "AdminRewardSettings",
+  "AdminTicketDetail",
+  "AdminTicketList",
+  "AirwayBillDetail",
+  "AirwayBillList",
+  "AllOrders",
+  "AnnouncementList",
+  "AssignAirwayGoods",
+  "AssignGoods",
+  "AtRiskCustomers",
+  "AuditLogDetail",
+  "AuditLogs",
+  "BatchUpdate",
+  "BatchUpdateDetail",
+  "CampaignList",
+  "CargoBagDetail",
+  "CertificateDetailAdmin",
+  "CertificateHistory",
+  "ChooseShippingMethod",
+  "ClientDetails",
+  "ClientManagement",
+  "ConsigneeDetail",
+  "ConsigneeList",
+  "ContainerDetail",
+  "ContainerList",
+  "CreateAirwayBill",
+  "CreateCampaign",
+  "CreateConsignee",
+  "CreateContainer",
+  "CreateAnnouncement",
+  "DataExport",
+  "EditClient",
+  "EditOrder",
+  "GlobalSearch",
+  "IssueCertificate",
+  "LoadingList",
+  "ManagePromos",
+  "NotificationEventDetail",
+  "NotificationEvents",
+  "OrderDetailScreen",
+  "OrderDetailWithGoods",
+  "OrderPaymentHistory",
+  "OutstandingPaymentsList",
+  "PackingList",
+  "PaymentDetail",
+  "ReceiveGoods",
+  "RecordPaymentScreen",
+  "RouteForm",
+  "RouteList",
+  "ScanQRCode",
+  "SelectUser",
+  "SendSms",
+  "ShippingMethod",
+  "Stats",
+  "UnassignedGoods",
+  "UserActiveOrders",
+  "UserAdd",
+  "VoidGoods",
+  "VoidGoodsList",
+  "WhatsAppRequests",
+  "WinBackDashboard",
+]);
+
+export const isAdminRequiredScreen = (screenName: string): boolean => {
+  return ADMIN_REQUIRED_SCREENS.has(screenName);
+};
+
 type ScreensConfig = NonNullable<LinkingOptions<RootStackParamList>["config"]>["screens"];
 
 // Deep link path config. The cast below keeps compatibility with legacy route
@@ -152,7 +228,7 @@ const screensConfig = {
   NotificationDetail: "notifications/detail",
   NotificationSettings: "notifications/settings",
   MyPaymentHistory: "payments",
-  faq: "faq",
+  FAQ: "faq",
   AboutUs: "about",
   CheckRoute: "route-check",
   SharedShipment: "s/:token",
@@ -204,13 +280,12 @@ const screensConfig = {
   PaymentDetail: "admin/payments/:paymentId",
   OrderPaymentHistory: "admin/payments/history/:orderId",
   PaymentScreen: "admin/payment/:orderId",
-  UserPaymentDetail: "payments/:paymentId",
   AddOrder: "admin/order/new",
   ActiveOrder: "admin/orders/active/:type",
   SelectUser: "admin/select-user",
   PastOrders: "past-orders",
   UserAdd: "admin/user/new",
-  AdmninPastOrders: "admin/past-orders",
+  AdminPastOrders: "admin/past-orders",
   SendSms: "admin/sms",
   BatchUpdate: "admin/batch",
   EditOrder: "admin/order/:id/edit",

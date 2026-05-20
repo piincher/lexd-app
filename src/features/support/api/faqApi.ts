@@ -1,125 +1,66 @@
 /**
- * FAQ API - API calls for FAQ data
- * Following SRP: This file only handles FAQ API calls
- * Mock data for now - will be replaced with actual API calls
+ * FAQ API - Real API client for FAQ endpoints
+ * Replaces mock data with backend calls to /api/v2/faqs
  */
 
-import { FAQItem, FAQData, FAQCategory } from '../types';
-import { MOCK_FAQS } from './faqMockData';
+import { apiClientV2 } from '@src/api/client';
+import type {
+  FAQItem,
+  FAQCategoryCount,
+  FAQSearchSuggestion,
+  FAQFeedbackResponse,
+  FAQListResponse,
+} from '../types';
 
-const CACHE_KEY = 'faq_cache';
-const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+const BASE_URL = '/faqs';
 
-interface CachedFAQData {
-  data: FAQData;
-  timestamp: number;
-}
+const unwrap = <T>(response: { data: { data: T } }): T => response.data.data;
 
-/**
- * Get cached FAQ data from local storage
- */
-const getCachedFAQs = (): FAQData | null => {
-  try {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
-      const parsed: CachedFAQData = JSON.parse(cached);
-      const now = Date.now();
-      if (now - parsed.timestamp < CACHE_DURATION_MS) {
-        return parsed.data;
-      }
-    }
-  } catch {
-    // Silently fail if cache is invalid
-  }
-  return null;
+export const getFAQs = async (params?: {
+  category?: string;
+  search?: string;
+  popular?: boolean;
+  page?: number;
+  limit?: number;
+}): Promise<FAQListResponse> => {
+  const response = await apiClientV2.get(BASE_URL, { params });
+  return unwrap(response);
 };
 
-/**
- * Cache FAQ data to local storage
- */
-const cacheFAQs = (data: FAQData): void => {
-  try {
-    const cacheData: CachedFAQData = {
-      data,
-      timestamp: Date.now(),
-    };
-    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-  } catch {
-    // Silently fail if storage is unavailable
-  }
+export const getFAQById = async (id: string): Promise<FAQItem> => {
+  const response = await apiClientV2.get(`${BASE_URL}/${id}`);
+  return unwrap(response);
 };
 
-/**
- * Get all FAQ items
- * Returns cached data if available, otherwise fetches from API
- */
-export const getFAQs = async (): Promise<FAQItem[]> => {
-  // Check cache first for offline support
-  const cached = getCachedFAQs();
-  if (cached) {
-    return cached.items;
-  }
-
-  // Simulate API delay
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  const sortedItems = [...MOCK_FAQS].sort((a, b) => a.order - b.order);
-
-  // Cache the data
-  const faqData: FAQData = {
-    items: sortedItems,
-    categories: Object.values(FAQCategory),
-    lastUpdated: new Date().toISOString(),
-  };
-  cacheFAQs(faqData);
-
-  return sortedItems;
+export const incrementFAQViews = async (id: string): Promise<{ viewCount: number }> => {
+  const response = await apiClientV2.post(`${BASE_URL}/${id}/view`);
+  return unwrap(response);
 };
 
-/**
- * Search FAQs by query string
- * Searches in both question and answer fields
- */
-export const searchFAQs = async (query: string): Promise<FAQItem[]> => {
-  const allFAQs = await getFAQs();
-
-  if (!query.trim()) {
-    return allFAQs;
-  }
-
-  const lowerQuery = query.toLowerCase();
-  return allFAQs.filter(
-    (faq) =>
-      faq.question.toLowerCase().includes(lowerQuery) ||
-      faq.answer.toLowerCase().includes(lowerQuery)
-  );
+export const submitFAQFeedback = async (
+  id: string,
+  isHelpful: boolean
+): Promise<FAQFeedbackResponse> => {
+  const response = await apiClientV2.post(`${BASE_URL}/${id}/feedback`, { isHelpful });
+  return unwrap(response);
 };
 
-/**
- * Get FAQ data with full structure (items, categories, lastUpdated)
- */
-export const getFAQData = async (): Promise<FAQData> => {
-  const cached = getCachedFAQs();
-  if (cached) {
-    return cached;
-  }
-
-  const items = await getFAQs();
-  return {
-    items,
-    categories: Object.values(FAQCategory),
-    lastUpdated: new Date().toISOString(),
-  };
+export const getFAQSearchSuggestions = async (query: string): Promise<FAQSearchSuggestion[]> => {
+  const response = await apiClientV2.get(`${BASE_URL}/search/suggestions`, { params: { q: query } });
+  return unwrap(response);
 };
 
-/**
- * Clear FAQ cache
- * Call this when you want to force a fresh fetch
- */
-export const clearFAQCache = (): void => {
-  try {
-    localStorage.removeItem(CACHE_KEY);
-  } catch {
-    // Silently fail
-  }
+export const getFAQCategories = async (): Promise<FAQCategoryCount[]> => {
+  const response = await apiClientV2.get(`${BASE_URL}/categories`);
+  return unwrap(response);
+};
+
+export const getPopularFAQs = async (limit?: number): Promise<FAQItem[]> => {
+  const response = await apiClientV2.get(`${BASE_URL}/popular`, { params: { limit } });
+  return unwrap(response);
+};
+
+export const seedFAQs = async (): Promise<{ seeded: number; message?: string }> => {
+  const response = await apiClientV2.post(`${BASE_URL}/seed`);
+  return unwrap(response);
 };

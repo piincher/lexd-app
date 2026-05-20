@@ -1,5 +1,6 @@
 import React from "react";
-import { SafeAreaView, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { useCertificateDetailAdmin } from "../hooks/useCertificateDetailAdmin";

@@ -3,4 +3,5 @@
  */
 
 export { FAQScreen } from './FAQScreen';
+export { HelpCenterScreen } from './HelpCenterScreen';
 export { default as FAQScreenSkeleton } from './FAQScreenSkeleton';

@@ -3,23 +3,26 @@
  * API client for analytics endpoints
  */
 
-import { apiClient } from '@src/api/client';
-import { DashboardData, RevenueTrendsData, ContainerUtilizationData, CustomerAnalyticsData, GoodsVolumeData, PaymentMetricsData, RealtimeData, PeriodFilter, ExportOptions } from '../types';
+import { apiClientV2 } from '@src/api/client';
+import { DashboardData, RevenueTrendsData, ContainerUtilizationData, CustomerAnalyticsData, AtRiskCustomersData, GoodsVolumeData, PaymentMetricsData, RealtimeData, PeriodFilter, ExportOptions } from '../types';
 
-const BASE_URL = '/v2/analytics';
+const BASE_URL = '/analytics';
+
+// Helper to unwrap the standard { success, data, message, meta } response shape
+const unwrap = <T>(response: any): T => response.data?.data ?? response.data;
 
 // ============================================
 // DASHBOARD
 // ============================================
 
 export const getDashboard = async (): Promise<DashboardData> => {
-  const response = await apiClient.get(`${BASE_URL}/dashboard`);
-  return response.data;
+  const response = await apiClientV2.get(`${BASE_URL}/dashboard`);
+  return unwrap(response);
 };
 
 export const getRealtimeMetrics = async (): Promise<RealtimeData> => {
-  const response = await apiClient.get(`${BASE_URL}/realtime`);
-  return response.data;
+  const response = await apiClientV2.get(`${BASE_URL}/realtime`);
+  return unwrap(response);
 };
 
 // ============================================
@@ -29,8 +32,8 @@ export const getRealtimeMetrics = async (): Promise<RealtimeData> => {
 export const getRevenueTrends = async (
   params: PeriodFilter & { groupBy?: 'day' | 'week' | 'month'; compare?: boolean }
 ): Promise<RevenueTrendsData> => {
-  const response = await apiClient.get(`${BASE_URL}/revenue`, { params });
-  return response.data;
+  const response = await apiClientV2.get(`${BASE_URL}/revenue`, { params });
+  return unwrap(response);
 };
 
 // ============================================
@@ -40,8 +43,8 @@ export const getRevenueTrends = async (
 export const getContainerUtilization = async (
   params?: { period?: string }
 ): Promise<ContainerUtilizationData> => {
-  const response = await apiClient.get(`${BASE_URL}/containers/utilization`, { params });
-  return response.data;
+  const response = await apiClientV2.get(`${BASE_URL}/containers/utilization`, { params });
+  return unwrap(response);
 };
 
 // ============================================
@@ -51,8 +54,15 @@ export const getContainerUtilization = async (
 export const getTopCustomers = async (
   params?: { limit?: number; period?: string }
 ): Promise<CustomerAnalyticsData> => {
-  const response = await apiClient.get(`${BASE_URL}/customers/top`, { params });
-  return response.data;
+  const response = await apiClientV2.get(`${BASE_URL}/customers/top`, { params });
+  return unwrap(response);
+};
+
+export const getAtRiskCustomers = async (
+  params?: { days?: number; page?: number; limit?: number }
+): Promise<AtRiskCustomersData> => {
+  const response = await apiClientV2.get(`${BASE_URL}/customers/at-risk`, { params });
+  return unwrap(response);
 };
 
 // ============================================
@@ -62,8 +72,8 @@ export const getTopCustomers = async (
 export const getGoodsVolume = async (
   params?: { period?: string; groupBy?: string }
 ): Promise<GoodsVolumeData> => {
-  const response = await apiClient.get(`${BASE_URL}/goods/volume`, { params });
-  return response.data;
+  const response = await apiClientV2.get(`${BASE_URL}/goods/volume`, { params });
+  return unwrap(response);
 };
 
 // ============================================
@@ -73,8 +83,8 @@ export const getGoodsVolume = async (
 export const getPaymentMetrics = async (
   params?: { period?: string }
 ): Promise<PaymentMetricsData> => {
-  const response = await apiClient.get(`${BASE_URL}/payments/metrics`, { params });
-  return response.data;
+  const response = await apiClientV2.get(`${BASE_URL}/payments/metrics`, { params });
+  return unwrap(response);
 };
 
 // ============================================
@@ -82,7 +92,7 @@ export const getPaymentMetrics = async (
 // ============================================
 
 export const exportAnalytics = async (options: ExportOptions): Promise<Blob> => {
-  const response = await apiClient.get(`${BASE_URL}/export`, {
+  const response = await apiClientV2.get(`${BASE_URL}/export`, {
     params: options,
     responseType: 'blob',
   });
@@ -94,33 +104,33 @@ export const exportAnalytics = async (options: ExportOptions): Promise<Blob> => 
 // ============================================
 
 export const getDailyRevenue = async (date?: string) => {
-  const response = await apiClient.get('/v2/reports/revenue/daily', { params: { date } });
-  return response.data;
+  const response = await apiClientV2.get('/reports/revenue/daily', { params: { date } });
+  return unwrap(response);
 };
 
 export const getWeeklyRevenue = async (week?: number, year?: number) => {
-  const response = await apiClient.get('/v2/reports/revenue/weekly', { params: { week, year } });
-  return response.data;
+  const response = await apiClientV2.get('/reports/revenue/weekly', { params: { week, year } });
+  return unwrap(response);
 };
 
 export const getMonthlyRevenue = async (month?: number, year?: number) => {
-  const response = await apiClient.get('/v2/reports/revenue/monthly', { params: { month, year } });
-  return response.data;
+  const response = await apiClientV2.get('/reports/revenue/monthly', { params: { month, year } });
+  return unwrap(response);
 };
 
 export const getCustomRevenue = async (start: string, end: string) => {
-  const response = await apiClient.get('/v2/reports/revenue/custom', { params: { start, end } });
-  return response.data;
+  const response = await apiClientV2.get('/reports/revenue/custom', { params: { start, end } });
+  return unwrap(response);
 };
 
 export const getContainerProfitability = async (limit?: number, period?: string) => {
-  const response = await apiClient.get('/v2/reports/containers/profitability', {
+  const response = await apiClientV2.get('/reports/containers/profitability', {
     params: { limit, period },
   });
-  return response.data;
+  return unwrap(response);
 };
 
 export const getRevenueTrendsLegacy = async (period?: string, periods?: number) => {
-  const response = await apiClient.get('/v2/reports/trends', { params: { period, periods } });
-  return response.data;
+  const response = await apiClientV2.get('/reports/trends', { params: { period, periods } });
+  return unwrap(response);
 };

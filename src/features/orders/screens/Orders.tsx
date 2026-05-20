@@ -1,9 +1,12 @@
 import React from "react";
-import type { HomeTabScreenProps } from "@src/navigations/type";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { HomeTabScreenProps, RootStackParamList } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { withProtectedRoute } from "@src/hoc/withProtectedRoute";
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
+import { isAdminRole as hasAdminRole } from '@src/shared/lib/roles';
 import { OrdersAdminMenu, MenuItemType } from "../components/OrdersAdminMenu";
 import { OrdersCustomerView } from "../components/OrdersCustomerView";
 
@@ -23,11 +26,12 @@ const MANAGER_MENU: MenuItemType[] = [
 ];
 
 const Orders = ({ navigation }: HomeTabScreenProps<"Orders">) => {
-	const { role } = useAuth((state) => state.user);
+	const rootNavigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+	const role = useAuth((state) => state.user?.role);
 	const { colors } = useAppTheme();
-	const isAdminRole = ["admin", "superadmin"].includes(role);
+	const adminRole = hasAdminRole(role);
 
-	if (isAdminRole) {
+	if (adminRole) {
 		return <OrdersAdminMenu navigation={navigation} items={ADMIN_MENU} />;
 	}
 	if (role === "manager") {
@@ -38,7 +42,7 @@ const Orders = ({ navigation }: HomeTabScreenProps<"Orders">) => {
 		<OrdersCustomerView
 			headerRight={
 				<NotificationBell
-					onPress={() => (navigation as any).navigate("Notifications")}
+					onPress={() => rootNavigation.navigate("Notifications")}
 					size={24}
 					color={colors.text.primary}
 				/>

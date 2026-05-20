@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet } from "react-native";
+import React, { useState, useRef } from "react";
+import { StyleSheet, ScrollView, View } from "react-native";
 import { Portal, Dialog, Button, Text, TextInput } from "react-native-paper";
 import { Theme } from "@src/constants/Theme";
 
@@ -21,6 +21,13 @@ export const QuietHoursDialog: React.FC<QuietHoursDialogProps> = ({
    const [startTime, setStartTime] = useState(initialStartTime);
    const [endTime, setEndTime] = useState(initialEndTime);
 
+   const scrollViewRef = useRef<ScrollView>(null);
+   const scrollToEnd = () => {
+      setTimeout(() => {
+         scrollViewRef.current?.scrollToEnd({ animated: true });
+      }, 250);
+   };
+
    const handleSave = () => {
       onSave(startTime, endTime);
       onDismiss();
@@ -30,24 +37,29 @@ export const QuietHoursDialog: React.FC<QuietHoursDialogProps> = ({
       <Portal>
          <Dialog visible={visible} onDismiss={onDismiss}>
             <Dialog.Title>Definir les heures silencieuses</Dialog.Title>
-            <Dialog.Content>
-               <Text style={styles.dialogText}>
-                  Configurez la plage horaire pendant laquelle les notifications doivent etre
-                  silencieuses.
-               </Text>
-               <TextInput
-                  label="Heure de debut"
-                  value={startTime}
-                  onChangeText={setStartTime}
-                  style={styles.input}
-               />
-               <TextInput
-                  label="Heure de fin"
-                  value={endTime}
-                  onChangeText={setEndTime}
-                  style={styles.input}
-               />
-            </Dialog.Content>
+            <ScrollView keyboardShouldPersistTaps="handled" ref={scrollViewRef}>
+               <Dialog.Content>
+                  <Text style={styles.dialogText}>
+                     Configurez la plage horaire pendant laquelle les notifications doivent etre
+                     silencieuses.
+                  </Text>
+                  <TextInput
+                     label="Heure de debut"
+                     value={startTime}
+                     onChangeText={setStartTime}
+                     style={styles.input}
+                     onFocus={scrollToEnd}
+                  />
+                  <TextInput
+                     label="Heure de fin"
+                     value={endTime}
+                     onChangeText={setEndTime}
+                     style={styles.input}
+                     onFocus={scrollToEnd}
+                  />
+                  <View style={{ height: 280 }} />
+               </Dialog.Content>
+            </ScrollView>
             <Dialog.Actions>
                <Button onPress={onDismiss}>Annuler</Button>
                <Button onPress={handleSave}>Enregistrer</Button>

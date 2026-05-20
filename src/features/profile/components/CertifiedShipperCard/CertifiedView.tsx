@@ -81,6 +81,14 @@ export const CertifiedView: React.FC<CertifiedViewProps> = ({
             <MaterialIcons name="share" size={18} color={colors.accent.gold} />
             <Text style={styles.actionButtonText}>Partager</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => navigation.navigate("TrustProfile")}
+            activeOpacity={0.7}
+          >
+            <MaterialIcons name="verified-user" size={18} color={colors.accent.gold} />
+            <Text style={styles.actionButtonText}>Profil</Text>
+          </TouchableOpacity>
         </View>
       </MotiView>
     </TouchableOpacity>

@@ -25,13 +25,11 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
   isLastSlide,
   onPress,
   onSkip,
-  currentIndex,
 }) => {
   const { width } = useWindowDimensions();
   const { colors } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
   const isNarrow = width < 360;
-  // Show skip button on all slides except the last one
   const showSkip = !isLastSlide;
 
   if (isLastSlide) {
@@ -95,7 +93,7 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
             >
               Suivant
             </Text>
-            <AntDesign name="right" size={16} color={colors.text.inverse} style={styles.iconSmall} />
+            <AntDesign name="right" size={16} color={colors.neutral.white} style={styles.iconSmall} />
           </TouchableOpacity>
         </View>
       </View>

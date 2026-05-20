@@ -45,8 +45,8 @@ export interface ContainerWaypoint {
  * Waypoint status display labels (French) - Customer friendly
  */
 export const WAYPOINT_STATUS_LABELS: Record<WaypointStatus, string> = {
-  PENDING: 'En Attente',
-  IN_TRANSIT: 'En Transit',
+  PENDING: 'En attente',
+  IN_TRANSIT: 'En transit',
   ARRIVED: 'Arrivé',
   DEPARTED: 'Parti',
 };

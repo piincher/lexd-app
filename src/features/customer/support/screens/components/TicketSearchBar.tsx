@@ -18,9 +18,9 @@ interface TicketSearchBarProps {
 export const TicketSearchBar: React.FC<TicketSearchBarProps> = ({
   value,
   onChangeText,
-  placeholder = 'Rechercher un ticket...',
+  placeholder = 'Rechercher une demande...',
 }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const [text, setText] = useState(value);
 
   useEffect(() => {

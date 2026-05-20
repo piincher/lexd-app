@@ -21,6 +21,7 @@ interface FormInputProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   suffix?: string;
   disabled?: boolean;
+  onInputFocus?: () => void;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
@@ -35,6 +36,7 @@ export const FormInput: React.FC<FormInputProps> = ({
   autoCapitalize = 'none',
   suffix,
   disabled = false,
+  onInputFocus,
 }) => {
   const { colors, isDark } = useAppTheme();
 
@@ -109,6 +111,7 @@ export const FormInput: React.FC<FormInputProps> = ({
         activeOutlineColor={colors.status.success}
         outlineStyle={styles.outline}
         placeholderTextColor={colors.text.disabled}
+        onFocus={onInputFocus}
         dense
       />
       {error && (

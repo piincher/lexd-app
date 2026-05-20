@@ -80,7 +80,18 @@ export const useNotificationEffects = (
 
   useEffect(() => {
     const handleAppStateChange = async (nextAppState: any) => {
-      if (state.appState.current.match(/inactive|background/) && nextAppState === "active") { await badge.refreshUnreadCountFromServer(); }
+      if (state.appState.current.match(/inactive|background/) && nextAppState === "active") {
+        await badge.refreshUnreadCountFromServer();
+        // Ping backend to track app open for win-back automation
+        try {
+          await apiClient.post("/user/me/activity", {
+            type: "APP_OPEN",
+            timestamp: new Date().toISOString(),
+          });
+        } catch (err) {
+          // Silent fail - activity tracking is non-critical
+        }
+      }
       state.appState.current = nextAppState;
     };
     const subscription = AppState.addEventListener("change", handleAppStateChange);

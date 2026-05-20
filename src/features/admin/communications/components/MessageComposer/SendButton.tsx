@@ -4,7 +4,6 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { createStyles } from './MessageComposer.styles';
 
 interface SendButtonProps {
@@ -20,7 +19,7 @@ export const SendButton: React.FC<SendButtonProps> = ({ canSend, isSending, reci
   return (
     <TouchableOpacity onPress={onSend} disabled={!canSend} style={styles.sendWrapper} activeOpacity={0.8}>
       <LinearGradient
-        colors={canSend ? Theme.gradients.primary : [colors.neutral[200], colors.neutral[300]]}
+        colors={canSend ? [colors.primary.main, colors.primary.dark] : [colors.neutral[200], colors.neutral[300]]}
         style={styles.sendButton}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}

@@ -16,6 +16,7 @@ import { GoodsDetailQR } from '../GoodsDetailQR';
 interface GoodsDetailContentProps {
 	goods: Goods;
 	onScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
+	onViewPayments: () => void;
 }
 
 const SHOW_REVIEW_STATUSES = [
@@ -28,7 +29,7 @@ const SHOW_REVIEW_STATUSES = [
 	'DELIVERED',
 ];
 
-export const GoodsDetailContent: React.FC<GoodsDetailContentProps> = ({ goods, onScroll }) => {
+export const GoodsDetailContent: React.FC<GoodsDetailContentProps> = ({ goods, onScroll, onViewPayments }) => {
 	const images = normalizePhotos(goods);
 	const showReview = SHOW_REVIEW_STATUSES.includes(goods.status);
 
@@ -48,7 +49,7 @@ export const GoodsDetailContent: React.FC<GoodsDetailContentProps> = ({ goods, o
 				readyForPickupAt={goods.readyForPickupAt}
 				deliveredAt={goods.deliveredAt}
 			/>
-			<GoodsDetailPricing goods={goods} />
+			<GoodsDetailPricing goods={goods} onViewPayments={onViewPayments} />
 			<GoodsDetailContainer goods={goods} />
 			<GoodsDetailPickup
 				status={goods.status}

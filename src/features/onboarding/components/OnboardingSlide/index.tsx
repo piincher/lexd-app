@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useMemo } from "react";
 import { View, Text, Image, Animated } from "react-native";
-import type { ViewStyle } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { OnboardingSlide as OnboardingSlideType } from "../../types/onboarding.types";
+import { useOnboardingSlideAnimation } from "./hooks/useOnboardingSlideAnimation";
 import { createStyles } from "./OnboardingSlide.styles";
 
 interface OnboardingSlideProps {
@@ -26,81 +26,7 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
     [viewportHeight, width, colors]
   );
   const showCounter = viewportHeight >= 680;
-
-  const imageAnim = useRef(new Animated.Value(0)).current;
-  const titleAnim = useRef(new Animated.Value(0)).current;
-  const descAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    const animation = Animated.stagger(150, [
-      Animated.spring(imageAnim, {
-        toValue: 1,
-        useNativeDriver: true,
-        friction: 8,
-        tension: 40,
-      }),
-      Animated.spring(titleAnim, {
-        toValue: 1,
-        useNativeDriver: true,
-        friction: 8,
-        tension: 40,
-      }),
-      Animated.spring(descAnim, {
-        toValue: 1,
-        useNativeDriver: true,
-        friction: 8,
-        tension: 40,
-      }),
-    ]);
-
-    animation.start();
-
-    return () => {
-      animation.stop();
-    };
-  }, [descAnim, imageAnim, index, titleAnim]);
-
-  const imageStyle: Animated.WithAnimatedObject<ViewStyle> = {
-    transform: [
-      {
-        scale: imageAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0.8, 1],
-        }),
-      },
-      {
-        translateY: imageAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [50, 0],
-        }),
-      },
-    ],
-    opacity: imageAnim,
-  };
-
-  const titleStyle: Animated.WithAnimatedObject<ViewStyle> = {
-    transform: [
-      {
-        translateY: titleAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [30, 0],
-        }),
-      },
-    ],
-    opacity: titleAnim,
-  };
-
-  const descStyle: Animated.WithAnimatedObject<ViewStyle> = {
-    transform: [
-      {
-        translateY: descAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [20, 0],
-        }),
-      },
-    ],
-    opacity: descAnim,
-  };
+  const { imageStyle, titleStyle, descStyle } = useOnboardingSlideAnimation(index);
 
   return (
     <View style={[styles.container, { width }]}>
@@ -122,7 +48,7 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
         >
           {slide.title}
         </Animated.Text>
-        
+
         <Animated.Text
           style={[styles.description, descStyle]}
           numberOfLines={3}

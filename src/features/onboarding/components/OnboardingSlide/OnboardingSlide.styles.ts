@@ -44,7 +44,7 @@ export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOption
     decorationCircle: {
       position: "absolute",
       borderRadius: 999,
-      backgroundColor: colors.text.inverse + "1A",
+      backgroundColor: colors.neutral.white + "1A",
     },
     circle1: {
       width: Math.min(width * 0.42, 180),
@@ -68,7 +68,7 @@ export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOption
       fontSize: isNarrow ? 24 : 28,
       fontFamily: Fonts.black,
       fontWeight: "800",
-      color: colors.text.inverse,
+      color: colors.neutral.white,
       textAlign: "center",
       marginBottom: isShort ? 10 : 14,
       lineHeight: isNarrow ? 31 : 36,
@@ -80,7 +80,7 @@ export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOption
       maxWidth: 520,
       fontSize: isNarrow ? 14 : 16,
       fontFamily: Fonts.regular,
-      color: colors.text.inverse + "EB",
+      color: colors.neutral.white + "EB",
       textAlign: "center",
       lineHeight: isNarrow ? 21 : 24,
       paddingHorizontal: isNarrow ? 0 : 8,
@@ -89,7 +89,7 @@ export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOption
       marginTop: isShort ? 14 : 20,
       paddingHorizontal: 14,
       paddingVertical: 7,
-      backgroundColor: colors.text.inverse + "2E",
+      backgroundColor: colors.neutral.white + "2E",
       borderRadius: 999,
     },
     counterText: {
@@ -97,11 +97,11 @@ export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOption
       fontFamily: Fonts.medium,
     },
     counterCurrent: {
-      color: colors.text.inverse,
+      color: colors.neutral.white,
       fontWeight: "700",
     },
     counterTotal: {
-      color: colors.text.inverse + "B8",
+      color: colors.neutral.white + "B8",
     },
   });
 };

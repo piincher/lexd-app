@@ -12,9 +12,10 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 interface TicketReplyFormProps {
   onSend: (message: string) => void;
   isPending: boolean;
+  onFocus?: () => void;
 }
 
-export const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSend, isPending }) => {
+export const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSend, isPending, onFocus }) => {
   const theme = useTheme();
   const { colors, isDark } = useAppTheme();
   const [message, setMessage] = useState('');
@@ -64,6 +65,7 @@ export const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSend, isPend
           multiline
           maxLength={1000}
           placeholderTextColor={colors.text.secondary}
+          onFocus={onFocus}
         />
         <IconButton
           icon="send"

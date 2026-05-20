@@ -11,6 +11,7 @@ interface CardHolderFieldProps {
   error?: string;
   touched?: boolean;
   disabled?: boolean;
+  onInputFocus?: () => void;
 }
 
 export const CardHolderField: React.FC<CardHolderFieldProps> = ({
@@ -20,6 +21,7 @@ export const CardHolderField: React.FC<CardHolderFieldProps> = ({
   error,
   touched,
   disabled,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
 
@@ -43,6 +45,7 @@ export const CardHolderField: React.FC<CardHolderFieldProps> = ({
           placeholderTextColor={colors.text.disabled}
           autoCapitalize="characters"
           editable={!disabled}
+          onFocus={onInputFocus}
         />
       </View>
       {error && touched && (

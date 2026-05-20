@@ -4,6 +4,15 @@
  */
 
 import { apiClientV2 } from '@src/api/client';
+import type {
+  ActiveWorkSummary,
+  MonthlyTrendPoint,
+  NextShipmentAction,
+  RewardSummary,
+  ShipmentHealthItem,
+  ShippingSummary,
+  VipProgress,
+} from '@src/shared/types/dashboard';
 
 const axios = apiClientV2;
 const BASE_URL = '/customer/dashboard';
@@ -46,6 +55,13 @@ export interface GetDashboardResponse {
       estimatedArrival?: string;
     };
   }[];
+  shippingSummary?: ShippingSummary;
+  monthlyTrend?: MonthlyTrendPoint[];
+  activeWork?: ActiveWorkSummary;
+  shipmentHealth?: ShipmentHealthItem[];
+  vipProgress?: VipProgress;
+  rewardSummary?: RewardSummary;
+  nextShipmentActions?: NextShipmentAction[];
 }
 
 /**

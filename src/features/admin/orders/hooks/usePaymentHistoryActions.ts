@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Alert, Linking } from 'react-native';
+import { Alert } from 'react-native';
+import { openWhatsApp } from '@src/shared/lib/openWhatsApp';
 import { sharePDFOnWhatsApp as sharePDFOnWhatsAppUtil } from '@src/shared/lib/pdfShare';
 import { buildWhatsAppMessage } from '../lib/buildWhatsAppMessage';
 import { formatPhoneForWhatsApp } from '../lib/formatPhoneForWhatsApp';
@@ -35,20 +36,13 @@ export const usePaymentHistoryActions = (
         });
       } catch (err: any) {
         console.error('PDF share error:', err);
-        const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message + `\n\n📄 Votre reçu:\n${payment.receiptUrl}`)}`;
-        Linking.openURL(whatsappUrl).catch(() => Alert.alert('Erreur', "Impossible d'ouvrir WhatsApp."));
+        openWhatsApp(formattedPhone, message + `\n\n📄 Votre reçu:\n${payment.receiptUrl}`).catch(() => Alert.alert('Erreur', "Impossible d'ouvrir WhatsApp."));
       } finally {
         setSharingPaymentId(null);
       }
     } else {
-      const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
       try {
-        const canOpen = await Linking.canOpenURL(whatsappUrl);
-        if (canOpen) {
-          await Linking.openURL(whatsappUrl);
-        } else {
-          Alert.alert('WhatsApp non disponible', "WhatsApp n'est pas installé.");
-        }
+        await openWhatsApp(formattedPhone, message);
       } catch {
         Alert.alert('Erreur', "Impossible d'ouvrir WhatsApp.");
       }

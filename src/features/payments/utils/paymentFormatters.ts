@@ -4,7 +4,10 @@
  */
 
 import { Theme } from '@src/constants/Theme';
+import type { AppTheme } from '@src/constants/Theme';
 import { PaymentMethod, PaymentStatus } from '../types';
+
+type ThemeColors = AppTheme['colors'];
 
 /**
  * Format payment amount with currency
@@ -52,6 +55,7 @@ export const getPaymentMethodLabel = (method: PaymentMethod): string => {
     WAVE: 'Wave',
     CARD: 'Carte Bancaire',
     CASH: 'Espèces',
+    REWARD_POINTS: 'Points récompense',
   };
   return labels[method] || method;
 };
@@ -65,6 +69,7 @@ export const getPaymentMethodIcon = (method: PaymentMethod): string => {
     WAVE: 'wave',
     CARD: 'credit-card',
     CASH: 'cash',
+    REWARD_POINTS: 'ticket-percent',
   };
   return icons[method] || 'cash';
 };
@@ -73,7 +78,7 @@ export const getPaymentMethodIcon = (method: PaymentMethod): string => {
  * Get status color.
  * Pass theme `colors` object for theme-aware colors; otherwise falls back to static hex values.
  */
-export const getPaymentStatusColor = (status: PaymentStatus, themeColors?: any): string => {
+export const getPaymentStatusColor = (status: PaymentStatus, themeColors?: ThemeColors): string => {
   if (themeColors) {
     const mapping: Record<PaymentStatus, string> = {
       PENDING: themeColors.status.warning,
@@ -103,7 +108,7 @@ export const getPaymentStatusLabel = (status: PaymentStatus): string => {
   const labels: Record<PaymentStatus, string> = {
     PENDING: 'En attente',
     PROCESSING: 'En cours',
-    COMPLETED: 'Complété',
+    COMPLETED: 'Payé',
     FAILED: 'Échoué',
     CANCELLED: 'Annulé',
     REFUNDED: 'Remboursé',

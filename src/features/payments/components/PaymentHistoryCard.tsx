@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import type { AppTheme } from '@src/constants/Theme';
 import type { PaymentHistoryItem } from '../types';
 import { getPaymentHistoryCardStyles } from './PaymentHistoryCard.styles';
 import { PaymentHistoryCardHeader } from './PaymentHistoryCardHeader';
@@ -23,10 +24,11 @@ const METHOD_ICONS: Record<string, string> = {
   ORANGE_MONEY: 'cellphone',
   WAVE: 'wave',
   CARD: 'credit-card',
+  REWARD_POINTS: 'ticket-percent',
 };
 
 const STATUS_LABELS: Record<string, string> = {
-  COMPLETED: 'Complété',
+  COMPLETED: 'Payé',
   PENDING: 'En attente',
   PROCESSING: 'En cours',
   FAILED: 'Échoué',
@@ -34,7 +36,9 @@ const STATUS_LABELS: Record<string, string> = {
   REFUNDED: 'Remboursé',
 };
 
-const getMethodColor = (method: string, colors: any) => {
+type ThemeColors = AppTheme['colors'];
+
+const getMethodColor = (method: string, colors: ThemeColors) => {
   switch (method) {
     case 'CASH': return colors.status.success;
     case 'BANK_TRANSFER': return colors.status.info;
@@ -42,11 +46,12 @@ const getMethodColor = (method: string, colors: any) => {
     case 'ORANGE_MONEY': return colors.status.warning;
     case 'WAVE': return colors.status.info;
     case 'CARD': return colors.status.info;
+    case 'REWARD_POINTS': return colors.status.success;
     default: return colors.primary.main;
   }
 };
 
-const getStatusColor = (status: string, colors: any) => {
+const getStatusColor = (status: string, colors: ThemeColors) => {
   switch (status) {
     case 'COMPLETED': return colors.status.success;
     case 'PENDING': return colors.status.warning;

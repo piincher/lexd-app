@@ -15,10 +15,10 @@ export const PaymentHistoryEmptyState: React.FC = () => {
         color={colors.text.disabled}
       />
       <Text style={[styles.emptyTitle, { color: colors.text.primary }]}>
-        No Payments Yet
+        Aucun paiement pour le moment
       </Text>
       <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
-        You haven't made any payments yet. Your payment history will appear here.
+        Vos paiements validés apparaîtront ici.
       </Text>
     </View>
   );

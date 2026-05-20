@@ -51,7 +51,7 @@ export const FAQContactButton: React.FC<FAQContactButtonProps> = ({
   );
 };
 
-const getStyles = (colors: any) => StyleSheet.create({
+const getStyles = (colors: { text: { inverse: string } }) => StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',

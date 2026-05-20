@@ -20,6 +20,7 @@ interface Props {
   setSelectedCode: (code: string) => void;
   code: { label: string; value: string }[];
   maxLength?: number;
+  onInputFocus?: () => void;
 }
 
 export const AnimatedPhoneInput: React.FC<Props> = ({
@@ -29,6 +30,7 @@ export const AnimatedPhoneInput: React.FC<Props> = ({
   setSelectedCode,
   code,
   maxLength,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
@@ -54,7 +56,10 @@ export const AnimatedPhoneInput: React.FC<Props> = ({
     if (errorMsg) shakeUI();
   }, [errorMsg, shakeUI]);
 
-  const handleFocus = () => setIsFocused(true);
+  const handleFocus = () => {
+    setIsFocused(true);
+    onInputFocus?.();
+  };
   const handleBlurLocal = () => {
     setIsFocused(false);
     handleBlur(name);

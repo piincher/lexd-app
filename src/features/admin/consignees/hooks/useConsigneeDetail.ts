@@ -5,6 +5,7 @@ import type { RouteProp } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useGetConsigneeById, useDeleteConsignee } from "./useConsignees";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { openWhatsApp } from "@src/shared/lib/openWhatsApp";
 
 type ConsigneeStackParamList = {
    ConsigneeList: undefined;
@@ -35,8 +36,7 @@ export const useConsigneeDetail = () => {
          },
          whatsapp: () => {
             if (consignee?.phone) {
-               const whatsappUrl = `https://wa.me/${consignee.phone.replace(/\D/g, "")}`;
-               Linking.openURL(whatsappUrl);
+               openWhatsApp(consignee.phone);
             }
          },
          delete: () => {

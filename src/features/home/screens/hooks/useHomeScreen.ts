@@ -20,11 +20,11 @@ export const useHomeScreen = () => {
   const handlers = {
     handleServicePress: (route: string) => {
       if (route === 'ChooseShippingMethod') {
-        navigation.navigate('ChooseShippingMethod');
+        navigation.navigate('CheckRoute');
       }
     },
     handleDashboardPress: () => navigation.navigate('CustomerDashboard'),
-    handleCreateOrderPress: () => navigation.navigate('ChooseShippingMethod'),
+    handleCreateOrderPress: () => navigation.navigate('CreateTicket'),
   };
 
   return {

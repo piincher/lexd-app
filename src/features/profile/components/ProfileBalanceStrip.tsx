@@ -16,7 +16,7 @@ export const ProfileBalanceStrip: React.FC<ProfileBalanceStripProps> = ({ balanc
     <View style={styles.balanceStrip}>
       <View style={styles.balanceLeft}>
         <MaterialCommunityIcons name="wallet-outline" size={20} color={colors.text.inverse} />
-        <Text style={styles.balanceLabel}>Solde disponible</Text>
+        <Text style={styles.balanceLabel}>Solde à payer</Text>
       </View>
       <Text style={styles.balanceValue}>{balanceFormatted} FCFA</Text>
     </View>

@@ -8,7 +8,6 @@ import { StyleSheet } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { SmsService } from '@src/shared/types/user';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { CardHeader, StatsRow, ProgressSection, ActionButton } from './components';
 
 interface SmsSubscriptionCardProps {
@@ -56,7 +55,8 @@ export const SmsSubscriptionCard: React.FC<SmsSubscriptionCardProps> = ({
   subscription,
   index,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const meta = STATUS_META(colors)[subscription.status] || STATUS_META(colors).ACTIVE;
   const progressColor = getProgressColor(subscription.progressPercentage, subscription.isExpiringSoon, colors);
   const progressSubtext = getProgressSubtext(subscription);
@@ -105,15 +105,14 @@ export const SmsSubscriptionCard: React.FC<SmsSubscriptionCardProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any, _isDark?: boolean) => StyleSheet.create({
   container: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: Theme.neutral[100],
-    ...Theme.shadows.sm,
+    borderColor: colors.divider,
   },
 });
 

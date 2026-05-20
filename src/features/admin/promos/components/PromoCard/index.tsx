@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { PromoRecord, PromoStatus } from "../../api/promoAdminApi";
@@ -29,14 +29,10 @@ const getStatusColor = (colors: any, status: PromoStatus) => {
 
 const getStatusLabel = (status: PromoStatus) => {
   switch (status) {
-    case "ACTIVE":
-      return "Actif";
-    case "INACTIVE":
-      return "Inactif";
-    case "EXPIRED":
-      return "Expiré";
-    default:
-      return status;
+    case "ACTIVE": return "Actif";
+    case "INACTIVE": return "Inactif";
+    case "EXPIRED": return "Expiré";
+    default: return status;
   }
 };
 
@@ -44,13 +40,17 @@ type PromoCardProps = {
   promo: PromoRecord;
   onEdit: (promo: PromoRecord) => void;
   onDeactivate: (promo: PromoRecord) => void;
+  onStats: (promo: PromoRecord) => void;
+  onClone: (promo: PromoRecord) => void;
 };
 
-export function PromoCard({ promo, onEdit, onDeactivate }: PromoCardProps) {
-  const { colors, isDark } = useAppTheme();
+export function PromoCard({ promo, onEdit, onDeactivate, onStats, onClone }: PromoCardProps) {
+  const { colors, isDark } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   const statusColors = getStatusColor(colors, promo.status);
   const isPercentage = promo.type === "PERCENTAGE";
+  const usagePercent = promo.maxUsages ? Math.min(100, (promo.currentUsages / promo.maxUsages) * 100) : 0;
+  const isNearLimit = usagePercent >= 90 && promo.status === "ACTIVE";
 
   return (
     <View style={styles.card}>
@@ -72,6 +72,23 @@ export function PromoCard({ promo, onEdit, onDeactivate }: PromoCardProps) {
           </View>
         </View>
       </View>
+
+      {/* Usage progress bar */}
+      {promo.maxUsages != null && (
+        <View style={styles.usageRow}>
+          <View style={[styles.usageTrack, { backgroundColor: colors.neutral[200] }]}>
+            <View
+              style={[
+                styles.usageFill,
+                { width: `${usagePercent}%`, backgroundColor: isNearLimit ? colors.status.error : colors.primary.main },
+              ]}
+            />
+          </View>
+          <Text style={[styles.usageText, isNearLimit && { color: colors.status.error }]}>
+            {promo.currentUsages}/{promo.maxUsages}
+          </Text>
+        </View>
+      )}
 
       <View style={styles.cardRow}>
         <MaterialCommunityIcons name="tag-outline" size={16} color={colors.text.secondary} />
@@ -103,13 +120,21 @@ export function PromoCard({ promo, onEdit, onDeactivate }: PromoCardProps) {
       )}
 
       <View style={styles.actionRow}>
+        <TouchableOpacity style={styles.statsButton} onPress={() => onStats(promo)} activeOpacity={0.7}>
+          <MaterialCommunityIcons name="chart-bar" size={16} color={colors.primary.main} />
+          <Text style={styles.statsButtonText}>Stats</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.cloneButton} onPress={() => onClone(promo)} activeOpacity={0.7}>
+          <MaterialCommunityIcons name="content-copy" size={16} color={colors.accent.gold} />
+          <Text style={styles.cloneButtonText}>Dupliquer</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.editButton} onPress={() => onEdit(promo)} activeOpacity={0.7}>
-          <MaterialIcons name="edit" size={18} color={colors.primary.main} />
+          <MaterialIcons name="edit" size={16} color={colors.primary.main} />
           <Text style={styles.editButtonText}>Modifier</Text>
         </TouchableOpacity>
         {promo.status === "ACTIVE" && (
           <TouchableOpacity style={styles.deactivateButton} onPress={() => onDeactivate(promo)} activeOpacity={0.7}>
-            <MaterialIcons name="block" size={18} color={colors.status.error} />
+            <MaterialIcons name="block" size={16} color={colors.status.error} />
             <Text style={styles.deactivateButtonText}>Désactiver</Text>
           </TouchableOpacity>
         )}

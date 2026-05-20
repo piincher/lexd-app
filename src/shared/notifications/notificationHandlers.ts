@@ -7,6 +7,9 @@ import { CommonActions } from "@react-navigation/native";
 import type { NavigationContainerRef } from "@react-navigation/native";
 import { NotificationData, NotificationType } from "../services/notificationService";
 import { parseDeepLink } from "../lib/parseDeepLink";
+import { isAdminRequiredScreen } from "../lib/deepLinking";
+import { isAdminRole } from "../lib/roles";
+import { getAuthStoreRef } from "../api/authStoreRef";
 import type { RootStackParamList } from "@src/navigations/type";
 
 // ============================================================================
@@ -46,6 +49,13 @@ export const getNavigationRef = (): NavigationContainerRef<RootStackParamList> |
  * @param params Screen params
  */
 const navigate = (screenName: string, params?: Record<string, unknown>): void => {
+  const role = getAuthStoreRef()?.getState().user?.role;
+  if (isAdminRequiredScreen(screenName) && !isAdminRole(role)) {
+    console.warn("[NotificationHandlers] Blocked non-admin navigation to:", screenName);
+    screenName = "CustomerDashboard";
+    params = undefined;
+  }
+
   if (navigationRef?.isReady()) {
     navigationRef.dispatch(CommonActions.navigate({ name: screenName, params }));
   } else {
@@ -74,7 +84,7 @@ const handleOrderUpdate: NotificationHandler = (data) => {
   console.log("[NotificationHandlers] Handling ORDER_UPDATE:", data);
 
   if (data.orderId) {
-    navigate("OrderDetail", { orderId: data.orderId });
+    navigate("OrderDetail", { id: data.orderId });
   } else {
     console.warn("[NotificationHandlers] No orderId in ORDER_UPDATE notification");
     // Fallback to orders list
@@ -90,10 +100,9 @@ const handlePayment: NotificationHandler = (data) => {
   console.log("[NotificationHandlers] Handling PAYMENT:", data);
 
   if (data.paymentId) {
-    // Navigate to payment confirmation or order detail
-    navigate("OrderDetail", { paymentId: data.paymentId });
+    navigate("MyPaymentHistory");
   } else if (data.orderId) {
-    navigate("OrderDetail", { orderId: data.orderId });
+    navigate("OrderDetail", { id: data.orderId });
   } else {
     // Fallback to orders
     navigate("Orders");
@@ -110,10 +119,9 @@ const handleContainerStatus: NotificationHandler = (data) => {
   if (data.containerId) {
     navigate("ContainerTracking", { containerId: data.containerId });
   } else if (data.orderId) {
-    navigate("OrderDetail", { orderId: data.orderId });
+    navigate("OrderDetail", { id: data.orderId });
   } else {
-    // Fallback to stats/dashboard
-    navigate("Stats");
+    navigate("CustomerDashboard");
   }
 };
 
@@ -123,13 +131,15 @@ const handleContainerStatus: NotificationHandler = (data) => {
  */
 const handleTicketReply: NotificationHandler = (data) => {
   console.log("[NotificationHandlers] Handling TICKET_REPLY:", data);
+  const role = getAuthStoreRef()?.getState().user?.role;
+  const adminRole = isAdminRole(role);
 
   if (data.ticketId) {
-    const screen = data.screen === "AdminTicketDetail" ? "AdminTicketDetail" : "TicketDetail";
+    const screen = adminRole ? "AdminTicketDetail" : "TicketDetail";
     navigate(screen, { ticketId: data.ticketId });
   } else {
     // Fallback to ticket list
-    navigate("TicketList");
+    navigate(adminRole ? "AdminTicketList" : "TicketList");
   }
 };
 
@@ -137,9 +147,11 @@ const handleTicketCreated: NotificationHandler = (data) => {
   console.log("[NotificationHandlers] Handling TICKET_CREATED:", data);
 
   if (data.ticketId) {
-    navigate("AdminTicketDetail", { ticketId: data.ticketId });
+    const role = getAuthStoreRef()?.getState().user?.role;
+    navigate(isAdminRole(role) ? "AdminTicketDetail" : "TicketDetail", { ticketId: data.ticketId });
   } else {
-    navigate("AdminTicketList");
+    const role = getAuthStoreRef()?.getState().user?.role;
+    navigate(isAdminRole(role) ? "AdminTicketList" : "TicketList");
   }
 };
 
@@ -149,6 +161,47 @@ const handleTicketCreated: NotificationHandler = (data) => {
  */
 const handleInvoice: NotificationHandler = (data) => {
   console.log("[NotificationHandlers] INVOICE feature removed:", data);
+};
+
+/**
+ * Handle WIN_BACK_NO_SHIPMENT_30D notifications
+ * Navigate to create order screen
+ */
+const handleWinBackShipment: NotificationHandler = (data) => {
+  console.log("[NotificationHandlers] Handling WIN_BACK_NO_SHIPMENT_30D:", data);
+  const role = getAuthStoreRef()?.getState().user?.role;
+  navigate(isAdminRole(role) ? "AdminTicketList" : "TicketList");
+};
+
+/**
+ * Handle WIN_BACK_NO_APP_OPEN_14D notifications
+ * Navigate to orders screen
+ */
+const handleWinBackInactive: NotificationHandler = (data) => {
+  console.log("[NotificationHandlers] Handling WIN_BACK_NO_APP_OPEN_14D:", data);
+  navigate("Orders");
+};
+
+/**
+ * Handle WIN_BACK_GOODS_UNPAID notifications
+ * Navigate to payment screen
+ */
+const handleWinBackPayment: NotificationHandler = (data) => {
+  console.log("[NotificationHandlers] Handling WIN_BACK_GOODS_UNPAID:", data);
+  if (data.goodsId) {
+    navigate("MyPaymentHistory");
+  } else {
+    navigate("Orders");
+  }
+};
+
+/**
+ * Handle WIN_BACK_INVOICE_ABANDONED notifications
+ * Navigate to invoices screen
+ */
+const handleWinBackInvoice: NotificationHandler = (data) => {
+  console.log("[NotificationHandlers] Handling WIN_BACK_INVOICE_ABANDONED:", data);
+  navigate("MyPaymentHistory");
 };
 
 const handleCertificateIssued: NotificationHandler = (data) => {
@@ -210,6 +263,10 @@ export const notificationHandlers: Record<NotificationType, NotificationHandler>
   CERTIFICATE_ISSUED: handleCertificateIssued,
   GENERAL: handleGeneral,
   SYSTEM: handleSystem,
+  WIN_BACK_NO_SHIPMENT_30D: handleWinBackShipment,
+  WIN_BACK_NO_APP_OPEN_14D: handleWinBackInactive,
+  WIN_BACK_GOODS_UNPAID: handleWinBackPayment,
+  WIN_BACK_INVOICE_ABANDONED: handleWinBackInvoice,
 };
 
 /**
@@ -256,7 +313,11 @@ export const processNotificationData = (data: NotificationData): boolean => {
     const parsed = parseDeepLink(data.deepLink);
     if (parsed) {
       console.log("[NotificationHandlers] Navigating via deepLink:", data.deepLink);
-      navigate(parsed.screen, parsed.params);
+      if (parsed.requiresAdmin && !isAdminRole(getAuthStoreRef()?.getState().user?.role)) {
+        navigate("CustomerDashboard");
+      } else {
+        navigate(parsed.screen, parsed.params);
+      }
       return true;
     }
   }

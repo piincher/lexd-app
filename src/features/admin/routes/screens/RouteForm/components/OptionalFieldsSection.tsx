@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { TextInput, Divider, Switch } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
 
@@ -16,6 +16,13 @@ export const OptionalFieldsSection: React.FC<OptionalFieldsSectionProps> = ({
   isActive,
   onIsActiveChange,
 }) => {
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
+
   return (
     <View style={styles.optionalSection}>
       <Divider style={styles.divider} />
@@ -35,6 +42,7 @@ export const OptionalFieldsSection: React.FC<OptionalFieldsSectionProps> = ({
           left={<TextInput.Icon icon="text" />}
           multiline
           numberOfLines={3}
+          onFocus={scrollToEnd}
         />
       </View>
 

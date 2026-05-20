@@ -4,28 +4,20 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { FAQItem as FAQItemType } from '../types/faq.types';
 
-const isNewArchitectureEnabled = Boolean(
-  (globalThis as { nativeFabricUIManager?: unknown }).nativeFabricUIManager
-);
-
-// Enable LayoutAnimation on Android old architecture
-if (Platform.OS === 'android' && !isNewArchitectureEnabled && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
-
 interface FAQItemProps {
   item: FAQItemType;
+  index?: number;
 }
 
-export const FAQItem: React.FC<FAQItemProps> = ({ item }) => {
+export const FAQItem: React.FC<FAQItemProps> = ({ item, index }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
 
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -69,7 +61,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({ item }) => {
       color: colors.text.secondary,
       lineHeight: 20,
     },
-  }), [colors, isDark]);
+  }), [colors]);
 
   return (
     <View style={styles.container}>

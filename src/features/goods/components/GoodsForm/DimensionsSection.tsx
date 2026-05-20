@@ -13,6 +13,7 @@ interface DimensionsSectionProps {
   useDimensions: boolean;
   calculatedCBM?: number | null;
   onChange: (field: string, value: string | boolean) => void;
+  onInputFocus?: () => void;
 }
 
 export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
@@ -23,6 +24,7 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
   useDimensions,
   calculatedCBM,
   onChange,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
   const styles = useGoodsFormStyles();
@@ -47,6 +49,7 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
               keyboardType="decimal-pad" style={[styles.input, styles.thirdInput]}
               outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
               right={<TextInput.Affix text="cm" />}
+              onFocus={onInputFocus}
             />
             <TextInput
               mode="outlined" label="Largeur" value={width}
@@ -54,6 +57,7 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
               keyboardType="decimal-pad" style={[styles.input, styles.thirdInput]}
               outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
               right={<TextInput.Affix text="cm" />}
+              onFocus={onInputFocus}
             />
             <TextInput
               mode="outlined" label="Hauteur" value={height}
@@ -61,6 +65,7 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
               keyboardType="decimal-pad" style={[styles.input, styles.thirdInput]}
               outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
               right={<TextInput.Affix text="cm" />}
+              onFocus={onInputFocus}
             />
           </View>
           {calculatedCBM != null && calculatedCBM > 0 && (
@@ -77,6 +82,7 @@ export const DimensionsSection: React.FC<DimensionsSectionProps> = ({
           keyboardType="decimal-pad" style={styles.input}
           outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
           right={<TextInput.Affix text="m³" />}
+          onFocus={onInputFocus}
         />
       )}
     </>

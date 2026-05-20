@@ -9,12 +9,14 @@ interface AdminTicketReplyBoxProps {
   isPending: boolean;
   disabled?: boolean;
   onSend: (message: string) => void;
+  onFocus?: () => void;
 }
 
 export const AdminTicketReplyBox: React.FC<AdminTicketReplyBoxProps> = ({
   isPending,
   disabled,
   onSend,
+  onFocus,
 }) => {
   const { colors } = useAppTheme();
   const [message, setMessage] = useState('');
@@ -38,6 +40,7 @@ export const AdminTicketReplyBox: React.FC<AdminTicketReplyBoxProps> = ({
           value={message}
           onChangeText={setMessage}
           editable={!disabled && !isPending}
+          onFocus={onFocus}
         />
         <Pressable
           style={[styles.send, { backgroundColor: canSend ? colors.primary.main : colors.neutral[300] }]}

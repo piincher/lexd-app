@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Header } from '@src/components/Header/Header';
 import { Notification } from '@src/components/Notification/Notification';
@@ -29,30 +29,34 @@ const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
 
   return (
     <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-      <FormBackground />
-      <Header
-        title="Ajouter un utilisateur"
-        navigation={navigation}
-        showNotificationBell
-      />
-      <View style={styles.content}>
-        <AddUserForm
-          initialValues={initialValues}
-          onSubmit={handleSubmit}
-          validationSchema={signupSchema}
-          selectedCode={selectedCode}
-          setSelectedCode={setSelectedCode}
-          isPending={isPending}
-          signUpDataCode={signUpDataCode}
-          phoneMaxLength={phoneMaxLength}
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <FormBackground />
+        <Header
+          title="Ajouter un utilisateur"
+          navigation={navigation}
+          showNotificationBell
         />
-      </View>
-      <Notification
-        message="Utilisateur ajouté avec succès"
-        type="success"
-        visible={visible}
-        onDismissSnackBar={onDismissSnackBar}
-      />
+        <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1 }}>
+          <View style={styles.content}>
+            <AddUserForm
+              initialValues={initialValues}
+              onSubmit={handleSubmit}
+              validationSchema={signupSchema}
+              selectedCode={selectedCode}
+              setSelectedCode={setSelectedCode}
+              isPending={isPending}
+              signUpDataCode={signUpDataCode}
+              phoneMaxLength={phoneMaxLength}
+            />
+          </View>
+        </ScrollView>
+        <Notification
+          message="Utilisateur ajouté avec succès"
+          type="success"
+          visible={visible}
+          onDismissSnackBar={onDismissSnackBar}
+        />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

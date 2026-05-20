@@ -1,5 +1,5 @@
-import React from 'react';
-import { ScrollView } from 'react-native';
+import React, { useRef } from 'react';
+import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from 'react-native-paper';
 import { useEditGoodsScreen } from './hooks/useEditGoodsScreen';
@@ -25,6 +25,12 @@ const EditGoodsScreen: React.FC = () => {
   } = useEditGoodsScreen();
 
   const styles = useEditGoodsScreenStyles();
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
 
   if (status === 'loading') {
     return <EditGoodsLoading onBack={handlers.handleBack} onNotification={handlers.handleNotifications} />;
@@ -41,12 +47,21 @@ const EditGoodsScreen: React.FC = () => {
         onBack={handlers.handleBack}
         onNotification={handlers.handleNotifications}
       />
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          ref={scrollViewRef}
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+        >
         <GoodsForm
           data={formData}
           onChange={updateField}
           calculatedCBM={calculatedCBM}
           calculatedTotalCost={calculatedTotalCost}
+          onInputFocus={scrollToEnd}
         />
         <GoodsPhotosUpload
           photoUris={photoUris}
@@ -63,7 +78,8 @@ const EditGoodsScreen: React.FC = () => {
         >
           {isSaving ? 'Enregistrement...' : 'Enregistrer les modifications'}
         </Button>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

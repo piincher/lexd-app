@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface CardHeaderProps {
   countryFlag: string;
@@ -24,6 +24,9 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   statusBg,
   statusIcon,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <View style={styles.header}>
       <View style={styles.countryRow}>
@@ -41,7 +44,7 @@ export const CardHeader: React.FC<CardHeaderProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any, _isDark?: boolean) => StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -59,12 +62,12 @@ const styles = StyleSheet.create({
   countryName: {
     fontSize: 15,
     fontFamily: Fonts.bold,
-    color: Theme.neutral[800],
+    color: colors.text.primary,
   },
   offerName: {
     fontSize: 11,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
+    color: colors.text.secondary,
     marginTop: 1,
   },
   statusBadge: {

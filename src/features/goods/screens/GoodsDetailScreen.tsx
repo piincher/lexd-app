@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useHideTabBarOnScroll } from '@src/shared/lib';
 import { useGoodsDetailScreen } from './hooks/useGoodsDetailScreen';
 import { useGoodsDetailScreenStyles } from './GoodsDetailScreen.styles';
@@ -37,7 +37,11 @@ const GoodsDetailScreen: React.FC = () => {
         onBack={handlers.handleBack}
         onEdit={handlers.handleEdit}
       />
-      <GoodsDetailContent goods={goods} onScroll={onScroll} />
+      <GoodsDetailContent
+        goods={goods}
+        onScroll={onScroll}
+        onViewPayments={handlers.handleViewPayments}
+      />
     </SafeAreaView>
   );
 };

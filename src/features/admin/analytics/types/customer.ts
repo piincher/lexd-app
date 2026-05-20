@@ -49,3 +49,32 @@ export interface CustomerAnalyticsData {
     returningCustomers: number;
   };
 }
+
+export interface AtRiskCustomer {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  email?: string;
+  daysInactive: number;
+  totalShipments: number;
+  totalCBM: number;
+  lastShipmentAt: string | null;
+  lastRoute: string | null;
+  neverShipped: boolean;
+}
+
+export interface AtRiskCustomersData {
+  customers: AtRiskCustomer[];
+  summary: {
+    totalAtRisk: number;
+    neverShippedCount: number;
+    inactiveThresholdDays: number;
+  };
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
+}

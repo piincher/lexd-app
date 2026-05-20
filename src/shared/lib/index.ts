@@ -121,6 +121,22 @@ export {
 
 export { useHideTabBarOnScroll } from './use-hide-tab-bar-on-scroll';
 
+export {
+  isAdminRole,
+  isCustomerRole,
+  normalizeRole,
+  type AppRole,
+} from './roles';
+
+export {
+  CUSTOMER_AIR_STATUS_LABELS,
+  CUSTOMER_CONTAINER_STATUS_LABELS,
+  CUSTOMER_GOODS_STATUS_LABELS,
+  CUSTOMER_GOODS_STEP_LABELS,
+  CUSTOMER_ORDER_STATUS_LABELS,
+  customerStatusLabel,
+} from './customerStatus';
+
 // Theme hooks
 export {
   useAppTheme,
@@ -142,3 +158,14 @@ export { useClipboard } from './hooks/useClipboard';
 
 // Confirmation hook
 export { useConfirmationNotification } from './hooks/useConfirmation';
+
+// Version upgrade events
+export {
+  VERSION_EVENT,
+  emitVersionUpgradeRequired,
+  addVersionUpgradeListener,
+  type VersionUpgradeData,
+} from './versionEvents';
+
+// Device ID
+export { getDeviceId, getDeviceIdSync } from './deviceId';

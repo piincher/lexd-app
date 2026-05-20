@@ -23,16 +23,16 @@ export interface ContainerTimeline {
  * Timeline step labels (French)
  */
 export const TIMELINE_STEP_LABELS: Record<keyof ContainerTimeline, string> = {
-  bookedAt: 'Réservé',
-  emptyDispatchedAt: 'Vide vers Entrepôt',
-  loadingStartedAt: 'Chargement Commencé',
-  loadingCompletedAt: 'Chargement Terminé',
-  gateInFullAt: 'Entré au Port',
-  loadedOnVesselAt: 'Chargé à Bord',
+  bookedAt: 'Envoi planifié',
+  emptyDispatchedAt: 'Préparation au chargement',
+  loadingStartedAt: 'Chargement commencé',
+  loadingCompletedAt: 'Chargement terminé',
+  gateInFullAt: 'Au port de départ',
+  loadedOnVesselAt: 'Chargé sur le navire',
   departedAt: 'Départ',
   arrivedAt: 'Arrivé',
   dischargedAt: 'Déchargé',
-  readyForPickupAt: 'Prêt pour Retrait',
+  readyForPickupAt: 'Prêt pour retrait',
   deliveredAt: 'Livré',
 };
 
@@ -57,14 +57,14 @@ export const TIMELINE_STEPS_ORDER: (keyof ContainerTimeline)[] = [
  * Customer-visible steps only (simplified timeline)
  */
 export const CUSTOMER_TIMELINE_STEPS: { key: keyof ContainerTimeline; label: string }[] = [
-  { key: 'bookedAt', label: 'Réservé' },
+  { key: 'bookedAt', label: 'Planifié' },
   { key: 'loadingStartedAt', label: 'Chargement' },
   { key: 'loadingCompletedAt', label: 'Chargé' },
   { key: 'gateInFullAt', label: 'Port' },
-  { key: 'loadedOnVesselAt', label: 'Bord' },
-  { key: 'departedAt', label: 'En Transit' },
+  { key: 'loadedOnVesselAt', label: 'Navire' },
+  { key: 'departedAt', label: 'En transit' },
   { key: 'arrivedAt', label: 'Arrivé' },
   { key: 'dischargedAt', label: 'Déchargé' },
-  { key: 'readyForPickupAt', label: 'Prêt' },
+  { key: 'readyForPickupAt', label: 'Retrait' },
   { key: 'deliveredAt', label: 'Livré' },
 ];

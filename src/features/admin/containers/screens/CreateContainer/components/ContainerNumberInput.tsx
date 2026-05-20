@@ -7,12 +7,14 @@ interface ContainerNumberInputProps {
   value: string;
   error?: string;
   onChangeText: (text: string) => void;
+  onInputFocus?: () => void;
 }
 
 export const ContainerNumberInput: React.FC<ContainerNumberInputProps> = ({
   value,
   error,
   onChangeText,
+  onInputFocus,
 }) => {
   return (
     <View style={styles.container}>
@@ -25,6 +27,7 @@ export const ContainerNumberInput: React.FC<ContainerNumberInputProps> = ({
         style={styles.input}
         error={!!error}
         autoCapitalize="characters"
+        onFocus={onInputFocus}
       />
       {error && <HelperText type="error">{error}</HelperText>}
     </View>

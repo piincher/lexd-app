@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface StatsRowProps {
   availableUnits: number;
@@ -15,6 +15,9 @@ export const StatsRow: React.FC<StatsRowProps> = ({
   daysRemaining,
   expirationDateShort,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+
   return (
     <View style={styles.statsRow}>
       <View style={styles.stat}>
@@ -35,7 +38,7 @@ export const StatsRow: React.FC<StatsRowProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any, _isDark?: boolean) => StyleSheet.create({
   statsRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -50,17 +53,17 @@ const styles = StyleSheet.create({
   statDivider: {
     width: 1,
     height: 28,
-    backgroundColor: Theme.neutral[100],
+    backgroundColor: colors.divider,
   },
   statValue: {
     fontSize: 18,
     fontFamily: Fonts.bold,
-    color: Theme.neutral[800],
+    color: colors.text.primary,
   },
   statLabel: {
     fontSize: 11,
     fontFamily: Fonts.regular,
-    color: Theme.neutral[400],
+    color: colors.text.secondary,
     marginTop: 2,
   },
 });

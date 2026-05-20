@@ -15,32 +15,32 @@ const EMPTY_CONFIG: Record<FilterTab, { icon: MaterialIconName; title: string; s
   all: {
     icon: 'bell-off-outline',
     title: 'Aucune notification',
-    subtitle: 'Vous serez notifie des que quelque chose se passe',
+    subtitle: 'Vous serez notifié dès qu’une mise à jour est disponible.',
   },
   important: {
     icon: 'alert-circle-outline',
     title: "Rien d'important",
-    subtitle: 'Les alertes urgentes apparaitront ici',
+    subtitle: 'Les alertes urgentes apparaîtront ici.',
   },
   shipments: {
     icon: 'truck-delivery-outline',
-    title: 'Aucune mise a jour expedition',
-    subtitle: 'Les mouvements de vos colis apparaitront ici',
+    title: 'Aucune mise à jour d’expédition',
+    subtitle: 'Les mouvements de vos marchandises apparaîtront ici.',
   },
   payments: {
     icon: 'cash-multiple',
-    title: 'Aucune notification paiement',
-    subtitle: 'Les paiements et factures apparaitront ici',
+    title: 'Aucune notification de paiement',
+    subtitle: 'Les paiements et factures apparaîtront ici.',
   },
   unread: {
     icon: 'check-circle-outline',
     title: 'Tout est lu !',
-    subtitle: 'Vous etes a jour avec toutes vos notifications',
+    subtitle: 'Vous êtes à jour avec toutes vos notifications.',
   },
   system: {
     icon: 'cog-outline',
-    title: 'Aucune notification systeme',
-    subtitle: 'Les alertes systeme apparaitront ici',
+    title: 'Aucune notification système',
+    subtitle: 'Les alertes système apparaîtront ici.',
   },
 };
 

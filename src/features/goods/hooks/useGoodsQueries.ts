@@ -17,7 +17,9 @@ export const useGetMyGoods = (filters?: GoodsFilters) => {
 		queryKey: [QUERY_KEYS.myGoods, filters],
 		queryFn: () => goodsApi.getMyGoods(filters),
 		select: (response) => response.data.data,
-		staleTime: 5 * 60 * 1000, // 5 minutes
+		staleTime: 30 * 1000, // 30 seconds
+		refetchOnWindowFocus: true,
+		refetchOnReconnect: true,
 	});
 };
 

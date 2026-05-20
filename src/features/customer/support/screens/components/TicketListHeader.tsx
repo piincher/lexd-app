@@ -6,7 +6,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Appbar, Badge } from 'react-native-paper';
-import { Ionicons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -30,7 +29,7 @@ export const TicketListHeader: React.FC<TicketListHeaderProps> = ({
   return (
     <Appbar.Header style={[styles.header, { backgroundColor: colors.background.default }]}>
       <Appbar.BackAction onPress={onBack} />
-      <Appbar.Content title="Support" titleStyle={[styles.title, { color: colors.text.primary }]} />
+      <Appbar.Content title="Assistance" titleStyle={[styles.title, { color: colors.text.primary }]} />
       <Appbar.Action
         icon={showSearch ? 'close' : 'magnify'}
         onPress={onToggleSearch}

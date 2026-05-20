@@ -1,5 +1,6 @@
 import { GoodsStatus } from '../api';
 import { Theme } from '@src/constants/Theme';
+import { CUSTOMER_GOODS_STEP_LABELS } from '@src/shared/lib/customerStatus';
 
 export const formatCurrency = (amount?: number): string => {
 	return `${(amount ?? 0).toLocaleString('fr-FR')} FCFA`;
@@ -46,22 +47,22 @@ export const getPaymentColors = (status: string) => {
 };
 
 export const SEA_STATUS_STEPS: { key: GoodsStatus; label: string; icon: string }[] = [
-	{ key: 'RECEIVED_AT_WAREHOUSE', label: 'Reçu', icon: 'package-variant' },
-	{ key: 'ASSIGNED_TO_CONTAINER', label: 'Assigné', icon: 'clipboard-check' },
-	{ key: 'LOADED_IN_CONTAINER', label: 'Chargé', icon: 'package-up' },
-	{ key: 'IN_TRANSIT', label: 'En Transit', icon: 'truck-delivery' },
-	{ key: 'ARRIVED_DESTINATION', label: 'Arrivé', icon: 'flag-checkered' },
-	{ key: 'READY_FOR_PICKUP', label: 'Prêt', icon: 'hand-wave' },
-	{ key: 'DELIVERED', label: 'Livré', icon: 'check-circle' },
+	{ key: 'RECEIVED_AT_WAREHOUSE', label: CUSTOMER_GOODS_STEP_LABELS.RECEIVED_AT_WAREHOUSE, icon: 'package-variant' },
+	{ key: 'ASSIGNED_TO_CONTAINER', label: CUSTOMER_GOODS_STEP_LABELS.ASSIGNED_TO_CONTAINER, icon: 'clipboard-check' },
+	{ key: 'LOADED_IN_CONTAINER', label: CUSTOMER_GOODS_STEP_LABELS.LOADED_IN_CONTAINER, icon: 'package-up' },
+	{ key: 'IN_TRANSIT', label: CUSTOMER_GOODS_STEP_LABELS.IN_TRANSIT, icon: 'truck-delivery' },
+	{ key: 'ARRIVED_DESTINATION', label: CUSTOMER_GOODS_STEP_LABELS.ARRIVED_DESTINATION, icon: 'flag-checkered' },
+	{ key: 'READY_FOR_PICKUP', label: CUSTOMER_GOODS_STEP_LABELS.READY_FOR_PICKUP, icon: 'hand-wave' },
+	{ key: 'DELIVERED', label: CUSTOMER_GOODS_STEP_LABELS.DELIVERED, icon: 'check-circle' },
 ];
 
 export const AIR_STATUS_STEPS: { key: GoodsStatus; label: string; icon: string }[] = [
-	{ key: 'RECEIVED_AT_WAREHOUSE', label: 'Reçu', icon: 'package-variant' },
-	{ key: 'PACKED', label: 'Colis préparé', icon: 'cube-outline' },
-	{ key: 'IN_TRANSIT', label: 'En Transit', icon: 'airplane' },
-	{ key: 'ARRIVED_DESTINATION', label: 'Arrivé', icon: 'flag-checkered' },
-	{ key: 'READY_FOR_PICKUP', label: 'Prêt', icon: 'hand-wave' },
-	{ key: 'DELIVERED', label: 'Livré', icon: 'check-circle' },
+	{ key: 'RECEIVED_AT_WAREHOUSE', label: CUSTOMER_GOODS_STEP_LABELS.RECEIVED_AT_WAREHOUSE, icon: 'package-variant' },
+	{ key: 'PACKED', label: CUSTOMER_GOODS_STEP_LABELS.PACKED, icon: 'cube-outline' },
+	{ key: 'IN_TRANSIT', label: CUSTOMER_GOODS_STEP_LABELS.IN_TRANSIT, icon: 'airplane' },
+	{ key: 'ARRIVED_DESTINATION', label: CUSTOMER_GOODS_STEP_LABELS.ARRIVED_DESTINATION, icon: 'flag-checkered' },
+	{ key: 'READY_FOR_PICKUP', label: CUSTOMER_GOODS_STEP_LABELS.READY_FOR_PICKUP, icon: 'hand-wave' },
+	{ key: 'DELIVERED', label: CUSTOMER_GOODS_STEP_LABELS.DELIVERED, icon: 'check-circle' },
 ];
 
 export const getStatusSteps = (mode: 'AIR' | 'SEA') => {

@@ -26,6 +26,11 @@ export const useAssignGoodsToContainer = () => {
       queryClient.invalidateQueries({
         queryKey: containerQueryKeys.unassignedGoods(),
       });
+      // Customer-side invalidation
+      queryClient.invalidateQueries({ queryKey: ['customer-containers'] });
+      queryClient.invalidateQueries({ queryKey: ['customer-containers', 'detail', variables.containerId] });
+      queryClient.invalidateQueries({ queryKey: ['my-goods'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
   });
 };
@@ -50,6 +55,11 @@ export const useRemoveGoodsFromContainer = () => {
       queryClient.invalidateQueries({
         queryKey: containerQueryKeys.unassignedGoods(),
       });
+      // Customer-side invalidation
+      queryClient.invalidateQueries({ queryKey: ['customer-containers'] });
+      queryClient.invalidateQueries({ queryKey: ['customer-containers', 'detail', variables.containerId] });
+      queryClient.invalidateQueries({ queryKey: ['my-goods'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
     },
   });
 };

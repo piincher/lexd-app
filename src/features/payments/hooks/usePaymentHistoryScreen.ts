@@ -6,19 +6,18 @@ import type { PaymentStatus } from '../types';
 export const usePaymentHistoryScreen = () => {
   const navigation = useNavigation();
   const [selectedFilter, setSelectedFilter] = useState<PaymentStatus | 'ALL'>('ALL');
-  const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
 
   const {
     payments,
     isLoading,
+    isFetchingNextPage,
     error,
     refetch,
     loadMore,
     hasNextPage,
   } = usePaymentHistory({
     status: selectedFilter === 'ALL' ? undefined : selectedFilter,
-    page,
     limit: 20,
   });
 
@@ -29,11 +28,8 @@ export const usePaymentHistoryScreen = () => {
   }, [refetch]);
 
   const handleLoadMore = useCallback(() => {
-    if (hasNextPage && !isLoading) {
-      setPage((prev) => prev + 1);
-      loadMore();
-    }
-  }, [hasNextPage, isLoading, loadMore]);
+    loadMore();
+  }, [loadMore]);
 
   const handleFilterChange = useCallback((filter: PaymentStatus | 'ALL') => {
     setSelectedFilter(filter);
@@ -50,6 +46,7 @@ export const usePaymentHistoryScreen = () => {
   return {
     payments,
     isLoading,
+    isFetchingNextPage,
     error,
     refreshing,
     hasNextPage,

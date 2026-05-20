@@ -1,5 +1,6 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Appbar } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { EmptyState } from '@src/shared/ui';

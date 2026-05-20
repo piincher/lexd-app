@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Menu, HelperText } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
-import { styles } from './LocationSelect.styles';
+import { createStyles } from './LocationSelect.styles';
 
 interface LocationDropdownProps {
   label: string;
@@ -29,7 +29,8 @@ export const LocationDropdown: React.FC<LocationDropdownProps> = ({
   setMenuVisible,
   placeholder,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.label}>

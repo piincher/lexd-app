@@ -5,7 +5,8 @@
 
 import React from 'react';
 import { Surface } from 'react-native-paper';
-import { Alert, Linking } from 'react-native';
+import { Alert } from 'react-native';
+import { openWhatsApp } from '@src/shared/lib/openWhatsApp';
 import { useClientInfoCardStyles } from './ClientInfoCard.styles';
 import { ClientInfoHeader } from './ClientInfoHeader';
 import { ClientContactRow } from './ClientContactRow';
@@ -62,12 +63,10 @@ export const ClientInfoCard: React.FC<ClientInfoCardProps> = ({
       message += `Voici votre reçu: ${receiptUrl}\n\n`;
     }
     message += `Merci pour votre confiance!\n_ChinaLink Express_`;
-    const whatsappUrl = `https://wa.me/${formattedPhone}?text=${encodeURIComponent(message)}`;
 
-    const canOpen = await Linking.canOpenURL(whatsappUrl);
-    if (canOpen) {
-      await Linking.openURL(whatsappUrl);
-    } else {
+    try {
+      await openWhatsApp(formattedPhone, message);
+    } catch {
       Alert.alert('Erreur', 'WhatsApp n\'est pas installé');
     }
   };

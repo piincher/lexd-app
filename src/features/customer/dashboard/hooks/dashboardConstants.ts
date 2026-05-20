@@ -4,6 +4,12 @@
  */
 
 import { QuickAction, DashboardStats } from '../types';
+import type {
+  ActiveWorkSummary,
+  RewardSummary,
+  ShippingSummary,
+  VipProgress,
+} from '@src/shared/types/dashboard';
 
 export const DEFAULT_QUICK_ACTIONS: QuickAction[] = [
   { id: 'view-goods', label: 'Mes marchandises', icon: 'package-variant-closed', route: 'MyGoods' },
@@ -20,6 +26,57 @@ export const DEFAULT_STATS: DashboardStats = {
   totalSpent: 0,
   totalPaid: 0,
   balanceDue: 0,
+};
+
+export const DEFAULT_SHIPPING_SUMMARY: ShippingSummary = {
+  totalCBM: 0,
+  totalKg: 0,
+  deliveredCBM: 0,
+  deliveredKg: 0,
+  shipmentCount: 0,
+  deliveredCount: 0,
+  currentMonthCBM: 0,
+  currentMonthKg: 0,
+  currentMonthSpend: 0,
+  currentMonthShipmentCount: 0,
+  currentMonthDeliveredCount: 0,
+  totalSpent: 0,
+  totalPaid: 0,
+  balanceDue: 0,
+  averageShipmentValue: 0,
+};
+
+export const DEFAULT_ACTIVE_WORK: ActiveWorkSummary = {
+  warehouseGoods: 0,
+  inTransitGoods: 0,
+  arrivedGoods: 0,
+  readyForPickupGoods: 0,
+  unpaidGoods: 0,
+  pendingPayments: 0,
+  pendingActions: 0,
+};
+
+export const DEFAULT_REWARD_SUMMARY: RewardSummary = {
+  rewardPoints: 0,
+  pointValueFCFA: 50,
+  rewardValueFCFA: 0,
+};
+
+export const DEFAULT_VIP_PROGRESS: VipProgress = {
+  currentTier: {
+    id: 'beginner',
+    name: 'Débutant',
+    description: 'Bienvenue chez ChinaLink Express',
+    requiredCBM: 0,
+  },
+  nextTier: null,
+  metric: 'CBM',
+  deliveredCBM: 0,
+  deliveredKg: 0,
+  progressPercent: 0,
+  remainingCBM: 0,
+  rewardPoints: 0,
+  rewardValueFCFA: 0,
 };
 
 export const getWelcomeMessage = (name: string): string => {

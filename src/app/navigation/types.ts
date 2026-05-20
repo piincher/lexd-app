@@ -5,6 +5,7 @@
  */
 
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { PaymentHistoryItem } from '@src/features/payments/types';
 
 /**
  * Authenticated Stack Parameters
@@ -17,8 +18,12 @@ export interface AuthenticatedStackParamList {
   ClientOrderDetail: undefined;
   TrackOrder: undefined;
   
-  // Payment History — TEMPORARILY DISABLED
-  // MyPaymentHistory: undefined;
+  // Customer payment routes
+  MyPaymentHistory: undefined;
+  PaymentHistoryScreen: undefined;
+  UserPaymentDetail: {
+    payment: PaymentHistoryItem;
+  };
   
   // Admin Screens
   AllOrders: undefined;
@@ -80,11 +85,13 @@ export type PublicStackScreenProps<T extends keyof PublicStackParamList> =
  * Routes that require authentication
  * These routes will redirect to login if user is not authenticated
  */
-export const REQUIRES_AUTH: Array<keyof AuthenticatedStackParamList> = [
+export const REQUIRES_AUTH: (keyof AuthenticatedStackParamList)[] = [
   'ClientOrdersList',
   'ClientOrderDetail',
   'TrackOrder',
-  // 'MyPaymentHistory',
+  'MyPaymentHistory',
+  'PaymentHistoryScreen',
+  'UserPaymentDetail',
   'AllOrders',
   'AddOrder',
   'ReceiveGoods',

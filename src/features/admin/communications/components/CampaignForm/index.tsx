@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, TextInput } from "react-native";
+import React, { useRef } from "react";
+import { View, Text, TextInput, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createStyles } from "./CampaignForm.styles";
@@ -19,6 +19,12 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({
 }) => {
   const { colors, isDark } = useAppTheme();
   const styles = createStyles(colors, isDark);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
 
   return (
     <>
@@ -31,6 +37,7 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({
           value={title}
           onChangeText={onTitleChange}
           maxLength={200}
+          onFocus={scrollToEnd}
         />
         <Text style={styles.charCount}>{title.length}/200</Text>
       </View>
@@ -46,6 +53,7 @@ export const CampaignForm: React.FC<CampaignFormProps> = ({
           multiline
           numberOfLines={4}
           maxLength={500}
+          onFocus={scrollToEnd}
         />
         <Text style={styles.charCount}>{body.length}/500</Text>
       </View>

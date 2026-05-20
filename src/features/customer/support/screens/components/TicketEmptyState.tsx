@@ -22,9 +22,9 @@ export const TicketEmptyState: React.FC<TicketEmptyStateProps> = ({ onCreateTick
       <View style={[styles.iconCircle, { backgroundColor: colors.primary[50] }]}>
         <Ionicons name="chatbubbles-outline" size={48} color={colors.primary.main} />
       </View>
-      <Text style={[styles.title, { color: colors.text.primary }]}>Aucun ticket trouvé</Text>
+      <Text style={[styles.title, { color: colors.text.primary }]}>Aucune demande trouvée</Text>
       <Text style={[styles.subtitle, { color: colors.text.secondary }]}>
-        Vous n'avez pas encore de demandes de support. Créez un nouveau ticket si vous avez besoin d'aide.
+        Vous n&apos;avez pas encore de demande d&apos;assistance. Créez une demande si vous avez besoin d&apos;aide.
       </Text>
       <Button
         mode="contained"
@@ -34,7 +34,7 @@ export const TicketEmptyState: React.FC<TicketEmptyStateProps> = ({ onCreateTick
         buttonColor={colors.primary.main}
         textColor={colors.text.inverse}
       >
-        Créer un ticket
+        Créer une demande
       </Button>
     </View>
   );

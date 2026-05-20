@@ -1,3 +1,5 @@
+import { CUSTOMER_CONTAINER_STATUS_LABELS } from '@src/shared/lib/customerStatus';
+
 /**
  * Customer Container Status Types and Constants
  */
@@ -21,19 +23,8 @@ export type CustomerContainerStatus =
 /**
  * Customer container status display labels (French)
  */
-export const CUSTOMER_STATUS_LABELS: Record<CustomerContainerStatus, string> = {
-  BOOKED: 'Réservé',
-  EMPTY_TO_WAREHOUSE: 'Container vers entrepôt',
-  LOADING: 'Chargement en cours',
-  LOADED: 'Container chargé',
-  GATE_IN_FULL: 'Container au port',
-  LOADED_ON_VESSEL: 'Container sur le bateau',
-  IN_TRANSIT: 'En route vers Bamako',
-  ARRIVED: 'Arrivé à destination',
-  DISCHARGED: 'Déchargement terminé',
-  READY_FOR_PICKUP: 'Prêt pour retrait',
-  DELIVERED: 'Livré',
-};
+export const CUSTOMER_STATUS_LABELS: Record<CustomerContainerStatus, string> =
+  CUSTOMER_CONTAINER_STATUS_LABELS as Record<CustomerContainerStatus, string>;
 
 /**
  * Customer container status colors

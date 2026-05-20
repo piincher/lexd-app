@@ -1,7 +1,6 @@
 import { apiV2 } from '@src/api/client';
-import { ReceiveGoodsInput, UpdateLocationInput, Goods } from './types';
 // Import from local types to avoid cross-feature import (prevents circular dependency)
-import { GoodsFilters } from './types';
+import { ReceiveGoodsInput, UpdateLocationInput, Goods, GoodsFilters } from './types';
 import { AxiosResponse } from 'axios';
 
 const axios = apiV2;
@@ -52,6 +51,9 @@ export const adminGoodsApi = {
     
   delete: (id: string): Promise<AxiosResponse<ApiResponse<void>>> =>
     axios.delete(`${BASE_URL}/${id}`),
+
+  hardDelete: (id: string): Promise<AxiosResponse<ApiResponse<void>>> =>
+    axios.delete(`${BASE_URL}/${id}/hard`),
     
   assignToContainer: (containerId: string, goodsIds: string[]): Promise<AxiosResponse<ApiResponse<void>>> =>
     axios.post(`/containers/${containerId}/assign-goods`, { goodsIds }),

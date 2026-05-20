@@ -6,11 +6,13 @@ import { Theme } from '@src/constants/Theme';
 interface BookingReferenceInputProps {
   value: string;
   onChangeText: (text: string) => void;
+  onInputFocus?: () => void;
 }
 
 export const BookingReferenceInput: React.FC<BookingReferenceInputProps> = ({
   value,
   onChangeText,
+  onInputFocus,
 }) => {
   return (
     <View style={styles.container}>
@@ -23,6 +25,7 @@ export const BookingReferenceInput: React.FC<BookingReferenceInputProps> = ({
         style={styles.input}
         outlineColor={Theme.neutral[300]}
         activeOutlineColor={Theme.primary[500]}
+        onFocus={onInputFocus}
       />
     </View>
   );

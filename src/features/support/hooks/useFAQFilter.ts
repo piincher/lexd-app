@@ -7,13 +7,13 @@ import { FAQItem, FAQFilter } from '../types';
 
 const DEBOUNCE_MS = 300;
 const CATEGORY_ICONS: Record<string, string> = {
-  all: 'apps',
-  general: 'information-circle',
-  shipping: 'boat',
-  payment: 'card',
-  account: 'person',
-  tracking: 'location',
-  customs: 'shield-checkmark',
+  all: 'view-grid-outline',
+  general: 'information-outline',
+  shipping: 'ferry',
+  payment: 'credit-card-outline',
+  account: 'account-outline',
+  tracking: 'map-marker-outline',
+  customs: 'shield-check-outline',
 };
 
 const CATEGORY_LABELS: Record<string, string> = {
@@ -45,12 +45,14 @@ export const useFAQFilter = (allData: FAQItem[]) => {
   }, [allData, filter.category, debouncedSearch]);
 
   const setSearchQuery = useCallback((query: string) => setFilter((p) => ({ ...p, searchQuery: query })), []);
-  const setCategory = useCallback((category: string) => setFilter((p) => ({ ...p, category })), []);
+  const setCategory = useCallback((category: string) => {
+    setFilter((p) => ({ ...p, category: category as FAQFilter['category'] }));
+  }, []);
   const clearFilters = useCallback(() => setFilter({ searchQuery: '', category: 'all' }), []);
 
   const categories = useMemo(() => {
     const unique = [...new Set(allData.map((i) => i.category.toLowerCase()))];
-    return [{ id: 'all', label: CATEGORY_LABELS.all, icon: CATEGORY_ICONS.all }, ...unique.map((c) => ({ id: c, label: CATEGORY_LABELS[c] || c, icon: CATEGORY_ICONS[c] || 'help-circle' }))];
+    return [{ id: 'all', label: CATEGORY_LABELS.all, icon: CATEGORY_ICONS.all }, ...unique.map((c) => ({ id: c, label: CATEGORY_LABELS[c] || c, icon: CATEGORY_ICONS[c] || 'help-circle-outline' }))];
   }, [allData]);
 
   const hasActiveFilters = filter.searchQuery !== '' || filter.category !== 'all';

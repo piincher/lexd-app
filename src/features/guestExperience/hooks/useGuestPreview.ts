@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Linking } from 'react-native';
+import { openSupportWhatsApp } from '@src/shared/lib/openWhatsApp';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@src/navigations/type';
 import { DEMO_SHIPMENTS } from '../data/demoShipments';
@@ -35,15 +35,11 @@ export const useGuestPreview = (
   }, [navigation]);
 
   const handleContact = useCallback(() => {
-    const phone = GUEST_SUPPORT_PHONE.replace(/[^\d]/g, '');
-    const text = encodeURIComponent("Bonjour ChinaLink, j'ai téléchargé l'application et je veux devenir client.");
-    Linking.openURL(`https://wa.me/${phone}?text=${text}`);
+    openSupportWhatsApp("Bonjour ChinaLink, j'ai téléchargé l'application et je veux devenir client.");
   }, []);
 
   const handleWhatsApp = useCallback(() => {
-    const phone = GUEST_SUPPORT_PHONE.replace(/[^\d]/g, '');
-    const text = encodeURIComponent("Bonjour ChinaLink, j'ai une question sur l'application.");
-    Linking.openURL(`https://wa.me/${phone}?text=${text}`);
+    openSupportWhatsApp("Bonjour ChinaLink, j'ai une question sur l'application.");
   }, []);
 
   const handleAction = useCallback((id: string) => {
@@ -51,9 +47,11 @@ export const useGuestPreview = (
       handleWhatsApp();
     } else if (id === 'login') {
       handleLogin();
+    } else if (id === 'about') {
+      navigation.navigate('AboutUs');
     }
     // 'track' and 'documents' are demo-only actions (no-op in guest mode)
-  }, [handleLogin, handleWhatsApp]);
+  }, [handleLogin, handleWhatsApp, navigation]);
 
   return {
     benefits: DEMO_BENEFITS,

@@ -26,6 +26,6 @@ export const useGetContainerDetails = (containerId: string) => {
       };
     },
     enabled: !!containerId,
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 30 * 1000,
   });
 };

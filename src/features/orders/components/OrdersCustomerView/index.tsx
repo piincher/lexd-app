@@ -7,6 +7,7 @@ import { useAppTheme } from "@src/providers/ThemeProvider";
 import { OrderListCard } from "../OrderListCard";
 import { OrderStatusFilter } from "../OrderStatusFilter";
 import { OrderListSkeleton } from "@src/shared/ui/OrderListSkeleton";
+import { CUSTOMER_ORDER_STATUS_LABELS } from "@src/shared/lib/customerStatus";
 import { productType } from "../../api";
 import { useCustomerOrders } from "../../hooks/useCustomerOrders";
 import { styles } from "./OrdersCustomerView.styles";
@@ -17,10 +18,10 @@ interface OrdersCustomerViewProps {
 
 const STATUS_FILTERS = [
 	{ key: "all", label: "Tous" },
-	{ key: "Inactive", label: "En attente" },
-	{ key: "Active", label: "En cours" },
-	{ key: "In Transit", label: "En transit" },
-	{ key: "Delivered", label: "Livré" },
+	{ key: "Inactive", label: CUSTOMER_ORDER_STATUS_LABELS.Inactive },
+	{ key: "Active", label: CUSTOMER_ORDER_STATUS_LABELS.Active },
+	{ key: "In Transit", label: CUSTOMER_ORDER_STATUS_LABELS["In Transit"] },
+	{ key: "Delivered", label: CUSTOMER_ORDER_STATUS_LABELS.Delivered },
 ];
 
 export const OrdersCustomerView: React.FC<OrdersCustomerViewProps> = ({ headerRight }) => {

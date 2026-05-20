@@ -18,7 +18,7 @@ export const TicketDetailHeader: React.FC<TicketDetailHeaderProps> = ({ ticket, 
   <Appbar.Header>
     <Appbar.BackAction onPress={onBack} />
     <Appbar.Content
-      title={ticket?.ticketNumber || 'Ticket'}
+      title={ticket?.ticketNumber || 'Demande'}
       titleStyle={styles.title}
       subtitle={ticket ? TICKET_TYPE_LABELS[ticket.type] : undefined}
       subtitleStyle={styles.subtitle}

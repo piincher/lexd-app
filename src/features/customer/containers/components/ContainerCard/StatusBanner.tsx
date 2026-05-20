@@ -55,7 +55,7 @@ export const StatusBanner: React.FC<StatusBannerProps> = ({ container }) => {
     return (
       <View style={styles.infoBanner}>
         <MaterialCommunityIcons name="gate" size={14} color={colors.primary.main} />
-        <Text style={styles.infoBannerText}>Gate-in plein le {formatDate(container.timeline.gateInFullAt)}</Text>
+        <Text style={styles.infoBannerText}>Au port de départ depuis le {formatDate(container.timeline.gateInFullAt)}</Text>
       </View>
     );
   }

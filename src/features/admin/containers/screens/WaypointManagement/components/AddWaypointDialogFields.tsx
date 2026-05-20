@@ -13,7 +13,7 @@ interface FieldsProps {
   onUpdateField: (field: keyof NewWaypointForm, value: any) => void;
 }
 
-export const LocationNameField: React.FC<FieldsProps> = ({ newWaypoint, onUpdateField }) => {
+export const LocationNameField: React.FC<FieldsProps & { onInputFocus?: () => void }> = ({ newWaypoint, onUpdateField, onInputFocus }) => {
   const { colors, isDark } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
@@ -25,12 +25,13 @@ export const LocationNameField: React.FC<FieldsProps> = ({ newWaypoint, onUpdate
       onChangeText={(text) => onUpdateField('locationCity', text)}
       placeholder="Enter location name"
       placeholderTextColor={colors.neutral[400]}
+      onFocus={onInputFocus}
     />
   </View>
   );
 };
 
-export const LocationCodeField: React.FC<FieldsProps> = ({ newWaypoint, onUpdateField }) => {
+export const LocationCodeField: React.FC<FieldsProps & { onInputFocus?: () => void }> = ({ newWaypoint, onUpdateField, onInputFocus }) => {
   const { colors, isDark } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
   return (
@@ -43,6 +44,7 @@ export const LocationCodeField: React.FC<FieldsProps> = ({ newWaypoint, onUpdate
       placeholder="Enter location code (e.g., SHA)"
       placeholderTextColor={colors.neutral[400]}
       autoCapitalize="characters"
+      onFocus={onInputFocus}
     />
   </View>
   );

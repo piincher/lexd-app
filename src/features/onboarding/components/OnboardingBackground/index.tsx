@@ -30,7 +30,7 @@ export const OnboardingBackground: React.FC<OnboardingBackgroundProps> = ({
     >
       {/* Gradient Overlay */}
       <View style={styles.gradientOverlay} />
-      
+
       {/* Decorative Elements */}
       <View style={[styles.blob, styles.blob1]} />
       <View style={[styles.blob, styles.blob2]} />
@@ -55,7 +55,7 @@ const createStyles = (width: number, height: number, colors: any) => {
     blob: {
       position: "absolute",
       borderRadius: 999,
-      backgroundColor: colors.text.inverse + '12',
+      backgroundColor: colors.neutral.white + "12",
     },
     blob1: {
       width: largeBlob,

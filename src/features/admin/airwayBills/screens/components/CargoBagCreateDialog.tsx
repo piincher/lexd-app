@@ -2,8 +2,8 @@
  * CargoBagCreateDialog - Dialog to create a new cargo bag
  */
 
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, ScrollView, View } from 'react-native';
 import { Portal, Dialog, Button, TextInput } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -25,6 +25,13 @@ export const CargoBagCreateDialog: React.FC<CargoBagCreateDialogProps> = ({
   const { colors } = useAppTheme();
   const [notes, setNotes] = useState('');
 
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
+
   useEffect(() => {
     if (visible) {
       setNotes('');
@@ -39,22 +46,26 @@ export const CargoBagCreateDialog: React.FC<CargoBagCreateDialogProps> = ({
     <Portal>
       <Dialog visible={visible} onDismiss={onDismiss} style={{ backgroundColor: colors.background.card }}>
         <Dialog.Title style={{ color: colors.text.primary }}>Nouveau sac de cargo</Dialog.Title>
-        <Dialog.Content>
-          <TextInput
-            label="Notes (optionnel)"
-            value={notes}
-            onChangeText={setNotes}
-            mode="outlined"
-            multiline
-            numberOfLines={3}
-            style={[styles.input, { backgroundColor: colors.background.paper }]}
-            textColor={colors.text.primary}
-            outlineColor={colors.border}
-            activeOutlineColor={colors.primary.main}
-            placeholderTextColor={colors.text.disabled}
-            disabled={loading}
-          />
-        </Dialog.Content>
+        <ScrollView keyboardShouldPersistTaps="handled" ref={scrollViewRef}>
+          <Dialog.Content>
+            <TextInput
+              label="Notes (optionnel)"
+              value={notes}
+              onChangeText={setNotes}
+              mode="outlined"
+              multiline
+              numberOfLines={3}
+              style={[styles.input, { backgroundColor: colors.background.paper }]}
+              textColor={colors.text.primary}
+              outlineColor={colors.border}
+              activeOutlineColor={colors.primary.main}
+              placeholderTextColor={colors.text.disabled}
+              disabled={loading}
+              onFocus={scrollToEnd}
+            />
+            <View style={{ height: 280 }} />
+          </Dialog.Content>
+        </ScrollView>
         <Dialog.Actions>
           <Button onPress={onDismiss} disabled={loading} textColor={colors.text.secondary}>
             Annuler

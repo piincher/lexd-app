@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, ScrollView, Image, Text, TouchableOpacity, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
@@ -27,11 +27,20 @@ export const PastOrderCard: React.FC<PastOrderCardProps> = ({ item }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const copyToClipboard = async (text: string) => {
     await Clipboard.setStringAsync(text);
     setSnackbarVisible(true);
-    setTimeout(() => setSnackbarVisible(false), 3000);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setSnackbarVisible(false), 3000);
   };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const statusColor = getStatusColor(colors, status);
   const statusText = getStatusText(status);

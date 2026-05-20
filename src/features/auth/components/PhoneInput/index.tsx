@@ -20,11 +20,12 @@ interface PhoneInputProps {
   showCountryPicker: boolean;
   onClear: () => void;
   onSubmit?: () => void;
+  onInputFocus?: () => void;
 }
 
 export const PhoneInput: React.FC<PhoneInputProps> = ({
   value, onChangeText, selectedCountry, onSelectCountry, error,
-  showCountryPicker, onClear, onSubmit,
+  showCountryPicker, onClear, onSubmit, onInputFocus,
 }) => {
   const { colors } = useAppTheme();
   const inputBg = colors.background.paper;
@@ -56,6 +57,7 @@ export const PhoneInput: React.FC<PhoneInputProps> = ({
             placeholder={selectedCountry.placeholder} placeholderTextColor={colors.text.disabled}
             value={value} onChangeText={(t) => onChangeText(t.replace(/[^0-9]/g, ''))}
             keyboardType="number-pad" maxLength={selectedCountry.inputMaxLength || selectedCountry.maxLength} returnKeyType="done" onSubmitEditing={onSubmit}
+            onFocus={onInputFocus}
           />
           {value.length > 0 && (
             <Pressable onPress={onClear} hitSlop={8}>

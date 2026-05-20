@@ -185,6 +185,13 @@ export const DEMO_QUICK_ACTIONS: DemoQuickAction[] = [
     description: 'Contactez-nous',
   },
   {
+    id: 'about',
+    title: 'À propos',
+    icon: 'circle-info',
+    color: Theme.status.info,
+    description: 'ChinaLinkExpress',
+  },
+  {
     id: 'whatsapp',
     title: 'WhatsApp',
     icon: 'whatsapp',

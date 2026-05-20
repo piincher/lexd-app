@@ -25,12 +25,13 @@ interface CreateTicketFormProps {
   };
   errors: Record<string, string>;
   disabled?: boolean;
+  onInputFocus?: () => void;
 }
 
 const TYPES: TicketType[] = ['ORDER_ISSUE', 'PAYMENT_ISSUE', 'DELIVERY_ISSUE', 'GENERAL'];
 const PRIORITIES: TicketPriority[] = ['LOW', 'MEDIUM', 'HIGH', 'URGENT'];
 
-export const CreateTicketForm: React.FC<CreateTicketFormProps> = ({ form, errors, disabled }) => {
+export const CreateTicketForm: React.FC<CreateTicketFormProps> = ({ form, errors, disabled, onInputFocus }) => {
   const { colors } = useAppTheme();
 
   return (
@@ -50,7 +51,7 @@ export const CreateTicketForm: React.FC<CreateTicketFormProps> = ({ form, errors
       {errors.type && <HelperText type="error">{errors.type}</HelperText>}
 
       <Text style={[styles.label, { color: colors.text.secondary }]}>Priorité</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <View style={styles.chipRow}>
           {PRIORITIES.map((p) => {
             const active = form.priority === p;
@@ -74,6 +75,7 @@ export const CreateTicketForm: React.FC<CreateTicketFormProps> = ({ form, errors
         onChangeText={form.setSubject}
         maxLength={100}
         editable={!disabled}
+        onFocus={onInputFocus}
       />
       <View style={styles.row}>
         {errors.subject ? <HelperText type="error">{errors.subject}</HelperText> : <View />}
@@ -92,6 +94,7 @@ export const CreateTicketForm: React.FC<CreateTicketFormProps> = ({ form, errors
         textAlignVertical="top"
         maxLength={500}
         editable={!disabled}
+        onFocus={onInputFocus}
       />
       <View style={styles.row}>
         {errors.description ? <HelperText type="error">{errors.description}</HelperText> : <View />}

@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useMemo } from "react";
-import { Linking } from "react-native";
+import { openSupportWhatsApp } from "@src/shared/lib/openWhatsApp";
 import { useOtpState } from "./useOtpState";
 import { useOtpResend } from "./useOtpResend";
 import { useOtpVerification } from "./useOtpVerification";
@@ -48,8 +48,7 @@ export const useVerificationScreen = (phoneNumber: string) => {
   }, [consumePastedCodeToSubmit, isPending, pastedCodeToSubmit, submitCode]);
 
   const handleSupport = useCallback(() => {
-    const text = encodeURIComponent(`Bonjour ChinaLink, je n'arrive pas à vérifier mon numéro +${phoneNumber}.`);
-    Linking.openURL(`https://wa.me/${SUPPORT_PHONE}?text=${text}`);
+    openSupportWhatsApp(`Bonjour ChinaLink, je n'arrive pas à vérifier mon numéro +${phoneNumber}.`);
   }, [phoneNumber]);
 
   const maskedPhone = useMemo(() => maskVerificationPhone(phoneNumber), [phoneNumber]);

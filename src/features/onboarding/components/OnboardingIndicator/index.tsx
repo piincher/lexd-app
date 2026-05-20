@@ -28,21 +28,18 @@ export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
       {Array.from({ length: count }).map((_, i) => {
         const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
 
-        // Scale animation
         const scale = scrollX.interpolate({
           inputRange,
           outputRange: [0.8, 1, 0.8],
           extrapolate: "clamp",
         });
 
-        // Opacity animation
         const opacity = scrollX.interpolate({
           inputRange,
           outputRange: [0.4, 1, 0.4],
           extrapolate: "clamp",
         });
 
-        // Width animation for active state
         const dotWidth = scrollX.interpolate({
           inputRange,
           outputRange: [DOT_SIZE, ACTIVE_DOT_WIDTH, DOT_SIZE],
@@ -78,7 +75,7 @@ const createStyles = (colors: any) =>
     dot: {
       height: DOT_SIZE,
       borderRadius: DOT_SIZE / 2,
-      backgroundColor: colors.text.inverse,
+      backgroundColor: colors.neutral.white,
     },
   });
 

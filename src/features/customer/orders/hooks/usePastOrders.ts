@@ -42,7 +42,7 @@ export const usePastOrders = (filters: OrderFilters) => {
   return useQuery({
     queryKey: pastOrdersQueryKeys.list(filters),
     queryFn: () => fetchPastOrders(filters),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 30 * 1000,
   });
 };
 
@@ -57,7 +57,7 @@ export const usePastOrdersInfinite = (filters: OrderFilters) => {
       return undefined;
     },
     initialPageParam: 1,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 30 * 1000,
   });
 };
 

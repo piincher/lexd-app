@@ -31,9 +31,10 @@ interface GoodsFormProps {
   onChange: (field: keyof GoodsFormData, value: string | boolean) => void;
   calculatedCBM?: number | null;
   calculatedTotalCost?: number;
+  onInputFocus?: () => void;
 }
 
-export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculatedCBM, calculatedTotalCost }) => {
+export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculatedCBM, calculatedTotalCost, onInputFocus }) => {
   const { colors } = useAppTheme();
   const styles = useGoodsFormStyles();
   const isSea = data.shippingMode === 'SEA';
@@ -50,6 +51,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
           onChangeText={(v) => onChange('description', v)} multiline numberOfLines={3}
           style={styles.textArea} outlineStyle={styles.inputOutline}
           outlineColor={colors.border} activeOutlineColor={colors.primary.main}
+          onFocus={onInputFocus}
         />
       </FormSection>
 
@@ -61,6 +63,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             keyboardType="numeric" style={[styles.input, styles.halfInput]}
             outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
             right={<TextInput.Affix text="pcs" />}
+            onFocus={onInputFocus}
           />
           <TextInput
             mode="outlined" label="Poids" value={data.weight}
@@ -68,6 +71,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             keyboardType="decimal-pad" style={[styles.input, styles.halfInput]}
             outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
             right={<TextInput.Affix text="kg" />}
+            onFocus={onInputFocus}
           />
         </View>
       </FormSection>
@@ -79,6 +83,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             cbm={data.cbm} useDimensions={data.useDimensions}
             calculatedCBM={calculatedCBM}
             onChange={(field, value) => onChange(field as keyof GoodsFormData, value)}
+            onInputFocus={onInputFocus}
           />
         </FormSection>
       )}
@@ -90,6 +95,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
           keyboardType="decimal-pad" style={styles.input}
           outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
           right={<TextInput.Affix text={isSea ? 'FCFA/m³' : 'FCFA/kg'} />}
+          onFocus={onInputFocus}
         />
         {calculatedTotalCost != null && calculatedTotalCost > 0 && (
           <View style={styles.totalCostRow}>
@@ -106,6 +112,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
           autoCapitalize="characters" style={styles.input}
           outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
           placeholder="Ex: C3"
+          onFocus={onInputFocus}
         />
         <HelperText type="info">Format: lettre + chiffre (ex: A1, C3, D5)</HelperText>
       </FormSection>
@@ -116,6 +123,7 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
           onChangeText={(v) => onChange('receivedByName', v)}
           style={styles.input} outlineStyle={styles.inputOutline}
           outlineColor={colors.border} activeOutlineColor={colors.primary.main}
+          onFocus={onInputFocus}
         />
       </FormSection>
     </View>

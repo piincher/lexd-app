@@ -10,9 +10,13 @@ import axios, {
   AxiosError,
   InternalAxiosRequestConfig,
 } from 'axios';
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 import { getAuthStoreRef } from './authStoreRef';
 import { ApiRequestConfig, ApiResponse } from './types';
 import type { userData } from '@src/constants/types';
+import { emitVersionUpgradeRequired } from '../lib/versionEvents';
+import { getDeviceIdSync } from '../lib/deviceId';
 
 // ============================================
 // ENVIRONMENT CONFIGURATION
@@ -32,7 +36,7 @@ const getEnvironment = (value?: string): Environment => {
   return 'production';
 };
 
-const ENV = getEnvironment('production'); // Change this value to switch environments (or set via env variable in the future)
+const ENV = getEnvironment('development'); // Change this value to switch environments (or set via env variable in the future)
 
 const API_CONFIG = {
   local: {
@@ -174,6 +178,19 @@ const isTokenExpiredResponse = (responseData?: ApiResponse<unknown> | Record<str
 /**
  * Standard API Error class
  */
+export class VersionUpgradeError extends Error {
+  public readonly requiredVersion: string;
+  public readonly currentVersion: string;
+  public readonly statusCode = 426;
+
+  constructor(requiredVersion: string, currentVersion: string) {
+    super('Upgrade Required: App version is too old');
+    this.name = 'VersionUpgradeError';
+    this.requiredVersion = requiredVersion;
+    this.currentVersion = currentVersion;
+  }
+}
+
 export class ApiClientError extends Error {
   public readonly code: string;
   public readonly statusCode?: number;
@@ -311,17 +328,30 @@ const trackInflight = (config: InternalAxiosRequestConfig, promise: Promise<unkn
  */
 const requestInterceptor = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
   const token = getAuthStoreRef()?.getState().token;
-  
+
   // Only add auth header if token exists and is not empty
   if (token && token.trim() !== '' && !config.headers.get('skipAuth')) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  
+
+  // Add app version and platform headers for backend version gate
+  const appVersion = Constants.expoConfig?.version;
+  if (appVersion) {
+    config.headers['x-app-version'] = appVersion;
+  }
+  config.headers['x-platform'] = Platform.OS;
+
+  // Add device ID header for backend version-gate whitelist
+  const deviceId = getDeviceIdSync();
+  if (deviceId) {
+    config.headers['x-device-id'] = deviceId;
+  }
+
   // Remove internal headers before sending
   config.headers.delete('skipAuth');
   config.headers.delete('skipErrorHandling');
   config.headers.delete('retryCount');
-  
+
   return config;
 };
 
@@ -369,6 +399,17 @@ const createApiClient = (baseURL: string): AxiosInstance => {
     // Skip error handling if requested
     if (config.headers?.['skipErrorHandling']) {
       return Promise.reject(error);
+    }
+
+    // Handle 426 Upgrade Required before normal error handling
+    if (error.response?.status === 426) {
+      const responseData = error.response?.data as Record<string, unknown> | undefined;
+      const requiredVersion = typeof responseData?.requiredVersion === 'string' ? responseData.requiredVersion : '';
+      const currentVersion = typeof responseData?.currentVersion === 'string' ? responseData.currentVersion : '';
+
+      emitVersionUpgradeRequired({ requiredVersion, currentVersion });
+
+      return Promise.reject(new VersionUpgradeError(requiredVersion, currentVersion));
     }
 
     // Handle retry logic

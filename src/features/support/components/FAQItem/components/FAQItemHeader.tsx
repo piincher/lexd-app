@@ -7,7 +7,7 @@ import { Fonts } from '@src/constants/Fonts';
 interface FAQItemHeaderProps {
   question: string;
   categoryColor: string;
-  chevronStyle: any;
+  chevronStyle: Record<string, unknown>;
   textColor: string;
   chevronColor: string;
 }

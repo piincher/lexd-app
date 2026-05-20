@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { Text, Button, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -20,7 +20,8 @@ export const CreateAirwayBillScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
+      <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
         <Text style={styles.title}>Nouvelle lettre de transport</Text>
         <Text style={styles.helper}>
           Le numéro AWB sera généré automatiquement. Les informations du vol peuvent être ajoutées maintenant ou plus tard.
@@ -71,7 +72,8 @@ export const CreateAirwayBillScreen: React.FC = () => {
         >
           Créer la lettre de transport
         </Button>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

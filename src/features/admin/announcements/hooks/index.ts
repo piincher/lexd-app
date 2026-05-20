@@ -1,4 +1,10 @@
-export { useActiveAnnouncement, useAdminAnnouncement, useAdminAnnouncements } from "./useAnnouncements";
+export {
+  useActiveAnnouncement,
+  useAdminAnnouncement,
+  useAdminAnnouncements,
+  useAnnouncementStats,
+  useAnnouncementReceiptStats,
+} from "./useAnnouncements";
 export {
   useArchiveAnnouncement,
   useCreateAnnouncement,

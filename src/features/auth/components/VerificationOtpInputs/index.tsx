@@ -12,6 +12,7 @@ interface VerificationOtpInputsProps {
   onOtpChange: (value: string, index: number) => void;
   onKeyPress: (key: string, index: number) => void;
   hasError: boolean;
+  onInputFocus?: () => void;
 }
 
 export const VerificationOtpInputs: React.FC<VerificationOtpInputsProps> = ({
@@ -21,6 +22,7 @@ export const VerificationOtpInputs: React.FC<VerificationOtpInputsProps> = ({
   onOtpChange,
   onKeyPress,
   hasError,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
   const activeColor = hasError ? colors.status.error : colors.primary.main;
@@ -60,6 +62,7 @@ export const VerificationOtpInputs: React.FC<VerificationOtpInputsProps> = ({
               importantForAutofill="yes"
               maxLength={OTP_LENGTH}
               selectTextOnFocus
+              onFocus={onInputFocus}
               accessibilityLabel={`Chiffre ${index + 1} du code de vérification`}
             />
             {isActive && !isFilled && <View style={[styles.cursor, { backgroundColor: activeColor }]} />}

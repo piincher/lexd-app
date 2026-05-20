@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,15 +9,23 @@ import { usePromoForm } from "../hooks/usePromoForm";
 import { PromoFilters } from "../components/PromoFilters";
 import { PromoList } from "../components/PromoList";
 import { PromoForm } from "../components/PromoForm";
-import { createStyles } from './ManagePromosScreen.styles';
+import { PromoStatsModal } from "../components/PromoStatsModal";
+import { PromoSummaryStats } from "../components/PromoSummaryStats";
+import type { PromoRecord } from "../api/promoAdminApi";
+import { createStyles } from "./ManagePromosScreen.styles";
 
 export default function ManagePromosScreen({ navigation }: RootStackScreenProps<"ManagePromos">) {
   const { colors, isDark } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const [statsPromo, setStatsPromo] = useState<PromoRecord | null>(null);
+
   const {
-    activeFilter, page, promos, pagination, isLoading, isRefetching, refetch,
-    handleFilterChange, handleNextPage, handlePrevPage, handleDeactivate,
+    activeFilter, activeType, search, page, promos, pagination, summary,
+    isLoading, isRefetching, refetch,
+    handleFilterChange, handleTypeChange, handleSearchChange,
+    handleNextPage, handlePrevPage, handleDeactivate, handleClone,
   } = useManagePromos();
+
   const {
     showForm, editingPromo, form, isSubmitting,
     openCreateForm, openEditForm, closeForm, handleFormChange, handleOptionChange, handleSubmit,
@@ -25,6 +33,7 @@ export default function ManagePromosScreen({ navigation }: RootStackScreenProps<
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()} activeOpacity={0.7}>
@@ -38,18 +47,50 @@ export default function ManagePromosScreen({ navigation }: RootStackScreenProps<
           </View>
         </View>
       </View>
+
+      {/* Summary stats */}
+      <PromoSummaryStats summary={summary} />
+
+      {/* Filters */}
       <View style={styles.filterContainer}>
-        <PromoFilters activeFilter={activeFilter} onFilterChange={handleFilterChange} />
+        <PromoFilters
+          activeFilter={activeFilter}
+          activeType={activeType}
+          search={search}
+          onFilterChange={handleFilterChange}
+          onTypeChange={handleTypeChange}
+          onSearchChange={handleSearchChange}
+        />
       </View>
+
+      {/* List */}
       <PromoList
-        promos={promos} isLoading={isLoading} isRefetching={isRefetching} refetch={refetch}
-        activeFilter={activeFilter} page={page} totalPages={pagination.totalPages}
-        onEdit={openEditForm} onDeactivate={handleDeactivate}
-        onNextPage={handleNextPage} onPrevPage={handlePrevPage} onResetFilter={() => handleFilterChange("all")}
+        promos={promos}
+        isLoading={isLoading}
+        isRefetching={isRefetching}
+        refetch={refetch}
+        activeFilter={activeFilter}
+        page={page}
+        totalPages={pagination.totalPages}
+        onEdit={openEditForm}
+        onDeactivate={handleDeactivate}
+        onStats={(promo) => setStatsPromo(promo)}
+        onClone={handleClone}
+        onNextPage={handleNextPage}
+        onPrevPage={handlePrevPage}
+        onResetFilter={() => {
+          handleFilterChange("all");
+          handleTypeChange("all");
+          handleSearchChange("");
+        }}
       />
+
+      {/* FAB */}
       <TouchableOpacity style={styles.fab} onPress={openCreateForm} activeOpacity={0.8}>
         <Ionicons name="add" size={28} color={colors.text.inverse} />
       </TouchableOpacity>
+
+      {/* Form Modal */}
       <Modal visible={showForm} animationType="slide" presentationStyle="pageSheet">
         <SafeAreaView style={styles.modalContainer}>
           <View style={styles.modalHeader}>
@@ -61,11 +102,19 @@ export default function ManagePromosScreen({ navigation }: RootStackScreenProps<
             </Text>
           </View>
           <PromoForm
-            form={form} onChange={handleFormChange} onOptionChange={handleOptionChange}
-            onSubmit={handleSubmit} onCancel={closeForm} isSubmitting={isSubmitting} isEditing={!!editingPromo}
+            form={form}
+            onChange={handleFormChange}
+            onOptionChange={handleOptionChange}
+            onSubmit={handleSubmit}
+            onCancel={closeForm}
+            isSubmitting={isSubmitting}
+            isEditing={!!editingPromo}
           />
         </SafeAreaView>
       </Modal>
+
+      {/* Stats Modal */}
+      <PromoStatsModal visible={!!statsPromo} promo={statsPromo} onClose={() => setStatsPromo(null)} />
     </SafeAreaView>
   );
 }

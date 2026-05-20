@@ -10,6 +10,7 @@ interface ExpiryFieldProps {
   onYearChange: (value: string) => void;
   error?: string;
   disabled?: boolean;
+  onInputFocus?: () => void;
 }
 
 export const ExpiryField: React.FC<ExpiryFieldProps> = ({
@@ -19,6 +20,7 @@ export const ExpiryField: React.FC<ExpiryFieldProps> = ({
   onYearChange,
   error,
   disabled,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
 
@@ -35,6 +37,7 @@ export const ExpiryField: React.FC<ExpiryFieldProps> = ({
           keyboardType="number-pad"
           maxLength={2}
           editable={!disabled}
+          onFocus={onInputFocus}
         />
         <Text style={[styles.separator, { color: colors.text.secondary }]}>/</Text>
         <TextInput
@@ -46,6 +49,7 @@ export const ExpiryField: React.FC<ExpiryFieldProps> = ({
           keyboardType="number-pad"
           maxLength={2}
           editable={!disabled}
+          onFocus={onInputFocus}
         />
       </View>
       {error && <Text style={[styles.errorText, { color: colors.status.error }]}>{error}</Text>}

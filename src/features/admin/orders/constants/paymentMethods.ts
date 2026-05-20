@@ -4,6 +4,7 @@ export const PAYMENT_METHOD_ICONS: Record<string, string> = {
   MOBILE_MONEY: 'cellphone',
   ORANGE_MONEY: 'cellphone',
   WAVE: 'wave',
+  REWARD_POINTS: 'ticket-percent',
 };
 
 export const PAYMENT_METHOD_LABELS: Record<string, string> = {
@@ -12,4 +13,5 @@ export const PAYMENT_METHOD_LABELS: Record<string, string> = {
   MOBILE_MONEY: 'Mobile Money',
   ORANGE_MONEY: 'Orange Money',
   WAVE: 'Wave',
+  REWARD_POINTS: 'Points récompense',
 };

@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 
-export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+export const createStyles = (colors: any, _isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.neutral[50],
+    backgroundColor: colors.background.default,
   },
   flex: {
     flex: 1,

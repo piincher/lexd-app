@@ -55,6 +55,7 @@ const CreateCampaignScreen = ({
             onToggleDraft={() => handlers.setSaveAsDraft((v) => !v)}
             onShowDatePicker={() => handlers.setShowDatePicker(true)}
           />
+          <View style={{ height: 280 }} />
         </ScrollView>
       </KeyboardAvoidingView>
 

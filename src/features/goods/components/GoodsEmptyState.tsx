@@ -8,8 +8,10 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
+type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+
 interface GoodsEmptyStateProps {
-	icon?: string;
+	icon?: MaterialIconName;
 	title?: string;
 	message?: string;
 }
@@ -17,7 +19,7 @@ interface GoodsEmptyStateProps {
 export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
 	icon = 'package-variant',
 	title = 'Aucune marchandise',
-	message = 'Vous n\'avez pas encore de marchandises enregistrées.\nContactez-nous pour expédier vos colis.',
+	message = 'Vos marchandises apparaîtront ici dès leur réception à l’entrepôt.\nContactez-nous pour organiser un envoi.',
 }) => {
 	const { colors } = useAppTheme();
 	const styles = useMemo(() => StyleSheet.create({
@@ -47,7 +49,7 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
 	return (
 		<View style={styles.container}>
 			<MaterialCommunityIcons
-				name={icon as any}
+				name={icon}
 				size={80}
 				color={colors.status.success}
 			/>

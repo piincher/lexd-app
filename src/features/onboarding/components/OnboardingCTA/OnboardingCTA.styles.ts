@@ -25,11 +25,11 @@ export const createStyles = (colors: any) =>
     },
     primaryButton: { backgroundColor: colors.background.paper, width: "100%" },
     nextButton: {
-      backgroundColor: colors.text.inverse + "40",
+      backgroundColor: colors.neutral.white + "40",
       minWidth: 136,
       paddingHorizontal: 24,
       borderWidth: 1,
-      borderColor: colors.text.inverse + "4D",
+      borderColor: colors.neutral.white + "4D",
     },
     nextButtonCompact: { minWidth: 124, paddingHorizontal: 18 },
     skipSlot: { flex: 1, alignItems: "flex-start", minWidth: 0 },
@@ -41,7 +41,7 @@ export const createStyles = (colors: any) =>
       paddingHorizontal: 16,
     },
     skipText: {
-      color: colors.text.inverse + "CC",
+      color: colors.neutral.white + "CC",
       fontSize: 16,
       fontFamily: Fonts.medium,
       fontWeight: "500",
@@ -53,7 +53,7 @@ export const createStyles = (colors: any) =>
       fontWeight: "700",
     },
     nextText: {
-      color: colors.text.inverse,
+      color: colors.neutral.white,
       fontSize: 16,
       fontFamily: Fonts.semiBold,
       fontWeight: "600",

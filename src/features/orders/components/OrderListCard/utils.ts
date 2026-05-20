@@ -1,9 +1,11 @@
+import { CUSTOMER_ORDER_STATUS_LABELS } from '@src/shared/lib/customerStatus';
+
 export const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-   Active: { label: "En cours", color: "#1B365D" },
-   "In Transit": { label: "En transit", color: "#2D8FDB" },
-   Delivered: { label: "Livré", color: "#1AAE7E" },
-   Inactive: { label: "En attente", color: "#8E99A4" },
-   Arrived: { label: "Arrivé", color: "#F59E0B" },
+   Active: { label: CUSTOMER_ORDER_STATUS_LABELS.Active, color: "#1B365D" },
+   "In Transit": { label: CUSTOMER_ORDER_STATUS_LABELS["In Transit"], color: "#2D8FDB" },
+   Delivered: { label: CUSTOMER_ORDER_STATUS_LABELS.Delivered, color: "#1AAE7E" },
+   Inactive: { label: CUSTOMER_ORDER_STATUS_LABELS.Inactive, color: "#8E99A4" },
+   Arrived: { label: CUSTOMER_ORDER_STATUS_LABELS.Arrived, color: "#F59E0B" },
 };
 
 export type StepIndex = 0 | 1 | 2 | 3 | 4;

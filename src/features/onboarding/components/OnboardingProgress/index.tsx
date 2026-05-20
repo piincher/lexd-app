@@ -49,13 +49,13 @@ const createStyles = (colors: any) =>
     },
     track: {
       height: 4,
-      backgroundColor: colors.text.inverse + "4D",
+      backgroundColor: colors.neutral.white + "4D",
       borderRadius: 2,
       overflow: "hidden",
     },
     progress: {
       height: "100%",
-      backgroundColor: colors.text.inverse,
+      backgroundColor: colors.neutral.white,
       borderRadius: 2,
     },
   });

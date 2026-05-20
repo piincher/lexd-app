@@ -52,6 +52,17 @@ export const useDeleteGoods = () => {
   });
 };
 
+export const useHardDeleteGoods = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: string) => goodsService.delete(id, true),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: goodsQueryKeys.lists() });
+    },
+  });
+};
+
 export const useAssignGoodsToContainer = () => {
   const queryClient = useQueryClient();
 

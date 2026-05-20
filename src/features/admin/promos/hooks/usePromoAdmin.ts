@@ -13,6 +13,7 @@ export {
   useCreatePromo,
   useUpdatePromo,
   useDeactivatePromo,
+  useClonePromo,
   useCreateBanner,
   useUpdateBanner,
   useDeactivateBanner,

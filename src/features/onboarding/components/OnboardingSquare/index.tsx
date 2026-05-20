@@ -35,7 +35,7 @@ export const OnboardingSquare: React.FC<OnboardingSquareProps> = ({
       style={[
         styles.square,
         {
-          backgroundColor: colors.text.inverse,
+          backgroundColor: colors.neutral.white,
           transform: [{ rotate }, { translateX }],
         },
       ]}

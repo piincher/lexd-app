@@ -4,6 +4,8 @@ import type {
   AnnouncementListResult,
   CreateAnnouncementInput,
   UpdateAnnouncementInput,
+  AnnouncementStats,
+  AnnouncementReceiptAnalytics,
 } from "../types/announcement.types";
 
 const LEGACY_URL = "/announcement";
@@ -21,8 +23,12 @@ export const announcementAdminApi = {
   },
 
   list: async (params?: {
+    page?: number;
+    limit?: number;
     status?: Announcement["status"];
     placement?: Announcement["placement"];
+    type?: Announcement["type"];
+    search?: string;
   }): Promise<AnnouncementListResult> => {
     const response = await apiClientV2.get<ApiResponse<AnnouncementListResult>>(BASE_URL, {
       params,
@@ -47,6 +53,16 @@ export const announcementAdminApi = {
 
   archive: async (id: string): Promise<Announcement> => {
     const response = await apiClientV2.post<ApiResponse<Announcement>>(`${BASE_URL}/${id}/archive`);
+    return response.data.data;
+  },
+
+  getStats: async (): Promise<AnnouncementStats> => {
+    const response = await apiClientV2.get<ApiResponse<AnnouncementStats>>(`${BASE_URL}/stats`);
+    return response.data.data;
+  },
+
+  getReceiptStats: async (id: string): Promise<AnnouncementReceiptAnalytics> => {
+    const response = await apiClientV2.get<ApiResponse<AnnouncementReceiptAnalytics>>(`${BASE_URL}/${id}/receipts`);
     return response.data.data;
   },
 };

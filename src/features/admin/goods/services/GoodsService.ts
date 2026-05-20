@@ -15,12 +15,19 @@ interface ReceiveGoodsResponse extends Goods {
   order?: { _id: string; code: string };
 }
 
+type ReactNativeFilePart = {
+  uri: string;
+  name: string;
+  type: string;
+};
+
 /**
  * API endpoints for goods
  */
 const ENDPOINTS = {
   BASE: '/goods',
   BY_ID: (id: string) => `/goods/${id}`,
+  HARD_DELETE: (id: string) => `/goods/${id}/hard`,
   BY_CLIENT: (clientId: string) => `/goods/client/${clientId}`,
   LOCATION: (id: string) => `/goods/${id}/location`,
   PHOTO: (id: string) => `/goods/${id}/photo`,
@@ -125,7 +132,7 @@ export class GoodsService {
       uri: photoUri,
       name: `goods_${Date.now()}.jpg`,
       type: 'image/jpeg',
-    } as any);
+    } as ReactNativeFilePart as unknown as Blob);
 
     return uploadFile<{ url: string }>(
       this.client,
@@ -139,8 +146,12 @@ export class GoodsService {
    * Delete goods
    */
   async delete(id: string, permanent = false): Promise<ApiResponse<void>> {
+    if (permanent) {
+      return apiRequest.delete(this.client, ENDPOINTS.HARD_DELETE(id));
+    }
+
     return apiRequest.delete(this.client, ENDPOINTS.BY_ID(id), {
-      params: { permanent: permanent ? 'true' : undefined },
+      params: {},
     });
   }
 
@@ -221,7 +232,7 @@ export class GoodsService {
         uri,
         name: `goods_${Date.now()}_${index}.jpg`,
         type: 'image/jpeg',
-      } as any);
+      } as ReactNativeFilePart as unknown as Blob);
     });
 
     return formData;

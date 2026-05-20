@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
-import { RefreshControl, Linking, View, ActivityIndicator } from 'react-native';
+import { RefreshControl, Linking, ActivityIndicator } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { RootStackParamList } from '@src/navigations/type';
 import { EmptyState } from '@src/shared/ui/EmptyState';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMyPaymentHistory } from '../../hooks/useMyPaymentHistory';
@@ -12,7 +14,7 @@ import { PaymentHistoryItem } from '../../types';
 import { styles } from './styles';
 
 export const MyPaymentHistoryContent: React.FC = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { colors } = useAppTheme();
   const {
     payments,
@@ -74,7 +76,7 @@ export const MyPaymentHistoryContent: React.FC = () => {
       <EmptyState
         icon="cash-remove"
         title="Aucun paiement"
-        message="Vous n'avez pas encore de paiements enregistrés."
+        message="Vos paiements validés apparaîtront ici dès qu'ils seront enregistrés."
       />
     );
   }

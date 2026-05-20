@@ -11,12 +11,14 @@ interface ReviewCardProps {
   review: AdminReview;
   onRespond: (reviewId: string, response: string) => void;
   isResponding: boolean;
+  onInputFocus?: () => void;
 }
 
 export const ReviewCard: React.FC<ReviewCardProps> = ({
   review,
   onRespond,
   isResponding,
+  onInputFocus,
 }) => {
   const { colors, isDark } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
@@ -103,6 +105,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
                 multiline
                 numberOfLines={3}
                 maxLength={500}
+                onFocus={onInputFocus}
               />
               <View style={styles.responseActions}>
                 <TouchableOpacity

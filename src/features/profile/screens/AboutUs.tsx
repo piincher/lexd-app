@@ -4,7 +4,8 @@
  */
 
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useAboutUs } from '@src/features/profile/hooks/useAboutUs';
 import { AboutUsHero } from '@src/features/profile/components/AboutUsHero';

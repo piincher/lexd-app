@@ -40,5 +40,43 @@ export const useContainerHeaderCardStyles = () => {
     statusChip: {
       height: 32,
     },
+    situationBox: {
+      marginTop: 16,
+      padding: 14,
+      borderRadius: 14,
+      backgroundColor: colors.background.paper,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    situationEyebrow: {
+      fontFamily: Fonts.bold,
+      fontSize: 12,
+      color: colors.primary.main,
+      marginBottom: 4,
+    },
+    situationText: {
+      fontFamily: Fonts.medium,
+      fontSize: 14,
+      lineHeight: 20,
+      color: colors.text.primary,
+    },
+    routeSummary: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      marginTop: 10,
+    },
+    routeText: {
+      flex: 1,
+      fontFamily: Fonts.regular,
+      fontSize: 12,
+      color: colors.text.secondary,
+    },
+    goodsText: {
+      marginTop: 8,
+      fontFamily: Fonts.medium,
+      fontSize: 12,
+      color: colors.text.secondary,
+    },
   });
 };

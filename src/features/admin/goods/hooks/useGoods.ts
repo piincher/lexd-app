@@ -16,6 +16,7 @@ export {
   useUpdateGoodsLocation,
   useUpdateGoodsPhoto,
   useDeleteGoods,
+  useHardDeleteGoods,
   useAssignGoodsToContainer,
   useUpdateGoodsStatus,
 } from './goods/useGoodsMutations';

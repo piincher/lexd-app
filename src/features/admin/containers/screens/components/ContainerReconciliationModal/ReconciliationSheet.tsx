@@ -1,5 +1,5 @@
-import React from "react";
-import { View, TouchableOpacity, TextInput } from "react-native";
+import React, { useRef } from "react";
+import { View, ScrollView, TouchableOpacity, TextInput } from "react-native";
 import { Text, Button } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@src/constants/Theme";
@@ -38,6 +38,12 @@ export const ReconciliationSheet: React.FC<ReconciliationSheetProps> = ({
 }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
   return (
   <Animated.View entering={FadeIn} style={styles.overlay}>
     <Animated.View entering={SlideInUp} style={styles.sheet}>
@@ -51,48 +57,54 @@ export const ReconciliationSheet: React.FC<ReconciliationSheetProps> = ({
         </TouchableOpacity>
       </View>
 
-      <View style={styles.contextBox}>
-        <Text style={styles.contextText}>
-          CBM client facturé: <Text style={styles.contextBold}>{(clientTotalCBM ?? 0).toFixed(2)} m³</Text>
-        </Text>
-        <Text style={styles.contextText}>
-          Revenu client total: <Text style={styles.contextBold}>{(clientTotalRevenue ?? 0).toLocaleString("fr-FR")} FCFA</Text>
-        </Text>
-      </View>
+      <ScrollView ref={scrollViewRef} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+        <View style={styles.contextBox}>
+          <Text style={styles.contextText}>
+            CBM client facturé: <Text style={styles.contextBold}>{(clientTotalCBM ?? 0).toFixed(2)} m³</Text>
+          </Text>
+          <Text style={styles.contextText}>
+            Revenu client total: <Text style={styles.contextBold}>{(clientTotalRevenue ?? 0).toLocaleString("fr-FR")} FCFA</Text>
+          </Text>
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputLabel}>CBM final de l&apos;agent *</Text>
-        <TextInput
-          style={[styles.input, error ? styles.inputError : null]}
-          placeholder="Ex: 12.5"
-          keyboardType="decimal-pad"
-          value={agentCBM}
-          onChangeText={onAgentCBMChange}
-          editable={!isLoading}
-        />
-        {error ? <Text style={styles.errorText}>{error}</Text> : null}
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>CBM final de l&apos;agent *</Text>
+          <TextInput
+            style={[styles.input, error ? styles.inputError : null]}
+            placeholder="Ex: 12.5"
+            keyboardType="decimal-pad"
+            value={agentCBM}
+            onChangeText={onAgentCBMChange}
+            editable={!isLoading}
+            onFocus={scrollToEnd}
+          />
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputLabel}>Coût par CBM (FCFA)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder={`${currentAgentUnitCost}`}
-          keyboardType="number-pad"
-          value={agentUnitCost}
-          onChangeText={onAgentUnitCostChange}
-          editable={!isLoading}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.inputLabel}>Coût par CBM (FCFA)</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={`${currentAgentUnitCost}`}
+            keyboardType="number-pad"
+            value={agentUnitCost}
+            onChangeText={onAgentUnitCostChange}
+            editable={!isLoading}
+            onFocus={scrollToEnd}
+          />
+        </View>
 
-      {parsedCBM > 0 && (
-        <ReconciliationPreview
-          estimatedCost={estimatedCost}
-          actualCost={actualCost}
-          reconciledProfit={reconciledProfit}
-          profitGap={profitGap}
-        />
-      )}
+        {parsedCBM > 0 && (
+          <ReconciliationPreview
+            estimatedCost={estimatedCost}
+            actualCost={actualCost}
+            reconciledProfit={reconciledProfit}
+            profitGap={profitGap}
+          />
+        )}
+
+        <View style={{ height: 280 }} />
+      </ScrollView>
 
       <View style={styles.actions}>
         <Button mode="outlined" onPress={onDismiss} style={styles.cancelBtn} disabled={isLoading}>

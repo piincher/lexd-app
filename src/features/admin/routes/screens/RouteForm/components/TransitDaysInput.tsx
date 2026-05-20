@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { TextInput, HelperText } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
 
@@ -14,6 +14,13 @@ export const TransitDaysInput: React.FC<TransitDaysInputProps> = ({
   onChangeText,
   error,
 }) => {
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
+
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.label}>
@@ -31,6 +38,7 @@ export const TransitDaysInput: React.FC<TransitDaysInputProps> = ({
         left={<TextInput.Icon icon="clock-outline" />}
         keyboardType="numeric"
         maxLength={3}
+        onFocus={scrollToEnd}
       />
       {error && <HelperText type="error">{error}</HelperText>}
     </View>

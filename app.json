@@ -10,7 +10,6 @@
       "reactCompiler": true
     },
     "scheme": "chinalinkexpress",
-
     "splash": {
       "image": "./assets/images/splashscreen.png",
       "resizeMode": "contain",
@@ -54,7 +53,10 @@
           "enableBackgroundRemoteNotifications": true
         }
       ],
-      "@react-native-community/datetimepicker"
+      "@react-native-community/datetimepicker",
+      "expo-background-task",
+      "expo-image",
+      "expo-sharing"
     ],
     "assetBundlePatterns": [
       "assets/images/*",
@@ -104,7 +106,10 @@
               "pathPrefix": "/"
             }
           ],
-          "category": ["BROWSABLE", "DEFAULT"]
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
         }
       ],
       "permissions": [

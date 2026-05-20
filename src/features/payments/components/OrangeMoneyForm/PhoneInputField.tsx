@@ -9,6 +9,7 @@ interface PhoneInputFieldProps {
   onPhoneNumberChange: (phone: string) => void;
   error?: string;
   disabled?: boolean;
+  onInputFocus?: () => void;
 }
 
 const isValidPhone = (phone: string): boolean => {
@@ -21,6 +22,7 @@ export const PhoneInputField: React.FC<PhoneInputFieldProps> = ({
   onPhoneNumberChange,
   error,
   disabled = false,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
   const styles = useOrangeMoneyFormStyles();
@@ -60,7 +62,7 @@ export const PhoneInputField: React.FC<PhoneInputFieldProps> = ({
           style={styles.input}
           value={phoneNumber}
           onChangeText={handlePhoneChange}
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => { setIsFocused(true); onInputFocus?.(); }}
           onBlur={() => setIsFocused(false)}
           placeholder="07XXXXXXXX"
           placeholderTextColor={colors.text.disabled}

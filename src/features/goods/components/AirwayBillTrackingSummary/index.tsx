@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { CUSTOMER_AIR_STATUS_LABELS } from '@src/shared/lib/customerStatus';
 import { useAirwayBillTrackingSummaryStyles } from './AirwayBillTrackingSummary.styles';
 import type { TrackingWaypoint } from '../../api/types';
 
@@ -13,16 +14,6 @@ interface Props {
   estimatedArrival?: string | null;
   goodsCount: number;
 }
-
-const STATUS_LABELS: Record<string, string> = {
-  CREATED: 'Expédition créée',
-  PACKING: 'Préparation en cours',
-  READY_FOR_DEPARTURE: 'Prêt au départ',
-  IN_TRANSIT: 'En route',
-  ARRIVED: 'Arrivé à Bamako',
-  READY_FOR_PICKUP: 'Prêt pour retrait',
-  DELIVERED: 'Livré',
-};
 
 const STATUS_ICONS: Record<string, React.ComponentProps<typeof MaterialCommunityIcons>['name']> = {
   CREATED: 'file-document-outline',
@@ -60,7 +51,7 @@ export const AirwayBillTrackingSummary: React.FC<Props> = ({
   const { colors } = useAppTheme();
   const styles = useAirwayBillTrackingSummaryStyles();
   const icon = STATUS_ICONS[status] || 'airplane';
-  const label = STATUS_LABELS[status] || status;
+  const label = CUSTOMER_AIR_STATUS_LABELS[status] || status;
 
   return (
     <Card style={styles.card}>

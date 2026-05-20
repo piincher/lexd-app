@@ -47,7 +47,7 @@ export type PaymentStatus =
   | 'REFUNDED';
 
 // Payment Method
-export type PaymentMethod = 'ORANGE_MONEY' | 'WAVE' | 'CARD' | 'CASH';
+export type PaymentMethod = 'ORANGE_MONEY' | 'WAVE' | 'CARD' | 'CASH' | 'REWARD_POINTS';
 
 // Payment Initialization
 export interface InitializePaymentRequest {

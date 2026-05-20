@@ -31,6 +31,7 @@ export type RootStackParamList = {
    Orders: undefined;
    UserActiveOrders: { type: "air" | "sea" };
    AdminDashBoard: undefined;
+   AtRiskCustomers: undefined;
    OutstandingPaymentsList: undefined;
    VoidGoodsList: undefined;
    VoidGoods: {
@@ -98,8 +99,8 @@ export type RootStackParamList = {
    CargoBagDetail: { cargoBagId: string; airwayBillId: string };
    // WhatsApp Admin
    WhatsAppRequests: { requestId?: string } | undefined;
-   // Customer Payment Features — TEMPORARILY DISABLED
-   // MyPaymentHistory: undefined;
+   // Customer Payment Features
+   MyPaymentHistory: undefined;
    NotificationDetail: {
       notification: import("@src/features/notifications/types").InAppNotification;
    };
@@ -113,6 +114,11 @@ export type RootStackParamList = {
    NotificationEvents: undefined;
    NotificationEventDetail: { notificationEventId: string };
    Referral: undefined;
+   Redemption: undefined;
+   MyRewards: undefined;
+   AdminRedemptions: undefined;
+   AdminRewardSettings: undefined;
+   AppVersionSettings: undefined;
 
    // Admin Certificate Issuance
    IssueCertificate: undefined;
@@ -133,7 +139,7 @@ export type RootStackParamList = {
          issuedBy: { _id: string; firstName: string; lastName: string } | null;
       };
    };
-   // PaymentHistoryScreen: undefined;
+   PaymentHistoryScreen: undefined;
    // PaymentScreen: {
    //    orderId: string;
    //    orderCode: string;
@@ -153,6 +159,7 @@ export type RootStackParamList = {
    AdminTicketDetail: { ticketId: string };
    // Promos Screen
    ManagePromos: undefined;
+   WinBackDashboard: undefined;
    // Campaign Screens
    CampaignList: undefined;
    CreateCampaign: undefined;
@@ -162,6 +169,7 @@ export type RootStackParamList = {
    ActivityList: undefined;
    // Search Screens
    GlobalSearch: undefined;
+   TrustProfile: undefined;
    // Client Certificate Detail
    CertificateDetail: {
       certificateId: string;
@@ -207,10 +215,9 @@ export type RootStackParamList = {
          description: string;
       }[];
    };
-   // User Payment Detail Screen — TEMPORARILY DISABLED
-   // UserPaymentDetail: {
-   //    payment: import("@src/features/payments/types").PaymentHistoryItem;
-   // };
+   UserPaymentDetail: {
+      payment: import("@src/features/payments/types").PaymentHistoryItem;
+   };
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<

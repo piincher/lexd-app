@@ -8,12 +8,14 @@ interface WaypointNotesSectionProps {
   notes: string;
   onChangeNotes: (text: string) => void;
   delay?: number;
+  onFocus?: () => void;
 }
 
 export const WaypointNotesSection: React.FC<WaypointNotesSectionProps> = ({
   notes,
   onChangeNotes,
   delay = 0,
+  onFocus,
 }) => {
   return (
     <Animated.View entering={FadeIn.delay(delay)} style={styles.section}>
@@ -30,6 +32,7 @@ export const WaypointNotesSection: React.FC<WaypointNotesSectionProps> = ({
         multiline
         numberOfLines={4}
         textAlignVertical="top"
+        onFocus={onFocus}
       />
     </Animated.View>
   );

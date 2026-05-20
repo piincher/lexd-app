@@ -30,9 +30,9 @@ export const usePastOrdersAdmin = () => {
     return data.pages.flatMap((page) =>
       page.filter(
         (item) =>
-          item.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          item.code.includes(searchQuery) ||
-          item.clientPhone.includes(searchQuery)
+          item.clientName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.code?.includes(searchQuery) ||
+          item.clientPhone?.includes(searchQuery)
       )
     );
   })() as productType[];

@@ -43,7 +43,7 @@ export const CreateOrderCTA: React.FC<CreateOrderCTAProps> = ({ onPress }) => {
           color: colors.text.inverse,
         },
       }),
-    [colors.primary.main]
+    [colors.primary.main, colors.text.inverse]
   );
 
   return (
@@ -51,10 +51,10 @@ export const CreateOrderCTA: React.FC<CreateOrderCTAProps> = ({ onPress }) => {
       onPress={handlePress}
       style={({ pressed }) => [styles.container, pressed && styles.pressed]}
       accessibilityRole="button"
-      accessibilityLabel="Nouvelle Expedition"
+      accessibilityLabel="Nouvelle expédition"
     >
       <FontAwesome6 name="plus" size={16} color={colors.text.inverse} />
-      <Text style={styles.text}>Nouvelle Expedition</Text>
+      <Text style={styles.text}>Nouvelle expédition</Text>
     </Pressable>
   );
 };

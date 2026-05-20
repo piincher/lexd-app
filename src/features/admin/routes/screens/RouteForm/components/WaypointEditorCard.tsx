@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { View, Text } from 'react-native';
+import React, { useCallback, useRef } from 'react';
+import { View, Text, ScrollView } from 'react-native';
 import { IconButton, Menu, SegmentedButtons, Switch, TextInput } from 'react-native-paper';
 import type { RouteWaypointDraft } from '@src/features/admin/routes/types';
 import { KNOWN_PORTS, SEGMENT_TYPES, WAYPOINT_TYPES } from './routeWaypointOptions';
@@ -59,6 +59,12 @@ export const WaypointEditorCard: React.FC<WaypointEditorCardProps> = ({
   const { colors, isDark } = useAppTheme();
 
   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
 
   return (
     <View style={styles.card}>
@@ -88,6 +94,7 @@ export const WaypointEditorCard: React.FC<WaypointEditorCardProps> = ({
             onChangeText={(city) => patchLocation({ city })}
             right={<TextInput.Icon icon="menu-down" onPress={() => onTogglePortMenu(index)} />}
             style={styles.input}
+            onFocus={scrollToEnd}
           />
         }
       >
@@ -97,8 +104,8 @@ export const WaypointEditorCard: React.FC<WaypointEditorCardProps> = ({
       </Menu>
 
       <View style={styles.twoColumn}>
-        <TextInput mode="outlined" label="Pays" value={waypoint.location.country} onChangeText={(country) => patchLocation({ country })} style={styles.flexInput} />
-        <TextInput mode="outlined" label="Code" value={waypoint.location.portCode || ''} onChangeText={(portCode) => patchLocation({ portCode })} autoCapitalize="characters" style={styles.flexInput} />
+        <TextInput mode="outlined" label="Pays" value={waypoint.location.country} onChangeText={(country) => patchLocation({ country })} style={styles.flexInput} onFocus={scrollToEnd} />
+        <TextInput mode="outlined" label="Code" value={waypoint.location.portCode || ''} onChangeText={(portCode) => patchLocation({ portCode })} autoCapitalize="characters" style={styles.flexInput} onFocus={scrollToEnd} />
       </View>
 
       <SegmentedButtons
@@ -121,11 +128,11 @@ export const WaypointEditorCard: React.FC<WaypointEditorCardProps> = ({
       />
 
       <View style={styles.twoColumn}>
-        <TextInput mode="outlined" label="Jour" value={String(waypoint.estimatedDaysFromStart ?? 0)} onChangeText={(value) => patchWaypoint({ estimatedDaysFromStart: Number(value) || 0 })} keyboardType="number-pad" style={styles.dayInput} />
-        <TextInput mode="outlined" label="Terminal" value={waypoint.terminal || ''} onChangeText={(terminal) => patchWaypoint({ terminal })} style={styles.flexInput} />
+        <TextInput mode="outlined" label="Jour" value={String(waypoint.estimatedDaysFromStart ?? 0)} onChangeText={(value) => patchWaypoint({ estimatedDaysFromStart: Number(value) || 0 })} keyboardType="number-pad" style={styles.dayInput} onFocus={scrollToEnd} />
+        <TextInput mode="outlined" label="Terminal" value={waypoint.terminal || ''} onChangeText={(terminal) => patchWaypoint({ terminal })} style={styles.flexInput} onFocus={scrollToEnd} />
       </View>
 
-      <TextInput mode="outlined" label="Description" value={waypoint.description} onChangeText={(description) => patchWaypoint({ description })} style={styles.input} />
+      <TextInput mode="outlined" label="Description" value={waypoint.description} onChangeText={(description) => patchWaypoint({ description })} style={styles.input} onFocus={scrollToEnd} />
 
       <View style={styles.switchRow}>
         <View style={styles.switchItem}>

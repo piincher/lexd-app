@@ -33,7 +33,7 @@ export const useContainerETA = (
       return response.data.data;
     },
     enabled: !!containerId,
-    staleTime: 5 * 60 * 1000, // 5 minutes (ETA doesn't change often)
+    staleTime: 30 * 1000,
     ...options,
   });
 };

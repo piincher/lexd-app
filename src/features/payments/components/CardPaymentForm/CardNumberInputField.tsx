@@ -11,6 +11,7 @@ interface CardNumberInputFieldProps {
   error?: string;
   touched?: boolean;
   disabled?: boolean;
+  onInputFocus?: () => void;
 }
 
 export const CardNumberInputField: React.FC<CardNumberInputFieldProps> = ({
@@ -20,6 +21,7 @@ export const CardNumberInputField: React.FC<CardNumberInputFieldProps> = ({
   error,
   touched,
   disabled,
+  onInputFocus,
 }) => {
   const { colors } = useAppTheme();
 
@@ -44,6 +46,7 @@ export const CardNumberInputField: React.FC<CardNumberInputFieldProps> = ({
           keyboardType="number-pad"
           maxLength={19}
           editable={!disabled}
+          onFocus={onInputFocus}
         />
         {value.length > 0 && !error && (
           <MaterialCommunityIcons name="check-circle" size={20} color={colors.status.success} />

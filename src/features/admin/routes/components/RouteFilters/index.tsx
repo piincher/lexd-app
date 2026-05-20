@@ -7,6 +7,7 @@ import { View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ShippingMode } from '../../types';
 import { createStyles } from './RouteFilters.styles';

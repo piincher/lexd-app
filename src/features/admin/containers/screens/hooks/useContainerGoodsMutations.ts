@@ -49,14 +49,18 @@ export const useContainerGoodsMutations = (
       const response = await deleteContainer.mutateAsync(containerId);
       const releasedGoodsCount = response.data?.releasedGoodsCount || 0;
       dialogs.setShowDeleteDialog(false);
-      navigation.navigate('ContainerList' as never);
-      Alert.alert(
-        'Succès',
-        releasedGoodsCount > 0
-          ? `${releasedGoodsCount} marchandise(s) renvoyée(s) aux non assignées. Container supprimé.`
-          : 'Container supprimé.'
-      );
+      // Delay navigation to let the Dialog dismiss animation complete on Android
+      setTimeout(() => {
+        navigation.navigate('ContainerList' as never);
+        Alert.alert(
+          'Succès',
+          releasedGoodsCount > 0
+            ? `${releasedGoodsCount} marchandise(s) renvoyée(s) aux non assignées. Container supprimé.`
+            : 'Container supprimé.'
+        );
+      }, 300);
     } catch (error: unknown) {
+      dialogs.setShowDeleteDialog(false);
       Alert.alert(
         'Impossible de supprimer',
         getMutationErrorMessage(error, 'Une erreur est survenue')

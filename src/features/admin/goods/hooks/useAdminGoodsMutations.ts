@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { adminGoodsApi } from '../api';
-import { ReceiveGoodsInput } from '../api';
+import { adminGoodsApi, ReceiveGoodsInput } from '../api';
 
 export const useReceiveGoods = () => {
   const queryClient = useQueryClient();
@@ -38,6 +37,17 @@ export const useDeleteGoods = () => {
   
   return useMutation({
     mutationFn: adminGoodsApi.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-goods'] });
+    },
+  });
+};
+
+export const useHardDeleteGoods = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: adminGoodsApi.hardDelete,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-goods'] });
     },

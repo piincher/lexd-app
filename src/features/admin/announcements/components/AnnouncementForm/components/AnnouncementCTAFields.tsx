@@ -8,6 +8,7 @@ interface Props {
   onCtaLabelChange: (value: string) => void;
   onCtaUrlChange: (value: string) => void;
   onCtaScreenChange: (value: string) => void;
+  onInputFocus?: () => void;
 }
 
 export const AnnouncementCTAFields: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const AnnouncementCTAFields: React.FC<Props> = ({
   onCtaLabelChange,
   onCtaUrlChange,
   onCtaScreenChange,
+  onInputFocus,
 }) => (
   <>
     <Input
@@ -24,6 +26,7 @@ export const AnnouncementCTAFields: React.FC<Props> = ({
       value={ctaLabel}
       onChangeText={onCtaLabelChange}
       fullWidth
+      onFocus={onInputFocus}
     />
     <Input
       label="URL CTA (optionnel)"
@@ -32,6 +35,7 @@ export const AnnouncementCTAFields: React.FC<Props> = ({
       autoCapitalize="none"
       keyboardType="url"
       fullWidth
+      onFocus={onInputFocus}
     />
     <Input
       label="Écran app CTA (optionnel)"
@@ -39,6 +43,7 @@ export const AnnouncementCTAFields: React.FC<Props> = ({
       onChangeText={onCtaScreenChange}
       autoCapitalize="none"
       fullWidth
+      onFocus={onInputFocus}
     />
   </>
 );

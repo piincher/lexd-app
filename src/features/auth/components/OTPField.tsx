@@ -6,9 +6,11 @@ import type { TextInputProps } from 'react-native';
 
 interface Props extends TextInputProps {
 	ref: any;
+	onInputFocus?: () => void;
 }
 
 const OTPField = forwardRef<TextInput, Props>((props, ref) => {
+	const { onInputFocus, ...rest } = props;
 	const { colors, isDark } = useAppTheme();
 	const styles = useMemo(
 		() =>
@@ -32,10 +34,11 @@ const OTPField = forwardRef<TextInput, Props>((props, ref) => {
 
 	return (
 		<TextInput
-			{...props}
+			{...rest}
 			ref={ref}
 			style={[styles.input, props.style]}
 			placeholderTextColor={colors.text.disabled}
+			onFocus={onInputFocus}
 		/>
 	);
 });

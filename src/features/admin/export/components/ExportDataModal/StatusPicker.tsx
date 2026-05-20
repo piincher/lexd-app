@@ -11,9 +11,10 @@ interface StatusPickerProps {
   entity: ExportEntity;
   value: string;
   onSelect: (value: string) => void;
+  onInputFocus?: () => void;
 }
 
-export const StatusPicker: React.FC<StatusPickerProps> = ({ entity, value, onSelect }) => {
+export const StatusPicker: React.FC<StatusPickerProps> = ({ entity, value, onSelect, onInputFocus }) => {
   const [visible, setVisible] = useState(false);
   const { colors } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors), [colors]);
@@ -29,6 +30,7 @@ export const StatusPicker: React.FC<StatusPickerProps> = ({ entity, value, onSel
         value={value}
         onChangeText={onSelect}
         style={styles.input}
+        onFocus={onInputFocus}
       />
     );
   }

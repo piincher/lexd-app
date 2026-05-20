@@ -1,9 +1,10 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import React, { useMemo } from 'react';
-import { Pressable, Linking, StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import Animated from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
+import { openSupportWhatsApp } from "@src/shared/lib/openWhatsApp";
 
 interface WhatsAppButtonProps {
   animatedStyle: any;
@@ -15,11 +16,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({ animatedStyle })
   return (
     <Animated.View style={[styles.whatsappButton, animatedStyle]}>
       <Pressable
-        onPress={() =>
-          Linking.openURL(
-            "whatsapp://send?phone=+8618851725957&text=Bonjour%20ChinaLink,%20J%20ai%20une%20demande%20d'expedition%20a%20faire%20:)"
-          )
-        }
+        onPress={() => openSupportWhatsApp("Bonjour ChinaLink, J ai une demande d'expedition a faire :)")}
         style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1 })}
       >
         <LinearGradient colors={["#25D366", "#128C7E"]} style={styles.whatsappContainer}>

@@ -8,6 +8,7 @@ interface CardNumberInputProps {
   value: string;
   onChangeText: (value: string) => void;
   error?: string;
+  onInputFocus?: () => void;
 }
 
 const CARD_ICONS: Record<string, string> = {
@@ -21,6 +22,7 @@ export const CardNumberInput: React.FC<CardNumberInputProps> = ({
   value,
   onChangeText,
   error,
+  onInputFocus,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const cardType = detectCardType(value);
@@ -51,7 +53,7 @@ export const CardNumberInput: React.FC<CardNumberInputProps> = ({
           placeholder="1234 5678 9012 3456"
           keyboardType="number-pad"
           maxLength={19}
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => { setIsFocused(true); onInputFocus?.(); }}
           onBlur={() => setIsFocused(false)}
         />
         {cardType && (

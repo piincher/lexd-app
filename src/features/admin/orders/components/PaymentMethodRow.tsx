@@ -6,13 +6,14 @@ import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createPaymentInfoCardStyles } from "./PaymentInfoCard.styles";
 
 // Payment method brand colors — themed where possible
-const getPaymentMethods = (colors: any) => ({
+const getPaymentMethods = (colors: any): Record<string, { label: string; icon: string; color: string }> => ({
   CASH: { label: "Cash", icon: "cash", color: colors.status.success },
   BANK_TRANSFER: { label: "Bank Transfer", icon: "bank", color: colors.status.info },
   MOBILE_MONEY: { label: "Mobile Money", icon: "cellphone", color: colors.status.warning },
   ORANGE_MONEY: { label: "Orange Money", icon: "cellphone", color: colors.status.warning },
   WAVE: { label: "Wave", icon: "wave", color: colors.status.info },
   CARD: { label: "Card", icon: "credit-card", color: (colors.accent as any).purple || "#9C27B0" },
+  REWARD_POINTS: { label: "Points récompense", icon: "ticket-percent", color: colors.status.success },
 });
 
 interface PaymentMethodRowProps {

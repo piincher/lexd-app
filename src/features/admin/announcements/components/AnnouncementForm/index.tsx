@@ -17,6 +17,7 @@ interface AnnouncementFormProps {
   initialValues?: Announcement;
   isLoading?: boolean;
   submitLabel?: string;
+  onInputFocus?: () => void;
 }
 
 export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
@@ -24,6 +25,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
   initialValues,
   isLoading = false,
   submitLabel = "Publier l'annonce",
+  onInputFocus,
 }) => {
   const form = useAnnouncementForm({ onSubmit, initialValues });
 
@@ -34,6 +36,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
         value={form.title}
         onChangeText={form.setTitle}
         fullWidth
+        onFocus={onInputFocus}
       />
 
       <Input
@@ -44,6 +47,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
         numberOfLines={4}
         fullWidth
         inputStyle={styles.messageInput}
+        onFocus={onInputFocus}
       />
 
       <AnnouncementSelectFields
@@ -69,6 +73,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
         onCtaLabelChange={form.setCtaLabel}
         onCtaUrlChange={form.setCtaUrl}
         onCtaScreenChange={form.setCtaScreen}
+        onInputFocus={onInputFocus}
       />
 
       <AnnouncementTargetingFields

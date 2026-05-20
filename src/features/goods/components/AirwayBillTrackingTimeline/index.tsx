@@ -3,17 +3,20 @@ import { View } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { CUSTOMER_AIR_STATUS_LABELS } from '@src/shared/lib/customerStatus';
 import { createStyles } from './AirwayBillTrackingTimeline.styles';
 
+type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+
 const AWB_STATUS_STEPS = [
-  { key: 'CREATED', label: 'Créé', icon: 'file-document' },
-  { key: 'PACKING', label: 'Préparation', icon: 'cube-outline' },
-  { key: 'READY_FOR_DEPARTURE', label: 'Prêt au départ', icon: 'clock-check' },
-  { key: 'IN_TRANSIT', label: 'En transit', icon: 'airplane' },
-  { key: 'ARRIVED', label: 'Arrivé', icon: 'map-marker-check' },
-  { key: 'READY_FOR_PICKUP', label: 'Prêt pour retrait', icon: 'hand-wave' },
-  { key: 'DELIVERED', label: 'Livré', icon: 'check-circle' },
-];
+  { key: 'CREATED', label: CUSTOMER_AIR_STATUS_LABELS.CREATED, icon: 'file-document' },
+  { key: 'PACKING', label: CUSTOMER_AIR_STATUS_LABELS.PACKING, icon: 'cube-outline' },
+  { key: 'READY_FOR_DEPARTURE', label: CUSTOMER_AIR_STATUS_LABELS.READY_FOR_DEPARTURE, icon: 'clock-check' },
+  { key: 'IN_TRANSIT', label: CUSTOMER_AIR_STATUS_LABELS.IN_TRANSIT, icon: 'airplane' },
+  { key: 'ARRIVED', label: CUSTOMER_AIR_STATUS_LABELS.ARRIVED, icon: 'map-marker-check' },
+  { key: 'READY_FOR_PICKUP', label: CUSTOMER_AIR_STATUS_LABELS.READY_FOR_PICKUP, icon: 'hand-wave' },
+  { key: 'DELIVERED', label: CUSTOMER_AIR_STATUS_LABELS.DELIVERED, icon: 'check-circle' },
+] satisfies { key: string; label: string; icon: MaterialIconName }[];
 
 interface Props {
   currentStepIndex: number;
@@ -45,7 +48,7 @@ export const AirwayBillTrackingTimeline: React.FC<Props> = ({ currentStepIndex }
               <View key={step.key} style={styles.timelineItem}>
                 <View style={[styles.timelineIcon, { backgroundColor: isCompleted ? `${color}20` : colors.neutral[100] }]}>
                   <MaterialCommunityIcons
-                    name={step.icon as any}
+                    name={step.icon}
                     size={20}
                     color={isCompleted ? color : colors.neutral[400]}
                   />

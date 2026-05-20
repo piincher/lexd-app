@@ -4,9 +4,11 @@
  */
 
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { MotiView } from "moti";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import type { navigationProps } from "@src/navigations/type";
 import { CertificateProgress } from "../../api/certificateApi";
 import { createStyles } from "./CertifiedShipperCard.styles";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -18,8 +20,10 @@ interface ProgressViewProps {
 
 export const ProgressView: React.FC<ProgressViewProps> = ({ progress, styles }) => {
   const { colors } = useAppTheme();
+  const navigation = useNavigation<navigationProps>();
   const clampedPercentage = Math.min(progress.percentage, 100);
   return (
+    <TouchableOpacity activeOpacity={0.85} onPress={() => navigation.navigate("TrustProfile")}>
     <MotiView
       from={{ opacity: 0, translateY: 20 }}
       animate={{ opacity: 1, translateY: 0 }}
@@ -48,5 +52,6 @@ export const ProgressView: React.FC<ProgressViewProps> = ({ progress, styles }) 
         Expédiez {progress.targetCBM} CBM pour obtenir votre certificat
       </Text>
     </MotiView>
+    </TouchableOpacity>
   );
 };
