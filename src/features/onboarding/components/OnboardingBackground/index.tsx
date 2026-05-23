@@ -1,81 +1,49 @@
 /**
- * OnboardingBackground - Animated gradient background
+ * OnboardingBackground — Solid brand surface, no decorative blobs
  */
 
 import React from "react";
-import { View, StyleSheet, Animated, useWindowDimensions } from "react-native";
+import { View, StyleSheet, useWindowDimensions } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface OnboardingBackgroundProps {
-  backgroundColor: Animated.AnimatedInterpolation<string>;
+  isDark: boolean;
 }
 
 export const OnboardingBackground: React.FC<OnboardingBackgroundProps> = ({
-  backgroundColor,
+  isDark,
 }) => {
   const { width, height } = useWindowDimensions();
   const { colors } = useAppTheme();
   const styles = React.useMemo(
-    () => createStyles(width, height, colors),
-    [height, width, colors]
+    () => createStyles(width, height, colors, isDark),
+    [height, width, colors, isDark]
   );
 
   return (
-    <Animated.View
-      pointerEvents="none"
-      style={[
-        styles.container,
-        { backgroundColor },
-      ]}
-    >
-      {/* Gradient Overlay */}
-      <View style={styles.gradientOverlay} />
-
-      {/* Decorative Elements */}
-      <View style={[styles.blob, styles.blob1]} />
-      <View style={[styles.blob, styles.blob2]} />
-      <View style={[styles.blob, styles.blob3]} />
-    </Animated.View>
+    <View pointerEvents="none" style={styles.container}>
+      <View style={styles.subtleTint} />
+    </View>
   );
 };
 
-const createStyles = (width: number, height: number, colors: any) => {
-  const largeBlob = Math.min(Math.max(width * 0.72, 240), 360);
-  const midBlob = Math.min(Math.max(width * 0.48, 160), 240);
-  const smallBlob = Math.min(Math.max(width * 0.34, 120), 180);
-
-  return StyleSheet.create({
+const createStyles = (
+  width: number,
+  height: number,
+  colors: any,
+  isDark: boolean
+) =>
+  StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,
+      backgroundColor: isDark ? colors.background.default : "#F6F7F6",
     },
-    gradientOverlay: {
+    subtleTint: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: colors.background.overlay,
-    },
-    blob: {
-      position: "absolute",
-      borderRadius: 999,
-      backgroundColor: colors.neutral.white + "12",
-    },
-    blob1: {
-      width: largeBlob,
-      height: largeBlob,
-      top: -largeBlob * 0.36,
-      right: -largeBlob * 0.28,
-    },
-    blob2: {
-      width: midBlob,
-      height: midBlob,
-      top: height * 0.46,
-      left: -midBlob * 0.3,
-    },
-    blob3: {
-      width: smallBlob,
-      height: smallBlob,
-      bottom: -smallBlob * 0.22,
-      right: width * 0.22,
+      backgroundColor: isDark
+        ? colors.primary.main + "08"
+        : colors.primary.main + "06",
     },
   });
-};
 
 export default OnboardingBackground;

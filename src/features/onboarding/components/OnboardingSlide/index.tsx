@@ -34,9 +34,6 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
         <Animated.View style={[styles.imageWrapper, imageStyle]}>
           <Image source={slide.image} style={styles.image} resizeMode="contain" />
         </Animated.View>
-
-        <View style={[styles.decorationCircle, styles.circle1]} />
-        <View style={[styles.decorationCircle, styles.circle2]} />
       </View>
 
       <View style={styles.contentSection}>

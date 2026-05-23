@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Animated } from "react-native";
+import { Animated, Easing } from "react-native";
 import type { ViewStyle } from "react-native";
 
 export const useOnboardingSlideAnimation = (index: number) => {
@@ -8,24 +8,25 @@ export const useOnboardingSlideAnimation = (index: number) => {
   const descAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    const animation = Animated.stagger(150, [
-      Animated.spring(imageAnim, {
+    const animation = Animated.stagger(120, [
+      Animated.timing(imageAnim, {
         toValue: 1,
         useNativeDriver: true,
-        friction: 8,
-        tension: 40,
+        duration: 450,
+        easing: Easing.out(Easing.cubic),
+        delay: 80,
       }),
-      Animated.spring(titleAnim, {
+      Animated.timing(titleAnim, {
         toValue: 1,
         useNativeDriver: true,
-        friction: 8,
-        tension: 40,
+        duration: 400,
+        easing: Easing.out(Easing.cubic),
       }),
-      Animated.spring(descAnim, {
+      Animated.timing(descAnim, {
         toValue: 1,
         useNativeDriver: true,
-        friction: 8,
-        tension: 40,
+        duration: 400,
+        easing: Easing.out(Easing.cubic),
       }),
     ]);
 
@@ -39,15 +40,9 @@ export const useOnboardingSlideAnimation = (index: number) => {
   const imageStyle: Animated.WithAnimatedObject<ViewStyle> = {
     transform: [
       {
-        scale: imageAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0.8, 1],
-        }),
-      },
-      {
         translateY: imageAnim.interpolate({
           inputRange: [0, 1],
-          outputRange: [50, 0],
+          outputRange: [24, 0],
         }),
       },
     ],
@@ -59,7 +54,7 @@ export const useOnboardingSlideAnimation = (index: number) => {
       {
         translateY: titleAnim.interpolate({
           inputRange: [0, 1],
-          outputRange: [30, 0],
+          outputRange: [16, 0],
         }),
       },
     ],
@@ -71,7 +66,7 @@ export const useOnboardingSlideAnimation = (index: number) => {
       {
         translateY: descAnim.interpolate({
           inputRange: [0, 1],
-          outputRange: [20, 0],
+          outputRange: [12, 0],
         }),
       },
     ],
@@ -79,4 +74,3 @@ export const useOnboardingSlideAnimation = (index: number) => {
   };
 
   return { imageStyle, titleStyle, descStyle };
-};

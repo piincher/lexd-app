@@ -1,5 +1,5 @@
 /**
- * OnboardingProgress - Top progress bar showing onboarding progress
+ * OnboardingProgress — Brand-green top progress bar
  */
 
 import React, { useMemo } from "react";
@@ -43,19 +43,19 @@ export const OnboardingProgress: React.FC<OnboardingProgressProps> = ({
 const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: 24,
+      paddingHorizontal: 28,
       paddingTop: 16,
       paddingBottom: 8,
     },
     track: {
-      height: 4,
-      backgroundColor: colors.neutral.white + "4D",
+      height: 3,
+      backgroundColor: colors.text.muted + "33",
       borderRadius: 2,
       overflow: "hidden",
     },
     progress: {
       height: "100%",
-      backgroundColor: colors.neutral.white,
+      backgroundColor: colors.primary.main,
       borderRadius: 2,
     },
   });

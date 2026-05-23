@@ -6,7 +6,6 @@ import type { RootStackParamList } from "@src/navigations/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useOnboarding } from "../../hooks/useOnboarding";
 import { createStyles } from "../OnboardingScreen.styles";
-import { getOnboardingBackgroundColors } from "../onboardingColors";
 
 export const useOnboardingScreen = () => {
   const { width, height } = useWindowDimensions();
@@ -15,16 +14,6 @@ export const useOnboardingScreen = () => {
   const styles = useMemo(() => createStyles(), []);
 
   const onboardingData = useOnboarding(width);
-
-  const backgroundColors = useMemo(
-    () => getOnboardingBackgroundColors(onboardingData.bgColors, isDark),
-    [onboardingData.bgColors, isDark],
-  );
-
-  const backgroundColor = onboardingData.scrollX.interpolate({
-    inputRange: backgroundColors.map((_, i) => i * width),
-    outputRange: backgroundColors,
-  });
 
   const handleComplete = useCallback(() => {
     onboardingData.completeOnboarding();
@@ -37,7 +26,6 @@ export const useOnboardingScreen = () => {
     isDark,
     styles,
     onboardingData,
-    backgroundColor,
     handlers: {
       handleComplete,
     },

@@ -1,5 +1,5 @@
 /**
- * OnboardingCTA - Modern call-to-action buttons
+ * OnboardingCTA — Solid brand buttons, clear hierarchy
  */
 
 import React, { useMemo } from "react";
@@ -38,7 +38,7 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
         <TouchableOpacity
           style={[styles.button, styles.primaryButton]}
           onPress={onPress}
-          activeOpacity={0.9}
+          activeOpacity={0.85}
           accessibilityRole="button"
         >
           <Text
@@ -49,7 +49,7 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
           >
             Commencer
           </Text>
-          <AntDesign name="arrow-right" size={20} color={colors.primary.main} style={styles.icon} />
+          <AntDesign name="arrowright" size={20} color={colors.text.inverse} style={styles.icon} />
         </TouchableOpacity>
       </View>
     );
@@ -82,7 +82,7 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
           <TouchableOpacity
             style={[styles.button, styles.nextButton, isNarrow && styles.nextButtonCompact]}
             onPress={onPress}
-            activeOpacity={0.9}
+            activeOpacity={0.85}
             accessibilityRole="button"
           >
             <Text
@@ -93,7 +93,7 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
             >
               Suivant
             </Text>
-            <AntDesign name="right" size={16} color={colors.neutral.white} style={styles.iconSmall} />
+            <AntDesign name="right" size={16} color={colors.text.inverse} style={styles.iconSmall} />
           </TouchableOpacity>
         </View>
       </View>

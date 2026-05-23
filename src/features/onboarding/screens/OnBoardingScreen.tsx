@@ -12,14 +12,13 @@ export const OnboardingScreen: React.FC = () => {
       isDark,
       styles,
       onboardingData,
-      backgroundColor,
       handlers,
    } = useOnboardingScreen();
 
    return (
       <View style={styles.container}>
-         <StatusBar barStyle={isDark ? "light-content" : "light-content"} translucent backgroundColor="transparent" />
-         <OnboardingBackground backgroundColor={backgroundColor} />
+         <StatusBar barStyle={isDark ? "light-content" : "dark-content"} translucent backgroundColor="transparent" />
+         <OnboardingBackground isDark={isDark} />
 
          <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>
             <OnboardingPager

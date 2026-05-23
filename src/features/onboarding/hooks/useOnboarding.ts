@@ -2,7 +2,7 @@ import { useRef, useState, useCallback, useMemo } from "react";
 import { Animated, FlatList, NativeScrollEvent } from "react-native";
 import type { NativeSyntheticEvent } from "react-native";
 import { useAppLaunchStore } from "@src/store/AppLaunch";
-import { ONBOARDING_SLIDES, BACKGROUND_COLORS } from "../constants";
+import { ONBOARDING_SLIDES } from "../constants";
 import { OnboardingSlide } from "../types/onboarding.types";
 
 type OnboardingScrollEvent = NativeSyntheticEvent<NativeScrollEvent>;
@@ -13,7 +13,6 @@ export interface UseOnboardingReturn {
   scrollX: Animated.Value;
   isLastSlide: boolean;
   slides: typeof ONBOARDING_SLIDES;
-  bgColors: typeof BACKGROUND_COLORS;
 
   // Actions
   goToNext: () => void;
@@ -84,7 +83,6 @@ export const useOnboarding = (pageWidth: number): UseOnboardingReturn => {
     scrollX,
     isLastSlide,
     slides: ONBOARDING_SLIDES,
-    bgColors: BACKGROUND_COLORS,
     goToNext,
     goToPrevious,
     goToSlide,

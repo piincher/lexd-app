@@ -9,10 +9,10 @@ interface SlideStyleOptions {
 export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOptions & { colors: any }) => {
   const isNarrow = width < 360;
   const isShort = viewportHeight < 700;
-  const horizontalPadding = isNarrow ? 18 : 24;
+  const horizontalPadding = isNarrow ? 20 : 28;
   const imageHeight = Math.max(
-    isShort ? 170 : 220,
-    Math.min(viewportHeight * (isShort ? 0.32 : 0.38), width * 0.78)
+    isShort ? 160 : 200,
+    Math.min(viewportHeight * (isShort ? 0.30 : 0.36), width * 0.72)
   );
 
   return StyleSheet.create({
@@ -31,36 +31,18 @@ export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOption
     },
     imageWrapper: {
       width: "100%",
-      maxWidth: Math.min(width - horizontalPadding * 2, 390),
+      maxWidth: Math.min(width - horizontalPadding * 2, 360),
       height: imageHeight,
       justifyContent: "center",
       alignItems: "center",
-      zIndex: 2,
     },
     image: {
       width: "100%",
       height: "100%",
     },
-    decorationCircle: {
-      position: "absolute",
-      borderRadius: 999,
-      backgroundColor: colors.neutral.white + "1A",
-    },
-    circle1: {
-      width: Math.min(width * 0.42, 180),
-      height: Math.min(width * 0.42, 180),
-      top: isShort ? 8 : 18,
-      right: horizontalPadding,
-    },
-    circle2: {
-      width: Math.min(width * 0.28, 112),
-      height: Math.min(width * 0.28, 112),
-      bottom: 0,
-      left: horizontalPadding,
-    },
     contentSection: {
       flexShrink: 0,
-      alignItems: "center",
+      alignItems: "flex-start",
       paddingTop: isShort ? 12 : 20,
       paddingBottom: isShort ? 4 : 10,
     },
@@ -68,40 +50,32 @@ export const createStyles = ({ width, viewportHeight, colors }: SlideStyleOption
       fontSize: isNarrow ? 24 : 28,
       fontFamily: Fonts.black,
       fontWeight: "800",
-      color: colors.neutral.white,
-      textAlign: "center",
+      color: colors.text.primary,
+      textAlign: "left",
       marginBottom: isShort ? 10 : 14,
       lineHeight: isNarrow ? 31 : 36,
-      textShadowColor: "rgba(0, 0, 0, 0.18)",
-      textShadowOffset: { width: 0, height: 2 },
-      textShadowRadius: 4,
     },
     description: {
       maxWidth: 520,
       fontSize: isNarrow ? 14 : 16,
       fontFamily: Fonts.regular,
-      color: colors.neutral.white + "EB",
-      textAlign: "center",
+      color: colors.text.secondary,
+      textAlign: "left",
       lineHeight: isNarrow ? 21 : 24,
-      paddingHorizontal: isNarrow ? 0 : 8,
     },
     counter: {
       marginTop: isShort ? 14 : 20,
-      paddingHorizontal: 14,
-      paddingVertical: 7,
-      backgroundColor: colors.neutral.white + "2E",
-      borderRadius: 999,
     },
     counterText: {
       fontSize: 13,
       fontFamily: Fonts.medium,
     },
     counterCurrent: {
-      color: colors.neutral.white,
+      color: colors.primary.main,
       fontWeight: "700",
     },
     counterTotal: {
-      color: colors.neutral.white + "B8",
+      color: colors.text.muted,
     },
   });
 };

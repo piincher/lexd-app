@@ -1,5 +1,5 @@
 /**
- * OnboardingIndicator - Modern animated dot indicators
+ * OnboardingIndicator — Minimal brand dot indicators
  */
 
 import React, { useMemo } from "react";
@@ -13,8 +13,8 @@ interface OnboardingIndicatorProps {
   width?: number;
 }
 
-const DOT_SIZE = 10;
-const ACTIVE_DOT_WIDTH = 28;
+const DOT_SIZE = 8;
+const ACTIVE_DOT_WIDTH = 24;
 
 export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
   scrollX,
@@ -30,19 +30,29 @@ export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
 
         const scale = scrollX.interpolate({
           inputRange,
-          outputRange: [0.8, 1, 0.8],
+          outputRange: [0.85, 1, 0.85],
           extrapolate: "clamp",
         });
 
         const opacity = scrollX.interpolate({
           inputRange,
-          outputRange: [0.4, 1, 0.4],
+          outputRange: [0.35, 1, 0.35],
           extrapolate: "clamp",
         });
 
         const dotWidth = scrollX.interpolate({
           inputRange,
           outputRange: [DOT_SIZE, ACTIVE_DOT_WIDTH, DOT_SIZE],
+          extrapolate: "clamp",
+        });
+
+        const backgroundColor = scrollX.interpolate({
+          inputRange,
+          outputRange: [
+            colors.text.muted,
+            colors.primary.main,
+            colors.text.muted,
+          ],
           extrapolate: "clamp",
         });
 
@@ -55,6 +65,7 @@ export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
                 width: dotWidth,
                 opacity,
                 transform: [{ scale }],
+                backgroundColor,
               },
             ]}
           />
@@ -69,13 +80,12 @@ const createStyles = (colors: any) =>
     container: {
       flexDirection: "row",
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "flex-start",
       gap: 8,
     },
     dot: {
       height: DOT_SIZE,
       borderRadius: DOT_SIZE / 2,
-      backgroundColor: colors.neutral.white,
     },
   });
 

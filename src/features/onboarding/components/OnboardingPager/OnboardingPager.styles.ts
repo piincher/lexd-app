@@ -10,7 +10,7 @@ export const createStyles = (insets: EdgeInsets) =>
       flexGrow: 1,
     },
     bottomSection: {
-      paddingHorizontal: 24,
+      paddingHorizontal: 28,
       paddingTop: 12,
       paddingBottom: Math.max(insets.bottom, 16),
       gap: 18,

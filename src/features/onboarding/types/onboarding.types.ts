@@ -4,7 +4,6 @@ export interface OnboardingSlide {
   title: string;
   description: string;
   image: any; // Image source
-  bgColor: string;
 }
 
 // OnboardingState
@@ -19,7 +18,6 @@ export interface UseOnboardingReturn {
   scrollX: Animated.Value;
   isLastSlide: boolean;
   slides: OnboardingSlide[];
-  bgColors: string[];
   goToNext: () => void;
   goToPrevious: () => void;
   goToSlide: (index: number) => void;
