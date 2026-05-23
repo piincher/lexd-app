@@ -36,7 +36,7 @@ const getEnvironment = (value?: string): Environment => {
   return 'production';
 };
 
-const ENV = getEnvironment('development'); // Change this value to switch environments (or set via env variable in the future)
+const ENV = getEnvironment('production'); // Change this value to switch environments (or set via env variable in the future)
 
 const API_CONFIG = {
   local: {
