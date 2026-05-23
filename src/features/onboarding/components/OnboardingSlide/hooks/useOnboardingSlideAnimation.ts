@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { Animated, Easing } from "react-native";
-import type { ViewStyle } from "react-native";
 
 export const useOnboardingSlideAnimation = (index: number) => {
   const imageAnim = useRef(new Animated.Value(0)).current;
@@ -37,7 +36,7 @@ export const useOnboardingSlideAnimation = (index: number) => {
     };
   }, [descAnim, imageAnim, index, titleAnim]);
 
-  const imageStyle: Animated.WithAnimatedObject<ViewStyle> = {
+  const imageStyle = {
     transform: [
       {
         translateY: imageAnim.interpolate({
@@ -49,7 +48,7 @@ export const useOnboardingSlideAnimation = (index: number) => {
     opacity: imageAnim,
   };
 
-  const titleStyle: Animated.WithAnimatedObject<ViewStyle> = {
+  const titleStyle = {
     transform: [
       {
         translateY: titleAnim.interpolate({
@@ -61,7 +60,7 @@ export const useOnboardingSlideAnimation = (index: number) => {
     opacity: titleAnim,
   };
 
-  const descStyle: Animated.WithAnimatedObject<ViewStyle> = {
+  const descStyle = {
     transform: [
       {
         translateY: descAnim.interpolate({
@@ -74,3 +73,4 @@ export const useOnboardingSlideAnimation = (index: number) => {
   };
 
   return { imageStyle, titleStyle, descStyle };
+};
