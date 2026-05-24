@@ -5,19 +5,21 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from './SMSBalanceCard.styles';
 
+type MaterialCommunityIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+
 interface SMSBalanceHeaderProps {
-  meta: { icon: string; label: string };
+  meta: { icon: MaterialCommunityIconName; label: string; color: string };
 }
 
 export const SMSBalanceHeader: React.FC<SMSBalanceHeaderProps> = ({ meta }) => {
-  const { colors } = useAppTheme();
-  const styles = createStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.header}>
       <View style={styles.headerLeft}>
-        <View style={styles.iconWrap}>
-          <MaterialCommunityIcons name="message-badge" size={20} color={colors.text.inverse} />
+        <View style={[styles.iconWrap, { backgroundColor: meta.color + '18' }]}>
+          <MaterialCommunityIcons name="message-badge" size={20} color={meta.color} />
         </View>
         <View>
           <Text style={styles.title}>Crédits SMS</Text>
@@ -25,7 +27,7 @@ export const SMSBalanceHeader: React.FC<SMSBalanceHeaderProps> = ({ meta }) => {
         </View>
       </View>
       <View style={styles.statusBadge}>
-        <MaterialCommunityIcons name={meta.icon as any} size={12} color={colors.text.inverse} />
+        <MaterialCommunityIcons name={meta.icon} size={12} color={meta.color} />
         <Text style={styles.statusText}>{meta.label}</Text>
       </View>
     </View>

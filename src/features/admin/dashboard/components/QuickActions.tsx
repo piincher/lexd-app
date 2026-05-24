@@ -1,28 +1,34 @@
 import React from "react";
 import { View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { navigationProps } from "@src/app/navigation/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { Theme } from "@src/constants/Theme";
+import type { ThemeContextType } from "@src/constants/Theme";
 import { getQuickActionsStyles } from "./QuickActions.styles";
 import { QuickActionCard } from "./QuickActionCard";
+
+type AppThemeColors = ThemeContextType["colors"];
+type MaterialCommunityIconName = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+type QuickActionRoute = "ReceiveGoods" | "ChooseShippingMethod" | "ContainerList" | "ScanQRCode";
 
 interface QuickAction {
   id: string;
   title: string;
   subtitle: string;
-  icon: string;
-  route: string;
-  gradient: readonly string[];
+  icon: MaterialCommunityIconName;
+  route: QuickActionRoute;
+  accent: string;
 }
 
-const getQuickActions = (colors: any): QuickAction[] => [
+const getQuickActions = (colors: AppThemeColors): QuickAction[] => [
   {
     id: "qa1",
     title: "Réception",
     subtitle: "Nouvelle marchandise",
     icon: "package-variant-closed",
     route: "ReceiveGoods",
-    gradient: Theme.gradients.primary,
+    accent: colors.primary.main,
   },
   {
     id: "qa2",
@@ -30,7 +36,7 @@ const getQuickActions = (colors: any): QuickAction[] => [
     subtitle: "Créer une commande",
     icon: "plus-circle",
     route: "ChooseShippingMethod",
-    gradient: Theme.gradients.ocean,
+    accent: colors.status.info,
   },
   {
     id: "qa3",
@@ -38,7 +44,7 @@ const getQuickActions = (colors: any): QuickAction[] => [
     subtitle: "Gérer",
     icon: "ferry",
     route: "ContainerList",
-    gradient: Theme.gradients.sunset,
+    accent: colors.status.warning,
   },
   {
     id: "qa4",
@@ -46,12 +52,12 @@ const getQuickActions = (colors: any): QuickAction[] => [
     subtitle: "QR code",
     icon: "qrcode-scan",
     route: "ScanQRCode",
-    gradient: [colors.status.info, colors.accent.mint] as const,
+    accent: colors.accent.mint,
   },
 ];
 
 export const QuickActions: React.FC = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<navigationProps>();
   const { colors } = useAppTheme();
   const styles = getQuickActionsStyles(colors);
   const quickActions = React.useMemo(() => getQuickActions(colors), [colors]);
@@ -60,7 +66,7 @@ export const QuickActions: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Actions rapides</Text>
-        <Text style={styles.sectionBadge}>4 raccourcis</Text>
+        <Text style={styles.sectionBadge}>Prioritaire</Text>
       </View>
       <View style={styles.grid}>
         {quickActions.map((action) => (
@@ -68,7 +74,7 @@ export const QuickActions: React.FC = () => {
             key={action.id}
             action={action}
             colors={colors}
-            onPress={() => navigation.navigate(action.route as never)}
+            onPress={() => navigation.navigate(action.route)}
           />
         ))}
       </View>

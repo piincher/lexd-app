@@ -2,14 +2,16 @@ import React from 'react';
 import { View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useAppTheme } from '@src/providers/ThemeProvider';
 import { MenuItem } from '../constants/menuData';
+import type { createMenuCategoriesStyles } from './MenuCategories.styles';
+
+type MenuCategoryStyles = ReturnType<typeof createMenuCategoriesStyles>;
+type MaterialCommunityIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 interface MenuCategoryItemProps {
-  styles: any;
+  styles: MenuCategoryStyles;
   item: MenuItem;
   accent: string;
-  isDark: boolean;
   disabledColor: string;
   onPress: () => void;
   isLast: boolean;
@@ -23,23 +25,32 @@ export const MenuCategoryItem: React.FC<MenuCategoryItemProps> = ({
   onPress,
   isLast,
 }) => {
-  const { colors } = useAppTheme();
   return (
     <View>
       <Pressable
         onPress={onPress}
         style={({ pressed }) => [
           styles.item,
-          pressed && {
-            backgroundColor: colors.action.hover,
-          },
+          pressed && styles.itemPressed,
         ]}
+        accessibilityLabel={item.title}
       >
         <View style={styles.itemLeft}>
-          <View style={[styles.itemBullet, { backgroundColor: accent }]} />
-          <Text style={styles.itemText} numberOfLines={1}>
-            {item.title}
-          </Text>
+          <View style={[styles.itemIconWrap, { backgroundColor: accent + "16" }]}>
+            <MaterialCommunityIcons
+              name={item.icon as MaterialCommunityIconName}
+              size={18}
+              color={accent}
+            />
+          </View>
+          <View style={styles.itemTextBlock}>
+            <Text style={styles.itemText} numberOfLines={1}>
+              {item.title}
+            </Text>
+            <Text style={styles.itemDescription} numberOfLines={1}>
+              {item.description}
+            </Text>
+          </View>
         </View>
         <View style={styles.itemRight}>
           {item.badge ? (

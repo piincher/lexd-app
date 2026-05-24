@@ -109,7 +109,7 @@ export const OutstandingPaymentsSection: React.FC = () => {
             Impossible de récupérer les impayés
           </Text>
           <Pressable
-            onPress={refetch}
+            onPress={() => void refetch()}
             style={({ pressed }) => [
               styles.retryButton,
               pressed && { opacity: 0.7 },

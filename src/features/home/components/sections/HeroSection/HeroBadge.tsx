@@ -13,7 +13,7 @@ export const HeroBadge: React.FC = () => {
     <View style={styles.badge}>
       <View style={styles.pulseDot} />
       <FontAwesome6 name="truck-fast" size={12} color={colors.primary.light} />
-      <Text style={styles.badgeText}>Chine → Mali</Text>
+      <Text style={styles.badgeText}>Route Chine - Mali</Text>
     </View>
   );
 };

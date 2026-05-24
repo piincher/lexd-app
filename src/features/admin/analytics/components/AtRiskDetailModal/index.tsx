@@ -19,7 +19,7 @@ type AtRiskDetailModalProps = {
 
 export function AtRiskDetailModal({ visible, customer, onClose, onWhatsApp, onCall, onWinBack }: AtRiskDetailModalProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (!customer) return null;
 
@@ -113,7 +113,7 @@ export function AtRiskDetailModal({ visible, customer, onClose, onWhatsApp, onCa
 
 function DetailRow({ icon, label, value, colors }: { icon: string; label: string; value: string; colors: ThemeColors }) {
   const { isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   return (
     <View style={styles.detailRow}>
       <MaterialCommunityIcons name={icon as React.ComponentProps<typeof MaterialCommunityIcons>['name']} size={18} color={colors.text.secondary} />

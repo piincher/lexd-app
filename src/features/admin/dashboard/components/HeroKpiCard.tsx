@@ -1,10 +1,8 @@
 import React from "react";
 import { View, Pressable } from "react-native";
 import { Text } from "react-native-paper";
-import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { Theme } from "@src/constants/Theme";
 import { createStyles } from "./KPICards.styles";
 
 interface HeroKpiCardProps {
@@ -12,6 +10,8 @@ interface HeroKpiCardProps {
   label: string;
   icon: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
   trendLabel: string;
+  accentColor: string;
+  accentBgColor: string;
   onPress: () => void;
 }
 
@@ -20,6 +20,8 @@ export const HeroKpiCard: React.FC<HeroKpiCardProps> = ({
   label,
   icon,
   trendLabel,
+  accentColor,
+  accentBgColor,
   onPress,
 }) => {
   const { colors, isDark } = useAppTheme();
@@ -30,30 +32,27 @@ export const HeroKpiCard: React.FC<HeroKpiCardProps> = ({
       onPress={onPress}
       style={({ pressed }) => [
         styles.heroCard,
-        pressed && { opacity: 0.92, transform: [{ scale: 0.99 }] },
+        pressed && styles.pressed,
       ]}
     >
-      <LinearGradient
-        colors={Theme.gradients.ocean}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.heroGradient}
-      >
-        <View style={styles.heroDecor} />
+      <View style={[styles.heroAccentBar, { backgroundColor: accentColor }]} />
+      <View style={styles.heroBody}>
         <View style={styles.heroTop}>
-          <View style={styles.heroIconWrap}>
-            <MaterialCommunityIcons name={icon} size={22} color={colors.text.inverse} />
+          <View style={[styles.heroIconWrap, { backgroundColor: accentBgColor }]}>
+            <MaterialCommunityIcons name={icon} size={22} color={accentColor} />
           </View>
           <View style={styles.heroTrend}>
-            <MaterialCommunityIcons name="arrow-up" size={11} color={colors.text.inverse} />
+            <MaterialCommunityIcons name="database-check" size={12} color={accentColor} />
             <Text style={styles.heroTrendText}>{trendLabel}</Text>
           </View>
         </View>
         <View>
-          <Text style={styles.heroValue}>{value}</Text>
+          <Text style={styles.heroValue} numberOfLines={1} adjustsFontSizeToFit>
+            {value}
+          </Text>
           <Text style={styles.heroLabel}>{label}</Text>
         </View>
-      </LinearGradient>
+      </View>
     </Pressable>
   );
 };

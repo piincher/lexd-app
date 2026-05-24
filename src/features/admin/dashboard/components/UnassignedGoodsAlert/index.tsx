@@ -18,8 +18,8 @@ type AppThemeColors = ReturnType<typeof useAppTheme>["colors"];
 const createStyles = (colors: AppThemeColors) =>
   StyleSheet.create({
     card: {
-      marginBottom: 16,
-      borderRadius: 20,
+      marginBottom: 12,
+      borderRadius: 16,
       overflow: "hidden",
       backgroundColor: colors.background.card,
       borderWidth: 1,

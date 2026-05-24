@@ -3,10 +3,11 @@
  * Thin orchestrator composing home page sections
  */
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Header } from '../components/Header';
 import { CreateOrderCTA } from '../components/CreateOrderCTA';
 import Banner from '../components/Banner';
@@ -22,10 +23,12 @@ import {
   PartnersStrip,
 } from '../components/sections';
 import { useHomeScreen } from './hooks/useHomeScreen';
-import { styles } from './HomeScreen.styles';
+import { getStyles } from './HomeScreen.styles';
 
 const HomeScreen: React.FC = () => {
   const { token, firstName, whatsappStyle, scrollHandler, handlers } = useHomeScreen();
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => getStyles(colors), [colors]);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
@@ -38,14 +41,14 @@ const HomeScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
       >
         <HeroSection />
+        <StatsStrip />
+        <ServiceShowcase onServicePress={handlers.handleServicePress} />
         <Banner />
         {token && <CreateOrderCTA onPress={handlers.handleCreateOrderPress} />}
         {token && <DashboardBanner firstName={firstName} onPress={handlers.handleDashboardPress} />}
-        <StatsStrip />
-        <ServiceShowcase onServicePress={handlers.handleServicePress} />
         <ProcessTimeline />
-        <BenefitsGrid />
         <CertificateVerifier />
+        <BenefitsGrid />
         <PartnersStrip />
         <View style={styles.bottomSpacing} />
       </Animated.ScrollView>

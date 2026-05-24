@@ -1,22 +1,26 @@
 import React from "react";
 import { Pressable, View } from "react-native";
 import { Text } from "react-native-paper";
-import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import type { ThemeContextType } from "@src/constants/Theme";
 import { getQuickActionsStyles } from "./QuickActions.styles";
+
+type AppThemeColors = ThemeContextType["colors"];
+type MaterialCommunityIconName = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
+type QuickActionRoute = "ReceiveGoods" | "ChooseShippingMethod" | "ContainerList" | "ScanQRCode";
 
 interface QuickAction {
   id: string;
   title: string;
   subtitle: string;
-  icon: string;
-  route: string;
-  gradient: readonly [string, string];
+  icon: MaterialCommunityIconName;
+  route: QuickActionRoute;
+  accent: string;
 }
 
 interface QuickActionCardProps {
   action: QuickAction;
-  colors: any;
+  colors: AppThemeColors;
   onPress: () => void;
 }
 
@@ -27,23 +31,18 @@ export const QuickActionCard: React.FC<QuickActionCardProps> = ({ action, colors
       onPress={onPress}
       style={({ pressed }) => [
         styles.item,
-        pressed && { opacity: 0.9, transform: [{ scale: 0.96 }] },
+        pressed && styles.itemPressed,
       ]}
     >
-      <LinearGradient
-        colors={action.gradient}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.gradient}
-      >
-        <View style={styles.iconWrap}>
+      <View style={styles.actionContent}>
+        <View style={[styles.iconWrap, { backgroundColor: action.accent + "18" }]}>
           <MaterialCommunityIcons
-            name={action.icon as any}
+            name={action.icon}
             size={20}
-            color={colors.text.inverse}
+            color={action.accent}
           />
         </View>
-        <View>
+        <View style={styles.actionText}>
           <Text style={styles.title} numberOfLines={1}>
             {action.title}
           </Text>
@@ -51,7 +50,8 @@ export const QuickActionCard: React.FC<QuickActionCardProps> = ({ action, colors
             {action.subtitle}
           </Text>
         </View>
-      </LinearGradient>
+        <MaterialCommunityIcons name="chevron-right" size={18} color={colors.text.disabled} />
+      </View>
     </Pressable>
   );
 };

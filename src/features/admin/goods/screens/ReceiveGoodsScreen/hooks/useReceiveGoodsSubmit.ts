@@ -24,7 +24,7 @@ export const useReceiveGoodsSubmit = (
   const receiveGoodsMutation = useReceiveGoodsMutation();
   const { handleResponse } = useReceiveGoodsResponseHandler(formHook, setSuccessMessage);
 
-  const handleSubmit = useCallback(async () => {
+  const submitValid = useCallback(async () => {
     setIsSubmitted(true);
 
     if (!formHook.selectedClient) {
@@ -54,7 +54,18 @@ export const useReceiveGoodsSubmit = (
       const serverMessage = error?.message || error?.response?.data?.message;
       setErrorMessage(serverMessage || 'Une erreur inattendue est survenue');
     }
-  }, [formHook, receiveGoodsMutation, handleResponse, setIsSubmitted, setSuccessMessage, setShowSuccessDialog, setErrorMessage, queryClient]);
+  }, [formHook, receiveGoodsMutation, handleResponse, setIsSubmitted, setShowSuccessDialog, setErrorMessage, queryClient]);
+
+  const onInvalid = useCallback(() => {
+    setIsSubmitted(true);
+    setErrorMessage('Veuillez corriger les champs en rouge avant de continuer');
+  }, [setIsSubmitted, setErrorMessage]);
+
+  // Run RHF/zod validation first so incomplete forms can't submit NaN values.
+  const handleSubmit = useCallback(
+    () => formHook.handleSubmit(submitValid, onInvalid)(),
+    [formHook, submitValid, onInvalid],
+  );
 
   return { handleSubmit, isSubmitting: receiveGoodsMutation.isPending };
 };

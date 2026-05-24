@@ -3,9 +3,12 @@ import { View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
+import type { createDashboardHeaderStyles } from './DashboardHeader.styles';
+
+type DashboardHeaderStyles = ReturnType<typeof createDashboardHeaderStyles>;
 
 interface DashboardHeaderTopRowProps {
-  styles: any;
+  styles: DashboardHeaderStyles;
   dateText: string;
   onSearchPress: () => void;
   onNotificationPress: () => void;

@@ -22,7 +22,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
   if (isLoading) {
     return (
       <SafeAreaView
-        style={[styles.container, { backgroundColor: colors.background.default }]}
+        style={[styles.container, { backgroundColor: colors.background.paper }]}
       >
         <DashboardSkeleton />
       </SafeAreaView>
@@ -31,17 +31,19 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
   return (
     <SafeAreaView
-      style={[styles.container, { backgroundColor: colors.background.default }]}
+      style={[styles.container, { backgroundColor: colors.background.paper }]}
     >
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
             tintColor={colors.primary.main}
             colors={[colors.primary.main]}
+            progressBackgroundColor={colors.background.card}
           />
         }
       >
@@ -56,8 +58,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContainer: {
-    padding: 16,
-    paddingBottom: 32,
+    paddingHorizontal: 12,
+    paddingTop: 10,
+    paddingBottom: 40,
   },
 });
 

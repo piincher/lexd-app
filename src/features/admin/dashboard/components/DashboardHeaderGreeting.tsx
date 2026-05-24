@@ -1,10 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
+import type { createDashboardHeaderStyles } from './DashboardHeader.styles';
+
+type DashboardHeaderStyles = ReturnType<typeof createDashboardHeaderStyles>;
 
 interface DashboardHeaderGreetingProps {
-  styles: any;
+  styles: DashboardHeaderStyles;
   greeting: string;
   name: string;
   subtitle: string;
@@ -21,19 +23,14 @@ export const DashboardHeaderGreeting: React.FC<DashboardHeaderGreetingProps> = (
   <View style={styles.mainRow}>
     <View style={styles.greetingBlock}>
       <Text style={styles.greeting}>{greeting},</Text>
-      <Text style={styles.name} numberOfLines={1}>
-        {name} 👋
-      </Text>
+      <Text style={styles.name} numberOfLines={1}>{name}</Text>
       <Text style={styles.subtitle}>{subtitle}</Text>
     </View>
 
     <View style={styles.avatarWrap}>
-      <LinearGradient
-        colors={['rgba(255,255,255,0.35)', 'rgba(255,255,255,0.15)']} // Decorative white gradient on colored header
-        style={styles.avatarGradient}
-      >
+      <View style={styles.avatarInner}>
         <Text style={styles.avatarText}>{initials}</Text>
-      </LinearGradient>
+      </View>
     </View>
   </View>
 );

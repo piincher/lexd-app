@@ -1,10 +1,8 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface AlertHeroProps {
@@ -14,23 +12,15 @@ interface AlertHeroProps {
 
 export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) => {
   const { colors, isDark } = useAppTheme();
-  const gradient = hasUnassigned
-    ? Theme.gradients.sunset
-    : Theme.gradients.primary;
+  const accent = hasUnassigned ? colors.status.error : colors.status.success;
 
   const styles = useMemo(() => StyleSheet.create({
-    heroGradient: {
-      padding: 18,
-      paddingBottom: hasUnassigned ? 22 : 18,
-    },
-    decor: {
-      position: "absolute",
-      top: -30,
-      right: -30,
-      width: 140,
-      height: 140,
-      borderRadius: 70,
-      backgroundColor: "rgba(255,255,255,0.08)", // Decorative white overlay on colored gradient
+    heroPanel: {
+      padding: 16,
+      paddingBottom: hasUnassigned ? 18 : 16,
+      backgroundColor: isDark ? accent + "16" : accent + "0F",
+      borderBottomWidth: 1,
+      borderBottomColor: colors.border,
     },
     header: {
       flexDirection: "row",
@@ -41,65 +31,56 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
     iconWrap: {
       width: 40,
       height: 40,
-      borderRadius: 13,
-      backgroundColor: "rgba(255,255,255,0.22)", // Decorative white overlay on colored gradient
+      borderRadius: 12,
+      backgroundColor: accent + "18",
       borderWidth: 1,
-      borderColor: "rgba(255,255,255,0.25)", // Decorative white overlay on colored gradient
+      borderColor: accent + "30",
       justifyContent: "center",
       alignItems: "center",
     },
     title: {
       fontSize: 14,
       fontFamily: Fonts.bold,
-      color: colors.text.inverse,
-      letterSpacing: -0.2,
+      color: colors.text.primary,
     },
     subtitle: {
       fontSize: 11,
       fontFamily: Fonts.regular,
-      color: colors.text.inverse,
+      color: colors.text.secondary,
       marginTop: 1,
     },
     count: {
       fontSize: 42,
       fontFamily: Fonts.bold,
-      color: colors.text.inverse,
-      letterSpacing: -1.5,
+      color: colors.text.primary,
     },
     countLabel: {
       fontSize: 12,
       fontFamily: Fonts.regular,
-      color: colors.text.inverse,
+      color: colors.text.secondary,
       marginTop: 2,
     },
     successText: {
       fontSize: 14,
       fontFamily: Fonts.bold,
-      color: colors.text.inverse,
+      color: colors.text.primary,
     },
     successSubtext: {
       fontSize: 11,
       fontFamily: Fonts.regular,
-      color: colors.text.inverse,
+      color: colors.text.secondary,
       marginTop: 2,
     },
-  }), [colors, isDark]);
+  }), [accent, colors, hasUnassigned, isDark]);
 
   return (
-    <LinearGradient
-      colors={gradient}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.heroGradient}
-    >
-      <View style={styles.decor} />
-
+    <View style={styles.heroPanel}>
       <View style={styles.header}>
         <View style={styles.iconWrap}>
           <MaterialCommunityIcons
             name={hasUnassigned ? "package-variant-closed-remove" : "check-decagram"}
             size={22}
-            color={colors.text.inverse}
+            color={accent}
           />
         </View>
         <View>
@@ -114,17 +95,19 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
 
       {hasUnassigned ? (
         <>
-          <Text style={styles.count}>{total}</Text>
+          <Text style={styles.count} numberOfLines={1} adjustsFontSizeToFit>
+            {total}
+          </Text>
           <Text style={styles.countLabel}>colis en attente</Text>
         </>
       ) : (
         <>
-          <Text style={styles.successText}>Excellent travail 🎉</Text>
+          <Text style={styles.successText}>Excellent travail</Text>
           <Text style={styles.successSubtext}>
             Toutes les marchandises ont été assignées
           </Text>
         </>
       )}
-    </LinearGradient>
+    </View>
   );
 };

@@ -49,12 +49,21 @@ export const useReceiveFormActions = (options: Options) => {
   const buildSubmitData = useCallback((): ReceiveGoodsInput | null => {
     if (!selectedClient) return null;
 
+    const weight = parseFloat(watchedValues.weight.replace(',', '.'));
+    const quantity = parseInt(watchedValues.quantity, 10);
+    const unitPrice = parseFloat(watchedValues.unitPrice.replace(',', '.'));
+
+    // Guard against NaN so we never send invalid numbers to the backend.
+    if (!Number.isFinite(weight) || !Number.isFinite(quantity) || !Number.isFinite(unitPrice)) {
+      return null;
+    }
+
     const input: ReceiveGoodsInput = {
       clientId: selectedClient._id,
       description: watchedValues.description.trim(),
-      weight: parseFloat(watchedValues.weight.replace(',', '.')),
-      quantity: parseInt(watchedValues.quantity, 10),
-      unitPrice: parseFloat(watchedValues.unitPrice.replace(',', '.')),
+      weight,
+      quantity,
+      unitPrice,
       location: watchedValues.location.toUpperCase().trim(),
       receivedByName: watchedValues.receivedByName.trim(),
       expressTrackingNumber:

@@ -1,10 +1,8 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
-import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface CardHeroProps {
@@ -24,26 +22,17 @@ const formatCurrency = (amount: number): string =>
 export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
   const { colors, isDark } = useAppTheme();
   const isCritical = totalOutstanding > CRITICAL_THRESHOLD;
-
-  const gradient = isCritical
-    ? Theme.gradients.sunset
-    : Theme.gradients.ocean;
+  const accent = isCritical ? colors.status.error : colors.status.info;
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
-        heroGradient: {
-          padding: 18,
-          paddingBottom: 22,
-        },
-        heroDecor: {
-          position: "absolute",
-          top: -30,
-          right: -30,
-          width: 140,
-          height: 140,
-          borderRadius: 70,
-          backgroundColor: "rgba(255,255,255,0.08)", // Decorative white overlay on colored gradient
+        heroPanel: {
+          padding: 16,
+          paddingBottom: 18,
+          backgroundColor: isDark ? accent + "16" : accent + "0F",
+          borderBottomWidth: 1,
+          borderBottomColor: colors.border,
         },
         heroHeader: {
           flexDirection: "row",
@@ -59,23 +48,22 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
         iconWrap: {
           width: 40,
           height: 40,
-          borderRadius: 13,
-          backgroundColor: "rgba(255,255,255,0.22)", // Decorative white overlay on colored gradient
+          borderRadius: 12,
+          backgroundColor: accent + "18",
           borderWidth: 1,
-          borderColor: "rgba(255,255,255,0.25)", // Decorative white overlay on colored gradient
+          borderColor: accent + "30",
           justifyContent: "center",
           alignItems: "center",
         },
         heroTitle: {
           fontSize: 14,
           fontFamily: Fonts.bold,
-          color: colors.text.inverse,
-          letterSpacing: -0.2,
+          color: colors.text.primary,
         },
         heroSubtitle: {
           fontSize: 11,
           fontFamily: Fonts.regular,
-          color: colors.text.inverse,
+          color: colors.text.secondary,
           marginTop: 1,
         },
         criticalBadge: {
@@ -84,13 +72,13 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
           gap: 4,
           paddingHorizontal: 10,
           paddingVertical: 5,
-          borderRadius: 999,
-          backgroundColor: "rgba(255,255,255,0.2)", // Decorative white overlay on colored gradient
+          borderRadius: 10,
+          backgroundColor: accent + "18",
           borderWidth: 1,
-          borderColor: "rgba(255,255,255,0.3)", // Decorative white overlay on colored gradient
+          borderColor: accent + "30",
         },
         criticalText: {
-          color: colors.text.inverse,
+          color: accent,
           fontSize: 10,
           fontFamily: Fonts.bold,
           textTransform: "uppercase",
@@ -99,48 +87,42 @@ export const CardHero: React.FC<CardHeroProps> = ({ totalOutstanding }) => {
         amount: {
           fontSize: 32,
           fontFamily: Fonts.bold,
-          color: colors.text.inverse,
-          letterSpacing: -1,
+          color: colors.text.primary,
         },
         amountLabel: {
           fontSize: 12,
           fontFamily: Fonts.regular,
-          color: colors.text.inverse,
+          color: colors.text.secondary,
           marginTop: 2,
         },
       }),
-    [colors, isDark]
+    [accent, colors, isDark]
   );
 
   return (
-    <LinearGradient
-      colors={gradient}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.heroGradient}
-    >
-      <View style={styles.heroDecor} />
-
+    <View style={styles.heroPanel}>
       <View style={styles.heroHeader}>
         <View style={styles.heroHeaderLeft}>
           <View style={styles.iconWrap}>
-            <MaterialCommunityIcons name="cash-multiple" size={22} color={colors.text.inverse} />
+            <MaterialCommunityIcons name="cash-multiple" size={22} color={accent} />
           </View>
           <View>
             <Text style={styles.heroTitle}>Paiements en attente</Text>
-            <Text style={styles.heroSubtitle}>Vue d'ensemble</Text>
+            <Text style={styles.heroSubtitle}>Vue globale</Text>
           </View>
         </View>
         {isCritical && (
           <View style={styles.criticalBadge}>
-            <MaterialCommunityIcons name="alert-octagon" size={11} color={colors.text.inverse} />
+            <MaterialCommunityIcons name="alert-octagon" size={11} color={accent} />
             <Text style={styles.criticalText}>Critique</Text>
           </View>
         )}
       </View>
 
-      <Text style={styles.amount}>{formatCurrency(totalOutstanding)}</Text>
+      <Text style={styles.amount} numberOfLines={1} adjustsFontSizeToFit>
+        {formatCurrency(totalOutstanding)}
+      </Text>
       <Text style={styles.amountLabel}>Total dû par les clients</Text>
-    </LinearGradient>
+    </View>
   );
 };

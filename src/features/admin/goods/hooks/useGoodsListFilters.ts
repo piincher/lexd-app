@@ -11,18 +11,25 @@ interface DateRange {
   endDate: string;
 }
 
-export const useGoodsListFilters = (initialStatus: GoodsStatus | 'all' = 'all') => {
+export type ShippingMode = 'AIR' | 'SEA';
+
+export const useGoodsListFilters = (
+  initialStatus: GoodsStatus | 'all' = 'all',
+  initialMode: ShippingMode = 'SEA',
+) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState<GoodsStatus | 'all'>(initialStatus);
+  const [selectedMode, setSelectedMode] = useState<ShippingMode>(initialMode);
   const [selectedClient, setSelectedClient] = useState<userData | null>(null);
   const [dateRange, setDateRange] = useState<DateRange | null>(null);
 
   const filters = useMemo<GoodsFilters>(() => ({
+    shippingMode: selectedMode,
     ...(selectedStatus !== 'all' && { status: selectedStatus }),
     ...(searchQuery && { search: searchQuery }),
     ...(selectedClient && { clientId: selectedClient._id }),
     ...(dateRange && { startDate: dateRange.startDate, endDate: dateRange.endDate }),
-  }), [selectedStatus, searchQuery, selectedClient, dateRange]);
+  }), [selectedMode, selectedStatus, searchQuery, selectedClient, dateRange]);
 
   const hasFilters = !!searchQuery || selectedStatus !== 'all' || !!selectedClient || !!dateRange;
 
@@ -38,6 +45,8 @@ export const useGoodsListFilters = (initialStatus: GoodsStatus | 'all' = 'all') 
     setSearchQuery,
     selectedStatus,
     setSelectedStatus,
+    selectedMode,
+    setSelectedMode,
     selectedClient,
     setSelectedClient,
     dateRange,

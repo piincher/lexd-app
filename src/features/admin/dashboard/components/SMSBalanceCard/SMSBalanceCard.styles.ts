@@ -1,26 +1,21 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
+import type { ThemeContextType } from '@src/constants/Theme';
 
-export const createStyles = (colors: any, isDark?: boolean) =>
+type AppThemeColors = ThemeContextType['colors'];
+
+export const createStyles = (colors: AppThemeColors, isDark?: boolean) =>
   StyleSheet.create({
     card: {
-      marginBottom: 20,
-      borderRadius: 20,
-      overflow: 'hidden',
+      marginBottom: 16,
+      borderRadius: 16,
+      padding: 16,
+      backgroundColor: colors.background.card,
+      borderWidth: 1,
+      borderLeftWidth: 4,
+      borderColor: colors.border,
       ...Theme.shadows.md,
-    },
-    gradient: {
-      padding: 18,
-    },
-    decor: {
-      position: 'absolute',
-      top: -30,
-      right: -30,
-      width: 120,
-      height: 120,
-      borderRadius: 60,
-      backgroundColor: 'rgba(255,255,255,0.08)',
     },
     header: {
       flexDirection: 'row',
@@ -36,23 +31,22 @@ export const createStyles = (colors: any, isDark?: boolean) =>
     iconWrap: {
       width: 38,
       height: 38,
-      borderRadius: 12,
-      backgroundColor: 'rgba(255,255,255,0.22)',
+      borderRadius: 11,
+      backgroundColor: isDark ? colors.action.hover : colors.background.paper,
       borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.25)',
+      borderColor: colors.border,
       justifyContent: 'center',
       alignItems: 'center',
     },
     title: {
       fontSize: 14,
       fontFamily: Fonts.bold,
-      color: colors.text.inverse,
-      letterSpacing: -0.2,
+      color: colors.text.primary,
     },
     subtitle: {
       fontSize: 11,
       fontFamily: Fonts.regular,
-      color: colors.text.inverse,
+      color: colors.text.secondary,
       marginTop: 1,
     },
     statusBadge: {
@@ -61,13 +55,13 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       gap: 4,
       paddingHorizontal: 10,
       paddingVertical: 5,
-      borderRadius: 999,
-      backgroundColor: 'rgba(255,255,255,0.2)',
+      borderRadius: 10,
+      backgroundColor: isDark ? colors.action.hover : colors.background.paper,
       borderWidth: 1,
-      borderColor: 'rgba(255,255,255,0.25)',
+      borderColor: colors.border,
     },
     statusText: {
-      color: colors.text.inverse,
+      color: colors.text.primary,
       fontSize: 11,
       fontFamily: Fonts.bold,
     },
@@ -80,24 +74,22 @@ export const createStyles = (colors: any, isDark?: boolean) =>
     value: {
       fontSize: 32,
       fontFamily: Fonts.bold,
-      color: colors.text.inverse,
-      letterSpacing: -1,
+      color: colors.text.primary,
     },
     valueLabel: {
       fontSize: 13,
       fontFamily: Fonts.regular,
-      color: colors.text.inverse,
+      color: colors.text.secondary,
     },
     progressTrack: {
       height: 8,
       borderRadius: 4,
-      backgroundColor: 'rgba(255,255,255,0.2)',
+      backgroundColor: isDark ? colors.action.selected : colors.neutral[100],
       overflow: 'hidden',
       marginBottom: 8,
     },
     progressFill: {
       height: '100%',
-      backgroundColor: colors.background.card,
       borderRadius: 4,
     },
     footer: {
@@ -108,10 +100,10 @@ export const createStyles = (colors: any, isDark?: boolean) =>
     footerText: {
       fontSize: 11,
       fontFamily: Fonts.regular,
-      color: colors.text.inverse,
+      color: colors.text.secondary,
     },
     footerStrong: {
       fontFamily: Fonts.bold,
-      color: colors.text.inverse,
+      color: colors.text.primary,
     },
   });

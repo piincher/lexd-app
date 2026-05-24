@@ -11,7 +11,9 @@ interface CreateOrderCTAProps {
 }
 
 export const CreateOrderCTA: React.FC<CreateOrderCTAProps> = ({ onPress }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const buttonBg = isDark ? colors.primary.light : colors.primary.dark;
+  const buttonInk = isDark ? colors.neutral[900] : colors.neutral.white;
 
   const handlePress = () => {
     hapticLight();
@@ -31,7 +33,7 @@ export const CreateOrderCTA: React.FC<CreateOrderCTAProps> = ({ onPress }) => {
           paddingVertical: 14,
           paddingHorizontal: 20,
           borderRadius: 14,
-          backgroundColor: colors.primary.main,
+          backgroundColor: buttonBg,
         },
         pressed: {
           opacity: 0.88,
@@ -40,10 +42,10 @@ export const CreateOrderCTA: React.FC<CreateOrderCTAProps> = ({ onPress }) => {
         text: {
           fontFamily: Fonts.bold,
           fontSize: 15,
-          color: colors.text.inverse,
+          color: buttonInk,
         },
       }),
-    [colors.primary.main, colors.text.inverse]
+    [buttonBg, buttonInk]
   );
 
   return (
@@ -53,7 +55,7 @@ export const CreateOrderCTA: React.FC<CreateOrderCTAProps> = ({ onPress }) => {
       accessibilityRole="button"
       accessibilityLabel="Nouvelle expédition"
     >
-      <FontAwesome6 name="plus" size={16} color={colors.text.inverse} />
+      <FontAwesome6 name="plus" size={16} color={buttonInk} />
       <Text style={styles.text}>Nouvelle expédition</Text>
     </Pressable>
   );

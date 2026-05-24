@@ -1,38 +1,42 @@
 import React, { useMemo } from "react";
 import { View, StyleSheet } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import type { ThemeContextType } from "@src/constants/Theme";
 
-const createStyles = (colors: any, isDark?: boolean) =>
+type AppThemeColors = ThemeContextType["colors"];
+
+const createStyles = (colors: AppThemeColors, isDark?: boolean) =>
   StyleSheet.create({
     container: {
-      padding: 16,
+      paddingHorizontal: 12,
+      paddingTop: 10,
     },
     skelHero: {
-      height: 170,
-      borderRadius: 24,
-      marginBottom: 20,
+      height: 138,
+      borderRadius: 16,
+      marginBottom: 14,
       backgroundColor: isDark ? colors.neutral[800] : colors.neutral[100],
     },
     skelKpiHero: {
       height: 120,
-      borderRadius: 20,
+      borderRadius: 16,
       marginBottom: 12,
       backgroundColor: isDark ? colors.neutral[800] : colors.neutral[100],
     },
     skelRow: {
       flexDirection: "row",
       gap: 12,
-      marginBottom: 20,
+      marginBottom: 16,
     },
     skelKpiSmall: {
       flex: 1,
-      height: 130,
-      borderRadius: 18,
+      height: 122,
+      borderRadius: 14,
       backgroundColor: isDark ? colors.neutral[800] : colors.neutral[100],
     },
     skelSection: {
       height: 140,
-      borderRadius: 18,
+      borderRadius: 16,
       marginBottom: 16,
       backgroundColor: isDark ? colors.neutral[800] : colors.neutral[100],
     },

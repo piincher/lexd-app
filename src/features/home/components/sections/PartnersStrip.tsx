@@ -6,16 +6,20 @@
 
 import React from 'react';
 import { View, ScrollView, Image, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
 import { PARTNER_LOGOS } from '../../constants/homeData';
 import { SectionHeader } from '../SectionHeader';
 
 export const PartnersStrip: React.FC = () => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const logoShadow = {
+    shadowColor: colors.neutral[900],
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: isDark ? 0.18 : 0.05,
+    shadowRadius: 3,
+    elevation: isDark ? 0 : 2,
+  };
 
   return (
     <Animated.View
@@ -32,7 +36,11 @@ export const PartnersStrip: React.FC = () => {
         {PARTNER_LOGOS.map((logo, index) => (
           <View
             key={index}
-            style={[styles.logoCard, { backgroundColor: colors.background.card }]}
+            style={[
+              styles.logoCard,
+              logoShadow,
+              { backgroundColor: colors.background.card, borderColor: colors.border },
+            ]}
           >
             <Image source={{ uri: logo }} style={styles.logo} />
           </View>
@@ -54,7 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingVertical: 16,
     paddingHorizontal: 18,
-    ...Theme.shadows.sm,
+    borderWidth: 1,
   },
   logo: {
     width: 76,

@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import type { AppTheme } from '@src/constants/Theme';
 
-export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+export const createStyles = (colors: AppTheme['colors'], isDark?: boolean) => StyleSheet.create({
   container: {
-    marginTop: 32,
-    paddingHorizontal: 16,
+    marginTop: 34,
+    paddingHorizontal: 12,
   },
   timeline: {
     gap: 0,
@@ -15,13 +15,13 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
   },
   timelineCol: {
     alignItems: 'center',
-    width: 44,
-    marginRight: 12,
+    width: 38,
+    marginRight: 10,
   },
   stepCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 34,
+    height: 34,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,
@@ -44,9 +44,10 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     justifyContent: 'space-between',
     gap: 10,
     padding: 14,
-    borderRadius: 14,
+    borderRadius: 16,
     marginBottom: 10,
-    ...Theme.shadows.sm,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   stepContent: {
     flex: 1,
@@ -62,9 +63,9 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     lineHeight: 17,
   },
   stepIndexBadge: {
-    width: 26,
-    height: 26,
-    borderRadius: 8,
+    width: 30,
+    height: 30,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },

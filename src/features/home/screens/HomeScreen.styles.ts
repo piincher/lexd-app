@@ -1,17 +1,22 @@
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V5 */
+/* Hallmark · genre: modern-minimal · macrostructure: Route Console · design-system: app theme */
 import { StyleSheet } from 'react-native';
 
-export const getStyles = (colors: any) => StyleSheet.create({
+type HomeScreenColors = {
+  background: {
+    paper: string;
+  };
+};
+
+export const getStyles = (colors: HomeScreenColors) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background.default,
+    backgroundColor: colors.background.paper,
   },
   scrollContent: {
-    paddingBottom: 120,
+    paddingBottom: 128,
   },
   bottomSpacing: {
-    height: 40,
+    height: 32,
   },
 });
-
-// Backward compatibility export
-export const styles = getStyles({ background: { default: '#FFFFFF' } });

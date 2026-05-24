@@ -5,9 +5,10 @@ import Animated from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { openSupportWhatsApp } from "@src/shared/lib/openWhatsApp";
+import type { AppTheme } from '@src/constants/Theme';
 
 interface WhatsAppButtonProps {
-  animatedStyle: any;
+  animatedStyle: Record<string, unknown>;
 }
 
 export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({ animatedStyle }) => {
@@ -20,14 +21,14 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({ animatedStyle })
         style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1 })}
       >
         <LinearGradient colors={["#25D366", "#128C7E"]} style={styles.whatsappContainer}>
-          <FontAwesome6 name="whatsapp" size={28} color="white" />
+          <FontAwesome6 name="whatsapp" size={28} color={colors.neutral.white} />
         </LinearGradient>
       </Pressable>
     </Animated.View>
   );
 };
 
-const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   whatsappButton: {
     position: "absolute",
     right: 16,

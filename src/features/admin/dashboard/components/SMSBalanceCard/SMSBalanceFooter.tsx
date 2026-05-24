@@ -16,8 +16,8 @@ export const SMSBalanceFooter: React.FC<SMSBalanceFooterProps> = ({
   metaColor,
   metaLabel,
 }) => {
-  const { colors } = useAppTheme();
-  const styles = createStyles(colors);
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
   const showExpiry =
     balance.hasExpired ||
     balance.hasExpiringSoon ||

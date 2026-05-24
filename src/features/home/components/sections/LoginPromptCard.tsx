@@ -10,16 +10,34 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
+import type { navigationProps } from '@src/navigations/type';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
 
 export const LoginPromptCard: React.FC = () => {
-  const navigation = useNavigation<any>();
-  const { colors } = useAppTheme();
+  const navigation = useNavigation<navigationProps>();
+  const { colors, isDark } = useAppTheme();
+  const buttonColors: [string, string] = isDark
+    ? [colors.primary.light, colors.primary.main]
+    : [colors.primary.dark, colors.primary[800]];
+  const buttonInk = isDark ? colors.neutral[900] : colors.neutral.white;
+  const cardShadow = {
+    shadowColor: colors.neutral[900],
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: isDark ? 0.24 : 0.08,
+    shadowRadius: 12,
+    elevation: isDark ? 0 : 4,
+  };
 
   return (
-    <Animated.View entering={FadeInDown.delay(200).duration(500).springify()} style={[styles.card, { backgroundColor: colors.background.card }]}>
+    <Animated.View
+      entering={FadeInDown.delay(200).duration(500).springify()}
+      style={[
+        styles.card,
+        cardShadow,
+        { backgroundColor: colors.background.card, borderColor: colors.border },
+      ]}
+    >
       <LinearGradient colors={[colors.primary.main, colors.primary.dark]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.iconCircle}>
         <FontAwesome6 name="user-lock" size={18} color={colors.neutral.white} />
       </LinearGradient>
@@ -28,9 +46,9 @@ export const LoginPromptCard: React.FC = () => {
         <Text style={[styles.subtitle, { color: colors.text.secondary }]}>Accedez a vos envois, suivi et tableau de bord</Text>
       </View>
       <Pressable style={({ pressed }) => [styles.button, pressed && styles.pressed]} onPress={() => navigation.navigate('Login')}>
-        <LinearGradient colors={[colors.primary.main, colors.status.success]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.buttonGradient}>
-          <Text style={styles.buttonText}>Se connecter</Text>
-          <FontAwesome6 name="arrow-right" size={12} color={colors.neutral.white} />
+        <LinearGradient colors={buttonColors} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.buttonGradient}>
+          <Text style={[styles.buttonText, { color: buttonInk }]}>Se connecter</Text>
+          <FontAwesome6 name="arrow-right" size={12} color={buttonInk} />
         </LinearGradient>
       </Pressable>
     </Animated.View>
@@ -43,7 +61,7 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 20,
     marginBottom: 28,
-    ...Theme.shadows.md,
+    borderWidth: 1,
   },
   iconCircle: {
     width: 48,
@@ -84,7 +102,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: Fonts.bold,
     fontSize: 15,
-    color: Theme.neutral.white,
     letterSpacing: 0.3,
   },
   pressed: {

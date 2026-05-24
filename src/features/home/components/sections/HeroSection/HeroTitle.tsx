@@ -10,10 +10,10 @@ export const HeroTitle: React.FC = () => {
 
   return (
     <View>
-      <Text style={styles.title}>Expediez vos{'\n'}marchandises</Text>
-      <Text style={styles.titleAccent}>en toute securite</Text>
+      <Text style={styles.title}>Chine vers Mali,</Text>
+      <Text style={styles.titleAccent}>sans angle mort.</Text>
       <Text style={styles.subtitle}>
-        Service de fret aerien et maritime fiable, rapide et securise entre la Chine et le Mali
+        Fret aerien et maritime avec suivi, dedouanement et support WhatsApp au meme endroit.
       </Text>
     </View>
   );

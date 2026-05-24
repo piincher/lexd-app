@@ -10,14 +10,14 @@ interface StatusRowProps {
 }
 
 export const StatusRow: React.FC<StatusRowProps> = ({ counts }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
         statusRow: {
           flexDirection: "row",
-          paddingVertical: 14,
+          paddingVertical: 12,
           paddingHorizontal: 12,
         },
         statusItem: {
@@ -27,7 +27,7 @@ export const StatusRow: React.FC<StatusRowProps> = ({ counts }) => {
         statusIconWrap: {
           width: 34,
           height: 34,
-          borderRadius: 11,
+          borderRadius: 10,
           justifyContent: "center",
           alignItems: "center",
           marginBottom: 6,
@@ -68,7 +68,7 @@ export const StatusRow: React.FC<StatusRowProps> = ({ counts }) => {
           marginVertical: 4,
         },
       }),
-    [colors, isDark]
+    [colors]
   );
 
   return (

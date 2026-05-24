@@ -6,7 +6,7 @@
 
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import Animated, {
+import {
   useSharedValue,
   useAnimatedStyle,
   withTiming,
@@ -20,11 +20,18 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 export const ProcessTimeline: React.FC = () => {
   const { colors, isDark } = useAppTheme();
   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const stepColors = [
+    colors.status.info,
+    colors.primary.main,
+    colors.status.warning,
+    colors.status.success,
+    colors.primary.main,
+  ];
   const lineProgress = useSharedValue(0);
 
   useEffect(() => {
     lineProgress.value = withTiming(1, { duration: 1500 });
-  }, []);
+  }, [lineProgress]);
 
   const lineStyle = useAnimatedStyle(() => ({
     opacity: lineProgress.value,
@@ -42,7 +49,7 @@ export const ProcessTimeline: React.FC = () => {
         {WORKFLOW_STEPS.map((step, index) => (
           <TimelineStep
             key={index}
-            step={step}
+            step={{ ...step, color: stepColors[index] ?? colors.primary.main }}
             index={index}
             isLast={index === WORKFLOW_STEPS.length - 1}
             lineStyle={lineStyle}

@@ -19,6 +19,10 @@ interface DashboardBannerProps {
 
 export const DashboardBanner: React.FC<DashboardBannerProps> = ({ firstName, onPress }) => {
   const { colors, isDark } = useAppTheme();
+  const bannerColors: [string, string] = isDark
+    ? [colors.primary.light, colors.primary.main]
+    : [colors.primary.dark, colors.primary[800]];
+  const bannerInk = isDark ? colors.neutral[900] : colors.neutral.white;
 
   const styles = useMemo(
     () =>
@@ -59,17 +63,17 @@ export const DashboardBanner: React.FC<DashboardBannerProps> = ({ firstName, onP
         title: {
           fontFamily: Fonts.bold,
           fontSize: 16,
-          color: colors.text.inverse,
+          color: bannerInk,
         },
         subtitle: {
           fontFamily: Fonts.regular,
           fontSize: 12,
-          color: colors.text.inverse,
+          color: bannerInk,
           opacity: 0.85,
           marginTop: 2,
         },
       }),
-    [colors, isDark]
+    [colors, isDark, bannerInk]
   );
 
   return (
@@ -79,7 +83,7 @@ export const DashboardBanner: React.FC<DashboardBannerProps> = ({ firstName, onP
         onPress={onPress}
       >
         <LinearGradient
-          colors={[colors.primary.main, colors.primary.dark]}
+          colors={bannerColors}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.gradient}
@@ -93,7 +97,7 @@ export const DashboardBanner: React.FC<DashboardBannerProps> = ({ firstName, onP
             </Text>
             <Text style={styles.subtitle}>Suivez vos marchandises et paiements</Text>
           </View>
-          <MaterialCommunityIcons name="chevron-right" size={24} color={colors.text.inverse} style={{ opacity: 0.8 }} />
+          <MaterialCommunityIcons name="chevron-right" size={24} color={bannerInk} style={{ opacity: 0.8 }} />
         </LinearGradient>
       </Pressable>
     </Animated.View>

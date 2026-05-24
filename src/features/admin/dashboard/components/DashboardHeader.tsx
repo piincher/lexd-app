@@ -1,16 +1,17 @@
 import React, { useMemo } from "react";
 import { View } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
-import { Theme } from "@src/constants/Theme";
+import { navigationProps } from "@src/app/navigation/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { User } from "@src/shared/types";
 import { DashboardHeaderTopRow } from "./DashboardHeaderTopRow";
 import { DashboardHeaderGreeting } from "./DashboardHeaderGreeting";
 import { createDashboardHeaderStyles } from "./DashboardHeader.styles";
 
 interface DashboardHeaderProps {
-  user: User | null;
+  user: {
+    firstName?: string;
+    lastName?: string;
+  } | null;
 }
 
 const getGreeting = () => {
@@ -28,7 +29,7 @@ const getFormattedDate = () =>
   });
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<navigationProps>();
   const { colors, isDark } = useAppTheme();
   const styles = React.useMemo(() => createDashboardHeaderStyles(colors, isDark), [colors, isDark]);
 
@@ -39,31 +40,23 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
   );
 
   return (
-    <LinearGradient
-      colors={Theme.gradients.primary}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.container}
-    >
-      <View style={styles.decorCircle1} />
-      <View style={styles.decorCircle2} />
-
+    <View style={styles.container}>
       <DashboardHeaderTopRow
         styles={styles}
         dateText={getFormattedDate()}
         onSearchPress={() => navigation.navigate("GlobalSearch")}
         onNotificationPress={() => navigation.navigate("Notifications")}
-        iconColor={colors.text.inverse}
+        iconColor={colors.text.secondary}
       />
 
       <DashboardHeaderGreeting
         styles={styles}
         greeting={getGreeting()}
         name={user?.firstName || "Admin"}
-        subtitle="Voici votre aperçu du jour"
+        subtitle="Aperçu opérationnel du jour"
         initials={initials}
       />
-    </LinearGradient>
+    </View>
   );
 };
 

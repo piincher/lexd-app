@@ -1,16 +1,19 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
+import type { ThemeContextType } from "@src/constants/Theme";
 
-export const createStyles = (colors: any, isDark: boolean) =>
+type AppThemeColors = ThemeContextType["colors"];
+
+export const createStyles = (colors: AppThemeColors, isDark: boolean) =>
   StyleSheet.create({
     card: {
-      marginBottom: 20,
-      borderRadius: 20,
+      marginBottom: 16,
+      borderRadius: 16,
       backgroundColor: colors.background.card,
       borderWidth: 1,
-      borderColor: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)",
-      padding: 16,
+      borderColor: colors.border,
+      padding: 14,
       ...Theme.shadows.sm,
     },
     header: {
@@ -27,8 +30,8 @@ export const createStyles = (colors: any, isDark: boolean) =>
     headerIcon: {
       width: 30,
       height: 30,
-      borderRadius: 10,
-      backgroundColor: isDark ? "rgba(34,197,94,0.18)" : colors.feedback.successBg,
+      borderRadius: 9,
+      backgroundColor: isDark ? colors.primary.main + "20" : colors.primary[50],
       justifyContent: "center",
       alignItems: "center",
     },
@@ -36,16 +39,17 @@ export const createStyles = (colors: any, isDark: boolean) =>
       fontSize: 15,
       fontFamily: Fonts.bold,
       color: colors.text.primary,
-      letterSpacing: -0.2,
     },
     viewAll: {
       flexDirection: "row",
       alignItems: "center",
       gap: 3,
       paddingHorizontal: 10,
-      paddingVertical: 5,
-      borderRadius: 999,
-      backgroundColor: isDark ? "rgba(34,197,94,0.15)" : colors.feedback.successBg,
+      minHeight: 34,
+      borderRadius: 10,
+      backgroundColor: isDark ? colors.primary.main + "18" : colors.primary[50],
+      borderWidth: 1,
+      borderColor: isDark ? colors.primary.main + "26" : colors.primary[100],
     },
     viewAllText: {
       fontSize: 11,
@@ -55,17 +59,18 @@ export const createStyles = (colors: any, isDark: boolean) =>
     item: {
       flexDirection: "row",
       alignItems: "center",
-      paddingVertical: 10,
+      minHeight: 58,
+      paddingVertical: 9,
     },
     itemDivider: {
       height: 1,
-      backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+      backgroundColor: colors.divider,
       marginLeft: 52,
     },
     avatar: {
       width: 42,
       height: 42,
-      borderRadius: 14,
+      borderRadius: 12,
       justifyContent: "center",
       alignItems: "center",
       marginRight: 12,
@@ -81,7 +86,6 @@ export const createStyles = (colors: any, isDark: boolean) =>
       fontSize: 14,
       fontFamily: Fonts.bold,
       color: colors.text.primary,
-      letterSpacing: -0.2,
     },
     subRow: {
       flexDirection: "row",
@@ -124,7 +128,7 @@ export const createStyles = (colors: any, isDark: boolean) =>
       width: 52,
       height: 52,
       borderRadius: 16,
-      backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+      backgroundColor: isDark ? colors.background.elevated : colors.background.paper,
       justifyContent: "center",
       alignItems: "center",
       marginBottom: 10,

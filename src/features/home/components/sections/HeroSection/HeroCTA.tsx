@@ -11,6 +11,10 @@ import { openSupportWhatsApp } from '@src/shared/lib/openWhatsApp';
 export const HeroCTA: React.FC = () => {
   const { colors, isDark } = useAppTheme();
   const styles = createStyles(colors, isDark);
+  const ctaColors: [string, string] = isDark
+    ? [colors.primary.light, colors.primary.main]
+    : [colors.primary.dark, colors.primary[800]];
+  const ctaInk = isDark ? colors.neutral[900] : colors.neutral.white;
   const ctaScale = useSharedValue(1);
 
   const ctaAnimatedStyle = useAnimatedStyle(() => ({
@@ -30,17 +34,19 @@ export const HeroCTA: React.FC = () => {
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       style={styles.ctaWrapper}
+      accessibilityRole="button"
+      accessibilityLabel="Demander un devis sur WhatsApp"
     >
       <Animated.View style={[styles.ctaGlow, ctaAnimatedStyle]}>
         <LinearGradient
-          colors={[colors.primary.main, colors.primary.dark]}
+          colors={ctaColors}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.ctaGradient}
         >
-          <FontAwesome6 name="whatsapp" size={18} color={colors.text.inverse} />
-          <Text style={styles.ctaText}>Demander un Devis</Text>
-          <FontAwesome6 name="arrow-right" size={14} color={colors.text.inverse} />
+          <FontAwesome6 name="whatsapp" size={18} color={ctaInk} />
+          <Text style={styles.ctaText}>Demander un devis</Text>
+          <FontAwesome6 name="arrow-right" size={14} color={ctaInk} />
         </LinearGradient>
       </Animated.View>
     </Pressable>

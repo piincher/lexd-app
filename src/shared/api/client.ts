@@ -36,12 +36,34 @@ const getEnvironment = (value?: string): Environment => {
   return 'production';
 };
 
-const ENV = getEnvironment('production'); // Change this value to switch environments (or set via env variable in the future)
+const ENV = getEnvironment('development'); // Change this value to switch environments (or set via env variable in the future)
+
+// Port the local backend listens on.
+const LOCAL_API_PORT = 3000;
+// Fallback LAN IP used only when the Metro host can't be resolved (e.g. release build run over local env).
+const LOCAL_API_FALLBACK_HOST = '192.168.0.108';
+
+/**
+ * Resolve the dev machine's host from Expo's Metro bundler URL so the local
+ * API base tracks the current IP automatically instead of being hardcoded.
+ * Returns just the host/IP (port stripped).
+ */
+const getDevHost = (): string => {
+  const hostUri =
+    Constants.expoConfig?.hostUri ||
+    (Constants as unknown as { expoGoConfig?: { debuggerHost?: string } }).expoGoConfig?.debuggerHost ||
+    (Constants as unknown as { manifest?: { debuggerHost?: string } }).manifest?.debuggerHost;
+
+  const host = hostUri?.split(':')[0];
+  return host || LOCAL_API_FALLBACK_HOST;
+};
+
+const localBaseURL = `http://${getDevHost()}:${LOCAL_API_PORT}`;
 
 const API_CONFIG = {
   local: {
-    baseURL: 'http://192.168.0.107:3000/api/v1',
-    baseURLV2: 'http://192.168.0.107:3000/api/v2',
+    baseURL: `${localBaseURL}/api/v1`,
+    baseURLV2: `${localBaseURL}/api/v2`,
     timeout: 10000,
   },
   staging: {

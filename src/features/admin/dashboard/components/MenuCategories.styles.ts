@@ -1,11 +1,14 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
+import type { ThemeContextType } from "@src/constants/Theme";
 
-export const createMenuCategoriesStyles = (colors: any, isDark: boolean) =>
+type AppThemeColors = ThemeContextType["colors"];
+
+export const createMenuCategoriesStyles = (colors: AppThemeColors, isDark: boolean) =>
   StyleSheet.create({
     container: {
-      marginBottom: 20,
+      marginBottom: 16,
     },
     sectionHeader: {
       flexDirection: "row",
@@ -18,7 +21,6 @@ export const createMenuCategoriesStyles = (colors: any, isDark: boolean) =>
       fontSize: 16,
       fontFamily: Fonts.bold,
       color: colors.text.primary,
-      letterSpacing: -0.3,
     },
     sectionHint: {
       fontSize: 11,
@@ -26,18 +28,18 @@ export const createMenuCategoriesStyles = (colors: any, isDark: boolean) =>
       color: colors.text.secondary,
     },
     card: {
-      marginBottom: 12,
-      borderRadius: 20,
+      marginBottom: 10,
+      borderRadius: 16,
       backgroundColor: colors.background.card,
       borderWidth: 1,
-      borderColor: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)",
+      borderColor: colors.border,
       overflow: "hidden",
       ...Theme.shadows.sm,
     },
     categoryHeader: {
       flexDirection: "row",
       alignItems: "center",
-      paddingHorizontal: 16,
+      paddingHorizontal: 14,
       paddingTop: 14,
       paddingBottom: 10,
       gap: 10,
@@ -45,37 +47,40 @@ export const createMenuCategoriesStyles = (colors: any, isDark: boolean) =>
     categoryIconWrap: {
       width: 34,
       height: 34,
-      borderRadius: 11,
+      borderRadius: 10,
       justifyContent: "center",
       alignItems: "center",
+      borderWidth: 1,
+      borderColor: colors.border,
     },
     categoryTitle: {
       fontSize: 14,
       fontFamily: Fonts.bold,
       color: colors.text.primary,
       flex: 1,
-      letterSpacing: -0.2,
     },
     itemCount: {
       fontSize: 11,
       fontFamily: Fonts.regular,
       color: colors.text.secondary,
       paddingHorizontal: 8,
-      paddingVertical: 3,
-      borderRadius: 999,
-      backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+      paddingVertical: 4,
+      borderRadius: 9,
+      backgroundColor: isDark ? colors.action.hover : colors.background.paper,
+      overflow: "hidden",
     },
     divider: {
       height: 1,
-      backgroundColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
-      marginHorizontal: 16,
+      backgroundColor: colors.divider,
+      marginHorizontal: 14,
     },
     item: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      paddingVertical: 12,
-      paddingHorizontal: 16,
+      minHeight: 48,
+      paddingVertical: 10,
+      paddingHorizontal: 14,
     },
     itemLeft: {
       flexDirection: "row",

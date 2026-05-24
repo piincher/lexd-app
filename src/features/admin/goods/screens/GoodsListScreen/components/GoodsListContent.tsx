@@ -6,13 +6,14 @@
 import React, { useCallback } from 'react';
 import { View, StyleSheet, RefreshControl } from 'react-native';
 import { FlashList, ListRenderItem } from '@shopify/flash-list';
-import { ActivityIndicator, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsCard } from '../../../components/GoodsCard';
 import { GoodsEmptyState } from './GoodsEmptyState';
+import { GoodsListSkeleton } from './GoodsListSkeleton';
 import { Goods } from '../../../types';
 import { Theme } from '@src/constants/Theme';
 
@@ -45,20 +46,15 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   const keyExtractor = useCallback((item: Goods) => item._id, []);
 
   if (isLoading) {
-    return (
-      <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color={colors.primary.main} />
-        <Text style={[styles.loadingText, { color: colors.text.secondary }]}>Chargement des marchandises...</Text>
-      </View>
-    );
+    return <GoodsListSkeleton />;
   }
 
   if (error) {
     return (
       <View style={styles.centerContainer}>
-        <LinearGradient colors={[colors.feedback.errorBg, colors.background.paper]} style={styles.errorIcon}>
-          <Ionicons name="alert-circle" size={64} color={colors.status.error} />
-        </LinearGradient>
+        <View style={[styles.errorIcon, { backgroundColor: colors.feedback.errorBg }]}>
+          <Ionicons name="alert-circle" size={56} color={colors.status.error} />
+        </View>
         <Text style={[styles.errorTitle, { color: colors.text.primary }]}>Erreur de chargement</Text>
         <Text style={[styles.errorSubtitle, { color: colors.text.secondary }]}>Impossible de récupérer les marchandises</Text>
         <TouchableOpacity style={styles.retryButton} onPress={onRefresh}>
@@ -85,8 +81,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
 const styles = StyleSheet.create({
   centerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center',
     paddingVertical: Theme.spacing['4xl'], paddingHorizontal: Theme.spacing.xl },
-  loadingText: { marginTop: Theme.spacing.lg, fontSize: 16, fontWeight: '500' },
-  errorIcon: { width: 120, height: 120, borderRadius: Theme.radius['3xl'],
+  errorIcon: { width: 96, height: 96, borderRadius: Theme.radius['2xl'],
     justifyContent: 'center', alignItems: 'center', marginBottom: Theme.spacing.xl },
   errorTitle: { fontSize: 20, fontWeight: '700', marginBottom: Theme.spacing.sm },
   errorSubtitle: { fontSize: 14, fontWeight: '500',

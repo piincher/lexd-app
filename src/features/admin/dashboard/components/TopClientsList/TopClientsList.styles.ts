@@ -12,9 +12,9 @@ export const useTopClientsListStyles = () => {
       StyleSheet.create({
         container: {
           backgroundColor: colors.background.card,
-          borderRadius: 18,
+          borderRadius: 16,
           borderWidth: 1,
-          borderColor: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)",
+          borderColor: colors.border,
           padding: 14,
           ...Theme.shadows.sm,
         },
@@ -27,8 +27,8 @@ export const useTopClientsListStyles = () => {
         iconWrap: {
           width: 34,
           height: 34,
-          borderRadius: 11,
-          backgroundColor: isDark ? "rgba(245,158,11,0.18)" : colors.feedback.warningBg,
+          borderRadius: 10,
+          backgroundColor: isDark ? colors.status.warning + "22" : colors.feedback.warningBg,
           justifyContent: "center",
           alignItems: "center",
         },
@@ -39,7 +39,6 @@ export const useTopClientsListStyles = () => {
           fontSize: 13,
           fontFamily: Fonts.bold,
           color: colors.text.primary,
-          letterSpacing: -0.2,
         },
         subtitle: {
           fontSize: 10,
@@ -53,7 +52,7 @@ export const useTopClientsListStyles = () => {
           gap: 10,
           paddingVertical: 10,
           borderBottomWidth: 1,
-          borderBottomColor: isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+          borderBottomColor: colors.divider,
         },
         rowLast: {
           borderBottomWidth: 0,
@@ -61,7 +60,7 @@ export const useTopClientsListStyles = () => {
         rankWrap: {
           width: 32,
           height: 32,
-          borderRadius: 10,
+          borderRadius: 9,
           justifyContent: "center",
           alignItems: "center",
         },
@@ -73,8 +72,8 @@ export const useTopClientsListStyles = () => {
         avatar: {
           width: 36,
           height: 36,
-          borderRadius: 11,
-          backgroundColor: isDark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)",
+          borderRadius: 10,
+          backgroundColor: isDark ? colors.background.elevated : colors.background.paper,
           justifyContent: "center",
           alignItems: "center",
         },

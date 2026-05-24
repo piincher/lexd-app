@@ -1,6 +1,6 @@
 /**
  * StatsStrip
- * Three icon-rich stat cards showing delivery times and support
+ * Compact route facts for delivery times and support.
  */
 
 import React from 'react';
@@ -10,10 +10,11 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
 import { HIGHLIGHTS } from '../../constants/homeData';
 
-const ICON_MAP: Record<string, string> = {
+type FontAwesome6Name = React.ComponentProps<typeof FontAwesome6>['name'];
+
+const ICON_MAP: Record<string, FontAwesome6Name> = {
   airplane: 'plane-up',
   ship: 'ship',
   headset: 'headset',
@@ -37,11 +38,17 @@ export const StatsStrip: React.FC = () => {
         return (
           <Animated.View
             key={item.label}
-            entering={FadeInDown.delay(200 + index * 100).duration(500).springify()}
-            style={[styles.card, { backgroundColor: colors.background.card }]}
+            entering={FadeInDown.delay(120 + index * 70).duration(320)}
+            style={[
+              styles.card,
+              {
+                backgroundColor: colors.background.card,
+                borderColor: colors.border,
+              },
+            ]}
           >
-            <View style={[styles.iconCircle, { backgroundColor: `${accentColor}14` }]}>
-              <FontAwesome6 name={iconName as any} size={18} color={accentColor} />
+            <View style={[styles.iconCircle, { backgroundColor: `${accentColor}12` }]}>
+              <FontAwesome6 name={iconName} size={18} color={accentColor} />
             </View>
             <View style={styles.textBlock}>
               <View style={styles.valueRow}>
@@ -62,28 +69,28 @@ export const StatsStrip: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    gap: 10,
-    marginHorizontal: 16,
-    marginTop: 20,
+    gap: 8,
+    marginHorizontal: 12,
+    marginTop: 12,
   },
   card: {
     flex: 1,
-    alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 8,
+    alignItems: 'flex-start',
+    paddingVertical: 14,
+    paddingHorizontal: 10,
     borderRadius: 16,
-    ...Theme.shadows.sm,
+    borderWidth: 1,
   },
   iconCircle: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
+    width: 38,
+    height: 38,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 9,
   },
   textBlock: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   valueRow: {
     flexDirection: 'row',
@@ -92,8 +99,8 @@ const styles = StyleSheet.create({
   },
   value: {
     fontFamily: Fonts.bold,
-    fontSize: 22,
-    letterSpacing: -0.5,
+    fontSize: 20,
+    letterSpacing: -0.2,
   },
   unit: {
     fontFamily: Fonts.regular,
@@ -101,10 +108,9 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: Fonts.meduim,
-    fontSize: 10,
+    fontSize: 10.5,
     marginTop: 4,
-    textTransform: 'uppercase',
-    letterSpacing: 0.6,
-    textAlign: 'center',
+    letterSpacing: 0,
+    textAlign: 'left',
   },
 });

@@ -17,7 +17,9 @@ export const GoodsListScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
-      <GoodsListHeader total={s.total} pendingCount={s.pendingCount} onExportPress={s.handleExportPress}
+      <GoodsListHeader total={s.total} pendingCount={s.pendingCount} loading={s.isLoading}
+        mode={s.selectedMode} onChangeMode={s.setSelectedMode}
+        onExportPress={s.handleExportPress}
         isSelectionMode={s.isSelectionMode} onToggleSelectionMode={s.handleToggleSelectionMode} />
       <GoodsListSearch value={s.searchQuery} onChangeText={s.setSearchQuery}
         onClear={() => s.setSearchQuery('')} onFilterPress={() => s.setFilterModalVisible(true)}

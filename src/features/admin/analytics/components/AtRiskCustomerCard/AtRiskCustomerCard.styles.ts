@@ -98,8 +98,8 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       backgroundColor: "#25D366" + "08",
     },
     callBtn: {
-      borderColor: colors.semantic.info + "30",
-      backgroundColor: colors.semantic.info + "08",
+      borderColor: colors.status.info + "30",
+      backgroundColor: colors.status.info + "08",
     },
     winbackBtn: {
       borderColor: colors.primary.main + "30",

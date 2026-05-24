@@ -34,7 +34,7 @@ export const SmallKpiCard: React.FC<SmallKpiCardProps> = ({
       onPress={onPress}
       style={({ pressed }) => [
         styles.smallCard,
-        pressed && { opacity: 0.92 },
+        pressed && styles.pressed,
       ]}
     >
       <View
@@ -45,7 +45,9 @@ export const SmallKpiCard: React.FC<SmallKpiCardProps> = ({
       >
         <MaterialCommunityIcons name={icon} size={20} color={iconColor} />
       </View>
-      <Text style={styles.smallValue}>{value}</Text>
+      <Text style={styles.smallValue} numberOfLines={1} adjustsFontSizeToFit>
+        {value}
+      </Text>
       <Text style={styles.smallLabel}>{label}</Text>
       <View style={styles.progressTrack}>
         <View

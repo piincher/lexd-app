@@ -23,12 +23,9 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
   const { colors } = useAppTheme();
   return (
   <View style={styles.container}>
-    <LinearGradient
-      colors={[colors.background.paper, colors.background.default]}
-      style={styles.iconContainer}
-    >
-      <Ionicons name="cube-outline" size={64} color={colors.primary.main} />
-    </LinearGradient>
+    <View style={[styles.iconContainer, { backgroundColor: colors.primary[100] }]}>
+      <Ionicons name="cube-outline" size={56} color={colors.primary.main} />
+    </View>
     <Text style={[styles.title, { color: colors.text.primary }]}>Aucune marchandise</Text>
     <Text style={[styles.subtitle, { color: colors.text.secondary }]}>
       {hasFilters
@@ -53,9 +50,9 @@ const styles = StyleSheet.create({
     paddingVertical: Theme.spacing['4xl'],
   },
   iconContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: Theme.radius['3xl'],
+    width: 96,
+    height: 96,
+    borderRadius: Theme.radius['2xl'],
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: Theme.spacing.xl,

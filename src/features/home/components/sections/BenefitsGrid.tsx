@@ -11,36 +11,51 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
 import { BENEFITS } from '../../constants/homeData';
 import { SectionHeader } from '../SectionHeader';
 
 export const BenefitsGrid: React.FC = () => {
   const { colors } = useAppTheme();
+  const benefitColors = [
+    colors.status.info,
+    colors.status.success,
+    colors.status.warning,
+    colors.primary.main,
+    colors.status.error,
+    colors.primary.main,
+  ];
 
   return (
     <View style={styles.container}>
       <SectionHeader
-        title="Pourquoi ChinaLink Express ?"
-        subtitle="Les avantages qui font la difference"
+        eyebrow="Garanties"
+        title="Ce qui reste sous controle"
+        subtitle="Les points qui reduisent les surprises pendant le transport."
       />
 
       <View style={styles.grid}>
-        {BENEFITS.map((benefit, index) => (
-          <Animated.View
-            key={benefit.label}
-            entering={FadeInDown.delay(200 + index * 80).duration(400).springify()}
-            style={[styles.card, { backgroundColor: colors.background.card }]}
-          >
-            {/* Colored top accent */}
-            <View style={[styles.topAccent, { backgroundColor: benefit.color }]} />
+        {BENEFITS.map((benefit, index) => {
+          const accentColor = benefitColors[index] ?? colors.primary.main;
 
-            <View style={[styles.iconCircle, { backgroundColor: `${benefit.color}12` }]}>
-              <FontAwesome6 name={benefit.icon} size={22} color={benefit.color} />
-            </View>
-            <Text style={[styles.label, { color: colors.text.primary }]}>{benefit.label}</Text>
-          </Animated.View>
-        ))}
+          return (
+            <Animated.View
+              key={benefit.label}
+              entering={FadeInDown.delay(120 + index * 50).duration(300)}
+              style={[
+                styles.card,
+                {
+                  backgroundColor: colors.background.card,
+                  borderColor: colors.border,
+                },
+              ]}
+            >
+              <View style={[styles.iconCircle, { backgroundColor: `${accentColor}12` }]}>
+                <FontAwesome6 name={benefit.icon} size={18} color={accentColor} />
+              </View>
+              <Text style={[styles.label, { color: colors.text.primary }]}>{benefit.label}</Text>
+            </Animated.View>
+          );
+        })}
       </View>
     </View>
   );
@@ -48,8 +63,8 @@ export const BenefitsGrid: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 32,
-    paddingHorizontal: 16,
+    marginTop: 34,
+    paddingHorizontal: 12,
   },
   grid: {
     flexDirection: 'row',
@@ -58,25 +73,17 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '48%',
-    alignItems: 'center',
-    paddingVertical: 18,
-    paddingHorizontal: 10,
+    alignItems: 'flex-start',
+    paddingVertical: 14,
+    paddingHorizontal: 12,
     borderRadius: 16,
     overflow: 'hidden',
-    ...Theme.shadows.sm,
-  },
-  topAccent: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 3,
-    borderRadius: 1.5,
+    borderWidth: 1,
   },
   iconCircle: {
-    width: 48,
-    height: 48,
-    borderRadius: 14,
+    width: 40,
+    height: 40,
+    borderRadius: 13,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
@@ -84,6 +91,7 @@ const styles = StyleSheet.create({
   label: {
     fontFamily: Fonts.meduim,
     fontSize: 13,
-    textAlign: 'center',
+    textAlign: 'left',
+    lineHeight: 18,
   },
 });

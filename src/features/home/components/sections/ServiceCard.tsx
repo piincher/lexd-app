@@ -1,19 +1,20 @@
 import React from 'react';
 import { View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
-import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome6 } from '@expo/vector-icons';
 import Animated, { FadeInRight } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createServiceShowcaseStyles } from './ServiceShowcase.styles';
+
+type FontAwesome6Name = React.ComponentProps<typeof FontAwesome6>['name'];
 
 interface ServiceCardProps {
   id: string;
   title: string;
   description: string;
   deliveryTime: string;
-  icon: any;
-  gradient: [string, string];
+  icon: FontAwesome6Name;
+  accentColor: string;
   navigateTo: string;
   index: number;
   onPress: (navigateTo: string) => void;
@@ -24,7 +25,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   description,
   deliveryTime,
   icon,
-  gradient,
+  accentColor,
   navigateTo,
   index,
   onPress,
@@ -34,30 +35,18 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
 
   return (
     <Animated.View
-      entering={FadeInRight.delay(300 + index * 150).duration(500).springify()}
+      entering={FadeInRight.delay(160 + index * 90).duration(340)}
       style={styles.cardWrapper}
     >
       <Pressable
         style={({ pressed }) => [styles.pressable, pressed && styles.cardPressed]}
         onPress={() => onPress(navigateTo)}
+        accessibilityRole="button"
+        accessibilityLabel={`${title}, ${deliveryTime}`}
       >
-        <LinearGradient
-          colors={gradient}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.card}
-        >
-          <View style={styles.bgIconWrap}>
-            <FontAwesome6
-              name={icon}
-              size={80}
-              color={`${colors.neutral.white}0F`}
-              style={styles.bgIcon}
-            />
-          </View>
-
-          <View style={styles.cardIconCircle}>
-            <FontAwesome6 name={icon} size={22} color={gradient[0]} />
+        <View style={styles.card}>
+          <View style={[styles.cardIconCircle, { backgroundColor: `${accentColor}14` }]}>
+            <FontAwesome6 name={icon} size={22} color={accentColor} />
           </View>
 
           <View style={styles.cardContent}>
@@ -67,9 +56,9 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
           </View>
 
           <View style={styles.cardArrow}>
-            <FontAwesome6 name="arrow-right" size={12} color={`${colors.neutral.white}CC`} />
+            <FontAwesome6 name="arrow-right" size={12} color={colors.text.secondary} />
           </View>
-        </LinearGradient>
+        </View>
       </Pressable>
     </Animated.View>
   );

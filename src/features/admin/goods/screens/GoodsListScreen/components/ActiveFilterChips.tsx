@@ -1,11 +1,11 @@
-/**
- * ActiveFilterChips - Shows currently applied non-status filters
- * Allows quick removal of client and date filters
+/* Hallmark · component: active-filter-chips · genre: modern-minimal · theme: brand-aligned app theme
+ * Cohesion pass: theme-aware tinted removable chips (was frozen to light-mode tokens at module load).
+ * pre-emit critique: P4 H4 E5 S4 R5 V4
  */
-
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Chip } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 import { userData } from '@src/shared/types/user';
 
@@ -22,6 +22,9 @@ export const ActiveFilterChips: React.FC<ActiveFilterChipsProps> = ({
   dateRange,
   onClearDateRange,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
+
   if (!selectedClient && !dateRange) return null;
 
   const formatRange = (range: { startDate: string; endDate: string }) => {
@@ -58,23 +61,24 @@ export const ActiveFilterChips: React.FC<ActiveFilterChipsProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  wrapper: {
-    marginBottom: Theme.spacing.sm,
-  },
-  list: {
-    paddingHorizontal: Theme.spacing.xl,
-    gap: Theme.spacing.sm,
-  },
-  chip: {
-    backgroundColor: Theme.primary[50],
-    borderColor: Theme.primary[200],
-    borderWidth: 1,
-  },
-  chipText: {
-    color: Theme.primary[700],
-    fontWeight: '500',
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    wrapper: {
+      marginBottom: Theme.spacing.sm,
+    },
+    list: {
+      paddingHorizontal: Theme.spacing.xl,
+      gap: Theme.spacing.sm,
+    },
+    chip: {
+      backgroundColor: colors.primary[100],
+      borderColor: colors.primary.main,
+      borderWidth: 1,
+    },
+    chipText: {
+      color: colors.primary[700],
+      fontWeight: '600',
+    },
+  });
 
 export default ActiveFilterChips;

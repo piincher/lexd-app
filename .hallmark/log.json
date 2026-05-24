@@ -1,5 +1,26 @@
 [
   {
+    "date": "2026-05-25",
+    "macrostructure": "Operations Console",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "Tier-A admin command surface",
+    "brief": "Admin dashboard redesign — dense operational cards, priority summaries, theme-complete controls"
+  },
+  {
+    "date": "2026-05-25",
+    "macrostructure": "Stat-Led",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "Tier-A gradient hero KPI",
+    "brief": "GoodsListScreen redesign — asymmetric KPI hero (1 hero + 2 share-bar halves) + skeleton loading"
+  },
+  {
+    "date": "2026-05-25",
+    "macrostructure": "Route Console",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "Tier-A route board",
+    "brief": "Accueil screen redesign — logistics console rhythm"
+  },
+  {
     "date": "2026-05-22",
     "macrostructure": "Progressive Disclosure",
     "theme": "Brand-aligned (custom)",

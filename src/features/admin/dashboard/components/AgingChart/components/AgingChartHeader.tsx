@@ -42,7 +42,6 @@ export const AgingChartHeader: React.FC<Props> = ({ hasCritical }) => {
           fontSize: 13,
           fontFamily: Fonts.bold,
           color: colors.text.primary,
-          letterSpacing: -0.2,
         },
         subtitle: {
           fontSize: 10,

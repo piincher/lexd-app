@@ -31,6 +31,7 @@ export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
   );
   const smsColor =
     smsPct >= 50 ? colors.status.success : smsPct >= 20 ? colors.status.warning : colors.status.error;
+  const inventoryAccent = colors.status.info;
 
   return (
     <View style={styles.container}>
@@ -39,6 +40,8 @@ export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
         label="Marchandises en entrepôt"
         icon="package-variant"
         trendLabel="En stock"
+        accentColor={inventoryAccent}
+        accentBgColor={isDark ? inventoryAccent + "24" : colors.feedback.infoBg}
         onPress={() => navigation.navigate("UnassignedGoods")}
       />
 
@@ -50,7 +53,7 @@ export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
           iconColor={colors.status.warning}
           progressWidth={Math.min(100, stats.pendingContainers * 10)}
           progressColor={colors.status.warning}
-          iconBgColor={isDark ? "rgba(245,158,11,0.15)" : colors.feedback.warningBg}
+          iconBgColor={isDark ? colors.status.warning + "24" : colors.feedback.warningBg}
           onPress={() => navigation.navigate("ContainerList")}
         />
         <SmallKpiCard

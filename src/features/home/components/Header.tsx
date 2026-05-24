@@ -1,13 +1,11 @@
 import React, { useMemo } from 'react';
 import { View, Image, Pressable, StyleSheet, Platform } from "react-native";
-import { Text } from "react-native-paper";
-import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { IMAGES } from "@src/constants/Images";
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
+import type { AppTheme } from '@src/constants/Theme';
 
 export const Header = () => {
    const navigation = useNavigation();
@@ -26,7 +24,7 @@ export const Header = () => {
       >
          {/* Logo + Brand */}
          <View style={styles.brandRow}>
-            <Image source={IMAGES.flat_logo} style={styles.logo} resizeMode="contain" />
+            <Image source={isDark ? IMAGES.logo : IMAGES.flat_logo} style={styles.logo} resizeMode="contain" />
          </View>
 
          {/* Action Buttons */}
@@ -38,11 +36,12 @@ export const Header = () => {
                   {
                      backgroundColor: isDark
                         ? `${colors.primary.light}1E`
-                        : `${colors.primary.main}14`,
+                        : colors.background.paper,
+                     borderColor: isDark ? `${colors.primary.light}24` : colors.border,
                   },
                   pressed && styles.iconButtonPressed,
                ]}
-               hitSlop={8}
+               hitSlop={10}
                accessibilityRole="button"
                accessibilityLabel="Suivre un envoi"
             >
@@ -58,7 +57,8 @@ export const Header = () => {
                   {
                      backgroundColor: isDark
                         ? `${colors.primary.light}1E`
-                        : `${colors.primary.main}14`,
+                        : colors.background.paper,
+                     borderColor: isDark ? `${colors.primary.light}24` : colors.border,
                   },
                ]}
             >
@@ -73,13 +73,13 @@ export const Header = () => {
    );
 };
 
-const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
    container: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
       paddingHorizontal: 16,
-      paddingVertical: 12,
+      paddingVertical: 10,
       borderBottomWidth: StyleSheet.hairlineWidth,
       ...Platform.select({
          ios: {
@@ -98,18 +98,19 @@ const createStyles = (colors: any) => StyleSheet.create({
       alignItems: "center",
    },
    logo: {
-      width: 140,
-      height: 36,
+      width: 134,
+      height: 34,
    },
    actions: {
       flexDirection: "row",
-      gap: 8,
+      gap: 10,
       alignItems: "center",
    },
    iconButton: {
-      width: 36,
-      height: 36,
-      borderRadius: 10,
+      width: 44,
+      height: 44,
+      borderRadius: 14,
+      borderWidth: 1,
       justifyContent: "center",
       alignItems: "center",
    },

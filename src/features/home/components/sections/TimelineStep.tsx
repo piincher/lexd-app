@@ -8,14 +8,14 @@ import { createStyles } from './ProcessTimeline.styles';
 
 interface TimelineStepProps {
   step: {
-    icon: string;
+    icon: React.ComponentProps<typeof FontAwesome6>['name'];
     title: string;
     description: string;
     color: string;
   };
   index: number;
   isLast: boolean;
-  lineStyle: any;
+  lineStyle: Record<string, unknown>;
 }
 
 export const TimelineStep: React.FC<TimelineStepProps> = ({

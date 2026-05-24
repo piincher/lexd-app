@@ -1,13 +1,14 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import type { AppTheme } from '@src/constants/Theme';
 
 const { width } = Dimensions.get('window');
 const BANNER_WIDTH = width - 32;
-const BANNER_HEIGHT = BANNER_WIDTH * 0.55;
+const BANNER_HEIGHT = Math.min(190, BANNER_WIDTH * 0.48);
 
-export const createStyles = (colors: any) => StyleSheet.create({
+export const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   container: {
-    marginTop: 16,
-    marginBottom: 8,
+    marginTop: 24,
+    marginBottom: 4,
     alignItems: 'center',
   },
   loadingContainer: {
@@ -18,7 +19,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
   bannerImage: {
     width: BANNER_WIDTH,
     height: BANNER_HEIGHT,
-    borderRadius: 16,
+    borderRadius: 18,
     marginHorizontal: 16,
   },
   paginationActive: {

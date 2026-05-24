@@ -1,6 +1,9 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 import { getStatusColor } from "../utils/statusColors";
+import type { createStyles } from "./RecentOrders.styles";
+
+type RecentOrderStyles = ReturnType<typeof createStyles>;
 
 interface OrderRowProps {
   order: {
@@ -11,7 +14,7 @@ interface OrderRowProps {
     date: string;
   };
   isLast: boolean;
-  styles: any;
+  styles: RecentOrderStyles;
   onPress: () => void;
 }
 

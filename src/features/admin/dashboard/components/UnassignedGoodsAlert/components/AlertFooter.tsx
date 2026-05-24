@@ -21,7 +21,7 @@ const createStyles = (colors: AppThemeColors) =>
       paddingVertical: 11,
       borderTopWidth: 1,
       borderTopColor: colors.border,
-      backgroundColor: colors.background.default,
+      backgroundColor: colors.action.hover,
     },
     footerText: {
       fontSize: 12,

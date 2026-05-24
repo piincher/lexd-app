@@ -1,11 +1,14 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
+import type { ThemeContextType } from "@src/constants/Theme";
 
-export const getQuickActionsStyles = (colors: any) =>
+type AppThemeColors = ThemeContextType["colors"];
+
+export const getQuickActionsStyles = (colors: AppThemeColors) =>
   StyleSheet.create({
     container: {
-      marginBottom: 20,
+      marginBottom: 16,
     },
     sectionHeader: {
       flexDirection: "row",
@@ -18,7 +21,6 @@ export const getQuickActionsStyles = (colors: any) =>
       fontSize: 16,
       fontFamily: Fonts.bold,
       color: colors.text.primary,
-      letterSpacing: -0.3,
     },
     sectionBadge: {
       fontSize: 12,
@@ -27,39 +29,51 @@ export const getQuickActionsStyles = (colors: any) =>
     },
     grid: {
       flexDirection: "row",
+      flexWrap: "wrap",
       gap: 10,
     },
     item: {
-      flex: 1,
-      borderRadius: 18,
-      overflow: "hidden",
+      width: "48%",
+      minHeight: 76,
+      borderRadius: 14,
+      backgroundColor: colors.background.card,
+      borderWidth: 1,
+      borderColor: colors.border,
       ...Theme.shadows.sm,
     },
-    gradient: {
+    itemPressed: {
+      opacity: 0.9,
+      transform: [{ scale: 0.98 }],
+    },
+    actionContent: {
+      flex: 1,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 10,
       padding: 12,
-      minHeight: 110,
-      justifyContent: "space-between",
     },
     iconWrap: {
       width: 38,
       height: 38,
-      borderRadius: 12,
-      backgroundColor: "rgba(255,255,255,0.25)",
+      borderRadius: 11,
       justifyContent: "center",
       alignItems: "center",
       borderWidth: 1,
-      borderColor: "rgba(255,255,255,0.2)",
+      borderColor: colors.border,
+    },
+    actionText: {
+      flex: 1,
+      minWidth: 0,
     },
     title: {
       fontSize: 13,
       fontFamily: Fonts.bold,
-      color: colors.text.inverse,
-      letterSpacing: -0.2,
+      color: colors.text.primary,
     },
     subtitle: {
       fontSize: 10,
       fontFamily: Fonts.regular,
-      color: colors.text.inverse,
+      color: colors.text.secondary,
       marginTop: 1,
     },
   });

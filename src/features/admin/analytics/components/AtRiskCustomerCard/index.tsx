@@ -15,7 +15,7 @@ type AtRiskCustomerCardProps = {
 
 export function AtRiskCustomerCard({ customer, onWhatsApp, onCall, onDetail, onWinBack }: AtRiskCustomerCardProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   const initials = `${customer.firstName?.[0] || ""}${customer.lastName?.[0] || ""}`.toUpperCase();
   const name = `${customer.firstName || ""} ${customer.lastName || ""}`.trim() || "Client inconnu";

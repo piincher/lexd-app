@@ -108,6 +108,7 @@ export interface GoodsFilters {
   clientId?: string;
   containerId?: string;
   paymentStatus?: PaymentStatus;
+  shippingMode?: 'AIR' | 'SEA';
   page?: number;
   limit?: number;
 }

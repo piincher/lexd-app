@@ -3,7 +3,6 @@ import { View, TextInput, Pressable, ActivityIndicator } from 'react-native';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { createStyles } from './CertificateVerifier.styles';
 import type { VerifyState } from './useCertificateVerification';
 
@@ -26,6 +25,7 @@ export const CertificateVerifierInput: React.FC<CertificateVerifierInputProps> =
 }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
+  const buttonInk = colors.background.default;
 
   return (
     <View style={styles.inputRow}>
@@ -87,9 +87,9 @@ export const CertificateVerifierInput: React.FC<CertificateVerifierInputProps> =
           style={styles.verifyButtonGradient}
         >
           {state.kind === 'loading' ? (
-            <ActivityIndicator size="small" color={colors.background.card} />
+            <ActivityIndicator size="small" color={buttonInk} />
           ) : (
-            <FontAwesome6 name="magnifying-glass" size={16} color={colors.background.card} />
+            <FontAwesome6 name="magnifying-glass" size={16} color={buttonInk} />
           )}
         </LinearGradient>
       </Pressable>

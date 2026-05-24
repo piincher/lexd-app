@@ -19,12 +19,18 @@ interface ServiceShowcaseProps {
 export const ServiceShowcase: React.FC<ServiceShowcaseProps> = ({ onServicePress }) => {
   const { colors } = useAppTheme();
   const styles = createServiceShowcaseStyles(colors);
+  const serviceAccent = (id: string) =>
+    id === 'air' ? colors.status.info : colors.primary.main;
 
   return (
     <View style={styles.container}>
-      <SectionHeader title="Nos Solutions" subtitle="Choisissez le mode d'expedition adapte a vos besoins" />
+      <SectionHeader
+        eyebrow="Modes d'envoi"
+        title="Choisissez votre cadence"
+        subtitle="Aérien pour aller vite, maritime pour optimiser les volumes."
+      />
 
-      <View style={styles.cardsRow}>
+      <View style={styles.cardsColumn}>
         {SERVICES.map((service, index) => (
           <ServiceCard
             key={service.id}
@@ -33,7 +39,7 @@ export const ServiceShowcase: React.FC<ServiceShowcaseProps> = ({ onServicePress
             description={service.description}
             deliveryTime={service.deliveryTime}
             icon={service.icon}
-            gradient={service.gradient}
+            accentColor={serviceAccent(service.id)}
             navigateTo={service.navigateTo}
             index={index}
             onPress={onServicePress}

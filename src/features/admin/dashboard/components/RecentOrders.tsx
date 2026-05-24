@@ -3,6 +3,7 @@ import { View, Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { navigationProps } from "@src/app/navigation/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createStyles } from "./RecentOrders.styles";
 import { OrderRow } from "./OrderRow";
@@ -20,7 +21,7 @@ interface RecentOrdersProps {
 }
 
 export const RecentOrders: React.FC<RecentOrdersProps> = ({ orders }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<navigationProps>();
   const { colors, isDark } = useAppTheme();
   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
 
@@ -38,7 +39,7 @@ export const RecentOrders: React.FC<RecentOrdersProps> = ({ orders }) => {
           <Text style={styles.title}>Commandes récentes</Text>
         </View>
         <Pressable
-          onPress={() => (navigation.navigate as any)("AllOrders")}
+          onPress={() => navigation.navigate("AllOrders")}
           style={({ pressed }) => [styles.viewAll, pressed && { opacity: 0.7 }]}
         >
           <Text style={styles.viewAllText}>Tout voir</Text>
@@ -58,7 +59,7 @@ export const RecentOrders: React.FC<RecentOrdersProps> = ({ orders }) => {
             isLast={idx === orders.length - 1}
             styles={styles}
             onPress={() =>
-              (navigation.navigate as any)("ActiveOrderDetails", {
+              navigation.navigate("ActiveOrderDetails", {
                 id: order.id,
               })
             }

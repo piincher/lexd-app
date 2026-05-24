@@ -17,7 +17,7 @@ interface AgingChartProps {
 }
 
 export const AgingChart: React.FC<AgingChartProps> = ({ aging }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const { data, total, maxValue, hasCritical } = useAgingChartData(aging);
 
   const styles = useMemo(
@@ -25,14 +25,14 @@ export const AgingChart: React.FC<AgingChartProps> = ({ aging }) => {
       StyleSheet.create({
         container: {
           backgroundColor: colors.background.card,
-          borderRadius: 18,
+          borderRadius: 16,
           borderWidth: 1,
           borderColor: colors.border,
           padding: 14,
           ...Theme.shadows.sm,
         },
       }),
-    [colors, isDark]
+    [colors]
   );
 
   return (

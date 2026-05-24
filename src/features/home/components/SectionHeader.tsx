@@ -1,68 +1,79 @@
 /**
  * SectionHeader
- * Consistent section title with green accent bar and optional subtitle
+ * Compact section title with a quiet route-console rhythm.
  */
 
 import React, { useMemo } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import type { AppTheme } from '@src/constants/Theme';
 
 interface SectionHeaderProps {
   title: string;
   subtitle?: string;
   align?: 'left' | 'center';
+  eyebrow?: string;
 }
 
-export const SectionHeader: React.FC<SectionHeaderProps> = ({ title, subtitle, align = 'left' }) => {
+export const SectionHeader: React.FC<SectionHeaderProps> = ({
+  title,
+  subtitle,
+  align = 'left',
+  eyebrow,
+}) => {
   const { colors } = useAppTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
   return (
     <View style={[styles.container, align === 'center' && styles.center]}>
-      <View style={[styles.titleRow, align === 'center' && styles.titleRowCenter]}>
-        <View style={styles.accentBar} />
-        <Text style={[styles.title, { color: colors.text.primary }]}>{title}</Text>
-      </View>
+      {eyebrow && (
+        <Text style={[styles.eyebrow, { color: colors.primary.dark }, align === 'center' && styles.centerText]}>
+          {eyebrow}
+        </Text>
+      )}
+      <Text style={[styles.title, { color: colors.text.primary }, align === 'center' && styles.centerText]}>
+        {title}
+      </Text>
       {subtitle && (
-        <Text style={[styles.subtitle, { color: colors.text.secondary }]}>{subtitle}</Text>
+        <Text style={[styles.subtitle, { color: colors.text.secondary }, align === 'center' && styles.centerText]}>
+          {subtitle}
+        </Text>
       )}
     </View>
   );
 };
 
-const createStyles = (colors: any) => StyleSheet.create({
+const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
   container: {
     marginBottom: 16,
   },
   center: {
     alignItems: 'center',
   },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  titleRowCenter: {
-    justifyContent: 'center',
-  },
-  accentBar: {
-    width: 4,
-    height: 22,
-    borderRadius: 2,
-    backgroundColor: colors.primary.main,
+  eyebrow: {
+    fontFamily: Fonts.meduim,
+    fontSize: 11,
+    letterSpacing: 0.7,
+    marginBottom: 5,
+    textTransform: 'uppercase',
   },
   title: {
     fontFamily: Fonts.bold,
-    fontSize: 20,
-    letterSpacing: -0.3,
+    fontSize: 21,
+    letterSpacing: -0.2,
+    lineHeight: 27,
+    textAlign: 'left',
   },
   subtitle: {
     fontFamily: Fonts.regular,
     fontSize: 13,
-    marginTop: 4,
+    marginTop: 5,
     lineHeight: 19,
+    maxWidth: 330,
+  },
+  centerText: {
+    textAlign: 'center',
   },
 });

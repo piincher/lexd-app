@@ -4,33 +4,42 @@ import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MenuCategory } from '../constants/menuData';
 import { MenuCategoryItem } from './MenuCategoryItem';
+import type { createMenuCategoriesStyles } from './MenuCategories.styles';
+
+type MenuCategoryStyles = ReturnType<typeof createMenuCategoriesStyles>;
+type MaterialCommunityIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 interface MenuCategoryCardProps {
-  styles: any;
+  styles: MenuCategoryStyles;
   category: MenuCategory;
   accent: string;
-  isDark: boolean;
   disabledColor: string;
   onItemPress: (route: string) => void;
+  isLastCategory: boolean;
 }
 
 export const MenuCategoryCard: React.FC<MenuCategoryCardProps> = ({
   styles,
   category,
   accent,
-  isDark,
   disabledColor,
   onItemPress,
+  isLastCategory,
 }) => (
-  <View style={styles.card}>
+  <View style={[styles.categoryBlock, !isLastCategory && styles.categoryBlockBorder]}>
     <View style={styles.categoryHeader}>
       <View style={[styles.categoryIconWrap, { backgroundColor: accent + '20' }]}>
-        <MaterialCommunityIcons name={category.icon as any} size={18} color={accent} />
+        <MaterialCommunityIcons
+          name={category.icon as MaterialCommunityIconName}
+          size={18}
+          color={accent}
+        />
       </View>
-      <Text style={styles.categoryTitle}>{category.title}</Text>
-      <Text style={styles.itemCount}>{category.items.length}</Text>
+      <View style={styles.categoryCopy}>
+        <Text style={styles.categoryTitle}>{category.title}</Text>
+        <Text style={styles.categorySubtitle}>{category.items.length} accès</Text>
+      </View>
     </View>
-    <View style={styles.divider} />
     {category.items.map((item, idx) => (
       <MenuCategoryItem
         key={item.id}

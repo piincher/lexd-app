@@ -52,9 +52,6 @@ const Banner = () => {
    return (
       <View style={styles.container}>
          <SwiperFlatList
-            autoplay
-            autoplayDelay={5}
-            autoplayLoop
             index={0}
             showPagination
             paginationStyleItemActive={styles.paginationActive}

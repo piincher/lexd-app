@@ -6,7 +6,7 @@
 import { GoodsStatus } from '../types';
 import { ApiClientError } from '@src/api/client';
 import { userData } from '@src/shared/types/user';
-import { useGoodsListFilters } from './useGoodsListFilters';
+import { useGoodsListFilters, ShippingMode } from './useGoodsListFilters';
 import { useGoodsListData } from './useGoodsListData';
 
 interface DateRange {
@@ -29,6 +29,8 @@ interface UseGoodsListReturn {
   setSearchQuery: (query: string) => void;
   selectedStatus: GoodsStatus | 'all';
   setSelectedStatus: (status: GoodsStatus | 'all') => void;
+  selectedMode: ShippingMode;
+  setSelectedMode: (mode: ShippingMode) => void;
   selectedClient: userData | null;
   setSelectedClient: (client: userData | null) => void;
   dateRange: DateRange | null;
@@ -44,6 +46,7 @@ export const useGoodsList = (options: UseGoodsListOptions = {}): UseGoodsListRet
 
   const {
     searchQuery, setSearchQuery, selectedStatus, setSelectedStatus,
+    selectedMode, setSelectedMode,
     selectedClient, setSelectedClient, dateRange, setDateRange,
     filters, hasFilters, clearAllFilters,
   } = useGoodsListFilters(initialStatus);
@@ -62,6 +65,8 @@ export const useGoodsList = (options: UseGoodsListOptions = {}): UseGoodsListRet
     setSearchQuery,
     selectedStatus,
     setSelectedStatus,
+    selectedMode,
+    setSelectedMode,
     selectedClient,
     setSelectedClient,
     dateRange,

@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import type { AppTheme } from '@src/constants/Theme';
 
-export const createStyles = (colors: any) =>
+export const createStyles = (colors: AppTheme['colors']) =>
   StyleSheet.create({
     container: {
       marginTop: 32,
@@ -15,7 +15,13 @@ export const createStyles = (colors: any) =>
     verifyCard: {
       borderRadius: 20,
       padding: 18,
-      ...Theme.shadows.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+      shadowColor: colors.neutral[900],
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.08,
+      shadowRadius: 12,
+      elevation: 3,
     },
     verifyHeader: {
       flexDirection: 'row',

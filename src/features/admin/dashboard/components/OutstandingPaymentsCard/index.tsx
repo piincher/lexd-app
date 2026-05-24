@@ -17,14 +17,14 @@ export const OutstandingPaymentsCard: React.FC<OutstandingPaymentsCardProps> = (
   counts,
   onPress,
 }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
 
   const styles = useMemo(
     () =>
       StyleSheet.create({
         card: {
-          marginBottom: 16,
-          borderRadius: 20,
+          marginBottom: 12,
+          borderRadius: 16,
           overflow: "hidden",
           backgroundColor: colors.background.card,
           borderWidth: 1,
@@ -35,7 +35,7 @@ export const OutstandingPaymentsCard: React.FC<OutstandingPaymentsCardProps> = (
           opacity: 0.92,
         },
       }),
-    [colors, isDark]
+    [colors]
   );
 
   return (
