@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { View, Image, Pressable, ScrollView } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ interface OrderImageGalleryProps {
 export const OrderImageGallery: React.FC<OrderImageGalleryProps> = ({ images }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const hasImages = images && images.length > 0;
 
   if (!hasImages) {
