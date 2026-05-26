@@ -1,9 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
-import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
 
 interface ActionBarProps {
@@ -23,7 +22,6 @@ export const ActionBar: React.FC<ActionBarProps> = ({
   onMarkAll,
   onPrint,
 }) => {
-  const { colors } = useAppTheme();
   return (
     <Animated.View entering={FadeInUp.delay(300)} style={styles.actionBar}>
       <TouchableOpacity style={styles.actionButton} onPress={onReset} activeOpacity={0.9}>

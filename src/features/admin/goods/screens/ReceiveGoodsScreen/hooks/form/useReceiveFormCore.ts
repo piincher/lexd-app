@@ -1,26 +1,12 @@
 import { useForm, Control, UseFormHandleSubmit, UseFormSetValue, UseFormWatch, UseFormReset, FormState, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { receiveGoodsSchema, ReceiveGoodsFormData } from '../../types';
-
-const DEFAULT_VALUES: ReceiveGoodsFormData = {
-  description: '',
-  shippingMode: 'SEA',
-  length: '',
-  width: '',
-  height: '',
-  cbm: '',
-  weight: '',
-  quantity: '1',
-  unitPrice: '',
-  location: '',
-  receivedByName: '',
-  expressTrackingNumber: '',
-  receivedDate: '',
-  condition: 'new',
-};
+import { RECEIVE_FORM_DEFAULT_VALUES } from './defaultValues';
 
 interface Options {
   initialQuantity?: number;
+  /** Smart defaults (receiver, date, …) merged over the static defaults at form init. */
+  defaults?: Partial<ReceiveGoodsFormData>;
 }
 
 interface UseReceiveFormCoreReturn {
@@ -36,15 +22,16 @@ interface UseReceiveFormCoreReturn {
 }
 
 export const useReceiveFormCore = (options: Options = {}): UseReceiveFormCoreReturn => {
-  const { initialQuantity = 1 } = options;
+  const { initialQuantity = 1, defaults } = options;
 
   const { control, handleSubmit, setValue, watch, reset, formState } =
     useForm<ReceiveGoodsFormData>({
       resolver: zodResolver(receiveGoodsSchema) as Resolver<ReceiveGoodsFormData>,
       mode: 'onChange',
       defaultValues: {
-        ...DEFAULT_VALUES,
+        ...RECEIVE_FORM_DEFAULT_VALUES,
         quantity: initialQuantity.toString(),
+        ...defaults,
       },
     });
 

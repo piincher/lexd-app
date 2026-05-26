@@ -15,7 +15,7 @@ import { FilterPanelModal } from "../components/FilterPanelModal";
 
 export const GlobalSearchScreen: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const { data, handlers } = useGlobalSearchScreenUI();
 
   return (

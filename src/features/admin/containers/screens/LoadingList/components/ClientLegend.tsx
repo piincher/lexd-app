@@ -13,16 +13,34 @@ export const ClientLegend: React.FC<ClientLegendProps> = ({ weightDistribution }
 
   return (
     <Animated.View entering={FadeInUp.delay(200)} style={styles.legendCard}>
-      <Text style={styles.legendTitle}>Code Couleur Clients</Text>
+      <Text style={styles.legendTitle}>Progression par client</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={styles.legendItems}>
-          {weightDistribution.map((client) => (
-            <View key={client.clientId} style={styles.legendItem}>
-              <View style={[styles.legendDot, { backgroundColor: client.color }]} />
-              <Text style={styles.legendName} numberOfLines={1}>{client.clientName}</Text>
-              <Text style={styles.legendWeight}>{client.weight.toFixed(0)} kg</Text>
-            </View>
-          ))}
+          {weightDistribution.map((client) => {
+            const loadedItems = client.loadedItems ?? 0;
+            const totalItems = client.totalItems ?? 0;
+            const progress = totalItems > 0 ? (loadedItems / totalItems) * 100 : 0;
+            return (
+              <View key={client.clientId} style={styles.legendItem}>
+                <View style={styles.legendHeader}>
+                  <View style={[styles.legendDot, { backgroundColor: client.color }]} />
+                  <Text style={styles.legendName} numberOfLines={1}>{client.clientName}</Text>
+                </View>
+                <View style={styles.progressTrack}>
+                  <View
+                    style={[
+                      styles.progressFill,
+                      { width: `${progress}%`, backgroundColor: client.color },
+                    ]}
+                  />
+                </View>
+                <View style={styles.legendMeta}>
+                  <Text style={styles.legendProgress}>{loadedItems}/{totalItems} chargés</Text>
+                  <Text style={styles.legendWeight}>{client.weight.toFixed(0)} kg</Text>
+                </View>
+              </View>
+            );
+          })}
         </View>
       </ScrollView>
     </Animated.View>
@@ -48,13 +66,17 @@ const styles = StyleSheet.create({
     gap: Theme.spacing.md,
   },
   legendItem: {
+    width: 176,
+    gap: Theme.spacing.xs,
+    backgroundColor: Theme.neutral[50],
+    paddingVertical: Theme.spacing.sm,
+    paddingHorizontal: Theme.spacing.md,
+    borderRadius: Theme.radius.lg,
+  },
+  legendHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
-    backgroundColor: Theme.neutral[50],
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: Theme.radius.full,
   },
   legendDot: {
     width: 10,
@@ -66,6 +88,26 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: Theme.neutral[700],
     maxWidth: 100,
+  },
+  progressTrack: {
+    height: 6,
+    borderRadius: Theme.radius.full,
+    overflow: 'hidden',
+    backgroundColor: Theme.neutral[200],
+  },
+  progressFill: {
+    height: '100%',
+    borderRadius: Theme.radius.full,
+  },
+  legendMeta: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  legendProgress: {
+    fontSize: 11,
+    fontWeight: '700',
+    color: Theme.neutral[700],
   },
   legendWeight: {
     fontSize: 11,

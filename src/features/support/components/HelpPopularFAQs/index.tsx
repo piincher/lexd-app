@@ -16,7 +16,7 @@ type HelpPopularFAQsProps = {
 
 export function HelpPopularFAQs({ faqs, isLoading, onSelectFaq }: HelpPopularFAQsProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (isLoading || faqs.length === 0) return null;
 

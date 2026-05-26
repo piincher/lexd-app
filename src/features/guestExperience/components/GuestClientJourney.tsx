@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInRight } from 'react-native-reanimated';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ interface Props {
 
 export const GuestClientJourney: React.FC<Props> = ({ steps }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Animated.View entering={FadeInRight.springify()} style={styles.wrapper}>

@@ -11,7 +11,7 @@ interface Props {
 
 export const AssignGoodsHeader: React.FC<Props> = ({ title, onBack }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -22,7 +22,7 @@ export const AssignGoodsHeader: React.FC<Props> = ({ title, onBack }) => {
     },
     title: { fontSize: 17, fontWeight: '700', color: colors.neutral[800] },
     spacer: { width: 24 },
-  }), [colors, isDark]);
+  });
   return (
   <View style={styles.container}>
     <TouchableOpacity onPress={onBack}>

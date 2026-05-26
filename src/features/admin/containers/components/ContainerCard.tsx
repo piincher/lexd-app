@@ -37,7 +37,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
   maxCBM = 67, // Default 40ft container
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const statusColor = getContainerStatusColors(colors)[container.status];
   const statusLabel = CONTAINER_STATUS_LABELS[container.status];
   // Phase 3: Get shipping mode info

@@ -2,7 +2,6 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
 import type { SortField, SortConfig } from "./usePackingListSort";
 
 interface SortableHeaderProps {

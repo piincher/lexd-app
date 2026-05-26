@@ -3,7 +3,7 @@
  * Separates AIR / SEA so goods can't be mixed up; the active mode recolors the hero.
  * pre-emit critique: P4 H5 E4 S5 R4 V4
  */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -24,7 +24,7 @@ const TABS: { key: ShippingMode; label: string; icon: string }[] = [
 
 export const GoodsModeTabs: React.FC<GoodsModeTabsProps> = ({ mode, onChange }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.container}>

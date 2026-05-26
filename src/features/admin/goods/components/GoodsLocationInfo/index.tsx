@@ -25,7 +25,7 @@ export const GoodsLocationInfo: React.FC<GoodsLocationInfoProps> = ({
   container,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <Card style={styles.container}>
       <Card.Content>

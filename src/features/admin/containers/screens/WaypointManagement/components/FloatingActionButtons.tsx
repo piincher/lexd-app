@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -14,7 +14,7 @@ export const FloatingActionButtons: React.FC<FloatingActionButtonsProps> = ({
   onImportTemplate,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={styles.fabContainer}>
       <TouchableOpacity style={styles.fabSecondary} onPress={onImportTemplate}>

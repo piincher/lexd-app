@@ -166,6 +166,22 @@ export const useClientSearchStyles = () => {
           textAlign: 'center',
           marginTop: 4,
         },
+        // CTA shown in the no-results state — turns the dead-end into a 1-tap shortcut
+        // to add the client on the spot via the CreateClientModal.
+        createClientButton: {
+          marginTop: 16,
+          borderRadius: 8,
+          backgroundColor: colors.status.success,
+        },
+        createClientButtonContent: {
+          paddingVertical: 4,
+          paddingHorizontal: 12,
+        },
+        createClientButtonLabel: {
+          fontSize: 13,
+          fontWeight: '700',
+          letterSpacing: 0.3,
+        },
         errorText: {
           color: colors.status.error,
           fontSize: 12,

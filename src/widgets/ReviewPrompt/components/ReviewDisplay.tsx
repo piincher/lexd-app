@@ -12,7 +12,7 @@ interface ReviewDisplayProps {
 
 export const ReviewDisplay: React.FC<ReviewDisplayProps> = ({ rating, comment, goodsLabel }) => {
    const { colors } = useAppTheme();
-   const styles = React.useMemo(() => createStyles(colors), [colors]);
+   const styles = createStyles(colors);
    return (
       <Card style={styles.card} mode="elevated">
          <Card.Content style={styles.content}>

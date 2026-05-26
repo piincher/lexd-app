@@ -11,8 +11,8 @@ interface Props {
 }
 
 export const SettingsMenu: React.FC<Props> = ({ onNavigate }) => {
-  const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
   const cardBg = colors.background.card;
   const cardBorder = colors.border;
   const menuSections = getMenuSections(colors);

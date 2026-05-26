@@ -19,6 +19,9 @@ export {
   useHardDeleteGoods,
   useAssignGoodsToContainer,
   useUpdateGoodsStatus,
+  useAssignClientToGoods,
+  useBatchHardDeleteGoods,
+  useResendGoodsNotification,
 } from './goods/useGoodsMutations';
 
 export { useGoodsFormValidation } from './goods/useGoodsFormValidation';

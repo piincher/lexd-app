@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
 import { Text, IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -21,7 +21,7 @@ export const TrackingMapView: React.FC<TrackingMapViewProps> = ({
 }) => {
   const [zoom, setZoom] = useState(1);
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   if (isLoading) return (
     <Card style={styles.container}>

@@ -34,7 +34,7 @@ export const TransitStatusCard: React.FC<TransitStatusCardProps> = ({
   const currentStatusIcon = WAYPOINT_STATUS_ICONS[currentStatus];
   const segmentType = currentWaypoint?.segmentType || 'SEA';
   const segmentIcon = (SEGMENT_TYPE_ICONS[segmentType] || 'boat') as React.ComponentProps<typeof Ionicons>['name'];
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   if (isLoading) {
     return (

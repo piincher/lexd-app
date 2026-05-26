@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View } from "react-native";
 import { Text, TouchableRipple } from "react-native-paper";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -11,7 +11,7 @@ interface DimensionsToggleProps {
 
 export const DimensionsToggle: React.FC<DimensionsToggleProps> = ({ useDimensions, onToggleMode }) => {
    const { colors } = useAppTheme();
-   const styles = useMemo(() => createStyles(colors), [colors]);
+   const styles = createStyles(colors);
 
    return (
       <TouchableRipple onPress={() => onToggleMode(!useDimensions)} style={styles.toggleContainer}>

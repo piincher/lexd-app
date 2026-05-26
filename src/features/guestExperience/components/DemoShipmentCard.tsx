@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown, useAnimatedStyle, useSharedValue, withTiming, withDelay } from 'react-native-reanimated';
 import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ interface Props {
 
 export const DemoShipmentCard: React.FC<Props> = ({ shipment }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const progress = useSharedValue(0);
   useEffect(() => {
     progress.value = withDelay(400, withTiming(shipment.progress, { duration: 1000 }));

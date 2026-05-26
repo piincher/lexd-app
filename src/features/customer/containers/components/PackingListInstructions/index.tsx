@@ -4,7 +4,7 @@
  * SRP: Display pickup instructions
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Divider, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -20,7 +20,7 @@ export const PackingListInstructions: React.FC<PackingListInstructionsProps> = (
 }) => {
   const { colors, isDark } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     instructionsCard: {
       marginBottom: 16,
       backgroundColor: colors.accent.goldLight,
@@ -47,7 +47,7 @@ export const PackingListInstructions: React.FC<PackingListInstructionsProps> = (
       color: colors.text.secondary,
       lineHeight: 20,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <Card style={styles.instructionsCard}>

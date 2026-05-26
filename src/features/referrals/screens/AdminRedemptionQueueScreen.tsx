@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Screen } from '@src/shared/ui/Screen';
 import { AdminRedemptionApprovalModal } from '../components/AdminRedemptionApprovalModal';
@@ -9,7 +9,7 @@ import { createStyles } from './AdminRedemptionQueueScreen.styles';
 
 export const AdminRedemptionQueueScreen: React.FC = () => {
   const navigation = useNavigation();
-  const styles = useMemo(() => createStyles(), []);
+  const styles = createStyles();
   const redemption = useAdminRewardRedemptions();
   const handleBack = useCallback(() => navigation.goBack(), [navigation]);
 

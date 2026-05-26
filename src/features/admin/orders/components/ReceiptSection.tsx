@@ -3,7 +3,7 @@
  * SRP: UI rendering ONLY
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { Text, Surface, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -26,7 +26,7 @@ export interface ReceiptSectionProps {
 
 export const ReceiptSection: React.FC<ReceiptSectionProps> = (props) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createReceiptSectionStyles(colors, isDark), [colors, isDark]);
+  const styles = createReceiptSectionStyles(colors, isDark);
   const { receiptUrl, clientPhone, receiptNumber, loading } = props;
   const { isSharing, handleViewReceipt, handleShareGeneric, handleShareWhatsApp } = useReceiptActions(props);
 

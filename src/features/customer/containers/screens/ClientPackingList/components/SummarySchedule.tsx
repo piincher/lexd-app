@@ -24,49 +24,71 @@ export const SummarySchedule: React.FC<SummaryScheduleProps> = ({
 }) => {
   const { colors } = useAppTheme();
 
+  const dates = [
+    {
+      icon: 'calendar-check' as const,
+      label: 'Chargement',
+      value: formatDateTime ? formatDateTime(loadDate || departureDate) : formatDate(loadDate || departureDate),
+    },
+    {
+      icon: 'ferry' as const,
+      label: 'Arrivée Dakar',
+      value: formatDateTime ? formatDateTime(dakarPortArrivalAt || arrivalDate) : formatDate(dakarPortArrivalAt || arrivalDate),
+    },
+  ];
+
   return (
     <View style={styles.scheduleContainer}>
-      <View style={styles.datesContainer}>
-        <View style={styles.dateItem}>
-          <MaterialCommunityIcons name="calendar-check" size={16} color={colors.text.secondary} />
-          <Text style={[styles.dateLabel, { color: colors.status.success }]}>Chargement:</Text>
-          <Text style={[styles.dateValue, { color: colors.text.secondary }]}>
-            {formatDateTime ? formatDateTime(loadDate || departureDate) : formatDate(loadDate || departureDate)}
-          </Text>
+      {dates.map((d, i) => (
+        <View key={d.label} style={styles.dateItem}>
+          <View style={[styles.dateIconWrap, { backgroundColor: colors.background.paper }]}>
+            <MaterialCommunityIcons name={d.icon} size={16} color={colors.text.muted} />
+          </View>
+          <View style={styles.dateContent}>
+            <Text style={[styles.dateLabel, { color: colors.text.muted }]}>
+              {d.label}
+            </Text>
+            <Text style={[styles.dateValue, { color: colors.text.primary }]} numberOfLines={1}>
+              {d.value}
+            </Text>
+          </View>
         </View>
-        <View style={styles.dateItem}>
-          <MaterialCommunityIcons name="ferry" size={16} color={colors.text.secondary} />
-          <Text style={[styles.dateLabel, { color: colors.status.success }]}>Dakar:</Text>
-          <Text style={[styles.dateValue, { color: colors.text.secondary }]}>
-            {formatDateTime ? formatDateTime(dakarPortArrivalAt || arrivalDate) : formatDate(dakarPortArrivalAt || arrivalDate)}
-          </Text>
-        </View>
-      </View>
+      ))}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   scheduleContainer: {
-    gap: 10,
-  },
-  datesContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 12,
   },
   dateItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
     flex: 1,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  dateIconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  dateContent: {
+    flex: 1,
+    justifyContent: 'center',
   },
   dateLabel: {
     fontFamily: Fonts.regular,
-    fontSize: 12,
-    marginLeft: 6,
+    fontSize: 11,
+    textTransform: 'uppercase',
+    letterSpacing: 0.3,
+    marginBottom: 2,
   },
   dateValue: {
     fontFamily: Fonts.meduim,
-    fontSize: 12,
-    marginLeft: 4,
+    fontSize: 13,
   },
 });

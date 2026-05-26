@@ -1,11 +1,11 @@
 import { StyleSheet, StatusBar } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useMemo } from 'react';
+
 
 export const useNotificationToastStyles = () => {
   const { colors } = useAppTheme();
-  return useMemo(() => StyleSheet.create({
+  return StyleSheet.create({
   container: {
     position: 'absolute',
     top: 0,
@@ -65,5 +65,5 @@ export const useNotificationToastStyles = () => {
     height: '100%',
     width: '100%',
   },
-  }), [colors]);
+  });
 };

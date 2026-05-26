@@ -1,6 +1,6 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useFormikContext } from 'formik';
-import React, { Dispatch, FC, useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import type { StyleProp, TextInputProps, ViewStyle } from 'react-native';
 import Animated, {
@@ -74,7 +74,7 @@ const AuthInputField: FC<Props> = (props) => {
       handleSubmit();
    };
 
-   const styles = useMemo(() => createStyles(colors), [colors]);
+   const styles = createStyles(colors);
 
    return (
       <Animated.View style={[containerStyle, inputStyle]}>

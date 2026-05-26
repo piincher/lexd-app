@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -25,7 +25,7 @@ export const RedemptionStatusBadge: React.FC<RedemptionStatusBadgeProps> = ({
   size = 'md',
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, size), [colors, size]);
+  const styles = createStyles(colors, size);
   const config = STATUS_CONFIG[status];
   const statusColor = (colors.status as Record<string, string>)[config.colorKey] || colors.text.secondary;
 

@@ -88,9 +88,9 @@ export const createStyles = (colors: AppThemeColors, isDark?: boolean) =>
       ...Theme.shadows.sm,
     },
     smallIconWrap: {
-      width: 38,
-      height: 38,
-      borderRadius: 11,
+      width: 44,
+      height: 44,
+      borderRadius: 12,
       justifyContent: "center",
       alignItems: "center",
       marginBottom: 12,

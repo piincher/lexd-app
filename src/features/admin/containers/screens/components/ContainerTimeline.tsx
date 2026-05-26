@@ -3,7 +3,7 @@
  * Displays TIMELINE_STEPS with current status highlighted
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
@@ -25,7 +25,7 @@ export const ContainerTimeline: React.FC<ContainerTimelineProps> = ({
   currentStatusIndex,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const resolvedStatusIndex = TIMELINE_STEPS.findIndex((step) => step.status === currentStatus);
   const activeStatusIndex = resolvedStatusIndex >= 0 ? resolvedStatusIndex : currentStatusIndex;
 

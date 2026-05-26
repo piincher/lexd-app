@@ -16,7 +16,7 @@ export const usePackingListShare = (filteredPackingListData: AdminPackingListDat
         message,
         title: `Liste de Colisage - ${container.number}`,
       });
-    } catch (error) {
+    } catch {
       Alert.alert('Erreur', 'Impossible de partager la liste');
     }
   }, [filteredPackingListData]);

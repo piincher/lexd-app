@@ -4,7 +4,7 @@
  * SRP: Display error state with retry option
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Appbar, Text, Button, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,7 +26,7 @@ export const PackingListError: React.FC<PackingListErrorProps> = ({
   const theme = useTheme();
   const { colors, isDark } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.background.paper,
@@ -53,7 +53,7 @@ export const PackingListError: React.FC<PackingListErrorProps> = ({
     retryButton: {
       marginTop: 24,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <SafeAreaView style={styles.container}>

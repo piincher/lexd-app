@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Switch, Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -15,7 +15,7 @@ export const UnknownClientToggle: React.FC<UnknownClientToggleProps> = ({
   onChange,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <View style={styles.container}>

@@ -28,7 +28,7 @@ function SummaryPill({
   color: string;
 }) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   return (
     <View style={[styles.pill, { borderColor: color + "30" }]}>
       <MaterialCommunityIcons name={icon} size={16} color={color} />
@@ -40,7 +40,7 @@ function SummaryPill({
 
 export function PromoSummaryStats({ summary }: PromoSummaryStatsProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   return (
     <View style={styles.container}>

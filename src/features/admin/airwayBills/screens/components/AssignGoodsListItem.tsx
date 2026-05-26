@@ -13,7 +13,7 @@ interface Props {
 
 export const AssignGoodsListItem: React.FC<Props> = ({ item, isSelected, onToggle }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     item: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -31,7 +31,7 @@ export const AssignGoodsListItem: React.FC<Props> = ({ item, isSelected, onToggl
     itemWeight: { alignItems: 'flex-end' },
     weightText: { fontSize: 13, fontWeight: '700', color: colors.primary[600] },
     qtyText: { fontSize: 11, color: colors.neutral[400], marginTop: 2 },
-  }), [colors, isDark]);
+  });
   const clientName = item.clientId && typeof item.clientId !== 'string'
     ? `${item.clientId.firstName || ''} ${item.clientId.lastName || ''}`.trim()
     : '';

@@ -14,13 +14,14 @@ export const useLoadingListScreen = () => {
   const [loadedItems, setLoadedItems] = useState<Set<string>>(new Set());
 
   const { container, isContainerLoading, loadingListData } = useLoadingListData(containerId, loadedItems);
-  const { weightDistribution, progressPercentage } = useLoadingListStats(loadingListData);
+  const { weightDistribution } = useLoadingListStats(loadingListData);
   const { selectedClientId, setSelectedClientId, filteredLoadingListData } = useLoadingListFilters(
     loadingListData,
     initialClientId
   );
+  const { progressPercentage } = useLoadingListStats(filteredLoadingListData);
   const { handleToggleLoaded, handleMarkAllLoaded, handleResetLoading } = useLoadingListActions(
-    loadingListData?.items || [],
+    filteredLoadingListData?.items || loadingListData?.items || [],
     setLoadedItems
   );
   const { isGeneratingPDF, handlePrint } = useLoadingListPDF(filteredLoadingListData);

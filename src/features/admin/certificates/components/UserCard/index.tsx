@@ -13,7 +13,7 @@ interface UserCardProps {
 
 export const UserCard: React.FC<UserCardProps> = ({ user, isSelected, onSelect }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
   <TouchableOpacity
     style={[styles.card, isSelected && styles.cardSelected]}

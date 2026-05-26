@@ -21,7 +21,7 @@ export const RouteStopsManager: React.FC<RouteStopsManagerProps> = ({
   stops, onAddStop, onRemoveStop,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const [newStop, setNewStop] = useState('');
 
   const handleAdd = useCallback(() => {

@@ -4,7 +4,7 @@
  * SRP: Display pickup section with warehouse and consignee info
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Card, Divider, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -27,7 +27,7 @@ export const PackingListPickupSection: React.FC<PackingListPickupSectionProps> =
   consignee,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Card style={styles.pickupSectionCard}>

@@ -3,7 +3,7 @@
  * Photo picker with image thumbnail previews and remove buttons
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import { Text, IconButton } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -29,7 +29,7 @@ export const TicketAttachmentPicker: React.FC<TicketAttachmentPickerProps> = ({
   disabled,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const handleRemove = (index: number) => {
     onChange(attachments.filter((_, i) => i !== index));

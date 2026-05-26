@@ -3,7 +3,7 @@
  * Single step in the How It Works section
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -21,7 +21,7 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
   description,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background.card, borderColor: colors.border }]}>

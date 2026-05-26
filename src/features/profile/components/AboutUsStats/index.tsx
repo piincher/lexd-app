@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -8,7 +8,7 @@ import { STATS } from '@src/features/profile/hooks/useAboutUs';
 
 export const AboutUsStats: React.FC = () => {
    const { colors } = useAppTheme();
-   const styles = useMemo(() => makeStyles(colors), [colors]);
+   const styles = makeStyles(colors);
 
    return (
       <Animated.View entering={FadeInDown.delay(200).duration(600)} style={styles.statsRow}>

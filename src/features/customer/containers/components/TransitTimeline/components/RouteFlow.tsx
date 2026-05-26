@@ -11,7 +11,7 @@ import { createStyles } from '../TransitTimeline.styles';
 
 export const RouteFlow: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Animated.View entering={FadeInUp.delay(150)} style={styles.routeFlowCard}>

@@ -22,7 +22,7 @@ export const RecentSearchesBar: React.FC<RecentSearchesBarProps> = ({
 }) => {
   const { colors } = useAppTheme();
   const { trigger } = useHaptics();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   if (!visible || recents.length === 0) return null;
 

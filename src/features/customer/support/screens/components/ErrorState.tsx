@@ -3,7 +3,7 @@
  * Displays error message with retry option
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text, Button, useTheme } from 'react-native-paper';
@@ -19,7 +19,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({ error, onRetry }) => {
   const theme = useTheme();
   const { colors, isDark } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
@@ -42,7 +42,7 @@ export const ErrorState: React.FC<ErrorStateProps> = ({ error, onRetry }) => {
     button: {
       marginTop: 24,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <View style={styles.container}>

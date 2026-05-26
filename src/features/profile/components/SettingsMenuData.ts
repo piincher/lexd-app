@@ -1,7 +1,14 @@
+import type { ComponentProps } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import type { ThemeContextType } from '@src/constants/Theme';
+
+type AppColors = ThemeContextType['colors'];
+type MaterialIconName = ComponentProps<typeof MaterialCommunityIcons>['name'];
+
 interface MenuItem {
   title: string;
   subtitle: string;
-  icon: string;
+  icon: MaterialIconName;
   screen: string;
   iconBg: string;
   iconColor: string;
@@ -13,14 +20,15 @@ interface MenuSection {
 }
 
 const hexToRgba = (hex: string, alpha: number) => {
+  if (!hex.startsWith('#') || hex.length < 7) return hex;
+
   const r = parseInt(hex.slice(1, 3), 16);
   const g = parseInt(hex.slice(3, 5), 16);
   const b = parseInt(hex.slice(5, 7), 16);
   return `rgba(${r},${g},${b},${alpha})`;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getMenuSections = (colors: any): MenuSection[] => [
+export const getMenuSections = (colors: AppColors): MenuSection[] => [
   {
     title: 'Compte',
     items: [

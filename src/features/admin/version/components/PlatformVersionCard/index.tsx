@@ -41,7 +41,7 @@ export function PlatformVersionCard({
   onStoreUrlChange,
 }: PlatformVersionCardProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const config = PLATFORM_CONFIG[platform];
   const isOutdated = minVersion && latestVersion && minVersion !== latestVersion;
 

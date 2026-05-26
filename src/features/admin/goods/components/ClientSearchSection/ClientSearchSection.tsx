@@ -12,6 +12,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useClientSearchStyles } from './ClientSearchSection.styles';
 import { SelectedClientView } from './SelectedClientView';
 import { SearchResultsList } from './SearchResultsList';
+import { CreateClientModal } from './CreateClientModal';
 import { useSearchUsers } from './hooks/useSearchUsers';
 
 interface ClientSearchSectionProps {
@@ -28,6 +29,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
   onInputFocus,
 }) => {
   const [showResults, setShowResults] = useState(false);
+  const [createModalVisible, setCreateModalVisible] = useState(false);
   const { colors } = useAppTheme();
   const styles = useClientSearchStyles();
 
@@ -44,6 +46,16 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
     onSelectClient(client);
     setSearchQuery('');
     setShowResults(false);
+  };
+
+  // Fires from the no-results CTA — open the modal pre-filled with whatever the operator
+  // already typed (so they don't retype the phone they were searching for).
+  const handleCreateNew = () => setCreateModalVisible(true);
+
+  // The newly-created client lands here. We immediately select it (the screen's wrapped
+  // setSelectedClient adds it to persistent recents) so the operator can keep going.
+  const handleClientCreated = (client: userData) => {
+    handleSelect(client);
   };
 
   const handleClear = () => {
@@ -102,6 +114,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
                   isLoading={displayLoading}
                   searchQuery={debouncedQuery}
                   onSelect={handleSelect}
+                  onCreateNew={handleCreateNew}
                 />
               </View>
             )}
@@ -116,6 +129,13 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
           </View>
         )}
       </Card.Content>
+
+      <CreateClientModal
+        visible={createModalVisible}
+        initialQuery={searchQuery}
+        onDismiss={() => setCreateModalVisible(false)}
+        onCreated={handleClientCreated}
+      />
     </Card>
   );
 };

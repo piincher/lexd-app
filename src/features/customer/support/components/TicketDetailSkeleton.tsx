@@ -14,7 +14,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const TicketDetailSkeleton: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
   <Animated.View entering={FadeIn.duration(300)} style={styles.container}>
     <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>

@@ -4,7 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
+import { Theme, type ThemeContextType } from '@src/constants/Theme';
+
+type AppColors = ThemeContextType['colors'];
 
 interface ActionBarProps {
   isGeneratingPDF: boolean;
@@ -20,43 +22,65 @@ export const ActionBar: React.FC<ActionBarProps> = ({
   onPrint,
 }) => {
   const { colors } = useAppTheme();
+  const styles = createStyles(colors);
+  const disabledGradient = [colors.neutral[300], colors.neutral[400]] as const;
+  const shareDisabled = !hasClients;
+  const printDisabled = !hasClients || isGeneratingPDF;
+
   return (
     <Animated.View entering={FadeInUp.delay(400)} style={styles.actionBar}>
       <TouchableOpacity
-        style={styles.actionButton}
+        style={[styles.actionButton, shareDisabled && styles.actionButtonDisabled]}
         onPress={onShare}
-        disabled={!hasClients}
+        disabled={shareDisabled}
         activeOpacity={0.9}
+        accessibilityRole="button"
+        accessibilityState={{ disabled: shareDisabled }}
       >
         <LinearGradient
-          colors={Theme.gradients.ocean}
+          colors={shareDisabled ? disabledGradient : Theme.gradients.ocean}
           style={styles.actionGradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
           <Ionicons name="share-social" size={20} color={Theme.colors.text.inverse} />
-          <Text style={styles.actionButtonText}>Partager</Text>
+          <View style={styles.actionTextBlock}>
+            <Text style={styles.actionButtonText}>Partager</Text>
+            <Text style={styles.actionButtonMeta}>Vue actuelle</Text>
+          </View>
         </LinearGradient>
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={[styles.actionButton, styles.actionButtonPrimary]}
+        style={[
+          styles.actionButton,
+          styles.actionButtonPrimary,
+          printDisabled && styles.actionButtonDisabled,
+        ]}
         onPress={onPrint}
-        disabled={!hasClients || isGeneratingPDF}
+        disabled={printDisabled}
         activeOpacity={0.9}
+        accessibilityRole="button"
+        accessibilityState={{ disabled: printDisabled, busy: isGeneratingPDF }}
       >
         <LinearGradient
-          colors={Theme.gradients.primary}
+          colors={printDisabled && !isGeneratingPDF ? disabledGradient : Theme.gradients.primary}
           style={styles.actionGradient}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
           {isGeneratingPDF ? (
-            <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
+            <>
+              <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
+              <Text style={styles.actionButtonText}>Préparation...</Text>
+            </>
           ) : (
             <>
               <Ionicons name="print" size={20} color={Theme.colors.text.inverse} />
-              <Text style={styles.actionButtonText}>PDF / Imprimer</Text>
+              <View style={styles.actionTextBlock}>
+                <Text style={styles.actionButtonText}>Générer PDF</Text>
+                <Text style={styles.actionButtonMeta}>Imprimer</Text>
+              </View>
             </>
           )}
         </LinearGradient>
@@ -65,19 +89,22 @@ export const ActionBar: React.FC<ActionBarProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: AppColors) => StyleSheet.create({
   actionBar: {
     flexDirection: 'row',
     padding: Theme.spacing.lg,
     gap: Theme.spacing.md,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     borderTopWidth: 1,
-    borderTopColor: Theme.neutral[100],
+    borderTopColor: colors.neutral[100],
   },
   actionButton: {
     flex: 1,
     borderRadius: Theme.radius.xl,
     overflow: 'hidden',
+  },
+  actionButtonDisabled: {
+    opacity: 0.72,
   },
   actionButtonPrimary: {
     flex: 1.2,
@@ -86,12 +113,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: Theme.spacing.lg,
+    minHeight: 56,
+    paddingVertical: Theme.spacing.md,
+    paddingHorizontal: Theme.spacing.sm,
     gap: Theme.spacing.sm,
+  },
+  actionTextBlock: {
+    alignItems: 'flex-start',
   },
   actionButtonText: {
     fontSize: 14,
     fontWeight: '700',
     color: Theme.colors.text.inverse,
+  },
+  actionButtonMeta: {
+    marginTop: 1,
+    fontSize: 11,
+    fontWeight: '600',
+    color: Theme.colors.text.inverse,
+    opacity: 0.88,
   },
 });

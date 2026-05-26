@@ -1,14 +1,17 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useGetContainerById, containerQueryKeys } from '../../hooks';
+import { useGetContainerById, useGetPackingList, containerQueryKeys } from '../../hooks';
 import { waypointQueryKeys } from '../../hooks/useWaypoints';
 import { Container } from '../../types';
 import { useContainerDialogs } from './useContainerDialogs';
 import { useContainerStatusMutations } from './useContainerStatusMutations';
 import { useContainerGoodsMutations } from './useContainerGoodsMutations';
 import { useContainerNavigation } from './useContainerNavigation';
+import { useContainerAssist } from './useContainerAssist';
+import { buildContainerClientDirectory } from './containerClientDirectory';
+import { hasClientDisplayDetails } from './containerGoodsSignals';
 import { getGoodsList, getCapacityInfo, getContainerStatusInfo, normalizeCbmProfit, extractConsignee } from './utils';
 
 export type ContainerDetailScreenState = ReturnType<typeof useContainerDetailScreen>;
@@ -24,6 +27,14 @@ export const useContainerDetailScreen = () => {
   const { data: containerResponse, isLoading, isRefetching, refetch, error: containerError } = useGetContainerById(containerId);
   const container: Container | undefined = containerResponse?.data?.container || containerResponse?.data;
   const goodsList = getGoodsList(container);
+  const needsClientDirectoryFallback = goodsList.some((goods) => goods.clientId && !hasClientDisplayDetails(goods));
+  const { data: packingListResponse } = useGetPackingList(containerId, {
+    enabled: needsClientDirectoryFallback,
+  });
+  const clientDirectory = useMemo(
+    () => buildContainerClientDirectory(packingListResponse),
+    [packingListResponse],
+  );
   const { isAirContainer, totalWeight, capacityValue, maxCapacity, fillPercentage, fillColor } = getCapacityInfo(container, goodsList);
   const { statusColor, statusLabel, currentStatusIndex } = getContainerStatusInfo(container, colors);
   const cbmProfit = normalizeCbmProfit(containerResponse, goodsList);
@@ -32,6 +43,12 @@ export const useContainerDetailScreen = () => {
   const status = useContainerStatusMutations(containerId, container, goodsList, capacityValue, maxCapacity, isAirContainer, totalWeight, dialogs);
   const goods = useContainerGoodsMutations(containerId, dialogs);
   const nav = useContainerNavigation(containerId, goodsList);
+  const assist = useContainerAssist(container, goodsList, {
+    capacityValue,
+    maxCapacity,
+    fillPercentage,
+    isAirContainer,
+  }, clientDirectory);
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
@@ -57,6 +74,7 @@ export const useContainerDetailScreen = () => {
     ...goods,
     ...nav,
     ...dialogs,
+    assist,
     fillPercentage,
     fillColor,
     statusColor,

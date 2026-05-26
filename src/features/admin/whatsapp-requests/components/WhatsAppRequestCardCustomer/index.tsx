@@ -15,7 +15,7 @@ export const WhatsAppRequestCardCustomer: React.FC<WhatsAppRequestCardCustomerPr
   onCall,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const customerName = customerId
     ? `${customerId.firstName || ''} ${customerId.lastName || ''}`.trim()
     : 'Client inconnu';

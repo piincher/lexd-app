@@ -13,7 +13,7 @@ interface TemplateChipsProps {
 
 export const TemplateChips: React.FC<TemplateChipsProps> = ({ templates, onSelectTemplate }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
   <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.templateScroll}>
     {templates.map((template) => (

@@ -37,7 +37,7 @@ const createStyles = () => StyleSheet.create({
 
 export const CostTotalRow: React.FC<CostTotalRowProps> = ({ totalCost, formatCurrency }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(), []);
+  const styles = createStyles();
   return (
     <View style={styles.row}>
       <Text style={[styles.label, { color: colors.text.primary }]}>Coût total</Text>

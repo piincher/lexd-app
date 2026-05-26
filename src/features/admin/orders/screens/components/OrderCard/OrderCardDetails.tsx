@@ -13,7 +13,7 @@ interface OrderCardDetailsProps {
 
 export const OrderCardDetails: React.FC<OrderCardDetailsProps> = ({ clientPhone, departureDate, orderPrice }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.detailsGrid}>

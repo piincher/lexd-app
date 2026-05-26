@@ -2,7 +2,7 @@
  * TransitTimeline - Customer-facing transit timeline
  * Refactored: Composed from smaller components, < 150 lines
  */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
@@ -39,7 +39,7 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
   consignee,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     completedWaypoints,
     currentWaypoint,

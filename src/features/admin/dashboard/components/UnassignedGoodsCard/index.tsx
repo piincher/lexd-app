@@ -34,7 +34,7 @@ interface UnassignedGoodsCardProps {
 
 export const UnassignedGoodsCard: React.FC<UnassignedGoodsCardProps> = ({ item, onPress }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { name, phone } = getClientInfo(item.clientId);
   const badgeColor = getBadgeColor(item.daysWaiting, colors);
 

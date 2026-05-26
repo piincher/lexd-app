@@ -29,9 +29,9 @@ export const createStyles = (colors: AppThemeColors, isDark?: boolean) =>
       gap: 10,
     },
     iconWrap: {
-      width: 38,
-      height: 38,
-      borderRadius: 11,
+      width: 44,
+      height: 44,
+      borderRadius: 12,
       backgroundColor: isDark ? colors.action.hover : colors.background.paper,
       borderWidth: 1,
       borderColor: colors.border,

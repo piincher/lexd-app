@@ -17,7 +17,7 @@ export const MyReviewsHeader: React.FC<MyReviewsHeaderProps> = ({
   onNotificationPress,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <View

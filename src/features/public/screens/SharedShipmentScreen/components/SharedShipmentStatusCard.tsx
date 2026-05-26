@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -98,7 +98,7 @@ export const SharedShipmentStatusCard: React.FC<Props> = ({ reference, status, t
   const { colors } = useAppTheme();
   const config = getStatusConfig(status, colors);
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     card: {
       padding: Theme.spacing.lg,
       borderRadius: Theme.radius.xl,
@@ -132,7 +132,7 @@ export const SharedShipmentStatusCard: React.FC<Props> = ({ reference, status, t
       fontFamily: Fonts.bold,
       fontSize: 14,
     },
-  }), [colors]);
+  });
 
   return (
     <Surface style={styles.card}>

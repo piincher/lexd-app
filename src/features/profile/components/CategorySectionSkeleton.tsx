@@ -16,7 +16,7 @@ interface CategorySectionSkeletonProps {
 
 export const CategorySectionSkeleton: React.FC<CategorySectionSkeletonProps> = ({ skeletonBg }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
   <View style={styles.categorySection}>
     <View style={styles.categoryHeader}>

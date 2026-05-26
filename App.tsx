@@ -7,6 +7,7 @@ import { OfflineProvider } from "@src/app/providers/OfflineProvider";
 import { getQueryClient } from "@src/shared/lib/queryClient";
 import { ThemeProvider, useAppTheme } from "@src/providers";
 import { NotificationProvider } from "@src/app/providers";
+import { SessionGuard } from "@src/app/providers/SessionGuard";
 import { ScrollDirectionProvider } from "@src/providers/ScrollDirectionProvider";
 import { AppShell } from "@src/app/navigation/AppShell";
 import { useAppBootstrap } from "@src/app/bootstrap/useAppBootstrap";
@@ -29,6 +30,9 @@ const AppContent: React.FC<{ isAuthenticated: boolean; onLayout: () => void }> =
          <ScrollDirectionProvider>
             <GestureHandlerRootView style={{ flex: 1 }} onLayout={onLayout}>
                <PaperProvider theme={paperTheme}>
+                  {/* Side-effect-only — subscribes to session-expired events and runs
+                      the logout flow. Mounted inside PaperProvider so native Alert works. */}
+                  <SessionGuard />
                   <AppShell />
                </PaperProvider>
             </GestureHandlerRootView>

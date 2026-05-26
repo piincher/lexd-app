@@ -15,7 +15,7 @@ const BUTTON_TITLE = "Ajouter";
 
 const SelectUser = ({ navigation }: RootStackScreenProps<"SelectUser">) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const { selectedUser, search, filteredUsers, handlers } = useSelectUser(navigation);
 
   return (

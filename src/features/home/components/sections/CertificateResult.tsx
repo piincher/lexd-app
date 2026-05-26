@@ -3,7 +3,7 @@
  * Success and error result displays for certificate verification
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -17,7 +17,7 @@ import type { VerifiedCertificate } from '@src/shared/api/certificates';
 /* ── Success Result ── */
 export const CertificateSuccessResult: React.FC<{ data: VerifiedCertificate }> = ({ data }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const isActive = data.status === 'ACTIVE';
   const accentColor = isActive ? colors.status.success : colors.status.error;
   const bgGradient = isActive
@@ -60,7 +60,7 @@ export const CertificateSuccessResult: React.FC<{ data: VerifiedCertificate }> =
 /* ── Error Result ── */
 export const CertificateErrorResult: React.FC<{ message: string }> = ({ message }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <Animated.View entering={FadeIn.duration(300)} style={styles.container}>
       <View style={styles.errorBanner}>
@@ -74,7 +74,7 @@ export const CertificateErrorResult: React.FC<{ message: string }> = ({ message 
 /* ── Result Row ── */
 const ResultRow: React.FC<{ icon: string; label: string; value: string }> = ({ icon, label, value }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={styles.row}>
       <FontAwesome6 name={icon as any} size={12} color={colors.text.secondary} />

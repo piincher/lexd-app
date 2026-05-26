@@ -2,7 +2,7 @@
  * OnboardingCTA — Solid brand buttons, clear hierarchy
  */
 
-import React, { useMemo } from "react";
+import React from 'react';
 import {
   View,
   Text,
@@ -28,7 +28,7 @@ export const OnboardingCTA: React.FC<OnboardingCTAProps> = ({
 }) => {
   const { width } = useWindowDimensions();
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const isNarrow = width < 360;
   const showSkip = !isLastSlide;
 

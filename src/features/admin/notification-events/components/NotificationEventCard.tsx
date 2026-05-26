@@ -28,7 +28,7 @@ const getStatusColor = (status: NotificationEventStatus, colors: any): string =>
 
 export const NotificationEventCard = memo(({ item, onPress }: NotificationEventCardProps) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Pressable

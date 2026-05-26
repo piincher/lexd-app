@@ -1,15 +1,16 @@
 /**
  * PeriodSelector
  * SRP: Period filter pills for analytics data range
+ * Hallmark: refined pills, tighter voice
  */
 
 import React, { useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import { PeriodFilter, PeriodOption } from '../../types';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 interface PeriodSelectorProps {
   selected: PeriodFilter;
@@ -32,11 +33,13 @@ export const PeriodSelector: React.FC<PeriodSelectorProps> = ({ selected, onSele
         container: {
           flexDirection: 'row',
           paddingHorizontal: 20,
+          marginTop: 12,
+          marginBottom: 8,
           gap: 8,
         },
         pill: {
           paddingHorizontal: 14,
-          paddingVertical: 8,
+          paddingVertical: 7,
           borderRadius: 20,
           backgroundColor: colors.background.card,
           borderWidth: 1,
@@ -61,7 +64,7 @@ export const PeriodSelector: React.FC<PeriodSelectorProps> = ({ selected, onSele
   );
 
   return (
-    <View style={styles.container}>
+    <Animated.View entering={FadeIn.delay(180).duration(350)} style={styles.container}>
       {PERIODS.map((p) => {
         const isActive = p.key === selected;
         return (
@@ -77,6 +80,6 @@ export const PeriodSelector: React.FC<PeriodSelectorProps> = ({ selected, onSele
           </TouchableOpacity>
         );
       })}
-    </View>
+    </Animated.View>
   );
 };

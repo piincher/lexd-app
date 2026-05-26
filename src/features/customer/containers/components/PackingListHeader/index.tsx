@@ -4,7 +4,7 @@
  * SRP: Display document header information
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Card, Divider, Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -44,7 +44,7 @@ export const PackingListHeader: React.FC<PackingListHeaderProps> = ({
 }) => {
   const theme = useTheme();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Card style={[styles.documentCard, styles.headerCard]}>

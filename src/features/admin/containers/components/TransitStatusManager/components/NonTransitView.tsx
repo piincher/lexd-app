@@ -53,7 +53,7 @@ export const NonTransitView: React.FC<NonTransitViewProps> = ({
   const statusColor = getContainerStatusColors(colors)[containerStatus];
   const statusIcon = getStatusIcon(containerStatus);
   const waypointCount = waypoints?.length || 0;
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.container}>

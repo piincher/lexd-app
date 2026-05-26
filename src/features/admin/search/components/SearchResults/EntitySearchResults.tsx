@@ -31,7 +31,7 @@ export const EntitySearchResults: React.FC<EntitySearchResultsProps> = ({
   highlightQuery = "",
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const handlePress = (item: SearchResultItem) => onItemPress(item, entity);
 
   const renderItem = ({ item }: { item: SearchResultItem }) => {

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { View } from 'react-native';
 import { usePackingListParams } from './usePackingListParams';
 import { usePackingListData } from './usePackingListData';
@@ -11,8 +11,9 @@ export type { AdminV2StackParamList, NavigationProp } from './usePackingListPara
 export const MAX_CBM = 67;
 
 export const usePackingListScreen = () => {
-  const { containerId, initialClientId, navigation } = usePackingListParams();
+  const { containerId, initialClientId, autoPrint, navigation } = usePackingListParams();
   const documentRef = useRef<View>(null);
+  const autoPrintStarted = useRef(false);
 
   const { packingListData, isContainerLoading } = usePackingListData(containerId || '');
   const { filteredPackingListData, selectedClientId, setSelectedClientId } = usePackingListFilters(
@@ -20,9 +21,15 @@ export const usePackingListScreen = () => {
     initialClientId
   );
   const { allExpanded, setAllExpanded, handleToggleAll, handleGoToLoadingList, formatDate } =
-    usePackingListUI(navigation, containerId);
+    usePackingListUI(navigation, containerId, selectedClientId);
   const { isGeneratingPDF, setIsGeneratingPDF, handlePrint } = usePackingListPrint(filteredPackingListData);
   const { handleShare } = usePackingListShare(filteredPackingListData);
+
+  useEffect(() => {
+    if (!autoPrint || autoPrintStarted.current || !filteredPackingListData) return;
+    autoPrintStarted.current = true;
+    handlePrint();
+  }, [autoPrint, filteredPackingListData, handlePrint]);
 
   const clients = filteredPackingListData?.clients ?? [];
   const allClients = packingListData?.clients ?? [];

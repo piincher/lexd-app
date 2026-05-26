@@ -27,7 +27,7 @@ export const SmsBalanceHeader: React.FC<SmsBalanceHeaderProps> = ({
 }) => {
   const { colors, isDark } = useAppTheme();
   const navigation = useNavigation();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const balanceStatus =
     hasExpired ? 'critical' :

@@ -1,24 +1,16 @@
-import React from "react";
 import { useState, useMemo, useCallback } from "react";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import type { RootStackParamList } from "@src/navigations/type";
 import { getActiveOrders } from "@src/api/order";
 import { productType } from "@src/shared/types/order";
 import { LIMIT } from "@src/constants/Dimensions";
-
-export type ShippingMode = "all" | "air" | "sea";
-
-export interface FilterOption {
-  value: ShippingMode;
-  label: string;
-  icon: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
-}
-
-export const FILTER_OPTIONS: FilterOption[] = [
-  { value: "all", label: "Tous", icon: "filter-variant" },
-  { value: "sea", label: "Maritime", icon: "ferry" },
-  { value: "air", label: "Aérien", icon: "airplane" },
-];
+import type { ShippingMode } from "./pastOrdersConstants";
+import {
+  filterPastOrdersBySearch,
+  getPastOrdersSummary,
+} from "./pastOrdersTransforms";
 
 const ORDERKEY = "past-orders";
 
@@ -37,7 +29,9 @@ const fetchPastOrders = async (
 };
 
 export const usePastOrders = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const [shippingMode, setShippingMode] = useState<ShippingMode>("all");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const {
     data,
@@ -59,8 +53,22 @@ export const usePastOrders = () => {
 
   const orders = useMemo(() => {
     if (!data?.pages) return [];
-    return data.pages.flatMap((page) => page);
+    const seen = new Map<string, productType>();
+    data.pages.flatMap((page) => page).forEach((order) => {
+      const id = order._id || order.code || order.orderId;
+      if (id && !seen.has(id)) {
+        seen.set(id, order);
+      }
+    });
+    return Array.from(seen.values());
   }, [data]);
+
+  const visibleOrders = useMemo(
+    () => filterPastOrdersBySearch(orders, searchQuery),
+    [orders, searchQuery],
+  );
+
+  const summary = useMemo(() => getPastOrdersSummary(orders), [orders]);
 
   const loadMore = useCallback(() => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -68,15 +76,26 @@ export const usePastOrders = () => {
     }
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
+  const handleOrderPress = useCallback((order: productType) => {
+    if (order._id) {
+      navigation.navigate("OrderDetail", { id: order._id });
+    }
+  }, [navigation]);
+
   return {
     shippingMode,
     setShippingMode,
+    searchQuery,
+    setSearchQuery,
     orders,
+    visibleOrders,
+    summary,
     isLoading,
     isRefetching,
     refetch,
     hasNextPage,
     isFetchingNextPage,
     loadMore,
+    handleOrderPress,
   };
 };

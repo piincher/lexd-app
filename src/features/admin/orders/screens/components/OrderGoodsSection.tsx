@@ -2,7 +2,7 @@
  * OrderGoodsSection - Displays goods attached to an order
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -15,7 +15,7 @@ interface OrderGoodsSectionProps {
 export const OrderGoodsSection: React.FC<OrderGoodsSectionProps> = ({ goods }) => {
   const { colors, isDark } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       margin: 16,
       marginTop: 8,
@@ -68,7 +68,7 @@ export const OrderGoodsSection: React.FC<OrderGoodsSectionProps> = ({ goods }) =
       color: colors.text.secondary,
       marginTop: 2,
     },
-  }), [colors, isDark]);
+  });
 
   if (!goods || goods.length === 0) {
     return null;

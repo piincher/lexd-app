@@ -4,7 +4,14 @@
  */
 
 import { z } from 'zod';
+import type {
+  Control,
+  FieldErrors,
+  UseFormSetValue,
+  UseFormWatch,
+} from 'react-hook-form';
 import { userData } from '@src/shared/types/user';
+import type { ReceiveExceptionReason } from '../../types';
 
 // ============================================
 // ZOD SCHEMAS
@@ -94,6 +101,16 @@ export const receiveGoodsSchema = z.object({
   
   condition: z.enum(['new', 'used', 'damaged'])
     .default('new'),
+  
+  exceptionReasons: z.array(z.enum([
+    'CLIENT_UNKNOWN',
+    'TRACKING_DOUBTFUL',
+    'DAMAGED',
+    'PRICE_TO_CONFIRM',
+    'PHOTO_MISSING',
+  ])).default([]),
+  
+  exceptionNotes: z.string().optional(),
 }).refine((data) => {
   // For SEA shipping, CBM is required (either via dimensions or direct input)
   if (data.shippingMode === 'SEA') {
@@ -106,6 +123,12 @@ export const receiveGoodsSchema = z.object({
 }, {
   message: 'CBM est requis pour le transport maritime (dimensions ou CBM direct)',
   path: ['cbm'], // Error will be associated with cbm field
+}).refine((data) => {
+  if (!data.exceptionReasons.includes('CLIENT_UNKNOWN')) return true;
+  return !!data.exceptionNotes?.trim();
+}, {
+  message: 'Expliquez pourquoi le client est inconnu',
+  path: ['exceptionNotes'],
 });
 
 // ============================================
@@ -114,11 +137,13 @@ export const receiveGoodsSchema = z.object({
 
 export type ReceiveGoodsFormData = z.infer<typeof receiveGoodsSchema>;
 
+export type { ReceiveExceptionReason };
+
 export interface ReceiveGoodsFormSectionProps {
-  control: any;
-  errors: any;
-  setValue: any;
-  watch: any;
+  control: Control<ReceiveGoodsFormData>;
+  errors: FieldErrors<ReceiveGoodsFormData>;
+  setValue: UseFormSetValue<ReceiveGoodsFormData>;
+  watch: UseFormWatch<ReceiveGoodsFormData>;
 }
 
 export interface GoodsDimensionsInputProps extends ReceiveGoodsFormSectionProps {
@@ -134,7 +159,7 @@ export interface GoodsPhotosUploadProps {
   onPhotoRemoved: (uri: string) => void;
 }
 
-export interface GoodsConditionSelectorProps extends ReceiveGoodsFormSectionProps {}
+export type GoodsConditionSelectorProps = ReceiveGoodsFormSectionProps;
 
 export interface ClientSelectionProps {
   selectedClient: userData | null;

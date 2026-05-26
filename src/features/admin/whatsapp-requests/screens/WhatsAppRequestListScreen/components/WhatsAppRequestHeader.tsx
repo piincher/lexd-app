@@ -18,7 +18,7 @@ interface WhatsAppRequestHeaderProps {
 export const WhatsAppRequestHeader: React.FC<WhatsAppRequestHeaderProps> = ({ onRefresh }) => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
   <LinearGradient colors={Theme.gradients.glass} style={styles.header}>

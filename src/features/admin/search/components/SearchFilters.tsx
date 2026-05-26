@@ -34,7 +34,7 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
   onPresetSelect,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const [showPresets, setShowPresets] = useState(false);
   const {
     toggleStatus,

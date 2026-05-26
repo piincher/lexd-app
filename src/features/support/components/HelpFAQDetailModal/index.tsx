@@ -20,7 +20,7 @@ type HelpFAQDetailModalProps = {
 
 export function HelpFAQDetailModal({ visible, faq, onClose, onBookmark, isBookmarked, onFeedback, feedbackPending }: HelpFAQDetailModalProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (!faq) return null;
 

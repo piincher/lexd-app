@@ -1,7 +1,10 @@
 import { StyleSheet } from "react-native";
 import { Theme } from "@src/constants/Theme";
+import type { AppTheme } from "@src/constants/Theme";
 
-export const createStyles = (colors: any) => StyleSheet.create({
+type ThemeColors = AppTheme["colors"];
+
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
    container: {
       marginBottom: Theme.spacing.md,
    },

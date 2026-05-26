@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
@@ -8,7 +8,7 @@ import { Theme } from '@src/constants/Theme';
 
 export const AboutUsVisionCard: React.FC = () => {
    const { colors } = useAppTheme();
-   const styles = useMemo(() => makeStyles(colors), [colors]);
+   const styles = makeStyles(colors);
 
    return (
       <Animated.View entering={FadeInDown.delay(500).duration(600)} style={styles.card}>

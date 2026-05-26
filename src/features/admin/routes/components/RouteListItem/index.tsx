@@ -2,12 +2,13 @@
  * RouteListItem - Individual route list item component
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text, Card, Menu, IconButton } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { createStyles } from './RouteListItem.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 
 interface Route {
   id: string;
@@ -32,8 +33,8 @@ const MODE_CONFIG = (colors: any) => ({
 });
 
 export const RouteListItem: React.FC<RouteListItemProps> = ({ route, onPress, onEdit, onDelete }) => {
-  const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
   const [menuVisible, setMenuVisible] = React.useState(false);
   const mode = MODE_CONFIG(colors)[route.shippingMode];
   const closeMenu = () => setMenuVisible(false);

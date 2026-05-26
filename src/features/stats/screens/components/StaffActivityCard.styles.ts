@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme, lightTheme } from '@src/constants/Theme';
+import { lightTheme } from '@src/constants/Theme';
 
 export const createStaffActivityStyles = (colors: typeof lightTheme.colors) =>
   StyleSheet.create({
@@ -8,23 +8,25 @@ export const createStaffActivityStyles = (colors: typeof lightTheme.colors) =>
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
       borderRadius: 16,
-      padding: 18,
-      ...Theme.shadows.sm,
+      padding: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
     header: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      marginBottom: 14,
+      marginBottom: 12,
     },
     title: {
-      fontSize: 15,
+      fontSize: 16,
       fontFamily: Fonts.bold,
       fontWeight: '700',
       color: colors.text.primary,
+      letterSpacing: -0.2,
     },
     subtitle: {
-      fontSize: 11,
+      fontSize: 12,
       fontFamily: Fonts.regular,
       color: colors.text.disabled,
       marginTop: 2,
@@ -40,7 +42,7 @@ export const createStaffActivityStyles = (colors: typeof lightTheme.colors) =>
     summaryRow: {
       flexDirection: 'row',
       gap: 10,
-      marginBottom: 14,
+      marginBottom: 12,
     },
     summaryItem: {
       flex: 1,
@@ -84,5 +86,6 @@ export const createStaffActivityStyles = (colors: typeof lightTheme.colors) =>
       fontSize: 12,
       fontFamily: Fonts.regular,
       color: colors.text.disabled,
+      paddingVertical: 8,
     },
   });

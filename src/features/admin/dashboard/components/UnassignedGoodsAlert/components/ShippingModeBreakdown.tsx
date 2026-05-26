@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -41,9 +41,9 @@ const createStyles = (colors: AppThemeColors) =>
       backgroundColor: colors.action.hover,
     },
     modeIconWrap: {
-      width: 30,
-      height: 30,
-      borderRadius: 10,
+      width: 44,
+      height: 44,
+      borderRadius: 12,
       justifyContent: "center",
       alignItems: "center",
     },
@@ -69,7 +69,7 @@ export const ShippingModeBreakdown: React.FC<ShippingModeBreakdownProps> = ({
   byShippingMode,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const shippingModes: ShippingModeItem[] = [
     {

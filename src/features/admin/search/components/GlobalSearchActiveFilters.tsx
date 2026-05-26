@@ -15,7 +15,7 @@ export const GlobalSearchActiveFilters: React.FC<GlobalSearchActiveFiltersProps>
   onRemoveFilter,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const entries = Object.entries(filters).filter(([, value]) => !!value);
 
   if (entries.length === 0) return null;

@@ -1,9 +1,7 @@
-/**
- * useReceiveGoodsFormValues - Computed form values hook
- * Extracts and parses numeric values from form watch
- */
+import type { UseFormWatch } from 'react-hook-form';
+import type { ReceiveGoodsFormData } from '../types';
 
-export const useReceiveGoodsFormValues = (watch: any) => {
+export const useReceiveGoodsFormValues = (watch: UseFormWatch<ReceiveGoodsFormData>) => {
   const unitPrice = watch('unitPrice');
   const unitPriceValue = parseFloat(unitPrice?.replace(',', '.') || '0') || 0;
   const shippingMode = watch('shippingMode');

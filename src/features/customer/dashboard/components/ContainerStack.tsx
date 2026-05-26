@@ -43,7 +43,7 @@ const fmtDate = (s?: string) => (s ? new Date(s).toLocaleDateString('fr-FR', { d
 
 export const ContainerStack: React.FC<Props> = ({ containers, onContainerPress }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createContainerStackStyles(colors, isDark), [colors, isDark]);
+  const styles = createContainerStackStyles(colors, isDark);
   const statusMap = useMemo(() => getStatusMap(colors), [colors]);
 
   const active = containers.filter((c) => c.status !== 'DELIVERED' && c.status !== 'COMPLETED');

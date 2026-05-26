@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Card, Text, Divider, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -27,7 +27,7 @@ export const FinancialCard: React.FC<FinancialCardProps> = ({
   formatCurrency,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const paymentStatusColor = getPaymentStatusColor();
   const paymentStatusLabel = paymentStatus === 'PAID'
     ? 'Payé'

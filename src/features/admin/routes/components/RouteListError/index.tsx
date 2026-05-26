@@ -8,6 +8,7 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { createStyles } from './RouteListError.styles';
 
 interface RouteListErrorProps {
@@ -16,7 +17,7 @@ interface RouteListErrorProps {
 
 export const RouteListError: React.FC<RouteListErrorProps> = ({ onRetry }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.errorContainer}>
       <LinearGradient

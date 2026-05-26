@@ -18,7 +18,7 @@ export const OutstandingPaymentsSearch: React.FC<OutstandingPaymentsSearchProps>
   onClear,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.searchRow}>
       <View style={styles.searchBox}>

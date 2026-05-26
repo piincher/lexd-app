@@ -14,7 +14,7 @@ const AuditLogDetailScreen: React.FC<RootStackScreenProps<'AuditLogDetail'>> = (
   route,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { data, isLoading, isError } = useAuditLogDetail(route.params.auditLogId);
 
   return (

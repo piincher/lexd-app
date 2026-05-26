@@ -20,7 +20,7 @@ import { createStyles } from './SendSms.styles';
 
 const SendSms = ({ navigation }: RootStackScreenProps<'SendSms'>) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const s = useSendSmsScreen();
 
   return (

@@ -21,7 +21,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
   onInputFocus,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const [showResponseInput, setShowResponseInput] = useState(false);
   const [responseText, setResponseText] = useState("");
 

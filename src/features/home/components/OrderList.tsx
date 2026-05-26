@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 // import { LoadingSpinner } from '@src/components/common/LoadingSpinner';
-import { useMemo } from 'react';
+
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import { OrderListSkeleton } from '@src/shared/ui/OrderListSkeleton';
@@ -19,7 +19,7 @@ const ListingList = ({ Status }: Props) => {
 	const { colors } = useAppTheme();
 	const { data, isLoading, isError, fetchNextPage, refetch, hasNextPage, isFetchingNextPage } = useGetActiveOrder();
 
-	const styles = useMemo(() => StyleSheet.create({
+	const styles = StyleSheet.create({
 		buttonContainer: {
 			flex: 1,
 			alignItems: 'center',
@@ -35,7 +35,7 @@ const ListingList = ({ Status }: Props) => {
 			color: colors.text.primary,
 			fontWeight: 'bold',
 		},
-	}), [colors]);
+	});
 
 	const renderFooter = () => {
 		if (isFetchingNextPage) {

@@ -61,7 +61,7 @@ export const GoodsHeader: React.FC<GoodsHeaderProps> = ({
   const navigation = useNavigation();
   const [menuVisible, setMenuVisible] = useState(false);
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <LinearGradient colors={Theme.gradients.primary} style={styles.container}>

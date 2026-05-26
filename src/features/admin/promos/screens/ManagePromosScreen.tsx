@@ -16,7 +16,7 @@ import { createStyles } from "./ManagePromosScreen.styles";
 
 export default function ManagePromosScreen({ navigation }: RootStackScreenProps<"ManagePromos">) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const [statsPromo, setStatsPromo] = useState<PromoRecord | null>(null);
 
   const {

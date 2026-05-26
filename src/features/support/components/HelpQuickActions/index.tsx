@@ -22,7 +22,7 @@ type HelpQuickActionsProps = {
 
 export function HelpQuickActions({ onTrackOrder, onViewTickets, onWhatsApp, onCreateTicket }: HelpQuickActionsProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   const handlers: Record<string, () => void> = {
     track: onTrackOrder,

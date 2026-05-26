@@ -44,7 +44,7 @@ export const CertificateHistoryList: React.FC<CertificateHistoryListProps> = ({
   onPressCertificate,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const renderItem = ({ item }: { item: CertificateRecord }) => (
     <CertificateCard
       certificate={item}

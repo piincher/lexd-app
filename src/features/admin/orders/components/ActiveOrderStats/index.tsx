@@ -17,7 +17,7 @@ export const ActiveOrderStats: React.FC<ActiveOrderStatsProps> = ({
   packageCBM,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Surface style={styles.card}>

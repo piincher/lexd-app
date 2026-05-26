@@ -19,7 +19,7 @@ export const BulkActionBar: React.FC<BulkActionBarProps> = ({
   onClear,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const { trigger } = useHaptics();
 
   const handleBlock = useCallback(() => {

@@ -34,7 +34,7 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
   onPress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const isAuto = certificate.type === "AUTO";
   const isActive = certificate.status === "ACTIVE";
 

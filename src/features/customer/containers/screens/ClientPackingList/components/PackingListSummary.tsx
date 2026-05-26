@@ -21,6 +21,7 @@ interface PackingListSummaryProps {
   containerNumber?: string;
   shippingMode?: 'AIR' | 'SEA';
   status?: string;
+  statusLabel?: string;
   totalCBM?: number;
   totalWeight?: number;
   totalPackages?: number;
@@ -49,6 +50,7 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
   containerNumber,
   shippingMode,
   status,
+  statusLabel,
   totalCBM,
   totalWeight,
   totalPackages,
@@ -74,6 +76,7 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
         <SummaryHeader
           containerNumber={containerNumber}
           status={status}
+          statusLabel={statusLabel}
           statusBg={statusBg}
           statusTextColor={statusText}
         />

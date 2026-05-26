@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   ActivityIndicator,
   Text,
@@ -55,7 +55,7 @@ export const AdminRedemptionList: React.FC<AdminRedemptionListProps> = ({
   onPrevPage,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const items = data?.items || [];
   const pagination = data?.pagination;
 

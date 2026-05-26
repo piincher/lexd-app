@@ -1,11 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { Pressable, ScrollView, TextInput, View } from "react-native";
+import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { navigationProps } from "@src/app/navigation/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { MENU_CATEGORIES } from "../constants/menuData";
+import { MenuDirectorySearch } from "./MenuDirectorySearch";
+import { MenuDirectoryTabs } from "./MenuDirectoryTabs";
 import { MenuCategoryCard } from "./MenuCategoryCard";
 import { createMenuCategoriesStyles } from "./MenuCategories.styles";
 
@@ -61,9 +63,13 @@ export const MenuCategories: React.FC = () => {
     (sum, category) => sum + category.items.length,
     0
   );
+  const totalCommandCount = MENU_CATEGORIES.reduce(
+    (sum, category) => sum + category.items.length,
+    0
+  );
 
   const tabs = [
-    { id: ALL_CATEGORY, title: "Tous", count: MENU_CATEGORIES.length },
+    { id: ALL_CATEGORY, title: "Tous", count: totalCommandCount },
     ...MENU_CATEGORIES.map((category) => ({
       id: category.id,
       title: category.title,
@@ -80,65 +86,26 @@ export const MenuCategories: React.FC = () => {
         </View>
         <View style={styles.directoryBadge}>
           <MaterialCommunityIcons name="view-dashboard-edit" size={14} color={colors.primary.main} />
-          <Text style={styles.directoryBadgeText}>{MENU_CATEGORIES.length}</Text>
+          <Text style={styles.directoryBadgeText}>{totalCommandCount}</Text>
         </View>
       </View>
 
-      <View style={styles.searchBox}>
-        <MaterialCommunityIcons name="magnify" size={20} color={colors.text.secondary} />
-        <TextInput
-          value={query}
-          onChangeText={setQuery}
-          placeholder="Rechercher un accès admin"
-          placeholderTextColor={colors.text.disabled}
-          style={styles.searchInput}
-          returnKeyType="search"
-          selectionColor={colors.primary.main}
-        />
-        {query ? (
-          <Pressable
-            onPress={() => setQuery("")}
-            style={({ pressed }) => [styles.clearButton, pressed && styles.pressed]}
-            accessibilityLabel="Effacer la recherche"
-          >
-            <MaterialCommunityIcons name="close" size={18} color={colors.text.secondary} />
-          </Pressable>
-        ) : null}
-      </View>
+      <MenuDirectorySearch
+        styles={styles}
+        colors={colors}
+        query={query}
+        onChangeQuery={setQuery}
+        onClear={() => setQuery("")}
+      />
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.tabsContent}
-        style={styles.tabsRail}
-      >
-        {tabs.map((tab) => {
-          const isActive = selectedCategory === tab.id;
-          const accent = categoryColors[tab.id] || colors.primary.main;
-          return (
-            <Pressable
-              key={tab.id}
-              onPress={() => setSelectedCategory(tab.id)}
-              style={[
-                styles.tab,
-                isActive && styles.tabActive,
-                isActive && { borderColor: accent, backgroundColor: accent + "16" },
-              ]}
-              accessibilityLabel={`Filtrer ${tab.title}`}
-            >
-              <Text
-                numberOfLines={1}
-                style={[styles.tabText, isActive && { color: accent }]}
-              >
-                {tab.title}
-              </Text>
-              <Text style={[styles.tabCount, isActive && { color: accent }]}>
-                {tab.count}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </ScrollView>
+      <MenuDirectoryTabs
+        styles={styles}
+        colors={colors}
+        tabs={tabs}
+        selectedCategory={selectedCategory}
+        categoryColors={categoryColors}
+        onSelectCategory={setSelectedCategory}
+      />
 
       <View style={styles.directoryShell}>
         {visibleCategories.length > 0 ? (

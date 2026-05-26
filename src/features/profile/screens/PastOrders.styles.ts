@@ -9,4 +9,13 @@ export const createStyles = (colors: Colors) =>
       flex: 1,
       backgroundColor: colors.background.default,
     },
+    content: {
+      paddingHorizontal: 16,
+      paddingTop: 14,
+      paddingBottom: 8,
+      gap: 14,
+    },
+    emptyScrollContent: {
+      flexGrow: 1,
+    },
   });

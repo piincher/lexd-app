@@ -46,7 +46,7 @@ export const SkeletonBlock: React.FC<SkeletonBlockProps> = ({
 
 const GoodsCardSkeleton: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.card}>

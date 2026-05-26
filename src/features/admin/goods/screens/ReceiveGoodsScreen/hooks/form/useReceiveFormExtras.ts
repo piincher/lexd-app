@@ -4,7 +4,9 @@ import { userData } from '@src/shared/types/user';
 export const useReceiveFormExtras = () => {
   const [selectedClient, setSelectedClient] = useState<userData | null>(null);
   const [photoUris, setPhotoUris] = useState<string[]>([]);
-  const [useDimensions, setUseDimensions] = useState(true);
+  // Default OFF — operators enter CBM directly more often than dimensions; they toggle
+  // dimensions on only when they need the L×W×H → CBM calculation.
+  const [useDimensions, setUseDimensions] = useState(false);
 
   const addPhotoUri = useCallback((uri: string) => {
     setPhotoUris((prev) => (prev.includes(uri) ? prev : [...prev, uri]));

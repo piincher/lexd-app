@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { ActivityIndicator, Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -6,7 +6,7 @@ import { createPaymentHistoryLoadingStyles } from './PaymentHistoryLoading.style
 
 export const PaymentHistoryLoading: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createPaymentHistoryLoadingStyles(colors), [colors]);
+  const styles = createPaymentHistoryLoadingStyles(colors);
 
   return (
     <View style={styles.loadingContainer}>

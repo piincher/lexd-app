@@ -17,7 +17,7 @@ export const DeliveredDialog: React.FC<DeliveredDialogProps> = ({
   onConfirm,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <Dialog visible={visible} onDismiss={onDismiss}>

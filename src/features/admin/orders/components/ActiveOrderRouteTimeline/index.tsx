@@ -40,7 +40,7 @@ export const ActiveOrderRouteTimeline: React.FC<ActiveOrderRouteTimelineProps> =
   onCheckboxPress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const details = routeData?.orderDetail || [];
 
   return (

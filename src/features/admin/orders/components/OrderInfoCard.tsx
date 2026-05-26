@@ -3,7 +3,7 @@
  * SRP: Show order code and associated goods
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Surface, Divider } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -25,7 +25,7 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({
   goodsIds,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     card: {
       padding: 16,
       borderRadius: 12,
@@ -92,7 +92,7 @@ export const OrderInfoCard: React.FC<OrderInfoCardProps> = ({
       marginLeft: 8,
       flex: 1,
     },
-  }), [colors]);
+  });
 
   return (
     <Surface style={styles.card}>

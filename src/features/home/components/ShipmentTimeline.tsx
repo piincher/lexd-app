@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
@@ -16,7 +16,7 @@ export const ShipmentTimeline: React.FC<ShipmentTimelineProps> = ({
   progress,
   colors,
 }) => {
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
   <>

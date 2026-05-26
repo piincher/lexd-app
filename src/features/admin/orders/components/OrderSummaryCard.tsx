@@ -67,7 +67,7 @@ export const OrderSummaryCard: React.FC<OrderSummaryCardProps> = ({
   pricingSource,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Card variant="elevated" style={styles.card}>

@@ -1,5 +1,5 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
@@ -17,7 +17,7 @@ const PARTNER_LOGOS = [
 ];
 
 export const PartnersSection: React.FC<PartnersSectionProps> = ({ colors }) => {
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
    const textColor = colors.text?.primary ?? colors.text;
 
    return (

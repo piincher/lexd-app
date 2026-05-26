@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ const formatAmount = (value?: number) => {
 
 const Metric: React.FC<{ label: string; value: string; color: string }> = ({ label, value, color }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createOperationsHealthStyles(colors), [colors]);
+  const styles = createOperationsHealthStyles(colors);
 
   return (
     <View style={styles.metric}>
@@ -36,7 +36,7 @@ export const OperationsHealthCard: React.FC<OperationsHealthCardProps> = ({ oper
   const { colors } = useAppTheme();
   const summary = operations?.summary;
   const topStuckGoods = operations?.goodsFlow.stuckGoods.slice(0, 3) || [];
-  const styles = useMemo(() => createOperationsHealthStyles(colors), [colors]);
+  const styles = createOperationsHealthStyles(colors);
 
   if (isLoading) {
     return (
@@ -54,20 +54,20 @@ export const OperationsHealthCard: React.FC<OperationsHealthCardProps> = ({ oper
   if (!operations) return null;
 
   return (
-    <Animated.View entering={FadeInUp.delay(240).springify().damping(15)} style={styles.container}>
+    <Animated.View entering={FadeInUp.delay(280).springify().damping(15)} style={styles.container}>
       <View style={styles.header}>
         <View>
           <Text style={styles.title}>Operations</Text>
-          <Text style={styles.subtitle}>Recouvrement, flux et capacite</Text>
+          <Text style={styles.subtitle}>Recouvrement, flux et capacité</Text>
         </View>
         <View style={styles.iconBox}>
           <Ionicons name="pulse-outline" size={18} color={colors.status.info} />
         </View>
       </View>
       <View style={styles.grid}>
-        <Metric label="A recouvrer" value={`${formatAmount(summary?.unpaidAmount)} F`} color={colors.status.warning} />
+        <Metric label="À recouvrer" value={`${formatAmount(summary?.unpaidAmount)} F`} color={colors.status.warning} />
         <Metric label="En retard" value={`${summary?.overdueInvoices || 0}`} color={colors.status.error} />
-        <Metric label="Colis bloques" value={`${summary?.stuckGoods || 0}`} color={colors.status.info} />
+        <Metric label="Colis bloqués" value={`${summary?.stuckGoods || 0}`} color={colors.status.info} />
         <Metric label="Remplissage" value={`${summary?.avgContainerFillRate || 0}%`} color={colors.status.success} />
       </View>
       {topStuckGoods.length > 0 && (

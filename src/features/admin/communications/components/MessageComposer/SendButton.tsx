@@ -15,7 +15,7 @@ interface SendButtonProps {
 
 export const SendButton: React.FC<SendButtonProps> = ({ canSend, isSending, recipientCount, onSend }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <TouchableOpacity onPress={onSend} disabled={!canSend} style={styles.sendWrapper} activeOpacity={0.8}>
       <LinearGradient

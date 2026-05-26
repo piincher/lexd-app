@@ -5,6 +5,7 @@ import { useGoodsDetailScreenUI } from './hooks/useGoodsDetailScreenUI';
 import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
 import { GoodsDetailHeader } from './components/GoodsDetailHeader';
+import { GoodsDetailSummary } from './components/GoodsDetailSummary';
 import { QRCard } from './components/QRCard';
 import { GoodsPhotoSection } from './components/GoodsPhotoSection';
 import { DescriptionCard } from './components/DescriptionCard';
@@ -17,6 +18,7 @@ import { ReceptionCard } from './components/ReceptionCard';
 import { ActionButtons } from './components/ActionButtons';
 import { ExpressTrackingCard } from '../../components/ExpressTrackingCard';
 import { GoodsDetailAssignDialog } from '../../components/GoodsDetailAssignDialog';
+import { AssignClientDialog } from './components/AssignClientDialog';
 import { createStyles } from './GoodsDetailScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { normalizePhotos } from '@src/shared/lib';
@@ -25,10 +27,10 @@ export const GoodsDetailScreen: React.FC = () => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
   const { state, loading, dialogs, containers, airwayBills, mutations, actions, handlers } = useGoodsDetailScreenUI();
-  const { goods, client, container, hasQRCode, isAirShipping } = state;
+  const { goods, client, container, airwayBill, hasQRCode, isAirShipping, isOwnerUnidentified } = state;
   const { isLoading, isRefetching, refetch } = loading;
   const { menuVisible, assignDialogVisible, selectedContainerId, setMenuVisible, setSelectedContainerId } = dialogs;
-  const { isAssigning } = mutations;
+  const { isAssigning, isAssigningClient, isResendingNotification } = mutations;
 
   if (isLoading) return <LoadingState />;
   if (!goods) return <ErrorState />;
@@ -48,28 +50,42 @@ export const GoodsDetailScreen: React.FC = () => {
         canUnassign={state.canUnassignFromAwb}
         onDelete={actions.handleDelete}
         onBack={actions.handleGoBack}
+        onAssignClientPress={actions.handleOpenAssignClient}
+        isOwnerUnidentified={isOwnerUnidentified}
+        onResendNotification={actions.handleResendNotification}
+        isResendingNotification={isResendingNotification}
       />
       <ScrollView
         style={styles.scrollView}
         refreshControl={<RefreshControl refreshing={isRefetching} onRefresh={refetch} tintColor={colors.primary.main} />}
       >
+        {/* Narrative Workflow IA: the lifecycle journey rail is the spine, then payment status,
+            then cost composition, specs, parties/places — reference (photos/QR) last. */}
+        <GoodsDetailTimeline status={goods.status} shippingMode={goods.shippingMode} />
+        <GoodsDetailSummary goods={goods} />
+        <GoodsDetailFinancial goods={goods} />
+        <GoodsDetailProperties goods={goods} />
+        <LocationCard
+          warehouseLocation={goods.warehouseLocation}
+          container={container}
+          airwayBill={airwayBill}
+          isAirShipping={isAirShipping}
+        />
+        <ClientCard
+          client={client}
+          onAssignClient={isOwnerUnidentified ? actions.handleOpenAssignClient : undefined}
+        />
+        {goods.expressTrackingNumber ? (
+          <ExpressTrackingCard trackingNumber={goods.expressTrackingNumber} />
+        ) : null}
+        <ReceptionCard receivedAt={goods.receivedAt} receivedByName={goods.receivedByName} receivedBy={goods.receivedBy} formatDate={actions.formatDate} />
+        <DescriptionCard description={goods.description} />
+        <GoodsPhotoSection photoUrls={normalizePhotos(goods)} goodsId={goods.goodsId} />
         <QRCard
           hasQRCode={hasQRCode}
           qrCodeImageUrl={goods.qrCodeImageUrl}
           goodsId={goods.goodsId}
-          onShare={actions.handleShareQR}
         />
-        <GoodsPhotoSection photoUrls={normalizePhotos(goods)} goodsId={goods.goodsId} />
-        <DescriptionCard description={goods.description} />
-        {goods.expressTrackingNumber ? (
-          <ExpressTrackingCard trackingNumber={goods.expressTrackingNumber} />
-        ) : null}
-        <ClientCard client={client} />
-        <GoodsDetailProperties goods={goods} />
-        <LocationCard warehouseLocation={goods.warehouseLocation} container={container} airwayBill={goods?.airwayBillId} />
-        <GoodsDetailTimeline status={goods.status} shippingMode={goods.shippingMode} />
-        <GoodsDetailFinancial goods={goods} />
-        <ReceptionCard receivedAt={goods.receivedAt} receivedByName={goods.receivedByName} receivedBy={goods.receivedBy} formatDate={actions.formatDate} />
         <ActionButtons onEdit={actions.handleNavigateToEdit} onDelete={actions.handleDelete} />
         <View style={styles.bottomSpacer} />
       </ScrollView>
@@ -86,6 +102,16 @@ export const GoodsDetailScreen: React.FC = () => {
         onDismiss={handlers.handleDismissAssignDialog}
         onAssignContainer={actions.handleAssignToContainer}
         onAssignAirwayBill={actions.handleAssignToAirwayBill}
+      />
+      <AssignClientDialog
+        visible={dialogs.assignClientDialogVisible}
+        selectedClient={dialogs.selectedOwnerClient}
+        notes={dialogs.ownerAssignmentNotes}
+        isAssigning={isAssigningClient}
+        onSelectClient={dialogs.setSelectedOwnerClient}
+        onChangeNotes={dialogs.setOwnerAssignmentNotes}
+        onDismiss={actions.handleDismissAssignClient}
+        onConfirm={actions.handleAssignClient}
       />
     </SafeAreaView>
   );

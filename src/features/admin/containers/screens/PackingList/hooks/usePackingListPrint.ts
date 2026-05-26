@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import * as Print from 'expo-print';
 import { AdminPackingListData } from '../../../types/packingList';
 import { buildPackingListPDF } from './buildPackingListPDF';
+import { sharePDFFromUri } from '@src/shared/lib/pdfShare';
 
 export const usePackingListPrint = (filteredPackingListData: AdminPackingListData | null) => {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -21,7 +22,6 @@ export const usePackingListPrint = (filteredPackingListData: AdminPackingListDat
         base64: false,
       });
 
-      const { sharePDFFromUri } = require('../../../../../../shared/lib/pdfShare');
       await sharePDFFromUri({
         uri,
         filename: `PackingList_${container.number}_${Date.now()}.pdf`,

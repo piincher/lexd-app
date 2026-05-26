@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme, lightTheme } from '@src/constants/Theme';
+import { lightTheme } from '@src/constants/Theme';
 
 export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
   StyleSheet.create({
@@ -8,23 +8,25 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
       borderRadius: 16,
-      padding: 18,
-      ...Theme.shadows.sm,
+      padding: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: 16,
+      marginBottom: 14,
     },
     title: {
-      fontSize: 15,
+      fontSize: 16,
       fontFamily: Fonts.bold,
       fontWeight: '700',
       color: colors.text.primary,
+      letterSpacing: -0.2,
     },
     headerSubtitle: {
-      fontSize: 11,
+      fontSize: 12,
       fontFamily: Fonts.regular,
       color: colors.text.disabled,
       marginTop: 2,
@@ -99,8 +101,8 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
       borderRadius: 3,
     },
     methodsSection: {
-      marginTop: 16,
-      paddingTop: 14,
+      marginTop: 14,
+      paddingTop: 12,
       borderTopWidth: 1,
       borderTopColor: colors.border,
     },
@@ -110,6 +112,7 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
       fontWeight: '700',
       color: colors.text.secondary,
       marginBottom: 10,
+      letterSpacing: 0.3,
     },
     methodRow: {
       flexDirection: 'row',

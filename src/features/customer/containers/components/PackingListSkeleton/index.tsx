@@ -4,7 +4,7 @@
  * SRP: Display loading skeleton
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Appbar, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,7 +19,7 @@ interface PackingListSkeletonProps {
 export const PackingListSkeleton: React.FC<PackingListSkeletonProps> = ({ onBack }) => {
   const theme = useTheme();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.background.paper,
@@ -35,7 +35,7 @@ export const PackingListSkeleton: React.FC<PackingListSkeletonProps> = ({ onBack
       fontFamily: Fonts.meduim,
       color: colors.text.secondary,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <SafeAreaView style={styles.container}>

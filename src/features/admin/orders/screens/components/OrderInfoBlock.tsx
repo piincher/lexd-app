@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text, Divider } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -20,7 +20,7 @@ interface OrderInfoBlockProps {
 
 export const OrderInfoBlock: React.FC<OrderInfoBlockProps> = ({ title, items, showDivider = true }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <>

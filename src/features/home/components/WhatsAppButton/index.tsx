@@ -1,5 +1,5 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet } from "react-native";
 import Animated from "react-native-reanimated";
 import { LinearGradient } from "expo-linear-gradient";
@@ -13,7 +13,7 @@ interface WhatsAppButtonProps {
 
 export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({ animatedStyle }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <Animated.View style={[styles.whatsappButton, animatedStyle]}>
       <Pressable

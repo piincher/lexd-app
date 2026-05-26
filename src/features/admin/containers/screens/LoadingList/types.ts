@@ -36,6 +36,10 @@ export interface WeightDistribution {
   weight: number;
   percentage: number;
   color: string;
+  totalItems?: number;
+  loadedItems?: number;
+  remainingItems?: number;
+  loadedWeight?: number;
 }
 
 // Constants

@@ -12,7 +12,7 @@ interface ActionsProps {
 
 export const AddWaypointDialogActions: React.FC<ActionsProps> = ({ onDismiss, onAdd, isValid }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
   <Dialog.Actions style={styles.actions}>
     <Button onPress={onDismiss} textColor={colors.neutral[500]}>

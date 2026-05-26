@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -30,7 +30,7 @@ const toText = (value?: number | boolean) => {
 export const AdminRewardSettingsScreen: React.FC = () => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const {
     settings,
     ledger,

@@ -19,7 +19,7 @@ import { createStyles } from "./WinBackDashboardScreen.styles";
 
 export default function WinBackDashboardScreen({ navigation }: RootStackScreenProps<"WinBackDashboard">) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const { data: configs, isLoading: configsLoading } = useWinBackConfigs();
   const { data: stats, isLoading: statsLoading } = useWinBackStats(30);

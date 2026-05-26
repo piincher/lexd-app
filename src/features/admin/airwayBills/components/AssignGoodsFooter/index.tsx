@@ -18,7 +18,7 @@ export const AssignGoodsFooter: React.FC<Props> = ({
   onAssign,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       padding: Theme.spacing.lg,
       backgroundColor: colors.background.card,
@@ -26,7 +26,7 @@ export const AssignGoodsFooter: React.FC<Props> = ({
       borderTopColor: colors.neutral[100],
     },
     assignButton: { borderRadius: Theme.radius.lg },
-  }), [colors, isDark]);
+  });
   return (
   <View style={styles.container}>
     <PaperButton

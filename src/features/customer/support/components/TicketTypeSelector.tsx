@@ -3,7 +3,7 @@
  * Dropdown selector for ticket types with icons
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Menu, Button, Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -39,7 +39,7 @@ export const TicketTypeSelector: React.FC<TicketTypeSelectorProps> = ({
   const selectedLabel = value ? TICKET_TYPE_LABELS[value] : 'Sélectionner un type';
   const selectedIcon = value ? TICKET_TYPE_ICONS[value] : 'help-circle';
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       marginBottom: 16,
     },
@@ -66,7 +66,7 @@ export const TicketTypeSelector: React.FC<TicketTypeSelectorProps> = ({
       fontFamily: Fonts.regular,
       fontSize: 14,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <View style={styles.container}>

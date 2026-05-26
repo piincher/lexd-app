@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { Theme } from "@src/constants/Theme";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { Goods } from "../../../goods/types";
 import { createStyles } from "./PackingListTable.styles";
@@ -20,7 +19,7 @@ export const PackingListTable: React.FC<PackingListTableProps> = ({
   goods, showPhotos = false, startIndex = 1, sortable = true,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { sortConfig, handleSort, sortedGoods } = usePackingListSort(goods, sortable);
 
   return (

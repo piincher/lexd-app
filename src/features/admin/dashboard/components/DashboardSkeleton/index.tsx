@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, StyleSheet } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { ThemeContextType } from "@src/constants/Theme";
@@ -44,7 +44,7 @@ const createStyles = (colors: AppThemeColors, isDark?: boolean) =>
 
 export const DashboardSkeleton: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.container}>

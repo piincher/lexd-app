@@ -3,7 +3,7 @@
  * App bar header with back button and actions for packing list screen
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Appbar, ProgressBar } from 'react-native-paper';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
@@ -27,7 +27,7 @@ export const PackingListHeader: React.FC<PackingListHeaderProps> = ({
   const navigation = useNavigation();
   const isDownloading = downloadProgress > 0;
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View>

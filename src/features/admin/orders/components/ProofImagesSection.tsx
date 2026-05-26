@@ -3,7 +3,7 @@
  * SRP: Show proof images with fullscreen view capability
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { 
   View, 
   TouchableOpacity, 
@@ -24,7 +24,7 @@ export const ProofImagesSection: React.FC<ProofImagesSectionProps> = ({
 }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createProofImagesSectionStyles(colors), [colors]);
+  const styles = createProofImagesSectionStyles(colors);
 
   if (!proofImages || proofImages.length === 0) {
     return null;

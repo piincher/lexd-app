@@ -3,7 +3,7 @@
  * states: empty · typing (clear) · filter (active badge)
  * pre-emit critique: P4 H5 E4 S4 R5 V4
  */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -25,7 +25,7 @@ export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
   hasActiveFilters = false,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.wrapper}>

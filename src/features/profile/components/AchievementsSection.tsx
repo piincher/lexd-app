@@ -1,17 +1,17 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { CertifiedShipperCard } from './CertifiedShipperCard';
 import { MilestoneBadges } from './MilestoneBadges';
 import { BadgesSection } from './BadgesSection';
 import { ReviewsSection } from './ReviewsSection';
+import { ProfileSectionHeader } from './ProfileSectionHeader';
+import type { CertificateProgress } from '../api/certificateApi';
 
 interface Props {
-  certificateProgress: any;
+  certificateProgress?: CertificateProgress;
   isCertLoading: boolean;
-  certError: any;
+  certError: Error | null;
   onRetry: () => void;
 }
 
@@ -21,17 +21,22 @@ export const AchievementsSection: React.FC<Props> = ({
   certError,
   onRetry,
 }) => {
-  const { colors, isDark } = useAppTheme();
-  const cardBorder = colors.border;
+  const { colors } = useAppTheme();
 
   return (
     <>
-      <View style={styles.sectionHeader}>
-        <MaterialCommunityIcons name="trophy-outline" size={18} color={colors.primary.main} />
-        <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>Réalisations</Text>
-      </View>
-      <View style={[styles.card, { backgroundColor: colors.background.card, borderColor: cardBorder }]}>
-        <CertifiedShipperCard progress={certificateProgress} isLoading={isCertLoading} error={certError} onRetry={onRetry} />
+      <ProfileSectionHeader
+        icon="trophy-outline"
+        title="Réalisations"
+        subtitle="Certificat, badges et avis client"
+      />
+      <View style={[styles.card, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
+        <CertifiedShipperCard
+          progress={certificateProgress}
+          isLoading={isCertLoading}
+          error={certError}
+          onRetry={onRetry}
+        />
         <MilestoneBadges />
         <BadgesSection />
         <ReviewsSection />
@@ -41,21 +46,9 @@ export const AchievementsSection: React.FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 20,
-    marginTop: 28,
-    marginBottom: 12,
-  },
-  sectionTitle: {
-    fontSize: 16,
-    letterSpacing: -0.2,
-  },
   card: {
     marginHorizontal: 16,
-    borderRadius: 20,
+    borderRadius: 18,
     borderWidth: 1,
     overflow: 'hidden',
   },

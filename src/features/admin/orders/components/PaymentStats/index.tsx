@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text, Surface, Button } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -20,7 +20,7 @@ export const PaymentStats: React.FC<PaymentStatsProps> = ({
   onBackfill,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createPaymentStatsStyles(colors), [colors]);
+  const styles = createPaymentStatsStyles(colors);
 
   return (
     <>

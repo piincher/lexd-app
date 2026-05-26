@@ -1,43 +1,102 @@
 import { useCallback } from 'react';
 import { useAutoAssignToOrder } from './useAutoAssignToOrder';
 import type { useReceiveGoodsForm } from './useReceiveGoodsForm';
-import type { ReceiveGoodsInput } from '../../../../types';
+import type { Goods, ReceiveGoodsInput } from '@src/features/admin/goods/types';
 
 type FormHook = ReturnType<typeof useReceiveGoodsForm>;
 
-export const useReceiveGoodsResponseHandler = (
-  formHook: FormHook,
-  setSuccessMessage: (v: string) => void,
-) => {
+type ChannelStatus = { status: 'SENT' | 'FAILED' | 'SKIPPED'; reason?: string };
+type NotificationDispatch = {
+  // Receive flow: dispatch is fire-and-forget on the backend (so the request stays fast in
+  // batch intake). Backend reports that dispatch was *initiated* + the recipient.
+  dispatched?: boolean;
+  channel?: string;
+  recipient?: string | null;
+  // Assign-client flow (single action, awaitable): full per-channel status.
+  attempted?: boolean;
+  whatsapp?: ChannelStatus;
+  push?: ChannelStatus;
+  publicFeed?: ChannelStatus;
+};
+
+type ReceiveResponseData = Partial<Goods> & {
+  goods?: Partial<Goods>;
+  order?: { code?: string };
+  orderAction?: string;
+  notification?: NotificationDispatch | null;
+  /** Set to true when the backend short-circuited a duplicate submit and returned the
+   *  previously-saved goods. The UI surfaces this so the operator knows nothing new was
+   *  created. */
+  idempotent?: boolean;
+};
+
+/**
+ * Build the trailing notification badge so the operator can see — at every save in batch
+ * intake — whether the customer actually got the WhatsApp ping. Silent backend failures
+ * are now visible instead of invisibly swallowed.
+ */
+const formatNotificationBadge = (notification?: NotificationDispatch | null): string => {
+  if (!notification) return '';
+
+  // Receive flow (fire-and-forget) — backend just confirms dispatch was initiated.
+  if (notification.dispatched) {
+    const recipient = notification.recipient;
+    return recipient
+      ? ` · 📱 Notification envoyée à ${recipient}`
+      : ' · 📱 Notification envoyée';
+  }
+
+  // Assign-client flow (awaited) — full per-channel status available.
+  if (notification.attempted) {
+    const wa = notification.whatsapp;
+    if (!wa) return '';
+    if (wa.status === 'SENT') return ' · 📱 WhatsApp envoyé';
+    if (wa.status === 'FAILED') return ' · ⚠ WhatsApp échoué';
+    if (wa.status === 'SKIPPED') {
+      if (wa.reason === 'missing_phone_number') return ' · ⚠ WhatsApp ignoré (numéro manquant)';
+      if (wa.reason === 'whatsapp_disabled' || wa.reason === 'whatsapp_unavailable') {
+        return ' · ⚠ WhatsApp indisponible';
+      }
+      return ' · ⚠ WhatsApp ignoré';
+    }
+  }
+
+  return '';
+};
+
+export const useReceiveGoodsResponseHandler = (formHook: FormHook) => {
   const { autoAssignToOrder } = useAutoAssignToOrder();
 
-  const handleResponse = useCallback(async (result: unknown, submitData: ReceiveGoodsInput) => {
-    console.log('[ReceiveGoods] Full response:', JSON.stringify(result));
-
-    const res = result as any;
+  // Returns the success message to show; the caller decides how to surface it
+  // (success dialog for "finish", inline snackbar for "save & next").
+  const handleResponse = useCallback(async (result: unknown, submitData: ReceiveGoodsInput): Promise<string> => {
+    const res = result as { data?: ReceiveResponseData } & ReceiveResponseData;
     const resData = res?.data || res;
     const goodsObj = resData?.goods || resData;
     const orderObj = resData?.order;
     const orderAction = resData?.orderAction;
     const orderCode = orderObj?.code;
     const goodsId = goodsObj?._id || goodsObj?.goodsId;
-
-    console.log('[ReceiveGoods] Parsed:', { orderAction, orderCode, goodsId, orderIsNull: orderObj === null });
+    const notification = resData?.notification ?? null;
+    const notifBadge = formatNotificationBadge(notification);
+    const isIdempotent = resData?.idempotent === true;
+    // Prepended hint that surfaces an idempotent replay — the backend dedupe kicked in
+    // because the operator (or a network retry) re-submitted the same key, and the
+    // operator should know the original is the one that "won".
+    const idempotentHint = isIdempotent ? '⚠ Marchandise déjà enregistrée — ' : '';
 
     if (orderAction) {
       if (orderObj && orderCode) {
-        if (orderAction === 'added_to_existing') {
-          setSuccessMessage(`Marchandise ajoutée à la commande ${orderCode}`);
-        } else {
-          setSuccessMessage(`Nouvelle commande ${orderCode} créée avec la marchandise`);
-        }
-      } else {
-        console.warn('[ReceiveGoods] Backend reported order action without order object:', orderAction);
-        setSuccessMessage('Marchandise enregistrée, mais la commande automatique n\'a pas été retournée');
+        const base = orderAction === 'added_to_existing'
+          ? `Marchandise ajoutée à la commande ${orderCode}`
+          : `Nouvelle commande ${orderCode} créée avec la marchandise`;
+        return `${idempotentHint}${base}${notifBadge}`;
       }
-    } else if (goodsId && formHook.selectedClient) {
-      console.log('[ReceiveGoods] Order is null from backend, creating on frontend. GoodsId:', goodsId);
-      console.log('[ReceiveGoods] No orderAction from backend, creating order on frontend...');
+      console.warn('[ReceiveGoods] Backend reported order action without order object:', orderAction);
+      return `Marchandise enregistrée, mais la commande automatique n'a pas été retournée${notifBadge}`;
+    }
+
+    if (goodsId && formHook.selectedClient) {
       const orderResult = await autoAssignToOrder(goodsId, formHook.selectedClient, {
         weight: submitData.weight,
         quantity: submitData.quantity,
@@ -48,18 +107,16 @@ export const useReceiveGoodsResponseHandler = (
       });
 
       if (orderResult) {
-        if (orderResult.action === 'added_to_existing') {
-          setSuccessMessage(`Marchandise ajoutée à la commande ${orderResult.code}`);
-        } else {
-          setSuccessMessage(`Nouvelle commande ${orderResult.code} créée avec la marchandise`);
-        }
-      } else {
-        setSuccessMessage('Marchandise enregistrée mais la commande n\'a pas pu être créée automatiquement');
+        const base = orderResult.action === 'added_to_existing'
+          ? `Marchandise ajoutée à la commande ${orderResult.code}`
+          : `Nouvelle commande ${orderResult.code} créée avec la marchandise`;
+        return `${idempotentHint}${base}${notifBadge}`;
       }
-    } else {
-      setSuccessMessage('Marchandise enregistrée avec succès!');
+      return `Marchandise enregistrée mais la commande n'a pas pu être créée automatiquement${notifBadge}`;
     }
-  }, [formHook, autoAssignToOrder, setSuccessMessage]);
+
+    return `Marchandise enregistrée avec succès!${notifBadge}`;
+  }, [formHook, autoAssignToOrder]);
 
   return { handleResponse };
 };

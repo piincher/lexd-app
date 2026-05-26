@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
@@ -18,7 +18,7 @@ export const WaypointQuickActions: React.FC<WaypointQuickActionsProps> = ({
   delay = 0,
 }) => {
   const { isDark, colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   if (quickActions.length === 0) return null;
 

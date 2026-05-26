@@ -30,7 +30,7 @@ export function HelpFAQCard({
   feedbackPending,
 }: HelpFAQCardProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   const catColor = FAQ_CATEGORY_COLORS[faq.category as keyof typeof FAQ_CATEGORY_COLORS] || colors.primary.main;
 
@@ -38,16 +38,19 @@ export function HelpFAQCard({
     <View style={styles.card}>
       <TouchableOpacity style={styles.header} onPress={onToggle} activeOpacity={0.7}>
         <View style={styles.headerLeft}>
-          <View style={[styles.badge, { backgroundColor: catColor + "12" }]}>
+          <View style={styles.badgeRow}>
+            <View style={[styles.catDot, { backgroundColor: catColor }]} />
             <Text style={[styles.badgeText, { color: catColor }]}>{faq.category}</Text>
           </View>
           <Text style={styles.question}>{faq.question}</Text>
         </View>
-        <MaterialCommunityIcons
-          name={isExpanded ? "chevron-up" : "chevron-down"}
-          size={22}
-          color={colors.text.secondary}
-        />
+        <View style={[styles.chevronWrap, isExpanded && { backgroundColor: colors.primary.main }]}>
+          <MaterialCommunityIcons
+            name={isExpanded ? "chevron-up" : "chevron-down"}
+            size={20}
+            color={isExpanded ? colors.text.inverse : colors.text.secondary}
+          />
+        </View>
       </TouchableOpacity>
 
       {isExpanded && (

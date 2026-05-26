@@ -11,7 +11,7 @@ interface AuditChangeListProps {
 
 export const AuditChangeList: React.FC<AuditChangeListProps> = ({ changes }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const entries = Object.entries(changes || {});
 
   return (

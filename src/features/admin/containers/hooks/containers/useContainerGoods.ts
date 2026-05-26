@@ -7,9 +7,17 @@ import { containerService } from '../../services/ContainerService';
 import { ApiClientError } from '../../api';
 import { containerQueryKeys } from './containerQueryKeys';
 
+type UnassignedGoodsResponse = Awaited<ReturnType<typeof containerService.getUnassignedGoods>>;
+type ClientAllocationsResponse = Awaited<ReturnType<typeof containerService.getClientAllocations>>;
+type PackingListResponse = Awaited<ReturnType<typeof containerService.generatePackingList>>;
+type QueryOptions<TData> = Omit<
+  UseQueryOptions<TData, ApiClientError, TData, readonly unknown[]>,
+  'queryKey' | 'queryFn'
+>;
+
 export const useGetUnassignedGoods = (
   shippingMode?: string,
-  options?: UseQueryOptions<any, ApiClientError>
+  options?: QueryOptions<UnassignedGoodsResponse>
 ) => {
   return useQuery({
     queryKey: containerQueryKeys.unassignedGoods(shippingMode),
@@ -21,7 +29,7 @@ export const useGetUnassignedGoods = (
 
 export const useGetClientAllocations = (
   containerId: string | undefined,
-  options?: UseQueryOptions<any, ApiClientError>
+  options?: QueryOptions<ClientAllocationsResponse>
 ) => {
   return useQuery({
     queryKey: [
@@ -37,7 +45,7 @@ export const useGetClientAllocations = (
 
 export const useGetPackingList = (
   containerId: string | undefined,
-  options?: UseQueryOptions<any, ApiClientError>
+  options?: QueryOptions<PackingListResponse>
 ) => {
   return useQuery({
     queryKey: containerQueryKeys.packingList(containerId || ''),

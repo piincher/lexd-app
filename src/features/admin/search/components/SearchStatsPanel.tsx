@@ -21,7 +21,7 @@ interface SearchStatsPanelProps {
 
 export const SearchStatsPanel: React.FC<SearchStatsPanelProps> = ({ stats }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   if (!stats) return null;
 
   return (

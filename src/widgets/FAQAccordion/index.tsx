@@ -29,7 +29,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({
   onToggle,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const animationProgress = useSharedValue(0);
 
   useEffect(() => {

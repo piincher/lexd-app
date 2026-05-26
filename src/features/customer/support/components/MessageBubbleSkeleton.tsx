@@ -10,7 +10,7 @@ interface MessageBubbleSkeletonProps {
 
 export const MessageBubbleSkeleton: React.FC<MessageBubbleSkeletonProps> = ({ isCustomer = false }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View

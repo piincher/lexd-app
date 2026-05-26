@@ -4,7 +4,7 @@
  * SRP: Display contact options for consignee
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from '../ClientPackingListScreen.styles';
@@ -27,7 +27,7 @@ export const ContactDialog: React.FC<ContactDialogProps> = ({
   onWhatsApp,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Portal>

@@ -21,11 +21,13 @@ export const usePackingListFilters = (
     if (filteredClients.length === 0) return packingListData;
 
     const client = filteredClients[0];
+    const totalQuantity = client.summary.totalQuantity ||
+      client.goods.reduce((sum, goods) => sum + (goods.quantity || 1), 0);
     const singleClientSummary = {
       ...packingListData.summary,
       totalItems: client.summary.totalItems,
       totalPackages: client.summary.totalItems,
-      totalQuantity: client.summary.totalQuantity,
+      totalQuantity,
       totalCBM: client.summary.totalCBM,
       totalWeight: client.summary.totalWeight,
     };

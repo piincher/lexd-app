@@ -62,7 +62,7 @@ export const TicketRatingSection: React.FC<TicketRatingSectionProps> = ({
   isPending,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       marginTop: 16,
       borderRadius: 12,
@@ -100,7 +100,7 @@ export const TicketRatingSection: React.FC<TicketRatingSectionProps> = ({
       textAlign: 'center',
       marginTop: 8,
     },
-  }), [colors]);
+  });
 
   if (hasRated) {
     return (

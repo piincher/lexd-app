@@ -3,7 +3,7 @@
  * Displays certification progress or certified status in the Profile screen
  */
 
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, Text, TouchableOpacity } from "react-native";
 import { MotiView } from "moti";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -29,7 +29,7 @@ export const CertifiedShipperCard: React.FC<CertifiedShipperCardProps> = ({
 }) => {
   const navigation = useNavigation<navigationProps>();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { handleDownload, handleShare, isDownloading } = useCertifiedShipperActions(progress);
 
   if (isLoading) {

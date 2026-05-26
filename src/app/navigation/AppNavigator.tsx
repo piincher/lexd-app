@@ -13,6 +13,7 @@ import {
   CustomerDashboardTabRedirect,
   MyGoodsTabRedirect,
   MyContainersTabRedirect,
+  OrdersTabRedirect,
 } from "./tabRedirects";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -135,6 +136,7 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="OrderDetail" component={Screens.NewOrderDetailScreen} />
               <Stack.Screen name="MyGoods" component={MyGoodsTabRedirect} />
               <Stack.Screen name="CustomerDashboard" component={CustomerDashboardTabRedirect} />
+              <Stack.Screen name="Orders" component={OrdersTabRedirect} />
               <Stack.Screen name="ActivityList" component={Screens.ActivityListScreen} />
               <Stack.Screen name="MyContainers" component={MyContainersTabRedirect} />
               <Stack.Screen name="ContainerTracking" component={Screens.ContainerTrackingScreen} />

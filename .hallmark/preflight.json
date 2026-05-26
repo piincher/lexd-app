@@ -1,0 +1,19 @@
+{
+  "date": "2026-05-25",
+  "framework": "Expo + React Native",
+  "ui_layer": "react-native-paper + MaterialCommunityIcons",
+  "state_data": "React Query + Zustand",
+  "palette": "Brand green with gold/red accents from src/shared/constants/Theme.ts",
+  "motion": "Motion-cut for dashboard surfaces; touch feedback uses opacity/pressed state only",
+  "spacing": "Existing React Native StyleSheet spacing, 4px multiples",
+  "preserve": [
+    "Existing ThemeProvider dark/light tokens",
+    "Feature-sliced admin dashboard ownership",
+    "Existing navigation routes and data hooks"
+  ],
+  "introduced": [
+    "Command Directory macrostructure for admin access list",
+    "Searchable grouped command surface",
+    "Thumb-friendly 48px+ touch targets"
+  ]
+}

@@ -23,7 +23,7 @@ export const ModalActions: React.FC<ModalActionsProps> = ({
   confirmLabel,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.actions}>
       <Button

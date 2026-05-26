@@ -12,7 +12,7 @@ type HelpEmptyStateProps = {
 
 export function HelpEmptyState({ searchActive, hasBookmarks }: HelpEmptyStateProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (hasBookmarks) {
     return (

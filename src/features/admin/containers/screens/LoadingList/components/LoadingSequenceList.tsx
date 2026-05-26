@@ -13,6 +13,8 @@ export const LoadingSequenceList: React.FC<LoadingSequenceListProps> = ({
   items,
   onToggleLoaded,
 }) => {
+  const nextPendingId = items.find((item) => !item.isLoaded)?.goods._id;
+
   return (
     <View style={styles.loadingList}>
       {items.map((item, index) => (
@@ -20,6 +22,7 @@ export const LoadingSequenceList: React.FC<LoadingSequenceListProps> = ({
           key={item.goods._id}
           item={item}
           index={index}
+          isNext={item.goods._id === nextPendingId}
           onToggleLoaded={onToggleLoaded}
         />
       ))}

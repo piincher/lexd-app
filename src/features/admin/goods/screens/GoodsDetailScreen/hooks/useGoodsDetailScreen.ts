@@ -6,6 +6,7 @@ import { useGoodsDetailUnassignment } from './useGoodsDetailUnassignment';
 import { useGoodsDetailAssignDialog } from './useGoodsDetailAssignDialog';
 import { useGoodsDetailManagementActions } from './useGoodsDetailManagementActions';
 import { useGoodsDetailFormatters } from './useGoodsDetailFormatters';
+import { useGoodsDetailOwnerAssignment } from './useGoodsDetailOwnerAssignment';
 
 export const useGoodsDetailScreen = () => {
   const navigation = useNavigation();
@@ -16,16 +17,36 @@ export const useGoodsDetailScreen = () => {
   const assignDialog = useGoodsDetailAssignDialog(data, ui, navigation);
   const management = useGoodsDetailManagementActions(data, navigation);
   const formatters = useGoodsDetailFormatters(data.goods);
+  const ownerAssignment = useGoodsDetailOwnerAssignment(
+    {
+      goods: data.goods,
+      refetch: data.refetch,
+      assignClientMutation: data.assignClientMutation,
+    },
+    {
+      selectedOwnerClient: ui.selectedOwnerClient,
+      setSelectedOwnerClient: ui.setSelectedOwnerClient,
+      ownerAssignmentNotes: ui.ownerAssignmentNotes,
+      setOwnerAssignmentNotes: ui.setOwnerAssignmentNotes,
+      setAssignClientDialogVisible: ui.setAssignClientDialogVisible,
+      setMenuVisible: ui.setMenuVisible,
+    },
+  );
 
   return {
     state: {
       goods: data.goods,
       client: data.client,
       container: data.container,
+      airwayBill: data.airwayBill,
       balanceDue: data.balanceDue,
       hasQRCode: data.hasQRCode,
       canUnassignFromAwb: data.canUnassignFromAwb,
       isAirShipping: data.goods?.shippingMode === 'AIR',
+      // True when the parcel was received without a known client (CLIENT_UNKNOWN exception),
+      // OR the backend tagged it UNIDENTIFIED. Drives the "Assigner un client" entry points.
+      isOwnerUnidentified:
+        !!data.goods && (!data.goods.clientId || data.goods.ownerStatus === 'UNIDENTIFIED'),
     },
     loading: {
       isLoading: data.isPending,
@@ -41,6 +62,12 @@ export const useGoodsDetailScreen = () => {
       setAssignDialogVisible: ui.setAssignDialogVisible,
       setSelectedContainerId: ui.setSelectedContainerId,
       setSelectedAirwayBillId: ui.setSelectedAirwayBillId,
+      assignClientDialogVisible: ui.assignClientDialogVisible,
+      setAssignClientDialogVisible: ui.setAssignClientDialogVisible,
+      selectedOwnerClient: ui.selectedOwnerClient,
+      setSelectedOwnerClient: ui.setSelectedOwnerClient,
+      ownerAssignmentNotes: ui.ownerAssignmentNotes,
+      setOwnerAssignmentNotes: ui.setOwnerAssignmentNotes,
     },
     containers: {
       containers: data.containers,
@@ -53,6 +80,8 @@ export const useGoodsDetailScreen = () => {
     mutations: {
       isAssigning: data.assignContainerMutation.isPending || data.assignAirwayBillMutation.isPending,
       isUnassigning: data.removeAirwayBillMutation.isPending,
+      isAssigningClient: data.assignClientMutation.isPending,
+      isResendingNotification: data.resendNotificationMutation.isPending,
     },
     actions: {
       ...assignMutations,
@@ -60,6 +89,7 @@ export const useGoodsDetailScreen = () => {
       ...assignDialog,
       ...management,
       ...formatters,
+      ...ownerAssignment,
     },
   };
 };

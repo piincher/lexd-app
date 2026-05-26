@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -15,7 +15,7 @@ const formatMoney = (value: number) =>
 export const ShippingAnalyticsPanel: React.FC<Props> = ({ summary, trend }) => {
   const { colors } = useAppTheme();
   const maxVolume = Math.max(...trend.map((item) => item.cbm + item.kg / 100), 1);
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     wrapper: { paddingHorizontal: 16, marginTop: 16 },
     card: {
       backgroundColor: colors.background.card,
@@ -33,7 +33,7 @@ export const ShippingAnalyticsPanel: React.FC<Props> = ({ summary, trend }) => {
     barSlot: { flex: 1, alignItems: 'center', justifyContent: 'flex-end' },
     bar: { width: '70%', minHeight: 6, borderRadius: 999, backgroundColor: colors.primary.main },
     month: { color: colors.text.secondary, fontSize: 10, fontWeight: '700', marginTop: 6 },
-  }), [colors]);
+  });
 
   return (
     <View style={styles.wrapper}>

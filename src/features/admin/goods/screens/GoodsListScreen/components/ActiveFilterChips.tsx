@@ -2,7 +2,7 @@
  * Cohesion pass: theme-aware tinted removable chips (was frozen to light-mode tokens at module load).
  * pre-emit critique: P4 H4 E5 S4 R5 V4
  */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { Chip } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -23,7 +23,7 @@ export const ActiveFilterChips: React.FC<ActiveFilterChipsProps> = ({
   onClearDateRange,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   if (!selectedClient && !dateRange) return null;
 

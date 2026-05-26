@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -53,7 +53,7 @@ const getStatusConfig = (colors: any, status: string) => {
 
 export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const statusConfig = getStatusConfig(colors, order?.status);
   const initials = order?.clientName?.split(' ').map((n: string) => n[0]).join('') || '?';

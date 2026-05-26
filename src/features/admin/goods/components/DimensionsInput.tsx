@@ -1,5 +1,5 @@
 /** DimensionsInput - Component for entering dimensions or direct CBM */
-import React, { useMemo } from "react";
+import React from 'react';
 import { View } from "react-native";
 import { Text, Card, TouchableRipple } from "react-native-paper";
 import { FormInput } from "./FormInput";
@@ -36,7 +36,7 @@ export const DimensionsInput: React.FC<DimensionsInputProps> = ({
    calculatedCBM,
 }) => {
    const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
    return (
       <Card style={styles.card} elevation={2}>

@@ -23,7 +23,7 @@ interface GoodsClientInfoProps {
 
 export const GoodsClientInfo: React.FC<GoodsClientInfoProps> = ({ client }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const initials = `${client?.firstName?.[0] || '?'}${client?.lastName?.[0] || '?'}`;
   const fullName = client ? `${client.firstName} ${client.lastName}` : 'Client inconnu';
 

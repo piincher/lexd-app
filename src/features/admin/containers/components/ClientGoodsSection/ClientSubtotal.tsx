@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { ClientGoodsGroup } from '../../types/packingList';
 import { createStyles } from './ClientGoodsSection.styles';
 
@@ -11,7 +10,7 @@ interface ClientSubtotalProps {
 
 export const ClientSubtotal: React.FC<ClientSubtotalProps> = ({ clientGroup }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { summary } = clientGroup;
   const balance = summary.balanceDue || 0;
   const isPaid = balance <= 0;

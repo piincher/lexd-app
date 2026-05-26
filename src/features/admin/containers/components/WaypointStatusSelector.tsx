@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
@@ -30,7 +30,7 @@ export const WaypointStatusSelector: React.FC<WaypointStatusSelectorProps> = ({
   delay = 0,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <Animated.View entering={FadeIn.delay(delay)} style={styles.section}>
       <Text style={styles.sectionTitle}>Statut</Text>

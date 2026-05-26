@@ -25,7 +25,7 @@ export const ReviewForm: React.FC<ReviewFormProps> = ({
    onSubmit,
 }) => {
    const { colors } = useAppTheme();
-   const styles = React.useMemo(() => createStyles(colors), [colors]);
+   const styles = createStyles(colors);
 
    return (
       <Card style={styles.card} mode="elevated">

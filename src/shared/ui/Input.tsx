@@ -3,7 +3,7 @@
  * Supports multiple variants, validation states, and accessibility
  */
 
-import React, { forwardRef, useMemo } from 'react';
+import React, { forwardRef } from 'react';
 import { View, TextInput as RNTextInput, Text } from 'react-native';
 import type { ViewStyle, TextStyle, TextInputProps as RNTextInputProps } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -50,7 +50,7 @@ export const Input = forwardRef<RNTextInput, InputProps>(({
 }, ref) => {
   const { colors } = useAppTheme();
   const hasError = !!error;
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const containerStyles = [
     styles.container,

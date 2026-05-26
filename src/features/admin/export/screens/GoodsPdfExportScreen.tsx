@@ -18,7 +18,7 @@ import { GoodsPdfExportButton } from "../components/GoodsPdfExportButton";
 
 export const GoodsPdfExportScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     navigation,
     start,

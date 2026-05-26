@@ -13,7 +13,7 @@ import { createStyles } from "./AnnouncementListScreen.styles";
 
 const AnnouncementListScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     stats,
     statsLoading,

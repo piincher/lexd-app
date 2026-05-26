@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { RewardLedgerEntry } from '../types';
@@ -23,7 +23,7 @@ export const RewardLedgerList: React.FC<RewardLedgerListProps> = ({
   title = 'Historique des points',
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   if (entries.length === 0) return null;
 

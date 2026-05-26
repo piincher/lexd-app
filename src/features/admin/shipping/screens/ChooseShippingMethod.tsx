@@ -20,7 +20,7 @@ const list: DataType = [
 
 const ChooseShippingMethod = ({ navigation }: RootStackScreenProps<'ChooseShippingMethod'>) => {
 	const { colors } = useAppTheme();
-	const styles = React.useMemo(() => createStyles(colors), [colors]);
+	const styles = createStyles(colors);
 	const [selectedItem, setSelectedItem] = useState<DataType[number] | undefined>(undefined);
 	const setType = useShippingMode((state) => state.setType);
 	const items = list;

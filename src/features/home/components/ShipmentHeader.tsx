@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, Text } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -18,7 +18,7 @@ export const ShipmentHeader: React.FC<ShipmentHeaderProps> = ({
   shippingMode,
   colors,
 }) => {
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
   <View style={styles.headerRow}>

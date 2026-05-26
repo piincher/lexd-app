@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContainerActionButtons } from '../../screens/components/ContainerActionButtons';
+import { ContainerDangerZone } from '../../screens/components/ContainerDangerZone';
 import { ContainerDialogs } from '../../screens/components/ContainerDialogs';
 import { ContainerReconciliationModal } from '../../screens/components/ContainerReconciliationModal';
 import type { ContainerDetailScreenState } from '../../screens/hooks/useContainerDetailScreen';
@@ -22,12 +22,7 @@ export const ContainerDetailFooter: React.FC<ContainerDetailFooterProps> = ({
     handleReconcile,
     reconcileMutation,
     handleAssignGoods,
-    handleGeneratePackingList,
-    handleGoToLoadingList,
-    handleMarkReadyForPickup,
-    handleMarkDelivered,
     handleDeleteContainer,
-    canMarkDelivered,
     deleteContainerMutation,
     showDeleteDialog,
     setShowDeleteDialog,
@@ -45,16 +40,9 @@ export const ContainerDetailFooter: React.FC<ContainerDetailFooterProps> = ({
 
   return (
     <>
-      <ContainerActionButtons
+      <ContainerDangerZone
         onAssignGoods={handleAssignGoods}
-        onGeneratePackingList={handleGeneratePackingList}
-        onGoToLoadingList={handleGoToLoadingList}
-        onMarkReadyForPickup={handleMarkReadyForPickup}
-        onMarkDelivered={handleMarkDelivered}
         onDeleteContainer={handleDeleteContainer}
-        hasGoods={goodsList.length > 0}
-        canMarkReadyForPickup={container.status === 'ARRIVED' || container.status === 'DISCHARGED'}
-        canMarkDelivered={canMarkDelivered}
         isDeletingContainer={deleteContainerMutation.isPending}
       />
 

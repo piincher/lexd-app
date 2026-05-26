@@ -43,7 +43,7 @@ const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
 
 export const ActiveGoodsSection: React.FC<ActiveGoodsSectionProps> = ({ goods }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const renderItem = ({ item }: { item: OrderGoods }) => (
     <View style={styles.goodsItem}>

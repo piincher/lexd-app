@@ -30,11 +30,11 @@ export const AirwayBillFlightFields: React.FC<AirwayBillFlightFieldsProps> = ({
   onNotesChange,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     input: { marginBottom: Theme.spacing.md, backgroundColor: colors.background.card },
     row: { flexDirection: 'row', gap: Theme.spacing.md },
     half: { flex: 1 },
-  }), [colors, isDark]);
+  });
   const scrollViewRef = useRef<ScrollView>(null);
   const scrollToEnd = () => {
     setTimeout(() => {

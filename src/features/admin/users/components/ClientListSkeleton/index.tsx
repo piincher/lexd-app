@@ -43,7 +43,7 @@ const ShimmerBlock: React.FC<{
 
 const SkeletonCard: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={[styles.card, { backgroundColor: colors.background.card }]}>
       <View style={styles.accentBorder} />
@@ -63,7 +63,7 @@ const SkeletonCard: React.FC = () => {
 
 export const ClientListSkeleton: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <Animated.View entering={FadeIn.duration(200)} style={styles.container}>
       {Array.from({ length: 8 }).map((_, i) => (

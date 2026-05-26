@@ -33,7 +33,7 @@ export const AnimatedPhoneInput: React.FC<Props> = ({
   onInputFocus,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const [isFocused, setIsFocused] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const shakeValue = useSharedValue(0);

@@ -23,8 +23,9 @@ export const useAutoAssignToOrder = () => {
 
       await assignGoods(goodsId, matchResult.orderId);
       return { action: matchResult.action, code: matchResult.code };
-    } catch (error: any) {
-      console.error('[AutoAssign] Error details:', JSON.stringify({ status: error?.response?.status, data: error?.response?.data, message: error?.message }));
+    } catch (error: unknown) {
+      const err = error as { message?: string; response?: { data?: unknown; status?: number } };
+      console.error('[AutoAssign] Error details:', JSON.stringify({ status: err.response?.status, data: err.response?.data, message: err.message }));
       return null;
     }
   }, [matchOrder, assignGoods]);

@@ -11,7 +11,7 @@ interface GoodsListItemCheckboxProps {
 
 export const GoodsListItemCheckbox: React.FC<GoodsListItemCheckboxProps> = ({ isSelected }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
   <View style={styles.checkboxContainer}>
     <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>

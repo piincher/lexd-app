@@ -20,7 +20,7 @@ export const SearchFiltersPanel: React.FC<SearchFiltersPanelProps> = ({
   onRemoveFilter,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const hasFilters = Object.keys(filters).length > 0;
   
   if (!hasFilters) return null;

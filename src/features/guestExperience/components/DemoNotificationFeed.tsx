@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -12,7 +12,7 @@ interface Props {
 
 export const DemoNotificationFeed: React.FC<Props> = ({ notifications }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   return (

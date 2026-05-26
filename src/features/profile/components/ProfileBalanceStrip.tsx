@@ -15,10 +15,12 @@ export const ProfileBalanceStrip: React.FC<ProfileBalanceStripProps> = ({ balanc
   return (
     <View style={styles.balanceStrip}>
       <View style={styles.balanceLeft}>
-        <MaterialCommunityIcons name="wallet-outline" size={20} color={colors.text.inverse} />
+        <MaterialCommunityIcons name="wallet-outline" size={20} color={colors.primary[700]} />
         <Text style={styles.balanceLabel}>Solde à payer</Text>
       </View>
-      <Text style={styles.balanceValue}>{balanceFormatted} FCFA</Text>
+      <Text style={styles.balanceValue} numberOfLines={1}>
+        {balanceFormatted} FCFA
+      </Text>
     </View>
   );
 };

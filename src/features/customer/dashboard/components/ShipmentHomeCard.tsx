@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ export const ShipmentHomeCard: React.FC<Props> = ({
   onViewContainers,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     wrapper: { paddingHorizontal: 16, marginTop: 18 },
     card: {
       backgroundColor: colors.background.card,
@@ -73,7 +73,7 @@ export const ShipmentHomeCard: React.FC<Props> = ({
     },
     primaryText: { color: colors.text.inverse, fontWeight: '800', fontSize: 13 },
     secondaryText: { color: colors.primary.main, fontWeight: '800', fontSize: 13 },
-  }), [colors, isDark]);
+  });
 
   if (!shipmentHome.hasShipments) {
     return null;

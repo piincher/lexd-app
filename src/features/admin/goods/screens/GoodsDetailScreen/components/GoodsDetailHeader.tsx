@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { Text, Menu, Chip, Divider } from 'react-native-paper';
+import { Text, Menu, Divider } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -9,33 +9,8 @@ import { createStyles } from '../GoodsDetailScreen.styles';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
 import { Goods } from '../../../types';
-
-// Local StatusBadge component to avoid any import issues
-const StatusBadge: React.FC<{ status: string }> = ({ status }) => {
-  const { colors } = useAppTheme();
-  const STATUS_CONFIG: Record<string, { label: string; color: string; bgColor: string }> = {
-    RECEIVED_AT_WAREHOUSE: { label: 'En Entrepot', color: colors.status.info, bgColor: colors.background.paper },
-    PACKED: { label: 'Colis préparé', color: colors.primary.main, bgColor: colors.background.paper },
-    ASSIGNED_TO_CONTAINER: { label: 'Assigne', color: colors.status.warning, bgColor: colors.background.paper },
-    LOADED_IN_CONTAINER: { label: 'Charge', color: colors.status.warning, bgColor: colors.background.paper },
-    IN_TRANSIT: { label: 'En Transit', color: colors.status.info, bgColor: colors.background.paper },
-    ARRIVED_DESTINATION: { label: 'Arrive', color: colors.status.success, bgColor: colors.background.paper },
-    READY_FOR_PICKUP: { label: 'Pret', color: colors.status.success, bgColor: colors.background.paper },
-    DELIVERED: { label: 'Livre', color: colors.text.disabled, bgColor: colors.background.paper },
-  };
-
-  const config = STATUS_CONFIG[status] || { label: status, color: colors.text.muted, bgColor: colors.background.paper };
-
-  return (
-    <Chip
-      style={{ backgroundColor: config.bgColor, height: 28 }}
-      textStyle={{ color: config.color, fontSize: 12 }}
-      compact
-    >
-      {config.label}
-    </Chip>
-  );
-};
+import { getStatusConfig } from '../../../components/GoodsCardStatus';
+import { getVariantColors } from '../../../components/statusVariant';
 
 interface GoodsDetailHeaderProps {
   goods: Goods;
@@ -50,6 +25,12 @@ interface GoodsDetailHeaderProps {
   canUnassign: boolean;
   onDelete: () => void;
   onBack: () => void;
+  /** When set, the menu shows "Assigner un client" for goods with no client yet. */
+  onAssignClientPress?: () => void;
+  isOwnerUnidentified?: boolean;
+  /** When set + the goods has a client, the menu shows a "Renvoyer notification WhatsApp" item. */
+  onResendNotification?: () => void;
+  isResendingNotification?: boolean;
 }
 
 export const GoodsDetailHeader: React.FC<GoodsDetailHeaderProps> = ({
@@ -64,62 +45,114 @@ export const GoodsDetailHeader: React.FC<GoodsDetailHeaderProps> = ({
   canUnassign,
   onDelete,
   onBack,
+  onAssignClientPress,
+  isOwnerUnidentified,
+  onResendNotification,
+  isResendingNotification,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
-  const isAir = goods.shippingMode === 'AIR';
+  const styles = createStyles(colors);
   const navigation = useNavigation();
+
+  // react-native-paper's Menu does NOT auto-dismiss on item press in this version —
+  // tapping an item leaves `menuVisible` stuck at true. When an action then opens an
+  // Alert and the operator dismisses it, the next tap on the three-dot anchor calls
+  // `onMenuToggle(true)` on already-true state → no-op → menu appears broken on the
+  // third tap. `withClose` makes every item explicitly close the menu before running
+  // its handler so the state never gets stuck.
+  const withClose = (fn?: () => void) => () => {
+    onMenuToggle(false);
+    fn?.();
+  };
+
+  const isAir = goods.shippingMode === 'AIR';
+  // Recolor the header by shipping mode — matches the goods list (sea = ocean, air = violet).
+  const headerGradient = isAir ? Theme.gradients.purple : Theme.gradients.ocean;
+  const status = getStatusConfig(goods.status);
+  const statusDot = getVariantColors(status.variant, colors).dot;
+
   return (
-    <LinearGradient colors={Theme.gradients.primary} style={styles.header}>
+    <LinearGradient colors={headerGradient} start={{ x: 1, y: 1 }} end={{ x: 0, y: 0 }} style={styles.header}>
       <View style={styles.headerTop}>
         <TouchableOpacity onPress={onBack} style={styles.iconButton}>
-          <Ionicons name="arrow-back" size={24} color={colors.text.inverse} />
+          <Ionicons name="arrow-back" size={22} color="#FFFFFF" />
         </TouchableOpacity>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
+        <View style={styles.headerPillRow}>
           <Menu
             visible={menuVisible}
             onDismiss={() => onMenuToggle(false)}
             anchor={
               <TouchableOpacity onPress={() => onMenuToggle(true)} style={styles.iconButton}>
-                <Ionicons name="ellipsis-vertical" size={24} color={colors.text.inverse} />
+                <Ionicons name="ellipsis-vertical" size={22} color="#FFFFFF" />
               </TouchableOpacity>
             }
           >
+            {isOwnerUnidentified && onAssignClientPress && (
+              <Menu.Item
+                onPress={withClose(onAssignClientPress)}
+                title="Assigner un client"
+                leadingIcon="account-search"
+              />
+            )}
             {goods.status === 'RECEIVED_AT_WAREHOUSE' && (
               <Menu.Item
-                onPress={onAssignPress}
-                title={isAir ? "Assigner à la lettre de transport" : "Assigner au conteneur"}
+                onPress={withClose(onAssignPress)}
+                title={isAir ? 'Assigner à la lettre de transport' : 'Assigner au conteneur'}
                 disabled={isAir ? !hasAirwayBills : !hasContainers}
               />
             )}
             {canUnassign && (
               <Menu.Item
-                onPress={onUnassignPress}
+                onPress={withClose(onUnassignPress)}
                 title="Retirer de la lettre de transport"
                 titleStyle={{ color: colors.status.error }}
               />
             )}
-            <Menu.Item onPress={() => onStatusUpdate('READY_FOR_PICKUP')} title="Pret pour retrait" />
+            <Menu.Item
+              onPress={withClose(() => onStatusUpdate('READY_FOR_PICKUP'))}
+              title="Prêt pour retrait"
+            />
+            {/* Operator can re-trigger the customer notification when the original
+                dispatch failed (visible in the receive success badge / NotificationLog). */}
+            {onResendNotification && !isOwnerUnidentified && (
+              <Menu.Item
+                onPress={withClose(onResendNotification)}
+                title={isResendingNotification ? 'Envoi en cours…' : 'Renvoyer notification WhatsApp'}
+                leadingIcon="whatsapp"
+                disabled={!!isResendingNotification}
+              />
+            )}
             <Divider />
-            <Menu.Item onPress={onDelete} title="Supprimer" titleStyle={{ color: colors.status.error }} />
+            <Menu.Item
+              onPress={withClose(onDelete)}
+              title="Supprimer"
+              titleStyle={{ color: colors.status.error }}
+            />
           </Menu>
           <NotificationBell
             onPress={() => navigation.navigate('Notifications' as never)}
             size={22}
-            color={colors.text.inverse}
+            color="#FFFFFF"
           />
         </View>
       </View>
 
-    <View style={styles.headerContent}>
-      <View style={styles.goodsIdBadge}>
-        <MaterialCommunityIcons name="package-variant" size={20} color={colors.text.inverse} style={styles.badgeIcon} />
-        <Text style={styles.goodsIdText}>{goods.goodsId}</Text>
+      <View style={styles.headerContent}>
+        <View style={styles.goodsIdBadge}>
+          <MaterialCommunityIcons name="package-variant" size={20} color="#FFFFFF" style={styles.badgeIcon} />
+          <Text style={styles.goodsIdText}>{goods.goodsId}</Text>
+        </View>
+        <View style={styles.statusWrapper}>
+          <View style={styles.headerPill}>
+            <Ionicons name={isAir ? 'airplane' : 'boat'} size={13} color="#FFFFFF" />
+            <Text style={styles.headerPillText}>{isAir ? 'Aérien' : 'Maritime'}</Text>
+          </View>
+          <View style={styles.headerPill}>
+            <View style={[styles.headerPillDot, { backgroundColor: statusDot }]} />
+            <Text style={styles.headerPillText}>{status.label}</Text>
+          </View>
+        </View>
       </View>
-      <View style={styles.statusWrapper}>
-        <StatusBadge status={goods.status} />
-      </View>
-    </View>
-  </LinearGradient>
+    </LinearGradient>
   );
 };

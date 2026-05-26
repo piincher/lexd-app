@@ -45,7 +45,7 @@ export const VoidGoodsListItem: React.FC<VoidGoodsListItemProps> = ({
   onVoidPress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const statusColors = React.useMemo(() => getStatusColors(colors), [colors]);
   return (
   <Card style={styles.goodsCard}>

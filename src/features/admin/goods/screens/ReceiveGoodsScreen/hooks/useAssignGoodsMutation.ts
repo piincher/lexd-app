@@ -10,8 +10,9 @@ export const useAssignGoodsMutation = () => {
     try {
       await assignGoodsToOrder({ orderId, goodsId });
       console.log('[AutoAssign] Goods assigned successfully');
-    } catch (error: any) {
-      console.error('[AutoAssign] Failed to assign goods:', error?.response?.data || error?.message);
+    } catch (error: unknown) {
+      const err = error as { message?: string; response?: { data?: unknown } };
+      console.error('[AutoAssign] Failed to assign goods:', err.response?.data || err.message);
     }
     queryClient.invalidateQueries({ queryKey: [queryKey.ORDERKEY] });
   }, [queryClient]);

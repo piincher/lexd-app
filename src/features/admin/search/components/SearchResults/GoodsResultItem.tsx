@@ -21,7 +21,7 @@ export const GoodsResultItem: React.FC<GoodsResultItemProps> = ({
   highlightQuery,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const highlightText = useSearchHighlight(highlightQuery);
   const isPaid = item.paymentStatus === "PAID";
   const statusColors: Record<string, string> = {

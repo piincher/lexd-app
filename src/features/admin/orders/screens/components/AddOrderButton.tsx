@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { FAB } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -12,7 +12,7 @@ type NavigationProp = NativeStackNavigationProp<AuthenticatedStackParamList>;
 export const AddOrderButton: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       position: 'absolute',
       right: 16,
@@ -28,7 +28,7 @@ export const AddOrderButton: React.FC = () => {
       backgroundColor: colors.status.success,
       borderRadius: 12,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <View style={styles.container}>

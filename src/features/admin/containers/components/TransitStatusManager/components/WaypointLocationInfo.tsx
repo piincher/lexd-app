@@ -16,7 +16,7 @@ export const WaypointLocationInfo: React.FC<WaypointLocationInfoProps> = ({
   segmentIcon,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const locationName = currentWaypoint?.location?.city || currentWaypoint?.shortName || 'Inconnu';
   const locationCountry = currentWaypoint?.location?.country || '';
 

@@ -38,7 +38,7 @@ export const CapacityUsageBar: React.FC<CapacityUsageBarProps> = ({
   variant = 'cbm',
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const percentage = Math.min((used / max) * 100, 100);
   const remaining = Math.max(max - used, 0);
   const fillColors = getFillColor(percentage, colors);

@@ -3,7 +3,7 @@
  * SRP: Swipe action renderers for notification cards
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -19,7 +19,7 @@ export const NotificationCardLeftActions: React.FC<NotificationCardLeftActionsPr
   isUnread,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   if (!isUnread) return null;
   return (
@@ -32,7 +32,7 @@ export const NotificationCardLeftActions: React.FC<NotificationCardLeftActionsPr
 
 export const NotificationCardRightActions: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <View style={[styles.swipeAction, styles.rightAction]}>

@@ -2,7 +2,7 @@
  * ClientGoodsSection - Collapsible client section for packing list
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, LayoutAnimation } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { ClientGoodsGroup } from '../../types/packingList';
@@ -28,8 +28,12 @@ export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
   showPhotos = false,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
+  useEffect(() => {
+    setIsExpanded(defaultExpanded);
+  }, [defaultExpanded]);
 
   const handleToggle = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);

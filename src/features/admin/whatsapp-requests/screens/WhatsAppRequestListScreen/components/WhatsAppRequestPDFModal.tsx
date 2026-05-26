@@ -21,7 +21,7 @@ export const WhatsAppRequestPDFModal: React.FC<WhatsAppRequestPDFModalProps> = (
   onSend,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
   <Portal>

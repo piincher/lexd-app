@@ -4,7 +4,7 @@
  * SRP: Display goods items in a table format
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Card, Divider, Text, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -29,7 +29,7 @@ export const PackingListGoodsTable: React.FC<PackingListGoodsTableProps> = ({
 }) => {
   const theme = useTheme();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Card style={styles.sectionCard}>

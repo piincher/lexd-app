@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { FontAwesome6, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ interface Props {
 
 export const DemoLockedFeatures: React.FC<Props> = ({ features }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.container}>

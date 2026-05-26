@@ -4,7 +4,7 @@
  * SRP: Display consignee contact information dialog
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Linking, StyleSheet } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
@@ -29,7 +29,7 @@ export const PackingListContactDialog: React.FC<PackingListContactDialogProps> =
 }) => {
   const { colors, isDark } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     dialogText: {
       fontSize: 14,
       marginBottom: 8,
@@ -39,7 +39,7 @@ export const PackingListContactDialog: React.FC<PackingListContactDialogProps> =
       fontFamily: Fonts.bold,
       color: colors.text.secondary,
     },
-  }), [colors, isDark]);
+  });
 
   const handleCall = () => {
     if (consignee.phone) {

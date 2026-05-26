@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -26,7 +26,7 @@ const formatDate = (dateStr: string | null) => {
 
 export const RedemptionDetailCard: React.FC<RedemptionDetailCardProps> = ({ redemption }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const showApproved = redemption.status === 'APPROVED';
   const showRejected = redemption.status === 'REJECTED';

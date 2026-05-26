@@ -26,7 +26,7 @@ export const FilterPresetsModal: React.FC<FilterPresetsModalProps> = ({
   onClose,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const filteredPresets = presets.filter((p) => p.entity === entity);
 
   return (

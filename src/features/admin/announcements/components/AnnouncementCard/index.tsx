@@ -37,7 +37,7 @@ type AnnouncementCardProps = {
 
 export function AnnouncementCard({ item, onEdit, onArchive, onStats, isArchiving }: AnnouncementCardProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const typeConfig = TYPE_CONFIG[item.type] || TYPE_CONFIG.INFO;
   const statusLabel = STATUS_LABELS[item.status] || item.status;
   const isPublished = item.status === "PUBLISHED";

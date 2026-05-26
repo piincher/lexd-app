@@ -20,7 +20,7 @@ interface GoodsInfoCardProps {
 
 export const GoodsInfoCard: React.FC<GoodsInfoCardProps> = ({ goods }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const formattedCreatedAt = format(new Date(goods.createdAt), 'dd MMM yyyy', { locale: fr });
   const formattedUpdatedAt = format(new Date(goods.updatedAt), 'dd MMM yyyy', { locale: fr });
 

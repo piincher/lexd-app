@@ -22,9 +22,9 @@ export const AgingChartHeader: React.FC<Props> = ({ hasCritical }) => {
           marginBottom: 12,
         },
         iconWrap: {
-          width: 34,
-          height: 34,
-          borderRadius: 11,
+          width: 44,
+          height: 44,
+          borderRadius: 12,
           backgroundColor: isDark
             ? hasCritical
               ? "rgba(239,68,68,0.18)"

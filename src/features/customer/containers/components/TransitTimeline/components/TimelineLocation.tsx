@@ -21,7 +21,7 @@ export const TimelineLocation: React.FC<TimelineLocationProps> = ({
   isMainPort = false,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.background.paper,
       padding: Theme.spacing.md,
@@ -75,7 +75,7 @@ export const TimelineLocation: React.FC<TimelineLocationProps> = ({
       fontWeight: '800',
       color: colors.text.inverse,
     },
-  }), [colors]);
+  });
 
   return (
   <View style={[styles.container, isMainPort && styles.mainPortContainer]}>

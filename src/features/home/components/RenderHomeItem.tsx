@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+
 import { Pressable, StyleSheet, Text } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
@@ -12,7 +12,7 @@ export const RenderHomeItem = ({ item, navigation }: Item) => {
    const { colors } = useAppTheme();
    const setType = useShippingMode((state) => state.setType);
 
-   const styles = useMemo(() => StyleSheet.create({
+   const styles = StyleSheet.create({
       title: {
          fontFamily: Fonts.meduim,
       },
@@ -25,7 +25,7 @@ export const RenderHomeItem = ({ item, navigation }: Item) => {
          padding: 12,
          margin: 20,
       },
-   }), [colors]);
+   });
 
    const handleNavigation = () => {
       if (item.param) {

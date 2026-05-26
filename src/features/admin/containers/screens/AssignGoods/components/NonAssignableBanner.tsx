@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -12,7 +12,7 @@ interface NonAssignableBannerProps {
 
 export const NonAssignableBanner: React.FC<NonAssignableBannerProps> = ({ containerStatus }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const errorBg = colors.status.error + '26';
   const errorBorder = colors.status.error + '4D';
 

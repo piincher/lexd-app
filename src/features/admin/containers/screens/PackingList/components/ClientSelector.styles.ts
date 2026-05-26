@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import type { ThemeContextType } from '@src/constants/Theme';
 
-export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+type AppColors = ThemeContextType['colors'];
+
+export const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.create({
   container: {
     backgroundColor: colors.background.card,
     borderRadius: 12,
-    marginHorizontal: 16,
-    marginVertical: 12,
+    marginBottom: 16,
     padding: 16,
     shadowColor: colors.neutral[900],
     shadowOffset: { width: 0, height: 2 },
@@ -14,36 +15,53 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     shadowRadius: 4,
     elevation: 3,
     borderWidth: 1,
-    borderColor: colors.neutral[200],
+    borderColor: isDark ? colors.neutral[700] : colors.neutral[200],
   },
   label: {
     fontSize: 12,
     fontWeight: '600',
     color: colors.text.secondary,
     textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0,
     marginBottom: 8,
   },
   selector: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: colors.neutral[50],
+    backgroundColor: isDark ? colors.neutral[800] : colors.neutral[50],
     borderRadius: 8,
     paddingHorizontal: 12,
-    paddingVertical: 14,
+    paddingVertical: 12,
+    minHeight: 56,
     borderWidth: 1,
-    borderColor: colors.neutral[300],
+    borderColor: isDark ? colors.neutral[700] : colors.neutral[300],
+  },
+  selectorIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: isDark ? colors.neutral[700] : colors.primary[50],
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
+  selectorCopy: {
+    flex: 1,
+    minWidth: 0,
   },
   selectorText: {
     fontSize: 15,
+    fontWeight: '700',
+    color: colors.text.primary,
+  },
+  selectorSubtext: {
+    marginTop: 2,
+    fontSize: 12,
     fontWeight: '500',
     color: colors.text.secondary,
-    flex: 1,
   },
   chevron: {
-    fontSize: 12,
-    color: colors.text.secondary,
     marginLeft: 8,
   },
   modalOverlay: {
@@ -64,7 +82,14 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     justifyContent: 'space-between',
     padding: 16,
     borderBottomWidth: 1,
-    borderBottomColor: colors.neutral[200],
+    borderBottomColor: isDark ? colors.neutral[700] : colors.neutral[200],
+  },
+  closeButtonTouch: {
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 22,
   },
   modalTitle: {
     fontSize: 18,
@@ -76,27 +101,63 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     color: colors.text.secondary,
     padding: 4,
   },
+  searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    margin: 16,
+    marginBottom: 8,
+    paddingHorizontal: 12,
+    minHeight: 48,
+    borderRadius: 12,
+    backgroundColor: isDark ? colors.neutral[800] : colors.neutral[50],
+    borderWidth: 1,
+    borderColor: isDark ? colors.neutral[700] : colors.neutral[200],
+  },
+  searchInput: {
+    flex: 1,
+    minHeight: 44,
+    marginLeft: 8,
+    fontSize: 15,
+    fontWeight: '500',
+    color: colors.text.primary,
+    paddingVertical: 0,
+  },
   clientList: {
     maxHeight: 400,
+  },
+  clientListContent: {
+    paddingBottom: 12,
   },
   clientItem: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    minHeight: 64,
     borderBottomWidth: 1,
-    borderBottomColor: colors.neutral[100],
+    borderBottomColor: isDark ? colors.neutral[800] : colors.neutral[100],
   },
   clientItemSelected: {
     backgroundColor: colors.status.success + '10',
   },
+  clientIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    backgroundColor: isDark ? colors.neutral[700] : colors.primary[50],
+  },
   clientInfo: {
     flex: 1,
+    minWidth: 0,
   },
   clientItemText: {
     fontSize: 16,
-    color: colors.text.secondary,
-    fontWeight: '500',
+    color: colors.text.primary,
+    fontWeight: '700',
   },
   clientItemTextSelected: {
     color: colors.status.success,
@@ -107,10 +168,16 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     color: colors.text.secondary,
     marginTop: 4,
   },
-  checkmark: {
-    fontSize: 18,
-    color: colors.status.success,
-    fontWeight: '700',
-    marginLeft: 8,
+  clientEmptyState: {
+    paddingVertical: 28,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+  },
+  clientEmptyText: {
+    marginTop: 8,
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.text.secondary,
+    textAlign: 'center',
   },
 });

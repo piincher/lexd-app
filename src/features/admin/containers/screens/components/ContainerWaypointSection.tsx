@@ -4,7 +4,7 @@
  * Updated: Conditionally renders TransitStatusManager for IN_TRANSIT containers
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -32,7 +32,7 @@ export const ContainerWaypointSection: React.FC<ContainerWaypointSectionProps> =
   containerStatus: propContainerStatus,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const { data: containerData } = useGetContainerById(
     !propContainerStatus ? containerId : undefined

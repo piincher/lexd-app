@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { Pressable } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { productType } from "@src/shared/types/order";
@@ -15,7 +15,7 @@ interface ActiveShipmentCardProps {
 
 export const ActiveShipmentCard: React.FC<ActiveShipmentCardProps> = ({ order, onPress }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const currentStep = getStepFromStatus(order.status, order.currentStatus);
   const progress = PROGRESS_MAP[currentStep];
   const statusText = BADGE_LABELS[currentStep];

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, Share } from 'react-native';
 import { Text, Surface, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -16,7 +16,7 @@ export const SharedShipmentCTA: React.FC<Props> = ({ url, reference }) => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     card: {
       padding: Theme.spacing.xl,
       borderRadius: Theme.radius.xl,
@@ -48,7 +48,7 @@ export const SharedShipmentCTA: React.FC<Props> = ({ url, reference }) => {
     button: {
       flex: 1,
     },
-  }), [colors]);
+  });
 
   const handleShare = async () => {
     try {

@@ -11,7 +11,7 @@ interface ExpressTrackingCardProps {
 
 export const ExpressTrackingCard: React.FC<ExpressTrackingCardProps> = ({ trackingNumber }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <Card style={styles.card}>
       <Card.Content>

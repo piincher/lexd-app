@@ -19,7 +19,7 @@ export default function AdminReviewsScreen({
   navigation,
 }: RootStackScreenProps<"AdminReviews">) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     activeFilter,
     page,

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Snackbar, Portal, Dialog, Card, Divider, Text } from 'react-native-paper';
 import { ClientSearchSection } from '../ClientSearchSection';
@@ -48,7 +48,7 @@ export const ReceivedGoodsList: React.FC<ReceivedGoodsListProps> = ({
 }) => {
   const { colors, isDark } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     submitButton: {
       marginTop: 8,
       backgroundColor: colors.status.success,
@@ -80,7 +80,7 @@ export const ReceivedGoodsList: React.FC<ReceivedGoodsListProps> = ({
     dialogButton: {
       paddingHorizontal: 32,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -28,7 +28,7 @@ const parseCBM = (value: any): string => {
 export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
   const navigation = useNavigation();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const isAir = order?.shippingMode === 'air';
   const unitPrice = parsePrice(order?.unitPrice);

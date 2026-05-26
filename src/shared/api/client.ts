@@ -16,6 +16,7 @@ import { getAuthStoreRef } from './authStoreRef';
 import { ApiRequestConfig, ApiResponse } from './types';
 import type { userData } from '@src/constants/types';
 import { emitVersionUpgradeRequired } from '../lib/versionEvents';
+import { emitSessionExpired, type SessionExpiredReason } from '../lib/sessionEvents';
 import { getDeviceIdSync } from '../lib/deviceId';
 
 // ============================================
@@ -36,12 +37,13 @@ const getEnvironment = (value?: string): Environment => {
   return 'production';
 };
 
-const ENV = getEnvironment('development'); // Change this value to switch environments (or set via env variable in the future)
+const ENV = getEnvironment(process.env.EXPO_PUBLIC_ENV);
 
 // Port the local backend listens on.
 const LOCAL_API_PORT = 3000;
 // Fallback LAN IP used only when the Metro host can't be resolved (e.g. release build run over local env).
 const LOCAL_API_FALLBACK_HOST = '192.168.0.108';
+const LOCAL_API_HOST_OVERRIDE = process.env.EXPO_PUBLIC_LOCAL_API_HOST?.trim();
 
 /**
  * Resolve the dev machine's host from Expo's Metro bundler URL so the local
@@ -55,7 +57,7 @@ const getDevHost = (): string => {
     (Constants as unknown as { manifest?: { debuggerHost?: string } }).manifest?.debuggerHost;
 
   const host = hostUri?.split(':')[0];
-  return host || LOCAL_API_FALLBACK_HOST;
+  return LOCAL_API_HOST_OVERRIDE || host || LOCAL_API_FALLBACK_HOST;
 };
 
 const localBaseURL = `http://${getDevHost()}:${LOCAL_API_PORT}`;
@@ -138,26 +140,49 @@ const refreshClient = axios.create({
   },
 });
 
+/**
+ * Codes from the backend /auth/refresh that mean "this session is dead — no point
+ * trying again, user must re-authenticate". Non-terminal failures (network, 5xx, etc.)
+ * are kept silent so a flaky connection never forces a logout.
+ */
+const TERMINAL_REFRESH_CODES = new Set<string>([
+  'INVALID_REFRESH_TOKEN',
+  'TOKEN_REUSE_DETECTED',
+  'NEW_DEVICE_DETECTED',
+  'ACCOUNT_BLOCKED',
+]);
+
 const performRefresh = async (): Promise<string> => {
   const authState = getAuthStoreRef()?.getState();
   const refreshToken = authState?.refreshToken;
   if (!refreshToken) {
     throw new Error('No refresh token available');
   }
-  const res = await refreshClient.post('/auth/refresh', { refreshToken });
-  const data = res.data.data || res.data;
-  const newAccessToken = data.accessToken || data.token;
-  const newRefreshToken = data.refreshToken;
-  const expiresIn = data.expiresIn;
+  try {
+    const res = await refreshClient.post('/auth/refresh', { refreshToken });
+    const data = res.data.data || res.data;
+    const newAccessToken = data.accessToken || data.token;
+    const newRefreshToken = data.refreshToken;
+    const expiresIn = data.expiresIn;
 
-  authState?.setAuth({
-    user: authState?.user as unknown as userData,
-    token: newAccessToken,
-    accessToken: newAccessToken,
-    refreshToken: newRefreshToken,
-    expiresIn,
-  });
-  return newAccessToken;
+    authState?.setAuth({
+      user: authState?.user as unknown as userData,
+      token: newAccessToken,
+      accessToken: newAccessToken,
+      refreshToken: newRefreshToken,
+      expiresIn,
+    });
+    return newAccessToken;
+  } catch (err) {
+    // Inspect the backend code — only terminal codes trigger the session-expired event;
+    // network / 5xx errors keep the user logged in locally so they can retry.
+    const axErr = err as AxiosError<{ code?: string; error?: string }>;
+    const code = axErr.response?.data?.code;
+    if (code && TERMINAL_REFRESH_CODES.has(code)) {
+      emitSessionExpired({ reason: code as SessionExpiredReason });
+    }
+    throw err;
+  }
 };
 
 export const doRefresh = (): Promise<string> => {
@@ -425,7 +450,7 @@ const createApiClient = (baseURL: string): AxiosInstance => {
 
     // Handle 426 Upgrade Required before normal error handling
     if (error.response?.status === 426) {
-      const responseData = error.response?.data as Record<string, unknown> | undefined;
+      const responseData = error.response?.data as unknown as Record<string, unknown> | undefined;
       const requiredVersion = typeof responseData?.requiredVersion === 'string' ? responseData.requiredVersion : '';
       const currentVersion = typeof responseData?.currentVersion === 'string' ? responseData.currentVersion : '';
 

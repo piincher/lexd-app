@@ -30,11 +30,12 @@ interface GoodsListContentProps {
   isSelectionMode?: boolean;
   selectedIds?: string[];
   onToggleSelect?: (id: string) => void;
+  listHeader?: React.ReactElement;
 }
 
 export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   goods, isLoading, refreshing, error, hasFilters, onRefresh, onEndReached,
-  onPressGoods, onAddPress, isSelectionMode, selectedIds, onToggleSelect,
+  onPressGoods, onAddPress, isSelectionMode, selectedIds, onToggleSelect, listHeader,
 }) => {
   const { colors } = useAppTheme();
   const renderItem: ListRenderItem<Goods> = useCallback(({ item }) => (
@@ -46,23 +47,31 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   const keyExtractor = useCallback((item: Goods) => item._id, []);
 
   if (isLoading) {
-    return <GoodsListSkeleton />;
+    return (
+      <View style={styles.fill}>
+        {listHeader}
+        <GoodsListSkeleton />
+      </View>
+    );
   }
 
   if (error) {
     return (
-      <View style={styles.centerContainer}>
-        <View style={[styles.errorIcon, { backgroundColor: colors.feedback.errorBg }]}>
-          <Ionicons name="alert-circle" size={56} color={colors.status.error} />
+      <View style={styles.fill}>
+        {listHeader}
+        <View style={styles.centerContainer}>
+          <View style={[styles.errorIcon, { backgroundColor: colors.feedback.errorBg }]}>
+            <Ionicons name="alert-circle" size={56} color={colors.status.error} />
+          </View>
+          <Text style={[styles.errorTitle, { color: colors.text.primary }]}>Erreur de chargement</Text>
+          <Text style={[styles.errorSubtitle, { color: colors.text.secondary }]}>Impossible de récupérer les marchandises</Text>
+          <TouchableOpacity style={styles.retryButton} onPress={onRefresh}>
+            <LinearGradient colors={Theme.gradients.primary} style={styles.retryGradient}>
+              <Ionicons name="refresh" size={20} color={colors.text.inverse} />
+              <Text style={styles.retryText}>Réessayer</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
-        <Text style={[styles.errorTitle, { color: colors.text.primary }]}>Erreur de chargement</Text>
-        <Text style={[styles.errorSubtitle, { color: colors.text.secondary }]}>Impossible de récupérer les marchandises</Text>
-        <TouchableOpacity style={styles.retryButton} onPress={onRefresh}>
-          <LinearGradient colors={Theme.gradients.primary} style={styles.retryGradient}>
-            <Ionicons name="refresh" size={20} color={colors.text.inverse} />
-            <Text style={styles.retryText}>Réessayer</Text>
-          </LinearGradient>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -71,6 +80,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
     <FlashList data={goods} keyExtractor={keyExtractor} renderItem={renderItem}
       contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}
       onEndReached={onEndReached}
+      ListHeaderComponent={listHeader}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={Theme.primary[500]} />
       }
@@ -79,6 +89,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
 };
 
 const styles = StyleSheet.create({
+  fill: { flex: 1 },
   centerContainer: { flex: 1, justifyContent: 'center', alignItems: 'center',
     paddingVertical: Theme.spacing['4xl'], paddingHorizontal: Theme.spacing.xl },
   errorIcon: { width: 96, height: 96, borderRadius: Theme.radius['2xl'],

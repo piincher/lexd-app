@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
@@ -35,7 +35,7 @@ export const ContainerActionButtons: React.FC<ContainerActionButtonsProps> = ({
   isDeletingContainer,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <Animated.View entering={FadeInUp.delay(500)} style={styles.actionsCard}>

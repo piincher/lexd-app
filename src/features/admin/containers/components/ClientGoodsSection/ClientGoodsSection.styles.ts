@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { Theme, type ThemeContextType } from '@src/constants/Theme';
 
-export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+type AppColors = ThemeContextType['colors'];
+
+export const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.create({
   container: {
     marginBottom: Theme.spacing.md,
     borderRadius: Theme.radius.xl,
@@ -16,14 +18,15 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
   headerGradient: {
     padding: Theme.spacing.md,
   },
-  headerContent: {
+  clientTopRow: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'space-between',
+    gap: Theme.spacing.sm,
   },
-  clientInfo: {
+  clientInfoCompact: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     flex: 1,
     minWidth: 0,
   },
@@ -65,6 +68,7 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
   financialRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    flexWrap: 'wrap',
     gap: 8,
     marginTop: 4,
   },
@@ -82,20 +86,23 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     fontSize: 11,
     fontWeight: '700',
   },
-  summaryContainer: {
+  summaryGrid: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: Theme.spacing.sm,
-    flexShrink: 0,
+    gap: Theme.spacing.sm,
+    marginTop: Theme.spacing.md,
   },
   summaryItem: {
+    flex: 1,
+    minWidth: 0,
     alignItems: 'center',
-    paddingHorizontal: Theme.spacing.sm,
-    minWidth: 50,
+    borderRadius: Theme.radius.sm,
+    paddingVertical: Theme.spacing.sm,
+    backgroundColor: isDark ? colors.neutral[800] : colors.background.card,
   },
   summaryValue: {
-    fontSize: 14,
-    fontWeight: '700',
+    fontSize: 13,
+    fontWeight: '900',
     color: colors.primary[600],
   },
   summaryLabel: {
@@ -104,19 +111,13 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     color: colors.neutral[400],
     marginTop: 2,
   },
-  summaryDivider: {
-    width: 1,
-    height: 24,
-    backgroundColor: colors.neutral[200],
-  },
   expandIcon: {
-    width: 32,
-    height: 32,
+    width: 44,
+    height: 44,
     borderRadius: Theme.radius.full,
     backgroundColor: colors.primary[100],
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: Theme.spacing.sm,
   },
   content: {
     padding: Theme.spacing.md,

@@ -43,7 +43,7 @@ const Card: React.FC<{ m: DemoMetric; i: number; colors: ReturnType<typeof useAp
 
 export const GuestCommandCenter: React.FC<Props> = ({ metrics }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={[styles.container, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
       <View style={styles.grid}>

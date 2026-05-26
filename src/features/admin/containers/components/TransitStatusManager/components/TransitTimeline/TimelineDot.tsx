@@ -15,7 +15,7 @@ interface TimelineDotProps {
 
 export const TimelineDot: React.FC<TimelineDotProps> = ({ status, isLast }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const pulseScale = useSharedValue(1);
   const pulseOpacity = useSharedValue(1);
 

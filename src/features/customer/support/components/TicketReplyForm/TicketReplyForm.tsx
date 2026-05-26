@@ -3,7 +3,7 @@
  * Input form for sending replies to tickets
  */
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, StyleSheet, TextInput as RNTextInput } from 'react-native';
 import { IconButton, useTheme } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
@@ -27,7 +27,7 @@ export const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSend, isPend
     setMessage('');
   };
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.background.default,
       borderTopWidth: 1,
@@ -51,7 +51,7 @@ export const TicketReplyForm: React.FC<TicketReplyFormProps> = ({ onSend, isPend
       paddingTop: 8,
       paddingBottom: 8,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <View style={styles.container}>

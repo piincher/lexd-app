@@ -16,7 +16,7 @@ export const DistributionBar: React.FC<DistributionBarProps> = ({
   total,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const percentage = total > 0 ? (count / total) * 100 : 0;
 
   return (

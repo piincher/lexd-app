@@ -19,7 +19,7 @@ interface ShipmentSummaryProps {
 
 export const ShipmentSummary: React.FC<ShipmentSummaryProps> = ({ stats, onViewAll }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const STAT_CARDS = [
     { key: 'total' as const, label: 'Total', icon: 'package-variant', lib: 'mci' as const, color: colors.primary.dark },

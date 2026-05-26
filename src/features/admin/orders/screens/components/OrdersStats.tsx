@@ -11,7 +11,7 @@ interface OrdersStatsProps {
 
 export const OrdersStats: React.FC<OrdersStatsProps> = ({ orders }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const stats = useMemo(() => {
     if (!orders || !Array.isArray(orders)) {

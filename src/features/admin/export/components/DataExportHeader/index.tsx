@@ -8,7 +8,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const DataExportHeader: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const navigation = useNavigation();
 
   return (

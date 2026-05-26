@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { openWhatsApp } from '@src/shared/lib/openWhatsApp';
 import { sharePDFOnWhatsApp as sharePDFOnWhatsAppUtil } from '@src/shared/lib/pdfShare';
 import { buildWhatsAppMessage } from '../lib/buildWhatsAppMessage';

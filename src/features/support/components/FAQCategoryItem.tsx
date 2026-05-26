@@ -3,7 +3,7 @@
  * Displays a single FAQ category button
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
@@ -22,7 +22,7 @@ export const FAQCategoryItem: React.FC<FAQCategoryItemProps> = ({
   onPress,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -38,7 +38,7 @@ export const FAQCategoryItem: React.FC<FAQCategoryItemProps> = ({
       color: isSelected ? colors.text.inverse : colors.primary.main,
       marginLeft: 8,
     },
-  }), [colors, isSelected]);
+  });
 
   return (
     <TouchableOpacity

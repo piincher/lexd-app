@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from 'react';
 import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import { Text } from "react-native-paper";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -11,7 +11,7 @@ const NUVOTECH_URL = "https://nuvotech.tech";
 
 export const NuvotechSection: React.FC = () => {
    const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
    const handlePress = useCallback(() => {
       Linking.openURL(NUVOTECH_URL);

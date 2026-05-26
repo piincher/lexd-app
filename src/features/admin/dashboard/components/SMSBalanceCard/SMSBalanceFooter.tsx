@@ -24,11 +24,46 @@ export const SMSBalanceFooter: React.FC<SMSBalanceFooterProps> = ({
     (balance.daysRemaining !== undefined && balance.daysRemaining <= 30);
 
   if (showExpiry && balance.expirationDateShort) {
+    // Expired but still has credits
+    if (balance.hasExpired && balance.totalUnits > 0) {
+      return (
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>
+            <Text style={[styles.footerStrong, { color: metaColor }]}>
+              {balance.expiredCount && balance.expiredCount > 1
+                ? `${balance.expiredCount} abonnements expirés`
+                : 'Abonnement expiré'}
+            </Text>
+          </Text>
+          <Text style={styles.footerText}>
+            <Text style={styles.footerStrong}>{balance.totalUnits.toLocaleString()}</Text> SMS restants
+          </Text>
+        </View>
+      );
+    }
+
+    // Expired with no credits
+    if (balance.hasExpired) {
+      return (
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>
+            <Text style={[styles.footerStrong, { color: metaColor }]}>
+              Abonnement expiré
+            </Text>
+          </Text>
+          <Text style={styles.footerText}>
+            Aucun SMS disponible
+          </Text>
+        </View>
+      );
+    }
+
+    // Expiring soon
     return (
       <View style={styles.footer}>
         <Text style={styles.footerText}>
           <Text style={[styles.footerStrong, { color: metaColor }]}>
-            {balance.hasExpired ? 'Expiré' : `${balance.daysRemaining} jours`}
+            {balance.daysRemaining} jours
           </Text>{' '}
           restants
         </Text>

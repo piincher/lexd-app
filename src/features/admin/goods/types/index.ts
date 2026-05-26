@@ -48,6 +48,13 @@ export interface ClientInfo {
   email?: string;
 }
 
+export interface GoodsClientDisplayInfo extends Partial<ClientInfo> {
+  _id?: string;
+  id?: string;
+  name?: string;
+  phone?: string;
+}
+
 /**
  * Container information (populated)
  */
@@ -64,7 +71,10 @@ export interface ContainerInfo {
 export interface Goods {
   _id: string;
   goodsId: string;
-  clientId: string | ClientInfo;
+  clientId: string | ClientInfo | null;
+  client?: GoodsClientDisplayInfo | null;
+  clientName?: string;
+  clientPhone?: string;
   receivedBy: string | { firstName?: string; lastName?: string };
   receivedByName?: string;
   receivedAt: string;
@@ -77,6 +87,14 @@ export interface Goods {
   images?: string[];
   description: string;
   expressTrackingNumber?: string;
+  condition?: 'new' | 'used' | 'damaged';
+  intakeException?: {
+    isException: boolean;
+    reasons: string[];
+    notes?: string;
+    resolvedAt?: string | null;
+    resolvedBy?: string | null;
+  };
   shippingMode?: 'AIR' | 'SEA';
   status: GoodsStatus;
   containerId?: string | ContainerInfo;
@@ -87,6 +105,10 @@ export interface Goods {
   qrCodeData: string;
   qrCodeImageUrl?: string;
   airwayBillId?: string | AirwayBillInfo;
+  /** Set by the backend; UNIDENTIFIED when goods were received without a known client (CLIENT_UNKNOWN). */
+  ownerStatus?: 'IDENTIFIED' | 'UNIDENTIFIED';
+  unidentifiedNotes?: string;
+  assignedClientAt?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -106,7 +128,7 @@ export interface AirwayBillInfo {
  * Input for receiving new goods
  */
 export interface ReceiveGoodsInput {
-  clientId: string;
+  clientId?: string | null;
   description: string;
   shippingMode: 'AIR' | 'SEA';
   dimensions?: Dimensions;
@@ -118,6 +140,40 @@ export interface ReceiveGoodsInput {
   receivedByName: string;
   expressTrackingNumber?: string;
   receivedDate?: string;
+  condition?: 'new' | 'used' | 'damaged';
+  exceptionReasons?: ReceiveExceptionReason[];
+  exceptionNotes?: string;
+  /** Client-generated key for this submit session — lets the backend short-circuit a
+   *  retried request and return the already-saved goods instead of creating a duplicate. */
+  idempotencyKey?: string;
+}
+
+export type ReceiveExceptionReason =
+  | 'CLIENT_UNKNOWN'
+  | 'TRACKING_DOUBTFUL'
+  | 'DAMAGED'
+  | 'PRICE_TO_CONFIRM'
+  | 'PHOTO_MISSING';
+
+export interface DuplicateCandidate {
+  _id: string;
+  goodsId?: string;
+  expressTrackingNumber?: string;
+  description?: string;
+  weight?: number;
+  receivedAt?: string;
+  client?: ClientInfo | string | null;
+  reasons: string[];
+}
+
+/**
+ * Input for assigning a client to previously-unidentified goods.
+ * The backend re-fires the customer notification once the owner is identified.
+ */
+export interface AssignClientToGoodsInput {
+  goodsId: string;
+  clientId: string;
+  notes?: string;
 }
 
 /**

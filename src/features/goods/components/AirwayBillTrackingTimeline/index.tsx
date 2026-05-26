@@ -24,7 +24,7 @@ interface Props {
 
 export const AirwayBillTrackingTimeline: React.FC<Props> = ({ currentStepIndex }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const STATUS_COLORS: Record<string, string> = {
     CREATED: colors.neutral[400],
     PACKING: colors.primary[400],

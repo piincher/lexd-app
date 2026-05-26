@@ -1,7 +1,9 @@
 import { StyleSheet } from "react-native";
-import { Theme } from '@src/constants/Theme';
+import { Theme, type ThemeContextType } from '@src/constants/Theme';
 
-export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+type AppColors = ThemeContextType['colors'];
+
+export const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.create({
   container: {
     borderRadius: Theme.radius.lg,
     overflow: "hidden",

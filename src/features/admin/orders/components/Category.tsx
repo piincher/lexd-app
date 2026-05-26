@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createStyles } from "./Category.styles";
@@ -18,7 +18,7 @@ export const Category = ({
    status,
 }: CategoryProps) => {
    const { colors, isDark } = useAppTheme();
-   const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+   const styles = createStyles(colors, isDark);
 
    const getStatusText = (title: string) => {
       switch (title) {

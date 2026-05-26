@@ -1,20 +1,19 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Controller } from "react-hook-form";
 import { FormInput } from "../../../../components/FormInput";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createStyles } from "./DimensionsInputs.styles";
+import type { ReceiveGoodsFormSectionProps } from "../../types";
 
-interface DimensionsInputsProps {
-   control: any;
-   errors: any;
+interface DimensionsInputsProps extends Pick<ReceiveGoodsFormSectionProps, "control" | "errors"> {
    calculatedCBM: number;
 }
 
 export const DimensionsInputs: React.FC<DimensionsInputsProps> = ({ control, errors, calculatedCBM }) => {
    const { colors } = useAppTheme();
-   const styles = useMemo(() => createStyles(colors), [colors]);
+   const styles = createStyles(colors);
 
    return (
       <View style={styles.dimensionsContainer}>
@@ -26,7 +25,7 @@ export const DimensionsInputs: React.FC<DimensionsInputsProps> = ({ control, err
                   render={({ field: { onChange, value } }) => (
                      <FormInput
                         label="Longueur"
-                        value={value}
+                        value={value || ""}
                         onChangeText={onChange}
                         error={errors.length?.message}
                         keyboardType="decimal-pad"
@@ -43,7 +42,7 @@ export const DimensionsInputs: React.FC<DimensionsInputsProps> = ({ control, err
                   render={({ field: { onChange, value } }) => (
                      <FormInput
                         label="Largeur"
-                        value={value}
+                        value={value || ""}
                         onChangeText={onChange}
                         error={errors.width?.message}
                         keyboardType="decimal-pad"
@@ -60,7 +59,7 @@ export const DimensionsInputs: React.FC<DimensionsInputsProps> = ({ control, err
                   render={({ field: { onChange, value } }) => (
                      <FormInput
                         label="Hauteur"
-                        value={value}
+                        value={value || ""}
                         onChangeText={onChange}
                         error={errors.height?.message}
                         keyboardType="decimal-pad"

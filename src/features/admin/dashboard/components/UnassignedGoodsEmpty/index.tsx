@@ -6,7 +6,7 @@ import { createStyles } from "./UnassignedGoodsEmpty.styles";
 
 export const UnassignedGoodsEmpty: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.empty}>
       <Ionicons name="checkmark-circle" size={64} color={colors.status.success} />

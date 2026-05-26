@@ -3,7 +3,7 @@
  * Displays a single notification in the list with swipe actions
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Pressable, Dimensions } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { Swipeable } from 'react-native-gesture-handler';
@@ -36,7 +36,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
   const { colors } = useAppTheme();
   const typeConfig = NOTIFICATION_TYPE_CONFIG[notification.type] || NOTIFICATION_TYPE_CONFIG.GENERAL;
   const categoryConfig = NOTIFICATION_CATEGORY_CONFIG[notification.category] || NOTIFICATION_CATEGORY_CONFIG.INFO;
-  const styles = useMemo(() => createNotificationItemStyles(colors), [colors]);
+  const styles = createNotificationItemStyles(colors);
   const relativeTime = formatRelativeTime(notification.createdAt);
 
   const handleSwipeableOpen = (direction: 'left' | 'right') => {

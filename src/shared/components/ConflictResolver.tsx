@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from 'react';
 import { View, Text, Modal, TouchableOpacity } from "react-native";
 import { QueuedAction } from "../lib/offlineQueue";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -25,7 +25,7 @@ export const ConflictResolver: React.FC<ConflictResolverProps> = ({
 }) => {
   const [selectedOption, setSelectedOption] = useState<"server" | "client" | null>(null);
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   if (!conflict) return null;
   const { action, serverData, clientData } = conflict;

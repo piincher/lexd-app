@@ -3,6 +3,7 @@ import { Controller } from 'react-hook-form';
 import { ShippingModeSelector } from '../components/ShippingModeSelector';
 import { FormInput } from '../../../components/FormInput';
 import { ReceiveGoodsFormSectionProps } from '../types';
+import { ReceiveTrackingScannerInput } from './ReceiveTrackingScannerInput';
 
 export const ReceiveGoodsFormBasicFields: React.FC<ReceiveGoodsFormSectionProps> = ({
 	control,
@@ -36,19 +37,9 @@ export const ReceiveGoodsFormBasicFields: React.FC<ReceiveGoodsFormSectionProps>
 					/>
 				)}
 			/>
-			<Controller
+			<ReceiveTrackingScannerInput
 				control={control}
-				name="expressTrackingNumber"
-				render={({ field: { onChange, value } }) => (
-					<FormInput
-						label="N° de suivi express (optionnel)"
-						value={value}
-						onChangeText={onChange}
-						error={errors.expressTrackingNumber?.message}
-						placeholder="Ex: 1Z999AA10123456784"
-						autoCapitalize="characters"
-					/>
-				)}
+				error={errors.expressTrackingNumber?.message}
 			/>
 		</>
 	);

@@ -1,7 +1,7 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
 // GoodsDetailReception - Reception information (date received, received by)
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -36,7 +36,7 @@ export const GoodsDetailReception: React.FC<GoodsDetailReceptionProps> = ({
   receivedBy,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const getReceivedByText = (): string => {
     if (receivedByName) return receivedByName;
     if (typeof receivedBy === 'object' && receivedBy) {

@@ -23,7 +23,7 @@ export const GoodsListItem: React.FC<GoodsListItemProps> = ({
   index,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const clientName = (() => {
     if (typeof goods.clientId === 'object' && goods.clientId) {
       return `${goods.clientId.firstName} ${goods.clientId.lastName}`;

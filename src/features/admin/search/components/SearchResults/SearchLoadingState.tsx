@@ -5,7 +5,7 @@ import { useAppTheme } from "@src/providers/ThemeProvider";
 
 export const SearchLoadingState: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <View style={styles.centerContainer}>

@@ -5,20 +5,27 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Controller } from 'react-hook-form';
+import { Text } from 'react-native-paper';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { FormInput } from '../../../../components/FormInput';
+import type { ReceiveGoodsFormData } from '../../types';
 
 interface ReceiveGoodsFormInputRowsProps {
-  control: any;
-  errors: any;
+  control: Control<ReceiveGoodsFormData>;
+  errors: FieldErrors<ReceiveGoodsFormData>;
   shippingMode: 'AIR' | 'SEA';
+  priceWarning?: string | null;
 }
 
 export const ReceiveGoodsFormInputRows: React.FC<ReceiveGoodsFormInputRowsProps> = ({
   control,
   errors,
   shippingMode,
+  priceWarning,
 }) => {
+  const { colors } = useAppTheme();
+
   return (
     <>
       {/* Weight & Quantity Row */}
@@ -94,6 +101,9 @@ export const ReceiveGoodsFormInputRows: React.FC<ReceiveGoodsFormInputRowsProps>
           />
         </View>
       </View>
+      {priceWarning ? (
+        <Text style={[styles.warning, { color: colors.status.warning }]}>{priceWarning}</Text>
+      ) : null}
 
       {/* Received By */}
       <Controller
@@ -123,5 +133,10 @@ const styles = StyleSheet.create({
   halfColumn: {
     flex: 1,
     marginHorizontal: 6,
+  },
+  warning: {
+    marginBottom: 8,
+    fontSize: 12,
+    fontWeight: '700',
   },
 });

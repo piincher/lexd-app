@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -23,7 +23,7 @@ interface RecentOrdersProps {
 export const RecentOrders: React.FC<RecentOrdersProps> = ({ orders }) => {
   const navigation = useNavigation<navigationProps>();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.card}>

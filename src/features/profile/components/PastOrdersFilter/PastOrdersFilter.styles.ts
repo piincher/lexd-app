@@ -7,30 +7,36 @@ type Colors = typeof lightTheme.colors;
 export const createStyles = (colors: Colors) =>
   StyleSheet.create({
     filtersContainer: {
-      paddingHorizontal: 16,
-      paddingVertical: 12,
-      backgroundColor: colors.background.card,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
+      backgroundColor: colors.background.default,
     },
     filterRow: {
       flexDirection: "row",
-      gap: 10,
+      gap: 8,
     },
     filterChip: {
-      borderRadius: 20,
-      height: 36,
-      backgroundColor: colors.background.paper,
+      flex: 1,
+      minHeight: 48,
+      borderRadius: 16,
+      backgroundColor: colors.background.card,
+      borderWidth: 1,
+      borderColor: colors.border,
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "row",
+      gap: 6,
     },
     filterChipActive: {
       backgroundColor: colors.primary.main,
+      borderColor: colors.primary.main,
     },
     filterChipText: {
       color: colors.text.secondary,
       fontFamily: Fonts.meduim,
+      fontSize: 13,
     },
     filterChipTextActive: {
       color: colors.text.inverse,
       fontFamily: Fonts.bold,
+      fontSize: 13,
     },
   });

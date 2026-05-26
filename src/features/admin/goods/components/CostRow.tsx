@@ -27,7 +27,7 @@ const createStyles = () => StyleSheet.create({
 
 export const CostRow: React.FC<CostRowProps> = ({ label, value }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(), []);
+  const styles = createStyles();
   return (
     <View style={styles.row}>
       <Text style={[styles.label, { color: colors.text.secondary }]}>{label}</Text>

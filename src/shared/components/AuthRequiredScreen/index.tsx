@@ -1,15 +1,12 @@
-/**
- * AuthRequiredScreen Component
- * UI shown when user is not authenticated
- */
-
 import React from "react";
-import { View, Text, Image, Pressable, StyleSheet } from "react-native";
+import { ScrollView, Text, View, Pressable } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, { FadeIn } from "react-native-reanimated";
-import { IMAGES } from "@src/constants/Images";
-import { Fonts } from "@src/constants/Fonts";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Button } from "@src/shared/ui/Button";
+import { hapticLight } from "@src/shared/lib/haptics";
+import { createAuthRequiredStyles } from "./AuthRequiredScreen.styles";
 
 export interface AuthRequiredScreenProps {
    onLoginPress: () => void;
@@ -17,174 +14,135 @@ export interface AuthRequiredScreenProps {
    onPrivacyPress?: () => void;
 }
 
+const HERO_TITLE = "Connectez-vous\npour continuer";
+const HERO_SUBTITLE =
+   "Votre profil, vos colis et vos documents restent protégés jusqu'à votre connexion.";
+const SECURITY_NOTE = "Connexion requise avant d'afficher vos informations personnelles.";
+const TERMS_COPY = "En continuant, vous acceptez les règles de confidentialité du service.";
+const CREDIT_COPY = "Made with ❤️by nuvotech team Paris-Chine  +86-178-6567-3053";
+
 export const AuthRequiredScreen: React.FC<AuthRequiredScreenProps> = ({
    onLoginPress,
    onTermsPress,
    onPrivacyPress,
 }) => {
    const { colors } = useAppTheme();
+   const styles = React.useMemo(() => createAuthRequiredStyles(colors), [colors]);
+   const handleTermsPress = React.useCallback(() => {
+      if (!onTermsPress) return;
+      hapticLight();
+      onTermsPress();
+   }, [onTermsPress]);
+   const handlePrivacyPress = React.useCallback(() => {
+      if (!onPrivacyPress) return;
+      hapticLight();
+      onPrivacyPress();
+   }, [onPrivacyPress]);
 
    return (
-      <View style={[styles.container, { backgroundColor: colors.background.default }]}>
-         {/* Decorative Circles */}
-         <View style={[styles.decorCircle1, { backgroundColor: colors.primary[50] }]} />
-         <View style={[styles.decorCircle2, { backgroundColor: colors.primary[100] }]} />
+      <SafeAreaView edges={["top"]} style={styles.container}>
+         <View pointerEvents="none" style={styles.backgroundLayer}>
+            <View style={styles.topBlock} />
+            <View style={styles.bottomBlock} />
+            <View style={styles.accentRule} />
+         </View>
 
-         {/* Main Content */}
-         <Animated.View entering={FadeIn.duration(500)} style={styles.content}>
-            {/* Logo */}
-            <View style={styles.logoContainer}>
-               <Image
-                  source={IMAGES.flat_logo}
-                  style={[styles.logo, { tintColor: colors.primary.main }]}
-                  resizeMode="contain"
-               />
-            </View>
+         <ScrollView
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+         >
+            <Animated.View entering={FadeIn.duration(360)} style={styles.content}>
+               <View style={styles.brandRow}>
+                  <View style={styles.brandMark}>
+                     <MaterialCommunityIcons
+                        name="package-variant-closed-check"
+                        size={26}
+                        color={colors.text.inverse}
+                     />
+                  </View>
+                  <View style={styles.brandCopy}>
+                     <Text style={styles.brandTitle}>CHINALINK EXPRESS</Text>
+                     <Text style={styles.brandSubtitle}>Espace sécurisé</Text>
+                  </View>
+               </View>
 
-            {/* Title & Subtitle */}
-            <View style={styles.textContainer}>
-               <Text style={[styles.title, { color: colors.text.primary }]}>
-                  Connectez vous pour continuer
-               </Text>
-               <Text style={[styles.subtitle, { color: colors.text.secondary }]}>
-                  Pour utiliser l&apos;application, vous devez vous connecter
-               </Text>
-            </View>
+               <View style={styles.statusPanel}>
+                  <MaterialCommunityIcons
+                     name="shield-lock-outline"
+                     size={20}
+                     color={colors.primary.main}
+                  />
+                  <Text style={styles.statusText}>Profil protégé</Text>
+               </View>
 
-            {/* Login Button */}
-            <View style={styles.buttonContainer}>
-               <Button
-                  title="LOGIN"
-                  onPress={onLoginPress}
-                  variant="primary"
-                  size="large"
-                  fullWidth
-                  testID="auth-required-login-button"
-                  accessibilityLabel="Se connecter"
-                  accessibilityHint="Appuyez pour vous connecter à votre compte"
-               />
-            </View>
-         </Animated.View>
+               <View style={styles.heroBlock}>
+                  <Text style={styles.title}>{HERO_TITLE}</Text>
+                  <Text style={styles.subtitle}>{HERO_SUBTITLE}</Text>
+               </View>
 
-         {/* Footer with T&Cs */}
-         <Animated.View entering={FadeIn.duration(500).delay(200)} style={styles.footer}>
-            <Text style={[styles.termsText, { color: colors.text.secondary }]}>
-               En vous connectant, vous acceptez nos{" "}
-               <Pressable onPress={onTermsPress} testID="terms-link">
-                  <Text style={[styles.link, { color: colors.accent.gold }]}>
-                     conditions d&apos;utilisation
-                  </Text>
-               </Pressable>{" "}
-               et notre{" "}
-               <Pressable onPress={onPrivacyPress} testID="privacy-link">
-                  <Text style={[styles.link, { color: colors.accent.gold }]}>
-                     politique de confidentialité
-                  </Text>
-               </Pressable>
-            </Text>
-            <Text style={[styles.brandText, { color: colors.primary.main }]}>
-               CHINALINK EXPRESS
-            </Text>
-            <Text style={[styles.creditText, { color: colors.text.secondary }]}>
-               Made with ❤️ in Paris-China by www.nuvotech.tech team +86-178-65-67-30-53
-            </Text>
-         </Animated.View>
-      </View>
+               <View style={styles.actionBlock}>
+                  <Button
+                     title="Se connecter"
+                     onPress={onLoginPress}
+                     variant="primary"
+                     size="large"
+                     fullWidth
+                     icon="log-in-outline"
+                     style={styles.loginButton}
+                     textStyle={styles.loginButtonText}
+                     testID="auth-required-login-button"
+                     accessibilityLabel="Se connecter"
+                     accessibilityHint="Appuyez pour vous connecter à votre compte"
+                  />
+                  <View style={styles.securityNote}>
+                     <MaterialCommunityIcons
+                        name="lock-check-outline"
+                        size={18}
+                        color={colors.accent.gold}
+                     />
+                     <Text style={styles.securityText}>{SECURITY_NOTE}</Text>
+                  </View>
+               </View>
+            </Animated.View>
+
+            <Animated.View entering={FadeIn.duration(360).delay(120)} style={styles.footer}>
+               <Text style={styles.termsText}>{TERMS_COPY}</Text>
+               <View style={styles.legalRow}>
+                  <Pressable
+                     accessibilityRole="link"
+                     accessibilityState={{ disabled: !onTermsPress }}
+                     disabled={!onTermsPress}
+                     onPress={handleTermsPress}
+                     style={({ pressed }) => [
+                        styles.legalLink,
+                        pressed && styles.legalLinkPressed,
+                        !onTermsPress && styles.legalLinkDisabled,
+                     ]}
+                     testID="terms-link"
+                  >
+                     <Text style={styles.legalLinkText}>Conditions</Text>
+                  </Pressable>
+                  <View style={styles.legalDivider} />
+                  <Pressable
+                     accessibilityRole="link"
+                     accessibilityState={{ disabled: !onPrivacyPress }}
+                     disabled={!onPrivacyPress}
+                     onPress={handlePrivacyPress}
+                     style={({ pressed }) => [
+                        styles.legalLink,
+                        pressed && styles.legalLinkPressed,
+                        !onPrivacyPress && styles.legalLinkDisabled,
+                     ]}
+                     testID="privacy-link"
+                  >
+                     <Text style={styles.legalLinkText}>Confidentialité</Text>
+                  </Pressable>
+               </View>
+               <Text style={styles.creditText}>{CREDIT_COPY}</Text>
+            </Animated.View>
+         </ScrollView>
+      </SafeAreaView>
    );
 };
-
-const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      paddingHorizontal: 24,
-      overflow: "hidden",
-   },
-   decorCircle1: {
-      position: "absolute",
-      top: -100,
-      right: -100,
-      width: 250,
-      height: 250,
-      borderRadius: 125,
-      opacity: 0.5,
-   },
-   decorCircle2: {
-      position: "absolute",
-      bottom: -80,
-      left: -80,
-      width: 200,
-      height: 200,
-      borderRadius: 100,
-      opacity: 0.4,
-   },
-   content: {
-      width: "100%",
-      alignItems: "center",
-      paddingHorizontal: 16,
-   },
-   logoContainer: {
-      marginBottom: 40,
-      alignItems: "center",
-   },
-   logo: {
-      width: 180,
-      height: 50,
-   },
-   textContainer: {
-      alignItems: "center",
-      marginBottom: 40,
-   },
-   title: {
-      fontSize: 24,
-      fontFamily: Fonts.bold,
-      textAlign: "center",
-      marginBottom: 12,
-      letterSpacing: -0.5,
-   },
-   subtitle: {
-      fontSize: 15,
-      fontFamily: Fonts.regular,
-      textAlign: "center",
-      lineHeight: 22,
-      paddingHorizontal: 20,
-   },
-   buttonContainer: {
-      width: "100%",
-      marginTop: 8,
-   },
-   footer: {
-      position: "absolute",
-      bottom: 32,
-      left: 24,
-      right: 24,
-      alignItems: "center",
-   },
-   termsText: {
-      fontSize: 11,
-      fontFamily: Fonts.regular,
-      textAlign: "center",
-      lineHeight: 18,
-   },
-   link: {
-      fontSize: 11,
-      fontFamily: Fonts.medium,
-      textDecorationLine: "underline",
-   },
-   brandText: {
-      fontSize: 14,
-      fontFamily: Fonts.bold,
-      letterSpacing: 2,
-      marginTop: 16,
-   },
-   creditText: {
-      fontSize: 10,
-      fontFamily: Fonts.regular,
-      textAlign: "center",
-      lineHeight: 16,
-      marginTop: 8,
-   },
-});
 
 export default AuthRequiredScreen;

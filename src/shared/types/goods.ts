@@ -66,7 +66,7 @@ export interface ContainerInfo {
 export interface Goods {
   _id: string;
   goodsId: string;
-  clientId: string | ClientInfo;
+  clientId: string | ClientInfo | null;
   receivedBy: string;
   receivedByName?: string;
   receivedAt: string;
@@ -77,6 +77,15 @@ export interface Goods {
   quantity: number;
   photos: string[];
   description: string;
+  expressTrackingNumber?: string;
+  condition?: 'new' | 'used' | 'damaged';
+  intakeException?: {
+    isException: boolean;
+    reasons: string[];
+    notes?: string;
+    resolvedAt?: string | null;
+    resolvedBy?: string | null;
+  };
   status: GoodsStatus;
   containerId?: string | ContainerInfo;
   // Dual-ledger fields
@@ -129,7 +138,7 @@ export interface PaginationParams {
  * Input for receiving new goods
  */
 export interface ReceiveGoodsInput {
-  clientId: string;
+  clientId?: string | null;
   description: string;
   shippingMode?: 'AIR' | 'SEA';
   dimensions?: Dimensions;
@@ -140,6 +149,11 @@ export interface ReceiveGoodsInput {
   location: string;
   photoUrl?: string;
   receivedByName: string;
+  expressTrackingNumber?: string;
+  receivedDate?: string;
+  condition?: 'new' | 'used' | 'damaged';
+  exceptionReasons?: string[];
+  exceptionNotes?: string;
 }
 
 /**

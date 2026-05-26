@@ -22,7 +22,7 @@ interface SchedulerStatusCardProps {
 
 export const SchedulerStatusCard: React.FC<SchedulerStatusCardProps> = ({ status }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   if (!status) return null;
 
   const isActive = status.isScheduled && !status.isRunning;

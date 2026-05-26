@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationFilterType } from '../../hooks/useNotificationFilters';
@@ -21,7 +21,7 @@ export const NotificationFilters: React.FC<NotificationFiltersProps> = ({
   unreadCount,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <View style={styles.container}>

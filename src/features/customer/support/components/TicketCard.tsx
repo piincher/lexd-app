@@ -60,7 +60,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onPress }) => {
   );
   const borderColor = borderColors[ticket.priority] || colors.text.disabled;
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     card: {
       marginHorizontal: 16, marginVertical: 6, borderRadius: 16,
       backgroundColor: colors.background.card, ...Theme.shadows.md, overflow: 'hidden',
@@ -76,7 +76,7 @@ export const TicketCard: React.FC<TicketCardProps> = ({ ticket, onPress }) => {
     footerLeft: { flexDirection: 'row', alignItems: 'center', gap: 4 },
     dateText: { fontFamily: Fonts.regular, fontSize: 12, color: colors.text.secondary },
     unreadDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.primary.main },
-  }), [colors, borderColor]);
+  });
 
   return (
     <Pressable onPress={onPress}>

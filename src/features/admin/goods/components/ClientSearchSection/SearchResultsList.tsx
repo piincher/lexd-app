@@ -1,6 +1,6 @@
-import React, { useCallback } from 'react';
-import { View, TouchableOpacity, FlatList } from 'react-native';
-import { Avatar, Text, ActivityIndicator } from 'react-native-paper';
+import React from 'react';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
+import { Avatar, Text, ActivityIndicator, Button } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { userData } from '@src/shared/types/user';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -11,6 +11,8 @@ interface SearchResultsListProps {
   isLoading: boolean;
   searchQuery: string;
   onSelect: (client: userData) => void;
+  /** Optional — when provided, the no-results state shows an "Ajouter ce client" CTA. */
+  onCreateNew?: () => void;
 }
 
 const ResultItem = React.memo(({ item, onSelect }: { item: userData; onSelect: (client: userData) => void }) => {
@@ -50,15 +52,10 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
   isLoading,
   searchQuery,
   onSelect,
+  onCreateNew,
 }) => {
   const { colors } = useAppTheme();
   const styles = useClientSearchStyles();
-
-  const renderItem = useCallback(({ item }: { item: userData }) => (
-    <ResultItem item={item} onSelect={onSelect} />
-  ), [onSelect]);
-
-  const keyExtractor = useCallback((item: userData) => item._id, []);
 
   if (isLoading) {
     return (
@@ -70,6 +67,10 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
   }
 
   if (users.length > 0) {
+    // This component lives inside the receive form's ScrollView (which itself sits inside
+    // the screen's ScrollView). Using a FlatList here triggered "VirtualizedLists should
+    // never be nested inside plain ScrollViews". Results are capped at 50 by the search
+    // hook, so a plain mapped ScrollView is the correct, warning-free pattern.
     return (
       <View style={styles.resultsContainer}>
         <View style={styles.resultsHeader}>
@@ -77,17 +78,16 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
             {users.length} résultat{users.length > 1 ? 's' : ''} trouvé{users.length > 1 ? 's' : ''}
           </Text>
         </View>
-        <View style={{ height: 280 }}>
-          <FlatList
-            data={users}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-            nestedScrollEnabled
-            keyboardShouldPersistTaps="handled"
-            style={{ flex: 1 }}
-            showsVerticalScrollIndicator
-          />
-        </View>
+        <ScrollView
+          style={{ maxHeight: 280 }}
+          nestedScrollEnabled
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator
+        >
+          {users.map((item) => (
+            <ResultItem key={item._id} item={item} onSelect={onSelect} />
+          ))}
+        </ScrollView>
       </View>
     );
   }
@@ -98,6 +98,18 @@ export const SearchResultsList: React.FC<SearchResultsListProps> = ({
         <Avatar.Icon size={48} icon="account-off" style={styles.noResultsIcon} color={colors.text.disabled} />
         <Text style={styles.noResults}>Aucun client trouvé</Text>
         <Text style={styles.noResultsHint}>Essayez avec un autre nom ou numéro</Text>
+        {onCreateNew ? (
+          <Button
+            mode="contained"
+            onPress={onCreateNew}
+            icon="account-plus"
+            style={styles.createClientButton}
+            contentStyle={styles.createClientButtonContent}
+            labelStyle={styles.createClientButtonLabel}
+          >
+            Ajouter ce client
+          </Button>
+        ) : null}
       </View>
     );
   }

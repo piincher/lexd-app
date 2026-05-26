@@ -15,12 +15,12 @@ export const PaymentHealthBar: React.FC<PaymentHealthBarProps> = ({ paymentHealt
   return (
     <View style={styles.healthContainer}>
       <View style={styles.healthHeader}>
-        <Text style={[styles.healthLabel, { color: colors.text.secondary }]}>Sante des paiements</Text>
+        <Text style={[styles.healthLabel, { color: colors.text.secondary }]}>Santé des paiements</Text>
         <Text style={[styles.healthValue, { color: healthColor }]}>
           {paymentHealth}%
         </Text>
       </View>
-      <View style={[styles.track, { backgroundColor: colors.background.overlay }]}>
+      <View style={[styles.track, { backgroundColor: colors.background.paper }]}>
         <View
           style={[
             styles.fill,

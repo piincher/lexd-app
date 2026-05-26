@@ -54,6 +54,41 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     color: colors.text.primary,
     marginBottom: 10,
   },
+  // 4-metric strip shown above the action buttons — gives the operator the shape of
+  // the batch (count · kg · m³ · FCFA) before committing to assign / status-change / void.
+  totalsStrip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginBottom: 10,
+    borderRadius: 10,
+    backgroundColor: colors.background.paper,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  totalsCell: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 2,
+  },
+  totalsDivider: {
+    width: 1,
+    height: 28,
+    backgroundColor: colors.border,
+  },
+  totalsLabel: {
+    fontSize: 9,
+    fontWeight: '800',
+    letterSpacing: 0.5,
+    color: colors.text.secondary,
+  },
+  totalsValue: {
+    fontSize: 13,
+    fontWeight: '800',
+    color: colors.text.primary,
+    fontVariant: ['tabular-nums'],
+  },
   actionsRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -86,5 +121,28 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     color: colors.text.inverse,
     fontWeight: '600',
     fontSize: 13,
+  },
+  // Permanent-delete affordance: outlined (not filled) so it's visually distinct from
+  // the solid red "Annuler" void above, on its own row to prevent mis-taps.
+  hardDeleteButton: {
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: colors.status.error,
+    gap: 8,
+  },
+  hardDeleteButtonDisabled: {
+    borderColor: colors.border,
+  },
+  hardDeleteText: {
+    color: colors.status.error,
+    fontWeight: '700',
+    fontSize: 13,
+    letterSpacing: 0.2,
   },
 });

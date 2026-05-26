@@ -4,8 +4,11 @@
  */
 
 import { StyleSheet } from 'react-native';
+import type { AppTheme } from '@src/constants/Theme';
 
-export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
+type ThemeColors = AppTheme['colors'];
+
+export const createStyles = (colors: ThemeColors, isDark: boolean) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background.default,
@@ -41,17 +44,45 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   formContainer: {
     flex: 1,
   },
+  buttonGroup: {
+    paddingHorizontal: 16,
+    paddingTop: 8,
+    paddingBottom: 16,
+    gap: 10,
+  },
+  secondaryButton: {
+    borderColor: colors.primary.main,
+    borderWidth: 1.5,
+    borderRadius: 8,
+  },
   submitButton: {
-    margin: 16,
-    marginTop: 8,
     backgroundColor: colors.status.error,
     borderRadius: 8,
   },
   submitButtonContent: {
     paddingVertical: 8,
   },
+  sessionCounter: {
+    marginHorizontal: 16,
+    marginTop: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    backgroundColor: colors.primary[50] ?? colors.background.paper,
+    borderWidth: 1,
+    borderColor: colors.primary[100] ?? colors.border,
+    alignItems: 'center',
+  },
+  sessionCounterText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.primary.main,
+  },
   snackbar: {
     backgroundColor: colors.background.paper,
+  },
+  infoSnackbar: {
+    backgroundColor: colors.status.success,
   },
   dialog: {
     borderRadius: 16,

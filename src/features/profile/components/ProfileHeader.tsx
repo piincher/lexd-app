@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createProfileHeaderStyles } from './ProfileHeader.styles';
@@ -22,35 +21,40 @@ export const ProfileHeader: React.FC<Props> = ({
   avatarUri,
   balanceFormatted,
 }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const styles = createProfileHeaderStyles(colors);
   const initials = `${firstName?.[0] ?? ''}${lastName?.[0] ?? ''}`.toUpperCase();
+  const displayName = [firstName, lastName].filter(Boolean).join(' ') || 'Compte ChinaLink';
+  const phoneLabel = phoneNumber ? `+${phoneNumber}` : 'Téléphone non renseigné';
 
   return (
-    <LinearGradient
-      colors={isDark ? [colors.primary.dark, colors.primary.main, colors.primary.dark] : [colors.status.success, colors.primary.main, colors.primary.dark]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.headerGradient}
-    >
-      <View style={styles.decorCircle1} />
-      <View style={styles.decorCircle2} />
-
-      <View style={styles.headerContent}>
-        <ProfileAvatar avatarUri={avatarUri} initials={initials} />
-        <View style={styles.userInfo}>
-          <Text style={styles.username} numberOfLines={1}>
-            {firstName} {lastName}
-          </Text>
-          <View style={styles.phoneRow}>
-            <MaterialCommunityIcons name="phone-outline" size={13} color={colors.text.inverse} />
-            <Text style={styles.phoneNumber}>+{phoneNumber}</Text>
+    <View style={styles.headerPanel}>
+      <View style={styles.headerTop}>
+        <View style={styles.identityRow}>
+          <ProfileAvatar avatarUri={avatarUri} initials={initials} />
+          <View style={styles.userInfo}>
+            <Text style={styles.eyebrow}>Espace client</Text>
+            <Text style={styles.username} numberOfLines={1}>
+              {displayName}
+            </Text>
+            <View style={styles.phoneRow}>
+              <MaterialCommunityIcons name="phone-outline" size={14} color={colors.text.secondary} />
+              <Text style={styles.phoneNumber} numberOfLines={1}>
+                {phoneLabel}
+              </Text>
+            </View>
           </View>
+        </View>
+      </View>
+      <View style={styles.metaRow}>
+        <View style={styles.statusPill}>
+          <MaterialCommunityIcons name="shield-check-outline" size={15} color={colors.status.success} />
+          <Text style={styles.statusText}>Profil connecté</Text>
         </View>
       </View>
 
       <ProfileBalanceStrip balanceFormatted={balanceFormatted} />
-    </LinearGradient>
+    </View>
   );
 };
 

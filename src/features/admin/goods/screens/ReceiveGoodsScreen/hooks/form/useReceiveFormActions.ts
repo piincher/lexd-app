@@ -3,23 +3,7 @@ import { UseFormReset } from 'react-hook-form';
 import { userData } from '@src/shared/types/user';
 import { ReceiveGoodsInput } from '../../../../types';
 import { ReceiveGoodsFormData } from '../../types';
-
-const DEFAULT_VALUES: ReceiveGoodsFormData = {
-  description: '',
-  shippingMode: 'SEA',
-  length: '',
-  width: '',
-  height: '',
-  cbm: '',
-  weight: '',
-  quantity: '1',
-  unitPrice: '',
-  location: '',
-  receivedByName: '',
-  expressTrackingNumber: '',
-  receivedDate: '',
-  condition: 'new',
-};
+import { RECEIVE_FORM_DEFAULT_VALUES } from './defaultValues';
 
 interface Options {
   selectedClient: userData | null;
@@ -31,6 +15,8 @@ interface Options {
   setSelectedClient: (client: userData | null) => void;
   setPhotoUris: (uris: string[]) => void;
   setUseDimensions: (use: boolean) => void;
+  /** Threaded into the submit input so a retried request resolves to the original goods. */
+  idempotencyKey: string;
 }
 
 export const useReceiveFormActions = (options: Options) => {
@@ -44,10 +30,12 @@ export const useReceiveFormActions = (options: Options) => {
     setSelectedClient,
     setPhotoUris,
     setUseDimensions,
+    idempotencyKey,
   } = options;
 
   const buildSubmitData = useCallback((): ReceiveGoodsInput | null => {
-    if (!selectedClient) return null;
+    const isClientUnknown = watchedValues.exceptionReasons?.includes('CLIENT_UNKNOWN');
+    if (!selectedClient && !isClientUnknown) return null;
 
     const weight = parseFloat(watchedValues.weight.replace(',', '.'));
     const quantity = parseInt(watchedValues.quantity, 10);
@@ -59,7 +47,7 @@ export const useReceiveFormActions = (options: Options) => {
     }
 
     const input: ReceiveGoodsInput = {
-      clientId: selectedClient._id,
+      clientId: selectedClient?._id ?? null,
       description: watchedValues.description.trim(),
       weight,
       quantity,
@@ -70,6 +58,10 @@ export const useReceiveFormActions = (options: Options) => {
         watchedValues.expressTrackingNumber?.trim() || undefined,
       receivedDate: watchedValues.receivedDate || undefined,
       shippingMode: watchedValues.shippingMode || 'SEA',
+      condition: watchedValues.condition || 'new',
+      exceptionReasons: watchedValues.exceptionReasons || [],
+      exceptionNotes: watchedValues.exceptionNotes?.trim() || undefined,
+      idempotencyKey: idempotencyKey || undefined,
     };
 
     if (
@@ -90,17 +82,33 @@ export const useReceiveFormActions = (options: Options) => {
     }
 
     return input;
-  }, [selectedClient, watchedValues, useDimensions, calculatedCBM]);
+  }, [selectedClient, watchedValues, useDimensions, calculatedCBM, idempotencyKey]);
 
   const resetForm = useCallback(() => {
     reset({
-      ...DEFAULT_VALUES,
+      ...RECEIVE_FORM_DEFAULT_VALUES,
       quantity: initialQuantity.toString(),
     });
     setSelectedClient(null);
     setPhotoUris([]);
-    setUseDimensions(true);
+    setUseDimensions(false);
   }, [reset, initialQuantity, setSelectedClient, setPhotoUris, setUseDimensions]);
 
-  return { buildSubmitData, resetForm };
+  const resetForNext = useCallback(() => {
+    reset({
+      ...RECEIVE_FORM_DEFAULT_VALUES,
+      quantity: initialQuantity.toString(),
+      shippingMode: watchedValues.shippingMode || 'SEA',
+      location: watchedValues.location || '',
+      receivedByName: watchedValues.receivedByName || '',
+      receivedDate: watchedValues.receivedDate || '',
+      exceptionReasons: [],
+      exceptionNotes: '',
+    });
+    setPhotoUris([]);
+    setUseDimensions(false);
+    // selectedClient is intentionally preserved.
+  }, [reset, initialQuantity, watchedValues, setPhotoUris, setUseDimensions]);
+
+  return { buildSubmitData, resetForm, resetForNext };
 };

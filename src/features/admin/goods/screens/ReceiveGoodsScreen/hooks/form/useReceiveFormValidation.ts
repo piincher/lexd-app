@@ -5,14 +5,15 @@ import { ReceiveGoodsFormData } from '../../types';
 
 export const useReceiveFormValidation = (
   formState: FormState<ReceiveGoodsFormData>,
-  selectedClient: userData | null
+  selectedClient: userData | null,
+  exceptionReasons: ReceiveGoodsFormData['exceptionReasons'] = [],
 ) => {
   const isFormValid = useMemo(() => {
     const hasNoErrors = Object.keys(formState.errors).length === 0;
     const isDirty = formState.isDirty;
-    const hasClient = selectedClient !== null;
+    const hasClient = selectedClient !== null || exceptionReasons.includes('CLIENT_UNKNOWN');
     return hasNoErrors && isDirty && hasClient;
-  }, [formState.errors, formState.isDirty, selectedClient]);
+  }, [exceptionReasons, formState.errors, formState.isDirty, selectedClient]);
 
   return { isFormValid };
 };

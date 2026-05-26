@@ -29,7 +29,7 @@ export const MessageComposer: React.FC<MessageComposerProps> = ({
   onSend,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     activeCategory,
     setActiveCategory,

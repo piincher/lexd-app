@@ -22,7 +22,7 @@ export const WaypointStatusDisplay: React.FC<WaypointStatusDisplayProps> = ({
   formatTimestamp,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.statusContainer}>
       <View

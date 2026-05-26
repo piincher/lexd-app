@@ -31,7 +31,7 @@ export function HelpSearchBar({
   onClearHistory,
 }: HelpSearchBarProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const [focused, setFocused] = useState(false);
 
   const showDropdown = focused && (suggestions.length > 0 || history.length > 0) && showSuggestions;

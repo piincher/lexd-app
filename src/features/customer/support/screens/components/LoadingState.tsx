@@ -3,7 +3,7 @@
  * Displays loading indicator for ticket detail screen
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
@@ -14,7 +14,7 @@ export const LoadingState: React.FC = () => {
   const theme = useTheme();
   const { colors, isDark } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'center',
@@ -26,7 +26,7 @@ export const LoadingState: React.FC = () => {
       fontFamily: Fonts.meduim,
       color: colors.text.secondary,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <View style={styles.container}>

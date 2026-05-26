@@ -19,7 +19,7 @@ export const useOrderMatching = () => {
       let orders: productType[] = [];
       try {
         orders = await getOrdersBasedOnUserId(client._id) || [];
-      } catch (e) {
+      } catch {
         console.log('[AutoAssign] No existing orders found, will create new');
       }
 
@@ -55,8 +55,9 @@ export const useOrderMatching = () => {
         orderId,
         code: createdOrder?.code || orderId,
       };
-    } catch (error: any) {
-      console.error('[AutoAssign] Order matching error:', error?.message);
+    } catch (error: unknown) {
+      const err = error as { message?: string };
+      console.error('[AutoAssign] Order matching error:', err.message);
       return null;
     }
   }, []);

@@ -1,14 +1,14 @@
 /**
  * KPIGrid
- * SRP: Displays 4 key metric cards in a 2x2 grid with animated entry
+ * SRP: Horizontal scrolling strip of key metrics
+ * Hallmark: snap-scroll strip replaces generic 2×2 grid
  */
 
 import React, { useMemo } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
-import Animated, { FadeInDown } from 'react-native-reanimated';
-import { Theme } from '@src/constants/Theme';
+import Animated, { FadeInRight } from 'react-native-reanimated';
 import { Fonts } from '@src/constants/Fonts';
 import { KPIItem } from '../../types';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -24,28 +24,23 @@ const KPICard: React.FC<{ item: KPIItem; index: number }> = ({ item, index }) =>
     () =>
       StyleSheet.create({
         card: {
-          flex: 1,
-          minWidth: '45%',
+          width: 132,
           backgroundColor: colors.background.card,
-          borderRadius: 16,
+          borderRadius: 14,
           padding: 14,
-          ...Theme.shadows.sm,
+          borderWidth: 1,
+          borderColor: colors.border,
         },
-        cardTop: {
-          flexDirection: 'row',
-          justifyContent: 'space-between',
+        iconContainer: {
+          width: 32,
+          height: 32,
+          borderRadius: 8,
+          justifyContent: 'center',
           alignItems: 'center',
           marginBottom: 10,
         },
-        iconContainer: {
-          width: 38,
-          height: 38,
-          borderRadius: 11,
-          justifyContent: 'center',
-          alignItems: 'center',
-        },
         cardValue: {
-          fontSize: 20,
+          fontSize: 18,
           fontFamily: Fonts.bold,
           fontWeight: '700',
           color: colors.text.primary,
@@ -60,7 +55,7 @@ const KPICard: React.FC<{ item: KPIItem; index: number }> = ({ item, index }) =>
           fontSize: 10,
           fontFamily: Fonts.regular,
           color: colors.text.disabled,
-          marginTop: 4,
+          marginTop: 3,
         },
       }),
     [colors]
@@ -68,13 +63,11 @@ const KPICard: React.FC<{ item: KPIItem; index: number }> = ({ item, index }) =>
 
   return (
     <Animated.View
-      entering={FadeInDown.delay(index * 80).springify().damping(15)}
+      entering={FadeInRight.delay(index * 60).springify().damping(15)}
       style={styles.card}
     >
-      <View style={styles.cardTop}>
-        <View style={[styles.iconContainer, { backgroundColor: item.bgColor }]}>
-          <Ionicons name={item.icon as any} size={20} color={item.color} />
-        </View>
+      <View style={[styles.iconContainer, { backgroundColor: item.bgColor }]}>
+        <Ionicons name={item.icon as any} size={16} color={item.color} />
       </View>
       <Text style={styles.cardValue} numberOfLines={1}>{item.value}</Text>
       <Text style={styles.cardLabel} numberOfLines={1}>{item.label}</Text>
@@ -87,24 +80,29 @@ const KPICard: React.FC<{ item: KPIItem; index: number }> = ({ item, index }) =>
 
 export const KPIGrid: React.FC<KPIGridProps> = ({ items }) => {
   return (
-    <View style={staticStyles.container}>
-      <View style={staticStyles.grid}>
+    <View style={staticStyles.outer}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={staticStyles.scrollContent}
+        snapToInterval={144}
+        decelerationRate="fast"
+      >
         {items.map((item, index) => (
           <KPICard key={item.label} item={item} index={index} />
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 };
 
 const staticStyles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    marginTop: -16,
+  outer: {
+    marginTop: 16,
+    marginBottom: 4,
   },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 10,
+  scrollContent: {
+    paddingHorizontal: 20,
+    gap: 12,
   },
 });

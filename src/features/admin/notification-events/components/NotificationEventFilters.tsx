@@ -16,7 +16,7 @@ export const NotificationEventFilters: React.FC<NotificationEventFiltersProps> =
   onChange,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -21,7 +21,7 @@ interface TopCustomerRowProps {
 
 export const TopCustomerRow: React.FC<TopCustomerRowProps> = ({ customer, rank }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createTopCustomerRowStyles(colors), [colors]);
+  const styles = createTopCustomerRowStyles(colors);
 
   const RANK_COLORS = [
     colors.status.warning,

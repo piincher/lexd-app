@@ -10,7 +10,7 @@ import { createStyles } from './RouteListLoading.styles';
 
 export const RouteListLoading: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.loadingContainer}>

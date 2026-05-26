@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { createStyles } from "./CertificateDetailActions.styles";
@@ -24,7 +24,7 @@ export const CertificateDetailActions: React.FC<
   onRevoke,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <>

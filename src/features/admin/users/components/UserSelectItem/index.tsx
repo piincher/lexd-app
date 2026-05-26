@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, Text, StyleSheet } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
@@ -11,7 +11,7 @@ interface UserSelectItemProps {
 
 export const UserSelectItem: React.FC<UserSelectItemProps> = ({ item }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={styles.container} key={item._id}>
       <Text style={styles.userName}>

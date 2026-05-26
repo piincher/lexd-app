@@ -25,6 +25,7 @@ interface GoodsListHeaderProps {
   mode: ShippingMode;
   onChangeMode: (mode: ShippingMode) => void;
   loading?: boolean;
+  onScanPress?: () => void;
   onExportPress?: () => void;
   isSelectionMode?: boolean;
   onToggleSelectionMode?: () => void;
@@ -36,6 +37,7 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
   mode,
   onChangeMode,
   loading = false,
+  onScanPress,
   onExportPress,
   isSelectionMode,
   onToggleSelectionMode,
@@ -60,6 +62,7 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
         <Text style={[styles.title, { color: colors.text.primary }]}>Marchandises</Text>
         <View style={styles.toolbarActions}>
           <GoodsListHeaderActions
+            onScanPress={onScanPress}
             onToggleSelectionMode={onToggleSelectionMode}
             onExportPress={onExportPress}
             isSelectionMode={isSelectionMode}

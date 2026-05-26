@@ -1,6 +1,6 @@
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Fonts } from "@src/constants/Fonts";
-import { useMemo } from "react";
+
 import { StyleSheet, Text, View } from "react-native";
 import type { StyleProp, ViewStyle } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -14,7 +14,7 @@ interface RowDetailsProps {
 
 export const RowDetails = ({ label, value, icon, style }: RowDetailsProps) => {
    const { colors } = useAppTheme();
-   const styles = useMemo(() => StyleSheet.create({
+   const styles = StyleSheet.create({
       rowContainer: {
          flexDirection: "row",
          alignItems: "center",
@@ -41,7 +41,7 @@ export const RowDetails = ({ label, value, icon, style }: RowDetailsProps) => {
          fontFamily: Fonts.bold,
          fontSize: 16,
       },
-   }), [colors]);
+   });
 
    return (
       <View style={[styles.rowContainer, style]}>

@@ -53,7 +53,7 @@ const ShimmerBlock: React.FC<{
 
 export const ClientCardSkeleton: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
   <Animated.View entering={FadeIn.duration(200)} style={styles.wrapper}>
     <View style={styles.card}>

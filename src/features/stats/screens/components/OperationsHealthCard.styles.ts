@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme, lightTheme } from '@src/constants/Theme';
+import { lightTheme } from '@src/constants/Theme';
 
 export const createOperationsHealthStyles = (colors: typeof lightTheme.colors) =>
   StyleSheet.create({
@@ -8,8 +8,9 @@ export const createOperationsHealthStyles = (colors: typeof lightTheme.colors) =
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
       borderRadius: 16,
-      padding: 18,
-      ...Theme.shadows.sm,
+      padding: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
     header: {
       flexDirection: 'row',
@@ -18,13 +19,14 @@ export const createOperationsHealthStyles = (colors: typeof lightTheme.colors) =
       marginBottom: 14,
     },
     title: {
-      fontSize: 15,
+      fontSize: 16,
       fontFamily: Fonts.bold,
       fontWeight: '700',
       color: colors.text.primary,
+      letterSpacing: -0.2,
     },
     subtitle: {
-      fontSize: 11,
+      fontSize: 12,
       fontFamily: Fonts.regular,
       color: colors.text.disabled,
       marginTop: 2,
@@ -50,15 +52,15 @@ export const createOperationsHealthStyles = (colors: typeof lightTheme.colors) =
       padding: 12,
     },
     metricValue: {
-      fontSize: 18,
+      fontSize: 20,
       fontFamily: Fonts.bold,
       fontWeight: '700',
     },
     metricLabel: {
-      fontSize: 10,
+      fontSize: 11,
       fontFamily: Fonts.medium,
       color: colors.text.disabled,
-      marginTop: 3,
+      marginTop: 4,
     },
     stuckList: {
       marginTop: 14,
@@ -74,12 +76,12 @@ export const createOperationsHealthStyles = (colors: typeof lightTheme.colors) =
     },
     stuckText: {
       flex: 1,
-      fontSize: 11,
+      fontSize: 12,
       fontFamily: Fonts.medium,
       color: colors.text.secondary,
     },
     stuckDays: {
-      fontSize: 11,
+      fontSize: 12,
       fontFamily: Fonts.bold,
       color: colors.status.warning,
     },

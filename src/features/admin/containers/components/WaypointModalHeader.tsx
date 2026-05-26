@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
@@ -26,7 +26,7 @@ export const WaypointModalHeader: React.FC<WaypointModalHeaderProps> = ({
   onDismiss,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const getLocationTitle = (): string => {
     switch (locationCategory) {

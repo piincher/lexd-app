@@ -37,7 +37,7 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
   isLoading = false,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const scrollViewRef = React.useRef<ScrollView>(null);
 
   // Handle hardware back button on Android

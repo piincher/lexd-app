@@ -22,7 +22,7 @@ import { createStyles } from './RouteListScreen.styles';
 
 export const RouteListScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     routes,
     stats,

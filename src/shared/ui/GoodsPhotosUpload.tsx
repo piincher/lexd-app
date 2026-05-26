@@ -4,7 +4,7 @@
  * Pure UI - no business logic
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Alert } from 'react-native';
 import { Card, Text, Button } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
@@ -24,7 +24,7 @@ export const GoodsPhotosUpload: React.FC<GoodsPhotosUploadProps> = ({
   maxPhotos = MAX_PHOTOS,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const handleTakePhoto = async () => {
     if (photoUris.length >= maxPhotos) {

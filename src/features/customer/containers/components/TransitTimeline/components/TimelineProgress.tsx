@@ -17,7 +17,7 @@ export const TimelineProgress: React.FC<TimelineProgressProps> = ({
   totalCount,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       marginTop: 24,
     },
@@ -42,7 +42,7 @@ export const TimelineProgress: React.FC<TimelineProgressProps> = ({
       color: colors.text.inverse,
       marginTop: 2,
     },
-  }), [colors]);
+  });
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,5 @@
-import { useCallback, useMemo } from "react";
+
+import { useCallback } from "react";
 import { useWindowDimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -11,7 +12,7 @@ export const useOnboardingScreen = () => {
   const { width, height } = useWindowDimensions();
   const { isDark } = useAppTheme();
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const styles = useMemo(() => createStyles(), []);
+  const styles = createStyles();
 
   const onboardingData = useOnboarding(width);
 

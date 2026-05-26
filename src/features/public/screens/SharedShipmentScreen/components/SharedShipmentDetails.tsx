@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -20,7 +20,7 @@ interface Props {
 export const SharedShipmentDetails: React.FC<Props> = ({ type, data, estimatedDelivery }) => {
   const { colors } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     card: {
       padding: Theme.spacing.lg,
       borderRadius: Theme.radius.xl,
@@ -70,7 +70,7 @@ export const SharedShipmentDetails: React.FC<Props> = ({ type, data, estimatedDe
       fontSize: 16,
       color: colors.primary.main,
     },
-  }), [colors]);
+  });
 
   const DetailRow: React.FC<{ label: string; value?: string }> = ({ label, value }) => {
     if (!value) return null;

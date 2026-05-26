@@ -23,7 +23,7 @@ function StatBox({
   color: string;
 }) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   return (
     <View style={[styles.statBox, { borderColor: color + "30" }]}>
       <MaterialCommunityIcons name={icon} size={22} color={color} />
@@ -37,7 +37,7 @@ function StatBox({
 
 export function AnnouncementStatsModal({ visible, announcementId, onClose }: AnnouncementStatsModalProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const { data: stats, isLoading } = useAnnouncementReceiptStats(announcementId ?? "", visible && !!announcementId);
 
   return (

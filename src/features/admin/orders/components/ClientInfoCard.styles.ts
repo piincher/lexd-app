@@ -1,11 +1,10 @@
 import { StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
-import { useMemo } from 'react';
 
 export const useClientInfoCardStyles = () => {
   const { colors } = useAppTheme();
-  return useMemo(() => StyleSheet.create({
+  return StyleSheet.create({
     card: {
       padding: 16,
       borderRadius: 12,
@@ -58,5 +57,5 @@ export const useClientInfoCardStyles = () => {
     whatsappButton: {
       flex: 1,
     },
-  }), [colors]);
+  });
 };

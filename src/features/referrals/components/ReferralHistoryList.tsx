@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { ReferralPerson } from '../types';
@@ -13,7 +13,7 @@ const getName = (item: ReferralPerson) =>
 
 export const ReferralHistoryList: React.FC<ReferralHistoryListProps> = ({ referrals }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   if (referrals.length === 0) {
     return (

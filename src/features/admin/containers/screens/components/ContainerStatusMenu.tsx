@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Menu } from 'react-native-paper';
@@ -38,7 +38,7 @@ export const ContainerStatusMenu: React.FC<ContainerStatusMenuProps> = ({
   onUpdateStatus,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const handleUpdateStatus = (newStatus: ContainerStatus) => {
     if (isUpdatingStatus) return;

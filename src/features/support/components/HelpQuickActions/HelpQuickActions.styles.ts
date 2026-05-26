@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -8,7 +9,7 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: 16,
-      paddingTop: 12,
+      paddingTop: 18,
       paddingBottom: 4,
     },
     title: {
@@ -24,23 +25,26 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     card: {
       flex: 1,
       alignItems: "center",
-      paddingVertical: 12,
-      borderRadius: 14,
+      paddingVertical: 14,
+      paddingHorizontal: 4,
+      borderRadius: 16,
       backgroundColor: colors.background.card,
       borderWidth: 1,
       borderColor: colors.border,
+      ...Theme.shadows.sm,
     },
     iconWrapper: {
-      width: 44,
-      height: 44,
-      borderRadius: 12,
+      width: 46,
+      height: 46,
+      borderRadius: 14,
       justifyContent: "center",
       alignItems: "center",
-      marginBottom: 6,
+      marginBottom: 8,
     },
     label: {
       fontFamily: Fonts.medium,
-      fontSize: 11,
+      fontSize: 11.5,
       color: colors.text.secondary,
+      textAlign: "center",
     },
   });

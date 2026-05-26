@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -16,7 +16,7 @@ const formatMoney = (value: number) =>
 export const VipProgressCard: React.FC<Props> = ({ vip, rewards }) => {
   const { colors } = useAppTheme();
   const progress = Math.max(0, Math.min(100, vip.progressPercent || 0));
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     wrapper: { paddingHorizontal: 16, marginTop: 16 },
     card: {
       backgroundColor: colors.background.card,
@@ -43,7 +43,7 @@ export const VipProgressCard: React.FC<Props> = ({ vip, rewards }) => {
     rewardBox: { flex: 1, borderRadius: 12, padding: 10, backgroundColor: colors.background.paper },
     rewardValue: { color: colors.text.primary, fontSize: 16, fontWeight: '900' },
     rewardLabel: { color: colors.text.secondary, fontSize: 11, fontWeight: '600', marginTop: 2 },
-  }), [colors]);
+  });
 
   return (
     <View style={styles.wrapper}>

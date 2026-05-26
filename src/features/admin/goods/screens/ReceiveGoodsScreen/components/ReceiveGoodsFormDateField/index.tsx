@@ -5,14 +5,15 @@
 
 import React, { useState } from 'react';
 import { View, Pressable, Text, StyleSheet } from 'react-native';
-import { Controller } from 'react-hook-form';
+import { Control, Controller, UseFormSetValue } from 'react-hook-form';
 import { DatePickerModal } from 'react-native-paper-dates';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import type { ReceiveGoodsFormData } from '../../types';
 
 interface ReceiveGoodsFormDateFieldProps {
-  control: any;
-  setValue: any;
+  control: Control<ReceiveGoodsFormData>;
+  setValue: UseFormSetValue<ReceiveGoodsFormData>;
   error?: string;
 }
 
@@ -22,13 +23,13 @@ export const ReceiveGoodsFormDateField: React.FC<ReceiveGoodsFormDateFieldProps>
   error,
 }) => {
   const { colors } = useAppTheme();
+  const [show, setShow] = useState(false);
 
   return (
     <Controller
       control={control}
       name="receivedDate"
       render={({ field: { value } }) => {
-        const [show, setShow] = useState(false);
         const displayDate = value
           ? new Date(value).toLocaleDateString('fr-FR')
           : null;

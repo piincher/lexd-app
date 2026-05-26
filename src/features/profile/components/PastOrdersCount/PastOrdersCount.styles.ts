@@ -7,13 +7,24 @@ type Colors = typeof lightTheme.colors;
 export const createStyles = (colors: Colors) =>
   StyleSheet.create({
     countContainer: {
-      paddingHorizontal: 16,
-      paddingVertical: 8,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: 12,
+      paddingHorizontal: 2,
       backgroundColor: colors.background.default,
     },
     countText: {
-      fontFamily: Fonts.meduim,
+      flexShrink: 0,
+      fontFamily: Fonts.bold,
       fontSize: 14,
+      color: colors.text.primary,
+    },
+    countHint: {
+      flex: 1,
+      textAlign: "right",
+      fontFamily: Fonts.regular,
+      fontSize: 12,
       color: colors.text.secondary,
     },
   });

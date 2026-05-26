@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -19,7 +19,7 @@ const TYPE_CONFIG: Record<SearchResult['type'], { icon: string; colorKey: string
 
 export const SearchResultCard: React.FC<SearchResultCardProps> = ({ result, onPress }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const typeConfig = TYPE_CONFIG[result.type];
 
   const getColor = (key: string) => {

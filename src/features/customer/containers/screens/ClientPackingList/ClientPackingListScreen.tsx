@@ -37,6 +37,7 @@ const ClientPackingListScreen: React.FC = () => {
     handleShare,
     getShippingModeIcon,
     getStatusColor,
+    getStatusLabel,
     formatDate,
     formatDateTime,
     handleRefresh,
@@ -53,7 +54,7 @@ const ClientPackingListScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <PackingListHeader onBack={handlers.handleBack} onDownload={handleDownloadPDF} onShare={handleShare} downloadProgress={downloadProgress} />
       <ScrollView contentContainerStyle={styles.scrollContent} refreshControl={<RefreshControl refreshing={isFetching} onRefresh={handleRefresh} />}>
-        <PackingListSummary containerNumber={packingList.containerNumber} shippingMode={packingList.shippingMode} status={packingList.tracking?.status || 'N/A'} totalCBM={packingList.summary?.totalCBM || 0} totalWeight={packingList.summary?.totalWeight || 0} totalPackages={packingList.summary?.totalItems || 0} departureDate={packingList.route?.departureDate} arrivalDate={packingList.tracking?.estimatedArrival} loadDate={packingList.schedule?.loadDate} dakarPortArrivalAt={packingList.schedule?.dakarPortArrivalAt || packingList.tracking?.dakarPortArrivalAt} signature={packingList.signature} getShippingModeIcon={getShippingModeIcon} getStatusColor={getStatusColor} formatDate={formatDate} formatDateTime={formatDateTime} />
+        <PackingListSummary containerNumber={packingList.containerNumber} shippingMode={packingList.shippingMode} status={packingList.tracking?.status || 'N/A'} statusLabel={getStatusLabel(packingList.tracking?.status)} totalCBM={packingList.summary?.totalCBM || 0} totalWeight={packingList.summary?.totalWeight || 0} totalPackages={packingList.summary?.totalItems || 0} departureDate={packingList.route?.departureDate} arrivalDate={packingList.tracking?.estimatedArrival} loadDate={packingList.schedule?.loadDate} dakarPortArrivalAt={packingList.schedule?.dakarPortArrivalAt || packingList.tracking?.dakarPortArrivalAt} signature={packingList.signature} getShippingModeIcon={getShippingModeIcon} getStatusColor={getStatusColor} formatDate={formatDate} formatDateTime={formatDateTime} />
         {packingList.consignee && <PackingListConsignee consignee={packingList.consignee} onContactPress={handlers.handleShowContactDialog} onAddressPress={handleOpenMaps} />}
         <PackingListGoods goods={packingList.items || []} getStatusColor={getStatusColor} />
         <PackingListFooter onDownloadPDF={handleDownloadPDF} onShare={handleShare} isDownloading={downloadMutation.isPending} />

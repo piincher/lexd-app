@@ -17,7 +17,7 @@ import { createStyles } from './AssignGoodsScreen.styles';
 
 export const AssignGoodsScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     airwayBillId, airwayBill, goodsList, cargoBags, isLoading,
     selectedIds, selectedBagId, setSelectedBagId, totalSelectedWeight,

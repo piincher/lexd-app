@@ -25,7 +25,7 @@ export const CampaignCard: React.FC<CampaignCardProps> = ({
   isSending,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const statusStyle = getStatusStyle(campaign.status, colors, isDark);
   const canAct = campaign.status === "draft" || campaign.status === "scheduled";
 

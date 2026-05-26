@@ -37,7 +37,7 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
   onAddPress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const renderItem: ListRenderItem<Goods> = useCallback(({ item }) => (
     <GoodsCard goods={item} onPress={() => onGoodsPress(item._id)} />
   ), [onGoodsPress]);

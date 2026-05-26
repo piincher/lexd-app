@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,7 +12,7 @@ interface PaymentHistoryErrorProps {
 
 export const PaymentHistoryError: React.FC<PaymentHistoryErrorProps> = ({ error, onRetry }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createPaymentHistoryErrorStyles(colors), [colors]);
+  const styles = createPaymentHistoryErrorStyles(colors);
 
   return (
     <View style={styles.errorContainer}>

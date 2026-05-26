@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -6,7 +6,7 @@ import { useAppTheme } from "@src/providers/ThemeProvider";
 export const usePromoCodeInputStyles = () => {
   const { colors } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       paddingHorizontal: 16,
       paddingVertical: 8,
@@ -86,7 +86,7 @@ export const usePromoCodeInputStyles = () => {
     removeButton: {
       padding: 4,
     },
-  }), [colors]);
+  });
 
   return { styles, colors };
 };

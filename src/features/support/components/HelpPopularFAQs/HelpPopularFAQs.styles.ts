@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -22,13 +23,14 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       gap: 10,
     },
     card: {
-      width: 220,
+      width: 230,
+      height: 134,
       padding: 14,
       borderRadius: 16,
       backgroundColor: colors.background.card,
       borderWidth: 1,
       borderColor: colors.border,
-      marginRight: 10,
+      ...Theme.shadows.sm,
     },
     badge: {
       alignSelf: "flex-start",
@@ -40,6 +42,7 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     badgeText: {
       fontFamily: Fonts.bold,
       fontSize: 10,
+      letterSpacing: 0.4,
       textTransform: "uppercase",
     },
     question: {

@@ -12,7 +12,7 @@ interface GoodsListItemImageProps {
 
 export const GoodsListItemImage: React.FC<GoodsListItemImageProps> = ({ photoUrls }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const hasPhoto = photoUrls.length > 0;
   return (
     <View style={styles.imageContainer}>

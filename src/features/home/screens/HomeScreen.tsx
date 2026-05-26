@@ -3,7 +3,7 @@
  * Thin orchestrator composing home page sections
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Animated from 'react-native-reanimated';
@@ -28,7 +28,7 @@ import { getStyles } from './HomeScreen.styles';
 const HomeScreen: React.FC = () => {
   const { token, firstName, whatsappStyle, scrollHandler, handlers } = useHomeScreen();
   const { colors } = useAppTheme();
-  const styles = useMemo(() => getStyles(colors), [colors]);
+  const styles = getStyles(colors);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>

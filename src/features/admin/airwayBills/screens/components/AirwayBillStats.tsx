@@ -23,7 +23,7 @@ interface StatItemProps {
 
 const StatItem: React.FC<StatItemProps> = ({ icon, label, value, color, bgColor }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={[styles.statCard, { backgroundColor: colors.background.card }]}>
       <View style={[styles.iconContainer, { backgroundColor: bgColor }]}>
@@ -43,7 +43,7 @@ export const AirwayBillStats: React.FC<AirwayBillStatsProps> = ({
   totalWeight,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <StatItem

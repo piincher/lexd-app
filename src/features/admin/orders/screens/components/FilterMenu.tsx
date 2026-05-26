@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text, Menu, Divider } from 'react-native-paper';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ interface FilterMenuProps {
 export const FilterMenu: React.FC<FilterMenuProps> = ({ statusFilter, onSelect }) => {
   const [visible, setVisible] = useState(false);
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Menu

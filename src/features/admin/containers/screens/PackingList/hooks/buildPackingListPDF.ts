@@ -27,7 +27,7 @@ export const buildPackingListPDF = (
     const statusColor = isPaid ? '#10B981' : isPartial ? '#F59E0B' : '#EF4444';
     const statusText = isPaid ? 'PAYÉ' : isPartial ? 'PARTIELLEMENT PAYÉ' : 'IMPAYÉ';
 
-    const goodsRows = client.goods.map((item: any, index: number) => `
+    const goodsRows = client.goods.map((item: ClientGoodsGroup['goods'][number], index: number) => `
       <tr style="background: ${index % 2 === 0 ? '#ffffff' : '#f9fafb'};">
         <td style="padding: 8px 12px; font-size: 12px; color: #16a34a; font-weight: 600;">${index + 1}</td>
         <td style="padding: 8px 12px; font-size: 11px; color: #374151; font-family: monospace;">${item.goodsId}</td>

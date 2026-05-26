@@ -24,7 +24,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   photoUrls = [], imageHeight = 120, showCounter = true, editable = false, onAddPhoto, emptyLabel = 'Aucune photo',
 }) => {
   const { colors } = useAppTheme();
-  const s = React.useMemo(() => createStyles(colors), [colors]);
+  const s = createStyles(colors);
   const [visible, setVisible] = useState(false);
   const [idx, setIdx] = useState(0);
   const fade = useSharedValue(0);

@@ -5,6 +5,7 @@ import * as Sharing from 'expo-sharing';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { CUSTOMER_CONTAINER_STATUS_LABELS, customerStatusLabel } from '@src/shared/lib/customerStatus';
 import { useGetMyPackingList, useDownloadPackingListPDF } from '../../../hooks/useCustomerContainers';
 
 export const useClientPackingListScreen = (containerId: string) => {
@@ -29,7 +30,8 @@ export const useClientPackingListScreen = (containerId: string) => {
   const formatDate = useCallback((d?: string) => d ? format(new Date(d), 'dd MMMM yyyy', { locale: fr }) : 'Non disponible', []);
   const formatDateTime = useCallback((d?: string | null) => d ? format(new Date(d), 'dd MMMM yyyy HH:mm', { locale: fr }) : 'Non disponible', []);
   const getShippingModeIcon = useCallback((m: string) => m === 'SEA' ? 'ferry' : 'airplane', []);
-  const getStatusColor = useCallback((s: string) => ({ BOOKED: { bg: colors.feedback.infoBg, text: colors.primary.main, icon: colors.primary.main }, EMPTY_TO_WAREHOUSE: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, LOADING: { bg: colors.feedback.warningBg, text: colors.status.warning, icon: colors.status.warning }, LOADED: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, GATE_IN_FULL: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, LOADED_ON_VESSEL: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, IN_TRANSIT: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, ARRIVED: { bg: colors.feedback.successBg, text: colors.status.success, icon: colors.status.success }, DISCHARGED: { bg: colors.feedback.successBg, text: colors.status.success, icon: colors.status.success }, READY_FOR_PICKUP: { bg: colors.feedback.warningBg, text: colors.status.warning, icon: colors.status.warning }, DELIVERED: { bg: colors.feedback.successBg, text: colors.status.success, icon: colors.status.success } }[s] || { bg: colors.background.paper, text: colors.text.secondary, icon: colors.text.secondary }), [colors]);
+  const getStatusColor = useCallback((s: string) => ({ BOOKED: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, EMPTY_TO_WAREHOUSE: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, LOADING: { bg: colors.feedback.warningBg, text: colors.status.warning, icon: colors.status.warning }, LOADED: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, GATE_IN_FULL: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, LOADED_ON_VESSEL: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, IN_TRANSIT: { bg: colors.feedback.infoBg, text: colors.status.info, icon: colors.status.info }, ARRIVED: { bg: colors.feedback.successBg, text: colors.status.success, icon: colors.status.success }, DISCHARGED: { bg: colors.feedback.successBg, text: colors.status.success, icon: colors.status.success }, READY_FOR_PICKUP: { bg: colors.feedback.warningBg, text: colors.status.warning, icon: colors.status.warning }, DELIVERED: { bg: colors.feedback.successBg, text: colors.status.success, icon: colors.status.success } }[s] || { bg: colors.background.paper, text: colors.text.secondary, icon: colors.text.secondary }), [colors]);
+  const getStatusLabel = useCallback((s?: string | null) => customerStatusLabel(CUSTOMER_CONTAINER_STATUS_LABELS, s), []);
   const statusColors = useMemo(() => packingList?.tracking ? getStatusColor(packingList.tracking.status) : { bg: colors.background.paper, text: colors.text.secondary, icon: colors.text.secondary }, [packingList, getStatusColor]);
   const generateShareText = useCallback(() => {
     if (!packingList) return '';
@@ -62,5 +64,5 @@ export const useClientPackingListScreen = (containerId: string) => {
     } catch { Alert.alert('Erreur', 'Impossible de partager la liste de colisage'); }
   }, [packingList, containerId, downloadMutation, generateShareText]);
 
-  return { packingList, isLoading, isError, error, isFetching, contactDialogVisible, setContactDialogVisible, snackbarVisible, setSnackbarVisible, snackbarMessage, downloadProgress, downloadMutation, handleRefresh, showSnackbar, handleCallConsignee, handleOpenMaps, handleDownloadPDF, handleShare, generateShareText, getShippingModeIcon, getStatusColor, formatDate, formatDateTime, statusColors };
+  return { packingList, isLoading, isError, error, isFetching, contactDialogVisible, setContactDialogVisible, snackbarVisible, setSnackbarVisible, snackbarMessage, downloadProgress, downloadMutation, handleRefresh, showSnackbar, handleCallConsignee, handleOpenMaps, handleDownloadPDF, handleShare, generateShareText, getShippingModeIcon, getStatusColor, getStatusLabel, formatDate, formatDateTime, statusColors };
 };

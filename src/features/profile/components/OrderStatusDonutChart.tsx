@@ -17,22 +17,30 @@ interface OrderStatusDonutChartProps {
 }
 
 export const OrderStatusDonutChart: React.FC<OrderStatusDonutChartProps> = ({ data, total }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
 
   if (data.length === 0) {
     return (
-      <Animated.View entering={FadeInDown.delay(100).duration(400)} style={[styles.card, { backgroundColor: colors.background.card }]}>
-        <Text style={[styles.title, { color: colors.text.primary }]}>Etat des Marchandises</Text>
+      <Animated.View
+        entering={FadeInDown.delay(100).duration(400)}
+        style={[styles.card, { backgroundColor: colors.background.card, borderColor: colors.border }]}
+      >
+        <Text style={[styles.title, { color: colors.text.primary }]}>État des marchandises</Text>
         <View style={styles.emptyState}>
-          <Text style={[styles.emptyText, { color: colors.text.secondary }]}>Aucune donnee disponible</Text>
+          <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
+            Aucune donnée disponible
+          </Text>
         </View>
       </Animated.View>
     );
   }
 
   return (
-    <Animated.View entering={FadeInDown.delay(100).duration(400)} style={[styles.card, { backgroundColor: colors.background.card }]}>
-      <Text style={[styles.title, { color: colors.text.primary }]}>Etat des Marchandises</Text>
+    <Animated.View
+      entering={FadeInDown.delay(100).duration(400)}
+      style={[styles.card, { backgroundColor: colors.background.card, borderColor: colors.border }]}
+    >
+      <Text style={[styles.title, { color: colors.text.primary }]}>État des marchandises</Text>
 
       <View style={styles.chartRow}>
         <PieChart
@@ -73,6 +81,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginHorizontal: 16,
     marginTop: 16,
+    borderWidth: 1,
   },
   title: {
     fontFamily: Fonts.bold,

@@ -4,7 +4,7 @@
  * Improved with better padding, borders, and placeholder styling
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, Text, HelperText } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -40,7 +40,7 @@ export const FormInput: React.FC<FormInputProps> = ({
 }) => {
   const { colors, isDark } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       marginBottom: 4,
     },
@@ -81,7 +81,7 @@ export const FormInput: React.FC<FormInputProps> = ({
       fontSize: 12,
       marginTop: 2,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <View style={styles.container}>

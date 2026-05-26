@@ -10,7 +10,7 @@ import { createStyles } from './NotificationEventListScreen.styles';
 
 const NotificationEventListScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     filters,
     setFilters,

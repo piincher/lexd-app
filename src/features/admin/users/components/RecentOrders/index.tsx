@@ -14,7 +14,7 @@ interface OrderItemProps {
 
 const OrderItem: React.FC<OrderItemProps> = ({ order, isLast }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const statusConfig = STATUS_CONFIG[order.status as keyof typeof STATUS_CONFIG];
   
   return (

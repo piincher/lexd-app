@@ -30,4 +30,16 @@ export interface UseReceiveGoodsFormReturn {
   isFormValid: boolean;
   buildSubmitData: () => ReceiveGoodsInput | null;
   resetForm: () => void;
+  /** Batch intake: reset per-item fields, keep session-sticky fields + client. */
+  resetForNext: () => void;
+  /** Remember the warehouse location used, to default it on the next intake. */
+  persistLocation: (loc?: string) => void;
+  /** Idempotency key — included in every submit so a retried request returns the
+   *  already-saved goods instead of creating a duplicate. */
+  idempotencyKey: string;
+  /** Generate a fresh idempotency key — called after a successful save so the next
+   *  parcel in a batch intake gets its own key. */
+  regenerateIdempotencyKey: () => void;
+  /** Wipe the persisted form draft from AsyncStorage. Called after a successful save. */
+  clearDraft: () => Promise<void>;
 }

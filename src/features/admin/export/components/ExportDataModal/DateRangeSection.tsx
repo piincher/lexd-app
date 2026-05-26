@@ -20,7 +20,7 @@ export const DateRangeSection: React.FC<DateRangeSectionProps> = ({
   onEndPress,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <>

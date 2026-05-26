@@ -54,7 +54,7 @@ const ShimmerBlock: React.FC<{
 
 const OrderSkeletonItem: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <View
@@ -96,7 +96,7 @@ interface OrderListSkeletonProps {
 
 export const OrderListSkeleton: React.FC<OrderListSkeletonProps> = ({ count = 6 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
       {Array.from({ length: count }).map((_, i) => (

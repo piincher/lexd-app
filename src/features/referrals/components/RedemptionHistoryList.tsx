@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { RewardRedemption } from '../types';
@@ -19,7 +19,7 @@ export const RedemptionHistoryList: React.FC<RedemptionHistoryListProps> = ({
   onCancel,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   if (redemptions.length === 0) return null;
 

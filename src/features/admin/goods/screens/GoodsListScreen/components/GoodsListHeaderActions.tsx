@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 interface GoodsListHeaderActionsProps {
+  onScanPress?: () => void;
   onToggleSelectionMode?: () => void;
   onExportPress?: () => void;
   isSelectionMode?: boolean;
@@ -12,6 +13,7 @@ interface GoodsListHeaderActionsProps {
 }
 
 export const GoodsListHeaderActions: React.FC<GoodsListHeaderActionsProps> = ({
+  onScanPress,
   onToggleSelectionMode,
   onExportPress,
   isSelectionMode,
@@ -20,6 +22,18 @@ export const GoodsListHeaderActions: React.FC<GoodsListHeaderActionsProps> = ({
   cardBgColor,
 }) => (
   <View style={styles.actionsContainer}>
+    {/* Scan button — hidden while in selection mode so it doesn't compete with the
+        cancel-selection affordance and so the toolbar stays clean for bulk operations. */}
+    {onScanPress && !isSelectionMode && (
+      <TouchableOpacity
+        onPress={onScanPress}
+        style={[styles.actionButton, { backgroundColor: cardBgColor }]}
+        activeOpacity={0.8}
+        accessibilityLabel="Scanner un QR code"
+      >
+        <Ionicons name="scan-outline" size={22} color={primaryColor} />
+      </TouchableOpacity>
+    )}
     {onToggleSelectionMode && (
       <TouchableOpacity
         onPress={onToggleSelectionMode}
@@ -33,7 +47,7 @@ export const GoodsListHeaderActions: React.FC<GoodsListHeaderActionsProps> = ({
         />
       </TouchableOpacity>
     )}
-    {onExportPress && (
+    {onExportPress && !isSelectionMode && (
       <TouchableOpacity
         onPress={onExportPress}
         style={[styles.actionButton, { backgroundColor: cardBgColor }]}

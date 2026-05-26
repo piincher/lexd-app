@@ -1,6 +1,6 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { navigationProps } from '@src/navigations/type';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
@@ -13,7 +13,7 @@ interface UserHeaderInfoProps {
 
 export const UserHeaderInfo = ({ firstName, lastName, navigation }: UserHeaderInfoProps) => {
 	const { colors } = useAppTheme();
-	const styles = useMemo(() => StyleSheet.create({
+	const styles = StyleSheet.create({
 		container: {
 			flexDirection: 'row',
 			justifyContent: 'space-between',
@@ -33,7 +33,7 @@ export const UserHeaderInfo = ({ firstName, lastName, navigation }: UserHeaderIn
 
 		textContent: { color: colors.primary.main, fontSize: 18, fontFamily: Fonts.bold },
 		activeOrderText: { marginLeft: 20, fontSize: 26, color: colors.primary.main, fontFamily: Fonts.bold, marginVertical: 10 },
-	}), [colors]);
+	});
 
 	return (
 		<>

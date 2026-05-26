@@ -49,7 +49,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
   onPress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const statusColor = getExtendedStatusColor(waypoint.status as ExtendedWaypointStatus);
   const segmentIcon = SEGMENT_TYPE_ICONS[waypoint.segmentType];
 

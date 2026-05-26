@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Surface, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -27,7 +27,7 @@ interface TrackingDetailsCardProps {
 
 export const TrackingDetailsCard: React.FC<TrackingDetailsCardProps> = ({ data }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     detailsCard: {
       padding: Theme.spacing.lg,
       borderRadius: Theme.radius.xl,
@@ -78,7 +78,7 @@ export const TrackingDetailsCard: React.FC<TrackingDetailsCardProps> = ({ data }
       fontSize: 16,
       color: colors.primary.main,
     },
-  }), [colors, isDark]);
+  });
 
   const DetailRow: React.FC<{ label: string; value?: string }> = ({ label, value }) => {
     if (!value) return null;

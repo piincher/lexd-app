@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, Text } from "react-native";
 import { Card } from "react-native-paper";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -17,7 +17,7 @@ interface RecentShipmentsProps {
 
 export const RecentShipments: React.FC<RecentShipmentsProps> = ({ shipments }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const StatusBadge = ({ status }: { status: string }) => {
     let badgeColor = colors.text.muted;

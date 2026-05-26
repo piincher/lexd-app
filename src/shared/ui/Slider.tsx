@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import {
 	Image,
 	StyleSheet,
@@ -23,7 +23,7 @@ interface bannerImageProps {
 const Slider = ({ bannerImages }: bannerImageProps) => {
 	const [imgActive, setActive] = useState(0);
 	const { colors } = useAppTheme();
-	const styles = useMemo(() => StyleSheet.create({
+	const styles = StyleSheet.create({
 		container: {
 			flex: 1,
 			backgroundColor: colors.background.default,
@@ -47,7 +47,7 @@ const Slider = ({ bannerImages }: bannerImageProps) => {
 			margin: 3,
 			color: colors.neutral[200],
 		},
-	}), [colors]);
+	});
 
 	const onChange = (nativeEvent: NativeScrollEvent) => {
 		if (nativeEvent) {

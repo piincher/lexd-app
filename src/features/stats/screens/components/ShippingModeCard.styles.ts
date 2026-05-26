@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 
 export const createShippingModeCardStyles = (colors: {
@@ -12,8 +11,9 @@ export const createShippingModeCardStyles = (colors: {
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
       borderRadius: 16,
-      padding: 18,
-      ...Theme.shadows.sm,
+      padding: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
     header: {
       flexDirection: 'row',
@@ -22,10 +22,11 @@ export const createShippingModeCardStyles = (colors: {
       marginBottom: 14,
     },
     title: {
-      fontSize: 15,
+      fontSize: 16,
       fontFamily: Fonts.bold,
       fontWeight: '700',
       color: colors.text.primary,
+      letterSpacing: -0.2,
     },
     totalText: {
       fontSize: 12,

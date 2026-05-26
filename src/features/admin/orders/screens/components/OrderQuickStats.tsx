@@ -20,16 +20,6 @@ interface StatItemProps {
   bgColor: string;
 }
 
-const StatItem: React.FC<StatItemProps> = ({ icon, value, label, color, bgColor }) => (
-  <View style={styles.statItem}>
-    <View style={[styles.statIcon, { backgroundColor: bgColor }]}>
-      <MaterialCommunityIcons name={icon as any} size={20} color={color} />
-    </View>
-    <Text style={styles.statValue}>{value}</Text>
-    <Text style={styles.statLabel}>{label}</Text>
-  </View>
-);
-
 export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
   quantity,
   weight,
@@ -37,16 +27,27 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({
   shippingMode,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
+
+  const StatItem: React.FC<StatItemProps> = ({ icon, value, label, color, bgColor }) => (
+    <View style={styles.statItem}>
+      <View style={[styles.statIcon, { backgroundColor: bgColor }]}>
+        <MaterialCommunityIcons name={icon as any} size={20} color={color} />
+      </View>
+      <Text style={styles.statValue}>{value}</Text>
+      <Text style={styles.statLabel}>{label}</Text>
+    </View>
+  );
+
   // Parse values safely to handle v1 API string responses
-  const parsedQuantity = quantity !== undefined && quantity !== '' 
-    ? parseInt(String(quantity), 10) || 0 
+  const parsedQuantity = quantity !== undefined && quantity !== ''
+    ? parseInt(String(quantity), 10) || 0
     : 0;
-    
+
   const parsedWeight = weight !== undefined && weight !== '' && weight !== '0' && weight !== 0
     ? String(weight)
     : null;
-    
+
   const parsedCBM = cbm !== undefined && cbm !== '' && cbm !== '0' && cbm !== 0
     ? String(cbm)
     : null;

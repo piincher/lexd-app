@@ -31,7 +31,7 @@ const getFormattedDate = () =>
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
   const navigation = useNavigation<navigationProps>();
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createDashboardHeaderStyles(colors, isDark), [colors, isDark]);
+  const styles = createDashboardHeaderStyles(colors, isDark);
 
   const initials = useMemo(
     () =>

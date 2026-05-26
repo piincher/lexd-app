@@ -3,7 +3,7 @@
  * Supports multiple variants, sizes, states, and accessibility
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { TouchableOpacity, Text, ActivityIndicator, View } from 'react-native';
 import type { ViewStyle, TextStyle } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -49,7 +49,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const { colors } = useAppTheme();
   const isDisabled = disabled || loading;
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const handlePress = () => {
     if (variant === 'primary' || variant === 'danger') {

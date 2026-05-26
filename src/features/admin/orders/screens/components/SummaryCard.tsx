@@ -3,7 +3,7 @@
  * Displays order totals summary with active/voired CBM and totals
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
@@ -17,7 +17,7 @@ interface SummaryCardProps {
 
 export const SummaryCard: React.FC<SummaryCardProps> = ({ summary }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const savings = summary.originalTotal - summary.currentTotal;
 
   return (

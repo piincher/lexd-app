@@ -22,7 +22,7 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
   currentWaypointIndex,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   if (!waypoints || waypoints.length === 0) {
     return (
       <View style={styles.emptyContainer}>

@@ -20,7 +20,7 @@ export const ContainerResultItem: React.FC<ContainerResultItemProps> = ({
   highlightQuery,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const baseStyles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const baseStyles = createStyles(colors, isDark);
   const highlightText = useSearchHighlight(highlightQuery);
   const statusColors: Record<string, string> = {
     BOOKED: colors.status.info,
@@ -34,7 +34,7 @@ export const ContainerResultItem: React.FC<ContainerResultItemProps> = ({
   const statusColor = statusColors[item.status] || colors.neutral[400];
   const utilizationPercent = item.utilizationPercent || 0;
 
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     secondaryText: {
       fontSize: 12,
       color: colors.neutral[500],
@@ -58,7 +58,7 @@ export const ContainerResultItem: React.FC<ContainerResultItemProps> = ({
       fontWeight: "600",
       color: colors.neutral[600],
     },
-  }), [colors]);
+  });
 
   return (
     <TouchableOpacity

@@ -31,7 +31,7 @@ export const ConsigneePicker: React.FC<ConsigneePickerProps> = ({
   onClear,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: { marginBottom: Theme.spacing.md },
     label: { fontSize: 14, fontWeight: '600', color: colors.neutral[800], marginBottom: Theme.spacing.xs },
     searchbar: { backgroundColor: colors.neutral[100], borderRadius: Theme.radius.md },
@@ -69,7 +69,7 @@ export const ConsigneePicker: React.FC<ConsigneePickerProps> = ({
     selectedInfo: { flexDirection: 'row', alignItems: 'center', gap: Theme.spacing.sm, flex: 1 },
     selectedText: { flex: 1 },
     clearButton: { padding: Theme.spacing.xs },
-  }), [colors, isDark]);
+  });
   if (selectedConsignee) {
     return (
       <View style={styles.container}>

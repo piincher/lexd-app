@@ -72,7 +72,7 @@ const createStyles = () => StyleSheet.create({
 
 export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({ total, pendingCount }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(), []);
+  const styles = createStyles();
   const navigation = useNavigation();
   return (
     <LinearGradient colors={Theme.gradients.glass} style={styles.header}>

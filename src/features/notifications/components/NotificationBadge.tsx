@@ -4,7 +4,7 @@
  * Can be used with any icon or component
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import Animated, { 
@@ -67,7 +67,7 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
 
   const currentSize = sizeStyles[size];
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     badge: {
       borderRadius: 100,
       justifyContent: 'center',
@@ -79,7 +79,7 @@ const NotificationBadge: React.FC<NotificationBadgeProps> = ({
       fontFamily: Fonts.bold,
       color: colors.text.inverse,
     },
-  }), [colors]);
+  });
 
   return (
     <Animated.View 

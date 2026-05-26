@@ -31,7 +31,7 @@ export const RedemptionRequestModal: React.FC<RedemptionRequestModalProps> = ({
   isSubmitting,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const [points, setPoints] = useState('');
   const [note, setNote] = useState('');
 

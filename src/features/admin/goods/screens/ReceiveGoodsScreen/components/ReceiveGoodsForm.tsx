@@ -3,11 +3,16 @@
  * Composes all form sections with React Hook Form
  */
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { Text } from 'react-native-paper';
 import { useWatch } from 'react-hook-form';
+import type { userData } from '@src/shared/types/user';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { GoodsDimensionsInput } from './GoodsDimensionsInput';
 import { GoodsPhotosUpload } from './GoodsPhotosUpload';
 import { GoodsConditionSelector } from './GoodsConditionSelector';
+import { ReceiveExceptionPanel } from './ReceiveExceptionPanel';
+import { RecentClientRail } from './RecentClientRail';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
 import { CostSummary } from '../../../components/CostSummary';
 import { ReceiveGoodsFormDateField } from './ReceiveGoodsFormDateField';
@@ -27,6 +32,8 @@ interface ReceiveGoodsFormProps extends ReceiveGoodsFormSectionProps {
 	onPhotoSelected: (uri: string) => void;
 	onPhotoRemoved: (uri: string) => void;
 	totalCost: number;
+	recentClients: userData[];
+	priceWarning?: string | null;
 }
 
 export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
@@ -44,10 +51,15 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
 	onPhotoSelected,
 	onPhotoRemoved,
 	totalCost,
+	recentClients,
+	priceWarning,
 }) => {
+	const { colors } = useAppTheme();
 	const shippingMode = useWatch({ control, name: 'shippingMode' }) || 'SEA';
 	const unitPrice = useWatch({ control, name: 'unitPrice' });
 	const weight = useWatch({ control, name: 'weight' });
+	const exceptionReasons = useWatch({ control, name: 'exceptionReasons' }) || [];
+	const isClientUnknown = exceptionReasons.includes('CLIENT_UNKNOWN');
 	const unitPriceValue = parseFloat(unitPrice?.replace(',', '.') || '0') || 0;
 	const weightValue = parseFloat(weight?.replace(',', '.') || '0') || 0;
 
@@ -59,11 +71,29 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
 			keyboardShouldPersistTaps="handled"
 			nestedScrollEnabled
 		>
-			<ClientSearchSection
-				selectedClient={selectedClient}
-				onSelectClient={onSelectClient}
-				error={clientError}
+			<ReceiveExceptionPanel
+				control={control}
+				setValue={setValue}
+				noteError={errors.exceptionNotes?.message}
+				photoCount={photoUris.length}
+				onUnknownClient={() => onSelectClient(null)}
 			/>
+			{isClientUnknown ? (
+				<View style={[styles.unknownClientNotice, { backgroundColor: colors.feedback.warningBg }]}>
+					<Text style={[styles.unknownClientText, { color: colors.feedback.warningDark }]}>
+						Ce colis sera enregistré dans la file de revue sans client.
+					</Text>
+				</View>
+			) : (
+				<>
+					<RecentClientRail clients={recentClients} onSelect={onSelectClient} />
+					<ClientSearchSection
+						selectedClient={selectedClient}
+						onSelectClient={onSelectClient}
+						error={clientError}
+					/>
+				</>
+			)}
 			<ReceiveGoodsFormBasicFields control={control} errors={errors} setValue={setValue} watch={watch} />
 			<GoodsDimensionsInput
 				control={control}
@@ -79,6 +109,7 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
 				control={control}
 				errors={errors}
 				shippingMode={shippingMode}
+				priceWarning={priceWarning}
 			/>
 			<ReceiveGoodsFormDateField
 				control={control}

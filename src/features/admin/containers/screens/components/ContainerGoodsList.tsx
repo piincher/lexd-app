@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
@@ -20,7 +20,7 @@ export const ContainerGoodsList: React.FC<ContainerGoodsListProps> = ({
   onMarkDelivered,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   if (goodsList.length === 0) {
     return (
       <Animated.View entering={FadeInUp} style={styles.card}>

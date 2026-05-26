@@ -40,7 +40,7 @@ export function WinBackLogFilters({
   onResponseFilterChange,
 }: WinBackLogFiltersProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   return (
     <View style={styles.container}>

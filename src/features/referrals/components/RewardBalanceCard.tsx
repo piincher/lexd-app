@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -22,7 +22,7 @@ export const RewardBalanceCard: React.FC<RewardBalanceCardProps> = ({
   onHistory,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const value = points * pointValueFCFA;
   const pendingValue = pendingPoints * pointValueFCFA;
   const hasPoints = points > 0;

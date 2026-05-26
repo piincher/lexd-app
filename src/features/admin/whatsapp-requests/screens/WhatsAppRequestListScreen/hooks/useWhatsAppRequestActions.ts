@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { Linking } from 'react-native';
 import { openWhatsApp } from '@src/shared/lib/openWhatsApp';
 import { useMarkRequestProcessing, useMarkRequestCompleted } from '../../../hooks';
 import { WhatsAppRequest } from '../../../api/whatsappRequestApi';

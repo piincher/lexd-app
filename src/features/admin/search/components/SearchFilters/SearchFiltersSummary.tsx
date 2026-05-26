@@ -19,7 +19,7 @@ export const SearchFiltersSummary: React.FC<SearchFiltersSummaryProps> = ({
   onRemove,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const entries = Object.entries(filters).filter(([, value]) => !!value);
 
   if (entries.length === 0) return null;

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, ActivityIndicator } from "react-native";
 import { FlashList } from "@shopify/flash-list";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { HelpFAQCard } from "../HelpFAQCard";
 import { HelpEmptyState } from "../HelpEmptyState";
 import type { FAQItem } from "../../types";
@@ -16,6 +17,7 @@ type HelpFAQListProps = {
   onFeedback: (faqId: string, isHelpful: boolean) => void;
   feedbackPending: boolean;
   searchActive: boolean;
+  ListHeaderComponent?: React.ComponentProps<typeof FlashList>["ListHeaderComponent"];
 };
 
 export function HelpFAQList({
@@ -29,22 +31,23 @@ export function HelpFAQList({
   onFeedback,
   feedbackPending,
   searchActive,
+  ListHeaderComponent,
 }: HelpFAQListProps) {
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center", paddingVertical: 40 }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-  }
+  const { colors } = useAppTheme();
 
-  if (faqs.length === 0) {
-    return <HelpEmptyState searchActive={searchActive} />;
-  }
+  // Keep the browse hub (ListHeaderComponent) mounted while loading/empty by routing those
+  // states through ListEmptyComponent rather than replacing the whole list.
+  const listEmpty = isLoading ? (
+    <View style={{ alignItems: "center", justifyContent: "center", paddingVertical: 48 }}>
+      <ActivityIndicator size="large" color={colors.primary.main} />
+    </View>
+  ) : (
+    <HelpEmptyState searchActive={searchActive} />
+  );
 
   return (
     <FlashList
-      data={faqs}
+      data={isLoading ? [] : faqs}
       keyExtractor={(item) => item._id || item.id || String(item.question)}
       renderItem={({ item }) => (
         <HelpFAQCard
@@ -58,8 +61,11 @@ export function HelpFAQList({
           feedbackPending={feedbackPending}
         />
       )}
-      contentContainerStyle={{ paddingVertical: 8 }}
+      ListHeaderComponent={ListHeaderComponent}
+      ListEmptyComponent={listEmpty}
+      contentContainerStyle={{ paddingBottom: 32 }}
       showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
     />
   );
 }

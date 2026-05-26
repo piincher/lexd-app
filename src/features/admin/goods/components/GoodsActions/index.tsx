@@ -17,7 +17,7 @@ interface GoodsActionsProps {
 
 export const GoodsActions: React.FC<GoodsActionsProps> = ({ onDelete, onEdit }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const navigation = useNavigation();
 
   return (

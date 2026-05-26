@@ -20,7 +20,7 @@ export const AssignGoodsSummary: React.FC<Props> = ({
   isOverCapacity,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       paddingHorizontal: Theme.spacing.lg,
       paddingVertical: Theme.spacing.sm,
@@ -28,7 +28,7 @@ export const AssignGoodsSummary: React.FC<Props> = ({
     },
     summaryText: { fontSize: 13, fontWeight: '600', color: colors.primary[700] },
     warningText: { fontSize: 12, fontWeight: '600', color: colors.status.error, marginTop: 4 },
-  }), [colors, isDark]);
+  });
   return (
   <View style={styles.container}>
     <CapacityIndicator

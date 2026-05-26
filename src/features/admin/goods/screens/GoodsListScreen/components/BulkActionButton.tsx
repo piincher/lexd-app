@@ -3,8 +3,7 @@ import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { ActivityIndicator } from 'react-native-paper';
-import { Theme } from '@src/constants/Theme';
-import { styles } from './GoodsBulkActionBar.styles';
+import { createStyles } from './GoodsBulkActionBar.styles';
 
 interface BulkActionButtonProps {
   icon: string;
@@ -23,7 +22,11 @@ export const BulkActionButton: React.FC<BulkActionButtonProps> = ({
   variant = 'primary',
   onPress,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  // Styles are exported as a factory (createStyles) to bind to the active theme — call it
+  // here instead of expecting a static `styles` export, which was the source of the
+  // "cannot read property 'actionButton' of undefined" crash.
+  const styles = createStyles(colors, isDark);
   const buttonStyle = variant === 'danger' ? styles.actionButtonDanger : styles.actionButton;
 
   return (

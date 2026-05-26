@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from 'react';
 import { Animated, FlatList, NativeScrollEvent, View } from "react-native";
 import type { NativeSyntheticEvent } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -41,7 +41,7 @@ export const OnboardingPager: React.FC<OnboardingPagerProps> = ({
   onComplete,
 }) => {
   const insets = useSafeAreaInsets();
-  const styles = useMemo(() => createStyles(insets), [insets]);
+  const styles = createStyles(insets);
 
   const renderItem = useCallback(
     ({ item, index }: { item: OnboardingSlideType; index: number }) => (

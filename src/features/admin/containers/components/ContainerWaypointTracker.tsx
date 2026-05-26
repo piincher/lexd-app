@@ -1,7 +1,7 @@
 /**
  * ContainerWaypointTracker - Comprehensive waypoint tracker for admin use
  */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { useContainerWaypointTracker } from './ContainerWaypointTracker/hooks';
 import {
@@ -27,7 +27,7 @@ export const ContainerWaypointTracker: React.FC<ContainerWaypointTrackerProps> =
   consignee,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const {
     expandedIndex,
     toggleExpand,

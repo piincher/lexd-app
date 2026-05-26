@@ -12,7 +12,7 @@ import { createStyles } from "./IssueCertificateScreen.styles";
 
 export default function IssueCertificateScreen() {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     searchQuery, setSearchQuery,
     selectedUser,

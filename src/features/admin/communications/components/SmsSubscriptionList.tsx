@@ -20,7 +20,7 @@ export const SmsSubscriptionList: React.FC<SmsSubscriptionListProps> = ({
   subscriptions,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const activeCount = subscriptions.filter((s) => s.isActive).length;
   const expiredCount = subscriptions.filter((s) => s.isExpired).length;
   const expiringSoonCount = subscriptions.filter((s) => s.isExpiringSoon).length;

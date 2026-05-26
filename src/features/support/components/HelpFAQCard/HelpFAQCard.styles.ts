@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -8,43 +9,59 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
   StyleSheet.create({
     card: {
       backgroundColor: colors.background.card,
-      borderRadius: 14,
-      padding: 14,
+      borderRadius: 16,
+      padding: 16,
       marginHorizontal: 16,
       marginBottom: 10,
       borderWidth: 1,
       borderColor: colors.border,
+      ...Theme.shadows.sm,
     },
     header: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      gap: 10,
+      gap: 12,
     },
     headerLeft: {
       flex: 1,
+      minWidth: 0,
+      gap: 7,
+    },
+    // Category now reads as a small color dot + label, lighter than a filled pill.
+    badgeRow: {
+      flexDirection: "row",
+      alignItems: "center",
       gap: 6,
     },
-    badge: {
-      alignSelf: "flex-start",
-      paddingHorizontal: 8,
-      paddingVertical: 2,
-      borderRadius: 6,
+    catDot: {
+      width: 7,
+      height: 7,
+      borderRadius: 4,
     },
     badgeText: {
       fontFamily: Fonts.bold,
       fontSize: 10,
+      letterSpacing: 0.5,
       textTransform: "uppercase",
     },
     question: {
       fontFamily: Fonts.medium,
-      fontSize: 14,
+      fontSize: 15,
       color: colors.text.primary,
-      lineHeight: 20,
+      lineHeight: 21,
+    },
+    chevronWrap: {
+      width: 30,
+      height: 30,
+      borderRadius: 15,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: colors.background.paper,
     },
     body: {
-      marginTop: 12,
-      paddingTop: 12,
+      marginTop: 14,
+      paddingTop: 14,
       borderTopWidth: 1,
       borderTopColor: colors.border,
     },
@@ -55,13 +72,19 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       lineHeight: 22,
     },
     actions: {
-      marginTop: 14,
-      gap: 10,
-    },
-    feedbackRow: {
+      marginTop: 16,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
+      gap: 12,
+    },
+    feedbackRow: {
+      flex: 1,
+      minWidth: 0,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 8,
+      flexWrap: "wrap",
     },
     feedbackLabel: {
       fontFamily: Fonts.regular,
@@ -73,18 +96,27 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       gap: 8,
     },
     feedbackBtn: {
-      padding: 6,
-      borderRadius: 8,
-      backgroundColor: colors.background.default,
+      width: 34,
+      height: 34,
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 10,
+      backgroundColor: colors.background.paper,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
     iconActions: {
       flexDirection: "row",
-      justifyContent: "flex-end",
       gap: 8,
     },
     iconBtn: {
-      padding: 6,
-      borderRadius: 8,
-      backgroundColor: colors.background.default,
+      width: 34,
+      height: 34,
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 10,
+      backgroundColor: colors.background.paper,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
   });

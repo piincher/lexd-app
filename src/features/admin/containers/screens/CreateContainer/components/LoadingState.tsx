@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, ActivityIndicator } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createStyles } from "./LoadingState.styles";
@@ -9,7 +9,7 @@ interface LoadingStateProps {
 
 export const LoadingState: React.FC<LoadingStateProps> = ({ visible }) => {
    const { colors } = useAppTheme();
-   const styles = useMemo(() => createStyles(colors), [colors]);
+   const styles = createStyles(colors);
 
    if (!visible) return null;
 

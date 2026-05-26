@@ -23,7 +23,7 @@ interface RouteListHeaderProps {
 
 export const RouteListHeader: React.FC<RouteListHeaderProps> = ({ stats }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <LinearGradient

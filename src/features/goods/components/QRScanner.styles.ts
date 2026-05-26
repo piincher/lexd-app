@@ -1,7 +1,7 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { useMemo } from "react";
+
 
 const { width } = Dimensions.get("window");
 export const SCANNER_SIZE = width * 0.7;
@@ -9,7 +9,7 @@ export const SCANNER_SIZE = width * 0.7;
 export const useQRScannerStyles = () => {
   const { colors } = useAppTheme();
 
-  return useMemo(() => StyleSheet.create({
+  return StyleSheet.create({
     container: {
       flex: 1,
       backgroundColor: colors.background.default,
@@ -158,5 +158,5 @@ export const useQRScannerStyles = () => {
       textAlign: "center",
       marginTop: 8,
     },
-  }), [colors]);
+  });
 };

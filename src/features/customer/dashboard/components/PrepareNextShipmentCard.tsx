@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +17,7 @@ export const PrepareNextShipmentCard: React.FC<Props> = ({
   onPreparePress,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     wrapper: { paddingHorizontal: 16, marginTop: 16 },
     card: {
       backgroundColor: colors.background.card,
@@ -50,7 +50,7 @@ export const PrepareNextShipmentCard: React.FC<Props> = ({
       justifyContent: 'center',
     },
     secondaryText: { color: colors.text.primary, fontSize: 12, fontWeight: '800', textAlign: 'center' },
-  }), [colors]);
+  });
 
   const secondary = actions.filter((action) => action.priority !== 'primary').slice(0, 2);
 

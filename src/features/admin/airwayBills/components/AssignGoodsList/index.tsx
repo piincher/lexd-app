@@ -15,11 +15,11 @@ interface Props {
 
 export const AssignGoodsList: React.FC<Props> = ({ goodsList, selectedIds, onToggle }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     listContent: { paddingHorizontal: Theme.spacing.lg, paddingBottom: 100 },
     emptyState: { alignItems: 'center', justifyContent: 'center', paddingVertical: 60 },
     emptyText: { marginTop: Theme.spacing.md, fontSize: 14, color: colors.neutral[400] },
-  }), [colors, isDark]);
+  });
   const renderItem = useCallback(
     ({ item }: { item: AirwayBillGoods }) => (
       <AssignGoodsListItem

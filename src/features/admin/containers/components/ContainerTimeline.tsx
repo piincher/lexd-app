@@ -11,7 +11,7 @@ interface Props {
 
 export const ContainerTimeline: React.FC<Props> = ({ timeline }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   if (!timeline) return null;
   const steps = [
     { label: 'Réservé', active: !!timeline.bookedAt },

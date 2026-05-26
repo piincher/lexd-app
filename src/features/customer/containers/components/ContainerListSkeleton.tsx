@@ -11,7 +11,7 @@ import { ShimmerBlock } from '@src/shared/ui';
 
 const ContainerSkeletonItem: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <View
@@ -68,7 +68,7 @@ const ContainerSkeletonItem: React.FC = () => {
 
 export const ContainerListSkeleton: React.FC<{ count?: number }> = ({ count = 5 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
       {Array.from({ length: count }).map((_, i) => (

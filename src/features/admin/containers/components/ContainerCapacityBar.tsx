@@ -12,7 +12,7 @@ interface Props {
 
 export const ContainerCapacityBar: React.FC<Props> = ({ container, maxCBM }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const fillPercentage = Math.min(((container.totalCBM || 0) / maxCBM) * 100, 100);
   const isFull = fillPercentage >= 90;
   const isNearFull = fillPercentage >= 70 && fillPercentage < 90;

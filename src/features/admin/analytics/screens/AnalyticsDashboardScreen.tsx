@@ -19,7 +19,7 @@ import { createStyles } from './AnalyticsDashboardScreen.styles';
 
 export const AnalyticsDashboardScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     selectedPeriod,
     setSelectedPeriod,

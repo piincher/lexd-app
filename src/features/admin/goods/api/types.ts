@@ -13,7 +13,7 @@ export type { Goods, GoodsStatus, GoodsFilters };
  * Input for receiving new goods
  */
 export interface ReceiveGoodsInput {
-  clientId: string;
+  clientId?: string | null;
   description: string;
   shippingMode?: 'AIR' | 'SEA';
   dimensions?: {
@@ -28,6 +28,11 @@ export interface ReceiveGoodsInput {
   location: string;
   photoUrl?: string;
   receivedByName?: string;
+  expressTrackingNumber?: string;
+  receivedDate?: string;
+  condition?: 'new' | 'used' | 'damaged';
+  exceptionReasons?: string[];
+  exceptionNotes?: string;
 }
 
 /**

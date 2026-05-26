@@ -1,7 +1,7 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
 // GoodsDetailActions - Bottom action buttons
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
@@ -17,7 +17,7 @@ export const GoodsDetailActions: React.FC<GoodsDetailActionsProps> = ({
   onDelete,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const navigation = useNavigation();
 
   return (

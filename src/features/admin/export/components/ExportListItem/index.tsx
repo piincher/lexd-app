@@ -32,7 +32,7 @@ export const ExportListItem: React.FC<ExportListItemProps> = ({
   isDownloading,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const entityConfig = ENTITY_CONFIG[item.entity];
   const statusVariant = getStatusVariant(item.metadata.status);
 

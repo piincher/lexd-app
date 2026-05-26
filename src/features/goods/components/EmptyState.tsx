@@ -1,7 +1,7 @@
 // Goods Feature - EmptyState Component
 // Pure presentational component for empty state with optional refresh action
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -24,7 +24,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 	refreshLabel = 'Actualiser',
 }) => {
 	const { colors } = useAppTheme();
-	const styles = useMemo(() => StyleSheet.create({
+	const styles = StyleSheet.create({
 		container: {
 			flex: 1,
 			justifyContent: 'center',
@@ -49,7 +49,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 		refreshButton: {
 			marginTop: 24,
 		},
-	}), [colors]);
+	});
 
 	return (
 		<View style={styles.container}>

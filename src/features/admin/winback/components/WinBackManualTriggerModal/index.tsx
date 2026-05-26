@@ -21,7 +21,7 @@ type WinBackManualTriggerModalProps = {
 
 export function WinBackManualTriggerModal({ visible, onClose }: WinBackManualTriggerModalProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState<{ _id: string; firstName: string; lastName: string; phoneNumber: string } | null>(null);
   const [selectedTrigger, setSelectedTrigger] = useState<TriggerType | null>(null);

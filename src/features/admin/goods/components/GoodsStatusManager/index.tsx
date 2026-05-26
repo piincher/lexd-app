@@ -62,7 +62,7 @@ export const GoodsStatusManager: React.FC<GoodsStatusManagerProps> = ({
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Card style={styles.container}>

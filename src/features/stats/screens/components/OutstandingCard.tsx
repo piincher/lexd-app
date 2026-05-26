@@ -1,6 +1,7 @@
 /**
  * OutstandingCard
  * SRP: Displays outstanding/overdue payment summary from v2 dashboard
+ * Hallmark: full-width alert banner with left accent border
  */
 
 import React, { useMemo } from 'react';
@@ -29,30 +30,29 @@ export const OutstandingCard: React.FC<OutstandingCardProps> = ({ outstanding })
       StyleSheet.create({
         container: {
           marginHorizontal: 20,
+          marginTop: 16,
           backgroundColor: colors.feedback.errorBg,
-          borderRadius: 16,
-          padding: 16,
-          borderWidth: 1,
-          borderColor: colors.status.error + '40',
-        },
-        header: {
+          borderRadius: 12,
+          borderLeftWidth: 4,
+          borderLeftColor: colors.status.error,
+          padding: 14,
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 10,
+          gap: 12,
         },
         iconContainer: {
-          width: 34,
-          height: 34,
+          width: 36,
+          height: 36,
           borderRadius: 10,
           backgroundColor: colors.background.card,
           justifyContent: 'center',
           alignItems: 'center',
         },
-        headerText: {
+        textContainer: {
           flex: 1,
         },
         title: {
-          fontSize: 14,
+          fontSize: 13,
           fontFamily: Fonts.bold,
           fontWeight: '700',
           color: colors.status.error,
@@ -62,9 +62,9 @@ export const OutstandingCard: React.FC<OutstandingCardProps> = ({ outstanding })
           fontFamily: Fonts.regular,
           color: colors.status.error,
           marginTop: 1,
-          opacity: 0.8,
+          opacity: 0.85,
         },
-        totalAmount: {
+        amount: {
           fontSize: 15,
           fontFamily: Fonts.bold,
           fontWeight: '700',
@@ -73,11 +73,8 @@ export const OutstandingCard: React.FC<OutstandingCardProps> = ({ outstanding })
         overdueRow: {
           flexDirection: 'row',
           alignItems: 'center',
-          gap: 6,
-          marginTop: 10,
-          paddingTop: 10,
-          borderTopWidth: 1,
-          borderTopColor: colors.status.error + '30',
+          gap: 4,
+          marginTop: 6,
         },
         overdueText: {
           fontSize: 11,
@@ -95,26 +92,22 @@ export const OutstandingCard: React.FC<OutstandingCardProps> = ({ outstanding })
   const hasOverdue = outstanding.overdueCount > 0;
 
   return (
-    <Animated.View entering={FadeInUp.delay(300).springify().damping(15)} style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.iconContainer}>
-          <Ionicons name="alert-circle" size={18} color={colors.status.error} />
-        </View>
-        <View style={styles.headerText}>
-          <Text style={styles.title}>Creances</Text>
-          <Text style={styles.subtitle}>{outstanding.count} paiement(s) en attente</Text>
-        </View>
-        <Text style={styles.totalAmount}>{formatAmount(outstanding.totalFCFA)} F</Text>
+    <Animated.View entering={FadeInUp.delay(240).springify().damping(15)} style={styles.container}>
+      <View style={styles.iconContainer}>
+        <Ionicons name="alert-circle" size={18} color={colors.status.error} />
       </View>
-
-      {hasOverdue && (
-        <View style={styles.overdueRow}>
-          <Ionicons name="time-outline" size={14} color={colors.status.warning} />
-          <Text style={styles.overdueText}>
-            {outstanding.overdueCount} en retard · {formatAmount(outstanding.overdueAmountFCFA)} FCFA
-          </Text>
-        </View>
-      )}
+      <View style={styles.textContainer}>
+        <Text style={styles.title}>Créances · {outstanding.count} paiement(s) en attente</Text>
+        {hasOverdue && (
+          <View style={styles.overdueRow}>
+            <Ionicons name="time-outline" size={12} color={colors.status.warning} />
+            <Text style={styles.overdueText}>
+              {outstanding.overdueCount} en retard · {formatAmount(outstanding.overdueAmountFCFA)} FCFA
+            </Text>
+          </View>
+        )}
+      </View>
+      <Text style={styles.amount}>{formatAmount(outstanding.totalFCFA)} F</Text>
     </Animated.View>
   );
 };

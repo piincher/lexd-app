@@ -30,7 +30,7 @@ export const AnimatedInput: React.FC<Props> = ({
   ...inputProps
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const [isFocused, setIsFocused] = useState(false);
   const shakeValue = useSharedValue(0);
   const focusValue = useSharedValue(0);

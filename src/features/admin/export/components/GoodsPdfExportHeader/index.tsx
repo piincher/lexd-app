@@ -13,7 +13,7 @@ export const GoodsPdfExportHeader: React.FC<GoodsPdfExportHeaderProps> = ({
   onBack,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={onBack} style={styles.backButton}>

@@ -16,7 +16,7 @@ export const GoodsPdfPreviewCard: React.FC<GoodsPdfPreviewCardProps> = ({
    visible,
 }) => {
    const { colors, isDark } = useAppTheme();
-   const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+   const styles = createStyles(colors, isDark);
 
    if (!visible) return null;
 

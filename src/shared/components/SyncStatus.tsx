@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from 'react';
 import { Animated } from "react-native";
 import { useSyncStatus, useFormattedSyncStatus } from "../hooks/useSyncStatus";
 import { useNetworkStatus } from "../hooks/useNetworkStatus";
@@ -22,7 +22,7 @@ export const SyncStatus: React.FC<SyncStatusProps> = ({ compact = false, style }
   const [isSyncing, setIsSyncing] = useState(false);
   const [spinAnim] = useState(new Animated.Value(0));
 
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const handleSync = async () => {
     if (!isOnline) {

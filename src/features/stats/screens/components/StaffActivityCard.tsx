@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,7 +17,7 @@ export const StaffActivityCard: React.FC<StaffActivityCardProps> = ({ staffActiv
   const { colors } = useAppTheme();
   const topAdmins = staffActivity?.byAdmin.slice(0, 3) || [];
   const recentRisk = staffActivity?.recentHighRisk.slice(0, 3) || [];
-  const styles = useMemo(() => createStaffActivityStyles(colors), [colors]);
+  const styles = createStaffActivityStyles(colors);
 
   if (isLoading) {
     return (
@@ -35,10 +35,10 @@ export const StaffActivityCard: React.FC<StaffActivityCardProps> = ({ staffActiv
   if (!staffActivity) return null;
 
   return (
-    <Animated.View entering={FadeInUp.delay(320).springify().damping(15)} style={styles.container}>
+    <Animated.View entering={FadeInUp.delay(360).springify().damping(15)} style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Activite equipe</Text>
+          <Text style={styles.title}>Activité équipe</Text>
           <Text style={styles.subtitle}>Audit et actions sensibles</Text>
         </View>
         <View style={styles.iconBox}>
@@ -56,11 +56,11 @@ export const StaffActivityCard: React.FC<StaffActivityCardProps> = ({ staffActiv
         </View>
         <View style={styles.summaryItem}>
           <Text style={[styles.summaryValue, { color: colors.status.error }]}>{staffActivity.failedCount}</Text>
-          <Text style={styles.summaryLabel}>Echecs</Text>
+          <Text style={styles.summaryLabel}>Échecs</Text>
         </View>
       </View>
       {topAdmins.length === 0 && recentRisk.length === 0 ? (
-        <Text style={styles.emptyText}>Aucune activite recente</Text>
+        <Text style={styles.emptyText}>Aucune activité récente</Text>
       ) : (
         <>
           {topAdmins.map((admin) => (

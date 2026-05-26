@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, Text } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -14,7 +14,7 @@ interface ExportStatsCardProps {
 
 export const ExportStatsCard: React.FC<ExportStatsCardProps> = ({ stats }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   if (stats?.isLoading) {
     return (

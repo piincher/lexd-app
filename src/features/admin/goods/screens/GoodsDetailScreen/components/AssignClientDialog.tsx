@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
@@ -28,7 +28,7 @@ export const AssignClientDialog: React.FC<AssignClientDialogProps> = ({
   onConfirm,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     dialog: {
       backgroundColor: colors.background.card,
     },
@@ -41,7 +41,7 @@ export const AssignClientDialog: React.FC<AssignClientDialogProps> = ({
     selector: {
       marginBottom: 16,
     },
-  }), [colors]);
+  });
 
   return (
     <Portal>

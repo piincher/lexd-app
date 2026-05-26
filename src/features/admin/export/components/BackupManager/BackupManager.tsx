@@ -17,7 +17,7 @@ interface BackupManagerProps {
 
 export const BackupManager: React.FC<BackupManagerProps> = ({ isSuperAdmin = false }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     backups,
     isLoading,

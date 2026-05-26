@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Image, Pressable, StyleSheet, Platform } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
@@ -10,7 +10,7 @@ import type { AppTheme } from '@src/constants/Theme';
 export const Header = () => {
    const navigation = useNavigation();
    const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
    return (
       <View

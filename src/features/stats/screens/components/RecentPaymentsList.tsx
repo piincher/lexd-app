@@ -1,6 +1,7 @@
 /**
  * RecentPaymentsList
  * SRP: Displays recent payments from the v2 dashboard endpoint
+ * Hallmark: minimal flat list, no card wrapper, hairline separators
  */
 
 import React from 'react';
@@ -24,8 +25,8 @@ export const RecentPaymentsList: React.FC<RecentPaymentsListProps> = ({ payments
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Paiements recents</Text>
-          <Text style={styles.subtitle}>Dernieres transactions</Text>
+          <Text style={styles.title}>Paiements récents</Text>
+          <Text style={styles.subtitle}>Dernières transactions</Text>
         </View>
         <View style={styles.countBadge}>
           <Text style={styles.countText}>{payments.length}</Text>
@@ -45,7 +46,7 @@ export const RecentPaymentsList: React.FC<RecentPaymentsListProps> = ({ payments
       ) : (
         <View style={styles.emptyContainer}>
           <Ionicons name="receipt-outline" size={28} color={colors.text.disabled} />
-          <Text style={styles.emptyText}>Aucun paiement recent</Text>
+          <Text style={styles.emptyText}>Aucun paiement récent</Text>
         </View>
       )}
     </View>

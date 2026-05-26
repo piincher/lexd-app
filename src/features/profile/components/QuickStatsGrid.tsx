@@ -1,11 +1,10 @@
-import React, { useMemo } from 'react';
-import { View, Pressable, StyleSheet, Platform } from 'react-native';
-import { Text } from 'react-native-paper';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Fonts } from '@src/constants/Fonts';
 import type { AppTheme } from '@src/constants/Theme';
-import { hapticLight } from '@src/shared/lib/haptics';
+import { ProfileSectionHeader } from './ProfileSectionHeader';
+import { ProfileQuickActionCard } from './ProfileQuickActionCard';
 
 type ThemeColors = AppTheme['colors'];
 type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
@@ -13,6 +12,7 @@ type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['nam
 interface StatItem {
   id: string;
   label: string;
+  subtitle: string;
   icon: MaterialIconName;
   iconColor: string;
   iconBg: string;
@@ -25,22 +25,22 @@ interface Props {
 
 export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
-  const cardBg = colors.background.card;
-  const cardBorder = colors.border;
+  const styles = createStyles(colors);
 
   const STATS: StatItem[] = [
     {
       id: 'orders',
       label: 'Commandes',
+      subtitle: 'Suivre les demandes',
       icon: 'clipboard-list-outline',
       iconColor: colors.status.info,
       iconBg: colors.status.info + '15',
-      screen: 'PastOrders',
+      screen: 'Orders',
     },
     {
       id: 'goods',
       label: 'Marchandises',
+      subtitle: 'Voir les colis',
       icon: 'cube-outline',
       iconColor: colors.status.success,
       iconBg: colors.status.success + '15',
@@ -49,6 +49,7 @@ export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
     {
       id: 'containers',
       label: 'Expéditions',
+      subtitle: 'Containers actifs',
       icon: 'truck-outline',
       iconColor: colors.status.warning,
       iconBg: colors.status.warning + '15',
@@ -57,6 +58,7 @@ export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
     {
       id: 'support',
       label: 'Support',
+      subtitle: 'Tickets et aide',
       icon: 'headset',
       iconColor: colors.status.info,
       iconBg: colors.status.info + '15',
@@ -65,67 +67,40 @@ export const QuickStatsGrid: React.FC<Props> = ({ onNavigate }) => {
   ];
 
   return (
-    <View style={styles.quickStatsRow}>
-      {STATS.map((stat) => (
-        <Pressable
-          key={stat.id}
-          style={[styles.quickStatCard, { backgroundColor: cardBg, borderColor: cardBorder }]}
-          onPress={() => {
-            hapticLight();
-            onNavigate(stat.screen);
-          }}
-        >
-          <View style={[styles.quickStatIcon, { backgroundColor: stat.iconBg }]}>
-            <MaterialCommunityIcons name={stat.icon} size={20} color={stat.iconColor} />
-          </View>
-          <Text style={[styles.quickStatLabel, { color: colors.text.secondary }]}>
-            {stat.label}
-          </Text>
-          <MaterialCommunityIcons name="chevron-right" size={16} color={colors.text.disabled} />
-        </Pressable>
-      ))}
+    <View style={styles.section}>
+      <ProfileSectionHeader
+        icon="view-grid-plus-outline"
+        title="Accès rapides"
+        subtitle="Les raccourcis utiles de votre compte"
+      />
+      <View style={styles.quickStatsRow}>
+        {STATS.map((stat) => (
+          <ProfileQuickActionCard
+            key={stat.id}
+            label={stat.label}
+            subtitle={stat.subtitle}
+            icon={stat.icon}
+            iconColor={stat.iconColor}
+            iconBg={stat.iconBg}
+            onPress={() => {
+              onNavigate(stat.screen);
+            }}
+          />
+        ))}
+      </View>
     </View>
   );
 };
 
-const createStyles = (colors: ThemeColors) => StyleSheet.create({
+const createStyles = (_colors: ThemeColors) => StyleSheet.create({
+  section: {
+    marginTop: 2,
+  },
   quickStatsRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'center',
     paddingHorizontal: 16,
-    gap: 10,
-    marginTop: 16,
-  },
-  quickStatCard: {
-    width: '31%',
-    alignItems: 'center',
-    paddingVertical: 14,
-    paddingHorizontal: 8,
-    borderRadius: 16,
-    borderWidth: 1,
-    gap: 8,
-    ...Platform.select({
-      ios: {
-        shadowColor: colors.neutral[900],
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.04,
-        shadowRadius: 8,
-      },
-      android: { elevation: 1 },
-    }),
-  },
-  quickStatIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  quickStatLabel: {
-    fontSize: 11,
-    fontFamily: Fonts.medium,
-    textAlign: 'center',
+    gap: 12,
   },
 });
 

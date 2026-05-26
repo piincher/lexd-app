@@ -1,8 +1,12 @@
 import { useState, useCallback } from 'react';
 import { NavigationProp } from './usePackingListParams';
 
-export const usePackingListUI = (navigation: NavigationProp, containerId: string | undefined) => {
-  const [allExpanded, setAllExpanded] = useState(true);
+export const usePackingListUI = (
+  navigation: NavigationProp,
+  containerId: string | undefined,
+  selectedClientId: string | null
+) => {
+  const [allExpanded, setAllExpanded] = useState(false);
 
   const handleToggleAll = useCallback(() => {
     setAllExpanded((prev) => !prev);
@@ -10,9 +14,14 @@ export const usePackingListUI = (navigation: NavigationProp, containerId: string
 
   const handleGoToLoadingList = useCallback(() => {
     if (containerId) {
-      navigation.navigate('LoadingList', { containerId });
+      navigation.navigate(
+        'LoadingList',
+        selectedClientId
+          ? { containerId, initialClientId: selectedClientId, clientId: selectedClientId }
+          : { containerId }
+      );
     }
-  }, [navigation, containerId]);
+  }, [navigation, containerId, selectedClientId]);
 
   const formatDate = useCallback((date: Date | string): string => {
     const d = new Date(date);

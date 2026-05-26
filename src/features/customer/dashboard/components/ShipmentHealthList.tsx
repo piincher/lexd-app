@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -27,7 +27,7 @@ export const ShipmentHealthList: React.FC<Props> = ({
   onViewAll,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     wrapper: { paddingHorizontal: 16, marginTop: 16 },
     header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 },
     title: { color: colors.text.primary, fontSize: 17, fontWeight: '900' },
@@ -61,7 +61,7 @@ export const ShipmentHealthList: React.FC<Props> = ({
     ref: { color: colors.text.primary, fontSize: 14, fontWeight: '900' },
     meta: { color: colors.text.secondary, fontSize: 12, fontWeight: '600', marginTop: 2 },
     badge: { color: colors.status.success, fontSize: 11, fontWeight: '800', marginTop: 6 },
-  }), [colors]);
+  });
 
   return (
     <View style={styles.wrapper}>

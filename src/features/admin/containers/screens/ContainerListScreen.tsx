@@ -16,7 +16,7 @@ import { createStyles } from './ContainerListScreen.styles';
 
 export const ContainerListScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     selectedStatus,
     setSelectedStatus,

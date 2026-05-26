@@ -14,7 +14,7 @@ interface RoadSegmentCardProps {
 
 export const RoadSegmentCard: React.FC<RoadSegmentCardProps> = ({ segment, index }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Animated.View

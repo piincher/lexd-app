@@ -3,7 +3,7 @@
  * Supports both AIR (weight-based) and SEA (CBM-based) shipping modes
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Card, Text, Divider } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from './CostSummary.styles';
@@ -40,7 +40,7 @@ export const CostSummary: React.FC<CostSummaryProps> = ({
     return null;
   }
 
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <Card style={styles.card} elevation={2}>

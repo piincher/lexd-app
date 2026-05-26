@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useProfileCharts } from '../hooks/useProfileCharts';
 import { OrderStatusDonutChart } from './OrderStatusDonutChart';
@@ -17,7 +17,7 @@ export const ProfileChartsSection: React.FC = () => {
 
   if (isLoading) {
     return (
-      <View style={{ paddingVertical: 40, alignItems: 'center' }}>
+      <View style={styles.loadingState}>
         <ActivityIndicator size="small" color={colors.primary.main} />
       </View>
     );
@@ -31,3 +31,10 @@ export const ProfileChartsSection: React.FC = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  loadingState: {
+    paddingVertical: 40,
+    alignItems: 'center',
+  },
+});

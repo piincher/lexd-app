@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useRef } from 'react';
 import {
   ActivityIndicator,
   Alert,
@@ -77,7 +77,7 @@ export const AdminRedemptionApprovalModal: React.FC<AdminRedemptionApprovalModal
   onReject,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const scrollViewRef = useRef<ScrollView>(null);
   const busy = isApproving || isRejecting;
   const canReject = !!reason.trim() && !busy;

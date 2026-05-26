@@ -2,7 +2,7 @@
  * OnboardingProgress — Brand-green top progress bar
  */
 
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, StyleSheet, Animated } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
@@ -19,7 +19,7 @@ export const OnboardingProgress: React.FC<OnboardingProgressProps> = ({
   width = 0,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const progressWidth = scrollX.interpolate({
     inputRange: [0, (totalSlides - 1) * width],
     outputRange: ["0%", "100%"],

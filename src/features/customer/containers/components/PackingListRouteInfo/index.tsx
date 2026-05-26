@@ -4,7 +4,7 @@
  * SRP: Display shipping route information
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -27,7 +27,7 @@ export const PackingListRouteInfo: React.FC<PackingListRouteInfoProps> = ({
   showDetailed = false,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   if (showDetailed) {
     return (

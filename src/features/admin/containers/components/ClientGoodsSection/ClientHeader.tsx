@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { ClientGoodsGroup } from '../../types/packingList';
 import { createStyles } from './ClientGoodsSection.styles';
 
@@ -15,18 +14,22 @@ interface ClientHeaderProps {
 
 export const ClientHeader: React.FC<ClientHeaderProps> = ({ clientGroup, isExpanded, onToggle }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { clientName, clientPhone, summary } = clientGroup;
   const balance = summary.balanceDue || 0;
   const isPaid = balance <= 0;
   const isPartial = !isPaid && (summary.totalPaid || 0) > 0;
   const statusColor = isPaid ? colors.status.success : isPartial ? colors.status.warning : colors.status.error;
+  const totalArticles = summary.totalQuantity || clientGroup.goods.reduce(
+    (sum, goods) => sum + (goods.quantity || 1),
+    0
+  );
 
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={onToggle} style={styles.header}>
       <LinearGradient colors={[colors.primary[50], colors.background.card]} style={styles.headerGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-        <View style={styles.headerContent}>
-          <View style={styles.clientInfo}>
+        <View style={styles.clientTopRow}>
+          <View style={styles.clientInfoCompact}>
             <View style={styles.avatarContainer}>
               <Text style={styles.avatarText}>{clientName.charAt(0).toUpperCase()}</Text>
             </View>
@@ -52,34 +55,33 @@ export const ClientHeader: React.FC<ClientHeaderProps> = ({ clientGroup, isExpan
               </View>
             </View>
           </View>
-
-          <View style={styles.summaryContainer}>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{clientGroup.goods.length}</Text>
-              <Text style={styles.summaryLabel}>Colis</Text>
-            </View>
-            <View style={styles.summaryDivider} />
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{summary.totalQuantity}</Text>
-              <Text style={styles.summaryLabel}>Articles</Text>
-            </View>
-            <View style={styles.summaryDivider} />
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{summary.totalCBM.toFixed(2)}</Text>
-              <Text style={styles.summaryLabel}>m³</Text>
-            </View>
-            <View style={styles.summaryDivider} />
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{summary.totalWeight.toFixed(0)}</Text>
-              <Text style={styles.summaryLabel}>kg</Text>
-            </View>
-          </View>
-
           <View style={styles.expandIcon}>
-            <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color={colors.primary[600]} />
+            <Ionicons name={isExpanded ? 'chevron-up' : 'chevron-down'} size={20} color={colors.primary[700]} />
           </View>
+        </View>
+
+        <View style={styles.summaryGrid}>
+          <SummaryMetric label="Colis" value={clientGroup.goods.length} styles={styles} />
+          <SummaryMetric label="Articles" value={totalArticles} styles={styles} />
+          <SummaryMetric label="CBM" value={summary.totalCBM.toFixed(2)} styles={styles} />
+          <SummaryMetric label="Kg" value={summary.totalWeight.toFixed(0)} styles={styles} />
         </View>
       </LinearGradient>
     </TouchableOpacity>
   );
 };
+
+const SummaryMetric = ({
+  label,
+  value,
+  styles,
+}: {
+  label: string;
+  value: string | number;
+  styles: ReturnType<typeof createStyles>;
+}) => (
+  <View style={styles.summaryItem}>
+    <Text style={styles.summaryValue}>{value}</Text>
+    <Text style={styles.summaryLabel}>{label}</Text>
+  </View>
+);

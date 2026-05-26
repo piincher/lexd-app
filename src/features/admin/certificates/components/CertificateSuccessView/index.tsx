@@ -30,7 +30,7 @@ export const CertificateSuccessView: React.FC<CertificateSuccessViewProps> = ({
   onCopyCode,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const clientName =
     typeof issuedCertificate.userId === "object" && issuedCertificate.userId?.firstName
       ? `${issuedCertificate.userId.firstName} ${issuedCertificate.userId.lastName}`

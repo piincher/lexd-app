@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { Button } from 'react-native-paper';
 import { Screen } from '@src/shared/ui/Screen';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -31,14 +31,15 @@ const RecordPaymentScreen: React.FC = () => {
   const styles = createRecordPaymentScreenStyles(colors);
 
   return (
-    <Screen header={{ title: 'Record Payment', showNotificationBell: true }}>
+    <Screen header={{ title: 'Record Payment', showNotificationBell: true }} scrollable={false}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ flex: 1 }}
       >
         <ScrollView
           style={styles.container}
           keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="interactive"
         >
         <PaymentRecordSummary
           orderCode={orderCode}

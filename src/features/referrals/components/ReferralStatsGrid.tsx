@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -18,7 +18,7 @@ type StatItem = {
 
 export const ReferralStatsGrid: React.FC<ReferralStatsGridProps> = ({ stats, rewardPoints }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const items: StatItem[] = [
     { label: 'Filleuls', value: stats.referredCount, icon: 'account-multiple-outline' },
     { label: 'Récompensés', value: stats.rewardedCount, icon: 'check-circle-outline' },

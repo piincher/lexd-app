@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { Surface } from 'react-native-paper';
-import { Alert } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import { openWhatsApp } from '@src/shared/lib/openWhatsApp';
 import { useClientInfoCardStyles } from './ClientInfoCard.styles';
 import { ClientInfoHeader } from './ClientInfoHeader';

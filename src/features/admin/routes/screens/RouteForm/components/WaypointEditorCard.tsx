@@ -58,7 +58,7 @@ export const WaypointEditorCard: React.FC<WaypointEditorCardProps> = ({
 
   const { colors, isDark } = useAppTheme();
 
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const scrollViewRef = useRef<ScrollView>(null);
   const scrollToEnd = () => {
     setTimeout(() => {

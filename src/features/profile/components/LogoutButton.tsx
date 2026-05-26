@@ -1,8 +1,9 @@
 import React from 'react';
 import { Pressable, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Fonts } from '@src/constants/Fonts';
+import { hapticMedium } from '@src/shared/lib/haptics';
 
 interface Props {
   onPress: () => void;
@@ -12,18 +13,21 @@ export const LogoutButton: React.FC<Props> = ({ onPress }) => {
   const { colors } = useAppTheme();
   return (
     <Pressable
+      accessibilityRole="button"
+      accessibilityLabel="Se déconnecter"
+      android_ripple={{ color: colors.action.selected }}
       style={({ pressed }) => [
         styles.logoutButton,
         { backgroundColor: colors.feedback.errorBg, borderColor: colors.status.error + '25' },
         pressed && styles.logoutPressed,
       ]}
       onPress={() => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        hapticMedium();
         onPress();
       }}
     >
       <MaterialCommunityIcons name="logout" size={20} color={colors.status.error} />
-      <Text style={[styles.logoutText, { color: colors.status.error }]}>Se deconnecter</Text>
+      <Text style={[styles.logoutText, { color: colors.status.error }]}>Se déconnecter</Text>
     </Pressable>
   );
 };
@@ -35,9 +39,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 10,
     marginHorizontal: 16,
-    marginTop: 24,
-    paddingVertical: 15,
-    borderRadius: 14,
+    marginTop: 22,
+    minHeight: 54,
+    paddingHorizontal: 18,
+    borderRadius: 16,
     borderWidth: 1,
   },
   logoutPressed: {
@@ -46,6 +51,8 @@ const styles = StyleSheet.create({
   },
   logoutText: {
     fontSize: 15,
+    fontFamily: Fonts.bold,
+    letterSpacing: 0,
   },
 });
 

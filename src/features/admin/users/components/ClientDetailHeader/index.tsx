@@ -12,7 +12,7 @@ interface ClientDetailHeaderProps {
 export const ClientDetailHeader: React.FC<ClientDetailHeaderProps> = ({ totalShipments }) => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>

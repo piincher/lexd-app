@@ -12,6 +12,7 @@ export interface KPICardsProps {
     totalGoods: number;
     pendingContainers: number;
     smsBalance: number;
+    smsBalancePct: number;
   };
 }
 
@@ -23,12 +24,9 @@ export const formatNumber = (n: number) => {
 export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
   const navigation = useNavigation<navigationProps>();
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
-  const smsPct = Math.min(
-    100,
-    Math.max(0, stats.smsBalance > 0 ? Math.min(100, stats.smsBalance / 10) : 0)
-  );
+  const smsPct = stats.smsBalancePct ?? 0;
   const smsColor =
     smsPct >= 50 ? colors.status.success : smsPct >= 20 ? colors.status.warning : colors.status.error;
   const inventoryAccent = colors.status.info;

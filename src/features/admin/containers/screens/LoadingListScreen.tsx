@@ -19,7 +19,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const LoadingListScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     container,
     navigation,
@@ -54,7 +54,8 @@ export const LoadingListScreen: React.FC = () => {
     <SafeAreaView style={styles.container} edges={['bottom']}>
       <Header
         containerNumber={container.virtualContainerNumber}
-        itemCount={items.length}
+        itemCount={summary.totalItems}
+        articleCount={summary.totalPackages}
         onBack={() => navigation.goBack()}
         onNavigateToPackingList={() => navigation.navigate('PackingList', { containerId })}
       />

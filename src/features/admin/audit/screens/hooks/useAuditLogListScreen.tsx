@@ -12,7 +12,7 @@ const INITIAL_FILTERS: AuditLogFilters = { page: 1, limit: 50, status: 'ALL' };
 export const useAuditLogListScreen = () => {
   const navigation = useNavigation();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const [filters, setFilters] = useState(INITIAL_FILTERS);
   const { data, isLoading, isFetching, isError, refetch } = useAuditLogs(filters);
   const items = data?.items || [];

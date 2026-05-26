@@ -12,7 +12,7 @@ interface ReviewStatsProps {
 
 export const ReviewStats: React.FC<ReviewStatsProps> = ({ stats }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.statsCard}>
       <View style={styles.statsTop}>

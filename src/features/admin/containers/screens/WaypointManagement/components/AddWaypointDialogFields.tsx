@@ -15,7 +15,7 @@ interface FieldsProps {
 
 export const LocationNameField: React.FC<FieldsProps & { onInputFocus?: () => void }> = ({ newWaypoint, onUpdateField, onInputFocus }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
   <View style={styles.field}>
     <Text style={styles.label}>Location Name *</Text>
@@ -33,7 +33,7 @@ export const LocationNameField: React.FC<FieldsProps & { onInputFocus?: () => vo
 
 export const LocationCodeField: React.FC<FieldsProps & { onInputFocus?: () => void }> = ({ newWaypoint, onUpdateField, onInputFocus }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
   <View style={styles.field}>
     <Text style={styles.label}>Location Code *</Text>
@@ -52,7 +52,7 @@ export const LocationCodeField: React.FC<FieldsProps & { onInputFocus?: () => vo
 
 export const SegmentTypeField: React.FC<FieldsProps> = ({ newWaypoint, onUpdateField }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const [typeMenuVisible, setTypeMenuVisible] = React.useState(false);
 
   return (

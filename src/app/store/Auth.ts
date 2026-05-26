@@ -6,6 +6,7 @@ import { resetQueryClient } from '@src/shared/lib/queryClient';
 import * as EncryptedStorage from '@src/shared/lib/encryptedStorage';
 import { apiClientV2 } from '@src/api/client';
 import { setAuthStoreRef } from '@src/shared/api/authStoreRef';
+import { resetSessionEventFlag } from '@src/shared/lib/sessionEvents';
 
 interface authType {
 	user: {
@@ -56,7 +57,7 @@ export const useAuth = create<authType>()(
 					const expiresAt = payload.expiresIn
 						? Date.now() + payload.expiresIn * 1000
 						: state.expiresAt;
-	
+
 					return {
 						...state,
 						user: { ...state.user, ...payload.user },
@@ -65,6 +66,9 @@ export const useAuth = create<authType>()(
 						expiresAt,
 					};
 				});
+				// A successful auth (login or silent refresh) clears the once-fired guard so
+				// a future terminal failure can fire its dialog cleanly.
+				resetSessionEventFlag();
 			},
 			logOut: async () => {
 				const refreshToken = get().refreshToken;

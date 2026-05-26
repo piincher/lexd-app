@@ -18,7 +18,7 @@ const formatFCFA = (value: number) => `${Math.round(value).toLocaleString('fr-FR
 export const RedemptionScreen: React.FC = () => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const [isRedeemOpen, setRedeemOpen] = useState(false);
   const [selectedRedemption, setSelectedRedemption] = useState<RewardRedemption | null>(null);
 

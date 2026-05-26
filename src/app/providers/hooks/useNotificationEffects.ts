@@ -35,12 +35,23 @@ export const useNotificationEffects = (
         const lastResponse = await Notifications.getLastNotificationResponse();
         if (lastResponse) { state.setWasOpenedFromNotification(true); actions.handleNotificationResponse(lastResponse); }
         if (autoRequestPermission && status !== "granted") await actions.requestPermission();
+        // Ping backend on cold start to track app open for win-back automation
+        if (authToken && authToken.trim() !== "") {
+          try {
+            await apiClient.post("/user/me/activity", {
+              type: "APP_OPEN",
+              timestamp: new Date().toISOString(),
+            });
+          } catch {
+            // Silent fail - activity tracking is non-critical
+          }
+        }
       } catch (err) { state.setError(err instanceof Error ? err.message : "Failed to initialize notifications"); }
       finally { state.setIsLoading(false); }
     };
     initialize();
     // Note: listener cleanup is handled by the dedicated listener useEffect below
-  }, [autoRequestPermission, actions.handleNotificationResponse, actions.requestPermission]);
+  }, [autoRequestPermission, actions.handleNotificationResponse, actions.requestPermission, authToken]);
 
   useEffect(() => {
     if (authToken && authToken.trim() !== "" && state.permissionStatus === "granted" && autoRegister && !state.isRegistered) {

@@ -1,17 +1,19 @@
 import { StyleSheet, Platform } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import type { ThemeContextType } from '@src/constants/Theme';
 
-export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+type AppColors = ThemeContextType['colors'];
+
+export const createStyles = (colors: AppColors) => StyleSheet.create({
   menuGroup: {
-    marginTop: 12,
+    marginTop: 14,
   },
   menuGroupTitle: {
-    fontSize: 12,
-    fontFamily: Fonts.medium,
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
+    fontSize: 13,
+    fontFamily: Fonts.bold,
+    letterSpacing: 0,
     paddingHorizontal: 20,
-    marginBottom: 8,
+    marginBottom: 9,
   },
   menuCard: {
     marginHorizontal: 16,
@@ -31,22 +33,25 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 14,
+    minHeight: 66,
+    paddingVertical: 12,
     paddingHorizontal: 16,
     gap: 14,
   },
   menuItemPressed: {
     opacity: 0.7,
+    transform: [{ scale: 0.99 }],
   },
   menuIconCircle: {
-    width: 40,
-    height: 40,
+    width: 42,
+    height: 42,
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
   menuTextCol: {
     flex: 1,
+    minWidth: 0,
   },
   menuItemTitle: {
     fontSize: 15,
@@ -56,9 +61,10 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     fontSize: 12,
     fontFamily: Fonts.regular,
     marginTop: 1,
+    lineHeight: 16,
   },
   menuDivider: {
     height: StyleSheet.hairlineWidth,
-    marginLeft: 70,
+    marginLeft: 72,
   },
 });

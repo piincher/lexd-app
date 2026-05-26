@@ -42,7 +42,7 @@ export const BackupItem: React.FC<BackupItemProps> = ({
   item, isSuperAdmin, menuVisible, onMenuOpen, onMenuClose, onDownload, onRestore, onDelete,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={[styles.card, { backgroundColor: colors.background.card }]}>

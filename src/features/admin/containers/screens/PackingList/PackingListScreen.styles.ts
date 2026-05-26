@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { Theme, type ThemeContextType } from '@src/constants/Theme';
 
-export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
+type AppColors = ThemeContextType['colors'];
+
+export const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background.default,
@@ -26,6 +28,6 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     fontWeight: '600',
   },
   bottomSpacer: {
-    height: 100,
+    height: Theme.spacing['5xl'],
   },
 });

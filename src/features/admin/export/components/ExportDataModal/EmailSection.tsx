@@ -25,7 +25,7 @@ export const EmailSection: React.FC<EmailSectionProps> = ({
   onInputFocus,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <>

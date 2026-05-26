@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Surface, Divider, Text } from 'react-native-paper';
 import { createStyles } from './OrderInfoSection.styles';
@@ -31,7 +31,7 @@ const parsePrice = (value: any): number => {
 
 export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   // Parse values safely from v1 API (strings need to be converted)
   const quantity = parseNumber(order?.quantity) ?? 1;

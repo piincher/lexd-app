@@ -3,7 +3,7 @@
  * Thin composition wrapper — sub-components handle rendering
  */
 
-import React, { useMemo } from "react";
+import React from 'react';
 import { Card } from "react-native-paper";
 import { GoodsDimensionsInputProps } from "../types";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -22,7 +22,7 @@ export const GoodsDimensionsInput: React.FC<GoodsDimensionsInputProps> = ({
    shippingMode,
 }) => {
    const { colors } = useAppTheme();
-   const styles = useMemo(() => createStyles(colors), [colors]);
+   const styles = createStyles(colors);
    const isAirShipping = shippingMode === "AIR";
 
    return (

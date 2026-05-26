@@ -18,7 +18,7 @@ const getStatusColors = (colors: any): Record<AuditStatus, string> => ({
 
 export const AuditLogCard = memo(({ item, onPress }: AuditLogCardProps) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const actorName = item.actor?.name || item.adminName || 'System';
   const resource = item.resource?.display || item.targetDisplay || item.resource?.type || item.targetType || 'Ressource';
 

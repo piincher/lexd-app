@@ -49,7 +49,7 @@ const formatShortDate = (dateStr?: string): string => {
 
 const OrderCardInner: React.FC<OrderCardProps> = ({ order, onPress }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const statusConfig = useMemo(() => ({
     Active: { label: 'En cours', color: colors.status.info, bg: colors.feedback.infoBg },

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Surface, Text, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,7 +12,7 @@ interface TrackingMapProps {
 
 export const TrackingMap: React.FC<TrackingMapProps> = ({ onLogin }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     ctaCard: {
       padding: Theme.spacing.xl,
       borderRadius: Theme.radius.xl,
@@ -37,7 +37,7 @@ export const TrackingMap: React.FC<TrackingMapProps> = ({ onLogin }) => {
     ctaButton: {
       width: '100%',
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <Surface style={styles.ctaCard}>

@@ -22,7 +22,7 @@ export const StatusTab: React.FC<StatusTabProps> = ({
   onPress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Pressable

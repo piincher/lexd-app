@@ -1,13 +1,8 @@
-/**
- * LoadingSequenceItem - Single loading item with controls
- */
-
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInRight, Layout } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Theme } from '@src/constants/Theme';
 import { LoadingListItem, LoadingGoodsStatus, LOADING_STATUS_COLORS, LOADING_STATUS_LABELS } from '../types/packingList';
 import { createStyles } from './LoadingSequenceItem.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -17,17 +12,22 @@ interface LoadingSequenceItemProps {
   index: number;
   onToggleLoaded?: (goodsId: string, isLoaded: boolean) => void;
   disabled?: boolean;
+  isNext?: boolean;
 }
 
-export const LoadingSequenceItem: React.FC<LoadingSequenceItemProps> = ({
+const LoadingSequenceItemComponent: React.FC<LoadingSequenceItemProps> = ({
   item,
   index,
   onToggleLoaded,
   disabled = false,
+  isNext = false,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { sequenceNumber, goods, clientName, clientColor, isLoaded } = item;
+  const actualCBM = Number(goods.actualCBM || 0);
+  const weight = Number(goods.weight || 0);
+  const hasMissingInfo = !goods.goodsId || !goods.description || actualCBM <= 0 || weight <= 0;
 
   const handleToggle = () => {
     if (!disabled && onToggleLoaded) {
@@ -37,10 +37,11 @@ export const LoadingSequenceItem: React.FC<LoadingSequenceItemProps> = ({
 
   const status: LoadingGoodsStatus = isLoaded ? 'LOADED' : 'PENDING';
   const statusColor = LOADING_STATUS_COLORS[status];
+  const enteringDelay = Math.min(index, 8) * 35;
 
   return (
     <Animated.View
-      entering={FadeInRight.delay(index * 50)}
+      entering={FadeInRight.delay(enteringDelay)}
       layout={Layout.springify()}
       style={styles.container}
     >
@@ -55,10 +56,10 @@ export const LoadingSequenceItem: React.FC<LoadingSequenceItemProps> = ({
         </LinearGradient>
       </View>
 
-      <View style={[styles.content, isLoaded && styles.contentLoaded]}>
+      <View style={[styles.content, isLoaded && styles.contentLoaded, isNext && styles.contentNext]}>
         <View style={styles.header}>
           <View style={styles.goodsIdContainer}>
-            <Text style={styles.goodsId}>{goods.goodsId}</Text>
+            <Text style={styles.goodsId}>{goods.goodsId || 'Sans ID'}</Text>
             <View style={[styles.clientBadge, { backgroundColor: `${clientColor}20` }]}>
               <View style={[styles.clientDot, { backgroundColor: clientColor }]} />
               <Text style={[styles.clientName, { color: clientColor }]} numberOfLines={1}>
@@ -77,6 +78,7 @@ export const LoadingSequenceItem: React.FC<LoadingSequenceItemProps> = ({
             onPress={handleToggle}
             disabled={disabled}
             activeOpacity={0.8}
+            hitSlop={{ top: 6, bottom: 6, left: 6, right: 6 }}
           >
             <Ionicons
               name={isLoaded ? 'checkmark-circle' : 'ellipse-outline'}
@@ -93,14 +95,31 @@ export const LoadingSequenceItem: React.FC<LoadingSequenceItemProps> = ({
           {goods.description || 'Pas de description'}
         </Text>
 
+        {(isNext || hasMissingInfo) && (
+          <View style={styles.stateRow}>
+            {isNext && !isLoaded && (
+              <View style={styles.nextBadge}>
+                <Ionicons name="arrow-forward-circle" size={13} color={colors.status.warning} />
+                <Text style={styles.nextBadgeText}>Prochain</Text>
+              </View>
+            )}
+            {hasMissingInfo && (
+              <View style={styles.missingBadge}>
+                <Ionicons name="warning-outline" size={13} color={colors.status.error} />
+                <Text style={styles.missingBadgeText}>Infos à vérifier</Text>
+              </View>
+            )}
+          </View>
+        )}
+
         <View style={styles.footer}>
           <View style={styles.metric}>
             <Ionicons name="cube-outline" size={14} color={colors.neutral[500]} />
-            <Text style={styles.metricText}>{goods.actualCBM.toFixed(2)} m³</Text>
+            <Text style={styles.metricText}>{actualCBM.toFixed(2)} m³</Text>
           </View>
           <View style={styles.metric}>
             <Ionicons name="scale-outline" size={14} color={colors.neutral[500]} />
-            <Text style={styles.metricText}>{goods.weight.toFixed(0)} kg</Text>
+            <Text style={styles.metricText}>{weight.toFixed(0)} kg</Text>
           </View>
           <View style={styles.metric}>
             <Ionicons name="layers-outline" size={14} color={colors.neutral[500]} />
@@ -122,4 +141,5 @@ export const LoadingSequenceItem: React.FC<LoadingSequenceItemProps> = ({
   );
 };
 
+export const LoadingSequenceItem = React.memo(LoadingSequenceItemComponent);
 export default LoadingSequenceItem;

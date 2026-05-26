@@ -12,7 +12,7 @@ interface Props {
 
 export const AirwayBillTrackingHeader: React.FC<Props> = ({ awbNumber, flightLabel }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.header}>
       <MaterialCommunityIcons name="airplane" size={40} color={colors.primary[500]} />

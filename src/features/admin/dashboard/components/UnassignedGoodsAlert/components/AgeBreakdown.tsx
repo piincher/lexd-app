@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { Fonts } from "@src/constants/Fonts";
@@ -49,7 +49,7 @@ const createStyles = (colors: AppThemeColors) =>
 
 export const AgeBreakdown: React.FC<AgeBreakdownProps> = ({ byAge }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const ageRanges = [
     { key: "0-3" as const, label: "0-3j", value: byAge["0-3"], critical: false },

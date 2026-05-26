@@ -56,7 +56,7 @@ export const SmsSubscriptionCard: React.FC<SmsSubscriptionCardProps> = ({
   index,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const meta = STATUS_META(colors)[subscription.status] || STATUS_META(colors).ACTIVE;
   const progressColor = getProgressColor(subscription.progressPercentage, subscription.isExpiringSoon, colors);
   const progressSubtext = getProgressSubtext(subscription);

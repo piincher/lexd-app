@@ -45,7 +45,7 @@ const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
 
 export const ClientFAB: React.FC<ClientFABProps> = ({ onPress }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const scale = useSharedValue(1);
 
   const handlePressIn = useCallback(() => {

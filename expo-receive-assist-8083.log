@@ -1,0 +1,13 @@
+
+> homely@2.9.1 start
+> expo start --port 8083
+
+env: load .env.local .env
+env: export EXPO_PUBLIC_ENV EXPO_PUBLIC_SENTRY_DSN EXPO_UNSTABLE_METRO_OPTIMIZE_GRAPH EXPO_UNSTABLE_TREE_SHAKING SENTRY_AUTH_TOKEN
+Starting project at C:\Users\hp\workspace\chinalink\chinalinexpress
+Using src/app as the root directory for Expo Router.
+React Compiler enabled
+Starting Metro Bundler
+
+Waiting on http://localhost:8083
+Logs for your project will appear below.

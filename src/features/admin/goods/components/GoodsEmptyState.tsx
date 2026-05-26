@@ -66,7 +66,7 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
   onAddPress 
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
   <View style={styles.container}>
     <LinearGradient

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInRight, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming, interpolate } from 'react-native-reanimated';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ interface Props {
 
 export const DemoRouteBoard: React.FC<Props> = ({ shipment }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const pulse = useSharedValue(1);
   useEffect(() => {
     pulse.value = withRepeat(

@@ -4,7 +4,7 @@
  * SRP: Display packing list summary statistics
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Divider, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -25,7 +25,7 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
   totalPackages,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     summaryCard: {
       marginBottom: 16,
       elevation: 1,
@@ -59,7 +59,7 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
       fontSize: 14,
       color: colors.text.secondary,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <Card style={styles.summaryCard}>

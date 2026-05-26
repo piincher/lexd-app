@@ -23,7 +23,7 @@ type AtRiskWinBackModalProps = {
 
 export function AtRiskWinBackModal({ visible, customer, onClose, onTrigger, isPending }: AtRiskWinBackModalProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const [selected, setSelected] = useState<string>("inactivity_30");
 
   if (!customer) return null;

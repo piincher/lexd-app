@@ -1,6 +1,6 @@
 // GoodsDetailPhoto - Photo display section
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Image } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -12,7 +12,7 @@ interface GoodsDetailPhotoProps {
 
 export const GoodsDetailPhoto: React.FC<GoodsDetailPhotoProps> = ({ photoUrl }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   if (!photoUrl) return null;
 
   return (

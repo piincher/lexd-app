@@ -56,7 +56,7 @@ export const ExportDataModal: React.FC<ExportDataModalProps> = ({
 
   const { colors, isDark } = useAppTheme();
 
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const scrollViewRef = useRef<ScrollView>(null);
   const scrollToEnd = () => {

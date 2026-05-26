@@ -19,7 +19,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const ProcessTimeline: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const stepColors = [
     colors.status.info,
     colors.primary.main,

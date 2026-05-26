@@ -30,7 +30,7 @@ type HelpCreateTicketModalProps = {
 
 export function HelpCreateTicketModal({ visible, onClose, onSubmit, isPending, isSuccess }: HelpCreateTicketModalProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const [type, setType] = useState("GENERAL");
   const [priority, setPriority] = useState("MEDIUM");
   const [subject, setSubject] = useState("");

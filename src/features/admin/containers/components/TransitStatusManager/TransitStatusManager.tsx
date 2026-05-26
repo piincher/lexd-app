@@ -35,7 +35,7 @@ export const TransitStatusManager: React.FC<TransitStatusManagerProps> = ({
   currentWaypointIndex: propCurrentWaypointIndex,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     waypoints,
     currentWaypointIndex,

@@ -1,7 +1,7 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
 // GoodsDetailLocation - Location and container information
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ export const GoodsDetailLocation: React.FC<GoodsDetailLocationProps> = ({
   container,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <Card style={styles.sectionCard}>
       <Card.Content>

@@ -22,7 +22,7 @@ interface StatusChartProps {
 
 export const StatusChart: React.FC<StatusChartProps> = ({ data, hasData }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   if (!hasData) {
     return (
       <View style={styles.emptyContainer}>

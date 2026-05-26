@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
+import type { AppTheme } from '@src/constants/Theme';
 
-export const createStyles = (colors: any) =>
+type ThemeColors = AppTheme['colors'];
+
+export const createStyles = (colors: ThemeColors) =>
   StyleSheet.create({
     card: {
       marginVertical: 8,

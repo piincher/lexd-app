@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { Text, Surface, Divider, Button } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -25,7 +25,7 @@ export const PaymentCard: React.FC<PaymentCardProps> = ({
   onImagePress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createPaymentCardStyles(colors, isDark), [colors, isDark]);
+  const styles = createPaymentCardStyles(colors, isDark);
   const hasReceipt = !!payment.receiptUrl;
   const hasPhone = !!(clientPhone || payment.clientPhone);
   const isSharing = sharingPaymentId === payment._id;

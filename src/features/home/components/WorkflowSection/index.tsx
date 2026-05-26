@@ -1,5 +1,5 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
@@ -40,7 +40,7 @@ const WORKFLOW_STEPS = [
 ];
 
 export const WorkflowSection: React.FC<WorkflowSectionProps> = ({ colors }) => {
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
    const textColor = colors.text?.primary ?? colors.text;
    const textSecondary = colors.text?.secondary ?? (colors.textSecondary || colors.text.secondary);
    const cardBg = colors.background?.card ?? colors.background.card;

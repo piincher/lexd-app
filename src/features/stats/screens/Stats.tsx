@@ -2,7 +2,6 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView, View, RefreshControl } from 'react-native';
 import type { HomeTabScreenProps } from '@src/navigations/type';
-import { Theme } from '@src/constants/Theme';
 import { withProtectedRoute } from '@src/hoc/withProtectedRoute';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useAdminStats } from './hooks/useAdminStats';
@@ -58,37 +57,54 @@ const Stats: React.FC<HomeTabScreenProps<'Stats'>> = () => {
           />
         }
       >
+        {/* Command zone: header + KPIs + filter */}
         <StatsHeader firstName={stats.user?.firstName} totalOrders={stats.totalGoods} />
         <KPIGrid items={stats.kpiItems} />
-        <View style={styles.sectionGap} />
         <PeriodSelector selected={stats.period} onSelect={stats.setPeriod} />
-        <View style={styles.sectionGap} />
+
+        {/* Alert zone */}
         <OutstandingCard outstanding={stats.outstanding} />
-        <View style={styles.sectionGap} />
-        <OperationsHealthCard operations={stats.operations} isLoading={stats.isLoadingOperations} />
-        <View style={styles.sectionGap} />
-        <OperationsDrilldownCard operations={stats.operations} isLoading={stats.isLoadingOperations} />
-        <View style={styles.sectionGap} />
-        <ProfitOverviewCard profitSummary={stats.profitSummary} isLoading={stats.isLoadingProfit} />
-        <View style={styles.sectionGap} />
-        <GoodsOverview goodsVolume={stats.goodsVolume} isLoading={stats.isLoadingGoods} />
-        <View style={styles.sectionGap} />
-        <ShippingModeCard shippingModeCounts={stats.shippingModeCounts} />
-        <View style={styles.sectionGap} />
-        <PaymentOverview
-          paymentMetrics={stats.paymentMetrics}
-          paymentSummary={stats.paymentSummary}
-          isLoading={stats.isLoadingPayments}
-        />
-        <View style={styles.sectionGap} />
-        <TopCustomers customers={stats.topCustomers} isLoading={stats.isLoadingCustomers} />
-        <View style={styles.sectionGap} />
-        <StaffActivityCard
-          staffActivity={stats.operations?.staffActivity}
-          isLoading={stats.isLoadingOperations}
-        />
-        <View style={styles.sectionGap} />
-        <RecentPaymentsList payments={stats.recentPayments} />
+
+        {/* Primary data: operations */}
+        <View style={styles.zone}>
+          <OperationsHealthCard operations={stats.operations} isLoading={stats.isLoadingOperations} />
+          <View style={styles.zoneInnerGap} />
+          <OperationsDrilldownCard operations={stats.operations} isLoading={stats.isLoadingOperations} />
+        </View>
+
+        {/* Financial zone */}
+        <View style={styles.zone}>
+          <ProfitOverviewCard profitSummary={stats.profitSummary} isLoading={stats.isLoadingProfit} />
+          <View style={styles.zoneInnerGap} />
+          <PaymentOverview
+            paymentMetrics={stats.paymentMetrics}
+            paymentSummary={stats.paymentSummary}
+            isLoading={stats.isLoadingPayments}
+          />
+        </View>
+
+        {/* Logistics zone */}
+        <View style={styles.zone}>
+          <GoodsOverview goodsVolume={stats.goodsVolume} isLoading={stats.isLoadingGoods} />
+          <View style={styles.zoneInnerGap} />
+          <ShippingModeCard shippingModeCounts={stats.shippingModeCounts} />
+        </View>
+
+        {/* People zone */}
+        <View style={styles.zone}>
+          <TopCustomers customers={stats.topCustomers} isLoading={stats.isLoadingCustomers} />
+          <View style={styles.zoneInnerGap} />
+          <StaffActivityCard
+            staffActivity={stats.operations?.staffActivity}
+            isLoading={stats.isLoadingOperations}
+          />
+        </View>
+
+        {/* Footer zone */}
+        <View style={styles.footerZone}>
+          <RecentPaymentsList payments={stats.recentPayments} />
+        </View>
+
         <View style={styles.bottomPadding} />
       </ScrollView>
     </SafeAreaView>

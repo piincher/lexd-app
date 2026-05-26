@@ -22,7 +22,7 @@ export const SearchResultSection: React.FC<SearchResultSectionProps> = ({
   total,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   if (!items || items.length === 0) return null;
 
   return (

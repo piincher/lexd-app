@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ const formatAmount = (value?: number) => {
 
 export const OperationsDrilldownCard: React.FC<OperationsDrilldownCardProps> = ({ operations, isLoading }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createOperationsDrilldownStyles(colors), [colors]);
+  const styles = createOperationsDrilldownStyles(colors);
   const overdueInvoices = operations?.receivables.topOverdueInvoices.slice(0, 3) || [];
   const containers = operations?.containerProfit.topContainers.slice(0, 3) || [];
 

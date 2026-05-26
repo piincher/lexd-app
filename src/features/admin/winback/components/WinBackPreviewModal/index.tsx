@@ -14,7 +14,7 @@ type WinBackPreviewModalProps = {
 
 export function WinBackPreviewModal({ visible, config, onClose }: WinBackPreviewModalProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const { data, isLoading } = useAtRiskPreview(config?.triggerType ?? "", visible && !!config);
 
   return (

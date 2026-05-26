@@ -36,7 +36,7 @@ export const ClientCard: React.FC<ClientCardProps> = React.memo(({
   searchQuery = "", orderCount, lastOrderDate,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { handleNavigate, handleBlockToggle, handleDelete } = useClientCardActions(onToggleBlock, onDelete, onNavigate);
   const badges = useClientBadges(client, orderCount, lastOrderDate);
 

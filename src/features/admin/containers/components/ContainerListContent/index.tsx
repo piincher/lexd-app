@@ -33,7 +33,7 @@ export const ContainerListContent: React.FC<ContainerListContentProps> = ({
   onCreateContainerPress,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const renderContainer = ({ item }: { item: Container }) => (
     <ContainerCard container={item} onPress={() => onContainerPress(item._id)} />
   );

@@ -1,30 +1,23 @@
 [
   {
-    "date": "2026-05-25",
-    "macrostructure": "Operations Console",
+    "date": "2026-05-27",
+    "macrostructure": "Document Card (mobile packing list)",
     "theme": "Brand-aligned app theme",
-    "enrichment": "Tier-A admin command surface",
-    "brief": "Admin dashboard redesign — dense operational cards, priority summaries, theme-complete controls"
+    "enrichment": "none — typographic hierarchy + restrained color palette",
+    "brief": "ClientPackingListScreen (Liste de Colisage) — Hallmark redesign: human-readable status labels, muted label colors, strong numeric hierarchy, fixed overlapping icons, cleaner recipient card"
   },
   {
-    "date": "2026-05-25",
-    "macrostructure": "Stat-Led",
+    "date": "2026-05-27",
+    "macrostructure": "Bento Grid",
     "theme": "Brand-aligned app theme",
-    "enrichment": "Tier-A gradient hero KPI",
-    "brief": "GoodsListScreen redesign — asymmetric KPI hero (1 hero + 2 share-bar halves) + skeleton loading"
+    "enrichment": "none — triage tiles surface total / oldest / mode breakdown above the queue",
+    "brief": "UnassignedGoodsScreen (Marchandises non assignées) — Bento triage panel + refined header above the existing queue list"
   },
   {
-    "date": "2026-05-25",
-    "macrostructure": "Route Console",
-    "theme": "Brand-aligned app theme",
-    "enrichment": "Tier-A route board",
-    "brief": "Accueil screen redesign — logistics console rhythm"
-  },
-  {
-    "date": "2026-05-22",
-    "macrostructure": "Progressive Disclosure",
-    "theme": "Brand-aligned (custom)",
+    "date": "2026-05-26",
+    "macrostructure": "Workbench (mobile admin dashboard)",
+    "theme": "modern-minimal",
     "enrichment": "none",
-    "brief": "ChinaLink Express onboarding redesign — utilitarian / modern-minimal"
+    "brief": "ChinaLink Express admin stats screen redesign"
   }
 ]

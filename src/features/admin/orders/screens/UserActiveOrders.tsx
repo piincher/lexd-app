@@ -2,7 +2,7 @@
 import { UserHeaderInfo } from "@src/shared/components";
 import { useGetActiveOrder } from '@src/shared/hooks/useOrders';
 import { useAuth } from "@src/store/Auth";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,12 +19,12 @@ const status = [
 
 const UserActiveOrders = ({ navigation }: RootStackScreenProps<"UserActiveOrders">) => {
    const { colors, isDark } = useAppTheme();
-   const styles = useMemo(() => StyleSheet.create({
+   const styles = StyleSheet.create({
       container: {
          flex: 1,
          backgroundColor: colors.background.default,
       },
-   }), [colors, isDark]);
+   });
    const [statusChange, setStatusChange] = React.useState("Active");
    const { firstName, lastName } = useAuth((state) => state.user);
    const type = useShippingMode((state) => state.type);

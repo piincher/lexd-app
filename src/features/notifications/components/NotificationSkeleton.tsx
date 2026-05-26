@@ -3,7 +3,7 @@
  * Skeleton loading state for notification list
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -42,7 +42,7 @@ const SkeletonItem: React.FC<{ styles: SkeletonStyles; shimmerColor: string }> =
 
 const NotificationSkeleton: React.FC<NotificationSkeletonProps> = ({ count = 5 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     list: {
       paddingVertical: 8,
     },
@@ -92,7 +92,7 @@ const NotificationSkeleton: React.FC<NotificationSkeletonProps> = ({ count = 5 }
       overflow: 'hidden',
       marginTop: 4,
     },
-  }), [colors]);
+  });
 
   const shimmerColor = isDark ? colors.neutral[700] : colors.neutral[50];
 

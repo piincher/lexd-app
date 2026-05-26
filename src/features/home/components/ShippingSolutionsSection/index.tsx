@@ -1,5 +1,5 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
@@ -17,7 +17,7 @@ export const ShippingSolutionsSection: React.FC<ShippingSolutionsSectionProps> =
    onPressSea,
    colors,
 }) => {
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
    return (
       <View style={styles.section}>
          <Text style={[styles.sectionTitle, { color: colors.text?.primary ?? colors.text }]}>

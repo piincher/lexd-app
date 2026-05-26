@@ -32,7 +32,7 @@ type HelpMyTicketsPreviewProps = {
 
 export function HelpMyTicketsPreview({ tickets, isLoading, onViewAll, onViewTicket }: HelpMyTicketsPreviewProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (isLoading) return null;
   if (tickets.length === 0) return null;

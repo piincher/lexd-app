@@ -8,6 +8,7 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { ShippingMode } from '../../types';
 import { createStyles } from './RouteListEmpty.styles';
 
@@ -18,7 +19,7 @@ interface RouteListEmptyProps {
 
 export const RouteListEmpty: React.FC<RouteListEmptyProps> = ({ selectedMode, onCreateRoute }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.emptyContainer}>
       <LinearGradient

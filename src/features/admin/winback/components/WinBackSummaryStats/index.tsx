@@ -29,7 +29,7 @@ function StatPill({
   color: string;
 }) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   return (
     <View style={[styles.pill, { borderColor: color + "30" }]}>
       <MaterialCommunityIcons name={icon} size={18} color={color} />
@@ -43,7 +43,7 @@ function StatPill({
 
 export function WinBackSummaryStats({ summary, isLoading }: WinBackSummaryStatsProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (isLoading) {
     return (

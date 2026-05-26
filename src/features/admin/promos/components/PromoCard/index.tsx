@@ -46,7 +46,7 @@ type PromoCardProps = {
 
 export function PromoCard({ promo, onEdit, onDeactivate, onStats, onClone }: PromoCardProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const statusColors = getStatusColor(colors, promo.status);
   const isPercentage = promo.type === "PERCENTAGE";
   const usagePercent = promo.maxUsages ? Math.min(100, (promo.currentUsages / promo.maxUsages) * 100) : 0;

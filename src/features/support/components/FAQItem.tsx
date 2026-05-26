@@ -3,7 +3,7 @@
  * Displays a single FAQ question/answer with accordion functionality
  */
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
@@ -24,7 +24,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({ item, index }) => {
     setIsExpanded(!isExpanded);
   };
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.background.card,
       borderRadius: 12,
@@ -61,7 +61,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({ item, index }) => {
       color: colors.text.secondary,
       lineHeight: 20,
     },
-  }), [colors]);
+  });
 
   return (
     <View style={styles.container}>

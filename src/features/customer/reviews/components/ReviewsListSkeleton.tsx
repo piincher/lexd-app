@@ -1,5 +1,5 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 import { ShimmerBlock } from '@src/shared/ui';
@@ -45,7 +45,7 @@ export const ReviewsListSkeleton: React.FC<ReviewsListSkeletonProps> = ({
   count = 4,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       {/* Summary card */}

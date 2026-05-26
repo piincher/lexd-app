@@ -16,7 +16,7 @@ interface WaypointDetailsProps {
 
 export const WaypointDetails: React.FC<WaypointDetailsProps> = ({ waypoint, formatDateTime }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Animated.View entering={FadeIn} style={styles.expandedContent}>

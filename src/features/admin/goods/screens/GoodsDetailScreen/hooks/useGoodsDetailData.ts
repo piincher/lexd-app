@@ -4,6 +4,8 @@ import {
   useDeleteGoods,
   useUpdateGoodsStatus,
   useAssignGoodsToContainer,
+  useAssignClientToGoods,
+  useResendGoodsNotification,
 } from '../../../hooks/useGoods';
 import { useGetAllContainers } from '@src/shared/hooks/useAdminContainers';
 import {
@@ -40,6 +42,8 @@ export const useGoodsDetailData = () => {
   const airwayBills = airwayBillsData?.data?.airwayBills || [];
 
   const removeAirwayBillMutation = useRemoveGoodsFromAirwayBill();
+  const assignClientMutation = useAssignClientToGoods();
+  const resendNotificationMutation = useResendGoodsNotification();
 
   const client = goods && typeof goods.clientId === 'object' ? goods.clientId : null;
   const container = goods && typeof goods.containerId === 'object' ? goods.containerId : null;
@@ -71,5 +75,7 @@ export const useGoodsDetailData = () => {
     assignContainerMutation,
     assignAirwayBillMutation,
     removeAirwayBillMutation,
+    assignClientMutation,
+    resendNotificationMutation,
   };
 };

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -14,7 +14,7 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
   const { colors, isDark } = useAppTheme();
   const accent = hasUnassigned ? colors.status.error : colors.status.success;
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     heroPanel: {
       padding: 16,
       paddingBottom: hasUnassigned ? 18 : 16,
@@ -29,8 +29,9 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
       marginBottom: hasUnassigned ? 16 : 10,
     },
     iconWrap: {
-      width: 40,
-      height: 40,
+      width: 44,
+      height: 44,
+      minWidth: 44,
       borderRadius: 12,
       backgroundColor: accent + "18",
       borderWidth: 1,
@@ -71,7 +72,7 @@ export const AlertHero: React.FC<AlertHeroProps> = ({ hasUnassigned, total }) =>
       color: colors.text.secondary,
       marginTop: 2,
     },
-  }), [accent, colors, hasUnassigned, isDark]);
+  });
 
   return (
     <View style={styles.heroPanel}>

@@ -1,11 +1,11 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useMemo } from 'react';
+
 
 export const useNotificationEmptyStyles = () => {
   const { colors } = useAppTheme();
-  return useMemo(() => StyleSheet.create({
+  return StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -65,5 +65,5 @@ export const useNotificationEmptyStyles = () => {
     fontWeight: '600',
     color: colors.text.inverse,
   },
-  }), [colors]);
+  });
 };

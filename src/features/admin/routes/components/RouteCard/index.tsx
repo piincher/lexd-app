@@ -17,7 +17,7 @@ interface RouteCardProps {
 
 export const RouteCard: React.FC<RouteCardProps> = ({ route, onPress }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const modeColor = getShippingModeColors(colors)[route.shippingMode];
 
   return (

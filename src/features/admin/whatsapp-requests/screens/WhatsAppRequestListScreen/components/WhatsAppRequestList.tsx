@@ -40,7 +40,7 @@ export const WhatsAppRequestList: React.FC<WhatsAppRequestListProps> = ({
   onWhatsApp,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const keyExtractor = (item: WhatsAppRequest) => item._id;
 
   const renderItem = ({ item }: { item: WhatsAppRequest }) => (

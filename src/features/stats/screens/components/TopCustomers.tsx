@@ -1,9 +1,10 @@
 /**
  * TopCustomers
  * SRP: Displays top customers ranked by revenue
+ * Hallmark: flat section, no card wrapper, hairline separators
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { ShimmerBlock } from '@src/shared/ui';
 import { Text } from 'react-native-paper';
@@ -21,7 +22,7 @@ interface TopCustomersProps {
 
 export const TopCustomers: React.FC<TopCustomersProps> = ({ customers, isLoading }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createTopCustomersStyles(colors), [colors]);
+  const styles = createTopCustomersStyles(colors);
 
   return (
     <View style={styles.container}>
@@ -47,7 +48,7 @@ export const TopCustomers: React.FC<TopCustomersProps> = ({ customers, isLoading
       ) : (
         <View style={styles.emptyContainer}>
           <Ionicons name="people-outline" size={28} color={colors.text.disabled} />
-          <Text style={styles.emptyText}>Aucune donnee disponible</Text>
+          <Text style={styles.emptyText}>Aucune donnée disponible</Text>
         </View>
       )}
     </View>

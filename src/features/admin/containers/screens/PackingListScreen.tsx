@@ -18,7 +18,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const PackingListScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     container,
     navigation,
@@ -53,6 +53,7 @@ export const PackingListScreen: React.FC = () => {
         containerNumber={container.number}
         clientCount={clients.length}
         totalItems={safeSummary.totalItems}
+        totalQuantity={safeSummary.totalQuantity || safeSummary.totalPackages || 0}
         onBack={() => navigation.goBack()}
         onGoToLoadingList={handleGoToLoadingList}
       />

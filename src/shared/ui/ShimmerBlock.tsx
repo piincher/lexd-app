@@ -2,6 +2,7 @@
  * ShimmerBlock
  * Reusable shimmer skeleton block with animated gradient sweep
  */
+"use no memo";
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,7 +7,7 @@ import { createPaymentHistoryEmptyStyles } from './PaymentHistoryEmpty.styles';
 
 export const PaymentHistoryEmpty: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createPaymentHistoryEmptyStyles(colors), [colors]);
+  const styles = createPaymentHistoryEmptyStyles(colors);
 
   return (
     <View style={styles.emptyContainer}>

@@ -57,7 +57,7 @@ export const RecipientSelector: React.FC<RecipientSelectorProps> = ({
   isFetchingByDate,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const filtered = useMemo(
     () =>

@@ -28,7 +28,7 @@ type WinBackTriggerCardProps = {
 
 export function WinBackTriggerCard({ config, onToggle, onEdit, onPreview }: WinBackTriggerCardProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const isEnabled = config.enabled;
 
   return (

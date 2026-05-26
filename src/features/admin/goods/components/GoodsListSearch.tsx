@@ -51,7 +51,7 @@ export const GoodsListSearch: React.FC<GoodsListSearchProps> = ({
   onClear 
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
   <View style={styles.wrapper}>
     <LinearGradient colors={[colors.background.card, colors.background.paper]} style={styles.container}>

@@ -1,7 +1,7 @@
 // Goods Feature - GoodsEmptyState Component
 // Pure presentational component for empty state
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
 	message = 'Vos marchandises apparaîtront ici dès leur réception à l’entrepôt.\nContactez-nous pour organiser un envoi.',
 }) => {
 	const { colors } = useAppTheme();
-	const styles = useMemo(() => StyleSheet.create({
+	const styles = StyleSheet.create({
 		container: {
 			flex: 1,
 			justifyContent: 'center',
@@ -44,7 +44,7 @@ export const GoodsEmptyState: React.FC<GoodsEmptyStateProps> = ({
 			marginTop: 8,
 			lineHeight: 20,
 		},
-	}), [colors]);
+	});
 
 	return (
 		<View style={styles.container}>

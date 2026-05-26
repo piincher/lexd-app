@@ -1,19 +1,17 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View } from "react-native";
 import { Text } from "react-native-paper";
 import { Controller } from "react-hook-form";
 import { FormInput } from "../../../../components/FormInput";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { createStyles } from "./AirShippingView.styles";
+import type { ReceiveGoodsFormSectionProps } from "../../types";
 
-interface AirShippingViewProps {
-   control: any;
-   errors: any;
-}
+type AirShippingViewProps = Pick<ReceiveGoodsFormSectionProps, "control" | "errors">;
 
 export const AirShippingView: React.FC<AirShippingViewProps> = ({ control, errors }) => {
    const { colors } = useAppTheme();
-   const styles = useMemo(() => createStyles(colors), [colors]);
+   const styles = createStyles(colors);
 
    return (
       <View>

@@ -9,10 +9,16 @@ export const createStatsStyles = (colors: any) =>
     scrollContent: {
       flexGrow: 1,
     },
-    sectionGap: {
-      height: 14,
+    zone: {
+      marginTop: 20,
+    },
+    zoneInnerGap: {
+      height: 12,
+    },
+    footerZone: {
+      marginTop: 20,
     },
     bottomPadding: {
-      height: 32,
+      height: 40,
     },
   });

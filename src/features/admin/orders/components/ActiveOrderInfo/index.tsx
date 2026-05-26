@@ -14,7 +14,7 @@ interface ActiveOrderInfoProps {
 
 export const ActiveOrderInfo: React.FC<ActiveOrderInfoProps> = ({ item, note }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Surface style={styles.card}>

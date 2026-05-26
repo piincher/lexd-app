@@ -33,7 +33,7 @@ const createStyles = () => StyleSheet.create({
 
 export const GoodsListFAB: React.FC<GoodsListFABProps> = ({ onPress }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(), []);
+  const styles = createStyles();
   return (
   <TouchableOpacity style={styles.container} onPress={onPress} activeOpacity={0.9}>
     <LinearGradient

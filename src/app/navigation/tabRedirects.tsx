@@ -29,3 +29,4 @@ export const ContainerListTabRedirect = createHomeTabRedirect("ContainerList");
 export const CustomerDashboardTabRedirect = createHomeTabRedirect("CustomerDashboard");
 export const MyGoodsTabRedirect = createHomeTabRedirect("MyGoods");
 export const MyContainersTabRedirect = createHomeTabRedirect("MyContainers");
+export const OrdersTabRedirect = createHomeTabRedirect("Orders");

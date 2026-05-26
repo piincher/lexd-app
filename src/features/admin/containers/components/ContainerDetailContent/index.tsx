@@ -1,11 +1,14 @@
 import React from 'react';
-import { ScrollView, RefreshControl } from 'react-native';
 import { ContainerDetailHeader } from '../../screens/components/ContainerDetailHeader';
 import { ContainerTimeline } from '../../screens/components/ContainerTimeline';
 import { ContainerCapacityCard } from '../../screens/components/ContainerCapacityCard';
-import { ContainerGoodsList } from '../../screens/components/ContainerGoodsList';
 import { ContainerWaypointSection } from '../../screens/components/ContainerWaypointSection';
 import { ContainerProfitCard } from '../../screens/components/ContainerProfitCard';
+import { ContainerHealthPanel } from '../../screens/components/ContainerHealthPanel';
+import { ContainerIssueAlerts } from '../../screens/components/ContainerIssueAlerts';
+import { ContainerSmartFilters } from '../../screens/components/ContainerSmartFilters';
+import { ContainerQuickActionsBar } from '../../screens/components/ContainerQuickActionsBar';
+import { ContainerClientGroups } from '../../screens/components/ContainerClientGroups';
 import type { ContainerDetailScreenState } from '../../screens/hooks/useContainerDetailScreen';
 import type { Container } from '../../types';
 
@@ -40,10 +43,19 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
     navigation,
     handleRemoveGoods,
     handleMarkGoodsDelivered,
+    handleAssignGoods,
+    handleGeneratePackingList,
+    handleSharePackingList,
+    handleGoToLoadingList,
+    handleMarkReadyForPickup,
+    handleMarkDelivered,
+    canMarkReadyForPickup,
+    canMarkDelivered,
+    assist,
   } = screen;
 
-  return (
-    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}>
+  const header = (
+    <>
       <ContainerDetailHeader
         containerNumber={container.virtualContainerNumber || container.containerNumber}
         shippingMode={container.shippingMode?.toLowerCase() as 'air' | 'sea' | 'land'}
@@ -58,6 +70,26 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
         consignee={consignee}
       />
       <ContainerTimeline currentStatus={container.status} currentStatusIndex={currentStatusIndex} />
+      <ContainerQuickActionsBar
+        hasGoods={goodsList.length > 0}
+        canMarkReadyForPickup={canMarkReadyForPickup}
+        canMarkDelivered={canMarkDelivered}
+        onAssignGoods={handleAssignGoods}
+        onSharePackingList={handleSharePackingList}
+        onOpenPackingList={handleGeneratePackingList}
+        onOpenLoadingList={handleGoToLoadingList}
+        onMarkReadyForPickup={handleMarkReadyForPickup}
+        onMarkDelivered={handleMarkDelivered}
+      />
+      <ContainerHealthPanel health={assist.health} />
+      <ContainerIssueAlerts issues={assist.issues} />
+      <ContainerSmartFilters
+        searchQuery={assist.searchQuery}
+        activeFilter={assist.activeFilter}
+        counts={assist.filterCounts}
+        onSearchChange={assist.setSearchQuery}
+        onFilterChange={assist.setActiveFilter}
+      />
       <ContainerCapacityCard
         totalCBM={capacityValue}
         fillPercentage={fillPercentage}
@@ -80,12 +112,18 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
         containerStatus={container.status}
         containerNumber={container.virtualContainerNumber || container.containerNumber}
       />
-      <ContainerGoodsList
-        goodsList={goodsList}
-        onRemoveGoods={handleRemoveGoods}
-        onMarkDelivered={handleMarkGoodsDelivered}
-      />
-    </ScrollView>
+    </>
+  );
+
+  return (
+    <ContainerClientGroups
+      groups={assist.clientGroups}
+      header={header}
+      isRefreshing={isRefreshing}
+      onRefresh={handleRefresh}
+      onRemoveGoods={handleRemoveGoods}
+      onMarkDelivered={handleMarkGoodsDelivered}
+    />
   );
 };
 

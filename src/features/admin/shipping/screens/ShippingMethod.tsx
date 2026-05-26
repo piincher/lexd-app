@@ -1,7 +1,7 @@
 import RenderListItem from "@src/components/RenderListItem/RenderListItem";
 import type { RootStackParamList, RootStackScreenProps } from "@src/navigations/type";
 import { useShippingMode } from "@src/store/shippingMode";
-import React, { FC, useState, useMemo } from "react";
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, Pressable } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -24,7 +24,7 @@ const ShippingMethod = ({ navigation }: RootStackScreenProps<"ShippingMethod">) 
    const items = list;
    const { colors, isDark } = useAppTheme();
 
-   const styles = useMemo(() => StyleSheet.create({
+   const styles = StyleSheet.create({
       container: {
          flex: 1,
          backgroundColor: colors.background.default,
@@ -44,7 +44,7 @@ const ShippingMethod = ({ navigation }: RootStackScreenProps<"ShippingMethod">) 
          padding: 20,
          backgroundColor: colors.background.card,
       },
-   }), [colors, isDark]);
+   });
 
    const handleTypeChange = (item: Item) => {
       setType(item.title);

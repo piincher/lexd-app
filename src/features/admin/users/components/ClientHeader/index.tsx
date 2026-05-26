@@ -32,7 +32,7 @@ export const ClientHeader: React.FC<ClientHeaderProps> = ({
   onToggleSelection,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <LinearGradient colors={Theme.gradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.container}>

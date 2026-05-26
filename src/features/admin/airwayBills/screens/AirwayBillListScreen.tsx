@@ -18,7 +18,7 @@ export const AirwayBillListScreen: React.FC = () => {
   const { statusFilter, searchQuery, airwayBills, stats, isLoading, isError, error, isFetching, statusOptions, handlers } =
     useAirwayBillListScreenUI();
 
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const containerStyle = [styles.container, { backgroundColor: colors.background.default }];
 
   if (isLoading) {

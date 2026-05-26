@@ -23,7 +23,7 @@ export const ActiveOrderHeaderCard: React.FC<ActiveOrderHeaderCardProps> = ({
   orderPrice,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const initials = clientName?.split(' ').map((n: string) => n[0]).join('') || '?';
 
   return (

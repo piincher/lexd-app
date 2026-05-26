@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { useAppTheme } from '@src/providers/ThemeProvider';
 import { LoadingSummary } from '../types';
 import { Theme } from '@src/constants/Theme';
 
@@ -15,7 +14,6 @@ export const ProgressCard: React.FC<ProgressCardProps> = ({
   summary,
   progressPercentage,
 }) => {
-  const { colors } = useAppTheme();
   return (
     <View style={styles.progressCard}>
       <View style={styles.progressHeader}>
@@ -50,7 +48,7 @@ export const ProgressCard: React.FC<ProgressCardProps> = ({
         <View style={styles.progressStat}>
           <Ionicons name="time" size={16} color={Theme.neutral[400]} />
           <Text style={styles.progressStatText}>
-            {summary.remainingCBM.toFixed(2)} m³ restant
+            {summary.remainingItems} article(s) · {summary.remainingCBM.toFixed(2)} m³ restant
           </Text>
         </View>
       </View>
@@ -116,8 +114,7 @@ const styles = StyleSheet.create({
     color: Theme.neutral[800],
   },
   progressStats: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    gap: Theme.spacing.sm,
   },
   progressStat: {
     flexDirection: 'row',

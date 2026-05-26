@@ -10,6 +10,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Icon } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import type { AppTheme } from '@src/constants/Theme';
 
 export interface ShippingModeSelectorProps {
   value: 'AIR' | 'SEA';
@@ -28,7 +29,9 @@ const MODE_OPTIONS: ModeOption[] = [
   { value: 'SEA', label: 'Maritime', icon: 'ferry' },
 ];
 
-const createStyles = (colors: any) => StyleSheet.create({
+type ThemeColors = AppTheme['colors'];
+
+const createStyles = (colors: ThemeColors) => StyleSheet.create({
   container: {
     width: '100%',
   },
@@ -82,7 +85,7 @@ export const ShippingModeSelector: React.FC<ShippingModeSelectorProps> = ({
   error,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <View style={styles.container}>

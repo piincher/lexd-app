@@ -15,7 +15,7 @@ export const UserSearchInput: React.FC<UserSearchInputProps> = ({
   label = "Rechercher un client",
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <TextInput

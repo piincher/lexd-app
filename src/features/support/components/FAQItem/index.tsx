@@ -3,7 +3,7 @@
  * Following SRP: Single purpose - FAQ accordion item (< 150 lines)
  */
 
-import React, {useEffect, useMemo} from 'react';
+import React, { useEffect } from 'react';
 import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -32,7 +32,7 @@ export const FAQItem: React.FC<FAQItemProps> = ({
   index,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const animationProgress = useSharedValue(0);
 
   useEffect(() => {

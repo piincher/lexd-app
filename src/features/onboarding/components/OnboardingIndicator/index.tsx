@@ -2,7 +2,7 @@
  * OnboardingIndicator — Minimal brand dot indicators
  */
 
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, StyleSheet, Animated } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 
@@ -22,7 +22,7 @@ export const OnboardingIndicator: React.FC<OnboardingIndicatorProps> = ({
   width = 0,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={styles.container}>
       {Array.from({ length: count }).map((_, i) => {

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -23,7 +23,7 @@ const getStages = (colors: any) => [
 
 export const JourneyMap: React.FC<Props> = ({ goodsByStatus, totalGoods }) => {
 	const { colors } = useAppTheme();
-	const styles = useMemo(() => createJourneyMapStyles(colors), [colors]);
+	const styles = createJourneyMapStyles(colors);
 	const STAGES = getStages(colors);
 
 	return (

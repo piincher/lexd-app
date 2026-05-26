@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { View, Modal } from 'react-native';
 import { Text, Button, IconButton, Card } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -22,7 +22,7 @@ export const DateRangePicker: React.FC<DateRangePickerProps> = ({
   maxDate,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const [selectedPreset, setSelectedPreset] = useState<DateRangePreset>(initialPreset);
   const [startDate, setStartDate] = useState<Date>(initialRange?.startDate || getPresetRange('month').startDate);

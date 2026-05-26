@@ -17,7 +17,7 @@ interface StatusPickerProps {
 export const StatusPicker: React.FC<StatusPickerProps> = ({ entity, value, onSelect, onInputFocus }) => {
   const [visible, setVisible] = useState(false);
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const options = STATUS_OPTIONS[entity] || [];
   const selectedLabel = options.find((o) => o.value === value)?.label || (value ? value : "All Statuses");

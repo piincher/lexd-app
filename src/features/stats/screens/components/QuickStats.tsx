@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from 'react';
 import { View, Text } from "react-native";
 import { Card } from "react-native-paper";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -25,7 +25,7 @@ export const QuickStats: React.FC<QuickStatsProps> = ({
   statusCounts,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const StatCard: React.FC<StatCardProps> = ({ label, value, color }) => (
     <View style={styles.statItem}>

@@ -20,7 +20,7 @@ import { WhatsAppRequestErrorSnackbar } from './components/WhatsAppRequestErrorS
 
 export const WhatsAppRequestListScreen: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const { data, handlers } = useWhatsAppRequestListScreenUI();
 
   return (

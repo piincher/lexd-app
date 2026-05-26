@@ -54,7 +54,7 @@ export const TimelineItemRow: React.FC<TimelineItemRowProps> = ({
   currentWaypointIndex,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const status = getWaypointStatus(index, currentWaypointIndex);
   const entering = FadeInUp.delay(index * 100);
   const icon = getSegmentIcon(waypoint.segmentType);

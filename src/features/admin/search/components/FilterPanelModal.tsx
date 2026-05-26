@@ -45,7 +45,7 @@ export const FilterPanelModal: React.FC<FilterPanelModalProps> = ({
   onPresetSelect,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <Modal

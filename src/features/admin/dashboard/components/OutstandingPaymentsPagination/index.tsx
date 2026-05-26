@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -16,7 +16,7 @@ export const OutstandingPaymentsPagination: React.FC<OutstandingPaymentsPaginati
   onNext,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { page, pages } = pagination;
   const isPrevDisabled = page <= 1;
   const isNextDisabled = page >= pages;

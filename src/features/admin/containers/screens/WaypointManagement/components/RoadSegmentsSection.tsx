@@ -14,7 +14,7 @@ interface RoadSegmentsSectionProps {
 
 export const RoadSegmentsSection: React.FC<RoadSegmentsSectionProps> = ({ roadSegments }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <ScrollView style={styles.segmentsContainer}>

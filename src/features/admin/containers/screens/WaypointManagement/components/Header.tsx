@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,7 +19,7 @@ export const Header: React.FC<HeaderProps> = ({
   onSave,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const navigation = useNavigation();
   return (
     <LinearGradient

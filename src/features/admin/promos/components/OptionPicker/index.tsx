@@ -12,7 +12,7 @@ type OptionPickerProps<T extends string> = {
 
 export function OptionPicker<T extends string>({ label, options, selected, onSelect }: OptionPickerProps<T>) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   return (
     <View style={styles.fieldContainer}>
       <Text style={styles.fieldLabel}>{label}</Text>

@@ -11,6 +11,9 @@ interface UnassignedGoodsListProps {
   isLoading: boolean;
   onRefresh: () => void;
   onItemPress: (goodsId: string) => void;
+  /** Optional — renders above the first card (and above the empty state). The redesigned
+   *  screen passes the bento triage panel here so it scrolls with the queue. */
+  ListHeaderComponent?: React.ComponentProps<typeof FlashList>["ListHeaderComponent"];
 }
 
 export const UnassignedGoodsList: React.FC<UnassignedGoodsListProps> = ({
@@ -18,12 +21,14 @@ export const UnassignedGoodsList: React.FC<UnassignedGoodsListProps> = ({
   isLoading,
   onRefresh,
   onItemPress,
+  ListHeaderComponent,
 }) => {
   return (
     <FlashList
       data={data}
       keyExtractor={(item) => item._id}
       contentContainerStyle={styles.list}
+      ListHeaderComponent={ListHeaderComponent}
       refreshControl={
         <RefreshControl refreshing={isLoading} onRefresh={onRefresh} />
       }

@@ -1,30 +1,29 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 
 export const getStyles = (colors: any) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 20,
-      backgroundColor: colors.background.card,
-      borderRadius: 16,
-      padding: 18,
-      ...Theme.shadows.sm,
+      paddingVertical: 14,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
     },
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: 12,
+      marginBottom: 10,
     },
     title: {
-      fontSize: 15,
+      fontSize: 16,
       fontFamily: Fonts.bold,
       fontWeight: '700',
       color: colors.text.primary,
+      letterSpacing: -0.2,
     },
     subtitle: {
-      fontSize: 11,
+      fontSize: 12,
       fontFamily: Fonts.regular,
       color: colors.text.disabled,
       marginTop: 2,

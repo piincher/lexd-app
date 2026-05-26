@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Text, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -13,7 +13,7 @@ const formatFCFA = (value: number) => `${Math.round(value).toLocaleString('fr-FR
 
 export const RewardEarningRules: React.FC<RewardEarningRulesProps> = ({ settings }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const rules = [
     {

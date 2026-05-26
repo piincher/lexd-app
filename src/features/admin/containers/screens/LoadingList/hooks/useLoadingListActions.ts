@@ -19,8 +19,11 @@ export const useLoadingListActions = (
   }, [setLoadedItems]);
 
   const handleMarkAllLoaded = useCallback(() => {
-    const allIds = new Set(items.map((item) => item.goods._id));
-    setLoadedItems(allIds);
+    setLoadedItems((prev) => {
+      const next = new Set(prev);
+      items.forEach((item) => next.add(item.goods._id));
+      return next;
+    });
   }, [items, setLoadedItems]);
 
   const handleResetLoading = useCallback(() => {
@@ -32,11 +35,15 @@ export const useLoadingListActions = (
         {
           text: 'Réinitialiser',
           style: 'destructive',
-          onPress: () => setLoadedItems(new Set()),
+          onPress: () => setLoadedItems((prev) => {
+            const next = new Set(prev);
+            items.forEach((item) => next.delete(item.goods._id));
+            return next;
+          }),
         },
       ]
     );
-  }, [setLoadedItems]);
+  }, [items, setLoadedItems]);
 
   return { handleToggleLoaded, handleMarkAllLoaded, handleResetLoading };
 };

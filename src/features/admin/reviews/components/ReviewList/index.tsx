@@ -37,7 +37,7 @@ export const ReviewList: React.FC<ReviewListProps> = ({
   isResponding,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const renderReview = ({ item }: { item: AdminReview }) => (
     <ReviewCard
       review={item}

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -16,7 +16,7 @@ interface ReceptionCardProps {
 
 export const ReceptionCard: React.FC<ReceptionCardProps> = ({ receivedAt, receivedByName, receivedBy, formatDate }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   // Get receiver name from receivedByName or from populated receivedBy object
   const receiverName = receivedByName || 
     (receivedBy ? `${receivedBy.firstName || ''} ${receivedBy.lastName || ''}`.trim() : null) || 

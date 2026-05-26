@@ -28,7 +28,7 @@ const NotificationsScreen: React.FC = () => {
     handlers,
   } = useNotificationsScreenUI();
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>

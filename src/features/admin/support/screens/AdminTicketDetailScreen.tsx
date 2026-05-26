@@ -13,7 +13,7 @@ import {
 
 export const AdminTicketDetailScreen: React.FC<RootStackScreenProps<'AdminTicketDetail'>> = ({ navigation, route }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const { ticketId } = route.params;
   const { ticket, isLoading, isError, refreshing, isFetching, isReplyPending, isStatusPending, handlers } = useAdminTicketDetailScreen(ticketId);
 

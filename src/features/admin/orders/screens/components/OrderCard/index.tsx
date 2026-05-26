@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createStyles } from './OrderCard.styles';
@@ -30,7 +30,7 @@ interface OrderCardProps {
 export const OrderCard: React.FC<OrderCardProps> = ({ order, isSelected, isSelectionMode, onToggleSelect }) => {
   const navigation = useNavigation();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   if (!order) {
     console.log('[OrderCard] Received undefined order');

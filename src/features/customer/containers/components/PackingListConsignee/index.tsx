@@ -4,7 +4,7 @@
  * SRP: Display consignee details and contact actions
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Linking } from 'react-native';
 import { Card, Divider, Text, Button, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -31,7 +31,7 @@ export const PackingListConsignee: React.FC<PackingListConsigneeProps> = ({
 }) => {
   const theme = useTheme();
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const handleOpenMaps = () => {
     if (consignee.warehouseAddress) {

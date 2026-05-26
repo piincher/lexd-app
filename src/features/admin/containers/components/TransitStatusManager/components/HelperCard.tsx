@@ -8,7 +8,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const HelperCard: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <Card style={styles.helperCard}>
       <Card.Content>

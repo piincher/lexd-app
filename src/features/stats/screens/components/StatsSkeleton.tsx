@@ -3,7 +3,7 @@
  * SRP: Shimmer loading skeleton for the stats screen
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { ShimmerBlock } from '@src/shared/ui';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -16,7 +16,7 @@ import { StatsPaymentSkeleton } from './StatsPaymentSkeleton';
 
 export const StatsSkeleton: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStatsSkeletonStyles(colors), [colors]);
+  const styles = createStatsSkeletonStyles(colors);
 
   return (
     <View style={styles.container}>

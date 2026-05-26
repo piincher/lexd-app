@@ -3,7 +3,7 @@
  * Shows when ticket is resolved/closed and cannot receive messages
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Text } from 'react-native-paper';
@@ -19,7 +19,7 @@ export const TicketClosedBanner: React.FC<TicketClosedBannerProps> = ({ status }
   const { colors } = useAppTheme();
   const statusText = status === 'RESOLVED' ? 'résolu' : 'fermé';
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -34,7 +34,7 @@ export const TicketClosedBanner: React.FC<TicketClosedBannerProps> = ({ status }
       color: colors.text.secondary,
       marginLeft: 8,
     },
-  }), [colors]);
+  });
 
   return (
     <View style={styles.container}>

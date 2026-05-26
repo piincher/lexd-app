@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -25,7 +25,7 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
   onStatusUpdate 
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const currentStatus = order?.currentStatus || 'Order arrived at warehouse';
   const currentIndex = STATUS_ORDER.findIndex(s => s.key === currentStatus);

@@ -16,7 +16,7 @@ export const WhatsAppRequestCardSearchResults: React.FC<WhatsAppRequestCardSearc
   searchResults,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   if (!searchResults) return null;
 
   return (

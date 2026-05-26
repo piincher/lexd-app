@@ -20,7 +20,7 @@ export const FAQContactButton: React.FC<FAQContactButtonProps> = ({
   style,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors), [colors]);
+  const styles = getStyles(colors);
 
   return (
     <TouchableOpacity

@@ -15,7 +15,7 @@ import { createStyles } from './MyRewardsScreen.styles';
 export const MyRewardsScreen: React.FC = () => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const rewards = useMyRewards();
   const redemptions = useMyRewardRedemptions();

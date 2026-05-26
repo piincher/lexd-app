@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ export const PendingActionsRail: React.FC<Props> = ({
   onViewPayments,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     wrapper: { paddingHorizontal: 16, marginTop: 16 },
     title: { color: colors.text.primary, fontSize: 17, fontWeight: '900', marginBottom: 10 },
     row: { flexDirection: 'row', gap: 8 },
@@ -39,7 +39,7 @@ export const PendingActionsRail: React.FC<Props> = ({
     iconRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     count: { color: colors.text.primary, fontSize: 20, fontWeight: '900' },
     label: { color: colors.text.secondary, fontSize: 11, lineHeight: 16, fontWeight: '700' },
-  }), [colors]);
+  });
 
   const cards = [
     {

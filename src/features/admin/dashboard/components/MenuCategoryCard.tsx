@@ -46,7 +46,6 @@ export const MenuCategoryCard: React.FC<MenuCategoryCardProps> = ({
         styles={styles}
         item={item}
         accent={accent}
-        isDark={isDark}
         disabledColor={disabledColor}
         onPress={() => onItemPress(item.route)}
         isLast={idx === category.items.length - 1}

@@ -21,7 +21,7 @@ type WinBackConfigModalProps = {
 
 export function WinBackConfigModal({ visible, config, onClose, onSave, isSaving }: WinBackConfigModalProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   const [form, setForm] = useState<Partial<WinBackConfig>>({});
 

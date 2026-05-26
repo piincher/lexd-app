@@ -5,6 +5,13 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from './GoodsBulkActionBar.styles';
 import { BulkActionButton } from './BulkActionButton';
 
+export interface BulkSelectionTotals {
+  count: number;
+  weight: number;
+  cbm: number;
+  cost: number;
+}
+
 interface GoodsBulkActionBarProps {
   selectedCount: number;
   totalCount: number;
@@ -13,7 +20,13 @@ interface GoodsBulkActionBarProps {
   onAssignContainer: () => void;
   onChangeStatus: () => void;
   onVoid: () => void;
+  /** Optional — when provided, renders a separated permanent-delete row. */
+  onHardDelete?: () => void;
   onCancel: () => void;
+  /** Optional — when provided, replaces the "X sélectionné(s)" line with a 4-metric
+   *  strip (count · weight · CBM · cost) so the operator sees the shape of the batch
+   *  before acting on it. */
+  totals?: BulkSelectionTotals | null;
 }
 
 export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
@@ -24,10 +37,12 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
   onAssignContainer,
   onChangeStatus,
   onVoid,
+  onHardDelete,
   onCancel,
+  totals,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   if (totalCount === 0) return null;
 
   const isAllSelected = selectedCount === totalCount && totalCount > 0;
@@ -48,7 +63,31 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
           <Text style={styles.cancelText}>Annuler</Text>
         </TouchableOpacity>
       </View>
-      <Text style={styles.countText}>{selectedCount} sélectionné(s)</Text>
+      {totals && totals.count > 0 ? (
+        <View style={styles.totalsStrip}>
+          <View style={styles.totalsCell}>
+            <Text style={styles.totalsLabel}>SÉLECTION</Text>
+            <Text style={styles.totalsValue}>{totals.count}</Text>
+          </View>
+          <View style={styles.totalsDivider} />
+          <View style={styles.totalsCell}>
+            <Text style={styles.totalsLabel}>POIDS</Text>
+            <Text style={styles.totalsValue} numberOfLines={1}>{`${totals.weight.toFixed(1)} kg`}</Text>
+          </View>
+          <View style={styles.totalsDivider} />
+          <View style={styles.totalsCell}>
+            <Text style={styles.totalsLabel}>CBM</Text>
+            <Text style={styles.totalsValue} numberOfLines={1}>{`${totals.cbm.toFixed(2)} m³`}</Text>
+          </View>
+          <View style={styles.totalsDivider} />
+          <View style={styles.totalsCell}>
+            <Text style={styles.totalsLabel}>COÛT</Text>
+            <Text style={styles.totalsValue} numberOfLines={1}>{`${Math.round(totals.cost).toLocaleString('fr-FR')}`}</Text>
+          </View>
+        </View>
+      ) : (
+        <Text style={styles.countText}>{selectedCount} sélectionné(s)</Text>
+      )}
       <View style={styles.actionsRow}>
         <BulkActionButton
           icon="cube-outline"
@@ -73,6 +112,22 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
           onPress={onVoid}
         />
       </View>
+
+      {/* Permanent removal sits on its own row, outlined (not solid red) so it can't be
+          confused with the "Annuler" void above and isn't reachable by mis-tap. */}
+      {onHardDelete && (
+        <TouchableOpacity
+          style={[styles.hardDeleteButton, isDisabled && styles.hardDeleteButtonDisabled]}
+          onPress={onHardDelete}
+          disabled={isDisabled}
+          activeOpacity={0.7}
+        >
+          <Ionicons name="trash-bin" size={16} color={isDisabled ? colors.text.disabled : colors.status.error} />
+          <Text style={[styles.hardDeleteText, isDisabled && { color: colors.text.disabled }]}>
+            Supprimer définitivement
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

@@ -28,10 +28,15 @@ export const FinancialSummaryCards: React.FC<FinancialSummaryCardsProps> = ({ da
 
   if (!data) {
     return (
-      <Animated.View entering={FadeInDown.delay(300).duration(400)} style={[styles.card, { backgroundColor: colors.background.card }]}>
-        <Text style={[styles.title, { color: colors.text.primary }]}>Resume Financier</Text>
+      <Animated.View
+        entering={FadeInDown.delay(300).duration(400)}
+        style={[styles.card, { backgroundColor: colors.background.card, borderColor: colors.border }]}
+      >
+        <Text style={[styles.title, { color: colors.text.primary }]}>Résumé financier</Text>
         <View style={styles.emptyState}>
-          <Text style={[styles.emptyText, { color: colors.text.secondary }]}>Aucune donnee financiere</Text>
+          <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
+            Aucune donnée financière
+          </Text>
         </View>
       </Animated.View>
     );
@@ -40,14 +45,17 @@ export const FinancialSummaryCards: React.FC<FinancialSummaryCardsProps> = ({ da
   const { totalCost, totalPaid, totalDue, paymentHealth } = data;
 
   const metrics = [
-    { label: 'Total', value: totalCost, icon: '💰' },
-    { label: 'Paye', value: totalPaid, icon: '✅' },
-    { label: 'Restant', value: totalDue, icon: totalDue > 0 ? '⚠️' : '✅' },
-  ];
+    { label: 'Total', value: totalCost, icon: 'cash-multiple' },
+    { label: 'Payé', value: totalPaid, icon: 'check-circle-outline' },
+    { label: 'Restant', value: totalDue, icon: totalDue > 0 ? 'alert-circle-outline' : 'check-circle-outline' },
+  ] as const;
 
   return (
-    <Animated.View entering={FadeInDown.delay(300).duration(400)} style={[styles.card, { backgroundColor: colors.background.card }]}>
-      <Text style={[styles.title, { color: colors.text.primary }]}>Resume Financier</Text>
+    <Animated.View
+      entering={FadeInDown.delay(300).duration(400)}
+      style={[styles.card, { backgroundColor: colors.background.card, borderColor: colors.border }]}
+    >
+      <Text style={[styles.title, { color: colors.text.primary }]}>Résumé financier</Text>
 
       <View style={styles.metricsRow}>
         {metrics.map((m) => (

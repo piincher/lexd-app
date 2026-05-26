@@ -2,7 +2,7 @@
  * states: default · loading (progress bar + value)
  * pre-emit critique: P4 H5 E4 S4 R5 V4
  */
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -28,7 +28,7 @@ export const GoodsListStatCard: React.FC<GoodsListStatCardProps> = ({
   loading = false,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const pct = Math.max(0, Math.min(1, progress));
   const pctLabel = `${Math.round(pct * 100)}%`;

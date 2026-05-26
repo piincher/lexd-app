@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -23,20 +23,21 @@ export const SummarySignature: React.FC<SummarySignatureProps> = ({
   formatDate,
   formatDateTime,
 }) => {
-  const theme = useTheme();
   const { colors } = useAppTheme();
 
   if (!signature?.signed) return null;
 
   return (
     <View style={[styles.signatureRow, { borderTopColor: colors.border }]}>
-      <MaterialCommunityIcons name="signature-freehand" size={18} color={theme.colors.primary} />
-      <View>
-        <Text style={[styles.signatureText, { color: colors.text.secondary }]}>
+      <View style={[styles.sigIconWrap, { backgroundColor: colors.primary[50] }]}>
+        <MaterialCommunityIcons name="signature-freehand" size={16} color={colors.primary[600]} />
+      </View>
+      <View style={styles.sigContent}>
+        <Text style={[styles.signatureText, { color: colors.text.primary }]}>
           {signature.signatureLabel || `Signé par ${signature.signedBy || 'ChinaLink Express'}`}
         </Text>
-        <Text style={[styles.signatureMeta, { color: colors.status.success }]}>
-          {signature.signerName || 'Service Logistique'} ·{' '}
+        <Text style={[styles.signatureMeta, { color: colors.text.muted }]}>
+          {signature.signerName || 'Service Logistique'} · {' '}
           {formatDateTime ? formatDateTime(signature.signedAt) : formatDate(signature.signedAt)}
         </Text>
       </View>
@@ -47,20 +48,29 @@ export const SummarySignature: React.FC<SummarySignatureProps> = ({
 const styles = StyleSheet.create({
   signatureRow: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 12,
-    paddingTop: 12,
+    alignItems: 'flex-start',
+    marginTop: 16,
+    paddingTop: 16,
     borderTopWidth: 1,
+    gap: 10,
+  },
+  sigIconWrap: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sigContent: {
+    flex: 1,
   },
   signatureText: {
-    flex: 1,
     fontFamily: Fonts.meduim,
-    fontSize: 12,
-    marginLeft: 8,
+    fontSize: 13,
   },
   signatureMeta: {
     fontFamily: Fonts.regular,
-    fontSize: 11,
+    fontSize: 12,
     marginTop: 2,
   },
 });

@@ -30,7 +30,7 @@ type PromoFiltersProps = {
 
 export function PromoFilters({ activeFilter, activeType, search, onFilterChange, onTypeChange, onSearchChange }: PromoFiltersProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   return (
     <View style={styles.container}>

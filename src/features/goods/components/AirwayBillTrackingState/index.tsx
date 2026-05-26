@@ -21,7 +21,7 @@ export const AirwayBillTrackingState: React.FC<Props> = ({
   onRetry,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <SafeAreaView style={styles.container}>
       <Appbar.Header>

@@ -22,7 +22,7 @@ const SEARCH_PLACEHOLDER = "Rechercher par nom, téléphone ou email...";
 
 export default function ClientManagement({ navigation }: RootStackScreenProps<"ClientManagement">) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const s = useClientManagement();
   const clientListRef = useRef<ClientListRef>(null);
   const activeLetter = !s.searchQuery && s.clients.length > 20

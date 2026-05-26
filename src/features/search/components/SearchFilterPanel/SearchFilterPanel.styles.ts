@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useMemo } from 'react';
 
 export const useSearchFilterPanelStyles = () => {
   const { colors } = useAppTheme();
-  return useMemo(() => StyleSheet.create({
+  return StyleSheet.create({
     container: {
       backgroundColor: colors.background.card,
       padding: 20,
@@ -69,5 +68,5 @@ export const useSearchFilterPanelStyles = () => {
       justifyContent: 'space-between',
       gap: 12,
     },
-  }), [colors]);
+  });
 };

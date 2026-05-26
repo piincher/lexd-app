@@ -29,7 +29,7 @@ export const GoodsDimensionsCard: React.FC<GoodsDimensionsCardProps> = ({
   quantity,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <Card variant="elevated" padding="medium" style={styles.container}>
       <View style={styles.header}>

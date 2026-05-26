@@ -1,13 +1,16 @@
 import React from 'react';
 import { View, Text, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, Snackbar, Portal, Dialog } from 'react-native-paper';
 import { useReceiveGoodsScreen } from './hooks/useReceiveGoodsScreen';
 import { useReceiveGoodsScreenUI } from './hooks/useReceiveGoodsScreenUI';
 import { ReceiveGoodsForm } from './components/ReceiveGoodsForm';
+import { ReceiveAssistHeader } from './components/ReceiveAssistHeader';
+import { ReceiveBatchQueue } from './components/ReceiveBatchQueue';
+import { ReceiveFeedbackLayer } from './components/ReceiveFeedbackLayer';
+import { ReceiveSessionDashboard } from './components/ReceiveSessionDashboard';
+import { ReceiveSubmitBar } from './components/ReceiveSubmitBar';
 import { createStyles } from './ReceiveGoodsScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { NotificationBell } from '@src/shared/ui/NotificationBell';
 
 export const ReceiveGoodsScreen: React.FC = () => {
   const { form, ui, actions } = useReceiveGoodsScreen();
@@ -19,17 +22,12 @@ export const ReceiveGoodsScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.keyboardView}>
         <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
-          <View style={styles.header}>
-            <View style={styles.headerRow}>
-              <Text style={styles.headerTitle}>Réception Marchandise</Text>
-              <NotificationBell
-                onPress={handlers.handleNotificationPress}
-                size={24}
-                color={colors.text.secondary}
-              />
-            </View>
-            <Text style={styles.headerSubtitle}>Enregistrer une nouvelle marchandise</Text>
-          </View>
+          <ReceiveAssistHeader onNotificationPress={handlers.handleNotificationPress} />
+          <ReceiveSessionDashboard
+            stats={ui.sessionStats}
+            duplicateWarnings={ui.duplicateWarnings}
+            todayItems={ui.sessionItems}
+          />
 
           <View style={styles.formContainer}>
             <ReceiveGoodsForm
@@ -39,7 +37,7 @@ export const ReceiveGoodsScreen: React.FC = () => {
               watch={form.watch}
               selectedClient={form.selectedClient}
               onSelectClient={form.setSelectedClient}
-              clientError={!form.selectedClient && form.isSubmitted ? 'Veuillez sélectionner un client' : undefined}
+              clientError={!form.selectedClient && !form.isClientUnknown && form.isSubmitted ? 'Veuillez sélectionner un client' : undefined}
               useDimensions={form.useDimensions}
               onToggleDimensions={form.setUseDimensions}
               calculatedCBM={form.calculatedCBM}
@@ -47,46 +45,46 @@ export const ReceiveGoodsScreen: React.FC = () => {
               onPhotoSelected={form.addPhotoUri}
               onPhotoRemoved={form.removePhotoUri}
               totalCost={form.totalCost}
+              recentClients={form.recentClients}
+              priceWarning={form.priceWarning}
             />
           </View>
 
-          <Button
-            mode="contained"
-            onPress={form.onSubmit}
-            style={styles.submitButton}
-            contentStyle={styles.submitButtonContent}
-            loading={ui.isSubmitting}
-            disabled={ui.isSubmitting}
-            icon="check"
-          >
-            {ui.isSubmitting ? 'Enregistrement...' : 'Enregistrer la marchandise'}
-          </Button>
+          <ReceiveBatchQueue
+            items={ui.sessionItems}
+            onRemove={actions.removeSessionItem}
+            onOpenLabel={actions.openLabel}
+          />
+
+          {ui.sessionCount > 0 && (
+            <View style={styles.sessionCounter}>
+              <Text style={styles.sessionCounterText}>
+                {ui.sessionCount} marchandise{ui.sessionCount > 1 ? 's' : ''} enregistrée
+                {ui.sessionCount > 1 ? 's' : ''} dans cette session
+              </Text>
+            </View>
+          )}
+
+          <ReceiveSubmitBar
+            isSubmitting={ui.isSubmitting}
+            onSubmit={form.onSubmit}
+            onSubmitAndNext={form.onSubmitAndNext}
+          />
         </ScrollView>
-
-        <Snackbar
-          visible={!!ui.errorMessage}
-          onDismiss={actions.dismissError}
-          action={{ label: 'OK', onPress: actions.dismissError }}
-          style={styles.snackbar}
-        >
-          {ui.errorMessage}
-        </Snackbar>
-
       </KeyboardAvoidingView>
-
-      <Portal>
-        {/* Success Dialog */}
-        <Dialog visible={ui.showSuccessDialog} onDismiss={actions.dismissSuccess} style={styles.dialog}>
-          <Dialog.Icon icon="check-circle" size={48} color={colors.status.success} />
-          <Dialog.Title style={styles.dialogTitle}>Succès</Dialog.Title>
-          <Dialog.Content>
-            <Text style={styles.dialogText}>{ui.successMessage}</Text>
-          </Dialog.Content>
-          <Dialog.Actions style={styles.dialogActions}>
-            <Button onPress={actions.dismissSuccess} mode="contained" style={styles.dialogButton}>OK</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+      <ReceiveFeedbackLayer
+        infoMessage={ui.infoMessage}
+        errorMessage={ui.errorMessage}
+        showSuccessDialog={ui.showSuccessDialog}
+        successMessage={ui.successMessage}
+        labelGoods={ui.labelGoods}
+        labelVisible={ui.labelVisible}
+        onDismissInfo={actions.dismissInfo}
+        onDismissError={actions.dismissError}
+        onDismissSuccess={actions.dismissSuccess}
+        onOpenLabel={actions.openLabel}
+        onDismissLabel={actions.dismissLabel}
+      />
     </SafeAreaView>
   );
 };

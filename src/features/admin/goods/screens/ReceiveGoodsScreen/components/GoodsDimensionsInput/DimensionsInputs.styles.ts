@@ -1,6 +1,9 @@
 import { StyleSheet } from "react-native";
+import type { AppTheme } from "@src/constants/Theme";
 
-export const createStyles = (colors: any) => StyleSheet.create({
+type ThemeColors = AppTheme["colors"];
+
+export const createStyles = (colors: ThemeColors) => StyleSheet.create({
    dimensionsContainer: {
       marginTop: 20,
    },

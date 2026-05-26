@@ -13,7 +13,7 @@ export const CertificateDetailIdentity: React.FC<
   CertificateDetailIdentityProps
 > = ({ certificateId, onCopyCode }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.idContainer}>
       <MaterialIcons name="verified" size={28} color={colors.primary.main} />

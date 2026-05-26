@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ export const DashboardHero: React.FC<Props> = ({
   onNotifications,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     wrapper: { paddingHorizontal: 16, paddingTop: 8 },
     header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     eyebrow: { color: colors.text.secondary, fontSize: 12, fontWeight: '700' },
@@ -50,7 +50,7 @@ export const DashboardHero: React.FC<Props> = ({
     metric: { flex: 1, borderRadius: 12, padding: 10, backgroundColor: `${colors.neutral.white}20` },
     metricValue: { color: colors.text.inverse, fontSize: 16, fontWeight: '900' },
     metricLabel: { color: `${colors.text.inverse}D9`, fontSize: 11, fontWeight: '600', marginTop: 2 },
-  }), [colors]);
+  });
 
   return (
     <View style={styles.wrapper}>

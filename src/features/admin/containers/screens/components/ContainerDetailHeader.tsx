@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
@@ -71,7 +71,7 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
   consignee,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const navigation = useNavigation();
   const mappedShippingMode = shippingMode ? SHIPPING_MODE_MAPPING[shippingMode] : undefined;
   const shippingModeIcon = mappedShippingMode

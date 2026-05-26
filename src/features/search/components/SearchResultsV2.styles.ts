@@ -1,10 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { useMemo } from 'react';
 
 export const useSearchResultsV2Styles = () => {
 	const { colors } = useAppTheme();
-	return useMemo(() => StyleSheet.create({
+	return StyleSheet.create({
 		container: {
 			flex: 1,
 		},
@@ -49,5 +48,5 @@ export const useSearchResultsV2Styles = () => {
 			justifyContent: 'center',
 			padding: 20,
 		},
-	}), [colors]);
+	});
 };

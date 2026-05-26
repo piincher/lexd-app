@@ -25,7 +25,7 @@ export const TimelineStep: React.FC<TimelineStepProps> = ({
   lineStyle,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Animated.View

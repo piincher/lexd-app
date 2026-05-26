@@ -72,7 +72,7 @@ export type RootStackParamList = {
    CreateContainer: undefined;
    ContainerDetail: { containerId: string };
    AssignGoods: { containerId: string };
-   PackingList: { containerId: string };
+   PackingList: { containerId: string; initialClientId?: string; clientId?: string; autoPrint?: boolean };
    // Route V2 Features
    RouteList: undefined;
    RouteForm: { routeId?: string };
@@ -87,7 +87,7 @@ export type RootStackParamList = {
    TicketDetail: { ticketId: string };
    CreateTicket: undefined;
    // Admin Loading List
-   LoadingList: { containerId: string };
+   LoadingList: { containerId: string; initialClientId?: string; clientId?: string; autoPrint?: boolean };
    // Customer Loading List
    ClientLoadingList: { containerId: string };
    // Airway Bill Features

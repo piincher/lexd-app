@@ -20,7 +20,7 @@ export const DeleteContainerDialog: React.FC<DeleteContainerDialogProps> = ({
   isDeleting,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <Dialog visible={visible} onDismiss={isDeleting ? undefined : onDismiss}>

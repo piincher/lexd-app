@@ -13,7 +13,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const OrderDetailWithGoodsScreen: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const {
     orderId,
     data,

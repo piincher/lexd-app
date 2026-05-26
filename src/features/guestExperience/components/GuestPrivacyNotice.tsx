@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -7,7 +7,7 @@ import { Fonts } from '@src/constants/Fonts';
 
 export const GuestPrivacyNotice: React.FC = () => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <Animated.View

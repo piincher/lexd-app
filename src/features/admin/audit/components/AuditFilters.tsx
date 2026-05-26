@@ -13,7 +13,7 @@ const STATUS_OPTIONS: Array<AuditStatus | 'ALL'> = ['ALL', 'SUCCESS', 'FAILED', 
 
 export const AuditFilters: React.FC<AuditFiltersProps> = ({ filters, onChange }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const setStatus = (status: AuditStatus | 'ALL') => {
     onChange({ ...filters, status, page: 1 });

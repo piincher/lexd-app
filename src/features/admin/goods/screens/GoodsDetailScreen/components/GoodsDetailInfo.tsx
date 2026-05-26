@@ -1,7 +1,7 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
 // GoodsDetailInfo - Description and client information
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text, Card, Avatar } from 'react-native-paper';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
@@ -23,7 +23,7 @@ export const GoodsDetailInfo: React.FC<GoodsDetailInfoProps> = ({
   client,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <>
       {description && (

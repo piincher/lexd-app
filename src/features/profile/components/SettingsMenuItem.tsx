@@ -2,14 +2,16 @@ import React from 'react';
 import { View, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import * as Haptics from 'expo-haptics';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { hapticLight } from '@src/shared/lib/haptics';
 import { createStyles } from './SettingsMenu.styles';
+
+type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
 interface SettingsMenuItemProps {
   title: string;
   subtitle: string;
-  icon: string;
+  icon: MaterialIconName;
   iconBg: string;
   iconColor: string;
   screen: string;
@@ -27,8 +29,8 @@ export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({
   onNavigate,
   showDivider,
 }) => {
-  const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const { colors } = useAppTheme();
+  const styles = createStyles(colors);
 
   return (
     <React.Fragment>
@@ -36,24 +38,30 @@ export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({
         <View style={[styles.menuDivider, { backgroundColor: colors.border }]} />
       )}
       <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={title}
+        android_ripple={{ color: colors.action.selected }}
         style={({ pressed }) => [
           styles.menuItem,
           pressed && styles.menuItemPressed,
-          pressed && { backgroundColor: colors.background.overlay },
+          pressed && { backgroundColor: colors.action.selected },
         ]}
         onPress={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          hapticLight();
           onNavigate(screen);
         }}
       >
         <View style={[styles.menuIconCircle, { backgroundColor: iconBg }]}>
-          <MaterialCommunityIcons name={icon as any} size={20} color={iconColor} />
+          <MaterialCommunityIcons name={icon} size={20} color={iconColor} />
         </View>
         <View style={styles.menuTextCol}>
           <Text style={[styles.menuItemTitle, { color: colors.text.primary }]}>
             {title}
           </Text>
-          <Text style={[styles.menuItemSubtitle, { color: colors.text.secondary }]}>
+          <Text
+            style={[styles.menuItemSubtitle, { color: colors.text.secondary }]}
+            numberOfLines={2}
+          >
             {subtitle}
           </Text>
         </View>

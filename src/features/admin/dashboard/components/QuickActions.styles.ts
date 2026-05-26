@@ -53,9 +53,9 @@ export const getQuickActionsStyles = (colors: AppThemeColors) =>
       padding: 12,
     },
     iconWrap: {
-      width: 38,
-      height: 38,
-      borderRadius: 11,
+      width: 44,
+      height: 44,
+      borderRadius: 12,
       justifyContent: "center",
       alignItems: "center",
       borderWidth: 1,

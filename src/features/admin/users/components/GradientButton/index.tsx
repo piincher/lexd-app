@@ -24,7 +24,7 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 export const GradientButton: React.FC<Props> = ({ title, onPress, busy, disabled }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const scale = useSharedValue(1);
   const shimmer = useSharedValue(0);
 

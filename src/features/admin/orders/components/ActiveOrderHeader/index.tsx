@@ -15,7 +15,7 @@ export const ActiveOrderHeader: React.FC<ActiveOrderHeaderProps> = ({
   rightAction,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <Appbar.Header style={styles.appbar}>

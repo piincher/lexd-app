@@ -23,7 +23,7 @@ export const usePaymentHistoryQuery = (orderId: string) => {
     },
   });
 
-  const hasMissingReceipts = payments?.some((p: any) => !p.receiptUrl) || false;
+  const hasMissingReceipts = payments?.some((p: any) => !p.receiptUrl || (typeof p.receiptUrl === 'string' && p.receiptUrl.includes('error=generation_failed'))) || false;
   const totalPaid = payments?.reduce((sum: number, p: any) => sum + (p.amount || 0), 0) || 0;
 
   return { payments, isLoading, error, refetch, runBackfill, isBackfilling, hasMissingReceipts, totalPaid };

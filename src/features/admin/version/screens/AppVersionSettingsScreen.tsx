@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from 'react';
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
@@ -21,7 +21,7 @@ export default function AppVersionSettingsScreen({
   navigation,
 }: RootStackScreenProps<"AppVersionSettings">) {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   const { data, isLoading: settingsLoading } = useAppVersionSettings();
   const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useVersionGateStats();

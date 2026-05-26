@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { Theme } from "@src/constants/Theme";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -8,19 +9,20 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: 16,
-      paddingTop: 12,
       zIndex: 10,
     },
+    // Elevated card so the bar reads as a floating control over the hero edge.
     inputRow: {
       flexDirection: "row",
       alignItems: "center",
-      gap: 8,
-      paddingHorizontal: 12,
-      paddingVertical: 10,
-      borderRadius: 12,
-      backgroundColor: colors.background.default,
+      gap: 10,
+      paddingHorizontal: 14,
+      paddingVertical: 13,
+      borderRadius: 16,
+      backgroundColor: colors.background.card,
       borderWidth: 1,
       borderColor: colors.border,
+      ...Theme.shadows.md,
     },
     inputRowFocused: {
       borderColor: colors.primary.main,
@@ -34,26 +36,28 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     },
     dropdown: {
       backgroundColor: colors.background.card,
-      borderRadius: 12,
+      borderRadius: 14,
       borderWidth: 1,
       borderColor: colors.border,
-      marginTop: 4,
+      marginTop: 6,
       paddingVertical: 6,
       maxHeight: 280,
+      ...Theme.shadows.md,
     },
     sectionLabel: {
       fontFamily: Fonts.bold,
       fontSize: 11,
       color: colors.text.disabled,
       textTransform: "uppercase",
-      paddingHorizontal: 12,
+      letterSpacing: 0.4,
+      paddingHorizontal: 14,
       paddingVertical: 6,
     },
     historyHeader: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      paddingRight: 12,
+      paddingRight: 14,
     },
     clearText: {
       fontFamily: Fonts.medium,
@@ -64,8 +68,8 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       flexDirection: "row",
       alignItems: "center",
       gap: 10,
-      paddingHorizontal: 12,
-      paddingVertical: 10,
+      paddingHorizontal: 14,
+      paddingVertical: 11,
     },
     dropdownText: {
       flex: 1,

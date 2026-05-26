@@ -7,7 +7,6 @@ type ThemeColors = AppTheme["colors"];
 export const getStyles = (colors: ThemeColors, isDark: boolean) =>
   StyleSheet.create({
     container: {
-      paddingHorizontal: 16,
       paddingTop: 16,
       paddingBottom: 4,
     },
@@ -16,39 +15,51 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       fontSize: 16,
       color: colors.text.primary,
       marginBottom: 10,
+      paddingHorizontal: 16,
     },
-    grid: {
+    row: {
       flexDirection: "row",
-      flexWrap: "wrap",
       gap: 8,
+      paddingHorizontal: 16,
     },
-    card: {
-      width: "31%",
+    chip: {
+      flexDirection: "row",
       alignItems: "center",
-      paddingVertical: 12,
-      borderRadius: 14,
+      gap: 7,
+      paddingLeft: 12,
+      paddingRight: 8,
+      paddingVertical: 9,
+      borderRadius: 999,
       backgroundColor: colors.background.card,
       borderWidth: 1,
       borderColor: colors.border,
     },
-    iconWrapper: {
-      width: 40,
-      height: 40,
-      borderRadius: 12,
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: 6,
-    },
     label: {
       fontFamily: Fonts.medium,
-      fontSize: 11,
+      fontSize: 13,
       color: colors.text.primary,
-      textAlign: "center",
+    },
+    labelActive: {
+      fontFamily: Fonts.bold,
+      color: "#FFFFFF",
+    },
+    countPill: {
+      minWidth: 20,
+      paddingHorizontal: 6,
+      paddingVertical: 1,
+      borderRadius: 999,
+      backgroundColor: colors.background.paper,
+      alignItems: "center",
+    },
+    countPillActive: {
+      backgroundColor: "rgba(255,255,255,0.25)",
     },
     count: {
-      fontFamily: Fonts.regular,
-      fontSize: 10,
-      color: colors.text.disabled,
-      marginTop: 2,
+      fontFamily: Fonts.bold,
+      fontSize: 11,
+      color: colors.text.secondary,
+    },
+    countActive: {
+      color: "#FFFFFF",
     },
   });

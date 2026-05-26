@@ -10,7 +10,7 @@ type AtRiskEmptyStateProps = {
 
 export function AtRiskEmptyState({ searchActive }: AtRiskEmptyStateProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (searchActive) {
     return (

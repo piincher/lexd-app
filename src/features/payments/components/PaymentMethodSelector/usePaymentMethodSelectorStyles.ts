@@ -1,11 +1,10 @@
-import { useMemo } from 'react';
 import { StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 
 export const usePaymentMethodSelectorStyles = () => {
   const { colors } = useAppTheme();
-  return useMemo(() => StyleSheet.create({
+  return StyleSheet.create({
     container: { padding: 16 },
     title: { fontSize: 20, fontFamily: Fonts.bold, color: colors.text.primary, marginBottom: 16 },
     loadingContainer: { padding: 40, alignItems: 'center' },
@@ -36,5 +35,5 @@ export const usePaymentMethodSelectorStyles = () => {
     totalRow: { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.neutral[200] },
     totalLabel: { fontSize: 16, fontFamily: Fonts.bold, color: colors.text.primary },
     totalValue: { fontSize: 16, fontFamily: Fonts.bold, color: colors.primary.main },
-  }), [colors]);
+  });
 };

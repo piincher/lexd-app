@@ -13,7 +13,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 const OrderCardSkeletonItem: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
   <View style={styles.card}>
     <View style={styles.statusBar} />
@@ -57,7 +57,7 @@ interface OrderCardSkeletonProps {
 
 export const OrderCardSkeleton: React.FC<OrderCardSkeletonProps> = ({ count = 5 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <Animated.View entering={FadeIn.duration(300)} style={styles.list}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -72,7 +72,7 @@ export const OrderCardSkeleton: React.FC<OrderCardSkeletonProps> = ({ count = 5 
 /** Compact footer skeleton for loading more pages */
 export const OrderCardFooterSkeleton: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <Animated.View entering={FadeIn.duration(200)} style={styles.footer}>
       <OrderCardSkeletonItem />

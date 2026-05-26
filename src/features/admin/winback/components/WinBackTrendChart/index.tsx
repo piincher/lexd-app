@@ -14,7 +14,7 @@ type WinBackTrendChartProps = {
 
 export function WinBackTrendChart({ trends, isLoading }: WinBackTrendChartProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (isLoading) {
     return (

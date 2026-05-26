@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { CbmProfit } from '../../types/containerProfit';
 import {
@@ -20,7 +20,7 @@ interface ContainerProfitCardProps {
 
 export const ContainerProfitCard: React.FC<ContainerProfitCardProps> = ({ cbmProfit, onReconcile }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const { revenue, collected, cost, profit, profitMargin, totalCBM, cbmCostPerUnit, dualLedger } = cbmProfit;
   const isProfit = profit >= 0;

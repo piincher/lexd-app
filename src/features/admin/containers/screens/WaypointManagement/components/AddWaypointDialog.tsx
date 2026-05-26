@@ -23,7 +23,7 @@ export const AddWaypointDialog: React.FC<AddWaypointDialogProps> = ({
   onUpdateField,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const isValid = Boolean(newWaypoint.locationCity && newWaypoint.locationCode && newWaypoint.segmentType);
   const scrollViewRef = useRef<ScrollView>(null);
   const scrollToEnd = () => {

@@ -23,7 +23,7 @@ export const GoodsPdfDateSelector: React.FC<GoodsPdfDateSelectorProps> = ({
 
   const { colors, isDark } = useAppTheme();
 
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View>

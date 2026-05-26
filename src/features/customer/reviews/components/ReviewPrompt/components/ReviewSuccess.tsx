@@ -11,7 +11,7 @@ interface ReviewSuccessProps {
 
 export const ReviewSuccess: React.FC<ReviewSuccessProps> = ({ rating, comment }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
    return (
       <Card style={styles.card} mode="elevated">
          <Card.Content style={styles.content}>

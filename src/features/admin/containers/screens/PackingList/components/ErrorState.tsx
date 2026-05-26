@@ -3,20 +3,34 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
+import { Theme, type ThemeContextType } from '@src/constants/Theme';
+
+type AppColors = ThemeContextType['colors'];
 
 interface ErrorStateProps {
   onBack: () => void;
 }
 
 export const ErrorState: React.FC<ErrorStateProps> = ({ onBack }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.errorContainer}>
-        <Ionicons name="alert-circle" size={64} color={Theme.status.error} />
-        <Text style={styles.errorText}>Container non trouvé</Text>
-        <TouchableOpacity style={styles.backButton} onPress={onBack}>
+        <View style={styles.errorIcon}>
+          <Ionicons name="alert-circle-outline" size={42} color={colors.status.error} />
+        </View>
+        <Text style={styles.errorTitle}>Liste indisponible</Text>
+        <Text style={styles.errorText}>
+          Impossible de charger la liste de colisage pour ce container.
+        </Text>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={onBack}
+          activeOpacity={0.85}
+          accessibilityRole="button"
+        >
           <Text style={styles.backButtonText}>Retour</Text>
         </TouchableOpacity>
       </View>
@@ -24,10 +38,10 @@ export const ErrorState: React.FC<ErrorStateProps> = ({ onBack }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Theme.colors.background.default,
+    backgroundColor: colors.background.default,
   },
   errorContainer: {
     flex: 1,
@@ -35,22 +49,40 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: Theme.spacing['2xl'],
   },
-  errorText: {
+  errorIcon: {
+    width: 78,
+    height: 78,
+    borderRadius: 39,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: isDark ? colors.neutral[800] : colors.feedback.errorBg,
+  },
+  errorTitle: {
     marginTop: Theme.spacing.lg,
-    fontSize: 18,
-    fontWeight: '600',
-    color: Theme.neutral[700],
+    fontSize: 20,
+    fontWeight: '800',
+    color: colors.text.primary,
+  },
+  errorText: {
+    marginTop: Theme.spacing.sm,
+    fontSize: 14,
+    fontWeight: '500',
+    color: colors.text.secondary,
+    textAlign: 'center',
+    lineHeight: 20,
   },
   backButton: {
     marginTop: Theme.spacing.xl,
+    minHeight: 48,
+    justifyContent: 'center',
     paddingVertical: Theme.spacing.md,
     paddingHorizontal: Theme.spacing.xl,
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[600],
     borderRadius: Theme.radius.lg,
   },
   backButtonText: {
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '700',
   },
 });

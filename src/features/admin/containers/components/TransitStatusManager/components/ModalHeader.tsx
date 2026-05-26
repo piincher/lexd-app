@@ -7,7 +7,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const ModalHeader: React.FC = () => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   return (
     <View style={styles.header}>
       <Ionicons name="swap-horizontal" size={28} color={colors.status.info} />

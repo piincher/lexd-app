@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Ionicons } from '@expo/vector-icons';
@@ -36,7 +36,7 @@ export const ConsigneeSelector: React.FC<ConsigneeSelectorProps> = ({
   onClearConsignee,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const renderConsigneeItem = ({ item }: { item: Consignee }) => (
     <TouchableOpacity
       style={styles.consigneeItem}

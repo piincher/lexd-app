@@ -14,7 +14,7 @@ type IconName = React.ComponentProps<typeof MaterialCommunityIcons>["name"];
 
 function StatBox({ label, value, icon, color }: { label: string; value: string; icon: IconName; color: string }) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   return (
     <View style={[styles.statBox, { borderColor: color }]}>
       <MaterialCommunityIcons name={icon} size={22} color={color} />
@@ -28,7 +28,7 @@ function StatBox({ label, value, icon, color }: { label: string; value: string; 
 
 function UsageTimeline({ data }: { data: { _id: string; count: number; discountGiven: number }[] }) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (!data || data.length === 0) return (
     <View style={styles.emptyTimeline}>
@@ -67,7 +67,7 @@ type PromoStatsModalProps = {
 
 export function PromoStatsModal({ visible, promo, onClose }: PromoStatsModalProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const { data: stats, isLoading, error } = usePromoStats(promo?._id ?? "", visible && !!promo);
 
   return (

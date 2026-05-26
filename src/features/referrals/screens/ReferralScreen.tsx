@@ -19,7 +19,7 @@ export const ReferralScreen: React.FC = () => {
   const navigation = useNavigation();
   const { colors } = useAppTheme();
   const [isRedeemOpen, setRedeemOpen] = useState(false);
-  const styles = useMemo(() => createStyles(), []);
+  const styles = createStyles();
   const { data, isLoading, isError, refetch, referralCode, handleCopy, handleShare } =
     useReferralScreen();
   const {

@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 
 export const createGoodsOverviewStyles = (colors: {
@@ -13,8 +12,9 @@ export const createGoodsOverviewStyles = (colors: {
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
       borderRadius: 16,
-      padding: 18,
-      ...Theme.shadows.sm,
+      padding: 16,
+      borderWidth: 1,
+      borderColor: colors.border,
     },
     header: {
       flexDirection: 'row',
@@ -23,20 +23,21 @@ export const createGoodsOverviewStyles = (colors: {
       marginBottom: 14,
     },
     title: {
-      fontSize: 15,
+      fontSize: 16,
       fontFamily: Fonts.bold,
       fontWeight: '700',
       color: colors.text.primary,
+      letterSpacing: -0.2,
     },
     subtitle: {
-      fontSize: 11,
+      fontSize: 12,
       fontFamily: Fonts.regular,
       color: colors.text.disabled,
       marginTop: 2,
     },
     summaryBadge: {
       alignItems: 'center',
-      backgroundColor: colors.primary[50],
+      backgroundColor: colors.primary['50'],
       paddingHorizontal: 14,
       paddingVertical: 6,
       borderRadius: 12,

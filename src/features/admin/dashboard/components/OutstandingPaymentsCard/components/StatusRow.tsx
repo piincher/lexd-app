@@ -25,9 +25,9 @@ export const StatusRow: React.FC<StatusRowProps> = ({ counts }) => {
           alignItems: "center",
         },
         statusIconWrap: {
-          width: 34,
-          height: 34,
-          borderRadius: 10,
+          width: 44,
+          height: 44,
+          borderRadius: 12,
           justifyContent: "center",
           alignItems: "center",
           marginBottom: 6,

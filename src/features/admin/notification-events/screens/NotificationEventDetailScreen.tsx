@@ -17,7 +17,7 @@ const NotificationEventDetailScreen: React.FC<RootStackScreenProps<'Notification
   route,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { data, isLoading, isError } = useNotificationEventDetail(route.params.notificationEventId);
 
   return (

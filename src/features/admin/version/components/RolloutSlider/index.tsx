@@ -13,7 +13,7 @@ const PRESETS = [0, 25, 50, 75, 100];
 
 export function RolloutSlider({ value, onChange }: RolloutSliderProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   return (
     <View style={styles.container}>

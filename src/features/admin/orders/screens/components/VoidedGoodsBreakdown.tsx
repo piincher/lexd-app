@@ -3,7 +3,7 @@
  * Displays list of voided goods with strikethrough styling
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
@@ -17,7 +17,7 @@ interface VoidedGoodsBreakdownProps {
 
 export const VoidedGoodsBreakdown: React.FC<VoidedGoodsBreakdownProps> = ({ goods }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   return (
     <View style={styles.card}>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: Theme.spacing.md }}>

@@ -1,13 +1,17 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import type { ThemeContextType } from '@src/constants/Theme';
 
-export const createStyles = (colors: any) => StyleSheet.create({
+type AppColors = ThemeContextType['colors'];
+
+export const createStyles = (colors: AppColors) => StyleSheet.create({
   card: {
     borderRadius: 18,
     padding: 16,
     marginHorizontal: 16,
     marginTop: 12,
     marginBottom: 8,
+    borderWidth: 1,
   },
   title: {
     fontFamily: Fonts.bold,
@@ -21,14 +25,20 @@ export const createStyles = (colors: any) => StyleSheet.create({
   metricCard: {
     flex: 1,
     alignItems: 'center',
+    minHeight: 102,
     paddingVertical: 12,
     paddingHorizontal: 6,
     borderRadius: 12,
-    backgroundColor: colors.background.overlay,
+    backgroundColor: colors.background.paper,
   },
-  metricIcon: {
-    fontSize: 20,
-    marginBottom: 4,
+  metricIconBox: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 7,
+    backgroundColor: colors.primary[50],
   },
   metricValue: {
     fontFamily: Fonts.bold,

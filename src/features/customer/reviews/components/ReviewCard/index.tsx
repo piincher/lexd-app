@@ -27,7 +27,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   const goods = typeof review.goodsId === "object" ? review.goodsId : null;
   const isMaritime = goods?.shippingMode === "sea";
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
 
   return (
     <View style={styles.card}>

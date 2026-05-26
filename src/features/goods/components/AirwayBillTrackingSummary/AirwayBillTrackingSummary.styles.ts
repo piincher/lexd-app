@@ -2,11 +2,10 @@ import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
-import { useMemo } from 'react';
 
 export const useAirwayBillTrackingSummaryStyles = () => {
   const { colors } = useAppTheme();
-  return useMemo(() => StyleSheet.create({
+  return StyleSheet.create({
     card: {
       borderRadius: Theme.radius.xl,
       marginBottom: Theme.spacing.md,
@@ -94,5 +93,5 @@ export const useAirwayBillTrackingSummaryStyles = () => {
     fontSize: 12,
     color: colors.text.secondary,
   },
-  }), [colors]);
+  });
 };

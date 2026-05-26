@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Image, StyleSheet, Text } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -8,7 +8,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const AboutUsWarehouseImage: React.FC = () => {
    const { colors } = useAppTheme();
-   const styles = useMemo(() => makeStyles(colors), [colors]);
+   const styles = makeStyles(colors);
 
    return (
       <Animated.View entering={FadeInDown.delay(300).duration(600)} style={styles.imageCard}>

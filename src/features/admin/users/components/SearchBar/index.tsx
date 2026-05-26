@@ -25,7 +25,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onVoiceSearch,
 }) => {
   const { colors } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <Animated.View entering={FadeInUp.delay(200).duration(500)} style={styles.wrapper}>

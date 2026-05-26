@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, Text, Divider } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -32,7 +32,7 @@ export const GoodsInfoCard: React.FC<GoodsInfoCardProps> = ({
   onToggleDimensions,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   return (
     <Card style={styles.card} elevation={2}>

@@ -31,7 +31,7 @@ const formatDate = (dateStr: string | null) => {
 
 export const RedemptionTimeline: React.FC<RedemptionTimelineProps> = ({ redemption }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
 
   const steps: TimelineStep[] = useMemo(() => {
     const base: TimelineStep[] = [

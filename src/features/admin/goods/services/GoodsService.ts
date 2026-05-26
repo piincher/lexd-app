@@ -5,7 +5,13 @@
 
 import { apiClientV2, apiRequest, uploadFile } from '@src/api/client';
 import { ApiResponse, PaginatedResponse } from '@src/shared/types/api';
-import { Goods, ReceiveGoodsInput, UpdateLocationInput, GoodsFilters } from '../types';
+import {
+  DuplicateCandidate,
+  Goods,
+  ReceiveGoodsInput,
+  UpdateLocationInput,
+  GoodsFilters,
+} from '../types';
 
 /**
  * Extended response when backend auto-creates/assigns order
@@ -29,9 +35,13 @@ const ENDPOINTS = {
   BY_ID: (id: string) => `/goods/${id}`,
   HARD_DELETE: (id: string) => `/goods/${id}/hard`,
   BY_CLIENT: (clientId: string) => `/goods/client/${clientId}`,
+  DUPLICATE_CANDIDATES: '/goods/duplicate-candidates',
   LOCATION: (id: string) => `/goods/${id}/location`,
   PHOTO: (id: string) => `/goods/${id}/photo`,
   ASSIGN: (containerId: string) => `/containers/${containerId}/assign-goods`,
+  ASSIGN_CLIENT: (id: string) => `/goods/${id}/assign-client`,
+  BATCH: '/goods/batch',
+  RESEND_NOTIFICATION: (id: string) => `/goods/${id}/resend-notification`,
 } as const;
 
 /**
@@ -77,6 +87,17 @@ export class GoodsService {
    */
   async getByClient(clientId: string): Promise<ApiResponse<Goods[]>> {
     return apiRequest.get(this.client, ENDPOINTS.BY_CLIENT(clientId));
+  }
+
+  async getDuplicateCandidates(filters: {
+    tracking?: string;
+    clientId?: string;
+    weight?: number;
+    description?: string;
+  }): Promise<ApiResponse<{ candidates: DuplicateCandidate[] }>> {
+    return apiRequest.get(this.client, ENDPOINTS.DUPLICATE_CANDIDATES, {
+      params: filters,
+    });
   }
 
   // ============================================
@@ -155,6 +176,51 @@ export class GoodsService {
     });
   }
 
+  /**
+   * Bulk hard delete — permanently removes the goods and pulls their references from
+   * containers, airway bills, cargo bags, orders, invoices, and payments. Affected orders
+   * are resynced server-side. Capped at 500 IDs per call (backend enforces).
+   */
+  async batchHardDelete(
+    goodsIds: string[],
+    reason?: string,
+  ): Promise<ApiResponse<{
+    deletedCount: number;
+    requestedCount: number;
+    cleanup: {
+      containers: number;
+      airwayBills: number;
+      cargoBags: number;
+      orders: number;
+      invoices: number;
+      payments: number;
+    };
+    syncReport: unknown;
+  }>> {
+    return apiRequest.delete(this.client, ENDPOINTS.BATCH, {
+      data: { goodsIds, reason },
+    });
+  }
+
+  /**
+   * Re-trigger the customer "goods received" notifications (push + WhatsApp + in-app +
+   * public feed) for an existing goods. Used when the original dispatch reported FAILED.
+   * Backend awaits the dispatch and returns the per-channel status so the UI can show
+   * "WhatsApp envoyé" or the specific failure reason.
+   */
+  async resendNotification(id: string): Promise<ApiResponse<{
+    goodsId: string;
+    recipient: string | null;
+    notification: {
+      attempted: boolean;
+      whatsapp?: { status: 'SENT' | 'FAILED' | 'SKIPPED'; reason?: string };
+      push?: { status: 'SENT' | 'FAILED' | 'SKIPPED'; reason?: string };
+      publicFeed?: { status: 'SENT' | 'FAILED' | 'SKIPPED'; reason?: string };
+    };
+  }>> {
+    return apiRequest.post(this.client, ENDPOINTS.RESEND_NOTIFICATION(id), {});
+  }
+
   // ============================================
   // CONTAINER OPERATIONS
   // ============================================
@@ -183,6 +249,21 @@ export class GoodsService {
     });
   }
 
+  /**
+   * Assign a client to previously-unidentified goods.
+   * The backend updates the goods, links/creates an order, and fires the customer
+   * "arrived at warehouse" notification that was skipped at intake.
+   */
+  async assignClient(
+    id: string,
+    input: { clientId: string; notes?: string },
+  ): Promise<ApiResponse<Goods>> {
+    return apiRequest.patch(this.client, ENDPOINTS.ASSIGN_CLIENT(id), {
+      clientId: input.clientId,
+      notes: input.notes,
+    });
+  }
+
   // ============================================
   // PRIVATE HELPERS
   // ============================================
@@ -197,7 +278,9 @@ export class GoodsService {
     const formData = new FormData();
 
     // Add basic fields
-    formData.append('clientId', data.clientId);
+    if (data.clientId) {
+      formData.append('clientId', data.clientId);
+    }
     formData.append('description', data.description || '');
     formData.append('shippingMode', data.shippingMode || 'SEA');
     formData.append('actualCBM', data.actualCBM?.toString() || '0');
@@ -221,9 +304,27 @@ export class GoodsService {
       formData.append('receivedDate', data.receivedDate);
     }
 
+    if (data.condition) {
+      formData.append('condition', data.condition);
+    }
+
+    if (data.exceptionReasons?.length) {
+      formData.append('exceptionReasons', JSON.stringify(data.exceptionReasons));
+    }
+
+    if (data.exceptionNotes) {
+      formData.append('exceptionNotes', data.exceptionNotes);
+    }
+
     // Add dimensions if present
     if (data.dimensions) {
       formData.append('dimensions', JSON.stringify(data.dimensions));
+    }
+
+    // Idempotency key — backend short-circuits a retry within 30 min and returns the
+    // already-saved goods, preventing the "same parcel registered twice" bug.
+    if (data.idempotencyKey) {
+      formData.append('idempotencyKey', data.idempotencyKey);
     }
 
     // Add photos

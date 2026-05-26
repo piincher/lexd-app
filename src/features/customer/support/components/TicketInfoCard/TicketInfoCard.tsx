@@ -3,7 +3,7 @@
  * Displays ticket details (number, status, type, priority, dates)
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Card, Text, Divider, useTheme } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -22,7 +22,7 @@ export const TicketInfoCard: React.FC<TicketInfoCardProps> = ({ ticket }) => {
   const theme = useTheme();
   const { colors, isDark } = useAppTheme();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       marginBottom: 16,
       borderRadius: 12,
@@ -75,7 +75,7 @@ export const TicketInfoCard: React.FC<TicketInfoCardProps> = ({ ticket }) => {
       color: colors.text.secondary,
       lineHeight: 20,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <Card style={styles.container} mode="elevated">

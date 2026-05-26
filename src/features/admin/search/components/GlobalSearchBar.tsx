@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef, useEffect } from "react";
+import React, { useEffect, useState, useRef } from 'react';
 import {
   View, TextInput, TouchableOpacity, Animated, Keyboard,
 } from "react-native";
@@ -26,7 +26,7 @@ export const GlobalSearchBar: React.FC<GlobalSearchBarProps> = ({
   placeholder = "Rechercher...", showSuggestions = true, autoFocus = false,
 }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const [query, setQuery] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<TextInput>(null);

@@ -6,7 +6,7 @@
  *   features/notifications/components/ConnectedNotificationBell
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, StyleSheet, Pressable } from 'react-native';
 import { Text } from 'react-native-paper';
 import Animated, {
@@ -75,7 +75,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({
 
   const displayCount = unreadCount > 99 ? '99+' : unreadCount.toString();
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       position: 'relative',
       padding: 8,
@@ -103,7 +103,7 @@ export const NotificationBell: React.FC<NotificationBellProps> = ({
       fontSize: 10,
       color: colors.text.inverse,
     },
-  }), [colors]);
+  });
 
   return (
     <Pressable

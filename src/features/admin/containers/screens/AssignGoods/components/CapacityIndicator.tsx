@@ -23,7 +23,7 @@ export const CapacityIndicator: React.FC<CapacityIndicatorProps> = ({
   isAir = false,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const unit = isAir ? 'kg' : 'm³';
   const totalCBM = (currentCBM || 0) + (selectedCBM || 0);
   const fillPercentage = Math.min((totalCBM / maxCBM) * 100, 100);

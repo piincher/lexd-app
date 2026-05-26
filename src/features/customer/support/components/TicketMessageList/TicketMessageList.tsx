@@ -3,7 +3,7 @@
  * Displays the list of messages in a ticket thread
  */
 
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -40,7 +40,7 @@ export const TicketMessageList: React.FC<TicketMessageListProps> = ({
     }
   }, [messages.length]);
 
-  const styles = useMemo(() => StyleSheet.create({
+  const styles = StyleSheet.create({
     container: {
       padding: 16,
       paddingBottom: 80,
@@ -61,7 +61,7 @@ export const TicketMessageList: React.FC<TicketMessageListProps> = ({
       color: colors.text.secondary,
       marginTop: 4,
     },
-  }), [colors, isDark]);
+  });
 
   return (
     <FlashList

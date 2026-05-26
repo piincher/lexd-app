@@ -4,7 +4,7 @@
  * pre-emit critique: P4 H5 E4 S5 R4 V4
  */
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
@@ -13,6 +13,7 @@ import { Goods, PaymentStatus } from '../types';
 import { normalizePhotos } from '@src/shared/lib';
 import { GoodsImage } from '@src/shared/ui/GoodsImage';
 import { getStatusConfig } from './GoodsCardStatus';
+import { getVariantColors, StatusVariant } from './statusVariant';
 
 interface GoodsCardProps {
   goods: Goods;
@@ -22,33 +23,16 @@ interface GoodsCardProps {
   onToggleSelect?: () => void;
 }
 
-type Variant = 'primary' | 'success' | 'warning' | 'info' | 'neutral';
-
 const formatPrice = (n?: number): string => `${(n ?? 0).toLocaleString('fr-FR')} FCFA`;
 const formatCbm = (n?: number): string => `${+(n ?? 0).toFixed(3)} m³`;
 
-const PAYMENT_CONFIG: Record<PaymentStatus, { label: string; variant: Variant }> = {
+const PAYMENT_CONFIG: Record<PaymentStatus, { label: string; variant: StatusVariant }> = {
   PAID: { label: 'Payé', variant: 'success' },
   PARTIAL: { label: 'Partiel', variant: 'warning' },
   UNPAID: { label: 'À régler', variant: 'neutral' },
 };
 
-const getVariantColors = (variant: Variant, colors: any): { bg: string; fg: string; dot: string } => {
-  switch (variant) {
-    case 'primary':
-      return { bg: colors.primary[100], fg: colors.primary[700], dot: colors.primary.main };
-    case 'success':
-      return { bg: colors.feedback.successBg, fg: colors.feedback.successDark, dot: colors.status.success };
-    case 'warning':
-      return { bg: colors.feedback.warningBg, fg: colors.feedback.warningDark, dot: colors.status.warning };
-    case 'info':
-      return { bg: colors.feedback.infoBg, fg: colors.feedback.infoDark, dot: colors.status.info };
-    default:
-      return { bg: colors.neutral[100], fg: colors.text.secondary, dot: colors.neutral[400] };
-  }
-};
-
-const Pill: React.FC<{ label: string; variant: Variant; colors: any }> = ({ label, variant, colors }) => {
+const Pill: React.FC<{ label: string; variant: StatusVariant; colors: any }> = ({ label, variant, colors }) => {
   const v = getVariantColors(variant, colors);
   return (
     <View style={[pillStyles.pill, { backgroundColor: v.bg }]}>
@@ -69,7 +53,7 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({
   goods, onPress, isSelected, isSelectionMode, onToggleSelect,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const photoUrls = normalizePhotos(goods);
 
   const status = getStatusConfig(goods.status);
@@ -78,6 +62,21 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({
 
   const client = typeof goods.clientId === 'string' ? null : goods.clientId;
   const clientName = client ? `${client.firstName} ${client.lastName}`.trim() : 'Non identifié';
+  const clientPhone = client?.phoneNumber?.trim() || null;
+
+  // Days since reception — surfaced as an urgency chip *only* while the parcel is still
+  // sitting in our warehouse. Once it's been assigned/shipped/delivered the chip is
+  // hidden because "days waiting" no longer carries operational meaning.
+  const daysWaiting = goods.receivedAt && goods.status === 'RECEIVED_AT_WAREHOUSE'
+    ? Math.max(0, Math.floor((Date.now() - new Date(goods.receivedAt).getTime()) / (1000 * 60 * 60 * 24)))
+    : null;
+  const ageTone = daysWaiting === null
+    ? null
+    : daysWaiting >= 8
+      ? { bg: colors.feedback.errorBg, fg: colors.status.error }
+      : daysWaiting >= 4
+        ? { bg: colors.feedback.warningBg, fg: colors.status.warning }
+        : { bg: colors.background.paper, fg: colors.text.disabled };
 
   return (
     <TouchableOpacity
@@ -103,6 +102,12 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({
         <View style={styles.identity}>
           <View style={styles.idRow}>
             <Text style={styles.goodsId} numberOfLines={1}>{goods.goodsId}</Text>
+            {ageTone && daysWaiting !== null ? (
+              <View style={[styles.ageChip, { backgroundColor: ageTone.bg }]}>
+                <Ionicons name="time-outline" size={11} color={ageTone.fg} />
+                <Text style={[styles.ageChipText, { color: ageTone.fg }]}>{daysWaiting}j</Text>
+              </View>
+            ) : null}
             {isSelectionMode ? (
               <View style={[styles.checkbox, isSelected && styles.checkboxOn]}>
                 {isSelected && <Ionicons name="checkmark" size={15} color={colors.text.inverse} />}
@@ -128,6 +133,14 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({
         <Ionicons name="location-outline" size={14} color={colors.text.secondary} />
         <Text style={styles.subText} numberOfLines={1}>{goods.warehouseLocation || 'N/A'}</Text>
       </View>
+
+      {/* Phone — only when present; gives admins a one-tap-eyeball contact for the parcel. */}
+      {clientPhone ? (
+        <View style={styles.subRowTight}>
+          <Ionicons name="call-outline" size={13} color={colors.text.disabled} />
+          <Text style={styles.subTextMuted} numberOfLines={1}>{clientPhone}</Text>
+        </View>
+      ) : null}
 
       {/* Metric strip */}
       <View style={styles.strip}>
@@ -237,6 +250,21 @@ const createStyles = (colors: any, isDark: boolean) =>
       backgroundColor: colors.text.disabled,
       marginHorizontal: 3,
     },
+    // Phone row sits tight under owner+location with a muted treatment — present but
+    // secondary, so it doesn't compete with the metric strip below.
+    subRowTight: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 5,
+      marginTop: 4,
+    },
+    subTextMuted: {
+      fontSize: 12,
+      fontWeight: '500',
+      color: colors.text.disabled,
+      flexShrink: 1,
+      fontVariant: ['tabular-nums'],
+    },
     strip: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -272,6 +300,23 @@ const createStyles = (colors: any, isDark: boolean) =>
       fontWeight: '800',
       letterSpacing: -0.3,
       color: colors.text.primary,
+    },
+    // Age chip — small, sits between goodsId and the chevron / checkbox. Tone shifts with
+    // urgency (red ≥8d, amber ≥4d, muted else) so stale parcels are spotted at a glance
+    // without opening the unassigned screen.
+    ageChip: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 3,
+      paddingHorizontal: 7,
+      paddingVertical: 2,
+      borderRadius: Theme.radius.full,
+    },
+    ageChipText: {
+      fontSize: 11,
+      fontWeight: '800',
+      fontVariant: ['tabular-nums'],
+      letterSpacing: 0.2,
     },
     checkbox: {
       width: 24,

@@ -13,7 +13,7 @@ const formatFCFA = (value: number) => `${Math.round(value).toLocaleString('fr-FR
 
 export const RewardSettingsPreview: React.FC<RewardSettingsPreviewProps> = ({ settings }) => {
   const { colors } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors), [colors]);
+  const styles = createStyles(colors);
   const [mode, setMode] = useState<'SEA' | 'AIR'>('SEA');
   const [quantity, setQuantity] = useState('2.5');
 

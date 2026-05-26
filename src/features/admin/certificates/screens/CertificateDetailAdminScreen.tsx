@@ -20,7 +20,7 @@ export default function CertificateDetailAdminScreen({
   route,
 }: RootStackScreenProps<"CertificateDetailAdmin">) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const { certificate } = route.params;
   const {
     isActive,

@@ -1,7 +1,7 @@
 import { useAppTheme } from '@src/providers/ThemeProvider';
 // GoodsDetailPricing - Financial information and payment status
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 import { Text, Card, Divider, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -44,7 +44,7 @@ export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({
   paymentStatus,
 }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const balanceDue = (totalCost || 0) - (amountPaid || 0);
   const statusColor = getPaymentStatusColor(paymentStatus, colors);
 

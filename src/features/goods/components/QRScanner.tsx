@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { View, StyleSheet, Text, Button } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Camera, CameraView, type BarcodeScanningResult, type BarcodeType } from "expo-camera";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useTheme } from "react-native-paper";
+import { hapticError, hapticLight, hapticSuccess } from "@src/shared/lib/haptics";
 import { useQRScannerStyles, SCANNER_SIZE } from "./QRScanner.styles";
 import { ScannerOverlay } from "./ScannerOverlay";
 
-let BarCodeScanner: any;
-let BarCodeScannerType: any;
-
-try {
-  const barcodeModule = require("expo-barcode-scanner");
-  BarCodeScanner = barcodeModule.BarCodeScanner;
-  BarCodeScannerType = barcodeModule.BarCodeScanner.Constants?.BarCodeType;
-} catch {
-  BarCodeScanner = null;
-}
+const QR_BARCODE_TYPES: BarcodeType[] = ["qr"];
+const CAMERA_PERMISSION_LOADING = "Demande d'autorisation de caméra...";
+const CAMERA_PERMISSION_DENIED =
+  "Veuillez autoriser l'accès à la caméra dans les paramètres de l'application pour scanner les QR codes.";
 
 interface QRScannerProps {
   onScan: (data: string) => void;
@@ -29,36 +25,71 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onCancel }) => {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [scanned, setScanned] = useState(false);
   const [torchEnabled, setTorchEnabled] = useState(false);
+  const [cameraError, setCameraError] = useState(false);
 
   useEffect(() => {
-    if (!BarCodeScanner) return;
-    const getPermissions = async () => {
-      const { status } = await BarCodeScanner.requestPermissionsAsync();
-      setHasPermission(status === "granted");
+    let isMounted = true;
+
+    const requestPermission = async () => {
+      try {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        if (isMounted) setHasPermission(status === "granted");
+      } catch {
+        hapticError();
+        if (isMounted) setHasPermission(false);
+      }
     };
-    getPermissions();
+
+    requestPermission();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  const handleBarCodeScanned = ({ data }: { type: string; data: string }) => {
+  const requestCameraPermission = async () => {
+    hapticLight();
+    setHasPermission(null);
+    setCameraError(false);
+    try {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    } catch {
+      hapticError();
+      setHasPermission(false);
+    }
+  };
+
+  const handleBarCodeScanned = ({ data }: BarcodeScanningResult) => {
     if (scanned) return;
     setScanned(true);
+    hapticSuccess();
     onScan(data);
   };
 
-  const toggleTorch = () => setTorchEnabled((prev) => !prev);
+  const handleCameraMountError = () => {
+    hapticError();
+    setCameraError(true);
+  };
 
-  if (!BarCodeScanner) {
+  const toggleTorch = () => {
+    hapticLight();
+    setTorchEnabled((prev) => !prev);
+  };
+
+  if (cameraError) {
     return (
       <View style={styles.container}>
         <View style={styles.unavailableContainer}>
           <MaterialCommunityIcons name="qrcode-scan" size={80} color={theme.colors.primary} />
           <Text style={[styles.unavailableTitle, { color: colors.text.primary }]}>
-            Scanner non disponible
+            Caméra indisponible
           </Text>
           <Text style={[styles.unavailableText, { color: colors.text.secondary }]}>
-            Le scanner QR code nécessite l'installation de expo-barcode-scanner.
+            Impossible de démarrer la caméra. Vérifiez les autorisations puis réessayez.
           </Text>
-          <Button title="Retour" onPress={onCancel} />
+          <Button title="Réessayer" onPress={requestCameraPermission} />
+          {onCancel ? <Button title="Retour" onPress={onCancel} /> : null}
         </View>
       </View>
     );
@@ -67,7 +98,7 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onCancel }) => {
   if (hasPermission === null) {
     return (
       <View style={styles.container}>
-        <Text style={styles.messageText}>Demande d'autorisation de caméra...</Text>
+        <Text style={styles.messageText}>{CAMERA_PERMISSION_LOADING}</Text>
       </View>
     );
   }
@@ -80,20 +111,23 @@ export const QRScanner: React.FC<QRScannerProps> = ({ onScan, onCancel }) => {
           Accès caméra refusé
         </Text>
         <Text style={[styles.permissionText, { color: colors.text.secondary }]}>
-          Veuillez autoriser l'accès à la caméra dans les paramètres de l'application pour scanner les QR codes.
+          {CAMERA_PERMISSION_DENIED}
         </Text>
-        <Button title="Retour" onPress={onCancel} />
+        <Button title="Réessayer" onPress={requestCameraPermission} />
+        {onCancel ? <Button title="Retour" onPress={onCancel} /> : null}
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner
+      <CameraView
         style={[StyleSheet.absoluteFillObject, styles.scanner]}
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        barCodeTypes={[BarCodeScannerType?.QR || "qr"]}
-        flashMode={torchEnabled ? "torch" : "off"}
+        facing="back"
+        enableTorch={torchEnabled}
+        onBarcodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onMountError={handleCameraMountError}
+        barcodeScannerSettings={{ barcodeTypes: QR_BARCODE_TYPES }}
       />
       <ScannerOverlay
         scanned={scanned}

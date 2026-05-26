@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   FadeInDown,
@@ -19,7 +19,7 @@ interface Props {
 
 export const GuestFaqList: React.FC<Props> = ({ faqs }) => {
   const { colors, isDark } = useAppTheme();
-  const styles = useMemo(() => createStyles(colors, isDark), [colors, isDark]);
+  const styles = createStyles(colors, isDark);
   const [openId, setOpenId] = useState<string | null>(null);
 
   const toggle = useCallback((id: string) => {

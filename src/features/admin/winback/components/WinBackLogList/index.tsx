@@ -33,7 +33,7 @@ const RESPONSE_LABELS: Record<string, string> = {
 
 function LogItem({ log }: { log: WinBackLog }) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
   const user = log.userId;
   const respColor = RESPONSE_COLORS[log.responseType] || colors.text.disabled;
   const respLabel = RESPONSE_LABELS[log.responseType] || log.responseType;
@@ -74,7 +74,7 @@ function LogItem({ log }: { log: WinBackLog }) {
 
 export function WinBackLogList({ logs, isLoading, page, totalPages, onNextPage, onPrevPage }: WinBackLogListProps) {
   const { colors, isDark } = useAppTheme();
-  const styles = React.useMemo(() => getStyles(colors, isDark), [colors, isDark]);
+  const styles = getStyles(colors, isDark);
 
   if (isLoading) {
     return (
