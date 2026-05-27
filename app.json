@@ -2,7 +2,7 @@
   "expo": {
     "name": "ChinaLinkExpress",
     "slug": "ChinaLinkExpress",
-    "version": "2.9.1",
+    "version": "2.10.0",
     "orientation": "portrait",
     "icon": "./assets/images/log.png",
     "userInterfaceStyle": "automatic",
@@ -10,12 +10,37 @@
       "reactCompiler": true
     },
     "scheme": "chinalinkexpress",
-    "splash": {
-      "image": "./assets/images/splashscreen.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/images/splashscreen.png",
+          "resizeMode": "contain",
+          "imageWidth": 200,
+          "dark": {
+            "backgroundColor": "#0F172A"
+          },
+          "android": {
+            "backgroundColor": "#ffffff",
+            "image": "./assets/images/splashscreen.png",
+            "resizeMode": "contain",
+            "imageWidth": 200,
+            "dark": {
+              "backgroundColor": "#0F172A"
+            }
+          },
+          "ios": {
+            "backgroundColor": "#ffffff",
+            "image": "./assets/images/splashscreen.png",
+            "resizeMode": "contain",
+            "imageWidth": 200,
+            "dark": {
+              "backgroundColor": "#0F172A"
+            }
+          }
+        }
+      ],
       [
         "expo-build-properties",
         {

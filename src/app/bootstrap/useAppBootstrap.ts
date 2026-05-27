@@ -16,6 +16,12 @@ registerTranslation('fr', fr);
 // Prevent splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
+// Configure splash screen fade animation
+SplashScreen.setOptions({
+  duration: 400,
+  fade: true,
+});
+
 // One-time initializations (module scope, not hook)
 let initialized = false;
 const runOneTimeInit = () => {
