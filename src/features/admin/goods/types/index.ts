@@ -146,6 +146,10 @@ export interface ReceiveGoodsInput {
   /** Client-generated key for this submit session — lets the backend short-circuit a
    *  retried request and return the already-saved goods instead of creating a duplicate. */
   idempotencyKey?: string;
+  /** Per-receipt WhatsApp opt-out. Default true (notification sent). Set false from the
+   *  receive form's "Notifier par WhatsApp" toggle when the client doesn't want a message.
+   *  Only affects WhatsApp — push + in-app notifications still fire. */
+  notifyWhatsapp?: boolean;
 }
 
 export type ReceiveExceptionReason =

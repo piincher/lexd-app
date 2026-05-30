@@ -18,10 +18,11 @@ import { isAdminRole } from '@src/shared/lib/roles';
 import { HomeScreen } from '@src/features/home';
 import { GuestPreviewScreen } from '@src/features/guestExperience';
 import { CustomerDashboardScreen } from '@src/features/customer/dashboard';
-import { AdminDashBoard } from '@src/features/admin/dashboard';
+import { AdminDashBoard, AdminToolsScreen } from '@src/features/admin/dashboard';
 import { OrdersScreen as Orders } from '@src/features/orders';
 import { StatsScreen as Stats } from '@src/features/stats';
 import { ProfileScreen as Profile } from '@src/features/profile';
+import { MemberPointsScreen } from '@src/features/referrals';
 import MyGoodsScreen from '@src/features/goods/screens/MyGoodsScreen';
 import MyContainersScreen from '@src/features/customer/containers/screens/MyContainersScreen';
 import AdminGoodsList from '@src/features/admin/goods/screens/GoodsListScreen';
@@ -113,6 +114,16 @@ export const HomeBottomTab: React.FC = () => {
       },
     },
     {
+      name: 'MemberPoints',
+      component: MemberPointsScreen,
+      show: !adminRole && !!token,
+      options: {
+        tabBarLabel: 'Points',
+        tabBarAccessibilityLabel: 'Mes points',
+        tabBarIcon: ({ color, size }) => <FontAwesome5 name="coins" size={size} color={color} />,
+      },
+    },
+    {
       name: 'MyGoods',
       component: MyGoodsScreen,
       show: !adminRole && !!token,
@@ -157,6 +168,19 @@ export const HomeBottomTab: React.FC = () => {
       options: {
         tabBarLabel: 'Conteneurs',
         tabBarIcon: ({ color, size }) => <FontAwesome5 name="ship" size={size} color={color} />,
+      },
+    },
+    {
+      // Full admin directory — Récompenses, Commandes, Logistique, Clients,
+      // every screen the operator can reach. Owns the MenuCategories surface
+      // that used to live at the bottom of AdminDashBoard. Admin-only.
+      name: 'AdminTools',
+      component: AdminToolsScreen,
+      show: adminRole,
+      options: {
+        tabBarLabel: 'Outils',
+        tabBarAccessibilityLabel: 'Outils admin',
+        tabBarIcon: ({ color, size }) => <FontAwesome5 name="th-large" size={size} color={color} />,
       },
     },
     {

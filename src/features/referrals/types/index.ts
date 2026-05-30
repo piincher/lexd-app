@@ -196,6 +196,96 @@ export interface ReferralSummary {
   redemptions: RewardRedemption[];
 }
 
+export interface RewardItem {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  pointsRequired: number;
+  stock: number;
+  pickupMethod: 'PICKUP' | 'DELIVERY';
+  status: 'ACTIVE' | 'INACTIVE';
+  category: string;
+  createdAt: string;
+}
+
+export type ProductRedemptionStatus = 'PENDING' | 'APPROVED' | 'READY_FOR_PICKUP' | 'COLLECTED' | 'REJECTED' | 'CANCELLED';
+
+export interface ProductRedemption {
+  id: string;
+  userId: string;
+  status: ProductRedemptionStatus;
+  requestedPoints: number;
+  pointValueFCFA: number;
+  requestedValueFCFA: number;
+  approvedPoints: number;
+  approvedValueFCFA: number;
+  restoredPoints: number;
+  rewardItemId: string | null;
+  quantity: number;
+  pickupMethod: string | null;
+  phoneVerification: string;
+  customerRemarks: string;
+  adminRemarks: string;
+  rejectionReason: string;
+  reviewedBy: string | null;
+  reviewedAt: string | null;
+  cancelledAt: string | null;
+  createdAt: string;
+}
+
+export interface RewardSummaryV2 {
+  rewardPoints: number;
+  pointValueFCFA: number;
+  rewardValueFCFA: number;
+  settings: {
+    enabled: boolean;
+    cbmPointsRate: number;
+    kgPointsRate: number;
+    autoAwardEnabled: boolean;
+    autoAwardTriggerStatus: string;
+    pointExpiryMonths: number | null;
+  };
+  recentLedger: RewardLedgerEntry[];
+}
+
+export interface RewardLedgerEntryV2 {
+  id: string;
+  userId: string;
+  type: RewardLedgerType;
+  pointsDelta: number;
+  pointValueFCFA: number;
+  valueFCFA: number;
+  balanceAfter: number;
+  shipmentUnit: 'CBM' | 'KG' | null;
+  shipmentQuantity: number | null;
+  source?: {
+    type: string;
+    id: string;
+    reference?: string;
+  };
+  note: string;
+  createdAt: string;
+}
+
+export interface CreateProductRedemptionPayload {
+  rewardItemId: string;
+  quantity: number;
+  phoneVerification: string;
+  customerRemarks?: string;
+  idempotencyKey?: string;
+}
+
+export interface ProductRedemptionList {
+  items: ProductRedemption[];
+  pagination: PaginationInfo;
+}
+
+export interface RewardLedgerListV2 {
+  items: RewardLedgerEntryV2[];
+  pagination: PaginationInfo;
+}
+
 export interface ReferralValidation {
   valid: boolean;
   referralCode?: string;

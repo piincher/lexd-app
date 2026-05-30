@@ -51,6 +51,9 @@ export const AppNavigator: React.FC = () => {
           <Stack.Screen name="Referral" component={Screens.ReferralScreen} />
           <Stack.Screen name="Redemption" component={Screens.RedemptionScreen} />
           <Stack.Screen name="MyRewards" component={Screens.MyRewardsScreen} />
+          <Stack.Screen name="RewardDetail" component={Screens.RewardDetailScreen} />
+          <Stack.Screen name="PointsHistory" component={Screens.PointsHistoryScreen} />
+          <Stack.Screen name="MyProductRedemptions" component={Screens.MyProductRedemptionsScreen} />
           <Stack.Screen name="MyReviews" component={Screens.MyReviewsScreen} />
           <Stack.Screen name="GoodsDetail" component={Screens.GoodsDetailScreen} />
           <Stack.Screen name="EditGoods" component={Screens.EditGoodsScreen} />
@@ -102,6 +105,7 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="ContainerList" component={ContainerListTabRedirect} />
               <Stack.Screen name="CreateContainer" component={Screens.CreateContainerScreen} />
               <Stack.Screen name="ContainerDetail" component={Screens.ContainerDetailScreen} />
+              <Stack.Screen name="ContainerAnalytics" component={Screens.ContainerAnalyticsScreen} />
               <Stack.Screen name="AssignGoods" component={Screens.AssignGoodsScreen} />
               <Stack.Screen name="PackingList" component={Screens.PackingListScreen} />
               <Stack.Screen name="LoadingList" component={Screens.LoadingListScreen} />
@@ -118,6 +122,11 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="AdminRedemptions" component={Screens.AdminRedemptionQueueScreen} />
               <Stack.Screen name="AdminRewardSettings" component={Screens.AdminRewardSettingsScreen} />
               <Stack.Screen name="AppVersionSettings" component={Screens.AppVersionSettingsScreen} />
+              <Stack.Screen name="AdminRewardItems" component={Screens.AdminRewardItemsScreen} />
+              <Stack.Screen name="AdminRewardItemForm" component={Screens.AdminRewardItemFormScreen} />
+              <Stack.Screen name="AdminProductRedemptions" component={Screens.AdminProductRedemptionsScreen} />
+              <Stack.Screen name="AdminPointsManagement" component={Screens.AdminPointsManagementScreen} />
+              <Stack.Screen name="AdminRewardSettingsV2" component={Screens.AdminRewardSettingsScreenV2} />
               <Stack.Screen name="AdminReviews" component={Screens.AdminReviewsScreen} />
               <Stack.Screen name="ManagePromos" component={Screens.ManagePromosScreen} />
               <Stack.Screen name="WinBackDashboard" component={Screens.WinBackDashboardScreen} />

@@ -18,6 +18,7 @@ export const useGoodsListScreen = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
   const [scannerVisible, setScannerVisible] = useState(false);
+  const [statsSheetVisible, setStatsSheetVisible] = useState(false);
 
   const list = useGoodsList({
     onError: (err: ApiClientError) => setErrorMessage(err.getUserMessage()),
@@ -42,6 +43,13 @@ export const useGoodsListScreen = () => {
     if (bulk.isSelectionMode) bulk.exitSelectionMode();
     else bulk.setIsSelectionMode(true);
   }, [bulk]);
+
+  // ── Stats sheet ──────────────────────────────────────────────────────────
+  // Opens a bottom sheet with aggregated totals (count / weight / CBM) for
+  // the current filter set. Only fired when the operator taps the icon, so
+  // the aggregation query only runs on demand.
+  const handleStatsPress = useCallback(() => setStatsSheetVisible(true), []);
+  const handleStatsDismiss = useCallback(() => setStatsSheetVisible(false), []);
 
   // ── Scan-to-find ─────────────────────────────────────────────────────────
   // Opens the QR scanner modal; the handler below resolves the scanned code to a goods
@@ -113,5 +121,9 @@ export const useGoodsListScreen = () => {
     handleScannedCode,
     // Selection totals
     selectionTotals,
+    // Stats sheet
+    statsSheetVisible,
+    handleStatsPress,
+    handleStatsDismiss,
   };
 };

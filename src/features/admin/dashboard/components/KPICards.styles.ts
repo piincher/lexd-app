@@ -5,120 +5,56 @@ import type { ThemeContextType } from "@src/constants/Theme";
 
 type AppThemeColors = ThemeContextType["colors"];
 
-export const createStyles = (colors: AppThemeColors, isDark?: boolean) =>
+// Workbench tier-2: flat row, hairline divider, no card chrome.
+// Tile shadow + gradient + 3-different-shapes treatment (audit m3) is gone —
+// this row sits behind the PriorityPanel, not next to it.
+export const createKPIRowStyles = (colors: AppThemeColors, isDark?: boolean) =>
   StyleSheet.create({
     container: {
-      gap: 12,
-      marginBottom: 16,
+      paddingHorizontal: 4,
+      marginTop: Theme.spacing.lg,
+      marginBottom: Theme.spacing.lg,
+    },
+    eyebrow: {
+      fontSize: 11,
+      fontFamily: Fonts.bold,
+      color: colors.text.secondary,
+      textTransform: "uppercase",
+      letterSpacing: 1.4,
+      marginBottom: Theme.spacing.sm,
     },
     row: {
       flexDirection: "row",
-      gap: 12,
-    },
-    heroCard: {
-      borderRadius: 16,
-      overflow: "hidden",
-      backgroundColor: colors.background.card,
-      borderWidth: 1,
-      borderColor: colors.border,
-      ...Theme.shadows.sm,
-    },
-    heroAccentBar: {
-      position: "absolute",
-      left: 0,
-      top: 0,
-      bottom: 0,
-      width: 4,
-      backgroundColor: colors.status.info,
-    },
-    heroBody: {
-      padding: 16,
-      minHeight: 112,
-      justifyContent: "space-between",
-    },
-    heroTop: {
-      flexDirection: "row",
-      justifyContent: "space-between",
-      alignItems: "flex-start",
-    },
-    heroIconWrap: {
-      width: 44,
-      height: 44,
-      borderRadius: 12,
-      justifyContent: "center",
       alignItems: "center",
-      borderWidth: 1,
-      borderColor: colors.border,
+      paddingVertical: 4,
     },
-    heroTrend: {
-      flexDirection: "row",
-      alignItems: "center",
-      gap: 5,
-      paddingHorizontal: 9,
-      paddingVertical: 5,
-      borderRadius: 10,
-      backgroundColor: isDark ? colors.action.hover : colors.background.paper,
-      borderWidth: 1,
-      borderColor: colors.border,
-    },
-    heroTrendText: {
-      color: colors.text.secondary,
-      fontSize: 11,
-      fontFamily: Fonts.bold,
-    },
-    heroValue: {
-      fontSize: 32,
-      fontFamily: Fonts.bold,
-      color: colors.text.primary,
-    },
-    heroLabel: {
-      fontSize: 13,
-      fontFamily: Fonts.regular,
-      color: colors.text.secondary,
-      marginTop: 2,
-    },
-    smallCard: {
+    item: {
       flex: 1,
-      minHeight: 122,
-      borderRadius: 14,
-      padding: 14,
-      backgroundColor: colors.background.card,
-      borderWidth: 1,
-      borderColor: colors.border,
-      ...Theme.shadows.sm,
+      paddingVertical: 8,
     },
-    smallIconWrap: {
-      width: 44,
-      height: 44,
-      borderRadius: 12,
-      justifyContent: "center",
-      alignItems: "center",
-      marginBottom: 12,
-    },
-    smallValue: {
-      fontSize: 22,
+    value: {
+      fontSize: 24,
       fontFamily: Fonts.bold,
       color: colors.text.primary,
+      lineHeight: 28,
     },
-    smallLabel: {
+    label: {
       fontSize: 12,
-      fontFamily: Fonts.regular,
+      fontFamily: Fonts.medium,
       color: colors.text.secondary,
-      marginTop: 2,
+      marginTop: 4,
     },
-    progressTrack: {
-      marginTop: 10,
-      height: 4,
-      borderRadius: 2,
-      backgroundColor: isDark ? colors.action.selected : colors.neutral[100],
-      overflow: "hidden",
-    },
-    progressFill: {
-      height: "100%",
-      borderRadius: 2,
+    divider: {
+      width: 1,
+      height: 32,
+      marginHorizontal: 4,
+      backgroundColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)",
     },
     pressed: {
-      opacity: 0.9,
-      transform: [{ scale: 0.99 }],
+      opacity: 0.7,
     },
   });
+
+// Back-compat alias — older imports referenced `createStyles`. Keeps existing
+// import sites compiling if any other file reaches into this module.
+export const createStyles = createKPIRowStyles;

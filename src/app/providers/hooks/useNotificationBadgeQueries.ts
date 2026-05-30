@@ -4,6 +4,7 @@ import { notificationApi } from "@src/features/notifications/api";
 import { notificationQueryKeys } from "@src/features/notifications/hooks";
 import { useAuth } from "@src/store/Auth";
 import { clearBadgeCount, setBadgeCount } from "../../../shared/services/notificationService";
+import { runForegroundTask } from "../../../shared/lib/foregroundTasks";
 import type { useNotificationState } from "./useNotificationState";
 
 type State = ReturnType<typeof useNotificationState>;
@@ -34,8 +35,10 @@ export const useNotificationBadgeQueries = (state: State) => {
   }, [state.setBadgeCountState, applyUnreadCount]);
 
   const refreshNotificationQueries = useCallback(() => {
-    void queryClient.invalidateQueries({ queryKey: notificationQueryKeys.all });
-    setTimeout(() => { void queryClient.invalidateQueries({ queryKey: notificationQueryKeys.all }); void refreshUnreadCountFromServer(); }, 1000);
+    void runForegroundTask("notifications:query-refresh", 1000, async () => {
+      await queryClient.invalidateQueries({ queryKey: notificationQueryKeys.all });
+      await refreshUnreadCountFromServer();
+    });
   }, [queryClient, refreshUnreadCountFromServer]);
 
   return { updateUnreadQueryCount, incrementUnreadQueryCount, applyUnreadCount, refreshUnreadCountFromServer, refreshNotificationQueries };

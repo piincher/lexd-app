@@ -35,6 +35,10 @@ export const useContainerTracking = (
       }
       return 5 * 60 * 1000; // Every 5 minutes otherwise
     },
+    // Polling fires only while the screen is foregrounded. Backgrounded apps
+    // were the dominant source of request volume — customers leave tracking
+    // screens open for hours. This guard cuts that to zero.
+    refetchIntervalInBackground: false,
     ...options,
   });
 };

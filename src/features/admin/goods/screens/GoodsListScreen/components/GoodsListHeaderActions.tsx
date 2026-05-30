@@ -6,6 +6,7 @@ interface GoodsListHeaderActionsProps {
   onScanPress?: () => void;
   onToggleSelectionMode?: () => void;
   onExportPress?: () => void;
+  onStatsPress?: () => void;
   isSelectionMode?: boolean;
   primaryColor: string;
   errorColor: string;
@@ -16,12 +17,26 @@ export const GoodsListHeaderActions: React.FC<GoodsListHeaderActionsProps> = ({
   onScanPress,
   onToggleSelectionMode,
   onExportPress,
+  onStatsPress,
   isSelectionMode,
   primaryColor,
   errorColor,
   cardBgColor,
 }) => (
   <View style={styles.actionsContainer}>
+    {/* Stats button — opens the warehouse overview bottom sheet with totals
+        across the current filter set. Hidden in selection mode to keep the
+        toolbar focused on bulk operations. */}
+    {onStatsPress && !isSelectionMode && (
+      <TouchableOpacity
+        onPress={onStatsPress}
+        style={[styles.actionButton, { backgroundColor: cardBgColor }]}
+        activeOpacity={0.8}
+        accessibilityLabel="Voir les totaux de l'entrepôt"
+      >
+        <Ionicons name="stats-chart-outline" size={22} color={primaryColor} />
+      </TouchableOpacity>
+    )}
     {/* Scan button — hidden while in selection mode so it doesn't compete with the
         cancel-selection affordance and so the toolbar stays clean for bulk operations. */}
     {onScanPress && !isSelectionMode && (

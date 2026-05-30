@@ -21,7 +21,6 @@ export const useGetTickets = (filters?: TicketFilters, options?: UseQueryOptions
     },
     select: (data) => data,
     staleTime: 30 * 1000,
-    refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     ...options,
   });
@@ -36,7 +35,6 @@ export const useGetTicket = (id: string, options?: UseQueryOptions<Ticket, ApiCl
     },
     enabled: !!id,
     staleTime: 30 * 1000,
-    refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     ...options,
   });

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import type { InitializePaymentRequest, InitializePaymentResponse } from '../../types';
 import { useInitializePayment } from './useInitializePayment';
 import { useVerifyPayment } from './useVerifyPayment';
-import { usePaymentPolling } from './usePaymentPolling';
 
 export const usePaymentFlow = () => {
   const [step, setStep] = useState<'method' | 'details' | 'processing' | 'confirmation'>('method');
@@ -12,14 +11,6 @@ export const usePaymentFlow = () => {
 
   const initializeMutation = useInitializePayment();
   const verifyMutation = useVerifyPayment();
-  const polling = usePaymentPolling(
-    selectedProvider,
-    paymentData?.providerTransactionId ?? null,
-    {
-      onSuccess: () => setStep('confirmation'),
-      onFailure: () => setStep('confirmation'),
-    }
-  );
 
   const selectProvider = (provider: string) => {
     setSelectedProvider(provider);
@@ -33,10 +24,7 @@ export const usePaymentFlow = () => {
       setError(null);
       const result = await initializeMutation.mutateAsync(data);
       setPaymentData(result);
-
-      if (result.providerTransactionId) {
-        polling.startPolling();
-      }
+      setStep('confirmation');
 
       return result;
     } catch (err) {
@@ -51,7 +39,6 @@ export const usePaymentFlow = () => {
     setSelectedProvider(null);
     setPaymentData(null);
     setError(null);
-    polling.stopPolling();
   };
 
   const goBack = () => {
@@ -59,7 +46,6 @@ export const usePaymentFlow = () => {
       setStep('method');
       setSelectedProvider(null);
     } else if (step === 'processing') {
-      polling.stopPolling();
       setStep('details');
     }
   };
@@ -69,11 +55,11 @@ export const usePaymentFlow = () => {
     selectedProvider,
     paymentData,
     error,
-    isInitializing: initializeMutation.isLoading,
-    isVerifying: verifyMutation.isLoading,
-    isPolling: polling.isPolling,
-    pollingAttempts: polling.attempts,
-    pollingStatus: polling.status,
+    isInitializing: initializeMutation.isPending,
+    isVerifying: verifyMutation.isPending,
+    isPolling: false,
+    pollingAttempts: 0,
+    pollingStatus: 'idle' as const,
     selectProvider,
     initializePayment,
     verifyPayment: verifyMutation.mutateAsync,

@@ -12,7 +12,7 @@ import { Theme } from '@src/constants/Theme';
 export const VoidGoodsListEmpty: React.FC = () => (
   <View style={styles.emptyContainer}>
     <MaterialCommunityIcons
-      name="package-variant-off"
+      name="package-off"
       size={64}
       color={Theme.neutral[300]}
     />

@@ -11,6 +11,7 @@ import {
 } from './components';
 import { GoodsListScannerModal } from './components/GoodsListScannerModal';
 import { GoodsQuickFilterRow } from './components/GoodsQuickFilterRow';
+import { GoodsStatsBottomSheet } from './components/GoodsStatsBottomSheet';
 
 export const GoodsListScreen: React.FC = () => {
   const s = useGoodsListScreen();
@@ -24,6 +25,7 @@ export const GoodsListScreen: React.FC = () => {
         mode={s.selectedMode} onChangeMode={s.setSelectedMode}
         onScanPress={s.handleScanPress}
         onExportPress={s.handleExportPress}
+        onStatsPress={s.handleStatsPress}
         isSelectionMode={s.isSelectionMode} onToggleSelectionMode={s.handleToggleSelectionMode} />
       <GoodsListSearch value={s.searchQuery} onChangeText={s.setSearchQuery}
         onClear={() => s.setSearchQuery('')} onFilterPress={() => s.setFilterModalVisible(true)}
@@ -78,6 +80,17 @@ export const GoodsListScreen: React.FC = () => {
         visible={s.scannerVisible}
         onScan={s.handleScannedCode}
         onDismiss={s.handleScannerDismiss}
+      />
+      {/* Warehouse overview totals — count / kg / m³ for the current filter set.
+          Fed the same `filters` object that drives the list so totals always match
+          what's on screen. The hook inside the sheet is gated on visibility so the
+          aggregation only runs when the operator asks for it. */}
+      <GoodsStatsBottomSheet
+        visible={s.statsSheetVisible}
+        onDismiss={s.handleStatsDismiss}
+        filters={s.filters}
+        hasActiveFilters={s.hasFilters}
+        mode={s.selectedMode}
       />
     </SafeAreaView>
   );

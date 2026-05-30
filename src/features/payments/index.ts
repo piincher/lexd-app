@@ -14,7 +14,6 @@ export {
   useCalculateBalanceForGoods,
   useTopUpBalance,
   useCancelPayment,
-  usePaymentPolling,
   usePaymentFlow,
 } from './hooks/usePayments';
 

@@ -1,11 +1,31 @@
-import React from "react";
-import { View } from "react-native";
+/* Hallmark · macrostructure: Workbench · component: kpi-row · tone: utilitarian
+ *
+ * Reference tier — quiet stats. Three changes from the previous version:
+ *   1. Visual tier demoted: flat row of numbers + hairline rules. No cards,
+ *      no shadows, no gradient hero. Tier-2 reference content sits behind
+ *      the PriorityPanel, not alongside it.
+ *   2. SMS tile removed (audit C3): duplicated the standalone SMSBalanceCard.
+ *      Same data appearing twice is the kind of "I get lost" tell the audit
+ *      flagged. SMS lives in its own gated card now.
+ *   3. Hero route fixed (audit M5): "Marchandises en entrepôt" used to route
+ *      to UnassignedGoods, which is a different list. Now routes to the main
+ *      goods list — label matches destination.
+ *
+ * Two remaining stats:
+ *   · Marchandises en entrepôt → AdminGoodsList (the warehouse view)
+ *   · Conteneurs actifs        → ContainerList
+ *
+ * The arbitrary `pendingContainers * 10` progress bar from the old SmallKpiCard
+ * is gone — there's no meaningful capacity ceiling to plot against (audit m1).
+ */
+
+import React, { useMemo } from "react";
+import { View, Pressable } from "react-native";
+import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { navigationProps } from "@src/app/navigation/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
-import { createStyles } from "./KPICards.styles";
-import { HeroKpiCard } from "./HeroKpiCard";
-import { SmallKpiCard } from "./SmallKpiCard";
+import { createKPIRowStyles } from "./KPICards.styles";
 
 export interface KPICardsProps {
   stats: {
@@ -24,49 +44,48 @@ export const formatNumber = (n: number) => {
 export const KPICards: React.FC<KPICardsProps> = ({ stats }) => {
   const navigation = useNavigation<navigationProps>();
   const { colors, isDark } = useAppTheme();
-  const styles = createStyles(colors, isDark);
-
-  const smsPct = stats.smsBalancePct ?? 0;
-  const smsColor =
-    smsPct >= 50 ? colors.status.success : smsPct >= 20 ? colors.status.warning : colors.status.error;
-  const inventoryAccent = colors.status.info;
+  const styles = useMemo(() => createKPIRowStyles(colors, isDark), [colors, isDark]);
 
   return (
     <View style={styles.container}>
-      <HeroKpiCard
-        value={formatNumber(stats.totalGoods)}
-        label="Marchandises en entrepôt"
-        icon="package-variant"
-        trendLabel="En stock"
-        accentColor={inventoryAccent}
-        accentBgColor={isDark ? inventoryAccent + "24" : colors.feedback.infoBg}
-        onPress={() => navigation.navigate("UnassignedGoods")}
-      />
-
+      <Text style={styles.eyebrow}>Aperçu</Text>
       <View style={styles.row}>
-        <SmallKpiCard
-          value={formatNumber(stats.pendingContainers)}
-          label="Conteneurs actifs"
-          icon="ferry"
-          iconColor={colors.status.warning}
-          progressWidth={Math.min(100, stats.pendingContainers * 10)}
-          progressColor={colors.status.warning}
-          iconBgColor={isDark ? colors.status.warning + "24" : colors.feedback.warningBg}
-          onPress={() => navigation.navigate("ContainerList")}
+        <KPIItem
+          value={formatNumber(stats.totalGoods)}
+          // Short label — single-line clickable text (slop gate 59).
+          // Long form lived in the previous hero card; that was the wrap-risk.
+          label="Marchandises"
+          onPress={() => navigation.navigate("AdminGoodsList")}
+          styles={styles}
         />
-        <SmallKpiCard
-          value={formatNumber(stats.smsBalance)}
-          label="Crédits SMS"
-          icon="message-badge"
-          iconColor={colors.primary.main}
-          progressWidth={smsPct}
-          progressColor={smsColor}
-          iconBgColor={isDark ? colors.primary.main + '26' : colors.primary[50]}
-          onPress={() => navigation.navigate("SendSms")}
+        <View style={styles.divider} />
+        <KPIItem
+          value={formatNumber(stats.pendingContainers)}
+          label="Conteneurs"
+          onPress={() => navigation.navigate("ContainerList")}
+          styles={styles}
         />
       </View>
     </View>
   );
 };
+
+interface KPIItemProps {
+  value: string;
+  label: string;
+  onPress: () => void;
+  styles: ReturnType<typeof createKPIRowStyles>;
+}
+
+const KPIItem: React.FC<KPIItemProps> = ({ value, label, onPress, styles }) => (
+  <Pressable
+    onPress={onPress}
+    style={({ pressed }) => [styles.item, pressed && styles.pressed]}
+    accessibilityLabel={`${label}: ${value}`}
+  >
+    <Text style={styles.value}>{value}</Text>
+    <Text style={styles.label}>{label}</Text>
+  </Pressable>
+);
 
 export default KPICards;

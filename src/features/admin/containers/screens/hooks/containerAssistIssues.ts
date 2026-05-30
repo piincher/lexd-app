@@ -10,6 +10,7 @@ import {
   missingPhoto,
   missingQr,
 } from './containerGoodsSignals';
+import { buildContainerEta } from './containerEta';
 
 const ADVANCED_EMPTY_STATUSES = new Set([
   'LOADING',
@@ -46,6 +47,23 @@ export const buildContainerIssues = (
   push('location', 'Emplacement manquant', goodsList.filter(missingLocation).length, 'Marchandises sans localisation entrepôt', 'warning');
   push('phone', 'Téléphone client manquant', goodsList.filter((goods) => missingPhone(goods, directory)).length, 'Communication client limitée', 'info');
   push('qr-photo', 'Preuves incomplètes', goodsList.filter((goods) => missingQr(goods) || missingPhoto(goods)).length, 'QR ou photo manquant', 'info');
+
+  // Predictive delay alert: flag at-risk in-transit containers before arrival.
+  if (container) {
+    const eta = buildContainerEta(container);
+    if (!eta.isArrived && (eta.risk === 'HIGH' || eta.risk === 'MEDIUM')) {
+      issues.push({
+        id: 'delay-risk',
+        title: 'Retard probable',
+        count: 1,
+        detail:
+          eta.projectedDelayDays > 0
+            ? `Retard projeté de ${eta.projectedDelayDays} j — prévenir le client`
+            : 'Arrivée à risque selon la prévision',
+        severity: eta.risk === 'HIGH' ? 'error' : 'warning',
+      });
+    }
+  }
 
   if (container && goodsList.length === 0 && ADVANCED_EMPTY_STATUSES.has(container.status)) {
     issues.push({ id: 'empty-advanced', title: 'Container vide', count: 1, detail: 'Statut avancé sans marchandise assignée', severity: 'warning' });

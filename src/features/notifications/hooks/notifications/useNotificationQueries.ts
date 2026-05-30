@@ -44,7 +44,6 @@ export const useGetUnreadCount = (options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: notificationQueryKeys.unread(),
     queryFn: () => notificationApi.getUnreadCount(),
-    refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     staleTime: 1 * 60 * 1000,
     ...options,

@@ -27,6 +27,7 @@ interface GoodsListHeaderProps {
   loading?: boolean;
   onScanPress?: () => void;
   onExportPress?: () => void;
+  onStatsPress?: () => void;
   isSelectionMode?: boolean;
   onToggleSelectionMode?: () => void;
 }
@@ -39,6 +40,7 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
   loading = false,
   onScanPress,
   onExportPress,
+  onStatsPress,
   isSelectionMode,
   onToggleSelectionMode,
 }) => {
@@ -65,6 +67,7 @@ export const GoodsListHeader: React.FC<GoodsListHeaderProps> = ({
             onScanPress={onScanPress}
             onToggleSelectionMode={onToggleSelectionMode}
             onExportPress={onExportPress}
+            onStatsPress={onStatsPress}
             isSelectionMode={isSelectionMode}
             primaryColor={colors.primary.main}
             errorColor={colors.status.error}

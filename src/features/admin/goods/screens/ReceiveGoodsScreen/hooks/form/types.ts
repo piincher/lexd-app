@@ -25,6 +25,10 @@ export interface UseReceiveGoodsFormReturn {
   removePhotoUri: (uri: string) => void;
   useDimensions: boolean;
   setUseDimensions: (use: boolean) => void;
+  /** Per-receipt WhatsApp opt-out. True by default; set to false from the receive form's
+   *  "Notifier par WhatsApp" toggle to skip the WhatsApp message for this receipt only. */
+  notifyWhatsapp: boolean;
+  setNotifyWhatsapp: (notify: boolean) => void;
   calculatedCBM: number;
   totalCost: number;
   isFormValid: boolean;

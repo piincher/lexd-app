@@ -1,7 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import * as Haptics from 'expo-haptics';
 import { usePaymentFlow } from './usePayments';
-import type { PaymentProvider, InitializePaymentResponse } from '../types';
+import type { InitializePaymentResponse } from '../types';
 
 export const usePaymentSubmission = () => {
   const [showStatusModal, setShowStatusModal] = useState(false);
@@ -19,53 +18,7 @@ export const usePaymentSubmission = () => {
     };
   }, []);
 
-  const startPolling = useCallback(async (provider: PaymentProvider, transactionId: string) => {
-    const maxAttempts = 60;
-    let attempts = 0;
-
-    const checkStatus = async () => {
-      attempts++;
-      try {
-        const result = await paymentFlow.verifyPayment({ provider, transactionId });
-
-        if (result.status === 'COMPLETED') {
-          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-          setStatusModalConfig({
-            status: 'success',
-            title: 'Payment Successful!',
-            message: 'Your payment has been processed successfully.',
-          });
-          return;
-        } else if (result.status === 'FAILED') {
-          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
-          setStatusModalConfig({
-            status: 'error',
-            title: 'Payment Failed',
-            message: result.message || 'The payment could not be completed.',
-          });
-          return;
-        }
-
-        if (attempts < maxAttempts) {
-          timeoutRef.current = setTimeout(checkStatus, 2000);
-        } else {
-          setStatusModalConfig({
-            status: 'error',
-            title: 'Payment Timeout',
-            message: 'The payment confirmation timed out. Please check your payment status later.',
-          });
-        }
-      } catch {
-        if (attempts < maxAttempts) {
-          timeoutRef.current = setTimeout(checkStatus, 2000);
-        }
-      }
-    };
-
-    checkStatus();
-  }, [paymentFlow]);
-
-  const handleCardPayment = useCallback((result: InitializePaymentResponse) => {
+  const handleCardPayment = useCallback((_result: InitializePaymentResponse) => {
     timeoutRef.current = setTimeout(() => {
       setStatusModalConfig({
         status: 'success',
@@ -81,7 +34,6 @@ export const usePaymentSubmission = () => {
     isInitializing: paymentFlow.isInitializing,
     setShowStatusModal,
     setStatusModalConfig,
-    startPolling,
     handleCardPayment,
     initializePayment: paymentFlow.initializePayment,
   };

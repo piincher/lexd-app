@@ -82,8 +82,8 @@ export const VoidGoodsListItem: React.FC<VoidGoodsListItemProps> = ({
         <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Client</Text>
           <Text style={styles.detailValue}>
-            {typeof item.clientId === 'object'
-              ? `${item.clientId.firstName} ${item.clientId.lastName}`
+            {item.clientId && typeof item.clientId === 'object'
+              ? `${item.clientId.firstName ?? ''} ${item.clientId.lastName ?? ''}`.trim() || 'Unknown'
               : 'Unknown'}
           </Text>
         </View>

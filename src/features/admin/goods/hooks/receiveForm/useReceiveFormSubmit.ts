@@ -24,6 +24,7 @@ export const useReceiveFormSubmit = (options: UseReceiveFormSubmitOptions) => {
     const input: ReceiveGoodsInput = {
       clientId: selectedClient._id,
       description: formData.description.trim(),
+      shippingMode: 'SEA',
       actualCBM: calculatedCBM,
       weight: parseFloat(formData.weight.replace(',', '.')),
       quantity: parseInt(formData.quantity, 10),

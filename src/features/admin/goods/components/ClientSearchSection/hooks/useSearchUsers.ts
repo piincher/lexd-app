@@ -3,9 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchAllUsers } from '@src/features/admin/users/api/userApi';
 import { userData } from '@src/shared/types/user';
 
-const ALL_USERS_KEY = 'all-users-client-search-v2';
 const SERVER_SEARCH_KEY = 'users-server-search';
-const USERS_PER_PAGE = 200;
 const MIN_QUERY_LENGTH = 2;
 const MIN_PHONE_QUERY_DIGITS = 2;
 
@@ -41,6 +39,12 @@ const matchesQuery = (user: userData, rawQuery: string): boolean => {
   return nameMatch || phoneMatch;
 };
 
+const hasSearchIntent = (rawQuery: string): boolean => {
+  const query = rawQuery.trim();
+  const digitCount = query.replace(/\D/g, '').length;
+  return query.length >= MIN_QUERY_LENGTH || digitCount >= MIN_PHONE_QUERY_DIGITS;
+};
+
 export const useSearchUsers = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
@@ -52,54 +56,21 @@ export const useSearchUsers = () => {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
-  // Fetch ALL users by paginating through all pages.
-  // The backend caps each page at 200, so we loop until all pages are loaded.
-  const {
-    data: allUsers,
-    isLoading: isLoadingAll,
-    error: fetchAllError,
-  } = useQuery({
-    queryKey: [ALL_USERS_KEY],
-    queryFn: async () => {
-      const all: userData[] = [];
-      let page = 1;
-      let hasMore = true;
+  const normalizedQuery = debouncedQuery.trim();
+  const canSearch = hasSearchIntent(normalizedQuery);
 
-      while (hasMore) {
-        const response = await fetchAllUsers({ limit: USERS_PER_PAGE, page });
-        all.push(...response.data);
-        hasMore = page < response.meta.totalPages;
-        page++;
-
-        // Safety break to prevent infinite loops
-        if (page > 100) break;
-      }
-
-      return all;
-    },
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    refetchOnMount: 'always',  // Always refetch to ensure we have all users (critical for search)
-    retry: (failureCount, error: any) => {
-      // Don't retry auth errors — let the interceptor handle refresh/logout once
-      if (error?.response?.status === 401) return false;
-      return failureCount < 2;
-    },
-  });
-
-  // Fallback server-side search for cache-miss / freshly-created users not yet in the
-  // local cache. We do NOT trust its filtering — see `matchesQuery` applied below.
   const {
     data: serverSearchResults,
     isLoading: isLoadingServer,
     error: fetchServerError,
   } = useQuery({
-    queryKey: [SERVER_SEARCH_KEY, debouncedQuery],
+    queryKey: [SERVER_SEARCH_KEY, normalizedQuery],
     queryFn: async () => {
-      const response = await fetchAllUsers({ search: debouncedQuery, limit: 50 });
+      const response = await fetchAllUsers({ search: normalizedQuery, limit: 50 });
       return response.data;
     },
-    enabled: debouncedQuery.trim().length >= MIN_QUERY_LENGTH,
-    staleTime: 30 * 1000, // 30 seconds
+    enabled: canSearch,
+    staleTime: 5 * 60 * 1000,
     retry: (failureCount, error: any) => {
       if (error?.response?.status === 401) return false;
       return failureCount < 2;
@@ -111,20 +82,9 @@ export const useSearchUsers = () => {
     [debouncedQuery],
   );
 
-  // Client-side filter — no API calls per keystroke. Returns [] for sub-threshold queries
-  // and for queries that don't match any cached user.
-  const localFilteredUsers = useMemo(() => {
-    if (!allUsers || !Array.isArray(allUsers)) return [];
-    if (debouncedQuery.trim().length < MIN_QUERY_LENGTH) return [];
-    return allUsers.filter(predicate);
-  }, [allUsers, debouncedQuery, predicate]);
-
-  // Merge local + server. We re-apply the predicate to server results so a permissive
-  // backend can't surface unrelated users, and we dedupe by _id so the same record from
-  // both sources only shows once.
+  // Re-apply the predicate so a permissive backend can't surface unrelated users.
   const users = useMemo(() => {
-    if (localFilteredUsers.length > 0) return localFilteredUsers;
-    if (debouncedQuery.trim().length < MIN_QUERY_LENGTH) return [];
+    if (!canSearch) return [];
     if (!serverSearchResults || serverSearchResults.length === 0) return [];
 
     const filteredServer = serverSearchResults.filter(predicate);
@@ -140,10 +100,9 @@ export const useSearchUsers = () => {
       }
     }
     return merged;
-  }, [localFilteredUsers, serverSearchResults, debouncedQuery, predicate]);
+  }, [canSearch, serverSearchResults, predicate]);
 
-  const isLoading = isLoadingAll || isLoadingServer;
-  const fetchError = fetchAllError || fetchServerError;
+  const isLoading = canSearch && isLoadingServer;
 
   return {
     searchQuery,
@@ -151,6 +110,6 @@ export const useSearchUsers = () => {
     debouncedQuery,
     users,
     isLoading,
-    fetchError,
+    fetchError: fetchServerError,
   };
 };

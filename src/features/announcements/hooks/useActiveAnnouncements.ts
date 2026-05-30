@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { AppState } from "react-native";
 import { useEffect, useRef } from "react";
+import { runForegroundTask } from "@src/shared/lib/foregroundTasks";
 import { announcementApi } from "../api/announcementApi";
 
 export const announcementQueryKeys = {
@@ -21,16 +22,13 @@ export const useActiveAnnouncements = () => {
   refetchRef.current = query.refetch;
 
   useEffect(() => {
-    let lastRefetchTime = 0;
     const REFETCH_COOLDOWN = 30 * 1000; // 30s cooldown
 
     const subscription = AppState.addEventListener("change", (state) => {
       if (state === "active") {
-        const now = Date.now();
-        if (now - lastRefetchTime >= REFETCH_COOLDOWN) {
-          lastRefetchTime = now;
+        void runForegroundTask("announcements:active-refresh", REFETCH_COOLDOWN, () => {
           void refetchRef.current();
-        }
+        });
       }
     });
 

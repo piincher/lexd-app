@@ -1,5 +1,9 @@
 export { ReferralScreen } from './screens/ReferralScreen';
 export { RedemptionScreen } from './screens/RedemptionScreen';
 export { MyRewardsScreen } from './screens/MyRewardsScreen';
+export { MemberPointsScreen } from './screens/MemberPointsScreen';
+export { RewardDetailScreen } from './screens/RewardDetailScreen';
+export { PointsHistoryScreen } from './screens/PointsHistoryScreen';
+export { MyProductRedemptionsScreen } from './screens/MyProductRedemptionsScreen';
 export { AdminRedemptionQueueScreen } from './screens/AdminRedemptionQueueScreen';
 export { AdminRewardSettingsScreen } from './screens/AdminRewardSettingsScreen';

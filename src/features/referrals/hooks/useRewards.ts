@@ -7,7 +7,9 @@ import {
   getRewardSettings,
   updateRewardSettings,
 } from '../api/rewardApi';
+import { getMyRewardSummaryV2 } from '../api/rewardApi';
 import type { RewardSettings } from '../types';
+import { rewardSummaryV2QueryKeys } from './useRewardSummaryV2';
 
 export const rewardQueryKeys = {
   me: ['rewards', 'me'] as const,
@@ -19,6 +21,12 @@ export const useMyRewards = () =>
   useQuery({
     queryKey: rewardQueryKeys.me,
     queryFn: getMyRewards,
+  });
+
+export const useMyRewardSummaryV2 = () =>
+  useQuery({
+    queryKey: rewardSummaryV2QueryKeys.summary,
+    queryFn: getMyRewardSummaryV2,
   });
 
 export interface SettingsValidationResult {

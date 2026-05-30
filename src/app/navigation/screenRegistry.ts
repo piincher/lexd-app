@@ -23,7 +23,7 @@ export { OrdersScreen as Orders } from "@src/features/orders";
 export { ProfileScreen as Profile, AboutUsScreen as AboutUs, PastOrdersScreen as PastOrders, NotificationSettingsScreen, BadgesScreen, MyReviewsScreen } from "@src/features/profile";
 export { default as CertificateDetailScreen } from "@src/features/profile/screens/CertificateDetail";
 export { default as TrustProfileScreen } from "@src/features/profile/screens/TrustProfileScreen";
-export { AdminRedemptionQueueScreen, AdminRewardSettingsScreen, MyRewardsScreen, RedemptionScreen, ReferralScreen } from "@src/features/referrals";
+export { AdminRedemptionQueueScreen, AdminRewardSettingsScreen, MyRewardsScreen, RedemptionScreen, ReferralScreen, MemberPointsScreen, RewardDetailScreen, PointsHistoryScreen, MyProductRedemptionsScreen } from "@src/features/referrals";
 
 // Goods
 export { default as MyGoodsScreen } from "@src/features/goods/screens/MyGoodsScreen";
@@ -108,6 +108,7 @@ export { default as ConsigneeDetailScreen } from "@src/features/admin/consignees
 export { default as ContainerListScreen } from "@src/features/admin/containers/screens/ContainerListScreen";
 export { default as CreateContainerScreen } from "@src/features/admin/containers/screens/CreateContainerScreen";
 export { default as ContainerDetailScreen } from "@src/features/admin/containers/screens/ContainerDetailScreen";
+export { default as ContainerAnalyticsScreen } from "@src/features/admin/containers/screens/ContainerAnalyticsScreen";
 export { default as AssignGoodsScreen } from "@src/features/admin/containers/screens/AssignGoods/AssignGoodsScreen";
 export { default as PackingListScreen } from "@src/features/admin/containers/screens/PackingListScreen";
 export { default as LoadingListScreen } from "@src/features/admin/containers/screens/LoadingListScreen";
@@ -136,6 +137,9 @@ export { default as WhatsAppRequestListScreen } from "@src/features/admin/whatsa
 export { AdminTicketDetailScreen, AdminTicketListScreen } from "@src/features/admin/support";
 export { default as GlobalSearchScreen } from "@src/features/admin/search/screens/GlobalSearchScreen";
 export { default as AppVersionSettingsScreen } from "@src/features/admin/version/screens/AppVersionSettingsScreen";
+
+// Admin Rewards
+export { AdminRewardItemsScreen, AdminRewardItemFormScreen, AdminProductRedemptionsScreen, AdminPointsManagementScreen, AdminRewardSettingsScreenV2 } from "@src/features/admin/rewards";
 
 // Public / Tools
 export { default as SharedShipmentScreen } from "@src/features/public/screens/SharedShipmentScreen";

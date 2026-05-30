@@ -1,3 +1,18 @@
+/* Hallmark · macrostructure: Workbench · component: action-strip · tone: utilitarian
+ *
+ * Two audit fixes:
+ *   · M1: dropped the "Prioritaire" badge. The section sat at index 6 of 8 in
+ *         the old layout; calling itself priority while sitting behind the
+ *         actual priority surfaces was a label/placement contradiction.
+ *   · C4: neutralized the per-tile accent palette. Four tiles previously
+ *         carried four different colours (primary / info / warning / mint),
+ *         which made the colour wheel itself a fingerprint. All four tiles
+ *         now share the brand-green affordance accent — same visual weight,
+ *         same affordance, distinguished by icon + label only.
+ *
+ * The titles are short enough to fit on one line at 320px (slop gate 59).
+ */
+
 import React from "react";
 import { View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
@@ -21,40 +36,45 @@ interface QuickAction {
   accent: string;
 }
 
-const getQuickActions = (colors: AppThemeColors): QuickAction[] => [
-  {
-    id: "qa1",
-    title: "Réception",
-    subtitle: "Nouvelle marchandise",
-    icon: "package-variant-closed",
-    route: "ReceiveGoods",
-    accent: colors.primary.main,
-  },
-  {
-    id: "qa2",
-    title: "Commande",
-    subtitle: "Créer une commande",
-    icon: "plus-circle",
-    route: "ChooseShippingMethod",
-    accent: colors.status.info,
-  },
-  {
-    id: "qa3",
-    title: "Conteneurs",
-    subtitle: "Gérer",
-    icon: "ferry",
-    route: "ContainerList",
-    accent: colors.status.warning,
-  },
-  {
-    id: "qa4",
-    title: "Scanner",
-    subtitle: "QR code",
-    icon: "qrcode-scan",
-    route: "ScanQRCode",
-    accent: colors.accent.mint,
-  },
-];
+const getQuickActions = (colors: AppThemeColors): QuickAction[] => {
+  // Single shared affordance accent. Brand green only — no per-tile colour-
+  // assignment. Icons + labels carry the meaning; colour does not.
+  const accent = colors.primary.main;
+  return [
+    {
+      id: "qa1",
+      title: "Réception",
+      subtitle: "Nouvelle marchandise",
+      icon: "package-variant-closed",
+      route: "ReceiveGoods",
+      accent,
+    },
+    {
+      id: "qa2",
+      title: "Commande",
+      subtitle: "Créer",
+      icon: "plus-circle",
+      route: "ChooseShippingMethod",
+      accent,
+    },
+    {
+      id: "qa3",
+      title: "Conteneurs",
+      subtitle: "Gérer",
+      icon: "ferry",
+      route: "ContainerList",
+      accent,
+    },
+    {
+      id: "qa4",
+      title: "Scanner",
+      subtitle: "QR code",
+      icon: "qrcode-scan",
+      route: "ScanQRCode",
+      accent,
+    },
+  ];
+};
 
 export const QuickActions: React.FC = () => {
   const navigation = useNavigation<navigationProps>();
@@ -66,7 +86,7 @@ export const QuickActions: React.FC = () => {
     <View style={styles.container}>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Actions rapides</Text>
-        <Text style={styles.sectionBadge}>Prioritaire</Text>
+        {/* "Prioritaire" badge removed — see header comment, audit M1. */}
       </View>
       <View style={styles.grid}>
         {quickActions.map((action) => (

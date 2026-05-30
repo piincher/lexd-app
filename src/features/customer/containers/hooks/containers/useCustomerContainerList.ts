@@ -33,8 +33,7 @@ export const useGetMyContainers = (filters?: CustomerContainerFilters) => {
         }),
       };
     },
-    staleTime: 30 * 1000, // 30 seconds
-    refetchOnWindowFocus: true,
+    staleTime: 2 * 60 * 1000,
     refetchOnReconnect: true,
   });
 };

@@ -35,9 +35,13 @@ export const usePaymentScreen = () => {
         metadata: form.getPaymentDetails(),
       });
 
-      if (form.selectedProvider === 'ORANGE_MONEY' || form.selectedProvider === 'WAVE') {
-        submission.startPolling(form.selectedProvider, result.providerTransactionId);
-      } else {
+      submission.setStatusModalConfig({
+        status: 'processing',
+        title: 'Payment Pending',
+        message: 'Payment status is not checked automatically. Please refresh manually if this customer payment flow is re-enabled.',
+      });
+
+      if (form.selectedProvider === 'CARD') {
         submission.handleCardPayment(result);
       }
     } catch (error) {

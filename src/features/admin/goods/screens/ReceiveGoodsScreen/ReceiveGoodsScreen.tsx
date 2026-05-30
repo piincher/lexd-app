@@ -47,6 +47,8 @@ export const ReceiveGoodsScreen: React.FC = () => {
               totalCost={form.totalCost}
               recentClients={form.recentClients}
               priceWarning={form.priceWarning}
+              notifyWhatsapp={form.notifyWhatsapp}
+              onChangeNotifyWhatsapp={form.setNotifyWhatsapp}
             />
           </View>
 

@@ -20,7 +20,6 @@ export const useAdminTickets = (filters?: AdminTicketFilters) =>
     },
     staleTime: 60 * 1000,
     refetchOnReconnect: true,
-    refetchOnWindowFocus: true,
   });
 
 export const useAdminTicket = (ticketId: string) =>

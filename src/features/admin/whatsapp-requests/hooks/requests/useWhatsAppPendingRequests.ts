@@ -11,6 +11,8 @@ export const useGetPendingRequests = (
     queryFn: () => whatsappRequestApi.getRequests({ status: 'PENDING', limit: 50 }),
     staleTime: 15 * 1000,
     refetchInterval: 30 * 1000,
+    // Polling pauses when the screen is backgrounded — perf audit.
+    refetchIntervalInBackground: false,
     ...options,
   });
 };

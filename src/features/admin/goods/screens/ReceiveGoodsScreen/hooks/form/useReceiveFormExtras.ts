@@ -7,6 +7,11 @@ export const useReceiveFormExtras = () => {
   // Default OFF — operators enter CBM directly more often than dimensions; they toggle
   // dimensions on only when they need the L×W×H → CBM calculation.
   const [useDimensions, setUseDimensions] = useState(false);
+  // Per-receipt WhatsApp opt-out. Default ON so existing behavior is unchanged.
+  // The operator flips this off for the rare client who has asked not to be
+  // contacted on intake. Push + in-app notifications are NOT affected — only
+  // the outbound WhatsApp message is skipped.
+  const [notifyWhatsapp, setNotifyWhatsapp] = useState<boolean>(true);
 
   const addPhotoUri = useCallback((uri: string) => {
     setPhotoUris((prev) => (prev.includes(uri) ? prev : [...prev, uri]));
@@ -25,5 +30,7 @@ export const useReceiveFormExtras = () => {
     removePhotoUri,
     useDimensions,
     setUseDimensions,
+    notifyWhatsapp,
+    setNotifyWhatsapp,
   };
 };

@@ -1,0 +1,157 @@
+import { StyleSheet, Platform } from 'react-native';
+import { Fonts } from '@src/constants/Fonts';
+
+export const createStyles = (colors: any, isDark?: boolean) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: colors.background.default,
+    },
+    header: {
+      paddingHorizontal: 16,
+      paddingTop: Platform.OS === 'android' ? 12 : 20,
+      paddingBottom: 16,
+      backgroundColor: colors.background.card,
+      borderBottomWidth: 1,
+      borderBottomColor: colors.neutral[200],
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      borderRadius: 12,
+      backgroundColor: colors.neutral[100],
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: 14,
+    },
+    headerTitle: {
+      fontSize: 22,
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
+    },
+    scroll: {
+      padding: 16,
+      gap: 16,
+      paddingBottom: 100,
+    },
+    section: {
+      backgroundColor: colors.background.card,
+      borderRadius: 16,
+      padding: 16,
+      borderWidth: 1,
+      borderColor: colors.border.light,
+      gap: 12,
+    },
+    sectionTitle: {
+      fontSize: 15,
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
+      marginBottom: 4,
+    },
+    toggleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 8,
+    },
+    toggleLabel: {
+      fontSize: 14,
+      fontFamily: Fonts.medium,
+      color: colors.text.primary,
+    },
+    pickerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 12,
+      paddingHorizontal: 14,
+      backgroundColor: colors.background.default,
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: colors.border.light,
+    },
+    pickerLabel: {
+      fontSize: 14,
+      fontFamily: Fonts.regular,
+      color: colors.text.primary,
+    },
+    pickerValue: {
+      fontSize: 14,
+      fontFamily: Fonts.medium,
+      color: colors.primary.main,
+    },
+    helpText: {
+      fontSize: 12,
+      fontFamily: Fonts.regular,
+      color: colors.text.secondary,
+      lineHeight: 17,
+    },
+    saveButton: {
+      marginTop: 8,
+      marginBottom: 24,
+      paddingVertical: 14,
+      borderRadius: 12,
+      backgroundColor: colors.primary.main,
+      alignItems: 'center',
+    },
+    saveButtonText: {
+      fontSize: 15,
+      fontFamily: Fonts.bold,
+      color: colors.text.inverse,
+    },
+    state: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 12,
+      padding: 24,
+    },
+    stateText: {
+      fontSize: 15,
+      color: colors.text.secondary,
+      textAlign: 'center',
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: colors.background.overlay,
+      justifyContent: 'flex-end',
+    },
+    modalSheet: {
+      backgroundColor: colors.background.card,
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      padding: 20,
+      gap: 8,
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
+      marginBottom: 8,
+    },
+    modalOption: {
+      paddingVertical: 14,
+      paddingHorizontal: 16,
+      borderRadius: 12,
+      backgroundColor: colors.background.default,
+    },
+    modalOptionText: {
+      fontSize: 15,
+      fontFamily: Fonts.regular,
+      color: colors.text.primary,
+    },
+    modalCancel: {
+      marginTop: 8,
+      paddingVertical: 14,
+      borderRadius: 12,
+      backgroundColor: colors.neutral[200],
+      alignItems: 'center',
+    },
+    modalCancelText: {
+      fontSize: 15,
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
+    },
+  });

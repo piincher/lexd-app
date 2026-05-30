@@ -30,6 +30,9 @@ export const useGetContainerTracking = (
       }
       return 5 * 60 * 1000;
     },
+    // Backgrounded customers stop polling — biggest interim relief on
+    // tracking-screen request volume per the perf audit.
+    refetchIntervalInBackground: false,
     ...options,
   });
 };

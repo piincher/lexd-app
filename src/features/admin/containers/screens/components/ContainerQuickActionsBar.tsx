@@ -10,6 +10,7 @@ interface ContainerQuickActionsBarProps {
   canMarkReadyForPickup: boolean;
   canMarkDelivered: boolean;
   onAssignGoods: () => void;
+  onScanAssign: () => void;
   onSharePackingList: () => void;
   onOpenPackingList: () => void;
   onOpenLoadingList: () => void;
@@ -31,6 +32,7 @@ export const ContainerQuickActionsBar: React.FC<ContainerQuickActionsBarProps> =
   canMarkReadyForPickup,
   canMarkDelivered,
   onAssignGoods,
+  onScanAssign,
   onSharePackingList,
   onOpenPackingList,
   onOpenLoadingList,
@@ -40,6 +42,7 @@ export const ContainerQuickActionsBar: React.FC<ContainerQuickActionsBarProps> =
   const { colors } = useAppTheme();
   const actions: ActionItem[] = [
     { key: 'assign', label: 'Assigner colis', icon: 'add-circle-outline', onPress: onAssignGoods, accent: 'primary' },
+    { key: 'scan', label: 'Scanner colis', icon: 'scan-outline', onPress: onScanAssign, accent: 'primary' },
     { key: 'share', label: 'Partager PDF', icon: 'share-social-outline', onPress: onSharePackingList, disabled: !hasGoods, accent: 'primary' },
     { key: 'packing', label: 'Packing', icon: 'document-text-outline', onPress: onOpenPackingList, disabled: !hasGoods },
     { key: 'loading', label: 'Loading', icon: 'list-outline', onPress: onOpenLoadingList, disabled: !hasGoods, accent: 'warning' },

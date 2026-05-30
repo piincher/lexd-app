@@ -13,6 +13,7 @@ import * as EncryptedStorage from '@src/shared/lib/encryptedStorage';
 import NetInfo from '@react-native-community/netinfo';
 import { getQueryClient, persistOptions, prefetchForOffline } from '@src/shared/lib/queryClient';
 import { initBackgroundSync, checkAndSync, registerBackgroundSync } from '@src/shared/lib/backgroundSync';
+import { runForegroundTask } from '@src/shared/lib/foregroundTasks';
 import { showMessage } from 'react-native-flash-message';
 import { useAuth } from '@src/store/Auth';
 
@@ -82,21 +83,17 @@ export const OfflineProvider: React.FC<OfflineProviderProps> = ({
 
   // Handle app state changes
   useEffect(() => {
-    let lastSyncTime = 0;
     const SYNC_COOLDOWN = 30 * 1000; // Minimum 30s between foreground syncs
 
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
       if (nextAppState === 'active') {
-        const now = Date.now();
-        if (now - lastSyncTime < SYNC_COOLDOWN) return;
+        await runForegroundTask('offline:foreground-sync', SYNC_COOLDOWN, async () => {
+          const netInfo = await NetInfo.fetch();
 
-        // App came to foreground - check network and sync
-        const netInfo = await NetInfo.fetch();
-        
-        if (netInfo.isConnected) {
-          lastSyncTime = now;
-          await checkAndSync();
-        }
+          if (netInfo.isConnected) {
+            await checkAndSync();
+          }
+        });
       }
     };
 

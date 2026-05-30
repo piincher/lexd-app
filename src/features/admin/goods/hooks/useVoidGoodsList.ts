@@ -29,10 +29,16 @@ export const useVoidGoodsList = (): UseVoidGoodsListReturn => {
     search: searchQuery || undefined,
   });
 
-  const goodsList = useMemo(
-    () => data?.data?.data || data?.data?.goods || [],
-    [data]
-  );
+  const goodsList = useMemo(() => {
+    const raw = data?.data?.data || data?.data?.goods || [];
+    // Deduplicate by _id to prevent duplicate key errors in FlashList
+    const seen = new Set<string>();
+    return raw.filter((g: Goods) => {
+      if (seen.has(g._id)) return false;
+      seen.add(g._id);
+      return true;
+    });
+  }, [data]);
 
   return {
     goodsList,

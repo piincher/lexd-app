@@ -9,12 +9,31 @@ import { setupNotificationCategories } from "../../../shared/notifications/notif
 import apiClient from "../../../api/client";
 import { Platform } from "react-native";
 import { getNotificationUnreadCount } from "../notificationHelpers";
+import { runForegroundTask } from "../../../shared/lib/foregroundTasks";
 import type { useNotificationState } from "./useNotificationState";
 import type { useNotificationActions } from "./useNotificationActions";
 import { useNotificationBadgeQueries } from "./useNotificationBadgeQueries";
 
 type State = ReturnType<typeof useNotificationState>;
 type Actions = ReturnType<typeof useNotificationActions>;
+
+const APP_OPEN_COOLDOWN_MS = 5 * 60 * 1000;
+const UNREAD_REFRESH_COOLDOWN_MS = 30 * 1000;
+
+const sendAppOpenActivity = async (authToken: string | null): Promise<void> => {
+  if (!authToken || authToken.trim() === "") return;
+
+  await runForegroundTask("activity:app-open", APP_OPEN_COOLDOWN_MS, async () => {
+    try {
+      await apiClient.post("/user/me/activity", {
+        type: "APP_OPEN",
+        timestamp: new Date().toISOString(),
+      });
+    } catch {
+      // Silent fail - activity tracking is non-critical
+    }
+  });
+};
 
 export const useNotificationEffects = (
   state: State, actions: Actions, autoRegister: boolean, autoRequestPermission: boolean, authToken: string | null,
@@ -35,17 +54,7 @@ export const useNotificationEffects = (
         const lastResponse = await Notifications.getLastNotificationResponse();
         if (lastResponse) { state.setWasOpenedFromNotification(true); actions.handleNotificationResponse(lastResponse); }
         if (autoRequestPermission && status !== "granted") await actions.requestPermission();
-        // Ping backend on cold start to track app open for win-back automation
-        if (authToken && authToken.trim() !== "") {
-          try {
-            await apiClient.post("/user/me/activity", {
-              type: "APP_OPEN",
-              timestamp: new Date().toISOString(),
-            });
-          } catch {
-            // Silent fail - activity tracking is non-critical
-          }
-        }
+        await sendAppOpenActivity(authToken);
       } catch (err) { state.setError(err instanceof Error ? err.message : "Failed to initialize notifications"); }
       finally { state.setIsLoading(false); }
     };
@@ -92,20 +101,16 @@ export const useNotificationEffects = (
   useEffect(() => {
     const handleAppStateChange = async (nextAppState: any) => {
       if (state.appState.current.match(/inactive|background/) && nextAppState === "active") {
-        await badge.refreshUnreadCountFromServer();
-        // Ping backend to track app open for win-back automation
-        try {
-          await apiClient.post("/user/me/activity", {
-            type: "APP_OPEN",
-            timestamp: new Date().toISOString(),
-          });
-        } catch (err) {
-          // Silent fail - activity tracking is non-critical
-        }
+        await runForegroundTask(
+          "notifications:unread-refresh",
+          UNREAD_REFRESH_COOLDOWN_MS,
+          badge.refreshUnreadCountFromServer,
+        );
+        await sendAppOpenActivity(authToken);
       }
       state.appState.current = nextAppState;
     };
     const subscription = AppState.addEventListener("change", handleAppStateChange);
     return () => subscription.remove();
-  }, [badge.refreshUnreadCountFromServer]);
+  }, [authToken, badge.refreshUnreadCountFromServer, state.appState]);
 };

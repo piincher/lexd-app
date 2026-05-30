@@ -32,6 +32,7 @@ type ReactNativeFilePart = {
  */
 const ENDPOINTS = {
   BASE: '/goods',
+  SUMMARY: '/goods/summary',
   BY_ID: (id: string) => `/goods/${id}`,
   HARD_DELETE: (id: string) => `/goods/${id}/hard`,
   BY_CLIENT: (clientId: string) => `/goods/client/${clientId}`,
@@ -43,6 +44,16 @@ const ENDPOINTS = {
   BATCH: '/goods/batch',
   RESEND_NOTIFICATION: (id: string) => `/goods/${id}/resend-notification`,
 } as const;
+
+/**
+ * Aggregated totals for the current filter set — what the goods list stats
+ * bottom sheet displays. Mirrors the backend's getGoodsSummary response shape.
+ */
+export interface GoodsSummary {
+  count: number;
+  totalWeight: number; // kg, rounded to 2 decimals
+  totalCBM: number;    // m³, rounded to 3 decimals
+}
 
 /**
  * Goods Service
@@ -73,6 +84,15 @@ export class GoodsService {
    */
   async getAll(filters?: GoodsFilters): Promise<ApiResponse<PaginatedResponse<Goods>>> {
     return apiRequest.get(this.client, ENDPOINTS.BASE, { params: filters });
+  }
+
+  /**
+   * Get aggregated totals (count / weight / CBM) for the current filter set.
+   * Same filter shape as getAll — pass whatever's on screen and the backend
+   * returns totals across ALL matching goods, not just the current page.
+   */
+  async getSummary(filters?: GoodsFilters): Promise<ApiResponse<GoodsSummary>> {
+    return apiRequest.get(this.client, ENDPOINTS.SUMMARY, { params: filters });
   }
 
   /**
@@ -325,6 +345,13 @@ export class GoodsService {
     // already-saved goods, preventing the "same parcel registered twice" bug.
     if (data.idempotencyKey) {
       formData.append('idempotencyKey', data.idempotencyKey);
+    }
+
+    // Per-receipt WhatsApp opt-out. Only append when the operator explicitly toggled
+    // it off — undefined / true means "default behavior, send the notification".
+    // Multipart bodies stringify booleans; backend parses 'false' as false.
+    if (data.notifyWhatsapp === false) {
+      formData.append('notifyWhatsapp', 'false');
     }
 
     // Add photos

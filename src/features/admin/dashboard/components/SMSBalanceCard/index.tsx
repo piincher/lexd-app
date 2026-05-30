@@ -47,6 +47,15 @@ export const SMSBalanceCard: React.FC<SMSBalanceCardProps> = ({ balance }) => {
     ? Math.min(100, Math.max(0, (balance.totalUnits / balance.totalRequestedUnits) * 100))
     : Math.min(100, Math.max(0, (balance.totalUnits / 500) * 100));
 
+  // Critical-only render (audit C3 / hierarchy fix).
+  // The previous dashboard mounted this card unconditionally at position 2,
+  // making "Crédits SMS: bon niveau ✓" loud above-the-fold content. SMS
+  // credits are FYI unless they're about to run out. When status is success,
+  // the card hides; the standalone Crédits SMS row in the menu still owns
+  // the casual lookup. Warning + danger still surface here as an inline
+  // alert because the operator needs to top up before sends start failing.
+  if (balance.status === "success") return null;
+
   return (
     <View style={[styles.card, { borderLeftColor: meta.color }]}>
       <SMSBalanceHeader meta={meta} />

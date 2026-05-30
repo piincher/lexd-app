@@ -1,7 +1,10 @@
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { publicNotificationQueryKeys } from './publicNotificationKeys';
 import { getPublicNotifications, getPublicNotificationStats } from './publicNotificationApi';
-import type { GetPublicNotificationsParams, PublicNotificationType } from '../types';
+import type { GetPublicNotificationsParams } from './publicNotificationApi';
+import type { PublicNotificationType } from '../types';
+
+export { publicNotificationQueryKeys };
 
 export const useGetPublicNotifications = (params?: GetPublicNotificationsParams) => {
   return useQuery({
@@ -34,7 +37,6 @@ export const useGetPublicNotificationsPolling = (
   return useQuery({
     queryKey: publicNotificationQueryKeys.list(type),
     queryFn: () => getPublicNotifications({ type, limit: 20 }),
-    refetchOnWindowFocus: true,
     refetchOnReconnect: true,
     staleTime: 2 * 60 * 1000,
     enabled,

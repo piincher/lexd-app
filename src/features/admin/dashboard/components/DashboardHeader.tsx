@@ -1,25 +1,30 @@
-import React, { useMemo } from "react";
+/* Hallmark · macrostructure: Workbench · component: utility-header · tone: utilitarian
+ *
+ * One-row utility header — date on the left, search + notification on the right.
+ * The greeting card ("Bonjour X · Aperçu opérationnel du jour" + avatar) was
+ * removed per audit M4: decorative chrome that consumed above-the-fold real
+ * estate. Operators don't need to be told their name.
+ *
+ * The `user` prop is kept on the signature for backwards compatibility with the
+ * existing AdminDashBoard call site — it's no longer read because there's no
+ * greeting to personalise.
+ */
+
+import React from "react";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { navigationProps } from "@src/app/navigation/type";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { DashboardHeaderTopRow } from "./DashboardHeaderTopRow";
-import { DashboardHeaderGreeting } from "./DashboardHeaderGreeting";
 import { createDashboardHeaderStyles } from "./DashboardHeader.styles";
 
 interface DashboardHeaderProps {
+  // Preserved for call-site compatibility; no longer used after greeting removal.
   user: {
     firstName?: string;
     lastName?: string;
   } | null;
 }
-
-const getGreeting = () => {
-  const h = new Date().getHours();
-  if (h >= 5 && h < 12) return "Bonjour";
-  if (h >= 12 && h < 18) return "Bon après-midi";
-  return "Bonsoir";
-};
 
 const getFormattedDate = () =>
   new Date().toLocaleDateString("fr-FR", {
@@ -28,16 +33,10 @@ const getFormattedDate = () =>
     month: "long",
   });
 
-export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
+export const DashboardHeader: React.FC<DashboardHeaderProps> = () => {
   const navigation = useNavigation<navigationProps>();
   const { colors, isDark } = useAppTheme();
   const styles = createDashboardHeaderStyles(colors, isDark);
-
-  const initials = useMemo(
-    () =>
-      `${user?.firstName?.[0] || "A"}${user?.lastName?.[0] || ""}`.toUpperCase(),
-    [user?.firstName, user?.lastName]
-  );
 
   return (
     <View style={styles.container}>
@@ -47,14 +46,6 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({ user }) => {
         onSearchPress={() => navigation.navigate("GlobalSearch")}
         onNotificationPress={() => navigation.navigate("Notifications")}
         iconColor={colors.text.secondary}
-      />
-
-      <DashboardHeaderGreeting
-        styles={styles}
-        greeting={getGreeting()}
-        name={user?.firstName || "Admin"}
-        subtitle="Aperçu opérationnel du jour"
-        initials={initials}
       />
     </View>
   );

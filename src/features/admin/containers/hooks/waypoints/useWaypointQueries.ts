@@ -36,6 +36,8 @@ export const useGetTrackingStatus = (
     enabled: !!containerId,
     staleTime: 1 * 60 * 1000, // 1 minute
     refetchInterval: 5 * 60 * 1000, // Refetch every 5 minutes for live tracking
+    // Halt polling when the admin app is backgrounded — perf audit.
+    refetchIntervalInBackground: false,
     ...options,
   });
 };

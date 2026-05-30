@@ -6,6 +6,7 @@
 export {
   goodsQueryKeys,
   useGetAllGoods,
+  useGetGoodsSummary,
   useGetGoodsById,
   useGetGoodsByClient,
 } from './goods/useGoodsQueries';

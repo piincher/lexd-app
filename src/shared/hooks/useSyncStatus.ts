@@ -3,8 +3,8 @@
  * Provides information about sync state and pending actions
  */
 
-import { useState, useEffect } from 'react';
-import { getQueueStats, getQueue, QueueStats, QueuedAction } from '../lib/offlineQueue';
+import { useState, useEffect, useCallback } from 'react';
+import { getQueueStats, getQueue, QueuedAction } from '../lib/offlineQueue';
 import { getSyncStatus } from '../lib/backgroundSync';
 
 export interface SyncStatus {
@@ -28,7 +28,7 @@ export interface UseSyncStatusReturn extends SyncStatus {
 /**
  * Hook to monitor sync status
  */
-export const useSyncStatus = (refreshInterval = 5000): UseSyncStatusReturn => {
+export const useSyncStatus = (refreshInterval = 15000): UseSyncStatusReturn => {
   const [status, setStatus] = useState<SyncStatus>({
     pendingCount: 0,
     failedCount: 0,
@@ -40,9 +40,9 @@ export const useSyncStatus = (refreshInterval = 5000): UseSyncStatusReturn => {
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     try {
-      const [queueStats, queue, syncStatus] = await Promise.all([
+      const [, queue, syncStatus] = await Promise.all([
         getQueueStats(),
         getQueue(),
         Promise.resolve(getSyncStatus()),
@@ -65,7 +65,7 @@ export const useSyncStatus = (refreshInterval = 5000): UseSyncStatusReturn => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     // Initial load

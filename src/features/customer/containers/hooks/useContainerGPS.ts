@@ -34,7 +34,8 @@ export const useContainerGPS = (
     },
     enabled: !!containerId,
     staleTime: 1 * 60 * 1000, // 1 minute (GPS updates frequently)
-    refetchInterval: 60 * 1000, // Poll every minute
+    refetchInterval: 60 * 1000, // Poll every minute (only while screen is foregrounded)
+    refetchIntervalInBackground: false, // Stop polling when the app is backgrounded — eliminates GPS req storms from forgotten tabs
     ...options,
   });
 };

@@ -26,6 +26,8 @@ export const useOutstandingPayments = (
     queryFn: getOutstandingPayments,
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchInterval: 5 * 60 * 1000, // Auto-refresh every 5 minutes
+    // Stop polling when the admin app is backgrounded — perf audit.
+    refetchIntervalInBackground: false,
     ...options,
   });
 };

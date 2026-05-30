@@ -7,7 +7,6 @@ export { useBalanceDue } from './useBalanceDue';
 export { useCalculateBalanceForGoods } from './useCalculateBalanceForGoods';
 export { useTopUpBalance } from './useTopUpBalance';
 export { useCancelPayment } from './useCancelPayment';
-export { usePaymentPolling } from './usePaymentPolling';
 export { usePaymentFlow } from './usePaymentFlow';
 
 import { usePaymentProviders } from './usePaymentProviders';
@@ -18,7 +17,6 @@ import { useBalanceDue } from './useBalanceDue';
 import { useCalculateBalanceForGoods } from './useCalculateBalanceForGoods';
 import { useTopUpBalance } from './useTopUpBalance';
 import { useCancelPayment } from './useCancelPayment';
-import { usePaymentPolling } from './usePaymentPolling';
 import { usePaymentFlow } from './usePaymentFlow';
 
 export default {
@@ -30,6 +28,5 @@ export default {
   useCalculateBalanceForGoods,
   useTopUpBalance,
   useCancelPayment,
-  usePaymentPolling,
   usePaymentFlow,
 };

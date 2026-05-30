@@ -17,6 +17,8 @@ interface Options {
   setUseDimensions: (use: boolean) => void;
   /** Threaded into the submit input so a retried request resolves to the original goods. */
   idempotencyKey: string;
+  /** Per-receipt WhatsApp opt-out from the form's "Notifier par WhatsApp" toggle. */
+  notifyWhatsapp: boolean;
 }
 
 export const useReceiveFormActions = (options: Options) => {
@@ -31,6 +33,7 @@ export const useReceiveFormActions = (options: Options) => {
     setPhotoUris,
     setUseDimensions,
     idempotencyKey,
+    notifyWhatsapp,
   } = options;
 
   const buildSubmitData = useCallback((): ReceiveGoodsInput | null => {
@@ -62,6 +65,9 @@ export const useReceiveFormActions = (options: Options) => {
       exceptionReasons: watchedValues.exceptionReasons || [],
       exceptionNotes: watchedValues.exceptionNotes?.trim() || undefined,
       idempotencyKey: idempotencyKey || undefined,
+      // Only thread `false` — `true` is the default the backend assumes when
+      // the field is absent, so we keep the payload small for the common case.
+      notifyWhatsapp: notifyWhatsapp === false ? false : undefined,
     };
 
     if (
@@ -82,7 +88,7 @@ export const useReceiveFormActions = (options: Options) => {
     }
 
     return input;
-  }, [selectedClient, watchedValues, useDimensions, calculatedCBM, idempotencyKey]);
+  }, [selectedClient, watchedValues, useDimensions, calculatedCBM, idempotencyKey, notifyWhatsapp]);
 
   const resetForm = useCallback(() => {
     reset({

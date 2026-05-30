@@ -133,25 +133,6 @@ export const refundPayment = async (data: RefundRequest): Promise<any> => {
 };
 
 /**
- * Poll payment status (real-time updates)
- */
-export const pollPaymentStatus = async (
-  provider: string,
-  transactionId: string,
-  options?: { maxAttempts?: number; intervalMs?: number }
-): Promise<any> => {
-  const queryParams = new URLSearchParams();
-  if (options?.maxAttempts) queryParams.append('maxAttempts', options.maxAttempts.toString());
-  if (options?.intervalMs) queryParams.append('intervalMs', options.intervalMs.toString());
-
-  const response = await apiClientV2.post(
-    `${BASE_URL}/poll?${queryParams.toString()}`,
-    { provider, transactionId }
-  );
-  return response.data.data;
-};
-
-/**
  * Legacy: Initiate payment (backward compatibility)
  */
 export const initiatePayment = async (data: {
@@ -239,7 +220,6 @@ export default {
   getBalanceDue,
   calculateBalanceForGoods,
   refundPayment,
-  pollPaymentStatus,
   initiatePayment,
   getMyPaymentHistory,
   generateReceipt,

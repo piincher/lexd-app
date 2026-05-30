@@ -83,6 +83,7 @@ export const useReceiveGoodsScreen = () => {
       isSubmitted: feedback.isSubmitted, isClientUnknown: exceptionReasons.includes('CLIENT_UNKNOWN'),
       recentClients: recents.recentClients,
       priceWarning: pricing.getPriceWarning(shippingMode, unitPrice),
+      notifyWhatsapp: formHook.notifyWhatsapp, setNotifyWhatsapp: formHook.setNotifyWhatsapp,
       onSubmit: handleSubmit, onSubmitAndNext: handleSubmitAndNext,
     },
     ui: {

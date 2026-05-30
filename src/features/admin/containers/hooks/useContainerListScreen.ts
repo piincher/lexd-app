@@ -9,6 +9,7 @@ type AdminV2StackParamList = {
   ContainerList: undefined;
   CreateContainer: undefined;
   ContainerDetail: { containerId: string };
+  ContainerAnalytics: undefined;
   AssignGoods: { containerId: string };
 };
 

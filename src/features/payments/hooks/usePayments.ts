@@ -8,7 +8,6 @@ export {
   useCalculateBalanceForGoods,
   useTopUpBalance,
   useCancelPayment,
-  usePaymentPolling,
   usePaymentFlow,
 } from './payments';
 

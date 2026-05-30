@@ -13,6 +13,7 @@ import { GoodsPhotosUpload } from './GoodsPhotosUpload';
 import { GoodsConditionSelector } from './GoodsConditionSelector';
 import { ReceiveExceptionPanel } from './ReceiveExceptionPanel';
 import { RecentClientRail } from './RecentClientRail';
+import { WhatsappNotifyToggle } from './WhatsappNotifyToggle';
 import { ClientSearchSection } from '../../../components/ClientSearchSection';
 import { CostSummary } from '../../../components/CostSummary';
 import { ReceiveGoodsFormDateField } from './ReceiveGoodsFormDateField';
@@ -34,6 +35,9 @@ interface ReceiveGoodsFormProps extends ReceiveGoodsFormSectionProps {
 	totalCost: number;
 	recentClients: userData[];
 	priceWarning?: string | null;
+	/** Per-receipt WhatsApp notification opt-out (default ON). */
+	notifyWhatsapp: boolean;
+	onChangeNotifyWhatsapp: (notify: boolean) => void;
 }
 
 export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
@@ -53,6 +57,8 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
 	totalCost,
 	recentClients,
 	priceWarning,
+	notifyWhatsapp,
+	onChangeNotifyWhatsapp,
 }) => {
 	const { colors } = useAppTheme();
 	const shippingMode = useWatch({ control, name: 'shippingMode' }) || 'SEA';
@@ -92,6 +98,14 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
 						onSelectClient={onSelectClient}
 						error={clientError}
 					/>
+					{/* Per-receipt WhatsApp opt-out. Only shown once a client is picked —
+					    there's no WhatsApp dispatch without a recipient anyway. */}
+					{selectedClient && (
+						<WhatsappNotifyToggle
+							value={notifyWhatsapp}
+							onChange={onChangeNotifyWhatsapp}
+						/>
+					)}
 				</>
 			)}
 			<ReceiveGoodsFormBasicFields control={control} errors={errors} setValue={setValue} watch={watch} />

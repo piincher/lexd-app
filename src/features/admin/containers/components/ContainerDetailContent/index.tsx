@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { ContainerDetailHeader } from '../../screens/components/ContainerDetailHeader';
+import { ContainerEtaCard } from '../../screens/components/ContainerEtaCard';
+import { LoadPlanSuggestionCard } from '../../screens/components/LoadPlanSuggestionCard';
+import { ScanToAssignModal } from '../../screens/components/ScanToAssignModal';
+import { buildContainerEta } from '../../screens/hooks/containerEta';
+import { useContainerLoadPlan } from '../../screens/hooks/useContainerLoadPlan';
 import { ContainerTimeline } from '../../screens/components/ContainerTimeline';
 import { ContainerCapacityCard } from '../../screens/components/ContainerCapacityCard';
 import { ContainerWaypointSection } from '../../screens/components/ContainerWaypointSection';
@@ -54,6 +59,10 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
     assist,
   } = screen;
 
+  const eta = useMemo(() => buildContainerEta(container), [container]);
+  const loadPlan = useContainerLoadPlan(container);
+  const [scanVisible, setScanVisible] = useState(false);
+
   const header = (
     <>
       <ContainerDetailHeader
@@ -75,6 +84,7 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
         canMarkReadyForPickup={canMarkReadyForPickup}
         canMarkDelivered={canMarkDelivered}
         onAssignGoods={handleAssignGoods}
+        onScanAssign={() => setScanVisible(true)}
         onSharePackingList={handleSharePackingList}
         onOpenPackingList={handleGeneratePackingList}
         onOpenLoadingList={handleGoToLoadingList}
@@ -82,6 +92,14 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
         onMarkDelivered={handleMarkDelivered}
       />
       <ContainerHealthPanel health={assist.health} />
+      <ContainerEtaCard eta={eta} />
+      {loadPlan.isLoadable && loadPlan.plan && (
+        <LoadPlanSuggestionCard
+          plan={loadPlan.plan}
+          isApplying={loadPlan.isApplying}
+          onApply={loadPlan.applyPlan}
+        />
+      )}
       <ContainerIssueAlerts issues={assist.issues} />
       <ContainerSmartFilters
         searchQuery={assist.searchQuery}
@@ -116,14 +134,22 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
   );
 
   return (
-    <ContainerClientGroups
-      groups={assist.clientGroups}
-      header={header}
-      isRefreshing={isRefreshing}
-      onRefresh={handleRefresh}
-      onRemoveGoods={handleRemoveGoods}
-      onMarkDelivered={handleMarkGoodsDelivered}
-    />
+    <>
+      <ContainerClientGroups
+        groups={assist.clientGroups}
+        header={header}
+        isRefreshing={isRefreshing}
+        onRefresh={handleRefresh}
+        onRemoveGoods={handleRemoveGoods}
+        onMarkDelivered={handleMarkGoodsDelivered}
+      />
+      <ScanToAssignModal
+        visible={scanVisible}
+        containerId={containerId}
+        shippingMode={container.shippingMode}
+        onDismiss={() => setScanVisible(false)}
+      />
+    </>
   );
 };
 

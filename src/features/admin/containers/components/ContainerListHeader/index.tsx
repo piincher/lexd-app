@@ -33,9 +33,10 @@ interface ContainerListHeaderProps {
     arrived: number;
     assignable: number;
   };
+  onOpenAnalytics?: () => void;
 }
 
-export const ContainerListHeader: React.FC<ContainerListHeaderProps> = ({ stats }) => {
+export const ContainerListHeader: React.FC<ContainerListHeaderProps> = ({ stats, onOpenAnalytics }) => {
   const { colors } = useAppTheme();
   return (
     <LinearGradient colors={Theme.gradients.glass} style={styles.header}>
@@ -44,8 +45,8 @@ export const ContainerListHeader: React.FC<ContainerListHeaderProps> = ({ stats 
           <Text style={styles.headerGreeting}>Gestion</Text>
           <Text style={styles.headerTitle}>Containers</Text>
         </View>
-        <TouchableOpacity style={styles.iconButton}>
-          <Ionicons name="filter" size={24} color={Theme.neutral[700]} />
+        <TouchableOpacity style={styles.iconButton} onPress={onOpenAnalytics}>
+          <Ionicons name="bar-chart" size={24} color={Theme.neutral[700]} />
         </TouchableOpacity>
       </View>
 

@@ -94,6 +94,7 @@ export const useReceiveGoodsForm = (
     setPhotoUris: extras.setPhotoUris,
     setUseDimensions: extras.setUseDimensions,
     idempotencyKey,
+    notifyWhatsapp: extras.notifyWhatsapp,
   });
 
   return {

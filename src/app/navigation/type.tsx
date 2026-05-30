@@ -71,6 +71,7 @@ export type RootStackParamList = {
    ContainerList: undefined;
    CreateContainer: undefined;
    ContainerDetail: { containerId: string };
+   ContainerAnalytics: undefined;
    AssignGoods: { containerId: string };
    PackingList: { containerId: string; initialClientId?: string; clientId?: string; autoPrint?: boolean };
    // Route V2 Features
@@ -119,6 +120,15 @@ export type RootStackParamList = {
    AdminRedemptions: undefined;
    AdminRewardSettings: undefined;
    AppVersionSettings: undefined;
+   MemberPoints: undefined;
+   RewardDetail: { item: import("@src/features/referrals/types").RewardItem };
+   PointsHistory: undefined;
+   MyProductRedemptions: undefined;
+   AdminRewardItems: undefined;
+   AdminRewardItemForm: { itemId?: string } | undefined;
+   AdminProductRedemptions: undefined;
+   AdminPointsManagement: undefined;
+   AdminRewardSettingsV2: undefined;
 
    // Admin Certificate Issuance
    IssueCertificate: undefined;
@@ -235,8 +245,10 @@ export type HomeTabParamList = {
    MyContainers: undefined;
    CustomerDashboard: undefined;
    Orders: undefined;
+   MemberPoints: undefined;
    AdminGoodsList: undefined;
    ContainerList: undefined;
+   AdminTools: undefined;
 };
 
 export type navigationProps = NativeStackNavigationProp<RootStackParamList>;

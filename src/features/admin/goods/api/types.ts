@@ -33,6 +33,9 @@ export interface ReceiveGoodsInput {
   condition?: 'new' | 'used' | 'damaged';
   exceptionReasons?: string[];
   exceptionNotes?: string;
+  idempotencyKey?: string;
+  /** Per-receipt WhatsApp opt-out. Missing/true keeps the default send behavior. */
+  notifyWhatsapp?: boolean;
 }
 
 /**
