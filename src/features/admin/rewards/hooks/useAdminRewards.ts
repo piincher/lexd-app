@@ -6,7 +6,10 @@ import {
   createRewardItem,
   updateRewardItem,
   deleteRewardItem,
+  cloneRewardItem,
   getAdminProductRedemptions,
+  getRedemptionAnalytics,
+  bulkApproveRedemptions,
   approveProductRedemption,
   rejectProductRedemption,
   readyProductRedemption,
@@ -69,7 +72,16 @@ export const useAdminRewardItems = () => {
     onError: (err) => showMessage({ message: err.message || 'Suppression impossible', type: 'danger' }),
   });
 
-  return { query, create, update, remove };
+  const clone = useMutation<RewardItem, Error, string>({
+    mutationFn: cloneRewardItem,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.items });
+      showMessage({ message: 'Article dupliqué — ajustez puis activez', type: 'success' });
+    },
+    onError: (err) => showMessage({ message: err.message || 'Duplication impossible', type: 'danger' }),
+  });
+
+  return { query, create, update, remove, clone };
 };
 
 // ── Product Redemptions ───────────────────────────────────────────────────
@@ -111,16 +123,39 @@ export const useAdminProductRedemptions = (status: RedemptionStatusFilter, searc
   });
 
   const collect = useMutation({
-    mutationFn: (id: string) => collectProductRedemption(id),
+    mutationFn: ({ id, pickupCode }: { id: string; pickupCode?: string }) =>
+      collectProductRedemption(id, pickupCode),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'rewards', 'redemptions'] });
       showMessage({ message: 'Article collecté', type: 'success' });
     },
-    onError: (err: Error) => showMessage({ message: err.message || 'Action impossible', type: 'danger' }),
+    onError: (err: Error) => showMessage({ message: err.message || 'Code incorrect ou action impossible', type: 'danger' }),
   });
 
-  return { query, approve, reject, ready, collect };
+  const bulkApprove = useMutation({
+    mutationFn: ({ ids, adminRemarks }: { ids: string[]; adminRemarks?: string }) =>
+      bulkApproveRedemptions(ids, adminRemarks),
+    onSuccess: (result) => {
+      queryClient.invalidateQueries({ queryKey: ['admin', 'rewards', 'redemptions'] });
+      const msg = result.failedCount > 0
+        ? `${result.approvedCount} approuvée(s), ${result.failedCount} échec(s)`
+        : `${result.approvedCount} demande(s) approuvée(s)`;
+      showMessage({ message: msg, type: result.failedCount > 0 ? 'warning' : 'success' });
+    },
+    onError: (err: Error) => showMessage({ message: err.message || 'Approbation groupée impossible', type: 'danger' }),
+  });
+
+  return { query, approve, reject, ready, collect, bulkApprove };
 };
+
+// ── Redemption Analytics ──────────────────────────────────────────────────
+
+export const useAdminRedemptionAnalytics = () =>
+  useQuery({
+    queryKey: ['admin', 'rewards', 'redemptions', 'analytics'],
+    queryFn: getRedemptionAnalytics,
+    staleTime: 60 * 1000,
+  });
 
 // ── Settings V2 ────────────────────────────────────────────────────────────
 

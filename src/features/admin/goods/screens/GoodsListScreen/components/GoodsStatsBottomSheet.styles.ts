@@ -3,10 +3,19 @@ import { Theme } from '@src/constants/Theme';
 
 export const createStyles = (colors: any, isDark?: boolean) =>
   StyleSheet.create({
+    root: {
+      flex: 1,
+    },
     overlay: {
       flex: 1,
       justifyContent: 'flex-end',
+    },
+    backdrop: {
+      ...StyleSheet.absoluteFillObject,
       backgroundColor: 'rgba(0, 0, 0, 0.32)',
+    },
+    backdropPressable: {
+      flex: 1,
     },
     card: {
       backgroundColor: colors.background.card,
@@ -15,6 +24,17 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       paddingHorizontal: 20,
       paddingTop: 8,
       paddingBottom: 24,
+      // Animated.View replaces Paper's Card, so add the elevation/shadow here.
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: -2 },
+      shadowOpacity: 0.18,
+      shadowRadius: 12,
+      elevation: 16,
+    },
+    // Handle + header form the drag zone; a little vertical padding enlarges the
+    // touch target so the sheet is easy to grab and pull.
+    dragArea: {
+      paddingBottom: 4,
     },
     handle: {
       alignSelf: 'center',
@@ -23,6 +43,7 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       borderRadius: 2,
       backgroundColor: isDark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.12)',
       marginBottom: 12,
+      marginTop: 4,
     },
     header: {
       flexDirection: 'row',
@@ -102,6 +123,52 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       color: colors.text.secondary,
       textTransform: 'uppercase',
       letterSpacing: 0.4,
+    },
+    breakdown: {
+      marginTop: 16,
+    },
+    breakdownTitle: {
+      fontSize: 13,
+      fontWeight: '800',
+      color: colors.text.primary,
+      marginBottom: 8,
+      textTransform: 'uppercase',
+      letterSpacing: 0.4,
+    },
+    breakdownScroll: {
+      maxHeight: 200,
+    },
+    breakdownRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingVertical: 8,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.06)',
+      gap: 10,
+    },
+    breakdownLabelWrap: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+      flexShrink: 0,
+    },
+    breakdownDot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+    },
+    breakdownLabel: {
+      fontSize: 13,
+      fontWeight: '700',
+      color: colors.text.primary,
+    },
+    breakdownMeta: {
+      flex: 1,
+      textAlign: 'right',
+      fontSize: 11.5,
+      fontWeight: '600',
+      color: colors.text.secondary,
     },
     footnote: {
       marginTop: 14,

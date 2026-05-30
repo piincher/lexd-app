@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import type { RootStackScreenProps } from "@src/navigations/type";
 import { userData } from "@src/shared/types/user";
 import { useGetUsers } from "./useUserManagement";
+import { LEGACY_MANUAL_ORDERS_ENABLED } from "@src/features/admin/orders/legacyOrders";
 
 type UseSelectUserReturn = {
   selectedUser: userData | undefined;
@@ -44,6 +45,8 @@ export const useSelectUser = (
   }, []);
 
   const handleCreate = useCallback(() => {
+    // Manual order creation is retired — orders now come from goods.
+    if (!LEGACY_MANUAL_ORDERS_ENABLED) return;
     navigation.navigate("AddOrder", {
       clientName: `${selectedUser?.firstName} ${selectedUser?.lastName!}`,
       userId: selectedUser?._id!,

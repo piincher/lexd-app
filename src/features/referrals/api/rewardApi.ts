@@ -56,8 +56,8 @@ export const applyRewardToInvoice = async (
 };
 
 export const getActiveRewardItems = async (): Promise<RewardItem[]> => {
-  const response = await apiClientV2.get<ApiResponse<RewardItem[]>>('/rewards/items');
-  return response.data.data;
+  const response = await apiClientV2.get<ApiResponse<{ items: RewardItem[]; pagination: unknown }>>('/rewards/items');
+  return response.data.data?.items || [];
 };
 
 export const getRewardItemById = async (id: string): Promise<RewardItem> => {

@@ -3,11 +3,15 @@
  * Extracted from ContainerTrackingScreen to follow SRP
  */
 
-import React from 'react';
-import { View } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import { Text, Button, Chip, List, useTheme } from 'react-native-paper';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { showMessage } from 'react-native-flash-message';
 
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useCreateShareToken } from '@src/shared/hooks/useCreateShareToken';
+import { shareLink } from '@src/shared/lib/shareLink';
 import { CustomerGoodsInContainer } from '../types';
 import { styles } from './ContainerGoodsSection.styles';
 
@@ -20,6 +24,22 @@ interface ContainerGoodsSectionProps {
 const GoodsItem: React.FC<{ goods: CustomerGoodsInContainer }> = ({ goods }) => {
   const theme = useTheme();
   const { colors } = useAppTheme();
+  const { mutateAsync: createShareToken, isPending: isSharing } = useCreateShareToken();
+
+  // Public, no-account link to this parcel's tracking.
+  const handleShare = useCallback(async () => {
+    if (!goods.goodsId) return;
+    try {
+      const result = await createShareToken({ type: 'goods', resourceReference: goods.goodsId });
+      await shareLink({
+        message: `Suivez mon colis ChinaLink Express : ${goods.goodsId}`,
+        url: result.url,
+        title: `Colis ${goods.goodsId}`,
+      });
+    } catch {
+      showMessage({ message: 'Partage impossible pour le moment.', type: 'danger' });
+    }
+  }, [goods.goodsId, createShareToken]);
 
   const chipBg =
     goods.status === 'DELIVERED'
@@ -56,6 +76,15 @@ const GoodsItem: React.FC<{ goods: CustomerGoodsInContainer }> = ({ goods }) => 
           >
             {goods.status?.replace(/_/g, ' ') || 'N/A'}
           </Chip>
+          <TouchableOpacity
+            onPress={handleShare}
+            disabled={isSharing}
+            hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            style={{ marginTop: 4, opacity: isSharing ? 0.5 : 1 }}
+            accessibilityLabel="Partager le suivi du colis"
+          >
+            <MaterialCommunityIcons name="share-variant" size={18} color={colors.primary.main} />
+          </TouchableOpacity>
         </View>
       )}
       style={styles.goodsItem}

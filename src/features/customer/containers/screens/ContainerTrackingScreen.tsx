@@ -3,11 +3,14 @@
  * Maersk-style detailed tracking view with waypoint journey
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as Haptics from 'expo-haptics';
+import { showMessage } from 'react-native-flash-message';
 import type { RootStackScreenProps } from '@src/navigations/type';
+import { useCreateShareToken } from '@src/shared/hooks/useCreateShareToken';
+import { shareLink } from '@src/shared/lib/shareLink';
 import { useContainerTrackingStyles } from './ContainerTrackingScreen.styles';
 import { useContainerTrackingScreen } from '../hooks/useContainerTrackingScreen';
 import { TrackingAppbar } from '../components/TrackingAppbar';
@@ -38,6 +41,23 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
     getShippingModeIcon, formatDate, formatDateTime, toggleWaypoint,
   } = useContainerTrackingScreen(containerId);
 
+  // Public, no-account tracking link the customer can send to anyone.
+  const { mutateAsync: createShareToken, isPending: isSharing } = useCreateShareToken();
+  const handleShare = useCallback(async () => {
+    const ref = container?.virtualContainerNumber;
+    if (!ref) return;
+    try {
+      const result = await createShareToken({ type: 'container', resourceReference: ref });
+      await shareLink({
+        message: `Suivez mon expédition ChinaLink Express : ${ref}`,
+        url: result.url,
+        title: `Suivi ${ref}`,
+      });
+    } catch {
+      showMessage({ message: 'Partage impossible pour le moment.', type: 'danger' });
+    }
+  }, [container?.virtualContainerNumber, createShareToken]);
+
   if (isLoading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -66,7 +86,7 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
 
   return (
     <SafeAreaView style={styles.container}>
-      <TrackingAppbar navigation={navigation} />
+      <TrackingAppbar navigation={navigation} onShare={handleShare} isSharing={isSharing} />
       <ScrollView
         refreshControl={<RefreshControl refreshing={isFetching} onRefresh={handleRefresh} />}
         contentContainerStyle={styles.scrollContent}

@@ -14,6 +14,7 @@ import { useShippingMode } from '@src/store/shippingMode';
 import { CustomModal } from '@src/shared/ui/Modal';
 import { useDeleteOrder } from '@src/features/orders/hooks/useDeleteOrder';
 import { useClipboard } from '@src/shared/lib/hooks/useClipboard';
+import { LEGACY_MANUAL_ORDERS_ENABLED } from '@src/features/admin/orders/legacyOrders';
 import { useRenderOrderStyles } from './RenderOrder.styles';
 import { OrderHeader } from './OrderHeader';
 import { OrderInfoSection } from './OrderInfoSection';
@@ -94,6 +95,8 @@ export const RenderOrder = ({ item }: { item: productType }) => {
   };
 
   const handleEdit = () => {
+    // Manual order editing is retired — orders are now driven by goods.
+    if (!LEGACY_MANUAL_ORDERS_ENABLED) return;
     navigation.navigate('EditOrder', { id: item._id!, orderId: item?.category?._id });
   };
 

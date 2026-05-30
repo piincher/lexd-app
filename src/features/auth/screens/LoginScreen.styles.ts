@@ -1,10 +1,41 @@
 import { StyleSheet } from "react-native";
+import { Fonts } from "@src/constants/Fonts";
 
 export const styles = StyleSheet.create({
   container: { flex: 1 },
   flex: { flex: 1 },
-  scrollContent: { flexGrow: 1 },
-  card: { marginHorizontal: 16, marginTop: -16, borderRadius: 24, borderWidth: 1, padding: 20 },
-  demoButton: { marginTop: 12 },
-  demoNote: { marginTop: 10, fontSize: 12, lineHeight: 18, textAlign: "center" },
+  scrollContent: {
+    flexGrow: 1,
+    paddingHorizontal: 24,
+  },
+  form: {
+    paddingTop: 8,
+    paddingBottom: 16,
+  },
+  divider: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    marginTop: 20,
+    marginBottom: 4,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+  },
+  dividerText: {
+    fontSize: 13,
+    fontFamily: Fonts.regular,
+    letterSpacing: 0.5,
+  },
+  demoLink: {
+    alignSelf: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  demoLinkText: {
+    fontSize: 14,
+    fontFamily: Fonts.regular,
+    letterSpacing: 0.2,
+  },
 });

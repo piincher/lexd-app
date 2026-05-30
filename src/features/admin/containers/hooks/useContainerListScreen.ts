@@ -59,6 +59,10 @@ export const useContainerListScreen = () => {
     navigation.navigate('CreateContainer');
   }, [navigation]);
 
+  const handleOpenAnalytics = useCallback(() => {
+    navigation.navigate('ContainerAnalytics');
+  }, [navigation]);
+
   const handleRefresh = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: containerQueryKeys.lists() });
     await refetch();
@@ -78,6 +82,7 @@ export const useContainerListScreen = () => {
     stats,
     handleContainerPress,
     handleCreateContainerPress,
+    handleOpenAnalytics,
     handleRefresh,
   };
 };

@@ -49,7 +49,6 @@ export const AppNavigator: React.FC = () => {
           <Stack.Screen name="Badges" component={Screens.BadgesScreen} />
           <Stack.Screen name="PastOrders" component={Screens.PastOrders} />
           <Stack.Screen name="Referral" component={Screens.ReferralScreen} />
-          <Stack.Screen name="Redemption" component={Screens.RedemptionScreen} />
           <Stack.Screen name="MyRewards" component={Screens.MyRewardsScreen} />
           <Stack.Screen name="RewardDetail" component={Screens.RewardDetailScreen} />
           <Stack.Screen name="PointsHistory" component={Screens.PointsHistoryScreen} />
@@ -119,8 +118,6 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="WhatsAppRequests" component={Screens.WhatsAppRequestListScreen} />
               <Stack.Screen name="AdminTicketList" component={Screens.AdminTicketListScreen} />
               <Stack.Screen name="AdminTicketDetail" component={Screens.AdminTicketDetailScreen} />
-              <Stack.Screen name="AdminRedemptions" component={Screens.AdminRedemptionQueueScreen} />
-              <Stack.Screen name="AdminRewardSettings" component={Screens.AdminRewardSettingsScreen} />
               <Stack.Screen name="AppVersionSettings" component={Screens.AppVersionSettingsScreen} />
               <Stack.Screen name="AdminRewardItems" component={Screens.AdminRewardItemsScreen} />
               <Stack.Screen name="AdminRewardItemForm" component={Screens.AdminRewardItemFormScreen} />

@@ -115,10 +115,7 @@ export type RootStackParamList = {
    NotificationEvents: undefined;
    NotificationEventDetail: { notificationEventId: string };
    Referral: undefined;
-   Redemption: undefined;
    MyRewards: undefined;
-   AdminRedemptions: undefined;
-   AdminRewardSettings: undefined;
    AppVersionSettings: undefined;
    MemberPoints: undefined;
    RewardDetail: { item: import("@src/features/referrals/types").RewardItem };

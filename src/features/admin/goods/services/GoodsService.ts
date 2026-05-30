@@ -49,10 +49,19 @@ const ENDPOINTS = {
  * Aggregated totals for the current filter set — what the goods list stats
  * bottom sheet displays. Mirrors the backend's getGoodsSummary response shape.
  */
+export interface GoodsStatusBucket {
+  status: string;
+  count: number;
+  totalWeight: number;
+  totalCBM: number;
+}
+
 export interface GoodsSummary {
   count: number;
   totalWeight: number; // kg, rounded to 2 decimals
   totalCBM: number;    // m³, rounded to 3 decimals
+  /** Per-status breakdown (ignores the status filter so every bucket shows). */
+  byStatus?: GoodsStatusBucket[];
 }
 
 /**

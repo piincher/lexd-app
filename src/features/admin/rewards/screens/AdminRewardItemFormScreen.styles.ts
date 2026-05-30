@@ -1,5 +1,7 @@
+/* Hallmark · redesign · macrostructure: Sectioned Sheet · genre: premium-loyalty · theme: gold-on-green */
 import { StyleSheet, Platform } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 
 export const createStyles = (colors: any, isDark?: boolean) =>
   StyleSheet.create({
@@ -7,141 +9,206 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       flex: 1,
       backgroundColor: colors.background.default,
     },
+
+    // ── Header ──────────────────────────────────────────
     header: {
-      paddingHorizontal: 16,
-      paddingTop: Platform.OS === 'android' ? 12 : 20,
-      paddingBottom: 16,
+      paddingHorizontal: Theme.spacing.lg,
+      paddingTop: Platform.OS === 'android' ? Theme.spacing.md : Theme.spacing.xl,
+      paddingBottom: Theme.spacing.lg,
       backgroundColor: colors.background.card,
       borderBottomWidth: 1,
-      borderBottomColor: colors.neutral[200],
+      borderBottomColor: colors.border,
       flexDirection: 'row',
       alignItems: 'center',
     },
     backButton: {
       width: 40,
       height: 40,
-      borderRadius: 12,
+      borderRadius: Theme.radius.md,
       backgroundColor: colors.neutral[100],
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 14,
+      marginRight: Theme.spacing.md,
     },
     headerTitle: {
       fontSize: 22,
       fontFamily: Fonts.bold,
       color: colors.text.primary,
     },
+
+    // ── Scroll ──────────────────────────────────────────
     scroll: {
-      padding: 16,
-      gap: 16,
-      paddingBottom: 100,
+      padding: Theme.spacing.lg,
+      gap: Theme.spacing.xl,
+      paddingBottom: 120,
     },
-    section: {
-      backgroundColor: colors.background.card,
-      borderRadius: 16,
-      padding: 16,
-      borderWidth: 1,
-      borderColor: colors.border.light,
-      gap: 12,
+
+    // ── Hero image picker ───────────────────────────────
+    hero: {
+      width: '100%',
+      height: 160,
+      borderRadius: Theme.radius.xl,
+      overflow: 'hidden',
     },
-    sectionTitle: {
-      fontSize: 15,
-      fontFamily: Fonts.bold,
-      color: colors.text.primary,
-      marginBottom: 4,
-    },
-    imagePicker: {
-      width: 120,
-      height: 120,
-      borderRadius: 16,
-      backgroundColor: colors.neutral[200],
+    heroEmpty: {
+      width: '100%',
+      height: 160,
+      borderRadius: Theme.radius.xl,
+      backgroundColor: colors.primary[50],
+      borderWidth: 2,
+      borderStyle: 'dashed',
+      borderColor: colors.accent.gold,
       justifyContent: 'center',
       alignItems: 'center',
-      alignSelf: 'center',
-      borderWidth: 2,
-      borderColor: colors.border.light,
-      borderStyle: 'dashed',
+      gap: Theme.spacing.sm,
     },
-    imagePreview: {
-      width: 120,
-      height: 120,
-      borderRadius: 16,
-      alignSelf: 'center',
-    },
-    pickerRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingVertical: 12,
-      paddingHorizontal: 14,
-      backgroundColor: colors.background.default,
-      borderRadius: 12,
-      borderWidth: 1,
-      borderColor: colors.border.light,
-    },
-    pickerLabel: {
-      fontSize: 14,
-      fontFamily: Fonts.regular,
-      color: colors.text.primary,
-    },
-    pickerValue: {
+    heroEmptyText: {
       fontSize: 14,
       fontFamily: Fonts.medium,
-      color: colors.primary.main,
+      color: colors.text.secondary,
     },
-    saveButton: {
-      marginHorizontal: 16,
-      marginTop: 8,
-      marginBottom: 24,
-      paddingVertical: 14,
-      borderRadius: 12,
-      backgroundColor: colors.primary.main,
+    heroImage: {
+      width: '100%',
+      height: '100%',
+    },
+    editPill: {
+      position: 'absolute',
+      bottom: Theme.spacing.md,
+      right: Theme.spacing.md,
+      flexDirection: 'row',
       alignItems: 'center',
+      gap: 5,
+      paddingHorizontal: Theme.spacing.md,
+      paddingVertical: 7,
+      borderRadius: Theme.radius.full,
+      backgroundColor: colors.background.overlay,
     },
-    saveButtonText: {
-      fontSize: 15,
+    editPillText: {
+      fontSize: 12.5,
+      fontFamily: Fonts.bold,
+      color: colors.neutral.white,
+    },
+
+    // ── Live preview card ───────────────────────────────
+    previewCard: {
+      backgroundColor: colors.background.card,
+      borderRadius: Theme.radius.lg,
+      padding: Theme.spacing.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: Theme.spacing.md,
+      ...Theme.shadows.sm,
+    },
+    previewBody: {
+      flex: 1,
+      gap: Theme.spacing.sm,
+    },
+    previewName: {
+      fontSize: 16,
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
+    },
+    previewNamePlaceholder: {
+      fontSize: 16,
+      fontFamily: Fonts.medium,
+      color: colors.text.disabled,
+    },
+    previewRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: Theme.spacing.sm,
+    },
+
+    // ── Sections ────────────────────────────────────────
+    section: {
+      backgroundColor: colors.background.card,
+      borderRadius: Theme.radius.lg,
+      padding: Theme.spacing.lg,
+      borderWidth: 1,
+      borderColor: colors.border,
+      gap: Theme.spacing.md,
+    },
+    overline: {
+      fontSize: 11,
+      fontFamily: Fonts.bold,
+      letterSpacing: 1.2,
+      color: colors.text.secondary,
+      marginBottom: 2,
+    },
+
+    // ── Segmented control ───────────────────────────────
+    optionGroup: {
+      gap: Theme.spacing.sm,
+    },
+    optionLabel: {
+      fontSize: 13,
+      fontFamily: Fonts.medium,
+      color: colors.text.secondary,
+    },
+    segment: {
+      flexDirection: 'row',
+      backgroundColor: colors.neutral[100],
+      borderRadius: Theme.radius.md,
+      padding: 4,
+      gap: 4,
+    },
+    segmentOption: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 6,
+      paddingVertical: 10,
+      borderRadius: Theme.radius.sm,
+      backgroundColor: 'transparent',
+    },
+    segmentOptionActive: {
+      backgroundColor: colors.primary.main,
+      ...Theme.shadows.sm,
+    },
+    segmentText: {
+      fontSize: 13.5,
+      fontFamily: Fonts.medium,
+      color: colors.text.secondary,
+      textAlign: 'center',
+    },
+    segmentTextActive: {
       fontFamily: Fonts.bold,
       color: colors.text.inverse,
     },
-    modalOverlay: {
-      flex: 1,
-      backgroundColor: colors.background.overlay,
-      justifyContent: 'flex-end',
-    },
-    modalSheet: {
+
+    // ── Sticky save bar ─────────────────────────────────
+    saveBar: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 0,
+      paddingHorizontal: Theme.spacing.lg,
+      paddingTop: Theme.spacing.md,
+      paddingBottom: Platform.OS === 'ios' ? Theme.spacing['2xl'] : Theme.spacing.lg,
       backgroundColor: colors.background.card,
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
-      padding: 20,
-      gap: 8,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
     },
-    modalTitle: {
-      fontSize: 18,
-      fontFamily: Fonts.bold,
-      color: colors.text.primary,
-      marginBottom: 8,
-    },
-    modalOption: {
-      paddingVertical: 14,
-      paddingHorizontal: 16,
-      borderRadius: 12,
-      backgroundColor: colors.background.default,
-    },
-    modalOptionText: {
-      fontSize: 15,
-      fontFamily: Fonts.regular,
-      color: colors.text.primary,
-    },
-    modalCancel: {
-      marginTop: 8,
-      paddingVertical: 14,
-      borderRadius: 12,
-      backgroundColor: colors.neutral[200],
+    saveButton: {
+      flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'center',
+      gap: Theme.spacing.sm,
+      paddingVertical: 16,
+      borderRadius: Theme.radius.lg,
+      ...Theme.shadows.lg,
     },
-    modalCancelText: {
-      fontSize: 15,
+    saveButtonDisabled: {
+      opacity: 0.6,
+    },
+    saveButtonText: {
+      fontSize: 15.5,
       fontFamily: Fonts.bold,
-      color: colors.text.primary,
+      color: colors.text.inverse,
+      letterSpacing: 0.3,
     },
   });

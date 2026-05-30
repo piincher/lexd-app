@@ -23,7 +23,7 @@ export { OrdersScreen as Orders } from "@src/features/orders";
 export { ProfileScreen as Profile, AboutUsScreen as AboutUs, PastOrdersScreen as PastOrders, NotificationSettingsScreen, BadgesScreen, MyReviewsScreen } from "@src/features/profile";
 export { default as CertificateDetailScreen } from "@src/features/profile/screens/CertificateDetail";
 export { default as TrustProfileScreen } from "@src/features/profile/screens/TrustProfileScreen";
-export { AdminRedemptionQueueScreen, AdminRewardSettingsScreen, MyRewardsScreen, RedemptionScreen, ReferralScreen, MemberPointsScreen, RewardDetailScreen, PointsHistoryScreen, MyProductRedemptionsScreen } from "@src/features/referrals";
+export { MyRewardsScreen, ReferralScreen, MemberPointsScreen, RewardDetailScreen, PointsHistoryScreen, MyProductRedemptionsScreen } from "@src/features/referrals";
 
 // Goods
 export { default as MyGoodsScreen } from "@src/features/goods/screens/MyGoodsScreen";

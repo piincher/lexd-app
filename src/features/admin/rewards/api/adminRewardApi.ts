@@ -32,8 +32,20 @@ export interface ProductRedemption {
   approvedValueFCFA: number;
   restoredPoints: number;
   rewardItemId: string | null;
+  rewardItem?: {
+    id: string;
+    name: string;
+    description: string;
+    imageUrl: string;
+    pointsRequired: number;
+    stock: number;
+    pickupMethod: 'PICKUP' | 'DELIVERY';
+    status: 'ACTIVE' | 'INACTIVE';
+    category: string;
+  } | null;
   quantity: number;
   pickupMethod: string | null;
+  pickupCode: string | null;
   phoneVerification: string;
   customerRemarks: string;
   adminRemarks: string;
@@ -72,8 +84,8 @@ const BASE_URL = '/rewards/admin';
 // ── Reward Items ──────────────────────────────────────────────────────────
 
 export const getAdminRewardItems = async (): Promise<RewardItem[]> => {
-  const response = await apiClientV2.get<ApiResponse<RewardItem[]>>(`${BASE_URL}/items`);
-  return response.data.data;
+  const response = await apiClientV2.get<ApiResponse<{ items: RewardItem[]; pagination: unknown }>>(`${BASE_URL}/items`);
+  return response.data.data?.items || [];
 };
 
 export const createRewardItem = async (data: Omit<RewardItem, 'id' | 'createdAt'>): Promise<RewardItem> => {
@@ -88,6 +100,11 @@ export const updateRewardItem = async (id: string, data: Partial<Omit<RewardItem
 
 export const deleteRewardItem = async (id: string): Promise<void> => {
   await apiClientV2.delete<ApiResponse<void>>(`${BASE_URL}/items/${id}`);
+};
+
+export const cloneRewardItem = async (id: string): Promise<RewardItem> => {
+  const response = await apiClientV2.post<ApiResponse<RewardItem>>(`${BASE_URL}/items/${id}/clone`);
+  return response.data.data;
 };
 
 // ── Product Redemptions ───────────────────────────────────────────────────
@@ -114,6 +131,50 @@ export const getAdminProductRedemptions = async (
   return response.data.data;
 };
 
+// ── Analytics + Bulk ──────────────────────────────────────────────────────
+
+export interface RedemptionStatusBucket {
+  count: number;
+  points: number;
+}
+
+export interface RedemptionAnalytics {
+  totals: {
+    totalRequests: number;
+    pendingCount: number;
+    collectedCount: number;
+    collectedPoints: number;
+    fulfilledPoints: number;
+  };
+  byStatus: Record<string, RedemptionStatusBucket>;
+  topItems: { rewardItemId: string; name: string; count: number; points: number }[];
+}
+
+export const getRedemptionAnalytics = async (): Promise<RedemptionAnalytics> => {
+  const response = await apiClientV2.get<ApiResponse<RedemptionAnalytics>>(
+    `${BASE_URL}/redemptions/analytics`
+  );
+  return response.data.data;
+};
+
+export interface BulkApproveResult {
+  approvedCount: number;
+  failedCount: number;
+  approved: ProductRedemption[];
+  failed: { id: string; message: string; code: string }[];
+}
+
+export const bulkApproveRedemptions = async (
+  redemptionIds: string[],
+  adminRemarks?: string
+): Promise<BulkApproveResult> => {
+  const response = await apiClientV2.post<ApiResponse<BulkApproveResult>>(
+    `${BASE_URL}/redemptions/bulk-approve`,
+    { redemptionIds, ...(adminRemarks ? { adminRemarks } : {}) }
+  );
+  return response.data.data;
+};
+
 export const approveProductRedemption = async (id: string): Promise<ProductRedemption> => {
   const response = await apiClientV2.post<ApiResponse<ProductRedemption>>(
     `${BASE_URL}/redemptions/${id}/approve`
@@ -136,9 +197,10 @@ export const readyProductRedemption = async (id: string): Promise<ProductRedempt
   return response.data.data;
 };
 
-export const collectProductRedemption = async (id: string): Promise<ProductRedemption> => {
+export const collectProductRedemption = async (id: string, pickupCode?: string): Promise<ProductRedemption> => {
   const response = await apiClientV2.post<ApiResponse<ProductRedemption>>(
-    `${BASE_URL}/redemptions/${id}/collected`
+    `${BASE_URL}/redemptions/${id}/collected`,
+    pickupCode ? { pickupCode } : {}
   );
   return response.data.data;
 };

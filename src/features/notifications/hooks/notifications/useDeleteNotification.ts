@@ -27,13 +27,17 @@ export const useDeleteNotification = () => {
               ...old,
               pages: old.pages.map((page: any) => ({
                 ...page,
-                data: page.data?.filter((n: InAppNotification) => n._id !== id),
+                data: Array.isArray(page.data)
+                  ? page.data.filter((n: InAppNotification) => n._id !== id)
+                  : [],
               })),
             };
           }
           return {
             ...old,
-            data: old.data?.filter((n: InAppNotification) => n._id !== id),
+            data: Array.isArray(old.data)
+              ? old.data.filter((n: InAppNotification) => n._id !== id)
+              : [],
           };
         }
       );

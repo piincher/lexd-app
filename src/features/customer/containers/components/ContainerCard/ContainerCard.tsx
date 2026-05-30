@@ -2,13 +2,14 @@
  * Container Card Component
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Card, Text, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { format } from 'date-fns/format';
 import { fr } from 'date-fns/locale';
 import * as Haptics from 'expo-haptics';
+import { showMessage } from 'react-native-flash-message';
 import {
   CustomerContainer,
   CUSTOMER_STATUS_LABELS,
@@ -17,6 +18,8 @@ import {
 } from '../../types';
 import { useContainerCardStyles } from './ContainerCard.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { useCreateShareToken } from '@src/shared/hooks/useCreateShareToken';
+import { shareLink } from '@src/shared/lib/shareLink';
 import { StatusBanner } from './StatusBanner';
 
 interface ContainerCardProps {
@@ -40,10 +43,28 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
   const { colors } = useAppTheme();
   const styles = useContainerCardStyles();
 
+  const { mutateAsync: createShareToken, isPending: isSharing } = useCreateShareToken();
+
   const handlePress = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     onPress?.();
   };
+
+  // Public, no-account tracking link for this shipment.
+  const handleShare = useCallback(async () => {
+    const ref = container.virtualContainerNumber;
+    if (!ref) return;
+    try {
+      const result = await createShareToken({ type: 'container', resourceReference: ref });
+      await shareLink({
+        message: `Suivez mon expédition ChinaLink Express : ${ref}`,
+        url: result.url,
+        title: `Suivi ${ref}`,
+      });
+    } catch {
+      showMessage({ message: 'Partage impossible pour le moment.', type: 'danger' });
+    }
+  }, [container.virtualContainerNumber, createShareToken]);
 
   const statusColor = CUSTOMER_STATUS_COLORS[container.status];
   const statusBgColor = statusColor + '15';
@@ -107,6 +128,16 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
                 <Text style={[styles.footerText, styles.footerTextPrimary]}>Arrivée: {formatDate(container.estimatedArrival)}</Text>
               </View>
             )}
+            <TouchableOpacity
+              onPress={handleShare}
+              disabled={isSharing}
+              hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginLeft: 'auto', opacity: isSharing ? 0.5 : 1 }}
+              accessibilityLabel="Partager le suivi"
+            >
+              <MaterialCommunityIcons name="share-variant" size={16} color={colors.primary.main} />
+              <Text style={[styles.footerText, styles.footerTextPrimary]}>Partager</Text>
+            </TouchableOpacity>
           </View>
         </Card.Content>
       </Card>

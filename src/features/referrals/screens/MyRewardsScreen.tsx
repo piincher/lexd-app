@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { ActivityIndicator, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,7 +9,6 @@ import { RewardEarningRules } from '../components/RewardEarningRules';
 import { RewardLedgerList } from '../components/RewardLedgerList';
 import { RedemptionEmptyState } from '../components/RedemptionEmptyState';
 import { useMyRewards } from '../hooks/useRewards';
-import { useMyRewardRedemptions } from '../hooks/useRewardRedemptions';
 import { createStyles } from './MyRewardsScreen.styles';
 
 export const MyRewardsScreen: React.FC = () => {
@@ -18,12 +17,17 @@ export const MyRewardsScreen: React.FC = () => {
   const styles = createStyles(colors);
 
   const rewards = useMyRewards();
-  const redemptions = useMyRewardRedemptions();
 
   const handleBack = useCallback(() => navigation.goBack(), [navigation]);
 
-  const goToRedemptions = useCallback(() => {
-    (navigation as { navigate: (name: string) => void }).navigate('Redemption');
+  // "Spend points" now routes to the product catalogue (the remise/FCFA-discount
+  // flow has been retired); history routes to the points ledger screen.
+  const goToCatalog = useCallback(() => {
+    (navigation as { navigate: (name: string) => void }).navigate('MemberPoints');
+  }, [navigation]);
+
+  const goToHistory = useCallback(() => {
+    (navigation as { navigate: (name: string) => void }).navigate('PointsHistory');
   }, [navigation]);
 
   const goToReferral = useCallback(() => {
@@ -34,12 +38,7 @@ export const MyRewardsScreen: React.FC = () => {
   const isLoading = rewards.isLoading;
   const isError = rewards.isError;
 
-  const pendingPoints = useMemo(() => {
-    const items = redemptions.redemptions.data?.items || [];
-    return items
-      .filter((r) => r.status === 'PENDING')
-      .reduce((sum, r) => sum + r.requestedPoints, 0);
-  }, [redemptions.redemptions.data]);
+  const pendingPoints = 0;
 
   if (isLoading) {
     return (
@@ -75,8 +74,8 @@ export const MyRewardsScreen: React.FC = () => {
           points={data.rewardPoints}
           pointValueFCFA={data.pointValueFCFA}
           pendingPoints={pendingPoints}
-          onRedeem={goToRedemptions}
-          onHistory={goToRedemptions}
+          onRedeem={goToCatalog}
+          onHistory={goToHistory}
         />
 
         <RewardEarningRules settings={data.settings} />
@@ -85,7 +84,7 @@ export const MyRewardsScreen: React.FC = () => {
         <View style={styles.ledgerSection}>
           <View style={styles.ledgerHeader}>
             <Text style={styles.ledgerTitle}>Historique des transactions</Text>
-            <TouchableOpacity onPress={goToRedemptions}>
+            <TouchableOpacity onPress={goToHistory}>
               <Text style={[styles.ledgerLink, { color: colors.primary.main }]}>Tout voir</Text>
             </TouchableOpacity>
           </View>

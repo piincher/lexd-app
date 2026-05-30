@@ -66,6 +66,26 @@ export const containerFillPercentage = (container: Container): number => {
   return Math.min((used / capacity) * 100, 100);
 };
 
+/** Stable string route id, tolerating a `routeId` that arrives populated as an object. */
+const resolveRouteId = (c: Container): string => {
+  if (c.route?._id) return c.route._id;
+  const raw = c.routeId as unknown;
+  if (typeof raw === 'string' && raw) return raw;
+  if (raw && typeof raw === 'object' && typeof (raw as { _id?: unknown })._id === 'string') {
+    return (raw as { _id: string })._id;
+  }
+  return 'unknown';
+};
+
+/** Route name when `routeId` is populated as an object. */
+const routeName = (c: Container): string | undefined => {
+  const raw = c.routeId as unknown;
+  if (raw && typeof raw === 'object' && typeof (raw as { name?: unknown }).name === 'string') {
+    return (raw as { name: string }).name;
+  }
+  return undefined;
+};
+
 const profitOf = (c: Container): number =>
   c.cbmProfit?.profit ?? c.reconciledProfit ?? c.realTimeProfit ?? 0;
 
@@ -130,9 +150,11 @@ export const buildContainerAnalytics = (
       if (eta.projectedDelayDays <= 0) onTimeCount += 1;
     }
 
-    // Route grouping
-    const routeId = c.route?._id ?? c.routeId ?? 'unknown';
-    const name = c.route?.name ?? `${c.route?.origin ?? '?'} → ${c.route?.destination ?? '?'}`;
+    // Route grouping. `routeId` is typed as a string but the backend sometimes
+    // populates it as a full route object, so coerce to a stable string id —
+    // otherwise object keys collapse to "[object Object]" and collide.
+    const routeId = resolveRouteId(c);
+    const name = c.route?.name ?? routeName(c) ?? `${c.route?.origin ?? '?'} → ${c.route?.destination ?? '?'}`;
     const existing = routeMap.get(routeId) ?? {
       routeId,
       name,

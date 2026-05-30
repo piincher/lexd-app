@@ -98,14 +98,15 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
 						onSelectClient={onSelectClient}
 						error={clientError}
 					/>
-					{/* Per-receipt WhatsApp opt-out. Only shown once a client is picked —
-					    there's no WhatsApp dispatch without a recipient anyway. */}
-					{selectedClient && (
-						<WhatsappNotifyToggle
-							value={notifyWhatsapp}
-							onChange={onChangeNotifyWhatsapp}
-						/>
-					)}
+					{/* Per-receipt WhatsApp opt-out. Always visible in the known-client
+					    flow so the operator can set the intent up front (before or after
+					    picking the client). Only the WhatsApp message is affected — push
+					    and in-app notifications still fire. Hidden only for unknown-client
+					    intake, where there is no recipient to message. */}
+					<WhatsappNotifyToggle
+						value={notifyWhatsapp}
+						onChange={onChangeNotifyWhatsapp}
+					/>
 				</>
 			)}
 			<ReceiveGoodsFormBasicFields control={control} errors={errors} setValue={setValue} watch={watch} />

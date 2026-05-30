@@ -12,11 +12,8 @@ import { format } from 'date-fns/format';
 const isClientInfo = (clientId: string | ClientInfo): clientId is ClientInfo =>
   typeof clientId === 'object' && clientId !== null && 'firstName' in clientId;
 
-export const generateGoodsPdf = async (
-  goods: any[],
-  startDate: string,
-  endDate: string
-): Promise<void> => {
+/** Build the shared report HTML; `metaHtml` is the period/selection summary line. */
+const buildGoodsPdfHtml = (goods: any[], metaHtml: string): string => {
   const rows = goods
     .map((item, index) => {
       const clientName = isClientInfo(item.clientId)
@@ -68,7 +65,7 @@ export const generateGoodsPdf = async (
         <p>ChinaLink Express</p>
       </div>
       <div class="meta">
-        <strong>Période :</strong> ${format(new Date(startDate), 'dd/MM/yyyy')} – ${format(new Date(endDate), 'dd/MM/yyyy')}<br>
+        ${metaHtml}
         <strong>Nombre de marchandises :</strong> ${goods.length}
       </div>
       <table>
@@ -103,11 +100,31 @@ export const generateGoodsPdf = async (
     </html>
   `;
 
-  const { uri } = await Print.printToFileAsync({ html, base64: false });
+  return html;
+};
 
-  await sharePDFFromUri({
-    uri,
-    filename: `Export_Marchandises_${format(new Date(startDate), 'yyyy-MM-dd')}_${format(new Date(endDate), 'yyyy-MM-dd')}.pdf`,
-    dialogTitle: 'Exporter les marchandises en PDF',
-  });
+/** Print + share a goods PDF for the given HTML under the given filename. */
+const printAndShare = async (html: string, filename: string): Promise<void> => {
+  const { uri } = await Print.printToFileAsync({ html, base64: false });
+  await sharePDFFromUri({ uri, filename, dialogTitle: 'Exporter les marchandises en PDF' });
+};
+
+/** Date-range export (period summary). */
+export const generateGoodsPdf = async (
+  goods: any[],
+  startDate: string,
+  endDate: string
+): Promise<void> => {
+  const meta = `<strong>Période :</strong> ${format(new Date(startDate), 'dd/MM/yyyy')} – ${format(new Date(endDate), 'dd/MM/yyyy')}<br>`;
+  const html = buildGoodsPdfHtml(goods, meta);
+  const filename = `Export_Marchandises_${format(new Date(startDate), 'yyyy-MM-dd')}_${format(new Date(endDate), 'yyyy-MM-dd')}.pdf`;
+  await printAndShare(html, filename);
+};
+
+/** Selection export — exactly the goods the operator picked, no date range. */
+export const generateSelectedGoodsPdf = async (goods: any[]): Promise<void> => {
+  const meta = `<strong>Sélection manuelle</strong><br>`;
+  const html = buildGoodsPdfHtml(goods, meta);
+  const filename = `Export_Marchandises_Selection_${format(new Date(), 'yyyy-MM-dd_HHmm')}.pdf`;
+  await printAndShare(html, filename);
 };

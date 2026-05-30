@@ -4,6 +4,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { ApiClientError } from '@src/api/client';
 import { useGoodsList } from '../../../hooks';
 import { useGoodsBulkActions } from './useGoodsBulkActions';
+import { generateSelectedGoodsPdf } from '@src/features/admin/export/services/goodsPdfService';
 
 type Nav = NativeStackNavigationProp<{
   GoodsList: undefined; ReceiveGoods: undefined;
@@ -43,6 +44,22 @@ export const useGoodsListScreen = () => {
     if (bulk.isSelectionMode) bulk.exitSelectionMode();
     else bulk.setIsSelectionMode(true);
   }, [bulk]);
+
+  // Export ONLY the goods the operator has ticked in selection mode → PDF.
+  const handleExportSelectedPdf = useCallback(async () => {
+    const idSet = new Set(bulk.selectedGoodsIds);
+    const selected = list.goods.filter((g) => idSet.has(g._id));
+    if (selected.length === 0) {
+      setErrorMessage('Sélectionnez au moins une marchandise à exporter.');
+      return;
+    }
+    try {
+      await generateSelectedGoodsPdf(selected);
+      bulk.exitSelectionMode();
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Export PDF impossible.');
+    }
+  }, [bulk, list.goods]);
 
   // ── Stats sheet ──────────────────────────────────────────────────────────
   // Opens a bottom sheet with aggregated totals (count / weight / CBM) for
@@ -112,6 +129,7 @@ export const useGoodsListScreen = () => {
     handleGoodsPress,
     handleAddPress,
     handleExportPress,
+    handleExportSelectedPdf,
     handleToggleSelectionMode,
     pendingCount,
     // Scanner

@@ -15,10 +15,13 @@ export const useReferralScreen = () => {
 
   const referralCode = query.data?.referralCode || '';
 
+  // Accounts are created by an admin (no public self-signup), so the referral
+  // share carries the CODE — the new client gives it to the team when their
+  // account is created. (No onboarding deep link to consume it.)
   const shareMessage = useMemo(
     () =>
-      `Rejoins ChinaLink Express avec mon code de parrainage ${referralCode}. ` +
-      'Utilise ce code lors de la creation de ton compte.',
+      `Rejoins ChinaLink Express ! Donne mon code de parrainage ${referralCode} ` +
+      'à l’équipe lors de la création de ton compte.',
     [referralCode]
   );
 

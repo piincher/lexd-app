@@ -3,6 +3,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { useOrderDetail } from './useOrderDetail';
 import { useRoutes } from './useRoutes';
 import { useUpdateOrder } from './useOrderManagement';
+import { LEGACY_MANUAL_ORDERS_ENABLED } from '../legacyOrders';
 
 const parseNum = (val: any): number => {
   if (val === null || val === undefined || val === '') return 0;
@@ -49,6 +50,8 @@ export const useOrderDetailScreen = () => {
   }, [order, resolvedTotal]);
 
   const handleUpdateStatus = () => {
+    // Manual order editing is retired — orders are now driven by goods.
+    if (!LEGACY_MANUAL_ORDERS_ENABLED) return;
     navigation.navigate('EditOrder' as never, {
       id: order?._id,
       orderId: order?.code,

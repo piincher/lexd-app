@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { ShippingMode, FILTER_OPTIONS } from "../../hooks/pastOrdersConstants";
+import { LEGACY_MANUAL_ORDERS_ENABLED } from "@src/features/admin/orders/legacyOrders";
 import { createStyles } from "./PastOrdersEmptyState.styles";
 
 interface PastOrdersEmptyStateProps {
@@ -41,7 +42,7 @@ export const PastOrdersEmptyState: React.FC<PastOrdersEmptyStateProps> = ({
         {hasSearch ? "Aucun résultat" : "Aucune expédition terminée"}
       </Text>
       <Text style={styles.emptyText}>{emptyMessage}</Text>
-      {!hasSearch ? (
+      {!hasSearch && LEGACY_MANUAL_ORDERS_ENABLED ? (
         <Pressable
           style={styles.browseButton}
           onPress={() => navigation.navigate("AddOrder" as never)}

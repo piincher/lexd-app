@@ -4,8 +4,10 @@ export const filterNotifications = (
   notifications: InAppNotification[],
   filter: FilterTab,
 ) => {
+  const list = Array.isArray(notifications) ? notifications : [];
+
   if (filter === 'important') {
-    return notifications.filter((item) =>
+    return list.filter((item) =>
       item.priority === 'HIGH' ||
       item.category === 'WARNING' ||
       item.category === 'ERROR' ||
@@ -14,7 +16,7 @@ export const filterNotifications = (
   }
 
   if (filter === 'shipments') {
-    return notifications.filter((item) =>
+    return list.filter((item) =>
       item.type === 'CONTAINER_STATUS' ||
       item.type === 'ORDER_UPDATE' ||
       String(item.data?.screen || '').toLowerCase().includes('container')
@@ -22,11 +24,11 @@ export const filterNotifications = (
   }
 
   if (filter === 'payments') {
-    return notifications.filter((item) =>
+    return list.filter((item) =>
       item.type === 'PAYMENT' ||
       item.type === 'INVOICE'
     );
   }
 
-  return notifications;
+  return list;
 };

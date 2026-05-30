@@ -18,7 +18,6 @@ export const MemberPointsScreen: React.FC = () => {
   const itemsQuery = useActiveRewardItems();
   const summaryQuery = useMyRewardSummaryV2();
 
-  const handleBack = useCallback(() => navigation.goBack(), [navigation]);
   const goToHistory = useCallback(() => (navigation as any).navigate('PointsHistory'), [navigation]);
   const goToRedemptions = useCallback(() => (navigation as any).navigate('MyProductRedemptions'), [navigation]);
   const goToDetail = useCallback((item: any) => (navigation as any).navigate('RewardDetail', { item }), [navigation]);
@@ -32,7 +31,7 @@ export const MemberPointsScreen: React.FC = () => {
 
   return (
     <Screen
-      header={{ title: 'Récompenses', showBack: true, onBackPress: handleBack, rightAction: (
+      header={{ title: 'Récompenses', rightAction: (
         <TouchableOpacity onPress={goToHistory}>
           <MaterialCommunityIcons name="history" size={24} color={colors.primary.main} />
         </TouchableOpacity>
@@ -55,18 +54,18 @@ export const MemberPointsScreen: React.FC = () => {
         </View>
       )}
 
-      {!isLoading && !isError && items.length === 0 && (
-        <View style={styles.state}>
-          <RedemptionEmptyState title="Aucune récompense" subtitle="Aucun article disponible pour le moment. Revenez plus tard." icon="gift-off-outline" />
-        </View>
-      )}
-
-      {!isLoading && !isError && items.length > 0 && (
+      {!isLoading && !isError && (
         <>
           <View style={styles.header}>
             <PointsBalanceHeader points={points} pointValueFCFA={pointValueFCFA} />
           </View>
-          <RewardItemGrid items={items} userPoints={points} onItemPress={goToDetail} refreshing={itemsQuery.isRefetching} onRefresh={onRefresh} />
+          {items.length === 0 ? (
+            <View style={styles.state}>
+              <RedemptionEmptyState title="Aucune récompense" subtitle="Aucun article disponible pour le moment. Revenez plus tard." icon="gift-off-outline" />
+            </View>
+          ) : (
+            <RewardItemGrid items={items} userPoints={points} onItemPress={goToDetail} refreshing={itemsQuery.isRefetching} onRefresh={onRefresh} />
+          )}
         </>
       )}
 

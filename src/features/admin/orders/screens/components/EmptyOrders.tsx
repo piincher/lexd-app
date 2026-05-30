@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { createStyles } from './EmptyOrders.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { LEGACY_MANUAL_ORDERS_ENABLED } from '../../legacyOrders';
 
 export const EmptyOrders: React.FC = () => {
   const navigation = useNavigation();
@@ -18,17 +19,20 @@ export const EmptyOrders: React.FC = () => {
       </View>
       <Text style={styles.title}>No Orders Found</Text>
       <Text style={styles.subtitle}>
-        There are no orders matching your search criteria. Try adjusting your filters or create a new order.
+        There are no orders matching your search criteria. Try adjusting your filters.
       </Text>
-      <Button
-        mode="contained"
-        onPress={() => navigation.navigate('AddOrder' as never)}
-        style={styles.button}
-        buttonColor={colors.primary.main}
-        icon="plus"
-      >
-        Create New Order
-      </Button>
+      {/* Manual order creation retired — orders now come from goods. */}
+      {LEGACY_MANUAL_ORDERS_ENABLED && (
+        <Button
+          mode="contained"
+          onPress={() => navigation.navigate('AddOrder' as never)}
+          style={styles.button}
+          buttonColor={colors.primary.main}
+          icon="plus"
+        >
+          Create New Order
+        </Button>
+      )}
     </View>
   );
 };

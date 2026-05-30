@@ -3,6 +3,7 @@ import { ContainerDetailHeader } from '../../screens/components/ContainerDetailH
 import { ContainerEtaCard } from '../../screens/components/ContainerEtaCard';
 import { LoadPlanSuggestionCard } from '../../screens/components/LoadPlanSuggestionCard';
 import { ScanToAssignModal } from '../../screens/components/ScanToAssignModal';
+import { ContainerKeyInfoCard } from '../../screens/components/ContainerKeyInfoCard';
 import { buildContainerEta } from '../../screens/hooks/containerEta';
 import { useContainerLoadPlan } from '../../screens/hooks/useContainerLoadPlan';
 import { ContainerTimeline } from '../../screens/components/ContainerTimeline';
@@ -93,6 +94,7 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
       />
       <ContainerHealthPanel health={assist.health} />
       <ContainerEtaCard eta={eta} />
+      <ContainerKeyInfoCard container={container} />
       {loadPlan.isLoadable && loadPlan.plan && (
         <LoadPlanSuggestionCard
           plan={loadPlan.plan}

@@ -6,10 +6,17 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { AuthenticatedStackParamList } from '@src/navigation/types';
+import { LEGACY_MANUAL_ORDERS_ENABLED } from '../../legacyOrders';
 
 type NavigationProp = NativeStackNavigationProp<AuthenticatedStackParamList>;
 
 export const AddOrderButton: React.FC = () => {
+  // Manual order creation is being retired — orders now come from goods.
+  if (!LEGACY_MANUAL_ORDERS_ENABLED) return null;
+  return <AddOrderButtonInner />;
+};
+
+const AddOrderButtonInner: React.FC = () => {
   const navigation = useNavigation<NavigationProp>();
   const { colors, isDark } = useAppTheme();
   const styles = StyleSheet.create({

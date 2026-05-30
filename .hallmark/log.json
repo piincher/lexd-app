@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-05-29",
+    "macrostructure": "Letter",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "none — typographic hierarchy + intentional spacing",
+    "brief": "LoginScreen redesign — centered intimate form, unified phone input, solid primary CTA, simplified footer, removed gradient header and card chrome"
+  },
+  {
     "date": "2026-05-27",
     "macrostructure": "Document Card (mobile packing list)",
     "theme": "Brand-aligned app theme",

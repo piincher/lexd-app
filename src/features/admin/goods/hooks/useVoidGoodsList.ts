@@ -30,10 +30,12 @@ export const useVoidGoodsList = (): UseVoidGoodsListReturn => {
   });
 
   const goodsList = useMemo(() => {
-    const raw = data?.data?.data || data?.data?.goods || [];
+    const payload = data?.data as { data?: unknown; goods?: unknown } | undefined;
+    const raw = payload?.data || payload?.goods || [];
+    const list = Array.isArray(raw) ? raw : [];
     // Deduplicate by _id to prevent duplicate key errors in FlashList
     const seen = new Set<string>();
-    return raw.filter((g: Goods) => {
+    return list.filter((g: Goods) => {
       if (seen.has(g._id)) return false;
       seen.add(g._id);
       return true;

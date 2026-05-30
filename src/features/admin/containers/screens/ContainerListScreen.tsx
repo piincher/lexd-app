@@ -29,12 +29,13 @@ export const ContainerListScreen: React.FC = () => {
     stats,
     handleContainerPress,
     handleCreateContainerPress,
+    handleOpenAnalytics,
     handleRefresh,
   } = useContainerListScreen();
 
   return (
     <SafeAreaView style={styles.container}>
-      <ContainerListHeader stats={stats} />
+      <ContainerListHeader stats={stats} onOpenAnalytics={handleOpenAnalytics} />
       <ContainerStatusFilter
         selectedStatus={selectedStatus}
         onSelectStatus={setSelectedStatus}

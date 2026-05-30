@@ -11,6 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Goods } from '../../../types';
 import { getStatusConfig } from '../../../components/GoodsCardStatus';
 import { getVariantColors } from '../../../components/statusVariant';
+import { shareLink, adminGoodsDetailLink } from '@src/shared/lib/shareLink';
 
 interface GoodsDetailHeaderProps {
   goods: Goods;
@@ -87,6 +88,17 @@ export const GoodsDetailHeader: React.FC<GoodsDetailHeaderProps> = ({
               </TouchableOpacity>
             }
           >
+            <Menu.Item
+              onPress={withClose(() =>
+                shareLink({
+                  message: `Marchandise ${goods.goodsId}`,
+                  url: adminGoodsDetailLink(goods.goodsId),
+                  title: 'Partager la marchandise',
+                }),
+              )}
+              title="Partager le lien"
+              leadingIcon="share-variant"
+            />
             {isOwnerUnidentified && onAssignClientPress && (
               <Menu.Item
                 onPress={withClose(onAssignClientPress)}

@@ -1,5 +1,7 @@
+/* Hallmark · redesign · macrostructure: Marquee Hero + Catalogue · genre: premium-loyalty · theme: gold-on-green */
 import { StyleSheet, Platform } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { Theme } from '@src/constants/Theme';
 
 export const createStyles = (colors: any, isDark?: boolean) =>
   StyleSheet.create({
@@ -7,128 +9,188 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       flex: 1,
       backgroundColor: colors.background.default,
     },
-    header: {
-      paddingHorizontal: 16,
-      paddingTop: Platform.OS === 'android' ? 12 : 20,
-      paddingBottom: 16,
-      backgroundColor: colors.background.card,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.neutral[200],
-      flexDirection: 'row',
-      alignItems: 'center',
+
+    // ---- Marquee hero ---------------------------------------------------
+    hero: {
+      paddingTop: Platform.OS === 'android' ? Theme.spacing.lg : Theme.spacing['2xl'],
+      paddingBottom: Theme.spacing['2xl'],
+      paddingHorizontal: Theme.spacing.xl,
+      borderBottomLeftRadius: Theme.radius['2xl'],
+      borderBottomRightRadius: Theme.radius['2xl'],
+      ...Theme.shadows.md,
     },
-    backButton: {
-      width: 40,
-      height: 40,
-      borderRadius: 12,
-      backgroundColor: colors.neutral[100],
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginRight: 14,
-    },
-    headerTitleContainer: {
-      flex: 1,
-    },
-    headerTitle: {
-      fontSize: 22,
+    heroOverline: {
+      fontSize: 11,
+      letterSpacing: 1.5,
       fontFamily: Fonts.bold,
-      color: colors.text.primary,
-      marginBottom: 2,
+      color: colors.text.inverse,
+      opacity: 0.85,
+      marginBottom: Theme.spacing.xs,
     },
-    headerSubtitle: {
-      fontSize: 14,
+    heroTitle: {
+      fontSize: 26,
+      lineHeight: 32,
+      fontFamily: Fonts.black,
+      color: colors.text.inverse,
+      marginBottom: Theme.spacing.lg,
+    },
+    statRow: {
+      flexDirection: 'row',
+      gap: Theme.spacing.sm,
+    },
+    statChip: {
+      flex: 1,
+      paddingVertical: Theme.spacing.md,
+      paddingHorizontal: Theme.spacing.md,
+      borderRadius: Theme.radius.lg,
+      backgroundColor: 'rgba(255,255,255,0.16)',
+    },
+    statValue: {
+      fontSize: 20,
+      fontFamily: Fonts.black,
+      color: colors.text.inverse,
+    },
+    statLabel: {
+      fontSize: 11,
+      letterSpacing: 0.3,
       fontFamily: Fonts.medium,
-      color: colors.text.secondary,
+      color: colors.text.inverse,
+      opacity: 0.9,
+      marginTop: 2,
     },
-    searchContainer: {
-      paddingHorizontal: 16,
-      paddingVertical: 12,
+
+    // ---- Search band ----------------------------------------------------
+    searchBand: {
+      paddingHorizontal: Theme.spacing.lg,
+      paddingTop: Theme.spacing.lg,
+      paddingBottom: Theme.spacing.xs,
+      backgroundColor: colors.background.default,
+    },
+    searchCard: {
       backgroundColor: colors.background.card,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.neutral[200],
+      borderRadius: Theme.radius.lg,
+      paddingHorizontal: Theme.spacing.md,
+      paddingTop: Theme.spacing.md,
+      paddingBottom: Theme.spacing.xs,
+      ...Theme.shadows.sm,
     },
+
+    // ---- List + card ----------------------------------------------------
     listContent: {
-      padding: 16,
-      gap: 12,
+      paddingHorizontal: Theme.spacing.lg,
+      paddingTop: Theme.spacing.md,
+      paddingBottom: 96,
+      gap: Theme.spacing.md,
     },
     card: {
       backgroundColor: colors.background.card,
-      borderRadius: 16,
-      padding: 14,
-      borderWidth: 1,
-      borderColor: colors.border.light,
+      borderRadius: Theme.radius.lg,
+      padding: Theme.spacing.lg,
       flexDirection: 'row',
-      alignItems: 'center',
-      gap: 12,
+      gap: Theme.spacing.md,
+      ...Theme.shadows.sm,
     },
-    image: {
-      width: 56,
-      height: 56,
-      borderRadius: 12,
-      backgroundColor: colors.neutral[200],
-    },
-    imagePlaceholder: {
-      width: 56,
-      height: 56,
-      borderRadius: 12,
-      backgroundColor: colors.neutral[200],
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    info: {
+    cardBody: {
       flex: 1,
-      gap: 4,
+      gap: 6,
+    },
+    cardHeadRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: Theme.spacing.sm,
+    },
+    cardTitleCol: {
+      flex: 1,
+    },
+    overline: {
+      fontSize: 10,
+      letterSpacing: 1,
+      fontFamily: Fonts.bold,
+      color: colors.text.secondary,
+      textTransform: 'uppercase',
+      marginBottom: 2,
     },
     name: {
-      fontSize: 15,
+      fontSize: 16,
+      lineHeight: 21,
       fontFamily: Fonts.bold,
       color: colors.text.primary,
     },
-    meta: {
-      fontSize: 13,
-      fontFamily: Fonts.regular,
-      color: colors.text.secondary,
+    cardActions: {
+      flexDirection: 'row',
+      gap: Theme.spacing.xs,
     },
-    row: {
+    cardActionBtn: {
+      width: 36,
+      height: 36,
+      borderRadius: Theme.radius.md,
+      backgroundColor: colors.primary[50] ?? colors.background.paper,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    trashBtn: {
+      width: 36,
+      height: 36,
+      borderRadius: Theme.radius.md,
+      backgroundColor: colors.feedback.errorBg,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    pointsRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 8,
+      marginTop: 2,
     },
+    chipRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      gap: Theme.spacing.sm,
+      marginTop: 2,
+    },
+
+    // ---- FAB ------------------------------------------------------------
     fab: {
       position: 'absolute',
-      right: 20,
-      bottom: 24,
-      width: 56,
-      height: 56,
-      borderRadius: 28,
+      right: Theme.spacing.xl,
+      bottom: Theme.spacing['2xl'],
+      width: 58,
+      height: 58,
+      borderRadius: 29,
       backgroundColor: colors.primary.main,
       justifyContent: 'center',
       alignItems: 'center',
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.2,
-      shadowRadius: 8,
-      elevation: 6,
+      ...Theme.shadows.lg,
     },
-    empty: {
+
+    // ---- Empty / loading ------------------------------------------------
+    stateWrap: {
+      flexGrow: 1,
       alignItems: 'center',
-      paddingVertical: 48,
+      justifyContent: 'center',
+      paddingVertical: 72,
+      paddingHorizontal: Theme.spacing.xl,
+      gap: Theme.spacing.md,
     },
-    emptyText: {
-      marginTop: 12,
+    stateIconRing: {
+      width: 88,
+      height: 88,
+      borderRadius: 44,
+      backgroundColor: colors.background.card,
+      justifyContent: 'center',
+      alignItems: 'center',
+      ...Theme.shadows.sm,
+    },
+    stateTitle: {
+      fontSize: 16,
+      fontFamily: Fonts.bold,
+      color: colors.text.primary,
       textAlign: 'center',
-      color: colors.text.disabled,
+    },
+    stateSubtitle: {
+      fontSize: 13,
       fontFamily: Fonts.regular,
-      fontSize: 14,
-    },
-    loader: {
-      paddingVertical: 40,
-      alignItems: 'center',
-    },
-    loaderText: {
-      marginTop: 12,
       color: colors.text.secondary,
-      fontFamily: Fonts.regular,
-      fontSize: 14,
+      textAlign: 'center',
     },
   });

@@ -60,6 +60,60 @@ export const createStyles = (colors: any) =>
       color: colors.text.primary,
       lineHeight: 18,
     },
+    imagePlaceholder: {
+      width: 48,
+      height: 48,
+      borderRadius: 8,
+      backgroundColor: colors.primary[50] ?? colors.background.paper,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    // Pickup-code presentation — shown when the item is approved/ready so the
+    // client has the code ready to present at the counter.
+    pickupBox: {
+      borderRadius: 10,
+      padding: 12,
+      gap: 6,
+      alignItems: 'center',
+      backgroundColor: (colors.accent?.gold ?? colors.primary.main) + '14',
+      borderWidth: 1,
+      borderColor: (colors.accent?.gold ?? colors.primary.main) + '40',
+      borderStyle: 'dashed',
+    },
+    pickupLabel: {
+      fontSize: 11,
+      fontWeight: '700',
+      letterSpacing: 0.5,
+      textTransform: 'uppercase',
+      color: colors.text.secondary,
+    },
+    pickupCode: {
+      fontSize: 30,
+      fontWeight: '900',
+      letterSpacing: 8,
+      color: colors.accent?.goldDark ?? colors.primary.dark ?? colors.primary.main,
+    },
+    pickupHint: {
+      fontSize: 11,
+      color: colors.text.secondary,
+      textAlign: 'center',
+    },
+    rejectBox: {
+      backgroundColor: colors.status.error + '10',
+      borderRadius: 8,
+      padding: 10,
+      gap: 4,
+    },
+    rejectLabel: {
+      fontSize: 11,
+      fontWeight: '700',
+      color: colors.status.error,
+    },
+    rejectText: {
+      fontSize: 13,
+      color: colors.text.primary,
+      lineHeight: 18,
+    },
     cancelButton: {
       flexDirection: 'row',
       alignItems: 'center',

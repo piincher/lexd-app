@@ -179,13 +179,6 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         route: "AdminTicketList",
       },
       {
-        id: "c8",
-        title: "Demandes de remise",
-        description: "Valider les remises sur facture (legacy)",
-        icon: "gift-outline",
-        route: "AdminRedemptions",
-      },
-      {
         id: "c8b",
         title: "Catalogue récompenses",
         description: "Gérer les articles échangeables",
@@ -205,13 +198,6 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         description: "Ajuster les soldes clients",
         icon: "account-cash",
         route: "AdminPointsManagement",
-      },
-      {
-        id: "c9",
-        title: "Réglages remises",
-        description: "Configurer les règles legacy",
-        icon: "tune-variant",
-        route: "AdminRewardSettings",
       },
       {
         id: "c9b",

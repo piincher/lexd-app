@@ -211,9 +211,32 @@ export interface RewardItem {
 
 export type ProductRedemptionStatus = 'PENDING' | 'APPROVED' | 'READY_FOR_PICKUP' | 'COLLECTED' | 'REJECTED' | 'CANCELLED';
 
+/** Populated reward item summary returned alongside a product redemption. */
+export interface ProductRedemptionItem {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  pointsRequired: number;
+  stock: number;
+  pickupMethod: 'PICKUP' | 'DELIVERY';
+  status: 'ACTIVE' | 'INACTIVE';
+  category: string;
+}
+
+export interface ProductRedemptionUser {
+  id: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  name: string;
+  rewardPoints: number;
+}
+
 export interface ProductRedemption {
   id: string;
   userId: string;
+  user?: ProductRedemptionUser | null;
   status: ProductRedemptionStatus;
   requestedPoints: number;
   pointValueFCFA: number;
@@ -222,8 +245,12 @@ export interface ProductRedemption {
   approvedValueFCFA: number;
   restoredPoints: number;
   rewardItemId: string | null;
+  /** Populated item details (name, image…) when the backend joins them. */
+  rewardItem?: ProductRedemptionItem | null;
   quantity: number;
   pickupMethod: string | null;
+  /** Secure code minted on approval; the client presents it at pickup. */
+  pickupCode: string | null;
   phoneVerification: string;
   customerRemarks: string;
   adminRemarks: string;

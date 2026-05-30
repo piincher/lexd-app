@@ -87,7 +87,8 @@ export const useSearchUsers = () => {
     if (!canSearch) return [];
     if (!serverSearchResults || serverSearchResults.length === 0) return [];
 
-    const filteredServer = serverSearchResults.filter(predicate);
+    const resultList = Array.isArray(serverSearchResults) ? serverSearchResults : [];
+    const filteredServer = resultList.filter(predicate);
     if (filteredServer.length === 0) return [];
 
     // Dedupe defensively in case both sources somehow overlap.

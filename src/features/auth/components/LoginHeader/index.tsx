@@ -1,16 +1,14 @@
 /**
- * LoginHeader Component
- * Header section with gradient background and logo
+ * LoginHeader — Clean centered brand mark + title
+ * Hallmark · macrostructure: Letter · tone: warm-utilitarian
  */
 
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { FadeInDown } from 'react-native-reanimated';
-import { IMAGES } from '@src/constants/Images';
-import { Fonts } from '@src/constants/Fonts';
-import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
+import React from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import Animated, { FadeInDown } from "react-native-reanimated";
+import { IMAGES } from "@src/constants/Images";
+import { Fonts } from "@src/constants/Fonts";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 
 interface LoginHeaderProps {
   title: string;
@@ -21,31 +19,57 @@ export const LoginHeader: React.FC<LoginHeaderProps> = ({ title, subtitle }) => 
   const { colors } = useAppTheme();
 
   return (
-    <Animated.View entering={FadeInDown.duration(500).springify()} style={styles.container}>
-      <LinearGradient colors={Theme.gradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.gradient}>
-        <View style={styles.decorCircle1} />
-        <View style={styles.decorCircle2} />
-        <View style={styles.decorCircle3} />
-        <Image source={IMAGES.flat_logo} style={[styles.logo, { tintColor: colors.text.inverse }]} resizeMode="contain" />
-        <Text style={[styles.title, { color: colors.text.inverse }]}>{title}</Text>
-        <Text style={[styles.subtitle, { color: colors.text.inverse, opacity: 0.8 }]}>{subtitle}</Text>
-      </LinearGradient>
+    <Animated.View
+      entering={FadeInDown.duration(500).springify()}
+      style={styles.container}
+    >
+      <View style={[styles.logoWrap, { backgroundColor: colors.primary.main + "14" }]}>
+        <Image
+          source={IMAGES.logo}
+          style={[styles.logo, { tintColor: colors.primary.main }]}
+          resizeMode="contain"
+        />
+      </View>
+      <Text style={[styles.title, { color: colors.text.primary }]}>{title}</Text>
+      <Text style={[styles.subtitle, { color: colors.text.secondary }]}>{subtitle}</Text>
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { overflow: 'hidden' },
-  gradient: {
-    paddingTop: 40, paddingBottom: 36, paddingHorizontal: 24, alignItems: 'center',
-    borderBottomLeftRadius: 32, borderBottomRightRadius: 32, overflow: 'hidden',
+  container: {
+    alignItems: "center",
+    paddingTop: 48,
+    paddingBottom: 32,
+    paddingHorizontal: 24,
   },
-  decorCircle1: { position: 'absolute', top: -40, right: -40, width: 140, height: 140, borderRadius: 70, backgroundColor: 'rgba(255,255,255,0.07)' },
-  decorCircle2: { position: 'absolute', bottom: -30, left: -30, width: 100, height: 100, borderRadius: 50, backgroundColor: 'rgba(255,255,255,0.05)' },
-  decorCircle3: { position: 'absolute', top: 20, left: 40, width: 60, height: 60, borderRadius: 30, backgroundColor: 'rgba(255,255,255,0.04)' },
-  logo: { width: 160, height: 44, marginBottom: 20 },
-  title: { fontSize: 28, fontFamily: Fonts.bold, letterSpacing: -0.5, marginBottom: 6 },
-  subtitle: { fontSize: 14, fontFamily: Fonts.regular, textAlign: 'center' },
+  logoWrap: {
+    width: 80,
+    height: 80,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 24,
+  },
+  logo: {
+    width: 48,
+    height: 48,
+  },
+  title: {
+    fontSize: 32,
+    fontFamily: Fonts.bold,
+    letterSpacing: -0.8,
+    lineHeight: 40,
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 15,
+    fontFamily: Fonts.regular,
+    lineHeight: 22,
+    textAlign: "center",
+    maxWidth: 280,
+  },
 });
 
 export default LoginHeader;

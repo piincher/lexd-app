@@ -20,6 +20,8 @@ interface GoodsBulkActionBarProps {
   onAssignContainer: () => void;
   onChangeStatus: () => void;
   onVoid: () => void;
+  /** Optional — export the current selection to PDF. */
+  onExportPdf?: () => void;
   /** Optional — when provided, renders a separated permanent-delete row. */
   onHardDelete?: () => void;
   onCancel: () => void;
@@ -37,6 +39,7 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
   onAssignContainer,
   onChangeStatus,
   onVoid,
+  onExportPdf,
   onHardDelete,
   onCancel,
   totals,
@@ -103,6 +106,15 @@ export const GoodsBulkActionBar: React.FC<GoodsBulkActionBarProps> = ({
           disabled={isDisabled}
           onPress={onChangeStatus}
         />
+        {onExportPdf && (
+          <BulkActionButton
+            icon="document-text-outline"
+            label="PDF"
+            isPending={false}
+            disabled={selectedCount === 0}
+            onPress={onExportPdf}
+          />
+        )}
         <BulkActionButton
           icon="trash-outline"
           label="Annuler"

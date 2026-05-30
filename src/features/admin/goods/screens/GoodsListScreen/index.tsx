@@ -54,6 +54,7 @@ export const GoodsListScreen: React.FC = () => {
           onAssignContainer={() => s.setContainerPickerVisible(true)}
           onChangeStatus={() => s.setStatusPickerVisible(true)}
           onVoid={s.handleVoidGoods} onHardDelete={s.handleHardDeleteGoods}
+          onExportPdf={s.handleExportSelectedPdf}
           totals={s.selectionTotals}
           onCancel={s.exitSelectionMode} />
       )}

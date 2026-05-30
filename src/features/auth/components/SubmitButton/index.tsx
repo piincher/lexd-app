@@ -1,14 +1,14 @@
 /**
- * SubmitButton Component
- * Gradient submit button with loading state
+ * SubmitButton — Solid primary CTA
+ * Hallmark · component: button · genre: modern-minimal
+ * states: default · pressed · disabled · loading
  */
 
 import React from "react";
 import { Text, Pressable, StyleSheet, ActivityIndicator } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
+import { useAppTheme } from "@src/providers/ThemeProvider";
 import { hapticMedium } from "@src/shared/lib/haptics";
 
 interface SubmitButtonProps {
@@ -17,53 +17,69 @@ interface SubmitButtonProps {
   text?: string;
 }
 
-export const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, isLoading, text = "Continuer" }) => {
+export const SubmitButton: React.FC<SubmitButtonProps> = ({
+  onPress,
+  isLoading,
+  text = "Continuer",
+}) => {
+  const { colors } = useAppTheme();
+
   const handlePress = () => {
+    if (isLoading) return;
     hapticMedium();
     onPress();
   };
 
   return (
-  <Pressable
-    onPress={handlePress}
-    disabled={isLoading}
-    style={({ pressed }) => [
-      styles.container,
-      isLoading && styles.disabled,
-      pressed && !isLoading && styles.pressed,
-    ]}
-  >
-    <LinearGradient
-      colors={isLoading ? [Theme.colors.text.disabled, Theme.colors.text.disabled] : [Theme.colors.primary.main, Theme.colors.primary.dark]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 0 }}
-      style={styles.gradient}
+    <Pressable
+      onPress={handlePress}
+      disabled={isLoading}
+      style={({ pressed }) => [
+        styles.container,
+        {
+          backgroundColor: isLoading
+            ? colors.primary.light
+            : colors.primary.main,
+        },
+        pressed && !isLoading && {
+          backgroundColor: colors.primary.dark,
+          transform: [{ scale: 0.98 }],
+        },
+      ]}
     >
       {isLoading ? (
-        <ActivityIndicator size="small" color={Theme.colors.text.inverse} />
+        <ActivityIndicator size="small" color={colors.text.inverse} />
       ) : (
         <>
-          <Text style={styles.text}>{text}</Text>
-          <MaterialCommunityIcons name="arrow-right" size={20} color={Theme.colors.text.inverse} />
+          <Text style={[styles.text, { color: colors.text.inverse }]}>
+            {text}
+          </Text>
+          <MaterialCommunityIcons
+            name="arrow-right"
+            size={20}
+            color={colors.text.inverse}
+          />
         </>
       )}
-    </LinearGradient>
-  </Pressable>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { marginTop: 20, borderRadius: 16, overflow: "hidden" },
-  disabled: { opacity: 0.7 },
-  pressed: { opacity: 0.9, transform: [{ scale: 0.98 }] },
-  gradient: {
+  container: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-    paddingVertical: 16,
+    height: 56,
+    borderRadius: 16,
+    marginTop: 20,
   },
-  text: { fontSize: 16, fontFamily: Fonts.bold, color: Theme.colors.text.inverse, letterSpacing: 0.3 },
+  text: {
+    fontSize: 16,
+    fontFamily: Fonts.bold,
+    letterSpacing: 0.3,
+  },
 });
 
 export default SubmitButton;
