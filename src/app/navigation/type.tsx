@@ -23,6 +23,7 @@ export type RootStackParamList = {
    UserAdd: undefined;
    AdminPastOrders: undefined;
    SendSms: undefined;
+   SendWhatsApp: undefined;
    ActiveOrderDetails: { id: string };
    ScanQRCode: undefined;
    Notifications: undefined;

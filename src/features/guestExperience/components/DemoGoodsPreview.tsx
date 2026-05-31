@@ -67,7 +67,7 @@ export const DemoGoodsPreview: React.FC<Props> = ({ goods }) => {
 
 const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
   StyleSheet.create({
-    container: { marginHorizontal: 16, marginTop: 16 },
+    container: { marginHorizontal: 20, marginTop: Theme.spacing.lg },
     header: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
     headerTitle: { fontFamily: Fonts.bold, fontSize: 18, color: colors.text.primary },
     badge: { minWidth: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primary.main },

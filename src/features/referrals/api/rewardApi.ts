@@ -1,6 +1,7 @@
 import { apiClientV2 } from '@src/shared/api/client';
 import type {
   CreateProductRedemptionPayload,
+  PaginationInfo,
   ProductRedemption,
   ProductRedemptionList,
   RewardItem,
@@ -10,6 +11,22 @@ import type {
   RewardSummary,
   RewardSummaryV2,
 } from '../types';
+
+export type RewardCatalogSort = 'points_asc' | 'points_desc' | 'newest';
+
+export interface RewardCatalogParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+  category?: string;
+  sort?: RewardCatalogSort;
+}
+
+export interface ActiveRewardItemsResponse {
+  items: RewardItem[];
+  pagination: PaginationInfo;
+  categories: string[];
+}
 
 interface ApiResponse<T> {
   success: boolean;
@@ -55,9 +72,31 @@ export const applyRewardToInvoice = async (
   return response.data.data;
 };
 
-export const getActiveRewardItems = async (): Promise<RewardItem[]> => {
-  const response = await apiClientV2.get<ApiResponse<{ items: RewardItem[]; pagination: unknown }>>('/rewards/items');
-  return response.data.data?.items || [];
+export const getActiveRewardItems = async (
+  params: RewardCatalogParams = {}
+): Promise<ActiveRewardItemsResponse> => {
+  const query: Record<string, string | number> = {
+    page: params.page ?? 1,
+    limit: params.limit ?? 20,
+  };
+  if (params.search?.trim()) query.search = params.search.trim();
+  if (params.category && params.category !== 'all') query.category = params.category;
+  if (params.sort) query.sort = params.sort;
+
+  const response = await apiClientV2.get<ApiResponse<ActiveRewardItemsResponse>>('/rewards/items', {
+    params: query,
+  });
+  const data = response.data.data;
+  return {
+    items: data?.items || [],
+    pagination: data?.pagination || {
+      page: Number(query.page) || 1,
+      limit: Number(query.limit) || 20,
+      total: 0,
+      pages: 0,
+    },
+    categories: data?.categories || [],
+  };
 };
 
 export const getRewardItemById = async (id: string): Promise<RewardItem> => {

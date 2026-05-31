@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, useSharedValue, useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
 import type { DemoMetric } from '../types';
 
@@ -22,7 +23,7 @@ const Card: React.FC<{ m: DemoMetric; i: number; colors: ReturnType<typeof useAp
         <Animated.View
           style={[
             styles.card,
-            { backgroundColor: colors.background.card, borderColor: colors.border, shadowColor: colors.neutral[900] },
+            { backgroundColor: colors.background.card, borderColor: colors.border },
             a,
           ]}
         >
@@ -54,9 +55,9 @@ export const GuestCommandCenter: React.FC<Props> = ({ metrics }) => {
 };
 
 const createStyles = (colors: any) => StyleSheet.create({
-  container: { marginHorizontal: 20, marginTop: 24, borderRadius: 18, padding: 16, borderWidth: 1, backgroundColor: colors.background.card, borderColor: colors.border },
+  container: { marginHorizontal: 20, marginTop: Theme.spacing.lg, borderRadius: Theme.radius.xl, padding: Theme.spacing.lg, borderWidth: 1, backgroundColor: colors.background.card, borderColor: colors.border },
   grid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 12 },
-  card: { borderRadius: 14, padding: 12, borderWidth: 1, shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 3, shadowColor: colors.neutral[900] },
+  card: { borderRadius: Theme.radius.lg, padding: Theme.spacing.md, borderWidth: 1, ...Theme.shadows.sm, borderColor: colors.border },
   icon: { width: 36, height: 36, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
   val: { fontFamily: Fonts.bold, fontSize: 22, marginTop: 10 },
   lab: { fontFamily: Fonts.bold, fontSize: 12, marginTop: 3 },

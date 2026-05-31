@@ -7,3 +7,4 @@ export * from './useCampaigns';
 export * from './useCreateCampaignScreen';
 export * from './useNotifications';
 export * from './useSendSmsScreen';
+export * from './useSendWhatsAppScreen';

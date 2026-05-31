@@ -18,6 +18,7 @@ const OrderDetailScreen: React.FC = () => {
     refetch,
     routes,
     handleUpdateStatus,
+    handleOpenGoods,
   } = useOrderDetailScreen();
 
   if (isLoading) {
@@ -39,8 +40,7 @@ const OrderDetailScreen: React.FC = () => {
   return (
     <Screen
       header={{
-        title: 'Détails commande',
-        subtitle: normalizedOrder.code,
+        title: normalizedOrder.code ? `Détails ${normalizedOrder.code}` : 'Détails commande',
         showNotificationBell: true,
       }}
     >
@@ -51,6 +51,7 @@ const OrderDetailScreen: React.FC = () => {
         isUpdating={isUpdating}
         onRefresh={refetch}
         onUpdateStatus={handleUpdateStatus}
+        onOpenGoods={handleOpenGoods}
       />
     </Screen>
   );

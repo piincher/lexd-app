@@ -98,7 +98,7 @@ export const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.
     alignItems: 'center',
     borderRadius: Theme.radius.sm,
     paddingVertical: Theme.spacing.sm,
-    backgroundColor: isDark ? colors.neutral[800] : colors.background.card,
+    backgroundColor: isDark ? colors.neutral[200] : colors.background.card,
   },
   summaryValue: {
     fontSize: 13,

@@ -5,7 +5,8 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     flex: 1,
   },
   listContent: {
-    paddingHorizontal: 16,
+    // No horizontal padding here — the gradient hero is full-bleed and every
+    // other section (stats, filter chips, cards) owns its own 16px inset.
     paddingBottom: 100,
   },
   fab: {

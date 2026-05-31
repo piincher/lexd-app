@@ -1,11 +1,25 @@
 import { useMemo } from 'react';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useOrderDetail } from './useOrderDetail';
 import { useRoutes } from './useRoutes';
 import { useUpdateOrder } from './useOrderManagement';
 import { LEGACY_MANUAL_ORDERS_ENABLED } from '../legacyOrders';
 
-const parseNum = (val: any): number => {
+type GoodsLike = {
+  _id?: string;
+  totalCost?: unknown;
+  actualCBM?: unknown;
+  cbm?: unknown;
+  weight?: unknown;
+  isVoid?: boolean;
+  status?: string;
+};
+
+type GoodsTotals = { count: number; cbm: number; weight: number };
+type Nav = NativeStackNavigationProp<{ AdminGoodsDetail: { goodsId: string }; EditOrder: { id?: string; orderId?: string } }>;
+
+const parseNum = (val: unknown): number => {
   if (val === null || val === undefined || val === '') return 0;
   const num = parseFloat(String(val));
   return isNaN(num) ? 0 : num;
@@ -13,24 +27,37 @@ const parseNum = (val: any): number => {
 
 export const useOrderDetailScreen = () => {
   const route = useRoute();
-  const navigation = useNavigation();
+  const navigation = useNavigation<Nav>();
   const { id } = route.params as { id: string };
 
   const { data: order, isLoading, refetch } = useOrderDetail(id);
   const { data: routes } = useRoutes();
-  const { mutate: updateOrder, isPending: isUpdating } = useUpdateOrder();
+  const { isPending: isUpdating } = useUpdateOrder();
 
   const computeTotalFromGoods = (): number => {
     if (!order?.goodsIds || !Array.isArray(order.goodsIds) || order.goodsIds.length === 0) {
       return 0;
     }
-    return order.goodsIds.reduce((sum: number, g: any) => {
+    return order.goodsIds.reduce((sum: number, g: unknown) => {
       if (typeof g === 'object' && g !== null) {
-        return sum + (parseNum(g.totalCost) || 0);
+        return sum + (parseNum((g as GoodsLike).totalCost) || 0);
       }
       return sum;
     }, 0);
   };
+
+  const goodsTotals = useMemo(() => {
+    const goods = Array.isArray(order?.goodsIds) ? (order.goodsIds as GoodsLike[]) : [];
+    const activeGoods = goods.filter((item) => !item.isVoid && item.status !== 'VOID');
+    return activeGoods.reduce<GoodsTotals>(
+      (acc, item) => ({
+        count: acc.count + 1,
+        cbm: acc.cbm + (parseNum(item.actualCBM) || parseNum(item.cbm)),
+        weight: acc.weight + parseNum(item.weight),
+      }),
+      { count: 0, cbm: 0, weight: 0 }
+    );
+  }, [order?.goodsIds]);
 
   const resolvedTotal = parseNum(order?.calculatedTotal)
     || parseNum(order?.priceTotal)
@@ -40,31 +67,29 @@ export const useOrderDetailScreen = () => {
     if (!order) return null;
     return {
       ...order,
-      quantity: order?.quantity || 1,
-      packageWeight: order?.packageWeight || '0',
-      packageCBM: order?.packageCBM || String(order?.calculatedCBM || '0'),
+      quantity: goodsTotals.count || order?.quantity || 1,
+      packageWeight: goodsTotals.weight || parseNum(order?.packageWeight),
+      packageCBM: goodsTotals.cbm ? goodsTotals.cbm.toFixed(3) : order?.packageCBM || String(order?.calculatedCBM || '0'),
       unitPrice: parseNum(order?.unitPrice),
       priceTotal: resolvedTotal,
       calculatedTotal: resolvedTotal,
     };
-  }, [order, resolvedTotal]);
+  }, [goodsTotals, order, resolvedTotal]);
 
   const handleUpdateStatus = () => {
-    // Manual order editing is retired — orders are now driven by goods.
     if (!LEGACY_MANUAL_ORDERS_ENABLED) return;
-    navigation.navigate('EditOrder' as never, {
-      id: order?._id,
-      orderId: order?.code,
-    } as never);
+    navigation.navigate('EditOrder', { id: order?._id, orderId: order?.code });
   };
 
+  const handleOpenGoods = (goodsId: string) => navigation.navigate('AdminGoodsDetail', { goodsId });
+
   return {
-    order,
     normalizedOrder,
     isLoading,
     isUpdating,
     refetch,
     routes,
     handleUpdateStatus,
+    handleOpenGoods,
   };
 };

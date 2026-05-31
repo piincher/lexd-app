@@ -16,6 +16,7 @@ import { AllOrdersSearchBar } from '../components/AllOrdersSearchBar';
 import { AllOrdersStatusTabs } from '../components/AllOrdersStatusTabs';
 import { AllOrdersList } from '../components/AllOrdersList';
 import { AllOrdersErrorState } from '../components/AllOrdersErrorState';
+import { AllOrdersAdvancedFilters } from '../components/AllOrdersAdvancedFilters';
 import { createStyles } from './AllOrdersScreen.styles';
 
 const AllOrdersScreen: React.FC = () => {
@@ -23,6 +24,7 @@ const AllOrdersScreen: React.FC = () => {
   const styles = createStyles(colors, isDark);
   const {
     searchQuery, setSearchQuery, statusFilter, setStatusFilter,
+    advancedFilters,
     data, isLoading, isFetching, error, refetch,
     orders, filteredOrders, isFetchingNextPage, loadMore, handleMomentumScrollBegin,
     isSelectionMode, exitSelectionMode,
@@ -56,9 +58,6 @@ const AllOrdersScreen: React.FC = () => {
       scrollable={false}
     >
       <View style={styles.container}>
-        <OrdersStats orders={orders} />
-        <AllOrdersSearchBar value={searchQuery} onChangeText={setSearchQuery} />
-        <AllOrdersStatusTabs activeFilter={statusFilter} onChangeFilter={setStatusFilter} />
         <AllOrdersList
           data={data}
           filteredOrders={filteredOrders}
@@ -71,6 +70,19 @@ const AllOrdersScreen: React.FC = () => {
           isSelectionMode={isSelectionMode}
           selectedOrderIds={selectedOrderIds}
           onToggleSelect={toggleSelectOrder}
+          listHeader={
+            <View>
+              <OrdersStats orders={orders} />
+              <AllOrdersSearchBar value={searchQuery} onChangeText={setSearchQuery} />
+              <AllOrdersStatusTabs activeFilter={statusFilter} onChangeFilter={setStatusFilter} />
+              <AllOrdersAdvancedFilters
+                filters={advancedFilters.filters}
+                activeCount={advancedFilters.activeCount}
+                onChange={advancedFilters.setFilter}
+                onReset={advancedFilters.resetFilters}
+              />
+            </View>
+          }
         />
         {!isSelectionMode && <AddOrderButton />}
         {isSelectionMode && (

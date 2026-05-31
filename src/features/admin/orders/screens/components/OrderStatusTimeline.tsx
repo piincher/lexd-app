@@ -12,11 +12,11 @@ interface OrderStatusTimelineProps {
 }
 
 const STATUS_ORDER = [
-  { key: 'Order arrived at warehouse', label: 'Arrived at Warehouse', icon: 'warehouse' },
-  { key: 'Order in Processing', label: 'Processing', icon: 'cog' },
-  { key: 'Order in Transit', label: 'In Transit', icon: 'truck-delivery' },
-  { key: 'Order in Arrived', label: 'Arrived', icon: 'map-marker-check' },
-  { key: 'Delivered', label: 'Delivered', icon: 'package-check' },
+  { key: 'Order arrived at warehouse', label: 'Arrivée à l’entrepôt', icon: 'warehouse' },
+  { key: 'Order in Processing', label: 'En traitement', icon: 'cog' },
+  { key: 'Order in Transit', label: 'En transit', icon: 'truck-delivery' },
+  { key: 'Order in Arrived', label: 'Arrivée', icon: 'map-marker-check' },
+  { key: 'Delivered', label: 'Livrée', icon: 'package-check' },
 ];
 
 export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({ 
@@ -34,7 +34,7 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
     <Surface style={styles.container}>
       <View style={styles.header}>
         <MaterialCommunityIcons name="routes" size={22} color={colors.primary.main} />
-        <Text style={styles.title}>Shipping Timeline</Text>
+        <Text style={styles.title}>Suivi de la commande</Text>
       </View>
 
       <View style={styles.timeline}>
@@ -84,7 +84,7 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
                   {status.label}
                 </Text>
                 {isCurrent && (
-                  <Text style={styles.currentBadge}>Current</Text>
+                  <Text style={styles.currentBadge}>Étape actuelle</Text>
                 )}
               </View>
             </TouchableOpacity>
@@ -95,11 +95,11 @@ export const OrderStatusTimeline: React.FC<OrderStatusTimelineProps> = ({
       {/* Current Location */}
       {order?.route && order.route.length > 0 && (
         <View style={styles.locationSection}>
-          <Text style={styles.locationLabel}>Current Location</Text>
+          <Text style={styles.locationLabel}>Position actuelle</Text>
           <View style={styles.locationCard}>
             <MaterialCommunityIcons name="map-marker" size={20} color={colors.primary.main} />
             <Text style={styles.locationText}>
-              {order.route[order.route.length - 1]?.coordinates?.[0]?.location || 'Unknown'}
+              {order.route[order.route.length - 1]?.coordinates?.[0]?.location || 'Inconnue'}
             </Text>
           </View>
         </View>

@@ -15,12 +15,12 @@ export type currentPositionType = {
 	time: string;
 };
 
-export type routes = Array<{
+export type routes = {
 	id: string;
 	title: string;
 	time: string;
 	coordinates: { latitude: number; longitude: number; location: string }[];
-}>;
+}[];
 export type productType = {
 	clientName: string;
 	clientPhone: string;
@@ -54,10 +54,11 @@ export type productType = {
 	unitPrice: number;
 	shipmentLine?: string;
 	destinationCountry?: string;
+	destination?: string;
 	// Goods-linked order fields
 	calculatedTotal?: number;
 	calculatedCBM?: number;
-	goodsIds?: any[];
+	goodsIds?: unknown[];
 	isGoodsLinked?: boolean;
 	isManual?: boolean;
 	pricingSource?: 'manual' | 'goods-cbm';
@@ -65,7 +66,34 @@ export type productType = {
 	balanceDue?: number;
 	totalCost?: number;
 	note?: string;
+	goodsCount?: number;
+	containerSummaries?: {
+		_id: string;
+		virtualContainerNumber?: string;
+		containerNumber?: string;
+		status?: string;
+		shippingLine?: string;
+		shippingMode?: string;
+	}[];
+	// Aggregated, deduped photos from all non-void linked goods (read-time, set by getOrder).
+	goodsPhotos?: string[];
 };
+
+export type OrderSortBy = 'updatedAt' | 'createdAt' | 'departureDate' | 'calculatedTotal' | 'balanceDue';
+export type OrderSortOrder = 'asc' | 'desc';
+
+export interface OrderListFilters {
+	container?: string;
+	shippingMethod?: 'air' | 'sea' | 'all';
+	paymentStatus?: 'PAID' | 'PARTIAL' | 'UNPAID' | 'Paid' | 'Unpaid' | 'all';
+	linkState?: 'linked' | 'manual' | 'unlinked' | 'all';
+	startDate?: string;
+	endDate?: string;
+	minTotal?: number;
+	maxTotal?: number;
+	sortBy?: OrderSortBy;
+	sortOrder?: OrderSortOrder;
+}
 
 const API_URL = {
 	GET_ORDER: '/order/search',
@@ -78,11 +106,11 @@ const API_URL = {
 	GET_ORDER_BASED_ON_DATE: '/order/getOrderDepartureDate',
 };
 
-interface CheckRoute {
+interface CheckRoutePayload {
 	code: string;
 }
-export const CheckRoute = async (data: CheckRoute) => {
-	const response = await api.post<{ route: Array<string>; updatedAt: string }>(API_URL.GET_ORDER, data);
+export const CheckRoute = async (data: CheckRoutePayload) => {
+	const response = await api.post<{ route: string[]; updatedAt: string }>(API_URL.GET_ORDER, data);
 	return response.data;
 };
 
@@ -206,15 +234,22 @@ export const getOrdersBasedOnUserId = async (id:string) => {
 	return response.data;
 }
 
-export const getAllOrders = async (page: number = 1, status?: string) => {
-	let query = `limit=${LIMIT}&page=${page}`;
+export const getAllOrders = async (page: number = 1, status?: string, filters: OrderListFilters = {}) => {
+	const params = new URLSearchParams({
+		limit: String(LIMIT),
+		page: String(page),
+	});
 	if (status && status !== 'all') {
-		query += `&status=${status}`;
+		params.append('status', status);
 	}
-	const url = `${API_URL.getActiveOrdersAdmin}?${query}`;
+	Object.entries(filters).forEach(([key, value]) => {
+		if (value === undefined || value === '' || value === 'all') return;
+		params.append(key, String(value));
+	});
+	const url = `${API_URL.getActiveOrdersAdmin}?${params.toString()}`;
 	const response = await api.get<productType[]>(url);
 	return response.data;
-}
+};
 
 // ── Assign Goods to Order ──
 

@@ -70,6 +70,7 @@ export const GoodsDetailScreen: React.FC = () => {
           container={container}
           airwayBill={airwayBill}
           isAirShipping={isAirShipping}
+          onNavigateToContainer={actions.handleNavigateToContainer}
         />
         <ClientCard
           client={client}

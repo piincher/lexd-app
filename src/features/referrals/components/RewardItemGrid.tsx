@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, FlatList, RefreshControl, View } from 'react-native';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { RewardItem } from '../types';
 import { RewardItemCard } from './RewardItemCard';
 
@@ -9,17 +10,13 @@ interface RewardItemGridProps {
   onItemPress: (item: RewardItem) => void;
   refreshing?: boolean;
   onRefresh?: () => void;
+  onEndReached?: () => void;
+  isFetchingNextPage?: boolean;
+  ListHeaderComponent?: React.ComponentProps<typeof FlatList>['ListHeaderComponent'];
+  ListEmptyComponent?: React.ComponentProps<typeof FlatList>['ListEmptyComponent'];
 }
 
-const ITEM_WIDTH = 160;
 const SPACING = 12;
-
-// Affordability-first ordering: what the user can redeem NOW comes first, then
-// in-stock items they're saving toward (cheapest first), then out-of-stock.
-const affordabilityTier = (item: RewardItem, userPoints: number): number => {
-  if (item.stock <= 0) return 2;
-  return userPoints >= item.pointsRequired ? 0 : 1;
-};
 
 export const RewardItemGrid: React.FC<RewardItemGridProps> = ({
   items,
@@ -27,37 +24,45 @@ export const RewardItemGrid: React.FC<RewardItemGridProps> = ({
   onItemPress,
   refreshing,
   onRefresh,
+  onEndReached,
+  isFetchingNextPage,
+  ListHeaderComponent,
+  ListEmptyComponent,
 }) => {
-  const sortedItems = useMemo(
-    () =>
-      [...items].sort(
-        (a, b) =>
-          affordabilityTier(a, userPoints) - affordabilityTier(b, userPoints) ||
-          a.pointsRequired - b.pointsRequired
-      ),
-    [items, userPoints]
-  );
+  const { colors } = useAppTheme();
 
   return (
     <FlatList
-      data={sortedItems}
+      data={items}
       keyExtractor={(item) => item.id}
       numColumns={2}
-      columnWrapperStyle={{ gap: SPACING, marginBottom: SPACING }}
-      contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 32 }}
+      columnWrapperStyle={{ gap: SPACING, paddingHorizontal: 16 }}
+      contentContainerStyle={{ paddingBottom: 32, gap: SPACING }}
       showsVerticalScrollIndicator={false}
+      ListHeaderComponent={ListHeaderComponent}
+      ListEmptyComponent={ListEmptyComponent}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.4}
       refreshControl={
         onRefresh ? (
-          <RefreshControl refreshing={!!refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={!!refreshing}
+            onRefresh={onRefresh}
+            colors={[colors.primary.main]}
+            tintColor={colors.primary.main}
+          />
         ) : undefined
       }
+      ListFooterComponent={
+        isFetchingNextPage ? (
+          <View style={{ paddingVertical: 24 }}>
+            <ActivityIndicator color={colors.primary.main} />
+          </View>
+        ) : null
+      }
       renderItem={({ item }) => (
-        <View style={{ flex: 1, maxWidth: ITEM_WIDTH }}>
-          <RewardItemCard
-            item={item}
-            userPoints={userPoints}
-            onPress={onItemPress}
-          />
+        <View style={{ flex: 1, maxWidth: '48%' }}>
+          <RewardItemCard item={item} userPoints={userPoints} onPress={onItemPress} />
         </View>
       )}
     />

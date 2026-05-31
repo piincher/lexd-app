@@ -18,6 +18,7 @@ type ResendNotificationResult = {
 type GoodsDetailManagementData = {
   goods?: { _id: string; clientId?: unknown } | null;
   goodsId: string;
+  containerId?: string | null;
   deleteMutation: {
     mutate: (
       variables: { id: string; permanent?: boolean },
@@ -127,6 +128,10 @@ export const useGoodsDetailManagementActions = (data: GoodsDetailManagementData,
 
   const handleNavigateToEdit = useCallback(() => { navigation.navigate('EditGoods' as never, { goodsId } as never); }, [navigation, goodsId]);
   const handleGoBack = useCallback(() => { navigation.goBack(); }, [navigation]);
+  const handleNavigateToContainer = useCallback(() => {
+    if (!data.containerId) return;
+    navigation.navigate('ContainerDetail' as never, { containerId: data.containerId } as never);
+  }, [navigation, data.containerId]);
 
-  return { handleDelete, handleStatusUpdate, handleResendNotification, handleNavigateToEdit, handleGoBack };
+  return { handleDelete, handleStatusUpdate, handleResendNotification, handleNavigateToEdit, handleGoBack, handleNavigateToContainer };
 };

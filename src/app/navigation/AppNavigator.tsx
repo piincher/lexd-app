@@ -98,6 +98,7 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="AdminGoodsDetail" component={Screens.AdminGoodsDetailScreen} />
               <Stack.Screen name="AdminGoodsPdfExport" component={Screens.AdminGoodsPdfExport} />
               <Stack.Screen name="DataExport" component={Screens.DataExportScreen} />
+              <Stack.Screen name="SendWhatsApp" component={Screens.SendWhatsAppScreen} />
               <Stack.Screen name="ConsigneeList" component={Screens.ConsigneeListScreen} />
               <Stack.Screen name="CreateConsignee" component={Screens.CreateConsigneeScreen} />
               <Stack.Screen name="ConsigneeDetail" component={Screens.ConsigneeDetailScreen} />

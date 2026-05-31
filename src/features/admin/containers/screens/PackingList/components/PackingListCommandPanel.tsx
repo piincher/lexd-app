@@ -117,7 +117,7 @@ const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.create(
   articleHero: {
     minWidth: 92,
     borderRadius: Theme.radius.lg,
-    backgroundColor: isDark ? colors.neutral[800] : colors.primary[50],
+    backgroundColor: isDark ? colors.neutral[200] : colors.primary[50],
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: Theme.spacing.sm,
@@ -139,7 +139,7 @@ const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.create(
     minWidth: 0,
     borderRadius: Theme.radius.sm,
     paddingVertical: Theme.spacing.sm,
-    backgroundColor: isDark ? colors.neutral[800] : colors.neutral[50],
+    backgroundColor: isDark ? colors.neutral[200] : colors.neutral[50],
     alignItems: 'center',
   },
   metricValue: { fontSize: 14, fontWeight: '900', color: colors.text.primary },

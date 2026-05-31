@@ -1,101 +1,127 @@
-/**
- * OrderGoodsSection - Displays goods attached to an order
- */
-
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Surface } from 'react-native-paper';
+import React, { useMemo } from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import { Image } from 'expo-image';
+import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { normalizePhotos } from '@src/shared/lib';
+import { createStyles } from './OrderGoodsSection.styles';
 
-interface OrderGoodsSectionProps {
-  goods: any[];
+type IconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
+type GoodsTotals = { cbm: number; weight: number; value: number };
+
+interface GoodsLocation {
+  virtualContainerNumber?: string;
+  containerNumber?: string;
+  awbNumber?: string;
+  bagNumber?: string;
 }
 
-export const OrderGoodsSection: React.FC<OrderGoodsSectionProps> = ({ goods }) => {
+export interface OrderDetailGoods {
+  _id?: string;
+  id?: string;
+  goodsId?: string;
+  trackingCode?: string;
+  description?: string;
+  status?: string;
+  paymentStatus?: string;
+  warehouseLocation?: string;
+  actualCBM?: number;
+  cbm?: number;
+  weight?: number;
+  quantity?: number;
+  totalCost?: number;
+  amountPaid?: number;
+  isVoid?: boolean;
+  containerId?: GoodsLocation | null;
+  airwayBillId?: GoodsLocation | null;
+  cargoBagId?: GoodsLocation | null;
+}
+
+interface OrderGoodsSectionProps {
+  goods: unknown[];
+  onOpenGoods: (goodsId: string) => void;
+}
+
+const money = (value?: number) => `${(value || 0).toLocaleString('fr-FR')} FCFA`;
+const metric = (value?: number, suffix = '') => (value ? `${value.toLocaleString('fr-FR')}${suffix}` : '--');
+const isVoidGoods = (item: OrderDetailGoods) => item.isVoid || item.status === 'VOID';
+
+export const OrderGoodsSection: React.FC<OrderGoodsSectionProps> = ({ goods, onOpenGoods }) => {
   const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
+  const typedGoods = goods as OrderDetailGoods[];
 
-  const styles = StyleSheet.create({
-    container: {
-      margin: 16,
-      marginTop: 8,
-      padding: 16,
-      borderRadius: 12,
-      backgroundColor: colors.background.card,
-    },
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 12,
-    },
-    title: {
-      fontSize: 16,
-      fontWeight: '600',
-      marginLeft: 8,
-      color: colors.text.primary,
-    },
-    goodsItem: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      paddingVertical: 12,
-      borderBottomWidth: 1,
-      borderBottomColor: colors.border,
-    },
-    goodsInfo: {
-      flex: 1,
-    },
-    goodsCode: {
-      fontSize: 14,
-      fontWeight: '600',
-      color: colors.text.primary,
-    },
-    goodsDescription: {
-      fontSize: 12,
-      color: colors.text.secondary,
-      marginTop: 2,
-    },
-    goodsMeta: {
-      alignItems: 'flex-end',
-    },
-    cbm: {
-      fontSize: 13,
-      fontWeight: '500',
-      color: colors.primary.main,
-    },
-    weight: {
-      fontSize: 12,
-      color: colors.text.secondary,
-      marginTop: 2,
-    },
-  });
+  const totals = useMemo(() => typedGoods.reduce<GoodsTotals>((acc, item) => {
+    if (!isVoidGoods(item)) {
+      acc.cbm += Number(item.actualCBM || item.cbm || 0);
+      acc.weight += Number(item.weight || 0);
+      acc.value += Number(item.totalCost || 0);
+    }
+    return acc;
+  }, { cbm: 0, weight: 0, value: 0 }), [typedGoods]);
 
-  if (!goods || goods.length === 0) {
-    return null;
-  }
+  if (!typedGoods.length) return null;
+
+  const renderMeta = (icon: IconName, label?: string | number) => label ? (
+    <View style={styles.metaPill}>
+      <MaterialCommunityIcons name={icon} size={12} color={colors.text.secondary} />
+      <Text style={styles.metaText}>{label}</Text>
+    </View>
+  ) : null;
 
   return (
-    <Surface style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.header}>
-        <MaterialCommunityIcons name="package-variant" size={20} color={colors.primary.main} />
-        <Text style={styles.title}>Marchandises ({goods.length})</Text>
+        <View>
+          <Text style={styles.title}>Marchandises liées</Text>
+          <Text style={styles.subtitle}>Touchez une ligne pour ouvrir le détail.</Text>
+        </View>
+        <Text style={styles.countBadge}>{typedGoods.length} colis</Text>
       </View>
 
-      {goods.map((item, index) => (
-        <View key={item._id || item.id || index} style={styles.goodsItem}>
-          <View style={styles.goodsInfo}>
-            <Text style={styles.goodsCode}>{item.goodsId || item.trackingCode || 'N/A'}</Text>
-            <Text style={styles.goodsDescription} numberOfLines={1}>
-              {item.description || 'No description'}
-            </Text>
-          </View>
-          <View style={styles.goodsMeta}>
-            <Text style={styles.cbm}>{item.actualCBM || item.cbm || 0} m³</Text>
-            <Text style={styles.weight}>{item.weight || 0} kg</Text>
-          </View>
-        </View>
-      ))}
-    </Surface>
+      <View style={styles.totalsRow}>
+        <View style={styles.totalCell}><Text style={styles.totalLabel}>CBM actif</Text><Text style={styles.totalValue}>{metric(totals.cbm, ' m³')}</Text></View>
+        <View style={styles.totalCell}><Text style={styles.totalLabel}>Poids</Text><Text style={styles.totalValue}>{metric(totals.weight, ' kg')}</Text></View>
+        <View style={styles.totalCell}><Text style={styles.totalLabel}>Valeur</Text><Text style={styles.totalValue}>{money(totals.value)}</Text></View>
+      </View>
+
+      {typedGoods.map((item) => {
+        const goodsKey = item._id || item.id || item.goodsId || '';
+        const thumb = normalizePhotos(item as unknown as Record<string, unknown>)[0];
+        const statusColor = isVoidGoods(item) ? colors.status.error : colors.primary.main;
+        const containerLabel = item.containerId?.virtualContainerNumber || item.containerId?.containerNumber;
+        const airLabel = item.airwayBillId?.awbNumber || item.cargoBagId?.bagNumber;
+
+        return (
+          <TouchableOpacity key={goodsKey} style={styles.item} activeOpacity={0.75} onPress={() => goodsKey && onOpenGoods(goodsKey)}>
+            {thumb ? <Image source={{ uri: thumb }} style={styles.thumb} contentFit="cover" /> : (
+              <View style={styles.thumbPlaceholder}>
+                <MaterialCommunityIcons name="package-variant" size={22} color={colors.text.disabled} />
+              </View>
+            )}
+            <View style={styles.itemBody}>
+              <View style={styles.itemTop}>
+                <Text style={styles.goodsCode} numberOfLines={1}>{item.goodsId || item.trackingCode || goodsKey}</Text>
+                <View style={[styles.statusPill, { backgroundColor: statusColor + '15' }]}>
+                  <Text style={[styles.statusText, { color: statusColor }]}>{item.status || 'ACTIVE'}</Text>
+                </View>
+              </View>
+              <Text style={styles.description} numberOfLines={2}>{item.description || 'Aucune description'}</Text>
+              <View style={styles.metaRow}>
+                {renderMeta('cube-outline', metric(item.actualCBM || item.cbm, ' m³'))}
+                {renderMeta('weight', metric(item.weight, ' kg'))}
+                {renderMeta('map-marker', item.warehouseLocation)}
+                {renderMeta('cash', money(item.totalCost))}
+                {renderMeta('credit-card-check', item.paymentStatus)}
+                {renderMeta('shipping-pallet', containerLabel)}
+                {renderMeta('airplane', airLabel)}
+              </View>
+            </View>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
   );
 };
 

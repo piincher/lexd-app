@@ -28,7 +28,7 @@ export const PaymentActions: React.FC<PaymentActionsProps> = ({
         icon="cash-plus"
         labelStyle={styles.buttonLabel}
       >
-        Record Payment
+        Enregistrer un paiement
       </Button>
     )}
 
@@ -40,7 +40,7 @@ export const PaymentActions: React.FC<PaymentActionsProps> = ({
       icon="history"
       labelStyle={styles.buttonLabel}
     >
-      View Payment History
+      Historique des paiements
     </Button>
   </View>
 );

@@ -50,10 +50,13 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
 
   const statusConfig =
     paymentStatus === 'PAID'
-      ? { color: colors.status.success, bgColor: colors.background.paper, icon: 'check-circle', label: 'Paid' }
+      ? { color: colors.status.success, bgColor: colors.background.paper, icon: 'check-circle', label: 'Payée' }
       : paymentStatus === 'PARTIAL'
-      ? { color: colors.status.warning, bgColor: colors.background.paper, icon: 'clock-outline', label: 'Partial Payment' }
-      : { color: colors.status.error, bgColor: colors.background.paper, icon: 'alert-circle', label: 'Unpaid' };
+      ? { color: colors.status.warning, bgColor: colors.background.paper, icon: 'clock-outline', label: 'Paiement partiel' }
+      : { color: colors.status.error, bgColor: colors.background.paper, icon: 'alert-circle', label: 'Impayée' };
+
+  const paidRatio = totalPrice > 0 ? Math.min(1, Math.max(0, paidAmount / totalPrice)) : 0;
+  const paidPercent = Math.round(paidRatio * 100);
 
   const handleRecordPayment = () => {
     console.log('[PaymentSection] Navigating to RecordPaymentScreen', {
@@ -85,7 +88,7 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
     <Surface style={styles.container}>
       <View style={styles.header}>
         <MaterialCommunityIcons name="credit-card" size={22} color={colors.primary.main} />
-        <Text style={styles.title}>Payment Details</Text>
+        <Text style={styles.title}>Détails du paiement</Text>
       </View>
 
       <PaymentStatusCard
@@ -94,6 +97,25 @@ export const PaymentSection: React.FC<PaymentSectionProps> = ({ order }) => {
         balanceDue={balanceDue}
         styles={styles}
       />
+
+      {totalPrice > 0 && (
+        <View style={styles.progressBlock}>
+          <View style={styles.progressMetaRow}>
+            <Text style={styles.progressMetaLabel}>
+              Payé · {paidAmount.toLocaleString('fr-FR')} FCFA
+            </Text>
+            <Text style={[styles.progressPercent, { color: statusConfig.color }]}>{paidPercent}%</Text>
+          </View>
+          <View style={styles.progressTrack}>
+            <View style={[styles.progressFill, { width: `${paidPercent}%`, backgroundColor: statusConfig.color }]} />
+          </View>
+          {paymentStatus !== 'PAID' && (
+            <Text style={styles.progressRemaining}>
+              Reste {balanceDue.toLocaleString('fr-FR')} FCFA à encaisser
+            </Text>
+          )}
+        </View>
+      )}
 
       <PaymentBreakdown
         isAir={isAir}

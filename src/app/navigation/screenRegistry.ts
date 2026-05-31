@@ -77,6 +77,7 @@ export { default as AtRiskCustomersScreen } from "@src/features/admin/analytics/
 
 // Admin Communications
 export { default as SendSms } from "@src/features/admin/communications/screens/SendSms";
+export { default as SendWhatsAppScreen } from "@src/features/admin/communications/screens/SendWhatsApp";
 export { default as CampaignListScreen } from "@src/features/admin/communications/screens/CampaignListScreen";
 export { default as CreateCampaignScreen } from "@src/features/admin/communications/screens/CreateCampaignScreen";
 

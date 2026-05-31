@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Animated, { FadeInUp, useAnimatedStyle, useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
+import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -14,45 +14,34 @@ interface Props {
 }
 
 export const GuestConversionCard: React.FC<Props> = ({ onLogin, onContact }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
   const styles = createStyles(colors);
   const gradientColors = Theme.gradients.primary;
 
-  const translateY = useSharedValue(0);
-
-  useEffect(() => {
-    translateY.value = withRepeat(
-      withTiming(-3, { duration: 2000 }),
-      -1,
-      true
-    );
-  }, [translateY]);
-
-  const floatStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: translateY.value }],
-  }));
-
   return (
-    <Animated.View entering={FadeInUp.duration(800).springify()}>
-      <Animated.View style={[styles.wrapper, floatStyle]}>
-        <LinearGradient colors={gradientColors} style={styles.gradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
-          <Text style={styles.headline}>Devenez client ChinaLink</Text>
-          <Text style={styles.subtitle}>
-            Créez votre compte et suivez vos vraies marchandises.
-          </Text>
+    <Animated.View entering={FadeInUp.duration(600)} style={styles.wrapper}>
+      <LinearGradient
+        colors={gradientColors}
+        style={styles.gradient}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+      >
+        <Text style={styles.headline}>Devenez client ChinaLink</Text>
+        <Text style={styles.subtitle}>
+          Créez votre compte et suivez vos vraies marchandises en temps réel.
+        </Text>
 
-          <View style={styles.actions}>
-            <Pressable onPress={onLogin} style={styles.primaryButton}>
-              <Text style={styles.primaryText}>Se connecter</Text>
-            </Pressable>
+        <View style={styles.actions}>
+          <Pressable onPress={onLogin} style={styles.primaryButton}>
+            <Text style={styles.primaryText}>Se connecter</Text>
+          </Pressable>
 
-            <Pressable onPress={onContact} style={styles.secondaryButton}>
-              <FontAwesome6 name="whatsapp" size={16} color={colors.text.inverse} />
-              <Text style={styles.secondaryText}>Devenir client</Text>
-            </Pressable>
-          </View>
-        </LinearGradient>
-      </Animated.View>
+          <Pressable onPress={onContact} style={styles.secondaryButton}>
+            <FontAwesome6 name="whatsapp" size={16} color={colors.text.inverse} />
+            <Text style={styles.secondaryText}>Devenir client</Text>
+          </Pressable>
+        </View>
+      </LinearGradient>
     </Animated.View>
   );
 };
@@ -61,34 +50,34 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors']) =>
   StyleSheet.create({
     wrapper: {
       marginHorizontal: 20,
-      marginTop: 22,
-      marginBottom: 28,
-      borderRadius: 20,
+      marginTop: Theme.spacing['2xl'],
+      borderRadius: Theme.radius.xl,
       overflow: 'hidden',
-      shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.12, shadowRadius: 24, elevation: 8,
+      ...Theme.shadows.lg,
     },
     gradient: {
-      padding: 24,
+      padding: Theme.spacing['2xl'],
     },
     headline: {
       color: colors.text.inverse,
       fontFamily: Fonts.bold,
-      fontSize: 20,
+      fontSize: 22,
+      letterSpacing: -0.2,
     },
     subtitle: {
       color: colors.text.inverse + 'CC',
       fontFamily: Fonts.regular,
       fontSize: 14,
       lineHeight: 20,
-      marginTop: 6,
+      marginTop: Theme.spacing.sm,
     },
     actions: {
-      gap: 10,
-      marginTop: 18,
+      gap: Theme.spacing.md,
+      marginTop: Theme.spacing.xl,
     },
     primaryButton: {
       backgroundColor: colors.background.paper,
-      borderRadius: 9999,
+      borderRadius: Theme.radius.full,
       paddingVertical: 14,
       alignItems: 'center',
     },
@@ -102,10 +91,10 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors']) =>
       alignItems: 'center',
       justifyContent: 'center',
       gap: 8,
-      borderRadius: 9999,
+      borderRadius: Theme.radius.full,
       paddingVertical: 14,
       borderWidth: 1,
-      borderColor: colors.text.inverse + '80',
+      borderColor: colors.text.inverse + '50',
     },
     secondaryText: {
       color: colors.text.inverse,

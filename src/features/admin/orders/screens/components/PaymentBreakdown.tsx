@@ -49,39 +49,32 @@ export const PaymentBreakdown: React.FC<PaymentBreakdownProps> = ({
       <View style={styles.breakdownRow}>
         <Text style={styles.breakdownLabel}>Prix unitaire</Text>
         <Text style={styles.breakdownValue}>
-          {unitPrice.toLocaleString()} FCFA/{isAir ? 'kg' : 'm³'}
+          {unitPrice.toLocaleString('fr-FR')} FCFA/{isAir ? 'kg' : 'm³'}
         </Text>
       </View>
     )}
 
-    <View style={styles.breakdownRow}>
-      <Text style={styles.breakdownLabel}>Prix total</Text>
-      <Text style={styles.breakdownValue}>
-        {totalPrice > 0 ? `${totalPrice.toLocaleString()} FCFA` : 'Non défini'}
-      </Text>
-    </View>
-
     <Divider style={{ marginVertical: 8 }} />
 
     <View style={styles.breakdownRow}>
-      <Text style={styles.breakdownLabel}>Total Order Amount</Text>
+      <Text style={styles.breakdownLabel}>Montant total</Text>
       <Text style={styles.breakdownValue}>
-        {totalPrice > 0 ? `${totalPrice.toLocaleString()} FCFA` : 'Non défini'}
+        {totalPrice > 0 ? `${totalPrice.toLocaleString('fr-FR')} FCFA` : 'Non défini'}
       </Text>
     </View>
 
     <View style={styles.breakdownRow}>
-      <Text style={styles.breakdownLabel}>Amount Paid</Text>
+      <Text style={styles.breakdownLabel}>Montant payé</Text>
       <Text style={[styles.breakdownValue, { color: colors.status.success }]}>
-        {paidAmount.toLocaleString()} FCFA
+        {paidAmount.toLocaleString('fr-FR')} FCFA
       </Text>
     </View>
 
     {paymentStatus !== 'PAID' && (
       <View style={styles.breakdownRow}>
-        <Text style={styles.breakdownLabel}>Balance Due</Text>
+        <Text style={styles.breakdownLabel}>Solde dû</Text>
         <Text style={[styles.breakdownValue, { color: colors.status.error }]}>
-          {balanceDue.toLocaleString()} FCFA
+          {balanceDue.toLocaleString('fr-FR')} FCFA
         </Text>
       </View>
     )}

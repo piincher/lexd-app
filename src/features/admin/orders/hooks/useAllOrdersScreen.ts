@@ -1,15 +1,25 @@
 import { useState, useMemo, useCallback, useRef } from 'react';
 import { Alert } from 'react-native';
+import type { productType } from '@src/api/order';
 import { useGetAllOrders, useSyncOrderStatuses } from './useOrderManagement';
 import { useOrderBulkActions } from '../screens/hooks/useOrderBulkActions';
+import { useAllOrdersAdvancedFilters } from './useAllOrdersAdvancedFilters';
+
+interface SyncOrderResult {
+  affectedOrders?: number;
+  updatedCount?: number;
+}
+
+const getErrorMessage = (error: unknown) => (error instanceof Error ? error.message : 'Failed to sync order statuses');
 
 export const useAllOrdersScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
   const hasCalledOnEnd = useRef(false);
+  const advancedFilters = useAllOrdersAdvancedFilters();
 
   const { data, isLoading, isFetching, error, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useGetAllOrders(statusFilter);
+    useGetAllOrders(statusFilter, advancedFilters.apiFilters);
 
   const { mutate: syncOrderStatuses, isPending: isSyncing } = useSyncOrderStatuses();
 
@@ -23,12 +33,12 @@ export const useAllOrdersScreen = () => {
           text: 'Sync',
           onPress: () => {
             syncOrderStatuses(undefined, {
-              onSuccess: (result: any) => {
-                Alert.alert('Sync Complete', `Processed ${result.affectedOrders} orders\nUpdated ${result.updatedCount} orders`);
+              onSuccess: (result: SyncOrderResult) => {
+                Alert.alert('Sync Complete', `Processed ${result.affectedOrders ?? 0} orders\nUpdated ${result.updatedCount ?? 0} orders`);
                 refetch();
               },
-              onError: (error: any) => {
-                Alert.alert('Sync Failed', error?.message || 'Failed to sync order statuses');
+              onError: (error: unknown) => {
+                Alert.alert('Sync Failed', getErrorMessage(error));
               },
             });
           },
@@ -46,7 +56,7 @@ export const useAllOrdersScreen = () => {
     if (!orders || orders.length === 0) return [];
     if (!searchQuery) return orders;
     const query = searchQuery.toLowerCase();
-    return orders.filter((order: any) => {
+    return orders.filter((order: productType) => {
       if (!order) return false;
       return (
         order.clientName?.toLowerCase().includes(query) ||
@@ -75,6 +85,7 @@ export const useAllOrdersScreen = () => {
 
   return {
     searchQuery, setSearchQuery, statusFilter, setStatusFilter,
+    advancedFilters,
     data, isLoading, isFetching, error, refetch,
     orders, filteredOrders, isFetchingNextPage, loadMore, handleMomentumScrollBegin,
     isSelectionMode, setIsSelectionMode, exitSelectionMode,

@@ -1,5 +1,47 @@
 [
   {
+    "date": "2026-06-01",
+    "macrostructure": "Gallery Catalog + Gradient Hero",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "gradient points hero (expo-linear-gradient) + skeleton loaders + sticky redeem CTA",
+    "brief": "Points exchange user-side full redesign (MemberPointsScreen + RewardDetailScreen) — removed FCFA equivalents (points-only), gradient balance hero with next-reward progress nudge, search/category/sort toolbar, 'Échangeable' affordability filter, infinite-scroll catalog with skeletons + empty/error states, professional redeem flow with affordability bar + sticky CTA. Backend: extended customer /rewards/items with server-side search/category/sort + categories facet (additive)."
+  },
+  {
+    "date": "2026-06-01",
+    "macrostructure": "Workbench Detail",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "none — professional detail pass: French unification + advanced quick actions (call/WhatsApp/copy/share), container jump-to-detail, payment progress bar, timeline polish",
+    "brief": "OrderDetailScreen full professional redesign — unified mixed EN/FR copy to French across header/payment/timeline/goods; added header quick-action row (Appeler/WhatsApp/Copier/Partager via Linking+Clipboard+Share), tappable order-code copy, container chip linking to ContainerDetail; added paid/remaining progress bar in PaymentSection; removed duplicated payment breakdown row"
+  },
+  {
+    "date": "2026-06-01",
+    "macrostructure": "Workbench",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "none — no-typing container picker (searchable bottom-sheet) replacing free-text container filter",
+    "brief": "AllOrdersScreen advanced filters redesign — replaced free-text 'Conteneur' input with a searchable, virtualized ContainerPickerSheet populated from useGetAllContainers (5-min cache); sends exact container _id to backend for precise matching; refreshed filter surface with a persistent container trigger pill"
+  },
+  {
+    "date": "2026-06-01",
+    "macrostructure": "Workbench Detail",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "none — goods ledger rows with direct admin drill-in",
+    "brief": "OrderDetailScreen redesign — merged all order-linked goods into detail payload, surfaced goods CBM/weight/value/location/container/airway status, and added navigation to AdminGoodsDetail"
+  },
+  {
+    "date": "2026-06-01",
+    "macrostructure": "Workbench",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "none — operational triage stats + dense payment-forward order rows",
+    "brief": "AllOrdersScreen redesign — surfaced paid/partial/unpaid state, balance due, total/paid/remaining amounts, container metadata, and linked/manual source directly in the admin order list"
+  },
+  {
+    "date": "2026-06-01",
+    "macrostructure": "Section-Band Scroll",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "none — section bands + unified card language + reduced shadow chrome",
+    "brief": "GuestPreviewScreen (Demo) — Hallmark redesign: grouped content into background-band sections, unified margins (20px), reduced visual noise (removed BlurView locks, overlap shadows), cleaner hero, consistent Theme.shadows usage"
+  },
+  {
     "date": "2026-05-29",
     "macrostructure": "Letter",
     "theme": "Brand-aligned app theme",

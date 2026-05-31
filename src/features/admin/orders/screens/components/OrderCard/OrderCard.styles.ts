@@ -1,33 +1,39 @@
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V4 · genre: modern-minimal · macrostructure: Workbench · design-system: app theme · designed-as-app */
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import type { lightTheme } from '@src/constants/Theme';
 
-export const createStyles = (colors: any, isDark?: boolean) =>
+type AppColors = typeof lightTheme.colors;
+
+export const createStyles = (colors: AppColors, isDark?: boolean) =>
   StyleSheet.create({
     container: {
       backgroundColor: colors.background.card,
-      borderRadius: 12,
+      borderRadius: 8,
       marginHorizontal: 12,
       marginVertical: 6,
       shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.06,
-      shadowRadius: 8,
-      elevation: 3,
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.04,
+      shadowRadius: 6,
+      elevation: 1,
       overflow: 'hidden',
       flexDirection: 'row',
+      borderWidth: 1,
+      borderColor: colors.border,
     },
     statusBar: {
       width: 4,
     },
     content: {
       flex: 1,
-      padding: 14,
+      padding: 12,
     },
     header: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      marginBottom: 10,
+      marginBottom: 8,
     },
     clientSection: {
       flexDirection: 'row',
@@ -47,7 +53,7 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       flex: 1,
     },
     clientName: {
-      fontSize: 15,
+      fontSize: 16,
       fontWeight: '600',
       color: colors.text.primary,
       fontFamily: Fonts.semiBold,
@@ -72,14 +78,65 @@ export const createStyles = (colors: any, isDark?: boolean) =>
     statusBadge: {
       flexDirection: 'row',
       alignItems: 'center',
-      paddingHorizontal: 10,
+      paddingHorizontal: 8,
       paddingVertical: 5,
-      borderRadius: 16,
+      borderRadius: 6,
       gap: 4,
     },
     statusText: {
       fontSize: 11,
       fontWeight: '600',
+      fontFamily: Fonts.semiBold,
+    },
+    financePanel: {
+      padding: 10,
+      borderRadius: 6,
+      backgroundColor: colors.background.paper,
+      borderWidth: 1,
+      borderColor: colors.border,
+      marginBottom: 10,
+    },
+    financeHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      marginBottom: 8,
+    },
+    financeTitle: {
+      fontSize: 12,
+      color: colors.text.secondary,
+      fontFamily: Fonts.semiBold,
+      textTransform: 'uppercase',
+    },
+    paymentPill: {
+      minHeight: 28,
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 8,
+      borderRadius: 6,
+      gap: 4,
+    },
+    paymentPillText: {
+      fontSize: 11,
+      fontFamily: Fonts.semiBold,
+    },
+    financeGrid: {
+      flexDirection: 'row',
+      gap: 8,
+    },
+    financeMetric: {
+      flex: 1,
+      minWidth: 0,
+    },
+    financeLabel: {
+      fontSize: 10,
+      color: colors.text.secondary,
+      fontFamily: Fonts.medium,
+      marginBottom: 2,
+    },
+    financeValue: {
+      fontSize: 12,
+      color: colors.text.primary,
       fontFamily: Fonts.semiBold,
     },
     shippingRow: {
@@ -111,27 +168,60 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       color: colors.text.secondary,
       fontFamily: Fonts.medium,
     },
+    containerMetaRow: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: 6,
+      marginBottom: 10,
+    },
+    containerMetaPill: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      maxWidth: '100%',
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 6,
+      backgroundColor: colors.background.paper,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    containerMetaText: {
+      fontSize: 11,
+      color: colors.text.secondary,
+      fontFamily: Fonts.medium,
+    },
+    manualMetaPill: {
+      paddingHorizontal: 8,
+      paddingVertical: 4,
+      borderRadius: 6,
+      backgroundColor: colors.status.warning + '15',
+    },
+    manualMetaText: {
+      fontSize: 10,
+      color: colors.status.warning,
+      fontFamily: Fonts.semiBold,
+      textTransform: 'uppercase',
+    },
     detailsGrid: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       backgroundColor: colors.background.paper,
-      borderRadius: 8,
+      borderRadius: 6,
       padding: 10,
+      gap: 8,
     },
     detailItem: {
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       gap: 4,
+      minWidth: 0,
     },
     detailText: {
       fontSize: 12,
       color: colors.text.secondary,
       fontFamily: Fonts.regular,
-    },
-    amountText: {
-      fontSize: 12,
-      fontWeight: '600',
-      fontFamily: Fonts.semiBold,
     },
     progressSection: {
       marginTop: 10,

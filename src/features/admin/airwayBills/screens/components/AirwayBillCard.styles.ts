@@ -1,15 +1,19 @@
+/* Hallmark · redesign · macrostructure: Marquee Hero + Catalogue · genre: modern-minimal · theme: air-freight violet→sky */
 import { StyleSheet } from "react-native";
 
 export const getStyles = (colors: any) => StyleSheet.create({
   container: {
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 16,
-    marginBottom: 12,
-    borderLeftWidth: 4,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 3,
+    marginHorizontal: 16,
+    marginBottom: 14,
+    borderLeftWidth: 5,
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 14,
+    elevation: 4,
   },
   headerRow: {
     flexDirection: "row",

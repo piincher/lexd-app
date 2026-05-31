@@ -8,13 +8,23 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface OrderImageGalleryProps {
   images?: imagesType;
+  /** Goods photos (URLs) used when the order has no images of its own. */
+  fallbackPhotos?: string[];
 }
 
-export const OrderImageGallery: React.FC<OrderImageGalleryProps> = ({ images }) => {
+export const OrderImageGallery: React.FC<OrderImageGalleryProps> = ({ images, fallbackPhotos }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const { colors, isDark } = useAppTheme();
   const styles = createStyles(colors, isDark);
-  const hasImages = images && images.length > 0;
+
+  // Prefer the order's own images; otherwise fall back to aggregated goods photos
+  // so warehouse-intake pictures still surface on the order.
+  const galleryImages: imagesType =
+    images && images.length > 0
+      ? images
+      : (fallbackPhotos || []).map((url, index) => ({ url, public_id: `goods-${index}` }));
+  const fromGoods = !(images && images.length > 0) && galleryImages.length > 0;
+  const hasImages = galleryImages.length > 0;
 
   if (!hasImages) {
     return (
@@ -27,11 +37,13 @@ export const OrderImageGallery: React.FC<OrderImageGalleryProps> = ({ images }) 
     );
   }
 
+  const safeIndex = Math.min(activeIndex, galleryImages.length - 1);
+
   return (
     <Surface style={styles.container}>
       {/* Main image */}
       <Image
-        source={{ uri: images[activeIndex].url }}
+        source={{ uri: galleryImages[safeIndex].url }}
         style={styles.mainImage}
         resizeMode="cover"
       />
@@ -40,24 +52,32 @@ export const OrderImageGallery: React.FC<OrderImageGalleryProps> = ({ images }) 
       <View style={styles.countBadge}>
         <MaterialCommunityIcons name="image-multiple" size={14} color={colors.text.inverse} />
         <Text style={styles.countText}>
-          {activeIndex + 1}/{images.length}
+          {safeIndex + 1}/{galleryImages.length}
         </Text>
       </View>
 
+      {/* Source caption when photos come from the linked goods */}
+      {fromGoods && (
+        <View style={styles.sourceBadge}>
+          <MaterialCommunityIcons name="package-variant-closed" size={12} color={colors.text.inverse} />
+          <Text style={styles.countText}>Photos des marchandises</Text>
+        </View>
+      )}
+
       {/* Thumbnails (if multiple images) */}
-      {images.length > 1 && (
+      {galleryImages.length > 1 && (
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.thumbnailRow}
         >
-          {images.map((img, index) => (
+          {galleryImages.map((img, index) => (
             <Pressable
               key={img.public_id || index}
               onPress={() => setActiveIndex(index)}
               style={[
                 styles.thumbnail,
-                index === activeIndex && styles.thumbnailActive,
+                index === safeIndex && styles.thumbnailActive,
               ]}
             >
               <Image

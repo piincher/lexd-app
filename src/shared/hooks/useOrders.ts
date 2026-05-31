@@ -1,7 +1,7 @@
 // Shared Orders Hooks
 // Used across multiple features (stats, profile, admin, etc.)
 
-import { getActiveOrders, getAllOrders, getOrdersBasedOnUserId } from "@src/api/order";
+import { getActiveOrders, getAllOrders, getOrdersBasedOnUserId, type OrderListFilters } from "@src/api/order";
 import { fetchSmsBalance } from "@src/api/sms";
 import { LIMIT } from "@src/constants/Dimensions";
 import { SMSKEY } from "@src/constants/queryKey";
@@ -37,11 +37,11 @@ export const useViewSmsBalance = (isAdmin: boolean) => {
    });
 };
 
-export const useGetAllOrders = (status?: string) => {
+export const useGetAllOrders = (status?: string, filters: OrderListFilters = {}) => {
    return useInfiniteQuery({
-      queryKey: [ORDERKEY, 'all', status],
+      queryKey: [ORDERKEY, 'all', status, filters],
       queryFn: async ({ pageParam = 1 }) => {
-         const result = await getAllOrders(pageParam, status);
+         const result = await getAllOrders(pageParam, status, filters);
          return result;
       },
       getNextPageParam: (lastPage, allPages) => {

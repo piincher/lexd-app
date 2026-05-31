@@ -62,9 +62,10 @@ export const DemoShipmentCard: React.FC<Props> = ({ shipment }) => {
 const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
   StyleSheet.create({
     card: {
-      marginHorizontal: 16, marginTop: 16,
-      borderRadius: 24, padding: 16,
-      backgroundColor: colors.background.card, shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.12, shadowRadius: 24, elevation: 8,
+      marginHorizontal: 20, marginTop: Theme.spacing.lg,
+      borderRadius: Theme.radius['2xl'], padding: Theme.spacing.lg,
+      backgroundColor: colors.background.card,
+      ...Theme.shadows.md,
     },
     topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 },
     modeBadge: {

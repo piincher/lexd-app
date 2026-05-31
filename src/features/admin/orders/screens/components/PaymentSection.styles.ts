@@ -59,6 +59,40 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       color: colors.text.primary,
       fontFamily: Fonts.bold,
     },
+    progressBlock: {
+      marginBottom: 16,
+      gap: 8,
+    },
+    progressMetaRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    progressMetaLabel: {
+      fontSize: 12.5,
+      color: colors.text.secondary,
+      fontFamily: Fonts.medium,
+    },
+    progressPercent: {
+      fontSize: 13,
+      fontWeight: '700',
+      fontFamily: Fonts.bold,
+    },
+    progressTrack: {
+      height: 8,
+      borderRadius: 999,
+      backgroundColor: colors.background.paper,
+      overflow: 'hidden',
+    },
+    progressFill: {
+      height: '100%',
+      borderRadius: 999,
+    },
+    progressRemaining: {
+      fontSize: 11.5,
+      color: colors.text.secondary,
+      fontFamily: Fonts.medium,
+    },
     breakdown: {
       backgroundColor: colors.background.paper,
       borderRadius: 10,

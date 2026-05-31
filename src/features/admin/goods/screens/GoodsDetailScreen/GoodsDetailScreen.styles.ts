@@ -352,6 +352,9 @@ export const createStyles = (colors: any) => StyleSheet.create({
     color: colors.text.secondary,
     marginTop: 2,
   },
+  locationChevron: {
+    marginLeft: Theme.spacing.sm,
+  },
 
   // ── Cost-composition rows (Financial breakdown) ──
   financialRow: {

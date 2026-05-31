@@ -35,10 +35,10 @@ export const PaymentStatusCard: React.FC<PaymentStatusCardProps> = ({
         {statusConfig.label}
       </Text>
       {paymentStatus === 'PAID' ? (
-        <Text style={styles.statusAmount}>Fully Paid</Text>
+        <Text style={styles.statusAmount}>Intégralement payée</Text>
       ) : (
         <Text style={styles.statusAmount}>
-          {balanceDue.toLocaleString()} FCFA due
+          {balanceDue.toLocaleString('fr-FR')} FCFA à payer
         </Text>
       )}
     </View>

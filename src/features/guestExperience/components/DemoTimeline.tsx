@@ -70,9 +70,10 @@ export const DemoTimeline: React.FC<Props> = ({ steps }) => {
 const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: boolean) =>
   StyleSheet.create({
     container: {
-      marginHorizontal: 16, marginTop: 16,
-      borderRadius: 24, padding: 16,
-      backgroundColor: colors.background.card, shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 4,
+      marginHorizontal: 20, marginTop: Theme.spacing.lg,
+      borderRadius: Theme.radius['2xl'], padding: Theme.spacing.lg,
+      backgroundColor: colors.background.card,
+      ...Theme.shadows.sm,
     },
     stepRow: { flexDirection: 'row', gap: 12 },
     stepRowDone: { opacity: 0.8 },

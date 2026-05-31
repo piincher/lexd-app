@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -11,6 +11,7 @@ interface LocationCardProps {
   container: any;
   airwayBill?: any;
   isAirShipping?: boolean;
+  onNavigateToContainer?: () => void;
 }
 
 export const LocationCard: React.FC<LocationCardProps> = ({
@@ -18,6 +19,7 @@ export const LocationCard: React.FC<LocationCardProps> = ({
   container,
   airwayBill,
   isAirShipping,
+  onNavigateToContainer,
 }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
@@ -57,8 +59,8 @@ export const LocationCard: React.FC<LocationCardProps> = ({
     }
 
     const has = !!container;
-    return (
-      <View style={styles.locationItem}>
+    const ContainerRow = (
+      <>
         <View style={[styles.locationIcon, { backgroundColor: has ? assignedColor + '20' : colors.background.paper }]}>
           <MaterialCommunityIcons name="truck-cargo-container" size={24} color={has ? assignedColor : mutedColor} />
         </View>
@@ -75,8 +77,21 @@ export const LocationCard: React.FC<LocationCardProps> = ({
             <Text style={[styles.locationValue, { color: mutedColor }]}>Non assigné</Text>
           )}
         </View>
-      </View>
+        {has && onNavigateToContainer && (
+          <MaterialCommunityIcons name="chevron-right" size={22} color={colors.text.secondary} style={styles.locationChevron} />
+        )}
+      </>
     );
+
+    if (has && onNavigateToContainer) {
+      return (
+        <TouchableOpacity onPress={onNavigateToContainer} activeOpacity={0.7} style={styles.locationItem}>
+          {ContainerRow}
+        </TouchableOpacity>
+      );
+    }
+
+    return <View style={styles.locationItem}>{ContainerRow}</View>;
   };
 
   return (

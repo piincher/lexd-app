@@ -45,10 +45,10 @@ export const OrderInfoSection: React.FC<OrderInfoSectionProps> = ({ order }) => 
 
   // Format dates with empty string checks
   const departureDate =
-    order?.departureDate && order.departureDate !== '' ? formatDate(order.departureDate) : 'Not scheduled';
+    order?.departureDate && order.departureDate !== '' ? formatDate(order.departureDate) : 'Non planifiée';
 
   const receiptDate =
-    order?.dateOfReceipt && order.dateOfReceipt !== '' ? formatDate(order.dateOfReceipt) : 'Not received';
+    order?.dateOfReceipt && order.dateOfReceipt !== '' ? formatDate(order.dateOfReceipt) : 'Non reçue';
 
   const lastUpdate = order?.updatedAt ? formatDate(order.updatedAt) : 'N/A';
   const createdDate = order?.createdAt ? formatDate(order.createdAt) : 'N/A';

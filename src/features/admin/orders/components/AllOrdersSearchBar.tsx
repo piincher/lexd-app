@@ -17,7 +17,7 @@ export const AllOrdersSearchBar: React.FC<AllOrdersSearchBarProps> = ({
 
   return (
     <Searchbar
-      placeholder="Search orders..."
+      placeholder="Search client, code, or phone"
       onChangeText={onChangeText}
       value={value}
       style={styles.searchBar}

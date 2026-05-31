@@ -5,47 +5,84 @@ export const createStyles = (colors: any) =>
     content: {
       flex: 1,
     },
+    flex: {
+      flex: 1,
+    },
     scroll: {
       padding: 16,
-      gap: 16,
-      paddingBottom: 32,
+      gap: 18,
+      paddingBottom: 24,
+    },
+    notFound: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: 10,
+    },
+    notFoundText: {
+      fontSize: 15,
+      color: colors.text.secondary,
     },
     image: {
       width: '100%',
-      height: 220,
-      borderRadius: 16,
+      height: 230,
+      borderRadius: 18,
       backgroundColor: colors.background.paper,
     },
-    info: {
-      gap: 8,
-    },
-    name: {
-      fontSize: 20,
-      fontWeight: '800',
-      color: colors.text.primary,
-    },
-    metaRow: {
+    pointsBadge: {
+      position: 'absolute',
+      top: 12,
+      right: 12,
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 12,
+      gap: 4,
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 999,
+      backgroundColor: colors.primary.main,
     },
-    points: {
-      fontSize: 18,
-      fontWeight: '900',
-      color: colors.primary.main,
-    },
-    stock: {
+    pointsBadgeText: {
       fontSize: 13,
-      color: colors.text.secondary,
-      fontWeight: '600',
+      fontWeight: '900',
+      color: colors.text.inverse,
+    },
+    stockOverlay: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      bottom: 0,
+      top: 0,
+      borderRadius: 18,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.background.scrim + '80',
+    },
+    stockOverlayText: {
+      fontSize: 14,
+      fontWeight: '800',
+      color: colors.text.inverse,
+    },
+    info: {
+      gap: 10,
+    },
+    name: {
+      fontSize: 22,
+      fontWeight: '900',
+      color: colors.text.primary,
+      letterSpacing: -0.3,
+    },
+    chipsRow: {
+      flexDirection: 'row',
+      gap: 8,
+      flexWrap: 'wrap',
     },
     badge: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 4,
-      paddingHorizontal: 8,
-      paddingVertical: 3,
-      borderRadius: 6,
+      gap: 5,
+      paddingHorizontal: 10,
+      paddingVertical: 5,
+      borderRadius: 8,
     },
     badgeLabel: {
       fontSize: 12,
@@ -54,10 +91,52 @@ export const createStyles = (colors: any) =>
     description: {
       fontSize: 14,
       color: colors.text.secondary,
-      lineHeight: 20,
+      lineHeight: 21,
+    },
+    balanceCard: {
+      gap: 10,
+      padding: 16,
+      borderRadius: 14,
+      backgroundColor: colors.background.card,
+      borderWidth: 1,
+      borderColor: colors.border,
+    },
+    balanceTop: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    balanceLabelRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
+    },
+    balanceLabel: {
+      fontSize: 13,
+      fontWeight: '600',
+      color: colors.text.secondary,
+    },
+    balanceValue: {
+      fontSize: 16,
+      fontWeight: '900',
+      color: colors.text.primary,
+    },
+    balanceTrack: {
+      height: 6,
+      borderRadius: 999,
+      backgroundColor: colors.background.paper,
+      overflow: 'hidden',
+    },
+    balanceFill: {
+      height: '100%',
+      borderRadius: 999,
+    },
+    balanceHint: {
+      fontSize: 12.5,
+      fontWeight: '700',
     },
     section: {
-      gap: 8,
+      gap: 10,
     },
     sectionTitle: {
       fontSize: 14,
@@ -67,17 +146,20 @@ export const createStyles = (colors: any) =>
     quantityRow: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 16,
+      gap: 18,
     },
     qtyButton: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
+      width: 42,
+      height: 42,
+      borderRadius: 21,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors.background.paper,
       borderWidth: 1,
       borderColor: colors.border,
+    },
+    qtyButtonDisabled: {
+      opacity: 0.4,
     },
     qtyValue: {
       fontSize: 18,
@@ -85,22 +167,6 @@ export const createStyles = (colors: any) =>
       color: colors.text.primary,
       minWidth: 32,
       textAlign: 'center',
-    },
-    totalRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingVertical: 8,
-    },
-    totalLabel: {
-      fontSize: 14,
-      fontWeight: '600',
-      color: colors.text.secondary,
-    },
-    totalValue: {
-      fontSize: 18,
-      fontWeight: '900',
-      color: colors.primary.main,
     },
     input: {
       borderWidth: 1,
@@ -119,26 +185,49 @@ export const createStyles = (colors: any) =>
     errorText: {
       fontSize: 12,
       fontWeight: '600',
-      marginTop: 2,
     },
     multilineInput: {
       minHeight: 80,
       textAlignVertical: 'top',
     },
-    redeemButton: {
+    footer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 14,
+      paddingHorizontal: 16,
+      paddingTop: 12,
+      paddingBottom: 16,
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      backgroundColor: colors.background.default,
+    },
+    footerTotals: {
+      gap: 2,
+    },
+    footerTotalLabel: {
+      fontSize: 12,
+      fontWeight: '600',
+      color: colors.text.secondary,
+    },
+    footerTotalValue: {
+      fontSize: 20,
+      fontWeight: '900',
+      color: colors.primary.main,
+    },
+    cta: {
+      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
       gap: 8,
-      minHeight: 50,
-      borderRadius: 12,
+      minHeight: 52,
+      borderRadius: 14,
       backgroundColor: colors.primary.main,
-      marginTop: 8,
     },
-    redeemDisabled: {
+    ctaDisabled: {
       opacity: 0.4,
     },
-    redeemText: {
+    ctaText: {
       fontSize: 15,
       fontWeight: '800',
       color: colors.text.inverse,

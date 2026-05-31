@@ -46,6 +46,18 @@ export const createStyles = (colors: any, isDark?: boolean) =>
       fontWeight: '600',
       color: colors.text.inverse,
     },
+    sourceBadge: {
+      position: 'absolute',
+      top: 12,
+      left: 12,
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 4,
+      backgroundColor: colors.background.overlay,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 12,
+    },
     thumbnailRow: {
       paddingHorizontal: 12,
       paddingVertical: 10,

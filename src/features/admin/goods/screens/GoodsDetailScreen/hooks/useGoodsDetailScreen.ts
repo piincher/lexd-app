@@ -15,7 +15,7 @@ export const useGoodsDetailScreen = () => {
   const assignMutations = useGoodsDetailAssignMutations(data, ui);
   const unassignment = useGoodsDetailUnassignment(data);
   const assignDialog = useGoodsDetailAssignDialog(data, ui, navigation);
-  const management = useGoodsDetailManagementActions(data, navigation);
+  const management = useGoodsDetailManagementActions({ ...data, containerId: data.container?._id }, navigation);
   const formatters = useGoodsDetailFormatters(data.goods);
   const ownerAssignment = useGoodsDetailOwnerAssignment(
     {

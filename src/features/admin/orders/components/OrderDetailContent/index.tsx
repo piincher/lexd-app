@@ -11,14 +11,16 @@ import { OrderGoodsSection } from '../../screens/components/OrderGoodsSection';
 import { OrderStatusTimeline } from '../../screens/components/OrderStatusTimeline';
 import { OrderActions } from '../../screens/components/OrderActions';
 import { styles } from './OrderDetailContent.styles';
+import type { productType } from '@src/api/order';
 
 interface OrderDetailContentProps {
-  order: any;
-  routes?: any[];
+  order: productType;
+  routes?: unknown[];
   isLoading: boolean;
   isUpdating: boolean;
   onRefresh: () => void;
   onUpdateStatus: () => void;
+  onOpenGoods: (goodsId: string) => void;
 }
 
 export const OrderDetailContent: React.FC<OrderDetailContentProps> = ({
@@ -28,6 +30,7 @@ export const OrderDetailContent: React.FC<OrderDetailContentProps> = ({
   isUpdating,
   onRefresh,
   onUpdateStatus,
+  onOpenGoods,
 }) => {
   const { colors } = useAppTheme();
 
@@ -46,7 +49,7 @@ export const OrderDetailContent: React.FC<OrderDetailContentProps> = ({
       showsVerticalScrollIndicator={false}
     >
       <OrderDetailHeader order={order} />
-      <OrderImageGallery images={order.images} />
+      <OrderImageGallery images={order.images} fallbackPhotos={order.goodsPhotos} />
       <OrderQuickStats
         quantity={order.quantity}
         weight={order.packageWeight}
@@ -56,7 +59,7 @@ export const OrderDetailContent: React.FC<OrderDetailContentProps> = ({
       <PaymentSection order={order} />
       <OrderInfoSection order={order} />
       <OrderShippingSection order={order} />
-      <OrderGoodsSection goods={order.goodsIds || []} />
+      <OrderGoodsSection goods={order.goodsIds || []} onOpenGoods={onOpenGoods} />
       <OrderStatusTimeline order={order} routeData={routes?.[0]} />
       <OrderActions
         order={order}
