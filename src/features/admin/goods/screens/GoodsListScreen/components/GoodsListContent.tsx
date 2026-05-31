@@ -46,19 +46,14 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
 
   const keyExtractor = useCallback((item: Goods) => item._id, []);
 
-  if (isLoading) {
-    return (
-      <View style={styles.fill}>
-        {listHeader}
-        <GoodsListSkeleton />
-      </View>
-    );
-  }
-
-  if (error) {
-    return (
-      <View style={styles.fill}>
-        {listHeader}
+  // The loading / error / empty body is rendered as the FlashList's empty slot —
+  // NOT by swapping the whole tree — so the `listHeader` (and its search input)
+  // is mounted in exactly one place across every state. Swapping branches on a
+  // keystroke-triggered refetch used to remount the TextInput and dismiss the keyboard.
+  const renderEmpty = useCallback(() => {
+    if (isLoading) return <GoodsListSkeleton />;
+    if (error) {
+      return (
         <View style={styles.centerContainer}>
           <View style={[styles.errorIcon, { backgroundColor: colors.feedback.errorBg }]}>
             <Ionicons name="alert-circle" size={56} color={colors.status.error} />
@@ -72,19 +67,28 @@ export const GoodsListContent: React.FC<GoodsListContentProps> = ({
             </LinearGradient>
           </TouchableOpacity>
         </View>
-      </View>
-    );
-  }
+      );
+    }
+    return <GoodsEmptyState hasFilters={hasFilters} onAddPress={onAddPress} />;
+  }, [isLoading, error, hasFilters, onAddPress, onRefresh, colors]);
 
   return (
-    <FlashList data={goods} keyExtractor={keyExtractor} renderItem={renderItem}
-      contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}
+    <FlashList
+      // While loading or erroring, show no rows so the empty slot (skeleton/error)
+      // renders below the persistent header.
+      data={isLoading || error ? [] : goods}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
+      contentContainerStyle={styles.listContent}
+      showsVerticalScrollIndicator={false}
       onEndReached={onEndReached}
+      keyboardShouldPersistTaps="handled"
       ListHeaderComponent={listHeader}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={Theme.primary[500]} />
       }
-      ListEmptyComponent={<GoodsEmptyState hasFilters={hasFilters} onAddPress={onAddPress} />} />
+      ListEmptyComponent={renderEmpty()}
+    />
   );
 };
 

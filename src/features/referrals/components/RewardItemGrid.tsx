@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FlatList, RefreshControl, View } from 'react-native';
 import type { RewardItem } from '../types';
 import { RewardItemCard } from './RewardItemCard';
@@ -14,6 +14,13 @@ interface RewardItemGridProps {
 const ITEM_WIDTH = 160;
 const SPACING = 12;
 
+// Affordability-first ordering: what the user can redeem NOW comes first, then
+// in-stock items they're saving toward (cheapest first), then out-of-stock.
+const affordabilityTier = (item: RewardItem, userPoints: number): number => {
+  if (item.stock <= 0) return 2;
+  return userPoints >= item.pointsRequired ? 0 : 1;
+};
+
 export const RewardItemGrid: React.FC<RewardItemGridProps> = ({
   items,
   userPoints,
@@ -21,9 +28,19 @@ export const RewardItemGrid: React.FC<RewardItemGridProps> = ({
   refreshing,
   onRefresh,
 }) => {
+  const sortedItems = useMemo(
+    () =>
+      [...items].sort(
+        (a, b) =>
+          affordabilityTier(a, userPoints) - affordabilityTier(b, userPoints) ||
+          a.pointsRequired - b.pointsRequired
+      ),
+    [items, userPoints]
+  );
+
   return (
     <FlatList
-      data={items}
+      data={sortedItems}
       keyExtractor={(item) => item.id}
       numColumns={2}
       columnWrapperStyle={{ gap: SPACING, marginBottom: SPACING }}

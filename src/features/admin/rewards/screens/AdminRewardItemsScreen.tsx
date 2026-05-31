@@ -100,6 +100,14 @@ const AdminRewardItemsScreen: React.FC = () => {
           <View style={styles.chipRow}>
             <StatusPill active={item.status === 'ACTIVE'} />
             <PickupPill method={item.pickupMethod} />
+            {!!item.waitlistCount && item.waitlistCount > 0 && (
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: colors.status.warning + '20', paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999 }}>
+                <Ionicons name="notifications-outline" size={11} color={colors.status.warning} />
+                <Text style={{ fontSize: 11, fontWeight: '800', color: colors.status.warning }}>
+                  {item.waitlistCount} en attente
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </TouchableOpacity>

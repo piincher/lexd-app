@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useMutation } from '@tanstack/react-query';
+import { showMessage } from 'react-native-flash-message';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { Screen } from '@src/shared/ui/Screen';
@@ -8,6 +10,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useMyRewardSummaryV2 } from '../hooks/useRewards';
 import { useMyProductRedemptions } from '../hooks/useProductRedemptions';
 import { useRewardDetailForm } from '../hooks/useRewardDetailForm';
+import { joinRewardWaitlist } from '../api/rewardApi';
 import { RewardDetailConfirmModal } from '../components/RewardDetailConfirmModal';
 import type { RewardItem } from '../types';
 import { createStyles } from './RewardDetailScreen.styles';
@@ -23,6 +26,13 @@ export const RewardDetailScreen: React.FC = () => {
   const points = summary.data?.rewardPoints || 0;
   const form = useRewardDetailForm(item, points);
   const handleBack = useCallback(() => navigation.goBack(), [navigation]);
+
+  const outOfStock = !!item && item.stock <= 0;
+  const notifyMutation = useMutation({
+    mutationFn: () => joinRewardWaitlist(item!.id),
+    onSuccess: () => showMessage({ message: 'Vous serez prévenu dès le retour en stock', type: 'success' }),
+    onError: () => showMessage({ message: 'Inscription impossible pour le moment', type: 'danger' }),
+  });
 
   const handleConfirm = useCallback(() => {
     if (!item) return;
@@ -54,10 +64,23 @@ export const RewardDetailScreen: React.FC = () => {
         </View>
         <InputSection label="Téléphone" value={form.phone} onChange={form.setPhone} error={form.phoneError} placeholder="Votre numéro de téléphone" keyboard="phone-pad" colors={colors} styles={styles} />
         <InputSection label="Remarques (optionnel)" value={form.remarks} onChange={form.setRemarks} placeholder="Notes supplémentaires..." multiline colors={colors} styles={styles} />
-        <TouchableOpacity style={[styles.redeemButton, !form.isValid && styles.redeemDisabled]} onPress={form.openConfirm} disabled={!form.isValid || isCreatingRedemption}>
-          <MaterialCommunityIcons name="gift-outline" size={18} color={colors.text.inverse} />
-          <Text style={styles.redeemText}>{!form.canAfford ? 'Points insuffisants' : 'Échanger'}</Text>
-        </TouchableOpacity>
+        {outOfStock ? (
+          <TouchableOpacity
+            style={[styles.redeemButton, { backgroundColor: colors.status.warning }, notifyMutation.isPending && styles.redeemDisabled]}
+            onPress={() => notifyMutation.mutate()}
+            disabled={notifyMutation.isPending || notifyMutation.isSuccess}
+          >
+            <MaterialCommunityIcons name={notifyMutation.isSuccess ? 'bell-check-outline' : 'bell-ring-outline'} size={18} color={colors.text.inverse} />
+            <Text style={styles.redeemText}>
+              {notifyMutation.isSuccess ? 'Vous serez prévenu' : notifyMutation.isPending ? 'Inscription…' : 'Prévenez-moi quand disponible'}
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={[styles.redeemButton, !form.isValid && styles.redeemDisabled]} onPress={form.openConfirm} disabled={!form.isValid || isCreatingRedemption}>
+            <MaterialCommunityIcons name="gift-outline" size={18} color={colors.text.inverse} />
+            <Text style={styles.redeemText}>{!form.canAfford ? 'Points insuffisants' : 'Échanger'}</Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
       <RewardDetailConfirmModal visible={form.showConfirm} item={item} quantity={form.quantity} totalPoints={form.totalPoints} phone={form.phone} remarks={form.remarks} onClose={form.closeConfirm} onConfirm={handleConfirm} isSubmitting={isCreatingRedemption} />
     </Screen>

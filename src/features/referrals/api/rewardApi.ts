@@ -93,6 +93,14 @@ export const cancelMyProductRedemption = async (id: string): Promise<ProductRede
   return response.data.data;
 };
 
+/** Join the "notify me when back in stock" waitlist for a reward item. */
+export const joinRewardWaitlist = async (itemId: string): Promise<{ joined: boolean }> => {
+  const response = await apiClientV2.post<ApiResponse<{ joined: boolean }>>(
+    `/rewards/items/${itemId}/notify-me`
+  );
+  return response.data.data;
+};
+
 export const getMyPointLedger = async (page = 1, limit = 20): Promise<RewardLedgerListV2> => {
   const response = await apiClientV2.get<ApiResponse<RewardLedgerListV2>>('/rewards/ledger/me', {
     params: { page, limit },

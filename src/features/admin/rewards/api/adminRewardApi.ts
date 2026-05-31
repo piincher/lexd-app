@@ -11,6 +11,8 @@ export interface RewardItem {
   status: 'ACTIVE' | 'INACTIVE';
   category: string;
   createdAt: string;
+  /** Customers waiting for this item to be restocked (admin list only). */
+  waitlistCount?: number;
 }
 
 export interface ProductRedemption {
