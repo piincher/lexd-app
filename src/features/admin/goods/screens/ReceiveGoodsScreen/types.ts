@@ -155,7 +155,7 @@ export interface GoodsDimensionsInputProps extends ReceiveGoodsFormSectionProps 
 
 export interface GoodsPhotosUploadProps {
   photoUris: string[];
-  onPhotoSelected: (uri: string) => void;
+  onPhotoSelected: (uri: string, source?: 'camera' | 'gallery') => void;
   onPhotoRemoved: (uri: string) => void;
 }
 

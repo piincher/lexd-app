@@ -150,6 +150,11 @@ export interface ReceiveGoodsInput {
    *  receive form's "Notifier par WhatsApp" toggle when the client doesn't want a message.
    *  Only affects WhatsApp — push + in-app notifications still fire. */
   notifyWhatsapp?: boolean;
+  /** How the photos were obtained (camera vs gallery) — for the server-side
+   *  watermark/photo-attestation audit trail. */
+  source?: 'camera' | 'gallery';
+  /** Client-side capture timestamp of the photos (ISO). */
+  capturedAt?: string;
 }
 
 export type ReceiveExceptionReason =

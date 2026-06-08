@@ -1,6 +1,7 @@
 export interface GoodsPhotosUploadProps {
   photoUris: string[];
-  onPhotoSelected: (uri: string) => void;
+  /** `source` reports whether the photo came from the camera or the gallery. */
+  onPhotoSelected: (uri: string, source?: 'camera' | 'gallery') => void;
   onPhotoRemoved: (uri: string) => void;
   maxPhotos?: number;
 }
