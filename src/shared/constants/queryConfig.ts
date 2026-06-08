@@ -1,0 +1,18 @@
+export const ONE_SECOND_MS = 1000;
+export const ONE_MINUTE_MS = 60 * ONE_SECOND_MS;
+export const ONE_HOUR_MS = 60 * ONE_MINUTE_MS;
+export const ONE_DAY_MS = 24 * ONE_HOUR_MS;
+
+export const SHORT_STALE_TIME = 30 * ONE_SECOND_MS;
+export const DEFAULT_STALE_TIME = 5 * ONE_MINUTE_MS;
+export const PROFILE_STALE_TIME = 10 * ONE_MINUTE_MS;
+export const DASHBOARD_STALE_TIME = 2 * ONE_MINUTE_MS;
+export const REPORTS_STALE_TIME = ONE_HOUR_MS;
+export const ANNOUNCEMENTS_STALE_TIME = 30 * ONE_MINUTE_MS;
+export const EXPENSES_STALE_TIME = 15 * ONE_MINUTE_MS;
+
+export const SHORT_CACHE_TIME = 5 * ONE_MINUTE_MS;
+export const CHAT_CACHE_TIME = 10 * ONE_MINUTE_MS;
+export const USERS_CACHE_TIME = ONE_HOUR_MS;
+export const DEFAULT_CACHE_TIME = ONE_DAY_MS;
+export const REPORTS_CACHE_TIME = 7 * ONE_DAY_MS;

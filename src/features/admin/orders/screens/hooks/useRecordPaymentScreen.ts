@@ -20,7 +20,7 @@ export const useRecordPaymentScreen = (params: UseRecordPaymentScreenParams) => 
   const [notes, setNotes] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const { proofImages, showImageModal, setShowImageModal, pickImage, removeImage } = usePaymentImagePicker();
+  const { proofImages, showImageModal, setShowImageModal, pickImage, removeImage, source, capturedAt } = usePaymentImagePicker();
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
@@ -41,6 +41,8 @@ export const useRecordPaymentScreen = (params: UseRecordPaymentScreenParams) => 
     referenceNumber,
     notes,
     proofImages,
+    proofSource: source,
+    proofCapturedAt: capturedAt,
     validate,
     errors,
   });

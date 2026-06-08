@@ -7,45 +7,71 @@ import { QueryClient } from '@tanstack/react-query';
 import type { PersistQueryClientOptions } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import * as EncryptedStorage from './encryptedStorage';
+import {
+  ANNOUNCEMENTS_STALE_TIME,
+  CHAT_CACHE_TIME,
+  DASHBOARD_STALE_TIME,
+  DEFAULT_CACHE_TIME,
+  DEFAULT_STALE_TIME,
+  EXPENSES_STALE_TIME,
+  PROFILE_STALE_TIME,
+  REPORTS_CACHE_TIME,
+  REPORTS_STALE_TIME,
+  SHORT_CACHE_TIME,
+  USERS_CACHE_TIME,
+} from '@src/shared/constants/queryConfig';
+import { getQueryRoot, shouldPersistQueryKey } from './queryKeys';
 
 // Cache strategies for different data types
 export const CACHE_STRATEGIES = {
   // Critical data - always available offline
-  DASHBOARD: { staleTime: Infinity, gcTime: Infinity },
-  USER_PROFILE: { staleTime: Infinity, gcTime: Infinity },
-  GOODS_LIST: { staleTime: 5 * 60 * 1000, gcTime: 24 * 60 * 60 * 1000 },
-  CONTAINER_LIST: { staleTime: 5 * 60 * 1000, gcTime: 24 * 60 * 60 * 1000 },
-  ORDER_LIST: { staleTime: 5 * 60 * 1000, gcTime: 24 * 60 * 60 * 1000 },
+  DASHBOARD: { staleTime: DASHBOARD_STALE_TIME, gcTime: DEFAULT_CACHE_TIME },
+  USER_PROFILE: { staleTime: PROFILE_STALE_TIME, gcTime: DEFAULT_CACHE_TIME },
+  GOODS_LIST: { staleTime: DEFAULT_STALE_TIME, gcTime: DEFAULT_CACHE_TIME },
+  CONTAINER_LIST: { staleTime: DEFAULT_STALE_TIME, gcTime: DEFAULT_CACHE_TIME },
+  ORDER_LIST: { staleTime: DEFAULT_STALE_TIME, gcTime: DEFAULT_CACHE_TIME },
   
   // Data that can be stale
-  REPORTS: { staleTime: 60 * 60 * 1000, gcTime: 7 * 24 * 60 * 60 * 1000 },
-  ANNOUNCEMENTS: { staleTime: 30 * 60 * 1000, gcTime: 24 * 60 * 60 * 1000 },
+  REPORTS: { staleTime: REPORTS_STALE_TIME, gcTime: REPORTS_CACHE_TIME },
+  ANNOUNCEMENTS: { staleTime: ANNOUNCEMENTS_STALE_TIME, gcTime: DEFAULT_CACHE_TIME },
   
   // Real-time data - don't cache
-  NOTIFICATIONS: { staleTime: 0, gcTime: 5 * 60 * 1000 },
-  CHAT_MESSAGES: { staleTime: 0, gcTime: 10 * 60 * 1000 },
+  NOTIFICATIONS: { staleTime: 0, gcTime: SHORT_CACHE_TIME },
+  CHAT_MESSAGES: { staleTime: 0, gcTime: CHAT_CACHE_TIME },
   
   // Admin data
-  USERS_LIST: { staleTime: 10 * 60 * 1000, gcTime: 60 * 60 * 1000 },
-  EXPENSES: { staleTime: 15 * 60 * 1000, gcTime: 24 * 60 * 60 * 1000 },
+  USERS_LIST: { staleTime: PROFILE_STALE_TIME, gcTime: USERS_CACHE_TIME },
+  EXPENSES: { staleTime: EXPENSES_STALE_TIME, gcTime: DEFAULT_CACHE_TIME },
 } as const;
 
-// Keys of queries that should be persisted
-const PERSISTED_QUERY_KEYS = [
-  'dashboard',
-  'user',
-  'profile',
-  'goods',
-  'containers',
-  'orders',
-  'reports',
-  'announcements',
-  'users',
-  'expenses',
-  'invoices',
-  'routes',
-  'consignees',
-];
+const getCacheStrategyForQueryKey = (queryKey: readonly unknown[]) => {
+  const root = getQueryRoot(queryKey);
+  if (root === 'dashboard' || root === 'stats' || root === 'analytics') return CACHE_STRATEGIES.DASHBOARD;
+  if (root === 'user' || root === 'profile' || root === 'users') return CACHE_STRATEGIES.USER_PROFILE;
+  if (root === 'goods' || root === 'my-goods' || root === 'admin-goods') return CACHE_STRATEGIES.GOODS_LIST;
+  if (root === 'containers' || root === 'customer-containers') return CACHE_STRATEGIES.CONTAINER_LIST;
+  if (root === 'orders' || root === 'order') return CACHE_STRATEGIES.ORDER_LIST;
+  if (root === 'reports') return CACHE_STRATEGIES.REPORTS;
+  if (root === 'announcements' || root === 'announcement') return CACHE_STRATEGIES.ANNOUNCEMENTS;
+  if (root === 'notification' || root === 'notifications') return CACHE_STRATEGIES.NOTIFICATIONS;
+  if (root === 'expenses') return CACHE_STRATEGIES.EXPENSES;
+  return { staleTime: DEFAULT_STALE_TIME, gcTime: DEFAULT_CACHE_TIME };
+};
+
+const getHttpStatus = (error: unknown): number | undefined => {
+  if (!error || typeof error !== 'object') return undefined;
+  const response = 'response' in error ? (error as { response?: { status?: number } }).response : undefined;
+  if (typeof response?.status === 'number') return response.status;
+  return 'status' in error && typeof (error as { status?: unknown }).status === 'number'
+    ? (error as { status: number }).status
+    : undefined;
+};
+
+const isNetworkError = (error: unknown): boolean => {
+  if (!error || typeof error !== 'object') return false;
+  const message = 'message' in error ? (error as { message?: unknown }).message : undefined;
+  return message === 'Network Error' || !('response' in error);
+};
 
 /**
  * Create the React Query client with offline support
@@ -55,17 +81,18 @@ export const createQueryClient = (): QueryClient => {
     defaultOptions: {
       queries: {
         // Data stays fresh for 5 minutes
-        staleTime: 5 * 60 * 1000,
+        staleTime: DEFAULT_STALE_TIME,
         // Keep cached data for 24 hours
-        gcTime: 24 * 60 * 60 * 1000,
+        gcTime: DEFAULT_CACHE_TIME,
         // Retry failed queries only once, and not on network errors
-        retry: (failureCount, error: any) => {
+        retry: (failureCount, error) => {
           // Don't retry on 4xx errors (client errors)
-          if (error?.response?.status >= 400 && error?.response?.status < 500) {
+          const status = getHttpStatus(error);
+          if (status && status >= 400 && status < 500) {
             return false;
           }
           // Don't retry network errors (backend down / no connection)
-          if (error?.message === 'Network Error' || !error?.response) {
+          if (isNetworkError(error)) {
             return false;
           }
           return failureCount < 1;
@@ -74,9 +101,9 @@ export const createQueryClient = (): QueryClient => {
         // Mobile apps don't need window focus refetching
         refetchOnWindowFocus: false,
         // Refetch on reconnect only if data is stale
-        refetchOnReconnect: 'always',
+        refetchOnReconnect: true,
         // Only refetch on mount if data is stale
-        refetchOnMount: false,
+        refetchOnMount: true,
       },
       mutations: {
         // Retry mutations once on failure
@@ -107,16 +134,13 @@ export const createPersister = () => {
  */
 export const persistOptions: Omit<PersistQueryClientOptions, 'queryClient'> = {
   persister: createPersister(),
-  maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-  buster: 'v3', // Version key - increment to invalidate old cache
+  maxAge: REPORTS_CACHE_TIME,
+  buster: 'v4', // Invalidate old persisted caches that used infinite stale times
   dehydrateOptions: {
     // Only persist these query keys
     shouldDehydrateQuery: (query) => {
       if (query.state.status === 'pending') return false;
-      const queryKey = query.queryKey[0] as string;
-      return PERSISTED_QUERY_KEYS.some(key => 
-        typeof queryKey === 'string' && queryKey.includes(key)
-      );
+      return shouldPersistQueryKey(query.queryKey);
     },
   },
 };
@@ -153,18 +177,20 @@ export const invalidateAllQueries = async (): Promise<void> => {
  * Prefetch critical data for offline use
  */
 export const prefetchForOffline = async (
-  queries: Array<{ queryKey: string[]; queryFn: () => Promise<any> }>
+  queries: { queryKey: readonly unknown[]; queryFn: () => Promise<unknown>; staleTime?: number; gcTime?: number }[]
 ): Promise<void> => {
   const client = getQueryClient();
   
   await Promise.all(
-    queries.map(({ queryKey, queryFn }) =>
-      client.prefetchQuery({
+    queries.map(({ queryKey, queryFn, staleTime, gcTime }) => {
+      const strategy = getCacheStrategyForQueryKey(queryKey);
+      return client.prefetchQuery({
         queryKey,
         queryFn,
-        staleTime: CACHE_STRATEGIES.DASHBOARD.staleTime,
-      })
-    )
+        staleTime: staleTime ?? strategy.staleTime,
+        gcTime: gcTime ?? strategy.gcTime,
+      });
+    })
   );
 };
 

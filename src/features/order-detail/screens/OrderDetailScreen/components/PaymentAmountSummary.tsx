@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useOrderPaymentCardStyles } from "./OrderPaymentCard.styles";
 import { PaymentInfoRow } from "./PaymentInfoRow";
-import { PaymentStatus } from "../../../../hooks/useOrderPaymentData";
+import { PaymentStatus } from "../../../hooks/useOrderPaymentData";
 
 const formatCurrency = (amount?: number | null): string =>
   `${(amount ?? 0).toLocaleString("fr-FR")} FCFA`;

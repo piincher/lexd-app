@@ -22,3 +22,6 @@ export * from "./client";
 
 // Search Feature
 export * from "./search";
+
+// Photo Attestation / Watermark Feature
+export * from "./watermark";

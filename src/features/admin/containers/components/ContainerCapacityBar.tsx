@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Container } from './types';
+import { Container } from '../types';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createStyles } from './ContainerCard.styles';
 

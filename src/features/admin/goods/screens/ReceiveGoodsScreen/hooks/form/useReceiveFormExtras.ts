@@ -12,9 +12,13 @@ export const useReceiveFormExtras = () => {
   // contacted on intake. Push + in-app notifications are NOT affected — only
   // the outbound WhatsApp message is skipped.
   const [notifyWhatsapp, setNotifyWhatsapp] = useState<boolean>(true);
+  // How the photos were obtained (camera capture vs gallery import) — recorded
+  // on the server-side photo attestation/audit trail.
+  const [photoSource, setPhotoSource] = useState<'camera' | 'gallery' | undefined>(undefined);
 
-  const addPhotoUri = useCallback((uri: string) => {
+  const addPhotoUri = useCallback((uri: string, source?: 'camera' | 'gallery') => {
     setPhotoUris((prev) => (prev.includes(uri) ? prev : [...prev, uri]));
+    if (source) setPhotoSource(source);
   }, []);
 
   const removePhotoUri = useCallback((uri: string) => {
@@ -32,5 +36,6 @@ export const useReceiveFormExtras = () => {
     setUseDimensions,
     notifyWhatsapp,
     setNotifyWhatsapp,
+    photoSource,
   };
 };

@@ -8,6 +8,10 @@ export interface PaymentRecord {
 	referenceNumber?: string;
 	notes?: string;
 	proofImages?: string[];
+	/** How proof photos were obtained — for the server-side attestation audit trail. */
+	source?: 'camera' | 'gallery';
+	/** Client-side capture timestamp of the proof photos (ISO). */
+	capturedAt?: string;
 	recordedAt: string;
 }
 

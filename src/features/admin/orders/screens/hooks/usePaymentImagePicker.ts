@@ -2,9 +2,15 @@ import { useState } from 'react';
 import { Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
+export type ProofImageSource = 'camera' | 'gallery';
+
 export const usePaymentImagePicker = () => {
   const [proofImages, setProofImages] = useState<string[]>([]);
   const [showImageModal, setShowImageModal] = useState(false);
+  // How the proof photos were obtained (camera capture vs gallery import) —
+  // recorded on the server-side attestation/audit trail for fraud protection.
+  const [source, setSource] = useState<ProofImageSource | undefined>(undefined);
+  const [capturedAt, setCapturedAt] = useState<string | undefined>(undefined);
 
   const pickImage = async (fromCamera: boolean) => {
     try {
@@ -42,6 +48,8 @@ export const usePaymentImagePicker = () => {
         const asset = result.assets[0];
         const base64Image = `data:image/jpeg;base64,${asset.base64}`;
         setProofImages((prev) => [...prev, base64Image]);
+        setSource(fromCamera ? 'camera' : 'gallery');
+        setCapturedAt(new Date().toISOString());
       }
     } catch (error) {
       console.error('[RecordPaymentScreen] Image picker error:', error);
@@ -61,5 +69,7 @@ export const usePaymentImagePicker = () => {
     setShowImageModal,
     pickImage,
     removeImage,
+    source,
+    capturedAt,
   };
 };

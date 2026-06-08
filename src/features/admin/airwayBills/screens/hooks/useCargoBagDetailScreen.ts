@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { CargoBagStatus } from '../types';
+import { CargoBagStatus } from '../../types';
 import { useCargoBagDetailNavigation } from './detail/useCargoBagDetailNavigation';
 import { useCargoBagDetailData } from './detail/useCargoBagDetailData';
 import { useCargoBagDetailUI } from './detail/useCargoBagDetailUI';

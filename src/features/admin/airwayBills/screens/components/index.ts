@@ -27,3 +27,12 @@ export { CargoBagDetailInfoCard } from './CargoBagDetailInfoCard';
 export { CargoBagDetailGoodsItem } from './CargoBagDetailGoodsItem';
 export { CargoBagDetailGoodsList } from './CargoBagDetailGoodsList';
 export { CargoBagDetailFooter } from './CargoBagDetailFooter';
+// Redesigned detail building blocks
+export { ShipmentHero } from './ShipmentHero';
+export type { HeroMetaChip } from './ShipmentHero';
+export { ShipmentKpiGrid } from './ShipmentKpiGrid';
+export type { KpiItem } from './ShipmentKpiGrid';
+export { SegmentTabs } from './SegmentTabs';
+export type { SegmentTab } from './SegmentTabs';
+export { CargoBagSection } from './CargoBagSection';
+export { AirwayBillGoodsSection } from './AirwayBillGoodsSection';

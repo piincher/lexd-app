@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { View, ScrollView } from 'react-native';
 import { Portal, Dialog } from 'react-native-paper';
-import { NewWaypointForm } from '../../hooks/types';
+import { NewWaypointForm } from '../hooks/types';
 import { LocationNameField, LocationCodeField, SegmentTypeField } from './AddWaypointDialogFields';
 import { AddWaypointDialogActions } from './AddWaypointDialogActions';
 import { createStyles } from './AddWaypointDialog.styles';

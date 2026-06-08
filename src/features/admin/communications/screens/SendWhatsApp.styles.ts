@@ -35,8 +35,20 @@ export const createStyles = (colors: ThemeContextType["colors"]) =>
       fontFamily: Fonts.bold,
       color: colors.text.primary,
     },
-    content: {
+    recipientSection: {
+      flex: 1,
+      paddingHorizontal: Theme.spacing.md,
+      paddingTop: Theme.spacing.sm,
+    },
+    composePanel: {
+      maxHeight: "52%",
+      borderTopWidth: 1,
+      borderTopColor: colors.border,
+      backgroundColor: colors.background.card,
+    },
+    composeContent: {
       padding: Theme.spacing.lg,
       paddingBottom: Theme.spacing.xl,
+      gap: Theme.spacing.lg,
     },
   });

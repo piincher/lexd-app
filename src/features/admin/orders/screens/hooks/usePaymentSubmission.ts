@@ -8,6 +8,7 @@ interface UsePaymentSubmissionParams {
   orderId: string; orderCode: string; clientName: string; clientPhone?: string;
   currentBalance: number; amount: string; paymentMethod: string;
   referenceNumber: string; notes: string; proofImages: string[];
+  proofSource?: 'camera' | 'gallery'; proofCapturedAt?: string;
   validate: () => boolean; errors: Record<string, string>;
 }
 
@@ -20,13 +21,17 @@ export const usePaymentSubmission = (params: UsePaymentSubmissionParams) => {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
+    const hasProof = params.proofImages.length > 0;
     const paymentData = {
       orderId: params.orderId,
       amount: parseFloat(params.amount),
       paymentMethod: params.paymentMethod,
       referenceNumber: params.referenceNumber || undefined,
       notes: params.notes || undefined,
-      proofImages: params.proofImages.length > 0 ? params.proofImages : undefined,
+      proofImages: hasProof ? params.proofImages : undefined,
+      // Provenance for the proof-photo watermark/attestation (audit trail).
+      source: hasProof ? params.proofSource : undefined,
+      capturedAt: hasProof ? params.proofCapturedAt : undefined,
       recordedAt: new Date().toISOString(),
     };
 

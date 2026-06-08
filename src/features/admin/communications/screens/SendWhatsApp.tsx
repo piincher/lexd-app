@@ -4,7 +4,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { IconButton, Text } from "react-native-paper";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { RootStackScreenProps } from "@src/app/navigation/type";
-import { WhatsAppManualComposer } from "../components/WhatsAppManualComposer";
+import { Calendar } from "@src/components/Calendar/Calendar";
+import { RecipientSelector } from "../components/RecipientSelector";
+import { WhatsAppManualNumbers } from "../components/WhatsAppManualNumbers";
+import { WhatsAppMediaPicker } from "../components/WhatsAppMediaPicker";
+import { WhatsAppMessageComposer } from "../components/WhatsAppMessageComposer";
+import { WhatsAppSendConfirmModal } from "../components/WhatsAppSendConfirmModal";
+import { SendSmsSuccessOverlay } from "../components/SendSmsSuccessOverlay";
 import { useSendWhatsAppScreen } from "../hooks/useSendWhatsAppScreen";
 import { createStyles } from "./SendWhatsApp.styles";
 
@@ -28,31 +34,81 @@ const SendWhatsApp = ({ navigation }: RootStackScreenProps<"SendWhatsApp">) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 0}
       >
+        <View style={styles.recipientSection}>
+          <RecipientSelector
+            mode={s.mode}
+            onModeChange={s.setMode}
+            recipients={s.allRecipients}
+            selectedIds={s.selectedIds}
+            onToggle={s.handleToggle}
+            onSelectAll={s.handleSelectAll}
+            onDeselectAll={s.handleDeselectAll}
+            search={s.search}
+            onSearchChange={s.setSearch}
+            isLoading={s.mode === "all" ? s.isLoadingUsers : s.isFetchingByDate}
+            dateLabel={s.dateLabel}
+            onOpenCalendar={s.handleOpenCalendar}
+            onFetchByDate={s.handleFetchByDate}
+            isFetchingByDate={s.isFetchingByDate}
+          />
+        </View>
+
         <ScrollView
-          style={styles.flex}
-          contentContainerStyle={styles.content}
+          style={styles.composePanel}
+          contentContainerStyle={styles.composeContent}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <WhatsAppManualComposer
-            phone={s.phone}
+          <WhatsAppManualNumbers
+            numbers={s.manualNumbers}
+            onAddNumber={s.addManualNumber}
+            onRemoveNumber={s.removeManualNumber}
+          />
+
+          <WhatsAppMediaPicker
+            items={s.media.items}
+            canAddMore={s.media.canAddMore}
+            disabled={s.isSending}
+            onPickImages={s.media.pickImages}
+            onPickVideos={s.media.pickVideos}
+            onRemove={s.media.removeItem}
+            onRetry={s.media.retryItem}
+          />
+
+          <WhatsAppMessageComposer
             message={s.message}
-            mode={s.mode}
-            mediaUrl={s.mediaUrl}
-            mediaType={s.mediaType}
-            canSend={s.canSend}
+            onMessageChange={s.setMessage}
+            onInsertToken={s.insertToken}
+            recipientCount={s.recipientCount}
+            mediaCount={s.media.count}
             isSending={s.isSending}
+            isUploading={s.media.isUploading}
+            canSend={s.canSend}
             isEnabled={s.config?.enabled}
             isConfigLoading={s.isConfigLoading}
-            onPhoneChange={s.setPhone}
-            onMessageChange={s.setMessage}
-            onModeChange={s.setMode}
-            onMediaUrlChange={s.setMediaUrl}
-            onMediaTypeChange={s.setMediaType}
-            onSend={s.handleSend}
+            onSend={s.handleSendPress}
           />
         </ScrollView>
       </KeyboardAvoidingView>
+
+      <Calendar
+        open={s.calendar.open}
+        onDismissSingle={s.calendar.onDismissSingle}
+        date={s.calendar.date}
+        onConfirmSingle={s.calendar.onConfirmSingle}
+      />
+
+      <WhatsAppSendConfirmModal
+        visible={s.showConfirmation}
+        recipientCount={s.recipientCount}
+        mediaCount={s.media.count}
+        messagePreview={s.message}
+        isSending={s.isSending}
+        onConfirm={s.handleConfirmSend}
+        onCancel={() => s.setShowConfirmation(false)}
+      />
+
+      <SendSmsSuccessOverlay visible={s.showSuccess} sentCount={s.sentCount} />
     </SafeAreaView>
   );
 };

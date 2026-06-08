@@ -30,6 +30,15 @@ export {
 } from './queryClient';
 
 export {
+  getQueryRoot,
+  persistedQueryRoots,
+  queryKeys,
+  shouldPersistQueryKey,
+  type AppQueryKey,
+  type PersistedQueryRoot,
+} from './queryKeys';
+
+export {
   addToQueue,
   getQueue,
   removeFromQueue,

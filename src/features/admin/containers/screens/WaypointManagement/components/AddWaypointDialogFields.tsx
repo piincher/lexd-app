@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Menu } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
 import { SEGMENT_TYPE_OPTIONS, SEGMENT_TYPE_LABELS } from '../../../types';
-import { NewWaypointForm } from '../../hooks/types';
+import { NewWaypointForm } from '../hooks/types';
 import { createStyles } from './AddWaypointDialog.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 

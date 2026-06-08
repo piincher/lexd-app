@@ -2,7 +2,7 @@
  * Port-Specific Waypoint Status System - Core types
  */
 
-import { WaypointStatus } from '../../containerWaypoints';
+import { WaypointStatus } from '../containerWaypoints';
 
 export type ExtendedWaypointStatus = 
   | WaypointStatus

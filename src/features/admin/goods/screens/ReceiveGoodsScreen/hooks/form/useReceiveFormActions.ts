@@ -19,6 +19,8 @@ interface Options {
   idempotencyKey: string;
   /** Per-receipt WhatsApp opt-out from the form's "Notifier par WhatsApp" toggle. */
   notifyWhatsapp: boolean;
+  /** How the goods photos were obtained (camera vs gallery) — for the photo attestation audit trail. */
+  photoSource?: 'camera' | 'gallery';
 }
 
 export const useReceiveFormActions = (options: Options) => {
@@ -34,6 +36,7 @@ export const useReceiveFormActions = (options: Options) => {
     setUseDimensions,
     idempotencyKey,
     notifyWhatsapp,
+    photoSource,
   } = options;
 
   const buildSubmitData = useCallback((): ReceiveGoodsInput | null => {
@@ -68,6 +71,9 @@ export const useReceiveFormActions = (options: Options) => {
       // Only thread `false` — `true` is the default the backend assumes when
       // the field is absent, so we keep the payload small for the common case.
       notifyWhatsapp: notifyWhatsapp === false ? false : undefined,
+      // Photo provenance for the watermark/attestation audit trail.
+      source: photoSource,
+      capturedAt: photoSource ? new Date().toISOString() : undefined,
     };
 
     if (
@@ -88,7 +94,7 @@ export const useReceiveFormActions = (options: Options) => {
     }
 
     return input;
-  }, [selectedClient, watchedValues, useDimensions, calculatedCBM, idempotencyKey, notifyWhatsapp]);
+  }, [selectedClient, watchedValues, useDimensions, calculatedCBM, idempotencyKey, notifyWhatsapp, photoSource]);
 
   const resetForm = useCallback(() => {
     reset({
