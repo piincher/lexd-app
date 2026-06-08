@@ -21,8 +21,10 @@ export interface UseReceiveGoodsFormReturn {
   setSelectedClient: (client: userData | null) => void;
   photoUris: string[];
   setPhotoUris: (uris: string[]) => void;
-  addPhotoUri: (uri: string) => void;
+  addPhotoUri: (uri: string, source?: 'camera' | 'gallery') => void;
   removePhotoUri: (uri: string) => void;
+  /** How the photos were captured (camera vs gallery) — for the attestation audit trail. */
+  photoSource?: 'camera' | 'gallery';
   useDimensions: boolean;
   setUseDimensions: (use: boolean) => void;
   /** Per-receipt WhatsApp opt-out. True by default; set to false from the receive form's

@@ -363,6 +363,14 @@ export class GoodsService {
       formData.append('notifyWhatsapp', 'false');
     }
 
+    // Photo provenance for the watermark/attestation audit trail.
+    if (data.source) {
+      formData.append('source', data.source);
+    }
+    if (data.capturedAt) {
+      formData.append('capturedAt', data.capturedAt);
+    }
+
     // Add photos
     photoUris.forEach((uri, index) => {
       formData.append('photos', {

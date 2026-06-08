@@ -69,7 +69,7 @@ export const GoodsPhotosUpload: React.FC<GoodsPhotosUploadProps> = ({
       setIsProcessing(true);
       const compressedUri = await compressImage(result.assets[0].uri);
       setIsProcessing(false);
-      onPhotoSelected(compressedUri);
+      onPhotoSelected(compressedUri, 'camera');
     }
   };
 
@@ -96,7 +96,7 @@ export const GoodsPhotosUpload: React.FC<GoodsPhotosUploadProps> = ({
         result.assets.map((asset) => compressImage(asset.uri)),
       );
       setIsProcessing(false);
-      compressedUris.forEach((uri) => onPhotoSelected(uri));
+      compressedUris.forEach((uri) => onPhotoSelected(uri, 'gallery'));
     }
   };
 

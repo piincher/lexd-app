@@ -30,7 +30,7 @@ interface ReceiveGoodsFormProps extends ReceiveGoodsFormSectionProps {
 	onToggleDimensions: (use: boolean) => void;
 	calculatedCBM: number;
 	photoUris: string[];
-	onPhotoSelected: (uri: string) => void;
+	onPhotoSelected: (uri: string, source?: 'camera' | 'gallery') => void;
 	onPhotoRemoved: (uri: string) => void;
 	totalCost: number;
 	recentClients: userData[];
