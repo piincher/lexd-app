@@ -4,6 +4,7 @@ import {
   useDeleteGoods,
   useUpdateGoodsStatus,
   useAssignGoodsToContainer,
+  useRemoveGoodsFromContainer,
   useAssignClientToGoods,
   useResendGoodsNotification,
 } from '../../../hooks/useGoods';
@@ -25,11 +26,14 @@ export const useGoodsDetailData = () => {
   const goods = data?.data?.goods || data?.data;
   const isAirShipping = goods?.shippingMode === 'AIR';
 
+  // No status filter — operators must be able to assign/move a good into a
+  // container at any container status (corrections happen).
   const { data: containersData } = useGetAllContainers(
-    { status: ['BOOKED', 'LOADING'] },
+    {},
     { enabled: !isAirShipping },
   );
   const assignContainerMutation = useAssignGoodsToContainer();
+  const removeContainerMutation = useRemoveGoodsFromContainer();
   const containers = Array.isArray(containersData?.data)
     ? containersData?.data
     : containersData?.data?.containers || [];
@@ -50,6 +54,7 @@ export const useGoodsDetailData = () => {
   const airwayBill = goods && typeof goods.airwayBillId === 'object' ? goods.airwayBillId : null;
 
   const canUnassignFromAwb = airwayBill && ['CREATED', 'PACKING'].includes(airwayBill.status);
+  const canUnassignFromContainer = !isAirShipping && !!goods?.containerId;
   const balanceDue = goods ? (goods.totalCost || 0) - (goods.amountPaid || 0) : 0;
   const hasQRCode = !!goods?.qrCodeImageUrl;
 
@@ -61,6 +66,7 @@ export const useGoodsDetailData = () => {
     airwayBill,
     isAirShipping,
     canUnassignFromAwb,
+    canUnassignFromContainer,
     balanceDue,
     hasQRCode,
     containers,
@@ -73,6 +79,7 @@ export const useGoodsDetailData = () => {
     deleteMutation,
     updateStatusMutation,
     assignContainerMutation,
+    removeContainerMutation,
     assignAirwayBillMutation,
     removeAirwayBillMutation,
     assignClientMutation,

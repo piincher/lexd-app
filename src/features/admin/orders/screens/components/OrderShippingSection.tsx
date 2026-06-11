@@ -70,10 +70,45 @@ const formatDateSafe = (dateValue: any): string => {
   }
 };
 
+// Shipping-line enum (MAERSK, CMA_CGM, HAPAG_LLOYD…) → readable carrier name.
+const formatCarrier = (line?: string): string | undefined =>
+  line ? line.replace(/_/g, ' ') : undefined;
+
+// Container status → French position label (mirrors the container timeline).
+const CONTAINER_STATUS_LABEL: Record<string, string> = {
+  BOOKED: 'Réservé',
+  EMPTY_TO_WAREHOUSE: 'Vide vers entrepôt',
+  LOADING: 'Chargement',
+  LOADED: 'Chargé',
+  GATE_IN_FULL: 'Entré au port',
+  LOADED_ON_VESSEL: 'Chargé à bord',
+  IN_TRANSIT: 'En transit',
+  ARRIVED: 'Arrivé',
+  DISCHARGED: 'Déchargé',
+  READY_FOR_PICKUP: 'Prêt pour retrait',
+  DELIVERED: 'Livré',
+};
+
 export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ order }) => {
   const { colors, isDark } = useAppTheme();
   const styles = createStyles(colors, isDark);
-  const position = getPositionFromRoute(order);
+
+  // For goods-linked orders the legacy v1 fields (contenairNumber / partenaire) are
+  // usually empty — the real shipping truth lives on the linked container, surfaced
+  // by the API as `containerSummaries`. Fall back to it so the section isn't "N/A".
+  const linkedContainer = Array.isArray(order?.containerSummaries)
+    ? order.containerSummaries[0]
+    : undefined;
+  const containerNumber =
+    order?.contenairNumber ||
+    linkedContainer?.virtualContainerNumber ||
+    linkedContainer?.containerNumber;
+  const carrier = formatCarrier(linkedContainer?.shippingLine) || order?.partenaire;
+  // Prefer the linked container's real status as the position; otherwise fall back
+  // to the legacy v1 route logic (which ends at the generic "En attente").
+  const position =
+    (linkedContainer?.status && CONTAINER_STATUS_LABEL[linkedContainer.status]) ||
+    getPositionFromRoute(order);
   const departureDate = formatDateSafe(order?.departureDate);
   const receiptDate = formatDateSafe(order?.dateOfReceipt);
 
@@ -103,8 +138,8 @@ export const OrderShippingSection: React.FC<OrderShippingSectionProps> = ({ orde
 
       <Divider style={styles.divider} />
 
-      <ShippingRow styles={styles} icon="identifier" label="N° Conteneur" value={order?.contenairNumber} iconColor={colors.status.info} />
-      <ShippingRow styles={styles} icon="handshake" label="Transporteur" value={order?.partenaire || 'Non spécifié'} iconColor={colors.primary.main} />
+      <ShippingRow styles={styles} icon="identifier" label="N° Conteneur" value={containerNumber} iconColor={colors.status.info} />
+      <ShippingRow styles={styles} icon="handshake" label="Transporteur" value={carrier || 'Non spécifié'} iconColor={colors.primary.main} />
       <ShippingRow styles={styles} icon="map-marker-radius" label="Position actuelle" value={position} iconColor={colors.status.warning} />
       <ShippingRow styles={styles} icon="calendar-arrow-right" label="Date de départ" value={departureDate} iconColor={colors.status.warning} />
       <ShippingRow styles={styles} icon="calendar-check" label="Date de réception" value={receiptDate} iconColor={colors.status.success} />

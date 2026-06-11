@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { Linking, Pressable, Share, View } from 'react-native';
+import { Linking, Pressable, View } from 'react-native';
 import { Text, Surface } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
@@ -7,6 +7,7 @@ import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/
 import { createStyles } from './OrderDetailHeader.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { buildOrderShareMessage, telUrl, whatsappUrl } from '../../utils/orderContact';
+import { useEntityShare } from '@src/shared/lib/share/useEntityShare';
 
 interface OrderDetailHeaderProps {
   order: any;
@@ -75,9 +76,16 @@ export const OrderDetailHeader: React.FC<OrderDetailHeaderProps> = ({ order }) =
     if (order?.clientPhone) Linking.openURL(whatsappUrl(order.clientPhone)).catch(() => {});
   }, [order?.clientPhone]);
 
-  const handleShare = useCallback(() => {
-    Share.share({ message: buildOrderShareMessage(order) }).catch(() => {});
-  }, [order]);
+  // Unified share: internal deep link (opens the admin order screen for staff)
+  // or a public read-only token link. The chooser appears because `order` is a
+  // public-capable shipment entity with a `publicRef` (the order code).
+  const { share: handleShare } = useEntityShare({
+    type: 'order',
+    internalPath: `admin/order/${order?._id}`,
+    publicRef: order?.code,
+    title: `Commande ${order?.code ?? ''}`.trim(),
+    message: buildOrderShareMessage(order),
+  });
 
   const handleOpenContainer = useCallback(() => {
     if (primaryContainer?._id) {

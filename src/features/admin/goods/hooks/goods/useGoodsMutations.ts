@@ -67,9 +67,22 @@ export const useAssignGoodsToContainer = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ containerId, goodsIds }: AssignToContainerInput) =>
-      goodsService.assignToContainer(containerId, goodsIds),
+    mutationFn: ({ containerId, goodsIds, isCorrection }: AssignToContainerInput) =>
+      goodsService.assignToContainer(containerId, goodsIds, isCorrection),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: goodsQueryKeys.lists() });
+    },
+  });
+};
+
+export const useRemoveGoodsFromContainer = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ containerId, goodsId }: { containerId: string; goodsId: string }) =>
+      goodsService.removeFromContainer(containerId, goodsId),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: goodsQueryKeys.detail(variables.goodsId) });
       queryClient.invalidateQueries({ queryKey: goodsQueryKeys.lists() });
     },
   });

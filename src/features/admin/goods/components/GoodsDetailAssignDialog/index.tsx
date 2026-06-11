@@ -10,6 +10,8 @@ interface GoodsDetailAssignDialogProps {
   airwayBills: any[];
   selectedAirwayBillId: string | null;
   isAssigning: boolean;
+  isCorrection?: boolean;
+  onToggleCorrection?: () => void;
   onSelectContainer: (id: string) => void;
   onSelectAirwayBill: (id: string) => void;
   onDismiss: () => void;
@@ -25,6 +27,8 @@ export const GoodsDetailAssignDialog: React.FC<GoodsDetailAssignDialogProps> = (
   airwayBills,
   selectedAirwayBillId,
   isAssigning,
+  isCorrection,
+  onToggleCorrection,
   onSelectContainer,
   onSelectAirwayBill,
   onDismiss,
@@ -51,6 +55,8 @@ export const GoodsDetailAssignDialog: React.FC<GoodsDetailAssignDialogProps> = (
       containers={containers}
       selectedContainerId={selectedContainerId}
       isAssigning={isAssigning}
+      isCorrection={isCorrection}
+      onToggleCorrection={onToggleCorrection}
       onSelect={onSelectContainer}
       onDismiss={onDismiss}
       onConfirm={onAssignContainer}

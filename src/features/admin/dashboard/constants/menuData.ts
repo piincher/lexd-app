@@ -228,6 +228,13 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         route: "CampaignList",
       },
       {
+        id: "c13",
+        title: "Événements",
+        description: "Mode événement (Coupe du Monde…)",
+        icon: "calendar-star",
+        route: "EventList",
+      },
+      {
         id: "c12",
         title: "Annonces",
         description: "Publier les messages admin",

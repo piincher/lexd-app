@@ -123,9 +123,18 @@ export const createPersister = () => {
     key: 'CHINALINK_QUERY_CACHE',
     // Throttle writes to storage (ms)
     throttleTime: 1000,
-    // Serialize/deserialize functions
+    // Serialize/deserialize functions. Deserialize is defensive: a corrupted or
+    // truncated cache blob (e.g. killed mid-write) must not throw during hydration
+    // and white-screen the app — return undefined so the persister discards it.
     serialize: (data) => JSON.stringify(data),
-    deserialize: (data) => JSON.parse(data),
+    deserialize: (data) => {
+      try {
+        return JSON.parse(data);
+      } catch (error) {
+        console.warn('[queryClient] Corrupt persisted cache discarded:', error);
+        return undefined as never;
+      }
+    },
   });
 };
 

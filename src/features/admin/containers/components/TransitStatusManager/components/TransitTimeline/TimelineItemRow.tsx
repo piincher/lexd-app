@@ -7,11 +7,27 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint } from '../../../../types/waypoints';
 import { createStyles } from './TransitTimeline.styles';
 import { TimelineDot, WaypointItemStatus } from './TimelineDot';
+import { getCurrentLegLabel } from '../transitStatusUtils';
 
 const STATUS_LABELS: Record<WaypointItemStatus, string> = {
   completed: 'Terminé',
   current: 'En cours',
   pending: 'En attente',
+};
+
+/**
+ * The "current" leg is overloaded: the container may still be travelling toward
+ * this waypoint, or already physically there. getCurrentLegLabel (shared with the
+ * top card) disambiguates via actualArrival / origin so the label reflects the
+ * real situation instead of a vague "En cours".
+ */
+const getStatusLabel = (
+  status: WaypointItemStatus,
+  waypoint: ContainerWaypoint,
+  index: number,
+): string => {
+  if (status === 'current') return getCurrentLegLabel(waypoint, index);
+  return STATUS_LABELS[status];
 };
 
 const getWaypointStatus = (index: number, currentIndex: number): WaypointItemStatus => {
@@ -81,7 +97,7 @@ export const TimelineItemRow: React.FC<TimelineItemRowProps> = ({
           </View>
           <View style={styles.statusTextContainer}>
             <Text style={[styles.statusLabel, status === 'completed' && styles.statusLabelCompleted, status === 'current' && styles.statusLabelCurrent, status === 'pending' && styles.statusLabelPending]}>
-              {STATUS_LABELS[status]}
+              {getStatusLabel(status, waypoint, index)}
             </Text>
             <Text style={styles.waypointName}>{waypoint.location?.city || waypoint.shortName || '—'}</Text>
             {waypoint.location?.country && <Text style={styles.countryName}>{waypoint.location.country}</Text>}

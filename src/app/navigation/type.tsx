@@ -171,6 +171,9 @@ export type RootStackParamList = {
    // Campaign Screens
    CampaignList: undefined;
    CreateCampaign: undefined;
+   // Event Engine Screens
+   EventList: undefined;
+   EventForm: { id?: string } | undefined;
    // Data Export Screen
    DataExport: undefined;
    // Activity List

@@ -6,6 +6,8 @@ export const useGoodsDetailUI = () => {
   const [assignDialogVisible, setAssignDialogVisible] = useState(false);
   const [selectedContainerId, setSelectedContainerId] = useState<string | null>(null);
   const [selectedAirwayBillId, setSelectedAirwayBillId] = useState<string | null>(null);
+  // When true, the assignment is a correction → the client is NOT notified.
+  const [isCorrection, setIsCorrection] = useState(false);
 
   // Assign-client (for previously-unidentified goods).
   const [assignClientDialogVisible, setAssignClientDialogVisible] = useState(false);
@@ -21,6 +23,8 @@ export const useGoodsDetailUI = () => {
     setSelectedContainerId,
     selectedAirwayBillId,
     setSelectedAirwayBillId,
+    isCorrection,
+    setIsCorrection,
     assignClientDialogVisible,
     setAssignClientDialogVisible,
     selectedOwnerClient,

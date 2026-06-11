@@ -3,19 +3,19 @@ import { Alert } from 'react-native';
 
 export const useGoodsDetailAssignMutations = (data: any, ui: any) => {
   const { goods, refetch, assignContainerMutation, assignAirwayBillMutation } = data;
-  const { selectedContainerId, selectedAirwayBillId, setAssignDialogVisible, setSelectedContainerId, setSelectedAirwayBillId } = ui;
+  const { selectedContainerId, selectedAirwayBillId, isCorrection, setAssignDialogVisible, setSelectedContainerId, setSelectedAirwayBillId } = ui;
 
   const handleAssignToContainer = useCallback(() => {
     if (!selectedContainerId) { Alert.alert('Erreur', 'Veuillez sélectionner un container'); return; }
     if (!goods) return;
     assignContainerMutation.mutate(
-      { containerId: selectedContainerId, data: { goodsIds: [goods._id] } },
+      { containerId: selectedContainerId, goodsIds: [goods._id], isCorrection: !!isCorrection },
       {
         onSuccess: () => { Alert.alert('Succès', 'Marchandise assignée au container'); setAssignDialogVisible(false); setSelectedContainerId(null); refetch(); },
         onError: (error: any) => { Alert.alert('Erreur', error?.message || 'Impossible d\'assigner la marchandise'); },
       },
     );
-  }, [selectedContainerId, goods, assignContainerMutation, setAssignDialogVisible, setSelectedContainerId, refetch]);
+  }, [selectedContainerId, goods, isCorrection, assignContainerMutation, setAssignDialogVisible, setSelectedContainerId, refetch]);
 
   const handleAssignToAirwayBill = useCallback(() => {
     if (!selectedAirwayBillId) { Alert.alert('Erreur', 'Veuillez sélectionner une lettre de transport'); return; }

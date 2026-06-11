@@ -5,3 +5,4 @@ export { NotificationTypesList } from './NotificationTypesList';
 export { QuietHoursCard } from './QuietHoursCard';
 export { QuietHoursDialog } from './QuietHoursDialog';
 export { InfoSection } from './InfoSection';
+export { TestNotificationButton } from './TestNotificationButton';

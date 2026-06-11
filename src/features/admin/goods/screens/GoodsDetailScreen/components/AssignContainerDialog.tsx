@@ -1,11 +1,13 @@
 import React from 'react';
-import { Portal, Dialog, Button, Text, RadioButton } from 'react-native-paper';
+import { Portal, Dialog, Button, Text, RadioButton, Checkbox, Divider } from 'react-native-paper';
 
 interface AssignContainerDialogProps {
   visible: boolean;
   containers: any[];
   selectedContainerId: string | null;
   isAssigning: boolean;
+  isCorrection?: boolean;
+  onToggleCorrection?: () => void;
   onSelect: (id: string) => void;
   onDismiss: () => void;
   onConfirm: () => void;
@@ -16,6 +18,8 @@ export const AssignContainerDialog: React.FC<AssignContainerDialogProps> = ({
   containers = [],
   selectedContainerId,
   isAssigning,
+  isCorrection,
+  onToggleCorrection,
   onSelect,
   onDismiss,
   onConfirm,
@@ -36,6 +40,16 @@ export const AssignContainerDialog: React.FC<AssignContainerDialogProps> = ({
               />
             ))}
           </RadioButton.Group>
+        )}
+        {onToggleCorrection && (
+          <>
+            <Divider style={{ marginVertical: 8 }} />
+            <Checkbox.Item
+              label="Correction — ne pas notifier le client"
+              status={isCorrection ? 'checked' : 'unchecked'}
+              onPress={onToggleCorrection}
+            />
+          </>
         )}
       </Dialog.Content>
       <Dialog.Actions>

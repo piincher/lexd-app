@@ -29,7 +29,7 @@ export const GoodsDetailScreen: React.FC = () => {
   const { state, loading, dialogs, containers, airwayBills, mutations, actions, handlers } = useGoodsDetailScreenUI();
   const { goods, client, container, airwayBill, hasQRCode, isAirShipping, isOwnerUnidentified } = state;
   const { isLoading, isRefetching, refetch } = loading;
-  const { menuVisible, assignDialogVisible, selectedContainerId, setMenuVisible, setSelectedContainerId } = dialogs;
+  const { menuVisible, assignDialogVisible, selectedContainerId, isCorrection, setIsCorrection, setMenuVisible, setSelectedContainerId } = dialogs;
   const { isAssigning, isAssigningClient, isResendingNotification } = mutations;
 
   if (isLoading) return <LoadingState />;
@@ -48,6 +48,8 @@ export const GoodsDetailScreen: React.FC = () => {
         onAssignPress={actions.handleAssignPress}
         onUnassignPress={actions.handleUnassignFromAirwayBill}
         canUnassign={state.canUnassignFromAwb}
+        onUnassignContainerPress={actions.handleUnassignFromContainer}
+        canUnassignFromContainer={state.canUnassignFromContainer}
         onDelete={actions.handleDelete}
         onBack={actions.handleGoBack}
         onAssignClientPress={actions.handleOpenAssignClient}
@@ -98,6 +100,8 @@ export const GoodsDetailScreen: React.FC = () => {
         airwayBills={airwayBills.airwayBills}
         selectedAirwayBillId={dialogs.selectedAirwayBillId}
         isAssigning={isAssigning}
+        isCorrection={isCorrection}
+        onToggleCorrection={() => setIsCorrection((v: boolean) => !v)}
         onSelectContainer={setSelectedContainerId}
         onSelectAirwayBill={dialogs.setSelectedAirwayBillId}
         onDismiss={handlers.handleDismissAssignDialog}

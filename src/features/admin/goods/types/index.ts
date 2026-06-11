@@ -205,6 +205,8 @@ export interface UpdatePhotoInput {
 export interface AssignToContainerInput {
   containerId: string;
   goodsIds: string[];
+  /** When true, the assignment is a correction — the client is NOT notified. */
+  isCorrection?: boolean;
 }
 
 // ============================================

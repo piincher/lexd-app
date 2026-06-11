@@ -105,7 +105,16 @@ export interface NotificationPreference {
 }
 
 const NOTIFICATION_CHANNELS = {
-  DEFAULT: "default",
+  // v2 id: the original "default" channel was created at DEFAULT importance, and
+  // Android locks a channel's importance at creation — it can never be raised in
+  // place. Bumping the id forces a fresh HIGH-importance channel so foreground
+  // notifications show as heads-up banners. The backend must send this same id.
+  DEFAULT: "default_v2",
+  // The backend sends channelId "high_priority" for every priority:"HIGH"
+  // notification (container arrived, ready-for-pickup, payments, air cargo…).
+  // This channel MUST exist on the device or Android drops the heads-up banner
+  // and shows it silently in the tray (the "need to leave the app" symptom).
+  HIGH_PRIORITY: "high_priority",
   ORDERS: "orders",
   PAYMENTS: "payments",
   CONTAINERS: "containers",
@@ -181,7 +190,8 @@ export const getScheduledNotifications = async (): Promise<Notifications.Notific
 
 export const setupNotificationChannels = async (): Promise<void> => {
   await setupNotificationChannelsBase("NotificationService", [
-    { id: NOTIFICATION_CHANNELS.DEFAULT, name: "General", importance: Notifications.AndroidImportance.DEFAULT, vibrationPattern: [0, 250, 250, 250], lightColor: "#8B5CF6" },
+    { id: NOTIFICATION_CHANNELS.DEFAULT, name: "General", importance: Notifications.AndroidImportance.HIGH, vibrationPattern: [0, 250, 250, 250], lightColor: "#8B5CF6" },
+    { id: NOTIFICATION_CHANNELS.HIGH_PRIORITY, name: "Priorité haute", importance: Notifications.AndroidImportance.MAX, vibrationPattern: [0, 250, 250, 250], lightColor: "#EF4444" },
     { id: NOTIFICATION_CHANNELS.ORDERS, name: "Orders", importance: Notifications.AndroidImportance.HIGH, vibrationPattern: [0, 250, 250, 250], lightColor: "#8B5CF6" },
     { id: NOTIFICATION_CHANNELS.PAYMENTS, name: "Payments", importance: Notifications.AndroidImportance.HIGH, vibrationPattern: [0, 250, 250, 250], lightColor: "#10B981" },
     { id: NOTIFICATION_CHANNELS.CONTAINERS, name: "Container Updates", importance: Notifications.AndroidImportance.DEFAULT, vibrationPattern: [0, 250, 250, 250], lightColor: "#3B82F6" },

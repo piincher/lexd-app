@@ -11,6 +11,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Header } from '../components/Header';
 import { CreateOrderCTA } from '../components/CreateOrderCTA';
 import Banner from '../components/Banner';
+import { EventCountdownBanner } from '@src/features/events';
 import { WhatsAppButton } from '../components/WhatsAppButton';
 import {
   HeroSection,
@@ -41,6 +42,7 @@ const HomeScreen: React.FC = () => {
         contentContainerStyle={styles.scrollContent}
       >
         <HeroSection />
+        <EventCountdownBanner />
         <StatsStrip />
         <ServiceShowcase onServicePress={handlers.handleServicePress} />
         <Banner />

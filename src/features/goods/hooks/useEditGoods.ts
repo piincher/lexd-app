@@ -25,7 +25,8 @@ export const useEditGoods = (goodsId: string) => {
   const { photoUris, existingPhotos, newPhotoUris, onPhotoSelected, onPhotoRemoved } = useEditGoodsPhotos(goods);
   const { calculatedCBM, calculatedTotalCost } = useEditGoodsCalculations(formData);
 
-  const canEdit = isAdmin && goods?.status === 'RECEIVED_AT_WAREHOUSE';
+  // Goods can be edited at any status — corrections happen. Admin-only.
+  const canEdit = isAdmin;
 
   const handleSave = useCallback(async () => {
     if (!isAdmin || !canEdit) return;
@@ -59,7 +60,13 @@ export const useEditGoods = (goodsId: string) => {
     updateMutation.mutate(
       { goodsId, data: updateData },
       {
-        onSuccess: () => Alert.alert('Succès', 'Marchandise mise à jour avec succès', [{ text: 'OK', onPress: () => navigation.goBack() }]),
+        onSuccess: (response: any) => {
+          const invoiceWarning = response?.data?.invoiceWarning;
+          const message = invoiceWarning
+            ? `Marchandise mise à jour.\n\n⚠️ ${invoiceWarning}`
+            : 'Marchandise mise à jour avec succès';
+          Alert.alert('Succès', message, [{ text: 'OK', onPress: () => navigation.goBack() }]);
+        },
         onError: (err: unknown) => {
           const message = err instanceof Error ? err.message : 'Impossible de mettre à jour la marchandise';
           Alert.alert('Erreur', message);

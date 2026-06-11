@@ -24,6 +24,9 @@ interface GoodsDetailHeaderProps {
   onAssignPress: () => void;
   onUnassignPress: () => void;
   canUnassign: boolean;
+  /** Container-specific unassign (distinct from the airway-bill unassign above). */
+  onUnassignContainerPress?: () => void;
+  canUnassignFromContainer?: boolean;
   onDelete: () => void;
   onBack: () => void;
   /** When set, the menu shows "Assigner un client" for goods with no client yet. */
@@ -44,6 +47,8 @@ export const GoodsDetailHeader: React.FC<GoodsDetailHeaderProps> = ({
   onAssignPress,
   onUnassignPress,
   canUnassign,
+  onUnassignContainerPress,
+  canUnassignFromContainer,
   onDelete,
   onBack,
   onAssignClientPress,
@@ -106,11 +111,18 @@ export const GoodsDetailHeader: React.FC<GoodsDetailHeaderProps> = ({
                 leadingIcon="account-search"
               />
             )}
-            {goods.status === 'RECEIVED_AT_WAREHOUSE' && (
+            {/* Assignment is allowed at any status so operators can fix mistakes.
+                Only disabled when there is no eligible target to assign into. */}
+            <Menu.Item
+              onPress={withClose(onAssignPress)}
+              title={isAir ? 'Assigner à la lettre de transport' : 'Assigner au conteneur'}
+              disabled={isAir ? !hasAirwayBills : !hasContainers}
+            />
+            {canUnassignFromContainer && onUnassignContainerPress && (
               <Menu.Item
-                onPress={withClose(onAssignPress)}
-                title={isAir ? 'Assigner à la lettre de transport' : 'Assigner au conteneur'}
-                disabled={isAir ? !hasAirwayBills : !hasContainers}
+                onPress={withClose(onUnassignContainerPress)}
+                title="Retirer du conteneur"
+                titleStyle={{ color: colors.status.error }}
               />
             )}
             {canUnassign && (

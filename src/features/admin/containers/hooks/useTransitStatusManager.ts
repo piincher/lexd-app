@@ -22,6 +22,7 @@ export const useTransitStatusManager = ({
   const updateWaypointMutation = useUpdateWaypoint();
 
   const [selectedStatus, setSelectedStatus] = useState<WaypointStatus | null>(null);
+  const [isArrivalAction, setIsArrivalAction] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [notes, setNotes] = useState("");
   const [snackbar, setSnackbar] = useState({ visible: false, message: "", type: "success" as "success" | "error" });
@@ -35,8 +36,24 @@ export const useTransitStatusManager = ({
   const currentWaypoint = waypoints[currentWaypointIndex];
   const completedWaypoints = waypoints.filter((_, index) => index < currentWaypointIndex).length;
 
+  // "Marquer l'arrivée" applies when the container is travelling toward an
+  // intermediate waypoint and hasn't been recorded as arrived yet. The origin
+  // (index 0) is the start point, so arrival there isn't meaningful.
+  const canMarkArrived =
+    currentWaypoint?.status === "IN_PROGRESS" &&
+    !currentWaypoint?.actualArrival &&
+    currentWaypointIndex > 0;
+
   const handleOpenStatusModal = useCallback((status: WaypointStatus) => {
     setSelectedStatus(status);
+    setIsArrivalAction(false);
+    setModalVisible(true);
+    setNotes("");
+  }, []);
+
+  const handleOpenArrivalModal = useCallback(() => {
+    setSelectedStatus(null);
+    setIsArrivalAction(true);
     setModalVisible(true);
     setNotes("");
   }, []);
@@ -44,26 +61,35 @@ export const useTransitStatusManager = ({
   const handleCloseModal = useCallback(() => {
     setModalVisible(false);
     setSelectedStatus(null);
+    setIsArrivalAction(false);
     setNotes("");
   }, []);
 
   const handleConfirmStatusUpdate = useCallback(async () => {
-    if (!selectedStatus || currentWaypointIndex < 0) return;
+    if (currentWaypointIndex < 0) return;
+    if (!isArrivalAction && !selectedStatus) return;
     try {
+      const data = isArrivalAction
+        ? { actualArrival: new Date().toISOString() }
+        : { status: selectedStatus as WaypointStatus, notes: notes || undefined };
       await updateWaypointMutation.mutateAsync({
         containerId,
         waypointIndex: currentWaypointIndex,
-        data: { status: selectedStatus, notes: notes || undefined },
+        data,
       });
       await refetchWaypoints();
       queryClient.invalidateQueries({ queryKey: waypointQueryKeys.list(containerId) });
       queryClient.invalidateQueries({ queryKey: containerQueryKeys.detail(containerId) });
-      setSnackbar({ visible: true, message: "Statut mis à jour avec succès", type: "success" });
+      setSnackbar({
+        visible: true,
+        message: isArrivalAction ? "Arrivée enregistrée avec succès" : "Statut mis à jour avec succès",
+        type: "success",
+      });
       handleCloseModal();
     } catch (error) {
       setSnackbar({ visible: true, message: "Erreur lors de la mise à jour du statut", type: "error" });
     }
-  }, [selectedStatus, currentWaypointIndex, containerId, notes, updateWaypointMutation, refetchWaypoints, queryClient, handleCloseModal]);
+  }, [selectedStatus, isArrivalAction, currentWaypointIndex, containerId, notes, updateWaypointMutation, refetchWaypoints, queryClient, handleCloseModal]);
 
   const handleDismissSnackbar = useCallback(() => {
     setSnackbar((prev) => ({ ...prev, visible: false }));
@@ -79,12 +105,15 @@ export const useTransitStatusManager = ({
     progressPercentage,
     modalVisible,
     selectedStatus,
+    isArrivalAction,
+    canMarkArrived,
     notes,
     snackbarVisible: snackbar.visible,
     snackbarMessage: snackbar.message,
     snackbarType: snackbar.type,
     updateWaypointMutation,
     handleOpenStatusModal,
+    handleOpenArrivalModal,
     handleCloseModal,
     handleConfirmStatusUpdate,
     handleDismissSnackbar,

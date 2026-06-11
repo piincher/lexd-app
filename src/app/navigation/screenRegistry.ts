@@ -81,6 +81,9 @@ export { default as SendWhatsAppScreen } from "@src/features/admin/communication
 export { default as CampaignListScreen } from "@src/features/admin/communications/screens/CampaignListScreen";
 export { default as CreateCampaignScreen } from "@src/features/admin/communications/screens/CreateCampaignScreen";
 
+// Admin Event Engine
+export { EventListScreen, EventFormScreen } from "@src/features/admin/events";
+
 // Admin Announcements & Audit
 export { default as CreateAnnouncementScreen } from "@src/features/admin/announcements/screens/CreateAnnouncementScreen";
 export { default as AnnouncementListScreen } from "@src/features/admin/announcements/screens/AnnouncementListScreen";

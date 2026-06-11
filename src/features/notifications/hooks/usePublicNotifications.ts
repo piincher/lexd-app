@@ -22,10 +22,20 @@ export const usePublicNotifications = (type?: PublicNotificationType) => {
 
   const { formatNotifications } = usePublicNotificationDisplay();
 
-  const notifications = useMemo(
-    () => formatNotifications(data?.pages.flatMap(page => page.data) || []),
-    [data, formatNotifications]
-  );
+  const notifications = useMemo(() => {
+    const flat = data?.pages.flatMap(page => page.data) || [];
+    // De-duplicate by _id before formatting: overlapping offset pages would
+    // otherwise produce duplicate React keys downstream.
+    const seen = new Set<string>();
+    const deduped = flat.filter((n: { _id?: string }) => {
+      const id = n?._id;
+      if (!id) return true;
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+    return formatNotifications(deduped);
+  }, [data, formatNotifications]);
 
   return {
     notifications,

@@ -13,11 +13,6 @@ import type { PaymentHistoryItem } from '@src/features/payments/types';
  */
 export interface AuthenticatedStackParamList {
   [key: string]: object | undefined;
-  // Client Screens
-  ClientOrdersList: undefined;
-  ClientOrderDetail: undefined;
-  TrackOrder: undefined;
-  
   // Customer payment routes
   MyPaymentHistory: undefined;
   PaymentHistoryScreen: undefined;
@@ -86,9 +81,6 @@ export type PublicStackScreenProps<T extends keyof PublicStackParamList> =
  * These routes will redirect to login if user is not authenticated
  */
 export const REQUIRES_AUTH: (keyof AuthenticatedStackParamList)[] = [
-  'ClientOrdersList',
-  'ClientOrderDetail',
-  'TrackOrder',
   'MyPaymentHistory',
   'PaymentHistoryScreen',
   'UserPaymentDetail',

@@ -46,12 +46,15 @@ export const TransitStatusManager: React.FC<TransitStatusManagerProps> = ({
     progressPercentage,
     modalVisible,
     selectedStatus,
+    isArrivalAction,
+    canMarkArrived,
     notes,
     snackbarVisible,
     snackbarMessage,
     snackbarType,
     updateWaypointMutation,
     handleOpenStatusModal,
+    handleOpenArrivalModal,
     handleCloseModal,
     handleConfirmStatusUpdate,
     handleDismissSnackbar,
@@ -73,6 +76,13 @@ export const TransitStatusManager: React.FC<TransitStatusManagerProps> = ({
     );
   }
 
+  // Derive context for the action labels + client-message preview.
+  const isFinalWaypoint = waypoints.length > 0 && currentWaypointIndex === waypoints.length - 1;
+  const nextWaypoint = waypoints[currentWaypointIndex + 1];
+  const currentLocationName =
+    currentWaypoint?.location?.city || currentWaypoint?.shortName || null;
+  const nextLocation = nextWaypoint?.location?.city || nextWaypoint?.shortName || null;
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -85,6 +95,7 @@ export const TransitStatusManager: React.FC<TransitStatusManagerProps> = ({
           currentWaypoint={currentWaypoint}
           currentWaypointIndex={currentWaypointIndex}
           totalWaypoints={waypoints.length}
+          completedWaypoints={completedWaypoints}
           progressPercentage={progressPercentage}
           isLoading={isLoading}
         />
@@ -93,7 +104,10 @@ export const TransitStatusManager: React.FC<TransitStatusManagerProps> = ({
           <TransitActionButtons
             currentWaypoint={currentWaypoint}
             onStatusUpdate={handleOpenStatusModal}
+            onMarkArrived={handleOpenArrivalModal}
             isLoading={updateWaypointMutation.isPending}
+            isFinalWaypoint={isFinalWaypoint}
+            canMarkArrived={canMarkArrived}
           />
         )}
 
@@ -113,6 +127,10 @@ export const TransitStatusManager: React.FC<TransitStatusManagerProps> = ({
         notes={notes}
         onNotesChange={setNotes}
         isLoading={updateWaypointMutation.isPending}
+        currentLocationName={currentLocationName}
+        nextLocation={nextLocation}
+        isFinalWaypoint={isFinalWaypoint}
+        isArrivalAction={isArrivalAction}
       />
 
       <Snackbar

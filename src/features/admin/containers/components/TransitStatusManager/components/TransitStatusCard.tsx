@@ -7,7 +7,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerWaypoint, WaypointStatus } from '../../../types/waypoints';
 import { WaypointStatusDisplay } from './WaypointStatusDisplay';
 import { WaypointLocationInfo } from './WaypointLocationInfo';
-import { WAYPOINT_STATUS_ICONS, formatTimestamp } from './transitStatusUtils';
+import { WAYPOINT_STATUS_ICONS, formatTimestamp, getCurrentLegLabel } from './transitStatusUtils';
 import { createStyles } from './TransitStatusCard.styles';
 
 export interface TransitStatusCardProps {
@@ -15,6 +15,9 @@ export interface TransitStatusCardProps {
   currentWaypoint?: ContainerWaypoint;
   currentWaypointIndex: number;
   totalWaypoints: number;
+  /** Number of waypoints already completed — used for the step counter so it
+   *  matches the client notification ("Étape X sur N") instead of the leg index. */
+  completedWaypoints: number;
   progressPercentage: number;
   isLoading?: boolean;
 }
@@ -24,13 +27,19 @@ export const TransitStatusCard: React.FC<TransitStatusCardProps> = ({
   currentWaypoint,
   currentWaypointIndex,
   totalWaypoints,
+  completedWaypoints,
   progressPercentage,
   isLoading,
 }) => {
   const { colors, isDark } = useAppTheme();
   const currentStatus = (currentWaypoint?.status || 'IN_PROGRESS') as WaypointStatus;
   const currentStatusColor = WAYPOINT_STATUS_COLORS[currentStatus];
-  const currentStatusLabel = WAYPOINT_STATUS_LABELS[currentStatus];
+  // Match the timeline: the active leg uses the disambiguated label
+  // ("En route vers" / "Sur place" / "Au point de départ"), not the bare "En cours".
+  const currentStatusLabel =
+    currentStatus === 'IN_PROGRESS'
+      ? getCurrentLegLabel(currentWaypoint, currentWaypointIndex)
+      : WAYPOINT_STATUS_LABELS[currentStatus];
   const currentStatusIcon = WAYPOINT_STATUS_ICONS[currentStatus];
   const segmentType = currentWaypoint?.segmentType || 'SEA';
   const segmentIcon = (SEGMENT_TYPE_ICONS[segmentType] || 'boat') as React.ComponentProps<typeof Ionicons>['name'];
@@ -65,7 +74,7 @@ export const TransitStatusCard: React.FC<TransitStatusCardProps> = ({
             />
           </View>
           <Text style={styles.progressText}>
-            Étape {currentWaypointIndex + 1} sur {totalWaypoints}
+            Étape {completedWaypoints} sur {totalWaypoints} ({progressPercentage}%)
           </Text>
         </View>
 

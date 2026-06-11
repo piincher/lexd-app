@@ -19,6 +19,7 @@ export {
   useDeleteGoods,
   useHardDeleteGoods,
   useAssignGoodsToContainer,
+  useRemoveGoodsFromContainer,
   useUpdateGoodsStatus,
   useAssignClientToGoods,
   useBatchHardDeleteGoods,

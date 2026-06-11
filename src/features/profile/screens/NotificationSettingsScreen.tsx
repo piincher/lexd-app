@@ -10,6 +10,7 @@ import {
   QuietHoursCard,
   QuietHoursDialog,
   InfoSection,
+  TestNotificationButton,
 } from './NotificationSettings/components';
 import { useNotificationSettingsScreen } from './hooks/useNotificationSettingsScreen';
 import { createStyles } from './NotificationSettings/NotificationSettings.styles';
@@ -74,6 +75,8 @@ const NotificationSettingsScreen: React.FC = () => {
             />
           </>
         )}
+
+        <TestNotificationButton />
 
         <InfoSection />
       </ScrollView>

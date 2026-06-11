@@ -130,6 +130,8 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="WinBackDashboard" component={Screens.WinBackDashboardScreen} />
               <Stack.Screen name="CampaignList" component={Screens.CampaignListScreen} />
               <Stack.Screen name="CreateCampaign" component={Screens.CreateCampaignScreen} />
+              <Stack.Screen name="EventList" component={Screens.EventListScreen} />
+              <Stack.Screen name="EventForm" component={Screens.EventFormScreen} />
               <Stack.Screen name="AnnouncementList" component={Screens.AnnouncementListScreen} />
               <Stack.Screen name="CreateAnnouncement" component={Screens.CreateAnnouncementScreen} />
               <Stack.Screen name="AuditLogs" component={Screens.AuditLogListScreen} />

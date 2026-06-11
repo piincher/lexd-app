@@ -9,10 +9,15 @@
  * @param cbm - The cubic meter value
  * @returns Formatted CBM string or '—' if null/undefined
  */
-export const formatCBM = (cbm: number | null | undefined): string => {
-  if (cbm === null || cbm === undefined) return '—';
+export const formatCBM = (cbm: number | string | null | undefined): string => {
+  if (cbm === null || cbm === undefined || cbm === '') return '—';
 
-  return `${cbm.toLocaleString('fr-FR', {
+  // Accept numeric strings (some backend fields are stored as strings) and
+  // never render "NaN m³" for an unparseable value.
+  const n = typeof cbm === 'string' ? Number(cbm) : cbm;
+  if (!Number.isFinite(n)) return '—';
+
+  return `${n.toLocaleString('fr-FR', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })} m³`;
@@ -24,9 +29,11 @@ export const formatCBM = (cbm: number | null | undefined): string => {
  * @returns Formatted date string (DD/MM/YYYY) or '—' if null/undefined
  */
 export const formatDate = (date: Date | string | null | undefined): string => {
-  if (date === null || date === undefined) return '—';
+  if (date === null || date === undefined || date === '') return '—';
 
   const dateObj = typeof date === 'string' ? new Date(date) : date;
+  // Guard against "Invalid Date" rendering literally in the UI.
+  if (Number.isNaN(dateObj.getTime())) return '—';
 
   return dateObj.toLocaleDateString('fr-FR', {
     day: '2-digit',
@@ -61,9 +68,10 @@ export const formatDateLong = (date: Date | string | null | undefined): string =
  * @returns Formatted datetime string (DD/MM/YYYY HH:mm) or '—' if null/undefined
  */
 export const formatDateTime = (date: Date | string | null | undefined): string => {
-  if (date === null || date === undefined) return '—';
+  if (date === null || date === undefined || date === '') return '—';
 
   const dateObj = typeof date === 'string' ? new Date(date) : date;
+  if (Number.isNaN(dateObj.getTime())) return '—';
 
   return dateObj.toLocaleString('fr-FR', {
     day: '2-digit',

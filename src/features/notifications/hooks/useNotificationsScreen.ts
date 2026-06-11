@@ -30,10 +30,20 @@ export const useNotificationsScreen = () => {
   const { data: unreadData } = useGetUnreadCount();
   const unreadCount = unreadData?.count || 0;
 
-  const allNotifications = useMemo(
-    () => data?.pages.flatMap(page => page.data ?? []) || [],
-    [data]
-  );
+  const allNotifications = useMemo(() => {
+    const flat = data?.pages.flatMap(page => page.data ?? []) || [];
+    // De-duplicate by _id. Offset-based pages can overlap when new notifications
+    // arrive between fetches, which would otherwise yield duplicate React keys
+    // ("Encountered two children with the same key") and drop/duplicate rows.
+    const seen = new Set<string>();
+    return flat.filter((n) => {
+      const id = n?._id;
+      if (!id) return true;
+      if (seen.has(id)) return false;
+      seen.add(id);
+      return true;
+    });
+  }, [data]);
 
   const { filteredNotifications: notifications, hasUnread } =
     useNotificationFilter(allNotifications, activeFilter);

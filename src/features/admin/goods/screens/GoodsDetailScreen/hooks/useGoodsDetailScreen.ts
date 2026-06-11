@@ -42,6 +42,7 @@ export const useGoodsDetailScreen = () => {
       balanceDue: data.balanceDue,
       hasQRCode: data.hasQRCode,
       canUnassignFromAwb: data.canUnassignFromAwb,
+      canUnassignFromContainer: data.canUnassignFromContainer,
       isAirShipping: data.goods?.shippingMode === 'AIR',
       // True when the parcel was received without a known client (CLIENT_UNKNOWN exception),
       // OR the backend tagged it UNIDENTIFIED. Drives the "Assigner un client" entry points.
@@ -58,6 +59,8 @@ export const useGoodsDetailScreen = () => {
       assignDialogVisible: ui.assignDialogVisible,
       selectedContainerId: ui.selectedContainerId,
       selectedAirwayBillId: ui.selectedAirwayBillId,
+      isCorrection: ui.isCorrection,
+      setIsCorrection: ui.setIsCorrection,
       setMenuVisible: ui.setMenuVisible,
       setAssignDialogVisible: ui.setAssignDialogVisible,
       setSelectedContainerId: ui.setSelectedContainerId,

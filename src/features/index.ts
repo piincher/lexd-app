@@ -17,9 +17,6 @@ export * from "./goods";
 // Phase 3 Features
 export * from "./customer";
 
-// Phase 4 Features
-export * from "./client";
-
 // Search Feature
 export * from "./search";
 

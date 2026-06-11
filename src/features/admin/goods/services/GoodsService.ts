@@ -40,6 +40,8 @@ const ENDPOINTS = {
   LOCATION: (id: string) => `/goods/${id}/location`,
   PHOTO: (id: string) => `/goods/${id}/photo`,
   ASSIGN: (containerId: string) => `/containers/${containerId}/assign-goods`,
+  REMOVE_FROM_CONTAINER: (containerId: string, goodsId: string) =>
+    `/containers/${containerId}/goods/${goodsId}`,
   ASSIGN_CLIENT: (id: string) => `/goods/${id}/assign-client`,
   BATCH: '/goods/batch',
   RESEND_NOTIFICATION: (id: string) => `/goods/${id}/resend-notification`,
@@ -259,11 +261,23 @@ export class GoodsService {
    */
   async assignToContainer(
     containerId: string,
-    goodsIds: string[]
+    goodsIds: string[],
+    isCorrection = false
   ): Promise<ApiResponse<void>> {
     return apiRequest.post(this.client, ENDPOINTS.ASSIGN(containerId), {
       goodsIds,
+      isCorrection,
     });
+  }
+
+  /**
+   * Remove a single good from its container (unassign). Works at any status.
+   */
+  async removeFromContainer(
+    containerId: string,
+    goodsId: string
+  ): Promise<ApiResponse<void>> {
+    return apiRequest.delete(this.client, ENDPOINTS.REMOVE_FROM_CONTAINER(containerId, goodsId));
   }
 
   /**
