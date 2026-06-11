@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Goods } from '../../../types';
 import { getStatusConfig } from '../../../components/GoodsCardStatus';
 import { getVariantColors } from '../../../components/statusVariant';
-import { shareLink, adminGoodsDetailLink } from '@src/shared/lib/shareLink';
+import { useEntityShare } from '@src/shared/lib/share/useEntityShare';
 
 interface GoodsDetailHeaderProps {
   goods: Goods;
@@ -60,6 +60,15 @@ export const GoodsDetailHeader: React.FC<GoodsDetailHeaderProps> = ({
   const styles = createStyles(colors);
   const navigation = useNavigation();
 
+  // Share defaults to the PUBLIC read-only tracking link so a client (or someone
+  // tracking on their behalf) can open it with no login.
+  const { share: handleShare } = useEntityShare({
+    type: 'goods',
+    internalPath: `admin-goods/${goods.goodsId}`,
+    publicRef: goods.goodsId,
+    title: `Marchandise ${goods.goodsId}`,
+  });
+
   // react-native-paper's Menu does NOT auto-dismiss on item press in this version —
   // tapping an item leaves `menuVisible` stuck at true. When an action then opens an
   // Alert and the operator dismisses it, the next tap on the three-dot anchor calls
@@ -94,14 +103,8 @@ export const GoodsDetailHeader: React.FC<GoodsDetailHeaderProps> = ({
             }
           >
             <Menu.Item
-              onPress={withClose(() =>
-                shareLink({
-                  message: `Marchandise ${goods.goodsId}`,
-                  url: adminGoodsDetailLink(goods.goodsId),
-                  title: 'Partager la marchandise',
-                }),
-              )}
-              title="Partager le lien"
+              onPress={withClose(handleShare)}
+              title="Partager le suivi"
               leadingIcon="share-variant"
             />
             {isOwnerUnidentified && onAssignClientPress && (

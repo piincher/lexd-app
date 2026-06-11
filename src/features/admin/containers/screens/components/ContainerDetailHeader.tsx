@@ -14,6 +14,7 @@ import {
 import {  createStyles  } from '../ContainerDetailScreen.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ContainerStatusMenu } from './ContainerStatusMenu';
+import { useEntityShare } from '@src/shared/lib/share/useEntityShare';
 
 interface ConsigneeInfo {
   name?: string;
@@ -73,6 +74,16 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
   const navigation = useNavigation();
+
+  // Share defaults to the PUBLIC read-only tracking link (minted by container
+  // number) so a client can follow the container with no login.
+  const { share: handleShare } = useEntityShare({
+    type: 'container',
+    internalPath: `admin-containers/${containerNumber ?? ''}`,
+    publicRef: containerNumber,
+    title: `Conteneur ${containerNumber ?? ''}`.trim(),
+  });
+
   const mappedShippingMode = shippingMode ? SHIPPING_MODE_MAPPING[shippingMode] : undefined;
   const shippingModeIcon = mappedShippingMode
     ? SHIPPING_MODE_ICONS[mappedShippingMode] as HeaderStatusIcon
@@ -101,6 +112,9 @@ export const ContainerDetailHeader: React.FC<ContainerDetailHeaderProps> = ({
             onSetVisible={setStatusMenuVisible}
             onUpdateStatus={onUpdateStatus}
           />
+          <TouchableOpacity onPress={handleShare} style={styles.backIconButton} accessibilityLabel="Partager le suivi">
+            <Ionicons name="share-social-outline" size={22} color={colors.text.inverse} />
+          </TouchableOpacity>
           <NotificationBell
             onPress={() => navigation.navigate('Notifications' as never)}
             size={22}
