@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -12,9 +12,10 @@ export const RouteSelectorNoRoutes: React.FC<RouteSelectorNoRoutesProps> = ({
   onCreateRoute,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
   <View style={styles.noRoutesContainer}>
-    <Ionicons name="alert-circle" size={16} color={Theme.status.warning} />
+    <Ionicons name="alert-circle" size={16} color={colors.status.warning} />
     <Text style={styles.noRoutesText}>
       Aucune route active pour ce mode.{'\n'}
       Veuillez créer une route d'abord.
@@ -31,17 +32,17 @@ export const RouteSelectorNoRoutes: React.FC<RouteSelectorNoRoutesProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   noRoutesContainer: {
     marginTop: Theme.spacing.sm,
     padding: Theme.spacing.md,
-    backgroundColor: Theme.status.warning + '15',
+    backgroundColor: colors.status.warning + '15',
     borderRadius: Theme.radius.md,
     gap: Theme.spacing.sm,
   },
   noRoutesText: {
     fontSize: 13,
-    color: Theme.neutral[700],
+    color: colors.text.primary,
     lineHeight: 18,
     marginLeft: Theme.spacing.lg,
   },
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     paddingVertical: Theme.spacing.sm,
     paddingHorizontal: Theme.spacing.md,
     borderRadius: Theme.radius.md,
@@ -61,6 +62,6 @@ const styles = StyleSheet.create({
   createRouteButtonText: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.colors.text.inverse,
+    color: colors.text.inverse,
   },
 });

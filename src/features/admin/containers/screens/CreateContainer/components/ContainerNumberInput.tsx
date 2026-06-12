@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput, HelperText } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface ContainerNumberInputProps {
   value: string;
@@ -16,6 +17,8 @@ export const ContainerNumberInput: React.FC<ContainerNumberInputProps> = ({
   onChangeText,
   onInputFocus,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Container Number</Text>
@@ -34,17 +37,17 @@ export const ContainerNumberInput: React.FC<ContainerNumberInputProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     marginBottom: Theme.spacing.md,
   },
   label: {
     fontSize: 14,
     fontWeight: '500',
-    color: Theme.neutral[800],
+    color: colors.text.primary,
     marginBottom: Theme.spacing.xs,
   },
   input: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
 });

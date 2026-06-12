@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface BookingReferenceInputProps {
   value: string;
@@ -14,6 +15,8 @@ export const BookingReferenceInput: React.FC<BookingReferenceInputProps> = ({
   onChangeText,
   onInputFocus,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Booking Reference (Optional)</Text>
@@ -23,24 +26,24 @@ export const BookingReferenceInput: React.FC<BookingReferenceInputProps> = ({
         placeholder="Enter booking reference"
         mode="outlined"
         style={styles.input}
-        outlineColor={Theme.neutral[300]}
-        activeOutlineColor={Theme.primary[500]}
+        outlineColor={colors.border}
+        activeOutlineColor={colors.primary[500]}
         onFocus={onInputFocus}
       />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     marginBottom: Theme.spacing.md,
   },
   label: {
     fontSize: 16,
-    color: Theme.neutral[800],
+    color: colors.text.primary,
     marginBottom: Theme.spacing.xs,
   },
   input: {
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
 });

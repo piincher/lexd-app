@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { HelperText } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Route } from '../../../types';
 import { RouteSelectorSelectedRoute } from './RouteSelectorSelectedRoute';
 import { RouteSelectorDropdown } from './RouteSelectorDropdown';
@@ -30,6 +31,8 @@ export const RouteSelector: React.FC<RouteSelectorProps> = ({
   onCreateRoute,
 }) => {
   const [showRouteMenu, setShowRouteMenu] = React.useState(false);
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
 
   if (selectedRouteId && selectedRoute) {
     return (
@@ -75,17 +78,17 @@ export const RouteSelector: React.FC<RouteSelectorProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   container: {
     marginBottom: Theme.spacing.lg,
   },
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: Theme.neutral[700],
+    color: colors.text.primary,
     marginBottom: Theme.spacing.sm,
   },
   required: {
-    color: Theme.status.error,
+    color: colors.status.error,
   },
 });

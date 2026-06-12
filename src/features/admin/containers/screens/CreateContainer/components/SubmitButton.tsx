@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, ActivityIndicator } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface SubmitButtonProps {
   isLoading: boolean;
@@ -14,12 +15,13 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
   isDisabled,
   onSubmit,
 }) => {
+  const { colors } = useAppTheme();
   return (
     <View style={styles.container}>
       {isLoading ? (
         <ActivityIndicator
           animating={true}
-          color={Theme.primary[500]}
+          color={colors.primary[500]}
           size="large"
         />
       ) : (

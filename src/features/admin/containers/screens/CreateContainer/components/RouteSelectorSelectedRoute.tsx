@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -15,6 +15,7 @@ export const RouteSelectorSelectedRoute: React.FC<RouteSelectorSelectedRouteProp
   onClearRoute,
 }) => {
   const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
   <View style={styles.selectedRouteContainer}>
     <View style={styles.selectedRouteContent}>
@@ -27,7 +28,7 @@ export const RouteSelectorSelectedRoute: React.FC<RouteSelectorSelectedRouteProp
         </Text>
         <View style={styles.selectedRouteDetails}>
           <Text style={styles.selectedRouteMeta}>
-            <Ionicons name="time" size={12} color={Theme.primary[600]} />{' '}
+            <Ionicons name="time" size={12} color={colors.primary[600]} />{' '}
             {selectedRoute?.estimatedTransitDays || '--'} jours
           </Text>
           {selectedRoute && (
@@ -48,22 +49,22 @@ export const RouteSelectorSelectedRoute: React.FC<RouteSelectorSelectedRouteProp
       style={styles.clearRouteButton}
       onPress={onClearRoute}
     >
-      <Ionicons name="close-circle" size={24} color={Theme.status.error} />
+      <Ionicons name="close-circle" size={24} color={colors.status.error} />
     </TouchableOpacity>
   </View>
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   selectedRouteContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: Theme.primary[50],
+    backgroundColor: colors.primary[50],
     borderRadius: Theme.radius.lg,
     padding: Theme.spacing.md,
     borderWidth: 1,
-    borderColor: Theme.primary[200],
+    borderColor: colors.primary[200],
   },
   selectedRouteContent: {
     flexDirection: 'row',
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.primary[500],
+    backgroundColor: colors.primary[500],
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
   selectedRouteName: {
     fontSize: 16,
     fontWeight: '600',
-    color: Theme.neutral[800],
+    color: colors.text.primary,
   },
   selectedRouteDetails: {
     flexDirection: 'row',
@@ -95,12 +96,12 @@ const styles = StyleSheet.create({
   },
   selectedRouteMeta: {
     fontSize: 13,
-    color: Theme.primary[600],
+    color: colors.primary[600],
     fontWeight: '500',
   },
   selectedRoutePath: {
     fontSize: 13,
-    color: Theme.neutral[500],
+    color: colors.text.secondary,
   },
   clearRouteButton: {
     padding: Theme.spacing.xs,

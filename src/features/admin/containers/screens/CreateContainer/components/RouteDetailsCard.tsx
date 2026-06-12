@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Route } from '../../../types';
 
 interface RouteDetailsCardProps {
@@ -9,11 +10,13 @@ interface RouteDetailsCardProps {
 }
 
 export const RouteDetailsCard: React.FC<RouteDetailsCardProps> = ({ route }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   if (!route?.description) return null;
 
   return (
     <View style={styles.routeDescriptionContainer}>
-      <Ionicons name="information-circle" size={16} color={Theme.neutral[500]} />
+      <Ionicons name="information-circle" size={16} color={colors.text.secondary} />
       <Text style={styles.routeDescriptionText}>
         {route.description}
       </Text>
@@ -21,7 +24,7 @@ export const RouteDetailsCard: React.FC<RouteDetailsCardProps> = ({ route }) => 
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   routeDescriptionContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
@@ -29,13 +32,13 @@ const styles = StyleSheet.create({
     marginTop: -Theme.spacing.md,
     marginBottom: Theme.spacing.lg,
     padding: Theme.spacing.md,
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.background.elevated,
     borderRadius: Theme.radius.md,
   },
   routeDescriptionText: {
     flex: 1,
     fontSize: 13,
-    color: Theme.neutral[600],
+    color: colors.text.secondary,
     lineHeight: 18,
   },
 });

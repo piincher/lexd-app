@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Menu, HelperText } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Route } from '../../../types';
 import { RouteSelectorMenuItem } from './RouteSelectorMenuItem';
 import { RouteSelectorNoRoutes } from './RouteSelectorNoRoutes';
@@ -30,6 +31,8 @@ export const RouteSelectorDropdown: React.FC<RouteSelectorDropdownProps> = ({
   error,
   onCreateRoute,
 }) => {
+  const { colors } = useAppTheme();
+  const styles = useMemo(() => createStyles(colors), [colors]);
   return (
     <>
       <Menu
@@ -50,7 +53,7 @@ export const RouteSelectorDropdown: React.FC<RouteSelectorDropdownProps> = ({
               <Ionicons
                 name="git-branch"
                 size={20}
-                color={isLoading ? Theme.neutral[300] : Theme.primary[500]}
+                color={isLoading ? colors.border : colors.primary[500]}
               />
               <Text
                 style={[
@@ -70,7 +73,7 @@ export const RouteSelectorDropdown: React.FC<RouteSelectorDropdownProps> = ({
               <Ionicons
                 name={showRouteMenu ? 'chevron-up' : 'chevron-down'}
                 size={20}
-                color={Theme.neutral[400]}
+                color={colors.text.disabled}
               />
             )}
           </TouchableOpacity>
@@ -104,23 +107,23 @@ export const RouteSelectorDropdown: React.FC<RouteSelectorDropdownProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
+const createStyles = (colors: any) => StyleSheet.create({
   dropdownButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: Theme.neutral[200],
+    borderColor: colors.border,
     borderRadius: Theme.radius.md,
     paddingHorizontal: Theme.spacing.md,
     paddingVertical: Theme.spacing.md,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
   },
   dropdownButtonError: {
-    borderColor: Theme.status.error,
+    borderColor: colors.status.error,
   },
   dropdownButtonLoading: {
-    backgroundColor: Theme.neutral[50],
+    backgroundColor: colors.background.elevated,
   },
   dropdownButtonContent: {
     flexDirection: 'row',
@@ -130,17 +133,17 @@ const styles = StyleSheet.create({
   dropdownButtonText: {
     fontSize: 15,
     fontWeight: '500',
-    color: Theme.neutral[800],
+    color: colors.text.primary,
   },
   dropdownButtonPlaceholder: {
-    color: Theme.neutral[400],
+    color: colors.text.disabled,
   },
   dropdownButtonTextLoading: {
-    color: Theme.neutral[400],
+    color: colors.text.disabled,
   },
   menuContent: {
     borderRadius: Theme.radius.lg,
-    backgroundColor: Theme.colors.background.card,
+    backgroundColor: colors.background.card,
     width: '85%',
   },
 });
