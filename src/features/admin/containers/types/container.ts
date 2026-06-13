@@ -163,6 +163,7 @@ export interface UpdateContainerStatusInput {
  */
 export interface AssignGoodsInput {
   goodsIds: string[];
+  isCorrection?: boolean;
 }
 
 export interface DeleteContainerResult {

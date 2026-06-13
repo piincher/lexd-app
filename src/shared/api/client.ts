@@ -37,7 +37,7 @@ const getEnvironment = (value?: string): Environment => {
   return 'production';
 };
 
-const ENV = getEnvironment('production');
+const ENV = getEnvironment(process.env.EXPO_PUBLIC_ENV);
 
 // Port the local backend listens on.
 const LOCAL_API_PORT = 3000;

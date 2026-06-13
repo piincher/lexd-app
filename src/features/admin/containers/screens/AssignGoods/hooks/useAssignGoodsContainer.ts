@@ -3,10 +3,19 @@ import { Container, ContainerStatus } from '../../../types';
 
 const MAX_CONTAINER_CBM = 67;
 const MAX_CONTAINER_WEIGHT = 28000; // kg
-const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'EMPTY_TO_WAREHOUSE', 'LOADING'];
+
+// Statuses where assignment is part of the standard warehouse workflow.
+// All other statuses still allow assignment (for corrections), but trigger
+// a warning and are sent to the backend as isCorrection=true.
+const STANDARD_ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'EMPTY_TO_WAREHOUSE', 'LOADING'];
 
 export const canReceiveGoods = (status: ContainerStatus): boolean =>
-  ASSIGNABLE_STATUSES.includes(status);
+  // Container assignment is allowed at any status to support corrections.
+  // The backend intentionally does not gate on container status.
+  Boolean(status);
+
+export const isLateAssignment = (status: ContainerStatus): boolean =>
+  !STANDARD_ASSIGNABLE_STATUSES.includes(status);
 
 export const useAssignGoodsContainer = (containerId: string) => {
   const {
@@ -20,6 +29,7 @@ export const useAssignGoodsContainer = (containerId: string) => {
   const isAirContainer = container?.shippingMode === 'AIR';
   const containerStatus = container?.status as ContainerStatus;
   const isAssignable = canReceiveGoods(containerStatus);
+  const isLateAssignmentStatus = isLateAssignment(containerStatus);
 
   const maxCapacity = isAirContainer ? MAX_CONTAINER_WEIGHT : MAX_CONTAINER_CBM;
   const currentContainerCBM = isAirContainer
@@ -43,6 +53,7 @@ export const useAssignGoodsContainer = (containerId: string) => {
     isAirContainer,
     containerStatus,
     isAssignable,
+    isLateAssignment: isLateAssignmentStatus,
     maxCapacity,
     currentContainerCBM,
   };

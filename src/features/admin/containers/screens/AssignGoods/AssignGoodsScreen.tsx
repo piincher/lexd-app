@@ -25,7 +25,7 @@ export const AssignGoodsScreen: React.FC = () => {
   const styles = createStyles(colors);
   const {
     container, filteredGoods, selectedGoods, searchQuery,
-    isLoading, isRefetching, error, isAssignable,
+    isLoading, isRefetching, error, isAssignable, isLateAssignment,
     currentContainerCBM, totalSelectedCBM, isOverCapacity,
     isAirContainer, maxCapacity,
     assignMutation, toggleSelection, toggleSelectAll,
@@ -49,6 +49,7 @@ export const AssignGoodsScreen: React.FC = () => {
         currentContainerCBM={currentContainerCBM}
         totalSelectedCBM={totalSelectedCBM}
         isAssignable={isAssignable}
+        isLateAssignment={isLateAssignment}
         containerStatus={containerStatus}
         isAirContainer={isAirContainer}
         maxCapacity={maxCapacity}

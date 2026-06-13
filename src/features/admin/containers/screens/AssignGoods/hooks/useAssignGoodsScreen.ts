@@ -23,6 +23,7 @@ export const useAssignGoodsScreen = (): UseAssignGoodsScreenReturn => {
     isAirContainer,
     containerStatus,
     isAssignable,
+    isLateAssignment,
     maxCapacity,
     currentContainerCBM,
   } = useAssignGoodsContainer(containerId);
@@ -54,6 +55,7 @@ export const useAssignGoodsScreen = (): UseAssignGoodsScreenReturn => {
     isAssignable,
     isOverCapacity,
     containerStatus,
+    isLateAssignment,
     navigation,
   );
 
@@ -72,6 +74,7 @@ export const useAssignGoodsScreen = (): UseAssignGoodsScreenReturn => {
     isRefetching,
     error: containerError || goodsError,
     isAssignable,
+    isLateAssignment,
     filteredGoods,
     currentContainerCBM,
     totalSelectedCBM,

@@ -44,22 +44,22 @@ export const BottomActionBar: React.FC<BottomActionBarProps> = ({
             </Text>
           </View>
           <TouchableOpacity
-            style={[styles.assignButton, (isPending || isOverCapacity || !isAssignable) && styles.assignButtonDisabled]}
+            style={[styles.assignButton, (isPending || isOverCapacity) && styles.assignButtonDisabled]}
             onPress={onAssign}
-            disabled={isPending || isOverCapacity || !isAssignable}
+            disabled={isPending || isOverCapacity}
           >
             <LinearGradient
-              colors={isOverCapacity || !isAssignable ? Theme.gradients.card : Theme.gradients.primary}
+              colors={isOverCapacity ? Theme.gradients.card : Theme.gradients.primary}
               style={styles.assignButtonGradient}
             >
               {isPending ? (
                 <ActivityIndicator size="small" color={colors.text.inverse} />
               ) : (
                 <>
-                  <Text style={[styles.assignButtonText, (isOverCapacity || !isAssignable) && styles.assignButtonTextDisabled]}>
-                    {!isAssignable ? 'Verrouillé' : 'Assigner'}
+                  <Text style={[styles.assignButtonText, isOverCapacity && styles.assignButtonTextDisabled]}>
+                    Assigner
                   </Text>
-                  <Ionicons name={!isAssignable ? "lock-closed" : "arrow-forward"} size={18} color={isOverCapacity || !isAssignable ? colors.neutral[400] : colors.text.inverse} />
+                  <Ionicons name="arrow-forward" size={18} color={isOverCapacity ? colors.neutral[400] : colors.text.inverse} />
                 </>
               )}
             </LinearGradient>

@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import { CapacityIndicator } from './CapacityIndicator';
 import { HeaderInfoBlock } from './HeaderInfoBlock';
 import { NonAssignableBanner } from './NonAssignableBanner';
+import { LateAssignmentBanner } from './LateAssignmentBanner';
 import { Container, ContainerStatus } from '../../../types';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
@@ -18,6 +19,7 @@ interface HeaderProps {
   currentContainerCBM: number;
   totalSelectedCBM: number;
   isAssignable: boolean;
+  isLateAssignment: boolean;
   containerStatus: ContainerStatus;
   isAirContainer?: boolean;
   maxCapacity?: number;
@@ -31,6 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
   currentContainerCBM,
   totalSelectedCBM,
   isAssignable,
+  isLateAssignment,
   containerStatus,
   isAirContainer = false,
   maxCapacity = MAX_CONTAINER_CBM,
@@ -63,6 +66,7 @@ export const Header: React.FC<HeaderProps> = ({
         />
 
         {!isAssignable && <NonAssignableBanner containerStatus={containerStatus} />}
+        {isLateAssignment && <LateAssignmentBanner containerStatus={containerStatus} />}
       </LinearGradient>
     </SafeAreaView>
   );

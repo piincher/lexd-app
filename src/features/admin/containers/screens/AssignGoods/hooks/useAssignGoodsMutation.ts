@@ -8,6 +8,7 @@ export const useAssignGoodsMutation = (
   isAssignable: boolean,
   isOverCapacity: boolean,
   containerStatus: ContainerStatus,
+  isLateAssignment: boolean,
   navigation: { goBack: () => void },
 ) => {
   const assignMutation = useAssignGoodsToContainer();
@@ -17,7 +18,7 @@ export const useAssignGoodsMutation = (
     if (!isAssignable)
       return Alert.alert(
         'Action impossible',
-        `Ce container est en statut "${CONTAINER_STATUS_LABELS[containerStatus]}". Les marchandises ne peuvent être assignées qu'aux containers "Réservé" ou "En Chargement".`,
+        `Ce container est en statut "${CONTAINER_STATUS_LABELS[containerStatus]}". Aucune marchandise ne peut être assignée pour le moment.`,
         [{ text: 'OK' }],
       );
     if (isOverCapacity)
@@ -29,7 +30,7 @@ export const useAssignGoodsMutation = (
     try {
       await assignMutation.mutateAsync({
         containerId,
-        data: { goodsIds: selectedGoods },
+        data: { goodsIds: selectedGoods, isCorrection: isLateAssignment },
       });
       Alert.alert('Succès', `${selectedGoods.length} marchandise(s) assignée(s) au container`, [
         { text: 'OK', onPress: () => navigation.goBack() },

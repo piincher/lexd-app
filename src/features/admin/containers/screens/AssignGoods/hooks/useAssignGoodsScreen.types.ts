@@ -20,6 +20,7 @@ export interface UseAssignGoodsScreenReturn {
   isRefetching: boolean;
   error: any;
   isAssignable: boolean;
+  isLateAssignment: boolean;
   filteredGoods: Goods[];
   currentContainerCBM: number;
   totalSelectedCBM: number;

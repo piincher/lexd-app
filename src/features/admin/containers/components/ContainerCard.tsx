@@ -19,11 +19,8 @@ import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, getContainerStatus
 import { ContainerCapacityBar } from './ContainerCapacityBar';
 import { ContainerTimeline } from './ContainerTimeline';
 
-// Statuses that can receive goods (assignable)
-const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'EMPTY_TO_WAREHOUSE', 'LOADING'];
-
-const canReceiveGoods = (status: ContainerStatus): boolean => 
-  ASSIGNABLE_STATUSES.includes(status);
+// Goods can be assigned to a container at any status to support corrections.
+const canReceiveGoods = (status: ContainerStatus): boolean => Boolean(status);
 
 interface ContainerCardProps {
   container: Container;

@@ -15,20 +15,13 @@ type AdminV2StackParamList = {
 
 type NavigationProp = NativeStackNavigationProp<AdminV2StackParamList>;
 
-const ASSIGNABLE_STATUSES: ContainerStatus[] = ['BOOKED', 'EMPTY_TO_WAREHOUSE', 'LOADING'];
-const canReceiveGoods = (status: ContainerStatus): boolean => ASSIGNABLE_STATUSES.includes(status);
-
 export const useContainerListScreen = () => {
   const navigation = useNavigation<NavigationProp>();
   const queryClient = useQueryClient();
-  const [selectedStatus, setSelectedStatus] = useState<ContainerStatus | 'all' | 'assignable'>('all');
+  const [selectedStatus, setSelectedStatus] = useState<ContainerStatus | 'all'>('all');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const filters = selectedStatus === 'assignable'
-    ? {}
-    : selectedStatus !== 'all'
-    ? { status: selectedStatus }
-    : undefined;
+  const filters = selectedStatus !== 'all' ? { status: selectedStatus } : undefined;
 
   const { data, isLoading, isRefetching, error, refetch } = useGetAllContainers(filters);
 
@@ -37,10 +30,6 @@ export const useContainerListScreen = () => {
     ? responseData
     : responseData?.containers || [];
 
-  const filteredContainers = selectedStatus === 'assignable'
-    ? containers.filter((c: Container) => canReceiveGoods(c.status))
-    : containers;
-
   const stats = {
     total: containers?.length || 0,
     booked: containers?.filter((c: Container) => c.status === 'BOOKED').length || 0,
@@ -48,7 +37,6 @@ export const useContainerListScreen = () => {
     loaded: containers?.filter((c: Container) => c.status === 'LOADED').length || 0,
     inTransit: containers?.filter((c: Container) => c.status === 'IN_TRANSIT').length || 0,
     arrived: containers?.filter((c: Container) => c.status === 'ARRIVED').length || 0,
-    assignable: containers?.filter((c: Container) => canReceiveGoods(c.status)).length || 0,
   };
 
   const handleContainerPress = useCallback((containerId: string) => {
@@ -78,7 +66,7 @@ export const useContainerListScreen = () => {
     isLoading,
     isRefetching,
     error,
-    filteredContainers,
+    filteredContainers: containers,
     stats,
     handleContainerPress,
     handleCreateContainerPress,

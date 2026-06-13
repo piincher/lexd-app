@@ -31,7 +31,6 @@ interface ContainerListHeaderProps {
     loading: number;
     inTransit: number;
     arrived: number;
-    assignable: number;
   };
   onOpenAnalytics?: () => void;
 }
@@ -55,7 +54,7 @@ export const ContainerListHeader: React.FC<ContainerListHeaderProps> = ({ stats,
         <StatCard label="En chargement" value={stats.loading} icon="hammer" gradient={[colors.status.warning, colors.status.warning]} />
         <StatCard label="En transit" value={stats.inTransit} icon="airplane" gradient={[colors.primary.main, colors.primary.light]} />
         <StatCard label="Arrivés" value={stats.arrived} icon="flag" gradient={[colors.status.success, colors.status.success]} />
-        <StatCard label="Peut recevoir" value={stats.assignable} icon="add-circle" gradient={[colors.status.info, colors.status.info]} />
+
       </ScrollView>
     </LinearGradient>
   );

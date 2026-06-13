@@ -36,6 +36,16 @@ export const useUpdateContainerStatus = () => {
       queryClient.invalidateQueries({
         queryKey: containerQueryKeys.lists(),
       });
+      // Waypoints are auto-initialized server-side when a container goes
+      // IN_TRANSIT, so refetch them here — otherwise the tracking timeline stays
+      // behind the 2-min stale cache and the admin would have to click
+      // "Initialiser le suivi" / refresh to see it.
+      queryClient.invalidateQueries({
+        queryKey: waypointQueryKeys.list(variables.id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: waypointQueryKeys.status(variables.id),
+      });
       // Customer-side invalidation
       queryClient.invalidateQueries({ queryKey: ['customer-containers'] });
       queryClient.invalidateQueries({ queryKey: ['customer-containers', 'detail', variables.id] });

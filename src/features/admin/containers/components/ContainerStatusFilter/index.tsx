@@ -8,9 +8,8 @@ import { Theme } from '@src/constants/Theme';
 
 type StatusFilterIcon = keyof typeof Ionicons.glyphMap;
 
-const STATUS_FILTERS: { key: ContainerStatus | 'all' | 'assignable'; label: string; icon: StatusFilterIcon }[] = [
+const STATUS_FILTERS: { key: ContainerStatus | 'all'; label: string; icon: StatusFilterIcon }[] = [
   { key: 'all', label: 'Tous', icon: 'apps' },
-  { key: 'assignable', label: 'Peut recevoir', icon: 'add-circle' },
   { key: 'BOOKED', label: 'Réservés', icon: 'bookmark' },
   { key: 'LOADING', label: 'Chargement', icon: 'hammer' },
   { key: 'LOADED', label: 'Chargés', icon: 'cube' },
@@ -23,8 +22,8 @@ const STATUS_FILTERS: { key: ContainerStatus | 'all' | 'assignable'; label: stri
 ];
 
 interface ContainerStatusFilterProps {
-  selectedStatus: ContainerStatus | 'all' | 'assignable';
-  onSelectStatus: (status: ContainerStatus | 'all' | 'assignable') => void;
+  selectedStatus: ContainerStatus | 'all';
+  onSelectStatus: (status: ContainerStatus | 'all') => void;
 }
 
 export const ContainerStatusFilter: React.FC<ContainerStatusFilterProps> = ({
