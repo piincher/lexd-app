@@ -18,6 +18,13 @@ const CreateAnnouncementScreen: React.FC<RootStackScreenProps<"CreateAnnouncemen
   const update = useUpdateAnnouncement();
   const isPending = create.isPending || update.isPending;
 
+  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollToEnd = () => {
+    setTimeout(() => {
+      scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, 250);
+  };
+
   const handleSubmit = (data: CreateAnnouncementInput) => {
     const options = {
       onSuccess: () => {
@@ -48,13 +55,6 @@ const CreateAnnouncementScreen: React.FC<RootStackScreenProps<"CreateAnnouncemen
       </Screen>
     );
   }
-
-  const scrollViewRef = useRef<ScrollView>(null);
-  const scrollToEnd = () => {
-    setTimeout(() => {
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-    }, 250);
-  };
 
   return (
     <Screen
