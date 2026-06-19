@@ -12,6 +12,6 @@ export interface WaypointFilters {
   country?: string;
 }
 
-export type WaypointType = 'PORT' | 'WAREHOUSE' | 'BORDER' | 'TERMINAL' | 'DEPOT';
+export type WaypointType = 'PORT' | 'WAREHOUSE' | 'BORDER' | 'TERMINAL' | 'DEPOT' | 'CUSTOMS';
 
 export type TransportMode = 'SEA' | 'ROAD' | 'AIR' | 'RAIL';

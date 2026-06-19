@@ -18,6 +18,7 @@ import { StatusUpdateModal } from "./components/StatusUpdateModal";
 import { NonTransitView } from "./components/NonTransitView";
 import { createStyles } from "./TransitStatusManager.styles";
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { getWaypointDisplayTitle } from '@src/shared/lib/waypointDisplay';
 
 export interface TransitStatusManagerProps {
   containerId: string;
@@ -79,9 +80,8 @@ export const TransitStatusManager: React.FC<TransitStatusManagerProps> = ({
   // Derive context for the action labels + client-message preview.
   const isFinalWaypoint = waypoints.length > 0 && currentWaypointIndex === waypoints.length - 1;
   const nextWaypoint = waypoints[currentWaypointIndex + 1];
-  const currentLocationName =
-    currentWaypoint?.location?.city || currentWaypoint?.shortName || null;
-  const nextLocation = nextWaypoint?.location?.city || nextWaypoint?.shortName || null;
+  const currentLocationName = currentWaypoint ? getWaypointDisplayTitle(currentWaypoint) : null;
+  const nextLocation = nextWaypoint ? getWaypointDisplayTitle(nextWaypoint) : null;
 
   return (
     <View style={styles.container}>
@@ -129,6 +129,7 @@ export const TransitStatusManager: React.FC<TransitStatusManagerProps> = ({
         isLoading={updateWaypointMutation.isPending}
         currentLocationName={currentLocationName}
         nextLocation={nextLocation}
+        nextWaypoint={nextWaypoint}
         isFinalWaypoint={isFinalWaypoint}
         isArrivalAction={isArrivalAction}
       />

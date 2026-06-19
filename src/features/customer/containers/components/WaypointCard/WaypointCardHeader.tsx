@@ -11,6 +11,7 @@ import {
   ExtendedWaypointStatus,
 } from '@src/shared/types/waypointStatus';
 import { ContainerWaypoint } from '@src/shared/types/containerWaypoints';
+import { getWaypointDisplayTitle } from '@src/shared/lib/waypointDisplay';
 import { useWaypointCardStyles } from './WaypointCard.styles';
 import { Theme } from '@src/constants/Theme';
 
@@ -53,7 +54,7 @@ export const WaypointCardHeader: React.FC<WaypointCardHeaderProps> = ({ waypoint
 
       <View style={styles.wpTitleContainer}>
         <Text style={[styles.wpLocation, isDakar && { color: colors.status.info, fontSize: 18 }]}>
-          {waypoint.location?.city || 'Unknown'}
+          {getWaypointDisplayTitle(waypoint)}
           {getLocationSuffix()}
         </Text>
         <Text style={styles.wpCode}>{waypoint.location?.countryCode || ''}</Text>

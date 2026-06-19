@@ -144,6 +144,13 @@ export const useTimelineWaypointCardStyles = () => {
           marginTop: Theme.spacing.sm,
           flexWrap: 'wrap',
         },
+        contextRow: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: Theme.spacing.sm,
+          marginTop: Theme.spacing.xs,
+          flexWrap: 'wrap',
+        },
         detailItem: {
           flexDirection: 'row',
           alignItems: 'center',

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { getWaypointDisplayTitle } from '@src/shared/lib/waypointDisplay';
 import { ContainerWaypoint } from '../../types';
 
 interface WaypointCardHeaderProps {
@@ -15,7 +16,7 @@ export const WaypointCardHeader: React.FC<WaypointCardHeaderProps> = ({
 }) => (
   <View style={styles.headerRow}>
     <View style={styles.locationContainer}>
-      <Text style={styles.locationName} numberOfLines={1}>{waypoint.location}</Text>
+      <Text style={styles.locationName} numberOfLines={1}>{getWaypointDisplayTitle(waypoint)}</Text>
       <Text style={styles.locationCode}>{waypoint.locationCode}</Text>
     </View>
     {displayDate && (

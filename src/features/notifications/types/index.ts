@@ -20,27 +20,40 @@ export type NotificationCategory = 'INFO' | 'SUCCESS' | 'WARNING' | 'ERROR';
 export interface NotificationTrackingData {
   currentStatus?: string;
   currentLocation?: string;
+  currentWaypointLabel?: string;
+  currentOperation?: string;
   destination?: string;
   progressPercentage?: number;
   completedWaypoints?: number;
   totalWaypoints?: number;
   isFinalWaypoint?: boolean;
+  sameCityNext?: boolean;
   nextWaypoint?: {
     location: string;
+    label?: string;
+    operation?: string;
     status: string;
     estimatedArrival?: string;
     estimatedDeparture?: string;
     segmentType: string;
     transportInfo?: string;
+    routeDetails?: string;
+    borderCrossing?: string;
+    description?: string;
+    shortName?: string;
   };
   completedWaypoint?: {
     location: string;
+    label?: string;
+    operation?: string;
     status: string;
     actualArrival?: string;
     actualDeparture?: string;
     segmentType: string;
     vesselName?: string;
     transportInfo?: string;
+    description?: string;
+    shortName?: string;
   };
 }
 
@@ -67,7 +80,10 @@ export interface InAppNotification {
     // Tracking-specific fields for container waypoint notifications
     currentStatus?: string;
     currentLocation?: string;
+    currentWaypointLabel?: string;
+    currentOperation?: string;
     destination?: string;
+    sameCityNext?: boolean;
     progressPercentage?: number;
     completedWaypoints?: number;
     totalWaypoints?: number;

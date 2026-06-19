@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { getWaypointDisplayTitle } from '@src/shared/lib/waypointDisplay';
 import {
   ContainerWaypoint,
   SEGMENT_TYPE_ICONS,
@@ -76,7 +77,7 @@ export const WaypointCard: React.FC<WaypointCardProps> = ({
 
           <View style={styles.waypointTitleContainer}>
             <Text style={[styles.waypointLocation, isDakar && styles.waypointLocationDakar]}>
-              {waypoint.location?.city || waypoint.location?.toString() || 'Unknown'}
+              {getWaypointDisplayTitle(waypoint)}
               {isDakar && ' 🚢'}{isBorderPoint && ' 🛂'}{isWarehousePoint && ' 📦'}
             </Text>
             <Text style={styles.waypointCode}>{waypoint.location?.portCode || waypoint.location?.countryCode || ''}</Text>

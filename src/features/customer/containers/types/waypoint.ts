@@ -39,6 +39,22 @@ export interface ContainerWaypoint {
   driverName?: string;
   driverPhone?: string;
   notes?: string;
+  /** Raw backend description for this waypoint (e.g. port operation context). */
+  description?: string;
+  /** Short name used for compact labels. */
+  shortName?: string;
+  /** Road route details such as "Dakar → Kidira → Diboli → Kayes → Bamako". */
+  routeDetails?: string;
+  /** Border crossing point for road segments. */
+  borderCrossing?: string;
+  /**
+   * Nested road details fallback (used when the waypoint comes from the shared
+   * ContainerWaypoint shape instead of the flattened customer shape).
+   */
+  roadDetails?: {
+    routeDetails?: string;
+    borderCrossing?: string;
+  };
 }
 
 /**

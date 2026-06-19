@@ -91,7 +91,7 @@ export const TransitTimeline: React.FC<TransitTimelineProps> = ({
         secondaryTextColor={colors.neutral[400]}
       />
 
-      {dakarWaypoint && <DakarInfo dakarWaypoint={dakarWaypoint} styles={styles} />}
+      {dakarWaypoint && <DakarInfo dakarWaypoint={dakarWaypoint} waypoints={waypoints} styles={styles} />}
 
       {consignee && (
         <PickupInfo consignee={consignee} onCall={handleCall} styles={styles} />

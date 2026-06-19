@@ -1,12 +1,15 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Text, ProgressBar } from 'react-native-paper';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { InAppNotification } from '../../types';
+
+type Colors = ReturnType<typeof useAppTheme>['colors'];
 
 interface TrackingSectionProps {
   data: NonNullable<InAppNotification['data']>;
   styles: ReturnType<typeof import('./NotificationDetailDataCard.styles').getStyles>;
-  colors: any;
+  colors: Colors;
 }
 
 export const TrackingSection: React.FC<TrackingSectionProps> = ({ data, styles, colors }) => (
@@ -27,7 +30,11 @@ export const TrackingSection: React.FC<TrackingSectionProps> = ({ data, styles, 
         <Text style={styles.trackingBullet}>●</Text>
         <View style={{ flex: 1 }}>
           <Text style={styles.trackingText}>Statut actuel : {data.currentStatus}</Text>
-          {data.currentLocation && <Text style={styles.trackingSubtext}>📍 {data.currentLocation}</Text>}
+          {data.currentWaypointLabel ? (
+            <Text style={styles.trackingSubtext}>📍 {data.currentWaypointLabel}</Text>
+          ) : data.currentLocation ? (
+            <Text style={styles.trackingSubtext}>📍 {data.currentLocation}</Text>
+          ) : null}
         </View>
       </View>
     )}
@@ -36,7 +43,12 @@ export const TrackingSection: React.FC<TrackingSectionProps> = ({ data, styles, 
       <View style={styles.trackingItem}>
         <Text style={styles.trackingBullet}>✓</Text>
         <View style={{ flex: 1 }}>
-          <Text style={styles.trackingText}>Étape accomplie : {data.completedWaypoint.location}</Text>
+          <Text style={styles.trackingText}>
+            Étape accomplie : {data.completedWaypoint.label || data.completedWaypoint.location}
+          </Text>
+          {data.completedWaypoint.operation && (
+            <Text style={styles.trackingSubtext}>⚙️ {data.completedWaypoint.operation}</Text>
+          )}
           {data.completedWaypoint.transportInfo && (
             <Text style={styles.trackingSubtext}>🚛 {data.completedWaypoint.transportInfo}</Text>
           )}
@@ -48,11 +60,22 @@ export const TrackingSection: React.FC<TrackingSectionProps> = ({ data, styles, 
       <View style={styles.trackingItem}>
         <Text style={styles.trackingBullet}>→</Text>
         <View style={{ flex: 1 }}>
-          <Text style={styles.trackingText}>Prochaine étape : {data.nextWaypoint.location}</Text>
+          <Text style={styles.trackingText}>
+            Prochaine étape : {data.nextWaypoint.label || data.nextWaypoint.location}
+          </Text>
+          {data.nextWaypoint.operation && (
+            <Text style={styles.trackingSubtext}>⚙️ {data.nextWaypoint.operation}</Text>
+          )}
           {data.nextWaypoint.estimatedArrival && (
             <Text style={styles.trackingSubtext}>
               📅 Arrivée estimée : {new Date(data.nextWaypoint.estimatedArrival).toLocaleDateString('fr-FR')}
             </Text>
+          )}
+          {data.nextWaypoint.routeDetails && (
+            <Text style={styles.trackingSubtext}>🛣️ {data.nextWaypoint.routeDetails}</Text>
+          )}
+          {data.nextWaypoint.borderCrossing && (
+            <Text style={styles.trackingSubtext}>🛂 Frontière : {data.nextWaypoint.borderCrossing}</Text>
           )}
           {data.nextWaypoint.transportInfo && (
             <Text style={styles.trackingSubtext}>🚛 {data.nextWaypoint.transportInfo}</Text>

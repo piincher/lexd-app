@@ -1,4 +1,4 @@
-import type { RouteWaypointDraft } from '@src/features/admin/routes/types';
+import type { RouteWaypointDraft, ShippingLine } from '@src/features/admin/routes/types';
 
 export const WAYPOINT_TYPES = [
   { label: 'Port', value: 'PORT' },
@@ -23,33 +23,46 @@ export const KNOWN_PORTS = [
   { label: 'Dakar', city: 'Dakar', country: 'Senegal', countryCode: 'SN', portCode: 'SNDKR', terminal: 'DAKAR PORT CONTAINER TERMINAL' },
   { label: 'Tanjung Pelepas', city: 'Tanjung Pelepas', country: 'Malaysia', countryCode: 'MY', portCode: 'MYTPP', terminal: 'TANJUNG PELEPAS CONTAINER TERMINAL' },
   { label: 'Tanger Med', city: 'Tanger Med', country: 'Morocco', countryCode: 'MA', portCode: 'MAPTM', terminal: 'TANGER MED CONTAINER TERMINAL' },
+  { label: 'Diboli', city: 'Diboli', country: 'Mali', countryCode: 'ML', portCode: 'MLDBL', terminal: 'Diboli Border' },
   { label: 'Bamako', city: 'Bamako', country: 'Mali', countryCode: 'ML', portCode: 'MLBKQ', terminal: 'ChinaLink Warehouse - Bamako' },
 ] as const;
 
+export const SHIPPING_LINE_PRESETS: Record<ShippingLine, readonly string[]> = {
+  MSC: ['Nansha', 'Dakar', 'Diboli', 'Bamako'],
+  MAERSK: ['Nansha', 'Abidjan', 'Dakar', 'Diboli', 'Bamako'],
+  CMA_CGM: ['Nansha', 'Singapore', 'Dakar', 'Diboli', 'Bamako'],
+  HAPAG_LLOYD: ['Nansha', 'Lagos', 'Dakar', 'Diboli', 'Bamako'],
+  ETHIOPIAN_AIRLINES: [],
+};
+
 export const ROUTE_PRESETS = [
-  {
-    label: 'Singapore',
-    waypoints: ['Nansha', 'Singapore', 'Dakar', 'Bamako'],
-  },
-  {
-    label: 'Lagos',
-    waypoints: ['Nansha', 'Lagos', 'Dakar', 'Bamako'],
-  },
-  {
-    label: 'Abidjan',
-    waypoints: ['Nansha', 'Abidjan', 'Dakar', 'Bamako'],
-  },
-  {
-    label: 'T. Pelepas',
-    waypoints: ['Nansha', 'Tanjung Pelepas', 'Tanger Med', 'Dakar', 'Bamako'],
-  },
+  { label: 'Singapore', waypoints: ['Nansha', 'Singapore', 'Dakar', 'Diboli', 'Bamako'] },
+  { label: 'Lagos', waypoints: ['Nansha', 'Lagos', 'Dakar', 'Diboli', 'Bamako'] },
+  { label: 'Abidjan', waypoints: ['Nansha', 'Abidjan', 'Dakar', 'Diboli', 'Bamako'] },
+  { label: 'Direct Dakar', waypoints: ['Nansha', 'Dakar', 'Diboli', 'Bamako'] },
+  { label: 'T. Pelepas', waypoints: ['Nansha', 'Tanjung Pelepas', 'Tanger Med', 'Dakar', 'Diboli', 'Bamako'] },
 ] as const;
 
 const getKnownPort = (label: string) => KNOWN_PORTS.find((port) => port.label === label);
 
-const getTypeForPort = (label: string) => label === 'Bamako' ? 'WAREHOUSE' : 'PORT';
+const getTypeForPort = (label: string) => {
+  if (label === 'Bamako') return 'WAREHOUSE';
+  if (label === 'Diboli') return 'BORDER';
+  return 'PORT';
+};
 
-const getSegmentForPort = (label: string) => label === 'Bamako' ? 'WAREHOUSE' : 'SEA';
+const getSegmentForPort = (label: string) => {
+  if (label === 'Bamako') return 'WAREHOUSE';
+  if (label === 'Diboli') return 'ROAD';
+  return 'SEA';
+};
+
+const getDescriptionForPort = (label: string, index: number, total: number) => {
+  if (index === 0) return `Départ - ${label}`;
+  if (index === total - 1) return `Arrivée - ${label}`;
+  if (label === 'Diboli') return 'Frontière/Dédouanement - Diboli (Sénégal-Mali)';
+  return `Transit - ${label}`;
+};
 
 export const createWaypoint = (
   label = '',
@@ -70,11 +83,7 @@ export const createWaypoint = (
       portCode: known?.portCode || '',
     },
     estimatedDaysFromStart: day,
-    description: index === 0
-      ? `Départ - ${displayName}`
-      : index === total - 1
-        ? `Arrivée - ${displayName}`
-        : `Transit - ${displayName}`,
+    description: getDescriptionForPort(displayName, index, total),
     type: getTypeForPort(displayName),
     segmentType: getSegmentForPort(displayName),
     terminal: known?.terminal || '',
@@ -87,3 +96,12 @@ export const createPresetWaypoints = (
   labels: readonly string[],
   totalDays: number,
 ) => labels.map((label, index) => createWaypoint(label, index, labels.length, totalDays));
+
+export const createWaypointsForShippingLine = (
+  line: ShippingLine,
+  totalDays: number,
+): RouteWaypointDraft[] => {
+  const labels = SHIPPING_LINE_PRESETS[line];
+  if (!labels || labels.length === 0) return [];
+  return labels.map((label, index) => createWaypoint(label, index, labels.length, totalDays));
+};

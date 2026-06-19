@@ -2,13 +2,19 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button, Divider } from 'react-native-paper';
 import { Theme } from '@src/constants/Theme';
-import type { RouteWaypointDraft } from '@src/features/admin/routes/types';
+import type { RouteWaypointDraft, ShippingLine } from '@src/features/admin/routes/types';
 import { WaypointEditorCard } from './WaypointEditorCard';
-import { createPresetWaypoints, createWaypoint, ROUTE_PRESETS } from './routeWaypointOptions';
+import { WaypointPresetToolbar } from './WaypointPresetToolbar';
+import {
+  createPresetWaypoints,
+  createWaypoint,
+  createWaypointsForShippingLine,
+} from './routeWaypointOptions';
 
 interface RouteWaypointsInputProps {
   waypoints: RouteWaypointDraft[];
   totalDays: number;
+  shippingLine: ShippingLine | '';
   onChange: (waypoints: RouteWaypointDraft[]) => void;
 }
 
@@ -18,6 +24,7 @@ const reorderWaypoints = (waypoints: RouteWaypointDraft[]) =>
 export const RouteWaypointsInput: React.FC<RouteWaypointsInputProps> = ({
   waypoints,
   totalDays,
+  shippingLine,
   onChange,
 }) => {
   const [openPortMenuIndex, setOpenPortMenuIndex] = useState<number | null>(null);
@@ -31,6 +38,11 @@ export const RouteWaypointsInput: React.FC<RouteWaypointsInputProps> = ({
   const handleApplyPreset = useCallback((labels: readonly string[]) => {
     onChange(createPresetWaypoints(labels, safeTotalDays));
   }, [onChange, safeTotalDays]);
+
+  const handleGenerate = useCallback(() => {
+    if (!shippingLine) return;
+    onChange(createWaypointsForShippingLine(shippingLine, safeTotalDays));
+  }, [onChange, shippingLine, safeTotalDays]);
 
   const handleAddWaypoint = useCallback(() => {
     onChange([
@@ -64,20 +76,11 @@ export const RouteWaypointsInput: React.FC<RouteWaypointsInputProps> = ({
       <Text style={styles.title}>Éditeur des escales</Text>
       <Text style={styles.summary} numberOfLines={2}>{summary}</Text>
 
-      <View style={styles.presets}>
-        {ROUTE_PRESETS.map((preset) => (
-          <Button
-            key={preset.label}
-            mode="outlined"
-            compact
-            onPress={() => handleApplyPreset(preset.waypoints)}
-            style={styles.presetButton}
-            labelStyle={styles.presetLabel}
-          >
-            {preset.label}
-          </Button>
-        ))}
-      </View>
+      <WaypointPresetToolbar
+        shippingLine={shippingLine}
+        onGenerate={handleGenerate}
+        onApplyPreset={handleApplyPreset}
+      />
 
       <View style={styles.list}>
         {waypoints.map((waypoint, index) => (
@@ -117,18 +120,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
     color: Theme.neutral[500],
-  },
-  presets: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: Theme.spacing.sm,
-  },
-  presetButton: {
-    borderRadius: Theme.radius.md,
-  },
-  presetLabel: {
-    marginHorizontal: Theme.spacing.sm,
-    fontSize: 12,
   },
   list: {
     gap: Theme.spacing.md,

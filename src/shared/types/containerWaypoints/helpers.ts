@@ -43,7 +43,7 @@ export const PORT_TYPE_LABELS: Record<PortType, string> = {
   FEEDER: 'Feeder',
 };
 
-export const WAYPOINT_TYPE_OPTIONS: WaypointType[] = ['PORT', 'WAREHOUSE', 'BORDER', 'TERMINAL', 'DEPOT'];
+export const WAYPOINT_TYPE_OPTIONS: WaypointType[] = ['PORT', 'WAREHOUSE', 'BORDER', 'TERMINAL', 'DEPOT', 'CUSTOMS'];
 
 export const WAYPOINT_TYPE_LABELS: Record<WaypointType, string> = {
   PORT: 'Port',
@@ -51,6 +51,7 @@ export const WAYPOINT_TYPE_LABELS: Record<WaypointType, string> = {
   BORDER: 'Frontière',
   TERMINAL: 'Terminal',
   DEPOT: 'Dépôt',
+  CUSTOMS: 'Douane',
 };
 
 export const WAYPOINT_TYPE_ICONS: Record<WaypointType, string> = {
@@ -59,6 +60,7 @@ export const WAYPOINT_TYPE_ICONS: Record<WaypointType, string> = {
   BORDER: 'flag',
   TERMINAL: 'business',
   DEPOT: 'cube',
+  CUSTOMS: 'business',
 };
 
 export const TRANSPORT_MODE_OPTIONS: TransportMode[] = ['SEA', 'ROAD', 'AIR', 'RAIL'];

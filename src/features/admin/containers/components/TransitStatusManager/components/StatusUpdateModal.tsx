@@ -29,6 +29,8 @@ export interface StatusUpdateModalProps {
   currentLocationName?: string | null;
   /** Next waypoint location, if any (for the "en route vers …" preview). */
   nextLocation?: string | null;
+  /** Next waypoint object, used to derive the real destination city for the preview. */
+  nextWaypoint?: ContainerWaypoint;
   /** True when the active waypoint is the destination. */
   isFinalWaypoint?: boolean;
   /** True when the modal is opened to mark an arrival (vs. a status update). */
@@ -46,6 +48,7 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
   isLoading = false,
   currentLocationName,
   nextLocation,
+  nextWaypoint,
   isFinalWaypoint = false,
   isArrivalAction = false,
 }) => {
@@ -55,20 +58,63 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
 
   // Mirror of the backend notification wording (containerWaypointNotificationBuilder)
   // so the admin sees exactly what the client will receive before confirming.
+  // For road legs the waypoint city is the destination, so the "from" city must be
+  // the origin of the leg (e.g. Dakar) to avoid "left Diboli → towards Diboli".
+  const getRoadOrigin = (wp?: ContainerWaypoint): string | null => {
+    if (wp?.segmentType === 'ROAD' && wp?.roadDetails?.routeDetails) {
+      const stops = wp.roadDetails.routeDetails.split('→').map((s) => s.trim());
+      return stops[0] || null;
+    }
+    return null;
+  };
+
+  const getRoadDestination = (wp?: ContainerWaypoint): string | null => {
+    if (wp?.segmentType === 'ROAD' && wp?.roadDetails?.routeDetails) {
+      const stops = wp.roadDetails.routeDetails.split('→').map((s) => s.trim());
+      return stops[stops.length - 1] || null;
+    }
+    return null;
+  };
+
+  const getWaypointCity = (wp?: ContainerWaypoint): string | null =>
+    wp?.location?.city || wp?.shortName || null;
+
+  const isCustomsDescription = (description = '') =>
+    /dédouanement|douane|customs clearance|customs|dédouané/i.test(description);
+
   const clientPreview = React.useMemo<string | null>(() => {
+    const arrivalLocation = currentLocationName || getWaypointCity(currentWaypoint);
+
     if (isArrivalAction) {
-      return currentLocationName
-        ? `Vos marchandises sont arrivées à ${currentLocationName}.`
+      return arrivalLocation
+        ? `Vos marchandises sont arrivées à ${arrivalLocation}.`
         : 'Vos marchandises sont arrivées à une nouvelle étape.';
     }
     if (selectedStatus === 'COMPLETED') {
       if (isFinalWaypoint) {
-        return currentLocationName
-          ? `Vos marchandises sont arrivées à ${currentLocationName} et ont terminé leur parcours.`
+        return arrivalLocation
+          ? `Vos marchandises sont arrivées à ${arrivalLocation} et ont terminé leur parcours.`
           : 'Vos marchandises ont terminé leur parcours.';
       }
-      if (currentLocationName && nextLocation) {
-        return `Vos marchandises ont quitté ${currentLocationName} et sont maintenant en route vers ${nextLocation}.`;
+
+      const fromLocation =
+        getRoadOrigin(currentWaypoint) ||
+        (isCustomsDescription(currentWaypoint?.description || '')
+          ? getWaypointCity(currentWaypoint)
+          : null) ||
+        currentLocationName ||
+        getWaypointCity(currentWaypoint);
+
+      const toLocation =
+        getRoadDestination(nextWaypoint) ||
+        (isCustomsDescription(nextWaypoint?.description || '')
+          ? getWaypointCity(nextWaypoint)
+          : null) ||
+        nextLocation ||
+        getWaypointCity(nextWaypoint);
+
+      if (fromLocation && toLocation) {
+        return `Vos marchandises ont quitté ${fromLocation} et sont maintenant en route vers ${toLocation}.`;
       }
       return 'Vos marchandises ont accompli une nouvelle étape.';
     }
@@ -76,7 +122,15 @@ export const StatusUpdateModal: React.FC<StatusUpdateModalProps> = ({
       return "L'expédition de vos marchandises est retardée. L'itinéraire a été mis à jour.";
     }
     return null;
-  }, [selectedStatus, isArrivalAction, isFinalWaypoint, currentLocationName, nextLocation]);
+  }, [
+    selectedStatus,
+    isArrivalAction,
+    isFinalWaypoint,
+    currentLocationName,
+    nextLocation,
+    currentWaypoint,
+    nextWaypoint,
+  ]);
 
   // Handle hardware back button on Android
   React.useEffect(() => {

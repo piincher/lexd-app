@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { getWaypointDisplayTitle } from '@src/shared/lib/waypointDisplay';
 import { ContainerWaypoint } from '../../../types/waypoints';
 import { createStyles } from './TransitStatusCard.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -17,7 +18,7 @@ export const WaypointLocationInfo: React.FC<WaypointLocationInfoProps> = ({
 }) => {
   const { colors, isDark } = useAppTheme();
   const styles = createStyles(colors, isDark);
-  const locationName = currentWaypoint?.location?.city || currentWaypoint?.shortName || 'Inconnu';
+  const locationName = currentWaypoint ? getWaypointDisplayTitle(currentWaypoint) : 'Inconnu';
   const locationCountry = currentWaypoint?.location?.country || '';
 
   return (

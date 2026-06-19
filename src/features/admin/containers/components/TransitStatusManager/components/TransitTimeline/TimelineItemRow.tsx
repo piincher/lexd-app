@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { getWaypointDisplayTitle } from '@src/shared/lib/waypointDisplay';
 import { ContainerWaypoint } from '../../../../types/waypoints';
 import { createStyles } from './TransitTimeline.styles';
 import { TimelineDot, WaypointItemStatus } from './TimelineDot';
@@ -99,7 +100,7 @@ export const TimelineItemRow: React.FC<TimelineItemRowProps> = ({
             <Text style={[styles.statusLabel, status === 'completed' && styles.statusLabelCompleted, status === 'current' && styles.statusLabelCurrent, status === 'pending' && styles.statusLabelPending]}>
               {getStatusLabel(status, waypoint, index)}
             </Text>
-            <Text style={styles.waypointName}>{waypoint.location?.city || waypoint.shortName || '—'}</Text>
+            <Text style={styles.waypointName}>{getWaypointDisplayTitle(waypoint)}</Text>
             {waypoint.location?.country && <Text style={styles.countryName}>{waypoint.location.country}</Text>}
           </View>
         </View>

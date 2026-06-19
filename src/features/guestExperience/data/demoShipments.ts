@@ -63,7 +63,7 @@ export const DEMO_SHIPMENTS: DemoShipment[] = [
       {
         id: 'sea-dakar',
         title: 'Arrivée à Dakar',
-        detail: 'Dédouanement au port de Dakar puis transfert vers le dépôt.',
+        detail: 'Déchargement au port de Dakar, dédouanement à la frontière Sénégal-Mali, puis transport vers le dépôt.',
         status: 'next',
         icon: 'anchor',
         location: 'Dakar, Sénégal',
