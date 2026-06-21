@@ -241,6 +241,13 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         icon: "bullhorn",
         route: "AnnouncementList",
       },
+      {
+        id: "c14",
+        title: "Campagnes promo",
+        description: "Gérer les popups promotionnels",
+        icon: "image-multiple",
+        route: "PromoCampaignList",
+      },
     ],
   },
   {

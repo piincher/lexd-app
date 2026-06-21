@@ -19,3 +19,5 @@ export {
   useScrollDirection,
   useTabBarVisibility,
 } from './ScrollDirectionProvider';
+
+export { PromoCampaignProvider } from './PromoCampaignProvider';

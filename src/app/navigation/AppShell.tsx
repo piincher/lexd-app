@@ -4,6 +4,7 @@ import { useAppTheme } from "@src/providers";
 import { StatusBar as ThemeStatusBar } from "@src/components/StatusBar";
 import { AppAnnouncementHost } from "@src/features/announcements";
 import { UpdateProvider, useUpdate } from "@src/app/providers/UpdateProvider";
+import { PromoCampaignProvider } from "@src/app/providers";
 import { ForceUpdateScreen } from "@src/features/update";
 import { addVersionUpgradeListener } from "@src/shared/lib/versionEvents";
 import { ThemedApp } from "./ThemedApp";
@@ -48,7 +49,9 @@ export const AppShell: React.FC = () => {
    return (
       <SafeAreaProvider>
          <UpdateProvider>
-            <AppShellInner />
+            <PromoCampaignProvider>
+               <AppShellInner />
+            </PromoCampaignProvider>
          </UpdateProvider>
       </SafeAreaProvider>
    );

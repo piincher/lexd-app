@@ -84,6 +84,10 @@ export { default as CreateCampaignScreen } from "@src/features/admin/communicati
 // Admin Event Engine
 export { EventListScreen, EventFormScreen } from "@src/features/admin/events";
 
+// Admin Promo Campaigns
+export { default as PromoCampaignListScreen } from "@src/features/promoCampaigns/screens/PromoCampaignListScreen";
+export { default as PromoCampaignFormScreen } from "@src/features/promoCampaigns/screens/PromoCampaignFormScreen";
+
 // Admin Announcements & Audit
 export { default as CreateAnnouncementScreen } from "@src/features/admin/announcements/screens/CreateAnnouncementScreen";
 export { default as AnnouncementListScreen } from "@src/features/admin/announcements/screens/AnnouncementListScreen";
