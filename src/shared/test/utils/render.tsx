@@ -7,6 +7,7 @@ import React, { ReactElement } from 'react';
 import { render } from '@testing-library/react-native';
 import type { RenderOptions, RenderResult } from '@testing-library/react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from '@src/providers/ThemeProvider';
 
 // Create a fresh QueryClient for each test
 const createTestQueryClient = () => {
@@ -50,7 +51,7 @@ export const AllTheProviders: React.FC<AllTheProvidersProps> = ({
 }) => {
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <ThemeProvider>{children}</ThemeProvider>
     </QueryClientProvider>
   );
 };

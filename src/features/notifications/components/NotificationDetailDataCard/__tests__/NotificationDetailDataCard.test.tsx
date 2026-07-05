@@ -34,7 +34,7 @@ describe('NotificationDetailDataCard', () => {
     expect(screen.getByText('📍 Suivi du conteneur')).toBeTruthy();
     expect(screen.getByText(/Progression : 3 \/ 4 \(75%\)/)).toBeTruthy();
     expect(screen.getByText('Statut actuel : IN_TRANSIT')).toBeTruthy();
-    expect(screen.getByText(/Dakar/)).toBeTruthy();
+    expect(screen.getAllByText(/Dakar/).length).toBeGreaterThanOrEqual(1);
     expect(screen.getByText(/Prochaine étape : Bamako/)).toBeTruthy();
     expect(screen.getByText(/Transporteur: TransAfrica/)).toBeTruthy();
   });
@@ -119,12 +119,12 @@ describe('NotificationDetailDataCard', () => {
   });
 
   it('returns null when no data is provided', () => {
-    const { container } = render(<NotificationDetailDataCard data={undefined} />);
-    expect(container.children.length).toBe(0);
+    const { toJSON } = render(<NotificationDetailDataCard data={undefined} />);
+    expect(toJSON()).toBeNull();
   });
 
   it('returns null when data has no relevant fields', () => {
-    const { container } = render(<NotificationDetailDataCard data={{ someRandomField: 'value' }} />);
-    expect(container.children.length).toBe(0);
+    const { toJSON } = render(<NotificationDetailDataCard data={{ someRandomField: 'value' }} />);
+    expect(toJSON()).toBeNull();
   });
 });

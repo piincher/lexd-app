@@ -1,0 +1,232 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Code coverage report for src/features/admin/containers/screens/hooks/useContainerStatusMutations.ts</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../../../favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../../../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+    
+<body>
+<div class='wrapper'>
+    <div class='pad1'>
+        <h1><a href="../../../../../../index.html">All files</a> / <a href="index.html">src/features/admin/containers/screens/hooks</a> useContainerStatusMutations.ts</h1>
+        <div class='clearfix'>
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>0/56</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/19</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/10</span>
+            </div>
+        
+            
+            <div class='fl pad1y space-right2'>
+                <span class="strong">0% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>0/23</span>
+            </div>
+        
+            
+        </div>
+        <p class="quiet">
+            Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
+        </p>
+        <template id="filterTemplate">
+            <div class="quiet">
+                Filter:
+                <input type="search" id="fileSearch">
+            </div>
+        </template>
+    </div>
+    <div class='status-line low'></div>
+    <pre><table class="coverage">
+<tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
+<a name='L2'></a><a href='#L2'>2</a>
+<a name='L3'></a><a href='#L3'>3</a>
+<a name='L4'></a><a href='#L4'>4</a>
+<a name='L5'></a><a href='#L5'>5</a>
+<a name='L6'></a><a href='#L6'>6</a>
+<a name='L7'></a><a href='#L7'>7</a>
+<a name='L8'></a><a href='#L8'>8</a>
+<a name='L9'></a><a href='#L9'>9</a>
+<a name='L10'></a><a href='#L10'>10</a>
+<a name='L11'></a><a href='#L11'>11</a>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a>
+<a name='L14'></a><a href='#L14'>14</a>
+<a name='L15'></a><a href='#L15'>15</a>
+<a name='L16'></a><a href='#L16'>16</a>
+<a name='L17'></a><a href='#L17'>17</a>
+<a name='L18'></a><a href='#L18'>18</a>
+<a name='L19'></a><a href='#L19'>19</a>
+<a name='L20'></a><a href='#L20'>20</a>
+<a name='L21'></a><a href='#L21'>21</a>
+<a name='L22'></a><a href='#L22'>22</a>
+<a name='L23'></a><a href='#L23'>23</a>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useCallback } from 'react';
+import { Alert } from 'react-native';
+import { ContainerStatus, CONTAINER_STATUS_LABELS } from '../../types';
+import { Goods } from '../../../goods/types';
+import { useUpdateContainerStatus, useMarkReadyForPickup, useMarkGoodsDelivered, useMarkContainerDelivered } from '../../hooks';
+import { ContainerDialogsState } from './useContainerDialogs';
+import { MAX_CBM, MAX_WEIGHT } from './utils';
+&nbsp;
+const CAPACITY_CHECK_STATUSES: ContainerStatus[] = <span class="cstat-no" title="statement not covered" >['LOADED','GATE_IN_FULL','LOADED_ON_VESSEL','IN_TRANSIT','ARRIVED','DISCHARGED','READY_FOR_PICKUP'];</span>
+&nbsp;
+export const useContainerStatusMutations = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span>
+  containerId: string, container: any, goodsList: Goods[],
+  capacityValue: number, maxCapacity: number, isAirContainer: boolean, totalWeight: number,
+  dialogs: ContainerDialogsState,
+) =&gt; {
+  const updateStatus = <span class="cstat-no" title="statement not covered" >useUpdateContainerStatus();</span>
+  const markReady = <span class="cstat-no" title="statement not covered" >useMarkReadyForPickup();</span>
+  const markGoodsDelivered = <span class="cstat-no" title="statement not covered" >useMarkGoodsDelivered();</span>
+  const markContainerDelivered = <span class="cstat-no" title="statement not covered" >useMarkContainerDelivered();</span>
+&nbsp;
+  const handleUpdateStatus = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync (newStatus: ContainerStatus) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    dialogs.setStatusMenuVisible(false);</span>
+<span class="cstat-no" title="statement not covered" >    if (newStatus === container?.status) <span class="cstat-no" title="statement not covered" >return;</span></span>
+    const doUpdate = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; { <span class="cstat-no" title="statement not covered" >try { <span class="cstat-no" title="statement not covered" >await updateStatus.mutateAsync({ id: containerId, data: { status: newStatus } }); <span class="cstat-no" title="statement not covered" ></span>Alert.alert('Succès', `Statut mis à jour: ${CONTAINER_STATUS_LABELS[newStatus]}`); </span>} catch { <span class="cstat-no" title="statement not covered" >Alert.alert('Erreur', 'Impossible de mettre à jour le statut'); </span>} </span>};</span>
+    const checkCapacity = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; { <span class="cstat-no" title="statement not covered" >if (!CAPACITY_CHECK_STATUSES.includes(newStatus)) { <span class="cstat-no" title="statement not covered" >doUpdate(); <span class="cstat-no" title="statement not covered" ></span>return; </span>} <span class="cstat-no" title="statement not covered" ></span>if (goodsList.length === 0) { <span class="cstat-no" title="statement not covered" >Alert.alert('Attention', 'Ce container est vide. Impossible de passer au statut ' + CONTAINER_STATUS_LABELS[newStatus] + '.'); <span class="cstat-no" title="statement not covered" ></span>return; </span>} <span class="cstat-no" title="statement not covered" ></span>if (capacityValue &gt; maxCapacity) { <span class="cstat-no" title="statement not covered" >Alert.alert('Alerte Capacité', `${isAirContainer ? 'Poids' : 'CBM'} du container (${capacityValue.toFixed(1)}) dépasse le maximum (${maxCapacity}). Voulez-vous continuer ?`, [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: doUpdate }]); <span class="cstat-no" title="statement not covered" ></span>return; </span>} <span class="cstat-no" title="statement not covered" ></span>doUpdate(); </span>};</span>
+<span class="cstat-no" title="statement not covered" >    Alert.alert('Confirmer le changement de statut', `Passer le container de "${CONTAINER_STATUS_LABELS[container!.status]}" à "${CONTAINER_STATUS_LABELS[newStatus]}" ?`, [{ text: 'Annuler', style: 'cancel' }, { text: 'Confirmer', onPress: checkCapacity }]);</span>
+  }, [containerId, container, goodsList, capacityValue, maxCapacity, isAirContainer, dialogs, updateStatus]);
+&nbsp;
+  const confirmMarkReadyForPickup = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+    const doMark = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; { <span class="cstat-no" title="statement not covered" >try { <span class="cstat-no" title="statement not covered" >await markReady.mutateAsync(containerId); <span class="cstat-no" title="statement not covered" ></span>dialogs.setShowReadyForPickupDialog(false); <span class="cstat-no" title="statement not covered" ></span>Alert.alert('Succès', 'Container marqué comme prêt pour le retrait'); </span>} catch { <span class="cstat-no" title="statement not covered" >Alert.alert('Erreur', 'Impossible de marquer le container'); </span>} </span>};</span>
+<span class="cstat-no" title="statement not covered" >    if (capacityValue &gt; maxCapacity) { <span class="cstat-no" title="statement not covered" >Alert.alert('Alerte Capacité', isAirContainer ? `Poids du container (${totalWeight.toFixed(1)}kg) dépasse le maximum (${MAX_WEIGHT}kg). Continuer quand même ?` : `CBM du container (${capacityValue.toFixed(1)}m³) dépasse le maximum (${MAX_CBM}m³). Continuer quand même ?`, [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: doMark }]); <span class="cstat-no" title="statement not covered" ></span>return; </span>}</span>
+<span class="cstat-no" title="statement not covered" >    await doMark();</span>
+  }, [containerId, capacityValue, maxCapacity, isAirContainer, totalWeight, dialogs, markReady]);
+&nbsp;
+  const confirmMarkDelivered = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+    const doMark = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; { <span class="cstat-no" title="statement not covered" >try { <span class="cstat-no" title="statement not covered" >await markContainerDelivered.mutateAsync(containerId); <span class="cstat-no" title="statement not covered" ></span>dialogs.setShowDeliveredDialog(false); <span class="cstat-no" title="statement not covered" ></span>Alert.alert('Succès', 'Container marqué comme livré'); </span>} catch (error: any) { <span class="cstat-no" title="statement not covered" >Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); </span>} </span>};</span>
+<span class="cstat-no" title="statement not covered" >    if (goodsList.length === 0) { <span class="cstat-no" title="statement not covered" >Alert.alert('Attention', 'Ce container est vide. Marquer un container vide comme livré est inhabituel. Continuer ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: doMark }]); <span class="cstat-no" title="statement not covered" ></span>return; </span>}</span>
+<span class="cstat-no" title="statement not covered" >    await doMark();</span>
+  }, [containerId, goodsList, dialogs, markContainerDelivered]);
+&nbsp;
+  const handleMarkGoodsDelivered = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(g</span>oodsId: string) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    Alert.alert('Confirmer la livraison', 'Marquer cette marchandise comme livrée ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Marquer Livré', onPress: <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; { <span class="cstat-no" title="statement not covered" >try { <span class="cstat-no" title="statement not covered" >await markGoodsDelivered.mutateAsync(goodsId); <span class="cstat-no" title="statement not covered" ></span>Alert.alert('Succès', 'Marchandise marquée comme livrée'); </span>} catch { <span class="cstat-no" title="statement not covered" >Alert.alert('Erreur', 'Impossible de marquer la marchandise'); </span>} </span>} }]);</span>
+  }, [markGoodsDelivered]);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return {</span>
+    updateStatusMutation: updateStatus, markReadyForPickupMutation: markReady, markGoodsDeliveredMutation: markGoodsDelivered, markContainerDeliveredMutation: markContainerDelivered,
+    handleUpdateStatus, confirmMarkReadyForPickup, confirmMarkDelivered, handleMarkGoodsDelivered,
+  };
+};
+&nbsp;</pre></td></tr></table></pre>
+
+                <div class='push'></div><!-- for sticky footer -->
+            </div><!-- /wrapper -->
+            <div class='footer quiet pad2 space-top1 center small'>
+                Code coverage generated by
+                <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+                at 2026-06-19T14:24:04.619Z
+            </div>
+        <script src="../../../../../../prettify.js"></script>
+        <script>
+            window.onload = function () {
+                prettyPrint();
+            };
+        </script>
+        <script src="../../../../../../sorter.js"></script>
+        <script src="../../../../../../block-navigation.js"></script>
+    </body>
+</html>
+    

@@ -53,6 +53,36 @@ jest.mock('react-native-paper', () => {
         <Text>{children}</Text>
       </Pressable>
     ),
+    MD3LightTheme: {
+      colors: {
+        primary: '#6200ee',
+        primaryContainer: '#6200ee',
+        secondary: '#03dac6',
+        surface: '#ffffff',
+        background: '#f6f6f6',
+        error: '#b00020',
+        onPrimary: '#ffffff',
+        onSurface: '#000000',
+        onBackground: '#000000',
+        outline: '#e0e0e0',
+        backdrop: 'rgba(0, 0, 0, 0.5)',
+      },
+    },
+    MD3DarkTheme: {
+      colors: {
+        primary: '#bb86fc',
+        primaryContainer: '#bb86fc',
+        secondary: '#03dac6',
+        surface: '#121212',
+        background: '#121212',
+        error: '#cf6679',
+        onPrimary: '#000000',
+        onSurface: '#ffffff',
+        onBackground: '#ffffff',
+        outline: '#424242',
+        backdrop: 'rgba(0, 0, 0, 0.5)',
+      },
+    },
   };
 });
 

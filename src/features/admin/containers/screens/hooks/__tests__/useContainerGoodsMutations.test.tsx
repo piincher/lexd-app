@@ -3,29 +3,36 @@ import { act, renderHook } from '@testing-library/react-native';
 import { useContainerGoodsMutations } from '../useContainerGoodsMutations';
 import type { ContainerDialogsState } from '../useContainerDialogs';
 
-const mockNavigate = jest.fn();
-const mockDeleteContainer = jest.fn();
+jest.mock('@react-navigation/native', () => {
+  const navigateMock = jest.fn();
+  return {
+    ...jest.requireActual('@react-navigation/native'),
+    useNavigation: () => ({ navigate: navigateMock, goBack: jest.fn() }),
+    __navigateMock: navigateMock,
+  };
+});
 
-jest.mock('@react-navigation/native', () => ({
-  useNavigation: () => ({
-    navigate: mockNavigate,
-  }),
-}));
+jest.mock('../../../hooks', () => {
+  const mutateAsyncMock = jest.fn();
+  return {
+    useRemoveGoodsFromContainer: () => ({
+      mutateAsync: jest.fn(),
+      isPending: false,
+    }),
+    useDeleteContainer: () => ({
+      mutateAsync: mutateAsyncMock,
+      isPending: false,
+    }),
+    useReconcileContainer: () => ({
+      mutateAsync: jest.fn(),
+      isPending: false,
+    }),
+    __deleteMutateAsyncMock: mutateAsyncMock,
+  };
+});
 
-jest.mock('../../../hooks', () => ({
-  useRemoveGoodsFromContainer: () => ({
-    mutateAsync: jest.fn(),
-    isPending: false,
-  }),
-  useDeleteContainer: () => ({
-    mutateAsync: mockDeleteContainer,
-    isPending: false,
-  }),
-  useReconcileContainer: () => ({
-    mutateAsync: jest.fn(),
-    isPending: false,
-  }),
-}));
+const mockNavigate = jest.requireMock('@react-navigation/native').__navigateMock;
+const mockDeleteContainer = jest.requireMock('../../../hooks').__deleteMutateAsyncMock;
 
 const createDialogs = (): ContainerDialogsState => ({
   statusMenuVisible: false,
@@ -49,8 +56,13 @@ const createDialogs = (): ContainerDialogsState => ({
 
 describe('useContainerGoodsMutations', () => {
   beforeEach(() => {
+    jest.useFakeTimers();
     jest.clearAllMocks();
     jest.spyOn(Alert, 'alert').mockImplementation(jest.fn());
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   it('navigates back to ContainerList after successful delete and reports released goods', async () => {
@@ -69,6 +81,10 @@ describe('useContainerGoodsMutations', () => {
 
     await act(async () => {
       await result.current.confirmDeleteContainer();
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(300);
     });
 
     expect(mockDeleteContainer).toHaveBeenCalledWith('container-123');

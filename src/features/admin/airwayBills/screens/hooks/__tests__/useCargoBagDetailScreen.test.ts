@@ -20,7 +20,8 @@ const mockRemoveMutation = { mutateAsync: jest.fn(), isPending: false };
 const mockUpdateStatusMutation = { mutateAsync: jest.fn(), isPending: false };
 const mockRefetch = jest.fn();
 
-jest.mock('../../hooks/useCargoBags', () => ({
+jest.mock('../../../hooks/useCargoBags', () => ({
+  useGetCargoBagWaypoints: () => ({ data: { data: [] }, isLoading: false, refetch: jest.fn() }),
   useGetCargoBagById: () => ({
     data: {
       data: {
@@ -44,13 +45,15 @@ jest.mock('../../hooks/useCargoBags', () => ({
   }),
   useRemoveGoodsFromCargoBag: () => mockRemoveMutation,
   useUpdateCargoBagStatus: () => mockUpdateStatusMutation,
+  useUpdateCargoBagWaypoint: () => mockUpdateStatusMutation,
+  useDeleteCargoBag: () => mockRemoveMutation,
 }));
 
 import { useCargoBagDetailScreen } from '../useCargoBagDetailScreen';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
+    defaultOptions: { queries: { retry: false, gcTime: 0 } },
   });
   return React.createElement(QueryClientProvider, { client: queryClient }, children);
 };

@@ -1,32 +1,26 @@
-import '@testing-library/jest-native/extend-expect';
+import '@testing-library/react-native/extend-expect';
+
+// Restore `window` now that the jest-expo preset has finished loading.
+Object.defineProperty(global, 'window', {
+  value: global,
+  configurable: true,
+  writable: true,
+  enumerable: true,
+});
+global.window.navigator = {};
 
 // Global test timeout
 jest.setTimeout(10000);
 
 // Mock react-native-reanimated before anything else
-jest.mock('react-native-reanimated', () => {
-  const Reanimated = require('react-native-reanimated/mock');
-  Reanimated.default.call = () => {};
-  return {
-    ...Reanimated,
-    FadeIn: { duration: () => ({}) },
-    FadeInUp: { duration: () => ({}) },
-    FadeOut: { duration: () => ({}) },
-    FadeOutDown: { duration: () => ({}) },
-    Layout: {
-      springify: () => ({}),
-      damping: () => ({}),
-      stiffness: () => ({}),
-    },
-    Easing: {
-      linear: (t) => t,
-      ease: (t) => t,
-      inOut: (easing) => easing,
-    },
-  };
-});
+jest.mock('react-native-reanimated', () => require('./src/shared/test/mocks/reanimatedMock.js'));
+// Redirect the dedicated mock entry point to the same manual mock
+jest.mock('react-native-reanimated/mock', () => require('./src/shared/test/mocks/reanimatedMock.js'));
 
-// Mock react-native-worklets
+// Avoid AsyncStorage-driven theme loading in tests
+jest.mock('@src/providers/ThemeProvider', () => require('./src/shared/test/mocks/themeProviderMock.js'));
+
+// Mock react-native-worklets before react-native-reanimated is loaded
 jest.mock('react-native-worklets', () => ({
   Worklets: {
     runOnUI: (fn) => fn,
@@ -34,6 +28,37 @@ jest.mock('react-native-worklets', () => ({
     createSharedValue: (value) => ({ value }),
     useSharedValue: (value) => ({ value }),
   },
+  runOnUI: (fn) => fn,
+  runOnJS: (fn) => fn,
+  runOnUIAsync: (fn) => fn(),
+  runOnUISync: (fn) => fn(),
+  createSharedValue: (value) => ({ value }),
+  makeMutable: (value) => ({ value }),
+  createSerializable: (value) => value,
+  isSerializableRef: () => false,
+  registerCustomSerializable: () => {},
+  makeShareable: (value) => value,
+  makeShareableCloneRecursive: (value) => value,
+  makeShareableCloneOnUIRecursive: (value) => value,
+  shareableMappingCache: { get: () => undefined, set: () => {}, delete: () => {} },
+  isShareableRef: () => false,
+  createSynchronizable: (value) => value,
+  isSynchronizable: () => false,
+  createWorkletRuntime: () => ({}),
+  runOnRuntime: (_runtime, fn) => fn,
+  scheduleOnRuntime: () => {},
+  getRuntimeKind: () => ({}),
+  RuntimeKind: {},
+  callMicrotasks: () => {},
+  executeOnUIRuntimeSync: (fn) => fn(),
+  scheduleOnRN: () => {},
+  scheduleOnUI: () => {},
+  unstable_eventLoopTask: () => {},
+  getDynamicFeatureFlag: () => false,
+  getStaticFeatureFlag: () => false,
+  setDynamicFeatureFlag: () => {},
+  isWorkletFunction: () => false,
+  WorkletsModule: {},
 }));
 
 // Mock moti
@@ -183,6 +208,13 @@ jest.mock('react-native-paper', () => ({
   }),
   withTheme: (Component) => Component,
   Button: 'Button',
+  Surface: 'Surface',
+  Text: 'Text',
+  Title: 'Title',
+  Paragraph: 'Paragraph',
+  Subheading: 'Subheading',
+  Headline: 'Headline',
+  Caption: 'Caption',
   Card: 'Card',
   CardContent: 'CardContent',
   CardActions: 'CardActions',
@@ -215,8 +247,36 @@ jest.mock('react-native-paper', () => ({
   Chip: 'Chip',
   Badge: 'Badge',
   ProgressBar: 'ProgressBar',
-  MD3LightTheme: {},
-  MD3DarkTheme: {},
+  MD3LightTheme: {
+    colors: {
+      primary: '#6200ee',
+      primaryContainer: '#6200ee',
+      secondary: '#03dac6',
+      surface: '#ffffff',
+      background: '#f6f6f6',
+      error: '#b00020',
+      onPrimary: '#ffffff',
+      onSurface: '#000000',
+      onBackground: '#000000',
+      outline: '#e0e0e0',
+      backdrop: 'rgba(0, 0, 0, 0.5)',
+    },
+  },
+  MD3DarkTheme: {
+    colors: {
+      primary: '#bb86fc',
+      primaryContainer: '#bb86fc',
+      secondary: '#03dac6',
+      surface: '#121212',
+      background: '#121212',
+      error: '#cf6679',
+      onPrimary: '#000000',
+      onSurface: '#ffffff',
+      onBackground: '#ffffff',
+      outline: '#424242',
+      backdrop: 'rgba(0, 0, 0, 0.5)',
+    },
+  },
 }));
 
 // Mock react-native-paper-dates
@@ -255,6 +315,10 @@ jest.mock('@react-navigation/native', () => ({
   NavigationContainer: ({ children }) => children,
 }));
 
+// Make TanStack Query notifications synchronous to avoid stray timers
+const { notifyManager } = require('@tanstack/query-core');
+notifyManager.setScheduler((cb) => cb());
+
 // Silence console warnings during tests
 const originalConsoleWarn = console.warn;
 const originalConsoleError = console.error;
@@ -271,6 +335,7 @@ beforeAll(() => {
   console.error = (...args) => {
     if (args[0]?.includes('ReactDOMTestUtils.act')) return;
     if (typeof args[0] === 'string' && args[0].includes('Warning:')) return;
+    if (typeof args[0] === 'string' && args[0].includes('was not wrapped in act')) return;
     originalConsoleError(...args);
   };
 });

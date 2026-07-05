@@ -50,12 +50,12 @@ describe('NotificationTrackingPreview', () => {
   });
 
   it('returns null when no tracking data', () => {
-    const { container } = render(<NotificationTrackingPreview data={{}} />);
-    expect(container.children.length).toBe(0);
+    const { toJSON } = render(<NotificationTrackingPreview data={{}} />);
+    expect(toJSON()).toBeNull();
   });
 
   it('returns null when data is undefined', () => {
-    const { container } = render(<NotificationTrackingPreview data={undefined} />);
-    expect(container.children.length).toBe(0);
+    const { toJSON } = render(<NotificationTrackingPreview data={undefined} />);
+    expect(toJSON()).toBeNull();
   });
 });

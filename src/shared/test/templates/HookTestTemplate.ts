@@ -1,14 +1,14 @@
 /**
  * Hook Test Template
- * 
+ *
  * Use this template as a starting point for testing custom React hooks.
  * Copy this file and modify it for your specific hook.
- * 
+ *
  * @example
  * // useMyHook.test.ts
- * import { renderHook, act } from '@testing-library/react-hooks';
+ * import { renderHook, act } from '@testing-library/react-native';
  * import { useMyHook } from './useMyHook';
- * 
+ *
  * describe('useMyHook', () => {
  *   it('returns expected initial state', () => {
  *     const { result } = renderHook(() => useMyHook());
@@ -17,7 +17,7 @@
  * });
  */
 
-import { renderHook, act, cleanup } from '@testing-library/react-hooks';
+import { renderHook, act, waitFor } from '@testing-library/react-native';
 import { useState, useCallback, useEffect } from 'react';
 
 // Example hook (replace with your actual hook)
@@ -61,11 +61,6 @@ const useCounter = (options: UseCounterOptions = {}): UseCounterReturn => {
 
 // Tests
 describe('useCounter', () => {
-  // Clean up after each test
-  afterEach(() => {
-    cleanup();
-  });
-
   describe('Initialization', () => {
     it('initializes with default value', () => {
       const { result } = renderHook(() => useCounter());
@@ -183,7 +178,7 @@ const useAsyncData = () => {
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -200,7 +195,7 @@ const useAsyncData = () => {
 
 describe('useAsyncData', () => {
   it('handles async data fetching', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAsyncData());
+    const { result } = renderHook(() => useAsyncData());
 
     expect(result.current.loading).toBe(false);
     expect(result.current.data).toBeNull();
@@ -211,9 +206,8 @@ describe('useAsyncData', () => {
 
     expect(result.current.loading).toBe(true);
 
-    await waitForNextUpdate();
+    await waitFor(() => expect(result.current.loading).toBe(false));
 
-    expect(result.current.loading).toBe(false);
     expect(result.current.data).toBe('fetched data');
   });
 });
@@ -281,7 +275,6 @@ describe('useLocalStorage', () => {
 
 // Best practices for testing hooks:
 // 1. Always wrap state updates in act()
-// 2. Use cleanup() after each test to unmount hooks
-// 3. Test initial state, state updates, and edge cases
-// 4. Mock external dependencies (API calls, localStorage, etc.)
-// 5. Test error states and loading states for async hooks
+// 2. Test initial state, state updates, and edge cases
+// 3. Mock external dependencies (API calls, localStorage, etc.)
+// 4. Test error states and loading states for async hooks

@@ -5,13 +5,14 @@ import { waypointQueryKeys } from '@src/shared/hooks/useWaypoints';
 import { containerQueryKeys } from '../containerQueryKeys';
 import { useDeleteContainer } from '../useContainerMutations';
 
-const mockDelete = jest.fn();
-
 jest.mock('../../../services/ContainerService', () => ({
   containerService: {
-    delete: mockDelete,
+    delete: jest.fn(),
   },
 }));
+
+import { containerService } from '../../../services/ContainerService';
+const mockDelete = containerService.delete as jest.Mock;
 
 const createWrapper = (queryClient: QueryClient) => {
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
@@ -28,7 +29,7 @@ describe('useDeleteContainer', () => {
   it('invalidates container and unassigned goods queries and clears deleted detail/waypoint queries', async () => {
     const queryClient = new QueryClient({
       defaultOptions: {
-        queries: { retry: false },
+        queries: { retry: false, gcTime: 0 },
         mutations: { retry: false },
       },
     });

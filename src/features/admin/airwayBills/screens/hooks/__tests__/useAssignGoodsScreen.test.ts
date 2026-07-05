@@ -17,7 +17,7 @@ jest.mock('@react-navigation/native', () => ({
 const mockAssignToBag = jest.fn();
 const mockAssignToAwb = jest.fn();
 
-jest.mock('../../hooks/useAirwayBills', () => ({
+jest.mock('../../../hooks/useAirwayBills', () => ({
   useGetAirwayBillById: () => ({
     data: {
       data: {
@@ -51,7 +51,7 @@ jest.mock('../../hooks/useAirwayBills', () => ({
   }),
 }));
 
-jest.mock('../../hooks/useCargoBags', () => ({
+jest.mock('../../../hooks/useCargoBags', () => ({
   useGetCargoBagsByAwb: () => ({
     data: {
       data: {
@@ -87,7 +87,7 @@ import { useAssignGoodsScreen } from '../useAssignGoodsScreen';
 
 const wrapper = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
-    defaultOptions: { queries: { retry: false } },
+    defaultOptions: { queries: { retry: false, gcTime: 0 } },
   });
   return React.createElement(QueryClientProvider, { client: queryClient }, children);
 };

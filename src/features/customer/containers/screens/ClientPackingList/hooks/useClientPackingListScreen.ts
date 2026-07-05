@@ -54,15 +54,39 @@ export const useClientPackingListScreen = (containerId: string) => {
       const destFile = new File(Paths.cache, filename); const base64 = await blobToBase64(pdfBlob); setDownloadProgress(0.7); await destFile.write(base64, { encoding: 'base64' }); setDownloadProgress(1); showSnackbar('PDF téléchargé avec succès'); Alert.alert('Téléchargement terminé', 'Voulez-vous ouvrir le PDF ?', [{ text: 'Plus tard', style: 'cancel' }, { text: 'Ouvrir', onPress: async () => { if (await Sharing.isAvailableAsync()) await Sharing.shareAsync(destFile.uri, { mimeType: 'application/pdf', dialogTitle: 'Ouvrir le PDF' }); } }]);
     } catch { Alert.alert('Erreur de téléchargement', 'Impossible de télécharger le PDF. Veuillez réessayer.'); } finally { setTimeout(() => setDownloadProgress(0), 1000); }
   }, [packingList, containerId, downloadMutation, showSnackbar]);
+  const sharePackingListPDF = useCallback(async () => {
+    setDownloadProgress(0.3);
+    const pdfBlob = await downloadMutation.mutateAsync(containerId);
+    setDownloadProgress(0.7);
+    const filename = `PackingList_${packingList?.containerNumber}_${format(new Date(), 'yyyyMMdd_HHmmss')}.pdf`;
+    const destFile = new File(Paths.cache, filename);
+    await destFile.write(await blobToBase64(pdfBlob), { encoding: 'base64' });
+    setDownloadProgress(1);
+    await Sharing.shareAsync(destFile.uri, { mimeType: 'application/pdf', dialogTitle: 'Partager ma liste de colisage', UTI: 'com.adobe.pdf' });
+    setTimeout(() => setDownloadProgress(0), 500);
+  }, [containerId, downloadMutation, packingList?.containerNumber]);
+
+  const sharePackingListText = useCallback(async () => {
+    if (!packingList) return;
+    await Share.share({ message: generateShareText(), title: `Liste de Colisage - ${packingList.containerNumber}` });
+  }, [generateShareText, packingList]);
+
   const handleShare = useCallback(async () => {
     if (!packingList) return;
     try {
-      if (packingList.generatedAt && Platform.OS !== 'web') {
-        try { setDownloadProgress(0.3); const pdfBlob = await downloadMutation.mutateAsync(containerId); setDownloadProgress(0.7); const filename = `PackingList_${packingList.containerNumber}_${format(new Date(), 'yyyyMMdd_HHmmss')}.pdf`; const destFile = new File(Paths.cache, filename); const base64 = await blobToBase64(pdfBlob); await destFile.write(base64, { encoding: 'base64' }); setDownloadProgress(1); await Sharing.shareAsync(destFile.uri, { mimeType: 'application/pdf', dialogTitle: 'Partager ma liste de colisage', UTI: 'com.adobe.pdf' }); setTimeout(() => setDownloadProgress(0), 500); return; } catch {}
+      if (Platform.OS !== 'web') {
+        try { await sharePackingListPDF(); return; } catch (err) {
+          console.error('PDF share failed:', err);
+          Alert.alert('Partage PDF indisponible', 'Impossible de partager le fichier PDF. Voulez-vous partager la version texte ?', [
+            { text: 'Annuler', style: 'cancel', onPress: () => setDownloadProgress(0) },
+            { text: 'Partager texte', onPress: () => sharePackingListText().finally(() => setDownloadProgress(0)) },
+          ]);
+          return;
+        }
       }
-      await Share.share({ message: generateShareText(), title: `Liste de Colisage - ${packingList.containerNumber}` });
+      await sharePackingListText();
     } catch { Alert.alert('Erreur', 'Impossible de partager la liste de colisage'); }
-  }, [packingList, containerId, downloadMutation, generateShareText]);
+  }, [packingList, sharePackingListPDF, sharePackingListText]);
 
   return { packingList, isLoading, isError, error, isFetching, contactDialogVisible, setContactDialogVisible, snackbarVisible, setSnackbarVisible, snackbarMessage, downloadProgress, downloadMutation, handleRefresh, showSnackbar, handleCallConsignee, handleOpenMaps, handleDownloadPDF, handleShare, generateShareText, getShippingModeIcon, getStatusColor, getStatusLabel, formatDate, formatDateTime, statusColors };
 };
