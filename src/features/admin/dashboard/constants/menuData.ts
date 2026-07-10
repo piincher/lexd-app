@@ -137,6 +137,13 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         route: "AtRiskCustomers",
       },
       {
+        id: "c1c",
+        title: "Marques d'expédition",
+        description: "Générer et envoyer les marques clients",
+        icon: "qrcode",
+        route: "ShippingMarksAdmin",
+      },
+      {
         id: "c2",
         title: "Ajouter un utilisateur",
         description: "Créer un nouveau compte",

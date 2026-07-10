@@ -66,7 +66,8 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             onFocus={onInputFocus}
           />
           <TextInput
-            mode="outlined" label="Poids" value={data.weight}
+            mode="outlined" label={isSea ? 'Poids' : 'Poids (optionnel)'}
+            value={data.weight}
             onChangeText={(v) => onChange('weight', v.replace(/[^0-9.]/g, ''))}
             keyboardType="decimal-pad" style={[styles.input, styles.halfInput]}
             outlineStyle={styles.inputOutline} outlineColor={colors.border} activeOutlineColor={colors.primary.main}
@@ -74,6 +75,9 @@ export const GoodsForm: React.FC<GoodsFormProps> = ({ data, onChange, calculated
             onFocus={onInputFocus}
           />
         </View>
+        {!isSea && (
+          <HelperText type="info">Vous pourrez renseigner le poids plus tard.</HelperText>
+        )}
       </FormSection>
 
       {isSea && (

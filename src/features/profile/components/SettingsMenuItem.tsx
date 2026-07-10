@@ -17,6 +17,7 @@ interface SettingsMenuItemProps {
   screen: string;
   onNavigate: (screen: string) => void;
   showDivider: boolean;
+  highlight?: boolean;
 }
 
 export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({
@@ -28,6 +29,7 @@ export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({
   screen,
   onNavigate,
   showDivider,
+  highlight = false,
 }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
@@ -55,9 +57,14 @@ export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({
           <MaterialCommunityIcons name={icon} size={20} color={iconColor} />
         </View>
         <View style={styles.menuTextCol}>
-          <Text style={[styles.menuItemTitle, { color: colors.text.primary }]}>
-            {title}
-          </Text>
+          <View style={styles.titleRow}>
+            <Text style={[styles.menuItemTitle, { color: colors.text.primary }]}>
+              {title}
+            </Text>
+            {highlight && (
+              <View style={[styles.highlightDot, { backgroundColor: colors.status.error }]} />
+            )}
+          </View>
           <Text
             style={[styles.menuItemSubtitle, { color: colors.text.secondary }]}
             numberOfLines={2}

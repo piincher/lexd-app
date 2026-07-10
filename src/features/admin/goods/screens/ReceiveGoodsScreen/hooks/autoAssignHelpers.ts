@@ -23,7 +23,7 @@ export const isRecentOrder = (order: productType, days: number): boolean => {
 };
 
 export interface AutoAssignGoodsData {
-  weight: number;
+  weight?: number;
   quantity: number;
   unitPrice: number;
   shippingMode?: string;
@@ -51,7 +51,7 @@ export const buildNewOrderData = (
   return {
     clientName: `${client.firstName} ${client.lastName}`.trim(),
     clientPhone: client.phoneNumber || '',
-    packageWeight: goodsData.weight,
+    packageWeight: goodsData.weight ?? 0,
     quantity: goodsData.quantity,
     unitPrice: goodsData.unitPrice,
     shippingMode,

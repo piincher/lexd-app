@@ -59,14 +59,14 @@ import React from "react";
 import { useAdminDashboard } from "../hooks/useAdminDashboard";
 import { DashboardHeader } from "../components/DashboardHeader";
 import { PriorityPanel } from "../components/PriorityPanel";
-import { KPICards } from "../components/KPICards";
 import { QuickActions } from "../components/QuickActions";
 import { RecentOrders } from "../components/RecentOrders";
 import { SMSBalanceCard } from "../components/SMSBalanceCard";
 import { DashboardLayout } from "../components/DashboardLayout";
+import { DashboardAnalyticsSections } from "../components/DashboardAnalyticsSections";
 
 export const AdminDashBoard: React.FC = () => {
-  const { user, stats, recentOrders, smsBalance, refreshing, onRefresh, isLoading } =
+  const { user, stats, recentOrders, smsBalance, analytics, refreshing, onRefresh, isLoading } =
     useAdminDashboard();
 
   // The 25-item admin directory (Marchandises, Commandes, Logistique, Clients,
@@ -78,7 +78,11 @@ export const AdminDashBoard: React.FC = () => {
       <PriorityPanel />
       {stats.smsBalance !== undefined && <SMSBalanceCard balance={smsBalance} />}
       <QuickActions />
-      <KPICards stats={stats} />
+      <DashboardAnalyticsSections
+        analytics={analytics}
+        totalGoods={stats.totalGoods}
+        pendingContainers={stats.pendingContainers}
+      />
       <RecentOrders orders={recentOrders} />
     </DashboardLayout>
   );

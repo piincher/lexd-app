@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { useAppTheme } from "@src/providers/ThemeProvider";
@@ -7,14 +7,17 @@ import { useHaptics } from "../../hooks/useHaptics";
 import { callPhone, openWhatsApp, sendEmail, sendSMS } from "../../lib/contactActions";
 import { userData } from "@src/shared/types/user";
 
+type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
+
 interface QuickActionBarProps {
   user: userData | undefined;
   onBlock: () => void;
   onEdit: () => void;
+  onShippingMark: () => void;
 }
 
 const ActionButton: React.FC<{
-  icon: string;
+  icon: IoniconName;
   label: string;
   color: string;
   bgColor: string;
@@ -28,13 +31,13 @@ const ActionButton: React.FC<{
       accessibilityRole="button"
       accessibilityLabel={label}
     >
-      <Ionicons name={icon as any} size={20} color={color} />
+      <Ionicons name={icon} size={20} color={color} />
       <Text style={[styles.label, { color }]}>{label}</Text>
     </TouchableOpacity>
   );
 };
 
-export const QuickActionBar: React.FC<QuickActionBarProps> = ({ user, onBlock, onEdit }) => {
+export const QuickActionBar: React.FC<QuickActionBarProps> = ({ user, onBlock, onEdit, onShippingMark }) => {
   const { colors } = useAppTheme();
 
   return (
@@ -51,6 +54,7 @@ export const QuickActionBar: React.FC<QuickActionBarProps> = ({ user, onBlock, o
       {user?.phoneNumber && (
         <ActionButton icon="chatbubble" label="SMS" color={colors.status.warning} bgColor={`${colors.status.warning}15`} onPress={() => sendSMS(user.phoneNumber)} />
       )}
+      <ActionButton icon="qr-code-outline" label="Marque" color={colors.primary.main} bgColor={`${colors.primary.main}15`} onPress={onShippingMark} />
       <ActionButton icon="create" label="Modifier" color={colors.text.secondary} bgColor={colors.background.paper} onPress={onEdit} />
       <ActionButton icon="ban" label={user?.blocked?.isBlocked ? "Débloquer" : "Bloquer"} color={colors.status.error} bgColor={colors.feedback.errorBg} onPress={onBlock} />
     </Animated.View>

@@ -1,4 +1,5 @@
-import type { RouteWaypointDraft, ShippingLine } from '@src/features/admin/routes/types';
+import type { RouteWaypointDraft } from '@src/features/admin/routes/types';
+import { ShippingLine, SHIPPING_LINE_WAYPOINT_PRESETS } from '@src/shared/constants/shippingLines';
 
 export const WAYPOINT_TYPES = [
   { label: 'Port', value: 'PORT' },
@@ -26,14 +27,6 @@ export const KNOWN_PORTS = [
   { label: 'Diboli', city: 'Diboli', country: 'Mali', countryCode: 'ML', portCode: 'MLDBL', terminal: 'Diboli Border' },
   { label: 'Bamako', city: 'Bamako', country: 'Mali', countryCode: 'ML', portCode: 'MLBKQ', terminal: 'ChinaLink Warehouse - Bamako' },
 ] as const;
-
-export const SHIPPING_LINE_PRESETS: Record<ShippingLine, readonly string[]> = {
-  MSC: ['Nansha', 'Dakar', 'Diboli', 'Bamako'],
-  MAERSK: ['Nansha', 'Abidjan', 'Dakar', 'Diboli', 'Bamako'],
-  CMA_CGM: ['Nansha', 'Singapore', 'Dakar', 'Diboli', 'Bamako'],
-  HAPAG_LLOYD: ['Nansha', 'Lagos', 'Dakar', 'Diboli', 'Bamako'],
-  ETHIOPIAN_AIRLINES: [],
-};
 
 export const ROUTE_PRESETS = [
   { label: 'Singapore', waypoints: ['Nansha', 'Singapore', 'Dakar', 'Diboli', 'Bamako'] },
@@ -101,7 +94,7 @@ export const createWaypointsForShippingLine = (
   line: ShippingLine,
   totalDays: number,
 ): RouteWaypointDraft[] => {
-  const labels = SHIPPING_LINE_PRESETS[line];
+  const labels = SHIPPING_LINE_WAYPOINT_PRESETS[line as keyof typeof SHIPPING_LINE_WAYPOINT_PRESETS];
   if (!labels || labels.length === 0) return [];
   return labels.map((label, index) => createWaypoint(label, index, labels.length, totalDays));
 };

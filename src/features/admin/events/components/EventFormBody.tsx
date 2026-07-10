@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Input, Button, Checkbox } from '@src/shared/ui';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -7,6 +7,8 @@ import { EventStatus } from '../api/types';
 import { ChipSelect } from './ChipSelect';
 import { ShippingRuleEditor } from './ShippingRuleEditor';
 import { CampaignStepEditor } from './CampaignStepEditor';
+import { EventDateField } from './EventDateField';
+import { EventBannerPicker } from './EventBannerPicker';
 
 type Controller = ReturnType<typeof useEventForm>;
 
@@ -17,8 +19,6 @@ const STATUSES: { value: EventStatus; label: string }[] = [
   { value: 'ended', label: 'Terminé' },
 ];
 
-const dateVal = (iso?: string | null) => (iso ? String(iso).slice(0, 10) : '');
-
 const SectionTitle: React.FC<{ children: string }> = ({ children }) => {
   const { colors } = useAppTheme();
   return <Text style={[styles.section, { color: colors.text.primary }]}>{children}</Text>;
@@ -27,6 +27,7 @@ const SectionTitle: React.FC<{ children: string }> = ({ children }) => {
 export const EventFormBody: React.FC<{ ctrl: Controller }> = ({ ctrl }) => {
   const { colors } = useAppTheme();
   const { form, setField, setTheme } = ctrl;
+  const [showShippingRules, setShowShippingRules] = useState(false);
 
   return (
     <View>
@@ -37,14 +38,14 @@ export const EventFormBody: React.FC<{ ctrl: Controller }> = ({ ctrl }) => {
         onChangeText={(t) => setField('slug', t.toLowerCase().replace(/\s+/g, '-'))} fullWidth />
       <ChipSelect label="Statut" value={(form.status || 'draft') as EventStatus} options={STATUSES}
         onChange={(status) => setField('status', status)} />
-      <Input label="Début teaser (AAAA-MM-JJ)" value={dateVal(form.teaserStart)}
-        onChangeText={(t) => setField('teaserStart', t)} fullWidth />
-      <Input label="Début event mode (AAAA-MM-JJ)" value={dateVal(form.liveStart)}
-        onChangeText={(t) => setField('liveStart', t)} fullWidth />
-      <Input label="Date de l'événement / coup d'envoi (AAAA-MM-JJ)" value={dateVal(form.eventStart)}
-        onChangeText={(t) => setField('eventStart', t)} fullWidth />
-      <Input label="Fin (AAAA-MM-JJ)" value={dateVal(form.liveEnd)}
-        onChangeText={(t) => setField('liveEnd', t)} fullWidth />
+      <EventDateField label="Début teaser" value={form.teaserStart}
+        onChange={(d) => setField('teaserStart', d)} maximumDate={form.liveStart ? new Date(form.liveStart) : undefined} />
+      <EventDateField label="Début event mode" value={form.liveStart}
+        onChange={(d) => setField('liveStart', d)} minimumDate={form.teaserStart ? new Date(form.teaserStart) : undefined} />
+      <EventDateField label="Date de l'événement / coup d'envoi" value={form.eventStart}
+        onChange={(d) => setField('eventStart', d)} minimumDate={form.liveStart ? new Date(form.liveStart) : undefined} />
+      <EventDateField label="Fin" value={form.liveEnd}
+        onChange={(d) => setField('liveEnd', d)} minimumDate={form.eventStart ? new Date(form.eventStart) : undefined} />
       <Input label="Régions (codes séparés par virgule, ex: ML,CI)" value={form.regions.join(',')}
         autoCapitalize="characters"
         onChangeText={(t) => setField('regions', t.split(',').map((s) => s.trim().toUpperCase()).filter(Boolean))}
@@ -61,16 +62,27 @@ export const EventFormBody: React.FC<{ ctrl: Controller }> = ({ ctrl }) => {
         onChangeText={(t) => setTheme({ primaryColor: t })} fullWidth />
       <Input label="Couleur accent (#hex)" value={form.theme.accentColor} autoCapitalize="none"
         onChangeText={(t) => setTheme({ accentColor: t })} fullWidth />
-      <Input label="URL bannière" value={form.theme.bannerImageUrl} autoCapitalize="none"
-        onChangeText={(t) => setTheme({ bannerImageUrl: t })} fullWidth />
+      <Text style={[styles.label, { color: colors.text.secondary }]}>Bannière</Text>
+      <EventBannerPicker value={form.theme.bannerImageUrl}
+        onChange={(url) => setTheme({ bannerImageUrl: url })} />
 
-      {/* ── Expédition & tarifs ── */}
-      <SectionTitle>Lignes d'expédition</SectionTitle>
-      {form.shippingRules.map((rule, i) => (
-        <ShippingRuleEditor key={i} index={i} rule={rule} eventStart={form.eventStart}
-          onChange={(patch) => ctrl.updateRule(i, patch)} onRemove={() => ctrl.removeRule(i)} />
-      ))}
-      <Button title="+ Ajouter une ligne" variant="outline" onPress={ctrl.addRule} />
+      {/* ── Expédition & tarifs (avancé) ── */}
+      <Button
+        title={showShippingRules ? 'Masquer les lignes d\'expédition' : 'Afficher les lignes d\'expédition (avancé)'}
+        variant="outline"
+        onPress={() => setShowShippingRules((s) => !s)}
+        style={styles.advancedButton}
+      />
+      {showShippingRules && (
+        <>
+          <SectionTitle>Lignes d&apos;expédition</SectionTitle>
+          {form.shippingRules.map((rule, i) => (
+            <ShippingRuleEditor key={i} index={i} rule={rule} eventStart={form.eventStart}
+              onChange={(patch) => ctrl.updateRule(i, patch)} onRemove={() => ctrl.removeRule(i)} />
+          ))}
+          <Button title="+ Ajouter une ligne" variant="outline" onPress={ctrl.addRule} />
+        </>
+      )}
 
       {/* ── Campagne ── */}
       <View style={styles.spacer} />
@@ -90,6 +102,8 @@ export const EventFormBody: React.FC<{ ctrl: Controller }> = ({ ctrl }) => {
 
 const styles = StyleSheet.create({
   section: { fontSize: 18, fontWeight: '800', marginTop: 18, marginBottom: 10 },
+  label: { fontSize: 13, fontWeight: '600', marginTop: 12, marginBottom: 6 },
+  advancedButton: { marginTop: 18 },
   spacer: { height: 8 },
   error: { fontSize: 13, fontWeight: '600', marginTop: 12 },
 });

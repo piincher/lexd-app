@@ -38,9 +38,16 @@ export const useGoodsFormValidation = () => {
       }
     }
 
-    const weight = parseFloat(formData.weight.replace(',', '.'));
-    if (!formData.weight || isNaN(weight) || weight <= 0) {
-      errors.weight = 'Poids invalide';
+    if (formData.shippingMode === 'SEA') {
+      const weight = parseFloat(formData.weight.replace(',', '.'));
+      if (!formData.weight || isNaN(weight) || weight <= 0) {
+        errors.weight = 'Poids requis pour le transport maritime';
+      }
+    } else if (formData.weight) {
+      const weight = parseFloat(formData.weight.replace(',', '.'));
+      if (isNaN(weight) || weight < 0) {
+        errors.weight = 'Poids invalide';
+      }
     }
 
     const quantity = parseInt(formData.quantity);

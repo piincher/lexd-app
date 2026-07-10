@@ -1,4 +1,5 @@
 import { PackingListContainer, ClientGoodsGroup, ContainerSummary } from '../../../types/packingList';
+import { ShippingLine } from '@src/shared/constants/shippingLines';
 import { SHIPPING_MODE_LABELS, SHIPPING_LINE_LABELS } from '../../../types';
 
 export const buildPackingListPDF = (
@@ -153,7 +154,7 @@ export const buildPackingListPDF = (
         </div>
         <div class="info-item">
           <div class="info-label">Compagnie</div>
-          <div class="info-value">${container.shippingLineLabel || SHIPPING_LINE_LABELS[container.shippingLine as 'MSC' | 'MAERSK' | 'CMA_CGM' | 'HAPAG_LLOYD' | 'ETHIOPIAN_AIRLINES' | 'AIR_STANDARD'] || container.shippingLine}</div>
+          <div class="info-value">${container.shippingLineLabel || SHIPPING_LINE_LABELS[container.shippingLine as ShippingLine] || container.shippingLine}</div>
         </div>
         <div class="info-item">
           <div class="info-label">Date</div>

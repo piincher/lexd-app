@@ -327,7 +327,9 @@ export class GoodsService {
     formData.append('description', data.description || '');
     formData.append('shippingMode', data.shippingMode || 'SEA');
     formData.append('actualCBM', data.actualCBM?.toString() || '0');
-    formData.append('weight', data.weight.toString());
+    if (Number.isFinite(data.weight)) {
+      formData.append('weight', String(data.weight));
+    }
     formData.append('quantity', data.quantity.toString());
     formData.append('unitPrice', data.unitPrice.toString());
     formData.append('location', data.location);

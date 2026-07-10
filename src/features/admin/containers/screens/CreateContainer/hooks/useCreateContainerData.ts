@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
+import { SEA_SHIPPING_LINES } from '@src/shared/constants/shippingLines';
 import { useGetActiveRoutes } from '../../../../routes/hooks/useRoutes';
 import { useGetConsignees, Consignee } from '../../../../consignees';
 import { useCreateContainer } from '../../../hooks';
 import { ShippingLine, ShippingMode, Route } from '../../../types';
-
-const SEA_SHIPPING_LINES: ShippingLine[] = ['MSC', 'MAERSK', 'CMA_CGM', 'HAPAG_LLOYD'];
 
 export const useCreateContainerData = (
   shippingMode: ShippingMode | '',
@@ -31,7 +30,7 @@ export const useCreateContainerData = (
   } = useGetActiveRoutes(shippingMode || undefined);
   const createMutation = useCreateContainer();
 
-  const consignees: Consignee[] = consigneesData || [];
+  const consignees = useMemo<Consignee[]>(() => consigneesData || [], [consigneesData]);
   const routes: Route[] = ((routesData?.data?.routes || []) as unknown as Route[]).filter(
     (route) => route.shippingMode === 'SEA'
   );
@@ -55,7 +54,7 @@ export const useCreateContainerData = (
     });
   }, [consignees, consigneeSearchQuery]);
 
-  const availableShippingLines = useMemo(() => SEA_SHIPPING_LINES, []);
+  const availableShippingLines = useMemo<ShippingLine[]>(() => [...SEA_SHIPPING_LINES], []);
 
   return {
     consignees,

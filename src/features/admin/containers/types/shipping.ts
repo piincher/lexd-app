@@ -1,9 +1,8 @@
 import { ShippingMode } from './route';
+import { ShippingLine, SHIPPING_LINE_LABELS } from '@src/shared/constants/shippingLines';
+import type { ThemeContextType } from '@src/constants/Theme';
 
-/**
- * Shipping line carriers
- */
-export type ShippingLine = 'MSC' | 'MAERSK' | 'CMA_CGM' | 'HAPAG_LLOYD' | 'ETHIOPIAN_AIRLINES' | 'AIR_STANDARD';
+export { ShippingLine, SHIPPING_LINE_LABELS };
 
 /**
  * Shipping mode display names
@@ -22,23 +21,11 @@ export const SHIPPING_MODE_ICONS: Record<ShippingMode, string> = {
 };
 
 /**
- * Shipping line display names
- */
-export const SHIPPING_LINE_LABELS: Record<ShippingLine, string> = {
-  MSC: 'MSC - Mediterranean Shipping',
-  MAERSK: 'Maersk Line',
-  CMA_CGM: 'CMA CGM',
-  HAPAG_LLOYD: 'Hapag-Lloyd',
-  ETHIOPIAN_AIRLINES: 'Ethiopian Airlines',
-  AIR_STANDARD: 'Air Freight Standard',
-};
-
-/**
  * Shipping mode colors (theme-aware)
  * @param colors - Theme colors
  * @returns Record of shipping mode colors
  */
-export const getShippingModeColors = (colors: any): Record<ShippingMode, string> => ({
+export const getShippingModeColors = (colors: ThemeContextType['colors']): Record<ShippingMode, string> => ({
   SEA: colors.status.info,
   AIR: colors.accent.sky,
 });

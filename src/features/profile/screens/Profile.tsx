@@ -10,6 +10,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { withProtectedRoute } from "@src/hoc/withProtectedRoute";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { ProfileHeader } from "../components/ProfileHeader";
+import { ShippingMarkProfileCTA } from "../components/ShippingMarkProfileCTA";
 import { QuickStatsGrid } from "../components/QuickStatsGrid";
 import { AchievementsSection } from "../components/AchievementsSection";
 import { ProfileSettingsSection } from "../components/ProfileSettingsSection";
@@ -46,9 +47,14 @@ const Profile = () => {
             firstName={profile.user?.firstName}
             lastName={profile.user?.lastName}
             phoneNumber={profile.user?.phoneNumber}
+            shippingClientId={profile.user?.shippingClientId}
             avatarUri={profile.user?.avatar?.url}
             balanceFormatted={profile.balanceFormatted}
           />
+        </Animated.View>
+
+        <Animated.View entering={FadeInDown.delay(75).duration(400).springify()}>
+          <ShippingMarkProfileCTA />
         </Animated.View>
 
         <Animated.View entering={FadeInDown.delay(100).duration(400).springify()}>

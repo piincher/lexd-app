@@ -5,6 +5,7 @@ import { registerSentryNavigationContainer } from "@src/shared/lib/sentry";
 import { navigationRef } from "@src/navigations/navigationRef";
 import { useAppTheme } from "@src/providers";
 import DeepLinkHandler from "@src/app/components/DeepLinkHandler";
+import { ShippingMarkPromptProvider } from "@src/features/shipping-mark/providers/ShippingMarkPromptProvider";
 import { AppNavigator } from "./AppNavigator";
 
 export const ThemedApp: React.FC = () => {
@@ -18,7 +19,9 @@ export const ThemedApp: React.FC = () => {
          onReady={() => registerSentryNavigationContainer(navigationRef)}
       >
          <DeepLinkHandler />
-         <AppNavigator />
+         <ShippingMarkPromptProvider>
+            <AppNavigator />
+         </ShippingMarkPromptProvider>
       </NavigationContainer>
    );
 };

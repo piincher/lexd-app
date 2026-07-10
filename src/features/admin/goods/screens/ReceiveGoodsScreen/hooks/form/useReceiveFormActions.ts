@@ -43,19 +43,25 @@ export const useReceiveFormActions = (options: Options) => {
     const isClientUnknown = watchedValues.exceptionReasons?.includes('CLIENT_UNKNOWN');
     if (!selectedClient && !isClientUnknown) return null;
 
-    const weight = parseFloat(watchedValues.weight.replace(',', '.'));
+    const shippingMode = watchedValues.shippingMode || 'SEA';
+    const hasWeight = !!watchedValues.weight?.trim();
+    const weight = hasWeight ? parseFloat(watchedValues.weight.replace(',', '.')) : 0;
     const quantity = parseInt(watchedValues.quantity, 10);
     const unitPrice = parseFloat(watchedValues.unitPrice.replace(',', '.'));
 
     // Guard against NaN so we never send invalid numbers to the backend.
-    if (!Number.isFinite(weight) || !Number.isFinite(quantity) || !Number.isFinite(unitPrice)) {
+    if (
+      (shippingMode !== 'AIR' && (!hasWeight || !Number.isFinite(weight) || weight <= 0)) ||
+      (hasWeight && (!Number.isFinite(weight) || weight < 0)) ||
+      !Number.isFinite(quantity) ||
+      !Number.isFinite(unitPrice)
+    ) {
       return null;
     }
 
     const input: ReceiveGoodsInput = {
       clientId: selectedClient?._id ?? null,
       description: watchedValues.description.trim(),
-      weight,
       quantity,
       unitPrice,
       location: watchedValues.location.toUpperCase().trim(),
@@ -63,7 +69,7 @@ export const useReceiveFormActions = (options: Options) => {
       expressTrackingNumber:
         watchedValues.expressTrackingNumber?.trim() || undefined,
       receivedDate: watchedValues.receivedDate || undefined,
-      shippingMode: watchedValues.shippingMode || 'SEA',
+      shippingMode,
       condition: watchedValues.condition || 'new',
       exceptionReasons: watchedValues.exceptionReasons || [],
       exceptionNotes: watchedValues.exceptionNotes?.trim() || undefined,
@@ -75,6 +81,10 @@ export const useReceiveFormActions = (options: Options) => {
       source: photoSource,
       capturedAt: photoSource ? new Date().toISOString() : undefined,
     };
+
+    if (hasWeight || shippingMode !== 'AIR') {
+      input.weight = weight;
+    }
 
     if (
       useDimensions &&

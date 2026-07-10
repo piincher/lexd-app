@@ -5,11 +5,13 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { createProfileHeaderStyles } from './ProfileHeader.styles';
 import { ProfileAvatar } from './ProfileAvatar';
 import { ProfileBalanceStrip } from './ProfileBalanceStrip';
+import { ClientIdBadge } from './ClientIdBadge';
 
 interface Props {
   firstName?: string;
   lastName?: string;
   phoneNumber?: string;
+  shippingClientId?: string;
   avatarUri?: string;
   balanceFormatted: string;
 }
@@ -18,6 +20,7 @@ export const ProfileHeader: React.FC<Props> = ({
   firstName,
   lastName,
   phoneNumber,
+  shippingClientId,
   avatarUri,
   balanceFormatted,
 }) => {
@@ -52,6 +55,8 @@ export const ProfileHeader: React.FC<Props> = ({
           <Text style={styles.statusText}>Profil connecté</Text>
         </View>
       </View>
+
+      {!!shippingClientId && <ClientIdBadge clientId={shippingClientId} />}
 
       <ProfileBalanceStrip balanceFormatted={balanceFormatted} />
     </View>

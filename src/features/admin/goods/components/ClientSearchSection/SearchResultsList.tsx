@@ -41,11 +41,21 @@ const ResultItem = React.memo(({ item, onSelect }: { item: userData; onSelect: (
             {item.phoneNumber || 'Numéro non disponible'}
           </Text>
         </View>
+        {item.shippingClientId ? (
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 2 }}>
+            <Ionicons name="pricetag-outline" size={12} color={colors.text.secondary} />
+            <Text style={styles.resultPhone}>
+              ID client: {item.shippingClientId}
+            </Text>
+          </View>
+        ) : null}
       </View>
       <Ionicons name="chevron-forward" size={18} color={colors.text.disabled} />
     </TouchableOpacity>
   );
 });
+
+ResultItem.displayName = 'ClientSearchResultItem';
 
 export const SearchResultsList: React.FC<SearchResultsListProps> = ({
   users,

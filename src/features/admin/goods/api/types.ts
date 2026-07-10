@@ -22,7 +22,7 @@ export interface ReceiveGoodsInput {
     height: number;
   };
   actualCBM?: number;
-  weight: number;
+  weight?: number;
   quantity: number;
   unitPrice: number;
   location: string;

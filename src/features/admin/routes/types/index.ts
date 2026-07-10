@@ -3,6 +3,11 @@
  * Domain types for shipping route management
  */
 
+import { ShippingLine, SHIPPING_LINE_LABELS, SEA_SHIPPING_LINES } from '@src/shared/constants/shippingLines';
+import type { ThemeContextType } from '@src/constants/Theme';
+
+export { ShippingLine, SHIPPING_LINE_LABELS };
+
 // ============================================
 // DOMAIN ENTITIES
 // ============================================
@@ -11,11 +16,6 @@
  * Shipping mode for routes
  */
 export type ShippingMode = 'SEA' | 'AIR';
-
-/**
- * Available shipping lines for SEA mode
- */
-export type ShippingLine = 'MSC' | 'MAERSK' | 'CMA_CGM' | 'HAPAG_LLOYD' | 'ETHIOPIAN_AIRLINES';
 
 /**
  * Core Route entity
@@ -115,27 +115,16 @@ export const SHIPPING_MODE_LABELS: Record<ShippingMode, string> = {
 /**
  * Shipping mode colors for UI
  */
-export const getShippingModeColors = (colors: any): Record<ShippingMode, string> => ({
+export const getShippingModeColors = (colors: ThemeContextType['colors']): Record<ShippingMode, string> => ({
   SEA: colors.status.info,
   AIR: colors.accent.sky,
 });
 
 /**
- * Shipping line display names
- */
-export const SHIPPING_LINE_LABELS: Record<ShippingLine, string> = {
-  MSC: 'MSC - Mediterranean Shipping',
-  MAERSK: 'Maersk Line',
-  CMA_CGM: 'CMA CGM',
-  HAPAG_LLOYD: 'Hapag-Lloyd',
-  ETHIOPIAN_AIRLINES: 'Ethiopian Airlines',
-};
-
-/**
  * Available shipping lines by mode
  */
 export const SHIPPING_LINES_BY_MODE: Record<ShippingMode, ShippingLine[]> = {
-  SEA: ['MSC', 'MAERSK', 'CMA_CGM', 'HAPAG_LLOYD'],
+  SEA: [...SEA_SHIPPING_LINES],
   AIR: [], // Air routes don't use shipping lines
 };
 

@@ -179,11 +179,13 @@ export type RootStackParamList = {
    PromoCampaignForm: { id?: string } | undefined;
    // Data Export Screen
    DataExport: undefined;
+   ShippingMarksAdmin: { q?: string } | undefined;
    // Activity List
    ActivityList: undefined;
    // Search Screens
    GlobalSearch: undefined;
    TrustProfile: undefined;
+   ShippingMark: undefined;
    // Client Certificate Detail
    CertificateDetail: {
       certificateId: string;

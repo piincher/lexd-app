@@ -12,6 +12,7 @@ interface MenuItem {
   screen: string;
   iconBg: string;
   iconColor: string;
+  highlight?: boolean;
 }
 
 interface MenuSection {
@@ -55,6 +56,14 @@ export const getMenuSections = (colors: AppColors): MenuSection[] => [
         screen: 'NotificationSettings',
         iconBg: hexToRgba(colors.status.warning, 0.1),
         iconColor: colors.status.warning,
+      },
+      {
+        title: "Marque d'expédition",
+        subtitle: 'Téléchargez votre marque pour le fournisseur',
+        icon: 'qrcode',
+        screen: 'ShippingMark',
+        iconBg: hexToRgba(colors.primary.main, 0.1),
+        iconColor: colors.primary.main,
       },
     ],
   },

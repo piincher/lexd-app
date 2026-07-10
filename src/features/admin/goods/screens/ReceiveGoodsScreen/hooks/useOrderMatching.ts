@@ -36,7 +36,7 @@ export const useOrderMatching = () => {
       }
 
       const shippingMode = (goodsData.shippingMode || 'SEA').toLowerCase() as 'air' | 'sea';
-      const totalPrice = goodsData.unitPrice * (shippingMode === 'air' ? goodsData.weight : (goodsData.actualCBM || 0));
+      const totalPrice = goodsData.unitPrice * (shippingMode === 'air' ? (goodsData.weight ?? 0) : (goodsData.actualCBM || 0));
       const shipmentLine = shippingMode === 'air' ? 'AIR_ML_STANDARD' : 'SEA_ML_DAKAR';
       const partenaire = getPartnerFromShipmentLine(shipmentLine);
 

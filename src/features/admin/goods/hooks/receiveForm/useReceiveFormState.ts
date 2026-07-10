@@ -19,6 +19,7 @@ const INITIAL_FORM_DATA: GoodsFormData = {
   receivedByName: '',
   expressTrackingNumber: '',
   receivedDate: '',
+  shippingMode: 'SEA',
 };
 
 export const useReceiveFormState = (initialQuantity: number) => {

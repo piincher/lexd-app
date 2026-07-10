@@ -22,7 +22,10 @@ export const matchesUserQuery = (user: userData, rawQuery: string): boolean => {
     phoneDigits.length > 0 &&
     phoneDigits.includes(queryDigits);
 
-  return nameMatch || phoneMatch;
+  const shippingClientId = user.shippingClientId?.toLowerCase() || '';
+  const clientIdMatch = !!shippingClientId && shippingClientId.includes(query);
+
+  return nameMatch || phoneMatch || clientIdMatch;
 };
 
 export const hasSearchIntent = (rawQuery: string): boolean => {

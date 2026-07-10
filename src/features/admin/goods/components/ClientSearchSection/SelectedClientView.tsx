@@ -27,6 +27,9 @@ export const SelectedClientView: React.FC<SelectedClientViewProps> = ({ client, 
           {client.firstName} {client.lastName}
         </Text>
         <Text style={styles.selectedPhone}>{client.phoneNumber}</Text>
+        {client.shippingClientId ? (
+          <Text style={styles.selectedPhone}>ID client: {client.shippingClientId}</Text>
+        ) : null}
       </View>
       <Chip onPress={onChange} style={styles.changeChip} textStyle={styles.changeChipText} mode="outlined">
         Changer

@@ -53,9 +53,19 @@ export const createStyles = (colors: AppColors) => StyleSheet.create({
     flex: 1,
     minWidth: 0,
   },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   menuItemTitle: {
     fontSize: 15,
     fontFamily: Fonts.medium,
+  },
+  highlightDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
   },
   menuItemSubtitle: {
     fontSize: 12,

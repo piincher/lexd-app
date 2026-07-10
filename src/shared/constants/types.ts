@@ -2,6 +2,7 @@ export type userData = {
 	firstName: string;
 	lastName: string;
 	phoneNumber?: string;
+	shippingClientId?: string;
 	role: string;
 	_id: string;
 	avatar: {

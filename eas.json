@@ -7,17 +7,24 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "channel": "development"
+      "channel": "development",
+      "env": {
+        "APP_VARIANT": "development"
+      }
     },
     "preview": {
       "distribution": "internal",
-      "channel": "preview"
+      "channel": "preview",
+      "env": {
+        "APP_VARIANT": "preview"
+      }
     },
     "staging": {
       "distribution": "internal",
       "channel": "staging",
       "env": {
         "APP_ENV": "staging",
+        "APP_VARIANT": "staging",
         "EXPO_PUBLIC_ENV": "staging",
         "EXPO_PUBLIC_API_URL": "https://chinalinkexpressbackend.onrender.com/api/v1",
         "EXPO_PUBLIC_API_URL_V2": "https://chinalinkexpressbackend.onrender.com/api/v2"
@@ -36,6 +43,7 @@
       "autoIncrement": true,
       "env": {
         "APP_ENV": "production",
+        "APP_VARIANT": "production",
         "EXPO_PUBLIC_ENV": "production",
         "EXPO_PUBLIC_API_URL": "https://api.chinalinkexpress.com/api/v1",
         "EXPO_PUBLIC_API_URL_V2": "https://api.chinalinkexpress.com/api/v2"
@@ -47,6 +55,24 @@
       "android": {
         "resourceClass": "medium",
         "buildType": "app-bundle"
+      }
+    },
+    "production-device": {
+      "distribution": "internal",
+      "channel": "production",
+      "env": {
+        "APP_ENV": "production",
+        "APP_VARIANT": "production",
+        "EXPO_PUBLIC_ENV": "production",
+        "EXPO_PUBLIC_API_URL": "https://api.chinalinkexpress.com/api/v1",
+        "EXPO_PUBLIC_API_URL_V2": "https://api.chinalinkexpress.com/api/v2"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "resourceClass": "m-medium",
+        "buildConfiguration": "Release"
       }
     }
   },

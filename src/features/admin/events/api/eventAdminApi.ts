@@ -3,7 +3,7 @@
  * Base path: /api/v2/events (admin only).
  */
 
-import { apiClientV2, apiRequest } from '@src/api/client';
+import { apiClientV2, apiRequest, uploadFile } from '@src/api/client';
 import { ApiResponse } from '@src/shared/types/api';
 import {
   AdminEvent,
@@ -46,6 +46,23 @@ export class EventAdminService {
 
   async deleteEvent(id: string): Promise<ApiResponse<void>> {
     return apiRequest.delete(this.client, `${BASE_URL}/${id}`);
+  }
+
+  async uploadEventBanner(uri: string): Promise<string> {
+    const formData = new FormData();
+    formData.append('images', {
+      uri,
+      name: `event_banner_${Date.now()}.jpg`,
+      type: 'image/jpeg',
+    } as unknown as Blob);
+
+    const response = await uploadFile<{ urls: string[] }>(
+      this.client,
+      '/admin/upload-images?folder=events',
+      formData,
+    );
+
+    return response.data.urls[0];
   }
 }
 

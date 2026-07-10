@@ -188,7 +188,7 @@ export const CreateClientModal: React.FC<CreateClientModalProps> = ({
   );
 };
 
-const createStyles = (colors: any) =>
+const createStyles = (colors: ReturnType<typeof useAppTheme>['colors']) =>
   StyleSheet.create({
     dialog: {
       backgroundColor: colors.background.card,

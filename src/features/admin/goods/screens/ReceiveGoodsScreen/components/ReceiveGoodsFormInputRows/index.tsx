@@ -36,12 +36,12 @@ export const ReceiveGoodsFormInputRows: React.FC<ReceiveGoodsFormInputRowsProps>
             name="weight"
             render={({ field: { onChange, value } }) => (
               <FormInput
-                label="Poids"
+                label={shippingMode === 'AIR' ? 'Poids (optionnel)' : 'Poids'}
                 value={value}
                 onChangeText={onChange}
                 error={errors.weight?.message}
                 keyboardType="decimal-pad"
-                placeholder="0"
+                placeholder={shippingMode === 'AIR' ? 'À confirmer' : '0'}
                 suffix="kg"
               />
             )}

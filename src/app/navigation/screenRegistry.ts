@@ -23,6 +23,7 @@ export { OrdersScreen as Orders } from "@src/features/orders";
 export { ProfileScreen as Profile, AboutUsScreen as AboutUs, PastOrdersScreen as PastOrders, NotificationSettingsScreen, BadgesScreen, MyReviewsScreen } from "@src/features/profile";
 export { default as CertificateDetailScreen } from "@src/features/profile/screens/CertificateDetail";
 export { default as TrustProfileScreen } from "@src/features/profile/screens/TrustProfileScreen";
+export { ShippingMarkScreen } from "@src/features/shipping-mark";
 export { MyRewardsScreen, ReferralScreen, MemberPointsScreen, RewardDetailScreen, PointsHistoryScreen, MyProductRedemptionsScreen } from "@src/features/referrals";
 
 // Goods
@@ -145,6 +146,7 @@ export { default as WhatsAppRequestListScreen } from "@src/features/admin/whatsa
 export { AdminTicketDetailScreen, AdminTicketListScreen } from "@src/features/admin/support";
 export { default as GlobalSearchScreen } from "@src/features/admin/search/screens/GlobalSearchScreen";
 export { default as AppVersionSettingsScreen } from "@src/features/admin/version/screens/AppVersionSettingsScreen";
+export { ShippingMarksAdminScreen } from "@src/features/admin/shipping-marks";
 
 // Admin Rewards
 export { AdminRewardItemsScreen, AdminRewardItemFormScreen, AdminProductRedemptionsScreen, AdminPointsManagementScreen, AdminRewardSettingsScreenV2 } from "@src/features/admin/rewards";

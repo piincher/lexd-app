@@ -40,6 +40,7 @@ export const AppNavigator: React.FC = () => {
       <Stack.Screen name="SharedShipment" component={Screens.SharedShipmentScreen} />
       <Stack.Screen name="CertificateDetail" component={Screens.CertificateDetailScreen} />
       <Stack.Screen name="TrustProfile" component={Screens.TrustProfileScreen} />
+      <Stack.Screen name="ShippingMark" component={Screens.ShippingMarkScreen} />
 
       {token ? (
         <>
@@ -120,6 +121,7 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="AdminTicketList" component={Screens.AdminTicketListScreen} />
               <Stack.Screen name="AdminTicketDetail" component={Screens.AdminTicketDetailScreen} />
               <Stack.Screen name="AppVersionSettings" component={Screens.AppVersionSettingsScreen} />
+              <Stack.Screen name="ShippingMarksAdmin" component={Screens.ShippingMarksAdminScreen} />
               <Stack.Screen name="AdminRewardItems" component={Screens.AdminRewardItemsScreen} />
               <Stack.Screen name="AdminRewardItemForm" component={Screens.AdminRewardItemFormScreen} />
               <Stack.Screen name="AdminProductRedemptions" component={Screens.AdminProductRedemptionsScreen} />

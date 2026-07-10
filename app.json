@@ -81,7 +81,15 @@
       "@react-native-community/datetimepicker",
       "expo-background-task",
       "expo-image",
-      "expo-sharing"
+      "expo-sharing",
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "L'application accède à votre galerie pour enregistrer votre marque d'expédition.",
+          "savePhotosPermission": "L'application a besoin d'enregistrer la marque d'expédition dans votre galerie.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ]
     ],
     "assetBundlePatterns": [
       "assets/images/*",
@@ -99,6 +107,8 @@
         "applinks:www.chinalinkexpress.com"
       ],
       "infoPlist": {
+        "NSPhotoLibraryAddUsageDescription": "L'application enregistre votre marque d'expédition dans votre galerie pour que vous puissiez l'envoyer à votre fournisseur.",
+        "NSPhotoLibraryUsageDescription": "L'application accède à votre galerie pour enregistrer votre marque d'expédition.",
         "LSApplicationQueriesSchemes": [
           "itms-apps"
         ],
@@ -140,7 +150,10 @@
       "permissions": [
         "RECEIVE_BOOT_COMPLETED",
         "VIBRATE",
-        "WAKE_LOCK"
+        "WAKE_LOCK",
+        "READ_MEDIA_IMAGES",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
       ]
     },
     "web": {

@@ -32,17 +32,18 @@ export const useReceiveAssistSession = () => {
     client: userData | null,
   ) => {
     const goods = unwrapReceiveGoods(result);
+    const inputWeight = input.weight ?? 0;
     const item: ReceiveSessionItem = {
       id: goods?._id || `${Date.now()}`,
       goodsId: goods?.goodsId || 'Enregistré',
       description: goods?.description || input.description,
       clientName: getClientName(client, input),
       tracking: goods?.expressTrackingNumber || input.expressTrackingNumber,
-      weight: goods?.weight ?? input.weight,
+      weight: goods?.weight ?? inputWeight,
       cbm: goods?.actualCBM ?? input.actualCBM ?? 0,
       totalCost: goods?.totalCost ?? (
         input.shippingMode === 'AIR'
-          ? input.weight * input.unitPrice
+          ? inputWeight * input.unitPrice
           : (input.actualCBM || 0) * input.unitPrice
       ),
       isException: !!input.exceptionReasons?.length,

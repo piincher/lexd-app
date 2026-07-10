@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Animated, { useSharedValue, useAnimatedScrollHandler } from "react-native-reanimated";
 import type { RootStackScreenProps } from "@src/navigations/type";
@@ -27,7 +27,7 @@ import { ErrorState } from "../components/ErrorState";
 
 const HEADER_HEIGHT = 280;
 
-export default function ClientDetail({ route }: RootStackScreenProps<"ClientDetails">) {
+export default function ClientDetail({ route, navigation }: RootStackScreenProps<"ClientDetails">) {
   const { id } = route.params;
   const { colors } = useAppTheme();
   const scrollY = useSharedValue(0);
@@ -39,13 +39,14 @@ export default function ClientDetail({ route }: RootStackScreenProps<"ClientDeta
   if (isError) return <ErrorState onRetry={refetch} />;
 
   const avgOrderValue = stats.total > 0 ? stats.totalPrice / stats.total : 0;
+  const openShippingMark = () => navigation.navigate('ShippingMarksAdmin', { q: user?.shippingClientId });
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]} edges={["top"]}>
       <ClientDetailParallaxHeader user={user} scrollY={scrollY} />
       <Animated.ScrollView contentContainerStyle={{ paddingTop: HEADER_HEIGHT, paddingBottom: 40 }}
         showsVerticalScrollIndicator={false} onScroll={scrollHandler} scrollEventThrottle={16}>
-        <QuickActionBar user={user} onBlock={handleBlock} onEdit={handleEdit} />
+        <QuickActionBar user={user} onBlock={handleBlock} onEdit={handleEdit} onShippingMark={openShippingMark} />
         <AccountHealthCard user={user} />
         <BalanceRewardsCard user={user} />
         <ContactInfoCard user={user} />

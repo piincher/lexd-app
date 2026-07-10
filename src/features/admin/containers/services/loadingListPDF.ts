@@ -1,12 +1,16 @@
 import * as Print from 'expo-print';
+import { SHIPPING_LINE_LABELS as SHARED_SHIPPING_LINE_LABELS } from '@src/shared/constants/shippingLines';
 import { AdminLoadingListData } from '../types/packingList';
+import type { ConsigneeInfo } from '../types/destination';
+import type { Route } from '../types/route';
+import { sharePDFFromUri } from '../../../../shared/lib/pdfShare';
 
 const SHIPPING_MODE_LABELS: Record<string, string> = { sea: 'Maritime', SEA: 'Maritime', air: 'Aérien', AIR: 'Aérien', land: 'Terrestre', LAND: 'Terrestre' };
 const SHIPPING_LINE_LABELS: Record<string, string> = {
+  ...SHARED_SHIPPING_LINE_LABELS,
   cosco: 'COSCO', maersk: 'Maersk', msc: 'MSC', 'cma-cgm': 'CMA CGM',
   evergreen: 'Evergreen', one: 'ONE', 'hapag-lloyd': 'Hapag-Lloyd', other: 'Autre',
-  COSCO: 'COSCO', MAERSK: 'Maersk', MSC: 'MSC', CMA_CGM: 'CMA CGM',
-  EVERGREEN: 'Evergreen', ONE: 'ONE', HAPAG_LLOYD: 'Hapag-Lloyd', OTHER: 'Autre',
+  COSCO: 'COSCO', ONE: 'ONE', OTHER: 'Autre',
 };
 const COMPANY_PHONE = '+223-76696177';
 
@@ -26,9 +30,15 @@ const formatLocation = (value: unknown, fallback: string) => {
 };
 
 const getConsigneeInfo = (container: AdminLoadingListData['container']) => {
-  const raw = (container as any).consignee || (
-    typeof (container as any).consigneeId === 'object' ? (container as any).consigneeId : null
-  );
+  const legacyContainer = container as unknown as {
+    consignee?: ConsigneeInfo;
+    consigneeId?: unknown;
+  };
+  const populatedConsignee =
+    typeof legacyContainer.consigneeId === 'object' && legacyContainer.consigneeId !== null
+      ? legacyContainer.consigneeId as ConsigneeInfo
+      : null;
+  const raw = legacyContainer.consignee || populatedConsignee;
 
   return {
     name: raw?.name || 'ChinaLink Express Bamako',
@@ -38,7 +48,12 @@ const getConsigneeInfo = (container: AdminLoadingListData['container']) => {
 };
 
 const getRouteLabel = (container: AdminLoadingListData['container']) => {
-  const route = (container as any).route || (typeof (container as any).routeId === 'object' ? (container as any).routeId : null);
+  const legacyContainer = container as unknown as { route?: Route; routeId?: unknown };
+  const populatedRoute =
+    typeof legacyContainer.routeId === 'object' && legacyContainer.routeId !== null
+      ? legacyContainer.routeId as Route
+      : null;
+  const route = legacyContainer.route || populatedRoute;
   const origin = formatLocation(route?.origin, 'Chine');
   const destination = formatLocation(route?.destination, 'Bamako');
   return `${origin} → ${destination}`;
@@ -176,7 +191,6 @@ export async function generateLoadingListPDF(
 
   const { uri } = await Print.printToFileAsync({ html, base64: false });
 
-  const { sharePDFFromUri } = require('../../../../shared/lib/pdfShare');
   await sharePDFFromUri({
     uri,
     filename: `LoadingList_${container.virtualContainerNumber}_${Date.now()}.pdf`,

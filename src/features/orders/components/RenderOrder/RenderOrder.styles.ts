@@ -69,6 +69,9 @@ export const useRenderOrderStyles = () => {
         paid: {
           backgroundColor: colors.status.success,
         },
+        partial: {
+          backgroundColor: colors.status.warning,
+        },
         unpaid: {
           backgroundColor: colors.status.error,
         },

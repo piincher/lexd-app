@@ -1,4 +1,5 @@
 import { PackingListContainer, ClientGoodsGroup, ContainerSummary } from '../../../types/packingList';
+import { ShippingLine } from '@src/shared/constants/shippingLines';
 import { SHIPPING_MODE_LABELS, SHIPPING_LINE_LABELS } from '../../../types';
 
 export const buildPackingListShareText = (
@@ -22,7 +23,7 @@ export const buildPackingListShareText = (
   lines.push(`📦 Container: ${container.number}`);
   lines.push(`🚢 Route: Chine → Bamako`);
   lines.push(`🛳️ Mode: ${container.shippingModeLabel || SHIPPING_MODE_LABELS[container.shippingMode as 'SEA' | 'AIR'] || container.shippingMode}`);
-  lines.push(`🏢 Compagnie: ${container.shippingLineLabel || SHIPPING_LINE_LABELS[container.shippingLine as 'MSC' | 'MAERSK' | 'CMA_CGM' | 'HAPAG_LLOYD' | 'ETHIOPIAN_AIRLINES' | 'AIR_STANDARD'] || container.shippingLine}`);
+  lines.push(`🏢 Compagnie: ${container.shippingLineLabel || SHIPPING_LINE_LABELS[container.shippingLine as ShippingLine] || container.shippingLine}`);
   lines.push(`📅 Date: ${new Date().toLocaleDateString('fr-FR')}`);
   lines.push('');
   lines.push('── CONSIGNATAIRE & POINT DE RETRAIT ──────────────');

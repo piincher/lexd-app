@@ -23,8 +23,11 @@ export const useEditGoodsSubmit = (
       Alert.alert('Erreur', 'La description est requise');
       return;
     }
-    if (!formData.weight || parseFloat(formData.weight) <= 0) {
-      Alert.alert('Erreur', 'Le poids doit être supérieur à 0');
+    if (
+      formData.shippingMode === 'SEA' &&
+      (!formData.weight || parseFloat(formData.weight) <= 0)
+    ) {
+      Alert.alert('Erreur', 'Le poids est requis pour le transport maritime');
       return;
     }
     if (!formData.unitPrice || parseFloat(formData.unitPrice) <= 0) {

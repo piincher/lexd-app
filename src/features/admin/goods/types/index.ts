@@ -81,7 +81,7 @@ export interface Goods {
   warehouseLocation: string;
   dimensions?: Dimensions;
   actualCBM: number;
-  weight: number;
+  weight?: number;
   quantity: number;
   photos: string[];
   images?: string[];
@@ -133,7 +133,7 @@ export interface ReceiveGoodsInput {
   shippingMode: 'AIR' | 'SEA';
   dimensions?: Dimensions;
   actualCBM?: number;
-  weight: number;
+  weight?: number;
   quantity: number;
   unitPrice: number;
   location: string;
@@ -256,6 +256,7 @@ export interface GoodsFormData {
   receivedByName: string;
   expressTrackingNumber: string;
   receivedDate: string;
+  shippingMode: 'AIR' | 'SEA';
 }
 
 /**
@@ -306,6 +307,7 @@ export interface GoodsFormErrors {
   receivedByName?: string;
   expressTrackingNumber?: string;
   receivedDate?: string;
+  shippingMode?: string;
 }
 
 /**

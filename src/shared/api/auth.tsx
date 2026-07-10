@@ -33,6 +33,7 @@ export interface userRegistrationType {
 }
 export interface UserData {
    _id?: string;
+   shippingClientId?: string;
    firstName: string;
    lastName: string;
    role: string;

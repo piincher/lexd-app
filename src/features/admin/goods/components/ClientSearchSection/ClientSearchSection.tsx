@@ -85,7 +85,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
             <TextInput
               value={searchQuery}
               onChangeText={handleSearchChange}
-              placeholder="Rechercher un client (nom ou téléphone)"
+              placeholder="Rechercher un client (ID, nom ou téléphone)"
               mode="outlined"
               error={!!error}
               outlineColor={colors.border}
@@ -101,12 +101,6 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
               }
             />
 
-            {__DEV__ && (
-              <Text style={styles.debugText}>
-                Query: "{searchQuery}" | Debounced: "{debouncedQuery}" | Results: {users.length}
-              </Text>
-            )}
-
             {displayResults && (
               <View style={styles.resultsWrapper}>
                 <SearchResultsList
@@ -119,7 +113,7 @@ export const ClientSearchSection: React.FC<ClientSearchSectionProps> = ({
               </View>
             )}
 
-            {fetchError && (
+            {!!fetchError && (
               <Text style={styles.errorText}>
                 Erreur de recherche. Veuillez réessayer.
               </Text>

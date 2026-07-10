@@ -3,12 +3,11 @@ import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Slider from '@src/shared/ui/Slider';
 import { Button, Text } from 'react-native-paper';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@src/store/Auth';
 import { formatDate } from '@src/utils/formatDate';
-import { MaterialIcons } from '@expo/vector-icons';
 import { useGetOrderDetails } from '@src/shared/hooks/useOrderDetail';
 import { useShippingMode } from '@src/store/shippingMode';
 import { CustomModal } from '@src/shared/ui/Modal';
@@ -17,6 +16,11 @@ import { useClipboard } from '@src/shared/lib/hooks/useClipboard';
 import { LEGACY_MANUAL_ORDERS_ENABLED } from '@src/features/admin/orders/legacyOrders';
 import { useRenderOrderStyles } from './RenderOrder.styles';
 import { OrderHeader } from './OrderHeader';
+import {
+  normalizePaymentStatus,
+  PAYMENT_STATUS_LABELS,
+  PAYMENT_STATUS_COLOR_KEYS,
+} from '@src/shared/constants/paymentStatus';
 import { OrderInfoSection } from './OrderInfoSection';
 import { AdminActions } from './AdminActions';
 
@@ -75,12 +79,19 @@ export const RenderOrder = ({ item }: { item: productType }) => {
           { label: 'Compagnie de transport', value: item.contenairNumber, icon: 'local-shipping' },
           {
             label: 'Statut de paiement',
-            value:
-              item.paymentStatus === 'Paid' ? (
-                <Text style={{ color: colors.status.success, fontFamily: 'medium' }}>Payé</Text>
-              ) : (
-                <Text style={{ color: colors.status.error, fontFamily: 'medium' }}>Non payé</Text>
-              ),
+            value: (() => {
+              const paymentStatus = normalizePaymentStatus(item.paymentStatus);
+              return (
+                <Text
+                  style={{
+                    color: colors.status[PAYMENT_STATUS_COLOR_KEYS[paymentStatus]],
+                    fontFamily: 'medium',
+                  }}
+                >
+                  {PAYMENT_STATUS_LABELS[paymentStatus]}
+                </Text>
+              );
+            })(),
             icon: 'payment',
           },
         ]

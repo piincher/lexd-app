@@ -2,6 +2,11 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import {
+  normalizePaymentStatus,
+  PAYMENT_STATUS,
+  PAYMENT_STATUS_LABELS,
+} from '@src/shared/constants/paymentStatus';
 import { useRenderOrderStyles } from './RenderOrder.styles';
 import { productType } from '@src/api/order';
 
@@ -11,9 +16,19 @@ interface OrderHeaderProps {
   formattedLastUpdate: string;
 }
 
+const BADGE_STYLE_BY_STATUS: Record<string, 'paid' | 'partial' | 'unpaid'> = {
+  [PAYMENT_STATUS.PAID]: 'paid',
+  [PAYMENT_STATUS.PARTIAL]: 'partial',
+  [PAYMENT_STATUS.UNPAID]: 'unpaid',
+};
+
 export const OrderHeader: React.FC<OrderHeaderProps> = ({ item, orderStatus, formattedLastUpdate }) => {
   const { colors } = useAppTheme();
   const styles = useRenderOrderStyles();
+  const paymentStatus = normalizePaymentStatus(item.paymentStatus);
+  const badgeStyle = BADGE_STYLE_BY_STATUS[paymentStatus];
+  const statusLabel = PAYMENT_STATUS_LABELS[paymentStatus];
+  const iconName = paymentStatus === PAYMENT_STATUS.UNPAID ? 'warning' : 'check-circle';
 
   return (
     <View style={styles.headerCard}>
@@ -52,17 +67,11 @@ export const OrderHeader: React.FC<OrderHeaderProps> = ({ item, orderStatus, for
           <View
             style={[
               styles.statusBadge,
-              item.paymentStatus === 'Paid' ? styles.paid : styles.unpaid,
+              styles[badgeStyle],
             ]}
           >
-            {item.paymentStatus === 'Paid' ? (
-              <MaterialIcons name="check-circle" size={16} color={colors.text.inverse} />
-            ) : (
-              <MaterialIcons name="warning" size={16} color={colors.text.inverse} />
-            )}
-            <Text style={styles.statusText}>
-              {item.paymentStatus === 'Paid' ? 'Payé' : 'Non payé'}
-            </Text>
+            <MaterialIcons name={iconName} size={16} color={colors.text.inverse} />
+            <Text style={styles.statusText}>{statusLabel}</Text>
           </View>
           <Text style={styles.orderId}>Commande #{item.code}</Text>
         </View>

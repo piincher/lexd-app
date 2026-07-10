@@ -60,12 +60,8 @@ export const receiveGoodsSchema = z.object({
   height: z.string().optional(),
   cbm: z.string().optional(),
   
-  weight: z.string()
-    .min(1, 'Le poids est requis')
-    .refine((val) => {
-      const num = parseFloat(val.replace(',', '.'));
-      return !isNaN(num) && num > 0;
-    }, { message: 'Poids invalide' }),
+  // Required for SEA, optional for AIR. Mode-aware validation happens below.
+  weight: z.string().default(''),
   
   quantity: z.string()
     .min(1, 'La quantité est requise')
@@ -111,24 +107,46 @@ export const receiveGoodsSchema = z.object({
   ])).default([]),
   
   exceptionNotes: z.string().optional(),
-}).refine((data) => {
+}).superRefine((data, ctx) => {
+  const weightText = data.weight?.trim() || '';
+  const weight = parseFloat(weightText.replace(',', '.'));
+
+  if (data.shippingMode === 'SEA' && (!weightText || isNaN(weight) || weight <= 0)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Le poids est requis',
+      path: ['weight'],
+    });
+  }
+
+  if (data.shippingMode === 'AIR' && weightText && (isNaN(weight) || weight < 0)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Poids invalide',
+      path: ['weight'],
+    });
+  }
+
   // For SEA shipping, CBM is required (either via dimensions or direct input)
   if (data.shippingMode === 'SEA') {
     const hasDimensions = data.length && data.width && data.height;
     const hasDirectCBM = data.cbm && parseFloat(data.cbm.replace(',', '.')) > 0;
-    return hasDimensions || hasDirectCBM;
+    if (!hasDimensions && !hasDirectCBM) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'CBM est requis pour le transport maritime (dimensions ou CBM direct)',
+        path: ['cbm'],
+      });
+    }
   }
-  // For AIR shipping, CBM is optional
-  return true;
-}, {
-  message: 'CBM est requis pour le transport maritime (dimensions ou CBM direct)',
-  path: ['cbm'], // Error will be associated with cbm field
-}).refine((data) => {
-  if (!data.exceptionReasons.includes('CLIENT_UNKNOWN')) return true;
-  return !!data.exceptionNotes?.trim();
-}, {
-  message: 'Expliquez pourquoi le client est inconnu',
-  path: ['exceptionNotes'],
+
+  if (data.exceptionReasons.includes('CLIENT_UNKNOWN') && !data.exceptionNotes?.trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Expliquez pourquoi le client est inconnu',
+      path: ['exceptionNotes'],
+    });
+  }
 });
 
 // ============================================

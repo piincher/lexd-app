@@ -3,30 +3,21 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { SHIPPING_LINE_COLORS } from '@src/shared/constants/shippingLines';
 import { ContainerUtilizationItem, ShippingLineStats } from '../../types';
 import { DonutChart } from './DonutChart';
 import { UtilizationBar } from './UtilizationBar';
 import { RecentContainersList } from './RecentContainersList';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface ContainerUtilizationChartProps {
   containers: ContainerUtilizationItem[];
   byShippingLine: Record<string, ShippingLineStats>;
   avgFillRate: number;
 }
-
-const shippingLineColors: Record<string, string> = {
-  MSC: '#1E40AF',
-  MAERSK: '#E11D48',
-  CMA_CGM: '#059669',
-  HAPAG_LLOYD: '#D97706',
-  AIR: '#7C3AED',
-};
 
 export const ContainerUtilizationChart: React.FC<ContainerUtilizationChartProps> = ({
   containers,
@@ -98,7 +89,7 @@ export const ContainerUtilizationChart: React.FC<ContainerUtilizationChartProps>
               {Object.entries(byShippingLine).map(([line, stats]) => (
                 <UtilizationBar
                   key={line} label={line} percentage={stats.avgFillRate}
-                  color={shippingLineColors[line] || colors.text.muted} count={stats.containers}
+                  color={SHIPPING_LINE_COLORS[line as keyof typeof SHIPPING_LINE_COLORS] || colors.text.muted} count={stats.containers}
                   labelColor={textPrimary} countColor={textSecondary} trackColor={trackColor}
                 />
               ))}

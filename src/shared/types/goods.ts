@@ -73,7 +73,7 @@ export interface Goods {
   warehouseLocation: string;
   dimensions?: Dimensions;
   actualCBM: number;
-  weight: number;
+  weight?: number;
   quantity: number;
   photos: string[];
   description: string;
@@ -143,7 +143,7 @@ export interface ReceiveGoodsInput {
   shippingMode?: 'AIR' | 'SEA';
   dimensions?: Dimensions;
   actualCBM?: number;
-  weight: number;
+  weight?: number;
   quantity: number;
   unitPrice: number;
   location: string;

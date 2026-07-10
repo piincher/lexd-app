@@ -1,3 +1,4 @@
+import { isPaidStatus } from "@src/shared/constants/paymentStatus";
 import { productType } from "@src/shared/types/order";
 
 export type PastOrdersSummary = {
@@ -11,7 +12,7 @@ export const getOrderAmount = (order: productType): number =>
   order.priceTotal ?? order.calculatedTotal ?? order.totalCost ?? 0;
 
 export const isOrderPaid = (order: productType): boolean =>
-  order.paymentStatus === "Paid" || order.paymentStatus === "PAID";
+  isPaidStatus(order.paymentStatus);
 
 export const getPastOrdersSummary = (orders: productType[]): PastOrdersSummary =>
   orders.reduce(

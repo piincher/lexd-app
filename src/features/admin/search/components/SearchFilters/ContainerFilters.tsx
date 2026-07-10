@@ -7,10 +7,12 @@ import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme } from '@src/constants/Theme';
+import { SEA_SHIPPING_LINES, SHIPPING_LINE_LABELS } from '@src/shared/constants/shippingLines';
 import { FilterChipGroup } from '../FilterChipGroup';
 import { SearchFilters as SearchFiltersType } from '../../api/searchApi';
+import type { ThemeContextType } from '@src/constants/Theme';
 
-const getContainerStatuses = (colors: any) => [
+const getContainerStatuses = (colors: ThemeContextType['colors']) => [
   { value: 'BOOKED', label: 'Réservé', color: colors.status.info },
   { value: 'EMPTY_TO_WAREHOUSE', label: 'Vide → Entrepôt', color: colors.primary.main },
   { value: 'LOADING', label: 'Chargement', color: colors.accent.rose },
@@ -25,12 +27,10 @@ const SHIPPING_MODES = [
   { value: 'AIR', label: 'Aérien', icon: 'airplane' },
 ];
 
-const SHIPPING_LINES = [
-  { value: 'MSC', label: 'MSC' },
-  { value: 'MAERSK', label: 'Maersk' },
-  { value: 'CMA_CGM', label: 'CMA CGM' },
-  { value: 'HAPAG_LLOYD', label: 'Hapag-Lloyd' },
-];
+const SHIPPING_LINES = SEA_SHIPPING_LINES.map((line) => ({
+  value: line,
+  label: SHIPPING_LINE_LABELS[line],
+}));
 
 interface ContainerFiltersProps {
   filters: SearchFiltersType;
