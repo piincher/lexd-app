@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">41.17% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>7/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">5.26% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/19</span>
+                <span class='fraction'>1/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>2/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">46.66% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>7/15</span>
             </div>
         
             
@@ -111,34 +111,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState, useMemo } from "react";
-import type { Goods } from "../../../goods/types";
+import type { PackingListGoods } from '@src/shared/types/packingListGoods';
 &nbsp;
 export type SortField = "goodsId" | "description" | "actualCBM" | "weight" | "quantity";
 export type SortDirection = "asc" | "desc";
@@ -148,19 +148,19 @@ export interface SortConfig {
   direction: SortDirection;
 }
 &nbsp;
-export const usePackingListSort = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(g</span>oods: Goods[], sortable = <span class="branch-0 cbranch-no" title="branch not covered" >true)</span> =&gt; {</span>
-  const [sortConfig, setSortConfig] = <span class="cstat-no" title="statement not covered" >useState&lt;SortConfig&gt;({ field: "goodsId", direction: "asc" });</span>
+export const usePackingListSort = (goods: PackingListGoods[], sortable = <span class="branch-0 cbranch-no" title="branch not covered" >true)</span> =&gt; {
+  const [sortConfig, setSortConfig] = useState&lt;SortConfig&gt;({ field: "goodsId", direction: "asc" });
 &nbsp;
-  const handleSort = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(f</span>ield: SortField) =&gt; {</span>
+  const handleSort = <span class="fstat-no" title="function not covered" >(f</span>ield: SortField) =&gt; {
 <span class="cstat-no" title="statement not covered" >    setSortConfig(<span class="fstat-no" title="function not covered" >(c</span>urrent) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
       field,
       direction: current.field === field &amp;&amp; current.direction === "asc" ? "desc" : "asc",
     }));
   };
 &nbsp;
-  const sortedGoods = <span class="cstat-no" title="statement not covered" >useMemo(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!sortable) <span class="cstat-no" title="statement not covered" >return goods;</span></span>
-<span class="cstat-no" title="statement not covered" >    return [...goods].sort(<span class="fstat-no" title="function not covered" >(a</span>, b) =&gt; {</span>
+  const sortedGoods = useMemo(() =&gt; {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!sortable) <span class="cstat-no" title="statement not covered" >return goods;</span>
+    return [...goods].sort(<span class="fstat-no" title="function not covered" >(a</span>, b) =&gt; {
       const aValue = <span class="cstat-no" title="statement not covered" >a[sortConfig.field];</span>
       const bValue = <span class="cstat-no" title="statement not covered" >b[sortConfig.field];</span>
 <span class="cstat-no" title="statement not covered" >      if (typeof aValue === "number" &amp;&amp; typeof bValue === "number") {</span>
@@ -172,7 +172,7 @@ export const usePackingListSort = <span class="cstat-no" title="statement not co
     });
   }, [goods, sortConfig, sortable]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return { sortConfig, handleSort, sortedGoods };</span>
+  return { sortConfig, handleSort, sortedGoods };
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -181,7 +181,7 @@ export const usePackingListSort = <span class="cstat-no" title="statement not co
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

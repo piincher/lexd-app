@@ -120,7 +120,19 @@
 <a name='L55'></a><a href='#L55'>55</a>
 <a name='L56'></a><a href='#L56'>56</a>
 <a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -182,55 +194,61 @@
  */
 import { useQuery } from '@tanstack/react-query';
 import type { UseQueryOptions } from '@tanstack/react-query';
+import { DEFAULT_STALE_TIME } from '@src/shared/constants/queryConfig';
 import { containerService } from '../../services/ContainerService';
 import { ContainerFilters } from '../../types';
 import { ApiClientError } from '../../api';
 import { containerQueryKeys } from './containerQueryKeys';
 &nbsp;
+type ContainerListQueryData = Awaited&lt;ReturnType&lt;typeof containerService.getAll&gt;&gt;;
+type ContainerDetailQueryData = Awaited&lt;ReturnType&lt;typeof containerService.getById&gt;&gt;;
+type ContainerStatusQueryData = Awaited&lt;ReturnType&lt;typeof containerService.getByStatus&gt;&gt;;
+type ReadyForDepartureQueryData = Awaited&lt;ReturnType&lt;typeof containerService.getReadyForDeparture&gt;&gt;;
+&nbsp;
 export const useGetAllContainers = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span>
   filters?: ContainerFilters,
-  options?: UseQueryOptions&lt;any, ApiClientError&gt;
+  options?: UseQueryOptions&lt;ContainerListQueryData, ApiClientError&gt;
 ) =&gt; {
 <span class="cstat-no" title="statement not covered" >  return useQuery({</span>
     queryKey: containerQueryKeys.list(filters),
     queryFn: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >containerService.getAll(filters),</span>
-    staleTime: 5 * 60 * 1000,
+    staleTime: DEFAULT_STALE_TIME,
     ...options,
   });
 };
 &nbsp;
 export const useGetContainerById = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span>
   id: string | undefined,
-  options?: UseQueryOptions&lt;any, ApiClientError&gt;
+  options?: UseQueryOptions&lt;ContainerDetailQueryData, ApiClientError&gt;
 ) =&gt; {
 <span class="cstat-no" title="statement not covered" >  return useQuery({</span>
     queryKey: containerQueryKeys.detail(id || ''),
     queryFn: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >containerService.getById(id!),</span>
     enabled: !!id,
-    staleTime: 5 * 60 * 1000,
+    staleTime: DEFAULT_STALE_TIME,
     ...options,
   });
 };
 &nbsp;
 export const useGetContainersByStatus = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span>
   status: string,
-  options?: UseQueryOptions&lt;any, ApiClientError&gt;
+  options?: UseQueryOptions&lt;ContainerStatusQueryData, ApiClientError&gt;
 ) =&gt; {
 <span class="cstat-no" title="statement not covered" >  return useQuery({</span>
     queryKey: containerQueryKeys.byStatus(status),
     queryFn: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >containerService.getByStatus(status),</span>
-    staleTime: 5 * 60 * 1000,
+    staleTime: DEFAULT_STALE_TIME,
     ...options,
   });
 };
 &nbsp;
 export const useGetReadyForDeparture = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span>
-  options?: UseQueryOptions&lt;any, ApiClientError&gt;
+  options?: UseQueryOptions&lt;ReadyForDepartureQueryData, ApiClientError&gt;
 ) =&gt; {
 <span class="cstat-no" title="statement not covered" >  return useQuery({</span>
     queryKey: containerQueryKeys.readyForDeparture(),
     queryFn: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >containerService.getReadyForDeparture(),</span>
-    staleTime: 5 * 60 * 1000,
+    staleTime: DEFAULT_STALE_TIME,
     ...options,
   });
 };
@@ -241,7 +259,7 @@ export const useGetReadyForDeparture = <span class="cstat-no" title="statement n
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

@@ -123,11 +123,43 @@
 <a name='L58'></a><a href='#L58'>58</a>
 <a name='L59'></a><a href='#L59'>59</a>
 <a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -146,21 +178,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -172,6 +194,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -188,8 +212,9 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-nativ
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { getStyles } from "./AtRiskFilters.styles";
+import type { AtRiskFilter } from "../../types";
 &nbsp;
-const DAY_OPTIONS = <span class="cstat-no" title="statement not covered" >[</span>
+const DAY_OPTIONS: { key: AtRiskFilter; label: string }[] = <span class="cstat-no" title="statement not covered" >[</span>
   { key: "all", label: "Tous" },
   { key: "never", label: "Jamais" },
   { key: "60", label: "60j" },
@@ -200,8 +225,8 @@ const DAY_OPTIONS = <span class="cstat-no" title="statement not covered" >[</spa
 type AtRiskFiltersProps = {
   search: string;
   onSearchChange: (value: string) =&gt; void;
-  activeFilter: string;
-  onFilterChange: (key: string) =&gt; void;
+  activeFilter: AtRiskFilter;
+  onFilterChange: (key: AtRiskFilter) =&gt; void;
 };
 &nbsp;
 export function <span class="fstat-no" title="function not covered" >AtRiskFilters(</span>{ search, onSearchChange, activeFilter, onFilterChange }: AtRiskFiltersProps) {
@@ -218,9 +243,18 @@ export function <span class="fstat-no" title="function not covered" >AtRiskFilte
           placeholderTextColor={colors.text.disabled}
           value={search}
           onChangeText={onSearchChange}
+          returnKeyType="search"
+          autoCorrect={false}
+          accessibilityLabel="Rechercher un client à risque"
         /&gt;
         {search.length &gt; 0 &amp;&amp; (
-          &lt;TouchableOpacity onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >onSearchChange("")}</span> activeOpacity={0.7}&gt;
+          &lt;TouchableOpacity
+            onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >onSearchChange("")}</span>
+            activeOpacity={0.7}
+            style={styles.clearButton}
+            accessibilityRole="button"
+            accessibilityLabel="Effacer la recherche"
+          &gt;
             &lt;MaterialCommunityIcons name="close-circle" size={18} color={colors.text.secondary} /&gt;
           &lt;/TouchableOpacity&gt;
         )}
@@ -233,6 +267,8 @@ export function <span class="fstat-no" title="function not covered" >AtRiskFilte
             style={[styles.chip, activeFilter === opt.key &amp;&amp; styles.chipActive]}
             onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >onFilterChange(opt.key)}</span>
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityState={{ selected: activeFilter === opt.key }}
           &gt;
             &lt;Text style={[styles.chipText, activeFilter === opt.key &amp;&amp; styles.chipTextActive]}&gt;
               {opt.label}
@@ -250,7 +286,7 @@ export function <span class="fstat-no" title="function not covered" >AtRiskFilte
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

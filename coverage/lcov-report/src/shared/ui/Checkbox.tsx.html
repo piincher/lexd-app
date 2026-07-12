@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">54.54% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/22</span>
+                <span class='fraction'>12/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -216,19 +216,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,11 +239,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -299,7 +299,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -345,41 +345,41 @@ export interface CheckboxProps {
   accessibilityLabel?: string;
 }
 &nbsp;
-const sizeMap = <span class="cstat-no" title="statement not covered" >{</span>
+const sizeMap = {
   small: 18,
   medium: 24,
   large: 32,
 };
 &nbsp;
-const checkmarkSizeMap = <span class="cstat-no" title="statement not covered" >{</span>
+const checkmarkSizeMap = {
   small: 12,
   medium: 16,
   large: 20,
 };
 &nbsp;
-export const Checkbox: React.FC&lt;CheckboxProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
+export const Checkbox: React.FC&lt;CheckboxProps&gt; = ({
   checked,
   onPress,
-  size = <span class="branch-0 cbranch-no" title="branch not covered" >'medium',</span>
-  disabled = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
+  size = 'medium',
+  disabled = false,
   label,
   style,
   labelStyle,
   testID,
   accessibilityLabel,
 }) =&gt; {
-  const { colors } = <span class="cstat-no" title="statement not covered" >useAppTheme();</span>
-  const boxSize = <span class="cstat-no" title="statement not covered" >sizeMap[size];</span>
-  const checkmarkSize = <span class="cstat-no" title="statement not covered" >checkmarkSizeMap[size];</span>
+  const { colors } = useAppTheme();
+  const boxSize = sizeMap[size];
+  const checkmarkSize = checkmarkSizeMap[size];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;TouchableOpacity
       onPress={onPress}
       disabled={disabled}
       activeOpacity={0.7}
-      style={[styles.container, disabled &amp;&amp; styles.disabled, style]}
+      style={[styles.container, disabled &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >styles.disabled,</span> style]}
       testID={testID}
-      accessibilityLabel={accessibilityLabel || label}
+      accessibilityLabel={accessibilityLabel || <span class="branch-1 cbranch-no" title="branch not covered" >label}</span>
       accessibilityRole="checkbox"
       accessibilityState={{ checked, disabled }}
     &gt;
@@ -390,7 +390,7 @@ export const Checkbox: React.FC&lt;CheckboxProps&gt; = <span class="cstat-no" ti
             width: boxSize,
             height: boxSize,
             borderRadius: boxSize * 0.25,
-            borderColor: disabled ? colors.neutral[400] : checked ? colors.primary.main : colors.neutral[400],
+            borderColor: disabled ? <span class="branch-0 cbranch-no" title="branch not covered" >colors.neutral[400] </span>: checked ? colors.primary.main : colors.neutral[400],
             backgroundColor: checked ? colors.primary.main : 'transparent',
           },
         ]}
@@ -411,7 +411,7 @@ export const Checkbox: React.FC&lt;CheckboxProps&gt; = <span class="cstat-no" ti
         )}
       &lt;/View&gt;
       {label &amp;&amp; (
-        &lt;Text
+<span class="branch-1 cbranch-no" title="branch not covered" >        &lt;Text</span>
           style={[
             styles.label,
             {
@@ -428,7 +428,7 @@ export const Checkbox: React.FC&lt;CheckboxProps&gt; = <span class="cstat-no" ti
   );
 };
 &nbsp;
-const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.create({</span>
+const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -457,7 +457,7 @@ export default Checkbox;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

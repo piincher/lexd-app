@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>0/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
@@ -134,7 +134,19 @@
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -150,6 +162,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -167,21 +183,17 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -205,14 +217,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState } from 'react';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useCallback, useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ApiClientError } from '@src/shared/api/client';
 import {
   fetchShippingMarkClients,
   regenerateClientShippingMark,
   sendBulkShippingMarkWhatsApp,
   type ClientListFilters,
 } from '../api/shippingMarkAdminApi';
+import { useShippingMarkSelection } from './useShippingMarkSelection';
+import { useShippingMarkGeneration } from './useShippingMarkGeneration';
 &nbsp;
 const CLIENTS_QUERY_KEY = <span class="cstat-no" title="statement not covered" >'shipping-mark-clients';</span>
 &nbsp;
@@ -220,7 +241,11 @@ export const useShippingMarksAdmin = <span class="cstat-no" title="statement not
   const [filters, setFilters] = <span class="cstat-no" title="statement not covered" >useState&lt;ClientListFilters&gt;({ page: 1, limit: 20, q: initialQuery });</span>
   const queryClient = <span class="cstat-no" title="statement not covered" >useQueryClient();</span>
 &nbsp;
-  const { data, isLoading, isFetching, isError, refetch } = <span class="cstat-no" title="statement not covered" >useQuery({</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    setFilters(<span class="fstat-no" title="function not covered" >(c</span>urrent) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...current, page: 1, q: initialQuery })</span>);</span>
+  }, [initialQuery]);
+&nbsp;
+  const { data, isLoading, isFetching, isError, error, refetch } = <span class="cstat-no" title="statement not covered" >useQuery({</span>
     queryKey: [CLIENTS_QUERY_KEY, filters],
     queryFn: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >fetchShippingMarkClients(filters),</span>
     select: <span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; (<span class="cstat-no" title="statement not covered" >{</span>
@@ -238,24 +263,20 @@ export const useShippingMarksAdmin = <span class="cstat-no" title="statement not
   const bulkSendMutation = <span class="cstat-no" title="statement not covered" >useMutation({</span>
     mutationFn: sendBulkShippingMarkWhatsApp,
   });
+  const selection = <span class="cstat-no" title="statement not covered" >useShippingMarkSelection(data?.clients ?? []);</span>
+  const generation = <span class="cstat-no" title="statement not covered" >useShippingMarkGeneration();</span>
+  const { clearSelection } = <span class="cstat-no" title="statement not covered" >selection;</span>
 &nbsp;
-  const updateSearch = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(q</span>: string) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >clearSelection(),</span> [clearSelection, initialQuery]);</span>
+&nbsp;
+  const updateSearch = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(q</span>: string) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    clearSelection();</span>
 <span class="cstat-no" title="statement not covered" >    setFilters(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, q, page: 1 })</span>);</span>
-  };
+  }, [clearSelection]);
 &nbsp;
-  const goToPage = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>age: number) =&gt; {</span>
+  const goToPage = <span class="cstat-no" title="statement not covered" >useCallback(<span class="fstat-no" title="function not covered" >(p</span>age: number) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >    setFilters(<span class="fstat-no" title="function not covered" >(p</span>rev) =&gt; (<span class="cstat-no" title="statement not covered" >{ ...prev, page })</span>);</span>
-  };
-&nbsp;
-  const toggleClientSelection = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(</span></span>
-    selected: Set&lt;string&gt;,
-    clientId: string,
-  ): Set&lt;string&gt; =&gt; {
-    const next = <span class="cstat-no" title="statement not covered" >new Set(selected);</span>
-<span class="cstat-no" title="statement not covered" >    if (next.has(clientId)) <span class="cstat-no" title="statement not covered" >next.delete(clientId);</span></span>
-    else <span class="cstat-no" title="statement not covered" >next.add(clientId);</span>
-<span class="cstat-no" title="statement not covered" >    return next;</span>
-  };
+  }, []);
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return {</span>
     clients: data?.clients ?? [],
@@ -263,8 +284,12 @@ export const useShippingMarksAdmin = <span class="cstat-no" title="statement not
     isLoading,
     isFetching,
     isError,
+    errorMessage: error instanceof ApiClientError
+      ? error.getUserMessage()
+      : 'Le service des marques est temporairement indisponible.',
     refetch,
     filters,
+    ...selection,
     searchQuery: filters.q,
     updateSearch,
     goToPage,
@@ -272,8 +297,10 @@ export const useShippingMarksAdmin = <span class="cstat-no" title="statement not
     isRegenerating: regenerateMutation.isPending,
     sendBulkWhatsApp: bulkSendMutation.mutateAsync,
     isSendingBulk: bulkSendMutation.isPending,
+    sendingClientIds: bulkSendMutation.isPending ? bulkSendMutation.variables?.userIds ?? [] : [],
     bulkResult: bulkSendMutation.data,
-    toggleClientSelection,
+    ...generation,
+    regeneratingClientId: regenerateMutation.isPending ? regenerateMutation.variables : undefined,
   };
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -283,7 +310,7 @@ export const useShippingMarksAdmin = <span class="cstat-no" title="statement not
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

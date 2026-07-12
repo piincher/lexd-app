@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">57.89% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>11/19</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -122,10 +122,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -157,31 +157,31 @@ import { View, Text, Image, Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Theme } from "@src/constants/Theme";
 import { normalizePhotos } from "@src/shared/lib";
-import type { Goods } from "../../../goods/types";
+import type { PackingListGoods } from '@src/shared/types/packingListGoods';
 &nbsp;
 interface PackingListRowProps {
-  item: Goods;
+  item: PackingListGoods;
   index: number;
   showPhotos?: boolean;
   isLast: boolean;
 }
 &nbsp;
-export const PackingListRow: React.FC&lt;PackingListRowProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> item, index, showPhotos = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span> isLast }) =&gt; {</span>
-  const { colors } = <span class="cstat-no" title="statement not covered" >useAppTheme();</span>
-  const photoUrls = <span class="cstat-no" title="statement not covered" >normalizePhotos(item);</span>
-<span class="cstat-no" title="statement not covered" >  return (</span>
+export const PackingListRow: React.FC&lt;PackingListRowProps&gt; = ({ item, index, showPhotos = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span> isLast }) =&gt; {
+  const { colors } = useAppTheme();
+  const photoUrls = normalizePhotos(item);
+  return (
     &lt;View style={[
       { flexDirection: "row", paddingVertical: Theme.spacing.md, paddingHorizontal: Theme.spacing.md, borderBottomWidth: 1, borderBottomColor: colors.neutral[100], alignItems: "center" },
-      index % 2 === 0 ? { backgroundColor: colors.background.card } : { backgroundColor: colors.neutral[50] },
+      index % 2 === 0 ? <span class="branch-0 cbranch-no" title="branch not covered" >{ backgroundColor: colors.background.card } </span>: { backgroundColor: colors.neutral[50] },
       isLast &amp;&amp; { borderBottomWidth: 0 },
     ]}&gt;
       &lt;Text style={[{ flex: 0.5, fontSize: 12, fontWeight: "700", color: colors.primary[600], paddingHorizontal: 4 }]}&gt;{index}&lt;/Text&gt;
-      &lt;Text style={[{ flex: 1.2, fontSize: 12, fontWeight: "500", color: colors.neutral[700], paddingHorizontal: 4, fontFamily: Platform.OS === "ios" ? "Courier" : "monospace" }]}&gt;{item.goodsId}&lt;/Text&gt;
-      &lt;Text style={[{ flex: 2, fontSize: 12, fontWeight: "500", color: colors.neutral[700], paddingHorizontal: 4 }]} numberOfLines={2} ellipsizeMode="tail"&gt;{item.description || "-"}&lt;/Text&gt;
+      &lt;Text style={[{ flex: 1.2, fontSize: 12, fontWeight: "500", color: colors.neutral[700], paddingHorizontal: 4, fontFamily: Platform.OS === "ios" ? "Courier" : <span class="branch-1 cbranch-no" title="branch not covered" >"monospace" </span>}]}&gt;{item.goodsId}&lt;/Text&gt;
+      &lt;Text style={[{ flex: 2, fontSize: 12, fontWeight: "500", color: colors.neutral[700], paddingHorizontal: 4 }]} numberOfLines={2} ellipsizeMode="tail"&gt;{item.description || <span class="branch-1 cbranch-no" title="branch not covered" >"-"}</span>&lt;/Text&gt;
       {showPhotos &amp;&amp; (
         &lt;View style={[{ flex: 0.6, justifyContent: "center", alignItems: "center", paddingHorizontal: 4 }]}&gt;
           {photoUrls.length &gt; 0 ? (
-            &lt;Image source={{ uri: photoUrls[0] }} style={{ width: 32, height: 32, borderRadius: Theme.radius.sm, backgroundColor: colors.neutral[200] }} /&gt;
+<span class="branch-0 cbranch-no" title="branch not covered" >            &lt;Image source={{ uri: photoUrls[0] }} style={{ width: 32, height: 32, borderRadius: Theme.radius.sm, backgroundColor: colors.neutral[200] }} /&gt;</span>
           ) : (
             &lt;View style={{ width: 32, height: 32, borderRadius: Theme.radius.sm, backgroundColor: colors.neutral[100], justifyContent: "center", alignItems: "center" }}&gt;
               &lt;Ionicons name="image-outline" size={16} color={colors.neutral[400]} /&gt;
@@ -189,9 +189,9 @@ export const PackingListRow: React.FC&lt;PackingListRowProps&gt; = <span class="
           )}
         &lt;/View&gt;
       )}
-      &lt;Text style={[{ flex: 0.8, fontSize: 12, fontWeight: "600", color: colors.neutral[700], textAlign: "right", paddingHorizontal: 4 }]}&gt;{item.actualCBM.toFixed(2)}&lt;/Text&gt;
-      &lt;Text style={[{ flex: 0.8, fontSize: 12, fontWeight: "600", color: colors.neutral[700], textAlign: "right", paddingHorizontal: 4 }]}&gt;{item.weight != null ? item.weight.toFixed(0) : '—'}&lt;/Text&gt;
-      &lt;Text style={[{ flex: 0.6, fontSize: 12, fontWeight: "600", color: colors.neutral[700], textAlign: "right", paddingHorizontal: 4 }]}&gt;{item.quantity || 1}&lt;/Text&gt;
+      &lt;Text style={[{ flex: 0.8, fontSize: 12, fontWeight: "600", color: colors.neutral[700], textAlign: "right", paddingHorizontal: 4 }]}&gt;{Number(item.actualCBM || <span class="branch-1 cbranch-no" title="branch not covered" >0)</span>.toFixed(2)}&lt;/Text&gt;
+      &lt;Text style={[{ flex: 0.8, fontSize: 12, fontWeight: "600", color: colors.neutral[700], textAlign: "right", paddingHorizontal: 4 }]}&gt;{item.weight != null ? item.weight.toFixed(0) : <span class="branch-1 cbranch-no" title="branch not covered" >'—'}</span>&lt;/Text&gt;
+      &lt;Text style={[{ flex: 0.6, fontSize: 12, fontWeight: "600", color: colors.neutral[700], textAlign: "right", paddingHorizontal: 4 }]}&gt;{item.quantity || <span class="branch-1 cbranch-no" title="branch not covered" >1}</span>&lt;/Text&gt;
     &lt;/View&gt;
   );
 };
@@ -202,7 +202,7 @@ export const PackingListRow: React.FC&lt;PackingListRowProps&gt; = <span class="
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

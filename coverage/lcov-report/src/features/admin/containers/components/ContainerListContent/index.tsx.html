@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -167,7 +167,11 @@
 <a name='L102'></a><a href='#L102'>102</a>
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -201,21 +205,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -226,6 +223,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -236,6 +242,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -272,13 +280,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
-import { View, RefreshControl } from 'react-native';
+import { View, RefreshControl, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Text, ActivityIndicator } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
-import { Container, ContainerStatus } from '../../types';
+import { Container, ContainerArchiveMode, ContainerStatus } from '../../types';
 import { ContainerCard } from '../ContainerCard';
 import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -287,9 +294,10 @@ import { createStyles } from './ContainerListContent.styles';
 interface ContainerListContentProps {
   isLoading: boolean;
   isRefetching: boolean;
-  error: any;
+  error: unknown;
   filteredContainers: Container[];
   selectedStatus: ContainerStatus | 'all' | 'assignable';
+  archiveMode: ContainerArchiveMode;
   onRefresh: () =&gt; void;
   onContainerPress: (containerId: string) =&gt; void;
   onCreateContainerPress: () =&gt; void;
@@ -301,6 +309,7 @@ export const ContainerListContent: React.FC&lt;ContainerListContentProps&gt; = <
   error,
   filteredContainers,
   selectedStatus,
+  archiveMode,
   onRefresh,
   onContainerPress,
   onCreateContainerPress,
@@ -311,6 +320,7 @@ export const ContainerListContent: React.FC&lt;ContainerListContentProps&gt; = <
 <span class="cstat-no" title="statement not covered" >    &lt;ContainerCard container={item} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >onContainerPress(item._id)}</span> /&gt;</span>
   );
   const keyExtractor = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>tem: Container) =&gt; <span class="cstat-no" title="statement not covered" >item._id;</span></span>
+  const isArchive = <span class="cstat-no" title="statement not covered" >archiveMode === 'archived';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  if (isLoading) {</span>
 <span class="cstat-no" title="statement not covered" >    return (</span>
@@ -356,13 +366,15 @@ export const ContainerListContent: React.FC&lt;ContainerListContentProps&gt; = <
           &lt;/LinearGradient&gt;
           &lt;Text style={styles.emptyTitle}&gt;Aucun container&lt;/Text&gt;
           &lt;Text style={styles.emptySubtitle}&gt;
-            {selectedStatus === 'assignable'
+            {isArchive
+              ? 'Aucun container archivé'
+              : selectedStatus === 'assignable'
               ? 'Aucun container ne peut recevoir de marchandises'
               : selectedStatus !== 'all'
               ? 'Aucun container dans ce statut'
               : 'Créez votre premier container pour commencer'}
           &lt;/Text&gt;
-          {selectedStatus === 'all' &amp;&amp; (
+          {!isArchive &amp;&amp; selectedStatus === 'all' &amp;&amp; (
             &lt;TouchableOpacity style={styles.emptyButton} onPress={onCreateContainerPress}&gt;
               &lt;LinearGradient colors={Theme.gradients.primary} style={styles.emptyButtonGradient}&gt;
                 &lt;Ionicons name="add" size={20} color={colors.text.inverse} /&gt;
@@ -382,7 +394,7 @@ export const ContainerListContent: React.FC&lt;ContainerListContentProps&gt; = <
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

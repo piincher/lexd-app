@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
@@ -158,7 +158,31 @@
 <a name='L93'></a><a href='#L93'>93</a>
 <a name='L94'></a><a href='#L94'>94</a>
 <a name='L95'></a><a href='#L95'>95</a>
-<a name='L96'></a><a href='#L96'>96</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a>
+<a name='L105'></a><a href='#L105'>105</a>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a>
+<a name='L112'></a><a href='#L112'>112</a>
+<a name='L113'></a><a href='#L113'>113</a>
+<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -199,6 +223,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -207,6 +237,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -264,6 +300,10 @@ interface ContainerQuickActionsBarProps {
   hasGoods: boolean;
   canMarkReadyForPickup: boolean;
   canMarkDelivered: boolean;
+  canArchive?: boolean;
+  canUnarchive?: boolean;
+  isArchiving?: boolean;
+  isUnarchiving?: boolean;
   onAssignGoods: () =&gt; void;
   onScanAssign: () =&gt; void;
   onSharePackingList: () =&gt; void;
@@ -271,6 +311,8 @@ interface ContainerQuickActionsBarProps {
   onOpenLoadingList: () =&gt; void;
   onMarkReadyForPickup: () =&gt; void;
   onMarkDelivered: () =&gt; void;
+  onArchive?: () =&gt; void;
+  onUnarchive?: () =&gt; void;
 }
 &nbsp;
 interface ActionItem {
@@ -286,6 +328,10 @@ export const ContainerQuickActionsBar: React.FC&lt;ContainerQuickActionsBarProps
   hasGoods,
   canMarkReadyForPickup,
   canMarkDelivered,
+  canArchive,
+  canUnarchive,
+  isArchiving,
+  isUnarchiving,
   onAssignGoods,
   onScanAssign,
   onSharePackingList,
@@ -293,6 +339,8 @@ export const ContainerQuickActionsBar: React.FC&lt;ContainerQuickActionsBarProps
   onOpenLoadingList,
   onMarkReadyForPickup,
   onMarkDelivered,
+  onArchive,
+  onUnarchive,
 }) =&gt; {
   const { colors } = <span class="cstat-no" title="statement not covered" >useAppTheme();</span>
   const actions: ActionItem[] = <span class="cstat-no" title="statement not covered" >[</span>
@@ -308,6 +356,12 @@ export const ContainerQuickActionsBar: React.FC&lt;ContainerQuickActionsBarProps
   }
 <span class="cstat-no" title="statement not covered" >  if (canMarkDelivered) {</span>
 <span class="cstat-no" title="statement not covered" >    actions.push({ key: 'delivered', label: 'Livré', icon: 'checkmark-circle-outline', onPress: onMarkDelivered, accent: 'success' });</span>
+  }
+<span class="cstat-no" title="statement not covered" >  if (canArchive &amp;&amp; onArchive) {</span>
+<span class="cstat-no" title="statement not covered" >    actions.push({ key: 'archive', label: isArchiving ? 'Archivage...' : 'Archiver', icon: 'archive-outline', onPress: onArchive, disabled: isArchiving, accent: 'warning' });</span>
+  }
+<span class="cstat-no" title="statement not covered" >  if (canUnarchive &amp;&amp; onUnarchive) {</span>
+<span class="cstat-no" title="statement not covered" >    actions.push({ key: 'unarchive', label: isUnarchiving ? 'Restauration...' : 'Désarchiver', icon: 'arrow-up-circle-outline', onPress: onUnarchive, disabled: isUnarchiving, accent: 'warning' });</span>
   }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
@@ -355,7 +409,7 @@ export default ContainerQuickActionsBar;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

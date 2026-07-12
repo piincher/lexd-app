@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">81.25% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/16</span>
+                <span class='fraction'>13/16</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">85.71% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>6/7</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -123,15 +123,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -167,15 +167,15 @@ interface SortableHeaderProps {
   onSort: (field: SortField) =&gt; void;
 }
 &nbsp;
-export const SortableHeader: React.FC&lt;SortableHeaderProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
-  field, label, flex, align = <span class="branch-0 cbranch-no" title="branch not covered" >"left",</span> sortConfig, sortable = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span> onSort,
+export const SortableHeader: React.FC&lt;SortableHeaderProps&gt; = ({
+  field, label, flex, align = "left", sortConfig, sortable = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span> onSort,
 }) =&gt; {
-  const { colors } = <span class="cstat-no" title="statement not covered" >useAppTheme();</span>
-  const isActive = <span class="cstat-no" title="statement not covered" >sortConfig.field === field;</span>
-  const iconName = <span class="cstat-no" title="statement not covered" >!sortable || !isActive ? "swap-vertical" : sortConfig.direction === "asc" ? "chevron-up" : "chevron-down";</span>
-  const iconColor = <span class="cstat-no" title="statement not covered" >!sortable || !isActive ? colors.neutral[400] : colors.primary[600];</span>
+  const { colors } = useAppTheme();
+  const isActive = sortConfig.field === field;
+  const iconName = !sortable || !isActive ? "swap-vertical" : sortConfig.direction === "asc" ? "chevron-up" : <span class="branch-1 cbranch-no" title="branch not covered" >"chevron-down";</span>
+  const iconColor = !sortable || !isActive ? colors.neutral[400] : colors.primary[600];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;TouchableOpacity
       style={{ flex, flexDirection: "row", alignItems: "center", paddingHorizontal: 4 }}
       onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >onSort(field)}</span>
@@ -184,7 +184,7 @@ export const SortableHeader: React.FC&lt;SortableHeaderProps&gt; = <span class="
     &gt;
       &lt;Text style={[
         { fontSize: 11, fontWeight: "700", color: colors.primary[700], textTransform: "uppercase", letterSpacing: 0.5 },
-        align === "center" &amp;&amp; { textAlign: "center" },
+        align === "center" &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >{ textAlign: "center" },</span>
         align === "right" &amp;&amp; { textAlign: "right" },
       ]}&gt;
         {label}
@@ -202,7 +202,7 @@ export const SortableHeader: React.FC&lt;SortableHeaderProps&gt; = <span class="
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

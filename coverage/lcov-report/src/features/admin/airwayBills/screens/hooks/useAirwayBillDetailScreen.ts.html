@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
@@ -166,21 +166,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -188,6 +175,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -201,6 +196,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -219,6 +218,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -260,6 +260,7 @@ import { useAirwayBillDetailActions } from './detail/useAirwayBillDetailActions'
 import { useAirwayBillDetailRefresh } from './detail/useAirwayBillDetailRefresh';
 import { useCargoBagsData } from './detail/useCargoBagsData';
 import { useCargoBagActions } from './detail/useCargoBagActions';
+import { useAirwayBillDetailManifest } from './detail/useAirwayBillDetailManifest';
 &nbsp;
 export const useAirwayBillDetailScreen = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
   const { navigation, airwayBillId } = <span class="cstat-no" title="statement not covered" >useAirwayBillDetailNavigation();</span>
@@ -278,14 +279,8 @@ export const useAirwayBillDetailScreen = <span class="cstat-no" title="statement
     refetchWaypoints,
   } = <span class="cstat-no" title="statement not covered" >useAirwayBillDetailData(airwayBillId);</span>
 &nbsp;
-  const {
-    menuVisible,
-    menuKey,
-    createBagVisible,
-    setCreateBagVisible,
-    openMenu,
-    closeMenu,
-  } = <span class="cstat-no" title="statement not covered" >useAirwayBillDetailUI();</span>
+  const { menuVisible, menuKey, createBagVisible, setCreateBagVisible, openMenu, closeMenu } =
+<span class="cstat-no" title="statement not covered" >    useAirwayBillDetailUI();</span>
 &nbsp;
   const {
     cargoBags,
@@ -294,7 +289,11 @@ export const useAirwayBillDetailScreen = <span class="cstat-no" title="statement
     refetchCargoBags,
   } = <span class="cstat-no" title="statement not covered" >useCargoBagsData(airwayBillId);</span>
 &nbsp;
-  const { handleRefreshCargoBags } = <span class="cstat-no" title="statement not covered" >useAirwayBillDetailRefresh(refetchAwb, refetchWaypoints, refetchCargoBags);</span>
+  const manifestState = <span class="cstat-no" title="statement not covered" >useAirwayBillDetailManifest(airwayBillId, airwayBill?.awbNumber);</span>
+&nbsp;
+  const { handleRefreshCargoBags } = <span class="cstat-no" title="statement not covered" >useAirwayBillDetailRefresh(refetchAwb, refetchWaypoints, <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >    await Promise.all([refetchCargoBags(), manifestState.refetchGoodsManifest()]);</span>
+  });
 &nbsp;
   const {
     handleStatusChange,
@@ -346,6 +345,7 @@ export const useAirwayBillDetailScreen = <span class="cstat-no" title="statement
     handleBagPress,
     handleRefreshCargoBags,
     isRefreshingCargoBags,
+    ...manifestState,
   };
 };
 &nbsp;</pre></td></tr></table></pre>
@@ -355,7 +355,7 @@ export const useAirwayBillDetailScreen = <span class="cstat-no" title="statement
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

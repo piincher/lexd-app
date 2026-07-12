@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
@@ -191,8 +191,12 @@
 <a name='L126'></a><a href='#L126'>126</a>
 <a name='L127'></a><a href='#L127'>127</a>
 <a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -234,13 +238,19 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -333,10 +343,9 @@ import {
 } from 'react-native';
 import { createStyles } from './ContainerCard.styles';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Badge } from '@src/components/ui/Badge/Badge';
-import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, getContainerStatusColors, SHIPPING_LINE_LABELS, SHIPPING_MODE_LABELS, SHIPPING_MODE_ICONS, getShippingModeColors } from '../types';
+import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, getContainerStatusColors, SHIPPING_LINE_LABELS, SHIPPING_MODE_ICONS, getShippingModeColors } from '../types';
 import { ContainerCapacityBar } from './ContainerCapacityBar';
 import { ContainerTimeline } from './ContainerTimeline';
 &nbsp;
@@ -360,9 +369,8 @@ export const ContainerCard: React.FC&lt;ContainerCardProps&gt; = <span class="cs
   const statusLabel = <span class="cstat-no" title="statement not covered" >CONTAINER_STATUS_LABELS[container.status];</span>
   // Phase 3: Get shipping mode info
   const shippingMode = <span class="cstat-no" title="statement not covered" >container.shippingMode || 'SEA';</span>
-  const modeIcon = <span class="cstat-no" title="statement not covered" >SHIPPING_MODE_ICONS[shippingMode];</span>
+  const modeIcon = <span class="cstat-no" title="statement not covered" >SHIPPING_MODE_ICONS[shippingMode] as React.ComponentProps&lt;typeof Ionicons&gt;['name'];</span>
   const modeColor = <span class="cstat-no" title="statement not covered" >getShippingModeColors(colors)[shippingMode];</span>
-  const modeLabel = <span class="cstat-no" title="statement not covered" >SHIPPING_MODE_LABELS[shippingMode];</span>
 &nbsp;
   // Phase 3: Get route info
   const routeName = <span class="cstat-no" title="statement not covered" >container.route?.name;</span>
@@ -381,7 +389,7 @@ export const ContainerCard: React.FC&lt;ContainerCardProps&gt; = <span class="cs
         {/* Header: Container Number and Status */}
         &lt;View style={styles.header}&gt;
           &lt;View style={styles.numberContainer}&gt;
-            &lt;Ionicons name={modeIcon as any} size={20} color={modeColor} /&gt;
+            &lt;Ionicons name={modeIcon} size={20} color={modeColor} /&gt;
             &lt;Text style={styles.containerNumber}&gt;
               {container.virtualContainerNumber}
             &lt;/Text&gt;
@@ -398,13 +406,20 @@ export const ContainerCard: React.FC&lt;ContainerCardProps&gt; = <span class="cs
               variant="neutral"
               size="small"
             /&gt;
+            {container.archived &amp;&amp; (
+              &lt;Badge
+                label="Archivé"
+                variant="warning"
+                size="small"
+              /&gt;
+            )}
           &lt;/View&gt;
         &lt;/View&gt;
 &nbsp;
         {/* Phase 3: Shipping Mode Badge */}
         &lt;View style={styles.modeBadgeContainer}&gt;
           &lt;View style={[styles.modeBadge, { backgroundColor: `${modeColor}15` }]}&gt;
-            &lt;Ionicons name={modeIcon as any} size={12} color={modeColor} /&gt;
+            &lt;Ionicons name={modeIcon} size={12} color={modeColor} /&gt;
             &lt;Text style={[styles.modeBadgeText, { color: modeColor }]}&gt;
               {shippingMode === 'SEA' ? 'Maritime' : 'Aérien'}
             &lt;/Text&gt;
@@ -454,7 +469,7 @@ export default ContainerCard;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

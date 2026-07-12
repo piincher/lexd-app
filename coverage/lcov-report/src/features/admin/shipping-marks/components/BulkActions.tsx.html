@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
@@ -107,7 +107,28 @@
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -117,6 +138,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -143,7 +182,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,14 +194,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@src/shared/ui/Button';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { createStyles } from './BulkActions.styles';
 &nbsp;
 interface BulkActionsProps {
   selectedCount: number;
-  total?: number;
+  total: number;
   onSendSelected: () =&gt; void;
   onSendAll: () =&gt; void;
+  onClearSelection: () =&gt; void;
+  isSending: boolean;
 }
 &nbsp;
 export const BulkActions: React.FC&lt;BulkActionsProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
@@ -167,34 +215,49 @@ export const BulkActions: React.FC&lt;BulkActionsProps&gt; = <span class="cstat-
   total,
   onSendSelected,
   onSendAll,
-}) =&gt; (
-<span class="cstat-no" title="statement not covered" >  &lt;View style={styles.container}&gt;</span>
-    &lt;Button
-      title={`Envoyer WhatsApp (${selectedCount})`}
-      icon="logo-whatsapp"
-      onPress={onSendSelected}
-      disabled={selectedCount === 0}
-      style={styles.button}
-    /&gt;
-    &lt;Button
-      title={`Envoyer à tous les clients (${total ?? 0})`}
-      icon="send"
-      variant="outline"
-      onPress={onSendAll}
-      disabled={!total}
-      style={styles.button}
-    /&gt;
-  &lt;/View&gt;
-);
+  onClearSelection,
+  isSending,
+}) =&gt; {
+  const { colors } = <span class="cstat-no" title="statement not covered" >useAppTheme();</span>
+  const styles = <span class="cstat-no" title="statement not covered" >createStyles(colors);</span>
+  const hasSelection = <span class="cstat-no" title="statement not covered" >selectedCount &gt; 0;</span>
 &nbsp;
-const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.create({</span>
-  container: {
-    gap: 12,
-  },
-  button: {
-    marginBottom: 0,
-  },
-});
+<span class="cstat-no" title="statement not covered" >  return (</span>
+    &lt;SafeAreaView edges={['bottom']} style={styles.safeArea}&gt;
+      &lt;View style={styles.container}&gt;
+        {hasSelection ? (
+          &lt;Pressable
+            onPress={onClearSelection}
+            style={<span class="fstat-no" title="function not covered" >({</span> pressed }) =&gt; <span class="cstat-no" title="statement not covered" >[styles.clearButton, pressed &amp;&amp; styles.pressed]}</span>
+            accessibilityRole="button"
+            accessibilityLabel="Effacer la sélection"
+          &gt;
+            &lt;Ionicons name="close" size={21} color={colors.text.primary} /&gt;
+          &lt;/Pressable&gt;
+        ) : (
+          &lt;View style={styles.iconBox}&gt;
+            &lt;Ionicons name="people-outline" size={21} color={colors.primary.main} /&gt;
+          &lt;/View&gt;
+        )}
+        &lt;View style={styles.summary}&gt;
+          &lt;Text style={styles.title}&gt;Envoi groupé&lt;/Text&gt;
+          &lt;Text style={styles.subtitle} selectable numberOfLines={1}&gt;
+            {hasSelection ? `${selectedCount} client${selectedCount &gt; 1 ? 's' : ''} sélectionné${selectedCount &gt; 1 ? 's' : ''}` : `${total} clients disponibles`}
+          &lt;/Text&gt;
+        &lt;/View&gt;
+        &lt;Button
+          title={hasSelection ? `Envoyer (${selectedCount})` : 'Envoyer à tous'}
+          icon="logo-whatsapp"
+          onPress={hasSelection ? onSendSelected : onSendAll}
+          disabled={total === 0 || isSending}
+          loading={isSending}
+          style={styles.sendButton}
+          accessibilityHint={hasSelection ? 'Ouvre la confirmation pour les clients sélectionnés' : 'Ouvre la confirmation pour tous les clients filtrés'}
+        /&gt;
+      &lt;/View&gt;
+    &lt;/SafeAreaView&gt;
+  );
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -202,7 +265,7 @@ const styles = <span class="cstat-no" title="statement not covered" >StyleSheet.
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-07-10T11:55:12.045Z
+                at 2026-07-12T06:01:22.623Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>
