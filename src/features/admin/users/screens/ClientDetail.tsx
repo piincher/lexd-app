@@ -39,7 +39,10 @@ export default function ClientDetail({ route, navigation }: RootStackScreenProps
   if (isError) return <ErrorState onRetry={refetch} />;
 
   const avgOrderValue = stats.total > 0 ? stats.totalPrice / stats.total : 0;
-  const openShippingMark = () => navigation.navigate('ShippingMarksAdmin', { q: user?.shippingClientId });
+  const openShippingMark = () => {
+    const query = user?.shippingClientId || user?.phoneNumber;
+    if (query) navigation.navigate('ShippingMarksAdmin', { q: query });
+  };
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]} edges={["top"]}>

@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import Animated, { FadeInUp } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Theme, type ThemeContextType } from '@src/constants/Theme';
 
@@ -28,13 +27,14 @@ export const ActionBar: React.FC<ActionBarProps> = ({
   const printDisabled = !hasClients || isGeneratingPDF;
 
   return (
-    <Animated.View entering={FadeInUp.delay(400)} style={styles.actionBar}>
+    <View style={styles.actionBar}>
       <TouchableOpacity
         style={[styles.actionButton, shareDisabled && styles.actionButtonDisabled]}
         onPress={onShare}
         disabled={shareDisabled}
         activeOpacity={0.9}
         accessibilityRole="button"
+        accessibilityLabel="Partager la vue actuelle de la liste de colisage"
         accessibilityState={{ disabled: shareDisabled }}
       >
         <LinearGradient
@@ -61,6 +61,7 @@ export const ActionBar: React.FC<ActionBarProps> = ({
         disabled={printDisabled}
         activeOpacity={0.9}
         accessibilityRole="button"
+        accessibilityLabel="Générer et imprimer le PDF de la liste de colisage"
         accessibilityState={{ disabled: printDisabled, busy: isGeneratingPDF }}
       >
         <LinearGradient
@@ -85,7 +86,7 @@ export const ActionBar: React.FC<ActionBarProps> = ({
           )}
         </LinearGradient>
       </TouchableOpacity>
-    </Animated.View>
+    </View>
   );
 };
 

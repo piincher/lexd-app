@@ -9,6 +9,7 @@ import {
   AssignGoodsInput,
   Container,
   ContainerFilters,
+  ContainerListResponse,
   CreateContainerInput,
   DeleteContainerResult,
   PackingList,
@@ -69,7 +70,7 @@ export class ContainerService {
   // READ OPERATIONS
   // ============================================
 
-  async getAll(filters?: ContainerFilters): Promise<ApiResponse<Container[]>> {
+  async getAll(filters?: ContainerFilters): Promise<ApiResponse<Container[] | ContainerListResponse>> {
     return apiRequest.get(this.client, BASE_URL, { params: filters });
   }
 
@@ -98,6 +99,14 @@ export class ContainerService {
     data: UpdateContainerStatusInput
   ): Promise<ApiResponse<Container>> {
     return apiRequest.patch(this.client, `${BASE_URL}/${id}/status`, data);
+  }
+
+  async archive(id: string): Promise<ApiResponse<Container>> {
+    return apiRequest.patch(this.client, `${BASE_URL}/${id}/archive`, {});
+  }
+
+  async unarchive(id: string): Promise<ApiResponse<Container>> {
+    return apiRequest.patch(this.client, `${BASE_URL}/${id}/unarchive`, {});
   }
 
   async delete(id: string): Promise<ApiResponse<DeleteContainerResult>> {

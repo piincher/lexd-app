@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/18</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
@@ -136,7 +136,21 @@
 <a name='L71'></a><a href='#L71'>71</a>
 <a name='L72'></a><a href='#L72'>72</a>
 <a name='L73'></a><a href='#L73'>73</a>
-<a name='L74'></a><a href='#L74'>74</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a>
+<a name='L81'></a><a href='#L81'>81</a>
+<a name='L82'></a><a href='#L82'>82</a>
+<a name='L83'></a><a href='#L83'>83</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -150,16 +164,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -213,6 +231,11 @@
 import { View, Text } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import {
+  normalizePaymentStatus,
+  PAYMENT_STATUS,
+  PAYMENT_STATUS_LABELS,
+} from '@src/shared/constants/paymentStatus';
 import { useRenderOrderStyles } from './RenderOrder.styles';
 import { productType } from '@src/api/order';
 &nbsp;
@@ -222,9 +245,19 @@ interface OrderHeaderProps {
   formattedLastUpdate: string;
 }
 &nbsp;
+const BADGE_STYLE_BY_STATUS: Record&lt;string, 'paid' | 'partial' | 'unpaid'&gt; = <span class="cstat-no" title="statement not covered" >{</span>
+  [PAYMENT_STATUS.PAID]: 'paid',
+  [PAYMENT_STATUS.PARTIAL]: 'partial',
+  [PAYMENT_STATUS.UNPAID]: 'unpaid',
+};
+&nbsp;
 export const OrderHeader: React.FC&lt;OrderHeaderProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span> item, orderStatus, formattedLastUpdate }) =&gt; {</span>
   const { colors } = <span class="cstat-no" title="statement not covered" >useAppTheme();</span>
   const styles = <span class="cstat-no" title="statement not covered" >useRenderOrderStyles();</span>
+  const paymentStatus = <span class="cstat-no" title="statement not covered" >normalizePaymentStatus(item.paymentStatus);</span>
+  const badgeStyle = <span class="cstat-no" title="statement not covered" >BADGE_STYLE_BY_STATUS[paymentStatus];</span>
+  const statusLabel = <span class="cstat-no" title="statement not covered" >PAYMENT_STATUS_LABELS[paymentStatus];</span>
+  const iconName = <span class="cstat-no" title="statement not covered" >paymentStatus === PAYMENT_STATUS.UNPAID ? 'warning' : 'check-circle';</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  return (</span>
     &lt;View style={styles.headerCard}&gt;
@@ -263,17 +296,11 @@ export const OrderHeader: React.FC&lt;OrderHeaderProps&gt; = <span class="cstat-
           &lt;View
             style={[
               styles.statusBadge,
-              item.paymentStatus === 'Paid' ? styles.paid : styles.unpaid,
+              styles[badgeStyle],
             ]}
           &gt;
-            {item.paymentStatus === 'Paid' ? (
-              &lt;MaterialIcons name="check-circle" size={16} color={colors.text.inverse} /&gt;
-            ) : (
-              &lt;MaterialIcons name="warning" size={16} color={colors.text.inverse} /&gt;
-            )}
-            &lt;Text style={styles.statusText}&gt;
-              {item.paymentStatus === 'Paid' ? 'Payé' : 'Non payé'}
-            &lt;/Text&gt;
+            &lt;MaterialIcons name={iconName} size={16} color={colors.text.inverse} /&gt;
+            &lt;Text style={styles.statusText}&gt;{statusLabel}&lt;/Text&gt;
           &lt;/View&gt;
           &lt;Text style={styles.orderId}&gt;Commande #{item.code}&lt;/Text&gt;
         &lt;/View&gt;
@@ -289,7 +316,7 @@ export const OrderHeader: React.FC&lt;OrderHeaderProps&gt; = <span class="cstat-
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-19T14:24:04.619Z
+                at 2026-07-10T11:55:12.045Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

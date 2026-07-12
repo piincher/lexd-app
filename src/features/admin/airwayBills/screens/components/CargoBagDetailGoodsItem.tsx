@@ -5,6 +5,7 @@ import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Badge } from '@src/shared/ui/Badge';
 import { Card } from '@src/shared/ui/Card';
+import { formatCurrency } from '@src/shared/lib/currency';
 import type { AirwayBillGoods } from '../../types';
 
 interface Props {
@@ -16,6 +17,9 @@ interface Props {
 
 export const CargoBagDetailGoodsItem: React.FC<Props> = ({ item, isSelected, removeMode, onToggleSelection }) => {
   const { colors } = useAppTheme();
+  const client = typeof item.clientId === 'object' ? item.clientId : null;
+  const clientName = client?.fullName || [client?.firstName, client?.lastName].filter(Boolean).join(' ').trim();
+  const balanceDue = Math.max(0, (item.totalCost || 0) - (item.amountPaid || 0));
   const goodsCardStyle = StyleSheet.flatten([
     styles.goodsCard,
     isSelected && { borderColor: colors.status.error, borderWidth: 2 },
@@ -45,6 +49,12 @@ export const CargoBagDetailGoodsItem: React.FC<Props> = ({ item, isSelected, rem
             <Text style={[styles.goodsMeta, { color: colors.text.muted }]}>
               {item.quantity || 0} colis · {item.weight?.toFixed?.(1) || item.weight || 0} kg
             </Text>
+            <Text style={[styles.goodsOwner, { color: colors.text.secondary }]} numberOfLines={1}>
+              {clientName || 'Client non identifié'} · {client?.phoneNumber || 'Téléphone inconnu'} · {client?.shippingClientId || 'Code inconnu'}
+            </Text>
+            <Text style={[styles.goodsMeta, { color: colors.text.muted }]} numberOfLines={1}>
+              Lieu: {item.warehouseLocation || '—'} · Solde: {formatCurrency(item.balanceDue ?? balanceDue)}
+            </Text>
           </View>
           <Badge
             label={item.status || 'N/A'}
@@ -66,4 +76,5 @@ const styles = StyleSheet.create({
   goodsId: { fontSize: 14, fontWeight: '700' },
   goodsDesc: { fontSize: 13, marginTop: 2 },
   goodsMeta: { fontSize: 12, marginTop: 2, fontWeight: '500' },
+  goodsOwner: { fontSize: 12, marginTop: 4, fontWeight: '700' },
 });

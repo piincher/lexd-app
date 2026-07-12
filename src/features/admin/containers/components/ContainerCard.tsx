@@ -12,10 +12,9 @@ import {
 } from 'react-native';
 import { createStyles } from './ContainerCard.styles';
 import { Ionicons } from '@expo/vector-icons';
-import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Badge } from '@src/components/ui/Badge/Badge';
-import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, getContainerStatusColors, SHIPPING_LINE_LABELS, SHIPPING_MODE_LABELS, SHIPPING_MODE_ICONS, getShippingModeColors } from '../types';
+import { Container, ContainerStatus, CONTAINER_STATUS_LABELS, getContainerStatusColors, SHIPPING_LINE_LABELS, SHIPPING_MODE_ICONS, getShippingModeColors } from '../types';
 import { ContainerCapacityBar } from './ContainerCapacityBar';
 import { ContainerTimeline } from './ContainerTimeline';
 
@@ -39,9 +38,8 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
   const statusLabel = CONTAINER_STATUS_LABELS[container.status];
   // Phase 3: Get shipping mode info
   const shippingMode = container.shippingMode || 'SEA';
-  const modeIcon = SHIPPING_MODE_ICONS[shippingMode];
+  const modeIcon = SHIPPING_MODE_ICONS[shippingMode] as React.ComponentProps<typeof Ionicons>['name'];
   const modeColor = getShippingModeColors(colors)[shippingMode];
-  const modeLabel = SHIPPING_MODE_LABELS[shippingMode];
 
   // Phase 3: Get route info
   const routeName = container.route?.name;
@@ -60,7 +58,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
         {/* Header: Container Number and Status */}
         <View style={styles.header}>
           <View style={styles.numberContainer}>
-            <Ionicons name={modeIcon as any} size={20} color={modeColor} />
+            <Ionicons name={modeIcon} size={20} color={modeColor} />
             <Text style={styles.containerNumber}>
               {container.virtualContainerNumber}
             </Text>
@@ -77,13 +75,20 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({
               variant="neutral"
               size="small"
             />
+            {container.archived && (
+              <Badge
+                label="Archivé"
+                variant="warning"
+                size="small"
+              />
+            )}
           </View>
         </View>
 
         {/* Phase 3: Shipping Mode Badge */}
         <View style={styles.modeBadgeContainer}>
           <View style={[styles.modeBadge, { backgroundColor: `${modeColor}15` }]}>
-            <Ionicons name={modeIcon as any} size={12} color={modeColor} />
+            <Ionicons name={modeIcon} size={12} color={modeColor} />
             <Text style={[styles.modeBadgeText, { color: modeColor }]}>
               {shippingMode === 'SEA' ? 'Maritime' : 'Aérien'}
             </Text>

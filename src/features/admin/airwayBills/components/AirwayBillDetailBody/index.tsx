@@ -20,6 +20,7 @@ import {
   AirwayBillStatus,
   AirwayBillWaypointStatus,
   AirwayBillWaypointPayload,
+  AirwayBillGoodsManifest,
   CargoBag,
 } from '../../types';
 
@@ -50,6 +51,11 @@ interface Props {
   handleBagPress: (bagId: string) => void;
   handleRefreshCargoBags: () => void;
   isRefreshingCargoBags: boolean;
+  goodsManifest?: AirwayBillGoodsManifest;
+  isLoadingGoodsManifest?: boolean;
+  goodsManifestError?: unknown;
+  handleDownloadGoodsManifest?: () => void;
+  isDownloadingGoodsManifest?: boolean;
 }
 
 const formatDate = (date?: string | null) => {
@@ -84,6 +90,11 @@ export const AirwayBillDetailBody: React.FC<Props> = ({
   isLoadingCargoBags,
   setCreateBagVisible,
   handleBagPress,
+  goodsManifest,
+  isLoadingGoodsManifest,
+  goodsManifestError,
+  handleDownloadGoodsManifest,
+  isDownloadingGoodsManifest,
 }) => {
   const [tab, setTab] = useState<TabKey>('itinerary');
 
@@ -188,8 +199,12 @@ export const AirwayBillDetailBody: React.FC<Props> = ({
       {tab === 'goods' && (
         <AirwayBillGoodsSection
           goodsList={goodsList}
-          cargoBags={cargoBags}
           onAssignPress={handleAssignPress}
+          manifest={goodsManifest}
+          loading={isLoadingGoodsManifest}
+          error={goodsManifestError}
+          onDownloadPDF={handleDownloadGoodsManifest}
+          isDownloadingPDF={isDownloadingGoodsManifest}
         />
       )}
     </View>

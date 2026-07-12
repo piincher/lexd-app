@@ -1,55 +1,36 @@
-import React, { useCallback } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Screen } from "@src/shared/ui/Screen";
-import { useAppTheme } from "@src/providers/ThemeProvider";
-import { Fonts } from "@src/constants/Fonts";
-import { useGetAtRiskCustomers } from "../hooks/analytics/useAtRiskCustomers";
-import { useTriggerWinBack } from "../hooks/useAtRiskWinBack";
-import { useAtRiskScreen } from "../hooks/useAtRiskScreen";
-import { AtRiskSummaryStats } from "../components/AtRiskSummaryStats";
-import { AtRiskFilters } from "../components/AtRiskFilters";
-import { AtRiskCustomerList } from "../components/AtRiskCustomerList";
-import { AtRiskDetailModal } from "../components/AtRiskDetailModal";
-import { AtRiskWinBackModal } from "../components/AtRiskWinBackModal";
+import React from 'react';
+import { Screen } from '@src/shared/ui/Screen';
+import { EmptyState } from '@src/shared/ui/EmptyState';
+import { useGetAtRiskCustomers } from '../hooks/analytics/useAtRiskCustomers';
+import { useTriggerWinBack } from '../hooks/useAtRiskWinBack';
+import { useAtRiskScreen } from '../hooks/useAtRiskScreen';
+import { AtRiskSummaryStats } from '../components/AtRiskSummaryStats';
+import { AtRiskFilters } from '../components/AtRiskFilters';
+import { AtRiskCustomerList } from '../components/AtRiskCustomerList';
+import { AtRiskDetailModal } from '../components/AtRiskDetailModal';
+import { AtRiskWinBackModal } from '../components/AtRiskWinBackModal';
 
 export const AtRiskCustomersScreen: React.FC = () => {
-  const { colors } = useAppTheme();
-  const { data, isLoading, isError, refetch } = useGetAtRiskCustomers({ days: 60, page: 1, limit: 50 });
-  const { mutateAsync: triggerWinBack, isPending: isTriggering } = useTriggerWinBack();
+  const { triggerWinBack, isPending: isTriggering } = useTriggerWinBack();
+  const vm = useAtRiskScreen(triggerWinBack);
+  const { data, isLoading, isFetching, isError, refetch } = useGetAtRiskCustomers(vm.queryParams);
 
-  const {
-    search, setSearch, activeFilter, setActiveFilter, filtered,
-    detailCustomer, setDetailCustomer, winBackCustomer, setWinBackCustomer,
-    handleWhatsApp, handleCall,
-  } = useAtRiskScreen(data?.customers ?? []);
-
-  const handleWinBack = useCallback(async (userId: string, triggerType: string) => {
-    await triggerWinBack({ userId, triggerType });
-    setWinBackCustomer(null);
-  }, [triggerWinBack, setWinBackCustomer]);
-
-  if (isError) {
+  if (isError && !data) {
     return (
-      <Screen header={{ title: "Clients à risque" }}>
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center", gap: 12, padding: 24 }}>
-          <MaterialCommunityIcons name="alert-circle-outline" size={48} color={colors.status.error} />
-          <Text style={{ fontFamily: Fonts.medium, fontSize: 16, color: colors.text.secondary }}>
-            Erreur de chargement
-          </Text>
-          <TouchableOpacity
-            onPress={() => refetch()}
-            style={{ backgroundColor: colors.primary.main, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 10 }}
-          >
-            <Text style={{ color: colors.text.inverse, fontFamily: Fonts.bold, fontSize: 14 }}>Réessayer</Text>
-          </TouchableOpacity>
-        </View>
+      <Screen header={{ title: 'Clients à risque' }}>
+        <EmptyState
+          icon="cloud-alert-outline"
+          title="Chargement impossible"
+          message="Vérifiez votre connexion puis réessayez."
+          actionLabel="Réessayer"
+          onAction={() => { void refetch(); }}
+        />
       </Screen>
     );
   }
 
   return (
-    <Screen header={{ title: "Clients à risque" }} scrollable={false}>
+    <Screen header={{ title: 'Clients à risque' }} scrollable={false}>
       {data?.summary && (
         <AtRiskSummaryStats
           totalAtRisk={data.summary.totalAtRisk}
@@ -57,39 +38,33 @@ export const AtRiskCustomersScreen: React.FC = () => {
           inactiveThresholdDays={data.summary.inactiveThresholdDays}
         />
       )}
-
       <AtRiskFilters
-        search={search}
-        onSearchChange={setSearch}
-        activeFilter={activeFilter}
-        onFilterChange={setActiveFilter}
+        search={vm.search}
+        onSearchChange={vm.setSearch}
+        activeFilter={vm.activeFilter}
+        onFilterChange={vm.setActiveFilter}
       />
-
       <AtRiskCustomerList
-        customers={filtered}
+        customers={data?.customers ?? []}
         isLoading={isLoading && !data}
-        searchActive={search.length > 0}
-        onWhatsApp={handleWhatsApp}
-        onCall={handleCall}
-        onDetail={setDetailCustomer}
-        onWinBack={setWinBackCustomer}
+        isRefreshing={isFetching && Boolean(data)}
+        searchActive={vm.search.length > 0 || vm.activeFilter !== 'all'}
+        pagination={data?.pagination}
+        onRefresh={() => { void refetch(); }}
+        onPageChange={vm.setPage}
+        onWhatsApp={vm.handleWhatsApp}
+        onCall={vm.handleCall}
+        onDetail={vm.setDetailCustomer}
+        onWinBack={vm.setWinBackCustomer}
       />
-
       <AtRiskDetailModal
-        visible={!!detailCustomer}
-        customer={detailCustomer}
-        onClose={() => setDetailCustomer(null)}
-        onWhatsApp={handleWhatsApp}
-        onCall={handleCall}
-        onWinBack={setWinBackCustomer}
+        visible={Boolean(vm.detailCustomer)} customer={vm.detailCustomer}
+        onClose={() => vm.setDetailCustomer(null)} onWhatsApp={vm.handleWhatsApp}
+        onCall={vm.handleCall} onWinBack={vm.setWinBackCustomer}
       />
-
       <AtRiskWinBackModal
-        visible={!!winBackCustomer}
-        customer={winBackCustomer}
-        onClose={() => setWinBackCustomer(null)}
-        onTrigger={handleWinBack}
-        isPending={isTriggering}
+        visible={Boolean(vm.winBackCustomer)} customer={vm.winBackCustomer}
+        onClose={() => vm.setWinBackCustomer(null)} onTrigger={vm.handleWinBack} isPending={isTriggering}
       />
     </Screen>
   );

@@ -70,7 +70,11 @@ export const AirwayBillTrackingContent: React.FC<Props> = ({
     ) : (
       <AirwayBillTrackingTimeline currentStepIndex={currentStepIndex} />
     )}
-    <AirwayBillTrackingGoodsList goodsIds={awb.goodsIds} />
+    <AirwayBillTrackingGoodsList
+      airwayBillId={awb._id}
+      awbNumber={awb.awbNumber}
+      goodsIds={awb.goodsIds}
+    />
   </ScrollView>
   );
 };

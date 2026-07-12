@@ -3,8 +3,9 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-nativ
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { getStyles } from "./AtRiskFilters.styles";
+import type { AtRiskFilter } from "../../types";
 
-const DAY_OPTIONS = [
+const DAY_OPTIONS: { key: AtRiskFilter; label: string }[] = [
   { key: "all", label: "Tous" },
   { key: "never", label: "Jamais" },
   { key: "60", label: "60j" },
@@ -15,8 +16,8 @@ const DAY_OPTIONS = [
 type AtRiskFiltersProps = {
   search: string;
   onSearchChange: (value: string) => void;
-  activeFilter: string;
-  onFilterChange: (key: string) => void;
+  activeFilter: AtRiskFilter;
+  onFilterChange: (key: AtRiskFilter) => void;
 };
 
 export function AtRiskFilters({ search, onSearchChange, activeFilter, onFilterChange }: AtRiskFiltersProps) {
@@ -33,9 +34,18 @@ export function AtRiskFilters({ search, onSearchChange, activeFilter, onFilterCh
           placeholderTextColor={colors.text.disabled}
           value={search}
           onChangeText={onSearchChange}
+          returnKeyType="search"
+          autoCorrect={false}
+          accessibilityLabel="Rechercher un client à risque"
         />
         {search.length > 0 && (
-          <TouchableOpacity onPress={() => onSearchChange("")} activeOpacity={0.7}>
+          <TouchableOpacity
+            onPress={() => onSearchChange("")}
+            activeOpacity={0.7}
+            style={styles.clearButton}
+            accessibilityRole="button"
+            accessibilityLabel="Effacer la recherche"
+          >
             <MaterialCommunityIcons name="close-circle" size={18} color={colors.text.secondary} />
           </TouchableOpacity>
         )}
@@ -48,6 +58,8 @@ export function AtRiskFilters({ search, onSearchChange, activeFilter, onFilterCh
             style={[styles.chip, activeFilter === opt.key && styles.chipActive]}
             onPress={() => onFilterChange(opt.key)}
             activeOpacity={0.7}
+            accessibilityRole="button"
+            accessibilityState={{ selected: activeFilter === opt.key }}
           >
             <Text style={[styles.chipText, activeFilter === opt.key && styles.chipTextActive]}>
               {opt.label}

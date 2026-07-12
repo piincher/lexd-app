@@ -3,8 +3,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { View, LayoutAnimation } from 'react-native';
-import Animated, { FadeInUp } from 'react-native-reanimated';
+import { View } from 'react-native';
 import { ClientGoodsGroup } from '../../types/packingList';
 import { PackingListTable } from '../../components/PackingListTable';
 import { createStyles } from './ClientGoodsSection.styles';
@@ -22,7 +21,7 @@ interface ClientGoodsSectionProps {
 
 export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
   clientGroup,
-  index,
+  index: _index,
   defaultExpanded = true,
   onToggleExpand,
   showPhotos = false,
@@ -36,14 +35,13 @@ export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
   }, [defaultExpanded]);
 
   const handleToggle = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const newValue = !isExpanded;
     setIsExpanded(newValue);
     onToggleExpand?.(newValue);
   };
 
   return (
-    <Animated.View entering={FadeInUp.delay(index * 100)} style={styles.container}>
+    <View style={styles.container}>
       <ClientHeader clientGroup={clientGroup} isExpanded={isExpanded} onToggle={handleToggle} />
 
       {isExpanded && (
@@ -52,7 +50,7 @@ export const ClientGoodsSection: React.FC<ClientGoodsSectionProps> = ({
           <ClientSubtotal clientGroup={clientGroup} />
         </View>
       )}
-    </Animated.View>
+    </View>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import type { Goods } from "../../../goods/types";
+import type { PackingListGoods } from '@src/shared/types/packingListGoods';
 
 export type SortField = "goodsId" | "description" | "actualCBM" | "weight" | "quantity";
 export type SortDirection = "asc" | "desc";
@@ -9,7 +9,7 @@ export interface SortConfig {
   direction: SortDirection;
 }
 
-export const usePackingListSort = (goods: Goods[], sortable = true) => {
+export const usePackingListSort = (goods: PackingListGoods[], sortable = true) => {
   const [sortConfig, setSortConfig] = useState<SortConfig>({ field: "goodsId", direction: "asc" });
 
   const handleSort = (field: SortField) => {

@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/42</span>
+                <span class='fraction'>0/41</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/30</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
@@ -163,14 +163,8 @@
 <a name='L98'></a><a href='#L98'>98</a>
 <a name='L99'></a><a href='#L99'>99</a>
 <a name='L100'></a><a href='#L100'>100</a>
-<a name='L101'></a><a href='#L101'>101</a>
-<a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L101'></a><a href='#L101'>101</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -192,14 +186,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -277,7 +263,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { RouteWaypointDraft, ShippingLine } from '@src/features/admin/routes/types';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { RouteWaypointDraft } from '@src/features/admin/routes/types';
+import { ShippingLine, SHIPPING_LINE_WAYPOINT_PRESETS } from '@src/shared/constants/shippingLines';
 &nbsp;
 export const WAYPOINT_TYPES = <span class="cstat-no" title="statement not covered" >[</span>
   { label: 'Port', value: 'PORT' },
@@ -305,14 +292,6 @@ export const KNOWN_PORTS = <span class="cstat-no" title="statement not covered" 
   { label: 'Diboli', city: 'Diboli', country: 'Mali', countryCode: 'ML', portCode: 'MLDBL', terminal: 'Diboli Border' },
   { label: 'Bamako', city: 'Bamako', country: 'Mali', countryCode: 'ML', portCode: 'MLBKQ', terminal: 'ChinaLink Warehouse - Bamako' },
 ] as const;
-&nbsp;
-export const SHIPPING_LINE_PRESETS: Record&lt;ShippingLine, readonly string[]&gt; = <span class="cstat-no" title="statement not covered" >{</span>
-  MSC: ['Nansha', 'Dakar', 'Diboli', 'Bamako'],
-  MAERSK: ['Nansha', 'Abidjan', 'Dakar', 'Diboli', 'Bamako'],
-  CMA_CGM: ['Nansha', 'Singapore', 'Dakar', 'Diboli', 'Bamako'],
-  HAPAG_LLOYD: ['Nansha', 'Lagos', 'Dakar', 'Diboli', 'Bamako'],
-  ETHIOPIAN_AIRLINES: [],
-};
 &nbsp;
 export const ROUTE_PRESETS = <span class="cstat-no" title="statement not covered" >[</span>
   { label: 'Singapore', waypoints: ['Nansha', 'Singapore', 'Dakar', 'Diboli', 'Bamako'] },
@@ -380,7 +359,7 @@ export const createWaypointsForShippingLine = <span class="cstat-no" title="stat
   line: ShippingLine,
   totalDays: number,
 ): RouteWaypointDraft[] =&gt; {
-  const labels = <span class="cstat-no" title="statement not covered" >SHIPPING_LINE_PRESETS[line];</span>
+  const labels = <span class="cstat-no" title="statement not covered" >SHIPPING_LINE_WAYPOINT_PRESETS[line as keyof typeof SHIPPING_LINE_WAYPOINT_PRESETS];</span>
 <span class="cstat-no" title="statement not covered" >  if (!labels || labels.length === 0) <span class="cstat-no" title="statement not covered" >return [];</span></span>
 <span class="cstat-no" title="statement not covered" >  return labels.map(<span class="fstat-no" title="function not covered" >(l</span>abel, index) =&gt; <span class="cstat-no" title="statement not covered" >createWaypoint(label, index, labels.length, totalDays))</span>;</span>
 };
@@ -391,7 +370,7 @@ export const createWaypointsForShippingLine = <span class="cstat-no" title="stat
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-19T14:24:04.619Z
+                at 2026-07-10T11:55:12.045Z
             </div>
         <script src="../../../../../../../prettify.js"></script>
         <script>

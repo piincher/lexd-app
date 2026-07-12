@@ -21,6 +21,11 @@ export const AirwayBillDetailScreen: React.FC = () => {
     handleBagPress,
     handleRefreshCargoBags,
     isRefreshingCargoBags,
+    goodsManifest,
+    isLoadingGoodsManifest,
+    goodsManifestError,
+    handleDownloadGoodsManifest,
+    isDownloadingGoodsManifest,
   } = useAirwayBillDetailScreen();
 
   if (isLoading || !airwayBill) {
@@ -66,6 +71,11 @@ export const AirwayBillDetailScreen: React.FC = () => {
           handleBagPress={handleBagPress}
           handleRefreshCargoBags={handleRefreshCargoBags}
           isRefreshingCargoBags={isRefreshingCargoBags}
+          goodsManifest={goodsManifest}
+          isLoadingGoodsManifest={isLoadingGoodsManifest}
+          goodsManifestError={goodsManifestError}
+          handleDownloadGoodsManifest={handleDownloadGoodsManifest}
+          isDownloadingGoodsManifest={isDownloadingGoodsManifest}
         />
       </ScrollView>
       <CargoBagCreateDialog

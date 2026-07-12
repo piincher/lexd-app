@@ -148,7 +148,37 @@ export interface UpdateGoodsInput {
 export interface AirwayBillGoodsItem {
   _id: string;
   goodsId: string;
+  description?: string;
+  weight?: number;
+  quantity?: number;
   status?: string;
+  condition?: 'new' | 'used' | 'damaged';
+  ownerStatus?: 'IDENTIFIED' | 'UNIDENTIFIED';
+  clientId?:
+    | string
+    | {
+        _id?: string;
+        firstName?: string;
+        lastName?: string;
+        fullName?: string;
+        phoneNumber?: string;
+        shippingClientId?: string;
+        email?: string;
+        profileImage?: string;
+      };
+  cargoBagId?: string | null;
+  photos?: string[];
+  warehouseLocation?: string;
+  dimensions?: { length?: number; width?: number; height?: number };
+  actualCBM?: number;
+  unitPrice?: number;
+  totalCost?: number;
+  amountPaid?: number;
+  balanceDue?: number;
+  paymentStatus?: 'UNPAID' | 'PARTIAL' | 'PAID';
+  expressTrackingNumber?: string;
+  receivedAt?: string;
+  receivedByName?: string;
 }
 
 export interface TrackingWaypoint {

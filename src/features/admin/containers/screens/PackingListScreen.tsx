@@ -36,7 +36,6 @@ export const PackingListScreen: React.FC = () => {
     handlePrint,
     handleToggleAll,
     handleGoToLoadingList,
-    formatDate,
   } = usePackingListScreen();
 
   if (isContainerLoading) {
@@ -66,7 +65,6 @@ export const PackingListScreen: React.FC = () => {
         selectedClientId={selectedClientId}
         onSelectClient={setSelectedClientId}
         onToggleAll={handleToggleAll}
-        formatDate={formatDate}
       />
 
       <ActionBar

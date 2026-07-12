@@ -3,55 +3,61 @@
  */
 import { useQuery } from '@tanstack/react-query';
 import type { UseQueryOptions } from '@tanstack/react-query';
+import { DEFAULT_STALE_TIME } from '@src/shared/constants/queryConfig';
 import { containerService } from '../../services/ContainerService';
 import { ContainerFilters } from '../../types';
 import { ApiClientError } from '../../api';
 import { containerQueryKeys } from './containerQueryKeys';
 
+type ContainerListQueryData = Awaited<ReturnType<typeof containerService.getAll>>;
+type ContainerDetailQueryData = Awaited<ReturnType<typeof containerService.getById>>;
+type ContainerStatusQueryData = Awaited<ReturnType<typeof containerService.getByStatus>>;
+type ReadyForDepartureQueryData = Awaited<ReturnType<typeof containerService.getReadyForDeparture>>;
+
 export const useGetAllContainers = (
   filters?: ContainerFilters,
-  options?: UseQueryOptions<any, ApiClientError>
+  options?: UseQueryOptions<ContainerListQueryData, ApiClientError>
 ) => {
   return useQuery({
     queryKey: containerQueryKeys.list(filters),
     queryFn: () => containerService.getAll(filters),
-    staleTime: 5 * 60 * 1000,
+    staleTime: DEFAULT_STALE_TIME,
     ...options,
   });
 };
 
 export const useGetContainerById = (
   id: string | undefined,
-  options?: UseQueryOptions<any, ApiClientError>
+  options?: UseQueryOptions<ContainerDetailQueryData, ApiClientError>
 ) => {
   return useQuery({
     queryKey: containerQueryKeys.detail(id || ''),
     queryFn: () => containerService.getById(id!),
     enabled: !!id,
-    staleTime: 5 * 60 * 1000,
+    staleTime: DEFAULT_STALE_TIME,
     ...options,
   });
 };
 
 export const useGetContainersByStatus = (
   status: string,
-  options?: UseQueryOptions<any, ApiClientError>
+  options?: UseQueryOptions<ContainerStatusQueryData, ApiClientError>
 ) => {
   return useQuery({
     queryKey: containerQueryKeys.byStatus(status),
     queryFn: () => containerService.getByStatus(status),
-    staleTime: 5 * 60 * 1000,
+    staleTime: DEFAULT_STALE_TIME,
     ...options,
   });
 };
 
 export const useGetReadyForDeparture = (
-  options?: UseQueryOptions<any, ApiClientError>
+  options?: UseQueryOptions<ReadyForDepartureQueryData, ApiClientError>
 ) => {
   return useQuery({
     queryKey: containerQueryKeys.readyForDeparture(),
     queryFn: () => containerService.getReadyForDeparture(),
-    staleTime: 5 * 60 * 1000,
+    staleTime: DEFAULT_STALE_TIME,
     ...options,
   });
 };

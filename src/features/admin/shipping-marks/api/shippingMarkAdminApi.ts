@@ -48,6 +48,26 @@ export interface ShippingMarkDeliveryJob {
   total: number;
 }
 
+export type ShippingMarkGenerationStatus = 'QUEUED' | 'RUNNING' | 'COMPLETED' | 'PARTIAL' | 'FAILED';
+
+export interface ShippingMarkGenerationJob {
+  id: string;
+  status: ShippingMarkGenerationStatus;
+  total: number;
+  generated: number;
+  failed: number;
+  force: boolean;
+  createdAt?: string | null;
+  completedAt?: string | null;
+}
+
+export interface BulkGenerateShippingMarksPayload {
+  userIds?: string[];
+  all?: boolean;
+  q?: string;
+  force?: boolean;
+}
+
 interface ApiEnvelope<T> {
   success: boolean;
   data: T;
@@ -131,6 +151,23 @@ export const sendBulkShippingMarkWhatsApp = async (payload: {
 export const regenerateClientShippingMark = async (userId: string): Promise<{ shippingMarkImageUrl: string }> => {
   const response = await apiClientV2.post<ApiEnvelope<{ shippingMarkImageUrl: string }>>(
     `/shipping-mark/admin/${userId}/regenerate`,
+  );
+  return response.data.data;
+};
+
+export const generateBulkShippingMarks = async (
+  payload: BulkGenerateShippingMarksPayload,
+): Promise<ShippingMarkGenerationJob> => {
+  const response = await apiClientV2.post<ApiEnvelope<ShippingMarkGenerationJob>>(
+    '/admin/shipping-marks/generate-bulk',
+    payload,
+  );
+  return response.data.data;
+};
+
+export const fetchShippingMarkGenerationJob = async (jobId: string): Promise<ShippingMarkGenerationJob> => {
+  const response = await apiClientV2.get<ApiEnvelope<ShippingMarkGenerationJob>>(
+    `/admin/shipping-marks/generation-jobs/${jobId}`,
   );
   return response.data.data;
 };

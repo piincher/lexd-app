@@ -1,180 +1,86 @@
-import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from 'react';
 import type { RootStackScreenProps } from '@src/navigations/type';
-import { showMessage } from 'react-native-flash-message';
 import { Screen } from '@src/shared/ui/Screen';
 import { Loading } from '@src/shared/ui/Loading';
-import { Button } from '@src/shared/ui/Button';
-import { shareShippingMark } from '@src/shared/lib/shippingMarkShare';
-import { useShippingMarksAdmin } from '../hooks/useShippingMarksAdmin';
-import { useShippingMarkConfig } from '../hooks/useShippingMarkConfig';
-import { ClientSearchBar } from '../components/ClientSearchBar';
-import { BulkSendModal } from '../components/BulkSendModal';
-import { BulkActions } from '../components/BulkActions';
-import { ShippingMarkConfigForm } from '../components/ShippingMarkConfigForm';
+import { useShippingMarksAdminScreen } from '../hooks/useShippingMarksAdminScreen';
 import { ClientsList } from '../components/ClientsList';
+import { BulkActions } from '../components/BulkActions';
+import { BulkSendModal } from '../components/BulkSendModal';
+import { BulkGenerateModal } from '../components/BulkGenerateModal';
+import { ShippingMarkSettingsModal } from '../components/ShippingMarkSettingsModal';
 import { ClientShippingMarkPreviewModal } from '../components/ClientShippingMarkPreviewModal';
-import type { ShippingMarkClient } from '../api/shippingMarkAdminApi';
-
-const DEFAULT_SINGLE_SEND_CAPTION =
-  "Bonjour {{name}}, voici votre marque d'expédition. Merci de l'envoyer à votre fournisseur avec l'adresse de l'entrepôt. Le fournisseur doit l'imprimer et la coller sur chaque colis.";
+import { ShippingMarksListHeader } from '../components/ShippingMarksListHeader';
+import { styles as screenStyles } from './ShippingMarksAdminScreen.styles';
 
 export const ShippingMarksAdminScreen: React.FC<RootStackScreenProps<'ShippingMarksAdmin'>> = ({ route }) => {
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [showModal, setShowModal] = useState(false);
-  const [sendAll, setSendAll] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
-  const [previewClient, setPreviewClient] = useState<ShippingMarkClient | null>(null);
+  const vm = useShippingMarksAdminScreen(route.params?.q);
 
-  const {
-    clients,
-    pagination,
-    isLoading,
-    isFetching,
-    updateSearch,
-    goToPage,
-    regenerateMark,
-    isRegenerating,
-    sendBulkWhatsApp,
-    isSendingBulk,
-    searchQuery,
-    toggleClientSelection,
-  } = useShippingMarksAdmin(route.params?.q);
+  if (vm.isInitialLoading) return <Loading message="Chargement des marques…" fullScreen />;
 
-  const { config, isLoading: configLoading, updateConfig, isUpdating } = useShippingMarkConfig();
-
-  const handleSend = async (caption: string) => {
-    if (sendAll) {
-      await sendBulkWhatsApp({ all: true, q: searchQuery, caption });
-    } else {
-      await sendBulkWhatsApp({ userIds: Array.from(selected), caption });
-    }
-    setShowModal(false);
-    setSendAll(false);
-    setSelected(new Set());
-  };
-
-  const handleDownload = async (client: ShippingMarkClient) => {
-    if (!client.shippingMarkImageUrl) return;
-    try {
-      await shareShippingMark(client.shippingMarkImageUrl, client.clientId);
-    } catch (error) {
-      showMessage({
-        message: 'Téléchargement impossible',
-        description: error instanceof Error ? error.message : 'Impossible de télécharger la marque.',
-        type: 'danger',
-      });
-    }
-  };
-
-  const handleSendOne = async (client: ShippingMarkClient) => {
-    try {
-      await sendBulkWhatsApp({
-        userIds: [client._id],
-        caption: DEFAULT_SINGLE_SEND_CAPTION,
-      });
-
-      showMessage({
-        message: 'Envoi programmé',
-        description: `La marque ${client.clientId} est en file d'envoi WhatsApp.`,
-        type: 'success',
-      });
-    } catch (error) {
-      showMessage({
-        message: 'Erreur WhatsApp',
-        description: error instanceof Error ? error.message : "Impossible d'envoyer la marque.",
-        type: 'danger',
-      });
-    }
-  };
-
-  if (isLoading || configLoading) return <Loading message="Chargement..." fullScreen />;
+  const total = vm.pagination?.total ?? 0;
+  const page = vm.pagination?.page ?? 1;
+  const pages = vm.pagination?.pages ?? 1;
+  const listHeader = <ShippingMarksListHeader
+    total={total} visibleCount={vm.clients.length} readyCount={vm.readyCount}
+    page={page} pages={pages} selectedCount={vm.selected.size} query={vm.searchQuery}
+    job={vm.generationJob} loading={vm.isGeneratingBulk} fetching={vm.isFetching}
+    unavailable={vm.isError} onGenerate={vm.openGenerate} onSearch={vm.updateSearch}
+    onOpenSettings={vm.openSettings}
+  />;
 
   return (
-    <Screen header={{ title: "Marques d'expédition" }} scrollable={false} contentStyle={styles.screenContent}>
-      <View style={styles.container}>
-        <Button
-          title={showSettings ? 'Masquer les paramètres' : 'Paramètres de la marque'}
-          icon="settings-outline"
-          variant="outline"
-          onPress={() => setShowSettings((visible) => !visible)}
-          style={styles.settingsButton}
-        />
-        {showSettings && <ShippingMarkConfigForm config={config} onSave={updateConfig} isSaving={isUpdating} />}
-        <ClientSearchBar onSearch={updateSearch} loading={isFetching} />
+    <Screen
+      header={{ title: "Marques d'expédition" }}
+      scrollable={false}
+      contentStyle={screenStyles.content}
+      footer={vm.isError ? undefined : (
         <BulkActions
-          selectedCount={selected.size}
-          total={pagination?.total}
-          onSendSelected={() => {
-            setSendAll(false);
-            setShowModal(true);
-          }}
-          onSendAll={() => {
-            setSendAll(true);
-            setShowModal(true);
-          }}
+          selectedCount={vm.selected.size}
+          total={total}
+          onSendSelected={vm.openSendSelected}
+          onSendAll={vm.openSendAll}
+          onClearSelection={vm.clearSelection}
+          isSending={vm.isSendingBulk}
         />
-        <ClientsList
-          clients={clients}
-          selected={selected}
-          onToggle={(id) => setSelected(toggleClientSelection(selected, id))}
-          onToggleAll={() =>
-            setSelected(selected.size === clients.length ? new Set() : new Set(clients.map((c) => c._id)))
-          }
-          onPreview={setPreviewClient}
-          onDownload={(client) => {
-            void handleDownload(client);
-          }}
-          onSend={(client) => {
-            void handleSendOne(client);
-          }}
-          onRegenerate={regenerateMark}
-          isRegenerating={isRegenerating}
-          isSending={isSendingBulk}
-          page={pagination?.page}
-          pages={pagination?.pages}
-          hasPrev={pagination?.hasPrev}
-          hasNext={pagination?.hasNext}
-          onPageChange={goToPage}
-        />
-      </View>
-      <BulkSendModal
-        visible={showModal}
-        count={sendAll ? pagination?.total ?? 0 : selected.size}
-        onClose={() => {
-          setShowModal(false);
-          setSendAll(false);
-        }}
-        onSend={handleSend}
-        isSending={isSendingBulk}
+      )}
+    >
+      <ClientsList
+        clients={vm.clients}
+        header={listHeader}
+        selected={vm.selected}
+        allCurrentPageSelected={vm.allCurrentPageSelected}
+        onToggle={vm.toggleClientSelection}
+        onToggleAll={vm.toggleCurrentPageSelection}
+        onPreview={vm.setPreviewClient}
+        onDownload={vm.download}
+        onSend={vm.sendOne}
+        onRegenerate={vm.regenerate}
+        regeneratingClientId={vm.regeneratingClientId}
+        sendingClientIds={vm.sendingClientIds}
+        isFetching={vm.isFetching}
+        isError={vm.isError}
+        errorMessage={vm.errorMessage}
+        onRefresh={vm.refetch}
+        page={page}
+        pages={pages}
+        hasPrev={vm.pagination?.hasPrev ?? false}
+        hasNext={vm.pagination?.hasNext ?? false}
+        onPageChange={vm.goToPage}
       />
+      <BulkSendModal visible={vm.sendModalVisible} count={vm.sendCount} onClose={vm.closeSend} onSend={vm.sendBulk} isSending={vm.isSendingBulk} />
+      <BulkGenerateModal
+        visible={vm.generateModalVisible}
+        count={vm.generateCount}
+        onClose={vm.closeGenerate}
+        onGenerate={vm.generateBulk}
+        isGenerating={vm.isGeneratingBulk}
+      />
+      <ShippingMarkSettingsModal visible={vm.settingsVisible} config={vm.config} isSaving={vm.isUpdatingConfig} onSave={vm.updateConfig} onClose={vm.closeSettings} />
       <ClientShippingMarkPreviewModal
-        visible={Boolean(previewClient)}
-        client={previewClient}
-        isSending={isSendingBulk}
-        isRegenerating={isRegenerating}
-        onClose={() => setPreviewClient(null)}
-        onDownload={(client) => {
-          void handleDownload(client);
-        }}
-        onSend={(client) => {
-          void handleSendOne(client);
-        }}
-        onRegenerate={regenerateMark}
+        visible={Boolean(vm.previewClient)} client={vm.previewClient}
+        isSending={vm.isSendingBulk} isRegenerating={vm.isRegenerating}
+        onClose={vm.closePreview} onDownload={vm.download} onSend={vm.sendOne} onRegenerate={vm.regenerate}
       />
     </Screen>
   );
 };
-
-const styles = StyleSheet.create({
-  screenContent: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  settingsButton: {
-    marginBottom: 12,
-  },
-});

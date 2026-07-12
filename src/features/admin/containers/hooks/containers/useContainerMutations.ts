@@ -54,6 +54,38 @@ export const useUpdateContainerStatus = () => {
   });
 };
 
+export const useArchiveContainer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => containerService.archive(id),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({
+        queryKey: containerQueryKeys.detail(id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: containerQueryKeys.lists(),
+      });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    },
+  });
+};
+
+export const useUnarchiveContainer = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => containerService.unarchive(id),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({
+        queryKey: containerQueryKeys.detail(id),
+      });
+      queryClient.invalidateQueries({
+        queryKey: containerQueryKeys.lists(),
+      });
+      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
+    },
+  });
+};
+
 export const useDeleteContainer = () => {
   const queryClient = useQueryClient();
   return useMutation({

@@ -7,7 +7,6 @@ import { FlashList, ListRenderItem } from '@shopify/flash-list';
 import {
   SectionHeader,
   EmptyState,
-  SummaryCard,
   PackingListCommandPanel,
 } from '../../screens/PackingList/components';
 import { ClientSelector } from '../../screens/PackingList/components/ClientSelector';
@@ -24,7 +23,6 @@ interface PackingListBodyProps {
   selectedClientId: string | null;
   onSelectClient: (clientId: string | null) => void;
   onToggleAll: () => void;
-  formatDate: (date: Date | string) => string;
 }
 
 export const PackingListBody: React.FC<PackingListBodyProps> = ({
@@ -35,7 +33,6 @@ export const PackingListBody: React.FC<PackingListBodyProps> = ({
   selectedClientId,
   onSelectClient,
   onToggleAll,
-  formatDate,
 }) => {
   const { colors, isDark } = useAppTheme();
   const styles = createStyles(colors, isDark);
@@ -83,14 +80,7 @@ export const PackingListBody: React.FC<PackingListBodyProps> = ({
       />
     </View>
   );
-  const footer = clients.length > 0 ? (
-    <View>
-      <SummaryCard summary={summary} formatDate={formatDate} />
-      <View style={styles.bottomSpacer} />
-    </View>
-  ) : (
-    <View style={styles.bottomSpacer} />
-  );
+  const footer = <View style={styles.bottomSpacer} />;
 
   return (
     <FlashList

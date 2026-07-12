@@ -4,13 +4,52 @@
  */
 import { File, Paths } from 'expo-file-system';
 
-import RNShare from 'react-native-share';
+import RNShare, { ShareSingleOptions } from 'react-native-share';
 
 export interface PDFShareOptions {
   uri: string;
   filename: string;
   dialogTitle: string;
   mimeType?: string;
+}
+
+const blobToBase64 = (blob: Blob): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result?.toString().split(',')[1];
+      if (base64) {
+        resolve(base64);
+        return;
+      }
+      reject(new Error('Failed to convert PDF blob to base64'));
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+
+/**
+ * Save a PDF blob to the cache directory and return the local file URI
+ */
+export async function savePDFToCache(blob: Blob, filename: string): Promise<string> {
+  const destFile = new File(Paths.cache, filename);
+  const base64Data = await blobToBase64(blob);
+  await destFile.write(base64Data, { encoding: 'base64' });
+  return destFile.uri;
+}
+
+/**
+ * Trigger a browser download for a PDF blob on web
+ */
+export function downloadPDFOnWeb(blob: Blob, filename: string): void {
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(url);
 }
 
 /**
@@ -61,9 +100,9 @@ export async function sharePDFFromUri(options: PDFShareOptions): Promise<void> {
         filename: filename,
         message: dialogTitle,
       });
-    } catch (error: any) {
+    } catch (error) {
       // User cancelled is not an error
-      if (error?.message?.includes('User did not share') || error?.message?.includes('cancelled')) {
+      if (error instanceof Error && (error.message.includes('User did not share') || error.message.includes('cancelled'))) {
         return;
       }
       throw error;
@@ -96,10 +135,10 @@ export async function sharePDFOnWhatsApp(options: {
       message,
       filename,
       whatsAppNumber: phone,
-    } as any);
-  } catch (err: any) {
+    } as ShareSingleOptions);
+  } catch (err) {
     // If WhatsApp-specific fails, fallback to generic share
-    if (err?.message?.includes('not installed') || err?.message?.includes('not supported')) {
+    if (err instanceof Error && (err.message.includes('not installed') || err.message.includes('not supported'))) {
       await sharePDFGeneric({ fileUri, filename, message });
     } else if (!isUserCancellation(err)) {
       throw err;
@@ -132,14 +171,14 @@ export async function sharePDFGeneric(options: {
       filename,
       message,
     });
-  } catch (err: any) {
+  } catch (err) {
     if (!isUserCancellation(err)) {
       throw err;
     }
   }
 }
 
-function isUserCancellation(err: any): boolean {
-  const msg = err?.message || '';
+function isUserCancellation(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message : '';
   return msg.includes('User did not share') || msg.includes('cancelled');
 }

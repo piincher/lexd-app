@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/12</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
@@ -39,7 +39,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
@@ -205,7 +205,9 @@
 <a name='L140'></a><a href='#L140'>140</a>
 <a name='L141'></a><a href='#L141'>141</a>
 <a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a>
+<a name='L145'></a><a href='#L145'>145</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -214,13 +216,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -237,6 +232,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -253,8 +259,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -355,14 +359,18 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { SEA_SHIPPING_LINES, SHIPPING_LINE_LABELS } from '@src/shared/constants/shippingLines';
 import { FilterCategorySection } from './FilterCategorySection';
 import { FilterChipGroup } from './FilterChipGroup';
 import { FilterSummaryChips } from './FilterSummaryChips';
 import { SearchFilters } from '../api/searchApi';
 import { FilterFooter } from './FilterFooter';
 import { createStyles } from './FilterSectionContainer.styles';
+import type { ThemeContextType } from '@src/constants/Theme';
 &nbsp;
-const getGoodsStatuses = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>olors: any) =&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
+type AppColors = ThemeContextType['colors'];
+&nbsp;
+const getGoodsStatuses = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>olors: AppColors) =&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
   { value: 'RECEIVED_AT_WAREHOUSE', label: 'Entrepôt', color: colors.status.info },
   { value: 'PACKED', label: 'Préparé', color: colors.primary.main },
   { value: 'ASSIGNED_TO_CONTAINER', label: 'Assigné', color: colors.accent.mint },
@@ -373,13 +381,13 @@ const getGoodsStatuses = <span class="cstat-no" title="statement not covered" ><
   { value: 'DELIVERED', label: 'Livré', color: colors.primary.light },
 ];
 &nbsp;
-const getGoodsPaymentStatuses = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>olors: any) =&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
+const getGoodsPaymentStatuses = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>olors: AppColors) =&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
   { value: 'UNPAID', label: 'Non payé', color: colors.status.error },
   { value: 'PARTIAL', label: 'Partiel', color: colors.status.warning },
   { value: 'PAID', label: 'Payé', color: colors.status.success },
 ];
 &nbsp;
-const getContainerStatuses = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>olors: any) =&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
+const getContainerStatuses = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>olors: AppColors) =&gt; <span class="cstat-no" title="statement not covered" >[</span></span>
   { value: 'BOOKED', label: 'Réservé', color: colors.status.info },
   { value: 'EMPTY_TO_WAREHOUSE', label: 'Vide → Entrepôt', color: colors.primary.main },
   { value: 'LOADING', label: 'Chargement', color: colors.accent.rose },
@@ -394,12 +402,10 @@ const SHIPPING_MODES = <span class="cstat-no" title="statement not covered" >[</
   { value: 'AIR', label: 'Aérien', icon: 'airplane' },
 ];
 &nbsp;
-const SHIPPING_LINES = <span class="cstat-no" title="statement not covered" >[</span>
-  { value: 'MSC', label: 'MSC' },
-  { value: 'MAERSK', label: 'Maersk' },
-  { value: 'CMA_CGM', label: 'CMA CGM' },
-  { value: 'HAPAG_LLOYD', label: 'Hapag-Lloyd' },
-];
+const SHIPPING_LINES = <span class="cstat-no" title="statement not covered" >SEA_SHIPPING_LINES.map(<span class="fstat-no" title="function not covered" >(l</span>ine) =&gt; (<span class="cstat-no" title="statement not covered" >{</span></span>
+  value: line,
+  label: SHIPPING_LINE_LABELS[line],
+}));
 &nbsp;
 interface FilterSectionContainerProps {
   entity: 'goods' | 'containers' | 'clients';
@@ -496,7 +502,7 @@ export const FilterSectionContainer: React.FC&lt;FilterSectionContainerProps&gt;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-19T14:24:04.619Z
+                at 2026-07-10T11:55:12.045Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

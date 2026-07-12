@@ -4,7 +4,7 @@ import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme['colors'];
 
-export const getStyles = (colors: ThemeColors, isDark: boolean) =>
+export const getStyles = (colors: ThemeColors, _isDark: boolean) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
@@ -29,7 +29,10 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       color: colors.text.primary,
     },
     closeBtn: {
-      padding: 4,
+      width: 44,
+      height: 44,
+      alignItems: "center",
+      justifyContent: "center",
     },
     subtitle: {
       fontFamily: Fonts.regular,
@@ -50,17 +53,26 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       borderRadius: 12,
       backgroundColor: colors.background.default,
       borderWidth: 1,
-      borderColor: colors.border.light,
+      borderColor: colors.border,
     },
     triggerItemActive: {
       borderColor: colors.primary.main + "40",
       backgroundColor: colors.primary.main + "08",
     },
     triggerText: {
-      flex: 1,
       fontFamily: Fonts.medium,
       fontSize: 14,
       color: colors.text.primary,
+    },
+    triggerCopy: {
+      flex: 1,
+      gap: 2,
+    },
+    triggerDescription: {
+      fontFamily: Fonts.regular,
+      fontSize: 12,
+      lineHeight: 17,
+      color: colors.text.secondary,
     },
     triggerTextActive: {
       color: colors.primary.main,

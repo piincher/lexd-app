@@ -4,7 +4,7 @@ import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme['colors'];
 
-export const getStyles = (colors: ThemeColors, isDark: boolean) =>
+export const getStyles = (colors: ThemeColors, _isDark: boolean) =>
   StyleSheet.create({
     container: {
       flexDirection: "row",

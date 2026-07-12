@@ -9,6 +9,10 @@ interface ContainerQuickActionsBarProps {
   hasGoods: boolean;
   canMarkReadyForPickup: boolean;
   canMarkDelivered: boolean;
+  canArchive?: boolean;
+  canUnarchive?: boolean;
+  isArchiving?: boolean;
+  isUnarchiving?: boolean;
   onAssignGoods: () => void;
   onScanAssign: () => void;
   onSharePackingList: () => void;
@@ -16,6 +20,8 @@ interface ContainerQuickActionsBarProps {
   onOpenLoadingList: () => void;
   onMarkReadyForPickup: () => void;
   onMarkDelivered: () => void;
+  onArchive?: () => void;
+  onUnarchive?: () => void;
 }
 
 interface ActionItem {
@@ -31,6 +37,10 @@ export const ContainerQuickActionsBar: React.FC<ContainerQuickActionsBarProps> =
   hasGoods,
   canMarkReadyForPickup,
   canMarkDelivered,
+  canArchive,
+  canUnarchive,
+  isArchiving,
+  isUnarchiving,
   onAssignGoods,
   onScanAssign,
   onSharePackingList,
@@ -38,6 +48,8 @@ export const ContainerQuickActionsBar: React.FC<ContainerQuickActionsBarProps> =
   onOpenLoadingList,
   onMarkReadyForPickup,
   onMarkDelivered,
+  onArchive,
+  onUnarchive,
 }) => {
   const { colors } = useAppTheme();
   const actions: ActionItem[] = [
@@ -53,6 +65,12 @@ export const ContainerQuickActionsBar: React.FC<ContainerQuickActionsBarProps> =
   }
   if (canMarkDelivered) {
     actions.push({ key: 'delivered', label: 'Livré', icon: 'checkmark-circle-outline', onPress: onMarkDelivered, accent: 'success' });
+  }
+  if (canArchive && onArchive) {
+    actions.push({ key: 'archive', label: isArchiving ? 'Archivage...' : 'Archiver', icon: 'archive-outline', onPress: onArchive, disabled: isArchiving, accent: 'warning' });
+  }
+  if (canUnarchive && onUnarchive) {
+    actions.push({ key: 'unarchive', label: isUnarchiving ? 'Restauration...' : 'Désarchiver', icon: 'arrow-up-circle-outline', onPress: onUnarchive, disabled: isUnarchiving, accent: 'warning' });
   }
 
   return (

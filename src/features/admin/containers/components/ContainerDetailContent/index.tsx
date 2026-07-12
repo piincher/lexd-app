@@ -13,7 +13,7 @@ import { ContainerProfitCard } from '../../screens/components/ContainerProfitCar
 import { ContainerHealthPanel } from '../../screens/components/ContainerHealthPanel';
 import { ContainerIssueAlerts } from '../../screens/components/ContainerIssueAlerts';
 import { ContainerSmartFilters } from '../../screens/components/ContainerSmartFilters';
-import { ContainerQuickActionsBar } from '../../screens/components/ContainerQuickActionsBar';
+import { ContainerDetailQuickActions } from '../../screens/components/ContainerDetailQuickActions';
 import { ContainerClientGroups } from '../../screens/components/ContainerClientGroups';
 import type { ContainerDetailScreenState } from '../../screens/hooks/useContainerDetailScreen';
 import type { Container } from '../../types';
@@ -49,14 +49,6 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
     navigation,
     handleRemoveGoods,
     handleMarkGoodsDelivered,
-    handleAssignGoods,
-    handleGeneratePackingList,
-    handleSharePackingList,
-    handleGoToLoadingList,
-    handleMarkReadyForPickup,
-    handleMarkDelivered,
-    canMarkReadyForPickup,
-    canMarkDelivered,
     assist,
   } = screen;
 
@@ -80,17 +72,10 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
         consignee={consignee}
       />
       <ContainerTimeline currentStatus={container.status} currentStatusIndex={currentStatusIndex} />
-      <ContainerQuickActionsBar
-        hasGoods={goodsList.length > 0}
-        canMarkReadyForPickup={canMarkReadyForPickup}
-        canMarkDelivered={canMarkDelivered}
-        onAssignGoods={handleAssignGoods}
+      <ContainerDetailQuickActions
+        goodsCount={goodsList.length}
+        screen={screen}
         onScanAssign={() => setScanVisible(true)}
-        onSharePackingList={handleSharePackingList}
-        onOpenPackingList={handleGeneratePackingList}
-        onOpenLoadingList={handleGoToLoadingList}
-        onMarkReadyForPickup={handleMarkReadyForPickup}
-        onMarkDelivered={handleMarkDelivered}
       />
       <ContainerHealthPanel health={assist.health} />
       <ContainerEtaCard eta={eta} />

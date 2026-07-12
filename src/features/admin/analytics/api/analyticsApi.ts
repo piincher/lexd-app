@@ -4,12 +4,18 @@
  */
 
 import { apiClientV2 } from '@src/api/client';
-import { DashboardData, RevenueTrendsData, ContainerUtilizationData, CustomerAnalyticsData, AtRiskCustomersData, GoodsVolumeData, PaymentMetricsData, RealtimeData, PeriodFilter, ExportOptions } from '../types';
+import { DashboardData, RevenueTrendsData, ContainerUtilizationData, CustomerAnalyticsData, AtRiskCustomersData, AtRiskCustomersParams, GoodsVolumeData, PaymentMetricsData, RealtimeData, PeriodFilter, ExportOptions } from '../types';
 
 const BASE_URL = '/analytics';
 
 // Helper to unwrap the standard { success, data, message, meta } response shape
-const unwrap = <T>(response: any): T => response.data?.data ?? response.data;
+const unwrap = <T>(response: { data?: T | { data?: T } }): T => {
+  const payload = response.data;
+  if (payload && typeof payload === 'object' && 'data' in payload) {
+    return (payload as { data?: T }).data as T;
+  }
+  return payload as T;
+};
 
 // ============================================
 // DASHBOARD
@@ -59,7 +65,7 @@ export const getTopCustomers = async (
 };
 
 export const getAtRiskCustomers = async (
-  params?: { days?: number; page?: number; limit?: number }
+  params?: AtRiskCustomersParams
 ): Promise<AtRiskCustomersData> => {
   const response = await apiClientV2.get(`${BASE_URL}/customers/at-risk`, { params });
   return unwrap(response);

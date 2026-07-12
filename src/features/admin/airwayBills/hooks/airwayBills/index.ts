@@ -12,6 +12,10 @@ export {
   useUpdateAirwayBillWaypoint,
 } from './useAirwayBillWaypoints';
 export {
+  useGetAirwayBillGoodsManifest,
+  useAirwayBillGoodsManifestDownload,
+} from './useAirwayBillGoodsManifest';
+export {
   useCreateAirwayBill,
   useUpdateAirwayBill,
   useDeleteAirwayBill,

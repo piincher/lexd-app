@@ -18,6 +18,8 @@ export {
   useReconcileContainer,
   useCreateContainer,
   useUpdateContainerStatus,
+  useArchiveContainer,
+  useUnarchiveContainer,
   useDeleteContainer,
   useAssignGoodsToContainer,
   useRemoveGoodsFromContainer,

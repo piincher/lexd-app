@@ -5,6 +5,7 @@ import { useAirwayBillDetailActions } from './detail/useAirwayBillDetailActions'
 import { useAirwayBillDetailRefresh } from './detail/useAirwayBillDetailRefresh';
 import { useCargoBagsData } from './detail/useCargoBagsData';
 import { useCargoBagActions } from './detail/useCargoBagActions';
+import { useAirwayBillDetailManifest } from './detail/useAirwayBillDetailManifest';
 
 export const useAirwayBillDetailScreen = () => {
   const { navigation, airwayBillId } = useAirwayBillDetailNavigation();
@@ -23,14 +24,8 @@ export const useAirwayBillDetailScreen = () => {
     refetchWaypoints,
   } = useAirwayBillDetailData(airwayBillId);
 
-  const {
-    menuVisible,
-    menuKey,
-    createBagVisible,
-    setCreateBagVisible,
-    openMenu,
-    closeMenu,
-  } = useAirwayBillDetailUI();
+  const { menuVisible, menuKey, createBagVisible, setCreateBagVisible, openMenu, closeMenu } =
+    useAirwayBillDetailUI();
 
   const {
     cargoBags,
@@ -39,7 +34,11 @@ export const useAirwayBillDetailScreen = () => {
     refetchCargoBags,
   } = useCargoBagsData(airwayBillId);
 
-  const { handleRefreshCargoBags } = useAirwayBillDetailRefresh(refetchAwb, refetchWaypoints, refetchCargoBags);
+  const manifestState = useAirwayBillDetailManifest(airwayBillId, airwayBill?.awbNumber);
+
+  const { handleRefreshCargoBags } = useAirwayBillDetailRefresh(refetchAwb, refetchWaypoints, async () => {
+    await Promise.all([refetchCargoBags(), manifestState.refetchGoodsManifest()]);
+  });
 
   const {
     handleStatusChange,
@@ -91,5 +90,6 @@ export const useAirwayBillDetailScreen = () => {
     handleBagPress,
     handleRefreshCargoBags,
     isRefreshingCargoBags,
+    ...manifestState,
   };
 };

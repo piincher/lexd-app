@@ -64,6 +64,16 @@ export interface AtRiskCustomer {
   neverShipped: boolean;
 }
 
+export type AtRiskFilter = 'all' | 'never' | '60' | '90' | '120';
+
+export interface AtRiskCustomersParams {
+  days?: number;
+  page?: number;
+  limit?: number;
+  q?: string;
+  risk?: AtRiskFilter;
+}
+
 export interface AtRiskCustomersData {
   customers: AtRiskCustomer[];
   summary: {
@@ -75,6 +85,8 @@ export interface AtRiskCustomersData {
     page: number;
     limit: number;
     total: number;
-    pages: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
   };
 }

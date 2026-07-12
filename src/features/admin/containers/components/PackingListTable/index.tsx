@@ -1,15 +1,17 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, useWindowDimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import type { Goods } from "../../../goods/types";
+import type { PackingListGoods } from '@src/shared/types/packingListGoods';
 import { createStyles } from "./PackingListTable.styles";
 import { SortableHeader } from "./SortableHeader";
 import { PackingListRow } from "./PackingListRow";
 import { usePackingListSort } from "./usePackingListSort";
+import { PackingListCard } from './PackingListCard';
+import { CompactSortBar } from './CompactSortBar';
 
 interface PackingListTableProps {
-  goods: Goods[];
+  goods: PackingListGoods[];
   showPhotos?: boolean;
   startIndex?: number;
   sortable?: boolean;
@@ -19,12 +21,15 @@ export const PackingListTable: React.FC<PackingListTableProps> = ({
   goods, showPhotos = false, startIndex = 1, sortable = true,
 }) => {
   const { colors, isDark } = useAppTheme();
+  const { width } = useWindowDimensions();
   const styles = createStyles(colors, isDark);
   const { sortConfig, handleSort, sortedGoods } = usePackingListSort(goods, sortable);
+  const compact = width < 600;
 
   return (
     <View style={styles.container}>
-      <View style={styles.headerRow}>
+      {compact && sortable && <CompactSortBar sortConfig={sortConfig} onSort={handleSort} />}
+      {!compact && <View style={styles.headerRow}>
         <View style={[styles.headerCell, { flex: 0.5 }]}>
           <Text style={styles.headerText}>N°</Text>
         </View>
@@ -38,11 +43,15 @@ export const PackingListTable: React.FC<PackingListTableProps> = ({
         <SortableHeader field="actualCBM" label="CBM" flex={0.8} align="right" sortConfig={sortConfig} sortable={sortable} onSort={handleSort} />
         <SortableHeader field="weight" label="Poids" flex={0.8} align="right" sortConfig={sortConfig} sortable={sortable} onSort={handleSort} />
         <SortableHeader field="quantity" label="Qté" flex={0.6} align="right" sortConfig={sortConfig} sortable={sortable} onSort={handleSort} />
-      </View>
+      </View>}
 
-      <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
-        {sortedGoods.map((item, index) => (
-          <PackingListRow
+      {sortedGoods.map((item, index) => (
+          compact ? <PackingListCard
+            key={item._id || item.goodsId}
+            item={item}
+            index={startIndex + index}
+            showPhotos={showPhotos}
+          /> : <PackingListRow
             key={item._id || item.goodsId || `item-${index}`}
             item={item}
             index={startIndex + index}
@@ -50,7 +59,6 @@ export const PackingListTable: React.FC<PackingListTableProps> = ({
             isLast={index === sortedGoods.length - 1}
           />
         ))}
-      </ScrollView>
 
       {sortedGoods.length === 0 && (
         <View style={styles.emptyState}>

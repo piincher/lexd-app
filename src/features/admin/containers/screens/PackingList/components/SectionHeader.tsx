@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface SectionHeaderProps {
   allExpanded: boolean;
@@ -18,6 +19,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   totalQuantity,
   onToggleAll,
 }) => {
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
   const title = clientCount === 1 ? 'Marchandises du client' : 'Marchandises par client';
   const meta =
     typeof clientCount === 'number' && typeof totalItems === 'number'
@@ -27,7 +30,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   return (
     <View style={styles.sectionHeader}>
       <View style={styles.sectionHeaderLeft}>
-        <Ionicons name="people" size={18} color={Theme.neutral[600]} />
+        <Ionicons name="people" size={18} color={colors.text.secondary} />
         <View style={styles.sectionTitleBlock}>
           <Text style={styles.sectionHeaderTitle} numberOfLines={1}>
             {title}
@@ -39,6 +42,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         onPress={onToggleAll}
         style={styles.expandAllButton}
         accessibilityRole="button"
+        accessibilityLabel={allExpanded ? 'Réduire toutes les sections client' : 'Déplier toutes les sections client'}
+        accessibilityState={{ expanded: allExpanded }}
       >
         <Text style={styles.expandAllText}>
           {allExpanded ? 'Tout réduire' : 'Tout déplier'}
@@ -46,14 +51,16 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         <Ionicons
           name={allExpanded ? 'chevron-up' : 'chevron-down'}
           size={16}
-          color={Theme.primary[600]}
+          color={colors.primary[600]}
         />
       </TouchableOpacity>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+type AppColors = ReturnType<typeof useAppTheme>['colors'];
+
+const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.create({
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -76,25 +83,27 @@ const styles = StyleSheet.create({
   sectionHeaderTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: Theme.neutral[700],
+    color: colors.text.primary,
   },
   sectionHeaderMeta: {
     marginTop: 2,
     fontSize: 12,
     fontWeight: '600',
-    color: Theme.neutral[500],
+    color: colors.text.secondary,
   },
   expandAllButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: Theme.spacing.xs,
-    minHeight: 44,
+    minHeight: 48,
     paddingHorizontal: Theme.spacing.sm,
+    borderRadius: Theme.radius.full,
+    backgroundColor: isDark ? colors.neutral[200] : colors.primary[50],
   },
   expandAllText: {
     fontSize: 13,
     fontWeight: '600',
-    color: Theme.primary[600],
+    color: colors.primary[600],
   },
 });

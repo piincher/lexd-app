@@ -21,6 +21,8 @@ export {
 export {
   useCreateContainer,
   useUpdateContainerStatus,
+  useArchiveContainer,
+  useUnarchiveContainer,
   useDeleteContainer,
 } from './useContainerMutations';
 

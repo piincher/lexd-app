@@ -14,6 +14,7 @@ import {
   AirwayBillWaypointPayload,
   UpdateAirwayBillWaypointInput,
   AirwayBillGoods,
+  AirwayBillGoodsManifest,
   AirCargoRouteOption,
 } from '../types';
 
@@ -93,6 +94,17 @@ class AirwayBillServiceClass {
 
   async getUnassignedGoods(): Promise<{ data: { goods: AirwayBillGoods[]; count: number } }> {
     return apiRequest.get(this.client, `${BASE_URL}/unassigned-goods`);
+  }
+
+  async getGoodsManifest(id: string): Promise<{ data: { manifest: AirwayBillGoodsManifest } }> {
+    return apiRequest.get(this.client, `${BASE_URL}/${id}/goods-manifest`);
+  }
+
+  async downloadGoodsManifestPdf(id: string): Promise<Blob> {
+    const response = await this.client.get(`${BASE_URL}/${id}/goods-manifest/export`, {
+      responseType: 'blob',
+    });
+    return response.data;
   }
 }
 

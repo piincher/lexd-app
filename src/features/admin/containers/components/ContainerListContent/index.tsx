@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, RefreshControl } from 'react-native';
+import { View, RefreshControl, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Text, ActivityIndicator } from 'react-native-paper';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native';
-import { Container, ContainerStatus } from '../../types';
+import { Container, ContainerArchiveMode, ContainerStatus } from '../../types';
 import { ContainerCard } from '../ContainerCard';
 import { Theme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -14,9 +13,10 @@ import { createStyles } from './ContainerListContent.styles';
 interface ContainerListContentProps {
   isLoading: boolean;
   isRefetching: boolean;
-  error: any;
+  error: unknown;
   filteredContainers: Container[];
   selectedStatus: ContainerStatus | 'all' | 'assignable';
+  archiveMode: ContainerArchiveMode;
   onRefresh: () => void;
   onContainerPress: (containerId: string) => void;
   onCreateContainerPress: () => void;
@@ -28,6 +28,7 @@ export const ContainerListContent: React.FC<ContainerListContentProps> = ({
   error,
   filteredContainers,
   selectedStatus,
+  archiveMode,
   onRefresh,
   onContainerPress,
   onCreateContainerPress,
@@ -38,6 +39,7 @@ export const ContainerListContent: React.FC<ContainerListContentProps> = ({
     <ContainerCard container={item} onPress={() => onContainerPress(item._id)} />
   );
   const keyExtractor = (item: Container) => item._id;
+  const isArchive = archiveMode === 'archived';
 
   if (isLoading) {
     return (
@@ -83,13 +85,15 @@ export const ContainerListContent: React.FC<ContainerListContentProps> = ({
           </LinearGradient>
           <Text style={styles.emptyTitle}>Aucun container</Text>
           <Text style={styles.emptySubtitle}>
-            {selectedStatus === 'assignable'
+            {isArchive
+              ? 'Aucun container archivé'
+              : selectedStatus === 'assignable'
               ? 'Aucun container ne peut recevoir de marchandises'
               : selectedStatus !== 'all'
               ? 'Aucun container dans ce statut'
               : 'Créez votre premier container pour commencer'}
           </Text>
-          {selectedStatus === 'all' && (
+          {!isArchive && selectedStatus === 'all' && (
             <TouchableOpacity style={styles.emptyButton} onPress={onCreateContainerPress}>
               <LinearGradient colors={Theme.gradients.primary} style={styles.emptyButtonGradient}>
                 <Ionicons name="add" size={20} color={colors.text.inverse} />

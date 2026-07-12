@@ -1,8 +1,11 @@
 import React from 'react';
-import { Image, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { Ionicons } from '@expo/vector-icons';
 import { Button } from '@src/shared/ui/Button';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { ShippingMarkClient } from '../api/shippingMarkAdminApi';
+import { createStyles } from './ClientShippingMarkPreviewModal.styles';
 
 interface ClientShippingMarkPreviewModalProps {
   client: ShippingMarkClient | null;
@@ -29,6 +32,7 @@ export const ClientShippingMarkPreviewModal: React.FC<ClientShippingMarkPreviewM
   onRegenerate,
 }) => {
   const { colors } = useAppTheme();
+  const styles = createStyles(colors);
 
   if (!client) return null;
 
@@ -38,24 +42,35 @@ export const ClientShippingMarkPreviewModal: React.FC<ClientShippingMarkPreviewM
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View style={styles.centered}>
         <Pressable style={styles.backdrop} onPress={onClose} />
-        <View style={[styles.card, { backgroundColor: colors.background.card }]}>
+        <View style={styles.card}>
           <View style={styles.header}>
             <View style={styles.headerText}>
-              <Text style={[styles.title, { color: colors.text.primary }]}>Aperçu de la marque</Text>
-              <Text style={[styles.subtitle, { color: colors.text.secondary }]} numberOfLines={2}>
+              <Text style={styles.title}>Aperçu de la marque</Text>
+              <Text style={styles.subtitle} numberOfLines={2} selectable>
                 {getClientName(client)} • {client.clientId}
               </Text>
             </View>
-            <Pressable onPress={onClose} hitSlop={12}>
-              <Text style={[styles.close, { color: colors.text.secondary }]}>×</Text>
+            <Pressable
+              onPress={onClose}
+              style={({ pressed }) => [styles.closeButton, pressed && styles.pressed]}
+              accessibilityRole="button"
+              accessibilityLabel="Fermer l'aperçu"
+            >
+              <Ionicons name="close" size={23} color={colors.text.primary} />
             </Pressable>
           </View>
 
-          <View style={[styles.preview, { backgroundColor: colors.background.paper }]}>
+          <View style={styles.preview}>
             {hasImage ? (
-              <Image source={{ uri: client.shippingMarkImageUrl }} style={styles.image} resizeMode="contain" />
+              <Image
+                source={{ uri: client.shippingMarkImageUrl }}
+                style={styles.image}
+                contentFit="contain"
+                recyclingKey={client._id}
+                transition={160}
+              />
             ) : (
-              <Text style={[styles.emptyText, { color: colors.text.secondary }]}>
+              <Text style={styles.emptyText}>
                 {"Aucune image générée. Régénérez la marque avant l'envoi."}
               </Text>
             )}
@@ -63,10 +78,9 @@ export const ClientShippingMarkPreviewModal: React.FC<ClientShippingMarkPreviewM
 
           <View style={styles.actions}>
             <Button
-              title="Télécharger"
-              icon="download-outline"
+              title="Partager"
+              icon="share-outline"
               variant="outline"
-              size="small"
               disabled={!hasImage}
               onPress={() => onDownload(client)}
               style={styles.actionButton}
@@ -74,7 +88,6 @@ export const ClientShippingMarkPreviewModal: React.FC<ClientShippingMarkPreviewM
             <Button
               title="Envoyer WhatsApp"
               icon="logo-whatsapp"
-              size="small"
               disabled={!hasImage || isSending}
               loading={isSending}
               onPress={() => onSend(client)}
@@ -84,7 +97,6 @@ export const ClientShippingMarkPreviewModal: React.FC<ClientShippingMarkPreviewM
               title="Régénérer"
               icon="refresh-outline"
               variant="secondary"
-              size="small"
               loading={isRegenerating}
               onPress={() => onRegenerate(client._id)}
               style={styles.actionButton}
@@ -95,67 +107,3 @@ export const ClientShippingMarkPreviewModal: React.FC<ClientShippingMarkPreviewM
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(15, 23, 42, 0.64)',
-  },
-  card: {
-    width: '92%',
-    maxHeight: '88%',
-    borderRadius: 12,
-    padding: 16,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 12,
-  },
-  headerText: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  subtitle: {
-    marginTop: 3,
-    fontSize: 13,
-  },
-  close: {
-    fontSize: 30,
-    lineHeight: 32,
-    fontWeight: '600',
-  },
-  preview: {
-    width: '100%',
-    aspectRatio: 0.96,
-    borderRadius: 8,
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  emptyText: {
-    padding: 24,
-    textAlign: 'center',
-  },
-  actions: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 8,
-    marginTop: 14,
-  },
-  actionButton: {
-    flexGrow: 1,
-  },
-});

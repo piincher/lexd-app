@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/27</span>
+                <span class='fraction'>0/31</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/45</span>
+                <span class='fraction'>0/57</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/26</span>
+                <span class='fraction'>0/30</span>
             </div>
         
             
@@ -189,7 +189,17 @@
 <a name='L124'></a><a href='#L124'>124</a>
 <a name='L125'></a><a href='#L125'>125</a>
 <a name='L126'></a><a href='#L126'>126</a>
-<a name='L127'></a><a href='#L127'>127</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L127'></a><a href='#L127'>127</a>
+<a name='L128'></a><a href='#L128'>128</a>
+<a name='L129'></a><a href='#L129'>129</a>
+<a name='L130'></a><a href='#L130'>130</a>
+<a name='L131'></a><a href='#L131'>131</a>
+<a name='L132'></a><a href='#L132'>132</a>
+<a name='L133'></a><a href='#L133'>133</a>
+<a name='L134'></a><a href='#L134'>134</a>
+<a name='L135'></a><a href='#L135'>135</a>
+<a name='L136'></a><a href='#L136'>136</a>
+<a name='L137'></a><a href='#L137'>137</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -237,8 +247,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -249,6 +257,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -265,6 +277,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -360,19 +380,25 @@ export const useReceiveFormActions = <span class="cstat-no" title="statement not
     const isClientUnknown = <span class="cstat-no" title="statement not covered" >watchedValues.exceptionReasons?.includes('CLIENT_UNKNOWN');</span>
 <span class="cstat-no" title="statement not covered" >    if (!selectedClient &amp;&amp; !isClientUnknown) <span class="cstat-no" title="statement not covered" >return null;</span></span>
 &nbsp;
-    const weight = <span class="cstat-no" title="statement not covered" >parseFloat(watchedValues.weight.replace(',', '.'));</span>
+    const shippingMode = <span class="cstat-no" title="statement not covered" >watchedValues.shippingMode || 'SEA';</span>
+    const hasWeight = <span class="cstat-no" title="statement not covered" >!!watchedValues.weight?.trim();</span>
+    const weight = <span class="cstat-no" title="statement not covered" >hasWeight ? parseFloat(watchedValues.weight.replace(',', '.')) : 0;</span>
     const quantity = <span class="cstat-no" title="statement not covered" >parseInt(watchedValues.quantity, 10);</span>
     const unitPrice = <span class="cstat-no" title="statement not covered" >parseFloat(watchedValues.unitPrice.replace(',', '.'));</span>
 &nbsp;
     // Guard against NaN so we never send invalid numbers to the backend.
-<span class="cstat-no" title="statement not covered" >    if (!Number.isFinite(weight) || !Number.isFinite(quantity) || !Number.isFinite(unitPrice)) {</span>
+<span class="cstat-no" title="statement not covered" >    if (</span>
+      (shippingMode !== 'AIR' &amp;&amp; (!hasWeight || !Number.isFinite(weight) || weight &lt;= 0)) ||
+      (hasWeight &amp;&amp; (!Number.isFinite(weight) || weight &lt; 0)) ||
+      !Number.isFinite(quantity) ||
+      !Number.isFinite(unitPrice)
+    ) {
 <span class="cstat-no" title="statement not covered" >      return null;</span>
     }
 &nbsp;
     const input: ReceiveGoodsInput = <span class="cstat-no" title="statement not covered" >{</span>
       clientId: selectedClient?._id ?? null,
       description: watchedValues.description.trim(),
-      weight,
       quantity,
       unitPrice,
       location: watchedValues.location.toUpperCase().trim(),
@@ -380,7 +406,7 @@ export const useReceiveFormActions = <span class="cstat-no" title="statement not
       expressTrackingNumber:
         watchedValues.expressTrackingNumber?.trim() || undefined,
       receivedDate: watchedValues.receivedDate || undefined,
-      shippingMode: watchedValues.shippingMode || 'SEA',
+      shippingMode,
       condition: watchedValues.condition || 'new',
       exceptionReasons: watchedValues.exceptionReasons || [],
       exceptionNotes: watchedValues.exceptionNotes?.trim() || undefined,
@@ -392,6 +418,10 @@ export const useReceiveFormActions = <span class="cstat-no" title="statement not
       source: photoSource,
       capturedAt: photoSource ? new Date().toISOString() : undefined,
     };
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    if (hasWeight || shippingMode !== 'AIR') {</span>
+<span class="cstat-no" title="statement not covered" >      input.weight = weight;</span>
+    }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    if (</span>
       useDimensions &amp;&amp;
@@ -448,7 +478,7 @@ export const useReceiveFormActions = <span class="cstat-no" title="statement not
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-19T14:24:04.619Z
+                at 2026-07-10T11:55:12.045Z
             </div>
         <script src="../../../../../../../../prettify.js"></script>
         <script>

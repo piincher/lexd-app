@@ -26,7 +26,7 @@ export const ClientHeader: React.FC<ClientHeaderProps> = ({ clientGroup, isExpan
   );
 
   return (
-    <TouchableOpacity activeOpacity={0.9} onPress={onToggle} style={styles.header}>
+    <TouchableOpacity activeOpacity={0.9} onPress={onToggle} style={styles.header} accessibilityRole="button" accessibilityLabel={`${clientName}, ${clientGroup.goods.length} colis`} accessibilityHint={isExpanded ? 'Réduit les marchandises du client' : 'Affiche les marchandises du client'} accessibilityState={{ expanded: isExpanded }}>
       <LinearGradient colors={[colors.primary[50], colors.background.card]} style={styles.headerGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}>
         <View style={styles.clientTopRow}>
           <View style={styles.clientInfoCompact}>

@@ -60,14 +60,14 @@ export const AirwayBillTrackingScreen: React.FC = () => {
       </Appbar.Header>
       <AirwayBillTrackingContent
         awb={awb}
-        flightLabel={flightLabel}
-        departureAirport={departureAirport}
-        arrivalAirport={arrivalAirport}
-        waypoints={waypoints}
+        flightLabel={flightLabel || ''}
+        departureAirport={departureAirport || ''}
+        arrivalAirport={arrivalAirport || ''}
+        waypoints={waypoints || []}
         currentWaypoint={currentWaypoint}
-        currentWaypointIndex={currentWaypointIndex}
-        waypointProgress={waypointProgress}
-        currentStepIndex={currentStepIndex}
+        currentWaypointIndex={currentWaypointIndex ?? -1}
+        waypointProgress={waypointProgress ?? 0}
+        currentStepIndex={currentStepIndex ?? -1}
         estimatedArrivalLabel={estimatedArrivalLabel}
         isFetching={Boolean(isFetching)}
         onRefresh={handlers.handleRefresh}

@@ -21,6 +21,8 @@ export type ContainerStatus =
   | 'READY_FOR_PICKUP'
   | 'DELIVERED';
 
+export type ContainerArchiveMode = 'active' | 'archived' | 'all';
+
 /**
  * Timeline step definition for UI
  */
@@ -87,6 +89,9 @@ export interface Container {
   };
   consigneeId: string | ConsigneeInfo;
   status: ContainerStatus;
+  archived?: boolean;
+  archivedAt?: string | null;
+  archivedBy?: string | null;
   goodsIds: string[] | Goods[];
   goods?: Goods[];
   totalCBM: number;
@@ -188,10 +193,25 @@ export interface RemoveGoodsInput {
  */
 export interface ContainerFilters {
   status?: ContainerStatus;
+  archive?: ContainerArchiveMode;
   shippingMode?: ShippingMode;
   shippingLine?: ShippingLine;
   consigneeId?: string;
   routeId?: string;
+}
+
+export interface ContainerListResponse {
+  containers: Container[];
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    pages?: number;
+    totalPages?: number;
+    hasNextPage?: boolean;
+    hasPrevPage?: boolean;
+  };
+  archiveMode?: ContainerArchiveMode;
 }
 
 // ============================================

@@ -18,7 +18,7 @@ const AppShellInner: React.FC = () => {
          setForceUpdateFromApi(true);
          setForceUpdateData({
             message: `Your app version (${data.currentVersion}) is no longer supported. Please upgrade to version ${data.requiredVersion} or later to continue.`,
-            storeUrl: data.storeUrl || '',
+            storeUrl: data.storeUrl || "",
          });
       });
       return () => sub.remove();

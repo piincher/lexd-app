@@ -1,23 +1,26 @@
-import React from 'react';
-import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
+import React, { useCallback } from 'react';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { Ionicons } from '@expo/vector-icons';
 import { Checkbox } from '@src/shared/ui/Checkbox';
-import { Button } from '@src/shared/ui/Button';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import type { ShippingMarkClient } from '../api/shippingMarkAdminApi';
+import { createStyles } from './ClientRow.styles';
+import { ClientRowAction } from './ClientRowAction';
 
 interface ClientRowProps {
   client: ShippingMarkClient;
   selected: boolean;
-  onToggle: () => void;
-  onPreview: () => void;
-  onDownload: () => void;
-  onSend: () => void;
-  onRegenerate: () => void;
+  onToggle: (id: string) => void;
+  onPreview: (client: ShippingMarkClient) => void;
+  onDownload: (client: ShippingMarkClient) => void;
+  onSend: (client: ShippingMarkClient) => void;
+  onRegenerate: (id: string) => void;
   isRegenerating: boolean;
   isSending: boolean;
 }
 
-export const ClientRow: React.FC<ClientRowProps> = ({
+export const ClientRow = React.memo<ClientRowProps>(({
   client,
   selected,
   onToggle,
@@ -28,99 +31,103 @@ export const ClientRow: React.FC<ClientRowProps> = ({
   isRegenerating,
   isSending,
 }) => {
-  const { colors } = useAppTheme();
+  const { colors, isDark } = useAppTheme();
+  const styles = createStyles(colors, isDark);
+  const hasImage = Boolean(client.shippingMarkImageUrl);
   const name = `${client.firstName || ''} ${client.lastName || ''}`.trim() || client.phoneNumber;
+  const toggle = useCallback(() => onToggle(client._id), [client._id, onToggle]);
+  const preview = useCallback(() => onPreview(client), [client, onPreview]);
+  const download = useCallback(() => onDownload(client), [client, onDownload]);
+  const send = useCallback(() => onSend(client), [client, onSend]);
+  const regenerate = useCallback(() => onRegenerate(client._id), [client._id, onRegenerate]);
 
   return (
-    <View style={[styles.row, { backgroundColor: colors.background.paper }]}>
-      <Checkbox checked={selected} onPress={onToggle} />
-      <View style={styles.info}>
-        <Text style={[styles.name, { color: colors.text.primary }]} numberOfLines={1}>
-          {name}
-        </Text>
-        <Text style={[styles.meta, { color: colors.text.secondary }]}>
-          {client.clientId} • {client.phoneNumber}
-        </Text>
-      </View>
-      <Pressable onPress={onPreview} disabled={!client.shippingMarkImageUrl}>
-        {client.shippingMarkImageUrl ? (
-          <Image source={{ uri: client.shippingMarkImageUrl }} style={styles.thumb} />
-        ) : (
-          <View style={[styles.emptyThumb, { borderColor: colors.border }]}>
-            <Text style={[styles.emptyThumbText, { color: colors.text.secondary }]}>—</Text>
+    <View style={[styles.card, selected && styles.selectedCard]}>
+      <View style={styles.mainRow}>
+        <Checkbox
+          checked={selected}
+          onPress={toggle}
+          style={styles.selectionTarget}
+          accessibilityLabel={`Sélectionner ${name}`}
+        />
+        <Pressable
+          onPress={preview}
+          disabled={!hasImage}
+          style={({ pressed }) => [styles.previewButton, pressed && styles.pressed]}
+          accessibilityRole="button"
+          accessibilityLabel={`Aperçu de la marque de ${name}`}
+          accessibilityState={{ disabled: !hasImage }}
+        >
+          {hasImage ? (
+            <Image
+              source={{ uri: client.shippingMarkImageUrl }}
+              style={styles.thumb}
+              contentFit="contain"
+              recyclingKey={client._id}
+              transition={120}
+            />
+          ) : (
+            <Ionicons name="document-outline" size={25} color={colors.text.secondary} />
+          )}
+        </Pressable>
+
+        <View style={styles.info}>
+          <Text style={styles.name} numberOfLines={1}>{name}</Text>
+          <View style={styles.identityRow}>
+            <Text style={styles.clientId} selectable numberOfLines={1}>{client.clientId}</Text>
+            <View style={hasImage ? styles.readyBadge : styles.missingBadge}>
+              <Ionicons
+                name={hasImage ? 'checkmark-circle' : 'time-outline'}
+                size={13}
+                color={hasImage ? colors.feedback.successDark : colors.feedback.warningDark}
+              />
+              <Text style={hasImage ? styles.readyText : styles.missingText}>
+                {hasImage ? 'Prête' : 'À générer'}
+              </Text>
+            </View>
           </View>
+          <Text style={styles.phone} selectable numberOfLines={1}>{client.phoneNumber}</Text>
+        </View>
+
+        {hasImage && (
+          <Pressable
+            onPress={regenerate}
+            disabled={isRegenerating}
+            style={({ pressed }) => [styles.refreshButton, pressed && styles.pressed]}
+            accessibilityRole="button"
+            accessibilityLabel={`Régénérer la marque de ${name}`}
+            accessibilityState={{ busy: isRegenerating }}
+          >
+            {isRegenerating ? (
+              <ActivityIndicator size="small" color={colors.primary.main} />
+            ) : (
+              <Ionicons name="refresh-outline" size={20} color={colors.text.secondary} />
+            )}
+          </Pressable>
         )}
-      </Pressable>
-      <View style={styles.actions}>
-        <Button title="Voir" variant="outline" size="small" onPress={onPreview} disabled={!client.shippingMarkImageUrl} />
-        <Button
-          title="Télécharger"
-          variant="outline"
-          size="small"
-          onPress={onDownload}
-          disabled={!client.shippingMarkImageUrl}
-        />
-        <Button
-          title="WhatsApp"
-          size="small"
-          onPress={onSend}
-          disabled={!client.shippingMarkImageUrl || isSending}
-          loading={isSending}
-        />
-        <Button
-          title="Régénérer"
-          variant="secondary"
-          size="small"
-          onPress={onRegenerate}
-          loading={isRegenerating}
-        />
       </View>
+
+      {hasImage ? (
+        <View style={styles.actions}>
+          <ClientRowAction label="Aperçu" icon="eye-outline" onPress={preview} />
+          <ClientRowAction label="Partager" icon="share-outline" onPress={download} />
+          <ClientRowAction label="WhatsApp" icon="logo-whatsapp" onPress={send} loading={isSending} primary />
+        </View>
+      ) : (
+        <Pressable
+          onPress={regenerate}
+          disabled={isRegenerating}
+          style={({ pressed }) => [styles.generateButton, pressed && styles.pressed]}
+          accessibilityRole="button"
+          accessibilityLabel={`Générer la marque de ${name}`}
+          accessibilityState={{ busy: isRegenerating }}
+        >
+          {isRegenerating ? <ActivityIndicator color={colors.primary.main} /> : <Ionicons name="sparkles-outline" size={20} color={colors.primary.main} />}
+          <Text style={styles.generateText}>{isRegenerating ? 'Génération…' : 'Générer la marque'}</Text>
+        </Pressable>
+      )}
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 12,
-    borderRadius: 8,
-    marginBottom: 8,
-    gap: 12,
-  },
-  info: {
-    flex: 1,
-  },
-  name: {
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  meta: {
-    fontSize: 12,
-    marginTop: 2,
-  },
-  thumb: {
-    width: 48,
-    height: 32,
-    borderRadius: 4,
-  },
-  emptyThumb: {
-    width: 48,
-    height: 32,
-    borderRadius: 4,
-    borderWidth: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  emptyThumbText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  actions: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-end',
-    gap: 6,
-    maxWidth: 330,
-  },
 });
+
+ClientRow.displayName = 'ClientRow';

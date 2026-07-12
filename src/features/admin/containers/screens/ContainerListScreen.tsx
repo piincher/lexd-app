@@ -9,6 +9,7 @@ import { Snackbar } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { useContainerListScreen } from '../hooks/useContainerListScreen';
 import { ContainerListHeader } from '../components/ContainerListHeader';
+import { ContainerArchiveToggle } from '../components/ContainerArchiveToggle';
 import { ContainerStatusFilter } from '../components/ContainerStatusFilter';
 import { ContainerListContent } from '../components/ContainerListContent';
 import { ContainerListFAB } from '../components/ContainerListFAB';
@@ -20,6 +21,8 @@ export const ContainerListScreen: React.FC = () => {
   const {
     selectedStatus,
     setSelectedStatus,
+    archiveMode,
+    setArchiveMode,
     errorMessage,
     dismissError,
     isLoading,
@@ -36,16 +39,23 @@ export const ContainerListScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ContainerListHeader stats={stats} onOpenAnalytics={handleOpenAnalytics} />
-      <ContainerStatusFilter
-        selectedStatus={selectedStatus}
-        onSelectStatus={setSelectedStatus}
+      <ContainerArchiveToggle
+        archiveMode={archiveMode}
+        onSelectMode={setArchiveMode}
       />
+      {archiveMode === 'active' && (
+        <ContainerStatusFilter
+          selectedStatus={selectedStatus}
+          onSelectStatus={setSelectedStatus}
+        />
+      )}
       <ContainerListContent
         isLoading={isLoading}
         isRefetching={isRefetching}
         error={error}
         filteredContainers={filteredContainers}
         selectedStatus={selectedStatus}
+        archiveMode={archiveMode}
         onRefresh={handleRefresh}
         onContainerPress={handleContainerPress}
         onCreateContainerPress={handleCreateContainerPress}

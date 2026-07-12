@@ -4,7 +4,7 @@ import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme['colors'];
 
-export const getStyles = (colors: ThemeColors, isDark: boolean) =>
+export const getStyles = (colors: ThemeColors, _isDark: boolean) =>
   StyleSheet.create({
     card: {
       backgroundColor: colors.background.card,
@@ -13,7 +13,7 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       marginHorizontal: 16,
       marginBottom: 10,
       borderWidth: 1,
-      borderColor: colors.border.light,
+      borderColor: colors.border,
     },
     header: {
       flexDirection: "row",
@@ -76,19 +76,20 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       marginTop: 12,
       paddingTop: 10,
       borderTopWidth: 1,
-      borderTopColor: colors.border.light,
+      borderTopColor: colors.border,
     },
     actionBtn: {
       flex: 1,
+      minHeight: 48,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
       gap: 6,
-      paddingVertical: 8,
+      paddingVertical: 10,
       borderRadius: 10,
       backgroundColor: colors.background.default,
       borderWidth: 1,
-      borderColor: colors.border.light,
+      borderColor: colors.border,
     },
     actionBtnDisabled: {
       opacity: 0.5,

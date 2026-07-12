@@ -146,9 +146,110 @@ export interface AirwayBillGoods {
   weight?: number;
   quantity?: number;
   status?: string;
-  clientId?: string | { firstName?: string; lastName?: string };
+  condition?: 'new' | 'used' | 'damaged';
+  ownerStatus?: 'IDENTIFIED' | 'UNIDENTIFIED';
+  clientId?:
+    | string
+    | {
+        _id?: string;
+        firstName?: string;
+        lastName?: string;
+        fullName?: string;
+        phoneNumber?: string;
+        shippingClientId?: string;
+        email?: string;
+        profileImage?: string;
+      };
   cargoBagId?: string | null;
   photos?: string[];
+  warehouseLocation?: string;
+  dimensions?: { length?: number; width?: number; height?: number };
+  actualCBM?: number;
+  unitPrice?: number;
+  totalCost?: number;
+  amountPaid?: number;
+  balanceDue?: number;
+  paymentStatus?: 'UNPAID' | 'PARTIAL' | 'PAID';
+  expressTrackingNumber?: string;
+  receivedAt?: string;
+  receivedByName?: string;
+}
+
+export interface AirwayBillManifestSummary {
+  totalClients: number;
+  totalCargoBags: number;
+  totalGoods: number;
+  totalQuantity: number;
+  totalWeight: number;
+  totalCBM: number;
+  totalCost: number;
+  totalPaid: number;
+  totalBalanceDue: number;
+  unbaggedGoods: number;
+}
+
+export interface AirwayBillManifestClientInfo {
+  clientId: string;
+  name: string;
+  phoneNumber: string | null;
+  email: string | null;
+  shippingClientId: string | null;
+  unidentified?: boolean;
+}
+
+export interface AirwayBillManifestGoods {
+  _id: string;
+  goodsId: string;
+  description: string;
+  quantity: number;
+  weight: number;
+  actualCBM: number;
+  dimensions?: { length?: number; width?: number; height?: number } | null;
+  warehouseLocation?: string | null;
+  status?: string | null;
+  paymentStatus: string;
+  totalCost: number;
+  amountPaid: number;
+  balanceDue: number;
+  receivedAt?: string | null;
+  condition?: string | null;
+  intakeException?: { isException?: boolean; reasons?: string[]; notes?: string };
+  expressTrackingNumber?: string | null;
+  ownerStatus?: string;
+  unidentifiedNotes?: string;
+  cargoBagId?: string | null;
+  cargoBagNumber?: string | null;
+  client: AirwayBillManifestClientInfo;
+}
+
+export interface AirwayBillManifestClient extends AirwayBillManifestClientInfo {
+  summary: AirwayBillManifestSummary;
+  goods: AirwayBillManifestGoods[];
+}
+
+export interface AirwayBillManifestCargoBag {
+  cargoBagId: string;
+  bagNumber: string;
+  status?: string | null;
+  totalWeight: number;
+  totalPackages: number;
+  goodsCount: number;
+  arrivedAt?: string | null;
+  summary: AirwayBillManifestSummary;
+  goods: AirwayBillManifestGoods[];
+}
+
+export interface AirwayBillGoodsManifest {
+  generatedAt: string;
+  airwayBill: Pick<
+    AirwayBill,
+    '_id' | 'awbNumber' | 'flightNumber' | 'airline' | 'departureAirport' | 'arrivalAirport' | 'departureDate' | 'estimatedArrivalDate' | 'actualArrivalDate' | 'status' | 'routeKey' | 'routeName' | 'capacityWeight'
+  >;
+  consignee: AirwayBillConsignee | null;
+  summary: AirwayBillManifestSummary;
+  clients: AirwayBillManifestClient[];
+  cargoBags: AirwayBillManifestCargoBag[];
+  unbaggedGoods: AirwayBillManifestGoods[];
 }
 
 export interface AirwayBillConsignee {

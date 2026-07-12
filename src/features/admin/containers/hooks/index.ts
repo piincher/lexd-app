@@ -11,6 +11,8 @@ export {
   useGetPackingList,
   useCreateContainer,
   useUpdateContainerStatus,
+  useArchiveContainer,
+  useUnarchiveContainer,
   useDeleteContainer,
   useAssignGoodsToContainer,
   useRemoveGoodsFromContainer,

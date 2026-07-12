@@ -60,6 +60,8 @@ export const useContainerDetailScreen = () => {
 
   const canMarkReadyForPickup = container?.status === 'ARRIVED' || container?.status === 'DISCHARGED';
   const canMarkDelivered = container?.status === 'READY_FOR_PICKUP';
+  const canArchive = container?.status === 'DELIVERED' && !container?.archived;
+  const canUnarchive = container?.archived === true;
 
   return {
     containerId,
@@ -85,6 +87,8 @@ export const useContainerDetailScreen = () => {
     maxCapacity,
     canMarkReadyForPickup,
     canMarkDelivered,
+    canArchive,
+    canUnarchive,
     handleRefresh,
     consignee,
   };

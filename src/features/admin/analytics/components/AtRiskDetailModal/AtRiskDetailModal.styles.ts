@@ -4,7 +4,7 @@ import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme['colors'];
 
-export const getStyles = (colors: ThemeColors, isDark: boolean) =>
+export const getStyles = (colors: ThemeColors, _isDark: boolean) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
@@ -27,7 +27,10 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       alignSelf: "flex-end",
     },
     closeBtn: {
-      padding: 6,
+      width: 44,
+      height: 44,
+      alignItems: "center",
+      justifyContent: "center",
     },
     avatar: {
       width: 64,
@@ -88,10 +91,11 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       gap: 10,
       padding: 16,
       borderTopWidth: 1,
-      borderTopColor: colors.border.light,
+      borderTopColor: colors.border,
     },
     actionBtn: {
       flex: 1,
+      minHeight: 48,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",

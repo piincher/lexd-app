@@ -30,9 +30,6 @@ export const createStyles = (colors: AppColors, isDark?: boolean) => StyleSheet.
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
-  body: {
-    maxHeight: 300,
-  },
   emptyState: {
     padding: Theme.spacing.xl,
     alignItems: "center",

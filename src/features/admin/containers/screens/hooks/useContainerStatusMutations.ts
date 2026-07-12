@@ -1,15 +1,19 @@
 import { useCallback } from 'react';
 import { Alert } from 'react-native';
-import { ContainerStatus, CONTAINER_STATUS_LABELS } from '../../types';
+import { Container, ContainerStatus, CONTAINER_STATUS_LABELS } from '../../types';
 import { Goods } from '../../../goods/types';
-import { useUpdateContainerStatus, useMarkReadyForPickup, useMarkGoodsDelivered, useMarkContainerDelivered } from '../../hooks';
+import { useUpdateContainerStatus, useMarkReadyForPickup, useMarkGoodsDelivered, useMarkContainerDelivered, useArchiveContainer, useUnarchiveContainer } from '../../hooks';
 import { ContainerDialogsState } from './useContainerDialogs';
 import { MAX_CBM, MAX_WEIGHT } from './utils';
 
 const CAPACITY_CHECK_STATUSES: ContainerStatus[] = ['LOADED','GATE_IN_FULL','LOADED_ON_VESSEL','IN_TRANSIT','ARRIVED','DISCHARGED','READY_FOR_PICKUP'];
 
+const getErrorMessage = (error: unknown, fallback: string) =>
+  (error as { response?: { data?: { message?: string } }; message?: string })?.response?.data?.message ||
+  (error as Error)?.message ||
+  fallback;
 export const useContainerStatusMutations = (
-  containerId: string, container: any, goodsList: Goods[],
+  containerId: string, container: Container | undefined, goodsList: Goods[],
   capacityValue: number, maxCapacity: number, isAirContainer: boolean, totalWeight: number,
   dialogs: ContainerDialogsState,
 ) => {
@@ -17,7 +21,8 @@ export const useContainerStatusMutations = (
   const markReady = useMarkReadyForPickup();
   const markGoodsDelivered = useMarkGoodsDelivered();
   const markContainerDelivered = useMarkContainerDelivered();
-
+  const archiveContainer = useArchiveContainer();
+  const unarchiveContainer = useUnarchiveContainer();
   const handleUpdateStatus = useCallback(async (newStatus: ContainerStatus) => {
     dialogs.setStatusMenuVisible(false);
     if (newStatus === container?.status) return;
@@ -33,7 +38,7 @@ export const useContainerStatusMutations = (
   }, [containerId, capacityValue, maxCapacity, isAirContainer, totalWeight, dialogs, markReady]);
 
   const confirmMarkDelivered = useCallback(async () => {
-    const doMark = async () => { try { await markContainerDelivered.mutateAsync(containerId); dialogs.setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: any) { Alert.alert('Erreur', error?.response?.data?.message || error?.message || 'Impossible de marquer le container comme livré'); } };
+    const doMark = async () => { try { await markContainerDelivered.mutateAsync(containerId); dialogs.setShowDeliveredDialog(false); Alert.alert('Succès', 'Container marqué comme livré'); } catch (error: unknown) { Alert.alert('Erreur', getErrorMessage(error, 'Impossible de marquer le container comme livré')); } };
     if (goodsList.length === 0) { Alert.alert('Attention', 'Ce container est vide. Marquer un container vide comme livré est inhabituel. Continuer ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Continuer', style: 'destructive', onPress: doMark }]); return; }
     await doMark();
   }, [containerId, goodsList, dialogs, markContainerDelivered]);
@@ -42,8 +47,53 @@ export const useContainerStatusMutations = (
     Alert.alert('Confirmer la livraison', 'Marquer cette marchandise comme livrée ?', [{ text: 'Annuler', style: 'cancel' }, { text: 'Marquer Livré', onPress: async () => { try { await markGoodsDelivered.mutateAsync(goodsId); Alert.alert('Succès', 'Marchandise marquée comme livrée'); } catch { Alert.alert('Erreur', 'Impossible de marquer la marchandise'); } } }]);
   }, [markGoodsDelivered]);
 
+  const confirmArchiveContainer = useCallback(async () => {
+    Alert.alert(
+      'Archiver le container',
+      'Ce container livré sera retiré de la liste active et restera visible dans Archives. Continuer ?',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        {
+          text: 'Archiver',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await archiveContainer.mutateAsync(containerId);
+              Alert.alert('Succès', 'Container archivé');
+            } catch (error: unknown) {
+              Alert.alert('Erreur', getErrorMessage(error, 'Impossible d\'archiver le container'));
+            }
+          },
+        },
+      ],
+    );
+  }, [containerId, archiveContainer]);
+
+  const confirmUnarchiveContainer = useCallback(async () => {
+    Alert.alert(
+      'Désarchiver le container',
+      'Ce container reviendra dans la liste active. Continuer ?',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        {
+          text: 'Désarchiver',
+          onPress: async () => {
+            try {
+              await unarchiveContainer.mutateAsync(containerId);
+              Alert.alert('Succès', 'Container désarchivé');
+            } catch (error: unknown) {
+              Alert.alert('Erreur', getErrorMessage(error, 'Impossible de désarchiver le container'));
+            }
+          },
+        },
+      ],
+    );
+  }, [containerId, unarchiveContainer]);
+
   return {
     updateStatusMutation: updateStatus, markReadyForPickupMutation: markReady, markGoodsDeliveredMutation: markGoodsDelivered, markContainerDeliveredMutation: markContainerDelivered,
+    archiveContainerMutation: archiveContainer, unarchiveContainerMutation: unarchiveContainer,
     handleUpdateStatus, confirmMarkReadyForPickup, confirmMarkDelivered, handleMarkGoodsDelivered,
+    confirmArchiveContainer, confirmUnarchiveContainer,
   };
 };
