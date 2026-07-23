@@ -1,5 +1,0 @@
-env: load .env.local .env
-env: export EXPO_UNSTABLE_METRO_OPTIMIZE_GRAPH EXPO_UNSTABLE_TREE_SHAKING SENTRY_AUTH_TOKEN
-Starting project at C:\Users\hp\workspace\chinalink\chinalinexpress
-› Port 8081 is being used by another process
-› Skipping dev server
