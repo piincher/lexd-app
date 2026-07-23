@@ -144,6 +144,13 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         route: "ShippingMarksAdmin",
       },
       {
+        id: "c1d",
+        title: "Adresses d'entrepôt",
+        description: "Modifier l'adresse de réception (air/mer)",
+        icon: "warehouse",
+        route: "WarehouseAddressAdmin",
+      },
+      {
         id: "c2",
         title: "Ajouter un utilisateur",
         description: "Créer un nouveau compte",
@@ -263,6 +270,13 @@ export const MENU_CATEGORIES: MenuCategory[] = [
     icon: "tools",
     items: [
       {
+        id: "t0",
+        title: "File de travail",
+        description: "Résoudre les priorités opérationnelles",
+        icon: "clipboard-alert-outline",
+        route: "AdminWorkQueue",
+      },
+      {
         id: "t1",
         title: "Scanner un QR code",
         description: "Lire un code de suivi",
@@ -310,6 +324,13 @@ export const MENU_CATEGORIES: MenuCategory[] = [
         description: "Gérer la politique de mise à jour",
         icon: "cellphone-cog",
         route: "AppVersionSettings",
+      },
+      {
+        id: "t8",
+        title: "Imprimantes d’étiquettes",
+        description: "Configurer et tester les imprimantes QR",
+        icon: "printer-settings",
+        route: "WarehousePrinters",
       },
     ],
   },

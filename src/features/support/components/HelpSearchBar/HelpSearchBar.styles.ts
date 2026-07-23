@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -18,9 +19,9 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       gap: 10,
       paddingHorizontal: 14,
       paddingVertical: 13,
-      borderRadius: 16,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       ...Theme.shadows.md,
     },
@@ -36,8 +37,8 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     },
     dropdown: {
       backgroundColor: colors.background.card,
-      borderRadius: 14,
-      borderWidth: 1,
+      borderRadius: RADIUS.card,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       marginTop: 6,
       paddingVertical: 6,
@@ -49,7 +50,7 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       fontSize: 11,
       color: colors.text.disabled,
       textTransform: "uppercase",
-      letterSpacing: 0.4,
+      letterSpacing: 0.7,
       paddingHorizontal: 14,
       paddingVertical: 6,
     },

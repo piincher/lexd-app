@@ -1,19 +1,31 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { SupplierShippingMarkShareRequest } from '@src/shared/types/shippingMark';
 import type { ShippingMarkClient } from '../api/shippingMarkAdminApi';
 import { useShippingMarkConfig } from './useShippingMarkConfig';
 import { useShippingMarkDeliveryActions } from './useShippingMarkDeliveryActions';
 import { useShippingMarksAdmin } from './useShippingMarksAdmin';
 import { useShippingMarkGenerationActions } from './useShippingMarkGenerationActions';
+import { useSupplierShippingMarkShare } from './useSupplierShippingMarkShare';
 
 type SendMode = 'all' | 'selected' | null;
 
-export const useShippingMarksAdminScreen = (initialQuery?: string) => {
+export const useShippingMarksAdminScreen = (initialQuery?: string, initialSupplierShare?: SupplierShippingMarkShareRequest) => {
   const list = useShippingMarksAdmin(initialQuery);
   const settings = useShippingMarkConfig();
   const delivery = useShippingMarkDeliveryActions(list.sendBulkWhatsApp, list.regenerateMark);
   const [sendMode, setSendMode] = useState<SendMode>(null);
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [previewClient, setPreviewClient] = useState<ShippingMarkClient | null>(null);
+  const supplierShare = useSupplierShippingMarkShare();
+  const shareSupplierRequest = supplierShare.shareWithSupplier;
+  const autoShareStarted = useRef(false);
+
+  useEffect(() => {
+    if (!list.isLoading && initialSupplierShare && !autoShareStarted.current) {
+      autoShareStarted.current = true;
+      void shareSupplierRequest(initialSupplierShare);
+    }
+  }, [initialSupplierShare, list.isLoading, shareSupplierRequest]);
 
   const readyCount = useMemo(
     () => list.clients.filter((client) => Boolean(client.shippingMarkImageUrl)).length,
@@ -24,6 +36,7 @@ export const useShippingMarksAdminScreen = (initialQuery?: string) => {
     total: list.pagination?.total ?? 0,
     searchQuery: list.searchQuery,
     generationJob: list.generationJob,
+    isGeneratingBulk: list.isGeneratingBulk,
     generateBulk: list.generateBulk,
     clearSelection: list.clearSelection,
   });
@@ -34,6 +47,15 @@ export const useShippingMarksAdminScreen = (initialQuery?: string) => {
   const openSettings = useCallback(() => setSettingsVisible(true), []);
   const closeSettings = useCallback(() => setSettingsVisible(false), []);
   const closePreview = useCallback(() => setPreviewClient(null), []);
+  const shareWithSupplier = useCallback((client: ShippingMarkClient) => {
+    const clientName = `${client.firstName || ''} ${client.lastName || ''}`.trim();
+    return shareSupplierRequest({
+      userId: client._id,
+      clientId: client.clientId,
+      clientName,
+      phoneNumber: client.phoneNumber,
+    });
+  }, [shareSupplierRequest]);
 
   const sendBulk = useCallback(async (caption: string) => {
     if (sendMode === 'all') {
@@ -56,11 +78,15 @@ export const useShippingMarksAdminScreen = (initialQuery?: string) => {
     settingsVisible,
     sendModalVisible: sendMode !== null,
     generateModalVisible: generation.visible,
+    generateMode: generation.mode,
     generateCount: generation.count,
+    generateMissingLoading: generation.missingLoading,
+    generateRegenerateLoading: generation.regenerateLoading,
     sendCount: sendMode === 'all' ? list.pagination?.total ?? 0 : list.selected.size,
     openSendAll,
     openSendSelected,
-    openGenerate: generation.open,
+    openGenerate: generation.openMissing,
+    openRegenerate: generation.openRegenerate,
     closeGenerate: generation.close,
     openSettings,
     closeSettings,
@@ -69,7 +95,8 @@ export const useShippingMarksAdminScreen = (initialQuery?: string) => {
     closePreview,
     closeSend,
     sendBulk,
-    download: delivery.download,
+    shareWithSupplier,
+    sharingClientId: supplierShare.sharingClientId,
     sendOne: delivery.sendOne,
     regenerate: delivery.regenerate,
   };

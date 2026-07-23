@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -29,10 +30,10 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     },
     card: {
       backgroundColor: colors.background.card,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       padding: 12,
       marginBottom: 8,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     row: {
@@ -57,7 +58,7 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     badge: {
       paddingHorizontal: 8,
       paddingVertical: 2,
-      borderRadius: 6,
+      borderRadius: RADIUS.badge,
     },
     badgeText: {
       fontFamily: Fonts.bold,

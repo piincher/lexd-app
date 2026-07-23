@@ -44,13 +44,15 @@ export const useShippingMarkActions = (data?: ShippingMarkData | null) => {
     if (!data?.shippingMarkImageUrl || !data.clientId) return;
     try {
       await shareShippingMark(data.shippingMarkImageUrl, data.clientId);
+      // Sharing to the supplier fulfills the goal too — stop nagging on login.
+      if (userId) markDownloaded(userId);
     } catch (error: unknown) {
       if (!isUserCancellation(error)) {
         const message = error instanceof Error ? error.message : String(error);
         showError(message);
       }
     }
-  }, [data, showError]);
+  }, [data, userId, markDownloaded, showError]);
 
   return { handleDownload, handleShare, isDownloading };
 };

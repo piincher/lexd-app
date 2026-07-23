@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const getStyles = (colors: any) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 20,
       paddingVertical: 14,
-      borderTopWidth: 1,
+      borderTopWidth: HAIRLINE,
       borderTopColor: colors.border,
     },
     header: {
@@ -32,7 +33,7 @@ export const getStyles = (colors: any) =>
       backgroundColor: colors.primary[50],
       paddingHorizontal: 10,
       paddingVertical: 4,
-      borderRadius: 10,
+      borderRadius: RADIUS.badge,
     },
     countText: {
       fontSize: 13,

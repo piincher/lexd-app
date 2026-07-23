@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 type IoniconsName = React.ComponentProps<typeof Ionicons>['name'];
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import {
   NotificationPreference,
   NotificationType,
@@ -30,13 +31,15 @@ export const NotificationTypesList: React.FC<NotificationTypesListProps> = ({
       StyleSheet.create({
         card: {
           marginBottom: 16,
-          borderRadius: 12,
-          elevation: 2,
+          borderRadius: RADIUS.card,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
           backgroundColor: colors.background.default,
         },
         sectionTitle: {
-          fontSize: 14,
-          fontWeight: '600',
+          fontSize: 11,
+          fontWeight: '700',
+          letterSpacing: 0.8,
           color: colors.text.secondary,
           textTransform: 'uppercase',
           marginBottom: 8,
@@ -48,7 +51,7 @@ export const NotificationTypesList: React.FC<NotificationTypesListProps> = ({
         typeIcon: {
           width: 40,
           height: 40,
-          borderRadius: 10,
+          borderRadius: RADIUS.control,
           justifyContent: 'center',
           alignItems: 'center',
         },

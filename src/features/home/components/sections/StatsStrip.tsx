@@ -10,6 +10,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS, RAIL_WIDTH, HAIRLINE } from '@src/shared/ui/designLanguage';
 import { HIGHLIGHTS } from '../../constants/homeData';
 
 type FontAwesome6Name = React.ComponentProps<typeof FontAwesome6>['name'];
@@ -47,7 +48,10 @@ export const StatsStrip: React.FC = () => {
               },
             ]}
           >
-            <View style={[styles.iconCircle, { backgroundColor: `${accentColor}12` }]}>
+            {/* LEXD status rail — the leading-edge signature. */}
+            <View style={[styles.rail, { backgroundColor: accentColor }]} pointerEvents="none" />
+
+            <View style={[styles.iconTile, { backgroundColor: `${accentColor}14` }]}>
               <FontAwesome6 name={iconName} size={18} color={accentColor} />
             </View>
             <View style={styles.textBlock}>
@@ -78,13 +82,23 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingVertical: 14,
     paddingHorizontal: 10,
-    borderRadius: 16,
-    borderWidth: 1,
+    // Waybill geometry: squarer than the previous 16px, border-first, no shadow.
+    paddingLeft: 10 + RAIL_WIDTH,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
+    overflow: 'hidden',
   },
-  iconCircle: {
-    width: 38,
-    height: 38,
-    borderRadius: 12,
+  rail: {
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: RAIL_WIDTH,
+  },
+  iconTile: {
+    width: 36,
+    height: 36,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 9,
@@ -107,10 +121,12 @@ const styles = StyleSheet.create({
     fontSize: 11,
   },
   label: {
-    fontFamily: Fonts.meduim,
-    fontSize: 10.5,
-    marginTop: 4,
-    letterSpacing: 0,
+    // Tracked uppercase micro-label: the manifest cue used app-wide.
+    fontFamily: Fonts.bold,
+    fontSize: 9.5,
+    marginTop: 5,
+    letterSpacing: 0.7,
+    textTransform: 'uppercase',
     textAlign: 'left',
   },
 });

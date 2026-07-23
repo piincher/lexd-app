@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
+import { OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 interface ShippingModeDetailProps {
   icon: 'airplane' | 'boat';
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
   modeIcon: {
     width: 38,
     height: 38,
-    borderRadius: 11,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -62,13 +63,13 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   modeLabel: {
-    fontSize: 11,
+    ...OVERLINE,
     fontFamily: Fonts.regular,
   },
   percentBadge: {
     paddingHorizontal: 10,
     paddingVertical: 3,
-    borderRadius: 10,
+    borderRadius: RADIUS.badge,
     marginTop: 2,
   },
   percentText: {

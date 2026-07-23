@@ -1,8 +1,13 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import { lightTheme, Theme } from "@src/constants/Theme";
 import type { AnnouncementType } from "../../types";
+import { HAIRLINE } from "@src/shared/ui/designLanguage";
 
 type AppColors = typeof lightTheme.colors;
+
+const SCREEN = Dimensions.get("window");
+const CARD_MAX_HEIGHT = Math.min(SCREEN.height * 0.82, 660);
+const CAROUSEL_HEIGHT = Math.min(SCREEN.height * 0.5, 440);
 
 export const getTone = (type: AnnouncementType) => {
   const tones = {
@@ -18,22 +23,56 @@ export const getTone = (type: AnnouncementType) => {
 
 export const createStyles = (colors: AppColors, tone: ReturnType<typeof getTone>) =>
   StyleSheet.create({
-    backdrop: {
-      flex: 1,
+    // Full-screen, in-tree overlay. Sits above the navigator via z-index/elevation.
+    overlay: {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
       padding: 20,
+      alignItems: "center",
       justifyContent: "center",
+      zIndex: 2000,
+    },
+    backdrop: {
+      ...StyleSheet.absoluteFillObject,
       backgroundColor: "rgba(0,0,0,0.48)",
     },
     card: {
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
+      width: "100%",
+      maxWidth: 420,
+      maxHeight: CARD_MAX_HEIGHT,
       backgroundColor: colors.background.card,
       borderRadius: 8,
       padding: 20,
       gap: 14,
-      shadowColor: colors.neutral[900],
-      shadowOpacity: 0.18,
-      shadowRadius: 18,
-      shadowOffset: { width: 0, height: 8 },
-      elevation: 10,
+    },
+    carousel: {
+      height: CAROUSEL_HEIGHT,
+    },
+    slideContent: {
+      gap: 12,
+      paddingHorizontal: 2,
+      paddingBottom: 6,
+    },
+    slideImage: {
+      width: "100%",
+      height: 170,
+      borderRadius: 10,
+      backgroundColor: colors.neutral[100],
+    },
+    dots: {
+      flexDirection: "row",
+      justifyContent: "center",
+      gap: 6,
+    },
+    dot: {
+      width: 8,
+      height: 8,
+      borderRadius: 4,
     },
     closeButton: {
       position: "absolute",

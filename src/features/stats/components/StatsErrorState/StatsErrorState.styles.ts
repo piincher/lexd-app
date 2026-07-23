@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const styles = (colors: any) =>
   StyleSheet.create({
@@ -31,7 +32,7 @@ export const styles = (colors: any) =>
       backgroundColor: colors.primary.main,
       paddingHorizontal: 24,
       paddingVertical: 12,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       marginTop: 12,
     },
     retryText: {

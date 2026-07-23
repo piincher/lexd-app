@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Image, Pressable, StyleSheet, Platform } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { View, Image, Pressable, StyleSheet } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { IMAGES } from "@src/constants/Images";
 import { useNavigation } from "@react-navigation/native";
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 import type { AppTheme } from '@src/constants/Theme';
 
 export const Header = () => {
@@ -45,8 +46,8 @@ export const Header = () => {
                accessibilityRole="button"
                accessibilityLabel="Suivre un envoi"
             >
-               <AntDesign
-                  name="search"
+               <Ionicons
+                  name="search-outline"
                   size={20}
                   color={colors.primary.main}
                />
@@ -78,39 +79,31 @@ const createStyles = (colors: AppTheme['colors']) => StyleSheet.create({
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingHorizontal: 16,
-      paddingVertical: 10,
-      borderBottomWidth: StyleSheet.hairlineWidth,
-      ...Platform.select({
-         ios: {
-            shadowColor: colors.neutral[900],
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.06,
-            shadowRadius: 4,
-         },
-         android: {
-            elevation: 2,
-         },
-      }),
+      paddingHorizontal: 20,
+      paddingVertical: 8,
+      borderBottomWidth: HAIRLINE,
    },
    brandRow: {
       flexDirection: "row",
       alignItems: "center",
    },
    logo: {
-      width: 134,
-      height: 34,
+      // Matches the LEXD wordmark's 2.74:1 aspect so `contain` does not
+      // letterbox it inside an over-wide box.
+      width: 96,
+      height: 35,
    },
    actions: {
       flexDirection: "row",
-      gap: 10,
+      gap: 4,
       alignItems: "center",
    },
    iconButton: {
       width: 44,
       height: 44,
-      borderRadius: 14,
-      borderWidth: 1,
+      // LEXD geometry: squarer controls than the previous 14px.
+      borderRadius: RADIUS.control,
+      borderWidth: 0,
       justifyContent: "center",
       alignItems: "center",
    },

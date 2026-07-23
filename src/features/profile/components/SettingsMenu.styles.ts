@@ -1,5 +1,6 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import type { ThemeContextType } from '@src/constants/Theme';
 
 type AppColors = ThemeContextType['colors'];
@@ -9,26 +10,18 @@ export const createStyles = (colors: AppColors) => StyleSheet.create({
     marginTop: 14,
   },
   menuGroupTitle: {
-    fontSize: 13,
+    fontSize: 11,
     fontFamily: Fonts.bold,
-    letterSpacing: 0,
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
     paddingHorizontal: 20,
     marginBottom: 9,
   },
   menuCard: {
     marginHorizontal: 16,
-    borderRadius: 16,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     overflow: 'hidden',
-    ...Platform.select({
-      ios: {
-        shadowColor: colors.neutral[900],
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.03,
-        shadowRadius: 6,
-      },
-      android: { elevation: 1 },
-    }),
   },
   menuItem: {
     flexDirection: 'row',
@@ -45,7 +38,7 @@ export const createStyles = (colors: AppColors) => StyleSheet.create({
   menuIconCircle: {
     width: 42,
     height: 42,
-    borderRadius: 12,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
   },

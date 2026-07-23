@@ -3,6 +3,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import type { PaymentStatus } from '../../types';
 
 interface PaymentHistoryFilterProps {
@@ -60,7 +61,7 @@ export const PaymentHistoryFilter: React.FC<PaymentHistoryFilterProps> = ({
 const styles = StyleSheet.create({
   filterContainer: {
     paddingVertical: 12,
-    borderBottomWidth: 1,
+    borderBottomWidth: HAIRLINE,
   },
   filterList: {
     paddingHorizontal: 16,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
   filterButton: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: 20,
+    borderRadius: RADIUS.badge,
   },
   filterButtonText: {
     fontSize: 14,

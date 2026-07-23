@@ -23,7 +23,7 @@ const client = {
 const handlers = {
   onToggle: jest.fn(),
   onPreview: jest.fn(),
-  onDownload: jest.fn(),
+  onShareSupplier: jest.fn(),
   onSend: jest.fn(),
   onRegenerate: jest.fn(),
 };
@@ -39,6 +39,7 @@ describe('ClientRow', () => {
         {...handlers}
         isRegenerating={false}
         isSending={false}
+        isSharing={false}
       />,
     );
 
@@ -48,13 +49,13 @@ describe('ClientRow', () => {
 
     fireEvent.press(screen.getByLabelText('Sélectionner Awa Diallo'));
     fireEvent.press(screen.getByLabelText('Aperçu'));
-    fireEvent.press(screen.getByLabelText('Partager'));
-    fireEvent.press(screen.getByLabelText('WhatsApp'));
+    fireEvent.press(screen.getByLabelText('Fournisseur'));
+    fireEvent.press(screen.getByLabelText('Au client'));
     fireEvent.press(screen.getByLabelText('Régénérer la marque de Awa Diallo'));
 
     expect(handlers.onToggle).toHaveBeenCalledWith('user-1');
     expect(handlers.onPreview).toHaveBeenCalledWith(client);
-    expect(handlers.onDownload).toHaveBeenCalledWith(client);
+    expect(handlers.onShareSupplier).toHaveBeenCalledWith(client);
     expect(handlers.onSend).toHaveBeenCalledWith(client);
     expect(handlers.onRegenerate).toHaveBeenCalledWith('user-1');
   });
@@ -68,12 +69,15 @@ describe('ClientRow', () => {
         {...handlers}
         isRegenerating={false}
         isSending={false}
+        isSharing={false}
       />,
     );
 
     expect(screen.getByText('À générer')).toBeTruthy();
-    expect(screen.queryByLabelText('WhatsApp')).toBeNull();
-    fireEvent.press(screen.getByLabelText('Générer la marque de Awa Diallo'));
+    expect(screen.queryByLabelText('Au client')).toBeNull();
+    fireEvent.press(screen.getByLabelText('Partager au fournisseur'));
+    expect(handlers.onShareSupplier).toHaveBeenCalledWith(missingClient);
+    fireEvent.press(screen.getByLabelText('Générer'));
     expect(handlers.onRegenerate).toHaveBeenCalledWith('user-1');
   });
 });

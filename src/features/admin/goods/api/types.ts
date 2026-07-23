@@ -24,6 +24,7 @@ export interface ReceiveGoodsInput {
   actualCBM?: number;
   weight?: number;
   quantity: number;
+  packageCount?: number;
   unitPrice: number;
   location: string;
   photoUrl?: string;

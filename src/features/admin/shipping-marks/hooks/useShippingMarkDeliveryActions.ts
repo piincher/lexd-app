@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { showMessage } from 'react-native-flash-message';
-import { shareShippingMark } from '@src/shared/lib/shippingMarkShare';
-import type { ShippingMarkClient, ShippingMarkDeliveryJob } from '../api/shippingMarkAdminApi';
+import type { ShippingMarkDeliveryJob } from '../api/shippingMarkAdminApi';
 
 const SINGLE_SEND_CAPTION =
   "Bonjour {{name}}, voici votre marque d'expédition. Merci de l'envoyer à votre fournisseur avec l'adresse de l'entrepôt. Le fournisseur doit l'imprimer et la coller sur chaque colis.";
@@ -17,20 +16,7 @@ export const useShippingMarkDeliveryActions = (
   sendBulk: SendBulk,
   regenerateMark: (clientId: string) => Promise<{ shippingMarkImageUrl: string }>,
 ) => {
-  const download = useCallback(async (client: ShippingMarkClient) => {
-    if (!client.shippingMarkImageUrl) return;
-    try {
-      await shareShippingMark(client.shippingMarkImageUrl, client.clientId);
-    } catch (error) {
-      showMessage({
-        message: 'Partage impossible',
-        description: error instanceof Error ? error.message : 'Impossible de partager la marque.',
-        type: 'danger',
-      });
-    }
-  }, []);
-
-  const sendOne = useCallback(async (client: ShippingMarkClient) => {
+  const sendOne = useCallback(async (client: { _id: string; clientId: string }) => {
     try {
       await sendBulk({ userIds: [client._id], caption: SINGLE_SEND_CAPTION });
       showMessage({
@@ -60,5 +46,5 @@ export const useShippingMarkDeliveryActions = (
     }
   }, [regenerateMark]);
 
-  return { download, sendOne, regenerate };
+  return { sendOne, regenerate };
 };

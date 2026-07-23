@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -10,8 +11,11 @@ export const createStyles = (colors: any) =>
     surface: {
       flexDirection: 'row',
       padding: 12,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.background.card,
+      // Waybill: border-first, no drop shadow.
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
     },
     iconContainer: {
       width: 48,
@@ -33,11 +37,12 @@ export const createStyles = (colors: any) =>
     typeBadge: {
       paddingHorizontal: 8,
       paddingVertical: 2,
-      borderRadius: 4,
+      borderRadius: RADIUS.badge,
     },
     typeText: {
       fontFamily: Fonts.medium,
       fontSize: 11,
+      letterSpacing: 0.6,
       textTransform: 'uppercase',
     },
     timeAgo: {

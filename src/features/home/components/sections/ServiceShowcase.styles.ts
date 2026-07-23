@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS, RAIL_WIDTH, HAIRLINE } from '@src/shared/ui/designLanguage';
 import type { AppTheme } from '@src/constants/Theme';
 
 export const createServiceShowcaseStyles = (colors: AppTheme['colors']) =>
@@ -15,29 +16,38 @@ export const createServiceShowcaseStyles = (colors: AppTheme['colors']) =>
       width: '100%',
     },
     pressable: {
-      borderRadius: 18,
+      borderRadius: RADIUS.card,
       overflow: 'hidden',
     },
     cardPressed: {
       opacity: 0.92,
-      transform: [{ scale: 0.97 }],
+      transform: [{ scale: 0.99 }],
     },
     card: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 14,
-      borderRadius: 18,
+      // Waybill geometry: 10px corners, hairline edge, no shadow.
+      borderRadius: RADIUS.card,
       padding: 16,
+      paddingLeft: 16 + RAIL_WIDTH,
       minHeight: 112,
       overflow: 'hidden',
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       backgroundColor: colors.background.card,
     },
-    cardIconCircle: {
+    cardRail: {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      bottom: 0,
+      width: RAIL_WIDTH,
+    },
+    cardIconTile: {
       width: 48,
       height: 48,
-      borderRadius: 15,
+      borderRadius: RADIUS.control,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -51,10 +61,13 @@ export const createServiceShowcaseStyles = (colors: AppTheme['colors']) =>
       color: colors.text.primary,
     },
     cardDelivery: {
-      fontFamily: Fonts.meduim,
-      fontSize: 13,
-      color: colors.primary.dark,
-      marginTop: 2,
+      // Transit time reads as manifest metadata, not body copy.
+      fontFamily: Fonts.bold,
+      fontSize: 10.5,
+      letterSpacing: 0.7,
+      textTransform: 'uppercase',
+      color: colors.primary.main,
+      marginTop: 3,
     },
     cardDescription: {
       fontFamily: Fonts.regular,
@@ -64,10 +77,12 @@ export const createServiceShowcaseStyles = (colors: AppTheme['colors']) =>
       lineHeight: 17,
     },
     cardArrow: {
-      width: 36,
-      height: 36,
-      borderRadius: 12,
+      width: 34,
+      height: 34,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.paper,
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
       justifyContent: 'center',
       alignItems: 'center',
     },

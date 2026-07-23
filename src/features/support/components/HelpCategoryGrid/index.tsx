@@ -49,7 +49,7 @@ export function HelpCategoryGrid({ categories, activeCategory, onSelectCategory 
               <MaterialCommunityIcons
                 name={iconName as React.ComponentProps<typeof MaterialCommunityIcons>["name"]}
                 size={16}
-                color={isActive ? "#FFFFFF" : catColor}
+                color={isActive ? colors.text.inverse : catColor}
               />
               <Text style={[styles.label, isActive && styles.labelActive]}>{cat.label}</Text>
               <View style={[styles.countPill, isActive && styles.countPillActive]}>

@@ -11,6 +11,7 @@ import Animated, {
    withTiming,
 } from 'react-native-reanimated';
 import AppInput from '../AppInput';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { createStyles } from './AuthInput.styles';
 import { AuthInputLabel } from './AuthInputLabel';
 import { AuthInputRightIcon } from './AuthInputRightIcon';
@@ -82,8 +83,8 @@ const AuthInputField: FC<Props> = (props) => {
          <View
             style={{
                borderColor: errorMsg ? colors.status.error : colors.border,
-               borderWidth: 0.5,
-               borderRadius: 8,
+               borderWidth: HAIRLINE,
+               borderRadius: RADIUS.control,
             }}
          >
             <AppInput

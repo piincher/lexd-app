@@ -36,6 +36,9 @@ export { default as AirwayBillTrackingScreen } from "@src/features/goods/screens
 // Customer Containers
 export { MyContainersScreen, ContainerTrackingScreen, ClientPackingListScreen, ClientLoadingListScreen } from "@src/features/customer/containers";
 
+// Shipments — the unified customer surface replacing the Orders/Goods/Containers split
+export { ShipmentsScreen, ShipmentDetailScreen } from "@src/features/shipments";
+
 // Customer Payments
 export { MyPaymentHistoryScreen } from "@src/features/payments";
 export { default as UserPaymentDetailScreen } from "@src/features/payments/screens/UserPaymentDetailScreen";
@@ -72,6 +75,7 @@ export { default as EditClient } from "@src/features/admin/users/screens/EditCli
 export { default as AdminDashBoard } from "@src/features/admin/dashboard/screens/AdminDashBoard";
 export { default as UnassignedGoodsScreen } from "@src/features/admin/dashboard/screens/UnassignedGoodsScreen";
 export { default as OutstandingPaymentsListScreen } from "@src/features/admin/dashboard/screens/OutstandingPaymentsListScreen";
+export { default as AdminWorkQueueScreen } from '@src/features/admin/dashboard/screens/AdminWorkQueueScreen';
 
 // Admin Analytics
 export { default as AtRiskCustomersScreen } from "@src/features/admin/analytics/screens/AtRiskCustomersScreen";
@@ -79,6 +83,8 @@ export { default as AtRiskCustomersScreen } from "@src/features/admin/analytics/
 // Admin Communications
 export { default as SendSms } from "@src/features/admin/communications/screens/SendSms";
 export { default as SendWhatsAppScreen } from "@src/features/admin/communications/screens/SendWhatsApp";
+export { default as WhatsAppBroadcastListScreen } from "@src/features/admin/communications/screens/WhatsAppBroadcastListScreen";
+export { default as WhatsAppBroadcastDetailScreen } from "@src/features/admin/communications/screens/WhatsAppBroadcastDetailScreen";
 export { default as CampaignListScreen } from "@src/features/admin/communications/screens/CampaignListScreen";
 export { default as CreateCampaignScreen } from "@src/features/admin/communications/screens/CreateCampaignScreen";
 
@@ -92,6 +98,13 @@ export { default as PromoCampaignFormScreen } from "@src/features/promoCampaigns
 // Admin Announcements & Audit
 export { default as CreateAnnouncementScreen } from "@src/features/admin/announcements/screens/CreateAnnouncementScreen";
 export { default as AnnouncementListScreen } from "@src/features/admin/announcements/screens/AnnouncementListScreen";
+
+// Warehouse Addresses (client view + admin edit)
+export { WarehouseAddressScreen } from "@src/features/warehouse-address";
+export { default as WarehouseAddressAdminScreen } from "@src/features/admin/warehouse-address/screens/WarehouseAddressAdminScreen";
+
+// Announcements inbox (client)
+export { AnnouncementInboxScreen } from "@src/features/announcements";
 export { AuditLogDetailScreen, AuditLogListScreen } from "@src/features/admin/audit";
 export { NotificationEventDetailScreen, NotificationEventListScreen } from "@src/features/admin/notification-events";
 
@@ -146,6 +159,7 @@ export { default as WhatsAppRequestListScreen } from "@src/features/admin/whatsa
 export { AdminTicketDetailScreen, AdminTicketListScreen } from "@src/features/admin/support";
 export { default as GlobalSearchScreen } from "@src/features/admin/search/screens/GlobalSearchScreen";
 export { default as AppVersionSettingsScreen } from "@src/features/admin/version/screens/AppVersionSettingsScreen";
+export { WarehousePrintersScreen } from "@src/features/admin/printers";
 export { ShippingMarksAdminScreen } from "@src/features/admin/shipping-marks";
 
 // Admin Rewards

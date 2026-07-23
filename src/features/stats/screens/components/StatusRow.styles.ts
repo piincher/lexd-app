@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStatusRowStyles = (colors: any) =>
   StyleSheet.create({
@@ -20,7 +21,7 @@ export const createStatusRowStyles = (colors: any) =>
     statusDot: {
       width: 22,
       height: 22,
-      borderRadius: 7,
+      borderRadius: RADIUS.control,
       justifyContent: 'center',
       alignItems: 'center',
     },

@@ -1,12 +1,6 @@
 // App Providers - Public API
 
 export {
-  NotificationProvider,
-  useNotificationContext,
-} from "./NotificationProvider";
-export type { NotificationContextValue } from "./types";
-
-export {
   ThemeProvider,
   useAppTheme,
   useThemeStyles,

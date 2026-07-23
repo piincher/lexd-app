@@ -7,6 +7,7 @@ import React, { useMemo } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import type { ViewStyle, TextStyle } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { RADIUS } from './designLanguage';
 
 export type BadgeVariant =
   | 'default'
@@ -51,20 +52,20 @@ export const Badge: React.FC<BadgeProps> = ({
     }
 
     switch (variant) {
-      case 'default':
       case 'primary':
-        return { bg: themeColors.neutral[200], text: themeColors.text.secondary };
+        // Brand-tinted, so a primary badge no longer reads as plain neutral.
+        return { bg: themeColors.primary.main + '18', text: themeColors.primary.dark };
       case 'success':
-        return { bg: themeColors.background.paper, text: themeColors.text.primary };
+        return { bg: themeColors.feedback.successBg, text: themeColors.feedback.successDark };
       case 'warning':
-        return { bg: themeColors.accent.goldLight + '20', text: themeColors.accent.goldDark };
+        return { bg: themeColors.feedback.warningBg, text: themeColors.feedback.warningDark };
       case 'danger':
       case 'error':
-        return { bg: themeColors.status.error + '15', text: themeColors.status.error };
+        return { bg: themeColors.feedback.errorBg, text: themeColors.feedback.errorDark };
       case 'info':
-        return { bg: themeColors.primary.main + '15', text: themeColors.primary.dark };
+        return { bg: themeColors.feedback.infoBg, text: themeColors.feedback.infoDark };
+      case 'default':
       case 'neutral':
-        return { bg: themeColors.neutral[200], text: themeColors.text.secondary };
       default:
         return { bg: themeColors.neutral[200], text: themeColors.text.secondary };
     }
@@ -75,24 +76,28 @@ export const Badge: React.FC<BadgeProps> = ({
   const styles = useMemo(
     () =>
       StyleSheet.create({
+        // Squared corners + tracked uppercase: the waybill cue, replacing the
+        // previous 20px pill.
         base: {
-          borderRadius: 20,
+          borderRadius: RADIUS.badge,
           alignSelf: 'flex-start',
         },
         small: {
-          paddingHorizontal: 10,
-          paddingVertical: 4,
+          paddingHorizontal: 7,
+          paddingVertical: 3,
         },
         medium: {
-          paddingHorizontal: 14,
-          paddingVertical: 6,
+          paddingHorizontal: 10,
+          paddingVertical: 5,
         },
         text: {
-          fontSize: 12,
-          fontWeight: '600',
+          fontSize: 11,
+          fontWeight: '700',
+          letterSpacing: 0.6,
+          textTransform: 'uppercase',
         },
         mediumText: {
-          fontSize: 14,
+          fontSize: 12,
         },
       }),
     [themeColors],

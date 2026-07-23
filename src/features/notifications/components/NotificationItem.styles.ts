@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import type { ThemeContextType } from '@src/providers/ThemeProvider';
 
 export const createNotificationItemStyles = (colors: ThemeContextType['colors']) =>
@@ -8,8 +9,11 @@ export const createNotificationItemStyles = (colors: ThemeContextType['colors'])
       backgroundColor: colors.background.card,
       marginHorizontal: 16,
       marginVertical: 4,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       overflow: 'hidden',
+      // Waybill: border-first separation.
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
     },
     unreadContainer: {
       backgroundColor: colors.background.paper,
@@ -21,12 +25,12 @@ export const createNotificationItemStyles = (colors: ThemeContextType['colors'])
       flexDirection: 'row',
       alignItems: 'center',
       padding: 12,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
     },
     iconContainer: {
       width: 48,
       height: 48,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       justifyContent: 'center',
       alignItems: 'center',
       marginRight: 12,
@@ -70,11 +74,13 @@ export const createNotificationItemStyles = (colors: ThemeContextType['colors'])
       backgroundColor: colors.neutral[200],
       paddingHorizontal: 8,
       paddingVertical: 2,
-      borderRadius: 4,
+      borderRadius: RADIUS.badge,
     },
     typeText: {
       fontFamily: Fonts.medium,
       fontSize: 11,
+      letterSpacing: 0.6,
+      textTransform: 'uppercase',
     },
     time: {
       fontFamily: Fonts.regular,
@@ -92,14 +98,14 @@ export const createNotificationItemStyles = (colors: ThemeContextType['colors'])
     },
     leftAction: {
       backgroundColor: colors.status.success,
-      borderTopLeftRadius: 12,
-      borderBottomLeftRadius: 12,
+      borderTopLeftRadius: RADIUS.card,
+      borderBottomLeftRadius: RADIUS.card,
       marginLeft: 16,
     },
     rightAction: {
       backgroundColor: colors.status.error,
-      borderTopRightRadius: 12,
-      borderBottomRightRadius: 12,
+      borderTopRightRadius: RADIUS.card,
+      borderBottomRightRadius: RADIUS.card,
       marginRight: 16,
     },
     swipeActionText: {

@@ -6,6 +6,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { GoodsStatus } from '../api';
 import { formatDateTime, getStatusSteps, getStatusIndex } from '../lib/goodsHelpers';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
 
@@ -28,7 +29,7 @@ export const GoodsDetailTimeline: React.FC<GoodsDetailTimelineProps> = ({
 	const currentIndex = getStatusIndex(status, mode);
 
 	return (
-		<Card style={styles.card}>
+		<Card style={[styles.card, { borderColor: colors.border }]}>
 			<View style={styles.header}>
 				<MaterialCommunityIcons name="timeline-clock" size={20} color={colors.primary.main} />
 				<Text style={[styles.title, { color: colors.text.primary }]}>Suivi du statut</Text>
@@ -85,7 +86,7 @@ export const GoodsDetailTimeline: React.FC<GoodsDetailTimelineProps> = ({
 };
 
 const styles = StyleSheet.create({
-	card: { marginHorizontal: 16, marginBottom: 12, elevation: 2, borderRadius: 12 },
+	card: { marginHorizontal: 16, marginBottom: 12, borderRadius: RADIUS.card, borderWidth: HAIRLINE },
 	header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 16, paddingBottom: 8, gap: 8 },
 	title: { fontFamily: Fonts.bold, fontSize: 15 },
 	timeline: { paddingVertical: 8 },

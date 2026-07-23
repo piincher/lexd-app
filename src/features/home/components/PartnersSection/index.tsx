@@ -3,17 +3,18 @@ import React from 'react';
 import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
+import { HAIRLINE } from "@src/shared/ui/designLanguage";
 
 interface PartnersSectionProps {
    colors: any;
 }
 
 const PARTNER_LOGOS = [
-   "https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/cma-cgm.png",
-   "https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/maersk.png",
-   "https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/hapag.png",
-   "https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/ethiopian.png",
-   "https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/turkish.png",
+   "https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/cma-cgm.png",
+   "https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/maersk.png",
+   "https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/hapag.png",
+   "https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/ethiopian.png",
+   "https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/turkish.png",
 ];
 
 export const PartnersSection: React.FC<PartnersSectionProps> = ({ colors }) => {
@@ -55,13 +56,11 @@ const createStyles = (colors: any) => StyleSheet.create({
       gap: 12,
    },
    logoContainer: {
+     borderWidth: HAIRLINE,
+     borderColor: colors.border,
       backgroundColor: colors.background.card,
       borderRadius: 12,
       padding: 12,
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.06,
-      shadowRadius: 4,
-      elevation: 2,
    },
    logo: {
       width: 70,

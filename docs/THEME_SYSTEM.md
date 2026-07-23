@@ -1,4 +1,4 @@
-# ChinaLink Express - Theme System Documentation
+# LEXD - Theme System Documentation
 
 ## Overview
 

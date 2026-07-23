@@ -21,7 +21,7 @@ import {
 import { setAppThemeMode } from '@src/constants/themeState';
 
 // Storage key
-const THEME_STORAGE_KEY = '@chinalink_theme_mode';
+const THEME_STORAGE_KEY = '@lexd_theme_mode';
 
 // Create Context
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);

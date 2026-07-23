@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -26,7 +27,7 @@ export const createStyles = (colors: any) =>
     image: {
       width: '100%',
       height: 230,
-      borderRadius: 18,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.background.paper,
     },
     pointsBadge: {
@@ -38,7 +39,7 @@ export const createStyles = (colors: any) =>
       gap: 4,
       paddingHorizontal: 12,
       paddingVertical: 6,
-      borderRadius: 999,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.primary.main,
     },
     pointsBadgeText: {
@@ -52,7 +53,7 @@ export const createStyles = (colors: any) =>
       right: 0,
       bottom: 0,
       top: 0,
-      borderRadius: 18,
+      borderRadius: RADIUS.card,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors.background.scrim + '80',
@@ -82,7 +83,7 @@ export const createStyles = (colors: any) =>
       gap: 5,
       paddingHorizontal: 10,
       paddingVertical: 5,
-      borderRadius: 8,
+      borderRadius: RADIUS.badge,
     },
     badgeLabel: {
       fontSize: 12,
@@ -96,9 +97,9 @@ export const createStyles = (colors: any) =>
     balanceCard: {
       gap: 10,
       padding: 16,
-      borderRadius: 14,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     balanceTop: {
@@ -112,8 +113,11 @@ export const createStyles = (colors: any) =>
       gap: 6,
     },
     balanceLabel: {
-      fontSize: 13,
-      fontWeight: '600',
+      // Waybill tracked uppercase micro-label (balance metadata).
+      fontSize: 10,
+      fontWeight: '700',
+      letterSpacing: 0.7,
+      textTransform: 'uppercase',
       color: colors.text.secondary,
     },
     balanceValue: {
@@ -123,13 +127,13 @@ export const createStyles = (colors: any) =>
     },
     balanceTrack: {
       height: 6,
-      borderRadius: 999,
+      borderRadius: RADIUS.pill,
       backgroundColor: colors.background.paper,
       overflow: 'hidden',
     },
     balanceFill: {
       height: '100%',
-      borderRadius: 999,
+      borderRadius: RADIUS.pill,
     },
     balanceHint: {
       fontSize: 12.5,
@@ -155,7 +159,7 @@ export const createStyles = (colors: any) =>
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors.background.paper,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     qtyButtonDisabled: {
@@ -169,9 +173,9 @@ export const createStyles = (colors: any) =>
       textAlign: 'center',
     },
     input: {
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       paddingHorizontal: 12,
       paddingVertical: 10,
       fontSize: 14,
@@ -221,7 +225,7 @@ export const createStyles = (colors: any) =>
       justifyContent: 'center',
       gap: 8,
       minHeight: 52,
-      borderRadius: 14,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.primary.main,
     },
     ctaDisabled: {

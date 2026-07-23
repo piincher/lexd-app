@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '@src/navigations/type';
 import { useUpdateAirwayBillStatus, useDeleteAirwayBill, useUpdateAirwayBillWaypoint } from '../../../hooks/useAirwayBills';
+import { ApiClientError } from '@src/api/client';
 import { AirwayBillStatus, AirwayBillWaypointStatus } from '../../../types';
 
 export const useAirwayBillDetailActions = (
@@ -19,8 +20,15 @@ export const useAirwayBillDetailActions = (
       closeMenu();
       try {
         await updateStatusMutation.mutateAsync({ id: airwayBillId, status: newStatus });
-      } catch {
-        Alert.alert('Erreur', 'Impossible de mettre à jour le statut');
+      } catch (error) {
+        console.error('[AWB] status update failed:', error);
+        const message =
+          error instanceof ApiClientError
+            ? `${error.getUserMessage()}${error.code ? ` (${error.code})` : ''}`
+            : error instanceof Error
+              ? error.message
+              : 'Impossible de mettre à jour le statut';
+        Alert.alert('Erreur', message);
       }
     },
     [airwayBillId, updateStatusMutation, closeMenu]

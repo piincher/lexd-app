@@ -1,4 +1,4 @@
-# ChinaLink Express - Feature Roadmap & Technical Debt
+# LEXD - Feature Roadmap & Technical Debt
 
 > **Last Updated**: April 2026  
 > **Version**: 2.6.0  
@@ -23,7 +23,7 @@
 - Password reset links
 
 **Implementation Notes**:
-- Configure iOS Universal Links (`applinks:chinalinkexpress.com`)
+- Configure iOS Universal Links (`applinks:lexdservices.com`)
 - Configure Android App Links
 - Handle `getInitialURL()` and `Linking.addEventListener` in App.tsx
 - Navigation param parsing for each route
@@ -32,7 +32,7 @@
 - `src/app/navigation/DeepLinkHandler.tsx`
 - `app.json` - Add associated domains
 - `android/app/src/main/AndroidManifest.xml`
-- `ios/ChinaLinkExpress/ChinaLinkExpress.entitlements`
+- `ios/LEXD/LEXD.entitlements`
 
 ---
 
@@ -123,8 +123,8 @@ npm install react-native-html-to-pdf
 - Retry failed deliveries
 
 **Files to Create/Modify**:
-- `chinalinkexpressbackend/src/v2/services/pushNotificationService.js`
-- `chinalinkexpressbackend/src/v2/services/notificationTriggers.js` - Add push calls
+- `lexdbackend/src/v2/services/pushNotificationService.js`
+- `lexdbackend/src/v2/services/notificationTriggers.js` - Add push calls
 
 ---
 
@@ -178,8 +178,8 @@ npm install react-native-html-to-pdf
 - `src/features/referral/screens/ReferralScreen.tsx`
 - `src/features/referral/components/ReferralStats.tsx`
 - `src/features/referral/hooks/useReferral.ts`
-- `chinalinkexpressbackend/src/v2/models/Referral.js`
-- `chinalinkexpressbackend/src/v2/routes/referralRoutes.js`
+- `lexdbackend/src/v2/models/Referral.js`
+- `lexdbackend/src/v2/routes/referralRoutes.js`
 
 ---
 

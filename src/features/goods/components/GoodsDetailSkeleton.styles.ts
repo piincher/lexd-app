@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
   container: {
@@ -23,17 +24,17 @@ export const styles = StyleSheet.create({
   photoCard: {
     marginHorizontal: 16,
     marginBottom: 12,
-    borderRadius: 12,
+    borderRadius: RADIUS.card,
     overflow: 'hidden',
-    elevation: 2,
+    borderWidth: HAIRLINE,
   },
   statsRow: {
     flexDirection: 'row',
     marginHorizontal: 16,
     marginBottom: 12,
-    borderRadius: 12,
+    borderRadius: RADIUS.card,
     paddingVertical: 16,
-    elevation: 1,
+    borderWidth: HAIRLINE,
   },
   statBox: {
     flex: 1,
@@ -49,8 +50,8 @@ export const styles = StyleSheet.create({
   sectionCard: {
     marginHorizontal: 16,
     marginBottom: 12,
-    elevation: 2,
-    borderRadius: 12,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -86,7 +87,7 @@ export const styles = StyleSheet.create({
   containerBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 12,
+    borderRadius: RADIUS.card,
     padding: 16,
   },
   containerBoxInfo: {

@@ -41,9 +41,9 @@ const getConsigneeInfo = (container: AdminLoadingListData['container']) => {
   const raw = legacyContainer.consignee || populatedConsignee;
 
   return {
-    name: raw?.name || 'ChinaLink Express Bamako',
+    name: raw?.name || 'LEXD Bamako',
     phone: raw?.phone || COMPANY_PHONE,
-    warehouseAddress: raw?.warehouseAddress || 'ChinaLink Express Warehouse - Bamako',
+    warehouseAddress: raw?.warehouseAddress || 'LEXD Warehouse - Bamako',
   };
 };
 
@@ -61,8 +61,8 @@ const getRouteLabel = (container: AdminLoadingListData['container']) => {
 
 function generateItemsHtml(items: AdminLoadingListData['items']) {
   return items.map((item) => `
-    <tr style="background: ${item.isLoaded ? '#f0fdf4' : '#ffffff'}; border-left: 4px solid ${item.clientColor};">
-      <td style="padding: 10px 12px; font-size: 14px; font-weight: 700; color: #166534;">${item.sequenceNumber}</td>
+    <tr style="background: ${item.isLoaded ? '#EDF7F3' : '#ffffff'}; border-left: 4px solid ${item.clientColor};">
+      <td style="padding: 10px 12px; font-size: 14px; font-weight: 700; color: #024130;">${item.sequenceNumber}</td>
       <td style="padding: 10px 12px; font-size: 12px; color: #374151; font-family: monospace;">${escapeHtml(item.goods.goodsId)}</td>
       <td style="padding: 10px 12px; font-size: 12px; color: #4b5563;">
         <div style="display: flex; align-items: center; gap: 6px;">
@@ -107,12 +107,12 @@ export async function generateLoadingListPDF(
     .info-value { font-size: 14px; font-weight: 600; color: #374151; }
     .progress-section { background: #fffbeb; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 2px solid #fcd34d; }
     .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .progress-title { font-size: 16px; font-weight: 700; color: #92400e; }
+    .progress-title { font-size: 16px; font-weight: 700; color: #93370D; }
     .progress-value { font-size: 24px; font-weight: 800; color: #d97706; }
     .progress-bar { height: 24px; background: #fef3c7; border-radius: 12px; overflow: hidden; }
     .progress-fill { height: 100%; background: linear-gradient(90deg, #d97706, #f59e0b); border-radius: 12px; }
     table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th { background: #fffbeb; padding: 12px; text-align: left; font-size: 11px; color: #92400e; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #fcd34d; }
+    th { background: #fffbeb; padding: 12px; text-align: left; font-size: 11px; color: #93370D; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #fcd34d; }
     td { border-bottom: 1px solid #e5e7eb; }
     .footer { margin-top: 40px; text-align: center; padding-top: 20px; border-top: 1px solid #e5e7eb; }
     .footer p { margin: 4px 0; font-size: 12px; color: #6b7280; }
@@ -150,12 +150,12 @@ export async function generateLoadingListPDF(
     <div class="progress-bar">
       <div class="progress-fill" style="width: ${summary.totalItems > 0 ? (summary.loadedItems / summary.totalItems) * 100 : 0}%;"></div>
     </div>
-    <div style="margin-top: 12px; display: flex; justify-content: space-between; font-size: 13px; color: #92400e;">
+    <div style="margin-top: 12px; display: flex; justify-content: space-between; font-size: 13px; color: #93370D;">
       <span>Chargé: ${summary.loadedCBM.toFixed(2)} m³</span>
       <span>Restant: ${summary.remainingCBM.toFixed(2)} m³</span>
     </div>
   </div>
-  <h2 style="color: #92400e; font-size: 18px; margin-bottom: 16px;">🚛 Séquence de Chargement</h2>
+  <h2 style="color: #93370D; font-size: 18px; margin-bottom: 16px;">🚛 Séquence de Chargement</h2>
   <p style="color: #6b7280; font-size: 12px; margin-bottom: 16px;">Ordre: Du plus lourd au plus léger pour une meilleure stabilité</p>
   <table>
     <thead>
@@ -173,17 +173,17 @@ export async function generateLoadingListPDF(
     <tbody>${itemsHtml}</tbody>
   </table>
   <div style="background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 16px; margin: 24px 0;">
-    <div style="font-size: 14px; font-weight: 700; color: #92400e; margin-bottom: 8px; text-align: center;">💳 PAIEMENT EN AVANCE</div>
+    <div style="font-size: 14px; font-weight: 700; color: #93370D; margin-bottom: 8px; text-align: center;">💳 PAIEMENT EN AVANCE</div>
     <div style="font-size: 12px; color: #78350f; text-align: center; line-height: 1.6;">
       Pour effectuer un paiement anticipé ou régler votre solde,<br>
       veuillez contacter le consignataire:<br>
-      <strong style="font-size: 14px; color: #92400e;">${escapeHtml(consignee.name)}</strong><br>
+      <strong style="font-size: 14px; color: #93370D;">${escapeHtml(consignee.name)}</strong><br>
       📞 <strong>${escapeHtml(consignee.phone)}</strong>
     </div>
   </div>
   <div class="footer">
     <p>Document généré le ${new Date().toLocaleDateString('fr-FR')} à ${new Date().toLocaleTimeString('fr-FR')}</p>
-    <p><strong>ChinaLink Express</strong> - Transport International</p>
+    <p><strong>LEXD</strong> - Transport International</p>
     <p>Bamako, Mali | Tél: ${COMPANY_PHONE}</p>
   </div>
 </body>

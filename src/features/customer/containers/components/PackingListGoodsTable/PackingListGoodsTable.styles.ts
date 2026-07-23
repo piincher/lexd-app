@@ -1,10 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   sectionCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
-    elevation: 1,
   },
   sectionHeader: {
     flexDirection: 'row',

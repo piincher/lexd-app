@@ -11,6 +11,7 @@ import { Screen } from "@src/shared/ui/Screen";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Theme } from "@src/constants/Theme";
 import { Fonts } from "@src/constants/Fonts";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 import { useHelpCenterScreen } from "./hooks/useHelpCenterScreen";
 import { HelpQuickActions } from "../components/HelpQuickActions";
 import { HelpPopularFAQs } from "../components/HelpPopularFAQs";
@@ -148,14 +149,14 @@ const createStyles = (colors: any) =>
       paddingHorizontal: Theme.spacing.xl,
       paddingTop: Theme.spacing.lg,
       paddingBottom: Theme.spacing["3xl"],
-      borderBottomLeftRadius: Theme.radius["2xl"],
-      borderBottomRightRadius: Theme.radius["2xl"],
+      borderBottomLeftRadius: RADIUS.sheet,
+      borderBottomRightRadius: RADIUS.sheet,
     },
     heroTitle: {
       fontFamily: Fonts.bold,
       fontSize: 24,
       lineHeight: 30,
-      color: "#FFFFFF",
+      color: colors.text.inverse,
       letterSpacing: -0.3,
     },
     heroSubtitle: {

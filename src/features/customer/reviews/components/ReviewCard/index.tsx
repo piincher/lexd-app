@@ -72,7 +72,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
       {review.adminResponse ? (
         <View style={styles.responseContainer}>
           <Text style={styles.responseLabel}>
-            Réponse de l'équipe ChinaLink :
+            Réponse de l'équipe LEXD :
           </Text>
           <Text style={styles.responseText}>{review.adminResponse}</Text>
         </View>

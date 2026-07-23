@@ -17,6 +17,10 @@ export const useAddUser = (navigation: RootStackScreenProps<'UserAdd'>['navigati
 		onDismissSnackBar,
 		isPending,
 		handleSubmit,
+		createdUser,
+		handleCreateAnother,
+		handleViewCreatedClient,
+		handleShareCreatedClient,
 	} = useAddUserCreation(navigation, selectedCode);
 
 	return {
@@ -26,6 +30,10 @@ export const useAddUser = (navigation: RootStackScreenProps<'UserAdd'>['navigati
 		setSelectedCode,
 		isPending,
 		handleSubmit,
+		createdUser,
+		handleCreateAnother,
+		handleViewCreatedClient,
+		handleShareCreatedClient,
 		initialValues,
 		signupSchema,
 		signUpDataCode,

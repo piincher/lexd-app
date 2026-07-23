@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { DashboardStats } from '../types';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 type DashboardUser = { firstName?: string } | null | undefined;
 type IoniconName = React.ComponentProps<typeof Ionicons>['name'];
@@ -92,11 +93,12 @@ export const HeroSection: React.FC<Props> = ({
             style={{
               width: 44,
               height: 44,
-              borderRadius: 14,
+              borderRadius: RADIUS.control,
               backgroundColor: colors.background.card,
               justifyContent: 'center',
               alignItems: 'center',
-              elevation: 2,
+              borderWidth: HAIRLINE,
+              borderColor: colors.border,
             }}
           >
             <Ionicons name="notifications-outline" size={20} color={colors.text.primary} />

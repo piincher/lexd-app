@@ -38,7 +38,7 @@ export const lightShadows = {
     elevation: 12,
   },
   colored: {
-    shadowColor: '#22C55E',
+    shadowColor: '#007757',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
     shadowRadius: 12,
@@ -83,7 +83,7 @@ export const darkShadows = {
     elevation: 12,
   },
   colored: {
-    shadowColor: '#4ADE80',
+    shadowColor: '#3D9E80',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 12,

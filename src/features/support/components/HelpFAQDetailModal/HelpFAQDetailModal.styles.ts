@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -8,13 +9,13 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
-      backgroundColor: "#00000080",
+      backgroundColor: colors.background.overlay,
       justifyContent: "flex-end",
     },
     sheet: {
       backgroundColor: colors.background.card,
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
+      borderTopLeftRadius: RADIUS.sheet,
+      borderTopRightRadius: RADIUS.sheet,
       maxHeight: "90%",
     },
     header: {
@@ -37,7 +38,7 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       alignSelf: "flex-start",
       paddingHorizontal: 10,
       paddingVertical: 3,
-      borderRadius: 8,
+      borderRadius: RADIUS.badge,
       marginBottom: 12,
     },
     badgeText: {
@@ -67,9 +68,9 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     tag: {
       paddingHorizontal: 10,
       paddingVertical: 4,
-      borderRadius: 20,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.background.default,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     tagText: {
@@ -100,9 +101,9 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       justifyContent: "center",
       gap: 6,
       paddingVertical: 12,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.default,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
     },
     feedbackBtnText: {
       fontFamily: Fonts.bold,

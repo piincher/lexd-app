@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { lightTheme } from "@src/constants/Theme";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 type Colors = typeof lightTheme.colors;
 
@@ -8,15 +9,10 @@ export const createStyles = (colors: Colors) =>
   StyleSheet.create({
     panel: {
       backgroundColor: colors.background.card,
-      borderRadius: 8,
+      borderRadius: RADIUS.card,
       padding: 16,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 8 },
-      shadowOpacity: 0.08,
-      shadowRadius: 18,
-      elevation: 3,
     },
     lede: {
       flexDirection: "row",
@@ -25,7 +21,7 @@ export const createStyles = (colors: Colors) =>
     iconWell: {
       width: 52,
       height: 52,
-      borderRadius: 18,
+      borderRadius: RADIUS.control,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: colors.primary[50],
@@ -47,7 +43,7 @@ export const createStyles = (colors: Colors) =>
       color: colors.text.primary,
     },
     divider: {
-      height: 1,
+      height: HAIRLINE,
       backgroundColor: colors.border,
       marginVertical: 14,
     },
@@ -59,7 +55,7 @@ export const createStyles = (colors: Colors) =>
     metric: {
       flex: 0.7,
       minHeight: 64,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       padding: 10,
       backgroundColor: colors.background.paper,
       justifyContent: "center",
@@ -67,7 +63,7 @@ export const createStyles = (colors: Colors) =>
     metricWide: {
       flex: 1.35,
       minHeight: 64,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       padding: 10,
       backgroundColor: colors.background.paper,
       justifyContent: "center",
@@ -81,6 +77,9 @@ export const createStyles = (colors: Colors) =>
       marginTop: 3,
       fontFamily: Fonts.regular,
       fontSize: 11,
+      fontWeight: "700",
+      letterSpacing: 0.6,
+      textTransform: "uppercase",
       color: colors.text.secondary,
     },
   });

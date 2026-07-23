@@ -6,7 +6,7 @@
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const PENDING_DEEP_LINK_KEY = "CHINALINK_PENDING_DEEP_LINK";
+const PENDING_DEEP_LINK_KEY = "LEXD_PENDING_DEEP_LINK";
 
 /** Store a pending deep link for post-login navigation */
 export async function storePendingDeepLink(url: string): Promise<void> {

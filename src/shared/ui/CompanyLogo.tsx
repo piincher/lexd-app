@@ -8,7 +8,7 @@ interface Props {
 }
 
 const ComppanyLogo: FC<Props> = ({ img, style }: Props) => {
-	return <Image source={img || require('../../../assets/images/logoYellow.png')} style={[styles.container, style]} />;
+	return <Image source={img || require('../../../assets/images/lexd-logo.png')} style={[styles.container, style]} />;
 };
 
 const styles = StyleSheet.create({

@@ -1,13 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const createGoodsDetailContainerStyles = (colors: any) =>
   StyleSheet.create({
     card: {
       marginHorizontal: 16,
       marginBottom: 12,
-      elevation: 2,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
     },
     header: {
       flexDirection: 'row',

@@ -1,19 +1,19 @@
 {
-  "date": "2026-05-25",
-  "framework": "Expo + React Native",
-  "ui_layer": "react-native-paper + MaterialCommunityIcons",
+  "date": "2026-07-20",
+  "framework": "Expo 55 + React Native 0.83",
+  "ui_layer": "React Native primitives + React Native Paper + Ionicons",
   "state_data": "React Query + Zustand",
-  "palette": "Brand green with gold/red accents from src/shared/constants/Theme.ts",
-  "motion": "Motion-cut for dashboard surfaces; touch feedback uses opacity/pressed state only",
+  "palette": "LEXD green and amber semantic ramps from src/shared/constants/Theme.ts",
+  "motion": "Motion-cut for home surfaces; touch feedback uses opacity and subtle pressed state only",
   "spacing": "Existing React Native StyleSheet spacing, 4px multiples",
   "preserve": [
     "Existing ThemeProvider dark/light tokens",
-    "Feature-sliced admin dashboard ownership",
-    "Existing navigation routes and data hooks"
+    "Feature-sliced home ownership",
+    "Existing guest navigation routes and authentication redirect"
   ],
   "introduced": [
-    "Command Directory macrostructure for admin access list",
-    "Searchable grouped command surface",
-    "Thumb-friendly 48px+ touch targets"
+    "Index-First macrostructure for the guest home",
+    "Operational China-to-Mali route narrative",
+    "Thumb-friendly 44px+ touch targets"
   ]
 }

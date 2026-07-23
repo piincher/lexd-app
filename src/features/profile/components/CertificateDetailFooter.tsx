@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const CertificateDetailFooter: React.FC<Props> = ({
-  text = "Ce certificat atteste de votre statut d'expéditeur certifié ChinaLink Express",
+  text = "Ce certificat atteste de votre statut d'expéditeur certifié LEXD",
 }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors.text.inverse);

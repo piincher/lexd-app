@@ -154,7 +154,6 @@ export const GoodsStatsBottomSheet: React.FC<GoodsStatsBottomSheetProps> = ({
       transparent
       animationType="none"
       onRequestClose={onDismiss}
-      statusBarTranslucent
     >
       <GestureHandlerRootView style={styles.root}>
         <View style={styles.overlay}>
@@ -175,7 +174,7 @@ export const GoodsStatsBottomSheet: React.FC<GoodsStatsBottomSheetProps> = ({
 
                 <View style={styles.header}>
                   <View style={styles.headerText}>
-                    <Text style={styles.title}>Vue d'ensemble</Text>
+                    <Text style={styles.title}>{"Vue d'ensemble"}</Text>
                     <Text style={styles.subtitle}>{scopeLabel}</Text>
                   </View>
                   <TouchableOpacity
@@ -265,8 +264,7 @@ export const GoodsStatsBottomSheet: React.FC<GoodsStatsBottomSheetProps> = ({
           {/* Hint when filters are narrowing — helps the operator interpret the numbers */}
           {summary && hasActiveFilters && (
             <Text style={styles.footnote}>
-              Ces totaux ne reflètent que les marchandises correspondant aux filtres actifs.
-              Effacez les filtres pour voir l'entrepôt complet.
+              {"Ces totaux ne reflètent que les marchandises correspondant aux filtres actifs. Effacez les filtres pour voir l'entrepôt complet."}
             </Text>
           )}
           </Animated.View>

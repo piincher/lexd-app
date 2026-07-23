@@ -2,7 +2,7 @@
  * Deep Link URL Parser
  *
  * Parses deep link URLs into screen name and navigation params.
- * Supports both custom scheme (chinalinkexpress://) and universal links.
+ * Supports both custom scheme (lexd://) and universal links.
  */
 
 export interface ParsedLink {
@@ -22,12 +22,12 @@ const adminLink = (screen: string, params?: Record<string, unknown>): ParsedLink
  * This is a best-effort parser that mirrors the linking config.
  */
 export function parseDeepLink(url: string): ParsedLink | null {
+  // Strips the custom scheme and either universal-link host. The host must
+  // match app.json's associatedDomains (lexdservices.com / www.lexdservices.com)
+  // or a universal link falls through unparsed and the tap dead-ends.
   const path = url
-    .replace(/^chinalinkexpress:\/\//, "")
-    .replace(/^https:\/\/chinalinkexpress\.com\//, "")
-    .replace(/^https:\/\/www\.chinalinkexpress\.com\//, "")
-    .replace(/^http:\/\/chinalinkexpress\.com\//, "")
-    .replace(/^http:\/\/www\.chinalinkexpress\.com\//, "");
+    .replace(/^lexd:\/\//, "")
+    .replace(/^https?:\/\/(www\.)?lexdservices\.com\/?/, "");
   const [route, queryString] = path.split("?");
   const segments = route.split("/").filter(Boolean);
 
@@ -50,17 +50,20 @@ export function parseDeepLink(url: string): ParsedLink | null {
       return { screen: "HomeTab", params: { screen: "Home" } };
     case "dashboard":
       return { screen: "HomeTab", params: { screen: "CustomerDashboard" } };
+    // The Orders / MyGoods / MyContainers tabs merged into one Shipments tab.
+    // These three paths are kept rather than dropped: links already sent to
+    // customers must still land somewhere sensible, and that is now the
+    // unified list.
     case "containers":
-      return { screen: "HomeTab", params: { screen: "MyContainers" } };
     case "goods-list":
-      return { screen: "HomeTab", params: { screen: "MyGoods" } };
+      return { screen: "HomeTab", params: { screen: "Shipments" } };
     case "goods": {
       if (second === "new") return { screen: "ScanQR", params };
       if (third === "edit") return { screen: "EditGoods", params: { goodsId: second, ...params } };
       return { screen: "GoodsDetail", params: { goodsId: second, ...params } };
     }
     case "orders":
-      return { screen: "HomeTab", params: { screen: "Orders" } };
+      return { screen: "HomeTab", params: { screen: "Shipments" } };
     case "profile":
       return { screen: "HomeTab", params: { screen: "Profile" } };
     case "tracking":

@@ -8,6 +8,7 @@ interface Props {
   selectedCount: number;
   onConfirmRemove: () => void;
   onAddGoods: () => void;
+  onScanGoods: () => void;
   onToggleRemoveMode: () => void;
   isRemoving: boolean;
   isEmpty: boolean;
@@ -18,6 +19,7 @@ export const CargoBagDetailFooter: React.FC<Props> = ({
   selectedCount,
   onConfirmRemove,
   onAddGoods,
+  onScanGoods,
   onToggleRemoveMode,
   isRemoving,
   isEmpty,
@@ -38,6 +40,7 @@ export const CargoBagDetailFooter: React.FC<Props> = ({
       ) : (
         <>
           <Button title="+ Ajouter des marchandises" onPress={onAddGoods} variant="primary" fullWidth />
+          <Button title="Scanner des colis" icon="qr-code-outline" onPress={onScanGoods} variant="outline" fullWidth />
           {!isEmpty && (
             <Button title="Retirer des marchandises" onPress={onToggleRemoveMode} variant="outline" fullWidth />
           )}

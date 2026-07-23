@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS, HAIRLINE } from "@src/shared/ui/designLanguage";
 import { formatShortDate } from "../utils";
 
 interface OrderCardHeaderProps {
@@ -25,14 +26,17 @@ export const OrderCardHeader: React.FC<OrderCardHeaderProps> = ({
 }) => {
    const { colors } = useAppTheme();
    const isSeaShipping = shippingMode === "sea";
+   // Sea runs brand green, air runs amber — the same mode coding used on the
+   // home service cards and the dashboard shipment card.
+   const modeColor = isSeaShipping ? colors.primary.main : colors.accent.amber;
 
    return (
       <View style={styles.topRow}>
-         <View style={[styles.iconBox, { backgroundColor: colors.background.paper }]}>
+         <View style={[styles.iconBox, { backgroundColor: `${modeColor}14` }]}>
             <MaterialCommunityIcons
                name={isSeaShipping ? "ferry" : "airplane"}
                size={20}
-               color={colors.primary.dark}
+               color={modeColor}
             />
          </View>
 
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
    iconBox: {
       width: 38,
       height: 38,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       justifyContent: "center",
       alignItems: "center",
       marginRight: 10,
@@ -97,32 +101,37 @@ const styles = StyleSheet.create({
       flex: 1,
       marginRight: 8,
    },
+   // Order codes are reference numbers — tracked so they read as a document
+   // identifier rather than a title.
    orderCode: {
       fontSize: 15,
       fontWeight: "700",
+      letterSpacing: 0.4,
    },
    metaRow: {
       flexDirection: "row",
       alignItems: "center",
       marginTop: 3,
-      gap: 4,
+      gap: 5,
    },
    metaText: {
       fontSize: 11,
    },
+   // Hairline rule separator instead of a bullet dot.
    metaDot: {
-      width: 3,
-      height: 3,
-      borderRadius: 1.5,
+      width: HAIRLINE,
+      height: 9,
    },
    statusBadge: {
-      paddingHorizontal: 8,
-      paddingVertical: 4,
-      borderRadius: 6,
+      paddingHorizontal: 7,
+      paddingVertical: 3,
+      borderRadius: RADIUS.badge,
    },
    statusText: {
-      fontSize: 11,
-      fontWeight: "600",
+      fontSize: 10,
+      fontWeight: "700",
+      letterSpacing: 0.6,
+      textTransform: "uppercase",
    },
    chevron: {
       marginLeft: 6,

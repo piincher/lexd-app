@@ -43,7 +43,7 @@ export const PackingListPickupSection: React.FC<PackingListPickupSectionProps> =
             <Text style={styles.pickupSectionTitle}>📍 POINT DE RETRAIT</Text>
           </View>
           
-          <Text style={styles.warehouseMainName}>ChinaLink Express Warehouse - Bamako</Text>
+          <Text style={styles.warehouseMainName}>LEXD Warehouse - Bamako</Text>
           <Text style={styles.warehouseMainAddress}>Mali</Text>
           
           <Divider style={styles.pickupDivider} />

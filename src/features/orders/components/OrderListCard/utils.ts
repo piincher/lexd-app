@@ -1,12 +1,29 @@
 import { CUSTOMER_ORDER_STATUS_LABELS } from '@src/shared/lib/customerStatus';
 
-export const STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-   Active: { label: CUSTOMER_ORDER_STATUS_LABELS.Active, color: "#1B365D" },
-   "In Transit": { label: CUSTOMER_ORDER_STATUS_LABELS["In Transit"], color: "#2D8FDB" },
-   Delivered: { label: CUSTOMER_ORDER_STATUS_LABELS.Delivered, color: "#1AAE7E" },
-   Inactive: { label: CUSTOMER_ORDER_STATUS_LABELS.Inactive, color: "#8E99A4" },
-   Arrived: { label: CUSTOMER_ORDER_STATUS_LABELS.Arrived, color: "#F59E0B" },
+/** Minimal shape needed from the active theme palette. */
+type StatusColors = {
+   primary: { 300: string; 500: string; 700: string };
+   accent: { amber: string };
+   text: { muted: string };
 };
+
+export type StatusEntry = { label: string; color: string };
+
+/**
+ * Order status colors, resolved from the theme.
+ *
+ * These were previously hardcoded hexes (navy/blue/teal/gray/amber), which
+ * meant they ignored dark mode and sat outside the LEXD palette. They now walk
+ * down the green ramp so the sequence reads as progress toward delivery, with
+ * amber marking "In Transit" — the one state actively in motion.
+ */
+export const getStatusConfig = (colors: StatusColors): Record<string, StatusEntry> => ({
+   Inactive: { label: CUSTOMER_ORDER_STATUS_LABELS.Inactive, color: colors.text.muted },
+   Active: { label: CUSTOMER_ORDER_STATUS_LABELS.Active, color: colors.primary[300] },
+   "In Transit": { label: CUSTOMER_ORDER_STATUS_LABELS["In Transit"], color: colors.accent.amber },
+   Arrived: { label: CUSTOMER_ORDER_STATUS_LABELS.Arrived, color: colors.primary[500] },
+   Delivered: { label: CUSTOMER_ORDER_STATUS_LABELS.Delivered, color: colors.primary[700] },
+});
 
 export type StepIndex = 0 | 1 | 2 | 3 | 4;
 
@@ -18,12 +35,17 @@ export const STEP_PROGRESS: Record<StepIndex, number> = {
    4: 100,
 };
 
-export const STEP_STATUS_CONFIG: Record<StepIndex, { label: string; color: string }> = {
-   0: STATUS_CONFIG.Inactive,
-   1: STATUS_CONFIG.Active,
-   2: STATUS_CONFIG["In Transit"],
-   3: STATUS_CONFIG.Arrived,
-   4: STATUS_CONFIG.Delivered,
+export const getStepStatusConfig = (
+   colors: StatusColors,
+): Record<StepIndex, StatusEntry> => {
+   const status = getStatusConfig(colors);
+   return {
+      0: status.Inactive,
+      1: status.Active,
+      2: status["In Transit"],
+      3: status.Arrived,
+      4: status.Delivered,
+   };
 };
 
 const CURRENT_STATUS_MAP: Record<string, StepIndex> = {

@@ -6,7 +6,7 @@ import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
 import { GoodsDetailHeader } from './components/GoodsDetailHeader';
 import { GoodsDetailSummary } from './components/GoodsDetailSummary';
-import { QRCard } from './components/QRCard';
+import { PackageLabelsCard } from './components/PackageLabelsCard';
 import { GoodsPhotoSection } from './components/GoodsPhotoSection';
 import { DescriptionCard } from './components/DescriptionCard';
 import { ClientCard } from './components/ClientCard';
@@ -84,11 +84,7 @@ export const GoodsDetailScreen: React.FC = () => {
         <ReceptionCard receivedAt={goods.receivedAt} receivedByName={goods.receivedByName} receivedBy={goods.receivedBy} formatDate={actions.formatDate} />
         <DescriptionCard description={goods.description} />
         <GoodsPhotoSection photoUrls={normalizePhotos(goods)} goodsId={goods.goodsId} />
-        <QRCard
-          hasQRCode={hasQRCode}
-          qrCodeImageUrl={goods.qrCodeImageUrl}
-          goodsId={goods.goodsId}
-        />
+        <PackageLabelsCard goods={goods} />
         <ActionButtons onEdit={actions.handleNavigateToEdit} onDelete={actions.handleDelete} />
         <View style={styles.bottomSpacer} />
       </ScrollView>

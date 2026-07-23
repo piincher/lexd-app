@@ -3,7 +3,7 @@
  *
  * Every "share" surface should route through here so links are consistent with
  * the deep-link config (see deepLinking.ts / parseDeepLink.ts). We emit
- * **universal links** (https://chinalinkexpress.com/…) rather than the custom
+ * **universal links** (https://www.lexdservices.com/…) rather than the custom
  * scheme: a universal link opens the app when installed and falls back to the
  * web/app-store when not, so it survives being sent to anyone.
  *
@@ -18,7 +18,7 @@
 import { Share, type ShareContent } from 'react-native';
 
 /** Canonical universal-link host (matches app.json associatedDomains + .well-known). */
-export const SHARE_BASE_URL = 'https://chinalinkexpress.com';
+export const SHARE_BASE_URL = 'https://www.lexdservices.com';
 
 const encode = (v: string | number) => encodeURIComponent(String(v));
 

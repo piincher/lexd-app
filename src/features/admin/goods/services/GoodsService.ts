@@ -331,6 +331,7 @@ export class GoodsService {
       formData.append('weight', String(data.weight));
     }
     formData.append('quantity', data.quantity.toString());
+    formData.append('packageCount', String(data.packageCount ?? 1));
     formData.append('unitPrice', data.unitPrice.toString());
     formData.append('location', data.location);
 

@@ -17,7 +17,7 @@ export const useGoodsShare = (goods: Goods): UseGoodsShareResult => {
         resourceReference: goods.goodsId,
       });
       await Share.share({
-        message: `Suivez ma marchandise ChinaLink Express: ${goods.goodsId}\n${result.url}`,
+        message: `Suivez ma marchandise LEXD: ${goods.goodsId}\n${result.url}`,
         title: `Marchandise ${goods.goodsId}`,
       });
     } catch {

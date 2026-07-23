@@ -44,6 +44,7 @@ export * from './RecentSearchesBar';
 export * from './ResultsBar';
 export * from './RoleFilterChips';
 export * from './SearchBar';
+export * from './RegistrationSuccessCard';
 export * from './SectionHeader';
 export * from './SortSelector';
 export * from './StatCard';

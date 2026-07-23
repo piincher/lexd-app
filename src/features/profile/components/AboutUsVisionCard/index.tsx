@@ -4,7 +4,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const AboutUsVisionCard: React.FC = () => {
    const { colors } = useAppTheme();
@@ -33,9 +33,10 @@ const makeStyles = (colors: any) =>
          marginHorizontal: 20,
          marginTop: 14,
          backgroundColor: colors.background.card,
-         borderRadius: 16,
+         borderRadius: RADIUS.card,
          padding: 18,
-         ...Theme.shadows.sm,
+         borderWidth: HAIRLINE,
+         borderColor: colors.border,
       },
       cardIconRow: {
          flexDirection: 'row',
@@ -46,7 +47,7 @@ const makeStyles = (colors: any) =>
       cardIconContainer: {
          width: 38,
          height: 38,
-         borderRadius: 11,
+         borderRadius: RADIUS.control,
          justifyContent: 'center',
          alignItems: 'center',
       },

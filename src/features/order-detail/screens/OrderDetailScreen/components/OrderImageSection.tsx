@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { imagesType } from '@src/shared/types/order';
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { normalizePhotos } from "@src/shared/lib";
+import { RADIUS, HAIRLINE } from "@src/shared/ui/designLanguage";
 
 interface OrderImageSectionProps {
    images?: imagesType;
@@ -31,7 +32,7 @@ export const OrderImageSection: React.FC<OrderImageSectionProps> = ({ images, go
 
    if (allPhotos.length === 0) {
       return (
-         <Card style={styles.card}>
+         <Card style={[styles.card, { borderColor: colors.border }]}>
             <View style={[styles.image, styles.placeholder]}>
                <MaterialCommunityIcons name="package-variant" size={56} color={colors.text.disabled} />
                <Text style={[styles.placeholderText, { color: colors.text.disabled }]}>Aucune photo</Text>
@@ -42,7 +43,7 @@ export const OrderImageSection: React.FC<OrderImageSectionProps> = ({ images, go
 
    if (allPhotos.length === 1) {
       return (
-         <Card style={styles.card}>
+         <Card style={[styles.card, { borderColor: colors.border }]}>
             <Image source={{ uri: allPhotos[0] }} style={styles.image} resizeMode="cover" />
          </Card>
       );
@@ -50,7 +51,7 @@ export const OrderImageSection: React.FC<OrderImageSectionProps> = ({ images, go
 
    // Multiple photos — horizontal scroll
    return (
-      <Card style={styles.card}>
+      <Card style={[styles.card, { borderColor: colors.border }]}>
          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {allPhotos.map((url, index) => (
                <Image
@@ -66,11 +67,14 @@ export const OrderImageSection: React.FC<OrderImageSectionProps> = ({ images, go
 };
 
 const styles = StyleSheet.create({
+   // Border-first: hairline edge instead of elevation. borderColor is applied
+   // at each call site since this StyleSheet has no theme access.
    card: {
       marginHorizontal: 16,
-      borderRadius: 14,
+      borderRadius: RADIUS.card,
       overflow: "hidden",
-      elevation: 2,
+      borderWidth: HAIRLINE,
+      elevation: 0,
    },
    image: {
       width: "100%",

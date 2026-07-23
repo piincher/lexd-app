@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const useWaypointJourneySectionStyles = () => {
   const { colors } = useAppTheme();
@@ -8,8 +9,9 @@ export const useWaypointJourneySectionStyles = () => {
   return {
     ...StyleSheet.create({
       sectionCard: {
+        borderWidth: HAIRLINE,
+        borderColor: colors.border,
         marginBottom: 16,
-        elevation: 1,
       },
       sectionHeader: {
         flexDirection: 'row',

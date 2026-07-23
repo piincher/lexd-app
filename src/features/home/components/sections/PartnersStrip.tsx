@@ -10,15 +10,14 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { PARTNER_LOGOS } from '../../constants/homeData';
 import { SectionHeader } from '../SectionHeader';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const PartnersStrip: React.FC = () => {
   const { colors, isDark } = useAppTheme();
+  // Partner logos sit on bordered tiles rather than floating chips.
   const logoShadow = {
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: isDark ? 0.18 : 0.05,
-    shadowRadius: 3,
-    elevation: isDark ? 0 : 2,
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
   };
 
   return (

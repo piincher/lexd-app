@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Animated, { useSharedValue, useAnimatedStyle, withSpring } from "react-native-reanimated";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import { CountryCode } from "../types";
 
 interface PhoneInputProps {
@@ -137,8 +138,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     height: 56,
-    borderRadius: 16,
-    borderWidth: 1.5,
+    borderRadius: RADIUS.control,
+    borderWidth: HAIRLINE,
     paddingHorizontal: 4,
     paddingRight: 14,
   },

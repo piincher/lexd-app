@@ -13,11 +13,12 @@ interface ClientRowProps {
   selected: boolean;
   onToggle: (id: string) => void;
   onPreview: (client: ShippingMarkClient) => void;
-  onDownload: (client: ShippingMarkClient) => void;
+  onShareSupplier: (client: ShippingMarkClient) => void;
   onSend: (client: ShippingMarkClient) => void;
   onRegenerate: (id: string) => void;
   isRegenerating: boolean;
   isSending: boolean;
+  isSharing: boolean;
 }
 
 export const ClientRow = React.memo<ClientRowProps>(({
@@ -25,11 +26,12 @@ export const ClientRow = React.memo<ClientRowProps>(({
   selected,
   onToggle,
   onPreview,
-  onDownload,
+  onShareSupplier,
   onSend,
   onRegenerate,
   isRegenerating,
   isSending,
+  isSharing,
 }) => {
   const { colors, isDark } = useAppTheme();
   const styles = createStyles(colors, isDark);
@@ -37,7 +39,7 @@ export const ClientRow = React.memo<ClientRowProps>(({
   const name = `${client.firstName || ''} ${client.lastName || ''}`.trim() || client.phoneNumber;
   const toggle = useCallback(() => onToggle(client._id), [client._id, onToggle]);
   const preview = useCallback(() => onPreview(client), [client, onPreview]);
-  const download = useCallback(() => onDownload(client), [client, onDownload]);
+  const shareSupplier = useCallback(() => onShareSupplier(client), [client, onShareSupplier]);
   const send = useCallback(() => onSend(client), [client, onSend]);
   const regenerate = useCallback(() => onRegenerate(client._id), [client._id, onRegenerate]);
 
@@ -110,21 +112,25 @@ export const ClientRow = React.memo<ClientRowProps>(({
       {hasImage ? (
         <View style={styles.actions}>
           <ClientRowAction label="Aperçu" icon="eye-outline" onPress={preview} />
-          <ClientRowAction label="Partager" icon="share-outline" onPress={download} />
-          <ClientRowAction label="WhatsApp" icon="logo-whatsapp" onPress={send} loading={isSending} primary />
+          <ClientRowAction label="Fournisseur" icon="share-outline" onPress={shareSupplier} loading={isSharing} primary />
+          <ClientRowAction label="Au client" icon="logo-whatsapp" onPress={send} loading={isSending} />
         </View>
       ) : (
-        <Pressable
-          onPress={regenerate}
-          disabled={isRegenerating}
-          style={({ pressed }) => [styles.generateButton, pressed && styles.pressed]}
-          accessibilityRole="button"
-          accessibilityLabel={`Générer la marque de ${name}`}
-          accessibilityState={{ busy: isRegenerating }}
-        >
-          {isRegenerating ? <ActivityIndicator color={colors.primary.main} /> : <Ionicons name="sparkles-outline" size={20} color={colors.primary.main} />}
-          <Text style={styles.generateText}>{isRegenerating ? 'Génération…' : 'Générer la marque'}</Text>
-        </Pressable>
+        <View style={styles.actions}>
+          <ClientRowAction
+            label="Partager au fournisseur"
+            icon="share-outline"
+            onPress={shareSupplier}
+            loading={isSharing}
+            primary
+          />
+          <ClientRowAction
+            label="Générer"
+            icon="sparkles-outline"
+            onPress={regenerate}
+            loading={isRegenerating}
+          />
+        </View>
       )}
     </View>
   );

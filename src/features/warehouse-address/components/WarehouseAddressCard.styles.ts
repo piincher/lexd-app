@@ -1,0 +1,27 @@
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+  card: { borderWidth: 1, borderRadius: 20, overflow: 'hidden' },
+  header: { paddingHorizontal: 18, paddingTop: 18, paddingBottom: 14, gap: 12 },
+  headerTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  modeGroup: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  modeIcon: { width: 38, height: 38, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  modeTitle: { fontSize: 17, fontWeight: '800', letterSpacing: -0.2 },
+  modeSubtitle: { fontSize: 12, fontWeight: '600', marginTop: 1 },
+  modeBadge: { borderRadius: 999, paddingHorizontal: 11, paddingVertical: 6 },
+  modeBadgeText: { fontSize: 15, fontWeight: '800' },
+  purpose: { fontSize: 12, lineHeight: 17, fontWeight: '600' },
+  content: { paddingHorizontal: 18 },
+  eyebrow: { fontSize: 11, fontWeight: '800', letterSpacing: 0.9, textTransform: 'uppercase' },
+  empty: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 18 },
+  emptyText: { flex: 1, fontSize: 14, lineHeight: 20 },
+  note: { flexDirection: 'row', gap: 8, alignItems: 'flex-start', borderLeftWidth: 3, padding: 12, marginTop: 14 },
+  noteText: { flex: 1, fontSize: 13, lineHeight: 19, fontWeight: '600' },
+  actions: { padding: 16, marginTop: 16, gap: 10 },
+  primary: { minHeight: 54, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 9, borderRadius: 14, paddingHorizontal: 14 },
+  primaryText: { flexShrink: 1, fontSize: 15, fontWeight: '800', textAlign: 'center' },
+  primaryHint: { fontSize: 12, lineHeight: 17, textAlign: 'center' },
+  secondaryRow: { flexDirection: 'row', gap: 10 },
+  secondary: { flex: 1, minHeight: 48, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 7, borderWidth: 1, borderRadius: 13, paddingHorizontal: 8 },
+  secondaryText: { fontSize: 13, fontWeight: '700' },
+});

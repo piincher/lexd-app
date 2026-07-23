@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 import type { PaymentHistoryItem, PaymentProvider, PaymentStatus } from '../../types';
 import {
   PAYMENT_STATUS_COLORS,
@@ -40,7 +41,8 @@ export const PaymentHistoryListItem: React.FC<PaymentHistoryListItemProps> = ({ 
         styles.paymentCard,
         {
           backgroundColor: colors.background.card,
-          shadowColor: colors.neutral[900],
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
         },
       ]}
       onPress={() => {/* Navigate to payment details */}}

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { HAIRLINE } from "@src/shared/ui/designLanguage";
 
 export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   scrollContent: {
@@ -8,14 +9,11 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     flex: 1,
   },
   card: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
     borderRadius: 12,
     padding: 16,
-    elevation: 2,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
   },
   headerRow: {
     flexDirection: "row",
@@ -42,13 +40,10 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     height: 24,
   },
   waypointCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     borderRadius: 16,
     overflow: "hidden",
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
   },
   waypointContent: {
     padding: 16,

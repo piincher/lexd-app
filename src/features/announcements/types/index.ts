@@ -18,10 +18,20 @@ export interface AnnouncementViewerState {
   acknowledgedAt?: string | null;
 }
 
+export interface AnnouncementBlock {
+  heading?: string;
+  body?: string;
+  imageUrl?: string | null;
+  imageKey?: string | null;
+}
+
 export interface Announcement {
   _id: string;
   title: string;
   message: string;
+  imageUrl?: string | null;
+  imageKey?: string | null;
+  blocks?: AnnouncementBlock[];
   type: AnnouncementType;
   placement: AnnouncementPlacement;
   audience: AnnouncementAudience;

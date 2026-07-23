@@ -3,6 +3,8 @@
  * Following SRP: Single file for FAQ-related types
  */
 
+import { amber, green, semantic } from '@src/shared/constants/brand';
+
 export enum FAQCategory {
   GENERAL = 'general',
   SHIPPING = 'shipping',
@@ -93,14 +95,16 @@ export const FAQ_CATEGORY_LABELS: Record<FAQCategory | 'all', string> = {
   customs: 'Douane',
 };
 
-// Category colors for UI
+// Category colors for UI — mapped to the brand token ramps where a matching
+// token exists. `account` keeps its categorical purple: the token set has no
+// purple step, and remapping would collide with another category hue.
 export const FAQ_CATEGORY_COLORS: Record<FAQCategory, string> = {
-  general: '#22C55E',
-  shipping: '#3B82F6',
-  payment: '#D4AF37',
+  general: green[500],
+  shipping: semantic.info,
+  payment: amber[500],
   account: '#8B5CF6',
-  tracking: '#F59E0B',
-  customs: '#EF4444',
+  tracking: semantic.warning,
+  customs: semantic.error,
 };
 
 // Category icons for UI

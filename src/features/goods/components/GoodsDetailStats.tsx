@@ -4,6 +4,7 @@ import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface GoodsDetailStatsProps {
 	cbm?: number;
@@ -15,7 +16,7 @@ export const GoodsDetailStats: React.FC<GoodsDetailStatsProps> = ({ cbm, weight,
 	const { colors } = useAppTheme();
 
 	return (
-		<View style={[styles.row, { backgroundColor: colors.background.card }]}>
+		<View style={[styles.row, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
 			<View style={styles.statBox}>
 				<MaterialCommunityIcons name="cube-outline" size={22} color={colors.status.success} />
 				<Text style={[styles.statValue, { color: colors.text.primary }]}>{(cbm ?? 0).toFixed(3)}</Text>
@@ -39,12 +40,12 @@ export const GoodsDetailStats: React.FC<GoodsDetailStatsProps> = ({ cbm, weight,
 
 const styles = StyleSheet.create({
 	row: {
+	  borderWidth: HAIRLINE,
 		flexDirection: 'row',
 		marginHorizontal: 16,
 		marginBottom: 12,
 		borderRadius: 12,
 		paddingVertical: 16,
-		elevation: 1,
 	},
 	statBox: {
 		flex: 1,

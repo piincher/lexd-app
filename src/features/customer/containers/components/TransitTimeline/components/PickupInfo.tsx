@@ -33,7 +33,7 @@ export const PickupInfo: React.FC<PickupInfoProps> = ({ consignee, onCall, style
           </View>
 
           {/* Warehouse Address */}
-          <Text style={styles.warehouseName}>ChinaLink Express Warehouse</Text>
+          <Text style={styles.warehouseName}>LEXD Warehouse</Text>
           <Text style={styles.warehouseAddress}>Bamako, Mali</Text>
 
           <Divider style={styles.divider} />

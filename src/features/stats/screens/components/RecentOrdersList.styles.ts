@@ -1,13 +1,12 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
   container: {
     marginHorizontal: 20,
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     padding: 18,
-    ...Theme.shadows.sm,
   },
   header: {
     flexDirection: 'row',
@@ -28,7 +27,7 @@ export const styles = StyleSheet.create({
   countBadge: {
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 10,
+    borderRadius: RADIUS.badge,
   },
   countText: {
     fontSize: 13,
@@ -44,7 +43,7 @@ export const styles = StyleSheet.create({
   shippingIconContainer: {
     width: 36,
     height: 36,
-    borderRadius: 10,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -80,12 +79,13 @@ export const styles = StyleSheet.create({
   statusBadge: {
     paddingHorizontal: 7,
     paddingVertical: 2,
-    borderRadius: 6,
+    borderRadius: RADIUS.badge,
   },
   statusText: {
     fontSize: 9,
     fontFamily: Fonts.bold,
     fontWeight: '700',
+    letterSpacing: 0.6,
     textTransform: 'uppercase',
   },
   orderDate: {

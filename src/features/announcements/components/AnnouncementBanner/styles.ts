@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { lightTheme, Theme } from "@src/constants/Theme";
 import type { AnnouncementType } from "../../types";
+import { HAIRLINE } from "@src/shared/ui/designLanguage";
 
 type AppColors = typeof lightTheme.colors;
 
@@ -20,14 +21,22 @@ export const getTone = (type: AnnouncementType) => {
 export const createStyles = (colors: AppColors, tone: ReturnType<typeof getTone>) =>
   StyleSheet.create({
     shell: {
+      // Floating toast: it sits above the screen's own content, so it keeps a
+      // shadow. The bordered surface is `banner` inside it.
+      elevation: 6,
+      shadowColor: '#000',
+      shadowOpacity: 0.16,
+      shadowRadius: 10,
+      shadowOffset: { width: 0, height: 3 },
       position: "absolute",
       top: 8,
       left: 12,
       right: 12,
       zIndex: 1000,
-      elevation: 20,
     },
     banner: {
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
       minHeight: 56,
       borderRadius: 8,
       paddingHorizontal: 12,
@@ -38,11 +47,6 @@ export const createStyles = (colors: AppColors, tone: ReturnType<typeof getTone>
       flexDirection: "row",
       alignItems: "center",
       gap: 10,
-      shadowColor: colors.neutral[900],
-      shadowOpacity: 0.14,
-      shadowRadius: 10,
-      shadowOffset: { width: 0, height: 4 },
-      elevation: 6,
     },
     pressed: {
       opacity: 0.92,

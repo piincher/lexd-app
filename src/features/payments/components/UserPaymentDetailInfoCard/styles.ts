@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
   card: {
-    borderRadius: 12,
+    borderRadius: RADIUS.card,
     padding: 16,
     marginBottom: 16,
-    elevation: 2,
   },
   cardHeader: {
     flexDirection: 'row',

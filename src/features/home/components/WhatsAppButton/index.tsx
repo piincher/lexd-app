@@ -17,7 +17,7 @@ export const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({ animatedStyle })
   return (
     <Animated.View style={[styles.whatsappButton, animatedStyle]}>
       <Pressable
-        onPress={() => openSupportWhatsApp("Bonjour ChinaLink, J ai une demande d'expedition a faire :)")}
+        onPress={() => openSupportWhatsApp("Bonjour LEXD, J ai une demande d'expedition a faire :)")}
         style={({ pressed }) => ({ opacity: pressed ? 0.8 : 1 })}
       >
         <LinearGradient colors={["#25D366", "#128C7E"]} style={styles.whatsappContainer}>

@@ -3,6 +3,7 @@ import { Pressable, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { hapticMedium } from '@src/shared/lib/haptics';
 
 interface Props {
@@ -42,8 +43,8 @@ const styles = StyleSheet.create({
     marginTop: 22,
     minHeight: 54,
     paddingHorizontal: 18,
-    borderRadius: 16,
-    borderWidth: 1,
+    borderRadius: RADIUS.control,
+    borderWidth: HAIRLINE,
   },
   logoutPressed: {
     opacity: 0.7,

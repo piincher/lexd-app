@@ -27,7 +27,7 @@ export const FloatingButtons: React.FC<FloatingButtonsProps> = ({
   };
 
   const handleWhatsApp = () => {
-    openSupportWhatsApp("Bonjour ChinaLink, J ai une demande d'expedition a faire :)");
+    openSupportWhatsApp("Bonjour LEXD, J ai une demande d'expedition a faire :)");
   };
 
   return (

@@ -85,7 +85,7 @@ export const createStyles = (colors: ThemeColors, isDark?: boolean) =>
     },
     paidText: {
       fontSize: 12,
-      color: colors.status?.success || '#22c55e',
+      color: colors.status?.success || '#007757',
       fontWeight: '600',
     },
     receivedText: {

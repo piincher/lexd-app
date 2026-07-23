@@ -1,14 +1,15 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStatusBreakdownStyles = (colors: any) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 20,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 18,
-      ...Theme.shadows.sm,
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
     },
     header: {
       flexDirection: 'row',
@@ -30,7 +31,7 @@ export const createStatusBreakdownStyles = (colors: any) =>
       alignItems: 'center',
       paddingHorizontal: 14,
       paddingVertical: 6,
-      borderRadius: 12,
+      borderRadius: RADIUS.badge,
     },
     totalBadge: {
       fontSize: 18,
@@ -38,7 +39,9 @@ export const createStatusBreakdownStyles = (colors: any) =>
       fontWeight: '700',
     },
     totalBadgeLabel: {
+      ...OVERLINE,
       fontSize: 10,
+      letterSpacing: 0.6,
       fontFamily: Fonts.regular,
     },
   });

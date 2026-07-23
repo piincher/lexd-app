@@ -1,14 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const useContainerHeaderCardStyles = () => {
   const { colors } = useAppTheme();
 
   return StyleSheet.create({
     headerCard: {
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
       marginBottom: 16,
-      elevation: 2,
     },
     headerRow: {
       flexDirection: 'row',

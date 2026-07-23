@@ -36,7 +36,7 @@ export const ComparisonTableRow: React.FC<ComparisonTableRowProps> = ({ feature,
         </View>
       </View>
       <View style={styles.brandCol}>
-        <ComparisonStatusIcon status={feature.chinalink} />
+        <ComparisonStatusIcon status={feature.lexd} />
       </View>
       <View style={styles.brandCol}>
         <ComparisonStatusIcon status={feature.others} />

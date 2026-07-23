@@ -17,6 +17,16 @@ export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from '.
 export { Input, type InputProps, type InputVariant, type InputSize } from './Input';
 export { Card, type CardProps, type CardVariant, type CardPadding } from './Card';
 export { Badge, type BadgeProps, type BadgeVariant, type BadgeSize } from './Badge';
+export { SectionLabel, type SectionLabelProps } from './SectionLabel';
+export {
+  RADIUS,
+  RAIL_WIDTH,
+  HAIRLINE,
+  OVERLINE,
+  STACK,
+  railColor,
+  type RailTone,
+} from './designLanguage';
 export { Screen, type ScreenProps, type ScreenVariant } from './Screen';
 export { Checkbox, type CheckboxProps, type CheckboxSize } from './Checkbox';
 export { ConfirmDialog, type ConfirmDialogProps } from './ConfirmDialog';

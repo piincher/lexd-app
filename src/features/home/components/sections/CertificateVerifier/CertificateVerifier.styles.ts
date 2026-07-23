@@ -17,11 +17,6 @@ export const createStyles = (colors: AppTheme['colors']) =>
       padding: 18,
       borderWidth: 1,
       borderColor: colors.border,
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.08,
-      shadowRadius: 12,
-      elevation: 3,
     },
     verifyHeader: {
       flexDirection: 'row',

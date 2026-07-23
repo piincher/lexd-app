@@ -3,8 +3,11 @@
  * Uses react-native-share for reliable Android sharing
  */
 import { File, Paths } from 'expo-file-system';
+import { Platform } from 'react-native';
 
 import RNShare, { ShareSingleOptions } from 'react-native-share';
+import { apiClientV2 } from '../api/client';
+import { getAuthStoreRef } from '../api/authStoreRef';
 
 export interface PDFShareOptions {
   uri: string;
@@ -147,6 +150,35 @@ export async function sharePDFOnWhatsApp(options: {
 }
 
 /**
+ * Download a PDF from a v2 API path directly to the cache directory.
+ *
+ * React Native's axios blob support is unreliable, so this uses
+ * expo-file-system's native download implementation. On web it falls back to
+ * a browser blob download.
+ */
+export async function downloadApiPdf(apiPath: string, filename: string): Promise<string> {
+  if (Platform.OS === 'web') {
+    const response = await apiClientV2.get(apiPath, { responseType: 'blob' });
+    downloadPDFOnWeb(response.data as Blob, filename);
+    return '';
+  }
+
+  const baseURL = apiClientV2.defaults.baseURL;
+  if (!baseURL) {
+    throw new Error('API base URL not configured');
+  }
+
+  const token = getAuthStoreRef()?.getState().token;
+  const destFile = new File(Paths.cache, filename);
+  await File.downloadFileAsync(`${baseURL}${apiPath}`, destFile, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    idempotent: true,
+  });
+
+  return destFile.uri;
+}
+
+/**
  * Share a remote PDF URL via native share sheet (any app)
  */
 export async function sharePDFGeneric(options: {
@@ -167,7 +199,7 @@ export async function sharePDFGeneric(options: {
     await RNShare.open({
       url: fileUri,
       type: 'application/pdf',
-      title: 'Reçu de Paiement - ChinaLink Express',
+      title: 'Reçu de Paiement - LEXD',
       filename,
       message,
     });

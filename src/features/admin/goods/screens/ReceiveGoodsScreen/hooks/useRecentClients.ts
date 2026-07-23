@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { userData } from '@src/shared/types/user';
 
-const STORAGE_KEY = '@chinalink/receive_recent_clients';
+const STORAGE_KEY = '@lexd/receive_recent_clients';
 const MAX_RECENT = 8;
 
 export const useRecentClients = () => {

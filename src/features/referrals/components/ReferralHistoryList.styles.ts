@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) => StyleSheet.create({
   section: {
@@ -9,8 +10,8 @@ export const createStyles = (colors: any) => StyleSheet.create({
     fontWeight: '700',
   },
   empty: {
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     padding: 16,
     backgroundColor: colors.background.card,
     borderColor: colors.border,
@@ -20,8 +21,8 @@ export const createStyles = (colors: any) => StyleSheet.create({
     lineHeight: 20,
   },
   row: {
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     padding: 14,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -38,7 +39,7 @@ export const createStyles = (colors: any) => StyleSheet.create({
     marginTop: 2,
   },
   badge: {
-    borderRadius: 999,
+    borderRadius: RADIUS.badge,
     paddingHorizontal: 10,
     paddingVertical: 5,
     alignSelf: 'flex-start',

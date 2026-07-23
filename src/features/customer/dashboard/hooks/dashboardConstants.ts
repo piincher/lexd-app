@@ -66,7 +66,7 @@ export const DEFAULT_VIP_PROGRESS: VipProgress = {
   currentTier: {
     id: 'beginner',
     name: 'Débutant',
-    description: 'Bienvenue chez ChinaLink Express',
+    description: 'Bienvenue chez LEXD',
     requiredCBM: 0,
   },
   nextTier: null,

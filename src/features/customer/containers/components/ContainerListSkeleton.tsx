@@ -89,11 +89,6 @@ const createStyles = (colors: any) => StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
     padding: 16,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 4,
-    elevation: 2,
   },
   headerRow: {
     flexDirection: 'row',

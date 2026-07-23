@@ -11,7 +11,7 @@ export const useReceiveLabel = () => {
     const goods = unwrapReceiveGoods(result);
     if (!goods) return null;
 
-    if (goods.qrCodeImageUrl || !goods._id) {
+    if (goods.packages?.length || !goods._id) {
       setLabelGoods(goods);
       if (open) setVisible(true);
       return goods;

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createGoodsOverviewStyles = (colors: {
   background: { card: string; paper: string };
@@ -11,9 +12,9 @@ export const createGoodsOverviewStyles = (colors: {
     container: {
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 16,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     header: {
@@ -40,7 +41,7 @@ export const createGoodsOverviewStyles = (colors: {
       backgroundColor: colors.primary['50'],
       paddingHorizontal: 14,
       paddingVertical: 6,
-      borderRadius: 12,
+      borderRadius: RADIUS.badge,
     },
     summaryValue: {
       fontSize: 16,
@@ -51,12 +52,15 @@ export const createGoodsOverviewStyles = (colors: {
     summaryLabel: {
       fontSize: 9,
       fontFamily: Fonts.regular,
+      fontWeight: '700',
+      letterSpacing: 0.6,
+      textTransform: 'uppercase',
       color: colors.primary.light,
     },
     quickStats: {
       flexDirection: 'row',
       backgroundColor: colors.background.paper,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       padding: 14,
       marginBottom: 14,
     },
@@ -74,6 +78,9 @@ export const createGoodsOverviewStyles = (colors: {
     quickStatLabel: {
       fontSize: 10,
       fontFamily: Fonts.medium,
+      fontWeight: '700',
+      letterSpacing: 0.6,
+      textTransform: 'uppercase',
       color: colors.text.secondary,
     },
     quickStatDivider: {

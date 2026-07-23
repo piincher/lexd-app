@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { CertifiedShipperCard } from './CertifiedShipperCard';
 import { MilestoneBadges } from './MilestoneBadges';
 import { BadgesSection } from './BadgesSection';
@@ -48,8 +49,8 @@ export const AchievementsSection: React.FC<Props> = ({
 const styles = StyleSheet.create({
   card: {
     marginHorizontal: 16,
-    borderRadius: 18,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     overflow: 'hidden',
   },
 });

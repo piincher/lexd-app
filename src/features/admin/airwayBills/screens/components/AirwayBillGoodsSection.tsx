@@ -17,6 +17,7 @@ import type {
 interface Props {
   goodsList: AirwayBillGoods[];
   onAssignPress: () => void;
+  onScanPress: () => void;
   manifest?: AirwayBillGoodsManifest;
   loading?: boolean;
   error?: unknown;
@@ -49,6 +50,7 @@ const keyExtractor = (item: Row, index: number) =>
 export const AirwayBillGoodsSection: React.FC<Props> = ({
   goodsList,
   onAssignPress,
+  onScanPress,
   manifest,
   loading,
   error,
@@ -70,13 +72,13 @@ export const AirwayBillGoodsSection: React.FC<Props> = ({
 
   if (!hasGoods) {
     return (
-      <EmptyState
+      <View style={styles.container}><EmptyState
         icon="cube-outline"
         title="Aucune marchandise assignée"
         message="Assignez des marchandises à ce AWB, puis regroupez-les dans des sacs."
         actionLabel="Assigner des marchandises"
         onAction={onAssignPress}
-      />
+      /><Button title="Scanner une étiquette colis" icon="qr-code-outline" onPress={onScanPress} variant="outline" fullWidth /></View>
     );
   }
 
@@ -105,6 +107,7 @@ export const AirwayBillGoodsSection: React.FC<Props> = ({
           fullWidth
         />
         <Button title="+ Assigner plus de marchandises" onPress={onAssignPress} variant="outline" fullWidth />
+        <Button title="Scanner des colis sur cet AWB" icon="qr-code-outline" onPress={onScanPress} variant="primary" fullWidth />
       </View>
       <FlashList
         data={rows}
@@ -147,4 +150,3 @@ const styles = StyleSheet.create({
   warningBox: { flexDirection: 'row', alignItems: 'center', gap: 8, borderRadius: 12, padding: 12, marginBottom: 10 },
   warningText: { fontSize: 13, fontWeight: '800' },
 });
-

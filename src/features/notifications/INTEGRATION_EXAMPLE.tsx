@@ -58,7 +58,7 @@ export const HeaderWithNotifications: React.FC = () => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Content title="ChinaLink Express" />
+        <Appbar.Content title="LEXD" />
         <Appbar.Action 
           icon="bell" 
           onPress={() => setDropdownVisible(true)}

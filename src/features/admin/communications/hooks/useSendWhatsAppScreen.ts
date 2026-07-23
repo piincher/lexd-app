@@ -8,7 +8,7 @@ import {
   getWhatsAppConfig,
   sendWhatsAppBulkMessage,
   type WhatsAppBulkRecipient,
-  type WhatsAppBulkSummary,
+  type WhatsAppBroadcastAccepted,
 } from "../api/whatsappApi";
 import type { Recipient } from "../components/RecipientSelector";
 import type { PersonalizationToken } from "../components/WhatsAppMessageComposer";
@@ -44,15 +44,19 @@ const splitName = (full: string): { firstName: string; lastName: string } => {
   return { firstName: first, lastName: rest.join(" ") };
 };
 
-export const useSendWhatsAppScreen = () => {
+export const useSendWhatsAppScreen = (options?: {
+  onEnqueued?: (broadcastId: string) => void;
+}) => {
   const [mode, setMode] = useState<WhatsAppSourceMode>("all");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
   const [manualNumbers, setManualNumbers] = useState<string[]>([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const sentCountRef = useRef(0);
+
+  // Kept in a ref so the mutation's onSuccess never captures a stale callback.
+  const onEnqueuedRef = useRef(options?.onEnqueued);
+  onEnqueuedRef.current = options?.onEnqueued;
 
   const media = useWhatsAppMedia();
   const calendar = useCalendar();
@@ -219,24 +223,19 @@ export const useSendWhatsAppScreen = () => {
         message: message.trim(),
         media: media.uploadedMedia,
       }),
-    onSuccess: (summary: WhatsAppBulkSummary) => {
+    onSuccess: (accepted: WhatsAppBroadcastAccepted) => {
       setShowConfirmation(false);
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-      sentCountRef.current = summary.sent;
-      if (summary.failed > 0 || summary.skipped > 0) {
-        showMessage({
-          message: `Envoyé à ${summary.sent}/${summary.total}`,
-          description: `${summary.failed} échec(s)${summary.skipped ? `, ${summary.skipped} ignoré(s)` : ""}.`,
-          type: summary.sent > 0 ? "warning" : "danger",
-        });
-      }
-      if (summary.sent > 0) {
-        setShowSuccess(true);
-        setTimeout(() => {
-          setShowSuccess(false);
-          resetForm();
-        }, 2500);
-      }
+      showMessage({
+        message: "Envoi démarré",
+        description: `${accepted.total} destinataire(s) en cours d'envoi en arrière-plan${
+          accepted.invalidCount ? ` · ${accepted.invalidCount} numéro(s) invalide(s) ignoré(s)` : ""
+        }.`,
+        type: "success",
+      });
+      resetForm();
+      // Land on the live progress screen for this broadcast.
+      onEnqueuedRef.current?.(accepted.broadcastId);
     },
     onError: (error: Error) => {
       setShowConfirmation(false);
@@ -313,8 +312,6 @@ export const useSendWhatsAppScreen = () => {
     handleConfirmSend,
     showConfirmation,
     setShowConfirmation,
-    showSuccess,
-    sentCount: sentCountRef.current,
     // config
     config: configQuery.data,
     isConfigLoading: configQuery.isLoading,

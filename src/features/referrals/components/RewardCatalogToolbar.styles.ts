@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -11,9 +12,9 @@ export const createStyles = (colors: any) =>
       gap: 8,
       paddingHorizontal: 14,
       height: 46,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     searchInput: {
@@ -33,9 +34,9 @@ export const createStyles = (colors: any) =>
       gap: 6,
       paddingHorizontal: 12,
       height: 38,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     sortLabel: {
@@ -50,8 +51,8 @@ export const createStyles = (colors: any) =>
       gap: 6,
       paddingHorizontal: 12,
       height: 38,
-      borderRadius: 10,
-      borderWidth: 1,
+      borderRadius: RADIUS.control,
+      borderWidth: HAIRLINE,
       borderColor: colors.primary.main,
       backgroundColor: colors.primary.main + '12',
     },
@@ -73,9 +74,9 @@ export const createStyles = (colors: any) =>
     categoryChip: {
       paddingHorizontal: 14,
       paddingVertical: 8,
-      borderRadius: 999,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     categoryChipActive: {

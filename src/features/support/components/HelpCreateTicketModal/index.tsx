@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Modal, TextInput, ScrollView, ActivityInd
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Fonts } from "@src/constants/Fonts";
+import { amber, ink, semantic } from "@src/shared/constants/brand";
 
 import { getStyles } from "./HelpCreateTicketModal.styles";
 
@@ -14,10 +15,10 @@ const TICKET_TYPES = [
 ] as const;
 
 const PRIORITIES = [
-  { key: "LOW", label: "Basse", color: "#6B7280" },
-  { key: "MEDIUM", label: "Moyenne", color: "#F59E0B" },
-  { key: "HIGH", label: "Haute", color: "#EF4444" },
-  { key: "URGENT", label: "Urgente", color: "#DC2626" },
+  { key: "LOW", label: "Basse", color: ink[400] },
+  { key: "MEDIUM", label: "Moyenne", color: amber[500] },
+  { key: "HIGH", label: "Haute", color: semantic.error },
+  { key: "URGENT", label: "Urgente", color: semantic.errorDark },
 ] as const;
 
 type HelpCreateTicketModalProps = {

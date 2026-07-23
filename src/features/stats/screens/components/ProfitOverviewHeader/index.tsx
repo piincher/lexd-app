@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 interface Props {
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
   iconBox: {
     width: 34,
     height: 34,
-    borderRadius: 10,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   marginBadge: {
-    borderRadius: 20,
+    borderRadius: RADIUS.badge,
     paddingHorizontal: 10,
     paddingVertical: 3,
   },

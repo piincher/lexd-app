@@ -1,5 +1,6 @@
 import { StyleSheet, StatusBar } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 
@@ -16,11 +17,11 @@ export const useNotificationToastStyles = () => {
     paddingHorizontal: 16,
   },
   toastContainer: {
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     overflow: 'hidden',
   },
   surface: {
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     overflow: 'hidden',
     borderLeftWidth: 4,
     backgroundColor: colors.background.overlay,
@@ -34,7 +35,7 @@ export const useNotificationToastStyles = () => {
   iconContainer: {
     width: 44,
     height: 44,
-    borderRadius: 12,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
   },

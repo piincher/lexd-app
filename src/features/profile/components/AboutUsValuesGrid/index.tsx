@@ -4,7 +4,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { VALUES } from '@src/features/profile/hooks/useAboutUs';
 
 export const AboutUsValuesGrid: React.FC = () => {
@@ -50,14 +50,15 @@ const makeStyles = (colors: any) =>
          flex: 1,
          minWidth: '45%',
          backgroundColor: colors.background.card,
-         borderRadius: 14,
+         borderRadius: RADIUS.card,
          padding: 14,
-         ...Theme.shadows.sm,
+         borderWidth: HAIRLINE,
+         borderColor: colors.border,
       },
       valueIcon: {
          width: 38,
          height: 38,
-         borderRadius: 11,
+         borderRadius: RADIUS.control,
          justifyContent: 'center',
          alignItems: 'center',
          marginBottom: 10,

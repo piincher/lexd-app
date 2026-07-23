@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -16,8 +17,8 @@ export const createStyles = (colors: any) =>
       justifyContent: 'center',
       gap: 6,
       minHeight: 40,
-      borderRadius: 8,
-      borderWidth: 1,
+      borderRadius: RADIUS.control,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       backgroundColor: colors.background.paper,
     },
@@ -48,8 +49,8 @@ export const createStyles = (colors: any) =>
     input: {
       flex: 1,
       minHeight: 44,
-      borderWidth: 1,
-      borderRadius: 8,
+      borderWidth: HAIRLINE,
+      borderRadius: RADIUS.control,
       borderColor: colors.border,
       backgroundColor: colors.background.paper,
       color: colors.text.primary,
@@ -58,11 +59,11 @@ export const createStyles = (colors: any) =>
       paddingHorizontal: 12,
     },
     resultBox: {
-      borderRadius: 10,
+      borderRadius: RADIUS.card,
       padding: 14,
       gap: 8,
       backgroundColor: colors.background.paper,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     resultRow: {

@@ -45,7 +45,10 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         accessibilityLabel={`${title}, ${deliveryTime}`}
       >
         <View style={styles.card}>
-          <View style={[styles.cardIconCircle, { backgroundColor: `${accentColor}14` }]}>
+          {/* LEXD status rail, tinted per service mode. */}
+          <View style={[styles.cardRail, { backgroundColor: accentColor }]} pointerEvents="none" />
+
+          <View style={[styles.cardIconTile, { backgroundColor: `${accentColor}14` }]}>
             <FontAwesome6 name={icon} size={22} color={accentColor} />
           </View>
 

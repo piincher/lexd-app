@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -8,13 +9,13 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
   StyleSheet.create({
     overlay: {
       flex: 1,
-      backgroundColor: "#00000080",
+      backgroundColor: colors.background.overlay,
       justifyContent: "flex-end",
     },
     sheet: {
       backgroundColor: colors.background.card,
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
+      borderTopLeftRadius: RADIUS.sheet,
+      borderTopRightRadius: RADIUS.sheet,
       maxHeight: "92%",
     },
     header: {
@@ -40,9 +41,12 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       gap: 12,
     },
     sectionLabel: {
+      // Waybill tracked uppercase micro-label (form section eyebrow).
       fontFamily: Fonts.bold,
-      fontSize: 13,
-      color: colors.text.primary,
+      fontSize: 11,
+      letterSpacing: 0.7,
+      textTransform: "uppercase",
+      color: colors.text.secondary,
       marginTop: 4,
     },
     typeGrid: {
@@ -56,9 +60,9 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       gap: 8,
       paddingHorizontal: 12,
       paddingVertical: 10,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.default,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     typeCardActive: {
@@ -84,9 +88,9 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       gap: 6,
       paddingHorizontal: 12,
       paddingVertical: 8,
-      borderRadius: 20,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.background.default,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     priorityDot: {
@@ -101,8 +105,8 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     },
     input: {
       backgroundColor: colors.background.default,
-      borderRadius: 12,
-      borderWidth: 1,
+      borderRadius: RADIUS.control,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       paddingHorizontal: 14,
       paddingVertical: 12,
@@ -117,7 +121,7 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     submitBtn: {
       marginTop: 8,
       paddingVertical: 14,
-      borderRadius: 14,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.primary.main,
       alignItems: "center",
     },

@@ -5,6 +5,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 interface NotificationDetailActionsProps {
   actionLabel?: string;
@@ -29,7 +30,7 @@ export const NotificationDetailActions: React.FC<NotificationDetailActionsProps>
           marginTop: 8,
         },
         actionButton: {
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
           backgroundColor: colors.primary.main,
         },
         actionButtonContent: {

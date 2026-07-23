@@ -3,6 +3,7 @@
  */
 
 import { StyleSheet } from "react-native";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 export const hexToRgba = (hex: string, alpha: number) => {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -30,10 +31,10 @@ export const createStyles = (colors: any) =>
     },
     summaryCard: {
       backgroundColor: hexToRgba(colors.text.inverse, 0.07),
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 20,
       marginBottom: 24,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: hexToRgba(colors.accent.gold, 0.15),
     },
     summaryRow: {

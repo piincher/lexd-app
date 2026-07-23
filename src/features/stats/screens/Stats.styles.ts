@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
 	safeArea: {
@@ -15,10 +16,11 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
 		alignItems: "center",
 	},
 	userCard: {
-		borderRadius: 16,
+		borderRadius: RADIUS.card,
 		padding: 16,
 		marginBottom: 16,
-		elevation: 2,
+		borderWidth: HAIRLINE,
+		borderColor: colors.border,
 	},
 	userCardContent: {
 		flexDirection: "row",
@@ -38,10 +40,11 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
 		fontFamily: Fonts.regular,
 	},
 	statsCard: {
-		borderRadius: 16,
+		borderRadius: RADIUS.card,
 		padding: 16,
 		marginBottom: 16,
-		elevation: 2,
+		borderWidth: HAIRLINE,
+		borderColor: colors.border,
 	},
 	sectionTitle: {
 		fontSize: 18,
@@ -70,16 +73,18 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
 		fontFamily: Fonts.bold,
 	},
 	chartCard: {
-		borderRadius: 16,
+		borderRadius: RADIUS.card,
 		padding: 16,
 		marginBottom: 16,
-		elevation: 2,
+		borderWidth: HAIRLINE,
+		borderColor: colors.border,
 	},
 	card: {
-		borderRadius: 16,
+		borderRadius: RADIUS.card,
 		padding: 16,
 		marginBottom: 16,
-		elevation: 2,
+		borderWidth: HAIRLINE,
+		borderColor: colors.border,
 	},
 	cardTitle: {
 		fontSize: 18,
@@ -99,11 +104,12 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
 		textAlign: 'center',
 	},
 	emptyCard: {
-		borderRadius: 16,
+		borderRadius: RADIUS.card,
 		padding: 24,
 		marginBottom: 16,
 		alignItems: "center",
-		elevation: 2,
+		borderWidth: HAIRLINE,
+		borderColor: colors.border,
 	},
 	emptyText: {
 		fontSize: 16,
@@ -111,9 +117,10 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
 		textAlign: "center",
 	},
 	recentCard: {
-		borderRadius: 16,
+		borderRadius: RADIUS.card,
 		padding: 16,
-		elevation: 2,
+		borderWidth: HAIRLINE,
+		borderColor: colors.border,
 	},
 	shipmentRow: {
 		flexDirection: "row",
@@ -136,7 +143,7 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
 	statusBadge: {
 		paddingHorizontal: 12,
 		paddingVertical: 6,
-		borderRadius: 20,
+		borderRadius: RADIUS.badge,
 	},
 	statusText: {
 		fontSize: 12,

@@ -3,6 +3,7 @@ import { View, Text, Pressable, StyleSheet, ActivityIndicator } from "react-nati
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 
 interface VerificationResendProps {
   countdown: number;
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     gap: 4,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    borderRadius: 12,
+    borderRadius: RADIUS.badge,
   },
   countdownText: {
     fontSize: 13,
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 12,
+    borderRadius: RADIUS.control,
   },
   resendBtnText: {
     fontSize: 13,

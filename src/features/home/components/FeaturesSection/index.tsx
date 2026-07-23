@@ -3,6 +3,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface FeaturesSectionProps {
    colors: any;
@@ -24,13 +25,13 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ colors }) => {
    return (
       <View style={styles.section}>
          <Text style={[styles.sectionTitle, { color: textColor }]}>
-            Pourquoi ChinaLink Express ?
+            Pourquoi LEXD ?
          </Text>
          <View style={styles.grid}>
             {FEATURES.map((feature) => (
                <View
                   key={feature.label}
-                  style={[styles.featureCard, { backgroundColor: cardBg, shadowColor: colors.neutral[900] }]}
+                  style={[styles.featureCard, { backgroundColor: cardBg, borderColor: colors.border }]}
                >
                   <View style={[styles.iconCircle, { backgroundColor: feature.color + "15" }]}>
                      <FontAwesome6 name={feature.icon} size={18} color={feature.color} />
@@ -67,11 +68,8 @@ const styles = StyleSheet.create({
       gap: 10,
       paddingVertical: 14,
       paddingHorizontal: 12,
-      borderRadius: 14,
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.06,
-      shadowRadius: 4,
-      elevation: 2,
+      borderRadius: RADIUS.card,
+      borderWidth: HAIRLINE,
    },
    iconCircle: {
       width: 36,

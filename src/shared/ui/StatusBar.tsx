@@ -11,10 +11,8 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 export interface StatusBarProps {
   /** Override the automatic style detection */
   style?: 'auto' | 'inverted' | 'light' | 'dark';
-  /** Override background color */
+  /** Used for the optional spacer only; Android system bars stay edge-to-edge. */
   backgroundColor?: string;
-  /** Whether status bar should be translucent (Android only) */
-  translucent?: boolean;
   /** Whether to add a spacer for the status bar height */
   withSpacer?: boolean;
 }
@@ -22,7 +20,6 @@ export interface StatusBarProps {
 export const StatusBar: React.FC<StatusBarProps> = ({
   style,
   backgroundColor,
-  translucent = false,
   withSpacer = false,
 }) => {
   const { statusBarTheme, isDark } = useAppTheme();
@@ -37,10 +34,8 @@ export const StatusBar: React.FC<StatusBarProps> = ({
     <>
       <ExpoStatusBar
         style={statusBarStyle}
-        backgroundColor={bgColor}
-        translucent={translucent}
       />
-      {withSpacer && !translucent && <View style={[styles.spacer, { backgroundColor: bgColor }]} />}
+      {withSpacer && <View style={[styles.spacer, { backgroundColor: bgColor }]} />}
     </>
   );
 };

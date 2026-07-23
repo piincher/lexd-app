@@ -22,7 +22,25 @@ export const createPriorityPanelStyles = (colors: any, isDark: boolean) => // es
       color: colors.text.secondary,
       textTransform: "uppercase",
       letterSpacing: 1.4,
+    },
+    headerRow: {
+      minHeight: 44,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
       marginBottom: Theme.spacing.sm,
+    },
+    queueLink: {
+      minHeight: 44,
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 4,
+      paddingLeft: Theme.spacing.md,
+    },
+    queueLinkText: {
+      fontSize: 12,
+      fontFamily: Fonts.bold,
+      color: colors.primary.main,
     },
     tilesRow: {
       flexDirection: "row",

@@ -1,15 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { lightTheme } from '@src/constants/Theme';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createOperationsDrilldownStyles = (colors: typeof lightTheme.colors) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 16,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     header: {
@@ -38,7 +39,8 @@ export const createOperationsDrilldownStyles = (colors: typeof lightTheme.colors
       color: colors.text.secondary,
       marginTop: 10,
       marginBottom: 6,
-      letterSpacing: 0.3,
+      letterSpacing: 0.8,
+      textTransform: 'uppercase',
     },
     row: {
       flexDirection: 'row',

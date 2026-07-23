@@ -48,7 +48,7 @@ export const ShippingMarksOverview: React.FC<ShippingMarksOverviewProps> = ({
       </View>
 
       <Text style={styles.description}>
-        Prévisualisez les marques, sélectionnez les destinataires puis programmez l&apos;envoi WhatsApp.
+        Retrouvez un client, générez sa marque à la demande et partagez-la directement avec son fournisseur.
       </Text>
 
       <View style={styles.statsRow}>

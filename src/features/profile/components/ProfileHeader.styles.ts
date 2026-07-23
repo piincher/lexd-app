@@ -1,5 +1,6 @@
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import type { ThemeContextType } from '@src/constants/Theme';
 
 type AppColors = ThemeContextType['colors'];
@@ -10,19 +11,10 @@ export const createProfileHeaderStyles = (colors: AppColors) =>
       marginHorizontal: 16,
       marginTop: 12,
       padding: 18,
-      borderRadius: 18,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
-      ...Platform.select({
-        ios: {
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 8 },
-          shadowOpacity: 0.08,
-          shadowRadius: 20,
-        },
-        android: { elevation: 2 },
-      }),
     },
     headerTop: {
       flexDirection: 'row',
@@ -40,7 +32,7 @@ export const createProfileHeaderStyles = (colors: AppColors) =>
     avatar: {
       width: 68,
       height: 68,
-      borderRadius: 22,
+      borderRadius: RADIUS.card,
       borderWidth: 3,
       borderColor: colors.border,
     },
@@ -75,7 +67,7 @@ export const createProfileHeaderStyles = (colors: AppColors) =>
       fontFamily: Fonts.bold,
       color: colors.primary.main,
       textTransform: 'uppercase',
-      letterSpacing: 0,
+      letterSpacing: 0.8,
     },
     username: {
       marginTop: 3,
@@ -106,7 +98,7 @@ export const createProfileHeaderStyles = (colors: AppColors) =>
       alignItems: 'center',
       gap: 5,
       paddingHorizontal: 10,
-      borderRadius: 999,
+      borderRadius: RADIUS.pill,
       backgroundColor: colors.feedback.successBg,
     },
     statusText: {
@@ -119,11 +111,11 @@ export const createProfileHeaderStyles = (colors: AppColors) =>
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: colors.primary[50],
-      borderRadius: 14,
+      borderRadius: RADIUS.control,
       paddingHorizontal: 16,
       paddingVertical: 14,
       marginTop: 18,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.primary[100],
     },
     balanceLeft: {

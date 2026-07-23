@@ -4,7 +4,8 @@
  */
 
 import React from 'react';
-import { View, ScrollView, StatusBar } from 'react-native';
+import { View, ScrollView } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ScreenProps } from './Screen.types';
@@ -59,8 +60,7 @@ export const Screen: React.FC<ScreenProps> = ({
   return (
     <>
       <StatusBar
-        barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={colors.background.default}
+        style={isDark ? 'light' : 'dark'}
       />
       {safeArea ? (
         <SafeAreaView style={containerStyle} edges={['top', 'left', 'right']}>

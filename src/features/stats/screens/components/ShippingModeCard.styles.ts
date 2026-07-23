@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createShippingModeCardStyles = (colors: {
   background: { card: string };
@@ -10,9 +11,9 @@ export const createShippingModeCardStyles = (colors: {
     container: {
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 16,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     header: {

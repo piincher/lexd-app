@@ -1,8 +1,9 @@
-import React, { memo } from "react";
-import { Pressable, StyleSheet } from "react-native";
+import React, { memo, useMemo } from "react";
+import { Pressable, View, StyleSheet } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS, RAIL_WIDTH, HAIRLINE } from "@src/shared/ui/designLanguage";
 import { productType } from "../../api";
-import { getStep, STEP_STATUS_CONFIG, STEP_PROGRESS } from "./utils";
+import { getStep, getStepStatusConfig, STEP_PROGRESS } from "./utils";
 import { OrderCardHeader } from "./components/OrderCardHeader";
 import { OrderCardProgress } from "./components/OrderCardProgress";
 
@@ -20,7 +21,8 @@ interface OrderListCardProps {
 const OrderListCardInner: React.FC<OrderListCardProps> = ({ order, onPress }) => {
    const { colors } = useAppTheme();
    const step = getStep(order.status, order.currentStatus);
-   const statusCfg = STEP_STATUS_CONFIG[step];
+   const stepConfig = useMemo(() => getStepStatusConfig(colors), [colors]);
+   const statusCfg = stepConfig[step];
    const progress = STEP_PROGRESS[step];
 
    return (
@@ -31,11 +33,18 @@ const OrderListCardInner: React.FC<OrderListCardProps> = ({ order, onPress }) =>
             {
                backgroundColor: colors.background.card,
                borderColor: colors.border,
-               shadowColor: colors.neutral[900],
                opacity: pressed ? 0.95 : 1,
             },
          ]}
+         accessibilityRole="button"
+         accessibilityLabel={`Commande ${order.code}, ${statusCfg.label}`}
       >
+         {/* Status rail: the order's stage, readable before any text. */}
+         <View
+            style={[styles.rail, { backgroundColor: statusCfg.color }]}
+            pointerEvents="none"
+         />
+
          <OrderCardHeader
             orderCode={order.code}
             departureDate={order.departureDate}
@@ -56,15 +65,21 @@ const OrderListCardInner: React.FC<OrderListCardProps> = ({ order, onPress }) =>
 export const OrderListCard = memo(OrderListCardInner);
 
 const styles = StyleSheet.create({
+   // Border-first surface: the shadow/elevation stack is intentionally gone.
    card: {
-      borderRadius: 14,
-      borderWidth: 1,
+      borderRadius: RADIUS.card,
+      borderWidth: HAIRLINE,
       paddingHorizontal: 14,
+      paddingLeft: 14 + RAIL_WIDTH,
       paddingVertical: 12,
       marginBottom: 10,
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.04,
-      shadowRadius: 4,
-      elevation: 2,
+      overflow: "hidden",
+   },
+   rail: {
+      position: "absolute",
+      left: 0,
+      top: 0,
+      bottom: 0,
+      width: RAIL_WIDTH,
    },
 });

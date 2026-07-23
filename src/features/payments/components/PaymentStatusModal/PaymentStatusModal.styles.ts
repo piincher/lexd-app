@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const usePaymentStatusModalStyles = () => {
   const { colors } = useAppTheme();
@@ -18,7 +19,7 @@ export const usePaymentStatusModalStyles = () => {
         },
         container: {
           backgroundColor: colors.background.default,
-          borderRadius: 24,
+          borderRadius: RADIUS.sheet,
           width: '100%',
           maxWidth: 400,
           maxHeight: '80%',
@@ -41,7 +42,7 @@ export const usePaymentStatusModalStyles = () => {
         qrContainer: {
           width: 200,
           height: 200,
-          borderRadius: 16,
+          borderRadius: RADIUS.card,
           overflow: 'hidden',
           marginBottom: 24,
           position: 'relative',
@@ -110,7 +111,7 @@ export const usePaymentStatusModalStyles = () => {
           marginTop: 20,
           padding: 12,
           backgroundColor: colors.neutral[200] + '30',
-          borderRadius: 8,
+          borderRadius: RADIUS.control,
         },
         processingNoteText: {
           marginLeft: 8,
@@ -159,7 +160,7 @@ export const usePaymentStatusModalStyles = () => {
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: colors.status.success,
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
           paddingVertical: 14,
           paddingHorizontal: 32,
           gap: 8,
@@ -200,7 +201,7 @@ export const usePaymentStatusModalStyles = () => {
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: colors.primary.main + '10',
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
           paddingVertical: 12,
           paddingHorizontal: 24,
           gap: 8,
@@ -211,7 +212,7 @@ export const usePaymentStatusModalStyles = () => {
           color: colors.primary.main,
         },
         closeButton: {
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
           paddingVertical: 12,
           paddingHorizontal: 24,
         },

@@ -32,7 +32,7 @@ const GoodsItem: React.FC<{ goods: CustomerGoodsInContainer }> = ({ goods }) => 
     try {
       const result = await createShareToken({ type: 'goods', resourceReference: goods.goodsId });
       await shareLink({
-        message: `Suivez mon colis ChinaLink Express : ${goods.goodsId}`,
+        message: `Suivez mon colis LEXD : ${goods.goodsId}`,
         url: result.url,
         title: `Colis ${goods.goodsId}`,
       });
@@ -113,7 +113,7 @@ export const ContainerGoodsSection: React.FC<ContainerGoodsSectionProps> = ({
   const summary = summarizeGoods(goods || []);
 
   return (
-    <View style={[styles.sectionCard, { backgroundColor: colors.background.card }]}>
+    <View style={[styles.sectionCard, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
       <View style={styles.goodsSectionHeader}>
         <Text style={[styles.sectionTitle, { color: colors.text.primary }]}>
           Mes Marchandises ({goods?.length || 0})

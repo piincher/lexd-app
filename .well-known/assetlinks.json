@@ -3,9 +3,9 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.nuvotech.chinalinkexpress",
+      "package_name": "com.nuvotech.lexd",
       "sha256_cert_fingerprints": [
-        "92:FC:D1:37:D6:21:00:33:40:76:DD:5F:EE:CF:E1:16:7A:E0:FC:82:CD:34:82:47:2F:0F:AC:A8:D9:BC:E7:34"
+        "REPLACE_WITH_NEW_PLAY_APP_SIGNING_SHA256"
       ]
     }
   }

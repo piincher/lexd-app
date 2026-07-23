@@ -9,7 +9,9 @@ import { MENU_CATEGORIES } from "../constants/menuData";
 import { MenuDirectorySearch } from "./MenuDirectorySearch";
 import { MenuDirectoryTabs } from "./MenuDirectoryTabs";
 import { MenuCategoryCard } from "./MenuCategoryCard";
+import { MenuRecentSearches } from "./MenuRecentSearches";
 import { createMenuCategoriesStyles } from "./MenuCategories.styles";
+import { useRecentMenuSearches } from "../hooks/useRecentMenuSearches";
 
 const ALL_CATEGORY = "all";
 
@@ -24,6 +26,7 @@ export const MenuCategories: React.FC = () => {
   const { colors, isDark } = useAppTheme();
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(ALL_CATEGORY);
+  const { recents, addRecent, removeRecent, clearRecents } = useRecentMenuSearches();
 
   const styles = useMemo(() => createMenuCategoriesStyles(colors, isDark), [colors, isDark]);
 
@@ -96,6 +99,17 @@ export const MenuCategories: React.FC = () => {
         query={query}
         onChangeQuery={setQuery}
         onClear={() => setQuery("")}
+        onSubmitEditing={() => addRecent(query)}
+      />
+
+      <MenuRecentSearches
+        styles={styles}
+        colors={colors}
+        recents={recents}
+        visible={!query.trim()}
+        onSelect={setQuery}
+        onRemove={removeRecent}
+        onClear={clearRecents}
       />
 
       <MenuDirectoryTabs
@@ -116,7 +130,17 @@ export const MenuCategories: React.FC = () => {
               category={category}
               accent={categoryColors[category.id] || colors.primary.main}
               disabledColor={colors.text.disabled}
-              onItemPress={(route) => navigation.navigate(route as never)}
+              onItemPress={(route) => {
+                // Remember the term when a search actually leads somewhere (users
+                // tap a result without pressing "enter"), and clear the box so the
+                // recent searches are visible again on return to the directory.
+                const trimmed = query.trim();
+                if (trimmed) {
+                  addRecent(trimmed);
+                  setQuery("");
+                }
+                navigation.navigate(route as never);
+              }}
               isLastCategory={index === visibleCategories.length - 1}
             />
           ))

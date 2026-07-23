@@ -68,7 +68,7 @@ export const PackingListFooter: React.FC<PackingListFooterProps> = ({
         Document généré le {formatDate(generatedAt)}
       </Text>
       <Text style={styles.footerSubtext}>
-        ChinaLink Express - Transport International
+        LEXD - Transport International
       </Text>
       <Text style={styles.footerRoute}>
         Route: Chine → Dakar (Sénégal) → Bamako (Mali)

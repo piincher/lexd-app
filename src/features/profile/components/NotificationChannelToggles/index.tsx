@@ -9,6 +9,7 @@ import { Card, Text } from "react-native-paper";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 interface NotificationChannelTogglesProps {
   enabled: boolean;
@@ -28,8 +29,9 @@ export const NotificationChannelToggles: React.FC<NotificationChannelTogglesProp
       StyleSheet.create({
         card: {
           marginBottom: 16,
-          borderRadius: 12,
-          elevation: 2,
+          borderRadius: RADIUS.card,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
           backgroundColor: colors.background.default,
         },
         masterToggle: {
@@ -45,7 +47,7 @@ export const NotificationChannelToggles: React.FC<NotificationChannelTogglesProp
         iconContainer: {
           width: 48,
           height: 48,
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
           justifyContent: "center",
           alignItems: "center",
         },
@@ -67,9 +69,9 @@ export const NotificationChannelToggles: React.FC<NotificationChannelTogglesProp
           alignItems: "center",
           backgroundColor: colors.background.paper,
           padding: 12,
-          borderRadius: 8,
+          borderRadius: RADIUS.control,
           marginBottom: 16,
-          borderWidth: 1,
+          borderWidth: HAIRLINE,
           borderColor: colors.status.warning,
         },
         warningText: {

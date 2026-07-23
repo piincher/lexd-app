@@ -3,6 +3,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
 import { ShimmerBlock } from '@src/shared/ui';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface ReviewsListSkeletonProps {
   count?: number;
@@ -68,28 +69,22 @@ const createStyles = (colors: any) => StyleSheet.create({
     padding: 16,
   },
   summaryCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
     alignItems: 'center',
     gap: 8,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
   },
   card: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
   },
   cardHeader: {
     flexDirection: 'row',

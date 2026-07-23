@@ -27,12 +27,6 @@ export const SlideEditor: React.FC<SlideEditorProps> = ({ slides, updateSlide, r
 
   const pickImage = useCallback(async (index: number) => {
     try {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('Permission requise', 'L\'accès à la galerie est nécessaire pour choisir une image.');
-        return;
-      }
-
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,

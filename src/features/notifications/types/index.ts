@@ -2,6 +2,8 @@
  * Notification Types - In-App Notification System
  */
 
+import { ink, semantic } from '@src/shared/constants/brand';
+
 export type FilterTab = 'all' | 'important' | 'shipments' | 'payments' | 'unread' | 'system';
 
 export type NotificationType =
@@ -191,27 +193,27 @@ export const NOTIFICATION_CATEGORY_CONFIG: Record<NotificationCategory, {
   icon: string;
   label: string;
 }> = {
-  SUCCESS: { 
-    color: '#10B981', 
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+  SUCCESS: {
+    color: semantic.success,
+    backgroundColor: semantic.success + '1A',
     icon: 'check-circle',
     label: 'Succès'
   },
-  WARNING: { 
-    color: '#F59E0B', 
-    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+  WARNING: {
+    color: semantic.warning,
+    backgroundColor: semantic.warning + '1A',
     icon: 'alert',
     label: 'Attention'
   },
-  ERROR: { 
-    color: '#EF4444', 
-    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+  ERROR: {
+    color: semantic.error,
+    backgroundColor: semantic.error + '1A',
     icon: 'close-circle',
     label: 'Erreur'
   },
-  INFO: { 
-    color: '#3B82F6', 
-    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+  INFO: {
+    color: semantic.info,
+    backgroundColor: semantic.info + '1A',
     icon: 'information',
     label: 'Info'
   },
@@ -219,9 +221,9 @@ export const NOTIFICATION_CATEGORY_CONFIG: Record<NotificationCategory, {
 
 // Priority configuration
 export const NOTIFICATION_PRIORITY_CONFIG: Record<string, { color: string; label: string }> = {
-  HIGH: { color: '#EF4444', label: 'Urgent' },
-  NORMAL: { color: '#3B82F6', label: 'Normal' },
-  LOW: { color: '#6B7280', label: 'Faible' },
+  HIGH: { color: semantic.error, label: 'Urgent' },
+  NORMAL: { color: semantic.info, label: 'Normal' },
+  LOW: { color: ink[400], label: 'Faible' },
 };
 
 // ============================================
@@ -271,12 +273,12 @@ export const PUBLIC_NOTIFICATION_TYPE_CONFIG: Record<PublicNotificationType, {
     label: 'Arrivée',
     icon: 'package-variant-closed',
     description: 'Marchandise arrivée à l\'entrepôt',
-    color: '#10B981', // Success green
+    color: semantic.success,
   },
   GOODS_ASSIGNED: {
     label: 'Assignée à un envoi',
     icon: 'truck-delivery',
     description: 'Marchandise assignée à un envoi',
-    color: '#3B82F6', // Info blue
+    color: semantic.info,
   },
 };

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -15,10 +16,10 @@ export const createStyles = (colors: any) =>
       flexDirection: 'row',
       alignItems: 'flex-start',
       gap: 12,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       padding: 14,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     iconCircle: {

@@ -20,7 +20,7 @@ export const useReferralScreen = () => {
   // account is created. (No onboarding deep link to consume it.)
   const shareMessage = useMemo(
     () =>
-      `Rejoins ChinaLink Express ! Donne mon code de parrainage ${referralCode} ` +
+      `Rejoins LEXD ! Donne mon code de parrainage ${referralCode} ` +
       'à l’équipe lors de la création de ton compte.',
     [referralCode]
   );

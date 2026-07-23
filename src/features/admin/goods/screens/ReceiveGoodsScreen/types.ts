@@ -69,6 +69,13 @@ export const receiveGoodsSchema = z.object({
       const num = parseInt(val, 10);
       return !isNaN(num) && num > 0;
     }, { message: 'Quantité invalide' }),
+
+  packageCount: z.string()
+    .min(1, 'Le nombre de colis est requis')
+    .refine((val) => {
+      const num = Number(val);
+      return Number.isInteger(num) && num >= 1 && num <= 999;
+    }, { message: 'Le nombre de colis doit être compris entre 1 et 999' }),
   
   unitPrice: z.string()
     .min(1, 'Le prix unitaire est requis')

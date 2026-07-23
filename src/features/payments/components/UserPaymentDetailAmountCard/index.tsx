@@ -4,6 +4,7 @@ import { Text, Surface, Chip } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 import { styles } from './styles';
 
 interface MethodConfig {
@@ -34,7 +35,16 @@ export const UserPaymentDetailAmountCard: React.FC<UserPaymentDetailAmountCardPr
   const { colors } = useAppTheme();
 
   return (
-    <Surface style={[styles.heroCard, { backgroundColor: colors.background.default }]}>
+    <Surface
+      style={[
+        styles.heroCard,
+        {
+          backgroundColor: colors.background.default,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
+        },
+      ]}
+    >
       <View style={[styles.methodIcon, { backgroundColor: methodConfig.color + '15' }]}>
         <MaterialCommunityIcons name={methodConfig.icon as any} size={32} color={methodConfig.color} />
       </View>

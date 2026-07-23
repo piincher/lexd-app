@@ -190,6 +190,7 @@ export interface FormErrors {
   destination?: string;
   shippingLine?: string;
   estimatedTransitDays?: string;
+  waypoints?: string;
   baseRate?: string;
 }
 

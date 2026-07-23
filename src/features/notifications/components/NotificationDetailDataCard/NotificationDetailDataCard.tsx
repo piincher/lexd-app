@@ -31,7 +31,7 @@ export const NotificationDetailDataCard: React.FC<NotificationDetailDataCardProp
 
   return (
     <Animated.View entering={FadeInUp.delay(300)}>
-      <Surface style={styles.dataCard} elevation={1}>
+      <Surface style={styles.dataCard} elevation={0}>
         {showTracking && <TrackingSection data={data} styles={styles} colors={colors} />}
         {showTracking && showEntities && <View style={styles.divider} />}
         {showEntities && <EntitiesSection data={data} styles={styles} />}

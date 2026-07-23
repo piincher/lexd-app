@@ -2,8 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
-import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { STATS } from '@src/features/profile/hooks/useAboutUs';
 
 export const AboutUsStats: React.FC = () => {
@@ -29,9 +29,10 @@ const makeStyles = (colors: any) =>
          marginHorizontal: 20,
          marginTop: -20,
          backgroundColor: colors.background.card,
-         borderRadius: 16,
+         borderRadius: RADIUS.card,
          padding: 16,
-         ...Theme.shadows.sm,
+         borderWidth: HAIRLINE,
+         borderColor: colors.border,
       },
       statItem: {
          flex: 1,
@@ -46,6 +47,9 @@ const makeStyles = (colors: any) =>
       statLabel: {
          fontSize: 9,
          fontFamily: Fonts.regular,
+         fontWeight: '700',
+         letterSpacing: 0.6,
+         textTransform: 'uppercase',
          color: colors.text.secondary,
          textAlign: 'center',
          marginTop: 2,

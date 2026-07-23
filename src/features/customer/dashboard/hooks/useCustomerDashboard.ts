@@ -57,8 +57,7 @@ export interface UseCustomerDashboardReturn {
   handleActionPress: (action: QuickAction) => void;
   handleNextShipmentAction: (action: NextShipmentAction) => void;
   handlePrepareShipment: () => void;
-  handleViewGoods: () => void;
-  handleViewContainers: () => void;
+  handleViewShipments: () => void;
   handleViewPayments: () => void;
   handleShipmentHealthPress: (shipment: ShipmentHealthItem) => void;
   handleContainerPress: (shipment?: DashboardContainer) => void;
@@ -107,25 +106,44 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
   const handlePrepareShipment = useCallback(() => {
     navigation.navigate('CreateTicket');
   }, [navigation]);
-  const handleViewGoods = useCallback(() => navigation.navigate('MyGoods'), [navigation]);
-  const handleViewContainers = useCallback(() => navigation.navigate('MyContainers'), [navigation]);
-  const handleViewPayments = useCallback(() => navigation.navigate('MyPaymentHistory'), [navigation]);
-  const handleShipmentHealthPress = useCallback((shipment: ShipmentHealthItem) => {
-    if (shipment.trackingType === 'AIRWAY_BILL' || shipment.shippingMode === 'AIR') {
-      navigation.navigate('AirwayBillTracking', { airwayBillId: shipment.id });
-    } else {
-      navigation.navigate('ContainerTracking', { containerId: shipment.id });
-    }
-  }, [navigation]);
-  const handleContainerPress = useCallback((shipment?: DashboardContainer) => {
-    if (shipment?.trackingType === 'AIRWAY_BILL' || shipment?.shippingMode === 'AIR') {
-      navigation.navigate('AirwayBillTracking', { airwayBillId: shipment.airwayBillId || shipment.id });
-    } else if (shipment?.id) {
-      navigation.navigate('ContainerTracking', { containerId: shipment.id });
-    } else {
-      navigation.navigate('MyContainers');
-    }
-  }, [navigation]);
+  /**
+   * Goods and containers were two destinations for one idea. They are now one
+   * tab, so the dashboard offers one way in rather than two buttons that land
+   * in the same place.
+   */
+  const handleViewShipments = useCallback(
+    () => navigation.navigate('HomeTab', { screen: 'Shipments' }),
+    [navigation],
+  );
+  const handleViewPayments = useCallback(
+    () => navigation.navigate('HomeTab', { screen: 'Payments' }),
+    [navigation],
+  );
+
+  /**
+   * Every shipment opens the same record. The old AIR/SEA branch sent
+   * customers to two differently-shaped screens for the same question, which
+   * is precisely what the unified record removed.
+   */
+  const openShipment = useCallback(
+    (id?: string) => {
+      if (!id) {
+        handleViewShipments();
+        return;
+      }
+      navigation.navigate('ShipmentDetail', { shipmentId: id, source: 'container' });
+    },
+    [navigation, handleViewShipments],
+  );
+
+  const handleShipmentHealthPress = useCallback(
+    (shipment: ShipmentHealthItem) => openShipment(shipment.id),
+    [openShipment],
+  );
+  const handleContainerPress = useCallback(
+    (shipment?: DashboardContainer) => openShipment(shipment?.id),
+    [openShipment],
+  );
 
   return {
     user,
@@ -151,8 +169,7 @@ export const useCustomerDashboard = (): UseCustomerDashboardReturn => {
     handleActionPress,
     handleNextShipmentAction,
     handlePrepareShipment,
-    handleViewGoods,
-    handleViewContainers,
+    handleViewShipments,
     handleViewPayments,
     handleShipmentHealthPress,
     handleContainerPress,

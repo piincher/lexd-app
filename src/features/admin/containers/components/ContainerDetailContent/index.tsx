@@ -114,6 +114,7 @@ export const ContainerDetailContent: React.FC<ContainerDetailContentProps> = ({
       )}
       <ContainerWaypointSection
         containerId={containerId}
+        containerLabel={container.virtualContainerNumber || container.containerNumber}
         containerStatus={container.status}
         containerNumber={container.virtualContainerNumber || container.containerNumber}
       />

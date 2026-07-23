@@ -12,8 +12,9 @@ interface ClientShippingMarkPreviewModalProps {
   visible: boolean;
   isSending: boolean;
   isRegenerating: boolean;
+  isSharing: boolean;
   onClose: () => void;
-  onDownload: (client: ShippingMarkClient) => void;
+  onShareSupplier: (client: ShippingMarkClient) => void;
   onSend: (client: ShippingMarkClient) => void;
   onRegenerate: (clientId: string) => void;
 }
@@ -26,8 +27,9 @@ export const ClientShippingMarkPreviewModal: React.FC<ClientShippingMarkPreviewM
   visible,
   isSending,
   isRegenerating,
+  isSharing,
   onClose,
-  onDownload,
+  onShareSupplier,
   onSend,
   onRegenerate,
 }) => {
@@ -78,11 +80,11 @@ export const ClientShippingMarkPreviewModal: React.FC<ClientShippingMarkPreviewM
 
           <View style={styles.actions}>
             <Button
-              title="Partager"
+              title="Partager au fournisseur"
               icon="share-outline"
-              variant="outline"
-              disabled={!hasImage}
-              onPress={() => onDownload(client)}
+              loading={isSharing}
+              disabled={isSharing}
+              onPress={() => onShareSupplier(client)}
               style={styles.actionButton}
             />
             <Button

@@ -35,11 +35,6 @@ export const BadgeCircle: React.FC<BadgeCircleProps> = ({ milestone, isCurrent, 
           },
           isCurrent && {
             borderWidth: 2.5,
-            shadowColor: milestone.color,
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.6,
-            shadowRadius: 10,
-            elevation: 6,
           },
         ]}
       >

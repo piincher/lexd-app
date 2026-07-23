@@ -6,9 +6,9 @@ import { AirCargoRouteOption, AirwayBillConsignee } from '../../types';
 const DEFAULT_ROUTE: AirCargoRouteOption = {
   key: 'GUANGZHOU_HK_ADDIS_BAMAKO',
   name: 'Guangzhou-Hong Kong-Addis Ababa-Bamako',
-  description: 'Guangzhou → Hong Kong → Addis Ababa → Bamako Airport → Customs → ChinaLink Warehouse.',
+  description: 'Guangzhou → Hong Kong → Addis Ababa → Bamako Airport → Customs → LEXD Warehouse.',
   origin: 'Guangzhou, China',
-  destination: 'ChinaLink Warehouse, Bamako',
+  destination: 'LEXD Warehouse, Bamako',
 };
 
 export const useCreateAirwayBillScreen = () => {

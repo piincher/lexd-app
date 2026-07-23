@@ -29,12 +29,12 @@ export const GoodsDetailSkeleton: React.FC = () => {
         </View>
 
         {/* ── Photo Card ── */}
-        <Card style={styles.photoCard}>
+        <Card style={[styles.photoCard, { borderColor: colors.border }]}>
           <ShimmerBlock width="100%" height={220} borderRadius={0} />
         </Card>
 
         {/* ── Quick Stats ── */}
-        <View style={[styles.statsRow, { backgroundColor: colors.background.card }]}>
+        <View style={[styles.statsRow, { backgroundColor: colors.background.card, borderColor: colors.border }]}>
           {[0, 1, 2].map((i) => (
             <React.Fragment key={i}>
               <View style={styles.statBox}>

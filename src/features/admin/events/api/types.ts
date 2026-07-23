@@ -1,6 +1,6 @@
 /**
  * Admin Event Engine types — mirror the backend Event model
- * (chinalinkexpressbackend/src/v2/models/Event.js).
+ * (lexdbackend/src/v2/models/Event.js).
  */
 
 export type EventStatus = 'draft' | 'scheduled' | 'live' | 'ended' | 'archived';

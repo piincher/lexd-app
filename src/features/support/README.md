@@ -1,6 +1,6 @@
 # Support Feature
 
-A production-ready FAQ and customer support feature for the ChinaLink Express mobile app.
+A production-ready FAQ and customer support feature for the LEXD mobile app.
 
 ## Structure
 

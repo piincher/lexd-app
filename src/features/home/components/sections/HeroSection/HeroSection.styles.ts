@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import type { AppTheme } from '@src/constants/Theme';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: AppTheme['colors'], isDark: boolean) =>
   StyleSheet.create({
@@ -105,12 +106,7 @@ export const createStyles = (colors: AppTheme['colors'], isDark: boolean) =>
       minHeight: 52,
     },
     ctaGlow: {
-      borderRadius: 18,
-      shadowColor: colors.primary.main,
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: isDark ? 0.22 : 0.18,
-      shadowRadius: 14,
-      elevation: 4,
+      borderRadius: RADIUS.card,
     },
     ctaGradient: {
       flexDirection: 'row',

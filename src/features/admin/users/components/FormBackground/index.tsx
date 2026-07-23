@@ -67,16 +67,16 @@ export const FormBackground: React.FC = () => {
 
   const orbConfigs = isDark
     ? [
-        { size: 300, colors: ['#16A34A', '#14532D'] as [string, string], initialX: -80, initialY: height * 0.1, duration: 8000 },
-        { size: 250, colors: ['#15803D', '#0F172A'] as [string, string], initialX: width - 150, initialY: height * 0.3, duration: 10000 },
-        { size: 200, colors: ['#D4AF37', '#14532D'] as [string, string], initialX: width * 0.3, initialY: height * 0.6, duration: 9000 },
-        { size: 280, colors: ['#22C55E', '#1E293B'] as [string, string], initialX: -60, initialY: height * 0.7, duration: 11000 },
+        { size: 300, colors: ['#00664B', '#022E22'] as [string, string], initialX: -80, initialY: height * 0.1, duration: 8000 },
+        { size: 250, colors: ['#00543E', '#0F172A'] as [string, string], initialX: width - 150, initialY: height * 0.3, duration: 10000 },
+        { size: 200, colors: ['#F5A524', '#022E22'] as [string, string], initialX: width * 0.3, initialY: height * 0.6, duration: 9000 },
+        { size: 280, colors: ['#007757', '#1E293B'] as [string, string], initialX: -60, initialY: height * 0.7, duration: 11000 },
       ]
     : [
-        { size: 300, colors: ['#DCFCE7', '#F0FDF4'] as [string, string], initialX: -80, initialY: height * 0.1, duration: 8000 },
-        { size: 250, colors: ['#BBF7D0', '#FFFFFF'] as [string, string], initialX: width - 150, initialY: height * 0.3, duration: 10000 },
-        { size: 200, colors: ['#FEF9C3', '#F0FDF4'] as [string, string], initialX: width * 0.3, initialY: height * 0.6, duration: 9000 },
-        { size: 280, colors: ['#86EFAC', '#FFFFFF'] as [string, string], initialX: -60, initialY: height * 0.7, duration: 11000 },
+        { size: 300, colors: ['#D3EBE2', '#EDF7F3'] as [string, string], initialX: -80, initialY: height * 0.1, duration: 8000 },
+        { size: 250, colors: ['#A9D8C7', '#FFFFFF'] as [string, string], initialX: width - 150, initialY: height * 0.3, duration: 10000 },
+        { size: 200, colors: ['#FEF8EC', '#EDF7F3'] as [string, string], initialX: width * 0.3, initialY: height * 0.6, duration: 9000 },
+        { size: 280, colors: ['#74C0A7', '#FFFFFF'] as [string, string], initialX: -60, initialY: height * 0.7, duration: 11000 },
       ];
 
   return (

@@ -23,7 +23,7 @@ export const ComparisonTableHeader: React.FC = () => {
           style={styles.brandBadge}
         >
           <FontAwesome6 name="star" size={8} color={colors.neutral.white} />
-          <Text style={styles.brandBadgeText}>ChinaLink</Text>
+          <Text style={styles.brandBadgeText}>LEXD</Text>
         </LinearGradient>
       </View>
       <View style={styles.brandCol}>

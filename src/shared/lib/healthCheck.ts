@@ -14,7 +14,7 @@ import { perfMonitor } from './performanceMonitoring';
 // API URL from environment or constants
 const API_URL = Constants.expoConfig?.extra?.apiUrl || 
   process.env.EXPO_PUBLIC_API_URL || 
-  'https://api.chinalinkexpress.com';
+  'https://api.lexdservices.com';
 
 interface HealthCheckResult {
   healthy: boolean;

@@ -1,5 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {Fonts} from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   container: {
@@ -13,8 +14,9 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     height: 3,
   },
   header: {
+    borderBottomWidth: HAIRLINE,
+    borderBottomColor: colors.border,
     backgroundColor: colors.background.card,
-    elevation: 4,
   },
   centerContent: {
     flex: 1,
@@ -107,10 +109,11 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   },
   // Route Banner at Top
   routeBannerCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
-    elevation: 2,
   },
   routeBannerGradient: {
     padding: 4,
@@ -162,8 +165,9 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     paddingHorizontal: 4,
   },
   documentCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
-    elevation: 2,
   },
   headerCard: {
     backgroundColor: colors.background.card,
@@ -214,8 +218,9 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     marginLeft: 6,
   },
   statusCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
-    elevation: 1,
   },
   statusHeader: {
     flexDirection: 'row',
@@ -238,10 +243,11 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     opacity: 0.9,
   },
   routeInfoCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
-    elevation: 2,
   },
   routeInfoGradient: {
     padding: 4,
@@ -313,10 +319,11 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     flex: 1,
   },
   pickupSectionCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
-    elevation: 3,
   },
   pickupGradient: {
     padding: 4,
@@ -396,8 +403,9 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     flex: 1,
   },
   sectionCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
-    elevation: 1,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -617,11 +625,6 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     paddingVertical: 12,
     flexDirection: 'row',
     gap: 12,
-    elevation: 8,
-    shadowColor: colors.neutral[900],
-    shadowOffset: {width: 0, height: -2},
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   actionBarButton: {
     flex: 1,

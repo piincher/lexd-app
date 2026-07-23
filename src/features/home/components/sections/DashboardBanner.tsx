@@ -11,6 +11,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface DashboardBannerProps {
   firstName?: string;
@@ -30,13 +31,10 @@ export const DashboardBanner: React.FC<DashboardBannerProps> = ({ firstName, onP
         container: {
           marginHorizontal: 16,
           marginTop: 16,
-          borderRadius: 16,
+          borderRadius: RADIUS.card,
           overflow: 'hidden',
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: isDark ? 0.3 : 0.08,
-          shadowRadius: 12,
-          elevation: 4,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
         },
         pressed: {
           opacity: 0.95,

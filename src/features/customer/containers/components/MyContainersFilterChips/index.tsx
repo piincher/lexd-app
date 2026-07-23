@@ -7,6 +7,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { useMyContainersFilterChipsStyles } from './MyContainersFilterChips.styles';
 import { FilterMode } from '../../hooks/useMyContainersScreen';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface FilterOption {
   value: FilterMode;
@@ -48,15 +49,11 @@ export const MyContainersFilterChips: React.FC<MyContainersFilterChipsProps> = (
               }}
               style={[
                 styles.filterChip,
+                // Selection reads through fill and border alone — no lift.
                 isSelected && {
                   backgroundColor: theme.colors.primary,
-                  borderWidth: 1,
+                  borderWidth: HAIRLINE,
                   borderColor: theme.colors.primary,
-                  elevation: 2,
-                  shadowColor: colors.neutral[900],
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.2,
-                  shadowRadius: 2,
                 },
               ]}
               textStyle={{

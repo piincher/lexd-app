@@ -11,6 +11,9 @@ import { AnnouncementStatusToggle } from "./components/AnnouncementStatusToggle"
 import { AnnouncementCTAFields } from "./components/AnnouncementCTAFields";
 import { AnnouncementFormToggles } from "./components/AnnouncementFormToggles";
 import { AnnouncementExpiryPicker } from "./components/AnnouncementExpiryPicker";
+import { AnnouncementImagePicker } from "./components/AnnouncementImagePicker";
+import { AnnouncementBlocksEditor } from "./components/AnnouncementBlocksEditor";
+import { useAnnouncementUploadTracker } from "../../hooks/useAnnouncementUploadTracker";
 
 interface AnnouncementFormProps {
   onSubmit: (data: CreateAnnouncementInput) => void;
@@ -28,6 +31,7 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
   onInputFocus,
 }) => {
   const form = useAnnouncementForm({ onSubmit, initialValues });
+  const uploads = useAnnouncementUploadTracker();
 
   return (
     <View style={styles.container}>
@@ -48,6 +52,21 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
         fullWidth
         inputStyle={styles.messageInput}
         onFocus={onInputFocus}
+      />
+
+      <AnnouncementImagePicker
+        label="Image principale (optionnel)"
+        value={form.imageUrl}
+        onChange={form.setImageUrl}
+        onClear={() => form.setImageUrl(null)}
+        onUploadingChange={uploads.setUploading}
+      />
+
+      <AnnouncementBlocksEditor
+        blocks={form.blocks}
+        onChange={form.setBlocks}
+        onInputFocus={onInputFocus}
+        onUploadingChange={uploads.setUploading}
       />
 
       <AnnouncementSelectFields
@@ -107,11 +126,11 @@ export const AnnouncementForm: React.FC<AnnouncementFormProps> = ({
 
       <View style={styles.actions}>
         <Button
-          title={submitLabel}
+          title={uploads.isUploading ? "Envoi des images…" : submitLabel}
           variant="primary"
           onPress={form.handleSubmit}
-          loading={isLoading}
-          disabled={!form.isValid || isLoading}
+          loading={isLoading || uploads.isUploading}
+          disabled={!form.isValid || isLoading || uploads.isUploading}
           fullWidth
         />
       </View>

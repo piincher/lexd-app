@@ -91,12 +91,12 @@ export const getPaymentStatusColor = (status: PaymentStatus, themeColors?: Theme
     return mapping[status] || themeColors.text.disabled;
   }
   const fallback: Record<PaymentStatus, string> = {
-    PENDING: '#F59E0B',
-    PROCESSING: '#3B82F6',
-    COMPLETED: '#10B981',
-    FAILED: '#EF4444',
+    PENDING: Theme.colors.status.warning,
+    PROCESSING: Theme.colors.status.info,
+    COMPLETED: Theme.colors.status.success,
+    FAILED: Theme.colors.status.error,
     CANCELLED: Theme.colors.text.disabled,
-    REFUNDED: '#8B5CF6',
+    REFUNDED: Theme.colors.primary.main,
   };
   return fallback[status] || Theme.colors.text.disabled;
 };

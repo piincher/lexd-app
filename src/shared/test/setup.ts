@@ -1,5 +1,5 @@
 /**
- * Global test setup for ChinaLink Express
+ * Global test setup for LEXD
  * This file is imported in jest.setup.js for test initialization
  */
 
@@ -31,15 +31,6 @@ jest.mock('expo-secure-store', () => ({
   getItemAsync: jest.fn(),
   setItemAsync: jest.fn(),
   deleteItemAsync: jest.fn(),
-}));
-
-jest.mock('expo-notifications', () => ({
-  setNotificationHandler: jest.fn(),
-  requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
-  getExpoPushTokenAsync: jest.fn(() => Promise.resolve({ data: 'test-push-token' })),
-  addNotificationReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
-  addNotificationResponseReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
-  removeNotificationSubscription: jest.fn(),
 }));
 
 // Mock AsyncStorage

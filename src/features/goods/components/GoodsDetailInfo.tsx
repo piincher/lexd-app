@@ -21,7 +21,7 @@ export const GoodsDetailInfo: React.FC<GoodsDetailInfoProps> = ({ goods }) => {
 		(goods.dimensions.length || goods.dimensions.width || goods.dimensions.height);
 
 	return (
-		<Card style={styles.card}>
+		<Card style={[styles.card, { borderColor: colors.border }]}>
 			<View style={styles.header}>
 				<MaterialCommunityIcons name="information" size={20} color={colors.primary.main} />
 				<Text style={[styles.title, { color: colors.text.primary }]}>Informations</Text>

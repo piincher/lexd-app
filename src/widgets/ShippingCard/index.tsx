@@ -60,13 +60,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontFamily: 'Bold',
+    fontFamily: 'bold',
     fontSize: 24,
     marginVertical: 12,
     textAlign: 'center',
   },
   description: {
-    fontFamily: 'Medium',
+    fontFamily: 'medium',
     fontSize: 16,
     textAlign: 'center',
     lineHeight: 22,

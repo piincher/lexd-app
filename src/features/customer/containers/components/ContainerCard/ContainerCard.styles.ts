@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const useContainerCardStyles = () => {
   const { colors, isDark } = useAppTheme();
@@ -10,15 +11,12 @@ export const useContainerCardStyles = () => {
     () =>
       StyleSheet.create({
         card: {
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
           marginHorizontal: 16,
           marginVertical: 8,
           borderRadius: 12,
-          elevation: 2,
           backgroundColor: colors.background.card,
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.06,
-          shadowRadius: 4,
         },
         content: {
           padding: 16,

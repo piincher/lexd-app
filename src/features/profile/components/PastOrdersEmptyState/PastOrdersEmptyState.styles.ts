@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { lightTheme } from "@src/constants/Theme";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 type Colors = typeof lightTheme.colors;
 
@@ -16,11 +17,11 @@ export const createStyles = (colors: Colors) =>
     iconWell: {
       width: 92,
       height: 92,
-      borderRadius: 30,
+      borderRadius: RADIUS.control,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: colors.primary[50],
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.primary[100],
     },
     emptyTitle: {
@@ -44,7 +45,7 @@ export const createStyles = (colors: Colors) =>
       justifyContent: "center",
       paddingVertical: 12,
       paddingHorizontal: 24,
-      borderRadius: 16,
+      borderRadius: RADIUS.control,
     },
     browseButtonText: {
       color: colors.text.inverse,

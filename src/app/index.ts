@@ -9,12 +9,6 @@ export {
 } from './providers/UpdateProvider';
 
 export {
-  NotificationProvider,
-  useNotificationContext,
-} from './providers/NotificationProvider';
-export type { NotificationContextValue } from './providers/types';
-
-export {
   ThemeProvider,
   useAppTheme,
   useThemeStyles,

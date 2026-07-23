@@ -1,15 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { lightTheme } from '@src/constants/Theme';
+import { HAIRLINE, OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createOperationsHealthStyles = (colors: typeof lightTheme.colors) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 16,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     header: {
@@ -34,7 +35,7 @@ export const createOperationsHealthStyles = (colors: typeof lightTheme.colors) =
     iconBox: {
       width: 36,
       height: 36,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.feedback.infoBg,
       alignItems: 'center',
       justifyContent: 'center',
@@ -48,7 +49,7 @@ export const createOperationsHealthStyles = (colors: typeof lightTheme.colors) =
       flex: 1,
       minWidth: '46%',
       backgroundColor: colors.background.paper,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       padding: 12,
     },
     metricValue: {
@@ -57,7 +58,7 @@ export const createOperationsHealthStyles = (colors: typeof lightTheme.colors) =
       fontWeight: '700',
     },
     metricLabel: {
-      fontSize: 11,
+      ...OVERLINE,
       fontFamily: Fonts.medium,
       color: colors.text.disabled,
       marginTop: 4,

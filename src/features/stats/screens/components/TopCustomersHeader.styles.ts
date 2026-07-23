@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createTopCustomersHeaderStyles = (colors: any) =>
   StyleSheet.create({
@@ -25,7 +26,7 @@ export const createTopCustomersHeaderStyles = (colors: any) =>
     iconContainer: {
       width: 36,
       height: 36,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.feedback.warningBg,
       justifyContent: 'center',
       alignItems: 'center',

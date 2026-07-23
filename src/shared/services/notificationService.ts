@@ -197,7 +197,7 @@ export const setupNotificationChannels = async (): Promise<void> => {
     { id: NOTIFICATION_CHANNELS.CONTAINERS, name: "Container Updates", importance: Notifications.AndroidImportance.DEFAULT, vibrationPattern: [0, 250, 250, 250], lightColor: "#3B82F6" },
     { id: NOTIFICATION_CHANNELS.TICKETS, name: "Support Tickets", importance: Notifications.AndroidImportance.HIGH, vibrationPattern: [0, 250, 250, 250], lightColor: "#F59E0B" },
     { id: NOTIFICATION_CHANNELS.INVOICES, name: "Invoices", importance: Notifications.AndroidImportance.HIGH, vibrationPattern: [0, 250, 250, 250], lightColor: "#EF4444" },
-    { id: NOTIFICATION_CHANNELS.CERTIFICATES, name: "Certificates", importance: Notifications.AndroidImportance.HIGH, vibrationPattern: [0, 250, 250, 250], lightColor: "#F4D03F" },
+    { id: NOTIFICATION_CHANNELS.CERTIFICATES, name: "Certificates", importance: Notifications.AndroidImportance.HIGH, vibrationPattern: [0, 250, 250, 250], lightColor: "#EFC169" },
     { id: NOTIFICATION_CHANNELS.SYSTEM, name: "System", importance: Notifications.AndroidImportance.LOW, vibrationPattern: [0, 250], lightColor: "#6B7280" },
   ]);
 };

@@ -148,11 +148,6 @@ export const useWhatsAppMedia = () => {
   );
 
   const pickImages = useCallback(async () => {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      showMessage({ message: "Accès à la galerie requis", type: "warning" });
-      return;
-    }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
       allowsMultipleSelection: true,
@@ -164,11 +159,6 @@ export const useWhatsAppMedia = () => {
   }, [addAssets]);
 
   const pickVideos = useCallback(async () => {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) {
-      showMessage({ message: "Accès à la galerie requis", type: "warning" });
-      return;
-    }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["videos"],
       allowsMultipleSelection: true,

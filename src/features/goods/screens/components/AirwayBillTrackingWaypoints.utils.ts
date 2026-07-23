@@ -51,8 +51,8 @@ export const translateDescription = (description?: string, fallback?: string) =>
     .replace('Air transit through Addis Ababa', 'Transit aérien via Addis-Abeba')
     .replace('Cargo arrives at Bamako airport', "Arrivée du fret à l'aéroport de Bamako")
     .replace('Customs clearance at Bamako airport', "Dédouanement à l'aéroport de Bamako")
-    .replace('Final delivery to ChinaLink warehouse in Bamako', "Acheminement final vers l'entrepôt ChinaLink à Bamako")
-    .replace('packed and prepared at ChinaLink Guangzhou warehouse', "préparé à l'entrepôt ChinaLink de Guangzhou");
+    .replace('Final delivery to LEXD warehouse in Bamako', "Acheminement final vers l'entrepôt LEXD à Bamako")
+    .replace('packed and prepared at LEXD Guangzhou warehouse', "préparé à l'entrepôt LEXD de Guangzhou");
 };
 
 export const statusColor = (status: WaypointStatus) => ({

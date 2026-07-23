@@ -2,10 +2,20 @@
  * Announcement Types
  */
 
+export interface AnnouncementBlockInput {
+  heading?: string;
+  body?: string;
+  imageUrl?: string | null;
+  imageKey?: string | null;
+}
+
 export interface Announcement {
   _id: string;
   title: string;
   message: string;
+  imageUrl?: string | null;
+  imageKey?: string | null;
+  blocks?: AnnouncementBlockInput[];
   type: "INFO" | "WARNING" | "SUCCESS" | "URGENT" | "PROMOTION" | "MAINTENANCE";
   placement: "TOP_BANNER" | "HOME_CARD" | "MODAL" | "INBOX";
   audience: "ALL" | "CLIENTS" | "ADMINS" | "SPECIFIC_USERS" | "SEGMENT";
@@ -36,6 +46,8 @@ export interface AnnouncementTargeting {
 export interface CreateAnnouncementInput {
   title: string;
   message: string;
+  imageUrl?: string | null;
+  blocks?: AnnouncementBlockInput[];
   type: Announcement["type"];
   placement: Announcement["placement"];
   audience: Announcement["audience"];

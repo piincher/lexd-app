@@ -18,7 +18,7 @@ export const AboutUsFooter: React.FC<Props> = ({ onCall, onWebsite }) => {
       <Animated.View entering={FadeInDown.delay(900).duration(600)} style={styles.footer}>
          <View style={styles.footerDivider} />
          <Text style={styles.footerCopyright}>
-            © {new Date().getFullYear()} China Link Express. Tous droits reserves.
+            © {new Date().getFullYear()} LEXD. Tous droits reserves.
          </Text>
          <View style={styles.footerMadeBy}>
             <Text style={styles.madeWithText}>Made with </Text>

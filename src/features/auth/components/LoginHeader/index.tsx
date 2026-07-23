@@ -9,6 +9,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { IMAGES } from "@src/constants/Images";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 
 interface LoginHeaderProps {
   title: string;
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   logoWrap: {
     width: 80,
     height: 80,
-    borderRadius: 24,
+    borderRadius: RADIUS.control,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 24,

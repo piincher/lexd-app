@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -9,13 +9,13 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
   StyleSheet.create({
     card: {
       backgroundColor: colors.background.card,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 16,
       marginHorizontal: 16,
       marginBottom: 10,
-      borderWidth: 1,
+      // Waybill: border-first, no drop shadow.
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
-      ...Theme.shadows.sm,
     },
     header: {
       flexDirection: "row",
@@ -42,7 +42,7 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     badgeText: {
       fontFamily: Fonts.bold,
       fontSize: 10,
-      letterSpacing: 0.5,
+      letterSpacing: 0.7,
       textTransform: "uppercase",
     },
     question: {
@@ -100,9 +100,9 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       height: 34,
       alignItems: "center",
       justifyContent: "center",
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.paper,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     iconActions: {
@@ -114,9 +114,9 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       height: 34,
       alignItems: "center",
       justifyContent: "center",
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.paper,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
   });

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
   container: {
@@ -8,13 +9,13 @@ export const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 8,
     padding: 16,
-    borderRadius: 16,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
   },
   iconCircle: {
     width: 52,
     height: 52,
-    borderRadius: 14,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -36,11 +37,12 @@ export const styles = StyleSheet.create({
   urgentBadge: {
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 10,
+    borderRadius: RADIUS.badge,
   },
   urgentBadgeText: {
     fontSize: 10,
     fontWeight: '700',
+    letterSpacing: 0.6,
     textTransform: 'uppercase',
   },
   subtitle: {

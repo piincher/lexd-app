@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const usePaymentMethodSelectorStyles = () => {
   const { colors } = useAppTheme();
@@ -11,11 +12,11 @@ export const usePaymentMethodSelectorStyles = () => {
     loadingText: { marginTop: 12, fontSize: 14, fontFamily: Fonts.regular, color: colors.text.secondary },
     errorContainer: { padding: 40, alignItems: 'center' },
     errorText: { marginTop: 12, fontSize: 14, fontFamily: Fonts.regular, color: colors.status.error, textAlign: 'center' },
-    amountBanner: { backgroundColor: colors.primary.main + '10', borderRadius: 12, padding: 16, marginBottom: 16, alignItems: 'center' },
+    amountBanner: { backgroundColor: colors.primary.main + '10', borderRadius: RADIUS.control, padding: 16, marginBottom: 16, alignItems: 'center' },
     amountLabel: { fontSize: 14, fontFamily: Fonts.regular, color: colors.text.secondary },
     amountValue: { fontSize: 24, fontFamily: Fonts.bold, color: colors.primary.main, marginTop: 4 },
     methodsList: { gap: 12 },
-    methodCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.background.default, borderRadius: 12, padding: 16, borderWidth: 2, borderColor: 'transparent', shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 4, elevation: 2 },
+    methodCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.background.default, borderRadius: RADIUS.card, padding: 16, borderWidth: 2, borderColor: 'transparent' },
     methodCardSelected: { borderColor: colors.primary.main, backgroundColor: colors.primary.main + '08' },
     methodCardError: { borderColor: colors.status.error },
     methodCardDisabled: { opacity: 0.5 },
@@ -27,12 +28,12 @@ export const usePaymentMethodSelectorStyles = () => {
     methodRight: { marginLeft: 12 },
     selectedIndicator: { width: 24, height: 24, justifyContent: 'center', alignItems: 'center' },
     unselectedIndicator: { width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: colors.neutral[200] },
-    feeBreakdown: { marginTop: 24, padding: 16, backgroundColor: colors.background.default, borderRadius: 12 },
+    feeBreakdown: { marginTop: 24, padding: 16, backgroundColor: colors.background.default, borderRadius: RADIUS.control },
     feeBreakdownTitle: { fontSize: 14, fontFamily: Fonts.bold, color: colors.text.primary, marginBottom: 12 },
     feeRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
     feeLabel: { fontSize: 14, fontFamily: Fonts.regular, color: colors.text.secondary },
     feeValue: { fontSize: 14, fontFamily: Fonts.medium, color: colors.text.primary },
-    totalRow: { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: colors.neutral[200] },
+    totalRow: { marginTop: 8, paddingTop: 8, borderTopWidth: HAIRLINE, borderTopColor: colors.neutral[200] },
     totalLabel: { fontSize: 16, fontFamily: Fonts.bold, color: colors.text.primary },
     totalValue: { fontSize: 16, fontFamily: Fonts.bold, color: colors.primary.main },
   });

@@ -25,7 +25,7 @@ export const GuestHero: React.FC = () => {
             <FontAwesome6 name="eye" size={12} color={colors.text.inverse} />
             <Text style={styles.badgeText}>Mode démo</Text>
           </View>
-          <Text style={styles.title}>Découvrez ChinaLink Express</Text>
+          <Text style={styles.title}>Découvrez LEXD</Text>
           <Text style={styles.subtitle}>
             Suivez vos marchandises de la Chine jusqu'au Mali en temps réel.
           </Text>

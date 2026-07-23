@@ -61,7 +61,7 @@ export const AuthRequiredScreen: React.FC<AuthRequiredScreenProps> = ({
                      />
                   </View>
                   <View style={styles.brandCopy}>
-                     <Text style={styles.brandTitle}>CHINALINK EXPRESS</Text>
+                     <Text style={styles.brandTitle}>LEXD</Text>
                      <Text style={styles.brandSubtitle}>Espace sécurisé</Text>
                   </View>
                </View>

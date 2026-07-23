@@ -159,7 +159,7 @@ export const ACTIVITY_TYPE_COLORS: Record<ActivityType, string> = {
   CONTAINER_DEPARTED: '#0EA5E9', // Ocean blue
   ARRIVED: '#10B981',           // Green
   READY: '#F59E0B',             // Amber
-  PAYMENT: '#22C55E',           // Success green
+  PAYMENT: '#007757',           // Success green
 };
 
 /**

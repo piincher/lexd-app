@@ -24,6 +24,8 @@ export type RootStackParamList = {
    AdminPastOrders: undefined;
    SendSms: undefined;
    SendWhatsApp: undefined;
+   WhatsAppBroadcastList: undefined;
+   WhatsAppBroadcastDetail: { broadcastId: string };
    ActiveOrderDetails: { id: string };
    ScanQRCode: undefined;
    Notifications: undefined;
@@ -34,6 +36,7 @@ export type RootStackParamList = {
    AdminDashBoard: undefined;
    AtRiskCustomers: undefined;
    OutstandingPaymentsList: undefined;
+   AdminWorkQueue: undefined;
    VoidGoodsList: undefined;
    VoidGoods: {
       goodsId: string;
@@ -84,6 +87,8 @@ export type RootStackParamList = {
    MyContainers: undefined;
    ContainerTracking: { containerId: string };
    ClientPackingList: { containerId: string };
+   /** Unified shipment record. `source` selects which adapter resolves it. */
+   ShipmentDetail: { shipmentId: string; source: "container" | "order" };
    // Customer Support Features
    TicketList: undefined;
    TicketDetail: { ticketId: string };
@@ -110,6 +115,11 @@ export type RootStackParamList = {
    // Admin Announcements
    AnnouncementList: undefined;
    CreateAnnouncement: { announcementId?: string } | undefined;
+   // Warehouse Addresses
+   WarehouseAddress: undefined;
+   WarehouseAddressAdmin: undefined;
+   // Announcements inbox (client)
+   AnnouncementInbox: undefined;
    // Admin Operations
    AuditLogs: undefined;
    AuditLogDetail: { auditLogId: string };
@@ -118,6 +128,7 @@ export type RootStackParamList = {
    Referral: undefined;
    MyRewards: undefined;
    AppVersionSettings: undefined;
+   WarehousePrinters: undefined;
    MemberPoints: undefined;
    RewardDetail: { item: import("@src/features/referrals/types").RewardItem };
    PointsHistory: undefined;
@@ -179,7 +190,10 @@ export type RootStackParamList = {
    PromoCampaignForm: { id?: string } | undefined;
    // Data Export Screen
    DataExport: undefined;
-   ShippingMarksAdmin: { q?: string } | undefined;
+   ShippingMarksAdmin: {
+      q?: string;
+      supplierShare?: import("@src/shared/types/shippingMark").SupplierShippingMarkShareRequest;
+   } | undefined;
    // Activity List
    ActivityList: undefined;
    // Search Screens
@@ -247,14 +261,18 @@ export type HomeTabParamList = {
    Profile: undefined;
    AdminDashBoard: undefined;
    Stats: undefined;
-   MyGoods: undefined;
-   MyContainers: undefined;
    CustomerDashboard: undefined;
-   Orders: undefined;
-   MemberPoints: undefined;
    AdminGoodsList: undefined;
    ContainerList: undefined;
    AdminTools: undefined;
+   /**
+    * Customer tab: the unified shipment list. Replaces Orders + MyGoods +
+    * MyContainers as tab destinations — those screens remain registered on the
+    * stack so existing deep links and admin routes keep resolving.
+    */
+   Shipments: undefined;
+   /** Customer tab: payments, promoted out of the profile stack. */
+   Payments: undefined;
 };
 
 export type navigationProps = NativeStackNavigationProp<RootStackParamList>;

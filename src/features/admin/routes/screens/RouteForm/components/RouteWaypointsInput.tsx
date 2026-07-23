@@ -16,6 +16,7 @@ interface RouteWaypointsInputProps {
   totalDays: number;
   shippingLine: ShippingLine | '';
   onChange: (waypoints: RouteWaypointDraft[]) => void;
+  error?: string;
 }
 
 const reorderWaypoints = (waypoints: RouteWaypointDraft[]) =>
@@ -26,6 +27,7 @@ export const RouteWaypointsInput: React.FC<RouteWaypointsInputProps> = ({
   totalDays,
   shippingLine,
   onChange,
+  error,
 }) => {
   const [openPortMenuIndex, setOpenPortMenuIndex] = useState<number | null>(null);
   const safeTotalDays = Number.isFinite(totalDays) && totalDays > 0 ? totalDays : 90;
@@ -75,6 +77,7 @@ export const RouteWaypointsInput: React.FC<RouteWaypointsInputProps> = ({
       <Divider style={styles.divider} />
       <Text style={styles.title}>Éditeur des escales</Text>
       <Text style={styles.summary} numberOfLines={2}>{summary}</Text>
+      {!!error && <Text style={styles.error}>{error}</Text>}
 
       <WaypointPresetToolbar
         shippingLine={shippingLine}
@@ -121,6 +124,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: Theme.neutral[500],
   },
+  error: { color: Theme.status.error, fontSize: 12, lineHeight: 17, fontWeight: '600' },
   list: {
     gap: Theme.spacing.md,
   },

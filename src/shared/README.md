@@ -1,6 +1,6 @@
 # Offline Mode Module
 
-Comprehensive offline mode implementation for ChinaLink Express mobile app with data persistence, background sync, and optimistic updates.
+Comprehensive offline mode implementation for LEXD mobile app with data persistence, background sync, and optimistic updates.
 
 ## Features
 

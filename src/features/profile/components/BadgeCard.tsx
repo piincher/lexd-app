@@ -8,6 +8,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { MotiView } from "moti";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import type { UserBadge } from "../api/badgeApi";
 
@@ -24,6 +25,8 @@ const iconMap: Record<string, keyof typeof MaterialCommunityIcons.glyphMap> = {
   certificate: "certificate",
 };
 
+// Metallic badge-tier colors — categorical, no LEXD token equivalent
+// (colors.accent.gold is amber[500], a different hue). Flagged in handoff.
 const tierConfig: Record<string, { color: string; label: string }> = {
   BRONZE: { color: "#CD7F32", label: "Bronze" },
   SILVER: { color: "#C0C0C0", label: "Argent" },
@@ -49,13 +52,6 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({ badge, index }) => {
   const iconCircleDynamicStyle = {
     backgroundColor: badge.earned ? `${color}20` : colors.background.overlay,
     borderColor: badge.earned ? color : colors.border,
-    ...(badge.earned ? {
-      shadowColor: color,
-      shadowOffset: { width: 0, height: 0 },
-      shadowOpacity: 0.4,
-      shadowRadius: 8,
-      elevation: 4,
-    } : {}),
   };
 
   return (
@@ -114,9 +110,9 @@ export const BadgeCard: React.FC<BadgeCardProps> = ({ badge, index }) => {
 };
 
 const styles = StyleSheet.create({
-  badgeCard: { width: "47%", borderRadius: 14, padding: 14, alignItems: "center", borderWidth: 1, minHeight: 170 },
-  tierLabel: { position: "absolute", top: 8, right: 8, borderRadius: 8, paddingHorizontal: 6, paddingVertical: 2 },
-  tierLabelText: { fontFamily: Fonts.bold, fontSize: 9 },
+  badgeCard: { width: "47%", borderRadius: RADIUS.card, padding: 14, alignItems: "center", borderWidth: HAIRLINE, minHeight: 170 },
+  tierLabel: { position: "absolute", top: 8, right: 8, borderRadius: RADIUS.badge, paddingHorizontal: 6, paddingVertical: 2 },
+  tierLabelText: { fontFamily: Fonts.bold, fontSize: 9, letterSpacing: 0.6, textTransform: "uppercase" },
   badgeIconCircle: { width: 56, height: 56, borderRadius: 28, borderWidth: 2, alignItems: "center", justifyContent: "center", marginBottom: 10, marginTop: 4 },
   badgeName: { fontFamily: Fonts.bold, fontSize: 14, textAlign: "center", marginBottom: 4 },
   badgeDescription: { fontFamily: Fonts.regular, fontSize: 11, textAlign: "center", lineHeight: 15, marginBottom: 8 },

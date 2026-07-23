@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import type { RewardItem } from '../types';
 import { createStyles } from './RewardItemCard.styles';
 
@@ -51,7 +52,7 @@ export const RewardItemCard: React.FC<RewardItemCardProps> = ({
         transition={200}
       />
       {affordable && (
-        <View style={{ position: 'absolute', top: 8, left: 8, flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: colors.status.success, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 999 }}>
+        <View style={{ position: 'absolute', top: 8, left: 8, flexDirection: 'row', alignItems: 'center', gap: 4, backgroundColor: colors.status.success, paddingHorizontal: 8, paddingVertical: 3, borderRadius: RADIUS.badge }}>
           <MaterialCommunityIcons name="check-circle" size={11} color={colors.text.inverse} />
           <Text style={{ color: colors.text.inverse, fontSize: 10, fontWeight: '800' }}>Échangeable</Text>
         </View>
@@ -88,8 +89,8 @@ export const RewardItemCard: React.FC<RewardItemCardProps> = ({
       {item.stock > 0 && !canAfford && (
         <View style={styles.lockedOverlay}>
           <Text style={styles.lockedText}>Encore {missing} pts</Text>
-          <View style={{ width: '78%', height: 5, borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.3)', marginTop: 8, overflow: 'hidden' }}>
-            <View style={{ width: `${progress * 100}%`, height: 5, borderRadius: 999, backgroundColor: colors.status.warning }} />
+          <View style={{ width: '78%', height: 5, borderRadius: RADIUS.pill, backgroundColor: 'rgba(255,255,255,0.3)', marginTop: 8, overflow: 'hidden' }}>
+            <View style={{ width: `${progress * 100}%`, height: 5, borderRadius: RADIUS.pill, backgroundColor: colors.status.warning }} />
           </View>
           <Text style={[styles.lockedText, { fontSize: 11, marginTop: 6, opacity: 0.9 }]}>
             {userPoints} / {item.pointsRequired} pts

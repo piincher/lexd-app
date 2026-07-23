@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 const { height, width } = Dimensions.get('window');
 
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
     marginRight: 8,
   },
   surface: {
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     overflow: 'hidden',
   },
   header: {
@@ -62,7 +63,7 @@ export const styles = StyleSheet.create({
   itemIcon: {
     width: 40,
     height: 40,
-    borderRadius: 10,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,

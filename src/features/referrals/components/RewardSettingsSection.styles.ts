@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {
-      borderRadius: 12,
-      borderWidth: 1,
+      borderRadius: RADIUS.card,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       backgroundColor: colors.background.card,
       overflow: 'hidden',
@@ -29,7 +30,7 @@ export const createStyles = (colors: any) =>
       fontSize: 14,
       fontWeight: '800',
       textTransform: 'uppercase',
-      letterSpacing: 0.5,
+      letterSpacing: 0.7,
     },
     content: {
       padding: 14,

@@ -1,17 +1,15 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE } from "@src/shared/ui/designLanguage";
 
 export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     backgroundColor: colors.background.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 14,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
   },
   cardHeader: {
     flexDirection: "row",

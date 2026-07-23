@@ -107,7 +107,7 @@ export const PromoCampaignModal: React.FC<PromoCampaignModalProps> = ({
   );
 
   return (
-    <Modal visible={visible} animationType="fade" statusBarTranslucent onRequestClose={handleClose}>
+    <Modal visible={visible} animationType="fade" onRequestClose={handleClose}>
       <View style={styles.overlay}>
         <Pressable style={styles.closeButton} onPress={handleClose} accessibilityLabel="Fermer">
           <Ionicons name="close" size={24} color={campaign.textColor || colors.text.primary} />

@@ -8,7 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import CryptoJS from 'crypto-js';
 
-const KEY_NAME = 'CHINALINK_ASYNCSTORAGE_KEY';
+const KEY_NAME = 'LEXD_ASYNCSTORAGE_KEY';
 
 let cachedKey: string | null = null;
 

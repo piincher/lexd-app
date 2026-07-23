@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { lightTheme } from "@src/constants/Theme";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 type Colors = typeof lightTheme.colors;
 
@@ -11,7 +12,7 @@ export const createStyles = (colors: Colors) =>
       paddingTop: 8,
       paddingBottom: 16,
       backgroundColor: colors.background.card,
-      borderBottomWidth: 1,
+      borderBottomWidth: HAIRLINE,
       borderBottomColor: colors.border,
     },
     headerTop: {
@@ -35,8 +36,8 @@ export const createStyles = (colors: Colors) =>
     },
     eyebrow: {
       fontFamily: Fonts.bold,
-      fontSize: 12,
-      letterSpacing: 0.4,
+      fontSize: 11,
+      letterSpacing: 0.8,
       textTransform: "uppercase",
       color: colors.primary.main,
     },
@@ -51,7 +52,7 @@ export const createStyles = (colors: Colors) =>
       minHeight: 48,
     },
     searchOutline: {
-      borderRadius: 16,
+      borderRadius: RADIUS.control,
       borderColor: colors.border,
     },
     searchContent: {

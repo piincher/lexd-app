@@ -24,8 +24,10 @@ export const useShippingMarkPrompt = () => {
     if (isLoading || !config) return false;
     if (!config.enabled || !config.showOnLogin) return false;
     if (userState?.dismissedAt) return false;
+    // Don't nag a client who has already downloaded or shared their mark.
+    if (userState?.downloadedAt) return false;
     return true;
-  }, [userId, role, isLoading, config, userState?.dismissedAt]);
+  }, [userId, role, isLoading, config, userState?.dismissedAt, userState?.downloadedAt]);
 
   const handleDismissForever = useCallback(() => {
     if (!userId) return;

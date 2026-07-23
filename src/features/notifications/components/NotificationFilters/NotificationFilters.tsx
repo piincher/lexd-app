@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import { NotificationFilterType } from '../../hooks/useNotificationFilters';
 
 interface NotificationFiltersProps {
@@ -62,7 +63,7 @@ const createStyles = (colors: any) =>
     filterButton: {
       paddingHorizontal: 12,
       paddingVertical: 8,
-      borderRadius: 20,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.background.paper,
     },
     activeFilter: {

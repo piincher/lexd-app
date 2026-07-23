@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const useRenderOrderStyles = () => {
   const { colors } = useAppTheme();
@@ -13,15 +14,13 @@ export const useRenderOrderStyles = () => {
           flex: 1,
           backgroundColor: colors.background.default,
         },
+        // Border-first surfaces: the shadow stack is replaced by hairlines.
         headerCard: {
           backgroundColor: colors.background.card,
-          borderRadius: 16,
+          borderRadius: RADIUS.card,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
           padding: 16,
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 8,
-          elevation: 3,
           marginBottom: 16,
         },
         headerContent: {
@@ -31,10 +30,12 @@ export const useRenderOrderStyles = () => {
           marginBottom: 16,
         },
         progressTitle: {
-          fontSize: 14,
-          fontWeight: '600',
-          fontFamily: Fonts.medium,
-          color: colors.text.primary,
+          fontSize: 11,
+          fontWeight: '700',
+          letterSpacing: 0.8,
+          textTransform: 'uppercase',
+          fontFamily: Fonts.bold,
+          color: colors.text.secondary,
           marginBottom: 8,
         },
         progressTrack: {
@@ -46,10 +47,12 @@ export const useRenderOrderStyles = () => {
           alignItems: 'center',
         },
         progressText: {
-          fontSize: 12,
-          fontWeight: '500',
-          fontFamily: Fonts.regular,
-          color: colors.text.secondary,
+          fontSize: 9,
+          fontWeight: '700',
+          letterSpacing: 0.5,
+          textTransform: 'uppercase',
+          fontFamily: Fonts.medium,
+          color: colors.text.muted,
           marginTop: 4,
         },
         statusContainer: {
@@ -60,30 +63,35 @@ export const useRenderOrderStyles = () => {
         statusBadge: {
           flexDirection: 'row',
           alignItems: 'center',
-          paddingHorizontal: 12,
-          paddingVertical: 6,
-          borderRadius: 20,
+          paddingHorizontal: 8,
+          paddingVertical: 4,
+          borderRadius: RADIUS.badge,
           marginRight: 12,
           backgroundColor: colors.primary.main,
         },
         paid: {
           backgroundColor: colors.status.success,
         },
+        // Uses the darker warning step, not status.warning: white on #DC6803
+        // is only 3.49:1 and fails AA at this text size. The dark step is 7.52.
         partial: {
-          backgroundColor: colors.status.warning,
+          backgroundColor: colors.feedback.warningDark,
         },
         unpaid: {
           backgroundColor: colors.status.error,
         },
         statusText: {
-          fontSize: 12,
-          fontWeight: '600',
-          fontFamily: Fonts.medium,
+          fontSize: 10,
+          fontWeight: '700',
+          letterSpacing: 0.6,
+          textTransform: 'uppercase',
+          fontFamily: Fonts.bold,
           color: colors.text.inverse,
         },
         orderId: {
           fontSize: 18,
           fontWeight: '700',
+          letterSpacing: 0.4,
           fontFamily: Fonts.bold,
           color: colors.text.primary,
         },
@@ -94,33 +102,29 @@ export const useRenderOrderStyles = () => {
         },
         card: {
           backgroundColor: colors.background.card,
-          borderRadius: 16,
+          borderRadius: RADIUS.card,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
           padding: 16,
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 8,
-          elevation: 3,
           marginBottom: 16,
         },
         sliderContainer: {
           marginBottom: 16,
-          borderRadius: 16,
+          borderRadius: RADIUS.card,
           overflow: 'hidden',
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 8,
-          elevation: 3,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
         },
         sectionTitle: {
-          fontSize: 16,
+          fontSize: 11,
           fontWeight: '700',
+          letterSpacing: 0.8,
+          textTransform: 'uppercase',
           fontFamily: Fonts.bold,
-          color: colors.text.primary,
+          color: colors.text.secondary,
           marginBottom: 12,
           paddingBottom: 8,
-          borderBottomWidth: 1,
+          borderBottomWidth: HAIRLINE,
           borderBottomColor: colors.border,
         },
         adminActions: {
@@ -134,15 +138,10 @@ export const useRenderOrderStyles = () => {
           alignItems: 'center',
           paddingHorizontal: 16,
           paddingVertical: 12,
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
           backgroundColor: colors.background.card,
-          borderWidth: 1,
+          borderWidth: HAIRLINE,
           borderColor: colors.border,
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.05,
-          shadowRadius: 4,
-          elevation: 2,
         },
         adminButtonText: {
           marginLeft: 8,
@@ -154,13 +153,8 @@ export const useRenderOrderStyles = () => {
           alignSelf: 'center',
           backgroundColor: colors.primary.main,
           marginVertical: 16,
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
           height: 50,
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.2,
-          shadowRadius: 8,
-          elevation: 4,
         },
         buttonContent: {
           justifyContent: 'center',

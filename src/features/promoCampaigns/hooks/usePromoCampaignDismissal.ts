@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { PromoCampaign, PromoCampaignDismissState } from '../types';
 
-const STORAGE_KEY = 'CHINALINK_PROMO_CAMPAIGN_DISMISSALS';
+const STORAGE_KEY = 'LEXD_PROMO_CAMPAIGN_DISMISSALS';
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 const DEFAULT_STATE: PromoCampaignDismissState = {

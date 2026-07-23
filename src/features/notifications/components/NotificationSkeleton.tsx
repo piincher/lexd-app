@@ -9,6 +9,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 interface NotificationSkeletonProps {
   count?: number;
@@ -53,12 +54,12 @@ const NotificationSkeleton: React.FC<NotificationSkeletonProps> = ({ count = 5 }
       backgroundColor: colors.background.card,
       marginHorizontal: 16,
       marginVertical: 4,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
     },
     iconSkeleton: {
       width: 48,
       height: 48,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.neutral[200],
       overflow: 'hidden',
     },
@@ -70,14 +71,14 @@ const NotificationSkeleton: React.FC<NotificationSkeletonProps> = ({ count = 5 }
     titleSkeleton: {
       height: 16,
       width: '70%',
-      borderRadius: 4,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.neutral[200],
       overflow: 'hidden',
     },
     messageSkeleton: {
       height: 12,
       width: '100%',
-      borderRadius: 4,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.neutral[200],
       overflow: 'hidden',
     },
@@ -87,7 +88,7 @@ const NotificationSkeleton: React.FC<NotificationSkeletonProps> = ({ count = 5 }
     timeSkeleton: {
       height: 10,
       width: 60,
-      borderRadius: 4,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.neutral[200],
       overflow: 'hidden',
       marginTop: 4,

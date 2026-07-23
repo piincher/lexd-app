@@ -14,9 +14,9 @@ const Banner = () => {
 	useEffect(() => {
 		setLoading(true);
 		setBanner([
-			'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/1.jpg',
-			'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/2.jpg',
-			'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/3.jpg',
+			'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/1.jpg',
+			'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/2.jpg',
+			'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/3.jpg',
 		]);
 		setLoading(false);
 		return () => {

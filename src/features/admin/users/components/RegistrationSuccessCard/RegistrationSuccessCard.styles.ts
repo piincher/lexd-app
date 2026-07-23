@@ -1,0 +1,101 @@
+export const styles = {
+  card: {
+    borderRadius: 24,
+    margin: 20,
+    padding: 20,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.08,
+    shadowRadius: 16,
+    elevation: 4,
+  },
+  successIcon: {
+    width: 62,
+    height: 62,
+    borderRadius: 20,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    marginBottom: 14,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "800" as const,
+  },
+  subtitle: {
+    fontSize: 14,
+    lineHeight: 20,
+    marginTop: 6,
+  },
+  details: {
+    marginTop: 18,
+    marginBottom: 18,
+  },
+  row: {
+    minHeight: 58,
+    flexDirection: "row" as const,
+    alignItems: "center" as const,
+    borderBottomWidth: 1,
+    gap: 12,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+    borderRadius: 14,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+  },
+  rowText: {
+    flex: 1,
+  },
+  label: {
+    fontSize: 12,
+    fontWeight: "600" as const,
+    marginBottom: 3,
+  },
+  value: {
+    fontSize: 15,
+    fontWeight: "700" as const,
+  },
+  copyButton: {
+    minWidth: 44,
+    minHeight: 44,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+  },
+  primaryButton: {
+    minHeight: 50,
+    borderRadius: 16,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    marginTop: 4,
+    flexDirection: "row" as const,
+    gap: 8,
+  },
+  primaryButtonText: {
+    fontSize: 15,
+    fontWeight: "800" as const,
+  },
+  secondaryButton: {
+    minHeight: 50,
+    borderRadius: 16,
+    borderWidth: 1,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    marginTop: 10,
+  },
+  secondaryButtonText: {
+    fontSize: 15,
+    fontWeight: "800" as const,
+  },
+  tertiaryButton: {
+    minHeight: 48,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    flexDirection: "row" as const,
+    gap: 6,
+    marginTop: 6,
+  },
+  tertiaryButtonText: {
+    fontSize: 14,
+    fontWeight: "700" as const,
+  },
+};

@@ -2,7 +2,7 @@
  * Test module exports
  * 
  * This module provides testing utilities, mocks, and templates
- * for the ChinaLink Express test suite.
+ * for the LEXD test suite.
  */
 
 // Utilities

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Your app supports both **iOS Universal Links** and **Android App Links** using your domain `chinalinkexpress.com` hosted on Vercel.
+Your app supports both **iOS Universal Links** and **Android App Links** using your domain `lexdservices.com` hosted on Vercel.
 
 ---
 
@@ -27,7 +27,7 @@ your-vercel-project/
   vercel.json
 ```
 
-> **Note:** Vercel serves files in `public/` at the root. So `public/.well-known/apple-app-site-association` becomes `https://chinalinkexpress.com/.well-known/apple-app-site-association`.
+> **Note:** Vercel serves files in `public/` at the root. So `public/.well-known/apple-app-site-association` becomes `https://lexdservices.com/.well-known/apple-app-site-association`.
 
 ### Before you deploy — Update assetlinks.json
 
@@ -64,7 +64,7 @@ After deploying, verify these URLs return the correct content:
 
 ### Apple AASA
 ```bash
-curl -I https://chinalinkexpress.com/.well-known/apple-app-site-association
+curl -I https://lexdservices.com/.well-known/apple-app-site-association
 ```
 Expected:
 - HTTP 200
@@ -73,7 +73,7 @@ Expected:
 
 ### Android Asset Links
 ```bash
-curl -I https://chinalinkexpress.com/.well-known/assetlinks.json
+curl -I https://lexdservices.com/.well-known/assetlinks.json
 ```
 Expected:
 - HTTP 200
@@ -87,7 +87,7 @@ You **must** enable the Associated Domains capability in your Apple Developer ac
 
 1. Go to [Apple Developer Portal](https://developer.apple.com)
 2. Certificates, Identifiers & Profiles → Identifiers
-3. Find your app ID: `com.nuvotech.chinalinkexpress`
+3. Find your app ID: `com.nuvotech.lexd`
 4. Click **Edit**
 5. Check **Associated Domains**
 6. Save
@@ -111,8 +111,8 @@ eas build --platform ios --profile production
 The `app.json` already includes:
 ```json
 "associatedDomains": [
-  "applinks:chinalinkexpress.com",
-  "applinks:www.chinalinkexpress.com"
+  "applinks:lexdservices.com",
+  "applinks:www.lexdservices.com"
 ]
 ```
 
@@ -133,17 +133,17 @@ The `app.json` already includes the `intentFilters` with `autoVerify: true`.
 **Method 1 — Safari Test**
 1. Install the app on a physical device (Universal Links don't work in Simulator)
 2. Open Safari
-3. Type: `https://chinalinkexpress.com/goods/YOUR_GOODS_ID`
-4. You should see a banner at the top saying "Open in ChinaLinkExpress"
+3. Type: `https://lexdservices.com/goods/YOUR_GOODS_ID`
+4. You should see a banner at the top saying "Open in LEXD"
 5. Tap it — the app should open to the goods detail screen
 
 **Method 2 — Notes App Test**
-1. Paste `https://chinalinkexpress.com/dashboard` in Apple Notes
+1. Paste `https://lexdservices.com/dashboard` in Apple Notes
 2. Tap the link
 3. It should open directly in the app (no Safari intermediate)
 
 **Method 3 — Share Token Test (Critical)**
-1. Paste `https://chinalinkexpress.com/s/abc123` in Apple Notes
+1. Paste `https://www.lexdservices.com/s/abc123` in Apple Notes
 2. Tap the link
 3. It should open directly in the app to the shared shipment screen
 
@@ -151,7 +151,7 @@ The `app.json` already includes the `intentFilters` with `autoVerify: true`.
 Use Apple's validation tool:
 ```bash
 # On Mac with Xcode installed
-xcrun simctl openurl booted "https://chinalinkexpress.com/home"
+xcrun simctl openurl booted "https://lexdservices.com/home"
 ```
 
 Or use this online validator:
@@ -161,23 +161,23 @@ https://branch.io/resources/aasa-validator/
 
 **Method 1 — ADB Test**
 ```bash
-adb shell am start -W -a android.intent.action.VIEW -d "https://chinalinkexpress.com/home" com.nuvotech.chinalinkexpress
+adb shell am start -W -a android.intent.action.VIEW -d "https://lexdservices.com/home" com.nuvotech.lexd
 ```
 
 **Method 2 — Verify Digital Asset Links**
 ```bash
-adb shell pm verify-app-links --re-verify com.nuvotech.chinalinkexpress
+adb shell pm verify-app-links --re-verify com.nuvotech.lexd
 ```
 
 Check the status:
 ```bash
-adb shell pm get-app-links com.nuvotech.chinalinkexpress
+adb shell pm get-app-links com.nuvotech.lexd
 ```
-You should see `chinalinkexpress.com` listed with `legacy_failure: false`.
+You should see `lexdservices.com` listed with `legacy_failure: false`.
 
 **Method 3 — Share Token Test**
 ```bash
-adb shell am start -W -a android.intent.action.VIEW -d "https://chinalinkexpress.com/s/abc123" com.nuvotech.chinalinkexpress
+adb shell am start -W -a android.intent.action.VIEW -d "https://www.lexdservices.com/s/abc123" com.nuvotech.lexd
 ```
 
 ---
@@ -202,7 +202,7 @@ adb shell am start -W -a android.intent.action.VIEW -d "https://chinalinkexpress
 
 ### What the reviewer will check
 If your app claims to support Universal Links (via the Associated Domains entitlement), the reviewer may:
-1. Tap a link like `https://chinalinkexpress.com/home` on a device with your app installed
+1. Tap a link like `https://lexdservices.com/home` on a device with your app installed
 2. Verify the app opens instead of Safari
 3. Check that the app shows relevant content for that URL
 
@@ -220,72 +220,72 @@ If your app claims to support Universal Links (via the Associated Domains entitl
 ### Public (No Auth Required)
 | URL | Screen |
 |-----|--------|
-| `https://chinalinkexpress.com/` | Home |
-| `https://chinalinkexpress.com/home` | Home tab |
-| `https://chinalinkexpress.com/login` | Login |
-| `https://chinalinkexpress.com/verify` | Verification |
-| `https://chinalinkexpress.com/faq` | FAQ |
-| `https://chinalinkexpress.com/about` | About us |
-| `https://chinalinkexpress.com/s/:token` | **Shared Shipment** |
-| `https://chinalinkexpress.com/demo` | Guest demo |
-| `https://chinalinkexpress.com/demo-preview` | Demo preview |
-| `https://chinalinkexpress.com/onboarding` | Onboarding |
+| `https://lexdservices.com/` | Home |
+| `https://lexdservices.com/home` | Home tab |
+| `https://lexdservices.com/login` | Login |
+| `https://lexdservices.com/verify` | Verification |
+| `https://lexdservices.com/faq` | FAQ |
+| `https://lexdservices.com/about` | About us |
+| `https://www.lexdservices.com/s/:token` | **Shared Shipment** |
+| `https://lexdservices.com/demo` | Guest demo |
+| `https://lexdservices.com/demo-preview` | Demo preview |
+| `https://lexdservices.com/onboarding` | Onboarding |
 
 ### Customer (Auth Required)
 | URL | Screen |
 |-----|--------|
-| `https://chinalinkexpress.com/dashboard` | Customer Dashboard |
-| `https://chinalinkexpress.com/containers` | My Containers |
-| `https://chinalinkexpress.com/goods-list` | My Goods |
-| `https://chinalinkexpress.com/goods/:id` | Goods Detail |
-| `https://chinalinkexpress.com/goods/:id/edit` | Edit Goods |
-| `https://chinalinkexpress.com/tracking/:id` | Container Tracking |
-| `https://chinalinkexpress.com/order/:id` | Order Detail |
-| `https://chinalinkexpress.com/ticket/:id` | Ticket Detail |
-| `https://chinalinkexpress.com/support` | Support Tickets |
-| `https://chinalinkexpress.com/support/new` | Create Ticket |
-| `https://chinalinkexpress.com/notifications` | Notifications |
-| `https://chinalinkexpress.com/payments` | Payments |
-| `https://chinalinkexpress.com/payments/:id` | Payment Detail |
-| `https://chinalinkexpress.com/route-check` | Route Check |
-| `https://chinalinkexpress.com/scan` | Scan QR |
-| `https://chinalinkexpress.com/scan-qr` | Scan QR |
-| `https://chinalinkexpress.com/batch/:data` | Batch Update |
-| `https://chinalinkexpress.com/active-order/:id` | Active Order |
-| `https://chinalinkexpress.com/user-orders/:type` | User Orders |
-| `https://chinalinkexpress.com/outstanding` | Outstanding Payments |
-| `https://chinalinkexpress.com/shipping` | Shipping |
-| `https://chinalinkexpress.com/shipping/method` | Shipping Method |
-| `https://chinalinkexpress.com/clients` | Clients |
-| `https://chinalinkexpress.com/clients/:id` | Client Details |
-| `https://chinalinkexpress.com/receive` | Receive Goods |
-| `https://chinalinkexpress.com/consignees` | Consignees |
-| `https://chinalinkexpress.com/consignees/new` | Create Consignee |
-| `https://chinalinkexpress.com/consignees/:id` | Consignee Detail |
-| `https://chinalinkexpress.com/routes` | Routes |
-| `https://chinalinkexpress.com/routes/form` | Route Form |
-| `https://chinalinkexpress.com/unassigned` | Unassigned Goods |
-| `https://chinalinkexpress.com/whatsapp` | WhatsApp Requests |
-| `https://chinalinkexpress.com/campaigns` | Campaigns |
-| `https://chinalinkexpress.com/campaigns/new` | Create Campaign |
-| `https://chinalinkexpress.com/announcements/new` | Create Announcement |
-| `https://chinalinkexpress.com/search` | Global Search |
-| `https://chinalinkexpress.com/badges` | Badges |
-| `https://chinalinkexpress.com/reviews` | My Reviews |
-| `https://chinalinkexpress.com/promos` | Promos |
-| `https://chinalinkexpress.com/activity` | Activity |
-| `https://chinalinkexpress.com/packing/:id` | Packing List |
-| `https://chinalinkexpress.com/loading/:id` | Loading List |
-| `https://chinalinkexpress.com/certificate` | Certificate |
-| `https://chinalinkexpress.com/past-orders` | Past Orders |
-| `https://chinalinkexpress.com/stats` | Stats |
+| `https://lexdservices.com/dashboard` | Customer Dashboard |
+| `https://lexdservices.com/containers` | My Containers |
+| `https://lexdservices.com/goods-list` | My Goods |
+| `https://lexdservices.com/goods/:id` | Goods Detail |
+| `https://lexdservices.com/goods/:id/edit` | Edit Goods |
+| `https://lexdservices.com/tracking/:id` | Container Tracking |
+| `https://lexdservices.com/order/:id` | Order Detail |
+| `https://lexdservices.com/ticket/:id` | Ticket Detail |
+| `https://lexdservices.com/support` | Support Tickets |
+| `https://lexdservices.com/support/new` | Create Ticket |
+| `https://lexdservices.com/notifications` | Notifications |
+| `https://lexdservices.com/payments` | Payments |
+| `https://lexdservices.com/payments/:id` | Payment Detail |
+| `https://lexdservices.com/route-check` | Route Check |
+| `https://lexdservices.com/scan` | Scan QR |
+| `https://lexdservices.com/scan-qr` | Scan QR |
+| `https://lexdservices.com/batch/:data` | Batch Update |
+| `https://lexdservices.com/active-order/:id` | Active Order |
+| `https://lexdservices.com/user-orders/:type` | User Orders |
+| `https://lexdservices.com/outstanding` | Outstanding Payments |
+| `https://lexdservices.com/shipping` | Shipping |
+| `https://lexdservices.com/shipping/method` | Shipping Method |
+| `https://lexdservices.com/clients` | Clients |
+| `https://lexdservices.com/clients/:id` | Client Details |
+| `https://lexdservices.com/receive` | Receive Goods |
+| `https://lexdservices.com/consignees` | Consignees |
+| `https://lexdservices.com/consignees/new` | Create Consignee |
+| `https://lexdservices.com/consignees/:id` | Consignee Detail |
+| `https://lexdservices.com/routes` | Routes |
+| `https://lexdservices.com/routes/form` | Route Form |
+| `https://lexdservices.com/unassigned` | Unassigned Goods |
+| `https://lexdservices.com/whatsapp` | WhatsApp Requests |
+| `https://lexdservices.com/campaigns` | Campaigns |
+| `https://lexdservices.com/campaigns/new` | Create Campaign |
+| `https://lexdservices.com/announcements/new` | Create Announcement |
+| `https://lexdservices.com/search` | Global Search |
+| `https://lexdservices.com/badges` | Badges |
+| `https://lexdservices.com/reviews` | My Reviews |
+| `https://lexdservices.com/promos` | Promos |
+| `https://lexdservices.com/activity` | Activity |
+| `https://lexdservices.com/packing/:id` | Packing List |
+| `https://lexdservices.com/loading/:id` | Loading List |
+| `https://lexdservices.com/certificate` | Certificate |
+| `https://lexdservices.com/past-orders` | Past Orders |
+| `https://lexdservices.com/stats` | Stats |
 
 ### Admin (Auth Required)
 | URL | Screen |
 |-----|--------|
-| `https://chinalinkexpress.com/admin/*` | Admin screens |
-| `https://chinalinkexpress.com/admin-goods/*` | Admin Goods |
-| `https://chinalinkexpress.com/admin-containers/*` | Admin Containers |
+| `https://lexdservices.com/admin/*` | Admin screens |
+| `https://lexdservices.com/admin-goods/*` | Admin Goods |
+| `https://lexdservices.com/admin-containers/*` | Admin Containers |
 
 ---
 
@@ -294,21 +294,21 @@ If your app claims to support Universal Links (via the Associated Domains entitl
 ### Before every production release:
 
 - [ ] **Verify AASA file size** — Must be under 128KB (currently ~6KB)
-- [ ] **Verify AASA Content-Type** — `curl -I https://chinalinkexpress.com/.well-known/apple-app-site-association`
-- [ ] **Verify Asset Links Content-Type** — `curl -I https://chinalinkexpress.com/.well-known/assetlinks.json`
+- [ ] **Verify AASA Content-Type** — `curl -I https://lexdservices.com/.well-known/apple-app-site-association`
+- [ ] **Verify Asset Links Content-Type** — `curl -I https://lexdservices.com/.well-known/assetlinks.json`
 - [ ] **Verify SHA256 fingerprint** — Compare `assetlinks.json` fingerprint with Google Play Console → App Integrity → App Signing
-- [ ] **Test share token on iOS** — Paste `https://chinalinkexpress.com/s/TEST` in Notes, tap it
-- [ ] **Test share token on Android** — `adb shell am start -a android.intent.action.VIEW -d "https://chinalinkexpress.com/s/TEST"`
-- [ ] **Test customer deep link on iOS** — `https://chinalinkexpress.com/tracking/TEST_ID`
-- [ ] **Test customer deep link on Android** — `https://chinalinkexpress.com/tracking/TEST_ID`
-- [ ] **Verify Android autoVerify** — `adb shell pm get-app-links com.nuvotech.chinalinkexpress` should show `legacy_failure: false`
+- [ ] **Test share token on iOS** — Paste `https://www.lexdservices.com/s/TEST` in Notes, tap it
+- [ ] **Test share token on Android** — `adb shell am start -a android.intent.action.VIEW -d "https://www.lexdservices.com/s/TEST"`
+- [ ] **Test customer deep link on iOS** — `https://lexdservices.com/tracking/TEST_ID`
+- [ ] **Test customer deep link on Android** — `https://lexdservices.com/tracking/TEST_ID`
+- [ ] **Verify Android autoVerify** — `adb shell pm get-app-links com.nuvotech.lexd` should show `legacy_failure: false`
 
 ---
 
 ## Troubleshooting
 
 ### iOS: Link opens Safari instead of app
-1. Check AASA file is accessible: `curl https://chinalinkexpress.com/.well-known/apple-app-site-association`
+1. Check AASA file is accessible: `curl https://lexdservices.com/.well-known/apple-app-site-association`
 2. Check Content-Type is `application/json`
 3. Check Associated Domains entitlement is enabled in Apple Developer Portal
 4. Check `app.json` has the correct `associatedDomains` values
@@ -319,8 +319,8 @@ If your app claims to support Universal Links (via the Associated Domains entitl
 
 ### Android: Link opens browser instead of app
 1. Check `assetlinks.json` has the correct SHA256 fingerprint
-2. Run: `adb shell pm verify-app-links --re-verify com.nuvotech.chinalinkexpress`
-3. Check: `adb shell pm get-app-links com.nuvotech.chinalinkexpress`
+2. Run: `adb shell pm verify-app-links --re-verify com.nuvotech.lexd`
+3. Check: `adb shell pm get-app-links com.nuvotech.lexd`
 4. Make sure `autoVerify: true` is in `app.json` intentFilters
 
 ### Both: App opens but shows wrong screen

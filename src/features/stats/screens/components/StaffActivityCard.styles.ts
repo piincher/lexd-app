@@ -1,15 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { lightTheme } from '@src/constants/Theme';
+import { HAIRLINE, OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStaffActivityStyles = (colors: typeof lightTheme.colors) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 16,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     header: {
@@ -34,7 +35,7 @@ export const createStaffActivityStyles = (colors: typeof lightTheme.colors) =>
     iconBox: {
       width: 36,
       height: 36,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.feedback.warningBg,
       alignItems: 'center',
       justifyContent: 'center',
@@ -47,7 +48,7 @@ export const createStaffActivityStyles = (colors: typeof lightTheme.colors) =>
     summaryItem: {
       flex: 1,
       backgroundColor: colors.background.paper,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       padding: 10,
     },
     summaryValue: {
@@ -59,6 +60,9 @@ export const createStaffActivityStyles = (colors: typeof lightTheme.colors) =>
     summaryLabel: {
       fontSize: 10,
       fontFamily: Fonts.medium,
+      fontWeight: '700',
+      letterSpacing: 0.6,
+      textTransform: 'uppercase',
       color: colors.text.disabled,
       marginTop: 2,
     },

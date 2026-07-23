@@ -4,6 +4,7 @@
  */
 
 import { FAQItem, FAQCategory } from '../types';
+import { LEXD_CONTACTS } from '@src/shared/constants/contact';
 
 export const fetchMockFAQs = async (): Promise<FAQItem[]> => {
   // Simulate network delay
@@ -24,7 +25,7 @@ export const MOCK_FAQS: FAQItem[] = [
   {
     id: '2',
     question: "Comment puis-je contacter le service client ?",
-    answer: "Vous pouvez nous contacter sur WhatsApp au +8618851725957 ou utiliser la fonction de chat dans l'application en allant dans 'Centre d'assistance'.",
+    answer: `Vous pouvez nous contacter sur WhatsApp au ${LEXD_CONTACTS.main.displayPhone} ou utiliser la fonction de chat dans l'application en allant dans 'Centre d'assistance'.`,
     category: FAQCategory.GENERAL,
     order: 2,
     isPopular: true,

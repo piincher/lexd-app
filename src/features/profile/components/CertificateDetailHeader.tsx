@@ -14,7 +14,7 @@ interface Props {
 
 export const CertificateDetailHeader: React.FC<Props> = ({
   title = "Expéditeur Certifié",
-  subtitle = "ChinaLink Express",
+  subtitle = "LEXD",
 }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors.text.inverse);

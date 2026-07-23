@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -11,11 +12,11 @@ export const createStyles = (colors: any) =>
       gap: 12,
     },
     card: {
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       padding: 14,
       gap: 10,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     header: {
@@ -33,7 +34,7 @@ export const createStyles = (colors: any) =>
     image: {
       width: 48,
       height: 48,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.paper,
     },
     name: {
@@ -54,13 +55,15 @@ export const createStyles = (colors: any) =>
     },
     remarkBox: {
       backgroundColor: colors.background.paper,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       padding: 10,
       gap: 4,
     },
     remarkLabel: {
       fontSize: 11,
       fontWeight: '700',
+      letterSpacing: 0.7,
+      textTransform: 'uppercase',
       color: colors.text.secondary,
     },
     remarkText: {
@@ -74,8 +77,8 @@ export const createStyles = (colors: any) =>
       justifyContent: 'center',
       gap: 6,
       minHeight: 40,
-      borderRadius: 8,
-      borderWidth: 1,
+      borderRadius: RADIUS.control,
+      borderWidth: HAIRLINE,
       borderColor: colors.status.error + '40',
       backgroundColor: colors.status.error + '08',
     },

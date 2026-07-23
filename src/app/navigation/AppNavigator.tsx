@@ -41,12 +41,14 @@ export const AppNavigator: React.FC = () => {
       <Stack.Screen name="CertificateDetail" component={Screens.CertificateDetailScreen} />
       <Stack.Screen name="TrustProfile" component={Screens.TrustProfileScreen} />
       <Stack.Screen name="ShippingMark" component={Screens.ShippingMarkScreen} />
+      <Stack.Screen name="WarehouseAddress" component={Screens.WarehouseAddressScreen} />
 
       {token ? (
         <>
           <Stack.Screen name="Notifications" component={Screens.Notifications} />
           <Stack.Screen name="NotificationDetail" component={Screens.NotificationDetailScreen} />
           <Stack.Screen name="NotificationSettings" component={Screens.NotificationSettingsScreen} />
+          <Stack.Screen name="AnnouncementInbox" component={Screens.AnnouncementInboxScreen} />
           <Stack.Screen name="Badges" component={Screens.BadgesScreen} />
           <Stack.Screen name="PastOrders" component={Screens.PastOrders} />
           <Stack.Screen name="Referral" component={Screens.ReferralScreen} />
@@ -84,6 +86,7 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="AdminDashBoard" component={AdminDashboardTabRedirect} />
               <Stack.Screen name="AtRiskCustomers" component={Screens.AtRiskCustomersScreen} />
               <Stack.Screen name="OutstandingPaymentsList" component={Screens.OutstandingPaymentsListScreen} />
+              <Stack.Screen name="AdminWorkQueue" component={Screens.AdminWorkQueueScreen} />
               <Stack.Screen name="UserActiveOrders" component={Screens.UserActiveOrders} />
               <Stack.Screen name="ClientManagement" component={Screens.ClientManagement} />
               <Stack.Screen name="ClientDetails" component={Screens.ClientDetails} />
@@ -100,6 +103,8 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="AdminGoodsPdfExport" component={Screens.AdminGoodsPdfExport} />
               <Stack.Screen name="DataExport" component={Screens.DataExportScreen} />
               <Stack.Screen name="SendWhatsApp" component={Screens.SendWhatsAppScreen} />
+              <Stack.Screen name="WhatsAppBroadcastList" component={Screens.WhatsAppBroadcastListScreen} />
+              <Stack.Screen name="WhatsAppBroadcastDetail" component={Screens.WhatsAppBroadcastDetailScreen} />
               <Stack.Screen name="ConsigneeList" component={Screens.ConsigneeListScreen} />
               <Stack.Screen name="CreateConsignee" component={Screens.CreateConsigneeScreen} />
               <Stack.Screen name="ConsigneeDetail" component={Screens.ConsigneeDetailScreen} />
@@ -121,7 +126,9 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="AdminTicketList" component={Screens.AdminTicketListScreen} />
               <Stack.Screen name="AdminTicketDetail" component={Screens.AdminTicketDetailScreen} />
               <Stack.Screen name="AppVersionSettings" component={Screens.AppVersionSettingsScreen} />
+              <Stack.Screen name="WarehousePrinters" component={Screens.WarehousePrintersScreen} />
               <Stack.Screen name="ShippingMarksAdmin" component={Screens.ShippingMarksAdminScreen} />
+              <Stack.Screen name="WarehouseAddressAdmin" component={Screens.WarehouseAddressAdminScreen} />
               <Stack.Screen name="AdminRewardItems" component={Screens.AdminRewardItemsScreen} />
               <Stack.Screen name="AdminRewardItemForm" component={Screens.AdminRewardItemFormScreen} />
               <Stack.Screen name="AdminProductRedemptions" component={Screens.AdminProductRedemptionsScreen} />
@@ -152,6 +159,11 @@ export const AppNavigator: React.FC = () => {
               <Stack.Screen name="Orders" component={OrdersTabRedirect} />
               <Stack.Screen name="ActivityList" component={Screens.ActivityListScreen} />
               <Stack.Screen name="MyContainers" component={MyContainersTabRedirect} />
+              <Stack.Screen name="ShipmentDetail" component={Screens.ShipmentDetailScreen} />
+              {/* Points moved off the tab bar into Compte. It was never a stack
+                  screen, so it needs registering here or MyRewards/Referral
+                  would navigate to a route that no longer exists. */}
+              <Stack.Screen name="MemberPoints" component={Screens.MemberPointsScreen} />
               <Stack.Screen name="ContainerTracking" component={Screens.ContainerTrackingScreen} />
               <Stack.Screen name="ClientPackingList" component={Screens.ClientPackingListScreen} />
               <Stack.Screen name="ClientLoadingList" component={Screens.ClientLoadingListScreen} />

@@ -9,21 +9,22 @@ interface ClientRowActionProps {
   icon: keyof typeof Ionicons.glyphMap;
   onPress: () => void;
   loading?: boolean;
+  disabled?: boolean;
   primary?: boolean;
 }
 
-export const ClientRowAction: React.FC<ClientRowActionProps> = ({ label, icon, onPress, loading, primary }) => {
+export const ClientRowAction: React.FC<ClientRowActionProps> = ({ label, icon, onPress, loading, disabled, primary }) => {
   const { colors, isDark } = useAppTheme();
   const styles = createStyles(colors, isDark);
 
   return (
     <Pressable
       onPress={onPress}
-      disabled={loading}
-      style={({ pressed }) => [styles.action, primary && styles.primaryAction, pressed && styles.pressed]}
+      disabled={loading || disabled}
+      style={({ pressed }) => [styles.action, primary && styles.primaryAction, disabled && styles.disabled, pressed && styles.pressed]}
       accessibilityRole="button"
       accessibilityLabel={label}
-      accessibilityState={{ busy: Boolean(loading) }}
+      accessibilityState={{ busy: Boolean(loading), disabled: Boolean(disabled) }}
     >
       {loading ? (
         <ActivityIndicator size="small" color={colors.text.inverse} />

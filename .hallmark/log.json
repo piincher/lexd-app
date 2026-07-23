@@ -1,5 +1,12 @@
 [
   {
+    "date": "2026-07-20",
+    "macrostructure": "Index-First",
+    "theme": "Brand-aligned app theme",
+    "enrichment": "none — operational action index, freight lane rows, and four-stage route",
+    "brief": "LEXD guest HomeScreen full redesign — replaced the promotional section stack with a compact mobile command surface for tracking, previewing, choosing freight, and understanding the China-to-Mali journey"
+  },
+  {
     "date": "2026-06-01",
     "macrostructure": "Gallery Catalog + Gradient Hero",
     "theme": "Brand-aligned app theme",
@@ -67,6 +74,6 @@
     "macrostructure": "Workbench (mobile admin dashboard)",
     "theme": "modern-minimal",
     "enrichment": "none",
-    "brief": "ChinaLink Express admin stats screen redesign"
+    "brief": "LEXD admin stats screen redesign"
   }
 ]

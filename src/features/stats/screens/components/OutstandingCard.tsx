@@ -10,6 +10,7 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import { OutstandingData } from '../../types';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -32,7 +33,7 @@ export const OutstandingCard: React.FC<OutstandingCardProps> = ({ outstanding })
           marginHorizontal: 20,
           marginTop: 16,
           backgroundColor: colors.feedback.errorBg,
-          borderRadius: 12,
+          borderRadius: RADIUS.card,
           borderLeftWidth: 4,
           borderLeftColor: colors.status.error,
           padding: 14,
@@ -43,7 +44,7 @@ export const OutstandingCard: React.FC<OutstandingCardProps> = ({ outstanding })
         iconContainer: {
           width: 36,
           height: 36,
-          borderRadius: 10,
+          borderRadius: RADIUS.control,
           backgroundColor: colors.background.card,
           justifyContent: 'center',
           alignItems: 'center',

@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 
 export const useNotificationEmptyStyles = () => {
@@ -19,7 +20,7 @@ export const useNotificationEmptyStyles = () => {
   iconGradient: {
     width: 120,
     height: 120,
-    borderRadius: 36,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -49,7 +50,7 @@ export const useNotificationEmptyStyles = () => {
   },
   retryButton: {
     marginTop: 24,
-    borderRadius: 24,
+    borderRadius: RADIUS.control,
     overflow: 'hidden',
   },
   retryGradient: {

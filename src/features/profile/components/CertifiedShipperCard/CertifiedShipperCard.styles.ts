@@ -4,16 +4,18 @@
 
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 export const createStyles = (colors: any, isDark: boolean) => {
   const styles = StyleSheet.create({
     card: {
       backgroundColor: colors.background.card,
-      borderRadius: 16, padding: 16, marginBottom: 12,
+      borderRadius: RADIUS.card, padding: 16, marginBottom: 12,
+      borderWidth: HAIRLINE, borderColor: colors.border,
     },
     certifiedCard: {
       backgroundColor: colors.background.card,
-      borderRadius: 16, padding: 16, marginBottom: 12, borderWidth: 1, borderColor: colors.accent.gold + '4D',
+      borderRadius: RADIUS.card, padding: 16, marginBottom: 12, borderWidth: HAIRLINE, borderColor: colors.accent.gold + '4D',
     },
     loadingContainer: {
       flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, paddingVertical: 8,
@@ -31,11 +33,11 @@ export const createStyles = (colors: any, isDark: boolean) => {
     },
     retryButton: {
       marginTop: 8, paddingHorizontal: 16, paddingVertical: 8,
-      backgroundColor: colors.accent.gold + '26', borderRadius: 8,
-      borderWidth: 1, borderColor: colors.accent.gold + '4D',
+      backgroundColor: colors.accent.gold + '26', borderRadius: RADIUS.control,
+      borderWidth: HAIRLINE, borderColor: colors.accent.gold + '4D',
     },
     retryText: {
-      color: colors.accent.gold, fontFamily: Fonts.meduim, fontSize: 13,
+      color: colors.accent.goldDark, fontFamily: Fonts.meduim, fontSize: 13,
     },
     titleRow: {
       flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 12,
@@ -59,7 +61,7 @@ export const createStyles = (colors: any, isDark: boolean) => {
       fontFamily: Fonts.meduim, fontSize: 13,
     },
     progressPercentage: {
-      color: colors.accent.gold, fontFamily: Fonts.bold, fontSize: 13,
+      color: colors.accent.goldDark, fontFamily: Fonts.bold, fontSize: 13,
     },
     subtitle: {
       color: colors.text.disabled,
@@ -69,7 +71,7 @@ export const createStyles = (colors: any, isDark: boolean) => {
       flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8,
     },
     certifiedTitle: {
-      color: colors.accent.goldLight, fontFamily: Fonts.bold, fontSize: 16,
+      color: colors.accent.goldDark, fontFamily: Fonts.bold, fontSize: 16,
     },
     issuedDate: {
       color: colors.text.secondary,
@@ -80,21 +82,22 @@ export const createStyles = (colors: any, isDark: boolean) => {
     },
     actionButton: {
       flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 6,
-      backgroundColor: colors.accent.gold + '26', borderRadius: 10, paddingVertical: 10,
-      borderWidth: 1, borderColor: colors.accent.gold + '4D',
+      backgroundColor: colors.accent.gold + '26', borderRadius: RADIUS.control, paddingVertical: 10,
+      borderWidth: HAIRLINE, borderColor: colors.accent.gold + '4D',
     },
     actionButtonDisabled: {
       opacity: 0.6,
     },
     actionButtonText: {
-      color: colors.accent.gold, fontFamily: Fonts.meduim, fontSize: 13,
+      color: colors.accent.goldDark, fontFamily: Fonts.meduim, fontSize: 13,
     },
     newBadge: {
       backgroundColor: colors.accent.gold, paddingHorizontal: 8, paddingVertical: 2,
-      borderRadius: 10, marginLeft: 8,
+      borderRadius: RADIUS.badge, marginLeft: 8,
     },
     newBadgeText: {
-      color: colors.text.inverse, fontFamily: Fonts.bold, fontSize: 10,
+      color: colors.neutral[900], fontFamily: Fonts.bold, fontSize: 10,
+      fontWeight: "700", letterSpacing: 0.6, textTransform: "uppercase",
     },
     chevronHint: {
       position: "absolute", top: 16, right: 16,

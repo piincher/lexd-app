@@ -4,8 +4,8 @@
  *
  * À traiter — the new act-now anchor of the admin dashboard.
  *
- * Three tiles surface the only things an operator needs to act on as soon as
- * the app opens: non-identified parcels, outstanding payments, and aged
+ * Three tiles surface the first things an operator needs to act on as soon as
+ * the app opens: unassigned parcels, outstanding payments, and aged
  * orphans (>= 8 days). Each tile is a Pressable that routes straight to the
  * corresponding list screen.
  *
@@ -19,13 +19,15 @@
  */
 
 import React, { useMemo } from "react";
-import { View, Pressable, StyleSheet } from "react-native";
+import { View, Pressable } from "react-native";
 import { Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useUnassignedGoods, useOutstandingPayments } from "../../hooks";
 import { createPriorityPanelStyles } from "./styles";
+import { PriorityPanelHeader } from './PriorityPanelHeader';
+import { PriorityTile } from './PriorityTile';
 
 // FCFA formatting — millions get a compact "1.2M" form, thousands "120k".
 // Operators glance at orders of magnitude; full digits create reading load.
@@ -55,13 +57,14 @@ export const PriorityPanel: React.FC = () => {
   );
 
   const allClear = unassignedCount === 0 && outstandingTotal === 0 && agedCount === 0;
+  const openQueue = () => navigation.navigate('AdminWorkQueue');
 
   // ── Loading state ─────────────────────────────────────────────────
   // ONE compact skeleton row, not the 600px-tall pulse the audit flagged.
   if (isLoading) {
     return (
       <View style={styles.container}>
-        <Text style={styles.eyebrow}>À traiter</Text>
+        <PriorityPanelHeader onPress={openQueue} styles={styles} />
         <View style={styles.skeletonRow}>
           <View style={styles.skeletonTile} />
           <View style={styles.skeletonTile} />
@@ -76,7 +79,7 @@ export const PriorityPanel: React.FC = () => {
   if (hasError) {
     return (
       <View style={styles.container}>
-        <Text style={styles.eyebrow}>À traiter</Text>
+        <PriorityPanelHeader onPress={openQueue} styles={styles} />
         <Pressable
           onPress={() => {
             void outstanding.refetch();
@@ -99,7 +102,7 @@ export const PriorityPanel: React.FC = () => {
   if (allClear) {
     return (
       <View style={styles.container}>
-        <Text style={styles.eyebrow}>À traiter</Text>
+        <PriorityPanelHeader onPress={openQueue} styles={styles} />
         <View style={styles.allClearRow}>
           <MaterialCommunityIcons
             name="check-circle-outline"
@@ -112,14 +115,13 @@ export const PriorityPanel: React.FC = () => {
     );
   }
 
-  // ── Active state — 3 tiles ──────────────────────────────────────
   return (
     <View style={styles.container}>
-      <Text style={styles.eyebrow}>À traiter</Text>
+      <PriorityPanelHeader onPress={openQueue} styles={styles} />
       <View style={styles.tilesRow}>
         <PriorityTile
           value={String(unassignedCount)}
-          label="Non identifiés"
+          label="À affecter"
           severity={unassignedCount > 0 ? "warning" : "neutral"}
           onPress={() => navigation.navigate("UnassignedGoods")}
           styles={styles}
@@ -142,53 +144,6 @@ export const PriorityPanel: React.FC = () => {
         />
       </View>
     </View>
-  );
-};
-
-// ── Tile primitive ─────────────────────────────────────────────────
-// Only the affected tile carries colour. Operators learn at a glance:
-//   neutral = clear · amber = needs attention · red = aged / overdue.
-type TileSeverity = "neutral" | "warning" | "critical";
-
-interface PriorityTileProps {
-  value: string;
-  label: string;
-  severity: TileSeverity;
-  onPress: () => void;
-  styles: ReturnType<typeof createPriorityPanelStyles>;
-}
-
-const PriorityTile: React.FC<PriorityTileProps> = ({
-  value,
-  label,
-  severity,
-  onPress,
-  styles,
-}) => {
-  const severityStyle =
-    severity === "critical"
-      ? styles.tileCritical
-      : severity === "warning"
-        ? styles.tileWarning
-        : null;
-  const valueColorStyle =
-    severity === "critical"
-      ? styles.tileValueCritical
-      : severity === "warning"
-        ? styles.tileValueWarning
-        : styles.tileValue;
-
-  return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [styles.tile, severityStyle, pressed && styles.pressed]}
-      accessibilityLabel={`${label}: ${value}`}
-    >
-      <Text style={valueColorStyle} numberOfLines={1} adjustsFontSizeToFit>
-        {value}
-      </Text>
-      <Text style={styles.tileLabel}>{label}</Text>
-    </Pressable>
   );
 };
 

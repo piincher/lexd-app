@@ -19,6 +19,7 @@ import { CostSummary } from '../../../components/CostSummary';
 import { ReceiveGoodsFormDateField } from './ReceiveGoodsFormDateField';
 import { ReceiveGoodsFormInputRows } from './ReceiveGoodsFormInputRows';
 import { ReceiveGoodsFormBasicFields } from './ReceiveGoodsFormBasicFields';
+import { PackageCountField } from './PackageCountField';
 import { ReceiveGoodsFormSectionProps, ClientSelectionProps } from '../types';
 import { styles } from './ReceiveGoodsForm.styles';
 
@@ -126,6 +127,7 @@ export const ReceiveGoodsForm: React.FC<ReceiveGoodsFormProps> = ({
 				shippingMode={shippingMode}
 				priceWarning={priceWarning}
 			/>
+			<PackageCountField control={control} errors={errors} />
 			<ReceiveGoodsFormDateField
 				control={control}
 				setValue={setValue}

@@ -9,6 +9,7 @@ import { MotiView } from "moti";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE, OVERLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import type { BadgeSummary } from "../api/badgeApi";
 
 interface BadgesScreenSummaryProps {
@@ -30,10 +31,10 @@ export const BadgesScreenSummary: React.FC<BadgesScreenSummaryProps> = ({ summar
       StyleSheet.create({
         summaryCard: {
           backgroundColor: hexToRgba(colors.text.inverse, 0.1),
-          borderRadius: 16,
+          borderRadius: RADIUS.card,
           padding: 20,
           marginBottom: 24,
-          borderWidth: 1,
+          borderWidth: HAIRLINE,
           borderColor: hexToRgba(colors.accent.gold, 0.2),
         },
         summaryRow: {
@@ -54,7 +55,7 @@ export const BadgesScreenSummary: React.FC<BadgesScreenSummaryProps> = ({ summar
         summaryLabel: {
           color: hexToRgba(colors.text.inverse, 0.5),
           fontFamily: Fonts.regular,
-          fontSize: 11,
+          ...OVERLINE,
           marginTop: 2,
           textAlign: "center",
         },

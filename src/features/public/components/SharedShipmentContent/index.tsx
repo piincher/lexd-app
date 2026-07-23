@@ -42,7 +42,7 @@ export const SharedShipmentContent: React.FC<SharedShipmentContentProps> = ({ da
 
       <SharedShipmentTimeline timeline={data.timeline} />
 
-      <SharedShipmentCTA url={`https://chinalinkexpress.com/s/${token}`} reference={reference} />
+      <SharedShipmentCTA url={`https://www.lexdservices.com/s/${token}`} reference={reference} />
     </ScrollView>
   );
 };

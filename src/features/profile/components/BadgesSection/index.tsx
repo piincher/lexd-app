@@ -43,7 +43,7 @@ export const BadgesSection: React.FC = () => {
           <MaterialCommunityIcons name="alert-circle-outline" size={40} color={colors.status.warning} />
           <Text style={[styles.emptyText, { color: colors.text.secondary }]}>Impossible de charger les badges</Text>
           <TouchableOpacity onPress={() => refetch()} style={styles.retryButton}>
-            <Text style={[styles.retryText, { color: colors.accent.gold }]}>Réessayer</Text>
+            <Text style={[styles.retryText, { color: colors.accent.goldDark }]}>Réessayer</Text>
           </TouchableOpacity>
         </View>
       </MotiView>
@@ -79,7 +79,7 @@ export const BadgesSection: React.FC = () => {
         </View>
         <View style={styles.headerRight}>
           <View style={[styles.countBadge, { backgroundColor: `${colors.accent.gold}20` }]}>
-            <Text style={[styles.countText, { color: colors.accent.gold }]}>{summary.earnedCount}/{summary.totalBadges}</Text>
+            <Text style={[styles.countText, { color: colors.accent.goldDark }]}>{summary.earnedCount}/{summary.totalBadges}</Text>
           </View>
           <MaterialCommunityIcons name="chevron-right" size={20} color={colors.text.disabled} />
         </View>
@@ -90,7 +90,7 @@ export const BadgesSection: React.FC = () => {
       </ScrollView>
 
       <TouchableOpacity style={styles.viewAllButton} onPress={() => navigation.navigate("Badges")} activeOpacity={0.7}>
-        <Text style={[styles.viewAllText, { color: colors.accent.gold }]}>Voir tous les badges</Text>
+        <Text style={[styles.viewAllText, { color: colors.accent.goldDark }]}>Voir tous les badges</Text>
         <MaterialCommunityIcons name="arrow-right" size={14} color={colors.accent.gold} />
       </TouchableOpacity>
     </MotiView>

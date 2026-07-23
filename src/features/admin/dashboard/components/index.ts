@@ -8,6 +8,7 @@ export { SMSBalanceCard } from "./SMSBalanceCard";
 export { QuickActions } from "./QuickActions";
 export { RecentOrders } from "./RecentOrders";
 export { MenuCategories } from "./MenuCategories";
+export { MenuRecentSearches } from "./MenuRecentSearches";
 
 // Outstanding Payments
 export { OutstandingPaymentsCard } from "./OutstandingPaymentsCard";
@@ -40,3 +41,8 @@ export { DashboardRevenueTrend } from "./DashboardRevenueTrend";
 export { DashboardRecentPayments } from "./DashboardRecentPayments";
 export { DashboardTopCustomers } from "./DashboardTopCustomers";
 export { DashboardWarehouseSnapshot } from "./DashboardWarehouseSnapshot";
+export { WorkQueueList } from './WorkQueueList';
+export { WorkQueueItem } from './WorkQueueItem';
+export { WorkQueueOverview } from './WorkQueueOverview';
+export { WorkQueueFilters } from './WorkQueueFilters';
+export { WorkQueueState } from './WorkQueueState';

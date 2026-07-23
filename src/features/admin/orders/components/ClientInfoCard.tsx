@@ -62,7 +62,7 @@ export const ClientInfoCard: React.FC<ClientInfoCardProps> = ({
     if (receiptUrl) {
       message += `Voici votre reçu: ${receiptUrl}\n\n`;
     }
-    message += `Merci pour votre confiance!\n_ChinaLink Express_`;
+    message += `Merci pour votre confiance!\n_LEXD_`;
 
     try {
       await openWhatsApp(formattedPhone, message);

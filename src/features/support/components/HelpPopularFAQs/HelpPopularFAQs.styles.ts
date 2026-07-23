@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -26,23 +26,23 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       width: 230,
       height: 134,
       padding: 14,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      // Waybill: border-first, no drop shadow.
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
-      ...Theme.shadows.sm,
     },
     badge: {
       alignSelf: "flex-start",
       paddingHorizontal: 8,
       paddingVertical: 2,
-      borderRadius: 6,
+      borderRadius: RADIUS.badge,
       marginBottom: 8,
     },
     badgeText: {
       fontFamily: Fonts.bold,
       fontSize: 10,
-      letterSpacing: 0.4,
+      letterSpacing: 0.7,
       textTransform: "uppercase",
     },
     question: {

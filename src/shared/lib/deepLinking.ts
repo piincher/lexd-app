@@ -2,24 +2,24 @@
  * Deep Linking Configuration
  *
  * Maps URL patterns to React Navigation routes.
- * Supports both custom URL scheme (chinalinkexpress://) and universal links.
+ * Supports both custom URL scheme (lexd://) and universal links.
  *
  * URL Patterns:
- * - chinalinkexpress://home                  → Home tab
- * - chinalinkexpress://dashboard             → CustomerDashboard tab
- * - chinalinkexpress://containers            → MyContainers tab
- * - chinalinkexpress://goods                 → MyGoods tab
- * - chinalinkexpress://orders                → Orders tab
- * - chinalinkexpress://profile               → Profile tab
- * - chinalinkexpress://demo                  → Guest demo preview
- * - chinalinkexpress://tracking/:id          → ContainerTrackingScreen
- * - chinalinkexpress://goods/:goodsId        → GoodsDetailScreen
- * - chinalinkexpress://order/:id             → OrderDetail
- * - chinalinkexpress://ticket/:ticketId      → TicketDetailScreen
- * - chinalinkexpress://notifications         → NotificationsScreen
- * - chinalinkexpress://payments              → MyPaymentHistoryScreen
- * - chinalinkexpress://support               → TicketListScreen
- * - chinalinkexpress://faq                   → FAQScreen
+ * - lexd://home                  → Home tab
+ * - lexd://dashboard             → CustomerDashboard tab
+ * - lexd://containers            → MyContainers tab
+ * - lexd://goods                 → MyGoods tab
+ * - lexd://orders                → Orders tab
+ * - lexd://profile               → Profile tab
+ * - lexd://demo                  → Guest demo preview
+ * - lexd://tracking/:id          → ContainerTrackingScreen
+ * - lexd://goods/:goodsId        → GoodsDetailScreen
+ * - lexd://order/:id             → OrderDetail
+ * - lexd://ticket/:ticketId      → TicketDetailScreen
+ * - lexd://notifications         → NotificationsScreen
+ * - lexd://payments              → MyPaymentHistoryScreen
+ * - lexd://support               → TicketListScreen
+ * - lexd://faq                   → FAQScreen
  */
 
 import type { LinkingOptions } from "@react-navigation/native";
@@ -294,11 +294,11 @@ const screensConfig = {
 /** React Navigation linking configuration */
 export const linking: LinkingOptions<RootStackParamList> = {
   prefixes: [
-    "chinalinkexpress://",
-    "https://chinalinkexpress.com",
-    "https://www.chinalinkexpress.com",
-    "http://chinalinkexpress.com",
-    "http://www.chinalinkexpress.com",
+    "lexd://",
+    "https://lexdservices.com",
+    "https://www.lexdservices.com",
+    "http://lexdservices.com",
+    "http://www.lexdservices.com",
   ],
   config: {
     screens: screensConfig,

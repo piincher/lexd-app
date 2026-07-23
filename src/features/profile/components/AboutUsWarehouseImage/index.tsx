@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
 export const AboutUsWarehouseImage: React.FC = () => {
@@ -14,7 +14,7 @@ export const AboutUsWarehouseImage: React.FC = () => {
       <Animated.View entering={FadeInDown.delay(300).duration(600)} style={styles.imageCard}>
          <Image
             source={{
-               uri: 'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/warehouse.jpeg',
+               uri: 'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/warehouse.jpeg',
             }}
             style={styles.warehouseImage}
             resizeMode="cover"
@@ -34,10 +34,11 @@ const makeStyles = (colors: any) =>
       imageCard: {
          marginHorizontal: 20,
          marginTop: 16,
-         borderRadius: 16,
+         borderRadius: RADIUS.card,
          overflow: 'hidden',
          height: 180,
-         ...Theme.shadows.sm,
+         borderWidth: HAIRLINE,
+         borderColor: colors.border,
       },
       warehouseImage: {
          width: '100%',

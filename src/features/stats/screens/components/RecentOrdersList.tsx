@@ -7,6 +7,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 import { RecentOrder } from '../../types';
 import { RecentOrderRow } from './RecentOrderRow';
 import { RecentOrdersEmptyState } from './RecentOrdersEmptyState';
@@ -20,7 +21,16 @@ export const RecentOrdersList: React.FC<RecentOrdersListProps> = ({ orders }) =>
   const { colors } = useAppTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background.card }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: colors.background.card,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
+        },
+      ]}
+    >
       <View style={styles.header}>
         <View>
           <Text style={[styles.title, { color: colors.text.primary }]}>Commandes recentes</Text>

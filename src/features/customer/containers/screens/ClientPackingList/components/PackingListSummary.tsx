@@ -71,7 +71,7 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
   const statusText = statusColorObj?.text || (typeof rawStatusColor === 'string' ? rawStatusColor : colors.text.secondary);
 
   return (
-    <Card style={styles.card}>
+    <Card style={[styles.card, { borderColor: colors.border }]}>
       <Card.Content>
         <SummaryHeader
           containerNumber={containerNumber}

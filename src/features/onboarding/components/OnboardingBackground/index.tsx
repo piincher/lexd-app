@@ -36,7 +36,7 @@ const createStyles = (
   StyleSheet.create({
     container: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: isDark ? colors.background.default : "#F6F7F6",
+      backgroundColor: isDark ? colors.background.default : colors.background.paper,
     },
     subtleTint: {
       ...StyleSheet.absoluteFillObject,

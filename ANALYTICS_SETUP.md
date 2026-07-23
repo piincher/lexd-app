@@ -1,6 +1,6 @@
 # Analytics & Monitoring Setup
 
-This document describes the comprehensive analytics and monitoring implementation for ChinaLink Express.
+This document describes the comprehensive analytics and monitoring implementation for LEXD.
 
 ## Overview
 

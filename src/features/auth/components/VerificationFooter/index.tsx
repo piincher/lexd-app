@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 interface VerificationFooterProps {
   onSupport: () => void;
@@ -19,14 +20,14 @@ export const VerificationFooter: React.FC<VerificationFooterProps> = ({ onSuppor
         <View style={styles.helpCopy}>
           <Text style={[styles.helpTitle, { color: colors.text.primary }]}>{"Besoin d'aide ?"}</Text>
           <Text style={[styles.helpText, { color: colors.text.secondary }]}>
-            {"Contactez ChinaLink si le code n'arrive pas après quelques minutes."}
+            {"Contactez LEXD si le code n'arrive pas après quelques minutes."}
           </Text>
         </View>
         <Pressable
           onPress={onSupport}
           style={({ pressed }) => [styles.supportBtn, { borderColor: colors.primary.main }, pressed && styles.pressed]}
           accessibilityRole="button"
-          accessibilityLabel="Contacter le support ChinaLink sur WhatsApp"
+          accessibilityLabel="Contacter le support LEXD sur WhatsApp"
         >
           <MaterialCommunityIcons name="whatsapp" size={18} color={colors.primary.main} />
         </Pressable>
@@ -42,8 +43,8 @@ const styles = StyleSheet.create({
   },
   helpCard: {
     minHeight: 76,
-    borderRadius: 18,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     padding: 14,
     flexDirection: "row",
     alignItems: "center",
@@ -65,8 +66,8 @@ const styles = StyleSheet.create({
   supportBtn: {
     width: 44,
     height: 44,
-    borderRadius: 14,
-    borderWidth: 1,
+    borderRadius: RADIUS.control,
+    borderWidth: HAIRLINE,
     alignItems: "center",
     justifyContent: "center",
   },

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { lightTheme } from '@src/constants/Theme';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 type Colors = typeof lightTheme.colors;
 
@@ -19,6 +20,12 @@ export const createStyles = (colors: Colors) =>
     headerTitle: { fontSize: 18, fontWeight: '800', color: colors.text.primary },
     listContent: { padding: 16, paddingBottom: 120 },
     fab: {
+      // Floats above content: one of the few places elevation is correct.
+      elevation: 6,
+      shadowColor: '#000',
+      shadowOpacity: 0.18,
+      shadowRadius: 8,
+      shadowOffset: { width: 0, height: 3 },
       position: 'absolute',
       right: 20,
       bottom: 32,
@@ -28,10 +35,5 @@ export const createStyles = (colors: Colors) =>
       backgroundColor: colors.primary.main,
       alignItems: 'center',
       justifyContent: 'center',
-      elevation: 4,
-      shadowColor: '#000',
-      shadowOpacity: 0.2,
-      shadowRadius: 6,
-      shadowOffset: { width: 0, height: 3 },
     },
   });

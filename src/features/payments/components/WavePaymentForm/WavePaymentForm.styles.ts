@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import type { ThemeContextType } from '@src/constants/Theme';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createWavePaymentFormStyles = (
   colors: ThemeContextType['colors']
@@ -17,18 +18,15 @@ export const createWavePaymentFormStyles = (
     },
     qrSection: {
       backgroundColor: colors.background.default,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 16,
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.05,
-      shadowRadius: 8,
-      elevation: 2,
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
     },
     qrToggle: {
       flexDirection: 'row',
       backgroundColor: colors.neutral[200] + '30',
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       padding: 4,
       marginBottom: 16,
     },
@@ -38,7 +36,7 @@ export const createWavePaymentFormStyles = (
       alignItems: 'center',
       justifyContent: 'center',
       paddingVertical: 10,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       gap: 6,
     },
     toggleButtonActive: {
@@ -58,13 +56,13 @@ export const createWavePaymentFormStyles = (
     qrImage: {
       width: 220,
       height: 220,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.background.default,
     },
     qrPlaceholder: {
       width: 220,
       height: 220,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.neutral[200] + '30',
       justifyContent: 'center',
       alignItems: 'center',
@@ -113,7 +111,7 @@ export const createWavePaymentFormStyles = (
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: colors.primary.main,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       paddingVertical: 14,
       paddingHorizontal: 24,
       gap: 8,
@@ -144,7 +142,7 @@ export const createWavePaymentFormStyles = (
     },
     manualEntry: {
       backgroundColor: colors.background.default,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 16,
     },
     manualEntryTitle: {
@@ -165,7 +163,7 @@ export const createWavePaymentFormStyles = (
     },
     countryCodeBadge: {
       backgroundColor: colors.primary.main + '10',
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       paddingHorizontal: 12,
       paddingVertical: 14,
       marginRight: 8,
@@ -181,7 +179,7 @@ export const createWavePaymentFormStyles = (
       alignItems: 'center',
       justifyContent: 'space-between',
       backgroundColor: colors.neutral[200] + '30',
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       paddingHorizontal: 12,
       paddingVertical: 14,
     },
@@ -232,7 +230,7 @@ export const createWavePaymentFormStyles = (
       flexDirection: 'row',
       alignItems: 'center',
       backgroundColor: colors.status.success + '08',
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       padding: 12,
       marginTop: 20,
     },

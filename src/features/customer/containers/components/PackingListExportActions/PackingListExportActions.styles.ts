@@ -14,11 +14,6 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
     paddingVertical: 12,
     flexDirection: 'row',
     gap: 12,
-    elevation: 8,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   actionBarButton: {
     flex: 1,

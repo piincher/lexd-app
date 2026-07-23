@@ -9,6 +9,7 @@ import { PieChart } from 'react-native-gifted-charts';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import type { DonutChartItem } from '../hooks/useProfileCharts';
 
 interface OrderStatusDonutChartProps {
@@ -77,11 +78,11 @@ export const OrderStatusDonutChart: React.FC<OrderStatusDonutChartProps> = ({ da
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 18,
+    borderRadius: RADIUS.card,
     padding: 16,
     marginHorizontal: 16,
     marginTop: 16,
-    borderWidth: 1,
+    borderWidth: HAIRLINE,
   },
   title: {
     fontFamily: Fonts.bold,

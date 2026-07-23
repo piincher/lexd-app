@@ -1,7 +1,7 @@
 /**
  * Notifications Feature - Public API
  * 
- * In-App Notification System for ChinaLink Express
+ * In-App Notification System for LEXD
  * Provides real-time notifications, toast messages, and notification center
  */
 

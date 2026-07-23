@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
   heroCard: {
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     padding: 24,
     marginBottom: 16,
     alignItems: 'center',
-    elevation: 3,
   },
   methodIcon: {
     width: 64,

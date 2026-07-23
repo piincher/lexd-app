@@ -42,7 +42,7 @@ export const MilestoneBadges: React.FC = () => {
             Impossible de charger les badges
           </Text>
           <TouchableOpacity style={styles.retryButton} onPress={() => refetch()}>
-            <Text style={[styles.retryText, { color: colors.accent.gold }]}>Réessayer</Text>
+            <Text style={[styles.retryText, { color: colors.accent.goldDark }]}>Réessayer</Text>
           </TouchableOpacity>
         </View>
       </MotiView>
@@ -83,7 +83,6 @@ export const MilestoneBadges: React.FC = () => {
             {
               backgroundColor: `${currentMilestone.color}20`,
               borderColor: currentMilestone.color,
-              shadowColor: currentMilestone.color,
             },
           ]}
         >
@@ -118,7 +117,7 @@ export const MilestoneBadges: React.FC = () => {
           </Text>
         </View>
       ) : (
-        <Text style={[styles.maxLevelText, { color: colors.accent.gold }]}>
+        <Text style={[styles.maxLevelText, { color: colors.accent.goldDark }]}>
           Niveau maximum atteint !
         </Text>
       )}

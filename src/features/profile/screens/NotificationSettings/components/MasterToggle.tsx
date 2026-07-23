@@ -3,6 +3,7 @@ import { View, Switch, StyleSheet } from "react-native";
 import { Text, Card } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 interface MasterToggleProps {
    enabled: boolean;
@@ -17,8 +18,9 @@ export const MasterToggle: React.FC<MasterToggleProps> = ({ enabled, onToggle })
          StyleSheet.create({
             card: {
                marginBottom: 16,
-               borderRadius: 12,
-               elevation: 2,
+               borderRadius: RADIUS.card,
+               borderWidth: HAIRLINE,
+               borderColor: colors.border,
                backgroundColor: colors.background.default,
             },
             masterToggle: {
@@ -34,7 +36,7 @@ export const MasterToggle: React.FC<MasterToggleProps> = ({ enabled, onToggle })
             iconContainer: {
                width: 48,
                height: 48,
-               borderRadius: 12,
+               borderRadius: RADIUS.control,
                justifyContent: "center",
                alignItems: "center",
             },

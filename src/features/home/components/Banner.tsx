@@ -12,9 +12,9 @@ import { BannerSlide } from './BannerSlide';
 import { createStyles, BANNER_WIDTH, BANNER_HEIGHT } from './Banner.styles';
 
 const FALLBACK_IMAGES = [
-   'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/1.png',
-   'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/2.png',
-   'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/3.png',
+   'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/1.png',
+   'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/2.png',
+   'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/3.png',
 ];
 
 const Banner = () => {

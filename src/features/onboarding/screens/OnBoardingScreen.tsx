@@ -1,6 +1,7 @@
 import React from "react";
-import { StatusBar, View } from "react-native";
+import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
 import { useOnboardingScreen } from "./hooks/useOnboardingScreen";
 import { OnboardingBackground } from "../components/OnboardingBackground";
 import { OnboardingPager } from "../components";
@@ -17,7 +18,7 @@ export const OnboardingScreen: React.FC = () => {
 
    return (
       <View style={styles.container}>
-         <StatusBar barStyle={isDark ? "light-content" : "dark-content"} translucent backgroundColor="transparent" />
+         <StatusBar style={isDark ? "light" : "dark"} />
          <OnboardingBackground isDark={isDark} />
 
          <SafeAreaView style={styles.safeArea} edges={["top", "left", "right"]}>

@@ -19,7 +19,7 @@ export const TermsSection: React.FC = () => {
             En vous connectant, vous acceptez nos{" "}
             <Text
                style={[styles.link, { color: colors.primary.main }]}
-               onPress={() => openURL("https://www.chinalinkexpress.com/en/terms")}
+               onPress={() => openURL("https://www.lexdservices.com/en/terms")}
             >
                conditions d'utilisation
             </Text>{" "}

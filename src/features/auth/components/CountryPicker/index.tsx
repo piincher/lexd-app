@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { CountryCode } from '../types';
 
 interface CountryPickerProps {
@@ -40,7 +41,7 @@ export const CountryPicker: React.FC<CountryPickerProps> = ({ visible, countries
 };
 
 const styles = StyleSheet.create({
-  container: { marginTop: 8, borderRadius: 14, borderWidth: 1, overflow: 'hidden' },
+  container: { marginTop: 8, borderRadius: RADIUS.card, borderWidth: HAIRLINE, overflow: 'hidden' },
   option: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14, paddingVertical: 13, minHeight: 44 },
   flag: { fontSize: 22 },
   name: { flex: 1, fontSize: 14, fontFamily: Fonts.medium },

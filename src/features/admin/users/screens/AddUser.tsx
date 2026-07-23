@@ -8,6 +8,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 
 import { AddUserForm } from '../components/AddUserForm';
 import { FormBackground } from '../components/FormBackground';
+import { RegistrationSuccessCard } from '../components/RegistrationSuccessCard';
 import { useAddUser } from '../hooks/useAddUser';
 import { createStyles } from './AddUser.styles';
 
@@ -21,6 +22,10 @@ const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
     setSelectedCode,
     isPending,
     handleSubmit,
+    createdUser,
+    handleCreateAnother,
+    handleViewCreatedClient,
+    handleShareCreatedClient,
     initialValues,
     signupSchema,
     signUpDataCode,
@@ -38,16 +43,25 @@ const AddUser = ({ navigation }: RootStackScreenProps<'UserAdd'>) => {
         />
         <ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.content}>
-            <AddUserForm
-              initialValues={initialValues}
-              onSubmit={handleSubmit}
-              validationSchema={signupSchema}
-              selectedCode={selectedCode}
-              setSelectedCode={setSelectedCode}
-              isPending={isPending}
-              signUpDataCode={signUpDataCode}
-              phoneMaxLength={phoneMaxLength}
-            />
+            {createdUser ? (
+              <RegistrationSuccessCard
+                client={createdUser}
+                onCreateAnother={handleCreateAnother}
+                onViewDetails={handleViewCreatedClient}
+                onShareWithSupplier={handleShareCreatedClient}
+              />
+            ) : (
+              <AddUserForm
+                initialValues={initialValues}
+                onSubmit={handleSubmit}
+                validationSchema={signupSchema}
+                selectedCode={selectedCode}
+                setSelectedCode={setSelectedCode}
+                isPending={isPending}
+                signUpDataCode={signUpDataCode}
+                phoneMaxLength={phoneMaxLength}
+              />
+            )}
           </View>
         </ScrollView>
         <Notification

@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { lightTheme } from "@src/constants/Theme";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 type Colors = typeof lightTheme.colors;
 
@@ -8,15 +9,10 @@ export const createStyles = (colors: Colors) =>
   StyleSheet.create({
     card: {
       backgroundColor: colors.background.card,
-      borderRadius: 8,
+      borderRadius: RADIUS.card,
       padding: 14,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.06,
-      shadowRadius: 14,
-      elevation: 2,
     },
     cardPressed: {
       transform: [{ scale: 0.99 }],
@@ -35,7 +31,7 @@ export const createStyles = (colors: Colors) =>
       alignItems: "center",
       gap: 6,
       paddingHorizontal: 10,
-      borderRadius: 12,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.primary[50],
     },
     modeText: {
@@ -47,7 +43,7 @@ export const createStyles = (colors: Colors) =>
       minHeight: 32,
       justifyContent: "center",
       paddingHorizontal: 10,
-      borderRadius: 12,
+      borderRadius: RADIUS.badge,
     },
     paymentPaid: {
       backgroundColor: colors.feedback.successBg,
@@ -93,7 +89,7 @@ export const createStyles = (colors: Colors) =>
     detailItem: {
       flex: 0.9,
       minHeight: 58,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       paddingHorizontal: 9,
       paddingVertical: 8,
       backgroundColor: colors.background.paper,
@@ -102,7 +98,7 @@ export const createStyles = (colors: Colors) =>
     detailItemWide: {
       flex: 1.15,
       minHeight: 58,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       paddingHorizontal: 9,
       paddingVertical: 8,
       backgroundColor: colors.background.paper,
@@ -117,6 +113,9 @@ export const createStyles = (colors: Colors) =>
       marginTop: 2,
       fontFamily: Fonts.regular,
       fontSize: 10,
+      fontWeight: "700",
+      letterSpacing: 0.6,
+      textTransform: "uppercase",
       color: colors.text.secondary,
     },
   });

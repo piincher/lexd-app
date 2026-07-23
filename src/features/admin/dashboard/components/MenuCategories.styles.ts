@@ -83,6 +83,47 @@ export const createMenuCategoriesStyles = (colors: AppThemeColors, isDark: boole
     pressed: {
       opacity: 0.72,
     },
+    recentSearchesContainer: {
+      marginTop: 10,
+      marginBottom: 2,
+    },
+    recentSearchesHeader: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingHorizontal: 4,
+      marginBottom: 8,
+    },
+    recentSearchesTitle: {
+      fontSize: 11,
+      fontFamily: Fonts.bold,
+      textTransform: "uppercase",
+      letterSpacing: 0.5,
+    },
+    recentSearchesClear: {
+      fontSize: 12,
+      fontFamily: Fonts.bold,
+    },
+    recentSearchesChips: {
+      flexDirection: "row",
+      gap: 8,
+      paddingRight: 4,
+    },
+    recentSearchesChip: {
+      flexDirection: "row",
+      alignItems: "center",
+      gap: 6,
+      paddingHorizontal: 12,
+      paddingVertical: 6,
+      borderRadius: 16,
+      borderWidth: 1,
+      maxWidth: 200,
+    },
+    recentSearchesChipText: {
+      fontSize: 13,
+      fontFamily: Fonts.bold,
+      maxWidth: 130,
+    },
     tabsRail: {
       marginTop: 10,
       marginBottom: 12,

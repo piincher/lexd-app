@@ -26,7 +26,7 @@ export const GuestConversionCard: React.FC<Props> = ({ onLogin, onContact }) => 
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <Text style={styles.headline}>Devenez client ChinaLink</Text>
+        <Text style={styles.headline}>Devenez client LEXD</Text>
         <Text style={styles.subtitle}>
           Créez votre compte et suivez vos vraies marchandises en temps réel.
         </Text>

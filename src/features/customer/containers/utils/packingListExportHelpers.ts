@@ -69,7 +69,7 @@ export const generateShareText = (packingList: PackingListData): string => {
   }
   lines.push('');
   lines.push('── POINT DE RETRAIT ───────────────────');
-  lines.push('Entrepôt: ChinaLink Express Warehouse - Bamako');
+  lines.push('Entrepôt: LEXD Warehouse - Bamako');
   lines.push('');
   lines.push('── DESTINATAIRE ───────────────────────');
   lines.push(`Nom: ${packingList.consignee.name}`);
@@ -108,7 +108,7 @@ export const generateShareText = (packingList: PackingListData): string => {
   if (packingList.signature?.signed) {
     lines.push('');
     lines.push('── SIGNATURE ──────────────────────────');
-    lines.push(packingList.signature.signatureLabel || `Signé par ${packingList.signature.signedBy || 'ChinaLink Express'}`);
+    lines.push(packingList.signature.signatureLabel || `Signé par ${packingList.signature.signedBy || 'LEXD'}`);
     lines.push(`Signataire: ${packingList.signature.signerName || 'Service Logistique'}`);
     if (packingList.signature.signedAt) {
       lines.push(`Date signature: ${format(new Date(packingList.signature.signedAt), 'dd MMMM yyyy HH:mm', { locale: fr })}`);
@@ -116,7 +116,7 @@ export const generateShareText = (packingList: PackingListData): string => {
   }
   lines.push('');
   lines.push('═══════════════════════════════════════');
-  lines.push('ChinaLink Express - Transport International');
+  lines.push('LEXD - Transport International');
   lines.push('Route: Chine → Dakar (Sénégal) → Bamako (Mali)');
   lines.push('═══════════════════════════════════════');
 

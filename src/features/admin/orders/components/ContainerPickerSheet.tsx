@@ -187,7 +187,7 @@ export const ContainerPickerSheet: React.FC<ContainerPickerSheetProps> = ({
   };
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onDismiss} statusBarTranslucent>
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onDismiss}>
       <Pressable style={styles.backdrop} onPress={onDismiss}>
         <Pressable style={styles.sheet} onPress={(event) => event.stopPropagation()}>
           <View style={styles.grabber} />

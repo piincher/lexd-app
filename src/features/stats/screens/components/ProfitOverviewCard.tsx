@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { ContainerProfitSummary } from '../../api/statsApi';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { ProfitOverviewHeader } from './ProfitOverviewHeader';
@@ -59,10 +60,10 @@ export const ProfitOverviewCard: React.FC<ProfitOverviewCardProps> = ({
 
 const createStyles = (colors: any) => StyleSheet.create({
   card: {
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     padding: 16,
     marginHorizontal: 20,
-    borderWidth: 1,
+    borderWidth: HAIRLINE,
     borderColor: colors.border,
   },
   emptyText: {

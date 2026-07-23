@@ -10,6 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { IMAGES } from "@src/constants/Images";
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const LogoSection: React.FC = () => {
    const { colors } = useAppTheme();
@@ -36,7 +37,7 @@ export const LogoSection: React.FC = () => {
                   styles.logoWrapper,
                   {
                      backgroundColor: colors.background.card,
-                     shadowColor: colors.primary.main,
+                     borderColor: colors.border,
                   },
                ]}
             >
@@ -57,10 +58,8 @@ const styles = StyleSheet.create({
       borderRadius: 70,
       justifyContent: "center",
       alignItems: "center",
-      shadowOffset: { width: 0, height: 8 },
-      shadowOpacity: 0.15,
-      shadowRadius: 20,
-      elevation: 8,
+      // Waybill: border-first, no drop shadow on the brand mark.
+      borderWidth: HAIRLINE,
    },
    logo: {
       width: 100,

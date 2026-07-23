@@ -1,4 +1,5 @@
 import axiosInstance, { apiClientV2 } from "@src/api/client";
+import type { ApiResponse } from "@src/shared/api/types";
 import type {
   Announcement,
   AnnouncementListResult,
@@ -10,11 +11,6 @@ import type {
 
 const LEGACY_URL = "/announcement";
 const BASE_URL = "/announcements/admin";
-
-interface ApiResponse<T> {
-  success: boolean;
-  data: T;
-}
 
 export const announcementAdminApi = {
   getActive: async (): Promise<Announcement | null> => {

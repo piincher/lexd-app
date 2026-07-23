@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import type { ThemeContextType } from '@src/constants/Theme';
+import { OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 type AppColors = ThemeContextType['colors'];
 
@@ -13,7 +14,7 @@ export const createClientIdBadgeStyles = (colors: AppColors) =>
       flexDirection: 'row',
       alignItems: 'center',
       gap: 10,
-      borderRadius: 14,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.primary[50],
       overflow: 'hidden',
     },
@@ -27,7 +28,7 @@ export const createClientIdBadgeStyles = (colors: AppColors) =>
       minWidth: 0,
     },
     label: {
-      fontSize: 11,
+      ...OVERLINE,
       fontFamily: Fonts.medium,
       color: colors.primary[700],
     },

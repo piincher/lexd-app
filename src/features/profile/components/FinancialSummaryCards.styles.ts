@@ -1,17 +1,18 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import type { ThemeContextType } from '@src/constants/Theme';
+import { HAIRLINE, OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 type AppColors = ThemeContextType['colors'];
 
 export const createStyles = (colors: AppColors) => StyleSheet.create({
   card: {
-    borderRadius: 18,
+    borderRadius: RADIUS.card,
     padding: 16,
     marginHorizontal: 16,
     marginTop: 12,
     marginBottom: 8,
-    borderWidth: 1,
+    borderWidth: HAIRLINE,
   },
   title: {
     fontFamily: Fonts.bold,
@@ -28,13 +29,13 @@ export const createStyles = (colors: AppColors) => StyleSheet.create({
     minHeight: 102,
     paddingVertical: 12,
     paddingHorizontal: 6,
-    borderRadius: 12,
+    borderRadius: RADIUS.control,
     backgroundColor: colors.background.paper,
   },
   metricIconBox: {
     width: 32,
     height: 32,
-    borderRadius: 10,
+    borderRadius: RADIUS.control,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 7,
@@ -46,8 +47,8 @@ export const createStyles = (colors: AppColors) => StyleSheet.create({
     textAlign: 'center',
   },
   metricLabel: {
+    ...OVERLINE,
     fontFamily: Fonts.regular,
-    fontSize: 11,
     marginTop: 2,
   },
   healthContainer: {

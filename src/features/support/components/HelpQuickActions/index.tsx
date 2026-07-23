@@ -2,15 +2,19 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { green, semantic } from "@src/shared/constants/brand";
 
 
 import { getStyles } from "./HelpQuickActions.styles";
 
 const ACTIONS = [
-  { key: "track", label: "Suivre", icon: "map-marker-path", color: "#3B82F6", screen: "CheckRoute" },
+  { key: "track", label: "Suivre", icon: "map-marker-path", color: semantic.info, screen: "CheckRoute" },
+  // NOTE: "tickets" keeps its categorical purple — the brand token set has no
+  // purple step; remapping it would collide with another category hue.
   { key: "tickets", label: "Tickets", icon: "ticket-outline", color: "#8B5CF6", screen: "TicketList" },
+  // WhatsApp third-party brand green — intentional, not a theme token.
   { key: "whatsapp", label: "WhatsApp", icon: "whatsapp", color: "#25D366", screen: null },
-  { key: "ticket", label: "Créer ticket", icon: "plus-circle-outline", color: "#22C55E", screen: null },
+  { key: "ticket", label: "Créer ticket", icon: "plus-circle-outline", color: green[500], screen: null },
 ] as const;
 
 type HelpQuickActionsProps = {

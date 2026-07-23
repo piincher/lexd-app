@@ -120,7 +120,7 @@ export const createQueryClient = (): QueryClient => {
 export const createPersister = () => {
   return createAsyncStoragePersister({
     storage: EncryptedStorage,
-    key: 'CHINALINK_QUERY_CACHE',
+    key: 'LEXD_QUERY_CACHE',
     // Throttle writes to storage (ms)
     throttleTime: 1000,
     // Serialize/deserialize functions. Deserialize is defensive: a corrupted or

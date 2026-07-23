@@ -92,6 +92,7 @@ export const RouteFormContent: React.FC = () => {
             totalDays={parseInt(formData.estimatedTransitDays, 10)}
             shippingLine={formData.shippingLine}
             onChange={(value) => updateField('waypoints', value)}
+            error={errors.waypoints}
           />
 
           <OptionalFieldsSection

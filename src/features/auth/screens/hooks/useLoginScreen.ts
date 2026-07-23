@@ -37,8 +37,8 @@ export const useLoginScreen = () => {
   }, [setSelectedCountry, setShowCountryPicker]);
   const handleClearPhone = useCallback(() => setPhone(""), [setPhone]);
   const handleDemoPress = useCallback(() => navigation.navigate("GuestPreview"), [navigation]);
-  const handleTermsPress = useCallback(() => Linking.openURL("https://www.chinalinkexpress.com/fr/terms"), []);
-  const handlePrivacyPress = useCallback(() => Linking.openURL("https://www.chinalinkexpress.com/fr/privacy"), []);
+  const handleTermsPress = useCallback(() => Linking.openURL("https://www.lexdservices.com/fr/terms"), []);
+  const handlePrivacyPress = useCallback(() => Linking.openURL("https://www.lexdservices.com/fr/privacy"), []);
 
   return {
     phone, setPhone, selectedCountry, setSelectedCountry,

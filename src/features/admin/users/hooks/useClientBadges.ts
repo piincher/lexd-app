@@ -33,7 +33,7 @@ export const useClientBadges = (
     }
 
     if (orderCount && orderCount >= 10) {
-      badges.push({ label: "VIP", color: "#D4AF37", bgColor: "#FEF9C3", icon: "diamond" });
+      badges.push({ label: "VIP", color: "#F5A524", bgColor: "#FEF8EC", icon: "diamond" });
     }
 
     if (lastOrderDate) {

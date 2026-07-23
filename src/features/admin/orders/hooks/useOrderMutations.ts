@@ -78,6 +78,9 @@ export const useRecordPayment = () => {
       qc.invalidateQueries({ queryKey: ['BALANCE'] });
       qc.invalidateQueries({ queryKey: ['payments', 'history'] });
       qc.invalidateQueries({ queryKey: ['dashboard'] });
+      // Admin work queue ("file de travail") — refresh both the payment and goods
+      // sources so a settled item stops showing as unpaid.
+      qc.invalidateQueries({ queryKey: ['admin', 'work-queue'] });
     },
     onError: (error) => console.error('[useRecordPayment] Error:', error),
   });

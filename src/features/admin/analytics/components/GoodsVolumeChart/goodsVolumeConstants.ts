@@ -9,7 +9,7 @@ export const statusConfig: Record<string, { label: string; color: string; icon: 
   IN_TRANSIT: { label: 'En Transit', color: '#06B6D4', icon: 'ferry' },
   ARRIVED_DESTINATION: { label: 'Arrivé', color: '#10B981', icon: 'map-marker-check' },
   READY_FOR_PICKUP: { label: 'À Retirer', color: '#EC4899', icon: 'clock-outline' },
-  DELIVERED: { label: 'Livré', color: '#22C55E', icon: 'check-circle' },
+  DELIVERED: { label: 'Livré', color: '#007757', icon: 'check-circle' },
 };
 
 export const shippingModeColors: Record<string, string> = {

@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -29,9 +30,9 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       paddingLeft: 12,
       paddingRight: 8,
       paddingVertical: 9,
-      borderRadius: 999,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     label: {
@@ -41,13 +42,13 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
     },
     labelActive: {
       fontFamily: Fonts.bold,
-      color: "#FFFFFF",
+      color: colors.text.inverse,
     },
     countPill: {
       minWidth: 20,
       paddingHorizontal: 6,
       paddingVertical: 1,
-      borderRadius: 999,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.background.paper,
       alignItems: "center",
     },
@@ -60,6 +61,6 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       color: colors.text.secondary,
     },
     countActive: {
-      color: "#FFFFFF",
+      color: colors.text.inverse,
     },
   });

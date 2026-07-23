@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import type { navigationProps } from '@src/navigations/type';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const LoginPromptCard: React.FC = () => {
   const navigation = useNavigation<navigationProps>();
@@ -21,12 +22,10 @@ export const LoginPromptCard: React.FC = () => {
     ? [colors.primary.light, colors.primary.main]
     : [colors.primary.dark, colors.primary[800]];
   const buttonInk = isDark ? colors.neutral[900] : colors.neutral.white;
+  // Border-first: this card is a surface, not a floating element.
   const cardShadow = {
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: isDark ? 0.24 : 0.08,
-    shadowRadius: 12,
-    elevation: isDark ? 0 : 4,
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
   };
 
   return (

@@ -16,7 +16,7 @@ interface ShippingMarkPromptStore {
   resetForUser: (userId: string) => void;
 }
 
-const STORAGE_KEY = '@chinalink/shipping-mark-prompt';
+const STORAGE_KEY = '@lexd/shipping-mark-prompt';
 
 const asyncStorage: PersistStorage<ShippingMarkPromptStore> = {
   getItem: async (key) => {

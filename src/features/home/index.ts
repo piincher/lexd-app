@@ -2,7 +2,6 @@
 
 // Hooks
 export { useNotification } from "./hooks/useNotification";
-export { sendPushNotification } from "@src/shared/lib/pushNotification";
 
 // Components
 export { default as OrderList } from "./components/OrderList";

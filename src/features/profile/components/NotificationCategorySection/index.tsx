@@ -8,6 +8,7 @@ import { View, StyleSheet, Switch } from "react-native";
 import { Card, Text, Divider, List } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import {
   NotificationType,
   NotificationPreference,
@@ -60,8 +61,9 @@ export const NotificationCategorySection: React.FC<NotificationCategorySectionPr
     () =>
       StyleSheet.create({
         sectionTitle: {
-          fontSize: 14,
-          fontWeight: "600",
+          fontSize: 11,
+          fontWeight: "700",
+          letterSpacing: 0.8,
           color: colors.text.secondary,
           textTransform: "uppercase",
           marginBottom: 8,
@@ -69,8 +71,9 @@ export const NotificationCategorySection: React.FC<NotificationCategorySectionPr
         },
         card: {
           marginBottom: 16,
-          borderRadius: 12,
-          elevation: 2,
+          borderRadius: RADIUS.card,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
           backgroundColor: colors.background.default,
         },
         preferenceItem: {
@@ -79,7 +82,7 @@ export const NotificationCategorySection: React.FC<NotificationCategorySectionPr
         typeIcon: {
           width: 40,
           height: 40,
-          borderRadius: 10,
+          borderRadius: RADIUS.control,
           justifyContent: "center",
           alignItems: "center",
         },

@@ -2,6 +2,8 @@ import React, { useMemo } from "react";
 import { ScrollView, View, Text, RefreshControl } from "react-native";
 import { Screen } from "@src/shared/ui/Screen";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { ink } from "@src/shared/constants/brand";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 import { Share } from "react-native";
 import { useTrustProfile } from "../hooks/useTrustProfile";
 import { useShareTrustProfile } from "../hooks/useShareTrustProfile";
@@ -15,12 +17,12 @@ export default function TrustProfileScreen() {
   const { data: profile, isLoading, refetch } = useTrustProfile();
   const { mutate: shareProfile, isPending: isSharing } = useShareTrustProfile();
 
-  const trackColor = useMemo(() => (isDark ? "#374151" : "#E5E7EB"), [isDark]);
+  const trackColor = useMemo(() => (isDark ? ink[700] : ink[200]), [isDark]);
 
   const handleShare = () => {
     shareProfile(undefined, {
       onSuccess: (data) => {
-        Share.share({ message: `Mon profil marchand ChinaLink: ${data.shareUrl}`, title: "Profil Marchand" });
+        Share.share({ message: `Mon profil marchand LEXD: ${data.shareUrl}`, title: "Profil Marchand" });
       },
     });
   };
@@ -47,8 +49,8 @@ export default function TrustProfileScreen() {
         </View>
         {profile.isCertified && (
           <View style={{ alignItems: "center", marginBottom: 8 }}>
-            <View style={{ flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: colors.accent.gold + "15", paddingHorizontal: 14, paddingVertical: 6, borderRadius: 20 }}>
-              <Text style={{ fontSize: 13, fontWeight: "700", color: colors.accent.gold }}>Certified Shipper</Text>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 6, backgroundColor: colors.accent.gold + "15", paddingHorizontal: 14, paddingVertical: 6, borderRadius: RADIUS.badge }}>
+              <Text style={{ fontSize: 13, fontWeight: "700", color: colors.accent.goldDark }}>Certified Shipper</Text>
             </View>
           </View>
         )}

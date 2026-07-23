@@ -2,6 +2,7 @@ import React from "react";
 import { View, TextInput, StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 
 const OTP_LENGTH = 6;
 
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     flex: 1,
     maxWidth: 52,
     height: 58,
-    borderRadius: 16,
+    borderRadius: RADIUS.control,
     borderWidth: 2,
     justifyContent: "center",
     alignItems: "center",

@@ -35,6 +35,13 @@ export interface AuthenticatedStackParamList {
   AnnouncementList: undefined;
   CreateAnnouncement: { announcementId?: string } | undefined;
 
+  // Warehouse Addresses
+  WarehouseAddress: undefined;
+  WarehouseAddressAdmin: undefined;
+
+  // Announcements inbox (client)
+  AnnouncementInbox: undefined;
+
   // Payment Detail Screen — TEMPORARILY DISABLED
   // PaymentDetail: {
   //   paymentId: string;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Theme } from '@src/constants/Theme';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { ShimmerBlock } from '@src/shared/ui';
 
 interface PaymentHistorySkeletonProps {
@@ -50,8 +51,9 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   card: {
-    borderRadius: 12,
-    elevation: 2,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
+    borderColor: Theme.colors.border,
     backgroundColor: Theme.colors.background.card,
     padding: 16,
     marginBottom: 12,

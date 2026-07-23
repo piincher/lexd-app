@@ -1,15 +1,12 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
   paymentCard: {
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     padding: 16,
     marginBottom: 12,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
   },
   paymentHeader: {
     flexDirection: 'row',
@@ -43,7 +40,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 12,
+    borderRadius: RADIUS.badge,
   },
   statusDot: {
     width: 6,
@@ -57,7 +54,7 @@ export const styles = StyleSheet.create({
   },
   paymentBody: {
     paddingTop: 12,
-    borderTopWidth: 1,
+    borderTopWidth: HAIRLINE,
   },
   amountContainer: {
     flexDirection: 'row',
@@ -86,7 +83,7 @@ export const styles = StyleSheet.create({
   paymentFooter: {
     marginTop: 12,
     paddingTop: 12,
-    borderTopWidth: 1,
+    borderTopWidth: HAIRLINE,
   },
   receiptButton: {
     flexDirection: 'row',

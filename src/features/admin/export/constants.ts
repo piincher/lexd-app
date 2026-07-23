@@ -5,10 +5,10 @@ export const ENTITY_CONFIG: Record<
   { label: string; icon: string; color: string }
 > = {
   GOODS: { label: "Goods", icon: "package-variant", color: "#3B82F6" },
-  CONTAINERS: { label: "Containers", icon: "truck-cargo-container", color: "#16A34A" },
-  PAYMENTS: { label: "Payments", icon: "cash-multiple", color: "#D4AF37" },
-  CLIENTS: { label: "Clients", icon: "account-group", color: "#22C55E" },
-  USERS: { label: "Users", icon: "account", color: "#22C55E" },
+  CONTAINERS: { label: "Containers", icon: "truck-cargo-container", color: "#00664B" },
+  PAYMENTS: { label: "Payments", icon: "cash-multiple", color: "#F5A524" },
+  CLIENTS: { label: "Clients", icon: "account-group", color: "#007757" },
+  USERS: { label: "Users", icon: "account", color: "#007757" },
   INVOICES: { label: "Invoices", icon: "file-document", color: "#3B82F6" },
   EXPENSES: { label: "Expenses", icon: "cash-minus", color: "#DC2626" },
   ROUTES: { label: "Routes", icon: "routes", color: "#6B7280" },

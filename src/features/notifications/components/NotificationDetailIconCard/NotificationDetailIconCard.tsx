@@ -5,6 +5,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { NOTIFICATION_TYPE_CONFIG, NOTIFICATION_CATEGORY_CONFIG } from '../../types';
 import type { NotificationType, NotificationCategory } from '../../types';
 
@@ -29,9 +30,12 @@ export const NotificationDetailIconCard: React.FC<NotificationDetailIconCardProp
         iconCard: {
           margin: 16,
           padding: 24,
-          borderRadius: 16,
+          borderRadius: RADIUS.card,
           alignItems: 'center',
           backgroundColor: colors.background.card,
+          // Waybill: border-first, no drop shadow.
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
         },
         iconContainer: {
           width: 80,
@@ -52,7 +56,7 @@ export const NotificationDetailIconCard: React.FC<NotificationDetailIconCardProp
           alignItems: 'center',
           paddingHorizontal: 12,
           paddingVertical: 4,
-          borderRadius: 12,
+          borderRadius: RADIUS.badge,
           gap: 4,
         },
         categoryText: {
@@ -65,7 +69,7 @@ export const NotificationDetailIconCard: React.FC<NotificationDetailIconCardProp
 
   return (
     <Animated.View entering={FadeInUp.delay(100)}>
-      <Surface style={styles.iconCard} elevation={2}>
+      <Surface style={styles.iconCard} elevation={0}>
         <View style={[styles.iconContainer, { backgroundColor: categoryConfig.color }]}>
           <MaterialCommunityIcons
             name={typeConfig.icon as MaterialIconName}

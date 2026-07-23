@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import type { FilterTab } from '../../types';
 
 interface FilterTabConfig {
@@ -59,7 +60,7 @@ export const NotificationFilterTabs: React.FC<NotificationFilterTabsProps> = ({
           gap: 6,
           paddingHorizontal: 16,
           paddingVertical: 9,
-          borderRadius: 24,
+          borderRadius: RADIUS.badge,
           backgroundColor: colors.neutral[100],
         },
         activeTab: {

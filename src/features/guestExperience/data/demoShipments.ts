@@ -27,7 +27,7 @@ export const DEMO_SHIPMENTS: DemoShipment[] = [
       {
         id: 'sea-received',
         title: 'Marchandises reçues',
-        detail: 'Vos 5 colis ont été reçus, inspectés et enregistrés à l\'entrepôt ChinaLink Guangzhou.',
+        detail: 'Vos 5 colis ont été reçus, inspectés et enregistrés à l\'entrepôt LEXD Guangzhou.',
         status: 'done',
         icon: 'box-open',
         date: '12 avr. 2026',
@@ -71,7 +71,7 @@ export const DEMO_SHIPMENTS: DemoShipment[] = [
       {
         id: 'sea-bamako',
         title: 'Disponible à Bamako',
-        detail: 'Vos marchandises sont prêtes au dépôt ChinaLink Bamako. Contact : +223 76 69 61 77.',
+        detail: 'Vos marchandises sont prêtes au dépôt LEXD Bamako. Contact : +223 76 69 61 77.',
         status: 'next',
         icon: 'warehouse',
         location: 'Bamako, Mali',
@@ -147,7 +147,7 @@ export const DEMO_SHIPMENTS: DemoShipment[] = [
       {
         id: 'air-bamako',
         title: 'Arrivée Bamako',
-        detail: 'Dédouanement et livraison au dépôt ChinaLink Bamako.',
+        detail: 'Dédouanement et livraison au dépôt LEXD Bamako.',
         status: 'next',
         icon: 'plane-arrival',
         location: 'Bamako, Mali',

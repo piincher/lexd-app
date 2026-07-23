@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
   container: {
@@ -18,23 +19,19 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 8,
   },
+  // Skeletons mirror the real cards: border-first, 10px corners.
   imageCard: {
     marginHorizontal: 16,
-    borderRadius: 14,
+    borderRadius: RADIUS.card,
     overflow: 'hidden',
-    elevation: 2,
+    elevation: 0,
   },
   statsRow: {
     flexDirection: 'row',
     marginHorizontal: 16,
     marginTop: 16,
-    borderRadius: 14,
+    borderRadius: RADIUS.card,
     paddingVertical: 16,
-    shadowColor: '#111827',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
   },
   statBox: {
     flex: 1,
@@ -50,8 +47,8 @@ export const styles = StyleSheet.create({
   sectionCard: {
     marginHorizontal: 16,
     marginTop: 16,
-    borderRadius: 14,
-    elevation: 2,
+    borderRadius: RADIUS.card,
+    elevation: 0,
   },
   sectionHeader: {
     flexDirection: 'row',

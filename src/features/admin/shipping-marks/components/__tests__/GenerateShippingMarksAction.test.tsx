@@ -46,6 +46,38 @@ describe('GenerateShippingMarksAction', () => {
     expect(screen.getByText('Crée uniquement les marques manquantes')).toBeTruthy();
   });
 
+  it.each([
+    { selectedCount: 0, filtered: false, expected: 'Régénérer toutes les marques (264)' },
+    { selectedCount: 0, filtered: true, expected: 'Régénérer les résultats (264)' },
+    { selectedCount: 3, filtered: true, expected: 'Régénérer la sélection (3)' },
+  ])('describes the intended regeneration scope', ({ selectedCount, filtered, expected }) => {
+    const screen = render(
+      <GenerateShippingMarksAction
+        {...baseProps}
+        mode="regenerate"
+        selectedCount={selectedCount}
+        filtered={filtered}
+      />,
+    );
+
+    expect(screen.getByText(expected)).toBeTruthy();
+    expect(screen.getByLabelText(expected)).toBeTruthy();
+    expect(screen.getByText('Nouveau design · écrase les marques existantes')).toBeTruthy();
+  });
+
+  it('reports regeneration progress from a force job', () => {
+    const screen = render(
+      <GenerateShippingMarksAction
+        {...baseProps}
+        mode="regenerate"
+        loading
+        job={{ id: 'job-2', status: 'RUNNING', total: 8, generated: 3, failed: 0, force: true }}
+      />,
+    );
+
+    expect(screen.getByText('3/8 traitées en arrière-plan')).toBeTruthy();
+  });
+
   it('prevents generation while disabled', () => {
     const onPress = jest.fn();
     const screen = render(

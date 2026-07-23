@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   withTiming,
@@ -13,6 +13,7 @@ import Animated, {
   Extrapolate,
 } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { FAQItem as FAQItemType, FAQ_CATEGORY_COLORS } from '../../types';
 import { FAQItemHeader, FAQItemAnswer } from './components';
 
@@ -105,21 +106,11 @@ export const FAQItem: React.FC<FAQItemProps> = ({
 
 const createStyles = (colors: { neutral: Record<string, string>; border: string }) => StyleSheet.create({
   container: {
-    borderRadius: 12,
-    borderWidth: 1,
+    // Waybill: border-first accordion card, no drop shadow.
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     marginBottom: 12,
     overflow: 'hidden',
-    ...Platform.select({
-      ios: {
-        shadowColor: colors.neutral[900],
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.04,
-        shadowRadius: 8,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
   },
 });
 

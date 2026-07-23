@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const getStyles = (colors: any) =>
   StyleSheet.create({
@@ -16,7 +17,7 @@ export const getStyles = (colors: any) =>
     methodIcon: {
       width: 36,
       height: 36,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       justifyContent: 'center',
       alignItems: 'center',
     },

@@ -3,6 +3,7 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 interface CardHolderFieldProps {
   value: string;
@@ -67,8 +68,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 12,
-    borderWidth: 1,
+    borderRadius: RADIUS.control,
+    borderWidth: HAIRLINE,
     paddingHorizontal: 12,
   },
   input: {

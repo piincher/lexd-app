@@ -4,6 +4,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { APP_VERSION } from '@src/features/profile/hooks/useAboutUs';
 
@@ -21,11 +22,13 @@ export const AboutUsHero: React.FC = () => {
          >
             <View style={styles.logoWrapper}>
                <Image
-                  source={require('../../../../../assets/images/log.png')}
+                  // Light-ink wordmark: this hero sits on the green gradient.
+                  source={require('../../../../../assets/images/lexd-logo-light.png')}
+                  resizeMode="contain"
                   style={styles.logo}
                />
             </View>
-            <Text style={styles.heroTitle}>China Link Express</Text>
+            <Text style={styles.heroTitle}>LEXD</Text>
             <Text style={styles.heroSubtitle}>
                Votre partenaire logistique Chine - Afrique
             </Text>
@@ -46,22 +49,17 @@ const makeStyles = (colors: any) =>
          alignItems: 'center',
          paddingTop: 32,
          paddingBottom: 36,
-         borderBottomLeftRadius: 32,
-         borderBottomRightRadius: 32,
+         borderBottomLeftRadius: RADIUS.sheet,
+         borderBottomRightRadius: RADIUS.sheet,
       },
       logoWrapper: {
          width: 90,
          height: 90,
-         borderRadius: 22,
+         borderRadius: RADIUS.card,
          backgroundColor: colors.background.paper,
          justifyContent: 'center',
          alignItems: 'center',
          marginBottom: 16,
-         shadowColor: colors.neutral[900],
-         shadowOffset: { width: 0, height: 4 },
-         shadowOpacity: 0.15,
-         shadowRadius: 12,
-         elevation: 8,
       },
       logo: {
          width: 60,
@@ -85,7 +83,7 @@ const makeStyles = (colors: any) =>
          backgroundColor: colors.background.overlay,
          paddingHorizontal: 12,
          paddingVertical: 4,
-         borderRadius: 12,
+         borderRadius: RADIUS.badge,
       },
       versionText: {
          fontSize: 11,

@@ -34,21 +34,21 @@ const PrivacyNotificationCard: React.FC<PrivacyNotificationCardProps> = ({
         return {
           icon: 'package-variant-closed' as const,
           iconColor: colors.status.success,
-          backgroundColor: 'rgba(16, 185, 129, 0.1)',
+          backgroundColor: colors.status.success + '1A',
           label: 'Arrivée',
         };
       case 'GOODS_ASSIGNED':
         return {
           icon: 'truck-delivery' as const,
           iconColor: colors.primary.main,
-          backgroundColor: 'rgba(59, 130, 246, 0.1)',
+          backgroundColor: colors.status.info + '1A',
           label: 'Assigné',
         };
       default:
         return {
           icon: 'bell' as const,
           iconColor: colors.text.secondary,
-          backgroundColor: 'rgba(107, 114, 128, 0.1)',
+          backgroundColor: colors.text.secondary + '1A',
           label: 'Info',
         };
     }
@@ -58,7 +58,7 @@ const PrivacyNotificationCard: React.FC<PrivacyNotificationCardProps> = ({
 
   return (
     <Animated.View entering={FadeInUp.delay(index * 50)} style={styles.wrapper}>
-      <Surface style={styles.surface} elevation={1}>
+      <Surface style={styles.surface} elevation={0}>
         <View style={[styles.iconContainer, { backgroundColor: typeConfig.backgroundColor }]}>
           <MaterialCommunityIcons name={typeConfig.icon} size={24} color={typeConfig.iconColor} />
         </View>

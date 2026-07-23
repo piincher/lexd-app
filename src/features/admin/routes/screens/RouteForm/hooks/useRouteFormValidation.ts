@@ -8,6 +8,7 @@ export interface FormErrors {
   destination?: string;
   shippingLine?: string;
   estimatedTransitDays?: string;
+  waypoints?: string;
 }
 
 export const useRouteFormValidation = () => {
@@ -45,6 +46,16 @@ export const useRouteFormValidation = () => {
       if (isNaN(days) || days < 1 || days > 365) {
         newErrors.estimatedTransitDays = 'Veuillez entrer un nombre valide (1-365)';
       }
+    }
+
+    const invalidWaypointIndex = formData.waypoints.findIndex((waypoint) =>
+      !waypoint.location.city.trim() ||
+      !waypoint.location.country.trim() ||
+      !/^[A-Z]{2}$/.test((waypoint.location.countryCode || '').trim().toUpperCase()) ||
+      !waypoint.description.trim()
+    );
+    if (invalidWaypointIndex >= 0) {
+      newErrors.waypoints = `L'escale ${invalidWaypointIndex + 1} doit avoir une ville, un pays, un code pays ISO et une description.`;
     }
 
     setErrors(newErrors);

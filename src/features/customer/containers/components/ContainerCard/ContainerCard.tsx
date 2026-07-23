@@ -13,7 +13,7 @@ import { showMessage } from 'react-native-flash-message';
 import {
   CustomerContainer,
   CUSTOMER_STATUS_LABELS,
-  CUSTOMER_STATUS_COLORS,
+  getCustomerStatusColors,
   SHIPPING_LINE_LABELS,
 } from '../../types';
 import { useContainerCardStyles } from './ContainerCard.styles';
@@ -57,7 +57,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
     try {
       const result = await createShareToken({ type: 'container', resourceReference: ref });
       await shareLink({
-        message: `Suivez mon expédition ChinaLink Express : ${ref}`,
+        message: `Suivez mon expédition LEXD : ${ref}`,
         url: result.url,
         title: `Suivi ${ref}`,
       });
@@ -66,7 +66,7 @@ export const ContainerCard: React.FC<ContainerCardProps> = ({ container, onPress
     }
   }, [container.virtualContainerNumber, createShareToken]);
 
-  const statusColor = CUSTOMER_STATUS_COLORS[container.status];
+  const statusColor = getCustomerStatusColors(colors)[container.status];
   const statusBgColor = statusColor + '15';
   const statusLabel = CUSTOMER_STATUS_LABELS[container.status];
   const goodsCount = container.myGoods?.length || 0;

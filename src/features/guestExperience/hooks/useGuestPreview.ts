@@ -35,11 +35,11 @@ export const useGuestPreview = (
   }, [navigation]);
 
   const handleContact = useCallback(() => {
-    openSupportWhatsApp("Bonjour ChinaLink, j'ai téléchargé l'application et je veux devenir client.");
+    openSupportWhatsApp("Bonjour LEXD, j'ai téléchargé l'application et je veux devenir client.");
   }, []);
 
   const handleWhatsApp = useCallback(() => {
-    openSupportWhatsApp("Bonjour ChinaLink, j'ai une question sur l'application.");
+    openSupportWhatsApp("Bonjour LEXD, j'ai une question sur l'application.");
   }, []);
 
   const handleAction = useCallback((id: string) => {

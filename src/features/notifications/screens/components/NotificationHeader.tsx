@@ -11,6 +11,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { Theme } from '@src/constants/Theme';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 interface NotificationHeaderProps {
   unreadCount: number;
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
   backButton: {
     width: 38,
     height: 38,
-    borderRadius: 12,
+    borderRadius: RADIUS.control,
     backgroundColor: Theme.neutral[50],
     justifyContent: 'center',
     alignItems: 'center',
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.primary[50],
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 20,
+    borderRadius: RADIUS.badge,
   },
   markAllDisabled: {
     backgroundColor: Theme.neutral[100],

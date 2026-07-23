@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { ThemeToggle } from '@src/components/ThemeToggle';
 import { SettingsMenu } from './SettingsMenu';
 import { ProfileSectionHeader } from './ProfileSectionHeader';
@@ -30,8 +31,8 @@ export const ProfileSettingsSection: React.FC<Props> = ({ onNavigate }) => {
 const styles = StyleSheet.create({
   menuCard: {
     marginHorizontal: 16,
-    borderRadius: 16,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     overflow: 'hidden',
   },
 });

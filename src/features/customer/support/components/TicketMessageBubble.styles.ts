@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const getStyles = (colors: any) => StyleSheet.create({
   container: {
@@ -24,16 +25,13 @@ export const getStyles = (colors: any) => StyleSheet.create({
     marginHorizontal: 8,
   },
   bubble: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     maxWidth: '75%',
     padding: 12,
     borderRadius: 16,
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
   },
   customerBubble: {
     borderBottomRightRadius: 16,

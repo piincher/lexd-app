@@ -2,6 +2,7 @@ export { LoadingState } from './LoadingState';
 export { ErrorState } from './ErrorState';
 export { GoodsDetailHeader } from './GoodsDetailHeader';
 export { QRCard } from './QRCard';
+export { PackageLabelsCard } from './PackageLabelsCard';
 export { PhotoCard } from './PhotoCard';
 export { DescriptionCard } from './DescriptionCard';
 export { ClientCard } from './ClientCard';

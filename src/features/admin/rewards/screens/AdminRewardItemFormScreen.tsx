@@ -75,8 +75,6 @@ const AdminRewardItemFormScreen: React.FC<Props> = ({ item: propItem, onClose: p
   }, []);
 
   const pickImage = useCallback(async () => {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permission.granted) { Alert.alert('Permission refusée', 'Accès à la galerie requis.'); return; }
     const result = await ImagePicker.launchImageLibraryAsync({ allowsEditing: true, quality: 0.5, base64: true });
     if (!result.canceled && result.assets[0]?.base64) {
       setField('imageUrl', `data:image/jpeg;base64,${result.assets[0].base64}`);

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createTopCustomerRowStyles = (colors: any) =>
   StyleSheet.create({
@@ -10,13 +11,13 @@ export const createTopCustomerRowStyles = (colors: any) =>
       gap: 10,
     },
     rowBorder: {
-      borderBottomWidth: 1,
+      borderBottomWidth: HAIRLINE,
       borderBottomColor: colors.border,
     },
     rankBadge: {
       width: 30,
       height: 30,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.paper,
       justifyContent: 'center',
       alignItems: 'center',

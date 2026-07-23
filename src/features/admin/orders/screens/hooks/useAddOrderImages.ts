@@ -43,8 +43,6 @@ export const useAddOrderImages = () => {
 
   const pickImage = async () => {
     setShowModal(false);
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permissionResult.granted) { alert("Gallery access is required to select an image"); return; }
     const pickerResult = await ImagePicker.launchImageLibraryAsync({ allowsMultipleSelection: true, base64: true, quality: 0.3 });
     if (pickerResult.canceled) return;
     await uploadImages(pickerResult.assets.map((data) => data.base64));

@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const useOrangeMoneyFormStyles = () => {
   const { colors } = useAppTheme();
@@ -31,7 +32,7 @@ export const useOrangeMoneyFormStyles = () => {
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: colors.background.default,
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
           borderWidth: 2,
           borderColor: colors.neutral[200],
           overflow: 'hidden',
@@ -49,7 +50,7 @@ export const useOrangeMoneyFormStyles = () => {
           paddingHorizontal: 16,
           paddingVertical: 14,
           backgroundColor: colors.neutral[200] + '30',
-          borderRightWidth: 1,
+          borderRightWidth: HAIRLINE,
           borderRightColor: colors.neutral[200],
         },
         countryCodeText: {
@@ -100,7 +101,7 @@ export const useOrangeMoneyFormStyles = () => {
         },
         instructionsContent: {
           backgroundColor: colors.background.default,
-          borderRadius: 12,
+          borderRadius: RADIUS.card,
           padding: 16,
           marginBottom: 20,
         },
@@ -134,7 +135,7 @@ export const useOrangeMoneyFormStyles = () => {
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: colors.status.success + '10',
-          borderRadius: 8,
+          borderRadius: RADIUS.control,
           padding: 12,
           marginTop: 8,
         },
@@ -149,7 +150,7 @@ export const useOrangeMoneyFormStyles = () => {
           marginTop: 8,
         },
         supportedTitle: {
-          fontSize: 14,
+          ...OVERLINE,
           fontFamily: Fonts.medium,
           color: colors.text.secondary,
           marginBottom: 12,
@@ -163,7 +164,7 @@ export const useOrangeMoneyFormStyles = () => {
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: colors.neutral[200] + '30',
-          borderRadius: 16,
+          borderRadius: RADIUS.badge,
           paddingHorizontal: 12,
           paddingVertical: 6,
         },
@@ -182,7 +183,7 @@ export const useOrangeMoneyFormStyles = () => {
           alignItems: 'center',
           padding: 24,
           backgroundColor: colors.primary.main + '08',
-          borderRadius: 12,
+          borderRadius: RADIUS.card,
           marginTop: 16,
         },
         processingText: {

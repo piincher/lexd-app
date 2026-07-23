@@ -6,34 +6,30 @@
  */
 
 import { useMutation } from '@tanstack/react-query';
-import { Platform } from 'react-native';
-import { downloadAirwayBillGoodsPDF } from '@src/shared/api/airwayBillPdf';
-import { savePDFToCache, downloadPDFOnWeb, sharePDFGeneric } from '@src/shared/lib/pdfShare';
+import { downloadApiPdf, sharePDFGeneric } from '@src/shared/lib/pdfShare';
 
 interface UseDownloadAirwayBillGoodsPDFOptions {
   filename?: string;
   share?: boolean;
 }
 
+const safeFilename = (awbNumber?: string) =>
+  `AWB-${awbNumber || 'manifest'}-goods-manifest.pdf`.replace(/[^\w.-]+/g, '_');
+
 export const useDownloadAirwayBillGoodsPDF = (options: UseDownloadAirwayBillGoodsPDFOptions = {}) => {
   const { share = true } = options;
 
   return useMutation({
-    mutationFn: async ({ airwayBillId, filename }: { airwayBillId: string; filename: string }) => {
-      const blob = await downloadAirwayBillGoodsPDF(airwayBillId);
+    mutationFn: async ({ airwayBillId, filename }: { airwayBillId: string; filename?: string }) => {
+      const apiPath = `/airway-bills/${airwayBillId}/goods-manifest/export`;
+      const finalFilename = filename || safeFilename(airwayBillId);
+      const fileUri = await downloadApiPdf(apiPath, finalFilename);
 
-      if (Platform.OS === 'web') {
-        downloadPDFOnWeb(blob, filename);
-        return { uri: null, filename };
+      if (share && fileUri) {
+        await sharePDFGeneric({ fileUri, filename: finalFilename, message: 'Manifeste marchandises AWB' });
       }
 
-      const fileUri = await savePDFToCache(blob, filename);
-
-      if (share) {
-        await sharePDFGeneric({ fileUri, filename });
-      }
-
-      return { uri: fileUri, filename };
+      return { uri: fileUri, filename: finalFilename };
     },
   });
 };

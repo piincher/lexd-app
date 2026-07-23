@@ -10,6 +10,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 // import RetryButton from '@src/components/common/Error';
 import { useGetActiveOrder } from '@src/shared/hooks/useOrders';
 import OrderCard from './OrderCard';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface Props {
 	Status: string;
@@ -25,10 +26,11 @@ const ListingList = ({ Status }: Props) => {
 			alignItems: 'center',
 			justifyContent: 'center',
 			backgroundColor: colors.background.card,
-			borderRadius: 8,
+			borderRadius: RADIUS.control,
 			paddingVertical: 12,
 			paddingHorizontal: 16,
-			elevation: 2,
+			borderWidth: HAIRLINE,
+			borderColor: colors.border,
 		},
 		buttonText: {
 			fontSize: 16,

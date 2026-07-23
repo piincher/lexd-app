@@ -27,7 +27,7 @@ export const ProfileHeader: React.FC<Props> = ({
   const { colors } = useAppTheme();
   const styles = createProfileHeaderStyles(colors);
   const initials = `${firstName?.[0] ?? ''}${lastName?.[0] ?? ''}`.toUpperCase();
-  const displayName = [firstName, lastName].filter(Boolean).join(' ') || 'Compte ChinaLink';
+  const displayName = [firstName, lastName].filter(Boolean).join(' ') || 'Compte LEXD';
   const phoneLabel = phoneNumber ? `+${phoneNumber}` : 'Téléphone non renseigné';
 
   return (

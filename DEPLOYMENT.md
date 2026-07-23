@@ -1,4 +1,4 @@
-# ChinaLink Express — Production Deployment Guide
+# LEXD — Production Deployment Guide
 
 ## Overview
 
@@ -127,17 +127,17 @@ To change the submission track, edit `eas.json`:
 
 ### Configuration Highlights
 
-- **Bundle ID:** `com.nuvotech.chinalinkexpress`
+- **Bundle ID:** `com.nuvotech.lexd`
 - **Team ID:** `CZCJLA5GHT`
 - **ASC App ID:** `6503253700`
-- **Associated Domains:** `applinks:chinalinkexpress.com`, `applinks:www.chinalinkexpress.com`
+- **Associated Domains:** `applinks:lexdservices.com`, `applinks:www.lexdservices.com`
 - **Background modes:** `remote-notification`, `fetch`
 
 ### Pre-Build Checklist (iOS)
 
 - [ ] Apple Developer Portal: Associated Domains capability enabled for App ID
 - [ ] Provisioning profiles regenerated after capability change
-- [ ] AASA file deployed and accessible at `https://chinalinkexpress.com/.well-known/apple-app-site-association`
+- [ ] AASA file deployed and accessible at `https://lexdservices.com/.well-known/apple-app-site-association`
 - [ ] AASA returns `Content-Type: application/json`
 - [ ] ASC API Key (`.p8`) placed in `keys/` directory
 - [ ] `eas credentials` configured (or EAS manages them automatically)
@@ -226,12 +226,12 @@ eas build --profile production
 ### Android: "autoVerify failed"
 
 1. Verify `assetlinks.json` SHA256 matches Play Console
-2. Check Content-Type: `curl -I https://chinalinkexpress.com/.well-known/assetlinks.json`
-3. Re-verify on device: `adb shell pm verify-app-links --re-verify com.nuvotech.chinalinkexpress`
+2. Check Content-Type: `curl -I https://lexdservices.com/.well-known/assetlinks.json`
+3. Re-verify on device: `adb shell pm verify-app-links --re-verify com.nuvotech.lexd`
 
 ### iOS: "Universal link opens Safari"
 
-1. Check AASA accessibility: `curl https://chinalinkexpress.com/.well-known/apple-app-site-association`
+1. Check AASA accessibility: `curl https://lexdservices.com/.well-known/apple-app-site-association`
 2. Check Content-Type is `application/json`
 3. iOS caches AASA — uninstall app, wait 5 minutes, reinstall
 4. Verify Associated Domains capability in Apple Developer Portal

@@ -10,16 +10,14 @@ export const useAddUserCreation = (
 	selectedCode: string,
 ) => {
 	const [visible, setVisible] = useState(false);
-	const { mutate, isSuccess, isPending } = useCreateUser();
+	const { mutate, data, isSuccess, isPending, reset } = useCreateUser();
+	const createdUser = data?.user;
 
 	useEffect(() => {
 		if (isSuccess) {
 			setVisible(true);
-			setTimeout(() => {
-				navigation.navigate('HomeTab', { screen: 'Home' });
-			}, 900);
 		}
-	}, [isSuccess, navigation]);
+	}, [isSuccess]);
 
 	const handleSubmit = useCallback(async (values: AddUserFormValues) => {
 		try {
@@ -38,11 +36,37 @@ export const useAddUserCreation = (
 	}, [selectedCode, mutate]);
 
 	const onDismissSnackBar = useCallback(() => setVisible(false), []);
+	const handleCreateAnother = useCallback(() => {
+		reset();
+		setVisible(false);
+	}, [reset]);
+	const handleViewCreatedClient = useCallback(() => {
+		if (createdUser?._id) {
+			navigation.navigate('ClientDetails', { id: createdUser._id });
+		}
+	}, [createdUser?._id, navigation]);
+	const handleShareCreatedClient = useCallback(() => {
+		if (!createdUser?._id || !createdUser.shippingClientId) return;
+		const clientName = [createdUser.firstName, createdUser.lastName].filter(Boolean).join(' ');
+		navigation.navigate('ShippingMarksAdmin', {
+			q: createdUser.shippingClientId,
+			supplierShare: {
+				userId: createdUser._id,
+				clientId: createdUser.shippingClientId,
+				clientName,
+				phoneNumber: createdUser.phoneNumber,
+			},
+		});
+	}, [createdUser, navigation]);
 
 	return {
 		visible,
 		onDismissSnackBar,
 		isPending,
 		handleSubmit,
+		createdUser,
+		handleCreateAnother,
+		handleViewCreatedClient,
+		handleShareCreatedClient,
 	};
 };

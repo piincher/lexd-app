@@ -84,3 +84,26 @@ export interface OutstandingPaymentsListData {
     pages: number;
   };
 }
+
+// Unified admin work queue
+export type WorkQueueKind = 'owner' | 'intake' | 'assignment' | 'payment';
+export type WorkQueueSeverity = 'critical' | 'warning' | 'info';
+export type WorkQueueFilter = 'all' | 'critical' | 'goods' | 'payment';
+
+export interface AdminWorkQueueItem {
+  id: string;
+  goodsId: string;
+  kind: WorkQueueKind;
+  severity: WorkQueueSeverity;
+  title: string;
+  description: string;
+  clientName?: string;
+  ageDays: number;
+  amountDue?: number;
+}
+
+export interface WorkQueueSourceData<T> {
+  items: T[];
+  total: number;
+  truncated: boolean;
+}

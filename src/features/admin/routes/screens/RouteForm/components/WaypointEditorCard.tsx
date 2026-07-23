@@ -1,10 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import { IconButton, Menu, SegmentedButtons, Switch, TextInput } from 'react-native-paper';
+import { IconButton, SegmentedButtons, Switch, TextInput } from 'react-native-paper';
 import type { RouteWaypointDraft } from '@src/features/admin/routes/types';
 import { KNOWN_PORTS, SEGMENT_TYPES, WAYPOINT_TYPES } from './routeWaypointOptions';
 import { createStyles } from './WaypointEditorCard.styles';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { WaypointLocationFields } from './WaypointLocationFields';
 
 const PRIMARY_WAYPOINT_TYPES = WAYPOINT_TYPES.slice(0, 3);
 const SECONDARY_WAYPOINT_TYPES = WAYPOINT_TYPES.slice(3);
@@ -83,30 +84,15 @@ export const WaypointEditorCard: React.FC<WaypointEditorCardProps> = ({
         </View>
       </View>
 
-      <Menu
-        visible={portMenuVisible}
-        onDismiss={() => onTogglePortMenu(null)}
-        anchor={
-          <TextInput
-            mode="outlined"
-            label="Port ou ville"
-            value={waypoint.location.city}
-            onChangeText={(city) => patchLocation({ city })}
-            right={<TextInput.Icon icon="menu-down" onPress={() => onTogglePortMenu(index)} />}
-            style={styles.input}
-            onFocus={scrollToEnd}
-          />
-        }
-      >
-        {KNOWN_PORTS.map((port) => (
-          <Menu.Item key={port.portCode} title={port.label} onPress={() => handleSelectPort(port)} />
-        ))}
-      </Menu>
-
-      <View style={styles.twoColumn}>
-        <TextInput mode="outlined" label="Pays" value={waypoint.location.country} onChangeText={(country) => patchLocation({ country })} style={styles.flexInput} onFocus={scrollToEnd} />
-        <TextInput mode="outlined" label="Code" value={waypoint.location.portCode || ''} onChangeText={(portCode) => patchLocation({ portCode })} autoCapitalize="characters" style={styles.flexInput} onFocus={scrollToEnd} />
-      </View>
+      <WaypointLocationFields
+        waypoint={waypoint}
+        portMenuVisible={portMenuVisible}
+        onTogglePortMenu={(visible) => onTogglePortMenu(visible ? index : null)}
+        onSelectPort={handleSelectPort}
+        onPatchLocation={patchLocation}
+        onFocus={scrollToEnd}
+        styles={styles}
+      />
 
       <SegmentedButtons
         value={waypoint.type}

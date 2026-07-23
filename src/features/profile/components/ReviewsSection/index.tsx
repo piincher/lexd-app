@@ -53,7 +53,7 @@ export const ReviewsSection: React.FC = () => {
           <MaterialCommunityIcons name="alert-circle-outline" size={40} color={colors.status.warning} />
           <Text style={[styles.emptyTitle, { color: colors.text.secondary }]}>Impossible de charger les avis</Text>
           <TouchableOpacity onPress={handleRetry} style={styles.retryButton}>
-            <Text style={[styles.retryText, { color: colors.accent.gold }]}>Réessayer</Text>
+            <Text style={[styles.retryText, { color: colors.accent.goldDark }]}>Réessayer</Text>
           </TouchableOpacity>
         </View>
       </MotiView>

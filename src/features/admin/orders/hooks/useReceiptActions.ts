@@ -39,13 +39,13 @@ export const useReceiptActions = (params: UseReceiptActionsParams) => {
   const buildCaption = useCallback((): string => {
     const methodLabel = paymentMethod ? (PAYMENT_METHOD_LABELS[paymentMethod] || paymentMethod) : '';
     const dateStr = paidAt ? format(new Date(paidAt), 'dd MMMM yyyy', { locale: fr }) : '';
-    let caption = `✅ *Reçu de Paiement - ChinaLink Express*\n\nClient: *${clientName}*\n`;
+    let caption = `✅ *Reçu de Paiement - LEXD*\n\nClient: *${clientName}*\n`;
     caption += `💰 Montant: *${amount.toLocaleString('fr-FR')} FCFA*\n`;
     if (methodLabel) caption += `💳 Mode: ${methodLabel}\n`;
     if (orderCode) caption += `📦 Commande: ${orderCode}\n`;
     if (receiptNumber) caption += `🧾 N° Reçu: ${receiptNumber}\n`;
     if (dateStr) caption += `📅 Date: ${dateStr}\n`;
-    caption += `\nMerci pour votre confiance!\n_ChinaLink Express_`;
+    caption += `\nMerci pour votre confiance!\n_LEXD_`;
     return caption;
   }, [clientName, amount, orderCode, paymentMethod, receiptNumber, paidAt]);
 

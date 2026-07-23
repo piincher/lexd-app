@@ -1,4 +1,5 @@
 import { Theme } from '@src/constants/Theme';
+import { LEXD_CONTACTS } from '@src/shared/constants/contact';
 import type {
   DemoBenefit,
   DemoClientStep,
@@ -116,7 +117,7 @@ export const DEMO_CLIENT_STEPS: DemoClientStep[] = [
   {
     id: 'contact',
     title: 'Contactez-nous',
-    detail: 'Échangez avec l\'équipe ChinaLink pour définir vos besoins d\'expédition.',
+    detail: 'Échangez avec l\'équipe LEXD pour définir vos besoins d\'expédition.',
     icon: 'phone',
   },
   {
@@ -143,7 +144,7 @@ export const DEMO_FAQS: DemoFaq[] = [
   {
     id: 'login',
     question: 'Pourquoi je ne peux pas me connecter ?',
-    answer: 'La connexion est réservée aux clients enregistrés par ChinaLink. Si vous n\'avez pas encore de compte, contactez-nous via WhatsApp au +86 188 5172 5957 et nous créerons votre accès.',
+    answer: `La connexion est réservée aux clients enregistrés par LEXD. Si vous n'avez pas encore de compte, contactez-nous via WhatsApp au ${LEXD_CONTACTS.main.phone} et nous créerons votre accès.`,
   },
   {
     id: 'demo-data',
@@ -189,7 +190,7 @@ export const DEMO_QUICK_ACTIONS: DemoQuickAction[] = [
     title: 'À propos',
     icon: 'circle-info',
     color: Theme.status.info,
-    description: 'ChinaLinkExpress',
+    description: 'LEXD',
   },
   {
     id: 'whatsapp',
@@ -200,4 +201,4 @@ export const DEMO_QUICK_ACTIONS: DemoQuickAction[] = [
   },
 ];
 
-export const GUEST_SUPPORT_PHONE = '+8618851725957';
+export const GUEST_SUPPORT_PHONE = LEXD_CONTACTS.main.phone;

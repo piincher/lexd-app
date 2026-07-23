@@ -14,6 +14,7 @@ describe('BulkGenerateModal', () => {
     const screen = render(
       <BulkGenerateModal
         visible
+        mode="missing"
         count={12}
         onClose={onClose}
         onGenerate={onGenerate}
@@ -38,6 +39,7 @@ describe('BulkGenerateModal', () => {
     const screen = render(
       <BulkGenerateModal
         visible
+        mode="missing"
         count={1}
         onClose={jest.fn()}
         onGenerate={onGenerate}
@@ -52,5 +54,26 @@ describe('BulkGenerateModal', () => {
     expect(confirm.props.accessibilityState).toEqual({ disabled: true });
     fireEvent.press(confirm);
     expect(onGenerate).not.toHaveBeenCalled();
+  });
+
+  it('warns before overwriting existing marks in regenerate mode', () => {
+    const onGenerate = jest.fn();
+    const screen = render(
+      <BulkGenerateModal
+        visible
+        mode="regenerate"
+        count={40}
+        onClose={jest.fn()}
+        onGenerate={onGenerate}
+        isGenerating={false}
+      />,
+    );
+
+    expect(screen.getByText('Régénérer les marques')).toBeTruthy();
+    expect(screen.getByText(
+      'Régénérer 40 marques avec le nouveau design ? Les marques existantes seront écrasées et remplacées. Cette action est irréversible et se poursuit en arrière-plan.',
+    )).toBeTruthy();
+    fireEvent.press(screen.getByLabelText('Régénérer'));
+    expect(onGenerate).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Image, ActivityIndicator, StyleSheet } from 'react-native';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface ShippingMarkPreviewProps {
   imageUrl: string;
@@ -11,7 +12,7 @@ export const ShippingMarkPreview: React.FC<ShippingMarkPreviewProps> = ({ imageU
   const { colors } = useAppTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background.paper }]}>
+    <View style={[styles.container, { backgroundColor: colors.background.paper, borderColor: colors.border }]}>
       {isLoading ? (
         <ActivityIndicator size="large" color={colors.primary.main} />
       ) : (
@@ -23,17 +24,13 @@ export const ShippingMarkPreview: React.FC<ShippingMarkPreviewProps> = ({ imageU
 
 const styles = StyleSheet.create({
   container: {
+    borderWidth: HAIRLINE,
     width: '100%',
     aspectRatio: 1.5,
     borderRadius: 12,
     overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   image: {
     width: '100%',

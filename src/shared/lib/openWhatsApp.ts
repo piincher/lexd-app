@@ -1,4 +1,5 @@
 import { Linking, Platform } from 'react-native';
+import { LEXD_CONTACTS } from '@src/shared/constants/contact';
 
 /**
  * Open WhatsApp with Business priority fallback.
@@ -57,10 +58,9 @@ export const openWhatsApp = async (phone: string, text?: string): Promise<void> 
 };
 
 /**
- * Open the company's support WhatsApp (ChinaLink Express).
+ * Open the company's support WhatsApp (LEXD).
  * Uses the centralized support phone number.
  */
 export const openSupportWhatsApp = async (text?: string): Promise<void> => {
-  const SUPPORT_PHONE = '+8618851725957';
-  await openWhatsApp(SUPPORT_PHONE, text);
+  await openWhatsApp(LEXD_CONTACTS.main.phone, text);
 };

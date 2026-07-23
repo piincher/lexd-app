@@ -18,6 +18,7 @@ export interface ApiResponse<T> {
   data: T;
   message: string;
   error?: ApiError | null;
+  errors?: { code?: string; [key: string]: unknown } | null;
 }
 
 /**

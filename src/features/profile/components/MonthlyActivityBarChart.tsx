@@ -9,6 +9,7 @@ import { BarChart } from 'react-native-gifted-charts';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import type { BarChartItem } from '../hooks/useProfileCharts';
 
 const { width: SCREEN_W } = Dimensions.get('window');
@@ -83,11 +84,11 @@ export const MonthlyActivityBarChart: React.FC<MonthlyActivityBarChartProps> = (
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: 18,
+    borderRadius: RADIUS.card,
     padding: 16,
     marginHorizontal: 16,
     marginTop: 12,
-    borderWidth: 1,
+    borderWidth: HAIRLINE,
   },
   title: {
     fontFamily: Fonts.bold,

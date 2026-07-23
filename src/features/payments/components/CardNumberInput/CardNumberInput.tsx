@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Theme } from '@src/constants/Theme';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { formatCardNumber, detectCardType } from '../../utils/PaymentValidation';
 
 interface CardNumberInputProps {
@@ -80,9 +81,9 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: HAIRLINE,
     borderColor: Theme.neutral[300],
-    borderRadius: 8,
+    borderRadius: RADIUS.control,
     paddingHorizontal: Theme.spacing.md,
     backgroundColor: Theme.colors.background.card,
   },
@@ -105,11 +106,12 @@ const styles = StyleSheet.create({
     backgroundColor: Theme.colors.primary.light + '30',
     paddingHorizontal: Theme.spacing.sm,
     paddingVertical: Theme.spacing.xs,
-    borderRadius: 4,
+    borderRadius: RADIUS.badge,
   },
   cardTypeText: {
     fontSize: 10,
     fontWeight: '700',
+    letterSpacing: 0.6,
     color: Theme.colors.primary.main,
   },
   errorText: {

@@ -1,15 +1,19 @@
 import { StyleSheet } from "react-native";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS, HAIRLINE } from "@src/shared/ui/designLanguage";
 
 export const useOrderTimelineStyles = () => {
   const { colors } = useAppTheme();
 
   return StyleSheet.create({
+    // Border-first: hairline edge instead of elevation.
     card: {
       marginHorizontal: 16,
       marginTop: 16,
-      borderRadius: 14,
-      elevation: 2,
+      borderRadius: RADIUS.card,
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
+      elevation: 0,
     },
     header: {
       flexDirection: "row",
@@ -20,9 +24,11 @@ export const useOrderTimelineStyles = () => {
       paddingBottom: 8,
     },
     headerTitle: {
-      fontSize: 16,
+      fontSize: 11,
       fontWeight: "700",
-      color: colors.text.primary,
+      letterSpacing: 0.8,
+      textTransform: "uppercase",
+      color: colors.text.secondary,
     },
     timeline: {
       flexDirection: "row",
@@ -42,15 +48,20 @@ export const useOrderTimelineStyles = () => {
       height: 2,
       zIndex: -1,
     },
+    // Squared checkpoint node, consistent with the dashboard journey map and
+    // the airway-bill tracking timeline.
     circle: {
       width: 34,
       height: 34,
-      borderRadius: 17,
+      borderRadius: RADIUS.control,
       justifyContent: "center",
       alignItems: "center",
     },
     stepLabel: {
-      fontSize: 10,
+      fontSize: 9,
+      fontWeight: "700",
+      letterSpacing: 0.5,
+      textTransform: "uppercase",
       marginTop: 6,
       textAlign: "center",
     },

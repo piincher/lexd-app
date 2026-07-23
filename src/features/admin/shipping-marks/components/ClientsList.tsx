@@ -18,11 +18,12 @@ interface ClientsListProps {
   onToggle: (id: string) => void;
   onToggleAll: () => void;
   onPreview: (client: ShippingMarkClient) => void;
-  onDownload: (client: ShippingMarkClient) => void;
+  onShareSupplier: (client: ShippingMarkClient) => void;
   onSend: (client: ShippingMarkClient) => void;
   onRegenerate: (id: string) => void;
   regeneratingClientId?: string;
   sendingClientIds: string[];
+  sharingClientId?: string;
   isFetching: boolean;
   isError: boolean;
   errorMessage?: string;
@@ -32,6 +33,7 @@ interface ClientsListProps {
   hasPrev: boolean;
   hasNext: boolean;
   onPageChange: (page: number) => void;
+  onCreateClient?: () => void;
 }
 
 export const ClientsList: React.FC<ClientsListProps> = ({
@@ -42,11 +44,12 @@ export const ClientsList: React.FC<ClientsListProps> = ({
   onToggle,
   onToggleAll,
   onPreview,
-  onDownload,
+  onShareSupplier,
   onSend,
   onRegenerate,
   regeneratingClientId,
   sendingClientIds,
+  sharingClientId,
   isFetching,
   isError,
   errorMessage,
@@ -56,6 +59,7 @@ export const ClientsList: React.FC<ClientsListProps> = ({
   hasPrev,
   hasNext,
   onPageChange,
+  onCreateClient,
 }) => {
   const { colors } = useAppTheme();
   const selectedOnPage = clients.filter((client) => selected.has(client._id)).length;
@@ -67,13 +71,14 @@ export const ClientsList: React.FC<ClientsListProps> = ({
       selected={selected.has(item._id)}
       onToggle={onToggle}
       onPreview={onPreview}
-      onDownload={onDownload}
+      onShareSupplier={onShareSupplier}
       onSend={onSend}
       onRegenerate={onRegenerate}
       isRegenerating={regeneratingClientId === item._id}
       isSending={sendingIds.has(item._id)}
+      isSharing={sharingClientId === item._id}
     />
-  ), [onDownload, onPreview, onRegenerate, onSend, onToggle, regeneratingClientId, selected, sendingIds]);
+  ), [onPreview, onRegenerate, onSend, onShareSupplier, onToggle, regeneratingClientId, selected, sendingIds, sharingClientId]);
 
   const listHeader = useMemo(() => (
     <View style={styles.header}>
@@ -123,8 +128,8 @@ export const ClientsList: React.FC<ClientsListProps> = ({
           icon={isError ? 'cloud-alert-outline' : 'account-search-outline'}
           title={isError ? 'Chargement impossible' : 'Aucun client trouvé'}
           message={isError ? errorMessage || 'Le service est temporairement indisponible.' : 'Modifiez la recherche pour afficher des clients.'}
-          actionLabel={isError ? 'Réessayer' : undefined}
-          onAction={isError ? onRefresh : undefined}
+          actionLabel={isError ? 'Réessayer' : 'Créer un nouveau client'}
+          onAction={isError ? onRefresh : onCreateClient}
           style={styles.emptyState}
         />
       }

@@ -55,7 +55,7 @@ export const PackingListStatusCard: React.FC<PackingListStatusCardProps> = ({
   const statusColors = getStatusColor(status, colors);
 
   return (
-    <Card style={[styles.statusCard, { backgroundColor: statusColors.bg }]}>
+    <Card style={[styles.statusCard, { backgroundColor: statusColors.bg, borderColor: colors.border }]}>
       <Card.Content>
         <View style={styles.statusHeader}>
           <MaterialCommunityIcons

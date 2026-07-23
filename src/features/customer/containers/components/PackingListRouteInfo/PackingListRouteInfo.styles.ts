@@ -1,13 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create({
   // Banner styles
   routeBannerCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
     borderRadius: 12,
     overflow: 'hidden',
-    elevation: 2,
   },
   routeBannerGradient: {
     padding: 4,
@@ -60,8 +62,9 @@ export const createStyles = (colors: any, isDark: boolean) => StyleSheet.create(
   },
   // Detailed route styles
   sectionCard: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     marginBottom: 16,
-    elevation: 1,
   },
   sectionHeader: {
     flexDirection: 'row',

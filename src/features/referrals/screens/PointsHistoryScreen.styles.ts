@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -15,8 +16,8 @@ export const createStyles = (colors: any) =>
     tab: {
       paddingHorizontal: 12,
       paddingVertical: 6,
-      borderRadius: 8,
-      borderWidth: 1,
+      borderRadius: RADIUS.control,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       backgroundColor: colors.background.paper,
     },
@@ -79,9 +80,12 @@ export const createStyles = (colors: any) =>
       color: colors.status.error,
     },
     balance: {
-      fontSize: 11,
+      // Waybill tracked uppercase micro-label (running-balance metadata).
+      fontSize: 10,
       color: colors.text.disabled,
-      fontWeight: '600',
+      fontWeight: '700',
+      letterSpacing: 0.6,
+      textTransform: 'uppercase',
     },
     loadMore: {
       alignItems: 'center',

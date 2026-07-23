@@ -37,7 +37,7 @@ export const useOrderDetailScreen = (id: string) => {
             resourceReference: order.code || id,
          });
          await Share.share({
-            message: `Suivez ma commande ChinaLink Express: ${order.code}\n${result.url}`,
+            message: `Suivez ma commande LEXD: ${order.code}\n${result.url}`,
             title: `Commande ${order.code}`,
          });
       } catch {

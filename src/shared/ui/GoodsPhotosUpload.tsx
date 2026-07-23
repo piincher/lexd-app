@@ -78,11 +78,6 @@ export const GoodsPhotosUpload: React.FC<GoodsPhotosUploadProps> = ({
       Alert.alert('Limite atteinte', `Vous pouvez ajouter jusqu'à ${maxPhotos} photos`);
       return;
     }
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permission requise', 'Accès à la galerie nécessaire');
-      return;
-    }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,

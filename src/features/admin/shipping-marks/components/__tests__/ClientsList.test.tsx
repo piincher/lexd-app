@@ -24,7 +24,7 @@ const renderList = (overrides: Partial<React.ComponentProps<typeof ClientsList>>
     onToggle: jest.fn(),
     onToggleAll: jest.fn(),
     onPreview: jest.fn(),
-    onDownload: jest.fn(),
+    onShareSupplier: jest.fn(),
     onSend: jest.fn(),
     onRegenerate: jest.fn(),
     sendingClientIds: [],

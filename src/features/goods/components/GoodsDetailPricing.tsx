@@ -6,6 +6,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { Goods } from '../api';
 import { formatCurrency, formatDateTime, getPaymentColors } from '../lib/goodsHelpers';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface GoodsDetailPricingProps {
 	goods: Goods;
@@ -19,7 +20,7 @@ export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({ goods, o
 
 	return (
 		<>
-			<Card style={styles.card}>
+			<Card style={[styles.card, { borderColor: colors.border }]}>
 				<View style={styles.header}>
 					<MaterialCommunityIcons name="cash-multiple" size={20} color={colors.primary.main} />
 					<Text style={[styles.title, { color: colors.text.primary }]}>Tarification & Paiement</Text>
@@ -97,7 +98,7 @@ export const GoodsDetailPricing: React.FC<GoodsDetailPricingProps> = ({ goods, o
 };
 
 const styles = StyleSheet.create({
-	card: { marginHorizontal: 16, marginBottom: 12, elevation: 2, borderRadius: 12 },
+	card: { marginHorizontal: 16, marginBottom: 12, borderRadius: RADIUS.card, borderWidth: HAIRLINE },
 	header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 16, paddingBottom: 8, gap: 8 },
 	title: { fontFamily: Fonts.bold, fontSize: 15 },
 	row: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 10 },

@@ -1,13 +1,13 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
   card: {
-    borderRadius: 12,
+    borderRadius: RADIUS.card,
     padding: 16,
     marginBottom: 16,
-    elevation: 2,
   },
   cardHeader: {
     flexDirection: 'row',
@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
   receiptPreview: {
     alignItems: 'center',
     paddingVertical: 20,
-    borderRadius: 10,
+    borderRadius: RADIUS.control,
     marginBottom: 12,
   },
   receiptNumber: {
@@ -39,7 +39,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 10,
+    borderRadius: RADIUS.control,
     paddingVertical: 12,
     gap: 8,
   },

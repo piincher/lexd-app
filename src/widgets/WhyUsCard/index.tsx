@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   title: {
-    fontFamily: 'Bold',
+    fontFamily: 'bold',
     fontSize: 18,
     marginVertical: 8,
   },
   description: {
-    fontFamily: 'Medium',
+    fontFamily: 'medium',
     fontSize: 14,
   },
 });

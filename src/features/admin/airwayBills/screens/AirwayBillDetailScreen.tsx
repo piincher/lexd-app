@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAppTheme } from '@src/providers/ThemeProvider';
@@ -6,9 +6,11 @@ import { useAirwayBillDetailScreen } from './hooks';
 import { styles } from './AirwayBillDetailScreen.styles';
 import { AirwayBillSkeleton, CargoBagCreateDialog } from './components';
 import { AirwayBillDetailBody } from '../components/AirwayBillDetailBody';
+import { PackageAssignmentScannerModal } from '@src/entities/goodsPackage';
 
 export const AirwayBillDetailScreen: React.FC = () => {
   const { colors } = useAppTheme();
+  const [scanVisible, setScanVisible] = useState(false);
   const {
     airwayBill, waypointPayload, isLoading, goodsList,
     flightLabel, routeLabel, consignee,
@@ -62,6 +64,7 @@ export const AirwayBillDetailScreen: React.FC = () => {
           openMenu={openMenu}
           closeMenu={closeMenu}
           handleAssignPress={handleAssignPress}
+          handleScanPress={() => setScanVisible(true)}
           handleBack={handleBack}
           airwayBillId={airwayBillId}
           isUpdatingStatus={isUpdatingStatus}
@@ -85,6 +88,7 @@ export const AirwayBillDetailScreen: React.FC = () => {
         onSubmit={(_, notes) => handleCreateBag(notes)}
         loading={isCreatingBag}
       />
+      <PackageAssignmentScannerModal visible={scanVisible} targetType="AIR_AWB" targetId={airwayBillId} targetLabel={`AWB ${airwayBill.awbNumber}`} onDismiss={() => setScanVisible(false)} />
     </SafeAreaView>
   );
 };

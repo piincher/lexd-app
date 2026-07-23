@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { useShippingMode } from "@src/store/shippingMode";
-import { sendPushNotification } from "@src/shared/lib/pushNotification";
 import { hapticSuccess } from "@src/shared/lib/haptics";
 import { usePlaceOrder } from "../../hooks/useOrderManagement";
 import { useGetCategory } from "../../../hooks/useCategory";
@@ -47,11 +46,10 @@ export const useAddOrderForm = ({ navigation, route }: RootStackScreenProps<"Add
   };
   useEffect(() => {
     if (isSuccess) {
-      sendPushNotification(route.params.pushTokens, "Nouvelle Commande Ajoutée", "Votre commande a été ajoutée avec succès !", orderData?.data._id || "");
       setVisible(true);
       setTimeout(() => navigation.navigate("HomeTab", { screen: "Home" }), 900);
     }
-  }, [isSuccess, navigation, orderData?.data._id, route.params.pushTokens]);
+  }, [isSuccess, navigation]);
   const onDismissSnackBar = () => setVisible(false);
   const initialValues = {
     clientName: route.params.clientName,

@@ -4,6 +4,7 @@ import { Text, Card } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface GoodsDetailQRProps {
 	qrCodeUrl?: string;
@@ -15,7 +16,7 @@ export const GoodsDetailQR: React.FC<GoodsDetailQRProps> = ({ qrCodeUrl }) => {
 	if (!qrCodeUrl) return null;
 
 	return (
-		<Card style={styles.card}>
+		<Card style={[styles.card, { borderColor: colors.border }]}>
 			<View style={styles.header}>
 				<MaterialCommunityIcons name="qrcode" size={20} color={colors.primary.main} />
 				<Text style={[styles.title, { color: colors.text.primary }]}>Code QR</Text>
@@ -32,9 +33,9 @@ export const GoodsDetailQR: React.FC<GoodsDetailQRProps> = ({ qrCodeUrl }) => {
 
 const styles = StyleSheet.create({
 	card: {
+	  borderWidth: HAIRLINE,
 		marginHorizontal: 16,
 		marginBottom: 12,
-		elevation: 2,
 		borderRadius: 12,
 	},
 	header: {

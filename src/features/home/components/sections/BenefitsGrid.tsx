@@ -1,6 +1,6 @@
 /**
  * BenefitsGrid
- * "Why ChinaLink Express?" — 2-column vertical cards with large icons
+ * "Why LEXD?" — 2-column vertical cards with large icons
  * and colored top borders for visual distinction.
  */
 

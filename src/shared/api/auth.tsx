@@ -1,8 +1,6 @@
 import { userData, userType } from "@src/constants/types";
+import type { UserRegistrationResponse } from "@src/shared/types/user";
 import axiosInstance, { apiClientV2 } from "./client";
-import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
 const rootUrl = "/user";
 const API_URL = {
    login: `${rootUrl}/login`,
@@ -84,7 +82,7 @@ export const register = async ({ firstName, lastName, phoneNumber, referralCode 
       phoneNumber,
       referralCode,
    };
-   const response = await axiosInstance.post<userType>(API_URL.register, user);
+   const response = await axiosInstance.post<UserRegistrationResponse>(API_URL.register, user);
    return response.data;
 };
 type PhoneOtpResponse = Partial<userType> & {
@@ -98,23 +96,8 @@ export const sendPhoneOtp = async (phone: string) => {
    return response.data;
 };
 export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {
-   let pushToken = '';
-   
-   // Only get push token on physical devices
-   if (Device.isDevice) {
-      try {
-         pushToken = (
-            await Notifications.getExpoPushTokenAsync({
-               projectId: Constants?.expoConfig?.extra?.eas?.projectId || process.env.EXPO_PUBLIC_EAS_PROJECT_ID || "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d",
-            })
-         ).data;
-      } catch (e) {
-         console.log('Failed to get push token:', e);
-      }
-   }
-
    const response = await axiosInstance.post<{
-      user: userRegistrationType;
+      user: userData;
       token: string;
       accessToken?: string;
       refreshToken?: string;
@@ -122,7 +105,6 @@ export const verifyPhoneOtp = async (data: { phone: string; otp: string }) => {
    }>(API_URL.verifyPhoneOtp, {
       phone: data.phone,
       otp: data.otp,
-      pushToken: pushToken || undefined,
    });
    return response.data;
 };
@@ -164,27 +146,11 @@ export const getUser = async (id: string) => {
 // };
 
 export const loginPhoneOtpApple = async (data: { phone: string }) => {
-   let pushToken = '';
-   
-   // Only get push token on physical devices
-   if (Device.isDevice) {
-      try {
-         pushToken = (
-            await Notifications.getExpoPushTokenAsync({
-               projectId: Constants?.expoConfig?.extra?.eas?.projectId || process.env.EXPO_PUBLIC_EAS_PROJECT_ID || "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d",
-            })
-         ).data;
-      } catch (e) {
-         console.log('Failed to get push token:', e);
-      }
-   }
-   
    const datat = {
       phone: data.phone,
-      pushToken: pushToken || undefined,
    };
    const response = await axiosInstance.post<{
-      user: userRegistrationType;
+      user: userData;
       token: string;
       accessToken?: string;
       refreshToken?: string;
@@ -208,6 +174,6 @@ export const createUser = async ({ firstName, lastName, phoneNumber, referralCod
       referralCode,
       role: 'user',
    };
-   const response = await axiosInstance.post<{ success: boolean; user: userType }>(`${rootUrl}/admin/create`, user);
+   const response = await axiosInstance.post<UserRegistrationResponse>(`${rootUrl}/admin/create`, user);
    return response.data;
 };

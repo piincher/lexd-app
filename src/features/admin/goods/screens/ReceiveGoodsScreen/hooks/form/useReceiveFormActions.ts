@@ -47,6 +47,7 @@ export const useReceiveFormActions = (options: Options) => {
     const hasWeight = !!watchedValues.weight?.trim();
     const weight = hasWeight ? parseFloat(watchedValues.weight.replace(',', '.')) : 0;
     const quantity = parseInt(watchedValues.quantity, 10);
+    const packageCount = Number(watchedValues.packageCount);
     const unitPrice = parseFloat(watchedValues.unitPrice.replace(',', '.'));
 
     // Guard against NaN so we never send invalid numbers to the backend.
@@ -54,6 +55,9 @@ export const useReceiveFormActions = (options: Options) => {
       (shippingMode !== 'AIR' && (!hasWeight || !Number.isFinite(weight) || weight <= 0)) ||
       (hasWeight && (!Number.isFinite(weight) || weight < 0)) ||
       !Number.isFinite(quantity) ||
+      !Number.isInteger(packageCount) ||
+      packageCount < 1 ||
+      packageCount > 999 ||
       !Number.isFinite(unitPrice)
     ) {
       return null;
@@ -63,6 +67,7 @@ export const useReceiveFormActions = (options: Options) => {
       clientId: selectedClient?._id ?? null,
       description: watchedValues.description.trim(),
       quantity,
+      packageCount,
       unitPrice,
       location: watchedValues.location.toUpperCase().trim(),
       receivedByName: watchedValues.receivedByName.trim(),

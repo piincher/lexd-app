@@ -13,6 +13,7 @@ interface MenuDirectorySearchProps {
   query: string;
   onChangeQuery: (value: string) => void;
   onClear: () => void;
+  onSubmitEditing?: () => void;
 }
 
 export const MenuDirectorySearch: React.FC<MenuDirectorySearchProps> = ({
@@ -21,6 +22,7 @@ export const MenuDirectorySearch: React.FC<MenuDirectorySearchProps> = ({
   query,
   onChangeQuery,
   onClear,
+  onSubmitEditing,
 }) => (
   <View style={styles.searchBox}>
     <MaterialCommunityIcons name="magnify" size={20} color={colors.text.secondary} />
@@ -32,6 +34,8 @@ export const MenuDirectorySearch: React.FC<MenuDirectorySearchProps> = ({
       style={styles.searchInput}
       returnKeyType="search"
       selectionColor={colors.primary.main}
+      onSubmitEditing={onSubmitEditing}
+      blurOnSubmit={false}
     />
     {query ? (
       <Pressable

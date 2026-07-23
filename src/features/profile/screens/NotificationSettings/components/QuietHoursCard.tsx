@@ -3,6 +3,7 @@ import { View, Switch, StyleSheet } from 'react-native';
 import { Text, Card, Button } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { QuietHours } from '../hooks/useNotificationSettings';
 
 interface QuietHoursCardProps {
@@ -23,13 +24,15 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
       StyleSheet.create({
         card: {
           marginBottom: 16,
-          borderRadius: 12,
-          elevation: 2,
+          borderRadius: RADIUS.card,
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
           backgroundColor: colors.background.default,
         },
         sectionTitle: {
-          fontSize: 14,
-          fontWeight: '600',
+          fontSize: 11,
+          fontWeight: '700',
+          letterSpacing: 0.8,
           color: colors.text.secondary,
           textTransform: 'uppercase',
           marginBottom: 8,
@@ -48,7 +51,7 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
         iconContainer: {
           width: 48,
           height: 48,
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
           justifyContent: 'center',
           alignItems: 'center',
         },
@@ -65,7 +68,7 @@ export const QuietHoursCard: React.FC<QuietHoursCardProps> = ({
         quietHoursDetails: {
           marginTop: 16,
           paddingTop: 16,
-          borderTopWidth: 1,
+          borderTopWidth: HAIRLINE,
           borderTopColor: colors.border,
         },
         quietHoursDescription: {

@@ -6,6 +6,7 @@ import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { GoodsStatus } from '../api';
 import { formatDateTime } from '../lib/goodsHelpers';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface GoodsDetailPickupProps {
 	status: GoodsStatus;
@@ -24,7 +25,7 @@ export const GoodsDetailPickup: React.FC<GoodsDetailPickupProps> = ({
 	if (status !== 'READY_FOR_PICKUP' && status !== 'DELIVERED') return null;
 
 	return (
-		<Card style={styles.card}>
+		<Card style={[styles.card, { borderColor: colors.border }]}>
 			<View style={styles.header}>
 				<MaterialCommunityIcons name={status === 'DELIVERED' ? 'check-circle' : 'package-variant'} size={20} color={status === 'DELIVERED' ? colors.status.success : colors.status.warning} />
 				<Text style={[styles.title, { color: colors.text.primary }]}>Statut de Retrait</Text>
@@ -87,7 +88,7 @@ export const GoodsDetailPickup: React.FC<GoodsDetailPickupProps> = ({
 };
 
 const styles = StyleSheet.create({
-	card: { marginHorizontal: 16, marginBottom: 12, elevation: 2, borderRadius: 12 },
+	card: { marginHorizontal: 16, marginBottom: 12, borderRadius: RADIUS.card, borderWidth: HAIRLINE },
 	header: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, paddingTop: 16, paddingBottom: 8, gap: 8 },
 	title: { fontFamily: Fonts.bold, fontSize: 15 },
 	banner: { flexDirection: 'row', alignItems: 'center', alignSelf: 'flex-start', paddingHorizontal: 14, paddingVertical: 8, borderRadius: 20, marginBottom: 16, gap: 8 },

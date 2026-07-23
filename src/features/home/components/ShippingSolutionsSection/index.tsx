@@ -5,6 +5,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
+import { HAIRLINE } from "@src/shared/ui/designLanguage";
 
 interface ShippingSolutionsSectionProps {
    onPressAir: () => void;
@@ -81,14 +82,11 @@ const createStyles = (colors: any) => StyleSheet.create({
       gap: 12,
    },
    card: {
+     borderWidth: HAIRLINE,
+     borderColor: colors.border,
       flex: 1,
       borderRadius: 20,
       overflow: "hidden",
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.15,
-      shadowRadius: 8,
-      elevation: 4,
    },
    cardGradient: {
       padding: 20,

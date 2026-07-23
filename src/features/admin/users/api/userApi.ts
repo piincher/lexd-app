@@ -3,7 +3,7 @@
  * Migrated from legacy src/api/auth.tsx
  */
 import axiosInstance from "@src/api/client";
-import { userData } from "@src/shared/types/user";
+import { RegisteredUserSummary, userData } from "@src/shared/types/user";
 
 const rootUrl = "/user";
 
@@ -44,6 +44,14 @@ export interface UserUpdateRequest {
   role?: string;
 }
 
+export type CreatedUserSummary = RegisteredUserSummary;
+
+export interface CreateUserResponse {
+  success: boolean;
+  message?: string;
+  user: CreatedUserSummary;
+}
+
 // Fetch all users with filters and pagination
 export const fetchAllUsers = async (filters: UserListFilters = {}): Promise<UserListResponse> => {
   const params = new URLSearchParams();
@@ -77,7 +85,7 @@ export const getUser = async (id: string): Promise<userData> => {
 };
 
 // Admin create user
-export const createUser = async (user: UserRegistrationRequest): Promise<{ success: boolean; user: any }> => {
+export const createUser = async (user: UserRegistrationRequest): Promise<CreateUserResponse> => {
   const response = await axiosInstance.post(`${rootUrl}/admin/create`, { ...user, role: "user" });
   return response.data;
 };

@@ -13,11 +13,6 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     borderRadius: 12,
     borderWidth: 1,
     padding: 16,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 2,
   },
   infoHeader: {
     flexDirection: 'row',
@@ -55,10 +50,5 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
     borderRadius: 12,
     borderWidth: 1,
     padding: 16,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.04,
-    shadowRadius: 4,
-    elevation: 2,
   },
 });

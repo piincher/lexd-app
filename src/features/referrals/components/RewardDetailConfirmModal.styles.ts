@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -17,11 +18,11 @@ export const createStyles = (colors: any) =>
     },
     sheet: {
       backgroundColor: colors.background.card,
-      borderTopLeftRadius: 20,
-      borderTopRightRadius: 20,
+      borderTopLeftRadius: RADIUS.sheet,
+      borderTopRightRadius: RADIUS.sheet,
       padding: 20,
       gap: 14,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       borderBottomWidth: 0,
     },
@@ -64,13 +65,15 @@ export const createStyles = (colors: any) =>
     },
     noteBox: {
       backgroundColor: colors.background.paper,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       padding: 10,
       gap: 4,
     },
     noteLabel: {
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: '700',
+      letterSpacing: 0.7,
+      textTransform: 'uppercase',
       color: colors.text.secondary,
     },
     noteText: {
@@ -88,10 +91,10 @@ export const createStyles = (colors: any) =>
       alignItems: 'center',
       justifyContent: 'center',
       minHeight: 48,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
     },
     cancelButton: {
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       backgroundColor: colors.background.paper,
     },
     cancelText: {

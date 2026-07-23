@@ -42,6 +42,7 @@ interface Props {
   openMenu: () => void;
   closeMenu: () => void;
   handleAssignPress: () => void;
+  handleScanPress: () => void;
   handleBack: () => void;
   airwayBillId: string;
   isUpdatingStatus: boolean;
@@ -84,6 +85,7 @@ export const AirwayBillDetailBody: React.FC<Props> = ({
   openMenu,
   closeMenu,
   handleAssignPress,
+  handleScanPress,
   handleBack,
   isUpdatingStatus,
   cargoBags,
@@ -200,6 +202,7 @@ export const AirwayBillDetailBody: React.FC<Props> = ({
         <AirwayBillGoodsSection
           goodsList={goodsList}
           onAssignPress={handleAssignPress}
+          onScanPress={handleScanPress}
           manifest={goodsManifest}
           loading={isLoadingGoodsManifest}
           error={goodsManifestError}

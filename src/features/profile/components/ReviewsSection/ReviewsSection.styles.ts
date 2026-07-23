@@ -4,11 +4,12 @@
 
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getStyles = (colors: any) => StyleSheet.create({
   card: {
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     padding: 16,
     marginBottom: 12,
   },
@@ -45,12 +46,12 @@ export const getStyles = (colors: any) => StyleSheet.create({
   },
   countBadge: {
     backgroundColor: colors.accent.gold + '33',
-    borderRadius: 10,
+    borderRadius: RADIUS.badge,
     paddingHorizontal: 8,
     paddingVertical: 2,
   },
   countText: {
-    color: colors.accent.gold,
+    color: colors.accent.goldDark,
     fontFamily: Fonts.bold,
     fontSize: 12,
   },
@@ -87,7 +88,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
     marginTop: 12,
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: 8,
+    borderRadius: RADIUS.control,
   },
   retryText: {
     fontFamily: Fonts.meduim,
@@ -102,7 +103,7 @@ export const getStyles = (colors: any) => StyleSheet.create({
     paddingVertical: 6,
   },
   viewAllText: {
-    color: colors.accent.gold,
+    color: colors.accent.goldDark,
     fontFamily: Fonts.meduim,
     fontSize: 13,
   },

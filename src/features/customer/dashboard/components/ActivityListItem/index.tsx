@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import { Text } from "react-native-paper";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS, RAIL_WIDTH, HAIRLINE } from "@src/shared/ui/designLanguage";
 import { ActivityItem } from "../../types";
 
 interface ActivityListItemProps {
@@ -30,9 +31,14 @@ export const ActivityListItem: React.FC<ActivityListItemProps> = ({
   return (
     <Animated.View
       entering={FadeInUp.delay(index * 50).duration(400)}
-      style={[styles.activityItem, { backgroundColor: colors.background.card }]}
+      style={[
+        styles.activityItem,
+        { backgroundColor: colors.background.card, borderColor: colors.border },
+      ]}
     >
-      <View style={[styles.iconContainer, { backgroundColor: colors.primary.light + "20" }]}>
+      <View style={[styles.rail, { backgroundColor: colors.primary.main }]} pointerEvents="none" />
+
+      <View style={[styles.iconContainer, { backgroundColor: colors.primary.main + "14" }]}>
         <Text style={styles.icon}>{item.icon}</Text>
       </View>
       <View style={styles.content}>
@@ -49,23 +55,30 @@ export const ActivityListItem: React.FC<ActivityListItemProps> = ({
 };
 
 const styles = StyleSheet.create({
+  // Border-first row: the shadow/elevation stack is intentionally gone.
   activityItem: {
     flexDirection: "row",
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 12,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    elevation: 2,
+    padding: 14,
+    paddingLeft: 14 + RAIL_WIDTH,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
+    marginBottom: 10,
+    overflow: "hidden",
+  },
+  rail: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    width: RAIL_WIDTH,
   },
   iconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 44,
+    height: 44,
+    borderRadius: RADIUS.control,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 16,
+    marginRight: 14,
   },
   icon: {
     fontSize: 24,
@@ -84,7 +97,11 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   timestamp: {
-    fontSize: 12,
+    // Timestamps read as manifest metadata.
+    fontSize: 9.5,
+    fontWeight: "700",
+    letterSpacing: 0.6,
+    textTransform: "uppercase",
   },
 });
 

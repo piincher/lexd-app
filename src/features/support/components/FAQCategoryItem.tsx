@@ -8,6 +8,7 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import { FAQCategory, FAQ_CATEGORY_ICONS, FAQ_CATEGORY_LABELS } from '../types/faq.types';
 
 interface FAQCategoryItemProps {
@@ -28,7 +29,7 @@ export const FAQCategoryItem: React.FC<FAQCategoryItemProps> = ({
       alignItems: 'center',
       paddingHorizontal: 16,
       paddingVertical: 10,
-      borderRadius: 20,
+      borderRadius: RADIUS.badge,
       backgroundColor: isSelected ? colors.primary.main : colors.background.paper,
       marginRight: 8,
     },

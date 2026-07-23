@@ -10,14 +10,16 @@ import { WhatsAppManualNumbers } from "../components/WhatsAppManualNumbers";
 import { WhatsAppMediaPicker } from "../components/WhatsAppMediaPicker";
 import { WhatsAppMessageComposer } from "../components/WhatsAppMessageComposer";
 import { WhatsAppSendConfirmModal } from "../components/WhatsAppSendConfirmModal";
-import { SendSmsSuccessOverlay } from "../components/SendSmsSuccessOverlay";
 import { useSendWhatsAppScreen } from "../hooks/useSendWhatsAppScreen";
 import { createStyles } from "./SendWhatsApp.styles";
 
 const SendWhatsApp = ({ navigation }: RootStackScreenProps<"SendWhatsApp">) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
-  const s = useSendWhatsAppScreen();
+  const s = useSendWhatsAppScreen({
+    onEnqueued: (broadcastId) =>
+      navigation.navigate("WhatsAppBroadcastDetail", { broadcastId }),
+  });
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
@@ -27,6 +29,11 @@ const SendWhatsApp = ({ navigation }: RootStackScreenProps<"SendWhatsApp">) => {
           <Text style={styles.eyebrow}>Communications</Text>
           <Text style={styles.title}>WhatsApp manuel</Text>
         </View>
+        <IconButton
+          icon="history"
+          onPress={() => navigation.navigate("WhatsAppBroadcastList")}
+          accessibilityLabel="Historique des envois"
+        />
       </View>
 
       <KeyboardAvoidingView
@@ -107,8 +114,6 @@ const SendWhatsApp = ({ navigation }: RootStackScreenProps<"SendWhatsApp">) => {
         onConfirm={s.handleConfirmSend}
         onCancel={() => s.setShowConfirmation(false)}
       />
-
-      <SendSmsSuccessOverlay visible={s.showSuccess} sentCount={s.sentCount} />
     </SafeAreaView>
   );
 };

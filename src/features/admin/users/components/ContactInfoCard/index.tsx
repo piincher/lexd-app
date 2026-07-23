@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type ComponentProps } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeInUp } from "react-native-reanimated";
@@ -10,7 +10,9 @@ interface ContactInfoCardProps {
   user: userData | undefined;
 }
 
-const InfoRow: React.FC<{ icon: string; label: string; value?: string; onCopy?: () => void }> = ({
+type IconName = ComponentProps<typeof Ionicons>["name"];
+
+const InfoRow: React.FC<{ icon: IconName; label: string; value?: string; onCopy?: () => void }> = ({
   icon, label, value, onCopy,
 }) => {
   const { colors } = useAppTheme();
@@ -18,7 +20,7 @@ const InfoRow: React.FC<{ icon: string; label: string; value?: string; onCopy?: 
   return (
     <View style={[styles.row, { borderBottomColor: colors.neutral[200] }]}>
       <View style={[styles.iconCircle, { backgroundColor: `${colors.primary.main}15` }]}>
-        <Ionicons name={icon as any} size={18} color={colors.primary.main} />
+        <Ionicons name={icon} size={18} color={colors.primary.main} />
       </View>
       <View style={styles.info}>
         <Text style={[styles.label, { color: colors.text.secondary }]}>{label}</Text>
@@ -40,6 +42,7 @@ export const ContactInfoCard: React.FC<ContactInfoCardProps> = ({ user }) => {
   return (
     <Animated.View entering={FadeInUp.delay(400).duration(500)} style={[styles.card, { backgroundColor: colors.background.card, shadowColor: colors.neutral[900] }]}>
       <Text style={[styles.title, { color: colors.text.primary }]}>Informations de Contact</Text>
+      <InfoRow icon="qr-code-outline" label="ID client unique" value={user?.shippingClientId} onCopy={() => copy(user?.shippingClientId || "", "ID client")} />
       <InfoRow icon="call-outline" label="Téléphone" value={user?.phoneNumber} onCopy={() => copy(user?.phoneNumber || "", "Téléphone")} />
       <InfoRow icon="mail-outline" label="Email" value={user?.email} onCopy={() => copy(user?.email || "", "Email")} />
       <InfoRow icon="person-outline" label="Rôle" value={user?.role} />

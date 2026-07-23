@@ -34,7 +34,7 @@ export const SummarySignature: React.FC<SummarySignatureProps> = ({
       </View>
       <View style={styles.sigContent}>
         <Text style={[styles.signatureText, { color: colors.text.primary }]}>
-          {signature.signatureLabel || `Signé par ${signature.signedBy || 'ChinaLink Express'}`}
+          {signature.signatureLabel || `Signé par ${signature.signedBy || 'LEXD'}`}
         </Text>
         <Text style={[styles.signatureMeta, { color: colors.text.muted }]}>
           {signature.signerName || 'Service Logistique'} · {' '}

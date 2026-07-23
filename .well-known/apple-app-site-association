@@ -3,7 +3,7 @@
     "details": [
       {
         "appIDs": [
-          "CZCJLA5GHT.com.nuvotech.chinalinkexpress"
+          "CZCJLA5GHT.com.nuvotech.lexd"
         ],
         "components": [
           {
@@ -263,7 +263,7 @@
   },
   "webcredentials": {
     "apps": [
-      "CZCJLA5GHT.com.nuvotech.chinalinkexpress"
+      "CZCJLA5GHT.com.nuvotech.lexd"
     ]
   }
 }

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
-import { Theme } from "@src/constants/Theme";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import type { AppTheme } from "@src/constants/Theme";
 
 type ThemeColors = AppTheme["colors"];
@@ -27,16 +27,16 @@ export const getStyles = (colors: ThemeColors, isDark: boolean) =>
       alignItems: "center",
       paddingVertical: 14,
       paddingHorizontal: 4,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      // Waybill: border-first, no drop shadow.
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
-      ...Theme.shadows.sm,
     },
     iconWrapper: {
       width: 46,
       height: 46,
-      borderRadius: 14,
+      borderRadius: RADIUS.control,
       justifyContent: "center",
       alignItems: "center",
       marginBottom: 8,

@@ -25,7 +25,8 @@ import { ContactDialog } from '../components/ContactDialog';
 import { ContainerGoodsSection } from '../components/ContainerGoodsSection';
 import { PickupInfoCard } from '../components/PickupInfoCard';
 import { ContainerTrackingSkeleton } from '../components/ContainerTrackingSkeleton';
-import { CUSTOMER_STATUS_COLORS } from '../types';
+import { useAppTheme } from '@src/providers/ThemeProvider';
+import { getCustomerStatusColors } from '../types';
 
 const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'>> = ({
   navigation,
@@ -33,6 +34,8 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
 }) => {
   const { containerId } = route.params;
   const styles = useContainerTrackingStyles();
+  // Called before the early returns below so hook order stays stable.
+  const { colors } = useAppTheme();
   const {
     container, isLoading, isError, error, isFetching, waypointsData,
     contactDialogVisible, setContactDialogVisible, expandedWaypoint,
@@ -49,7 +52,7 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
     try {
       const result = await createShareToken({ type: 'container', resourceReference: ref });
       await shareLink({
-        message: `Suivez mon expédition ChinaLink Express : ${ref}`,
+        message: `Suivez mon expédition LEXD : ${ref}`,
         url: result.url,
         title: `Suivi ${ref}`,
       });
@@ -79,7 +82,7 @@ const ContainerTrackingScreen: React.FC<RootStackScreenProps<'ContainerTracking'
   const waypoints = waypointsData?.waypoints || [];
   const currentWaypointIndex = waypointsData?.currentWaypointIndex ?? -1;
   const progressPercentage = waypointsData?.progressPercentage ?? 0;
-  const statusColor = CUSTOMER_STATUS_COLORS[container.status] || '';
+  const statusColor = getCustomerStatusColors(colors)[container.status] || '';
   const statusBgColor = statusColor + '15';
   const eta = container.predictiveEta || container.etaPrediction || container.eta;
   const estimatedArrival = eta?.estimatedArrival?.toString() || container.estimatedArrival;

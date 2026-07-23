@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
+import { OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { ContainerProfitSummary } from '../../../api/statsApi';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { fmtProfitAmount } from '../ProfitOverviewCard.utils';
@@ -41,16 +42,14 @@ export const ProfitOverviewProfitBox: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   profitBox: {
-    borderRadius: 12,
+    borderRadius: RADIUS.control,
     padding: 14,
     alignItems: 'center',
     marginBottom: 14,
   },
   profitLabel: {
-    fontSize: 11,
+    ...OVERLINE,
     fontFamily: Fonts.medium,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
     marginBottom: 4,
   },
   profitValue: {

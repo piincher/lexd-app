@@ -1,16 +1,15 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {
-      borderRadius: 20,
+      borderRadius: RADIUS.card,
       padding: 20,
       gap: 14,
-      shadowColor: colors.primary.dark,
-      shadowOffset: { width: 0, height: 6 },
-      shadowOpacity: 0.25,
-      shadowRadius: 16,
-      elevation: 6,
+      // Waybill: border-first separation instead of the old drop shadow.
+      borderWidth: HAIRLINE,
+      borderColor: colors.primary.dark,
     },
     topRow: {
       flexDirection: 'row',
@@ -23,10 +22,12 @@ export const createStyles = (colors: any) =>
       gap: 6,
     },
     label: {
-      fontSize: 13,
+      // Waybill tracked uppercase micro-label (balance eyebrow).
+      fontSize: 11,
       fontWeight: '700',
       color: 'rgba(255,255,255,0.9)',
-      letterSpacing: 0.3,
+      letterSpacing: 0.8,
+      textTransform: 'uppercase',
     },
     headerActions: {
       flexDirection: 'row',
@@ -48,7 +49,7 @@ export const createStyles = (colors: any) =>
     value: {
       fontSize: 44,
       fontWeight: '900',
-      color: '#FFFFFF',
+      color: colors.text.inverse,
       letterSpacing: -1,
       lineHeight: 48,
     },
@@ -63,14 +64,14 @@ export const createStyles = (colors: any) =>
     },
     progressTrack: {
       height: 6,
-      borderRadius: 999,
+      borderRadius: RADIUS.pill,
       backgroundColor: 'rgba(255,255,255,0.25)',
       overflow: 'hidden',
     },
     progressFill: {
       height: '100%',
-      borderRadius: 999,
-      backgroundColor: '#FFFFFF',
+      borderRadius: RADIUS.pill,
+      backgroundColor: colors.text.inverse,
     },
     readyRow: {
       flexDirection: 'row',
@@ -85,6 +86,6 @@ export const createStyles = (colors: any) =>
     },
     nudgeStrong: {
       fontWeight: '900',
-      color: '#FFFFFF',
+      color: colors.text.inverse,
     },
   });

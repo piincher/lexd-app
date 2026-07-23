@@ -10,7 +10,7 @@ interface PromoCampaignListItemProps {
 }
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
-  ACTIVE: { bg: '#22C55E', text: '#FFFFFF' },
+  ACTIVE: { bg: '#007757', text: '#FFFFFF' },
   SCHEDULED: { bg: '#3B82F6', text: '#FFFFFF' },
   PAUSED: { bg: '#F59E0B', text: '#FFFFFF' },
   EXPIRED: { bg: '#6B7280', text: '#FFFFFF' },

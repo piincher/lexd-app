@@ -56,7 +56,6 @@ const createStyles = (colors: ReturnType<typeof useAppTheme>['colors'], isDark: 
       backgroundColor: colors.background.card,
       borderWidth: 1,
       borderColor: colors.border,
-      shadowColor: colors.neutral[900], shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.05, shadowRadius: 2, elevation: 2,
     },
     iconCircle: {
       width: 40,

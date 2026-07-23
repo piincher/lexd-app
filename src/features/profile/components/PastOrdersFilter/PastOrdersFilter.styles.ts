@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
 import { lightTheme } from "@src/constants/Theme";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 type Colors = typeof lightTheme.colors;
 
@@ -16,9 +17,9 @@ export const createStyles = (colors: Colors) =>
     filterChip: {
       flex: 1,
       minHeight: 48,
-      borderRadius: 16,
+      borderRadius: RADIUS.badge,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       alignItems: "center",
       justifyContent: "center",

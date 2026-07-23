@@ -25,7 +25,7 @@ export const KNOWN_PORTS = [
   { label: 'Tanjung Pelepas', city: 'Tanjung Pelepas', country: 'Malaysia', countryCode: 'MY', portCode: 'MYTPP', terminal: 'TANJUNG PELEPAS CONTAINER TERMINAL' },
   { label: 'Tanger Med', city: 'Tanger Med', country: 'Morocco', countryCode: 'MA', portCode: 'MAPTM', terminal: 'TANGER MED CONTAINER TERMINAL' },
   { label: 'Diboli', city: 'Diboli', country: 'Mali', countryCode: 'ML', portCode: 'MLDBL', terminal: 'Diboli Border' },
-  { label: 'Bamako', city: 'Bamako', country: 'Mali', countryCode: 'ML', portCode: 'MLBKQ', terminal: 'ChinaLink Warehouse - Bamako' },
+  { label: 'Bamako', city: 'Bamako', country: 'Mali', countryCode: 'ML', portCode: 'MLBKQ', terminal: 'LEXD Warehouse - Bamako' },
 ] as const;
 
 export const ROUTE_PRESETS = [

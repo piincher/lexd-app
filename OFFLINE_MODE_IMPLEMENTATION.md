@@ -1,7 +1,7 @@
 # Offline Mode Implementation Summary
 
 ## Overview
-Comprehensive offline mode functionality has been implemented for the ChinaLink Express mobile app with data persistence, background sync, and optimistic updates.
+Comprehensive offline mode functionality has been implemented for the LEXD mobile app with data persistence, background sync, and optimistic updates.
 
 ## Installation
 

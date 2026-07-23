@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
     card: {
       flex: 1,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
       overflow: 'hidden',
     },
@@ -36,11 +37,13 @@ export const createStyles = (colors: any) =>
       gap: 3,
       paddingHorizontal: 6,
       paddingVertical: 2,
-      borderRadius: 4,
+      borderRadius: RADIUS.badge,
     },
     badgeLabel: {
       fontSize: 10,
       fontWeight: '700',
+      letterSpacing: 0.6,
+      textTransform: 'uppercase',
     },
     points: {
       fontSize: 14,
@@ -57,7 +60,7 @@ export const createStyles = (colors: any) =>
       backgroundColor: colors.background.scrim + '80',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
     },
     lockedText: {
       fontSize: 11,

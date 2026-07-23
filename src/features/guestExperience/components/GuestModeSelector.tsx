@@ -5,6 +5,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import type { DemoShipment, DemoShipmentMode } from '../types';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface Props { shipments: DemoShipment[]; selectedMode: DemoShipmentMode; onSelect: (mode: DemoShipmentMode) => void; }
 
@@ -19,7 +20,7 @@ const ModeCard: React.FC<{ s: DemoShipment; sel: boolean; i: number; onSelect: (
         <Animated.View
           style={[
             styles.card,
-            { backgroundColor: colors.background.card, borderColor: sel ? colors.primary.main : colors.border, borderWidth: sel ? 2 : 1, shadowColor: sel ? colors.primary.main : 'transparent', shadowOffset: sel ? { width: 0, height: 4 } : { width: 0, height: 0 }, shadowOpacity: sel ? 0.15 : 0, shadowRadius: sel ? 12 : 0, elevation: sel ? 5 : 0 },
+            { backgroundColor: colors.background.card, borderColor: sel ? colors.primary.main : colors.border, borderWidth: sel ? 2 : HAIRLINE },
             a,
           ]}
         >

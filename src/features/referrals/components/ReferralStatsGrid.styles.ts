@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) => StyleSheet.create({
   grid: {
@@ -9,8 +10,8 @@ export const createStyles = (colors: any) => StyleSheet.create({
   item: {
     width: '48%',
     minHeight: 88,
-    borderRadius: 8,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     padding: 12,
     backgroundColor: colors.background.card,
     borderColor: colors.border,
@@ -22,8 +23,11 @@ export const createStyles = (colors: any) => StyleSheet.create({
     marginBottom: 8,
   },
   label: {
-    fontSize: 12,
-    fontWeight: '600',
+    // Waybill tracked uppercase micro-label (stat metadata).
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.7,
+    textTransform: 'uppercase',
   },
   value: {
     fontSize: 22,

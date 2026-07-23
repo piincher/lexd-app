@@ -15,6 +15,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 const ShimmerBlock: React.FC<{
   width: number | `${number}%`;
@@ -58,6 +59,7 @@ const GoodsSkeletonItem: React.FC = () => {
     <View
       style={[
         styles.card,
+        { borderColor: colors.border },
         {
           backgroundColor: colors.background.card,
           shadowColor: isDark ? 'transparent' : '#000',
@@ -110,13 +112,10 @@ const styles = StyleSheet.create({
     paddingTop: 4,
   },
   card: {
+    borderWidth: HAIRLINE,
     marginHorizontal: 16,
     marginVertical: 8,
     borderRadius: 12,
-    elevation: 2,
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
   },
   content: {
     flexDirection: 'row',

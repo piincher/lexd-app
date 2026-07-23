@@ -7,8 +7,7 @@ import type { ActiveWorkSummary } from '@src/shared/types/dashboard';
 
 interface Props {
   activeWork: ActiveWorkSummary;
-  onViewGoods: () => void;
-  onViewContainers: () => void;
+  onViewShipments: () => void;
   onViewPayments: () => void;
 }
 
@@ -17,8 +16,7 @@ const formatMoney = (value: number) =>
 
 export const PendingActionsRail: React.FC<Props> = ({
   activeWork,
-  onViewGoods,
-  onViewContainers,
+  onViewShipments,
   onViewPayments,
 }) => {
   const { colors } = useAppTheme();
@@ -47,8 +45,8 @@ export const PendingActionsRail: React.FC<Props> = ({
       icon: 'checkmark-circle-outline' as const,
       value: activeWork.readyForPickupGoods,
       label: 'Prêt pour retrait',
-      color: colors.status.success,
-      action: onViewGoods,
+      color: colors.accent.amber,
+      action: onViewShipments,
     },
     {
       id: 'payments',
@@ -63,8 +61,8 @@ export const PendingActionsRail: React.FC<Props> = ({
       icon: 'airplane-outline' as const,
       value: activeWork.inTransitGoods,
       label: 'En transit',
-      color: colors.status.info,
-      action: onViewContainers,
+      color: colors.primary.main,
+      action: onViewShipments,
     },
   ];
 

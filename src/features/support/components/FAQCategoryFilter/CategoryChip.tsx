@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import type { AppTheme } from '@src/constants/Theme';
 
 type ThemeColors = AppTheme['colors'];
@@ -90,8 +91,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 14,
     paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
+    borderRadius: RADIUS.badge,
+    borderWidth: HAIRLINE,
     marginRight: 8,
     minHeight: 44,
   },

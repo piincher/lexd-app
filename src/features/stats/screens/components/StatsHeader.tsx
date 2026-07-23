@@ -9,6 +9,7 @@ import { View, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { NotificationBell } from '@src/shared/ui/NotificationBell';
 import { useNavigation } from '@react-navigation/native';
@@ -110,7 +111,7 @@ const getStyles = (colors: any) =>
       gap: 6,
       paddingHorizontal: 12,
       paddingVertical: 6,
-      borderRadius: 20,
+      borderRadius: RADIUS.badge,
     },
     summaryText: {
       fontSize: 12,

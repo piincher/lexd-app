@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -16,7 +17,7 @@ export const createStyles = (colors: any) =>
       justifyContent: "center",
       minHeight: 52,
       paddingVertical: 12,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
     },
     primaryButton: {
       backgroundColor: colors.primary.main,

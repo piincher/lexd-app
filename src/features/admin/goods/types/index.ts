@@ -5,6 +5,7 @@
 
 import { BaseFilters } from '@src/api/types';
 import { userData } from '@src/shared/types/user';
+import type { GoodsPackage } from '@src/entities/goodsPackage';
 
 // ============================================
 // DOMAIN ENTITIES
@@ -83,6 +84,10 @@ export interface Goods {
   actualCBM: number;
   weight?: number;
   quantity: number;
+  packageCount?: number;
+  packedPackageCount?: number;
+  packagePackingStatus?: 'NOT_PACKED' | 'PARTIALLY_PACKED' | 'FULLY_PACKED';
+  packages?: GoodsPackage[];
   photos: string[];
   images?: string[];
   description: string;
@@ -135,6 +140,7 @@ export interface ReceiveGoodsInput {
   actualCBM?: number;
   weight?: number;
   quantity: number;
+  packageCount?: number;
   unitPrice: number;
   location: string;
   receivedByName: string;
@@ -251,6 +257,7 @@ export interface GoodsFormData {
   cbm: string;
   weight: string;
   quantity: string;
+  packageCount: string;
   unitPrice: string;
   location: string;
   receivedByName: string;
@@ -302,6 +309,7 @@ export interface GoodsFormErrors {
   cbm?: string;
   weight?: string;
   quantity?: string;
+  packageCount?: string;
   unitPrice?: string;
   location?: string;
   receivedByName?: string;

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { productType } from '@src/shared/types/order';
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS, HAIRLINE } from "@src/shared/ui/designLanguage";
 
 interface OrderQuickStatsProps {
    order: productType;
@@ -33,8 +34,11 @@ const StatBox = ({
                color: colors.text.primary,
             },
             statLabel: {
-               fontSize: 11,
-               color: colors.text.secondary,
+               fontSize: 9,
+               fontWeight: "700",
+               letterSpacing: 0.6,
+               textTransform: "uppercase",
+               color: colors.text.muted,
             },
          }),
       [colors]
@@ -42,7 +46,8 @@ const StatBox = ({
 
    return (
       <View style={styles.statBox}>
-         <MaterialCommunityIcons name={icon as any} size={22} color={colors.status.success} />
+         {/* Brand green: these are figures, not success states. */}
+         <MaterialCommunityIcons name={icon as any} size={21} color={colors.primary.main} />
          <Text style={styles.statValue}>{value}</Text>
          <Text style={styles.statLabel}>{label}</Text>
       </View>
@@ -55,18 +60,16 @@ export const OrderQuickStats: React.FC<OrderQuickStatsProps> = ({ order }) => {
    const styles = useMemo(
       () =>
          StyleSheet.create({
+            // Manifest-style figure strip: bordered, unshadowed.
             container: {
                flexDirection: "row",
                marginHorizontal: 16,
                marginTop: 16,
                backgroundColor: colors.background.card,
-               borderRadius: 14,
+               borderRadius: RADIUS.card,
+               borderWidth: HAIRLINE,
+               borderColor: colors.border,
                paddingVertical: 16,
-               shadowColor: colors.neutral[900],
-               shadowOffset: { width: 0, height: 1 },
-               shadowOpacity: 0.05,
-               shadowRadius: 4,
-               elevation: 2,
             },
             divider: {
                width: 1,

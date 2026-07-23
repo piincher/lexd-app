@@ -22,6 +22,7 @@ import { ShipmentKpiGrid, type KpiItem } from './components/ShipmentKpiGrid';
 import { SegmentTabs, type SegmentTab } from './components/SegmentTabs';
 import { CARGO_BAG_STATUS_CONFIG, CARGO_BAG_STATUS_LABELS } from '../constants';
 import { styles } from './CargoBagDetailScreen.styles';
+import { PackageAssignmentScannerModal } from '@src/entities/goodsPackage';
 
 const formatDate = (date?: string | null) => {
   if (!date) return null;
@@ -35,6 +36,7 @@ type TabKey = 'itinerary' | 'goods';
 export const CargoBagDetailScreen: React.FC = () => {
   const { colors } = useAppTheme();
   const [tab, setTab] = useState<TabKey>('itinerary');
+  const [scanVisible, setScanVisible] = useState(false);
   const {
     cargoBag, waypointPayload, goodsList, isLoading, isRefreshing, handleRefresh, handleBack,
     statusMenuVisible, setStatusMenuVisible, handleChangeStatus, removeMode,
@@ -157,10 +159,12 @@ export const CargoBagDetailScreen: React.FC = () => {
         selectedCount={selectedRemoveIds.length}
         onConfirmRemove={handleConfirmRemove}
         onAddGoods={handleAddGoods}
+        onScanGoods={() => setScanVisible(true)}
         onToggleRemoveMode={handleToggleRemoveMode}
         isRemoving={isRemoving}
         isEmpty={isEmpty}
       />
+      <PackageAssignmentScannerModal visible={scanVisible} targetType="AIR_CARGO_BAG" targetId={cargoBag._id} targetLabel={`Sac ${cargoBag.bagNumber}`} onDismiss={() => setScanVisible(false)} />
     </SafeAreaView>
   );
 };

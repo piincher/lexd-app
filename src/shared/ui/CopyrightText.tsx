@@ -20,7 +20,7 @@ const CopyrightText: FC<Props> = () => {
 			}),
 		[colors],
 	);
-	return <Text style={styles.container}>© {date.getFullYear()} ChinaLink Express. All rights reserved.</Text>;
+	return <Text style={styles.container}>© {date.getFullYear()} LEXD. All rights reserved.</Text>;
 };
 
 export default CopyrightText;

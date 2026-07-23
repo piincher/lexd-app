@@ -53,8 +53,8 @@ export const SharedShipmentCTA: React.FC<Props> = ({ url, reference }) => {
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `Suivez mon envoi ChinaLink Express: ${reference}\n${url}`,
-        title: 'Suivi ChinaLink Express',
+        message: `Suivez mon envoi LEXD: ${reference}\n${url}`,
+        title: 'Suivi LEXD',
       });
     } catch {
       // Silently fail
@@ -73,7 +73,7 @@ export const SharedShipmentCTA: React.FC<Props> = ({ url, reference }) => {
         color={colors.primary.main}
         style={styles.icon}
       />
-      <Text style={styles.title}>ChinaLink Express</Text>
+      <Text style={styles.title}>LEXD</Text>
       <Text style={styles.description}>
         Suivez vos propres envois et gérez vos commandes en créant un compte
       </Text>

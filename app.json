@@ -1,42 +1,45 @@
 {
   "expo": {
-    "name": "ChinaLinkExpress",
-    "slug": "ChinaLinkExpress",
-    "version": "2.10.1",
-    "orientation": "portrait",
-    "icon": "./assets/images/log.png",
+    "name": "LEXD",
+    "slug": "lexd",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/images/lexd-icon.png",
     "userInterfaceStyle": "automatic",
     "experiments": {
       "reactCompiler": true
     },
-    "scheme": "chinalinkexpress",
+    "scheme": "lexd",
     "plugins": [
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#ffffff",
-          "image": "./assets/images/splashscreen.png",
+          "backgroundColor": "#FFFFFF",
+          "image": "./assets/images/lexd-splash.png",
           "resizeMode": "contain",
-          "imageWidth": 200,
+          "imageWidth": 220,
           "dark": {
-            "backgroundColor": "#0F172A"
+            "image": "./assets/images/lexd-splash-dark.png",
+            "backgroundColor": "#0A1815"
           },
           "android": {
-            "backgroundColor": "#ffffff",
-            "image": "./assets/images/splashscreen.png",
+            "backgroundColor": "#FFFFFF",
+            "image": "./assets/images/lexd-splash.png",
             "resizeMode": "contain",
-            "imageWidth": 200,
+            "imageWidth": 220,
             "dark": {
-              "backgroundColor": "#0F172A"
+              "image": "./assets/images/lexd-splash-dark.png",
+              "backgroundColor": "#0A1815"
             }
           },
           "ios": {
-            "backgroundColor": "#ffffff",
-            "image": "./assets/images/splashscreen.png",
+            "backgroundColor": "#FFFFFF",
+            "image": "./assets/images/lexd-splash.png",
             "resizeMode": "contain",
-            "imageWidth": 200,
+            "imageWidth": 220,
             "dark": {
-              "backgroundColor": "#0F172A"
+              "image": "./assets/images/lexd-splash-dark.png",
+              "backgroundColor": "#0A1815"
             }
           }
         }
@@ -59,7 +62,8 @@
       [
         "expo-image-picker",
         {
-          "cameraPermission": "L'application accède à votre caméra pour vous permettre de prendre des photos et de les partager avec nous dans le chat."
+          "cameraPermission": "L'application accède à votre caméra pour vous permettre de prendre des photos et de les partager avec nous dans le chat.",
+          "microphonePermission": false
         }
       ],
       "expo-web-browser",
@@ -67,15 +71,8 @@
         "@sentry/react-native/expo",
         {
           "url": "https://sentry.io/",
-          "project": "chinalinkexpress",
+          "project": "lexd",
           "organization": "nuvotech"
-        }
-      ],
-      [
-        "expo-notifications",
-        {
-          "color": "#8B5CF6",
-          "enableBackgroundRemoteNotifications": true
         }
       ],
       "@react-native-community/datetimepicker",
@@ -87,24 +84,34 @@
         {
           "photosPermission": "L'application accède à votre galerie pour enregistrer votre marque d'expédition.",
           "savePhotosPermission": "L'application a besoin d'enregistrer la marque d'expédition dans votre galerie.",
-          "isAccessMediaLocationEnabled": true
+          "isAccessMediaLocationEnabled": false,
+          "granularPermissions": []
         }
       ]
     ],
     "assetBundlePatterns": [
-      "assets/images/*",
+      "assets/images/lexd-icon.png",
+      "assets/images/lexd-adaptive-icon.png",
+      "assets/images/lexd-logo.png",
+      "assets/images/lexd-splash.png",
+      "assets/images/lexd-splash-dark.png",
+      "assets/images/onboarding-1.png",
+      "assets/images/onboarding-2.png",
+      "assets/images/onboarding-3.png",
+      "assets/images/onboarding-4.png",
+      "assets/images/searchbox.png",
       "assets/fonts/*",
       "assets/favicon.png"
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.nuvotech.chinalinkexpress",
+      "bundleIdentifier": "com.nuvotech.lexd",
       "config": {
         "usesNonExemptEncryption": false
       },
       "associatedDomains": [
-        "applinks:chinalinkexpress.com",
-        "applinks:www.chinalinkexpress.com"
+        "applinks:www.lexdservices.com",
+        "applinks:lexdservices.com"
       ],
       "infoPlist": {
         "NSPhotoLibraryAddUsageDescription": "L'application enregistre votre marque d'expédition dans votre galerie pour que vous puissiez l'envoyer à votre fournisseur.",
@@ -113,18 +120,17 @@
           "itms-apps"
         ],
         "UIBackgroundModes": [
-          "remote-notification",
           "fetch"
         ]
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/log.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/lexd-adaptive-icon.png",
+        "backgroundColor": "#007757"
       },
       "googleServicesFile": "./google-services.json",
-      "package": "com.nuvotech.chinalinkexpress",
+      "package": "com.nuvotech.lexd",
       "intentFilters": [
         {
           "action": "VIEW",
@@ -132,12 +138,7 @@
           "data": [
             {
               "scheme": "https",
-              "host": "chinalinkexpress.com",
-              "pathPrefix": "/"
-            },
-            {
-              "scheme": "https",
-              "host": "www.chinalinkexpress.com",
+              "host": "www.lexdservices.com",
               "pathPrefix": "/"
             }
           ],
@@ -150,10 +151,14 @@
       "permissions": [
         "RECEIVE_BOOT_COMPLETED",
         "VIBRATE",
-        "WAKE_LOCK",
-        "READ_MEDIA_IMAGES",
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
+        "WAKE_LOCK"
+      ],
+      "blockedPermissions": [
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION"
       ]
     },
     "web": {
@@ -161,14 +166,12 @@
     },
     "extra": {
       "eas": {
-        "projectId": "e4e59c47-9dfe-4dff-8b6d-7cf9a102486d"
+        "projectId": "51211582-8e13-4158-a6c5-a429b3384902"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
-    "updates": {
-      "url": "https://u.expo.dev/e4e59c47-9dfe-4dff-8b6d-7cf9a102486d"
-    }
+    "updates": {}
   }
 }

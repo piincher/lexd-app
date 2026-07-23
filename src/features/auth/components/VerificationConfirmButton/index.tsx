@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 import { Theme } from '@src/constants/Theme';
 
 interface VerificationConfirmButtonProps {
@@ -52,7 +53,7 @@ export const VerificationConfirmButton: React.FC<VerificationConfirmButtonProps>
 const styles = StyleSheet.create({
   confirmBtn: {
     marginTop: 22,
-    borderRadius: 16,
+    borderRadius: RADIUS.control,
     overflow: "hidden",
   },
   confirmBtnDisabled: {

@@ -23,7 +23,7 @@ import type { UseFormSetValue } from 'react-hook-form';
 import type { userData } from '@src/shared/types/user';
 import type { ReceiveGoodsFormData } from '../types';
 
-const DRAFT_KEY = '@chinalink/receive_draft';
+const DRAFT_KEY = '@lexd/receive_draft';
 const DRAFT_TTL_MS = 24 * 60 * 60 * 1000;
 const SAVE_DEBOUNCE_MS = 500;
 

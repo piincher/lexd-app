@@ -42,7 +42,7 @@ export const buildExportFilename = (exportData: ExportResponse) => {
   const extension = EXTENSIONS[format];
   const entity = sanitizeFilePart(exportData.entity.toLowerCase());
   const exportId = sanitizeFilePart(exportData.exportId);
-  return `chinalink_${entity}_${exportId}.${extension}`;
+  return `lexd_${entity}_${exportId}.${extension}`;
 };
 
 export const downloadExportToCache = async (exportData: ExportResponse) => {
@@ -81,7 +81,7 @@ export const openExportFile = async (exportData: ExportResponse) => {
       type: file.mimeType,
       filename: file.filename,
       title: "Exporter le fichier",
-      message: "Export ChinaLink Express",
+      message: "Export LEXD",
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "";

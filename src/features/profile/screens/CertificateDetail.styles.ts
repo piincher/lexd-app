@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Fonts } from "@src/constants/Fonts";
+import { amber, ink } from "@src/shared/constants/brand";
+import { HAIRLINE, OVERLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 const hexToRgba = (hex: string, alpha: number) => {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -7,6 +9,14 @@ const hexToRgba = (hex: string, alpha: number) => {
   const b = parseInt(hex.slice(5, 7), 16);
   return `rgba(${r},${g},${b},${alpha})`;
 };
+
+// Static color constants for the certificate screens, which always render on
+// the dark gradient (Theme.gradients.dark) regardless of app theme.
+export const GOLD = amber[300];
+export const GOLD_DARK = amber[500];
+export const WHITE_60 = hexToRgba(ink[0], 0.6);
+export const WHITE_80 = hexToRgba(ink[0], 0.8);
+export const CARD_BORDER = hexToRgba(amber[500], 0.3);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const createStyles = (colors: any) => {
@@ -71,10 +81,10 @@ export const createStyles = (colors: any) => {
     },
     infoCard: {
       backgroundColor: cardBg,
-      borderRadius: 20,
+      borderRadius: RADIUS.card,
       padding: 20,
       marginBottom: 16,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: cardBorder,
     },
     infoRow: {
@@ -85,7 +95,7 @@ export const createStyles = (colors: any) => {
     infoIconWrapper: {
       width: 40,
       height: 40,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       backgroundColor: hexToRgba(colors.accent.gold, 0.12),
       alignItems: "center",
       justifyContent: "center",
@@ -95,7 +105,7 @@ export const createStyles = (colors: any) => {
       flex: 1,
     },
     infoLabel: {
-      fontSize: 12,
+      ...OVERLINE,
       fontFamily: Fonts.regular,
       color: white60,
       marginBottom: 4,
@@ -119,15 +129,15 @@ export const createStyles = (colors: any) => {
     copyButton: {
       width: 36,
       height: 36,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
       backgroundColor: hexToRgba(colors.accent.gold, 0.15),
       alignItems: "center",
       justifyContent: "center",
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: cardBorder,
     },
     cardDivider: {
-      height: 1,
+      height: HAIRLINE,
       backgroundColor: hexToRgba(colors.text.inverse, 0.08),
     },
     badgeContainer: {
@@ -141,20 +151,21 @@ export const createStyles = (colors: any) => {
       gap: 4,
       paddingHorizontal: 12,
       paddingVertical: 5,
-      borderRadius: 20,
+      borderRadius: RADIUS.badge,
     },
     statusText: {
       fontSize: 12,
       fontFamily: Fonts.bold,
       color: colors.text.inverse,
       letterSpacing: 1,
+      textTransform: "uppercase",
     },
     verificationCard: {
       backgroundColor: cardBg,
-      borderRadius: 20,
+      borderRadius: RADIUS.card,
       padding: 20,
       marginBottom: 24,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: hexToRgba(colors.text.inverse, 0.1),
     },
     verificationHeader: {
@@ -174,10 +185,10 @@ export const createStyles = (colors: any) => {
       alignItems: "center",
       gap: 10,
       backgroundColor: hexToRgba(colors.text.inverse, 0.08),
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       paddingHorizontal: 14,
       paddingVertical: 12,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: hexToRgba(colors.text.inverse, 0.1),
     },
     urlText: {
@@ -199,7 +210,7 @@ export const createStyles = (colors: any) => {
       marginBottom: 24,
     },
     downloadButton: {
-      borderRadius: 16,
+      borderRadius: RADIUS.control,
       overflow: "hidden",
     },
     downloadButtonDisabled: {
@@ -211,7 +222,7 @@ export const createStyles = (colors: any) => {
       justifyContent: "center",
       gap: 10,
       paddingVertical: 16,
-      borderRadius: 16,
+      borderRadius: RADIUS.control,
     },
     downloadText: {
       fontSize: 16,
@@ -227,7 +238,7 @@ export const createStyles = (colors: any) => {
       justifyContent: "center",
       gap: 10,
       paddingVertical: 16,
-      borderRadius: 16,
+      borderRadius: RADIUS.control,
       borderWidth: 1.5,
       borderColor: cardBorder,
       backgroundColor: hexToRgba(colors.accent.gold, 0.08),

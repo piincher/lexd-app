@@ -12,9 +12,6 @@ export const getGallerySupportedCodeLabel = () =>
   Platform.OS === 'ios' ? 'QR code' : 'QR code ou code-barres';
 
 export const pickGalleryTrackingCode = async (): Promise<GalleryTrackingDecodeResult> => {
-  const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  if (status !== 'granted') return { status: 'permission-denied' };
-
   const result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ['images'],
     allowsEditing: false,

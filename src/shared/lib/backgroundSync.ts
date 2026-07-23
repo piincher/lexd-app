@@ -17,7 +17,7 @@ import {
 } from './offlineQueue';
 
 
-const BACKGROUND_SYNC_TASK = 'CHINALINK_BACKGROUND_SYNC';
+const BACKGROUND_SYNC_TASK = 'LEXD_BACKGROUND_SYNC';
 
 export interface SyncResult {
   success: boolean;

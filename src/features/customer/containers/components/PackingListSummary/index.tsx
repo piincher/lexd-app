@@ -10,6 +10,7 @@ import { Card, Divider, Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface PackingListSummaryProps {
   totalItems: number;
@@ -27,8 +28,9 @@ export const PackingListSummary: React.FC<PackingListSummaryProps> = ({
   const { colors, isDark } = useAppTheme();
   const styles = StyleSheet.create({
     summaryCard: {
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
       marginBottom: 16,
-      elevation: 1,
     },
     summaryHeader: {
       flexDirection: 'row',

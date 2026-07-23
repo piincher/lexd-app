@@ -13,18 +13,17 @@ import { useAppTheme } from '@src/providers';
 import { useAuth } from '@src/store/Auth';
 import { useTabBarStore } from '@src/store/tabBarStore';
 import { isAdminRole } from '@src/shared/lib/roles';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 // Screens
 import { HomeScreen } from '@src/features/home';
 import { GuestPreviewScreen } from '@src/features/guestExperience';
 import { CustomerDashboardScreen } from '@src/features/customer/dashboard';
 import { AdminDashBoard, AdminToolsScreen } from '@src/features/admin/dashboard';
-import { OrdersScreen as Orders } from '@src/features/orders';
 import { StatsScreen as Stats } from '@src/features/stats';
 import { ProfileScreen as Profile } from '@src/features/profile';
-import { MemberPointsScreen } from '@src/features/referrals';
-import MyGoodsScreen from '@src/features/goods/screens/MyGoodsScreen';
-import MyContainersScreen from '@src/features/customer/containers/screens/MyContainersScreen';
+import { ShipmentsScreen } from '@src/features/shipments';
+import { MyPaymentHistoryScreen } from '@src/features/payments';
 import AdminGoodsList from '@src/features/admin/goods/screens/GoodsListScreen';
 import AdminContainerListScreen from '@src/features/admin/containers/screens/ContainerListScreen';
 
@@ -90,8 +89,12 @@ export const HomeBottomTab: React.FC = () => {
       component: CustomerDashboardScreen,
       show: !adminRole && !!token,
       options: {
-        tabBarLabel: 'Tableau de Bord',
-        tabBarIcon: ({ color, size }) => <AntDesign name="layout" color={color} size={size} />,
+        // "Accueil", not "Tableau de Bord": it is the first tab for a signed-in
+        // customer exactly as Home is for a guest, and the old label was the
+        // first to truncate on a narrow bar.
+        tabBarLabel: 'Accueil',
+        tabBarAccessibilityLabel: 'Accueil',
+        tabBarIcon: ({ color, size }) => <AntDesign name="home" color={color} size={size} />,
       },
     },
     {
@@ -104,43 +107,31 @@ export const HomeBottomTab: React.FC = () => {
       },
     },
     {
-      name: 'Orders',
-      component: Orders,
+      // Replaces the Orders / MyGoods / MyContainers trio. Those were three
+      // views of one shipment — the operational decomposition leaking into the
+      // customer's navigation. Goods are now the contents of a shipment, and
+      // an order is simply a shipment that has not been consolidated yet.
+      // All three screens stay registered on the stack, so deep links and any
+      // remaining direct navigation still resolve.
+      name: 'Shipments',
+      component: ShipmentsScreen,
       show: !adminRole && !!token,
       options: {
-        tabBarLabel: 'Commandes',
-        tabBarAccessibilityLabel: 'Commandes',
-        tabBarIcon: ({ color, size }) => <FontAwesome5 name="clipboard-list" size={size} color={color} />,
-      },
-    },
-    {
-      name: 'MemberPoints',
-      component: MemberPointsScreen,
-      show: !adminRole && !!token,
-      options: {
-        tabBarLabel: 'Points',
-        tabBarAccessibilityLabel: 'Mes points',
-        tabBarIcon: ({ color, size }) => <FontAwesome5 name="coins" size={size} color={color} />,
-      },
-    },
-    {
-      name: 'MyGoods',
-      component: MyGoodsScreen,
-      show: !adminRole && !!token,
-      options: {
-        tabBarLabel: 'Mes Marchandises',
-        tabBarAccessibilityLabel: 'Mes Marchandises',
-        tabBarIcon: ({ color, size }) => <FontAwesome5 name="box" size={size} color={color} />,
-      },
-    },
-    {
-      name: 'MyContainers',
-      component: MyContainersScreen,
-      show: !adminRole && !!token,
-      options: {
-        tabBarLabel: 'Expéditions',
-        tabBarAccessibilityLabel: 'Mes expéditions',
+        tabBarLabel: 'Envois',
+        tabBarAccessibilityLabel: 'Mes envois',
         tabBarIcon: ({ color, size }) => <FontAwesome5 name="route" size={size} color={color} />,
+      },
+    },
+    {
+      // Promoted out of the profile stack. What a customer owes gates the
+      // release of their cargo, so it should not take three taps to reach.
+      name: 'Payments',
+      component: MyPaymentHistoryScreen,
+      show: !adminRole && !!token,
+      options: {
+        tabBarLabel: 'Paiements',
+        tabBarAccessibilityLabel: 'Mes paiements',
+        tabBarIcon: ({ color, size }) => <FontAwesome5 name="wallet" size={size} color={color} />,
       },
     },
     {
@@ -188,7 +179,10 @@ export const HomeBottomTab: React.FC = () => {
       component: Profile,
       show: true,
       options: {
-        tabBarLabel: 'Profil',
+        // "Compte" rather than "Profil": this tab now holds points, support,
+        // documents and settings, not just profile details.
+        tabBarLabel: 'Compte',
+        tabBarAccessibilityLabel: 'Mon compte',
         tabBarIcon: ({ color, size }) => <Entypo name="user" color={color} size={size} />,
       },
     },
@@ -217,19 +211,17 @@ export const HomeBottomTab: React.FC = () => {
           height: 54,
           paddingVertical: 3,
         },
+        // Border-first, matching the rest of the app: the hairline rule
+        // separates the bar, so the shadow stack is no longer needed.
         tabBarStyle: {
           backgroundColor: colors.background.card,
           borderTopColor: colors.border,
-          borderTopWidth: 1,
+          borderTopWidth: HAIRLINE,
           display: showTabBar ? 'flex' : 'none',
           height: tabBarHeight,
           paddingBottom: bottomPadding,
           paddingTop: 4,
-          elevation: 12,
-          shadowColor: colors.neutral[900],
-          shadowOpacity: 0.08,
-          shadowRadius: 8,
-          shadowOffset: { width: 0, height: -2 },
+          elevation: 0,
         },
       }}
       screenListeners={{

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import * as WebBrowser from "expo-web-browser";
 import { CommonActions } from "@react-navigation/native";
 import { navigationRef } from "@src/navigations/navigationRef";
@@ -14,16 +14,29 @@ export const useAnnouncementHost = () => {
   const { markRead, dismiss, acknowledge } = useAnnouncementActions();
   const [selected, setSelected] = useState<Announcement | null>(null);
   const [hiddenIds, setHiddenIds] = useState<Set<string>>(() => new Set());
+  const autoOpenedIds = useRef<Set<string>>(new Set());
 
   const visibleAnnouncements = useMemo(
     () => data.filter((item) => !hiddenIds.has(item._id)),
     [data, hiddenIds]
   );
 
+  // Blocking modal: an acknowledgement is required and not yet given.
   const forcedModal = useMemo(
     () =>
       visibleAnnouncements.find(
         (item) => item.requiresAcknowledgement && !item.viewerState?.acknowledgedAt
+      ),
+    [visibleAnnouncements]
+  );
+
+  // Auto-opening modal: admin chose the MODAL placement (a pop-up on open) but
+  // did not require an acknowledgement. Without this, MODAL-placed announcements
+  // never rendered at all.
+  const autoModal = useMemo(
+    () =>
+      visibleAnnouncements.find(
+        (item) => item.placement === "MODAL" && !item.requiresAcknowledgement
       ),
     [visibleAnnouncements]
   );
@@ -36,9 +49,19 @@ export const useAnnouncementHost = () => {
     [visibleAnnouncements]
   );
 
+  // Auto-present the highest-intent pop-up: a blocking ack modal wins over a
+  // plain MODAL. `hiddenIds` keeps a closed auto-modal from immediately
+  // re-opening while it is still in the active list.
   useEffect(() => {
-    if (forcedModal) setSelected(forcedModal);
-  }, [forcedModal]);
+    const next = forcedModal ?? autoModal;
+    if (!next || selected || autoOpenedIds.current.has(next._id)) return;
+
+    autoOpenedIds.current.add(next._id);
+    setSelected(next);
+    if (autoModal && !forcedModal && canUseNetworkActions()) {
+      markRead.mutate(next._id);
+    }
+  }, [forcedModal, autoModal, selected, markRead.mutate]);
 
   const handleOpen = useCallback(
     (announcement: Announcement) => {
@@ -74,8 +97,17 @@ export const useAnnouncementHost = () => {
   }, [selected]);
 
   const closeModal = useCallback(() => {
-    if (!selected?.requiresAcknowledgement) setSelected(null);
-  }, [selected]);
+    if (selected?.requiresAcknowledgement) return;
+    const closing = selected;
+    setSelected(null);
+    // A MODAL-placed pop-up would re-trigger the auto-open effect while it is
+    // still active — hide it locally, and dismiss it server-side when allowed
+    // so it does not reappear on the next launch.
+    if (closing?.placement === "MODAL") {
+      setHiddenIds((current) => new Set(current).add(closing._id));
+      if (closing.dismissible && canUseNetworkActions()) dismiss.mutate(closing._id);
+    }
+  }, [selected, dismiss]);
 
   const acknowledgeSelected = useCallback(() => {
     if (!selected) return;

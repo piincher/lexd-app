@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
 import { Theme } from '@src/constants/Theme';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const useWaypointCardStyles = () => {
   const { colors, isDark } = useAppTheme();
@@ -20,21 +21,15 @@ export const useWaypointCardStyles = () => {
           borderRadius: 2,
         },
         waypointCard: {
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
           backgroundColor: colors.background.card,
           borderRadius: 16,
           overflow: 'hidden',
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 1 },
-          shadowOpacity: 0.05,
-          shadowRadius: 2,
-          elevation: 2,
         },
         waypointCardCurrent: {
           borderWidth: 2,
           borderColor: colors.status.info,
-          shadowColor: colors.status.info,
-          shadowOpacity: 0.15,
-          elevation: 4,
         },
         waypointCardCompleted: {
           opacity: 0.85,
@@ -42,17 +37,14 @@ export const useWaypointCardStyles = () => {
         waypointCardDakar: {
           borderWidth: 2,
           borderColor: colors.status.info,
-          elevation: 4,
         },
         waypointCardBorder: {
           borderWidth: 2,
           borderColor: colors.status.warning,
-          elevation: 4,
         },
         waypointCardWarehouse: {
           borderWidth: 2,
           borderColor: colors.primary.main,
-          elevation: 4,
         },
         wpStatusBar: {
           height: 4,

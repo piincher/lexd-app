@@ -19,7 +19,7 @@ export const StatusBanner: React.FC<StatusBannerProps> = ({ container }) => {
     return (
       <View style={styles.readyBanner}>
         <MaterialCommunityIcons name="truck-delivery-outline" size={16} color={colors.text.inverse} />
-        <Text style={styles.readyBannerText}>{"Prêt pour retrait à l'entrepôt ChinaLink"}</Text>
+        <Text style={styles.readyBannerText}>{"Prêt pour retrait à l'entrepôt LEXD"}</Text>
       </View>
     );
   }

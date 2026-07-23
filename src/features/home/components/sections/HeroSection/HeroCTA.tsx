@@ -30,7 +30,7 @@ export const HeroCTA: React.FC = () => {
 
   return (
     <Pressable
-      onPress={() => openSupportWhatsApp("Bonjour ChinaLink, J ai une demande d'expedition a faire :)")}
+      onPress={() => openSupportWhatsApp("Bonjour LEXD, J ai une demande d'expedition a faire :)")}
       onPressIn={onPressIn}
       onPressOut={onPressOut}
       style={styles.ctaWrapper}

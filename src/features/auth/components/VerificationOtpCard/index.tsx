@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Platform, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import type { TextInput } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { Fonts } from "@src/constants/Fonts";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 import { VerificationOtpInputs } from "../VerificationOtpInputs";
 import { VerificationConfirmButton } from "../VerificationConfirmButton";
 import { VerificationResend } from "../VerificationResend";
@@ -76,19 +77,10 @@ export const VerificationOtpCard: React.FC<VerificationOtpCardProps> = ({
 
 const createStyles = (colors: any) => StyleSheet.create({
   otpCard: {
-    borderRadius: 24,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     padding: 24,
     marginTop: 22,
-    ...Platform.select({
-      ios: {
-        shadowColor: colors.neutral[900],
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.08,
-        shadowRadius: 16,
-      },
-      android: { elevation: 4 },
-    }),
   },
   cardHeader: {
     marginBottom: 18,
@@ -106,7 +98,7 @@ const createStyles = (colors: any) => StyleSheet.create({
     marginTop: 5,
   },
   errorBox: {
-    borderRadius: 14,
+    borderRadius: RADIUS.control,
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginTop: 14,

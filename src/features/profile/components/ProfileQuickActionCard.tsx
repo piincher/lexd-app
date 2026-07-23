@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Pressable, StyleSheet, Platform } from 'react-native';
+import { View, Pressable, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import type { AppTheme } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { hapticLight } from '@src/shared/lib/haptics';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 type ThemeColors = AppTheme['colors'];
 type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
@@ -66,17 +67,8 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
     width: '47.8%',
     minHeight: 112,
     padding: 14,
-    borderRadius: 16,
-    borderWidth: 1,
-    ...Platform.select({
-      ios: {
-        shadowColor: colors.neutral[900],
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.04,
-        shadowRadius: 8,
-      },
-      android: { elevation: 1 },
-    }),
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
   },
   pressed: {
     opacity: 0.76,
@@ -91,7 +83,7 @@ const createStyles = (colors: ThemeColors) => StyleSheet.create({
   iconBox: {
     width: 42,
     height: 42,
-    borderRadius: 13,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
   },

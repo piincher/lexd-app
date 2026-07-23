@@ -26,8 +26,8 @@
         "APP_ENV": "staging",
         "APP_VARIANT": "staging",
         "EXPO_PUBLIC_ENV": "staging",
-        "EXPO_PUBLIC_API_URL": "https://chinalinkexpressbackend.onrender.com/api/v1",
-        "EXPO_PUBLIC_API_URL_V2": "https://chinalinkexpressbackend.onrender.com/api/v2"
+        "EXPO_PUBLIC_API_URL": "https://api.lexdservices.com/api/v1",
+        "EXPO_PUBLIC_API_URL_V2": "https://api.lexdservices.com/api/v2"
       },
       "ios": {
         "resourceClass": "m-medium",
@@ -45,8 +45,8 @@
         "APP_ENV": "production",
         "APP_VARIANT": "production",
         "EXPO_PUBLIC_ENV": "production",
-        "EXPO_PUBLIC_API_URL": "https://api.chinalinkexpress.com/api/v1",
-        "EXPO_PUBLIC_API_URL_V2": "https://api.chinalinkexpress.com/api/v2"
+        "EXPO_PUBLIC_API_URL": "https://api.lexdservices.com/api/v1",
+        "EXPO_PUBLIC_API_URL_V2": "https://api.lexdservices.com/api/v2"
       },
       "ios": {
         "resourceClass": "m-medium",
@@ -64,8 +64,8 @@
         "APP_ENV": "production",
         "APP_VARIANT": "production",
         "EXPO_PUBLIC_ENV": "production",
-        "EXPO_PUBLIC_API_URL": "https://api.chinalinkexpress.com/api/v1",
-        "EXPO_PUBLIC_API_URL_V2": "https://api.chinalinkexpress.com/api/v2"
+        "EXPO_PUBLIC_API_URL": "https://api.lexdservices.com/api/v1",
+        "EXPO_PUBLIC_API_URL_V2": "https://api.lexdservices.com/api/v2"
       },
       "android": {
         "buildType": "apk"

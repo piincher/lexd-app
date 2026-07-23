@@ -45,20 +45,22 @@ const styles = StyleSheet.create({
       marginTop: 10,
       gap: 8,
    },
+   // Squared meter, matching the app's geometry — no rounded caps.
    progressTrack: {
       flex: 1,
       height: 4,
-      borderRadius: 2,
+      borderRadius: 0,
       overflow: "hidden",
    },
    progressFill: {
       height: "100%",
-      borderRadius: 2,
+      borderRadius: 0,
    },
    progressLabel: {
       fontSize: 10,
-      fontWeight: "600",
-      width: 28,
+      fontWeight: "700",
+      letterSpacing: 0.4,
+      width: 30,
       textAlign: "right",
    },
 });

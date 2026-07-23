@@ -43,7 +43,7 @@ export const buildOrderShareMessage = (order: productType): string => {
     order?.contenairNumber;
 
   const lines = [
-    'China Link Express — Commande',
+    'LEXD — Commande',
     order?.code ? `Code : ${order.code}` : null,
     order?.clientName ? `Client : ${order.clientName}` : null,
     order?.clientPhone ? `Téléphone : ${order.clientPhone}` : null,

@@ -8,6 +8,7 @@ import { View, StyleSheet } from 'react-native';
 import { Appbar, Badge } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 interface TicketListHeaderProps {
   onBack: () => void;
@@ -27,7 +28,7 @@ export const TicketListHeader: React.FC<TicketListHeaderProps> = ({
   const { colors } = useAppTheme();
 
   return (
-    <Appbar.Header style={[styles.header, { backgroundColor: colors.background.default }]}>
+    <Appbar.Header style={[styles.header, { backgroundColor: colors.background.default, borderBottomColor: colors.border }]}>
       <Appbar.BackAction onPress={onBack} />
       <Appbar.Content title="Assistance" titleStyle={[styles.title, { color: colors.text.primary }]} />
       <Appbar.Action
@@ -53,8 +54,7 @@ export const TicketListHeader: React.FC<TicketListHeaderProps> = ({
 
 const styles = StyleSheet.create({
   header: {
-    elevation: 0,
-    shadowOpacity: 0,
+    borderBottomWidth: HAIRLINE,
   },
   title: {
     fontFamily: Fonts.bold,

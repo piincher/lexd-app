@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
     container: {
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 20,
       gap: 16,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     header: {
@@ -56,15 +57,18 @@ export const createStyles = (colors: any) =>
       color: colors.text.primary,
     },
     balanceLabel: {
-      fontSize: 12,
+      // Waybill tracked uppercase micro-label (balance metadata).
+      fontSize: 10,
       color: colors.text.secondary,
-      fontWeight: '600',
+      fontWeight: '700',
+      letterSpacing: 0.7,
+      textTransform: 'uppercase',
     },
     pendingBox: {
       flexDirection: 'row',
       alignItems: 'center',
       gap: 8,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       padding: 10,
     },
     pendingText: {
@@ -83,7 +87,7 @@ export const createStyles = (colors: any) =>
       justifyContent: 'center',
       gap: 6,
       minHeight: 46,
-      borderRadius: 10,
+      borderRadius: RADIUS.control,
     },
     redeemButton: {
       gap: 6,
@@ -94,7 +98,7 @@ export const createStyles = (colors: any) =>
       color: colors.text.inverse,
     },
     historyButton: {
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       backgroundColor: colors.background.paper,
     },
     historyText: {

@@ -73,7 +73,7 @@ export const exportRedemptionsCsv = async (rows: ProductRedemption[]): Promise<b
       type: 'text/csv',
       filename,
       title: 'Exporter les échanges',
-      message: 'Échanges produits — ChinaLink Express',
+      message: 'Échanges produits — LEXD',
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : '';

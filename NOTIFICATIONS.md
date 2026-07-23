@@ -2,7 +2,7 @@
 
 ## Overview
 
-ChinaLink Express uses Expo Notifications for cross-platform push notification handling with support for:
+LEXD uses Expo Notifications for cross-platform push notification handling with support for:
 - Push notifications (FCM for Android, APNS for iOS)
 - Local scheduled notifications
 - Notification preferences per type

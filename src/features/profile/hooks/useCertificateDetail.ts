@@ -30,7 +30,7 @@ export function useCertificateDetail({
     [issuedAt]
   );
 
-  const verificationUrl = `chinalinkexpress.com/verify/${verificationCode}`;
+  const verificationUrl = `lexdservices.com/verify/${verificationCode}`;
   const canDownload = !!(certificateUrl || certificateMongoId);
 
   const handleCopyCode = useCallback(async () => {
@@ -68,7 +68,7 @@ export function useCertificateDetail({
   const handleShare = useCallback(async () => {
     try {
       await Share.share({
-        message: `Je suis un expéditeur certifié ChinaLink Express ! Vérifiez mon certificat : https://${verificationUrl}`,
+        message: `Je suis un expéditeur certifié LEXD ! Vérifiez mon certificat : https://${verificationUrl}`,
       });
     } catch (_error) {
       // User cancelled or share failed silently

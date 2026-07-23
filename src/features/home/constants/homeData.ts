@@ -91,7 +91,7 @@ export const BENEFITS = [
 ] as const;
 
 // ============================================
-// COMPARISON: CHINALINK vs OTHERS
+// COMPARISON: LEXD vs OTHERS
 // ============================================
 
 export type ComparisonStatus = 'yes' | 'no' | 'partial';
@@ -100,8 +100,8 @@ export interface ComparisonFeature {
   label: string;
   icon: string;
   color: string;
-  chinalink: ComparisonStatus;
-  chinalinkDetail?: string;
+  lexd: ComparisonStatus;
+  lexdDetail?: string;
   others: ComparisonStatus;
   othersDetail?: string;
 }
@@ -111,8 +111,8 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
     label: 'Suivi en temps reel',
     icon: 'location-dot',
     color: Theme.colors.status.success,
-    chinalink: 'yes',
-    chinalinkDetail: 'App mobile + notifications',
+    lexd: 'yes',
+    lexdDetail: 'App mobile + notifications',
     others: 'partial',
     othersDetail: 'WhatsApp seulement',
   },
@@ -120,8 +120,8 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
     label: 'Dedouanement inclus',
     icon: 'file-invoice',
     color: Theme.colors.primary.main,
-    chinalink: 'yes',
-    chinalinkDetail: 'Inclus dans le prix',
+    lexd: 'yes',
+    lexdDetail: 'Inclus dans le prix',
     others: 'partial',
     othersDetail: 'Frais supplementaires',
   },
@@ -129,8 +129,8 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
     label: 'Assurance colis',
     icon: 'shield-halved',
     color: Theme.colors.status.warning,
-    chinalink: 'yes',
-    chinalinkDetail: 'Couverture complete',
+    lexd: 'yes',
+    lexdDetail: 'Couverture complete',
     others: 'partial',
     othersDetail: 'Limitee ou absente',
   },
@@ -138,8 +138,8 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
     label: 'Support client',
     icon: 'headset',
     color: Theme.colors.status.info,
-    chinalink: 'yes',
-    chinalinkDetail: '24/7 WhatsApp + App',
+    lexd: 'yes',
+    lexdDetail: '24/7 WhatsApp + App',
     others: 'no',
     othersDetail: 'Horaires limites',
   },
@@ -147,8 +147,8 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
     label: 'Transparence des prix',
     icon: 'tags',
     color: Theme.colors.primary.main,
-    chinalink: 'yes',
-    chinalinkDetail: 'Prix fixes, pas de surprises',
+    lexd: 'yes',
+    lexdDetail: 'Prix fixes, pas de surprises',
     others: 'partial',
     othersDetail: 'Frais caches frequents',
   },
@@ -156,8 +156,8 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
     label: 'Delai de livraison',
     icon: 'bolt',
     color: Theme.colors.status.error,
-    chinalink: 'yes',
-    chinalinkDetail: '2-3 sem (air) / 6-8 sem (mer)',
+    lexd: 'yes',
+    lexdDetail: '2-3 sem (air) / 6-8 sem (mer)',
     others: 'partial',
     othersDetail: 'Retards frequents',
   },
@@ -165,8 +165,8 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
     label: 'Entrepot en Chine',
     icon: 'warehouse',
     color: Theme.colors.accent.gold,
-    chinalink: 'yes',
-    chinalinkDetail: 'Entrepot propre',
+    lexd: 'yes',
+    lexdDetail: 'Entrepot propre',
     others: 'yes',
     othersDetail: 'Partage ou tiers',
   },
@@ -174,8 +174,8 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
     label: 'Certificat de fidelite',
     icon: 'award',
     color: Theme.colors.status.info,
-    chinalink: 'yes',
-    chinalinkDetail: 'Certificat verifiable',
+    lexd: 'yes',
+    lexdDetail: 'Certificat verifiable',
     others: 'no',
     othersDetail: 'Non disponible',
   },
@@ -183,8 +183,8 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
     label: 'Livraison porte-a-porte',
     icon: 'truck-fast',
     color: Theme.colors.status.error,
-    chinalink: 'yes',
-    chinalinkDetail: 'Bamako',
+    lexd: 'yes',
+    lexdDetail: 'Bamako',
     others: 'yes',
     othersDetail: 'Bamako seulement',
   },
@@ -196,7 +196,7 @@ export const COMPARISON_FEATURES: ComparisonFeature[] = [
 // ============================================
 
 export const COMPARISON_SUMMARY = {
-  chinalinkScore: 10,
+  lexdScore: 10,
   othersScore: 3,
   totalFeatures: 10,
 };
@@ -206,9 +206,9 @@ export const COMPARISON_SUMMARY = {
 // ============================================
 
 export const PARTNER_LOGOS = [
-  'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/cma-cgm.png',
-  'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/maersk.png',
-  'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/hapag.png',
-  'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/ethiopian.png',
-  'https://chinalinkexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/turkish.png',
+  'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/cma-cgm.png',
+  'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/maersk.png',
+  'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/hapag.png',
+  'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/ethiopian.png',
+  'https://lexd.nyc3.cdn.digitaloceanspaces.com/airshipping/turkish.png',
 ] as const;

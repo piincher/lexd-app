@@ -7,6 +7,7 @@ import React, { useMemo } from "react";
 import { StyleSheet } from "react-native";
 import { Button } from "react-native-paper";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 
 interface SaveSettingsButtonProps {
   onPress: () => void;
@@ -29,7 +30,7 @@ export const SaveSettingsButton: React.FC<SaveSettingsButtonProps> = ({
         button: {
           marginHorizontal: 16,
           marginBottom: 16,
-          borderRadius: 12,
+          borderRadius: RADIUS.control,
         },
         buttonContent: {
           paddingVertical: 8,

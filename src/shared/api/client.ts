@@ -69,13 +69,13 @@ const API_CONFIG = {
     timeout: 10000,
   },
   staging: {
-    baseURL: 'https://chinalinkexpressbackend.onrender.com/api/v1',
-    baseURLV2: 'https://chinalinkexpressbackend.onrender.com/api/v2',
+    baseURL: 'https://api.lexdservices.com/api/v1',
+    baseURLV2: 'https://api.lexdservices.com/api/v2',
     timeout: 15000,
   },
   production: {
-    baseURL: 'https://api.chinalinkexpress.com/api/v1',
-    baseURLV2: 'https://api.chinalinkexpress.com/api/v2',
+    baseURL: 'https://api.lexdservices.com/api/v1',
+    baseURLV2: 'https://api.lexdservices.com/api/v2',
     timeout: 15000,
   },
 } as const;
@@ -210,6 +210,12 @@ const getErrorCode = (responseData?: ApiResponse<unknown> | Record<string, unkno
 
   if (typeof error === 'string') return error;
 
+  const errors = data.errors;
+  if (typeof errors === 'object' && errors !== null && 'code' in errors) {
+    const errorsCode = (errors as { code?: unknown }).code;
+    if (typeof errorsCode === 'string') return errorsCode;
+  }
+
   const message = data.message;
   return typeof message === 'string' ? message : undefined;
 };
@@ -249,14 +255,16 @@ export class ApiClientError extends Error {
     // Backend format: { success, data, message, error }
     const message = responseData?.message || error.message;
     const errorField = responseData?.error;
-    const code = (typeof errorField === 'string' ? errorField : errorField?.code) || 'UNKNOWN_ERROR';
+    const code = getErrorCode(responseData) || 'UNKNOWN_ERROR';
     
     super(message);
     
     this.name = 'ApiClientError';
     this.code = code;
     this.statusCode = error.response?.status;
-    this.details = undefined;
+    this.details = responseData?.error && typeof responseData.error === 'object'
+      ? responseData.error.details
+      : undefined;
     this.originalError = error;
   }
 

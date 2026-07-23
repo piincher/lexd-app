@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Dimensions, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import Animated, { useAnimatedStyle, interpolate, Extrapolation, SharedValue } from "react-native-reanimated";
@@ -9,7 +9,6 @@ import { Theme } from "@src/constants/Theme";
 import { getInitials, getAvatarColor } from "../../lib/clientUtils";
 import { userData } from "@src/shared/types/user";
 
-const { width: SCREEN_W } = Dimensions.get("window");
 const HEADER_HEIGHT = 280;
 
 interface ClientDetailParallaxHeaderProps {
@@ -69,6 +68,7 @@ export const ClientDetailParallaxHeader: React.FC<ClientDetailParallaxHeaderProp
         </Animated.View>
         <Animated.View style={[{ alignItems: "center", marginTop: 12 }, nameStyle]}>
           <Text style={styles.name}>{user?.firstName} {user?.lastName}</Text>
+          {!!user?.shippingClientId && <Text style={styles.clientId}>{user.shippingClientId}</Text>}
           <Text style={styles.role}>{user?.role || "Client"}</Text>
         </Animated.View>
       </View>
@@ -124,5 +124,12 @@ const styles = {
     color: "rgba(255,255,255,0.8)",
     marginTop: 4,
     textTransform: "capitalize" as const,
+  },
+  clientId: {
+    fontSize: 15,
+    color: "#FFFFFF",
+    fontWeight: "800" as const,
+    marginTop: 6,
+    letterSpacing: 0.5,
   },
 };

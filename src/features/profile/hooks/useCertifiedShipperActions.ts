@@ -34,7 +34,7 @@ export const useCertifiedShipperActions = (
     if (progress?.certificate?.certificateUrl) {
       try {
         await Share.share({
-          message: `Je suis un expéditeur certifié ChinaLink Express ! Vérifiez mon certificat : ${progress.certificate.certificateUrl}`,
+          message: `Je suis un expéditeur certifié LEXD ! Vérifiez mon certificat : ${progress.certificate.certificateUrl}`,
           url: progress.certificate.certificateUrl,
         });
       } catch { /* User cancelled or share failed silently */ }

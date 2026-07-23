@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Theme } from '@src/constants/Theme';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStatsSkeletonStyles = (colors: any) =>
   StyleSheet.create({
@@ -12,8 +12,8 @@ export const createStatsSkeletonStyles = (colors: any) =>
       paddingHorizontal: 20,
       paddingTop: 12,
       paddingBottom: 28,
-      borderBottomLeftRadius: 24,
-      borderBottomRightRadius: 24,
+      borderBottomLeftRadius: RADIUS.sheet,
+      borderBottomRightRadius: RADIUS.sheet,
     },
     headerTop: {
       flexDirection: 'row',
@@ -31,9 +31,10 @@ export const createStatsSkeletonStyles = (colors: any) =>
       flex: 1,
       minWidth: '45%',
       backgroundColor: colors.background.card,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 14,
-      ...Theme.shadows.sm,
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
     },
     periodRow: {
       flexDirection: 'row',
@@ -45,9 +46,10 @@ export const createStatsSkeletonStyles = (colors: any) =>
       marginHorizontal: 20,
       marginTop: 12,
       backgroundColor: colors.background.card,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 18,
-      ...Theme.shadows.sm,
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
     },
     statusRow: {
       marginTop: 12,
@@ -75,7 +77,7 @@ export const createStatsSkeletonStyles = (colors: any) =>
     paymentCard: {
       flex: 1,
       backgroundColor: colors.background.paper,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       padding: 14,
     },
   });

@@ -2,7 +2,7 @@
 
 ## Context
 
-The ChinaLink Express mobile application had grown to a point where the existing folder structure was becoming difficult to maintain:
+The LEXD mobile application had grown to a point where the existing folder structure was becoming difficult to maintain:
 
 - **Tight Coupling**: Components were importing from unrelated features
 - **Unclear Boundaries**: Business logic mixed with UI components

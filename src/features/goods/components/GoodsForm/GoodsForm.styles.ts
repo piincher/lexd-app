@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { useMemo } from 'react';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const useGoodsFormStyles = () => {
   const { colors } = useAppTheme();
@@ -13,8 +14,9 @@ export const useGoodsFormStyles = () => {
           gap: 12,
         },
         card: {
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
           borderRadius: 12,
-          elevation: 1,
           backgroundColor: colors.background.card,
         },
         sectionHeader: {

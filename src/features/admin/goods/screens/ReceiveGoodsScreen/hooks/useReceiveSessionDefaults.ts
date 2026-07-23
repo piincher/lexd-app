@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAuth } from '@src/store/Auth';
 
-const LAST_LOCATION_KEY = '@chinalink/receive_last_location';
+const LAST_LOCATION_KEY = '@lexd/receive_last_location';
 
 export const useReceiveSessionDefaults = () => {
   const user = useAuth((s) => s.user);

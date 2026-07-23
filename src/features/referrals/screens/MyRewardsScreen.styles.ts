@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -48,7 +49,7 @@ export const createStyles = (colors: any) =>
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       padding: 14,
       gap: 10,
     },

@@ -3,6 +3,7 @@ import { Pressable, StyleSheet } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 
 interface VerificationBackButtonProps {
   onPress: () => void;
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
   backBtn: {
     width: 42,
     height: 42,
-    borderRadius: 14,
+    borderRadius: RADIUS.control,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 12,

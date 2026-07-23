@@ -1,14 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const createPickupInfoCardStyles = (colors: any, isDark: boolean) =>
   StyleSheet.create({
     sectionCard: {
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
       marginBottom: 16,
       backgroundColor: colors.background.card,
       borderRadius: 12,
       padding: 16,
-      elevation: 1,
     },
     pickupCard: {
       backgroundColor: isDark ? `${colors.status.warning}15` : colors.feedback.warningBg,

@@ -12,8 +12,9 @@ import { ClientShippingMarkPreviewModal } from '../components/ClientShippingMark
 import { ShippingMarksListHeader } from '../components/ShippingMarksListHeader';
 import { styles as screenStyles } from './ShippingMarksAdminScreen.styles';
 
-export const ShippingMarksAdminScreen: React.FC<RootStackScreenProps<'ShippingMarksAdmin'>> = ({ route }) => {
-  const vm = useShippingMarksAdminScreen(route.params?.q);
+export const ShippingMarksAdminScreen: React.FC<RootStackScreenProps<'ShippingMarksAdmin'>> = ({ route, navigation }) => {
+  const vm = useShippingMarksAdminScreen(route.params?.q, route.params?.supplierShare);
+  const createClient = () => navigation.navigate('UserAdd');
 
   if (vm.isInitialLoading) return <Loading message="Chargement des marques…" fullScreen />;
 
@@ -23,9 +24,12 @@ export const ShippingMarksAdminScreen: React.FC<RootStackScreenProps<'ShippingMa
   const listHeader = <ShippingMarksListHeader
     total={total} visibleCount={vm.clients.length} readyCount={vm.readyCount}
     page={page} pages={pages} selectedCount={vm.selected.size} query={vm.searchQuery}
-    job={vm.generationJob} loading={vm.isGeneratingBulk} fetching={vm.isFetching}
-    unavailable={vm.isError} onGenerate={vm.openGenerate} onSearch={vm.updateSearch}
-    onOpenSettings={vm.openSettings}
+    job={vm.generationJob} loading={vm.generateMissingLoading}
+    regenerateLoading={vm.generateRegenerateLoading} anyLoading={vm.isGeneratingBulk}
+    fetching={vm.isFetching}
+    unavailable={vm.isError} onGenerate={vm.openGenerate} onRegenerate={vm.openRegenerate}
+    onSearch={vm.updateSearch}
+    onOpenSettings={vm.openSettings} onCreateClient={createClient}
   />;
 
   return (
@@ -52,11 +56,12 @@ export const ShippingMarksAdminScreen: React.FC<RootStackScreenProps<'ShippingMa
         onToggle={vm.toggleClientSelection}
         onToggleAll={vm.toggleCurrentPageSelection}
         onPreview={vm.setPreviewClient}
-        onDownload={vm.download}
+        onShareSupplier={vm.shareWithSupplier}
         onSend={vm.sendOne}
         onRegenerate={vm.regenerate}
         regeneratingClientId={vm.regeneratingClientId}
         sendingClientIds={vm.sendingClientIds}
+        sharingClientId={vm.sharingClientId}
         isFetching={vm.isFetching}
         isError={vm.isError}
         errorMessage={vm.errorMessage}
@@ -66,10 +71,12 @@ export const ShippingMarksAdminScreen: React.FC<RootStackScreenProps<'ShippingMa
         hasPrev={vm.pagination?.hasPrev ?? false}
         hasNext={vm.pagination?.hasNext ?? false}
         onPageChange={vm.goToPage}
+        onCreateClient={createClient}
       />
       <BulkSendModal visible={vm.sendModalVisible} count={vm.sendCount} onClose={vm.closeSend} onSend={vm.sendBulk} isSending={vm.isSendingBulk} />
       <BulkGenerateModal
         visible={vm.generateModalVisible}
+        mode={vm.generateMode}
         count={vm.generateCount}
         onClose={vm.closeGenerate}
         onGenerate={vm.generateBulk}
@@ -79,7 +86,8 @@ export const ShippingMarksAdminScreen: React.FC<RootStackScreenProps<'ShippingMa
       <ClientShippingMarkPreviewModal
         visible={Boolean(vm.previewClient)} client={vm.previewClient}
         isSending={vm.isSendingBulk} isRegenerating={vm.isRegenerating}
-        onClose={vm.closePreview} onDownload={vm.download} onSend={vm.sendOne} onRegenerate={vm.regenerate}
+        isSharing={vm.sharingClientId === vm.previewClient?._id}
+        onClose={vm.closePreview} onShareSupplier={vm.shareWithSupplier} onSend={vm.sendOne} onRegenerate={vm.regenerate}
       />
     </Screen>
   );

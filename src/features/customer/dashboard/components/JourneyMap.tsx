@@ -12,13 +12,17 @@ interface Props {
 	totalGoods: number;
 }
 
+// Stages walk down the green ramp so the strip reads as progress deepening
+// toward delivery, instead of the previous unrelated blue/mint/orange mix.
+// Transit is the one amber node: it is the state in motion, and giving this
+// view a single focal point is the accent's job.
 const getStages = (colors: any) => [
-	{ key: 'received', label: 'Reçu', icon: 'archive-outline', color: colors.status.info },
-	{ key: 'inContainer', label: 'Chargé', icon: 'cube-outline', color: colors.accent.mint },
-	{ key: 'inTransit', label: 'Transit', icon: 'airplane-outline', color: colors.status.warning },
-	{ key: 'arrived', label: 'Arrivé', icon: 'flag-outline', color: colors.status.success },
-	{ key: 'ready', label: 'Prêt', icon: 'checkmark-circle-outline', color: colors.primary.main },
-	{ key: 'delivered', label: 'Livré', icon: 'home-outline', color: colors.primary.dark },
+	{ key: 'received', label: 'Reçu', icon: 'archive-outline', color: colors.primary[300] },
+	{ key: 'inContainer', label: 'Chargé', icon: 'cube-outline', color: colors.primary[400] },
+	{ key: 'inTransit', label: 'Transit', icon: 'airplane-outline', color: colors.accent.amber },
+	{ key: 'arrived', label: 'Arrivé', icon: 'flag-outline', color: colors.primary[500] },
+	{ key: 'ready', label: 'Prêt', icon: 'checkmark-circle-outline', color: colors.primary[600] },
+	{ key: 'delivered', label: 'Livré', icon: 'home-outline', color: colors.primary[700] },
 ];
 
 export const JourneyMap: React.FC<Props> = ({ goodsByStatus, totalGoods }) => {

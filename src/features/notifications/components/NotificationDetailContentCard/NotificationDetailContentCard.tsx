@@ -5,6 +5,7 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { NOTIFICATION_PRIORITY_CONFIG } from '../../types';
 import type { InAppNotification } from '../../types';
 
@@ -29,8 +30,11 @@ export const NotificationDetailContentCard: React.FC<NotificationDetailContentCa
           margin: 16,
           marginTop: 0,
           padding: 20,
-          borderRadius: 16,
+          borderRadius: RADIUS.card,
           backgroundColor: colors.background.card,
+          // Waybill: border-first, no drop shadow.
+          borderWidth: HAIRLINE,
+          borderColor: colors.border,
         },
         headerRow: {
           flexDirection: 'row',
@@ -47,11 +51,13 @@ export const NotificationDetailContentCard: React.FC<NotificationDetailContentCa
         priorityBadge: {
           paddingHorizontal: 8,
           paddingVertical: 2,
-          borderRadius: 4,
+          borderRadius: RADIUS.badge,
         },
         priorityText: {
           fontFamily: Fonts.bold,
           fontSize: 10,
+          letterSpacing: 0.6,
+          textTransform: 'uppercase',
           color: colors.text.inverse,
         },
         divider: {
@@ -83,7 +89,7 @@ export const NotificationDetailContentCard: React.FC<NotificationDetailContentCa
 
   return (
     <Animated.View entering={FadeInUp.delay(200)}>
-      <Surface style={styles.contentCard} elevation={1}>
+      <Surface style={styles.contentCard} elevation={0}>
         <View style={styles.headerRow}>
           <Text style={styles.title}>{notification.title}</Text>
           {notification.priority === 'HIGH' && (

@@ -27,6 +27,14 @@ export const AdminDashboardTabRedirect = createHomeTabRedirect("AdminDashBoard")
 export const AdminGoodsListTabRedirect = createHomeTabRedirect("AdminGoodsList");
 export const ContainerListTabRedirect = createHomeTabRedirect("ContainerList");
 export const CustomerDashboardTabRedirect = createHomeTabRedirect("CustomerDashboard");
-export const MyGoodsTabRedirect = createHomeTabRedirect("MyGoods");
-export const MyContainersTabRedirect = createHomeTabRedirect("MyContainers");
-export const OrdersTabRedirect = createHomeTabRedirect("Orders");
+
+/**
+ * The MyGoods / MyContainers / Orders stack routes are kept as redirects so
+ * anything still navigating to them — old deep links, push payloads, saved
+ * state — resolves instead of dead-ending. All three now land on the unified
+ * Shipments tab that replaced them.
+ */
+export const ShipmentsTabRedirect = createHomeTabRedirect("Shipments");
+export const MyGoodsTabRedirect = ShipmentsTabRedirect;
+export const MyContainersTabRedirect = ShipmentsTabRedirect;
+export const OrdersTabRedirect = ShipmentsTabRedirect;

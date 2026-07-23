@@ -28,6 +28,7 @@ export const useReceiveFormSubmit = (options: UseReceiveFormSubmitOptions) => {
       actualCBM: calculatedCBM,
       weight: parseFloat(formData.weight.replace(',', '.')),
       quantity: parseInt(formData.quantity, 10),
+      packageCount: parseInt(formData.packageCount || '1', 10),
       unitPrice: parseFloat(formData.unitPrice.replace(',', '.')),
       location: formData.location.toUpperCase().trim(),
       receivedByName: formData.receivedByName.trim(),

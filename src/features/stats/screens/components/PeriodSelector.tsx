@@ -8,6 +8,7 @@ import React, { useMemo } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Text } from 'react-native-paper';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { PeriodFilter, PeriodOption } from '../../types';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -40,9 +41,9 @@ export const PeriodSelector: React.FC<PeriodSelectorProps> = ({ selected, onSele
         pill: {
           paddingHorizontal: 14,
           paddingVertical: 7,
-          borderRadius: 20,
+          borderRadius: RADIUS.badge,
           backgroundColor: colors.background.card,
-          borderWidth: 1,
+          borderWidth: HAIRLINE,
           borderColor: colors.border,
         },
         pillActive: {

@@ -48,7 +48,7 @@ export const useVerificationScreen = (phoneNumber: string) => {
   }, [consumePastedCodeToSubmit, isPending, pastedCodeToSubmit, submitCode]);
 
   const handleSupport = useCallback(() => {
-    openSupportWhatsApp(`Bonjour ChinaLink, je n'arrive pas à vérifier mon numéro +${phoneNumber}.`);
+    openSupportWhatsApp(`Bonjour LEXD, je n'arrive pas à vérifier mon numéro +${phoneNumber}.`);
   }, [phoneNumber]);
 
   const maskedPhone = useMemo(() => maskVerificationPhone(phoneNumber), [phoneNumber]);

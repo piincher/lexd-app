@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const getStyles = (colors: any) =>
   StyleSheet.create({
@@ -7,8 +8,11 @@ export const getStyles = (colors: any) =>
       margin: 16,
       marginTop: 0,
       padding: 20,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       backgroundColor: colors.background.card,
+      // Waybill: border-first, no drop shadow.
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
     },
     dataTitle: {
       fontFamily: Fonts.bold,

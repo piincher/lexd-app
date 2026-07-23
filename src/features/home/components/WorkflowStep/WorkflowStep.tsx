@@ -42,11 +42,6 @@ const createStyles = (colors: any) => StyleSheet.create({
     padding: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 3,
     borderWidth: 1,
   },
   iconContainer: {
@@ -58,12 +53,12 @@ const createStyles = (colors: any) => StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontFamily: 'Bold',
+    fontFamily: 'bold',
     fontSize: 16,
     marginBottom: 4,
   },
   description: {
-    fontFamily: 'Medium',
+    fontFamily: 'medium',
     fontSize: 14,
     lineHeight: 20,
   },

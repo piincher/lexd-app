@@ -10,6 +10,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { hapticMedium } from "@src/shared/lib/haptics";
+import { RADIUS } from "@src/shared/ui/designLanguage";
 
 interface SubmitButtonProps {
   onPress: () => void;
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
     height: 56,
-    borderRadius: 16,
+    borderRadius: RADIUS.control,
     marginTop: 20,
   },
   text: {

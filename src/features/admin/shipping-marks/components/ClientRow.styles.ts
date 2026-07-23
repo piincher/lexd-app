@@ -55,11 +55,6 @@ export const createStyles = (colors: Colors, isDark: boolean) => StyleSheet.crea
   primaryAction: { backgroundColor: colors.primary.main, borderColor: colors.primary.main },
   actionText: { color: colors.text.primary, fontSize: 12, lineHeight: 16, fontWeight: '700', flexShrink: 1 },
   primaryActionText: { color: colors.text.inverse },
-  generateButton: {
-    minHeight: 48, borderRadius: 12, flexDirection: 'row', alignItems: 'center',
-    justifyContent: 'center', gap: 8, backgroundColor: colors.background.card,
-    borderWidth: 1, borderColor: colors.primary.main,
-  },
-  generateText: { color: colors.primary.main, fontSize: 14, lineHeight: 20, fontWeight: '700' },
+  disabled: { opacity: 0.45 },
   pressed: { opacity: 0.72, transform: [{ scale: 0.98 }] },
 });

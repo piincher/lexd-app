@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import type { AppTheme } from '@src/constants/Theme';
+import { HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: AppTheme['colors'], isDark?: boolean) => StyleSheet.create({
   container: {
@@ -19,17 +20,14 @@ export const createStyles = (colors: AppTheme['colors'], isDark?: boolean) => St
     marginRight: 10,
   },
   stepCircle: {
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
     width: 34,
     height: 34,
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1,
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.12,
-    shadowRadius: 4,
-    elevation: 3,
   },
   timelineLine: {
     width: 2,

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 interface CardPreviewProps {
   cardNumber: string;
@@ -65,19 +66,14 @@ const createStyles = (colors: any) => StyleSheet.create({
     width: '100%',
     maxWidth: 320,
     aspectRatio: 1.586,
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     padding: 20,
     justifyContent: 'space-between',
-    shadowColor: colors.neutral[900],
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
   },
   chip: {
     width: 50,
     height: 35,
-    borderRadius: 6,
+    borderRadius: RADIUS.badge,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -93,6 +89,8 @@ const createStyles = (colors: any) => StyleSheet.create({
   label: {
     fontSize: 10,
     fontFamily: Fonts.regular,
+    fontWeight: '700',
+    letterSpacing: 0.6,
     textTransform: 'uppercase',
   },
   value: {

@@ -1,6 +1,6 @@
 /**
  * ComparisonScoreBar
- * Animated score bar showing ChinaLink vs competitors rating
+ * Animated score bar showing LEXD vs competitors rating
  */
 
 import React from 'react';

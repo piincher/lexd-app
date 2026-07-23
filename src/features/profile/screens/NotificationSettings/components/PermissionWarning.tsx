@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 interface PermissionWarningProps {
   visible: boolean;
@@ -27,9 +28,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 12,
-    borderRadius: 8,
+    borderRadius: RADIUS.control,
     marginBottom: 16,
-    borderWidth: 1,
+    borderWidth: HAIRLINE,
   },
   warningText: {
     flex: 1,

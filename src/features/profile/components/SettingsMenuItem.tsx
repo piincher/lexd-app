@@ -18,6 +18,7 @@ interface SettingsMenuItemProps {
   onNavigate: (screen: string) => void;
   showDivider: boolean;
   highlight?: boolean;
+  badgeCount?: number;
 }
 
 export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({
@@ -30,6 +31,7 @@ export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({
   onNavigate,
   showDivider,
   highlight = false,
+  badgeCount = 0,
 }) => {
   const { colors } = useAppTheme();
   const styles = createStyles(colors);
@@ -61,7 +63,25 @@ export const SettingsMenuItem: React.FC<SettingsMenuItemProps> = ({
             <Text style={[styles.menuItemTitle, { color: colors.text.primary }]}>
               {title}
             </Text>
-            {highlight && (
+            {badgeCount > 0 && (
+              <View
+                style={{
+                  minWidth: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  paddingHorizontal: 6,
+                  marginLeft: 8,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: colors.status.error,
+                }}
+              >
+                <Text style={{ color: colors.text.inverse, fontSize: 11, fontWeight: '800', lineHeight: 14 }}>
+                  {badgeCount > 99 ? '99+' : badgeCount}
+                </Text>
+              </View>
+            )}
+            {highlight && badgeCount === 0 && (
               <View style={[styles.highlightDot, { backgroundColor: colors.status.error }]} />
             )}
           </View>

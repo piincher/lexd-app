@@ -40,7 +40,7 @@ export function useAtRiskScreen(triggerWinBack: TriggerWinBack) {
   const handleWhatsApp = useCallback(async (customer: AtRiskCustomer) => {
     if (!customer.phoneNumber) return;
     try {
-      await openWhatsApp(customer.phoneNumber, `Bonjour ${customer.firstName || ''}, ChinaLink Express vous remercie pour votre fidélité.`);
+      await openWhatsApp(customer.phoneNumber, `Bonjour ${customer.firstName || ''}, LEXD vous remercie pour votre fidélité.`);
     } catch {
       showMessage({ message: 'WhatsApp indisponible', type: 'danger' });
     }

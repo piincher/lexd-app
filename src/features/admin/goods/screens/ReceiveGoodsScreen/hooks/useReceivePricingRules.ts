@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type ShippingMode = 'AIR' | 'SEA';
 type PriceMap = Partial<Record<ShippingMode, number>>;
 
-const PRICE_KEY = '@chinalink/receive_unit_prices';
+const PRICE_KEY = '@lexd/receive_unit_prices';
 
 const parseAmount = (value?: string) => {
   const amount = Number((value || '').replace(',', '.'));

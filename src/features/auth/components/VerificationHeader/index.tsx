@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { Fonts } from "@src/constants/Fonts";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { HAIRLINE, RADIUS } from "@src/shared/ui/designLanguage";
 
 interface VerificationHeaderProps {
   maskedPhone: string;
@@ -12,16 +12,15 @@ interface VerificationHeaderProps {
 }
 
 export const VerificationHeader: React.FC<VerificationHeaderProps> = ({ maskedPhone, onEditPhone }) => {
-  const { colors, isDark } = useAppTheme();
+  const { colors } = useAppTheme();
 
   return (
     <Animated.View entering={FadeInDown.delay(100).duration(500).springify()} style={styles.heroSection}>
-      <LinearGradient
-        colors={isDark ? [`${colors.primary.main}2E`, `${colors.status.info}1A`] : [colors.feedback.successBg, colors.feedback.infoBg]}
-        style={styles.heroIconCircle}
+      <View
+        style={[styles.heroIconCircle, { backgroundColor: colors.primary.main + "14" }]}
       >
         <MaterialCommunityIcons name="shield-key-outline" size={34} color={colors.primary.main} />
-      </LinearGradient>
+      </View>
 
       <Text style={[styles.heroTitle, { color: colors.text.primary }]}>Vérification sécurisée</Text>
       <Text style={[styles.heroSubtitle, { color: colors.text.secondary }]}>
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
   heroIconCircle: {
     width: 80,
     height: 80,
-    borderRadius: 26,
+    borderRadius: RADIUS.control,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 18,
@@ -79,15 +78,15 @@ const styles = StyleSheet.create({
     marginTop: 18,
     paddingHorizontal: 12,
     paddingVertical: 10,
-    borderRadius: 16,
-    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    borderWidth: HAIRLINE,
     width: "100%",
     minHeight: 58,
   },
   phoneIcon: {
     width: 34,
     height: 34,
-    borderRadius: 12,
+    borderRadius: RADIUS.control,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -95,8 +94,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   phoneLabel: {
-    fontSize: 11,
-    fontFamily: Fonts.medium,
+    // Waybill tracked uppercase micro-label (metadata eyebrow).
+    fontSize: 10,
+    fontFamily: Fonts.bold,
+    letterSpacing: 0.7,
+    textTransform: "uppercase",
     marginBottom: 3,
   },
   phoneText: {

@@ -8,3 +8,4 @@ export { AdminToolsScreen } from "./AdminToolsScreen";
 export { UnassignedGoodsScreen } from "./UnassignedGoodsScreen";
 export { OutstandingPaymentsListScreen } from "./OutstandingPaymentsListScreen";
 export { default as OutstandingPaymentsListScreenDefault } from "./OutstandingPaymentsListScreen";
+export { AdminWorkQueueScreen } from './AdminWorkQueueScreen';

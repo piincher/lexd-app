@@ -1,5 +1,7 @@
 import { useCallback } from 'react';
 
+// Card-network brand colors — third-party brand identities with no LEXD token
+// equivalent; intentionally kept literal (flagged in the rebrand handoff).
 export const CARD_BRAND_CONFIG: Record<string, { icon: string; color: string; label: string }> = {
   visa: { icon: 'credit-card', color: '#1A1F71', label: 'Visa' },
   mastercard: { icon: 'credit-card', color: '#EB001B', label: 'Mastercard' },

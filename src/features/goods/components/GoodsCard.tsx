@@ -8,6 +8,7 @@ import { Goods } from '../api';
 import { StatusBadge } from './StatusBadge';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 import { GoodsImage } from '@src/shared/ui/GoodsImage';
 import { normalizePhotos } from '@src/shared/lib';
 import { CUSTOMER_GOODS_STATUS_LABELS } from '@src/shared/lib/customerStatus';
@@ -42,13 +43,12 @@ export const GoodsCard: React.FC<GoodsCardProps> = ({ goods, onPress }) => {
 				card: {
 					marginHorizontal: 16,
 					marginVertical: 8,
-					borderRadius: 20,
+					// Border-first: a hairline edge replaces the drop shadow.
+					borderRadius: RADIUS.card,
 					overflow: 'hidden',
-					elevation: 2,
-					shadowColor: colors.text.primary,
-					shadowOffset: { width: 0, height: 2 },
-					shadowOpacity: 0.08,
-					shadowRadius: 8,
+					borderWidth: HAIRLINE,
+					borderColor: colors.border,
+					backgroundColor: colors.background.card,
 				},
 				content: {
 					flexDirection: 'row',

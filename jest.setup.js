@@ -111,17 +111,6 @@ jest.mock('expo-secure-store', () => ({
   deleteItemAsync: jest.fn(),
 }));
 
-// Mock expo-notifications
-jest.mock('expo-notifications', () => ({
-  setNotificationHandler: jest.fn(),
-  requestPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
-  getExpoPushTokenAsync: jest.fn(() => Promise.resolve({ data: 'test-push-token' })),
-  addNotificationReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
-  addNotificationResponseReceivedListener: jest.fn(() => ({ remove: jest.fn() })),
-  removeNotificationSubscription: jest.fn(),
-  getPermissionsAsync: jest.fn(() => Promise.resolve({ status: 'granted' })),
-}));
-
 // Mock expo-modules-core
 jest.mock('expo-modules-core', () => ({
   EventEmitter: class EventEmitter {

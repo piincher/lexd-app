@@ -9,6 +9,7 @@ export const RECEIVE_FORM_DEFAULT_VALUES: ReceiveGoodsFormData = {
   cbm: '',
   weight: '',
   quantity: '1',
+  packageCount: '1',
   unitPrice: '',
   location: '',
   receivedByName: '',

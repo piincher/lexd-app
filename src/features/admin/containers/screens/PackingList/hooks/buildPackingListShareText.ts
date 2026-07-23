@@ -11,7 +11,7 @@ export const buildPackingListShareText = (
 ): string => {
   const lines: string[] = [];
   lines.push('╔════════════════════════════════════════════════╗');
-  lines.push('║         CHINALINK EXPRESS - LISTE DE COLISAGE  ║');
+  lines.push('║         LEXD - LISTE DE COLISAGE  ║');
   lines.push('╚════════════════════════════════════════════════╝');
   if (isSingleClientView) {
     lines.push('');
@@ -29,7 +29,7 @@ export const buildPackingListShareText = (
   lines.push('── CONSIGNATAIRE & POINT DE RETRAIT ──────────────');
   lines.push(`👤 Consignataire: ${container.consignee?.name || 'N/A'}`);
   lines.push(`📞 Contact: ${container.consignee?.phone || 'N/A'}`);
-  lines.push(`📍 Point de Retrait: ${container.consignee?.warehouseAddress || 'ChinaLink Express Warehouse - Bamako'}`);
+  lines.push(`📍 Point de Retrait: ${container.consignee?.warehouseAddress || 'LEXD Warehouse - Bamako'}`);
   lines.push('');
   lines.push('══════════════════════════════════════════════════');
   lines.push('                    MARCHANDISES                  ');
@@ -91,7 +91,7 @@ export const buildPackingListShareText = (
   lines.push(`📞 ${container.consignee?.phone || 'N/A'}`);
   lines.push('');
   lines.push('══════════════════════════════════════════════════');
-  lines.push('    ChinaLink Express - Transport International   ');
+  lines.push('    LEXD - Transport International   ');
   lines.push(`        Tél: ${container.consignee?.phone || '+223 XX XX XX XX'} | Bamako, Mali      `);
   lines.push('══════════════════════════════════════════════════');
 

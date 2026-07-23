@@ -27,6 +27,13 @@ export interface ShippingMarkClient {
   isActive: boolean;
 }
 
+export interface AdminShippingMark {
+  userId: string;
+  clientId: string;
+  shippingMarkImageUrl: string;
+  shippingMarkGeneratedAt?: string;
+}
+
 export interface BulkWhatsAppResult {
   total: number;
   sent: number;
@@ -151,6 +158,13 @@ export const sendBulkShippingMarkWhatsApp = async (payload: {
 export const regenerateClientShippingMark = async (userId: string): Promise<{ shippingMarkImageUrl: string }> => {
   const response = await apiClientV2.post<ApiEnvelope<{ shippingMarkImageUrl: string }>>(
     `/shipping-mark/admin/${userId}/regenerate`,
+  );
+  return response.data.data;
+};
+
+export const fetchClientShippingMark = async (userId: string): Promise<AdminShippingMark> => {
+  const response = await apiClientV2.get<ApiEnvelope<AdminShippingMark>>(
+    `/shipping-mark/admin/${userId}`,
   );
   return response.data.data;
 };

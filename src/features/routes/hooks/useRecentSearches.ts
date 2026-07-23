@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const STORAGE_KEY = '@chinalink/recent_tracking_codes';
+const STORAGE_KEY = '@lexd/recent_tracking_codes';
 const MAX_RECENT = 5;
 
 export const useRecentSearches = () => {

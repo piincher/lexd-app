@@ -30,9 +30,9 @@ export const CARGO_BAG_STATUS_LABELS: Record<CargoBagStatus, string> = {
 export const CARGO_BAG_STATUS_CONFIG: Record<CargoBagStatus, { label: string; color: string }> = {
   PACKED: { label: 'Emballé', color: Theme.colors.text.secondary },
   CHECKED_IN: { label: 'Enregistré', color: '#3B82F6' },
-  LOADED: { label: 'Chargé', color: '#D4AF37' },
+  LOADED: { label: 'Chargé', color: '#F5A524' },
   IN_TRANSIT: { label: 'En transit', color: '#3B82F6' },
-  ARRIVED: { label: 'Arrivé', color: '#16A34A' },
+  ARRIVED: { label: 'Arrivé', color: '#00664B' },
   CLEARED: { label: 'Dédouané', color: '#4ECDC4' },
 };
 

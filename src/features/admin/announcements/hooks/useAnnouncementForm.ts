@@ -1,5 +1,9 @@
 import { useState } from "react";
-import type { Announcement, CreateAnnouncementInput } from "../types/announcement.types";
+import type {
+  Announcement,
+  AnnouncementBlockInput,
+  CreateAnnouncementInput,
+} from "../types/announcement.types";
 
 interface UseAnnouncementFormParams {
   onSubmit: (data: CreateAnnouncementInput) => void;
@@ -11,6 +15,8 @@ const joinList = (items?: string[]) => items?.join(", ") || "";
 export const useAnnouncementForm = ({ onSubmit, initialValues }: UseAnnouncementFormParams) => {
   const [title, setTitle] = useState(initialValues?.title || "");
   const [message, setMessage] = useState(initialValues?.message || "");
+  const [imageUrl, setImageUrl] = useState<string | null>(initialValues?.imageUrl ?? null);
+  const [blocks, setBlocks] = useState<AnnouncementBlockInput[]>(initialValues?.blocks ?? []);
   const [type, setType] = useState<Announcement["type"]>(initialValues?.type || "INFO");
   const [placement, setPlacement] = useState<Announcement["placement"]>(
     initialValues?.placement || "TOP_BANNER"
@@ -44,9 +50,18 @@ export const useAnnouncementForm = ({ onSubmit, initialValues }: UseAnnouncement
   const handleSubmit = () => {
     const toList = (value: string) =>
       value.split(",").map((item) => item.trim()).filter(Boolean);
+    const cleanBlocks = blocks
+      .map((block) => ({
+        heading: (block.heading ?? "").trim(),
+        body: (block.body ?? "").trim(),
+        imageUrl: block.imageUrl ?? null,
+      }))
+      .filter((block) => block.heading || block.body || block.imageUrl);
     onSubmit({
       title: title.trim(),
       message: message.trim(),
+      imageUrl: imageUrl || null,
+      blocks: cleanBlocks,
       type,
       placement,
       audience,
@@ -70,6 +85,7 @@ export const useAnnouncementForm = ({ onSubmit, initialValues }: UseAnnouncement
   const isValid = title.trim().length > 0 && message.trim().length > 0;
   return {
     title, setTitle, message, setMessage,
+    imageUrl, setImageUrl, blocks, setBlocks,
     type, setType, placement, setPlacement,
     audience, setAudience, priority, setPriority,
     status, setStatus, dismissible, setDismissible,

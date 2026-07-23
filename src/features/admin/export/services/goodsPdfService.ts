@@ -62,7 +62,7 @@ const buildGoodsPdfHtml = (goods: any[], metaHtml: string): string => {
     <body>
       <div class="header">
         <h1>EXPORT MARCHANDISES</h1>
-        <p>ChinaLink Express</p>
+        <p>LEXD</p>
       </div>
       <div class="meta">
         ${metaHtml}

@@ -5,7 +5,7 @@
 import { useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const RECENT_SEARCHES_KEY = "chinalink_recent_searches";
+const RECENT_SEARCHES_KEY = "lexd_recent_searches";
 const MAX_RECENT_SEARCHES = 10;
 
 export const useRecentSearches = () => {

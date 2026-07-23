@@ -7,11 +7,6 @@ export const createStyles = (colors: any) =>
       borderRadius: 16,
       borderWidth: 1,
       padding: 16,
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.06,
-      shadowRadius: 8,
-      elevation: 3,
     },
     headerRow: {
       flexDirection: "row",

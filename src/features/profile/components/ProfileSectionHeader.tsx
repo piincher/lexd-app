@@ -5,6 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import type { ThemeContextType } from '@src/constants/Theme';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 type AppColors = ThemeContextType['colors'];
 type MaterialIconName = React.ComponentProps<typeof MaterialCommunityIcons>['name'];
@@ -49,11 +50,11 @@ const createStyles = (colors: AppColors) =>
     iconBox: {
       width: 36,
       height: 36,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: colors.primary[50],
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.primary[100],
     },
     copy: {

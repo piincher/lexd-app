@@ -42,11 +42,6 @@ export function useEditOrderImages(initialImages: any[] = []) {
 
   const pickImage = useCallback(async () => {
     setShowModal(false);
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (!permissionResult.granted) {
-      alert("Gallery access is required to select an image");
-      return;
-    }
     const pickerResult = await ImagePicker.launchImageLibraryAsync({
       allowsMultipleSelection: true,
       base64: true,

@@ -68,7 +68,7 @@ export const setupNotificationChannels = async (): Promise<void> => {
       name: 'Certificates',
       importance: Notifications.AndroidImportance.HIGH,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#F4D03F',
+      lightColor: '#EFC169',
     });
 
     // System channel

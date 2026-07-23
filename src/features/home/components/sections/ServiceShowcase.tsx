@@ -1,7 +1,7 @@
 /**
  * ServiceShowcase
- * Air and Sea freight service cards with gradient backgrounds,
- * enhanced visual depth, and press feedback.
+ * Air and Sea freight service cards, rendered in the LEXD waybill style:
+ * hairline-bordered surfaces carrying a leading status rail.
  */
 
 import React from 'react';
@@ -19,8 +19,10 @@ interface ServiceShowcaseProps {
 export const ServiceShowcase: React.FC<ServiceShowcaseProps> = ({ onServicePress }) => {
   const { colors } = useAppTheme();
   const styles = createServiceShowcaseStyles(colors);
+  // Both modes use brand colors rather than an off-palette blue: amber marks
+  // the fast/premium lane, green the standard one.
   const serviceAccent = (id: string) =>
-    id === 'air' ? colors.status.info : colors.primary.main;
+    id === 'air' ? colors.accent.amber : colors.primary.main;
 
   return (
     <View style={styles.container}>

@@ -30,11 +30,6 @@ export const usePaymentImagePicker = () => {
           base64: true,
         });
       } else {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-          Alert.alert('Permission needed', 'Gallery permission is required to select photos');
-          return;
-        }
         result = await ImagePicker.launchImageLibraryAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,

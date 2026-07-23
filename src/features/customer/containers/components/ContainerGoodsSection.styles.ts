@@ -1,12 +1,15 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
+  // Border-first. borderColor is supplied at the call site, which has theme
+  // access; this sheet is static.
   sectionCard: {
     marginBottom: 16,
-    borderRadius: 12,
+    borderRadius: RADIUS.card,
     padding: 16,
-    elevation: 1,
+    borderWidth: HAIRLINE,
   },
   sectionTitle: {
     fontFamily: Fonts.bold,

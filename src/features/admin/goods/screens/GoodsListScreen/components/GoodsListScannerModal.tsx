@@ -31,7 +31,6 @@ export const GoodsListScannerModal: React.FC<GoodsListScannerModalProps> = ({
       animationType="slide"
       presentationStyle="fullScreen"
       onRequestClose={onDismiss}
-      statusBarTranslucent
     >
       <View style={[styles.container, { backgroundColor: colors.background.default }]}>
         <QRScanner onScan={onScan} onCancel={onDismiss} />

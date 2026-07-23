@@ -1,15 +1,16 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
 import { lightTheme } from '@src/constants/Theme';
+import { HAIRLINE, OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
   StyleSheet.create({
     container: {
       marginHorizontal: 20,
       backgroundColor: colors.background.card,
-      borderRadius: 16,
+      borderRadius: RADIUS.card,
       padding: 16,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     header: {
@@ -37,7 +38,7 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
       gap: 4,
       paddingHorizontal: 10,
       paddingVertical: 5,
-      borderRadius: 12,
+      borderRadius: RADIUS.badge,
     },
     rateText: {
       fontSize: 13,
@@ -52,7 +53,7 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
     statCard: {
       flex: 1,
       backgroundColor: colors.background.paper,
-      borderRadius: 12,
+      borderRadius: RADIUS.control,
       padding: 14,
       borderLeftWidth: 3,
     },
@@ -65,6 +66,9 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
     statCurrency: {
       fontSize: 10,
       fontFamily: Fonts.medium,
+      fontWeight: '700',
+      letterSpacing: 0.6,
+      textTransform: 'uppercase',
       color: colors.text.disabled,
       marginBottom: 6,
     },
@@ -79,7 +83,7 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
       borderRadius: 3,
     },
     statLabel: {
-      fontSize: 11,
+      ...OVERLINE,
       fontFamily: Fonts.medium,
       color: colors.text.secondary,
     },
@@ -107,12 +111,10 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
       borderTopColor: colors.border,
     },
     methodsTitle: {
-      fontSize: 12,
+      ...OVERLINE,
       fontFamily: Fonts.bold,
-      fontWeight: '700',
       color: colors.text.secondary,
       marginBottom: 10,
-      letterSpacing: 0.3,
     },
     methodRow: {
       flexDirection: 'row',
@@ -123,7 +125,7 @@ export const createPaymentOverviewStyles = (colors: typeof lightTheme.colors) =>
     methodIcon: {
       width: 28,
       height: 28,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       justifyContent: 'center',
       alignItems: 'center',
     },

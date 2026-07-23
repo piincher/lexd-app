@@ -1,7 +1,7 @@
 {
   "servers": {
     "Sentry": {
-      "url": "https://mcp.sentry.dev/mcp/nuvotech/chinalinkexpress",
+      "url": "https://mcp.sentry.dev/mcp/nuvotech/lexd",
       "type": "http"
     }
   }

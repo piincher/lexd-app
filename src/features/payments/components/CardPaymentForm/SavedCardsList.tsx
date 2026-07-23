@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import type { SavedCard } from '../../types';
 import { CARD_BRAND_CONFIG } from '../../hooks/useCardPaymentValidation';
 
@@ -81,14 +82,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   title: {
-    fontSize: 14,
+    ...OVERLINE,
     fontFamily: Fonts.medium,
     marginBottom: 12,
   },
   item: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderRadius: 12,
+    borderRadius: RADIUS.card,
     padding: 12,
     marginBottom: 8,
     borderWidth: 2,

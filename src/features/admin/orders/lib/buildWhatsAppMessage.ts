@@ -10,9 +10,9 @@ export const buildWhatsAppMessage = (
   const methodLabel = PAYMENT_METHOD_LABELS[payment.paymentMethod] || payment.paymentMethod;
   const date = formatDate(payment.recordedAt);
   const name = clientName || 'Client';
-  let msg = `✅ *Reçu de Paiement - ChinaLink Express*\n\nBonjour ${name},\n\nVotre paiement a été enregistré avec succès.\n\n📋 *Détails du Paiement:*\n• Montant: *${amountStr} FCFA*\n• Méthode: ${methodLabel}\n• Date: ${date}\n• N° Commande: ${orderCode}\n`;
+  let msg = `✅ *Reçu de Paiement - LEXD*\n\nBonjour ${name},\n\nVotre paiement a été enregistré avec succès.\n\n📋 *Détails du Paiement:*\n• Montant: *${amountStr} FCFA*\n• Méthode: ${methodLabel}\n• Date: ${date}\n• N° Commande: ${orderCode}\n`;
   if (payment.referenceNumber) msg += `• Référence: ${payment.referenceNumber}\n`;
   if (payment.receiptNumber) msg += `• N° Reçu: ${payment.receiptNumber}\n`;
-  msg += `\nMerci de votre confiance!\n_ChinaLink Express_`;
+  msg += `\nMerci de votre confiance!\n_LEXD_`;
   return msg;
 };

@@ -9,6 +9,7 @@ import type { ViewStyle } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 interface FAQContactButtonProps {
   onPress: () => void;
@@ -58,7 +59,7 @@ const getStyles = (colors: { text: { inverse: string } }) => StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 14,
     paddingHorizontal: 20,
-    borderRadius: 12,
+    borderRadius: RADIUS.control,
     gap: 10,
     minHeight: 48,
   },

@@ -1,20 +1,22 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create({
   card: {
     backgroundColor: colors.background.card,
     marginHorizontal: 16,
     marginVertical: 5,
-    borderRadius: 16,
+    borderRadius: RADIUS.card,
     overflow: 'hidden',
     flexDirection: 'row',
-    ...Theme.shadows.sm,
+    // Waybill: border-first, no drop shadow.
+    borderWidth: HAIRLINE,
+    borderColor: colors.border,
   },
   unreadCard: {
     backgroundColor: colors.background.elevated,
-    borderWidth: 1,
+    borderWidth: HAIRLINE,
     borderColor: colors.primary[100],
   },
   pressed: {
@@ -34,7 +36,7 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
   iconCircle: {
     width: 46,
     height: 46,
-    borderRadius: 14,
+    borderRadius: RADIUS.control,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -79,12 +81,14 @@ export const createStyles = (colors: any, isDark?: boolean) => StyleSheet.create
   typeBadge: {
     paddingHorizontal: 8,
     paddingVertical: 3,
-    borderRadius: 6,
+    borderRadius: RADIUS.badge,
   },
   typeLabel: {
     fontSize: 11,
     fontFamily: Fonts.semiBold,
     fontWeight: '600',
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
   },
   time: {
     fontSize: 12,

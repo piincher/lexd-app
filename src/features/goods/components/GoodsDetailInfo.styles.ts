@@ -1,12 +1,14 @@
 import { StyleSheet } from 'react-native';
 import { Fonts } from '@src/constants/Fonts';
+import { RADIUS, HAIRLINE } from '@src/shared/ui/designLanguage';
 
 export const styles = StyleSheet.create({
+	// borderColor is applied at the call site: this sheet is static.
 	card: {
 		marginHorizontal: 16,
 		marginBottom: 12,
-		elevation: 2,
-		borderRadius: 12,
+		borderRadius: RADIUS.card,
+		borderWidth: HAIRLINE,
 	},
 	header: {
 		flexDirection: 'row',

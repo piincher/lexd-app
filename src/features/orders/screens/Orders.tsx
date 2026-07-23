@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { HomeTabScreenProps, RootStackParamList } from "@src/navigations/type";
+import type { RootStackScreenProps, RootStackParamList } from "@src/navigations/type";
 import { useAuth } from "@src/store/Auth";
 import { useAppTheme } from "@src/providers/ThemeProvider";
 import { withProtectedRoute } from "@src/hoc/withProtectedRoute";
@@ -25,7 +25,10 @@ const MANAGER_MENU: MenuItemType[] = [
 	{ id: "4", title: "Marquer comme livré", route: "ScanQRCode" },
 ];
 
-const Orders = ({ navigation }: HomeTabScreenProps<"Orders">) => {
+// No longer a tab screen: the customer Orders tab was replaced by Shipments,
+// and the "Orders" stack route now renders a redirect to it. This component is
+// currently unmounted — kept because it still holds the admin orders menu.
+const Orders = ({ navigation }: RootStackScreenProps<"Orders">) => {
 	const rootNavigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const role = useAuth((state) => state.user?.role);
 	const { colors } = useAppTheme();

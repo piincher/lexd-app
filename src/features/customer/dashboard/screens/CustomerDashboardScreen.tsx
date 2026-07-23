@@ -27,7 +27,7 @@ export const CustomerDashboardScreen: React.FC<
     vipProgress, rewardSummary, nextShipmentActions, activities,
     isLoading, isError, errorMessage, refresh,
     handleNotifications, handleViewAllActivity, handleNextShipmentAction,
-    handlePrepareShipment, handleViewGoods, handleViewContainers,
+    handlePrepareShipment, handleViewShipments,
     handleViewPayments, handleShipmentHealthPress,
   } = useCustomerDashboard();
 
@@ -61,15 +61,14 @@ export const CustomerDashboardScreen: React.FC<
 
           <PendingActionsRail
             activeWork={activeWork}
-            onViewGoods={handleViewGoods}
-            onViewContainers={handleViewContainers}
+            onViewShipments={handleViewShipments}
             onViewPayments={handleViewPayments}
           />
 
           <ShipmentHealthList
             shipments={shipmentHealth}
             onShipmentPress={handleShipmentHealthPress}
-            onViewAll={handleViewContainers}
+            onViewAll={handleViewShipments}
           />
 
           <PrepareNextShipmentCard

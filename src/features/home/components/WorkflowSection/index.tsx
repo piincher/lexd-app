@@ -4,6 +4,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Fonts } from "@src/constants/Fonts";
 import { Theme } from "@src/constants/Theme";
+import { HAIRLINE } from "@src/shared/ui/designLanguage";
 
 interface WorkflowSectionProps {
    colors: any;
@@ -85,16 +86,13 @@ const createStyles = (colors: any) => StyleSheet.create({
       gap: 10,
    },
    step: {
+     borderWidth: HAIRLINE,
+     borderColor: colors.border,
       flexDirection: "row",
       alignItems: "center",
       gap: 14,
       padding: 16,
       borderRadius: 14,
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.06,
-      shadowRadius: 4,
-      elevation: 2,
    },
    stepIcon: {
       width: 48,

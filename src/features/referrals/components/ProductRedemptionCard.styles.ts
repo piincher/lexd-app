@@ -1,13 +1,14 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
     card: {
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
       padding: 14,
       gap: 10,
       backgroundColor: colors.background.card,
-      borderWidth: 1,
+      borderWidth: HAIRLINE,
       borderColor: colors.border,
     },
     header: {
@@ -25,7 +26,7 @@ export const createStyles = (colors: any) =>
     image: {
       width: 48,
       height: 48,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.background.paper,
     },
     name: {
@@ -46,13 +47,15 @@ export const createStyles = (colors: any) =>
     },
     remarkBox: {
       backgroundColor: colors.background.paper,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       padding: 10,
       gap: 4,
     },
     remarkLabel: {
       fontSize: 11,
       fontWeight: '700',
+      letterSpacing: 0.7,
+      textTransform: 'uppercase',
       color: colors.text.secondary,
     },
     remarkText: {
@@ -63,7 +66,7 @@ export const createStyles = (colors: any) =>
     imagePlaceholder: {
       width: 48,
       height: 48,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       backgroundColor: colors.primary[50] ?? colors.background.paper,
       alignItems: 'center',
       justifyContent: 'center',
@@ -71,7 +74,7 @@ export const createStyles = (colors: any) =>
     // Pickup-code presentation — shown when the item is approved/ready so the
     // client has the code ready to present at the counter.
     pickupBox: {
-      borderRadius: 10,
+      borderRadius: RADIUS.card,
       padding: 12,
       gap: 6,
       alignItems: 'center',
@@ -83,7 +86,7 @@ export const createStyles = (colors: any) =>
     pickupLabel: {
       fontSize: 11,
       fontWeight: '700',
-      letterSpacing: 0.5,
+      letterSpacing: 0.7,
       textTransform: 'uppercase',
       color: colors.text.secondary,
     },
@@ -100,13 +103,15 @@ export const createStyles = (colors: any) =>
     },
     rejectBox: {
       backgroundColor: colors.status.error + '10',
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       padding: 10,
       gap: 4,
     },
     rejectLabel: {
       fontSize: 11,
       fontWeight: '700',
+      letterSpacing: 0.7,
+      textTransform: 'uppercase',
       color: colors.status.error,
     },
     rejectText: {
@@ -120,7 +125,7 @@ export const createStyles = (colors: any) =>
       justifyContent: 'center',
       gap: 6,
       minHeight: 40,
-      borderRadius: 8,
+      borderRadius: RADIUS.control,
       borderWidth: 1,
       borderColor: colors.status.error + '40',
       backgroundColor: colors.status.error + '08',

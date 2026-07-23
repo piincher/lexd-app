@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, Linking, StatusBar } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Button } from '@src/shared/ui/Button';
@@ -30,8 +31,7 @@ export const ForceUpdateScreen: React.FC<ForceUpdateScreenProps> = ({
   return (
     <>
       <StatusBar
-        barStyle={isDark ? 'light-content' : 'dark-content'}
-        backgroundColor={colors.background.default}
+        style={isDark ? 'light' : 'dark'}
       />
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background.default }]}>
         <View style={styles.content}>

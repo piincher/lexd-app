@@ -10,6 +10,7 @@ import { Text } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInRight } from 'react-native-reanimated';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, OVERLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { KPIItem } from '../../types';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 
@@ -26,15 +27,15 @@ const KPICard: React.FC<{ item: KPIItem; index: number }> = ({ item, index }) =>
         card: {
           width: 132,
           backgroundColor: colors.background.card,
-          borderRadius: 14,
+          borderRadius: RADIUS.card,
           padding: 14,
-          borderWidth: 1,
+          borderWidth: HAIRLINE,
           borderColor: colors.border,
         },
         iconContainer: {
           width: 32,
           height: 32,
-          borderRadius: 8,
+          borderRadius: RADIUS.control,
           justifyContent: 'center',
           alignItems: 'center',
           marginBottom: 10,
@@ -47,7 +48,7 @@ const KPICard: React.FC<{ item: KPIItem; index: number }> = ({ item, index }) =>
           marginBottom: 2,
         },
         cardLabel: {
-          fontSize: 11,
+          ...OVERLINE,
           fontFamily: Fonts.medium,
           color: colors.text.secondary,
         },

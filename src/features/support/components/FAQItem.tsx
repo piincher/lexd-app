@@ -8,6 +8,7 @@ import { View, Text, TouchableOpacity, StyleSheet, LayoutAnimation } from 'react
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 import { FAQItem as FAQItemType } from '../types/faq.types';
 
 interface FAQItemProps {
@@ -27,14 +28,12 @@ export const FAQItem: React.FC<FAQItemProps> = ({ item, index }) => {
   const styles = StyleSheet.create({
     container: {
       backgroundColor: colors.background.card,
-      borderRadius: 12,
+      borderRadius: RADIUS.card,
+      // Waybill: border-first, no drop shadow.
+      borderWidth: HAIRLINE,
+      borderColor: colors.border,
       marginBottom: 12,
       overflow: 'hidden',
-      elevation: 2,
-      shadowColor: colors.neutral[900],
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
     },
     questionContainer: {
       flexDirection: 'row',

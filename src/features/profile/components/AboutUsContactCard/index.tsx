@@ -4,8 +4,10 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Fonts } from '@src/constants/Fonts';
-import { Theme } from '@src/constants/Theme';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { LEXD_CONTACTS } from '@src/shared/constants/contact';
+import type { AppTheme } from '@src/constants/Theme';
 
 interface Props {
    onCall: () => void;
@@ -22,7 +24,7 @@ export const AboutUsContactCard: React.FC<Props> = ({ onCall }) => {
             style={styles.contactGradient}
          >
             <Ionicons name="call-outline" size={28} color={colors.text.inverse} />
-            <Text style={styles.contactTitle}>Besoin d'aide ?</Text>
+            <Text style={styles.contactTitle}>Besoin d&apos;aide ?</Text>
             <Text style={styles.contactSubtitle}>
                Notre equipe est disponible pour vous accompagner
             </Text>
@@ -32,21 +34,20 @@ export const AboutUsContactCard: React.FC<Props> = ({ onCall }) => {
                activeOpacity={0.8}
             >
                <Ionicons name="call" size={16} color={colors.primary[600]} />
-               <Text style={styles.contactButtonText}>+86 188 5172 5957</Text>
+               <Text style={styles.contactButtonText}>{LEXD_CONTACTS.main.displayPhone}</Text>
             </TouchableOpacity>
          </LinearGradient>
       </Animated.View>
    );
 };
 
-const makeStyles = (colors: any) =>
+const makeStyles = (colors: AppTheme['colors']) =>
    StyleSheet.create({
       contactCard: {
          marginHorizontal: 20,
          marginTop: 16,
-         borderRadius: 16,
+         borderRadius: RADIUS.card,
          overflow: 'hidden',
-         ...Theme.shadows.sm,
       },
       contactGradient: {
          alignItems: 'center',
@@ -74,7 +75,7 @@ const makeStyles = (colors: any) =>
          backgroundColor: colors.background.card,
          paddingHorizontal: 20,
          paddingVertical: 10,
-         borderRadius: 24,
+         borderRadius: RADIUS.control,
       },
       contactButtonText: {
          fontSize: 14,

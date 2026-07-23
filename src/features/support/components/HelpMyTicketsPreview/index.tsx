@@ -2,17 +2,18 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useAppTheme } from "@src/providers/ThemeProvider";
+import { green, ink, semantic } from "@src/shared/constants/brand";
 
 import type { TicketPreview } from "../../api/ticketApi";
 
 import { getStyles } from "./HelpMyTicketsPreview.styles";
 
 const STATUS_COLORS: Record<string, string> = {
-  OPEN: "#EF4444",
-  IN_PROGRESS: "#3B82F6",
-  WAITING_CUSTOMER: "#F59E0B",
-  RESOLVED: "#22C55E",
-  CLOSED: "#6B7280",
+  OPEN: semantic.error,
+  IN_PROGRESS: semantic.info,
+  WAITING_CUSTOMER: semantic.warning,
+  RESOLVED: green[500],
+  CLOSED: ink[400],
 };
 
 const STATUS_LABELS: Record<string, string> = {

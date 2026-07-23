@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fonts } from '@src/constants/Fonts';
 import { useAppTheme } from '@src/providers/ThemeProvider';
+import { RADIUS } from '@src/shared/ui/designLanguage';
 
 interface PaymentHistoryErrorStateProps {
   error?: Error | null;
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   retryButton: {
-    borderRadius: 8,
+    borderRadius: RADIUS.control,
     paddingHorizontal: 24,
     paddingVertical: 12,
   },

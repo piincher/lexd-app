@@ -48,12 +48,12 @@ export const PointsBalanceHeader: React.FC<PointsBalanceHeaderProps> = ({
         <View style={styles.headerActions}>
           {onRedemptions && (
             <Pressable onPress={onRedemptions} hitSlop={8} style={styles.iconButton} accessibilityLabel="Mes échanges">
-              <MaterialCommunityIcons name="clipboard-list-outline" size={18} color="#FFFFFF" />
+              <MaterialCommunityIcons name="clipboard-list-outline" size={18} color={colors.text.inverse} />
             </Pressable>
           )}
           {onHistory && (
             <Pressable onPress={onHistory} hitSlop={8} style={styles.iconButton} accessibilityLabel="Historique des points">
-              <MaterialCommunityIcons name="history" size={18} color="#FFFFFF" />
+              <MaterialCommunityIcons name="history" size={18} color={colors.text.inverse} />
             </Pressable>
           )}
         </View>
@@ -76,7 +76,7 @@ export const PointsBalanceHeader: React.FC<PointsBalanceHeaderProps> = ({
       ) : (
         <View style={styles.nudge}>
           <View style={styles.readyRow}>
-            <MaterialCommunityIcons name="check-decagram" size={15} color="#FFFFFF" />
+            <MaterialCommunityIcons name="check-decagram" size={15} color={colors.text.inverse} />
             <Text style={styles.nudgeText}>
               {points > 0 ? 'Vous pouvez échanger vos points dès maintenant' : 'Gagnez des points à chaque livraison'}
             </Text>

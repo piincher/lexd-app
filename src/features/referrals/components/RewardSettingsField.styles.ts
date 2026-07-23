@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 export const createStyles = (colors: any) =>
   StyleSheet.create({
@@ -11,18 +12,18 @@ export const createStyles = (colors: any) =>
       gap: 6,
     },
     label: {
-      fontSize: 13,
+      fontSize: 11,
       fontWeight: '700',
       color: colors.text.secondary,
       textTransform: 'uppercase',
-      letterSpacing: 0.3,
+      letterSpacing: 0.7,
     },
     inputRow: {
       flexDirection: 'row',
       alignItems: 'center',
       minHeight: 48,
-      borderWidth: 1,
-      borderRadius: 10,
+      borderWidth: HAIRLINE,
+      borderRadius: RADIUS.control,
       borderColor: colors.border,
       backgroundColor: colors.background.paper,
       paddingHorizontal: 12,

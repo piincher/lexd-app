@@ -1,6 +1,6 @@
 /**
  * ComparisonCard
- * ChinaLink vs Others — visually scannable feature comparison
+ * LEXD vs Others — visually scannable feature comparison
  * with score bars and clean row layout.
  */
 import React from 'react';
@@ -22,7 +22,7 @@ export const ComparisonCard: React.FC = () => {
   return (
     <View style={styles.container}>
       <SectionHeader
-        title="ChinaLink vs Autres"
+        title="LEXD vs Autres"
         subtitle="Decouvrez pourquoi nos clients nous choisissent"
       />
 
@@ -31,10 +31,10 @@ export const ComparisonCard: React.FC = () => {
         style={[styles.scoreCard, { backgroundColor: colors.background.card }]}
       >
         <ComparisonScoreBar
-          score={COMPARISON_SUMMARY.chinalinkScore}
+          score={COMPARISON_SUMMARY.lexdScore}
           total={COMPARISON_SUMMARY.totalFeatures}
           color={colors.status.success}
-          label="ChinaLink Express"
+          label="LEXD"
         />
         <View style={{ height: 14 }} />
         <ComparisonScoreBar

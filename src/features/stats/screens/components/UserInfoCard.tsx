@@ -24,7 +24,7 @@ export const UserInfoCard: React.FC<UserInfoCardProps> = ({
         <Avatar.Image
           size={72}
           source={{
-            uri: "https://chinalinexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/ChinaLink%20Express%20(1024%20x%201024%20px)%20(1).png",
+            uri: "https://chinalinexpress.nyc3.cdn.digitaloceanspaces.com/airshipping/LEXD%20Express%20(1024%20x%201024%20px)%20(1).png",
           }}
         />
         <View style={styles.userInfo}>

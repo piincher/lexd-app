@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
 import { useAppTheme } from '@src/providers/ThemeProvider';
 import { Fonts } from '@src/constants/Fonts';
+import { HAIRLINE, RADIUS } from '@src/shared/ui/designLanguage';
 
 interface FAQSearchBarProps {
   value: string;
@@ -92,8 +93,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 12,
     paddingVertical: 10,
-    borderRadius: 12,
-    borderWidth: 1,
+    borderRadius: RADIUS.control,
+    borderWidth: HAIRLINE,
     gap: 8,
     minHeight: 48,
   },
